@@ -2679,6 +2679,9 @@ static LRESULT CALLBACK OnExtSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					hWnd = GetDlgItem(hDlgWnd, IDC_DELIM_LIST);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.DelimList), (LPARAM)ts.DelimList);
 
+					// (6)
+					hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.ViewlogEditor), (LPARAM)ts.ViewlogEditor);
 
                     EndDialog(hDlgWnd, IDOK);
                     break;
@@ -3159,6 +3162,11 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2005/01/29 05:27:35  yutakakn
+ * "View Log"メニューの追加。
+ * "Additional settings"にView Log Editorボックスを追加。
+ * teraterm.iniに"ViewlogEditor"エントリを追加。
+ *
  * Revision 1.6  2005/01/22 06:44:34  yutakakn
  * すべてのTeraTermへ同一コマンドを送信することができる 'Broadcast command' を
  * Control menu配下に追加した。
