@@ -47,18 +47,26 @@
 
 * SSH autologin
   Perform the following command line options to be able to autologin with SSH protocol.
-  But now you can't include the blank in the passphrase. And also supporting method 
-  is only password authentication method.
   
   SYNOPSIS:
      ttermpro.exe HOSTNAME:22 /ssh [/1|/2] /auth=password /user=USERNAME /passwd=PASSPHRASE
 
-  EXAMPLE: SSH1
+  SYNOPSIS:
+     ttermpro.exe HOSTNAME:22 /ssh [/1|/2] /auth=publickey /user=USERNAME /passwd=PASSPHRASE /keyfile=PRIVATEKEYFILE
+
+  EXAMPLE: SSH1 password authentication auto-login (username nike  password kukuri)
      ttermpro.exe 192.168.1.3:22 /ssh /1 /auth=password /user=nike /passwd=kukuri
 
-  EXAMPLE: SSH2
+  EXAMPLE: SSH2 password authentication auto-login (username nike  password kukuri)
      ttermpro.exe 192.168.1.3:22 /ssh /2 /auth=password /user=nike /passwd=kukuri
 
+  EXAMPLE: SSH2 public-key authentication auto-login (username kitakita  password oyaji 28  private-key-file d:\tmp\id_rsa)
+     ttermpro.exe 192.168.1.3:22 /ssh /2 /auth=publickey /user=kitakita /passwd=oyaji@28 /keyfile=d:\tmp\id_rsa
+
+
+  NOTICE: blank operation
+    If you include the blank in the password or file path, replace the blank(' ') to '@'.
+    And also if you use the atmark character in them, write two continuation '@@' instead of '@'.
 
 
 * Development Environment
@@ -103,6 +111,12 @@
 
 
 * History
+
+2005.1.30 (Ver 1.08)
+  - added support of keyboard-interactive authentication. You can configurate the its authentication enabling flag by "KeyboardInteractive" entry of TTSSH section in the 'teraterm.ini' file.
+  - added show of Project Homepage URL and OpenSSL version at version dialog.
+  - fixed the application fault of pushing enter key before be grayed at rhosts and TIS in SSH2 authentication dailog.
+  - added support of public-key authentication auto-login. And also added /auth=publickey and /keyfile command line option.
 
 2005.1.6 (Ver 1.07)
   - fixed application fault when changing terminal size on telnet connection (degradation at TTSSH version supporting SSH2 1.06)

@@ -188,9 +188,9 @@ MaxBuffSize=500000
   
   ・telnet接続
   
-  connect 'myserver /nossh' 
+  connect 'myserver:23 /nossh' 
   or 
-  connect 'myserver' 
+  connect 'myserver:23' 
   
   /nossh を使う方を強く推奨します。このオプションがない場合、TeraTermは teraterm.ini が最後に保存されたときと同じメソッド（telnet もしくは SSH）を使って、接続しようとします。もし、SSHを使って接続しようとするならば、connectマクロは失敗するでしょう。
   
@@ -203,13 +203,19 @@ MaxBuffSize=500000
   or 
   connect 'myserver /ssh /2' 
   or 
-  connect 'myserver /ssh /auth=password /user=username /passwd=password'' 
+  connect 'myserver /ssh /auth=password /user=username /passwd=password'
   or 
-  connect 'myserver /ssh /1 /auth=password /user=username /passwd=password'' 
+  connect 'myserver /ssh /1 /auth=password /user=username /passwd=password'
   or 
-  connect 'myserver /ssh /2 /auth=password /user=username /passwd=password'' 
+  connect 'myserver /ssh /2 /auth=password /user=username /passwd=password'
+  or 
+  connect 'myserver /ssh /auth=publickey /user=username /passwd=password /keyfile=private-key-file' 
+  or 
+  connect 'myserver /ssh /1 /auth=publickey /user=username /passwd=password /keyfile=private-key-file' 
+  or 
+  connect 'myserver /ssh /2 /auth=publickey /user=username /passwd=password /keyfile=private-key-file' 
   
-  最初の方法は、SSHバージョンを指定せずにSSH接続をします。/1 と /2 のオプションは、SSH1およびSSH2であることを指定します。最後の3つの方法は、マクロからユーザ名とパスワードを渡すことにより、SSH認証ダイアログをスキップさせることができます。/auth=passwordはパスワード認証であることを表します。TeraTermマクロにユーザ名とパスワードを指定した場合、そのマクロファイルをプレーンテキストとして保存したのなら、セキュリティ的に安全な場所に置く必要があることを肝に銘じておいてください。
+  最初の方法は、SSHバージョンを指定せずにSSH接続をします。/1 と /2 のオプションは、SSH1およびSSH2であることを指定します。最後の6つの方法は、マクロからユーザ名とパスワードを渡すことにより、SSH認証ダイアログをスキップさせることができます。/auth=passwordはパスワード認証、/auth=publickeyは公開鍵認証であることを表します。TeraTermマクロにユーザ名とパスワードを指定した場合、そのマクロファイルをプレーンテキストとして保存したのなら、セキュリティ的に安全な場所に置く必要があることを肝に銘じておいてください。
   
   
   ・COMポート接続
@@ -269,6 +275,22 @@ MaxBuffSize=500000
 
 
 ■改版履歴
+
+2005.1.30 (Ver 4.10)
+  ・最大化ボタンを有効にした
+  ・TeraTerm Menu, LogMeInのアクセラレータキーを削除した
+  ・ログ採取時のデフォルト名(log_YYYYMMDD_HHMMSS.txt)を設定するようにした
+  ・Broadcast commandメニューをControl menu配下に追加した。
+  ・バージョンダイアログにホームページのURLを追加した。
+  ・"Save setup"ダイアログの初期ファイルディレクトリを、読み込まれたteraterm.iniがある箇所へ固定するよう変更した。
+  ・"File"配下に"View Log"メニューを追加した。
+  ・"Additional settings"に"View Log Editor"ボックスを追加した。
+  ・teraterm.iniの[Tera Term]セクションに、"ViewlogEditor"エントリを追加した。
+  ・TeraTerm Menu 1.02へ差し替え。
+     - デフォルトオプションに漢字コード(/KT=UTF8 /KR=UTF8)を追加した。
+     - SSH自動ログインにおいて、ユーザパラメータを指定できるようにした。
+     - SSH自動ログインにおいて、マクロの指定を削除した。
+     - SSH自動ログインにおいて、秘密鍵ファイルの指定をできるようにした。
 
 2005.1.10 (Ver 2.09)
   ・マルチディスプレイ環境において、ウィンドウのリサイズを行うと、プライマリディスプレイへ戻ってしまう現象に対処。パッチ作成に感謝します＞安藤弦彦氏

@@ -188,41 +188,47 @@ MaxBuffSize=500000
 
 There are 3 types of connection you can establish from TeraTerm macro: 
 
-- Telnet connection (port 23) 
-- SSH1 or SSH2 connection (port 22) 
-- Connection via COM port 
-
-Telnet connections 
-
-connect 'myserver /nossh' 
-or 
-connect 'myserver' 
-
-Using /nossh is strongly recommended. Without this parameter TeraTerm will start connecting with the same method (telnet or SSH) that was used during last time when teraterm.ini file was saved. In case it was SSH than your macro will try to connect via SSH and will eventually fail. 
-
-SSH connections 
-
-connect 'myserver /ssh' 
-or 
-connect 'myserver /ssh /1' 
-or 
-connect 'myserver /ssh /2' 
-or 
-connect 'myserver /ssh /auth=password /user=username /passwd=password'' 
-or 
-connect 'myserver /ssh /1 /auth=password /user=username /passwd=password'' 
-or 
-connect 'myserver /ssh /2 /auth=password /user=username /passwd=password'' 
-
-The first way will start SSH connection without defining whether SSH1 or SSH2 has to be used. Parameters /1 and /2 force to use SSH1 or SSH2 method. The last 3 ways allow to skip popup dialog and pass username and password directly from macro. Please note that /auth=password is the parameter saying that authentication will be done by entering password thus you should not replace the word 'password' in it with actual password. Only the words shown above with italic font has to be substituted with actual values. 
-Please remember that entering actual username and password in TeraTerm macro will cause them to be stored as an open text and it is your responsibility to keep such macro is secure location. 
-
-Connections via COM port 
-
-connect '/C=x' 
-
-Here x represents COM port number. For example to connect via COM port 1 the command will look like: connect '/C=1'
-
+  - Telnet connection (port 23) 
+  - SSH1 or SSH2 connection (port 22) 
+  - Connection via COM port 
+  
+  Telnet connections 
+  
+  connect 'myserver:23 /nossh' 
+  or 
+  connect 'myserver:23' 
+  
+  Using /nossh is strongly recommended. Without this parameter TeraTerm will start connecting with the same method (telnet or SSH) that was used during last time when teraterm.ini file was saved. In case it was SSH than your macro will try to connect via SSH and will eventually fail. 
+  
+  SSH connections 
+  
+  connect 'myserver /ssh' 
+  or 
+  connect 'myserver /ssh /1' 
+  or 
+  connect 'myserver /ssh /2' 
+  or 
+  connect 'myserver /ssh /auth=password /user=username /passwd=password'' 
+  or 
+  connect 'myserver /ssh /1 /auth=password /user=username /passwd=password'' 
+  or 
+  connect 'myserver /ssh /2 /auth=password /user=username /passwd=password'' 
+  or 
+  connect 'myserver /ssh /auth=publickey /user=username /passwd=password /keyfile=private-key-file' 
+  or 
+  connect 'myserver /ssh /1 /auth=publickey /user=username /passwd=password /keyfile=private-key-file' 
+  or 
+  connect 'myserver /ssh /2 /auth=publickey /user=username /passwd=password /keyfile=private-key-file' 
+  
+  The first way will start SSH connection without defining whether SSH1 or SSH2 has to be used. Parameters /1 and /2 force to use SSH1 or SSH2 method. The last 6 ways allow to skip popup dialog and pass username and password directly from macro. Please note that /auth=password or /auth=publickey is the parameter saying that authentication will be done by entering password or private-key-file thus you should not replace the word 'password' or the word 'RSA/DSA' in it with actual password. Only the words shown above with italic font has to be substituted with actual values. 
+  Please remember that entering actual username and password in TeraTerm macro will cause them to be stored as an open text and it is your responsibility to keep such macro is secure location. 
+  
+  Connections via COM port 
+  
+  connect '/C=x' 
+  
+  Here x represents COM port number. For example to connect via COM port 1 the command will look like: connect '/C=1'
+  
   source URL: http://www.neocom.ca/forum/viewtopic.php?t=6
 
 
@@ -285,8 +291,24 @@ Here x represents COM port number. For example to connect via COM port 1 the com
 
 * History
 
+2005.1.30 (Ver 4.10)
+  - enabled maximum button
+  - deleted the accelerator key of TeraTerm Menu and LogMeIn
+  - added the setting default file name(log_YYYYMMDD_HHMMSS.txt) of logging
+  - added the Broadcast command menu under Control menu
+  - added the homepage URL at version dialog
+  - fixed the initial directory of "Save setup" dialog at reading teraterm.ini directory
+  - added "View Log" menu under File menu
+  - added "View Log Editor" text-box on "Additional settings" dialog
+  - added the "ViewlogEditor" entry at [Tera Term] section of teraterm.ini
+  - upgraded TeraTerm Menu supporting SSH2 to 1.02.
+     -- added Kanji code(/KT=UTF8 /KR=UTF8) of default option
+     -- added specify of user paramater at SSH autologin
+     -- deleted macro specification at SSH autologin
+     -- added specify of private-key-file at SSH autologin
+
 2005.1.10 (Ver 2.09)
-  - fixed the bug of switching back to primary display when changing terminal size on multi display environment. It is thankful to Tsuruhiko Ando.
+  - fixed the bug of switching back to primary display when changing terminal size on multi display environment. Special thanks to Tsuruhiko Ando.
 
 2005.1.6 (Ver 2.08)
   - changed the logging dialog type from open-dialog to save-dialog

@@ -46,17 +46,26 @@
 
 ●SSH自動ログイン
   以下のコマンドライン・オプションの使用により、SSH1およびSSH2を利用してユーザの
-  自動ログインが可能となります。ただし、パスワードに空白を含めることはできません。
-  また、password認証のみのサポートとなっています。
+  自動ログインが可能となります。
   
-  書式）
+  書式）パスワードおよびkeyboard-interactive認証
      ttermpro.exe ホスト名:22 /ssh [/1|/2] /auth=password /user=ユーザ名 /passwd=パスワード
+  書式）公開鍵認証
+     ttermpro.exe ホスト名:22 /ssh [/1|/2] /auth=publickey /user=ユーザ名 /passwd=パスワード /keyfile=秘密鍵ファイル
 
-  例）SSH1
+  例）SSH1によるパスワード認証ログイン（ユーザ名 nike パスワード kukuri）
      ttermpro.exe 192.168.1.3:22 /ssh /1 /auth=password /user=nike /passwd=kukuri
 
-  例）SSH2
+  例）SSH2によるパスワード認証ログイン（ユーザ名 nike パスワード kukuri）
      ttermpro.exe 192.168.1.3:22 /ssh /2 /auth=password /user=nike /passwd=kukuri
+
+  例）SSH2による公開鍵認証ログイン（ユーザ名 kitakita パスワード oyaji 28 秘密鍵ファイル d:\tmp\id_rsa）
+     ttermpro.exe 192.168.1.3:22 /ssh /2 /auth=publickey /user=kitakita /passwd=oyaji@28 /keyfile=d:\tmp\id_rsa
+
+  ※空白の扱い
+    パスワードおよびパスに空白を含める場合、スペース(' ')の代わりにアットマーク('@')を
+    使用してください。また、アットマークという文字を使用する場合は、2つ続けて('@@')と
+    記述してください。
 
 
 ■開発環境
@@ -92,6 +101,12 @@
 
 
 ■改版履歴
+
+2005.1.30 (Ver 1.08)
+  ・keyboard-interactive認証をサポートした。それにともない、teraterm.ini ファイルのTTSSHセクションの"KeyboardInteractive"エントリを追加した。
+  ・バージョンダイアログにホームページのURL・OpenSSLバージョンを追加した。
+  ・SSH2認証ダイアログで、rhostsおよびTISがグレーになる前に、Enterキーを押下すると、アプリケーションエラーとなる現象に対処した。
+  ・公開鍵認証自動ログインをサポート。/auth=publickey, /keyfileコマンドラインオプションを追加。
 
 2005.1.6 (Ver 1.07)
   ・telnet接続時にターミナルサイズ変更を行うと、アプリケーションエラーとなるバグを修正（1.06でのデグレード）。
