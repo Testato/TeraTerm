@@ -52,24 +52,26 @@ END
 // Dialog
 //
 
-IDD_ABOUTDIALOG DIALOGEX 0, 0, 263, 258
+IDD_ABOUTDIALOG DIALOGEX 0, 0, 263, 271
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About TTSSH"
 FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
     LTEXT           "This extension uses code by Eric A. Young (LIBEAY32.DLL).\r\nThanks also to Ian Goldberg for his Pilot SSH code, which was a very handy reference. Special thanks to Takashi Teranishi for his cooperation.",
-                    IDC_STATIC,6,116,248,27
-    DEFPUSHBUTTON   "OK",IDOK,106,238,50,14
-    LTEXT           "TTSSH\r\nTeraterm Secure Shell extension, version 1.5.4\r\nCompatible with SSH protocol version 1.5\r\nCopyright Robert O'Callahan (roc+tt@cs.cmu.edu), 1998-1999\r\nIPv6 extention version 0.81 (kato@win6.jp), 2000-2003\r\nSSH2 support 1.09 (Y.Hirata), 2004-2005",
-                    IDC_STATIC,6,7,219,50
+                    IDC_STATIC,6,129,248,27
+    DEFPUSHBUTTON   "OK",IDOK,106,251,50,14
+    LTEXT           "Includes: TTSSH 1.5.4\r\nCopyright Robert O'Callahan (roc+tt@cs.cmu.edu), 1998-1999\r\nIPv6 extention version 0.81 (kato@win6.jp), 2000-2003\r\nSSH2 support (Y.Hirata), 2004-2005",
+                    IDC_STATIC,6,36,219,34
     LTEXT           "THIS EXTENSION INCORPORATES STRONG CRYPTOGRAPHY. POSESSION, USE, AND/OR EXPORT OF THIS EXTENSION MAY BE ILLEGAL IN YOUR COUNTRY.",
-                    IDC_STATIC,6,89,248,26
-    ICON            IDI_SECURETT,IDC_STATIC,234,7,20,20
-    EDITTEXT        IDC_ABOUTTEXT,6,146,248,87,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    IDC_STATIC,6,102,248,26
+    ICON            IDI_SECURETT,IDC_STATIC,234,7,21,20
+    EDITTEXT        IDC_ABOUTTEXT,6,159,248,87,ES_MULTILINE | ES_AUTOVSCROLL | 
                     ES_AUTOHSCROLL | ES_READONLY
     LTEXT           "TTSSH home page:      http://www.zip.com.au/~roca/ttssh.html\nOpenSource Project:   http://sourceforge.jp/projects/ttssh2/",
-                    IDC_STATIC,6,65,248,20,SS_SUNKEN
-    LTEXT           "OpenSSL:",IDC_OPENSSL_VERSION,6,56,175,8
+                    IDC_STATIC,6,78,248,20,SS_SUNKEN
+    LTEXT           "OpenSSL:",IDC_OPENSSL_VERSION,6,69,175,8
+    LTEXT           "TTSSH\r\nTeraterm Secure Shell extension, version 2.10\r\nCompatible with SSH protocol version 1.5 and 2.0",
+                    IDC_STATIC,6,7,222,26
 END
 
 IDD_SSHAUTH DIALOGEX 0, 0, 309, 214
@@ -348,7 +350,7 @@ BEGIN
         LEFTMARGIN, 6
         RIGHTMARGIN, 254
         TOPMARGIN, 7
-        BOTTOMMARGIN, 256
+        BOTTOMMARGIN, 269
     END
 
     IDD_SSHAUTH, DIALOG
@@ -435,8 +437,8 @@ IDI_SECURETT            ICON                    "ttsecure.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,5,4,0
- PRODUCTVERSION 1,5,4,0
+ FILEVERSION 2,10,0,0
+ PRODUCTVERSION 2,10,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -452,12 +454,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "TTXSSH"
-            VALUE "FileVersion", "1.5.4"
+            VALUE "FileVersion", "2.10"
             VALUE "InternalName", "TTXSSH"
-            VALUE "LegalCopyright", "Copyright © 1998-1999 Robert O'Callahan"
+            VALUE "LegalCopyright", "(C)2004-2005 Yutaka Hirata, (C)1998-1999 Robert O'Callahan"
             VALUE "OriginalFilename", "TTXSSH.dll"
             VALUE "ProductName", "TTSSH"
-            VALUE "ProductVersion", "1.5.4"
+            VALUE "ProductVersion", "2.10"
         END
     END
     BLOCK "VarFileInfo"
