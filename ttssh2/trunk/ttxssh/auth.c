@@ -209,8 +209,11 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 
 	update_server_supported_types(pvar, dlg);
 
-	// SSH2 autologin (2004.12.1 yutaka)
+	// SSH2 autologin 
 	// ユーザ、パスワード、認証メソッドを自動設定して、一定時間後にOKボタンを押下する。
+	// 
+	// (2004.12.1 yutaka)
+	// (2005.1.26 yutaka) 公開鍵認証サポート
 	if (pvar->ssh2_autologin == 1) {
 		SetDlgItemText(dlg, IDC_SSHUSERNAME, pvar->ssh2_username);
 		EnableWindow(GetDlgItem(dlg, IDC_SSHUSERNAME), FALSE);
@@ -220,8 +223,16 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 		EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORD), FALSE);
 		EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORDCAPTION), FALSE);
 
-		if (pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) {
+		if (pvar->ssh2_authmethod == SSH_AUTH_PASSWORD) {
 			CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL, IDC_SSHUSEPASSWORD);
+
+		} else if (pvar->ssh2_authmethod == SSH_AUTH_RSA) {
+			CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL, IDC_SSHUSERSA);
+
+			SetDlgItemText(dlg, IDC_RSAFILENAME, pvar->ssh2_keyfile);
+			EnableWindow(GetDlgItem(dlg, IDC_CHOOSERSAFILE), FALSE);
+			EnableWindow(GetDlgItem(dlg, IDC_RSAFILENAME), FALSE);
+
 		} else {
 			// TODO
 
@@ -354,6 +365,7 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 			char errmsg[256];
 
 			memset(errmsg, 0, sizeof(errmsg));
+			//GetCurrentDirectory(sizeof(errmsg), errmsg);
 
 			key_pair = read_SSH2_private_key(pvar, buf, password,
 									&invalid_passphrase,
@@ -981,6 +993,10 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2005/01/25 13:38:22  yutakakn
+ * SSH認証ダイアログで、Rhosts/TISがグレーになる前に、Enterキーを押下すると、
+ * アプリケーションエラーとなる現象に対処した。
+ *
  * Revision 1.6  2005/01/24 14:07:07  yutakakn
  * ・keyboard-interactive認証をサポートした。
  * 　それに伴い、teraterm.iniに "KeyboardInteractive" エントリを追加した。

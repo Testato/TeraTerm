@@ -201,8 +201,10 @@ typedef struct _TInstVar {
   int kexgex_bits;
   int kexgex_max;
   int ssh2_autologin;
+  SSHAuthMethod ssh2_authmethod;
   char ssh2_username[MAX_PATH];
   char ssh2_password[MAX_PATH];
+  char ssh2_keyfile[MAX_PATH];
   time_t ssh_heartbeat_tick;
   HANDLE ssh_heartbeat_thread;
   int keyboard_interactive_done;
@@ -231,6 +233,11 @@ int copy_teraterm_dir_relative_path(char FAR * dest, int destsize, char FAR * ba
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2005/01/24 14:07:07  yutakakn
+ * ・keyboard-interactive認証をサポートした。
+ * 　それに伴い、teraterm.iniに "KeyboardInteractive" エントリを追加した。
+ * ・バージョンダイアログに OpenSSLバージョン を追加
+ *
  * Revision 1.5  2004/12/27 14:05:08  yutakakn
  * 'Auto window close'が有効の場合、切断後の接続ができない問題を修正した。
  * 　・スレッドの終了待ち合わせ処理の追加

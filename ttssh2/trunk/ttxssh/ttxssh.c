@@ -1127,6 +1127,31 @@ static void read_ssh_options_from_user_file(PTInstVar pvar,
 	FWDUI_load_settings(pvar);
 }
 
+
+// @をブランクに置換する。 (2005.1.26 yutaka)
+static void replace_to_blank(char *src, char *dst, int dst_len)
+{
+	int len, i;
+
+	len = strlen(src);
+	if (dst_len < len) // buffer overflow check
+		return;
+
+	for (i = 0 ; i < len ; i++) {
+		if (src[i] == '@') { // @ が登場したら
+			if (i < len - 1 && src[i + 1] == '@') { // その次も @ ならアットマークと認識する
+				*dst++ = '@';
+				i++;
+			} else {
+				*dst++ = ' '; // 空白に置き換える
+			}
+		} else {
+			*dst++ = src[i];
+		}
+	}
+	*dst = '\0';
+}
+
 /* returns 1 if the option text must be deleted */
 static int parse_option(PTInstVar pvar, char FAR * option)
 {
@@ -1191,16 +1216,26 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 			pvar->settings.Enabled = 0;
 
 		} else if (MATCH_STR(option + 1, "auth") == 0) {
-			// SSH2自動ログインオプションの追加 (2004.11.30 yutaka)
+			// SSH2自動ログインオプションの追加 
 			//
-			// SYNOPSIS: /ssh /auth=認証メソッド /user=ユーザ名 /passwd=パスワード
-			// EXAMPLE: /ssh /auth=password /user=nike "/passwd=a b c"
-			// NOTICE: パスワードに空白が含まれる場合は、オプション全体を引用符で囲むこと。
+			// SYNOPSIS: /ssh /auth=passowrd /user=ユーザ名 /passwd=パスワード
+			//           /ssh /auth=publickey /user=ユーザ名 /passwd=パスワード /keyfile=パス
+			// EXAMPLE: /ssh /auth=password /user=nike /passwd=a@bc
+			//          /ssh /auth=publickey /user=foo /passwd=bar /keyfile=d:\tmp\id_rsa
+			// NOTICE: パスワードやパスに空白が含む場合は、ブランクの代わりに @ を使うこと。
+			//
+			// (2004.11.30 yutaka)
+			// (2005.1.26 yutaka) 空白対応。公開鍵認証サポート。
 			//
 			pvar->ssh2_autologin = 1; // for SSH2 (2004.11.30 yutaka)
 
-			if (MATCH_STR(option + 5, "=password") == 0) { // パスワード認証
-				pvar->auth_state.cur_cred.method = SSH_AUTH_PASSWORD;
+			if (MATCH_STR(option + 5, "=password") == 0) { // パスワード/keyboard-interactive認証
+				//pvar->auth_state.cur_cred.method = SSH_AUTH_PASSWORD;
+				pvar->ssh2_authmethod = SSH_AUTH_PASSWORD;
+
+			} else if (MATCH_STR(option + 5, "=publickey") == 0) { // 公開鍵認証
+				//pvar->auth_state.cur_cred.method = SSH_AUTH_RSA;
+				pvar->ssh2_authmethod = SSH_AUTH_RSA;
 
 			} else {
 				// TODO:
@@ -1208,10 +1243,15 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 			}
 
 		} else if (MATCH_STR(option + 1, "user=") == 0) {
-			_snprintf(pvar->ssh2_username, sizeof(pvar->ssh2_username), "%s", option + 6);
+			replace_to_blank(option + 6, pvar->ssh2_username, sizeof(pvar->ssh2_username));
+			//_snprintf(pvar->ssh2_username, sizeof(pvar->ssh2_username), "%s", option + 6);
 
 		} else if (MATCH_STR(option + 1, "passwd=") == 0) {
-			_snprintf(pvar->ssh2_password, sizeof(pvar->ssh2_password), "%s", option + 8);
+			replace_to_blank(option + 8, pvar->ssh2_password, sizeof(pvar->ssh2_password));
+			//_snprintf(pvar->ssh2_password, sizeof(pvar->ssh2_password), "%s", option + 8);
+
+		} else if (MATCH_STR(option + 1, "keyfile=") == 0) {
+			replace_to_blank(option + 9, pvar->ssh2_keyfile, sizeof(pvar->ssh2_keyfile));
 
 		}
 
@@ -2063,6 +2103,11 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2005/01/24 14:07:07  yutakakn
+ * ・keyboard-interactive認証をサポートした。
+ * 　それに伴い、teraterm.iniに "KeyboardInteractive" エントリを追加した。
+ * ・バージョンダイアログに OpenSSLバージョン を追加
+ *
  * Revision 1.8  2004/12/27 14:05:08  yutakakn
  * 'Auto window close'が有効の場合、切断後の接続ができない問題を修正した。
  * 　・スレッドの終了待ち合わせ処理の追加
