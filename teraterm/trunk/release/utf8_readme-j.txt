@@ -248,6 +248,7 @@ MaxBuffSize=500000
   TTSSHはRobert O'Callahan氏の著作物です。
   TeraTerm Menuは早川信平氏の著作物です。
   LogMeInはNeoCom Solutionsの著作物です。
+  Eterm風透過ウィンドウ機能はAKASI氏に著作権があります。
   本プログラムは無償で利用できますが、作者は本プログラムの使用にあたり
   生じる障害や問題に対して一切の責任を負いません。
 
@@ -260,6 +261,7 @@ MaxBuffSize=500000
   Cygterm: http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
   TeraTerm Menu: http://park11.wakwak.com/~shinpei/freesoft/index.html
   LogMeIn: http://www.neocom.ca/freeware/LogMeIn/
+  Eterm風透過ウィンドウ機能パッチ：http://www.geocities.co.jp/SiliconValley-PaloAlto/4954/av.html
   TeraTerm forum: http://www.neocom.ca/forum/index.php
   TeraTerm ML: http://www.freeml.com/info/teraterm@freeml.com
 
@@ -277,6 +279,14 @@ MaxBuffSize=500000
 
 
 ■改版履歴
+
+2005.2.?? (Ver 4.11)
+  ・ログ採取中に File -> log がグレイ表示にならない問題へ対処した。
+  ・Eterm風透過ウィンドウ機能（AKASI氏作パッチ）を追加した。
+  ・VisualStyle(WindowsXP)に対応させた
+  ・TitleFormatにformat ID=13を新規追加した
+  ・キャプション表示において、COM5以上の表示に対応した。
+  ・ログファイルの種別に"plain text"を追加した。当該オプションを有効にすると、ログファイルにASCII非表示文字を採取しないようになる。ただし、例外キャラクタ(HT, CR, LF)は採取対象。
 
 2005.1.30 (Ver 4.10)
   ・最大化ボタンを有効にした

@@ -102,6 +102,9 @@
 
 ■改版履歴
 
+2005.2.?? (Ver 1.09)
+  ・ドットで始まるディレクトリにあるSSH2秘密鍵ファイルが読み込めない問題へ対処した。
+
 2005.1.30 (Ver 1.08)
   ・keyboard-interactive認証をサポートした。それにともない、teraterm.ini ファイルのTTSSHセクションの"KeyboardInteractive"エントリを追加した。
   ・バージョンダイアログにホームページのURL・OpenSSLバージョンを追加した。

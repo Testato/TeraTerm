@@ -330,6 +330,9 @@
 				RelativePath="..\..\source\common\dlglib.h">
 			</File>
 			<File
+				RelativePath="..\..\source\ttfile\file_res.h">
+			</File>
+			<File
 				RelativePath="..\..\source\ttfile\ftlib.h">
 			</File>
 			<File
