@@ -338,8 +338,11 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
-2005.3.?? (Ver 4.12)
+2005.3.13 (Ver 4.12)
   - upgraded ttermpro.exe version information from 2.3 to 4.12.
+  - fixed the multibyte problem that the cursor scrolls to upper direction when ZENKAKU(Japanese character) cross the end of line. Special thanks to Iwamoto Kouichi.
+  - added TeraTerm title multibyte character converting EUC-JP to Shift_JIS(CP932).
+  - upgraded LogMeTT to 2.1.2.
 
 2005.2.22 (Ver 4.11)
   - fixed the problem that log menu doesn't become gray on logging

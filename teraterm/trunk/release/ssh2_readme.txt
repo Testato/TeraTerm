@@ -112,6 +112,16 @@
 
 * History
 
+2005.3.13 (Ver 2.10)
+  - upgraded ttxssh.dll version information from 1.5.4 to 2.10.
+  - changed SSH client ID(SSH-2.0-TTSSH/X.XX Win32) including TTSSH version information.
+  - added Tru64 UNIX workaround. Special thanks to Miguel.
+  - added SSH2 dump logging
+  - fixed the bug of being not able to get rid of CR when CR+LF code is included in SSH server ID.
+  - changed TTSSH don't send SSH2_MSG_SERVICE_REQUEST to server once the client try to login.
+  - changed the default value of [TTSSH] KeyboardInteractive to 0(disabled) because SSH connection is closed by server then the invalid method is used in OpenSSH 4.0. And also the passowrd authentication label of SSH authentication dialog is dynamically changed.
+  - added support of challenge/response login on SSH2 connection.
+
 2005.2.22 (Ver 1.09)
   - fixed the SSH2 public key problem that TTSSH can't read the private key file in the directory starting by the dot.
   - added the configuration of HeartBeat(keep-alive), SSH2 keyboard-interactive on TTSSH setup dialog

@@ -102,11 +102,15 @@
 
 ■改版履歴
 
-2005.3.?? (Ver 2.10)
+2005.3.13 (Ver 2.10)
    ・ttxssh.dllのバージョン情報が古いままだったので修正した。
-   ・SSH Client ID(SSH-2.0-TTSSH/X.XX Win32)にバージョン情報を含めるようにした。
-   ・Tru64 UNIX workaroundを追加
+   ・SSH client ID(SSH-2.0-TTSSH/X.XX Win32)にバージョン情報を含めるようにした。
+   ・Tru64 UNIX workaroundを追加。Miguel氏に感謝します。
    ・SSH2 log dump機構を追加した
+   ・SSH server IDにCR+LFが含まれていた場合、CRの除去ができていなかったバグを修正。
+   ・すでにログイン処理を行っている場合は、SSH2_MSG_SERVICE_REQUESTの送信は行わないようにした。
+   ・パスワード認証の前に行うkeyboard-interactiveメソッドで、デフォルト設定値([TTSSH] KeyboardInteractive)を無効(0)にした。OpenSSH 4.0では無効なメソッドを使用するとコネクションが切られてしまうため。また、認証ダイアログのラベル名を設定の有無により変更するようにした。
+   ・SSH2（keyboard-interactive認証）接続においてchallenge/response loginに対応した。
 
 2005.2.22 (Ver 1.09)
   ・ドットで始まるディレクトリにあるSSH2秘密鍵ファイルが読み込めない問題へ対処した。
