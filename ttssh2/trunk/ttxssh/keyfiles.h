@@ -38,4 +38,10 @@ CRYPTKeyPair FAR * KEYFILES_read_private_key(PTInstVar pvar, char FAR * relative
   char FAR * passphrase, BOOL FAR * invalid_passphrase,
   BOOL is_auto_login);
 
+CRYPTKeyPair *read_SSH2_private_key(PTInstVar pvar,
+							char FAR * relative_name,
+							char FAR * passphrase,
+							BOOL FAR * invalid_passphrase,
+							BOOL is_auto_login);
+
 #endif

@@ -47,7 +47,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.2 2004-12-17 14:05:55 yutakakn Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.3 2004-12-22 17:28:14 yutakakn Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -1411,6 +1411,15 @@ int CRYPT_passphrase_decrypt(int cipher, char FAR * passphrase,
 
 void CRYPT_free_key_pair(CRYPTKeyPair FAR * key_pair)
 {
-	RSA_free(key_pair->RSA_key);
+	if (key_pair->RSA_key != NULL)
+		RSA_free(key_pair->RSA_key);
+
+	if (key_pair->DSA_key != NULL)
+		DSA_free(key_pair->DSA_key);
+
 	free(key_pair);
 }
+
+/*
+ * $Log: not supported by cvs2svn $
+ */

@@ -32,12 +32,18 @@ See LICENSE.TXT for the license.
 */
 
 #include "ttxssh.h"
+#include "keyfiles.h"
 
 #include <io.h>
 #include <fcntl.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <openssl/rsa.h>
+#include <openssl/dsa.h>
+#include <openssl/evp.h>
+#include <openssl/pem.h>
+#include <openssl/err.h>
 
 static char ID_string[] = "SSH PRIVATE KEY FILE FORMAT 1.1\n";
 
@@ -300,7 +306,89 @@ CRYPTKeyPair FAR *KEYFILES_read_private_key(PTInstVar pvar,
 		CRYPTKeyPair FAR *result =
 			(CRYPTKeyPair FAR *) malloc(sizeof(CRYPTKeyPair));
 
+		// フリーするときに 0 かどうかで判別するため追加。(2004.12.20 yutaka)
+		ZeroMemory(result, sizeof(CRYPTKeyPair)); 
+
 		result->RSA_key = RSA_key;
 		return result;
 	}
 }
+
+
+//
+// SSH2
+//
+
+CRYPTKeyPair *read_SSH2_private_key(PTInstVar pvar,
+							char FAR * relative_name,
+							char FAR * passphrase,
+							BOOL FAR * invalid_passphrase,
+							BOOL is_auto_login)
+{
+	FILE *fp = NULL;
+	CRYPTKeyPair *result = NULL;
+	EVP_PKEY *pk = NULL;
+	unsigned long err = 0;
+	char errmsg[256];
+
+	OpenSSL_add_all_algorithms();
+	ERR_load_crypto_strings();
+	//seed_prng();
+
+	fp = fopen(relative_name, "r");
+	if (fp == NULL) {
+		goto error;
+	}
+
+	result = (CRYPTKeyPair *)malloc(sizeof(CRYPTKeyPair));
+	ZeroMemory(result, sizeof(CRYPTKeyPair)); 
+
+	// ファイルからパスフレーズを元に秘密鍵を読み込む。
+	pk = PEM_read_PrivateKey(fp, NULL, NULL, passphrase);
+	if (pk == NULL) {
+		err = ERR_get_error();
+		ERR_error_string_n(err, errmsg, sizeof(errmsg));
+		goto error;
+	}
+
+	if (pk->type == EVP_PKEY_RSA) { // RSA key
+		result->RSA_key = EVP_PKEY_get1_RSA(pk);
+		result->DSA_key = NULL;
+
+		// RSA目くらましを有効にする（タイミング攻撃からの防御）
+		if (RSA_blinding_on(result->RSA_key, NULL) != 1) {
+			goto error;
+		}
+
+	} else if (pk->type == EVP_PKEY_DSA) { // DSA key
+		result->RSA_key = NULL;
+		result->DSA_key = EVP_PKEY_get1_DSA(pk);
+
+	} else {
+		goto error;
+	}
+
+	if (pk != NULL)
+		EVP_PKEY_free(pk);
+
+	fclose(fp);
+	return (result);
+
+error:
+	if (pk != NULL)
+		EVP_PKEY_free(pk);
+
+	if (result != NULL)
+		CRYPT_free_key_pair(result);
+
+	if (fp != NULL)
+		fclose(fp);
+
+	return (NULL);
+}
+
+
+
+/*
+ * $Log: not supported by cvs2svn $
+ */

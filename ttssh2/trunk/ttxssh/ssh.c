@@ -33,6 +33,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <openssl/evp.h>
 #include <openssl/dh.h>
 #include <openssl/engine.h>
+#include <openssl/rsa.h>
+#include <openssl/dsa.h>
 #include <limits.h>
 #include <malloc.h>
 #include <string.h>
@@ -45,6 +47,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifdef _DEBUG
 #define SSH2_DEBUG
 #endif
+
+#define INTBLOB_LEN 20
+#define SIGBLOB_LEN (2*INTBLOB_LEN)
 
 static char ssh_ttymodes[] = "\x01\x03\x02\x1c\x03\x08\x04\x15\x05\x04";
 
@@ -3296,7 +3301,6 @@ static int ssh_dss_verify(
 			DSA *key, u_char *signature, u_int signaturelen,
 			u_char *data, u_int datalen)
 {
-#define INTBLOB_LEN 20
 	DSA_SIG *sig;
 	const EVP_MD *evp_md = EVP_sha1();
 	EVP_MD_CTX md;
@@ -3327,7 +3331,7 @@ static int ssh_dss_verify(
 	sigblob = ptr;
 	ptr += len;
 
-	if (len != (2*INTBLOB_LEN)) {
+	if (len != SIGBLOB_LEN) {
 		return -1;
 	}
 
@@ -4125,17 +4129,11 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 	char *s;
 	unsigned char *outmsg;
 	int len;
-
-#if 1
-	// TODO: MACの決定
-	{
 	int mode;
 
 	for (mode = 0 ; mode < MODE_MAX ; mode++) {
 		pvar->ssh2_keys[mode].mac.enabled = 1;
 	}
-	}
-#endif
 
 	// start user authentication
 	msg = buffer_init();
@@ -4158,12 +4156,193 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 	return TRUE;
 }
 
+
+static char *get_SSH2_keyname(CRYPTKeyPair *keypair)
+{
+	char *s;
+
+	if (keypair->RSA_key != NULL) {
+		s = "ssh-rsa";
+	} else {
+		s = "ssh-dss";
+	}
+
+	return (s);
+}
+
+
+static BOOL generate_SSH2_keysign(CRYPTKeyPair *keypair, char **sigptr, int *siglen, char *data, int datalen)
+{
+	buffer_t *msg = NULL;
+	char *s;
+
+	msg = buffer_init();
+	if (msg == NULL) {
+		// TODO: error check
+		return FALSE;
+	}
+
+	if (keypair->RSA_key != NULL) { // RSA
+		const EVP_MD *evp_md;
+		EVP_MD_CTX md;
+		u_char digest[EVP_MAX_MD_SIZE], *sig;
+		u_int slen, dlen, len;
+		int ok, nid;
+
+		nid = NID_sha1;
+		if ((evp_md = EVP_get_digestbynid(nid)) == NULL) {
+			goto error;
+		}
+
+		// ダイジェスト値の計算
+		EVP_DigestInit(&md, evp_md);
+		EVP_DigestUpdate(&md, data, datalen);
+		EVP_DigestFinal(&md, digest, &dlen);
+
+		slen = RSA_size(keypair->RSA_key);
+		sig = malloc(slen);
+		if (sig == NULL)
+			goto error;
+
+		// 電子署名を計算
+		ok = RSA_sign(nid, digest, dlen, sig, &len, keypair->RSA_key);
+		memset(digest, 'd', sizeof(digest));
+		if (ok != 1) { // error
+			free(sig);
+			goto error;
+		}
+		// 署名のサイズがバッファより小さい場合、後ろへずらす。先頭はゼロで埋める。
+		if (len < slen) {
+			u_int diff = slen - len;
+			memmove(sig + diff, sig, len);
+			memset(sig, 0, diff);
+
+		} else if (len > slen) {
+			free(sig);
+			goto error;
+
+		} else {
+			// do nothing
+
+		}
+
+		s = get_SSH2_keyname(keypair);
+		buffer_put_string(msg, s, strlen(s));
+		buffer_append_length(msg, sig, slen);
+		len = buffer_len(msg);
+
+		// setting
+		*siglen = len;
+		*sigptr = malloc(len);
+		if (*sigptr == NULL) {
+			free(sig);
+			goto error;
+		}
+		memcpy(*sigptr, buffer_ptr(msg), len);
+		free(sig);
+
+	} else { // DSA
+		DSA_SIG *sig;
+		const EVP_MD *evp_md = EVP_sha1();
+		EVP_MD_CTX md;
+		u_char digest[EVP_MAX_MD_SIZE], sigblob[SIGBLOB_LEN];
+		u_int rlen, slen, len, dlen;
+
+		// ダイジェストの計算
+		EVP_DigestInit(&md, evp_md);
+		EVP_DigestUpdate(&md, data, datalen);
+		EVP_DigestFinal(&md, digest, &dlen);
+
+		// DSA電子署名を計算
+		sig = DSA_do_sign(digest, dlen, keypair->DSA_key);
+		memset(digest, 'd', sizeof(digest));
+		if (sig == NULL) {
+			goto error;
+		}
+
+		// BIGNUMからバイナリ値への変換
+		rlen = BN_num_bytes(sig->r);
+		slen = BN_num_bytes(sig->s);
+		if (rlen > INTBLOB_LEN || slen > INTBLOB_LEN) {
+			DSA_SIG_free(sig);
+			goto error;
+		}
+		memset(sigblob, 0, SIGBLOB_LEN);
+		BN_bn2bin(sig->r, sigblob+ SIGBLOB_LEN - INTBLOB_LEN - rlen);
+		BN_bn2bin(sig->s, sigblob+ SIGBLOB_LEN - slen);
+		DSA_SIG_free(sig);
+
+		// setting
+		s = get_SSH2_keyname(keypair);
+		buffer_put_string(msg, s, strlen(s));
+		buffer_append_length(msg, sigblob, sizeof(sigblob));
+		len = buffer_len(msg);
+
+		// setting
+		*siglen = len;
+		*sigptr = malloc(len);
+		if (*sigptr == NULL) {
+			goto error;
+		}
+		memcpy(*sigptr, buffer_ptr(msg), len);
+
+	}
+
+	buffer_free(msg);
+	return TRUE;
+
+error:
+	buffer_free(msg);
+
+	return FALSE;
+}
+
+
+static BOOL get_SSH2_publickey_blob(PTInstVar pvar, buffer_t **blobptr, int *bloblen)
+{
+	buffer_t *msg = NULL;
+	CRYPTKeyPair *keypair;
+	char *s;
+
+	msg = buffer_init();
+	if (msg == NULL) {
+		// TODO: error check
+		return FALSE;
+	}
+
+	keypair = pvar->auth_state.cur_cred.key_pair;
+
+	if (keypair->RSA_key != NULL) { // RSA
+		s = get_SSH2_keyname(keypair);
+		buffer_put_string(msg, s, strlen(s));
+		buffer_put_bignum2(msg, keypair->RSA_key->e); // 公開指数
+		buffer_put_bignum2(msg, keypair->RSA_key->n); // p×q
+
+	} else { // DSA
+		s = get_SSH2_keyname(keypair);
+		buffer_put_string(msg, s, strlen(s));
+		buffer_put_bignum2(msg, keypair->DSA_key->p); // 素数
+		buffer_put_bignum2(msg, keypair->DSA_key->q); // (p-1)の素因数
+		buffer_put_bignum2(msg, keypair->DSA_key->g); // 整数
+		buffer_put_bignum2(msg, keypair->DSA_key->pub_key); // 公開鍵
+
+	}
+
+	*blobptr = msg;
+	*bloblen = buffer_len(msg);
+
+	return TRUE;
+}
+
+
+// ユーザ認証パケットの構築
 static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 {
-	buffer_t *msg;
+	buffer_t *msg = NULL;
 	char *s;
 	unsigned char *outmsg;
 	int len;
+	char *connect_id = "ssh-connection";
 
 	//		pvar->auth_state.cur_cred.password = password;
 	//		pvar->auth_state.user =
@@ -4174,26 +4353,90 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	}
 
 	// ペイロードの構築
-	// TODO:
 	if (pvar->ssh2_autologin == 1) { // SSH2自動ログイン
 		s = pvar->ssh2_username;
 	} else {
 		s = pvar->auth_state.user;  // ユーザ名
 	}
+	buffer_put_string(msg, s, strlen(s));
 
-	buffer_put_string(msg, s, strlen(s));
-	s = "ssh-connection";
-	buffer_put_string(msg, s, strlen(s));
-	s = "password";
-	buffer_put_string(msg, s, strlen(s));
-	buffer_put_char(msg, 0); // 0
+	if (pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) { // パスワード認証
+		s = connect_id;
+		buffer_put_string(msg, s, strlen(s));
+		s = "password";
+		buffer_put_string(msg, s, strlen(s));
+		buffer_put_char(msg, 0); // 0
 
-	if (pvar->ssh2_autologin == 1) { // SSH2自動ログイン
-		s = pvar->ssh2_password;
+		if (pvar->ssh2_autologin == 1) { // SSH2自動ログイン
+			s = pvar->ssh2_password;
+		} else {
+			s = pvar->auth_state.cur_cred.password;  // パスワード
+		}
+		buffer_put_string(msg, s, strlen(s));
+
+
+	} else if (pvar->auth_state.cur_cred.method == SSH_AUTH_RSA) { // 公開鍵認証
+		buffer_t *signbuf = NULL;
+		buffer_t *blob = NULL;
+		int bloblen;
+		char *signature = NULL;
+		int siglen;
+		CRYPTKeyPair *keypair = pvar->auth_state.cur_cred.key_pair;
+
+		if (get_SSH2_publickey_blob(pvar, &blob, &bloblen) == FALSE) {
+			goto error;
+		}
+
+		// step1
+		signbuf = buffer_init();
+		if (signbuf == NULL) {
+			buffer_free(blob);
+			goto error;
+		}
+		// セッションID
+		buffer_append_length(signbuf, pvar->session_id, pvar->session_id_len);
+		buffer_put_char(signbuf, SSH2_MSG_USERAUTH_REQUEST); 
+		s = pvar->auth_state.user;  // ユーザ名
+		buffer_put_string(signbuf, s, strlen(s));
+		s = connect_id;
+		buffer_put_string(signbuf, s, strlen(s));
+		s = "publickey";
+		buffer_put_string(signbuf, s, strlen(s));
+		buffer_put_char(signbuf, 1); // true
+		s = get_SSH2_keyname(keypair); // key typeに応じた文字列を得る
+		buffer_put_string(signbuf, s, strlen(s));
+		s = buffer_ptr(blob);
+		buffer_append_length(signbuf, s, bloblen);
+
+		// 署名の作成
+		if ( generate_SSH2_keysign(keypair, &signature, &siglen, buffer_ptr(signbuf), buffer_len(signbuf)) == FALSE) {
+			buffer_free(blob);
+			buffer_free(signbuf);
+			goto error;
+		}
+
+		// step3
+		s = connect_id;
+		buffer_put_string(msg, s, strlen(s));
+		s = "publickey";
+		buffer_put_string(msg, s, strlen(s));
+		buffer_put_char(msg, 1); // true
+		s = get_SSH2_keyname(keypair); // key typeに応じた文字列を得る
+		buffer_put_string(msg, s, strlen(s));
+		s = buffer_ptr(blob);
+		buffer_append_length(msg, s, bloblen);
+		buffer_append_length(msg, signature, siglen);
+
+
+		buffer_free(blob);
+		buffer_free(signbuf);
+		free(signature);
+
 	} else {
-		s = pvar->auth_state.cur_cred.password;  // パスワード
+		goto error;
+
 	}
-	buffer_put_string(msg, s, strlen(s));
+
 
 	// パケット送信
 	len = buffer_len(msg);
@@ -4208,6 +4451,11 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_BANNER);
 
 	return TRUE;
+
+error:
+	buffer_free(msg);
+
+	return FALSE;
 }
 
 
@@ -4650,6 +4898,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2004/12/17 16:52:36  yutakakn
+ * KEXにおけるRSAおよびDSSのkey verify処理を追加。
+ *
  * Revision 1.7  2004/12/17 14:28:36  yutakakn
  * メッセージ認証アルゴリズムに HMAC-MD5 を追加。
  * TTSSHバージョンダイアログにHMACアルゴリズム表示を追加。

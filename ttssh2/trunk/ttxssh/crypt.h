@@ -87,6 +87,7 @@ typedef struct {
 
 typedef struct _CRYPTKeyPair {
   RSA FAR * RSA_key;
+  DSA *DSA_key;
 } CRYPTKeyPair;
 
 typedef union {

@@ -249,9 +249,11 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize)
 	OPENFILENAME params;
 	char fullname_buf[2048] = "identity";
 
+	ZeroMemory(&params, sizeof(params));
 	params.lStructSize = sizeof(OPENFILENAME);
 	params.hwndOwner = parent;
-	params.lpstrFilter = NULL;
+	// フィルタの追加 (2004.12.19 yutaka)
+	params.lpstrFilter = "identity(RSA1)\0identity\0id_rsa(SSH2)\0id_rsa\0id_dsa(SSH2)\0id_dsa\0all(*.*)\0*.*\0\0";
 	params.lpstrCustomFilter = NULL;
 	params.nFilterIndex = 0;
 	buf[0] = 0;
@@ -321,11 +323,13 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 		GetDlgItemText(dlg, file_ctl_ID, buf, sizeof(buf));
 		if (buf[0] == 0) {
 			notify_nonfatal_error(pvar,
-								  "You must specify a file containing the RSA private key.");
+								  "You must specify a file containing the RSA/DSA private key.");
 			SetFocus(GetDlgItem(dlg, file_ctl_ID));
 			destroy_malloced_string(&password);
 			return FALSE;
-		} else {
+		} 
+		
+		if (SSHv1(pvar)) {
 			BOOL invalid_passphrase = FALSE;
 
 			key_pair = KEYFILES_read_private_key(pvar, buf, password,
@@ -344,7 +348,22 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 				destroy_malloced_string(&password);
 				return FALSE;
 			}
+
+		} else { // SSH2(yutaka)
+			BOOL invalid_passphrase = FALSE;
+
+			key_pair = read_SSH2_private_key(pvar, buf, password,
+									&invalid_passphrase,
+									FALSE);
+
+			if (key_pair == NULL) { // read error
+				notify_nonfatal_error(pvar, "read error SSH2 private key file");
+				destroy_malloced_string(&password);
+				return FALSE;
+			}
+
 		}
+
 	}
 
 	/* from here on, we cannot fail, so just munge cur_cred in place */
@@ -490,9 +509,10 @@ int AUTH_set_supported_auth_types(PTInstVar pvar, int types)
 			| (1 << SSH_AUTH_TIS);
 	} else {
 		// for SSH2(yutaka)
-		types &= (1 << SSH_AUTH_PASSWORD);
-//		types &= (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA)
-//			| (1 << SSH_AUTH_DSA);
+//		types &= (1 << SSH_AUTH_PASSWORD);
+		// 公開鍵認証を有効にする (2004.12.18 yutaka)
+		types &= (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA)
+			| (1 << SSH_AUTH_DSA);
 	}
 	pvar->auth_state.supported_types = types;
 
@@ -895,8 +915,26 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 	if (pvar->auth_state.user == NULL) {
 		strncpy(dest, "None", len);
 	} else if (pvar->auth_state.cur_cred.method != SSH_AUTH_NONE) {
-		_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user,
-				  get_auth_method_name(pvar->auth_state.cur_cred.method));
+		if (SSHv1(pvar)) {
+			_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user,
+					get_auth_method_name(pvar->auth_state.cur_cred.method));
+
+		} else { // SSH2:認証メソッドの判別 (2004.12.23 yutaka)
+			if (pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) {
+				_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user,
+						get_auth_method_name(pvar->auth_state.cur_cred.method));
+			} else {
+				char *method = "unknown";
+				if (pvar->auth_state.cur_cred.key_pair->RSA_key != NULL) {
+					method = "RSA";
+				} else if (pvar->auth_state.cur_cred.key_pair->DSA_key != NULL) {
+					method = "DSA";
+				}
+				_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user, method);
+			}
+
+		}
+
 	} else {
 		_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user,
 				  get_auth_method_name(pvar->auth_state.failed_method));
@@ -924,6 +962,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2004/12/16 13:01:09  yutakakn
+ * SSH自動ログインでアプリケーションエラーとなる現象を修正した。
+ *
  * Revision 1.2  2004/12/01 15:37:49  yutakakn
  * SSH2自動ログイン機能を追加。
  * 現状、パスワード認証のみに対応。
