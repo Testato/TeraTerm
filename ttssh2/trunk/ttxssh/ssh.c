@@ -90,6 +90,96 @@ static void start_ssh_heartbeat_thread(PTInstVar pvar);
 
 
 //
+// SSH2 data structure
+//
+
+/* default window/packet sizes for tcp/x11-fwd-channel */
+#define CHAN_SES_PACKET_DEFAULT (32*1024)
+#define CHAN_SES_WINDOW_DEFAULT (2*CHAN_SES_PACKET_DEFAULT) // READAMOUNT @ pkt.cと同期を取ること
+
+// channel data structure
+#define CHANNEL_MAX 100
+
+typedef struct channel {
+	int used;
+	int type;
+	int self_id;
+	int remote_id;
+	unsigned int local_window;
+	unsigned int local_window_max;
+	unsigned int local_consumed;
+	unsigned int local_maxpacket;
+	unsigned int remote_window;
+	unsigned int remote_maxpacket;
+} Channel_t;
+
+static Channel_t channels[CHANNEL_MAX];
+
+//
+// channel function
+//
+static Channel_t *ssh2_channel_new(unsigned int window, unsigned int maxpack)
+{
+	int i, found;
+	Channel_t *c;
+
+	found = -1;
+	for (i = 0 ; i < CHANNEL_MAX ; i++) {
+		if (channels[i].used == 0) { // free channel
+			found = i;
+			break;
+		}
+	}
+	if (found == -1) { // not free channel
+		return (NULL);
+	}
+
+	// setup
+	c = &channels[found];
+	c->used = 1;
+	c->self_id = i;
+	c->remote_id = -1;
+	c->local_window = window;
+	c->local_window_max = window;
+	c->local_consumed = 0;
+	c->local_maxpacket = maxpack;
+	c->remote_window = 0;
+	c->remote_maxpacket = 0;
+
+	return (c);
+}
+
+
+// connection close時に呼ばれる
+void ssh2_channel_free(void)
+{
+	int i;
+	Channel_t *c;
+
+	for (i = 0 ; i < CHANNEL_MAX ; i++) {
+		c = &channels[i];
+		memset(c, 0, sizeof(Channel_t));
+	}
+
+}
+
+static Channel_t *ssh2_channel_lookup(int id)
+{
+	Channel_t *c;
+
+	if (id < 0 || id >= CHANNEL_MAX) {
+		return (NULL);
+	}
+	c = &channels[id];
+	if (c->used == 0) { // already freed
+		return (NULL);
+	}
+	return (c);
+}
+
+
+
+//
 // SSH heartbeat mutex
 //
 static CRITICAL_SECTION g_ssh_heartbeat_lock;   /* ロック用変数 */
@@ -133,6 +223,7 @@ typedef struct memtag {
 
 static memtag_t memtags[MEMTAG_MAX];
 static int memtag_count = 0;
+static int memtag_use = 0; 
 
 /* ダンプラインをフォーマット表示する */
 static void displine_memdump(FILE *fp, int addr, int *bytes, int byte_cnt)
@@ -207,11 +298,17 @@ void init_memdump(void)
 		memtags[i].data = NULL;
 		memtags[i].len = 0;
 	}
+	memtag_use++;
 }
 
 void finish_memdump(void)
 {
 	int i;
+
+	// initializeされてないときは何もせずに戻る。(2005.4.3 yutaka)
+	if (memtag_use <= 0)
+		return;
+	memtag_use--;
 
 	for (i = 0 ; i < MEMTAG_MAX ; i++) {
 		free(memtags[i].name);
@@ -1438,71 +1535,6 @@ void SSH2_dispatch_add_range_message(unsigned char begin, unsigned char end)
 }
 
 
-/* default window/packet sizes for tcp/x11-fwd-channel */
-#define CHAN_SES_PACKET_DEFAULT (32*1024)
-#define CHAN_SES_WINDOW_DEFAULT (2*CHAN_SES_PACKET_DEFAULT) // READAMOUNT @ pkt.cと同期を取ること
-
-//#define CHAN_TCP_PACKET_DEFAULT (32*1024)
-//#define CHAN_TCP_WINDOW_DEFAULT (4*CHAN_TCP_PACKET_DEFAULT)
-//#define CHAN_X11_PACKET_DEFAULT (16*1024)
-//#define CHAN_X11_WINDOW_DEFAULT (4*CHAN_X11_PACKET_DEFAULT)
-
-// クライアントのwindow sizeをサーバへ知らせる
-static void do_SSH2_adjust_window_size(PTInstVar pvar)
-{
-	const unsigned int window_size = CHAN_SES_PACKET_DEFAULT;
-	buffer_t *msg;
-	unsigned char *outmsg;
-	int len;
-
-	// ローカルのwindow sizeにまだ余裕があるなら、何もしない。
-	if (pvar->local_window > window_size)
-		return;
-
-	{
-		// pty open
-		msg = buffer_init();
-		if (msg == NULL) {
-			// TODO: error check
-			return;
-		}
-		buffer_put_int(msg, pvar->remote_id);  
-		buffer_put_int(msg, window_size - pvar->local_window);  
-
-		len = buffer_len(msg);
-		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_WINDOW_ADJUST, len);
-		memcpy(outmsg, buffer_ptr(msg), len);
-		finish_send_packet(pvar);
-		buffer_free(msg);
-
-		// クライアントのwindow sizeを増やす
-		pvar->local_window = window_size;
-	}
-
-}
-
-
-static void SSH2_consume_packet_size(PTInstVar pvar, unsigned char message)
-{
-	int len;
-	char *data;
-
-	if (!(message >= SSH2_MSG_CHANNEL_OPEN_CONFIRMATION && message <= SSH2_MSG_CHANNEL_FAILURE)) {
-		return;
-	}
-
-	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
-	data = pvar->ssh_state.payload;
-	// パケットサイズ - (パディングサイズ+1)；真のパケットサイズ
-	len = pvar->ssh_state.payloadlen;
-
-	pvar->local_window -= (len + 1);
-
-	do_SSH2_adjust_window_size(pvar);
-
-}
-
-
 void SSH_handle_packet(PTInstVar pvar, char FAR * data, int len,
 					   int padding)
 {
@@ -2017,6 +2049,11 @@ void SSH_notify_disconnecting(PTInstVar pvar, char FAR * reason)
 		buffer_t *msg;
 		unsigned char *outmsg;
 		int len;
+		Channel_t *c;
+
+		c = ssh2_channel_lookup(pvar->shell_id);
+		if (c == NULL)
+			return;
 
 		// SSH2 serverにchannel closeを伝える
 		msg = buffer_init();
@@ -2024,7 +2061,7 @@ void SSH_notify_disconnecting(PTInstVar pvar, char FAR * reason)
 			// TODO: error check
 			return;
 		}
-		buffer_put_int(msg, pvar->remote_id);  
+		buffer_put_int(msg, c->remote_id);  
 
 		len = buffer_len(msg);
 		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_CLOSE, len);
@@ -2067,13 +2104,18 @@ void SSH_notify_win_size(PTInstVar pvar, int cols, int rows)
 		char *s;
 		unsigned char *outmsg;
 		int len;
+		Channel_t *c;
+
+		c = ssh2_channel_lookup(pvar->shell_id);
+		if (c == NULL)
+			return;
 
 		msg = buffer_init();
 		if (msg == NULL) {
 			// TODO: error check
 			return;
 		}
-		buffer_put_int(msg, pvar->remote_id);  
+		buffer_put_int(msg, c->remote_id);  
 		s = "window-change";  
 		buffer_put_string(msg, s, strlen(s));  
 		buffer_put_char(msg, 0);  // wantconfirm
@@ -2192,13 +2234,18 @@ void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, int buflen)
 		buffer_t *msg;
 		unsigned char *outmsg;
 		int len;
+		Channel_t *c;
+
+		c = ssh2_channel_lookup(pvar->shell_id);
+		if (c == NULL)
+			return;
 
 		msg = buffer_init();
 		if (msg == NULL) {
 			// TODO: error check
 			return;
 		}
-		buffer_put_int(msg, pvar->remote_id);  
+		buffer_put_int(msg, c->remote_id);  
 		buffer_put_string(msg, (char *)buf, buflen);  
 
 		len = buffer_len(msg);
@@ -2208,7 +2255,7 @@ void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, int buflen)
 		buffer_free(msg);
 
 		// remote window sizeの調整
-		pvar->remote_window -= len;
+		c->remote_window -= len;
 
 	}
 
@@ -2381,7 +2428,8 @@ void SSH_end(PTInstVar pvar)
 		pvar->session_id_len = 0;
 
 		pvar->userauth_success = 0;
-		pvar->remote_id = 0;
+		//pvar->remote_id = 0;
+		pvar->shell_id = 0;
 		pvar->session_nego_status = 0;
 
 		pvar->ssh_heartbeat_tick = 0;
@@ -2516,7 +2564,7 @@ void SSH_request_X11_forwarding(PTInstVar pvar,
 
 void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
 					  char FAR * to_remote_host, int to_remote_port,
-					  char FAR * originator)
+					  char FAR * originator, unsigned short originator_port)
 {
 	static const int msgs[]
 	= { SSH_MSG_CHANNEL_OPEN_CONFIRMATION, SSH_MSG_CHANNEL_OPEN_FAILURE };
@@ -2539,19 +2587,64 @@ void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
 		set_uint32(outmsg + 12 + host_len, originator_len);
 		memcpy(outmsg + 16 + host_len, originator, originator_len);
 	} else {
-		unsigned char FAR *outmsg =
-			begin_send_packet(pvar, SSH_MSG_PORT_OPEN,
-							  12 + host_len);
 
-		set_uint32(outmsg, local_channel_num);
-		set_uint32(outmsg + 4, host_len);
-		memcpy(outmsg + 8, to_remote_host, host_len);
-		set_uint32(outmsg + 8 + host_len, to_remote_port);
+		if (SSHv1(pvar)) {
+			unsigned char FAR *outmsg =
+				begin_send_packet(pvar, SSH_MSG_PORT_OPEN,
+								12 + host_len);
+
+			set_uint32(outmsg, local_channel_num);
+			set_uint32(outmsg + 4, host_len);
+			memcpy(outmsg + 8, to_remote_host, host_len);
+			set_uint32(outmsg + 8 + host_len, to_remote_port);
+
+		} else {
+			// SSH2 port-fowarding (2005.2.26 yutaka)
+			buffer_t *msg;
+			char *s;
+			unsigned char *outmsg;
+			int len;
+			Channel_t *c;
+
+			c = ssh2_channel_new(CHAN_SES_WINDOW_DEFAULT, CHAN_SES_PACKET_DEFAULT);
+
+			msg = buffer_init();
+			if (msg == NULL) {
+				// TODO: error check
+				return;
+			}
+			s = "direct-tcpip";
+			buffer_put_string(msg, s, strlen(s)); // ctype
+			buffer_put_int(msg, c->self_id);  // self
+			buffer_put_int(msg, c->local_window);  // local_window
+			buffer_put_int(msg, c->local_maxpacket);  // local_maxpacket
+
+			s = to_remote_host;
+			buffer_put_string(msg, s, strlen(s)); // target host
+			buffer_put_int(msg, to_remote_port);  // target port
+
+			s = originator;
+			buffer_put_string(msg, s, strlen(s)); // originator host
+			buffer_put_int(msg, originator_port);  // originator port
+
+			len = buffer_len(msg);
+			outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN, len);
+			memcpy(outmsg, buffer_ptr(msg), len);
+			finish_send_packet(pvar);
+			buffer_free(msg);
+
+			return;
+
+			/* NOT REACHED */
+		}
+
 	}
 
-	finish_send_packet(pvar);
+	if (SSHv1(pvar)) { // SSH1のみ
+		finish_send_packet(pvar);
+		enque_handlers(pvar, 2, msgs, handlers);
+	}
 
-	enque_handlers(pvar, 2, msgs, handlers);
 }
 
 
@@ -2647,6 +2740,10 @@ static Newkeys current_keys[MODE_MAX];
 
 #define write_buffer_file(buf,len) do_write_buffer_file(buf,len,__FILE__,__LINE__)
 
+
+//
+// general
+//
 
 static int get_cipher_block_size(SSHCipher cipher) 
 {
@@ -4980,22 +5077,27 @@ static BOOL handle_SSH2_userauth_success(PTInstVar pvar)
 	char *s;
 	unsigned char *outmsg;
 	int len;
+	Channel_t *c;
 
 	// 認証OK
 	pvar->userauth_success = 1;
+
+	// ポートフォワーディングの準備 (2005.2.26 yutaka)
+	FWD_enter_interactive_mode(pvar);
 
 	// ディスパッチルーチンの再設定
 	do_SSH2_dispatch_setup_for_transfer();
 
 
 	// チャネル設定
-	pvar->local_window = CHAN_SES_WINDOW_DEFAULT;
-	pvar->local_window_max = CHAN_SES_WINDOW_DEFAULT;
-	pvar->local_consumed = 0;
-	pvar->local_maxpacket = CHAN_SES_PACKET_DEFAULT;
-	pvar->remote_window = 0;
-	pvar->remote_maxpacket = 0;
+	c = ssh2_channel_new(CHAN_SES_WINDOW_DEFAULT, CHAN_SES_PACKET_DEFAULT);
+	if (c == NULL) {
+		// TODO: error check
+		return FALSE;
+	}
 
+	// シェルのIDを取っておく
+	pvar->shell_id = c->self_id;
 
 	// シェルオープン
 	msg = buffer_init();
@@ -5005,9 +5107,9 @@ static BOOL handle_SSH2_userauth_success(PTInstVar pvar)
 	}
 	s = "session";
 	buffer_put_string(msg, s, strlen(s));  // ctype
-	buffer_put_int(msg, 0);  // self
-	buffer_put_int(msg, pvar->local_window);  // local_window
-	buffer_put_int(msg, pvar->local_maxpacket);  // local_maxpacket
+	buffer_put_int(msg, c->self_id);  // self(channel number)
+	buffer_put_int(msg, c->local_window);  // local_window
+	buffer_put_int(msg, c->local_maxpacket);  // local_maxpacket
 	len = buffer_len(msg);
 	outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN, len);
 	memcpy(outmsg, buffer_ptr(msg), len);
@@ -5174,6 +5276,7 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	int len;
 	char *data;
 	int id, remote_id;
+	Channel_t *c;
 #ifdef DONT_WANTCONFIRM
 	int wantconfirm = 0; // false 
 #else
@@ -5187,17 +5290,24 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 
 	id = get_uint32_MSBfirst(data);
 	data += 4;
+
+	c = ssh2_channel_lookup(id);
+	if (c == NULL) {
+		// TODO:
+		return FALSE;
+	}
+
 	// TODO: id check
 	remote_id = get_uint32_MSBfirst(data);
 	data += 4;
 
-	pvar->remote_id = remote_id;
+	c->remote_id = remote_id;
 	pvar->session_nego_status = 1;  
 
 	// remote window size
-	pvar->remote_window = get_uint32_MSBfirst(data);
+	c->remote_window = get_uint32_MSBfirst(data);
 	data += 4;
-	pvar->remote_maxpacket = get_uint32_MSBfirst(data);
+	c->remote_maxpacket = get_uint32_MSBfirst(data);
 	data += 4;
 
 	//debug_print(100, data, len);
@@ -5248,6 +5358,7 @@ static BOOL handle_SSH2_channel_success(PTInstVar pvar)
 	char *s;
 	unsigned char *outmsg;
 	int len;
+	Channel_t *c;
 
 	{
 	char buf[128];
@@ -5268,7 +5379,15 @@ static BOOL handle_SSH2_channel_success(PTInstVar pvar)
 			// TODO: error check
 			return FALSE;
 		}
-		buffer_put_int(msg, pvar->remote_id);  
+		// find channel by shell id(2005.2.27 yutaka)
+		c = ssh2_channel_lookup(pvar->shell_id);
+		if (c == NULL) {
+			// TODO: error check
+			return FALSE;
+		}
+		buffer_put_int(msg, c->remote_id);  
+//		buffer_put_int(msg, pvar->remote_id);  
+
 		s = "shell";
 		buffer_put_string(msg, s, strlen(s));  // ctype
 		buffer_put_char(msg, wantconfirm);   // wantconfirm (disableに変更 2005/3/28 yutaka)
@@ -5296,12 +5415,48 @@ static BOOL handle_SSH2_channel_success(PTInstVar pvar)
 }
 
 
+
+// クライアントのwindow sizeをサーバへ知らせる
+static void do_SSH2_adjust_window_size(PTInstVar pvar, Channel_t *c)
+{
+	const unsigned int window_size = CHAN_SES_PACKET_DEFAULT;
+	buffer_t *msg;
+	unsigned char *outmsg;
+	int len;
+
+	// ローカルのwindow sizeにまだ余裕があるなら、何もしない。
+	if (c->local_window > window_size)
+		return;
+
+	{
+		// pty open
+		msg = buffer_init();
+		if (msg == NULL) {
+			// TODO: error check
+			return;
+		}
+		buffer_put_int(msg, c->remote_id);  
+		buffer_put_int(msg, window_size - c->local_window);  
+
+		len = buffer_len(msg);
+		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_WINDOW_ADJUST, len);
+		memcpy(outmsg, buffer_ptr(msg), len);
+		finish_send_packet(pvar);
+		buffer_free(msg);
+
+		// クライアントのwindow sizeを増やす
+		c->local_window = window_size;
+	}
+
+}
+
 static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 {	
 	int len;
 	char *data;
 	int id;
 	unsigned int strlen;
+	Channel_t *c;
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
@@ -5313,15 +5468,22 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 	// channel number
 	id = get_uint32_MSBfirst(data);
 	data += 4;
+
+	c = ssh2_channel_lookup(id);
+	if (c == NULL) {
+		// TODO:
+		return FALSE;
+	}
+
 	// string length
 	strlen = get_uint32_MSBfirst(data);
 	data += 4;
 
 	// バッファサイズのチェック
-	if (strlen > pvar->local_window_max) {
+	if (strlen > c->local_window_max) {
 		// TODO: logging
 	}
-	if (strlen > pvar->local_window) {
+	if (strlen > c->local_window) {
 		// TODO: logging
 		// local window sizeより大きなパケットは捨てる
 		return FALSE;
@@ -5334,9 +5496,9 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 	//debug_print(200, data, strlen);
 
 	// ウィンドウサイズの調整
-	pvar->local_window -= strlen;
+	c->local_window -= strlen;
 
-	do_SSH2_adjust_window_size(pvar);
+	do_SSH2_adjust_window_size(pvar, c);
 
 	return TRUE;
 }
@@ -5400,6 +5562,7 @@ static BOOL handle_SSH2_channel_request(PTInstVar pvar)
 	int success = 0;
 	char *emsg = "exit-status";
 	int estat = 0;
+	Channel_t *c;
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
@@ -5411,6 +5574,11 @@ static BOOL handle_SSH2_channel_request(PTInstVar pvar)
 	// ID(4) + string(any) + reply(1) + exit status(4)
 	id = get_uint32_MSBfirst(data);
 	data += 4;
+	c = ssh2_channel_lookup(id);
+	if (c == NULL) {
+		// TODO:
+		return FALSE;
+	}
 
 	buflen = get_uint32_MSBfirst(data);
 	data += 4;
@@ -5443,7 +5611,7 @@ static BOOL handle_SSH2_channel_request(PTInstVar pvar)
 			// TODO: error check
 			return FALSE;
 		}
-		buffer_put_int(msg, pvar->remote_id);  
+		buffer_put_int(msg, c->remote_id);  
 
 		len = buffer_len(msg);
 		outmsg = begin_send_packet(pvar, type, len);
@@ -5462,6 +5630,7 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 	char *data;
 	int id;
 	unsigned int adjust;
+	Channel_t *c;
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
@@ -5474,17 +5643,25 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 	id = get_uint32_MSBfirst(data);
 	data += 4;
 
+	c = ssh2_channel_lookup(id);
+	if (c == NULL)
+		return FALSE;
+
 	adjust = get_uint32_MSBfirst(data);
 	data += 4;
 
 	// window sizeの調整
-	pvar->remote_window += adjust;
+	c->remote_window += adjust;
 
 	return TRUE;
 }
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.24  2005/03/28 13:52:05  yutakakn
+ * SSH2_MSG_CHANNEL_REQUEST送信時において、wantconfirmをfalseにした（サーバからのリプライを期待しない）。
+ * NetScreen(HITACHI) workaround対応。
+ *
  * Revision 1.23  2005/03/27 04:39:55  yutakakn
  * SSH2のログ採取(verbose)のデータを追加した。
  *

@@ -755,6 +755,7 @@ static void accept_local_connection(PTInstVar pvar, int request_num)
 #ifdef INET6
 	struct sockaddr_storage addr;
 	char hname[NI_MAXHOST];
+	char strport[NI_MAXSERV]; // ws2tcpip.h
 #else
 	struct sockaddr addr;
 #endif							/* INET6 */
@@ -813,9 +814,10 @@ static void accept_local_connection(PTInstVar pvar, int request_num)
 #endif							/* INET6 */
 
 #ifdef INET6
+	// SSH2 port-forwardingに接続元のリモートポートが必要。(2005.2.27 yutaka)
 	if (getnameinfo
 		((struct sockaddr FAR *) &addr, addrlen, hname, sizeof(hname),
-		 NULL, 0, NI_NUMERICHOST)) {
+		 strport, sizeof(strport), NI_NUMERICHOST | NI_NUMERICSERV)) {
 		/* NOT REACHED */
 	}
 	_snprintf(buf, sizeof(buf),
@@ -845,8 +847,9 @@ static void accept_local_connection(PTInstVar pvar, int request_num)
 	channel->filter_closure = NULL;
 	channel->filter = NULL;
 
+	// add originator-port (2005.2.27 yutaka)
 	SSH_open_channel(pvar, channel_num, request->spec.to_host,
-					 request->spec.to_port, buf);
+					 request->spec.to_port, buf, atoi(strport));
 }
 
 static void write_local_connection_buffer(PTInstVar pvar, int channel_num)
@@ -1973,4 +1976,7 @@ void FWD_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/12/19 15:39:26  yutakakn
+ * CVS LogIDの追加
+ *
  */

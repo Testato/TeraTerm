@@ -182,6 +182,8 @@ static void uninit_TTSSH(PTInstVar pvar)
 {
 	halt_ssh_heartbeat_thread(pvar);
 
+	ssh2_channel_free();
+
 	SSH_end(pvar);
 	PKT_end(pvar);
 	AUTH_end(pvar);
@@ -2193,6 +2195,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  2005/03/27 04:39:55  yutakakn
+ * SSH2のログ採取(verbose)のデータを追加した。
+ *
  * Revision 1.16  2005/03/23 12:39:20  yutakakn
  * シリアルポートを開いた状態からAlt-Nで新規接続を開こうとしたとき、フォーカスを当てるようにした。
  *

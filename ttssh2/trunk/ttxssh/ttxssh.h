@@ -187,14 +187,17 @@ typedef struct _TInstVar {
   Newkeys ssh2_keys[MODE_MAX];
   EVP_CIPHER_CTX evpcip[MODE_MAX];
   int userauth_success;
-  int remote_id;
+  int shell_id;
+  /*int remote_id;*/
   int session_nego_status;
+  /*
   unsigned int local_window;
   unsigned int local_window_max;
   unsigned int local_consumed;
   unsigned int local_maxpacket;
   unsigned int remote_window;
   unsigned int remote_maxpacket;
+  */
   int client_key_bits;
   int server_key_bits;
   int kexgex_min;
@@ -236,6 +239,9 @@ void get_file_version(char *exefile, int *major, int *minor, int *release, int *
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2005/03/12 15:07:34  yutakakn
+ * SSH2 keyboard-interactive認証をTISダイアログに実装した。
+ *
  * Revision 1.9  2005/03/10 13:40:39  yutakakn
  * すでにログイン処理を行っている場合は、SSH2_MSG_SERVICE_REQUESTの送信は
  * しないことにする。OpenSSHでは支障ないが、Tru64 UNIXではサーバエラーとなってしまうため。

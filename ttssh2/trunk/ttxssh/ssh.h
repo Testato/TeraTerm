@@ -363,7 +363,8 @@ void SSH_request_forwarding(PTInstVar pvar, int from_server_port,
 void SSH_request_X11_forwarding(PTInstVar pvar,
   char FAR * auth_protocol, unsigned char FAR * auth_data, int auth_data_len, int screen_num);
 void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
-  char FAR * to_remote_host, int to_remote_port, char FAR * originator);
+					  char FAR * to_remote_host, int to_remote_port,
+					  char FAR * originator, unsigned short originator_port);
 
 /* auxiliary SSH2 interfaces for pkt.c */
 int SSH_get_min_packet_size(PTInstVar pvar);
@@ -384,6 +385,7 @@ void ssh_heartbeat_lock_finalize(void);
 void ssh_heartbeat_lock(void);
 void ssh_heartbeat_unlock(void);
 void halt_ssh_heartbeat_thread(PTInstVar pvar);
+void ssh2_channel_free(void);
 BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar);
 
 #endif
