@@ -104,6 +104,11 @@
 
 * History
 
+2004.12.27 (Ver 1.05)
+  - fixed the bug of can't connect the server after disconnecting when 'Auto window close' function is disabled
+  - fixed the memory leak of SSH2 KEX procedure
+  - upgraded the error message string when reading the SSH2 private key is failure
+
 2004.12.23 (Ver 1.04)
   - added support of public key authentication method
 
