@@ -922,14 +922,21 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		else					/* All com ports are already used */
 			GetHNRec->PortType = IdTCPIP;
 
-		if (GetHNRec->PortType == IdTCPIP)
+		if (GetHNRec->PortType == IdTCPIP) {
 			enable_dlg_items(dlg, IDC_HOSTCOMLABEL, IDC_HOSTCOM, FALSE);
+
+			enable_dlg_items(dlg, IDC_SSH_VERSION, IDC_SSH_VERSION, TRUE); 
+			enable_dlg_items(dlg, IDC_SSH_VERSION_LABEL, IDC_SSH_VERSION_LABEL, TRUE); 
+		}
 #ifdef INET6
 		else {
 			enable_dlg_items(dlg, IDC_HOSTNAMELABEL, IDC_HOSTTCPPORT,
 							 FALSE);
 			enable_dlg_items(dlg, IDC_HOSTTCPPROTOCOLLABEL,
 							 IDC_HOSTTCPPROTOCOL, FALSE);
+
+			enable_dlg_items(dlg, IDC_SSH_VERSION, IDC_SSH_VERSION, FALSE); // disabled
+			enable_dlg_items(dlg, IDC_SSH_VERSION_LABEL, IDC_SSH_VERSION_LABEL, FALSE); // disabled (2004.11.23 yutaka)
 		}
 #else
 		else
@@ -938,13 +945,12 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 #endif							/* INET6 */
 
 		// Host dialogにフォーカスをあてる (2004.10.2 yutaka)
-		{
-		HWND hwnd = GetDlgItem(dlg, IDC_HOSTNAME);
-
-		SetFocus(hwnd);
-		//SendMessage(hwnd, BM_SETCHECK, BST_CHECKED, 0);
-		//style = GetClassLongPtr(hwnd, GCL_STYLE);
-		//SetClassLongPtr(hwnd, GCL_STYLE, style | WS_TABSTOP);
+		if (GetHNRec->PortType == IdTCPIP) {
+			HWND hwnd = GetDlgItem(dlg, IDC_HOSTNAME);
+			SetFocus(hwnd);
+		} else {
+			HWND hwnd = GetDlgItem(dlg, IDC_HOSTCOM);
+			SetFocus(hwnd);
 		}
 
 		// SetFocus()でフォーカスをあわせた場合、FALSEを返す必要がある。
@@ -2187,6 +2193,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  2005/03/12 15:07:34  yutakakn
+ * SSH2 keyboard-interactive認証をTISダイアログに実装した。
+ *
  * Revision 1.14  2005/03/12 12:08:05  yutakakn
  * パスワード認証の前に行うkeyboard-interactiveメソッドで、デフォルト設定値を無効(0)にした。
  * また、認証ダイアログのラベル名を設定の有無により変更するようにした。
