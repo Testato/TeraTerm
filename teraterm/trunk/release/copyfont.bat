@@ -1,2 +1,6 @@
 @echo off
-copy /b /y TSPECIAL1.TTF %SystemRoot%\fonts\
+set file=TSPECIAL1.TTF
+attrib -R %SystemRoot%\fonts\%file%
+attrib +R %file%
+copy /b /y %file% %SystemRoot%\fonts\
+attrib +R %SystemRoot%\fonts\%file%
