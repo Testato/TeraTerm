@@ -25,6 +25,8 @@
 #include "file_r16.h"
 #endif
 
+#include <stdlib.h>
+
 static HANDLE hInst;
 
 #ifdef TERATERM32
@@ -40,99 +42,101 @@ BOOL IS_WIN4()
 
 BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 {
-  int i, j;
-  OPENFILENAME ofn;
-  int Ptr;
-//  char FNameFilter[HostNameMaxLength + 1]; // 81(yutaka)
-  char FNameFilter[81]; // 81(yutaka)
-  char TempDir[MAXPATHLEN];
-  char Dir[MAXPATHLEN];
-  char Name[MAXPATHLEN];
-  BOOL Ok;
+	int i, j;
+	OPENFILENAME ofn;
+	int Ptr;
+	//  char FNameFilter[HostNameMaxLength + 1]; // 81(yutaka)
+	char FNameFilter[81]; // 81(yutaka)
+	char TempDir[MAXPATHLEN];
+	char Dir[MAXPATHLEN];
+	char Name[MAXPATHLEN];
+	BOOL Ok;
 
-  /* save current dir */
-  getcwd(TempDir,sizeof(TempDir));
+	/* save current dir */
+	getcwd(TempDir,sizeof(TempDir));
 
-  /* File name filter */
-  memset(FNameFilter, 0, sizeof(FNameFilter));
-  if (FuncId==GSF_LOADKEY)
-  {
-    strcpy(FNameFilter, "keyboard setup files (*.cnf)");
-    Ptr = strlen(FNameFilter) + 1;
-    strcpy(&(FNameFilter[Ptr]), "*.cnf");
-  }
-  else {
-    strcpy(FNameFilter, "setup files (*.ini)");
-    Ptr = strlen(FNameFilter) + 1;
-    strcpy(&(FNameFilter[Ptr]), "*.ini");
-  }
+	/* File name filter */
+	memset(FNameFilter, 0, sizeof(FNameFilter));
+	if (FuncId==GSF_LOADKEY)
+	{
+		strcpy(FNameFilter, "keyboard setup files (*.cnf)");
+		Ptr = strlen(FNameFilter) + 1;
+		strcpy(&(FNameFilter[Ptr]), "*.cnf");
+	}
+	else {
+		strcpy(FNameFilter, "setup files (*.ini)");
+		Ptr = strlen(FNameFilter) + 1;
+		strcpy(&(FNameFilter[Ptr]), "*.ini");
+	}
 
-  /* OPENFILENAME record */
-  memset(&ofn, 0, sizeof(OPENFILENAME));
+	/* OPENFILENAME record */
+	memset(&ofn, 0, sizeof(OPENFILENAME));
 
-  ofn.lStructSize = sizeof(OPENFILENAME);
-  ofn.hwndOwner   = HWin;
-  ofn.lpstrFile   = Name;
-  ofn.nMaxFile	  = sizeof(Name);
-  ofn.lpstrFilter = FNameFilter;
-  ofn.nFilterIndex = 1;
-  ofn.hInstance = hInst;
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner   = HWin;
+	ofn.lpstrFile   = Name;
+	ofn.nMaxFile	  = sizeof(Name);
+	ofn.lpstrFilter = FNameFilter;
+	ofn.nFilterIndex = 1;
+	ofn.hInstance = hInst;
 
-  if (FuncId==GSF_LOADKEY)
-  {
-    ofn.lpstrDefExt = "cnf";
-    GetFileNamePos(ts->KeyCnfFN,&i,&j);
-    strcpy(Name,&(ts->KeyCnfFN[j]));
-    memcpy(Dir,ts->KeyCnfFN,i);
-    Dir[i] = 0;
+	if (FuncId==GSF_LOADKEY)
+	{
+		ofn.lpstrDefExt = "cnf";
+		GetFileNamePos(ts->KeyCnfFN,&i,&j);
+		strcpy(Name,&(ts->KeyCnfFN[j]));
+		memcpy(Dir,ts->KeyCnfFN,i);
+		Dir[i] = 0;
 
-    if ((strlen(Name)==0) || (stricmp(Name,"KEYBOARD.CNF")==0))
-      strcpy(Name,"KEYBOARD.CNF");
-  }
-  else {
-    ofn.lpstrDefExt = "ini";
-    GetFileNamePos(ts->SetupFName,&i,&j);
-    strcpy(Name,&(ts->SetupFName[j]));
-    memcpy(Dir,ts->SetupFName,i);
-    Dir[i] = 0;
+		if ((strlen(Name)==0) || (stricmp(Name,"KEYBOARD.CNF")==0))
+			strcpy(Name,"KEYBOARD.CNF");
+	}
+	else {
+		ofn.lpstrDefExt = "ini";
+		GetFileNamePos(ts->SetupFName,&i,&j);
+		strcpy(Name,&(ts->SetupFName[j]));
+		memcpy(Dir,ts->SetupFName,i);
+		Dir[i] = 0;
 
-    if ((strlen(Name)==0) || (stricmp(Name,"TERATERM.INI")==0))
-      strcpy(Name,"TERATERM.INI");
-  }
+		if ((strlen(Name)==0) || (stricmp(Name,"TERATERM.INI")==0))
+			strcpy(Name,"TERATERM.INI");
+	}
 
-  if (strlen(Dir)==0)
-    strcpy(Dir,ts->HomeDir);
+	if (strlen(Dir)==0)
+		strcpy(Dir,ts->HomeDir);
 
-  chdir(Dir);
+	chdir(Dir);
 
-  ofn.Flags = OFN_SHOWHELP | OFN_HIDEREADONLY;
-  switch (FuncId) {
-    case GSF_SAVE:
-      ofn.lpstrTitle = "Tera Term: Save setup";
-      Ok = GetSaveFileName(&ofn);
-      if (Ok)
-	strcpy(ts->SetupFName,Name);
-      break;
-    case GSF_RESTORE:
-      ofn.Flags = ofn.Flags | OFN_FILEMUSTEXIST;
-      ofn.lpstrTitle = "Tera Term: Restore setup";
-      Ok = GetOpenFileName(&ofn);
-      if (Ok)
-	strcpy(ts->SetupFName,Name);
-      break;
-    case GSF_LOADKEY:
-      ofn.Flags = ofn.Flags | OFN_FILEMUSTEXIST;
-      ofn.lpstrTitle = "Tera Term: Load key map";
-      Ok = GetOpenFileName(&ofn);
-      if (Ok)
-	strcpy(ts->KeyCnfFN,Name);
-      break;
-  }
+	ofn.Flags = OFN_SHOWHELP | OFN_HIDEREADONLY;
+	switch (FuncId) {
+	case GSF_SAVE:
+		// 初期ファイルディレクトリをプログラム本体がある箇所に固定する (2005.1.6 yutaka)
+		ofn.lpstrInitialDir = __argv[0];
+		ofn.lpstrTitle = "Tera Term: Save setup";
+		Ok = GetSaveFileName(&ofn);
+		if (Ok)
+			strcpy(ts->SetupFName,Name);
+		break;
+	case GSF_RESTORE:
+		ofn.Flags = ofn.Flags | OFN_FILEMUSTEXIST;
+		ofn.lpstrTitle = "Tera Term: Restore setup";
+		Ok = GetOpenFileName(&ofn);
+		if (Ok)
+			strcpy(ts->SetupFName,Name);
+		break;
+	case GSF_LOADKEY:
+		ofn.Flags = ofn.Flags | OFN_FILEMUSTEXIST;
+		ofn.lpstrTitle = "Tera Term: Load key map";
+		Ok = GetOpenFileName(&ofn);
+		if (Ok)
+			strcpy(ts->KeyCnfFN,Name);
+		break;
+	}
 
-  /* restore dir */
-  chdir(TempDir);
+	/* restore dir */
+	chdir(TempDir);
 
-  return Ok;
+	return Ok;
 }
 
 /* Hook function for file name dialog box */
@@ -205,99 +209,106 @@ BOOL CALLBACK TFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 BOOL FAR PASCAL GetTransFname
   (PFileVar fv, PCHAR CurDir, WORD FuncId, LPLONG Option)
 {
-  char FNFilter[11];
-  OPENFILENAME ofn;
-  LONG opt;
-  char TempDir[MAXPATHLEN];
-  BOOL Ok;
+	char FNFilter[11];
+	OPENFILENAME ofn;
+	LONG opt;
+	char TempDir[MAXPATHLEN];
+	BOOL Ok;
 
-  /* save current dir */
-  getcwd(TempDir,sizeof(TempDir));
+	/* save current dir */
+	getcwd(TempDir,sizeof(TempDir));
 
-  fv->FullName[0] = 0;
-  memset(FNFilter, 0, sizeof(FNFilter));  /* Set up for double null at end */
-  memset(&ofn, 0, sizeof(OPENFILENAME));
+	fv->FullName[0] = 0;
+	memset(FNFilter, 0, sizeof(FNFilter));  /* Set up for double null at end */
+	memset(&ofn, 0, sizeof(OPENFILENAME));
 
-  strcpy(fv->DlgCaption,"Tera Term: ");
-  switch (FuncId) {
-    case GTF_SEND:
-      strcat(fv->DlgCaption,"Send file");
-      break;
-    case GTF_LOG:
-      strcat(fv->DlgCaption,"Log");
-      break;
-    case GTF_BP:
-      strcat(fv->DlgCaption,"B-Plus Send");
-      break;
-    default: return FALSE;
-  }
+	strcpy(fv->DlgCaption,"Tera Term: ");
+	switch (FuncId) {
+	case GTF_SEND:
+		strcat(fv->DlgCaption,"Send file");
+		break;
+	case GTF_LOG:
+		strcat(fv->DlgCaption,"Log");
+		break;
+	case GTF_BP:
+		strcat(fv->DlgCaption,"B-Plus Send");
+		break;
+	default: return FALSE;
+	}
 
-  strcpy(FNFilter, "all");
-  strcpy(&(FNFilter[strlen(FNFilter)+1]), "*.*");      
+	strcpy(FNFilter, "all");
+	strcpy(&(FNFilter[strlen(FNFilter)+1]), "*.*");      
 
-  ofn.lStructSize = sizeof(OPENFILENAME);
-  ofn.hwndOwner   = fv->HMainWin;
-  ofn.lpstrFilter = FNFilter;
-  ofn.nFilterIndex = 1;
-  ofn.lpstrFile = fv->FullName;
-  ofn.nMaxFile = sizeof(fv->FullName);
-  ofn.lpstrInitialDir = CurDir;
-  ofn.Flags = OFN_SHOWHELP | OFN_HIDEREADONLY;
-  if (FuncId!=GTF_BP)
-  {
-    ofn.Flags = ofn.Flags | OFN_ENABLETEMPLATE | OFN_ENABLEHOOK;
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner   = fv->HMainWin;
+	ofn.lpstrFilter = FNFilter;
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFile = fv->FullName;
+	ofn.nMaxFile = sizeof(fv->FullName);
+	ofn.lpstrInitialDir = CurDir;
+	ofn.Flags = OFN_SHOWHELP | OFN_HIDEREADONLY;
+	if (FuncId!=GTF_BP)
+	{
+		ofn.Flags = ofn.Flags | OFN_ENABLETEMPLATE | OFN_ENABLEHOOK;
 #ifdef TERATERM32
-    if (IS_WIN4())
-    {
-      ofn.Flags = ofn.Flags | OFN_EXPLORER;
-      ofn.lpTemplateName = MAKEINTRESOURCE(IDD_FOPT);
-    }
-    else {
-      ofn.lpTemplateName = MAKEINTRESOURCE(IDD_FOPTOLD);
-    }
-    ofn.lpfnHook = (LPOFNHOOKPROC)(&TFnHook);
+		if (IS_WIN4())
+		{
+			ofn.Flags = ofn.Flags | OFN_EXPLORER;
+			ofn.lpTemplateName = MAKEINTRESOURCE(IDD_FOPT);
+		}
+		else {
+			ofn.lpTemplateName = MAKEINTRESOURCE(IDD_FOPTOLD);
+		}
+		ofn.lpfnHook = (LPOFNHOOKPROC)(&TFnHook);
 #else
-    ofn.lpTemplateName = MAKEINTRESOURCE(IDD_FOPTOLD);
-    ofn.lpfnHook = (LPOFNHOOKPROC)MakeProcInstance(TFnHook, hInst);
+		ofn.lpTemplateName = MAKEINTRESOURCE(IDD_FOPTOLD);
+		ofn.lpfnHook = (LPOFNHOOKPROC)MakeProcInstance(TFnHook, hInst);
 #endif
-  }
-  opt = *Option;
-  if (FuncId!=GTF_LOG)
-  {
-    ofn.Flags = ofn.Flags | OFN_FILEMUSTEXIST;
-    opt = MAKELONG(LOWORD(*Option),0xFFFF);
-  }
-  ofn.lCustData = (DWORD)&opt;
-  ofn.lpstrTitle = fv->DlgCaption;
+	}
+	opt = *Option;
+	if (FuncId!=GTF_LOG)
+	{
+		ofn.Flags = ofn.Flags | OFN_FILEMUSTEXIST;
+		opt = MAKELONG(LOWORD(*Option),0xFFFF);
+	}
+	ofn.lCustData = (DWORD)&opt;
+	ofn.lpstrTitle = fv->DlgCaption;
 
-  ofn.hInstance = hInst;
-  Ok = GetOpenFileName(&ofn);
+	ofn.hInstance = hInst;
+
+	// loggingの場合、オープンダイアログをセーブダイアログへ変更 (2005.1.6 yutaka)
+	if (FuncId == GTF_LOG) {
+		Ok = GetSaveFileName(&ofn);
+	} else {
+		Ok = GetOpenFileName(&ofn);
+	}
+
 #ifndef TERATERM32
-  FreeProcInstance(ofn.lpfnHook);
+	FreeProcInstance(ofn.lpfnHook);
 #endif
-  if (Ok)
-  {
-    if (FuncId==GTF_LOG)
-      *Option = opt;
-    else
-      *Option = MAKELONG(LOWORD(opt),HIWORD(*Option));
+	if (Ok)
+	{
+		if (FuncId==GTF_LOG)
+			*Option = opt;
+		else
+			*Option = MAKELONG(LOWORD(opt),HIWORD(*Option));
 
-    fv->DirLen = ofn.nFileOffset;
+		fv->DirLen = ofn.nFileOffset;
 
 #ifdef TERATERM32
-    // for Win NT 3.5: short name -> long name
-    GetLongFName(fv->FullName,&fv->FullName[fv->DirLen]);
+		// for Win NT 3.5: short name -> long name
+		GetLongFName(fv->FullName,&fv->FullName[fv->DirLen]);
 #endif
 
-    if (CurDir!=NULL)
-    {
-      memcpy(CurDir,fv->FullName,fv->DirLen-1);
-      CurDir[fv->DirLen-1] = 0;
-    }
-  }
-  /* restore dir */
-  chdir(TempDir);
-  return Ok;
+		if (CurDir!=NULL)
+		{
+			memcpy(CurDir,fv->FullName,fv->DirLen-1);
+			CurDir[fv->DirLen-1] = 0;
+		}
+	}
+	/* restore dir */
+	chdir(TempDir);
+	return Ok;
 }
 
 BOOL CALLBACK TFn2Hook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
@@ -909,3 +920,7 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
   return (1);
 }
 #endif
+
+/*
+ * $Log: not supported by cvs2svn $
+ */
