@@ -378,7 +378,9 @@ void SSH2_send_kexinit(PTInstVar pvar);
 BOOL do_SSH2_userauth(PTInstVar pvar);
 void debug_print(int no, char *msg, int len);
 void ssh_heartbeat_lock_initialize(void);
+void ssh_heartbeat_lock_finalize(void);
 void ssh_heartbeat_lock(void);
 void ssh_heartbeat_unlock(void);
+void halt_ssh_heartbeat_thread(PTInstVar pvar);
 
 #endif

@@ -203,6 +203,7 @@ typedef struct _TInstVar {
   char ssh2_username[MAX_PATH];
   char ssh2_password[MAX_PATH];
   time_t ssh_heartbeat_tick;
+  HANDLE ssh_heartbeat_thread;
 
 } TInstVar;
 
@@ -228,6 +229,10 @@ int copy_teraterm_dir_relative_path(char FAR * dest, int destsize, char FAR * ba
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2004/12/17 14:05:55  yutakakn
+ * パケット受信時のHMACチェックを追加。
+ * KEXにおけるHMACアルゴリズムチェックを追加。
+ *
  * Revision 1.3  2004/12/11 07:31:00  yutakakn
  * SSH heartbeatスレッドの追加した。これにより、IPマスカレード環境において、ルータの
  * NATテーブルクリアにより、SSHコネクションが切断される現象が回避される。

@@ -95,6 +95,11 @@ void ssh_heartbeat_lock_initialize(void)
 	InitializeCriticalSection(&g_ssh_heartbeat_lock);
 }
 
+void ssh_heartbeat_lock_finalize(void)
+{
+	DeleteCriticalSection(&g_ssh_heartbeat_lock);
+}
+
 void ssh_heartbeat_lock(void)
 {
 	EnterCriticalSection(&g_ssh_heartbeat_lock);
@@ -2094,6 +2099,44 @@ void SSH_end(PTInstVar pvar)
 		inflateEnd(&pvar->ssh_state.decompress_stream);
 		pvar->ssh_state.decompressing = FALSE;
 	}
+
+#if 1
+	// SSH2のデータを解放する (2004.12.27 yutaka)
+	if (SSHv2(pvar)) {
+		if (pvar->kexdh) {
+			DH_free(pvar->kexdh);
+			pvar->kexdh = NULL;
+		}
+		memset(pvar->server_version_string, 0, sizeof(pvar->server_version_string));
+		memset(pvar->client_version_string, 0, sizeof(pvar->client_version_string));
+
+		if (pvar->my_kex != NULL) {
+			buffer_free(pvar->my_kex);
+			pvar->my_kex = NULL;
+		}
+		if (pvar->peer_kex != NULL) {
+			buffer_free(pvar->peer_kex);
+			pvar->peer_kex = NULL;
+		}
+
+		pvar->we_need = 0;
+		pvar->key_done = 0;
+		pvar->rekeying = 0;
+
+		if (pvar->session_id != NULL) {
+			free(pvar->session_id);
+			pvar->session_id = NULL;
+		}
+		pvar->session_id_len = 0;
+
+		pvar->userauth_success = 0;
+		pvar->remote_id = 0;
+		pvar->session_nego_status = 0;
+
+		pvar->ssh_heartbeat_tick = 0;
+	}
+#endif
+
 }
 
 /* support for port forwarding */
@@ -4479,6 +4522,10 @@ static unsigned __stdcall ssh_heartbeat_thread(void FAR * p)
 	instance++;
 
 	for (;;) {
+		// ソケットがクローズされたらスレッドを終わる
+		if (pvar->socket == INVALID_SOCKET)
+			break;
+
 		// 一定時間無通信であれば、サーバへダミーパケットを送る
 		// 閾値が0であれば何もしない。
 		tick = time(NULL) - pvar->ssh_heartbeat_tick;
@@ -4515,7 +4562,9 @@ static unsigned __stdcall ssh_heartbeat_thread(void FAR * p)
 		Sleep(100); // yield
 	}
 
-	return 0; // not reach
+	instance = 0;
+
+	return 0; 
 }
 
 static void start_ssh_heartbeat_thread(PTInstVar pvar)
@@ -4526,6 +4575,17 @@ static void start_ssh_heartbeat_thread(PTInstVar pvar)
 	thread = (HANDLE)_beginthreadex(NULL, 0, ssh_heartbeat_thread, pvar, 0, &tid);
 	if (thread == (HANDLE)-1) {
 		// TODO:
+	} 
+	pvar->ssh_heartbeat_thread = thread;
+}
+
+// スレッドの停止 (2004.12.27 yutaka)
+void halt_ssh_heartbeat_thread(PTInstVar pvar)
+{
+	if (pvar->ssh_heartbeat_thread != (HANDLE)-1L) {
+		WaitForSingleObject(pvar->ssh_heartbeat_thread, INFINITE);
+		CloseHandle(pvar->ssh_heartbeat_thread);
+		pvar->ssh_heartbeat_thread = (HANDLE)-1L;
 	}
 }
 
@@ -4898,6 +4958,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2004/12/22 17:28:14  yutakakn
+ * SSH2公開鍵認証(RSA/DSA)をサポートした。
+ *
  * Revision 1.8  2004/12/17 16:52:36  yutakakn
  * KEXにおけるRSAおよびDSSのkey verify処理を追加。
  *

@@ -178,6 +178,8 @@ static void init_TTSSH(PTInstVar pvar)
 
 static void uninit_TTSSH(PTInstVar pvar)
 {
+	halt_ssh_heartbeat_thread(pvar);
+
 	SSH_end(pvar);
 	PKT_end(pvar);
 	AUTH_end(pvar);
@@ -196,6 +198,8 @@ static void uninit_TTSSH(PTInstVar pvar)
 					(LPARAM) pvar->OldSmallIcon);
 		pvar->OldSmallIcon = NULL;
 	}
+
+	ssh_heartbeat_lock_finalize();
 }
 
 static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv)
@@ -667,12 +671,13 @@ void notify_established_secure_connection(PTInstVar pvar)
 
 void notify_closed_connection(PTInstVar pvar)
 {
-	PostMessage(pvar->NotificationWindow, WM_USER_COMMNOTIFY,
-				pvar->socket, MAKELPARAM(FD_CLOSE, 0));
-
 	SSH_notify_disconnecting(pvar, NULL);
 	AUTH_notify_disconnecting(pvar);
 	HOSTS_notify_disconnecting(pvar);
+
+	PostMessage(pvar->NotificationWindow, WM_USER_COMMNOTIFY,
+				pvar->socket, MAKELPARAM(FD_CLOSE, 0));
+
 }
 
 static void add_err_msg(PTInstVar pvar, char FAR * msg)
@@ -2046,6 +2051,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2004/12/17 14:28:36  yutakakn
+ * メッセージ認証アルゴリズムに HMAC-MD5 を追加。
+ * TTSSHバージョンダイアログにHMACアルゴリズム表示を追加。
+ *
  * Revision 1.6  2004/12/16 13:57:43  yutakakn
  * "SECURITY WARINIG" dialogで ESC キーを押下すると、
  * アプリケーションエラーとなる現象への暫定対処。
