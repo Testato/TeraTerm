@@ -52,23 +52,24 @@ END
 // Dialog
 //
 
-IDD_ABOUTDIALOG DIALOGEX 0, 0, 263, 250
+IDD_ABOUTDIALOG DIALOGEX 0, 0, 263, 258
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About TTSSH"
 FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
     LTEXT           "This extension uses code by Eric A. Young (LIBEAY32.DLL).\r\nThanks also to Ian Goldberg for his Pilot SSH code, which was a very handy reference. Special thanks to Takashi Teranishi for his cooperation.",
-                    IDC_STATIC,6,105,248,35
-    DEFPUSHBUTTON   "OK",IDOK,106,228,50,14
+                    IDC_STATIC,6,116,248,27
+    DEFPUSHBUTTON   "OK",IDOK,106,238,50,14
     LTEXT           "TTSSH\r\nTeraterm Secure Shell extension, version 1.5.4\r\nCompatible with SSH protocol version 1.5\r\nCopyright Robert O'Callahan (roc+tt@cs.cmu.edu), 1998-1999\r\nIPv6 extention version 0.81 (kato@win6.jp), 2000-2003\r\nSSH2 support 1.08 (Y.Hirata), 2004-2005",
                     IDC_STATIC,6,7,219,50
     LTEXT           "THIS EXTENSION INCORPORATES STRONG CRYPTOGRAPHY. POSESSION, USE, AND/OR EXPORT OF THIS EXTENSION MAY BE ILLEGAL IN YOUR COUNTRY.",
-                    IDC_STATIC,6,80,248,26
+                    IDC_STATIC,6,89,248,26
     ICON            IDI_SECURETT,IDC_STATIC,234,7,21,20
-    EDITTEXT        IDC_ABOUTTEXT,6,135,248,87,ES_MULTILINE | ES_AUTOVSCROLL | 
+    EDITTEXT        IDC_ABOUTTEXT,6,146,248,87,ES_MULTILINE | ES_AUTOVSCROLL | 
                     ES_AUTOHSCROLL | ES_READONLY
     LTEXT           "TTSSH home page:      http://www.zip.com.au/~roca/ttssh.html\nOpenSource Project:   http://sourceforge.jp/projects/ttssh2/",
-                    IDC_STATIC,6,57,248,20,SS_SUNKEN
+                    IDC_STATIC,6,65,248,20,SS_SUNKEN
+    LTEXT           "OpenSSL:",IDC_OPENSSL_VERSION,6,56,175,8
 END
 
 IDD_SSHAUTH DIALOGEX 0, 0, 309, 214
@@ -84,21 +85,22 @@ BEGIN
                     WS_EX_RIGHT
     EDITTEXT        IDC_SSHPASSWORD,59,46,145,12,ES_PASSWORD | 
                     ES_AUTOHSCROLL | WS_GROUP
-    CONTROL         "Use p&lain password to log in",IDC_SSHUSEPASSWORD,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,
-                    71,149,10
+    CONTROL         "Use p&lain password to log in (SSH2: keyboard-interactive)",
+                    IDC_SSHUSEPASSWORD,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,13,71,200,10
     CONTROL         "Use &RSA/DSA key to log in",IDC_SSHUSERSA,"Button",
                     BS_AUTORADIOBUTTON | WS_TABSTOP,13,99,98,10
-    CONTROL         "Use r&hosts to log in",IDC_SSHUSERHOSTS,"Button",
-                    BS_AUTORADIOBUTTON | WS_TABSTOP,13,128,80,10
-    CONTROL         "Use challenge/response (&TIS) to log in",IDC_SSHUSETIS,
-                    "Button",BS_AUTORADIOBUTTON | WS_TABSTOP,14,172,191,10
+    CONTROL         "Use r&hosts to log in (SSH1)",IDC_SSHUSERHOSTS,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,13,128,96,10
+    CONTROL         "Use challenge/response (&TIS) to log in (SSH1)",
+                    IDC_SSHUSETIS,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,
+                    14,172,191,10
     PUSHBUTTON      "Private &key file:",IDC_CHOOSERSAFILE,118,97,58,14,
                     WS_GROUP
     EDITTEXT        IDC_RSAFILENAME,182,98,112,13,ES_AUTOHSCROLL | WS_GROUP
-    LTEXT           "Local &user name:",IDC_LOCALUSERNAMELABEL,104,128,55,8,
+    LTEXT           "Local &user name:",IDC_LOCALUSERNAMELABEL,119,128,55,8,
                     0,WS_EX_RIGHT
-    EDITTEXT        IDC_LOCALUSERNAME,167,126,127,13,ES_AUTOHSCROLL | 
+    EDITTEXT        IDC_LOCALUSERNAME,181,126,113,13,ES_AUTOHSCROLL | 
                     WS_GROUP
     PUSHBUTTON      "Host private key &file:",IDC_CHOOSEHOSTRSAFILE,90,141,
                     70,14
@@ -227,21 +229,22 @@ BEGIN
     LTEXT           "User &name:",IDC_SSHUSERNAMELABEL,14,24,37,8,0,
                     WS_EX_RIGHT
     EDITTEXT        IDC_SSHUSERNAME,56,22,145,12,ES_AUTOHSCROLL | WS_GROUP
-    CONTROL         "Use p&lain password to log in",IDC_SSHUSEPASSWORD,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,
-                    46,149,10
+    CONTROL         "Use p&lain password to log in (SSH2: keyboard-interactive)",
+                    IDC_SSHUSEPASSWORD,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,13,46,201,10
     CONTROL         "Use &RSA/DSA key to log in",IDC_SSHUSERSA,"Button",
                     BS_AUTORADIOBUTTON | WS_TABSTOP,13,76,100,10
-    CONTROL         "Use r&hosts to log in",IDC_SSHUSERHOSTS,"Button",
-                    BS_AUTORADIOBUTTON | WS_TABSTOP,13,105,80,10
-    CONTROL         "Use challenge/response (&TIS) to log in",IDC_SSHUSETIS,
-                    "Button",BS_AUTORADIOBUTTON | WS_TABSTOP,14,150,191,10
+    CONTROL         "Use r&hosts to log in (SSH1)",IDC_SSHUSERHOSTS,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,13,105,99,10
+    CONTROL         "Use challenge/response (&TIS) to log in (SSH1)",
+                    IDC_SSHUSETIS,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,
+                    14,150,191,10
     PUSHBUTTON      "Private &key file:",IDC_CHOOSERSAFILE,115,73,55,14,
                     WS_GROUP
     EDITTEXT        IDC_RSAFILENAME,175,73,119,13,ES_AUTOHSCROLL | WS_GROUP
-    LTEXT           "Local &user name:",IDC_LOCALUSERNAMELABEL,104,105,55,8,
+    LTEXT           "Local &user name:",IDC_LOCALUSERNAMELABEL,115,105,55,8,
                     0,WS_EX_RIGHT
-    EDITTEXT        IDC_LOCALUSERNAME,167,103,127,13,ES_AUTOHSCROLL | 
+    EDITTEXT        IDC_LOCALUSERNAME,176,103,118,13,ES_AUTOHSCROLL | 
                     WS_GROUP
     PUSHBUTTON      "Host private key &file:",IDC_CHOOSEHOSTRSAFILE,90,116,
                     70,14
@@ -338,7 +341,7 @@ BEGIN
         LEFTMARGIN, 6
         RIGHTMARGIN, 254
         TOPMARGIN, 7
-        BOTTOMMARGIN, 248
+        BOTTOMMARGIN, 256
     END
 
     IDD_SSHAUTH, DIALOG

@@ -68,6 +68,7 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar);
 static BOOL handle_SSH2_userauth_success(PTInstVar pvar);
 static BOOL handle_SSH2_userauth_failure(PTInstVar pvar);
 static BOOL handle_SSH2_userauth_banner(PTInstVar pvar);
+static BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar);
 static BOOL handle_SSH2_open_confirm(PTInstVar pvar);
 static BOOL handle_SSH2_request_success(PTInstVar pvar);
 static BOOL handle_SSH2_channel_success(PTInstVar pvar);
@@ -957,6 +958,7 @@ static void init_protocol(PTInstVar pvar)
 		enque_handler(pvar, SSH2_MSG_USERAUTH_SUCCESS, handle_SSH2_userauth_success);
 		enque_handler(pvar, SSH2_MSG_USERAUTH_FAILURE, handle_SSH2_userauth_failure);
 		enque_handler(pvar, SSH2_MSG_USERAUTH_BANNER, handle_SSH2_userauth_banner);
+		enque_handler(pvar, SSH2_MSG_USERAUTH_INFO_REQUEST, handle_SSH2_userauth_inforeq);
 
 		enque_handler(pvar, SSH2_MSG_UNIMPLEMENTED, handle_unimplemented);
 
@@ -4227,6 +4229,9 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 		pvar->ssh2_keys[mode].mac.enabled = 1;
 	}
 
+	// SSH2 keyboard-interactive methodの初期化 (2005.1.22 yutaka)
+	pvar->keyboard_interactive_done = 0;
+
 	// start user authentication
 	msg = buffer_init();
 	if (msg == NULL) {
@@ -4435,9 +4440,8 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	unsigned char *outmsg;
 	int len;
 	char *connect_id = "ssh-connection";
+	int kbdint = 0;
 
-	//		pvar->auth_state.cur_cred.password = password;
-	//		pvar->auth_state.user =
 	msg = buffer_init();
 	if (msg == NULL) {
 		// TODO: error check
@@ -4453,18 +4457,41 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	buffer_put_string(msg, s, strlen(s));
 
 	if (pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) { // パスワード認証
-		s = connect_id;
-		buffer_put_string(msg, s, strlen(s));
-		s = "password";
-		buffer_put_string(msg, s, strlen(s));
-		buffer_put_char(msg, 0); // 0
+		// 初回は keyboard-interactive メソッドでトライする (2005.1.22 yutaka)
+		// cf. http://www.openssh.com/txt/draft-ietf-secsh-auth-kbdinteract-02.txt
 
-		if (pvar->ssh2_autologin == 1) { // SSH2自動ログイン
-			s = pvar->ssh2_password;
+		if (pvar->settings.ssh2_keyboard_interactive == 1 &&
+			pvar->keyboard_interactive_done == 0) { // keyboard-interactive method
+			pvar->keyboard_interactive_done = 1;
+			kbdint = 1;
+
+			//s = "ssh-userauth";  // service name
+			s = connect_id;
+			buffer_put_string(msg, s, strlen(s));
+			s = "keyboard-interactive";  // method name
+			buffer_put_string(msg, s, strlen(s));
+			s = "";  // language tag
+			buffer_put_string(msg, s, strlen(s));
+			s = "";  // submethods
+			buffer_put_string(msg, s, strlen(s));
+
+
 		} else {
-			s = pvar->auth_state.cur_cred.password;  // パスワード
+			// password authentication method
+			s = connect_id;
+			buffer_put_string(msg, s, strlen(s));
+			s = "password";
+			buffer_put_string(msg, s, strlen(s));
+			buffer_put_char(msg, 0); // 0
+
+			if (pvar->ssh2_autologin == 1) { // SSH2自動ログイン
+				s = pvar->ssh2_password;
+			} else {
+				s = pvar->auth_state.cur_cred.password;  // パスワード
+			}
+			buffer_put_string(msg, s, strlen(s));
+
 		}
-		buffer_put_string(msg, s, strlen(s));
 
 
 	} else if (pvar->auth_state.cur_cred.method == SSH_AUTH_RSA) { // 公開鍵認証
@@ -4538,6 +4565,9 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	buffer_free(msg);
 
 	SSH2_dispatch_init(5);
+	if (kbdint == 1) { // keyboard-interactive method
+		SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_INFO_REQUEST);
+	} 
 	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_SUCCESS);
 	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_FAILURE);
 	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_BANNER);
@@ -4691,6 +4721,14 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 	// TCP connection closed
 	//notify_closed_connection(pvar);
 
+	// keyboard-interactive methodでトライして失敗した場合、次にpassword authentication method
+	// で無条件にトライしてみる。(2005.1.22 yutaka)
+	if (pvar->keyboard_interactive_done == 1) {
+		handle_SSH2_authrequest(pvar);
+		pvar->keyboard_interactive_done = 0; // clear flag
+		return TRUE;
+	}
+
 	if (pvar->ssh2_autologin == 1) {
 		// SSH2自動ログインが有効の場合は、リトライは行わない。(2004.12.4 yutaka)
 		notify_fatal_error(pvar,
@@ -4711,6 +4749,97 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 static BOOL handle_SSH2_userauth_banner(PTInstVar pvar)
 {
 	//
+
+	return TRUE;
+}
+
+
+// SSH2 keyboard-interactive methodの SSH2_MSG_USERAUTH_INFO_REQUEST 処理関数
+//
+// ※メモ：OpenSSHでPAMを有効にする方法
+//・ビルド
+//# ./configure --with-pam
+//# make
+//
+//・/etc/ssh/sshd_config に下記のように書く。
+//PasswordAuthentication no
+//PermitEmptyPasswords no
+//ChallengeResponseAuthentication yes
+//UsePAM yes
+//
+// (2005.1.23 yutaka)
+static BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar)
+{
+	int len;
+	char *data;
+	int slen, num, echo;
+	char *s, *prompt;
+	buffer_t *msg;
+	unsigned char *outmsg;
+	int i;
+
+
+	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
+	data = pvar->ssh_state.payload;
+	// パケットサイズ - (パディングサイズ+1)；真のパケットサイズ
+	len = pvar->ssh_state.payloadlen;
+
+	//debug_print(10, data, len);
+
+	///////// step1
+	// get string
+	slen = get_uint32_MSBfirst(data);
+	data += 4;
+	s = data;  // name
+	data += slen;
+
+	// get string
+	slen = get_uint32_MSBfirst(data);
+	data += 4;
+	s = data;  // instruction
+	data += slen;
+
+	// get string
+	slen = get_uint32_MSBfirst(data);
+	data += 4;
+	s = data;  // language tag
+	data += slen;
+
+	// num-prompts
+	num = get_uint32_MSBfirst(data);
+	data += 4;
+
+	///////// step2
+	// サーバへパスフレーズを送る
+	msg = buffer_init();
+	if (msg == NULL) {
+		// TODO: error check
+		return FALSE;
+	}
+	buffer_put_int(msg, num);
+
+	// プロンプトの数だけ prompt & echo が繰り返される。
+	for (i = 0 ; i < num ; i++) {
+		// get string
+		slen = get_uint32_MSBfirst(data);
+		data += 4;
+		prompt = data;  // prompt
+		data += slen;
+
+		// get boolean
+		echo = data[0];
+		data += 1;
+
+		// TODO: ここでプロンプトを表示してユーザから入力させるのが正解。
+		s = pvar->auth_state.cur_cred.password;
+		buffer_put_string(msg, s, strlen(s));  
+	}
+
+	len = buffer_len(msg);
+	outmsg = begin_send_packet(pvar, SSH2_MSG_USERAUTH_INFO_RESPONSE, len);
+	memcpy(outmsg, buffer_ptr(msg), len);
+	finish_send_packet(pvar);
+	buffer_free(msg);
 
 	return TRUE;
 }
@@ -5007,6 +5136,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2005/01/06 12:29:07  yutakakn
+ * telnet接続時にターミナルサイズ変更を行うと、アプリケーションエラーとなるバグを修正。
+ *
  * Revision 1.13  2005/01/04 16:09:45  yutakakn
  * キー再作成時にMAC corruptとなるバグを修正（メモリの二重フリーが原因）。
  *

@@ -55,6 +55,8 @@ static char FAR *ProtocolFamilyList[] = { "UNSPEC", "IPv6", "IPv4", NULL };
 #include <winsock.h>
 #endif							/* INET6 */
 
+#include <openssl/opensslv.h>
+
 #define MATCH_STR(s, o) _strnicmp((s), (o), NUM_ELEM(o) - 1)
 
 /* This extension implements SSH, so we choose a load order in the
@@ -375,6 +377,9 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 	// SSH heartbeat time(second) (2004.12.11 yutaka)
 	settings->ssh_heartbeat_overtime = GetPrivateProfileInt("TTSSH", "HeartBeat", 60, fileName);
 
+	// SSH2 keyboard-interactive (2005.1.23 yutaka)
+	settings->ssh2_keyboard_interactive = GetPrivateProfileInt("TTSSH", "KeyboardInteractive", 1, fileName);
+
 	clear_local_settings(pvar);
 }
 
@@ -435,6 +440,11 @@ static void write_ssh_options(PTInstVar pvar, PCHAR fileName,
 	// SSH heartbeat time(second) (2004.12.11 yutaka)
 	_snprintf(buf, sizeof(buf), "%d", settings->ssh_heartbeat_overtime);
 	WritePrivateProfileString("TTSSH", "HeartBeat", buf, fileName);
+
+	// SSH2 keyboard-interactive (2005.1.23 yutaka)
+	WritePrivateProfileString("TTSSH", "KeyboardInteractive", 
+		settings->ssh2_keyboard_interactive ? "1" : "0", 
+		fileName);
 
 }
 
@@ -1334,8 +1344,10 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 {
 	char buf[1024];
 
-	// TTSSHダイアログに表示するSSHに関する情報 (2004.10.30 yutaka)
+	// OpenSSLのバージョンを設定する (2005.1.24 yutaka)
+	SendMessage(GetDlgItem(dlg, IDC_OPENSSL_VERSION), WM_SETTEXT, 0, (LPARAM)OPENSSL_VERSION_TEXT);
 
+	// TTSSHダイアログに表示するSSHに関する情報 (2004.10.30 yutaka)
 	if (pvar->socket != INVALID_SOCKET) {
 		if (SSHv1(pvar)) {
 			SSH_get_server_ID_info(pvar, buf, sizeof(buf));
@@ -2051,6 +2063,11 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2004/12/27 14:05:08  yutakakn
+ * 'Auto window close'が有効の場合、切断後の接続ができない問題を修正した。
+ * 　・スレッドの終了待ち合わせ処理の追加
+ * 　・確保済みSSHリソースの解放
+ *
  * Revision 1.7  2004/12/17 14:28:36  yutakakn
  * メッセージ認証アルゴリズムに HMAC-MD5 を追加。
  * TTSSHバージョンダイアログにHMACアルゴリズム表示を追加。

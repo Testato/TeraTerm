@@ -920,6 +920,8 @@ static char FAR *get_auth_method_name(SSHAuthMethod auth)
 
 void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 {
+	char *method = "unknown";
+
 	if (pvar->auth_state.user == NULL) {
 		strncpy(dest, "None", len);
 	} else if (pvar->auth_state.cur_cred.method != SSH_AUTH_NONE) {
@@ -929,10 +931,15 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 
 		} else { // SSH2:認証メソッドの判別 (2004.12.23 yutaka)
 			if (pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) {
-				_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user,
-						get_auth_method_name(pvar->auth_state.cur_cred.method));
+				// keyboard-interactiveメソッドを追加 (2005.1.24 yutaka)
+				if (pvar->keyboard_interactive_done == 1) {
+					method = "keyboard-interactive";
+				} else {
+					method = get_auth_method_name(pvar->auth_state.cur_cred.method);
+				}
+				_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user, method);
+
 			} else {
-				char *method = "unknown";
 				if (pvar->auth_state.cur_cred.key_pair->RSA_key != NULL) {
 					method = "RSA";
 				} else if (pvar->auth_state.cur_cred.key_pair->DSA_key != NULL) {
@@ -970,6 +977,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2004/12/27 14:35:41  yutakakn
+ * SSH2秘密鍵読み込み失敗時のエラーメッセージを強化した。
+ *
  * Revision 1.4  2004/12/22 17:28:14  yutakakn
  * SSH2公開鍵認証(RSA/DSA)をサポートした。
  *

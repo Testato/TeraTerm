@@ -111,6 +111,7 @@ typedef struct _TS_SSH {
 
   int ssh_protocol_version; // SSH version (2004.10.11 yutaka)
   int ssh_heartbeat_overtime; // SSH heartbeat(keepalive) (2004.12.11 yutaka)
+  int ssh2_keyboard_interactive; // SSH2 keyboard-interactive (2005.1.23 yutaka)
 } TS_SSH;
 
 typedef struct _TInstVar {
@@ -204,6 +205,7 @@ typedef struct _TInstVar {
   char ssh2_password[MAX_PATH];
   time_t ssh_heartbeat_tick;
   HANDLE ssh_heartbeat_thread;
+  int keyboard_interactive_done;
 
 } TInstVar;
 
@@ -229,6 +231,11 @@ int copy_teraterm_dir_relative_path(char FAR * dest, int destsize, char FAR * ba
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2004/12/27 14:05:08  yutakakn
+ * 'Auto window close'が有効の場合、切断後の接続ができない問題を修正した。
+ * 　・スレッドの終了待ち合わせ処理の追加
+ * 　・確保済みSSHリソースの解放
+ *
  * Revision 1.4  2004/12/17 14:05:55  yutakakn
  * パケット受信時のHMACチェックを追加。
  * KEXにおけるHMACアルゴリズムチェックを追加。
