@@ -1371,6 +1371,22 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 			}
 			append_about_text(dlg, "Host Key: ", buf);
 
+			// add HMAC algorithm (2004.12.17 yutaka)
+			buf[0] = '\0';
+			if (pvar->ctos_hmac == HMAC_SHA1) {
+				strcat(buf, "hmac-sha1");
+			} else if (pvar->ctos_hmac == HMAC_MD5) {
+				strcat(buf, "hmac-md5");
+			}
+			strcat(buf, " to server, ");
+			if (pvar->stoc_hmac == HMAC_SHA1) {
+				strcat(buf, "hmac-sha1");
+			} else if (pvar->stoc_hmac == HMAC_MD5) {
+				strcat(buf, "hmac-md5");
+			}
+			strcat(buf, " from server");
+			append_about_text(dlg, "HMAC: ", buf);
+
 			CRYPT_get_cipher_info(pvar, buf, sizeof(buf));
 			append_about_text(dlg, "Encryption: ", buf);
 			CRYPT_get_server_key_info(pvar, buf, sizeof(buf));
@@ -2030,6 +2046,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2004/12/16 13:57:43  yutakakn
+ * "SECURITY WARINIG" dialogで ESC キーを押下すると、
+ * アプリケーションエラーとなる現象への暫定対処。
+ *
  * Revision 1.5  2004/12/11 07:31:00  yutakakn
  * SSH heartbeatスレッドの追加した。これにより、IPマスカレード環境において、ルータの
  * NATテーブルクリアにより、SSHコネクションが切断される現象が回避される。

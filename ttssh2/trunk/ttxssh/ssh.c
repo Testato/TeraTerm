@@ -2287,8 +2287,10 @@ static char *myproposal[PROPOSAL_MAX] = {
 	"ssh-rsa,ssh-dss",
 	"3des-cbc,aes128-cbc",
 	"3des-cbc,aes128-cbc",
-	"hmac-sha1,hmac-md5",
-	"hmac-sha1,hmac-md5",
+	"hmac-md5,hmac-sha1",
+	"hmac-md5,hmac-sha1",
+//	"hmac-sha1,hmac-md5",
+//	"hmac-sha1,hmac-md5",
 //	"hmac-sha1",
 //	"hmac-sha1",
 	"none",
@@ -2298,7 +2300,7 @@ static char *myproposal[PROPOSAL_MAX] = {
 };
 #else
 static char *myproposal[PROPOSAL_MAX] = {
-	"diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1",
+	"diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1",
 	"ssh-rsa,ssh-dss",
 	"3des-cbc,aes128-cbc",
 	"3des-cbc,aes128-cbc",
@@ -2546,7 +2548,6 @@ static enum hmac_type choose_SSH2_hmac_algorithm(char *server_proposal, char *my
 static void choose_SSH2_key_maxlength(PTInstVar pvar)
 {
 	int mode, need, val, ctos;
-	char *macname;
 	const EVP_MD *md;
 
 	for (mode = 0; mode < MODE_MAX; mode++) {
@@ -2603,7 +2604,6 @@ static void choose_SSH2_key_maxlength(PTInstVar pvar)
 	}
 	pvar->we_need = need;
 
-error:;
 }
 
 
@@ -4571,6 +4571,10 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2004/12/17 14:05:55  yutakakn
+ * パケット受信時のHMACチェックを追加。
+ * KEXにおけるHMACアルゴリズムチェックを追加。
+ *
  * Revision 1.5  2004/12/11 07:31:00  yutakakn
  * SSH heartbeatスレッドの追加した。これにより、IPマスカレード環境において、ルータの
  * NATテーブルクリアにより、SSHコネクションが切断される現象が回避される。
