@@ -243,6 +243,10 @@ MaxBuffSize=500000
 
 * History
 
+2004.12.15 (Ver 2.07c)
+  - fixed the attribute of font file in the installed directory
+  - added killing the process relation to TeraTerm at installation (using taskkill command)
+
 2004.12.14 (Ver 2.07b)
   - changed the initial value of scroll buffer size from 400000 to 20000 in the 'teraterm.ini' file.
   - added changing the attribute of font file to ReadOnly.
