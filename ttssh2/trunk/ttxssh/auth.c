@@ -464,6 +464,10 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 
 		switch (LOWORD(wParam)) {
 		case IDOK:
+			// 認証準備ができてから、認証データを送信する。早すぎると、落ちる。(2001.1.25 yutaka)
+			if ((pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME)) {
+				return FALSE;
+			}
 			return end_auth_dlg(pvar, dlg);
 
 		case IDCANCEL:			/* kill the connection */
@@ -977,6 +981,11 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2005/01/24 14:07:07  yutakakn
+ * ・keyboard-interactive認証をサポートした。
+ * 　それに伴い、teraterm.iniに "KeyboardInteractive" エントリを追加した。
+ * ・バージョンダイアログに OpenSSLバージョン を追加
+ *
  * Revision 1.5  2004/12/27 14:35:41  yutakakn
  * SSH2秘密鍵読み込み失敗時のエラーメッセージを強化した。
  *
