@@ -241,6 +241,11 @@ MaxBuffSize=500000
 
 * History
 
+2005.1.6 (Ver 2.08)
+  - changed the logging dialog type from open-dialog to save-dialog
+  - fixed the initial directory of "Save setup" dialog at program directory
+  - upgraded TTSSH version supporting SSH2 to 1.07
+
 2005.1.5 (Ver 2.07h)
   - upgraded TTSSH version supporting SSH2 to 1.06
 

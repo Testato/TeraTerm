@@ -104,9 +104,12 @@
 
 * History
 
+2005.1.6 (Ver 1.07)
+  - fixed application fault when changing terminal size on telnet connection (degradation at TTSSH version supporting SSH2 1.06)
+
 2005.1.5 (Ver 1.06)
   - added support of changing terminal size 
-  - fixed application fault at DH key re-creation (degraded at TTSSH version supporting SSH2 1.05)
+  - fixed application fault at DH key re-creation (degradation at TTSSH version supporting SSH2 1.05)
 
 2004.12.27 (Ver 1.05)
   - fixed the bug of can't connect the server after disconnecting when 'Auto window close' function is disabled
