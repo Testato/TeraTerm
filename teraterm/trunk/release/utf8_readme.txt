@@ -340,7 +340,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 2005.4.?? (Ver 4.13)
   - fixed TeraTerm version information can't be shown in version dialog at second later instance.
-  - upgraded LogMeTT to 2.2.1.
+  - upgraded LogMeTT to 2.2.3.
 
 2005.3.13 (Ver 4.12)
   - upgraded ttermpro.exe version information from 2.3 to 4.12.
