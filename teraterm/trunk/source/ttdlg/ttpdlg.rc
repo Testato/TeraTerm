@@ -264,7 +264,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,136,6,32,16,WS_GROUP
     CONTROL         "All Rights Reserved.",-1,"Static",SS_LEFTNOWORDWRAP | 
                     WS_GROUP,38,41,76,8
-    CONTROL         "UTF-8 support (Ver.2.09)",-1,"Static",SS_LEFTNOWORDWRAP | 
+    CONTROL         "UTF-8 support (Ver.4.10)",-1,"Static",SS_LEFTNOWORDWRAP | 
                     WS_GROUP,37,51,104,9
     CONTROL         "Copyright (C) 2004-2005 Y.Hirata",-1,"Static",
                     SS_LEFTNOWORDWRAP | WS_GROUP,37,61,122,9
