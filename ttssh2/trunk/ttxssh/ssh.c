@@ -1192,11 +1192,14 @@ BOOL SSH_handle_server_ID(PTInstVar pvar, char FAR * ID, int ID_len)
 		free(buf);
 
 
+		// ここでのコピーは削除 (2005.3.9 yutaka)
+#if 0
 		// for calculate SSH2 hash
 		// サーババージョンの保存（改行は取り除くこと）
 		if (ID_len >= sizeof(pvar->server_version_string)) 
 			return FALSE;
 		strncpy(pvar->server_version_string, ID, ID_len);
+#endif
 
 
 		if (ID[ID_len - 1] != '\n') {
@@ -1238,6 +1241,9 @@ BOOL SSH_handle_server_ID(PTInstVar pvar, char FAR * ID, int ID_len)
 				// クライアントバージョンの保存（改行は取り除くこと）
 				strncpy(pvar->client_version_string, TTSSH_ID, TTSSH_ID_len);
 
+				// サーババージョンの保存（改行は取り除くこと）(2005.3.9 yutaka)
+				_snprintf(pvar->server_version_string, sizeof(pvar->server_version_string), "%s", pvar->ssh_state.server_ID);
+
 				if ((pvar->Psend) (pvar->socket, TTSSH_ID, TTSSH_ID_len,
 								   0) != TTSSH_ID_len) {
 					notify_fatal_error(pvar,
@@ -1245,7 +1251,6 @@ BOOL SSH_handle_server_ID(PTInstVar pvar, char FAR * ID, int ID_len)
 									   "The connection will close.");
 				} else {
 					// 改行コードの除去 (2004.8.4 yutaka)
-					pvar->server_version_string[--ID_len] = 0;
 					pvar->client_version_string[--TTSSH_ID_len] = 0;
 
 					push_memdump("server ID", NULL, pvar->server_version_string, strlen(pvar->server_version_string));
@@ -5380,6 +5385,10 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.19  2005/03/08 14:24:11  yutakakn
+ * SSH2 log dump機構の追加。
+ * とりあえず、DH_GEXにおけるkey verifyまでにトレース採取を組み込んだ。
+ *
  * Revision 1.18  2005/03/05 10:19:05  yutakakn
  * Tru64 UNIX(HP-UX)向けworkaroundを追加。
  *
