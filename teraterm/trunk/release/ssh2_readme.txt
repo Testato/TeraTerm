@@ -112,6 +112,10 @@
 
 * History
 
+2005.2.22 (Ver 1.09)
+  - fixed the SSH2 public key problem that TTSSH can't read the private key file in the directory starting by the dot.
+  - added the configuration of HeartBeat(keep-alive), SSH2 keyboard-interactive on TTSSH setup dialog
+
 2005.1.30 (Ver 1.08)
   - added support of keyboard-interactive authentication. You can configurate the its authentication enabling flag by "KeyboardInteractive" entry of TTSSH section in the 'teraterm.ini' file.
   - added show of Project Homepage URL and OpenSSL version at version dialog.

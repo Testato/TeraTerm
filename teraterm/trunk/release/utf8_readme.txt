@@ -295,9 +295,18 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
-2005.2.?? (Ver 4.11)
-  -
-  -
+2005.2.22 (Ver 4.11)
+  - fixed the problem that log menu doesn't become gray on logging
+  - added Eterm lookfeel alphablend. Special thanks to AKASI.
+  - added support of VisualStyle(WindowsXP)
+  - added new Title Format ID(13). i.e, <host/port> - <title> VT/TEK
+  - added the show of COM5 over when the caption was displayed
+  - added new logginf type "plain text" on log saving dialog. If the option is enabled(default), TeraTerm doesn't include ASCII non-display characters in log file. Exceptionally the following characters(HT, CR, LF) include at any mode.
+  - added TTProxy(2004/1/22 version) supporting to TELNET/HTTP/SOCK proxying. Special thanks to YebisuyaHompo.
+  - added newly LogMeTT 2.02beta. Special thanks to Boris.
+  - deleted LogMeIn
+  - changed "Additional settings" dialog to tab control dialog
+  - changed the setting default file name of logging to "teraterm.log"
 
 2005.1.30 (Ver 4.10)
   - enabled maximum button

@@ -280,13 +280,18 @@ MaxBuffSize=500000
 
 ■改版履歴
 
-2005.2.?? (Ver 4.11)
+2005.2.22 (Ver 4.11)
   ・ログ採取中に File -> log がグレイ表示にならない問題へ対処した。
   ・Eterm風透過ウィンドウ機能（AKASI氏作パッチ）を追加した。
   ・VisualStyle(WindowsXP)に対応させた
   ・TitleFormatにformat ID=13を新規追加した
   ・キャプション表示において、COM5以上の表示に対応した。
   ・ログファイルの種別に"plain text"を追加した。当該オプションを有効にすると、ログファイルにASCII非表示文字を採取しないようになる。ただし、例外キャラクタ(HT, CR, LF)は採取対象。
+  ・TTProxy(2004/1/22版)の新規追加
+  ・LogMeTT 2.02βの新規追加
+  ・LogMeInを削除した
+  ・Additional settingsをtab control化した
+  ・ログ採取時のデフォルト名を"teraterm.log"に変更した
 
 2005.1.30 (Ver 4.10)
   ・最大化ボタンを有効にした
