@@ -3318,6 +3318,14 @@ void kex_derive_keys(PTInstVar pvar, int need, u_char *hash, BIGNUM *shared_secr
 		else
 			ctos = 0;
 
+		// free already allocated buffer (2004.12.27 yutaka)
+		if (current_keys[mode].enc.iv != NULL)
+			free(current_keys[mode].enc.iv);
+		if (current_keys[mode].enc.key != NULL)
+			free(current_keys[mode].enc.key);
+		if (current_keys[mode].mac.key != NULL)
+			free(current_keys[mode].mac.key);
+
 		// setting
 		current_keys[mode].enc.iv  = keys[ctos ? 0 : 1];
 		current_keys[mode].enc.key = keys[ctos ? 2 : 3];
@@ -4958,6 +4966,11 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2004/12/27 14:05:08  yutakakn
+ * 'Auto window close'が有効の場合、切断後の接続ができない問題を修正した。
+ * 　・スレッドの終了待ち合わせ処理の追加
+ * 　・確保済みSSHリソースの解放
+ *
  * Revision 1.9  2004/12/22 17:28:14  yutakakn
  * SSH2公開鍵認証(RSA/DSA)をサポートした。
  *
