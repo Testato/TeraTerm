@@ -42,6 +42,8 @@ CRYPTKeyPair *read_SSH2_private_key(PTInstVar pvar,
 							char FAR * relative_name,
 							char FAR * passphrase,
 							BOOL FAR * invalid_passphrase,
-							BOOL is_auto_login);
+							BOOL is_auto_login,
+							char *errmsg,
+							int errmsg_len);
 
 #endif

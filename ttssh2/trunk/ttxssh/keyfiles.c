@@ -323,13 +323,14 @@ CRYPTKeyPair *read_SSH2_private_key(PTInstVar pvar,
 							char FAR * relative_name,
 							char FAR * passphrase,
 							BOOL FAR * invalid_passphrase,
-							BOOL is_auto_login)
+							BOOL is_auto_login,
+							char *errmsg,
+							int errmsg_len)
 {
 	FILE *fp = NULL;
 	CRYPTKeyPair *result = NULL;
 	EVP_PKEY *pk = NULL;
 	unsigned long err = 0;
-	char errmsg[256];
 
 	OpenSSL_add_all_algorithms();
 	ERR_load_crypto_strings();
@@ -337,6 +338,7 @@ CRYPTKeyPair *read_SSH2_private_key(PTInstVar pvar,
 
 	fp = fopen(relative_name, "r");
 	if (fp == NULL) {
+		_snprintf(errmsg, errmsg_len, strerror(errno));
 		goto error;
 	}
 
@@ -347,7 +349,7 @@ CRYPTKeyPair *read_SSH2_private_key(PTInstVar pvar,
 	pk = PEM_read_PrivateKey(fp, NULL, NULL, passphrase);
 	if (pk == NULL) {
 		err = ERR_get_error();
-		ERR_error_string_n(err, errmsg, sizeof(errmsg));
+		ERR_error_string_n(err, errmsg, errmsg_len);
 		goto error;
 	}
 
@@ -357,6 +359,8 @@ CRYPTKeyPair *read_SSH2_private_key(PTInstVar pvar,
 
 		// RSA目くらましを有効にする（タイミング攻撃からの防御）
 		if (RSA_blinding_on(result->RSA_key, NULL) != 1) {
+			err = ERR_get_error();
+			ERR_error_string_n(err, errmsg, errmsg_len);
 			goto error;
 		}
 
@@ -391,4 +395,7 @@ error:
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/12/22 17:28:14  yutakakn
+ * SSH2公開鍵認証(RSA/DSA)をサポートした。
+ *
  */

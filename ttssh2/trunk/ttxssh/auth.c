@@ -351,13 +351,21 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 
 		} else { // SSH2(yutaka)
 			BOOL invalid_passphrase = FALSE;
+			char errmsg[256];
+
+			memset(errmsg, 0, sizeof(errmsg));
 
 			key_pair = read_SSH2_private_key(pvar, buf, password,
 									&invalid_passphrase,
-									FALSE);
+									FALSE,
+									errmsg,
+									sizeof(errmsg)
+									);
 
 			if (key_pair == NULL) { // read error
-				notify_nonfatal_error(pvar, "read error SSH2 private key file");
+				char buf[1024];
+				_snprintf(buf, sizeof(buf), "read error SSH2 private key file\r\n%s", errmsg);
+				notify_nonfatal_error(pvar, buf);
 				destroy_malloced_string(&password);
 				return FALSE;
 			}
@@ -962,6 +970,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2004/12/22 17:28:14  yutakakn
+ * SSH2公開鍵認証(RSA/DSA)をサポートした。
+ *
  * Revision 1.3  2004/12/16 13:01:09  yutakakn
  * SSH自動ログインでアプリケーションエラーとなる現象を修正した。
  *
