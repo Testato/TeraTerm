@@ -241,31 +241,11 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   GetNthNum(Temp,1,(int far *)(&ts->VTPos.x));
   GetNthNum(Temp,2,(int far *)(&ts->VTPos.y));
 
-  if ( (ts->VTPos.x < -20) || (ts->VTPos.y < -20) )
-  {
-    ts->VTPos.x = CW_USEDEFAULT;
-    ts->VTPos.y = CW_USEDEFAULT;
-  }
-  else {
-    if ( ts->VTPos.x < 0 ) ts->VTPos.x = 0;
-    if ( ts->VTPos.y < 0 ) ts->VTPos.y = 0;
-  }
-
   /* TEK win position */
   GetPrivateProfileString(Section,"TEKPos","-32768,-32768",
 			  Temp,sizeof(Temp),FName);  /* default: random position */
   GetNthNum(Temp,1,(int far *)&(ts->TEKPos.x));
   GetNthNum(Temp,2,(int far *)&(ts->TEKPos.y));
-
-  if ( (ts->TEKPos.x < -20) || (ts->TEKPos.y < -20) )
-  {
-    ts->TEKPos.x = CW_USEDEFAULT;
-    ts->TEKPos.y = CW_USEDEFAULT;
-  }
-  else {
-    if ( ts->TEKPos.x < 0 ) ts->TEKPos.x = 0;
-    if ( ts->TEKPos.y < 0 ) ts->TEKPos.y = 0;
-  }
 
   /* VT terminal size  */
   GetPrivateProfileString(Section,"TerminalSize","80,24",
@@ -2363,4 +2343,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/12/07 13:41:30  yutakakn
+ * External SetupをSetupメニュー配下へ移動。
+ * LogMeInの起動メニューを追加。
+ * Duplication sessionメニューを追加。
+ *
  */

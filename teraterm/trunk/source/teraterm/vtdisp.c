@@ -25,8 +25,9 @@ HFONT VTFont[AttrFontMask+1];
 int FontHeight, FontWidth, ScreenWidth, ScreenHeight;
 BOOL AdjustSize;
 BOOL DontChangeSize=FALSE;
-static int CRTWidth, CRTHeight;
 int CursorX, CursorY;
+/* Virtual screen region */
+RECT VirtualScreen;
 
 // --- scrolling status flags
 int WinOrgX, WinOrgY, NewOrgX, NewOrgY;
@@ -62,6 +63,7 @@ void InitDisp()
 {
   HDC TmpDC;
   int i;
+  BOOL bMultiDisplaySupport = FALSE;
 
   TmpDC = GetDC(NULL);
 
@@ -104,21 +106,68 @@ void InitDisp()
   /* background paintbrush */
   Background = CreateSolidBrush(ts.VTColor[1]);
   /* CRT width & height */
-  CRTWidth = GetDeviceCaps(TmpDC,HORZRES);
-  CRTHeight = GetDeviceCaps(TmpDC,VERTRES);
+  {
+	OSVERSIONINFO ver;
+	ZeroMemory( &ver, sizeof(ver) );
+	ver.dwOSVersionInfoSize = sizeof(ver);
+	GetVersionEx( &ver );
+	switch( ver.dwPlatformId ) {
+	// Windows 9x ‚© NT ‚©‚Ì”»’è
+	case VER_PLATFORM_WIN32_WINDOWS:
+		if( ver.dwMajorVersion > 4 ||
+			(ver.dwMajorVersion == 4 && ver.dwMinorVersion >= 10) ) // Windows 98 or later
+			bMultiDisplaySupport = TRUE;
+		break;
+	case VER_PLATFORM_WIN32_NT:
+		if( ver.dwMajorVersion >= 5 ) // Windows 2000 or later
+			bMultiDisplaySupport = TRUE;
+		break;
+	default:
+		break;
+	}
+  }
+  if( bMultiDisplaySupport ) {
+	  VirtualScreen.left = GetSystemMetrics(SM_XVIRTUALSCREEN);
+	  VirtualScreen.top = GetSystemMetrics(SM_YVIRTUALSCREEN);
+	  VirtualScreen.right = VirtualScreen.left +  GetSystemMetrics(SM_CXVIRTUALSCREEN);
+	  VirtualScreen.bottom = VirtualScreen.top + GetSystemMetrics(SM_CYVIRTUALSCREEN);
+  } else {
+	  VirtualScreen.left = 0;
+	  VirtualScreen.top = 0;
+	  VirtualScreen.right = GetDeviceCaps(TmpDC,HORZRES);
+	  VirtualScreen.bottom = GetDeviceCaps(TmpDC,VERTRES);
+  }
 
   ReleaseDC(NULL, TmpDC);
 
-  if ((ts.VTPos.x > CRTWidth) || (ts.VTPos.y > CRTHeight))
+  if ( (ts.VTPos.x > VirtualScreen.right) || (ts.VTPos.y > VirtualScreen.bottom) )
   {
     ts.VTPos.x = CW_USEDEFAULT;
     ts.VTPos.y = CW_USEDEFAULT;
   }
+  else if ( (ts.VTPos.x < VirtualScreen.left-20) || (ts.VTPos.y < VirtualScreen.top-20) )
+  {
+    ts.VTPos.x = CW_USEDEFAULT;
+    ts.VTPos.y = CW_USEDEFAULT;
+  }
+  else {
+    if ( ts.VTPos.x < VirtualScreen.left ) ts.VTPos.x = VirtualScreen.left;
+    if ( ts.VTPos.y < VirtualScreen.top ) ts.VTPos.y = VirtualScreen.top;
+  }
 
-  if ((ts.TEKPos.x > CRTWidth) || (ts.TEKPos.y > CRTHeight))
+  if ( (ts.TEKPos.x >  VirtualScreen.right) || (ts.TEKPos.y > VirtualScreen.bottom) )
   {
     ts.TEKPos.x = CW_USEDEFAULT;
     ts.TEKPos.y = CW_USEDEFAULT;
+  }
+  else if ( (ts.TEKPos.x < VirtualScreen.left-20) || (ts.TEKPos.y < VirtualScreen.top-20) )
+  {
+    ts.TEKPos.x = CW_USEDEFAULT;
+    ts.TEKPos.y = CW_USEDEFAULT;
+  }
+  else {
+    if ( ts.TEKPos.x < VirtualScreen.left ) ts.TEKPos.x = VirtualScreen.left;
+    if ( ts.TEKPos.y < VirtualScreen.top ) ts.TEKPos.y = VirtualScreen.top;
   }
 }
 
@@ -455,14 +504,14 @@ void ResizeWindow(int x, int y, int w, int h, int cw, int ch)
 
     NewX = x;
     NewY = y;
-    if (x+w > CRTWidth)
+    if (x+w > VirtualScreen.right)
     {
-      NewX = CRTWidth-w;
+      NewX = VirtualScreen.right-w;
       if (NewX < 0) NewX = 0;
     }
-    if (y+h > CRTHeight)
+    if (y+h > VirtualScreen.bottom)
     {
-      NewY = CRTHeight-h;
+      NewY =  VirtualScreen.bottom-h;
       if (NewY < 0) NewY = 0;
     }
     if ((NewX!=x) || (NewY!=y))
@@ -471,7 +520,7 @@ void ResizeWindow(int x, int y, int w, int h, int cw, int ch)
     Point.x = 0;
     Point.y = ScreenHeight;
     ClientToScreen(HVTWin,&Point);
-    CompletelyVisible = (Point.y <= CRTHeight);
+    CompletelyVisible = (Point.y <= VirtualScreen.bottom);
     if (IsCaretOn()) CaretOn();
   }
 }
@@ -1207,7 +1256,7 @@ void DispSetWinPos()
   Point.x = 0;
   Point.y = ScreenHeight;
   ClientToScreen(HVTWin,&Point);
-  CompletelyVisible = (Point.y <= CRTHeight);
+  CompletelyVisible = (Point.y <= VirtualScreen.bottom);
 }
 
 void DispSetActive(BOOL ActiveFlag)
