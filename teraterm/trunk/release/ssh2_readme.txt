@@ -100,11 +100,15 @@
 * Limitations of current release
   - does not support packet compression
   - supports only password authentication
-  - supports only HMAC-SHA1 message authentication code
   - does not support port forwarding
 
 
 * History
+
+2004.12.18 (Ver 1.03)
+  - added checking HMAC at received packet
+  - added support of HMAC-MD5 message authentication code
+  - added verifying the key of RSA and DSA at KEX procedure
 
 2004.12.16 (Ver 1.02)
   - fixed application fault when using SSH autologin mode
