@@ -1970,3 +1970,7 @@ void FWD_end(PTInstVar pvar)
 		DestroyWindow(pvar->fwd_state.accept_wnd);
 	}
 }
+
+/*
+ * $Log: not supported by cvs2svn $
+ */

@@ -299,3 +299,7 @@ void PKT_end(PTInstVar pvar)
 {
 	buf_destroy(&pvar->pkt_state.buf, &pvar->pkt_state.buflen);
 }
+
+/*
+ * $Log: not supported by cvs2svn $
+ */

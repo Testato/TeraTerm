@@ -219,3 +219,7 @@ BOOL UTIL_is_sock_deeply_buffered(UTILSockWriteBuf FAR * buf)
 {
 	return buf->buflen / 2 < buf->datalen;
 }
+
+/*
+ * $Log: not supported by cvs2svn $
+ */

@@ -187,3 +187,6 @@ void buffer_dump(FILE *fp, buffer_t *buf)
 	fprintf(fp, "\n");
 }
 
+/*
+ * $Log: not supported by cvs2svn $
+ */

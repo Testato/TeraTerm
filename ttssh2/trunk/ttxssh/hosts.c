@@ -724,3 +724,7 @@ void HOSTS_end(PTInstVar pvar)
 		free(pvar->hosts_state.file_names);
 	}
 }
+
+/*
+ * $Log: not supported by cvs2svn $
+ */

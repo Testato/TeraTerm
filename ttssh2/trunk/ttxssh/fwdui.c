@@ -1151,3 +1151,7 @@ void FWDUI_do_forwarding_dialog(PTInstVar pvar)
 							  "Unable to display forwarding setup dialog box.");
 	}
 }
+
+/*
+ * $Log: not supported by cvs2svn $
+ */

@@ -142,3 +142,7 @@ BOOL match_pattern(char const FAR * pattern, char const FAR * str) {
     return FALSE;
   }
 }
+
+/*
+ * $Log: not supported by cvs2svn $
+ */

@@ -261,3 +261,7 @@ int X11_unspoofing_filter(void FAR * void_closure, int direction,
 		return FWD_FILTER_RETAIN;
 	}
 }
+
+/*
+ * $Log: not supported by cvs2svn $
+ */
