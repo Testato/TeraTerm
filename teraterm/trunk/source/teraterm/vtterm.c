@@ -294,29 +294,44 @@ void BackSpace()
   }
 }
 
+static int crlf_logwrite_disabled = 0;
+
 void CarriageReturn()
 {
- if (cv.HLogBuf!=0) Log1Byte(CR);
- if (CursorX>0)
-   MoveCursor(0,CursorY);
+	// 行が連結している場合は、ログファイルに改行コードを含めない。(2004.12.7 yutaka)
+	if (Wrap && ts.EnableContinuedLineCopy) {
+		crlf_logwrite_disabled = 1;
+
+	} else {
+		if (cv.HLogBuf!=0) Log1Byte(CR);
+	}
+
+	if (CursorX>0)
+		MoveCursor(0,CursorY);
 }
 
 void LineFeed(BYTE b)
 {
- /* for auto print mode */
- if ((AutoPrintMode) &&
-     (b>=LF) && (b<=FF))
-   BuffDumpCurrentLine(b);
+	/* for auto print mode */
+	if ((AutoPrintMode) &&
+		(b>=LF) && (b<=FF))
+		BuffDumpCurrentLine(b);
 
- if (cv.HLogBuf!=0) Log1Byte(LF);
+	// 行が連結している場合は、ログファイルに改行コードを含めない。(2004.12.7 yutaka)
+	if (crlf_logwrite_disabled == 1) {
+		crlf_logwrite_disabled = 0;
 
- if (CursorY < CursorBottom)
-   MoveCursor(CursorX,CursorY+1);
- else if (CursorY == CursorBottom) BuffScrollNLines(1);
- else if (CursorY < NumOfLines-StatusLine-1)
-   MoveCursor(CursorX,CursorY+1);
+	} else {
+		if (cv.HLogBuf!=0) Log1Byte(LF);
+	}
 
- if (LFMode) CarriageReturn();
+	if (CursorY < CursorBottom)
+		MoveCursor(CursorX,CursorY+1);
+	else if (CursorY == CursorBottom) BuffScrollNLines(1);
+	else if (CursorY < NumOfLines-StatusLine-1)
+		MoveCursor(CursorX,CursorY+1);
+
+	if (LFMode) CarriageReturn();
 }
 
 void Tab()
@@ -327,11 +342,6 @@ void Tab()
 
 void PutChar(BYTE b)
 {
-#if 0
-	void PutKanji(BYTE b);
-	Kanji = 0;
-	PutKanji(b);
-#else
   BOOL SpecialNew;
   BYTE CharAttrTmp;
 
@@ -401,7 +411,6 @@ void PutChar(BYTE b)
     UpdateStr();
     Wrap = AutoWrapMode;
   }
-#endif
 }
 
 
@@ -2560,3 +2569,7 @@ int VTParse()
   if (ChangeEmu > 0) ParseMode = ModeFirst;
   return ChangeEmu;
 }
+
+/*
+ * $Log: not supported by cvs2svn $ 
+ */
