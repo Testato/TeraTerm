@@ -8,6 +8,7 @@
 #include "tttypes.h"
 #include <stdio.h>
 #include <string.h>
+#include <malloc.h>
 #include "ttlib.h"
 #include "helpid.h"
 
@@ -41,14 +42,80 @@ void VTActivate()
   SetFocus(HVTWin);
 }
 
+
+// タイトルバーのCP932への変換を行う
+// 現在、SJIS、EUCのみに対応。
+// (2005.3.13 yutaka)
+static void ConvertToCP932(char *str, int len)
+{
+#define IS_SJIS(n) (ts.KanjiCode == IdSJIS && IsDBCSLeadByte(n))
+#define IS_EUC(n) (ts.KanjiCode == IdEUC && (n & 0x80))
+	extern WORD FAR PASCAL JIS2SJIS(WORD KCode);
+	char *cc = _alloca(len + 1);
+	char *c = cc;
+	int i;
+	unsigned char b;
+	WORD word;
+
+	if (strcmp(ts.Locale, DEFAULT_LOCALE) == 0) {
+		for (i = 0 ; i < len ; i++) {
+			b = str[i];
+			if (IS_SJIS(b) || IS_EUC(b)) {
+				word = b<<8;
+
+				if (i == len - 1) {
+					*c++ = b;
+					continue;
+				}
+
+				b = str[i + 1];
+				word |= b;
+				i++;
+
+				if (ts.KanjiCode == IdSJIS) {
+					// SJISはそのままCP932として出力する
+
+				} else if (ts.KanjiCode == IdEUC) {
+					// EUC -> SJIS
+					word &= ~0x8080;
+					word = JIS2SJIS(word);
+
+				} else if (ts.KanjiCode == IdJIS) {
+
+				} else if (ts.KanjiCode == IdUTF8) {
+
+				} else if (ts.KanjiCode == IdUTF8m) {
+
+				} else {
+
+				}
+
+				*c++ = word >> 8;
+				*c++ = word & 0xff;
+
+			} else {
+				*c++ = b;
+			}
+		}
+
+		*c = '\0';
+		strcpy(str, cc);
+	}
+}
+
 // キャプションの変更
 //
 // (2005.2.19 yutaka) format ID=13の新規追加、COM5以上の表示に対応
+// (2005.3.13 yutaka) タイトルのSJISへの変換（日本語）を追加
 void ChangeTitle()
 {
 	int i;
 	char TempTitle[HostNameMaxLength + 50 + 1]; // バッファ拡張
 	char Num[11];
+	char *title = _alloca(sizeof(ts.Title));
+
+	strcpy(title, ts.Title);
+	ConvertToCP932(title, strlen(title));
 
 	strcpy(TempTitle, ts.Title);
 
@@ -68,7 +135,7 @@ void ChangeTitle()
 			_snprintf(str, sizeof(str), "COM%d", ts.ComPort);
 
 			if (ts.TitleFormat & 8) {
-				_snprintf(TempTitle, sizeof(TempTitle), "%s - %s", str, ts.Title);
+				_snprintf(TempTitle, sizeof(TempTitle), "%s - %s", str, title);
 			} else {
 				strncat(TempTitle, str, i); 
 			}
@@ -85,7 +152,7 @@ void ChangeTitle()
 		else {
 			if (ts.TitleFormat & 8) {
 				// format ID = 13(8 + 5): <hots/port> - <title>
-				_snprintf(TempTitle, sizeof(TempTitle), "%s - %s", ts.HostName, ts.Title);
+				_snprintf(TempTitle, sizeof(TempTitle), "%s - %s", ts.HostName, title);
 
 			} else {
 				strncat(TempTitle,ts.HostName,i);
@@ -173,6 +240,9 @@ void OpenHelp(HWND HWin, UINT Command, DWORD Data)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2005/02/21 14:52:11  yutakakn
+ * TitleFormat=13において、COMの場合も入れ替えるようにした。
+ *
  * Revision 1.2  2005/02/19 07:02:59  yutakakn
  * TitleFormatに 13 を追加。
  * COM5以上の表示に対応した。
