@@ -4098,6 +4098,13 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 	// TCP connection closed
 	//notify_closed_connection(pvar);
 
+	if (pvar->ssh2_autologin == 1) {
+		// SSH2自動ログインが有効の場合は、リトライは行わない。(2004.12.4 yutaka)
+		notify_fatal_error(pvar,
+			"SSH2 autologin error: user authentication was failure");
+		return TRUE;
+	}
+
 	// ユーザ認証に失敗したときは、ユーザ名は固定して、パスワードの再入力を
 	// させる。ここの処理は SSH1 と同じ。(2004.10.3 yutaka)
 	AUTH_set_generic_mode(pvar);
@@ -4407,6 +4414,12 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2004/12/01 15:37:49  yutakakn
+ * SSH2自動ログイン機能を追加。
+ * 現状、パスワード認証のみに対応。
+ * ・コマンドライン
+ *   /ssh /auth=認証メソッド /user=ユーザ名 /passwd=パスワード
+ *
  * Revision 1.2  2004/11/29 15:52:37  yutakakn
  * SSHのdefault protocolをSSH2にした。
  * 
