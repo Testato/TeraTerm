@@ -378,7 +378,9 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 	settings->ssh_heartbeat_overtime = GetPrivateProfileInt("TTSSH", "HeartBeat", 60, fileName);
 
 	// SSH2 keyboard-interactive (2005.1.23 yutaka)
-	settings->ssh2_keyboard_interactive = GetPrivateProfileInt("TTSSH", "KeyboardInteractive", 1, fileName);
+	// デフォルトでは無効とする。OpenSSH 4.0ではkeyboard-interactiveメソッドが定義されていない場合に、
+	// 当該メソッドを使うとコネクションが切られてしまう。(2005.3.12 yutaka)
+	settings->ssh2_keyboard_interactive = GetPrivateProfileInt("TTSSH", "KeyboardInteractive", 0, fileName);
 
 	clear_local_settings(pvar);
 }
@@ -2184,6 +2186,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2005/03/03 13:28:23  yutakakn
+ * クライアントのSSHバージョンを ttxssh.dll から取得して、サーバへ送るようにした。
+ *
  * Revision 1.12  2005/02/28 14:51:44  yutakakn
  * バージョンダイアログに表示するTTSSHのバージョンを、ttxssh.dllの
  * バージョン情報から取得するようにした。

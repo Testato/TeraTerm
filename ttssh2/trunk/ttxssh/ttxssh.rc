@@ -89,9 +89,9 @@ BEGIN
                     WS_EX_RIGHT
     EDITTEXT        IDC_SSHPASSWORD,59,46,145,12,ES_PASSWORD | 
                     ES_AUTOHSCROLL | WS_GROUP
-    CONTROL         "Use p&lain password to log in (SSH2: keyboard-interactive)",
-                    IDC_SSHUSEPASSWORD,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,13,71,200,10
+    CONTROL         "Use p&lain password to log in",IDC_SSHUSEPASSWORD,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,
+                    71,219,10
     CONTROL         "Use &RSA/DSA key to log in",IDC_SSHUSERSA,"Button",
                     BS_AUTORADIOBUTTON | WS_TABSTOP,13,99,98,10
     CONTROL         "Use r&hosts to log in (SSH1)",IDC_SSHUSERHOSTS,"Button",

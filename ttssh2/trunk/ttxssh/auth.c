@@ -239,6 +239,12 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 		}
 	}
 
+	// パスワード認証を試す前に、keyboard-interactiveメソッドを試す場合は、ラベル名を
+	// 変更する。(2005.3.12 yutaka)
+	if (pvar->settings.ssh2_keyboard_interactive == 1) {
+		SetDlgItemText(dlg, IDC_SSHUSEPASSWORD, "Use p&lain password to log in (with keyboard-interactive)");
+	}
+
 }
 
 static char FAR *alloc_control_text(HWND ctl)
@@ -1010,6 +1016,10 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2005/02/22 08:48:11  yutakakn
+ * TTSSH setupダイアログに HeartBeat 設定を追加。
+ * TTSSH authentication setupダイアログに keyboard-interactive 設定を追加。
+ *
  * Revision 1.8  2005/01/27 13:30:33  yutakakn
  * 公開鍵認証自動ログインをサポート。
  * /auth=publickey, /keyfile オプションを新規追加した。
