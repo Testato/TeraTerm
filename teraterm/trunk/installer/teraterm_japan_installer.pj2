@@ -1,16 +1,15 @@
 [Project]
 ProjectName=UTF-8 TeraTerm Pro
-CreateFileName=teraterm_utf8_207en
+CreateFileName=teraterm_utf8_207
 CreateFolder=C:\Program Files\Matsuoka\einstall2\Project\ExeFile
 MajorVersion=3
 MinorVersion=9
 CreateDateTime=2004/12/07 23:52:51
-UpdateDateTime=2004/12/08 22:38:13
+UpdateDateTime=2004/12/08 0:08:33
 Generator=EINSTALL 2.0
 CreateFileType=2
 CreateFileAddVersionInfo=0
 CreateFileNameOption=0
-CreateFolderBeforeBackup=1
 
 [SupportInfo]
 Publisher=Yutaka Hirata
@@ -134,13 +133,13 @@ FileUseCheck=0
 37=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\utf8_readme.txt|||0|0|127|||||||||||
 38=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\utf8_readme-j.txt|||0|0|127|||||||||||
 
+[ProgramItems]
+0=1|%InstallDir%|copyfont.bat||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
+1=1|%InstallDir%|utf8_readme-j.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
+2=1|%InstallDir%|ssh2_readme-j.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
+
 [ShortCutItems]
 0=UTF-8 TeraTerm Pro|%InstallDir%\ttermpro.exe||||0||0|35|0|||||||||||
 1=TeraTerm Menu|%InstallDir%\ttpmenu.exe||||0||0|8|0|||||||||||
 2=LogMeIn|%InstallDir%\LogMeIn.exe||||0||0|8|0|||||||||||
-
-[ProgramItems]
-0=1|%InstallDir%|copyfont.bat||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
-1=1|%InstallDir%|utf8_readme.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
-2=1|%InstallDir%|ssh2_readme.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
 
