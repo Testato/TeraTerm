@@ -5,7 +5,7 @@ CreateFolder=C:\Program Files\Matsuoka\einstall2\Project\ExeFile
 MajorVersion=3
 MinorVersion=9
 CreateDateTime=2004/12/07 23:52:51
-UpdateDateTime=2004/12/15 23:24:09
+UpdateDateTime=2005/01/05 21:48:55
 Generator=EINSTALL 2.0
 CreateFileType=4
 CreateFileAddVersionInfo=1
@@ -30,10 +30,10 @@ URLUpdateInfo=
 7=Å~
 
 [Software]
-SoftName=UTF-8 TeraTerm Pro
-InstallerTitle=UTF-8 TeraTerm Pro
+SoftName=UTF-8 TeraTerm Pro with TTSSH2
+InstallerTitle=UTF-8 TeraTerm Pro with TTSSH2
 MainFileName=%InstallDir%\ttermpro.exe
-Copyright=(C) Yutaka Hirata
+Copyright=Copyright (C)2004-2005 Yutaka Hirata
 Folder=%ProgramFilesDir%|teraterm
 SearchFileDir=%ProgramFilesDir%|
 LogoFileName=
@@ -148,6 +148,7 @@ InfoFileMethod=1
 36=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\ttxssh.dll|||0|0|127|||||||||||
 37=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\utf8_readme.txt|||0|0|127|||||||||||
 38=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\utf8_readme-j.txt|||0|0|127|||||||||||
+39=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\faq-j.txt|||0|0|127|||||||||||
 
 [ProgramItems]
 0=1|%InstallDir%\|copyfont.bat||0|3|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
@@ -155,4 +156,5 @@ InfoFileMethod=1
 2=1|%InstallDir%\|ssh2_readme-j.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
 3=1|%InstallDir%|utf8_readme.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
 4=1|%InstallDir%|ssh2_readme.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
+5=1|%InstallDir%|faq-j.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
 
