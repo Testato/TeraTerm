@@ -338,6 +338,10 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2005.4.?? (Ver 4.13)
+  - fixed TeraTerm version information can't be shown in version dialog at second later instance.
+  - upgraded LogMeTT to 2.2.1.
+
 2005.3.13 (Ver 4.12)
   - upgraded ttermpro.exe version information from 2.3 to 4.12.
   - fixed the multibyte problem that the cursor scrolls to upper direction when ZENKAKU(Japanese character) cross the end of line. Special thanks to Iwamoto Kouichi.
