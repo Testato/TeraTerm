@@ -39,6 +39,9 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:&quot;MSVCRT&quot;
+
+"
 				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib"
 				OutputFile=".\Debug/ttxssh.dll"
 				LinkIncremental="1"
@@ -109,6 +112,8 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:&quot;LIBCMT&quot;
+"
 				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib"
 				OutputFile=".\Release/ttxssh.dll"
 				LinkIncremental="1"
