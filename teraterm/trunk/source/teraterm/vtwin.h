@@ -83,6 +83,12 @@ protected:
 	afx_msg void OnSysKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+//<!--by AKASI
+	afx_msg LONG OnWindowPosChanging(UINT wParam, LONG lParam);
+	afx_msg LONG OnSettingChange(UINT wParam, LONG lParam);
+	afx_msg LONG OnEnterSizeMove(UINT wParam, LONG lParam);
+	afx_msg LONG  OnExitSizeMove(UINT wParam, LONG lParam);
+//-->
 	afx_msg LONG OnIMEComposition(UINT wParam, LONG lParam);
 	afx_msg LONG OnAccelCommand(UINT wParam, LONG lParam);
 	afx_msg LONG OnChangeMenu(UINT wParam, LONG lParam);

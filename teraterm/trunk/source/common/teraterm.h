@@ -10,6 +10,9 @@
 #endif /* INET6 */
 #include <windows.h>
 
+// AKASI氏によるEterm風透過ウィンドウ
+#define ALPHABLEND_TYPE2
+
 #ifdef __WATCOMC__
   #if defined(__WINDOWS__)
     #define TERATERM16

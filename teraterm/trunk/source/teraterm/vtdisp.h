@@ -8,6 +8,19 @@ extern "C" {
 #endif
 
 /* prototypes */
+//<!--by AKASI
+void BGInitialize(void);
+void BGSetupPrimary(BOOL);
+
+void BGOnSettingChange(void);
+void BGOnEnterSizeMove(void);
+void BGOnExitSizeMove(void);
+
+extern BOOL BGEnable;
+extern BOOL BGNoFrame;
+extern BOOL BGNoCopyBits;
+//-->
+
 void InitDisp();
 void EndDisp();
 void DispReset();

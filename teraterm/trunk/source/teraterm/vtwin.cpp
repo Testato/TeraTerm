@@ -69,7 +69,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 // ウィンドウ最大化ボタンを有効にする (2005.1.15 yutaka)
 #define WINDOW_MAXMIMUM_ENABLED 1
 
@@ -132,6 +131,12 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_WM_TIMER()
 	ON_WM_VSCROLL()
 	ON_MESSAGE(WM_IME_COMPOSITION,OnIMEComposition)
+//<!--by AKASI
+	ON_MESSAGE(WM_WINDOWPOSCHANGING,OnWindowPosChanging)
+	ON_MESSAGE(WM_SETTINGCHANGE,OnSettingChange)
+	ON_MESSAGE(WM_ENTERSIZEMOVE,OnEnterSizeMove)
+	ON_MESSAGE(WM_EXITSIZEMOVE ,OnExitSizeMove)
+//-->
 	ON_MESSAGE(WM_USER_ACCELCOMMAND, OnAccelCommand)
 	ON_MESSAGE(WM_USER_CHANGEMENU,OnChangeMenu)
 	ON_MESSAGE(WM_USER_CHANGETBAR,OnChangeTBar)
@@ -272,6 +277,9 @@ CVTWindow::CVTWindow()
   WNDCLASS wc;
   RECT rect;
   DWORD Style;
+#ifdef ALPHABLEND_TYPE2
+  DWORD ExStyle;
+#endif
   char Temp[MAXPATHLEN];
   int CmdShow;
   PKeyMap tempkm;
@@ -371,8 +379,15 @@ CVTWindow::CVTWindow()
   InitDisp();
 
   if (ts.HideTitle>0)
+  {
     Style = WS_VSCROLL | WS_HSCROLL |
 			WS_BORDER | WS_THICKFRAME | WS_POPUP;
+
+#ifdef ALPHABLEND_TYPE2
+     if(BGNoFrame)
+       Style &= ~(WS_BORDER | WS_THICKFRAME);
+#endif
+  }
   else
 #ifdef WINDOW_MAXMIMUM_ENABLED
     Style = WS_VSCROLL | WS_HSCROLL |
@@ -418,6 +433,17 @@ CVTWindow::CVTWindow()
   SetWindowStyle(&ts);
   // ロケールの設定
   setlocale(LC_ALL, ts.Locale);
+
+#ifdef ALPHABLEND_TYPE2
+//<!--by AKASI
+  if(BGNoFrame && ts.HideTitle > 0)
+  {
+    ExStyle  = GetWindowLong(HVTWin,GWL_EXSTYLE);
+    ExStyle &= ~WS_EX_CLIENTEDGE;
+    SetWindowLong(HVTWin,GWL_EXSTYLE,ExStyle);
+  }
+//-->
+#endif
 
 #ifdef TERATERM32
   // set the small icon
@@ -822,6 +848,11 @@ void CVTWindow::RestoreSetup()
     (*ReadIniFile)(ts.SetupFName,&ts);
   FreeTTSET();
 
+#ifdef ALPHABLEND_TYPE2
+  BGInitialize();
+  BGSetupPrimary(TRUE);
+#endif
+
   ChangeDefaultSet(&ts,NULL);
 
   ResetSetup();
@@ -908,7 +939,14 @@ LRESULT CVTWindow::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
   {
     Result = CFrameWnd::DefWindowProc(message,wParam,lParam);
     if ((Result==HTCLIENT) && AltKey())
-      Result = HTCAPTION;
+#ifdef ALPHABLEND_TYPE2
+    	if(ShiftKey())
+    		Result = HTBOTTOMRIGHT;
+	    else
+	    	Result = HTCAPTION;
+#else
+		Result = HTCAPTION;
+#endif
     return Result;
   }
 
@@ -1329,6 +1367,12 @@ void CVTWindow::OnPaint()
   HDC PaintDC;
   int Xs, Ys, Xe, Ye;
 
+#ifdef ALPHABLEND_TYPE2
+//<!--by AKASI
+  BGSetupPrimary(FALSE);
+//-->
+#endif
+
   cdc = BeginPaint(&ps);
   PaintDC = cdc->GetSafeHdc();
 
@@ -1561,6 +1605,42 @@ void CVTWindow::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
   DispVScroll(Func,nPos);
 }
 
+//<!--by AKASI
+LONG CVTWindow::OnWindowPosChanging(UINT wParam, LONG lParam)
+{
+#ifdef ALPHABLEND_TYPE2
+  if(BGEnable && BGNoCopyBits)
+    ((WINDOWPOS*)lParam)->flags |= SWP_NOCOPYBITS;
+#endif
+
+  return CFrameWnd::DefWindowProc(WM_WINDOWPOSCHANGING,wParam,lParam);
+}
+
+LONG CVTWindow::OnSettingChange(UINT wParam, LONG lParam)
+{
+#ifdef ALPHABLEND_TYPE2
+  BGOnSettingChange();
+#endif
+  return CFrameWnd::DefWindowProc(WM_SETTINGCHANGE,wParam,lParam);
+}
+
+LONG CVTWindow::OnEnterSizeMove(UINT wParam, LONG lParam)
+{
+#ifdef ALPHABLEND_TYPE2
+  BGOnEnterSizeMove();
+#endif
+  return CFrameWnd::DefWindowProc(WM_ENTERSIZEMOVE,wParam,lParam);
+}
+
+LONG CVTWindow::OnExitSizeMove(UINT wParam, LONG lParam)
+{
+#ifdef ALPHABLEND_TYPE2
+  BGOnExitSizeMove();
+#endif
+  return CFrameWnd::DefWindowProc(WM_EXITSIZEMOVE,wParam,lParam);
+}
+//-->
+
 LONG CVTWindow::OnIMEComposition(UINT wParam, LONG lParam)
 {
 #ifdef TERATERM32
@@ -1757,10 +1837,11 @@ LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
 LONG CVTWindow::OnChangeTBar(UINT wParam, LONG lParam)
 {
   BOOL TBar;
-  DWORD Style;
+  DWORD Style,ExStyle;
   HMENU SysMenu;
 
   Style = GetWindowLong (HVTWin, GWL_STYLE);
+   ExStyle = GetWindowLong (HVTWin, GWL_EXSTYLE);
   TBar = ((Style & WS_SYSMENU)!=0);
   if (TBar == (ts.HideTitle==0)) return 0;
 
@@ -1773,15 +1854,33 @@ LONG CVTWindow::OnChangeTBar(UINT wParam, LONG lParam)
 	    WS_MINIMIZEBOX;
 #else
   if (ts.HideTitle>0)
+  {
     Style = Style & ~(WS_SYSMENU | WS_CAPTION |
 	WS_MINIMIZEBOX | WS_MAXIMIZEBOX) | WS_BORDER | WS_POPUP;
-  else
+
+#ifdef ALPHABLEND_TYPE2
+     if(BGNoFrame)
+     {
+       Style   &= ~(WS_THICKFRAME | WS_BORDER);
+       ExStyle &= ~WS_EX_CLIENTEDGE;
+     }else{
+       ExStyle |=  WS_EX_CLIENTEDGE;
+     }
+#endif
+  }
+  else {
     Style = Style & ~WS_POPUP | WS_SYSMENU | WS_CAPTION |
-	    WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
+	    WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_THICKFRAME | WS_BORDER;
+
+       ExStyle |=  WS_EX_CLIENTEDGE;
+  }
 #endif
 
   AdjustSize = TRUE;
   SetWindowLong(HVTWin, GWL_STYLE, Style);
+#ifdef ALPHABLEND_TYPE2
+  SetWindowLong(HVTWin, GWL_EXSTYLE, ExStyle);
+#endif
   ::SetWindowPos(HVTWin, NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE |
 		 SWP_NOZORDER | SWP_FRAMECHANGED);
   ::ShowWindow(HVTWin, SW_SHOW);
@@ -3163,6 +3262,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2005/02/02 12:54:39  yutakakn
+ * ログ採取中に File -> log がグレイ表示にならない問題への対処。
+ *
  * Revision 1.8  2005/01/29 16:13:42  yutakakn
  * "Additional settings"の"Viewlog Editor"で、OKボタン押下時にテキストボックスから
  * コピーしていなかったバグを修正。
