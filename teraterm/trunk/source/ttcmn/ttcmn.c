@@ -42,6 +42,20 @@ static PMap  pm;
   #define TEKCLASSNAME "TEKWin"
 #endif
 
+
+void PASCAL CopyShmemToTTSet(PTTSet ts)
+{
+	// 現在の設定を共有メモリへコピーしておく
+	memcpy(ts, &pm->ts, sizeof(TTTSet));
+}
+
+void PASCAL CopyTTSetToShmem(PTTSet ts)
+{
+	// 現在の設定を共有メモリへコピーしておく
+	memcpy(&pm->ts, ts, sizeof(TTTSet));
+}
+
+
 BOOL PASCAL FAR StartTeraTerm(PTTSet ts)
 {
   char Temp[MAXPATHLEN];
@@ -1394,3 +1408,7 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 }
 #endif
 
+
+/*
+ * $Log: not supported by cvs2svn $
+ */

@@ -2254,7 +2254,11 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
     else if ( strnicmp(Temp,"/6", 2)==0 )
       ts->ProtocolFamily = AF_INET6;
 #endif
-    else if ( (Temp[0]!='/') && (strlen(Temp)>0) )
+	else if (strnicmp(Temp, "/DUPLICATE", 9) == 0 ) { // duplicate session (2004.12.7. yutaka)
+		ts->DuplicateSession = 1;
+
+	} 
+	else if ( (Temp[0]!='/') && (strlen(Temp)>0) )
     {
       if (JustAfterHost &&
 	  (sscanf(Temp,"%d",&c)==1))
@@ -2356,3 +2360,7 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 }
 #endif
 
+
+/*
+ * $Log: not supported by cvs2svn $
+ */

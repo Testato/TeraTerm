@@ -9,6 +9,8 @@
 extern "C" {
 #endif
 
+void PASCAL CopyShmemToTTSet(PTTSet ts);
+void PASCAL CopyTTSetToShmem(PTTSet ts);
 BOOL FAR PASCAL StartTeraTerm(PTTSet ts);
 void FAR PASCAL ChangeDefaultSet(PTTSet ts, PKeyMap km);
 void FAR PASCAL GetDefaultSet(PTTSet ts);

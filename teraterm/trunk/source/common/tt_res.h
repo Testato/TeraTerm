@@ -107,6 +107,9 @@
 #define ID_FILE_COMMENTTOLOG            52004
 #define ID_EDIT_EXTERNALSETUP           52005
 #define ID_FILE_TERATERMMENU            52006
+#define ID_FILE_LOGMEIN                 52010
+#define ID_FILE_DUPLICATESESSION        52013
+#define ID_SETUP_ADDITIONALSETTINGS     52016
 
 // Next default values for new objects
 // 
@@ -114,7 +117,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        112
-#define _APS_NEXT_COMMAND_VALUE         52007
+#define _APS_NEXT_COMMAND_VALUE         52017
 #define _APS_NEXT_CONTROL_VALUE         1017
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

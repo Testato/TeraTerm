@@ -314,6 +314,7 @@ struct tttset {
   char Locale[80];
 #define DEFAULT_CODEPAGE 932
   int CodePage;
+  int DuplicateSession;
 };
 
 typedef struct tttset TTTSet, *PTTSet;

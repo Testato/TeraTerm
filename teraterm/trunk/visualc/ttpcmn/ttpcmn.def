@@ -28,3 +28,6 @@ EXPORTS
   RussConv @33
   RussConvStr @34
   ConvertUnicode @35
+  CopyTTSetToShmem @36
+  CopyShmemToTTSet @37
+  

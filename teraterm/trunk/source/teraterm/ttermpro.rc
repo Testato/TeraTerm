@@ -63,7 +63,7 @@ END
 
 IDD_EXTERNAL_SETUP DIALOGEX 0, 0, 295, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "External Setup"
+CAPTION "Additional settings"
 FONT 10, "System", 400, 0, 0x80
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,238,7,50,14
@@ -261,8 +261,11 @@ BEGIN
     POPUP "&File"
     BEGIN
         MENUITEM "&New connection...\tAlt+N",   ID_FILE_NEWCONNECTION
+        MENUITEM "&Duplicate session\tAlt+D",   ID_FILE_DUPLICATESESSION
+        MENUITEM SEPARATOR
         MENUITEM "Cy&gwin connection\tAlt+G",   ID_FILE_CYGWINCONNECTION
         MENUITEM "TeraTerm &Menu\tAlt+M",       ID_FILE_TERATERMMENU
+        MENUITEM "&LogMeIn\tAlt+L",             ID_FILE_LOGMEIN
         MENUITEM SEPARATOR
         MENUITEM "&Log...",                     ID_FILE_LOG
         MENUITEM "Comment to Log...",           ID_FILE_COMMENTTOLOG
@@ -316,7 +319,6 @@ BEGIN
         MENUITEM "Clear &buffer",               ID_EDIT_CLEARBUFFER
         MENUITEM SEPARATOR
         MENUITEM "Select &all",                 ID_EDIT_SELECTALL
-        MENUITEM "&External setup",             ID_EDIT_EXTERNALSETUP
     END
     POPUP "&Setup"
     BEGIN
@@ -327,6 +329,7 @@ BEGIN
         MENUITEM "Serial &port...",             ID_SETUP_SERIALPORT
         MENUITEM "T&CP/IP...",                  ID_SETUP_TCPIP
         MENUITEM "&General...",                 ID_SETUP_GENERAL
+        MENUITEM "Additional settings",         ID_SETUP_ADDITIONALSETTINGS
         MENUITEM SEPARATOR
         MENUITEM "&Save setup...",              ID_SETUP_SAVE
         MENUITEM "&Restore setup...",           ID_SETUP_RESTORE
@@ -404,7 +407,9 @@ BEGIN
     "P",            ID_ACC_PRINT,           VIRTKEY, ALT, NOINVERT
     "B",            ID_ACC_SENDBREAK,       VIRTKEY, ALT, NOINVERT
     "G",            ID_FILE_CYGWINCONNECTION, VIRTKEY, ALT, NOINVERT
+    "L",            ID_FILE_LOGMEIN,        VIRTKEY, ALT, NOINVERT
     "M",            ID_FILE_TERATERMMENU,   VIRTKEY, ALT, NOINVERT
+    "D",            ID_FILE_DUPLICATESESSION, VIRTKEY, ALT, NOINVERT
 END
 
 #endif    // âpåÍ (ïƒçë) resources
