@@ -80,6 +80,7 @@
 
   e-mail : yutakakn@mail.goo.ne.jp
   URL    : http://hp.vector.co.jp/authors/VA013320/
+  CVS    : http://sourceforge.jp/projects/ttssh2/
   TeraTerm Pro: http://hp.vector.co.jp/authors/VA002416/
   IPv6版TeraTerm Pro: http://win6.jp/TeraTerm/index.html
   TTSSH original:http://www.zip.com.au/~roca/ttssh.html
@@ -93,6 +94,9 @@
 
 
 ■改版履歴
+
+2004.12.11 (Ver 1.01)
+  ・SSHハートビート（キープアライブ）機能を追加した。ハートビート間隔は、 teraterm.ini ファイルのTTSSHセクションの"HeartBeat"エントリで設定可能（デフォルトは60秒）。
 
 2004.12.8 (Ver 1.00)
   ・SSH1/SSH2自動ログインをサポート（password認証のみ）。/auth, /username, /passwdオプションを追加。

@@ -155,6 +155,16 @@ CygwinDirectory = c:\cygwin
   introduced by the UTF-8 package.
 
 
+* line buffer
+  If you configurate 10000 lines over of TeraTerm line buffer, you need to 
+  setup MaxBuffSize entry in the 'teraterm.ini' file. See example of this value below.
+
+------------------------------------------------------------------------------------
+; Max scroll buffer size
+MaxBuffSize=500000
+------------------------------------------------------------------------------------
+
+
 * Availability of SSH
   SSH(Secure SHell) version 1 & 2 are supported when using the SSH2 compatible TTSSH version.
 
@@ -225,9 +235,16 @@ CygwinDirectory = c:\cygwin
 
 * Limitations of current release
   - UTF-8 version is only Japanese characters now.
+  - At "Duplicate session" on SSH2 connected communication, TeraTerm always try to 
+    connect the server with SSH2 protocol.
+  - TeraTerm may crash by a cause of the application segmentation fault when push 
+    ESC key at "SECURITY WARNING" dialog with SSH1 protocol.
 
 
 * History
+
+2004.12.11 (Ver 2.07a)
+  - upgraded TTSSH version supporting SSH2 to 1.01
 
 2004.12.8 (Ver 2.07)
   - renamed "External setup" "Additional settings and removed the dialog to "Setup" menu
@@ -237,6 +254,7 @@ CygwinDirectory = c:\cygwin
   - extended the max line of scroll buffer to 400000 line
   - added LogMeIn 1.21. It is thankful to Boris Maisuradze.
   - added TeraTerm Menu 0.94r2(+SSH2 support 1.00). It is thankful to Shinpei Hayakawa.
+  - upgraded TTSSH version supporting SSH2 to 1.00(RTM)
   - in addition, fine bug fix
 
 2004.11.6 (Ver 2.06)
