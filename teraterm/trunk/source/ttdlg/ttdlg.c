@@ -336,7 +336,10 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	ShowDlgItem(Dialog,IDC_WINSCROLL1,IDC_WINSCROLL3);
 	SetRB(Dialog,ts->EnableScrollBuff,IDC_WINSCROLL1,IDC_WINSCROLL1);
 	SetDlgItemInt(Dialog,IDC_WINSCROLL2,ts->ScrollBuffSize,FALSE);
-	SendDlgItemMessage(Dialog, IDC_WINSCROLL2, EM_LIMITTEXT,5, 0);
+
+	// “ü—ÍÅ‘åŒ…”‚ð 5 ‚©‚ç 8 ‚ÖŠg’£ (2004.11.28 yutaka)
+	SendDlgItemMessage(Dialog, IDC_WINSCROLL2, EM_LIMITTEXT, 8, 0);
+
 	if ( ts->EnableScrollBuff==0 )
 	  DisableDlgItem(Dialog,IDC_WINSCROLL2,IDC_WINSCROLL3);
 	for (i = 0 ; i <= 1 ; i++)
@@ -1688,3 +1691,7 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
   return (1);
 }
 #endif
+
+/*
+ * $Log: not supported by cvs2svn $ 
+ */
