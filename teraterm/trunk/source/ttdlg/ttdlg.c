@@ -1261,7 +1261,8 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	switch (Message) {
 	case WM_INITDIALOG:
 		// TeraTermのバージョンを設定する (2005.2.28 yutaka)
-		get_file_version(__argv[0], &a, &b, &c, &d);
+		// __argv[0]では WinExec() したプロセスから参照できないようなので削除。(2005.3.14 yutaka)
+		get_file_version("ttermpro.exe", &a, &b, &c, &d);
 		_snprintf(buf, sizeof(buf), "Version %d.%d", a, b);
 		SendMessage(GetDlgItem(Dialog, IDC_TT_VERSION), WM_SETTEXT, 0, (LPARAM)buf);
 		return TRUE;
@@ -1762,6 +1763,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2005/02/28 14:30:35  yutakakn
+ * バージョンダイアログに表示するTeraTermのバージョンを、ttermpro.exeの
+ * バージョン情報から取得するようにした。
+ *
  * Revision 1.2  2004/11/28 13:14:51  yutakakn
  * スクロールバッファの入力桁数を5から8へ拡張した。
  * 
