@@ -761,7 +761,8 @@ BOOL MakeTTL(char *TTLName, JobInfo *jobInfo)
 		::WriteFile(hFile, buf, ::lstrlen(buf), &dwWrite, NULL);
 	}
 
-	::wsprintf(buf, "connect '%s'\r\n", jobInfo->szHostName);
+	// telnetポート番号を付加する (2004.12.3 yutaka)
+	::wsprintf(buf, "connect '%s:23'\r\n", jobInfo->szHostName);
 	::WriteFile(hFile, buf, ::lstrlen(buf), &dwWrite, NULL);
 
 	if (jobInfo->bUsername == TRUE) {
@@ -862,6 +863,22 @@ BOOL ConnectHost(HWND hWnd, UINT idItem, char *szJobName)
 
 	if (::lstrlen(jobInfo.szOption) != 0)
 		::wsprintf(szArgment, "%s %s", szArgment, jobInfo.szOption);
+
+	// TTSSHが有効の場合は、自動ログインのためのコマンドラインを付加する。(2004.12.3 yutaka)
+	if (jobInfo.dwMode == MODE_AUTOLOGIN) {
+		if (jobInfo.bTtssh == TRUE) {
+			// 現在、SSH2のpassword認証のみサポート。
+			_snprintf(szArgment, sizeof(szArgment), "%s:22 /ssh /auth=password /user=%s /passwd=%s", 
+				jobInfo.szHostName,
+				jobInfo.szUsername,
+				jobInfo.szPassword
+				);
+
+		} else {
+			// SSHを使わない場合、/nossh オプションを付けておく。
+			::wsprintf(szArgment, "%s /nossh", szArgment);
+		}
+	}
 
 	::lstrcpy(szDirectory, jobInfo.szTeraTerm);
 	if ((::GetFileAttributes(jobInfo.szTeraTerm) & FILE_ATTRIBUTE_DIRECTORY) == 0)
@@ -1270,7 +1287,7 @@ BOOL SaveLoginHostInformation(HWND hWnd)
 BOOL LoadLoginHostInformation(HWND hWnd)
 {
 	long	index;
-	char	*pt;
+//	char	*pt;
 	char	szName[MAX_PATH];
 
 	index = ::SendDlgItemMessage(hWnd, LIST_HOST, LB_GETCURSEL, 0, 0);
@@ -1329,9 +1346,13 @@ BOOL LoadLoginHostInformation(HWND hWnd)
 	::CheckDlgButton(hWnd, CHECK_PASSWORD, g_JobInfo.bPassword);
 
 	::CheckDlgButton(hWnd, CHECK_TTSSH, g_JobInfo.bTtssh);
+
+	// ttssh.exeは廃止したので下記チェックは削除する。(2004.12.3 yutaka)
+#if 0
 	if ((pt = lstrstri(g_JobInfo.szTeraTerm, TTSSH)) != NULL)
 		if (::lstrcmpi(pt, TTSSH) == 0)
 			::CheckDlgButton(hWnd, CHECK_TTSSH, TRUE);
+#endif
 
 	::CheckDlgButton(hWnd, CHECK_STARTUP, g_JobInfo.bStartup);
 
@@ -1356,7 +1377,8 @@ BOOL DeleteLoginHostInformation(HWND hWnd)
 	char	szSubKey[MAX_PATH];
 
 	if ((index = ::SendDlgItemMessage(hWnd, LIST_HOST, LB_GETCURSEL, 0, 0)) == LB_ERR) {
-		::MessageBox(hWnd, "削除する登録を選択して下さい。", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
+//		::MessageBox(hWnd, "削除する登録を選択して下さい。", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
+		::MessageBox(hWnd, "Select deleted registry name", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
 		return FALSE;
 	}
 
@@ -1967,4 +1989,7 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR nCmdLine, int nCmdShow)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/12/02 14:01:27  yutakakn
+ * メニュー文字列の英語化
+ *
  */

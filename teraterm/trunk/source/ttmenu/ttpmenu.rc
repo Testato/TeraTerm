@@ -129,8 +129,8 @@ BEGIN
     CONTROL         "use ttssh",CHECK_TTSSH,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,220,200,56,16
     GROUPBOX        "Launch Pattern",IDC_STATIC,164,40,116,140
-    CONTROL         "execute",CHECK_STARTUP,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,220,184,56,16
+    CONTROL         "kick at starting",CHECK_STARTUP,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,220,184,56,16
 END
 
 DIALOG_ETC DIALOGEX 0, 0, 214, 175
