@@ -1407,8 +1407,14 @@ void CVTWindow::OnRButtonDown(UINT nFlags, CPoint point)
 
 void CVTWindow::OnRButtonUp(UINT nFlags, CPoint point)
 {
-  if (! RButton) return;
-  ButtonUp(TRUE);
+	if (! RButton) return;
+
+	// 右ボタン押下でのペーストを禁止する (2005.3.16 yutaka)
+	if (ts.DisablePasteMouseRButton) {
+		ButtonUp(FALSE);
+	} else {
+		ButtonUp(TRUE);
+	}
 }
 
 void CVTWindow::OnSetFocus(CWnd* pOldWnd)
@@ -2819,6 +2825,14 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.ViewlogEditor);
 #endif
 
+			// (8)DisablePasteMouseRButton
+			hWnd = GetDlgItem(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON);
+			if (ts.DisablePasteMouseRButton == TRUE) {
+				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
+			} else {
+				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
+			}
+
 			// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
 			SetFocus(GetDlgItem(hDlgWnd, IDC_LINECOPY));
 
@@ -2931,6 +2945,14 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 					hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.ViewlogEditor), (LPARAM)ts.ViewlogEditor);
 #endif
+
+					// (8)
+					hWnd = GetDlgItem(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON);
+					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
+						ts.DisablePasteMouseRButton = TRUE;
+					} else {
+						ts.DisablePasteMouseRButton = FALSE;
+					}
 
                     EndDialog(hDlgWnd, IDOK);
 					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
@@ -3556,6 +3578,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2005/02/22 11:46:46  yutakakn
+ * Additional settingsをtab control化した
+ *
  * Revision 1.11  2005/02/21 14:58:00  yutakakn
  * LogMeIn -> LogMeTT へリネームにより、起動実行ファイル名も変更した。
  *

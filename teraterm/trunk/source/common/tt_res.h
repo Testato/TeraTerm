@@ -40,8 +40,9 @@
 #define IDC_BUTTON1                     1025
 #define IDC_VIEWLOG_PATH                1025
 #define IDC_SETUP_TAB                   1028
-#define IDC_CHECK1                      1029
 #define IDC_ETERM_LOOKFEEL              1030
+#define IDC_CHECK1                      1032
+#define IDC_DISABLE_PASTE_RBUTTON       1032
 #define IDD_PRNABORTDLG                 2100
 #define IDD_FILETRANSDLG                2200
 #define IDC_TRANSFNAME                  2201
@@ -138,7 +139,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        118
 #define _APS_NEXT_COMMAND_VALUE         52019
-#define _APS_NEXT_CONTROL_VALUE         1031
+#define _APS_NEXT_CONTROL_VALUE         1033
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -938,6 +938,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
     GetOnOff(Section,"EnableContinuedLineCopy",FName,FALSE);
 #endif /* NO_COPYLINE_FIX */
 
+  ts->DisablePasteMouseRButton =
+    GetOnOff(Section,"DisablePasteMouseRButton",FName,FALSE);
+
   // mouse cursor 
   GetPrivateProfileString(Section,"MouseCursor","IBEAM",
 			  Temp,sizeof(Temp),FName);
@@ -1093,6 +1096,7 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
   WritePrivateProfileString(Section,"KanjiOut",Temp,FName);
 
   // new configuration
+  WriteOnOff(Section, "DisablePasteMouseRButton", FName, ts->DisablePasteMouseRButton);
   WriteOnOff(Section, "EnableContinuedLineCopy", FName, ts->EnableContinuedLineCopy);
   WritePrivateProfileString(Section,"MouseCursor", ts->MouseCursorName, FName);
   _snprintf(Temp, sizeof(Temp), "%d", ts->AlphaBlend);
@@ -2349,6 +2353,11 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2005/01/29 05:27:35  yutakakn
+ * "View Log"メニューの追加。
+ * "Additional settings"にView Log Editorボックスを追加。
+ * teraterm.iniに"ViewlogEditor"エントリを追加。
+ *
  * Revision 1.3  2005/01/08 15:20:15  yutakakn
  * マルチディスプレイ環境において、ウィンドウのリサイズを行うとプライマリディスプレイへ
  * 戻ってしまう現象への対処。

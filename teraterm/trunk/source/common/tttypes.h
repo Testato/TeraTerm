@@ -317,6 +317,7 @@ struct tttset {
   int DuplicateSession;
   char ViewlogEditor[MAX_PATH];
   WORD LogTypePlainText;
+  int DisablePasteMouseRButton;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
