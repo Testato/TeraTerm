@@ -315,6 +315,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2005.4.?? (Ver 4.14)
+  - added clickable URL mechanism that mouse pointer overs on URL string. Special thanks to Kazuaki Ishizaki. And also added URLColor, EnableClickableUrl entry in teraterm.ini file.
+
 2005.3.31 (Ver 4.13)
   - fixed TeraTerm version information can't be shown in version dialog at second later instance.
   - added the configuration of disabling paste string by clicking mouse right button in teraterm.ini(DisablePasteMouseRButton) and Additional settings dialog.

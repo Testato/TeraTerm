@@ -303,6 +303,9 @@ MaxBuffSize=500000
 
 ■改版履歴
 
+2005.4.?? (Ver 4.14)
+  ・URL文字列をダブルクリックするとブラウザが起動するしかけを追加した。石崎氏に感謝します。teraterm.iniにURLColor, EnableClickableUrlを追加。
+
 2005.3.31 (Ver 4.13)
   ・2つめ以降のTeraTermプロセスにおいて、バージョン情報が正しく取得されない問題へ対処した。
   ・マウスの右ボタン押下でのペーストを禁止する設定を teraterm.ini(DisablePasteMouseRButton) および Additional settings に追加した。
