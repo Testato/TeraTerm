@@ -66,7 +66,12 @@ void ChangeTitle()
 			// COM5 overに対応
 			char str[10];
 			_snprintf(str, sizeof(str), "COM%d", ts.ComPort);
-			strncat(TempTitle, str, i); 
+
+			if (ts.TitleFormat & 8) {
+				_snprintf(TempTitle, sizeof(TempTitle), "%s - %s", str, ts.Title);
+			} else {
+				strncat(TempTitle, str, i); 
+			}
 
 #else
 			switch (ts.ComPort) {
@@ -168,4 +173,9 @@ void OpenHelp(HWND HWin, UINT Command, DWORD Data)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2005/02/19 07:02:59  yutakakn
+ * TitleFormatに 13 を追加。
+ * COM5以上の表示に対応した。
+ * キャプションバッファの拡張。
+ *
  */
