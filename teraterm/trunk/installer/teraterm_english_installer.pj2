@@ -5,9 +5,9 @@ CreateFolder=C:\Program Files\Matsuoka\einstall2\Project\ExeFile
 MajorVersion=3
 MinorVersion=9
 CreateDateTime=2004/12/07 23:52:51
-UpdateDateTime=2004/12/08 22:38:13
+UpdateDateTime=2004/12/11 17:36:25
 Generator=EINSTALL 2.0
-CreateFileType=2
+CreateFileType=4
 CreateFileAddVersionInfo=0
 CreateFileNameOption=0
 CreateFolderBeforeBackup=1
@@ -26,7 +26,7 @@ URLUpdateInfo=
 3=Å~
 4=
 5=
-6=
+6=Å~
 7=Å~
 
 [Software]
@@ -59,6 +59,10 @@ InstallMethod=0
 EnableSilentUnInstall=0
 Options=0
 FileCopyOptions=0
+EnableUninstallSetting=1
+EnableUnDeleteFileSetting=0
+EnableDeleteFileSetting=0
+EnableDeleteRegistrySetting=0
 
 [ShortCutSetting]
 GroupName=UTF-8 TeraTerm Pro
@@ -93,9 +97,20 @@ User=0
 EndFileRenOperation=0
 FileUseCheck=0
 
+[ShortCutItems]
+0=UTF-8 TeraTerm Pro|%InstallDir%\ttermpro.exe||||0||0|35|0|||||||||||
+1=TeraTerm Menu|%InstallDir%\ttpmenu.exe||||0||0|8|0|||||||||||
+2=LogMeIn|%InstallDir%\LogMeIn.exe||||0||0|8|0|||||||||||
+
+[UnInstallSetting]
+PersonalSettingDeleteConfirm=0
+SystemFileDelete=0
+SystemFileDeleteMessage=1
+InfoFileMethod=1
+
 [Files]
 0=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\copyfont.bat|||0|0|127|||||||||||
-1=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\cygterm.cfg|||0|0|127|||||||||||
+1=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\cygterm.cfg|||16|0|127|||||||||||
 2=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\cygterm.exe|||0|0|127|||||||||||
 3=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\delpassw.ttl|||0|0|127|||||||||||
 4=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\dialup.ttl|||0|0|127|||||||||||
@@ -117,7 +132,7 @@ FileUseCheck=0
 20=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\ssh2_readme.txt|||0|0|127|||||||||||
 21=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\ssh2_readme-j.txt|||0|0|127|||||||||||
 22=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\ssh2login.ttl|||0|0|127|||||||||||
-23=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\TERATERM.INI|||0|0|127|||||||||||
+23=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\TERATERM.INI|||16|0|127|||||||||||
 24=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\TSPECIAL1.TTF|||0|0|127|||||||||||
 25=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\ttermp.hlp|||0|0|127|||||||||||
 26=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\ttermpj.hlp|||0|0|127|||||||||||
@@ -134,13 +149,8 @@ FileUseCheck=0
 37=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\utf8_readme.txt|||0|0|127|||||||||||
 38=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\utf8_readme-j.txt|||0|0|127|||||||||||
 
-[ShortCutItems]
-0=UTF-8 TeraTerm Pro|%InstallDir%\ttermpro.exe||||0||0|35|0|||||||||||
-1=TeraTerm Menu|%InstallDir%\ttpmenu.exe||||0||0|8|0|||||||||||
-2=LogMeIn|%InstallDir%\LogMeIn.exe||||0||0|8|0|||||||||||
-
 [ProgramItems]
-0=1|%InstallDir%|copyfont.bat||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
-1=1|%InstallDir%|utf8_readme.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
-2=1|%InstallDir%|ssh2_readme.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
+0=1|%InstallDir%\|copyfont.bat||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
+1=1|%InstallDir%\|utf8_readme.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
+2=1|%InstallDir%\|ssh2_readme.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
 
