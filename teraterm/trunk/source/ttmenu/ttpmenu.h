@@ -77,6 +77,7 @@
 #define		KEY_TTSSH				"TeraTerm Mode"
 #define		KEY_LOG					"Log"
 #define		KEY_STARTUP				"Startup"
+#define		KEY_KEYFILE				"PrivateKeyFile"  // add (2005.1.27 yutaka)
 
 #define		STR_ICONMODE			"showing large icon"
 #define		STR_LEFTBUTTONPOPUP		"showing list by left-click"
@@ -107,6 +108,8 @@ struct JobInfo {
 	char	szLog[MAX_PATH];			// ログファイル名（自動ログインのみ）
 	char	szLoginPrompt[MAX_PATH];	// ログインプロンプト（自動ログインのみ）
 	char	szPasswdPrompt[MAX_PATH];	// パスワードプロンプト（自動ログインのみ）
+
+	char    PrivateKeyFile[MAX_PATH];   // 秘密鍵ファイル (2005.1.27 yutaka)
 };
 
 // 表示設定構造体

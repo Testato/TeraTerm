@@ -1,5 +1,5 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by ttpmenu.rc
 //
 #define BUTTON_DEFAULT                  3
@@ -50,6 +50,10 @@
 #define CHECK_STARTUP                   1038
 #define EDIT_LOG                        1039
 #define BUTTON_LOG                      1040
+#define IDC_KEYFILE_PATH                1040
+#define IDC_KEYFILE_LABEL               1041
+#define IDC_BUTTON1                     1042
+#define IDC_KEYFILE_BUTTON              1042
 #define ID_MENUITEM40013                40013
 #define ID_MENUITEM40014                40014
 #define ID_MENUITEM40015                40015
@@ -75,7 +79,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        116
 #define _APS_NEXT_COMMAND_VALUE         40043
-#define _APS_NEXT_CONTROL_VALUE         1040
+#define _APS_NEXT_CONTROL_VALUE         1043
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

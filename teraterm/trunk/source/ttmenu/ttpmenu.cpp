@@ -797,6 +797,39 @@ BOOL MakeTTL(char *TTLName, JobInfo *jobInfo)
 	return TRUE;
 }
 
+
+// 空白を @ に置き換える。@自身は@@にする。(2005.1.28 yutaka)
+static void replace_blank_to_mark(char *str, char *dst, int dst_len)
+{
+	int i, len, n;
+
+	len = strlen(str);
+	n = 0;
+	for (i = 0 ; i < len ; i++) {
+		if (str[i] == '@')
+			n++;
+	}
+	if (dst_len < (len + 2*n)) 
+		return;
+
+	for (i = 0 ; i < len ; i++) {
+		if (str[i] == '@') {
+			*dst++ = '@';
+			*dst++ = '@';
+
+		} else if (str[i] == ' ') {
+			*dst++ = '@';
+
+		} else {
+			*dst++ = str[i];
+
+		}
+	}
+	*dst = '\0';
+
+}
+
+
 /* ==========================================================================
 	Function Name	: (BOOL) ConnectHost()
 	Outline			: 自動ログインまたはアプリケーションの実行をする。
@@ -872,19 +905,34 @@ BOOL ConnectHost(HWND hWnd, UINT idItem, char *szJobName)
 
 	// TTSSHが有効の場合は、自動ログインのためのコマンドラインを付加する。(2004.12.3 yutaka)
 	// ユーザのパラメータを指定できるようにする (2005.1.25 yutaka)
+	// 公開鍵認証をサポート (2005.1.27 yutaka)
 	if (jobInfo.dwMode == MODE_AUTOLOGIN) {
 		if (jobInfo.bTtssh == TRUE) {
 			char tmp[MAX_PATH];
+			char passwd[MAX_PATH], keyfile[MAX_PATH];
 
 			strcpy(tmp, szArgment);
+			replace_blank_to_mark(jobInfo.szPassword, passwd, sizeof(passwd));
+			replace_blank_to_mark(jobInfo.PrivateKeyFile, keyfile, sizeof(keyfile));
 
-			// 現在、SSH2のpassword認証のみサポート。
-			_snprintf(szArgment, sizeof(szArgment), "%s:22 /ssh /auth=password /user=%s /passwd=%s %s", 
-				jobInfo.szHostName,
-				jobInfo.szUsername,
-				jobInfo.szPassword,
-				tmp
-				);
+			if (jobInfo.PrivateKeyFile[0] == NULL) { // password authentication
+				_snprintf(szArgment, sizeof(szArgment), "%s:22 /ssh /auth=password /user=%s /passwd=%s %s", 
+					jobInfo.szHostName,
+					jobInfo.szUsername,
+					passwd,
+					tmp
+					);
+
+			} else { // publickey
+				_snprintf(szArgment, sizeof(szArgment), "%s:22 /ssh /auth=publickey /user=%s /passwd=%s /keyfile=%s %s", 
+					jobInfo.szHostName,
+					jobInfo.szUsername,
+					passwd,
+					keyfile,
+					tmp
+					);
+
+			}
 
 		} else {
 			// SSHを使わない場合、/nossh オプションを付けておく。
@@ -1108,6 +1156,9 @@ BOOL RegSaveLoginHostInformation(JobInfo *jobInfo)
 
 	RegSetStr(hKey, KEY_LOG, jobInfo->szLog);
 
+	// SSH2
+	RegSetStr(hKey, KEY_KEYFILE, jobInfo->PrivateKeyFile);
+
 	RegClose(hKey);
 
 	return TRUE;
@@ -1162,6 +1213,10 @@ BOOL RegLoadLoginHostInformation(char *szName, JobInfo *job_Info)
 	RegGetDword(hKey, KEY_STARTUP, (LPDWORD) &(jobInfo.bStartup));
 
 	RegGetStr(hKey, KEY_LOG, jobInfo.szLog, MAX_PATH);
+
+	// SSH2
+	ZeroMemory(jobInfo.PrivateKeyFile, sizeof(jobInfo.PrivateKeyFile));
+	RegGetStr(hKey, KEY_KEYFILE, jobInfo.PrivateKeyFile, MAX_PATH);
 
 	RegClose(hKey);
 
@@ -1268,6 +1323,12 @@ BOOL SaveLoginHostInformation(HWND hWnd)
 			return FALSE;
 		}
 	}
+
+	// 秘密鍵ファイルの追加 (2005.1.28 yutaka)
+	if (::GetDlgItemText(hWnd, IDC_KEYFILE_PATH, g_JobInfo.PrivateKeyFile, MAX_PATH) == 0) {
+		ZeroMemory(g_JobInfo.PrivateKeyFile, sizeof(g_JobInfo.PrivateKeyFile));
+	}
+
 	if (RegSaveLoginHostInformation(&g_JobInfo) == FALSE) {
 		ErrorMessage(hWnd, "レジストリへの保存に失敗しました。\r\n");
 		return FALSE;
@@ -1360,6 +1421,18 @@ BOOL LoadLoginHostInformation(HWND hWnd)
 
 	::CheckDlgButton(hWnd, CHECK_TTSSH, g_JobInfo.bTtssh);
 
+	// 秘密鍵ファイルの追加 (2005.1.28 yutaka)
+	::SetDlgItemText(hWnd, IDC_KEYFILE_PATH, g_JobInfo.PrivateKeyFile);
+	if (g_JobInfo.bTtssh == TRUE) {
+		EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), TRUE);
+		EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), TRUE);
+
+	} else {
+		EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), FALSE);
+		EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), FALSE);
+
+	}
+
 	// ttssh.exeは廃止したので下記チェックは削除する。(2004.12.3 yutaka)
 #if 0
 	if ((pt = lstrstri(g_JobInfo.szTeraTerm, TTSSH)) != NULL)
@@ -1427,6 +1500,26 @@ BOOL DeleteLoginHostInformation(HWND hWnd)
 BOOL ManageWMCommand_Config(HWND hWnd, WPARAM wParam)
 {
 	char	*pt;
+	int ret = 0;
+
+	// 秘密鍵ファイルのコントロール (2005.1.28 yutaka)
+	switch(wParam) {
+	case CHECK_TTSSH | (BN_CLICKED << 16) :
+		ret = SendMessage(GetDlgItem(hWnd, CHECK_TTSSH), BM_GETCHECK, 0, 0);
+		if (ret & BST_CHECKED) {
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), TRUE);
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), TRUE);
+
+		} else {
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), FALSE);
+
+		}
+		return TRUE;
+
+	default:
+		break;
+	}
 
 	switch(LOWORD(wParam)) {
 	case IDOK:
@@ -1480,6 +1573,17 @@ BOOL ManageWMCommand_Config(HWND hWnd, WPARAM wParam)
 //		OpenFileDlg(hWnd, EDIT_MACRO, "マクロファイルを指定", "マクロファイル(*.ttl)\0*.ttl\0すべてのファイル(*.*)\0*.*\0\0", g_JobInfo.szMacroFile);
 		OpenFileDlg(hWnd, EDIT_MACRO, "specifying macro file", "macro file(*.ttl)\0*.ttl\0all files(*.*)\0*.*\0\0", g_JobInfo.szMacroFile);
 		return TRUE;
+
+	case IDC_KEYFILE_BUTTON:
+		::GetDlgItemText(hWnd, IDC_KEYFILE_PATH, g_JobInfo.PrivateKeyFile, MAX_PATH);
+		OpenFileDlg(hWnd, 
+			IDC_KEYFILE_PATH, 
+			"specifying private key file", 
+			"identity(RSA1)\0identity\0id_rsa(SSH2)\0id_rsa\0id_dsa(SSH2)\0id_dsa\0all(*.*)\0*.*\0\0", 
+			g_JobInfo.PrivateKeyFile
+		);
+		return TRUE;
+
 	case RADIO_LOGIN:
 		EnableItem(hWnd, EDIT_HOST, TRUE);
 		EnableItem(hWnd, CHECK_USER, TRUE);
@@ -2002,6 +2106,11 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR nCmdLine, int nCmdShow)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2005/01/25 14:06:06  yutakakn
+ * SSH自動ログインにおいて、ユーザパラメータを指定できるようにした。
+ * また、マクロの指定を削除した。
+ * デフォルトオプションに漢字コード(/KT, /KR)を追加した。
+ *
  * Revision 1.4  2004/12/14 13:23:40  yutakakn
  * ttermpro.exe の初期フォルダパスをカレントに変更。
  * 'use TTSSH' -> 'use SSH'へリネーム。
