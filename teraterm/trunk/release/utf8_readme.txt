@@ -253,8 +253,9 @@ There are 3 types of connection you can establish from TeraTerm macro:
   Copyright of Cygterm belongs to NSym.
   Copyright of original TTSSH belongs to Robert O'Callahan.
   Copyright of original TeraTerm Menu to Shinpei Hayakawa.
-  Copyright of LogMeIn to NeoCom Solutions.
+  Copyright of LogMeTT to NeoCom Solutions.
   Copyright of Eterm lookfeel transparency window belongs to AKASI.
+  Copyright of TTProxy to YebisuyaHompo.
 
   This program is provided "as is" without warranties of any kind, either expressed or 
   implied, including, but not limited to, the implied warranties of merchantability and fitness 
@@ -274,8 +275,9 @@ There are 3 types of connection you can establish from TeraTerm macro:
   IPv6 version TeraTerm Pro: http://win6.jp/TeraTerm/index.html
   Cygterm: http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
   TeraTerm Menu: http://park11.wakwak.com/~shinpei/freesoft/index.html
-  LogMeIn: http://www.neocom.ca/freeware/LogMeIn/
+  LogMeTT: http://www.neocom.ca/freeware/LogMeIn/
   Eterm lookfeel transparency window patch: http://www.geocities.co.jp/SiliconValley-PaloAlto/4954/av.html
+  TTProxy: http://yebisuya.dip.jp/Software/TTProxy/
   TeraTerm forum: http://www.neocom.ca/forum/index.php
   TeraTerm ML: http://www.freeml.com/info/teraterm@freeml.com
 

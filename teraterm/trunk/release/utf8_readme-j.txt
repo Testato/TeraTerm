@@ -247,8 +247,9 @@ MaxBuffSize=500000
   CygtermはNSym氏の著作物です。
   TTSSHはRobert O'Callahan氏の著作物です。
   TeraTerm Menuは早川信平氏の著作物です。
-  LogMeInはNeoCom Solutionsの著作物です。
+  LogMeTTはNeoCom Solutionsの著作物です。
   Eterm風透過ウィンドウ機能はAKASI氏に著作権があります。
+  TTProxyは蛭子屋双六氏の著作物です。
   本プログラムは無償で利用できますが、作者は本プログラムの使用にあたり
   生じる障害や問題に対して一切の責任を負いません。
 
@@ -260,8 +261,9 @@ MaxBuffSize=500000
   IPv6版TeraTerm Pro: http://win6.jp/TeraTerm/index.html
   Cygterm: http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
   TeraTerm Menu: http://park11.wakwak.com/~shinpei/freesoft/index.html
-  LogMeIn: http://www.neocom.ca/freeware/LogMeIn/
+  LogMeTT: http://www.neocom.ca/freeware/LogMeIn/
   Eterm風透過ウィンドウ機能パッチ：http://www.geocities.co.jp/SiliconValley-PaloAlto/4954/av.html
+  TTProxy: http://yebisuya.dip.jp/Software/TTProxy/
   TeraTerm forum: http://www.neocom.ca/forum/index.php
   TeraTerm ML: http://www.freeml.com/info/teraterm@freeml.com
 
@@ -282,13 +284,13 @@ MaxBuffSize=500000
 
 2005.2.22 (Ver 4.11)
   ・ログ採取中に File -> log がグレイ表示にならない問題へ対処した。
-  ・Eterm風透過ウィンドウ機能（AKASI氏作パッチ）を追加した。
+  ・Eterm風透過ウィンドウ機能を追加した。AKASI氏に感謝します。
   ・VisualStyle(WindowsXP)に対応させた
   ・TitleFormatにformat ID=13を新規追加した
   ・キャプション表示において、COM5以上の表示に対応した。
   ・ログファイルの種別に"plain text"を追加した。当該オプションを有効にすると、ログファイルにASCII非表示文字を採取しないようになる。ただし、例外キャラクタ(HT, CR, LF)は採取対象。
-  ・TTProxy(2004/1/22版)の新規追加
-  ・LogMeTT 2.02βの新規追加
+  ・TTProxy(2004/1/22版)の新規追加。蛭子屋双六氏に感謝します。
+  ・LogMeTT 2.02βの新規追加。Boris氏に感謝します。
   ・LogMeInを削除した
   ・Additional settingsをtab control化した
   ・ログ採取時のデフォルト名を"teraterm.log"に変更した
