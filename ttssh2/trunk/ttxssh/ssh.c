@@ -2283,16 +2283,14 @@ void debug_print(int no, char *msg, int len)
 // クライアントからサーバへの提案事項
 #ifdef SSH2_DEBUG
 static char *myproposal[PROPOSAL_MAX] = {
-//	"diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1",
 	"diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1",
-//	"ssh-rsa,ssh-dss",
-	"ssh-dss,ssh-rsa",
+	"ssh-rsa,ssh-dss",
 	"3des-cbc,aes128-cbc",
 	"3des-cbc,aes128-cbc",
-	"hmac-sha1",
-//	"hmac-sha1,hmac-md5",
-	"hmac-sha1",
-//	"hmac-sha1,hmac-md5",
+	"hmac-sha1,hmac-md5",
+	"hmac-sha1,hmac-md5",
+//	"hmac-sha1",
+//	"hmac-sha1",
 	"none",
 	"none",
 	"",
@@ -2304,8 +2302,8 @@ static char *myproposal[PROPOSAL_MAX] = {
 	"ssh-rsa,ssh-dss",
 	"3des-cbc,aes128-cbc",
 	"3des-cbc,aes128-cbc",
-	"hmac-sha1",
-	"hmac-sha1",
+	"hmac-sha1,hmac-md5",
+	"hmac-sha1,hmac-md5",
 	"none",
 	"none",
 	"",
@@ -2378,6 +2376,7 @@ static int get_cipher_key_len(SSHCipher cipher)
 }
 
 
+#if 0
 static int get_mac_index(char *name) 
 {
 	ssh2_mac_t *ptr = ssh2_macs;
@@ -2392,6 +2391,7 @@ static int get_mac_index(char *name)
 	}
 	return (val);
 }
+#endif
 
 
 static void do_write_buffer_file(void *buf, int len, char *file, int lineno)
@@ -2518,6 +2518,30 @@ static SSHCipher choose_SSH2_cipher_algorithm(char *server_proposal, char *my_pr
 }
 
 
+static enum hmac_type choose_SSH2_hmac_algorithm(char *server_proposal, char *my_proposal)
+{
+	char tmp[1024], *ptr;
+	enum hmac_type type = HMAC_UNKNOWN;
+
+	_snprintf(tmp, sizeof(tmp), my_proposal);
+	ptr = strtok(tmp, ","); // not thread-safe
+	while (ptr != NULL) {
+		// server_proposalにはサーバのproposalがカンマ文字列で格納されている
+		if (strstr(server_proposal, ptr)) { // match
+			break;
+		}
+		ptr = strtok(NULL, ",");
+	}
+	if (strstr(ptr, "hmac-sha1")) {
+		type = HMAC_SHA1;
+	} else if (strstr(ptr, "hmac-md5")) {
+		type = HMAC_MD5;
+	}
+
+	return (type);
+}
+
+
 // 暗号アルゴリズムのキーサイズ、ブロックサイズ、MACサイズのうち最大値(we_need)を決定する。
 static void choose_SSH2_key_maxlength(PTInstVar pvar)
 {
@@ -2530,10 +2554,11 @@ static void choose_SSH2_key_maxlength(PTInstVar pvar)
 			ctos = 1;
 		else
 			ctos = 0;
-		macname = myproposal[PROPOSAL_MAC_ALGS_CTOS + ctos];
-		val = get_mac_index(macname);
-		if (val == -1) {
-			goto error;
+
+		if (ctos == 1) {
+			val = pvar->ctos_hmac;
+		} else {
+			val = pvar->stoc_hmac;
 		}
 
 		// current_keys[]に設定しておいて、あとで pvar->ssh2_keys[] へコピーする。
@@ -2755,6 +2780,39 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 		msg = tmp;
 		goto error;
 	}
+
+
+	// HMAC(Hash Message Authentication Code)アルゴリズムの決定 (2004.12.17 yutaka)
+	size = get_payload_uint32(pvar, offset);
+	offset += 4;
+	for (i = 0; i < size; i++) {
+		buf[i] = data[offset + i];
+	}
+	buf[i] = 0;
+	offset += size;
+	pvar->ctos_hmac = choose_SSH2_hmac_algorithm(buf, myproposal[PROPOSAL_MAC_ALGS_CTOS]);
+	if (pvar->ctos_hmac == HMAC_UNKNOWN) { // not match
+		strcpy(tmp, "unknown HMAC algorithm: ");
+		strcat(tmp, buf);
+		msg = tmp;
+		goto error;
+	}
+
+	size = get_payload_uint32(pvar, offset);
+	offset += 4;
+	for (i = 0; i < size; i++) {
+		buf[i] = data[offset + i];
+	}
+	buf[i] = 0;
+	offset += size;
+	pvar->stoc_hmac = choose_SSH2_hmac_algorithm(buf, myproposal[PROPOSAL_MAC_ALGS_STOC]);
+	if (pvar->ctos_hmac == HMAC_UNKNOWN) { // not match
+		strcpy(tmp, "unknown HMAC algorithm: ");
+		strcat(tmp, buf);
+		msg = tmp;
+		goto error;
+	}
+
 
 	// we_needの決定 (2004.11.6 yutaka)
 	// キー再作成の場合はスキップする。
@@ -4513,6 +4571,11 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2004/12/11 07:31:00  yutakakn
+ * SSH heartbeatスレッドの追加した。これにより、IPマスカレード環境において、ルータの
+ * NATテーブルクリアにより、SSHコネクションが切断される現象が回避される。
+ * それに合わせて、teraterm.iniのTTSSHセクションに、HeartBeat エントリを追加。
+ *
  * Revision 1.4  2004/12/04 08:18:31  yutakakn
  * SSH2自動ログインにおいて、ユーザ認証に失敗した場合、リトライを行わないようにした。
  *

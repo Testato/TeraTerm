@@ -178,6 +178,13 @@ enum hostkey_type {
 	KEY_UNSPEC,
 };
 
+// 下記のインデックスは ssh2_macs[] と合わせること。
+enum hmac_type {
+	HMAC_SHA1,
+	HMAC_MD5,
+	HMAC_UNKNOWN
+};
+
 #define KEX_DEFAULT_KEX     "diffie-hellman-group-exchange-sha1,diffie-hellman-group1-sha1"
 
 #define	KEX_DEFAULT_PK_ALG	"ssh-rsa,ssh-dss"

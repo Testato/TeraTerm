@@ -176,6 +176,8 @@ typedef struct _TInstVar {
   enum hostkey_type hostkey_type;
   SSHCipher ctos_cipher;
   SSHCipher stoc_cipher;
+  enum hmac_type ctos_hmac;
+  enum hmac_type stoc_hmac;
   int we_need;
   int key_done;
   int rekeying;
@@ -226,6 +228,11 @@ int copy_teraterm_dir_relative_path(char FAR * dest, int destsize, char FAR * ba
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2004/12/11 07:31:00  yutakakn
+ * SSH heartbeatスレッドの追加した。これにより、IPマスカレード環境において、ルータの
+ * NATテーブルクリアにより、SSHコネクションが切断される現象が回避される。
+ * それに合わせて、teraterm.iniのTTSSHセクションに、HeartBeat エントリを追加。
+ *
  * Revision 1.2  2004/12/01 15:37:49  yutakakn
  * SSH2自動ログイン機能を追加。
  * 現状、パスワード認証のみに対応。

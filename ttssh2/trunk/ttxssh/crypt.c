@@ -47,7 +47,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.1.1.1 2004-11-14 15:53:14 yutakakn Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.2 2004-12-17 14:05:55 yutakakn Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -705,10 +705,44 @@ int CRYPT_get_receiver_MAC_size(PTInstVar pvar)
 
 }
 
+// HMACの検証 
+// ※本関数は SSH2 でのみ使用される。
+// (2004.12.17 yutaka)
 BOOL CRYPT_verify_receiver_MAC(PTInstVar pvar, uint32 sequence_number,
 							   char FAR * data, int len, char FAR * MAC)
 {
+    HMAC_CTX c;
+    unsigned char m[EVP_MAX_MD_SIZE];
+    unsigned char b[4];
+	struct Mac *mac;
+
+	mac = &pvar->ssh2_keys[MODE_IN].mac;
+
+	// HMACがまだ有効でない場合は、検証OKとして返す。
+	if (mac == NULL || mac->enabled == 0) 
+		return TRUE;
+
+    if (mac->key == NULL)
+		goto error;
+
+    if ((u_int)mac->mac_len > sizeof(m))
+		goto error;
+
+    HMAC_Init(&c, mac->key, mac->key_len, mac->md);
+    set_uint32_MSBfirst(b, sequence_number);
+    HMAC_Update(&c, b, sizeof(b));
+    HMAC_Update(&c, data, len);
+    HMAC_Final(&c, m, NULL);
+    HMAC_cleanup(&c);
+
+	if (memcmp(m, MAC, mac->mac_len)) {
+		goto error;
+	}
+
 	return TRUE;
+
+error:
+	return FALSE;
 }
 
 int CRYPT_get_sender_MAC_size(PTInstVar pvar)
