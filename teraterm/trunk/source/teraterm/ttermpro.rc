@@ -264,8 +264,8 @@ BEGIN
         MENUITEM "&Duplicate session\tAlt+D",   ID_FILE_DUPLICATESESSION
         MENUITEM SEPARATOR
         MENUITEM "Cy&gwin connection\tAlt+G",   ID_FILE_CYGWINCONNECTION
-        MENUITEM "TeraTerm &Menu\tAlt+M",       ID_FILE_TERATERMMENU
-        MENUITEM "&LogMeIn\tAlt+L",             ID_FILE_LOGMEIN
+        MENUITEM "TeraTerm &Menu",              ID_FILE_TERATERMMENU
+        MENUITEM "&LogMeIn",                    ID_FILE_LOGMEIN
         MENUITEM SEPARATOR
         MENUITEM "&Log...",                     ID_FILE_LOG
         MENUITEM "Comment to Log...",           ID_FILE_COMMENTTOLOG
@@ -407,8 +407,6 @@ BEGIN
     "P",            ID_ACC_PRINT,           VIRTKEY, ALT, NOINVERT
     "B",            ID_ACC_SENDBREAK,       VIRTKEY, ALT, NOINVERT
     "G",            ID_FILE_CYGWINCONNECTION, VIRTKEY, ALT, NOINVERT
-    "L",            ID_FILE_LOGMEIN,        VIRTKEY, ALT, NOINVERT
-    "M",            ID_FILE_TERATERMMENU,   VIRTKEY, ALT, NOINVERT
     "D",            ID_FILE_DUPLICATESESSION, VIRTKEY, ALT, NOINVERT
 END
 
