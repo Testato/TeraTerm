@@ -1819,10 +1819,20 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 
 			pvar->showing_err = TRUE;
 			pvar->err_msg = NULL;
+#if 1
+			// XXX: "SECURITY WARINIG" dialogで ESC キーを押下すると、
+			// なぜかアプリケーションエラーとなるため、下記APIは削除。(2004.12.16 yutaka)
+			if (!SSHv1(pvar)) {
+				MessageBox(NULL, msg, "TTSSH",
+						MB_TASKMODAL | MB_ICONEXCLAMATION);
+			}
+#else
 			MessageBox(NULL, msg, "TTSSH",
 					   MB_TASKMODAL | MB_ICONEXCLAMATION);
+#endif
 			free(msg);
 			pvar->showing_err = FALSE;
+
 			if (pvar->err_msg != NULL) {
 				PostMessage(hWin, WM_COMMAND, ID_SSHASYNCMESSAGEBOX, 0);
 			} else {
@@ -2020,6 +2030,11 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2004/12/11 07:31:00  yutakakn
+ * SSH heartbeatスレッドの追加した。これにより、IPマスカレード環境において、ルータの
+ * NATテーブルクリアにより、SSHコネクションが切断される現象が回避される。
+ * それに合わせて、teraterm.iniのTTSSHセクションに、HeartBeat エントリを追加。
+ *
  * Revision 1.4  2004/12/01 15:37:49  yutakakn
  * SSH2自動ログイン機能を追加。
  * 現状、パスワード認証のみに対応。
