@@ -370,5 +370,8 @@ int SSH_get_clear_MAC_size(PTInstVar pvar);
 void SSH2_send_kexinit(PTInstVar pvar);
 BOOL do_SSH2_userauth(PTInstVar pvar);
 void debug_print(int no, char *msg, int len);
+void ssh_heartbeat_lock_initialize(void);
+void ssh_heartbeat_lock(void);
+void ssh_heartbeat_unlock(void);
 
 #endif

@@ -37,6 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <malloc.h>
 #include <string.h>
 #include <stdlib.h>
+#include <process.h>
 #include "buffer.h"
 #include "ssh.h"
 #include "crypt.h"
@@ -76,6 +77,28 @@ int SSH2_dispatch_enabled_check(unsigned char message);
 void SSH2_dispatch_add_message(unsigned char message);
 void SSH2_dispatch_add_range_message(unsigned char begin, unsigned char end);
 int dh_pub_is_valid(DH *dh, BIGNUM *dh_pub);
+static void start_ssh_heartbeat_thread(PTInstVar pvar);
+
+
+//
+// SSH heartbeat mutex
+//
+static CRITICAL_SECTION g_ssh_heartbeat_lock;   /* ロック用変数 */
+
+void ssh_heartbeat_lock_initialize(void)
+{
+	InitializeCriticalSection(&g_ssh_heartbeat_lock);
+}
+
+void ssh_heartbeat_lock(void)
+{
+	EnterCriticalSection(&g_ssh_heartbeat_lock);
+}
+
+void ssh_heartbeat_unlock(void)
+{
+	LeaveCriticalSection(&g_ssh_heartbeat_lock);
+}
 
 
 static int get_predecryption_amount(PTInstVar pvar)
@@ -426,6 +449,9 @@ static void finish_send_packet_special(PTInstVar pvar, int skip_compress)
 	send_packet_blocking(pvar, data, data_length);
 
 	pvar->ssh_state.sender_sequence_number++;
+
+	// 送信時刻を記録 
+	pvar->ssh_heartbeat_tick = time(NULL);
 }
 
 static void destroy_packet_buf(PTInstVar pvar)
@@ -755,6 +781,10 @@ static BOOL handle_auth_success(PTInstVar pvar)
 	notify_verbose_message(pvar, "Authentication accepted",
 						   LOG_LEVEL_VERBOSE);
 	prep_compression(pvar);
+
+	// ハートビート・スレッドの開始 (2004.12.11 yutaka)
+	start_ssh_heartbeat_thread(pvar);
+
 	return FALSE;
 }
 
@@ -859,11 +889,6 @@ static BOOL parse_protocol_ID(PTInstVar pvar, char FAR * ID)
 			pvar->protocol_major = 2;
 			pvar->protocol_minor = 0;
 		}
-
-#ifdef SSH2_DEBUG
-		pvar->protocol_major = 2;
-		pvar->protocol_minor = 0;
-#endif
 
 	}
 
@@ -4049,6 +4074,77 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 }
 
 
+//
+// SSH2 heartbeat procedure
+// 
+// NAT環境において、SSHクライアントとサーバ間で通信が発生しなかった場合、
+// ルータが勝手にNATテーブルをクリアすることがあり、SSHコネクションが
+// 切れてしまうことがある。定期的に、クライアントからダミーパケットを
+// 送信することで対処する。(2004.12.10 yutaka)
+//
+static unsigned __stdcall ssh_heartbeat_thread(void FAR * p)
+{
+	static int instance = 0;
+	PTInstVar pvar = (PTInstVar)p;
+	time_t tick;
+
+	// すでに実行中なら何もせずに返る。
+	if (instance > 0)
+		return 0;
+	instance++;
+
+	for (;;) {
+		// 一定時間無通信であれば、サーバへダミーパケットを送る
+		// 閾値が0であれば何もしない。
+		tick = time(NULL) - pvar->ssh_heartbeat_tick;
+		if (pvar->ts_SSH->ssh_heartbeat_overtime > 0 && 
+			tick > pvar->ts_SSH->ssh_heartbeat_overtime) { 
+			buffer_t *msg;
+			char *s;
+			unsigned char *outmsg;
+			int len;
+
+			// 別コンテキストで、SSHのシーケンスへ割り込まないようにロックを取る。
+			ssh_heartbeat_lock();
+
+			msg = buffer_init();
+			if (msg == NULL) {
+				// TODO: error check
+				continue;
+			}
+			s = "ssh-heartbeat";
+			buffer_put_string(msg, s, strlen(s));
+			len = buffer_len(msg);
+			if (SSHv1(pvar)) {
+				outmsg = begin_send_packet(pvar, SSH_MSG_IGNORE, len);
+			} else {
+				outmsg = begin_send_packet(pvar, SSH2_MSG_IGNORE, len);
+			}
+			memcpy(outmsg, buffer_ptr(msg), len);
+			finish_send_packet(pvar);
+			buffer_free(msg);
+
+			ssh_heartbeat_unlock();
+		}
+
+		Sleep(100); // yield
+	}
+
+	return 0; // not reach
+}
+
+static void start_ssh_heartbeat_thread(PTInstVar pvar)
+{
+	HANDLE thread;
+	unsigned tid;
+
+	thread = (HANDLE)_beginthreadex(NULL, 0, ssh_heartbeat_thread, pvar, 0, &tid);
+	if (thread == (HANDLE)-1) {
+		// TODO:
+	}
+}
+
+
 static BOOL handle_SSH2_userauth_success(PTInstVar pvar)
 {
 	buffer_t *msg;
@@ -4088,6 +4184,9 @@ static BOOL handle_SSH2_userauth_success(PTInstVar pvar)
 	memcpy(outmsg, buffer_ptr(msg), len);
 	finish_send_packet(pvar);
 	buffer_free(msg);
+
+	// ハートビート・スレッドの開始 (2004.12.11 yutaka)
+	start_ssh_heartbeat_thread(pvar);
 
 	return TRUE;
 }
@@ -4414,6 +4513,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2004/12/04 08:18:31  yutakakn
+ * SSH2自動ログインにおいて、ユーザ認証に失敗した場合、リトライを行わないようにした。
+ *
  * Revision 1.3  2004/12/01 15:37:49  yutakakn
  * SSH2自動ログイン機能を追加。
  * 現状、パスワード認証のみに対応。

@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ttxssh.h"
 #include "fwdui.h"
 #include "util.h"
+#include "ssh.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -171,6 +172,8 @@ static void init_TTSSH(PTInstVar pvar)
 	HOSTS_init(pvar);
 	FWD_init(pvar);
 	FWDUI_init(pvar);
+
+	ssh_heartbeat_lock_initialize();
 }
 
 static void uninit_TTSSH(PTInstVar pvar)
@@ -365,6 +368,9 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 	// default is SSH2 (2004.11.30 yutaka)
 	settings->ssh_protocol_version = GetPrivateProfileInt("TTSSH", "ProtocolVersion", 2, fileName);
 
+	// SSH heartbeat time(second) (2004.12.11 yutaka)
+	settings->ssh_heartbeat_overtime = GetPrivateProfileInt("TTSSH", "HeartBeat", 60, fileName);
+
 	clear_local_settings(pvar);
 }
 
@@ -422,7 +428,12 @@ static void write_ssh_options(PTInstVar pvar, PCHAR fileName,
 		settings->ssh_protocol_version==2 ? "2" : "1",
 		fileName);
 
+	// SSH heartbeat time(second) (2004.12.11 yutaka)
+	_snprintf(buf, sizeof(buf), "%d", settings->ssh_heartbeat_overtime);
+	WritePrivateProfileString("TTSSH", "HeartBeat", buf, fileName);
+
 }
+
 
 /* find free port in all protocol family */
 static unsigned short find_local_port(PTInstVar pvar)
@@ -602,7 +613,13 @@ static int PASCAL FAR TTXrecv(SOCKET s, char FAR * buf, int len, int flags)
 	GET_VAR();
 
 	if (s == pvar->socket) {
-		return PKT_recv(pvar, buf, len);
+		int ret;
+
+		ssh_heartbeat_lock();
+		ret = PKT_recv(pvar, buf, len);
+		ssh_heartbeat_unlock();
+		return (ret);
+
 	} else {
 		return (pvar->Precv) (s, buf, len, flags);
 	}
@@ -614,7 +631,9 @@ static int PASCAL FAR TTXsend(SOCKET s, char const FAR * buf, int len,
 	GET_VAR();
 
 	if (s == pvar->socket) {
+		ssh_heartbeat_lock();
 		SSH_send(pvar, buf, len);
+		ssh_heartbeat_unlock();
 		return len;
 	} else {
 		return (pvar->Psend) (s, buf, len, flags);
@@ -2001,6 +2020,12 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2004/12/01 15:37:49  yutakakn
+ * SSH2自動ログイン機能を追加。
+ * 現状、パスワード認証のみに対応。
+ * ・コマンドライン
+ *   /ssh /auth=認証メソッド /user=ユーザ名 /passwd=パスワード
+ *
  * Revision 1.3  2004/11/29 15:52:37  yutakakn
  * SSHのdefault protocolをSSH2にした。
  *
