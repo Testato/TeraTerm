@@ -180,44 +180,44 @@ MaxBuffSize=500000
 
 
 ●マクロリファレンス: connect
-
-There are 3 types of connection you can establish from TeraTerm macro: 
-
-- Telnet connection (port 23) 
-- SSH1 or SSH2 connection (port 22) 
-- Connection via COM port 
-
-Telnet connections 
-
-connect 'myserver /nossh' 
-or 
-connect 'myserver' 
-
-Using /nossh is strongly recommended. Without this parameter TeraTerm will start connecting with the same method (telnet or SSH) that was used during last time when teraterm.ini file was saved. In case it was SSH than your macro will try to connect via SSH and will eventually fail. 
-
-SSH connections 
-
-connect 'myserver /ssh' 
-or 
-connect 'myserver /ssh /1' 
-or 
-connect 'myserver /ssh /2' 
-or 
-connect 'myserver /ssh /auth=password /user=username /passwd=password'' 
-or 
-connect 'myserver /ssh /1 /auth=password /user=username /passwd=password'' 
-or 
-connect 'myserver /ssh /2 /auth=password /user=username /passwd=password'' 
-
-The first way will start SSH connection without defining whether SSH1 or SSH2 has to be used. Parameters /1 and /2 force to use SSH1 or SSH2 method. The last 3 ways allow to skip popup dialog and pass username and password directly from macro. Please note that /auth=password is the parameter saying that authentication will be done by entering password thus you should not replace the word 'password' in it with actual password. Only the words shown above with italic font has to be substituted with actual values. 
-Please remember that entering actual username and password in TeraTerm macro will cause them to be stored as an open text and it is your responsibility to keep such macro is secure location. 
-
-Connections via COM port 
-
-connect '/C=x' 
-
-Here x represents COM port number. For example to connect via COM port 1 the command will look like: connect '/C=1'
-
+  TeraTermマクロから接続する方法には、3つの種類があります。
+  
+  - telnet接続 (port 23) 
+  - SSH1 および SSH2 接続 (port 22) 
+  - COM port 接続
+  
+  ・telnet接続
+  
+  connect 'myserver /nossh' 
+  or 
+  connect 'myserver' 
+  
+  /nossh を使う方を強く推奨します。このオプションがない場合、TeraTermは teraterm.ini が最後に保存されたときと同じメソッド（telnet もしくは SSH）を使って、接続しようとします。もし、SSHを使って接続しようとするならば、connectマクロは失敗するでしょう。
+  
+  
+  ・SSH接続
+  
+  connect 'myserver /ssh' 
+  or 
+  connect 'myserver /ssh /1' 
+  or 
+  connect 'myserver /ssh /2' 
+  or 
+  connect 'myserver /ssh /auth=password /user=username /passwd=password'' 
+  or 
+  connect 'myserver /ssh /1 /auth=password /user=username /passwd=password'' 
+  or 
+  connect 'myserver /ssh /2 /auth=password /user=username /passwd=password'' 
+  
+  最初の方法は、SSHバージョンを指定せずにSSH接続をします。/1 と /2 のオプションは、SSH1およびSSH2であることを指定します。最後の3つの方法は、マクロからユーザ名とパスワードを渡すことにより、SSH認証ダイアログをスキップさせることができます。/auth=passwordはパスワード認証であることを表します。TeraTermマクロにユーザ名とパスワードを指定した場合、そのマクロファイルをプレーンテキストとして保存したのなら、セキュリティ的に安全な場所に置く必要があることを肝に銘じておいてください。
+  
+  
+  ・COMポート接続
+  
+  connect '/C=x' 
+  
+  xはCOMポート番号を表します。たとえば、COM1に接続したいのなら、 connect '/C=1' とします。
+  
   source URL: http://www.neocom.ca/forum/viewtopic.php?t=6
 
 
@@ -254,6 +254,8 @@ Here x represents COM port number. For example to connect via COM port 1 the com
   Cygterm: http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
   TeraTerm Menu: http://park11.wakwak.com/~shinpei/freesoft/index.html
   LogMeIn: http://www.neocom.ca/freeware/LogMeIn/
+  TeraTerm forum: http://www.neocom.ca/forum/index.php
+  TeraTerm ML: http://www.freeml.com/info/teraterm@freeml.com
 
 
 ■注意事項

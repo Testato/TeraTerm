@@ -268,6 +268,8 @@ Here x represents COM port number. For example to connect via COM port 1 the com
   Cygterm: http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
   TeraTerm Menu: http://park11.wakwak.com/~shinpei/freesoft/index.html
   LogMeIn: http://www.neocom.ca/freeware/LogMeIn/
+  TeraTerm forum: http://www.neocom.ca/forum/index.php
+  TeraTerm ML: http://www.freeml.com/info/teraterm@freeml.com
 
 
 * Notes of current release
