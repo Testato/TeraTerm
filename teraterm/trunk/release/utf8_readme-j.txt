@@ -248,6 +248,16 @@ MaxBuffSize=500000
 	BGThemeFile = theme\*.ini
 
 
+■TeraTermのビルド方法
+  TeraTermのビルド方法について以下に示します。ビルドにはVisual Studio .NET 2003(VC++7.1)が必要です。
+  
+  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
+  2. teraterm\visualc\ttermpro.sln をVisual Studioで開く
+  3. ソリューションをビルドする
+  4. ビルドに成功するとteraterm\visualc\bin ディレクトリに実行プログラムが生成される
+
+
+
 ■開発環境
   OS: Windows XP Professional
   コンパイラ: Visual Studio .NET 2003

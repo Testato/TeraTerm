@@ -250,6 +250,16 @@ There are 3 types of connection you can establish from TeraTerm macro:
 	BGThemeFile = theme\*.ini
 
 
+* How to build TeraTerm
+  To build TeraTerm source code is shown in the following step:
+  And you need Visual Studio .NET 2003(VC++7.1) to build.
+  
+  1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
+  2. Open teraterm\visualc\ttermpro.sln with Visual Studio.
+  3. Build TeraTerm solution.
+  4. TeraTerm execution program will be generated in teraterm\visualc\bin directory if the building is successful.
+
+
 * Development Environment
   OS: Windows XP Professional
   Compiler: Visual Studio .NET 2003

@@ -69,6 +69,28 @@
     And also if you use the atmark character in them, write two continuation '@@' instead of '@'.
 
 
+* How to build TTSSH
+  To build TTSSH source code is shown in the following step:
+  And you need Visual Studio .NET 2003(VC++7.1) and ActivePerl to build.
+  
+  1. Checkout TTSSH source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
+  2. Extract zlib source code(http://www.gzip.org/zlib/) to ttssh2\zlib directory.
+  3. Extract OpenSSL source code(http://www.openssl.org/) to ttssh2\openssl directory. Build OpenSSL in the following step:
+  
+      - Build OpenSSL.
+            + cd openssl
+            + perl Configure VC-WIN32
+                (Yes, you need perl to build OpenSSL!)
+            + ms\do_ms
+            + nmake -f ms\nt.mak
+            + cd ..
+                (Now you are back in PortForwarder folder.)
+        See the instruction in the OpenSSL documentation for details.
+  
+  4. Open ttssh2\ttssh.sln with Visual Studio.
+  5. Build TTSSH solution.
+  6. TTSSH DLL will be generated in ttssh2\ttxssh directory if the building is successful.
+
 * Development Environment
   OS: Windows XP Professional
   Compiler: Visual Studio .NET 2003

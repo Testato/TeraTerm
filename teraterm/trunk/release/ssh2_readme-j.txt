@@ -68,6 +68,29 @@
     記述してください。
 
 
+■TTSSHのビルド方法
+  TTSSHのビルド方法について以下に示します。ビルドにはVisual Studio .NET 2003(VC++7.1)、ActivePerlが必要です。
+  
+  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
+  2. zlibのソースコード(http://www.gzip.org/zlib/)を ttssh2\zlib ディレクトリに展開する
+  3. OpenSSLのソースコード(http://www.openssl.org/)を ttssh2\openssl ディレクトリに展開する。OpenSSLをビルドする（以下参照）。
+
+      - Build OpenSSL.
+            + cd openssl
+            + perl Configure VC-WIN32
+                (Yes, you need perl to build OpenSSL!)
+            + ms\do_ms
+            + nmake -f ms\nt.mak
+            + cd ..
+                (Now you are back in PortForwarder folder.)
+        See the instruction in the OpenSSL documentation for details.
+
+  4. ttssh2\ttssh.sln をVisual Studioで開く
+  5. ソリューションをビルドする
+  6. ビルドに成功するとttssh2\ttxssh ディレクトリにDLLが生成される
+
+
+
 ■開発環境
   OS: Windows XP Professional
   コンパイラ: Visual Studio .NET 2003
