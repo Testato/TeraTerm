@@ -764,7 +764,7 @@ static void PASCAL FAR TTXOpenTCP(TTXSockHooks FAR * hooks)
 	GET_VAR();
 
 	if (pvar->settings.Enabled) {
-		char buf[1024] = "\nInitiating SSH session at ";
+		char buf[1024] = "\n---------------------------------------------------------------------\nInitiating SSH session at ";
 		struct tm FAR *newtime;
 		time_t long_time;
 
@@ -2193,6 +2193,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  2005/03/23 12:39:20  yutakakn
+ * シリアルポートを開いた状態からAlt-Nで新規接続を開こうとしたとき、フォーカスを当てるようにした。
+ *
  * Revision 1.15  2005/03/12 15:07:34  yutakakn
  * SSH2 keyboard-interactive認証をTISダイアログに実装した。
  *

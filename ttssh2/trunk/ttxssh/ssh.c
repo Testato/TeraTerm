@@ -2086,6 +2086,8 @@ void SSH_notify_win_size(PTInstVar pvar, int cols, int rows)
 		finish_send_packet(pvar);
 		buffer_free(msg);
 
+		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_REQUEST was sent at SSH_notify_win_size().", LOG_LEVEL_VERBOSE);
+
 	} else {
 		// SSHでない場合は何もしない。
 
@@ -2579,8 +2581,8 @@ void debug_print(int no, char *msg, int len)
 // クライアントからサーバへの提案事項
 #ifdef SSH2_DEBUG
 static char *myproposal[PROPOSAL_MAX] = {
-	"diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1",
-//	"diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1",
+//	"diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1",
+	"diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1",
 //	"ssh-rsa,ssh-dss",
 	"ssh-dss,ssh-rsa",
 	"3des-cbc,aes128-cbc",
@@ -2789,7 +2791,10 @@ void SSH2_send_kexinit(PTInstVar pvar)
 	memcpy(outmsg, buffer_ptr(msg), len);
 	finish_send_packet(pvar);
 
+	// my_kexに取っておくため、フリーしてはいけない。
 	//buffer_free(msg);
+
+	notify_verbose_message(pvar, "SSH2_MSG_KEXINIT was sent", LOG_LEVEL_VERBOSE);
 }
 
 
@@ -2916,6 +2921,8 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 	char *msg = NULL;
 	char tmp[1024+512];
 	char *ptr;
+
+	notify_verbose_message(pvar, "SSH2_MSG_KEXINIT is receiving", LOG_LEVEL_VERBOSE);
 
 	// すでにキー交換が終わっているにも関わらず、サーバから SSH2_MSG_KEXINIT が
 	// 送られてくる場合は、キー再作成を行う。(2004.10.24 yutaka)
@@ -3286,6 +3293,9 @@ static void SSH2_dh_kex_init(PTInstVar pvar)
 	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
 
 	buffer_free(msg);
+
+	notify_verbose_message(pvar, "SSH2_MSG_KEXDH_INIT was sent", LOG_LEVEL_VERBOSE);
+
 	return;
 
 error:;
@@ -3356,6 +3366,9 @@ static void SSH2_dh_gex_kex_init(PTInstVar pvar)
 	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
 
 	buffer_free(msg);
+
+	notify_verbose_message(pvar, "SSH2_MSG_KEX_DH_GEX_REQUEST was sent", LOG_LEVEL_VERBOSE);
+
 	return;
 
 error:;
@@ -4440,6 +4453,8 @@ static BOOL handle_SSH2_newkeys(PTInstVar pvar)
 	int supported_ciphers = (1 << SSH_CIPHER_3DES_CBC | 1 << SSH_CIPHER_AES128);
 	int type = (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA) | (1 << SSH_AUTH_TIS);
 
+	notify_verbose_message(pvar, "SSH2_MSG_NEWKEYS is received(DH key generation is completed).", LOG_LEVEL_VERBOSE);
+
 	// ログ採取の終了 (2005.3.7 yutaka)
 	finish_memdump();
 
@@ -4514,6 +4529,8 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 	SSH2_dispatch_init(4);
 	SSH2_dispatch_add_message(SSH2_MSG_SERVICE_ACCEPT);
 	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
+
+	notify_verbose_message(pvar, "SSH2_MSG_SERVICE_REQUEST was sent.", LOG_LEVEL_VERBOSE);
 
 	return TRUE;
 }
@@ -4707,6 +4724,8 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	char *connect_id = "ssh-connection";
 	int kbdint = 0;
 
+	notify_verbose_message(pvar, "SSH2_MSG_SERVICE_ACCEPT is received.", LOG_LEVEL_VERBOSE);
+
 	msg = buffer_init();
 	if (msg == NULL) {
 		// TODO: error check
@@ -4851,6 +4870,12 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_FAILURE);
 	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_BANNER);
 
+	{
+	char buf[128];
+	_snprintf(buf, sizeof(buf), "SSH2_MSG_USERAUTH_REQUEST was sent(method %d)", pvar->auth_state.cur_cred.method);
+	notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
+	}
+
 	return TRUE;
 
 error:
@@ -4990,6 +5015,9 @@ static BOOL handle_SSH2_userauth_success(PTInstVar pvar)
 
 	// ハートビート・スレッドの開始 (2004.12.11 yutaka)
 	start_ssh_heartbeat_thread(pvar);
+
+	notify_verbose_message(pvar, "User authentication is successful and SSH heartbeat thread is starting.", LOG_LEVEL_VERBOSE);
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN was sent.", LOG_LEVEL_VERBOSE);
 
 	return TRUE;
 }
@@ -5192,6 +5220,7 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	finish_send_packet(pvar);
 	buffer_free(msg);
 
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_REQUEST was sent at handle_SSH2_open_confirm().", LOG_LEVEL_VERBOSE);
 
 	return TRUE;
 }
@@ -5210,6 +5239,12 @@ static BOOL handle_SSH2_channel_success(PTInstVar pvar)
 	unsigned char *outmsg;
 	int len;
 
+	{
+	char buf[128];
+	_snprintf(buf, sizeof(buf), "SSH2_MSG_CHANNEL_SUCCESS is received(nego_status %d).", pvar->session_nego_status);
+	notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
+	}
+
 	if (pvar->session_nego_status == 1) {
 		pvar->session_nego_status = 2;  
 		msg = buffer_init();
@@ -5227,6 +5262,8 @@ static BOOL handle_SSH2_channel_success(PTInstVar pvar)
 		memcpy(outmsg, buffer_ptr(msg), len);
 		finish_send_packet(pvar);
 		buffer_free(msg);
+
+		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_REQUEST was sent at handle_SSH2_channel_success().", LOG_LEVEL_VERBOSE);
 
 	} else if (pvar->session_nego_status == 2) {
 		pvar->session_nego_status = 3;
@@ -5428,6 +5465,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.22  2005/03/12 15:07:33  yutakakn
+ * SSH2 keyboard-interactive認証をTISダイアログに実装した。
+ *
  * Revision 1.21  2005/03/10 13:40:39  yutakakn
  * すでにログイン処理を行っている場合は、SSH2_MSG_SERVICE_REQUESTの送信は
  * しないことにする。OpenSSHでは支障ないが、Tru64 UNIXではサーバエラーとなってしまうため。
