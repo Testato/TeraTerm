@@ -1,5 +1,6 @@
 /*
 Copyright (c) 1998-2001, Robert O'Callahan
+Copyright (c) 2004-2005, Yutaka Hirata
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -1060,6 +1061,7 @@ BOOL SSH_handle_server_ID(PTInstVar pvar, char FAR * ID, int ID_len)
 
 					SSH2_dispatch_init(1);
 					SSH2_dispatch_add_message(SSH2_MSG_KEXINIT);
+					SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.3 yutaka)
 				}
 			}
 
@@ -5140,6 +5142,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  2005/03/03 13:28:23  yutakakn
+ * クライアントのSSHバージョンを ttxssh.dll から取得して、サーバへ送るようにした。
+ *
  * Revision 1.15  2005/01/24 14:07:07  yutakakn
  * ・keyboard-interactive認証をサポートした。
  * 　それに伴い、teraterm.iniに "KeyboardInteractive" エントリを追加した。
