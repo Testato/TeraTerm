@@ -2502,6 +2502,9 @@ static LRESULT CALLBACK OnExtSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 			}
 			SetupRGBbox(hDlgWnd, 0);
 
+			// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
+			SetFocus(GetDlgItem(hDlgWnd, IDC_LINECOPY));
+
 			return FALSE;
 
         case WM_COMMAND:
@@ -2886,6 +2889,11 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2004/12/07 13:39:54  yutakakn
+ * External SetupをSetupメニュー配下へ移動。
+ * LogMeInの起動メニューを追加。
+ * Duplication sessionメニューを追加。
+ *
  * Revision 1.2  2004/12/03 15:52:55  yutakakn
  * FileメニューにTeraTerm Menuの起動エントリを追加。
  * また、アクセラレータキー(Alt+M)も追加した。
