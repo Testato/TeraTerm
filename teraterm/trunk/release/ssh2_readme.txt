@@ -99,11 +99,13 @@
 
 * Limitations of current release
   - does not support packet compression
-  - supports only password authentication
   - does not support port forwarding
 
 
 * History
+
+2004.12.23 (Ver 1.04)
+  - added support of public key authentication method
 
 2004.12.18 (Ver 1.03)
   - added checking HMAC at received packet
