@@ -2277,7 +2277,8 @@ void CVTWindow::OnTTMenuLaunch()
 //
 void CVTWindow::OnLogMeInLaunch()
 {
-	char *exename = "LogMeIn.exe";
+	// LogMeIn.exe -> LogMeTT.exe へリネーム (2005.2.21 yutaka)
+	char *exename = "LogMeTT.exe";
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 
@@ -2292,7 +2293,7 @@ void CVTWindow::OnLogMeInLaunch()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
-		_snprintf(buf, sizeof(buf), "Can't execute LogMeIn. (%d)", GetLastError());
+		_snprintf(buf, sizeof(buf), "Can't execute LogMeTT. (%d)", GetLastError());
 		::MessageBox(NULL, buf, "ERROR", MB_OK | MB_ICONWARNING);
 	}
 }
@@ -3262,6 +3263,10 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2005/02/03 14:36:16  yutakakn
+ * AKASI氏によるEterm風透過ウィンドウ機能を追加。
+ * VTColorの初期値は、teraterm.iniのANSI Colorを優先させた。
+ *
  * Revision 1.9  2005/02/02 12:54:39  yutakakn
  * ログ採取中に File -> log がグレイ表示にならない問題への対処。
  *

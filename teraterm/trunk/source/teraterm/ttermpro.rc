@@ -328,7 +328,7 @@ BEGIN
         MENUITEM "&Change directory...",        ID_FILE_CHANGEDIR
         MENUITEM SEPARATOR
         MENUITEM "TeraTerm &Menu",              ID_FILE_TERATERMMENU
-        MENUITEM "&LogMeIn",                    ID_FILE_LOGMEIN
+        MENUITEM "&LogMeTT",                    ID_FILE_LOGMEIN
         MENUITEM SEPARATOR
         MENUITEM "&Print...\tAlt+P",            ID_FILE_PRINT2
         MENUITEM SEPARATOR
