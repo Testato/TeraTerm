@@ -9,7 +9,11 @@
 #define IDI_TEK                         102
 #define IDD_COMMENT_DIALOG              110
 #define IDD_EXTERNAL_SETUP              111
+#define IDD_TABSHEET_GENERAL            111
 #define IDD_BROADCAST_DIALOG            112
+#define IDD_ADDITIONAL_SETUPTAB         114
+#define IDD_TABSHEET_VISUAL             116
+#define IDD_TABSHEET_LOG                117
 #define IDR_TEKMENU                     1000
 #define IDC_EDIT_COMMENT                1000
 #define IDC_EDIT_FULLPATH               1001
@@ -35,6 +39,9 @@
 #define IDC_VIEWLOG_EDITOR              1024
 #define IDC_BUTTON1                     1025
 #define IDC_VIEWLOG_PATH                1025
+#define IDC_SETUP_TAB                   1028
+#define IDC_CHECK1                      1029
+#define IDC_ETERM_LOOKFEEL              1030
 #define IDD_PRNABORTDLG                 2100
 #define IDD_FILETRANSDLG                2200
 #define IDC_TRANSFNAME                  2201
@@ -129,9 +136,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        113
+#define _APS_NEXT_RESOURCE_VALUE        118
 #define _APS_NEXT_COMMAND_VALUE         52019
-#define _APS_NEXT_CONTROL_VALUE         1026
+#define _APS_NEXT_CONTROL_VALUE         1031
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

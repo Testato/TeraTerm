@@ -2546,6 +2546,145 @@ void CVTWindow::OnSelectAllBuffer()
 }
 
 
+
+// Additional settingsで使うタブコントロールの親ハンドル
+static HWND gTabControlParent;
+
+// log tab
+static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
+{
+	HWND hWnd;
+
+    switch (msg) {
+        case WM_INITDIALOG:
+			// (7)Viewlog Editor path (2005.1.29 yutaka)
+			hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
+			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.ViewlogEditor);
+
+			// ダイアログにフォーカスを当てる 
+			SetFocus(GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR));
+
+			return FALSE;
+
+        case WM_COMMAND:
+			switch (wp) {
+				case IDC_VIEWLOG_PATH | (BN_CLICKED << 16):
+					{
+					OPENFILENAME ofn;
+
+					ZeroMemory(&ofn, sizeof(ofn));
+					ofn.lStructSize = sizeof(ofn);
+					ofn.hwndOwner = hDlgWnd;
+					ofn.lpstrFilter = "exe(*.exe)\0*.exe\0all(*.*)\0*.*\0\0";
+					ofn.lpstrFile = ts.ViewlogEditor;
+					ofn.nMaxFile = sizeof(ts.ViewlogEditor);
+					ofn.lpstrTitle = "Choose a executing file with launching logging file";
+					ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_FORCESHOWHIDDEN | OFN_HIDEREADONLY;
+					if (GetOpenFileName(&ofn) != 0) {
+						hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
+						SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.ViewlogEditor);
+					}
+					}
+					return TRUE;
+			}
+
+			switch (LOWORD(wp)) {
+                case IDOK:
+					// (6)
+					hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.ViewlogEditor), (LPARAM)ts.ViewlogEditor);
+
+                    EndDialog(hDlgWnd, IDOK);
+					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
+                    break;
+
+                case IDCANCEL:
+                    EndDialog(hDlgWnd, IDCANCEL);
+					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
+                    break;
+
+                default:
+                    return FALSE;
+            }
+
+        case WM_CLOSE:
+		    EndDialog(hDlgWnd, 0);
+			return TRUE;
+
+        default:
+            return FALSE;
+    }
+    return TRUE;
+}
+
+// visual tab
+static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
+{
+	HWND hWnd;
+	char buf[MAXPATHLEN];
+	LRESULT ret;
+
+    switch (msg) {
+        case WM_INITDIALOG:
+			// (1)AlphaBlend 
+			hWnd = GetDlgItem(hDlgWnd, IDC_ALPHA_BLEND);
+			_snprintf(buf, sizeof(buf), "%d", ts.AlphaBlend);
+			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
+
+			// (2)[BG] BGEnable 
+			hWnd = GetDlgItem(hDlgWnd, IDC_ETERM_LOOKFEEL);
+			if (BGEnable) {
+				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
+			} else {
+				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
+			}
+
+			// ダイアログにフォーカスを当てる 
+			SetFocus(GetDlgItem(hDlgWnd, IDC_ALPHA_BLEND));
+
+			return FALSE;
+
+        case WM_COMMAND:
+			switch (LOWORD(wp)) {
+                case IDOK:
+					// (1)
+					hWnd = GetDlgItem(hDlgWnd, IDC_ALPHA_BLEND);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+					ts.AlphaBlend = atoi(buf);
+
+					// (2)
+					hWnd = GetDlgItem(hDlgWnd, IDC_ETERM_LOOKFEEL);
+					ret = SendMessage(hWnd, BM_GETCHECK , 0, 0);
+					if (ret & BST_CHECKED) {
+						BGEnable = 1;
+					} else {
+						BGEnable = 0;
+					}
+
+                    EndDialog(hDlgWnd, IDOK);
+					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
+                    break;
+
+                case IDCANCEL:
+                    EndDialog(hDlgWnd, IDCANCEL);
+					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
+                    break;
+
+                default:
+                    return FALSE;
+            }
+
+        case WM_CLOSE:
+		    EndDialog(hDlgWnd, 0);
+			return TRUE;
+
+        default:
+            return FALSE;
+    }
+    return TRUE;
+}
+
+
 //
 // cf. http://homepage2.nifty.com/DSS/VCPP/API/SHBrowseForFolder.htm
 //
@@ -2603,7 +2742,6 @@ static void doSelectFolder(HWND hWnd, char *path, int pathlen)
 	lpMalloc->Release();
 }
 
-
 static void SetupRGBbox(HWND hDlgWnd, int index)
 {
 	HWND hWnd;
@@ -2626,8 +2764,8 @@ static void SetupRGBbox(HWND hDlgWnd, int index)
 	SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
 }
 
-
-static LRESULT CALLBACK OnExtSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
+// general tab
+static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
 	static HDC label_hdc = NULL;
 	HWND hWnd;
@@ -2652,10 +2790,12 @@ static LRESULT CALLBACK OnExtSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 			}
 			SendMessage(hWnd, LB_SELECTSTRING , 0, (LPARAM)ts.MouseCursorName);
 
+#if 0
 			// (3)AlphaBlend 
 			hWnd = GetDlgItem(hDlgWnd, IDC_ALPHA_BLEND);
 			_snprintf(buf, sizeof(buf), "%d", ts.AlphaBlend);
 			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
+#endif
 
 			// (4)Cygwin install path
 			hWnd = GetDlgItem(hDlgWnd, IDC_CYGWIN_PATH);
@@ -2673,9 +2813,11 @@ static LRESULT CALLBACK OnExtSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 			}
 			SetupRGBbox(hDlgWnd, 0);
 
+#if 0
 			// (7)Viewlog Editor path (2005.1.29 yutaka)
 			hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
 			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.ViewlogEditor);
+#endif
 
 			// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
 			SetFocus(GetDlgItem(hDlgWnd, IDC_LINECOPY));
@@ -2695,6 +2837,7 @@ static LRESULT CALLBACK OnExtSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.CygwinDirectory);
 					return TRUE;
 
+#if 0
 				case IDC_VIEWLOG_PATH | (BN_CLICKED << 16):
 					{
 					OPENFILENAME ofn;
@@ -2713,6 +2856,7 @@ static LRESULT CALLBACK OnExtSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					}
 					}
 					return TRUE;
+#endif
 
 				case IDC_ANSI_COLOR | (LBN_SELCHANGE << 16):
 					hWnd = GetDlgItem(hDlgWnd, IDC_ANSI_COLOR);
@@ -2767,10 +2911,12 @@ static LRESULT CALLBACK OnExtSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 						strcpy(ts.MouseCursorName, MouseCursor[lr].name);
 					}
 
+#if 0
 					// (3)
 					hWnd = GetDlgItem(hDlgWnd, IDC_ALPHA_BLEND);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
 					ts.AlphaBlend = atoi(buf);
+#endif
 
 					// (4)
 					hWnd = GetDlgItem(hDlgWnd, IDC_CYGWIN_PATH);
@@ -2780,15 +2926,19 @@ static LRESULT CALLBACK OnExtSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					hWnd = GetDlgItem(hDlgWnd, IDC_DELIM_LIST);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.DelimList), (LPARAM)ts.DelimList);
 
+#if 0
 					// (6)
 					hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.ViewlogEditor), (LPARAM)ts.ViewlogEditor);
+#endif
 
                     EndDialog(hDlgWnd, IDOK);
+					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
                     break;
 
                 case IDCANCEL:
                     EndDialog(hDlgWnd, IDCANCEL);
+					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
                     break;
 
                 default:
@@ -2799,6 +2949,7 @@ static LRESULT CALLBACK OnExtSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 		    EndDialog(hDlgWnd, 0);
 			return TRUE;
 
+#if 0
 		case WM_CTLCOLORSTATIC :
 			{
 				HDC		hDC = (HDC)wp;
@@ -2826,6 +2977,7 @@ static LRESULT CALLBACK OnExtSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 				}
 			}
 			break ;
+#endif
 
 
         default:
@@ -2834,13 +2986,154 @@ static LRESULT CALLBACK OnExtSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
     return TRUE;
 }
 
-// コンフィグレーションダイアログ
+#if 0
+// tab control: child
+static LRESULT CALLBACK OnTabSheetDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
+{
+	switch (msg) {
+        case WM_INITDIALOG:
+			return TRUE;
+
+		default:
+			return FALSE;
+	}
+}
+#endif
+
+// tab control: main
+// cf. http://home.a03.itscom.net/tsuzu/programing/tips28.htm
+static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
+{
+	TCITEM tc;
+	RECT rect;
+	LPPOINT pt = (LPPOINT)&rect;
+	NMHDR *nm = (NMHDR *)lp;
+	// dialog handle
+	static HWND hTabCtrl; // parent
+	static HWND hTabSheetGeneral; // 0
+	static HWND hTabSheetVisual; // 1
+	static HWND hTabSheetLog; // 2
+
+	switch (msg) {
+        case WM_INITDIALOG:
+			gTabControlParent = hDlgWnd;
+
+			// コモンコントロールの初期化
+			InitCommonControls();
+
+			// シート枠の作成
+			hTabCtrl = GetDlgItem(hDlgWnd, IDC_SETUP_TAB);
+			ZeroMemory(&tc, sizeof(tc));
+			tc.mask = TCIF_TEXT;
+			tc.pszText = "General";
+			TabCtrl_InsertItem(hTabCtrl, 0, &tc);
+
+			ZeroMemory(&tc, sizeof(tc));
+			tc.mask = TCIF_TEXT;
+			tc.pszText = "Visual";
+			TabCtrl_InsertItem(hTabCtrl, 1, &tc);
+
+			ZeroMemory(&tc, sizeof(tc));
+			tc.mask = TCIF_TEXT;
+			tc.pszText = "Log";
+			TabCtrl_InsertItem(hTabCtrl, 2, &tc);
+
+			// シートに載せる子ダイアログの作成
+			hTabSheetGeneral = CreateDialog(
+							hInst, 
+							MAKEINTRESOURCE(IDD_TABSHEET_GENERAL), 
+							hDlgWnd,
+							(DLGPROC)OnTabSheetGeneralProc
+							);
+
+			hTabSheetVisual = CreateDialog(
+							hInst, 
+							MAKEINTRESOURCE(IDD_TABSHEET_VISUAL), 
+							hDlgWnd,
+							(DLGPROC)OnTabSheetVisualProc
+							);
+
+			hTabSheetLog = CreateDialog(
+							hInst, 
+							MAKEINTRESOURCE(IDD_TABSHEET_LOG), 
+							hDlgWnd,
+							(DLGPROC)OnTabSheetLogProc
+							);
+
+			// タブコントロールの矩形座標を取得
+			// 親ウィンドウがhDlgなので座標変換が必要(MapWindowPoints)
+			GetClientRect(hTabCtrl, &rect);
+			TabCtrl_AdjustRect(hTabCtrl, FALSE, &rect);
+			MapWindowPoints(hTabCtrl, hDlgWnd, pt, 2);
+
+			// 生成した子ダイアログをタブシートの上に貼り付ける
+			// 実際は子ダイアログの表示位置をシート上に移動しているだけ
+			MoveWindow(hTabSheetGeneral, 
+				rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, FALSE);
+			MoveWindow(hTabSheetVisual, 
+				rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, FALSE);
+			MoveWindow(hTabSheetLog, 
+				rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, FALSE);
+		
+			ShowWindow(hTabSheetGeneral, SW_SHOW);
+
+			return FALSE;
+
+		case WM_NOTIFY:
+        	// タブコントロールのシート切り替え通知なら
+        	switch (nm->code) {
+        	case TCN_SELCHANGE:
+            	if (nm->hwndFrom == hTabCtrl) {
+                	// 現在表示されているのシートの番号を判別
+                	switch (TabCtrl_GetCurSel(hTabCtrl)) {
+                	case 0:
+                    	// シートの切り替え
+                    	ShowWindow(hTabSheetGeneral, SW_SHOW);
+                    	ShowWindow(hTabSheetVisual, SW_HIDE);
+                    	ShowWindow(hTabSheetLog, SW_HIDE);
+                    	break;
+
+                	case 1:
+                    	ShowWindow(hTabSheetGeneral, SW_HIDE);
+                    	ShowWindow(hTabSheetVisual, SW_SHOW);
+                    	ShowWindow(hTabSheetLog, SW_HIDE);
+                    	break;
+
+                	case 2:
+                    	ShowWindow(hTabSheetGeneral, SW_HIDE);
+                    	ShowWindow(hTabSheetVisual, SW_HIDE);
+                    	ShowWindow(hTabSheetLog, SW_SHOW);
+                    	break;
+                	}
+            	}
+            	break;
+        	}
+			return TRUE;
+
+		case WM_CLOSE:
+			EndDialog(hTabSheetGeneral, FALSE);
+			EndDialog(hTabSheetVisual, FALSE);
+			EndDialog(hTabSheetLog, FALSE);
+			EndDialog(hDlgWnd, FALSE);
+			return TRUE;
+
+        default:
+            return FALSE;
+	}
+
+    return TRUE;
+}
+
+// Additional settings dialog
+//
+// (2004.9.5 yutaka) new added
+// (2005.2.22 yutaka) changed to Tab Control
 void CVTWindow::OnExternalSetup()
 {
 	DWORD ret;
 
 	// 設定ダイアログ (2004.9.5 yutaka)
-	ret = DialogBox(hInst, MAKEINTRESOURCE(IDD_EXTERNAL_SETUP), HVTWin, (DLGPROC)OnExtSetupDlgProc);
+	ret = DialogBox(hInst, MAKEINTRESOURCE(IDD_ADDITIONAL_SETUPTAB), HVTWin, (DLGPROC)OnAdditionalSetupDlgProc);
 	if (ret == 0 || ret == -1) {
 		ret = GetLastError();
 	}
@@ -3263,6 +3556,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2005/02/21 14:58:00  yutakakn
+ * LogMeIn -> LogMeTT へリネームにより、起動実行ファイル名も変更した。
+ *
  * Revision 1.10  2005/02/03 14:36:16  yutakakn
  * AKASI氏によるEterm風透過ウィンドウ機能を追加。
  * VTColorの初期値は、teraterm.iniのANSI Colorを優先させた。
