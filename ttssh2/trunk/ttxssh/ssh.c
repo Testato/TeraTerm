@@ -3075,6 +3075,7 @@ static void SSH2_dh_kex_init(PTInstVar pvar)
 
 	SSH2_dispatch_init(2);
 	SSH2_dispatch_add_message(SSH2_MSG_KEXDH_REPLY);
+	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.5 yutaka)
 
 	buffer_free(msg);
 	return;
@@ -3137,6 +3138,7 @@ static void SSH2_dh_gex_kex_init(PTInstVar pvar)
 
 	SSH2_dispatch_init(2);
 	SSH2_dispatch_add_message(SSH2_MSG_KEX_DH_GEX_GROUP);
+	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.5 yutaka)
 
 	buffer_free(msg);
 	return;
@@ -3196,6 +3198,7 @@ static BOOL handle_SSH2_dh_gex_group(PTInstVar pvar)
 
 	SSH2_dispatch_init(2);
 	SSH2_dispatch_add_message(SSH2_MSG_KEX_DH_GEX_REPLY);
+	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.5 yutaka)
 
 	buffer_free(msg);
 
@@ -3848,6 +3851,7 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 
 	SSH2_dispatch_init(3);
 	SSH2_dispatch_add_message(SSH2_MSG_NEWKEYS);
+	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.5 yutaka)
 
 	BN_free(dh_server_pub);
 	RSA_free(rsa);
@@ -4139,6 +4143,7 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 
 	SSH2_dispatch_init(3);
 	SSH2_dispatch_add_message(SSH2_MSG_NEWKEYS);
+	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.5 yutaka)
 
 	BN_free(dh_server_pub);
 	RSA_free(rsa);
@@ -4255,6 +4260,7 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 
 	SSH2_dispatch_init(4);
 	SSH2_dispatch_add_message(SSH2_MSG_SERVICE_ACCEPT);
+	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.5 yutaka)
 
 	return TRUE;
 }
@@ -4571,6 +4577,7 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	buffer_free(msg);
 
 	SSH2_dispatch_init(5);
+	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.5 yutaka)
 	if (kbdint == 1) { // keyboard-interactive method
 		SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_INFO_REQUEST);
 	} 
@@ -5142,6 +5149,10 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  2005/03/03 13:37:31  yutakakn
+ * Tru64 UNIX(HP-UX)向けworkaroundを追加。
+ * KEXINIT時にSSH2_MSG_IGNOREを受信可能とした。
+ *
  * Revision 1.16  2005/03/03 13:28:23  yutakakn
  * クライアントのSSHバージョンを ttxssh.dll から取得して、サーバへ送るようにした。
  *
