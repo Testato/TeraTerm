@@ -73,10 +73,10 @@ BEGIN
                     WS_VSCROLL | WS_TABSTOP
     LTEXT           "AlphaBlend",IDC_STATIC,6,21,38,8
     EDITTEXT        IDC_ALPHA_BLEND,49,19,28,12,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Cygwin Install Path",IDC_STATIC,6,39,68,8
+    LTEXT           "Cygwin Install Path",IDC_STATIC,6,39,64,8
     EDITTEXT        IDC_CYGWIN_PATH,72,37,64,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_SELECT_FILE,141,37,13,10
-    LTEXT           "Delimiter Characters",IDC_STATIC,6,56,77,8
+    LTEXT           "Delimiter Characters",IDC_STATIC,6,56,73,8
     EDITTEXT        IDC_DELIM_LIST,87,54,130,12,ES_AUTOHSCROLL
     LTEXT           "ANSI color",IDC_STATIC,8,69,43,8
     LISTBOX         IDC_ANSI_COLOR,8,82,28,48,LBS_NOINTEGRALHEIGHT | 
@@ -439,6 +439,13 @@ BEGIN
     "D",            ID_FILE_DUPLICATESESSION, VIRTKEY, ALT, NOINVERT
 END
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+1                       RT_MANIFEST             "teraterm.manifest"
 #endif    // âpåÍ (ïƒçë) resources
 /////////////////////////////////////////////////////////////////////////////
 

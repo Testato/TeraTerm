@@ -694,6 +694,9 @@
 				RelativePath="..\source\common\tt_res.h">
 			</File>
 		</Filter>
+		<File
+			RelativePath="..\source\teraterm\teraterm.manifest">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
