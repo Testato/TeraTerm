@@ -88,6 +88,7 @@ void SetDlgNum(HWND HDlg, int id_Item, LONG Num)
 
 void SetDlgPercent(HWND HDlg, int id_Item, LONG a, LONG b)
 {
+#if 0
   int Num;
   char NumStr[10];
 
@@ -97,6 +98,20 @@ void SetDlgPercent(HWND HDlg, int id_Item, LONG a, LONG b)
     Num = 100 * a / b;
   sprintf(NumStr,"%u %c",Num,'%');
   SetDlgItemText(HDlg, id_Item, NumStr);
+#else
+	// 20MB以上のファイルをアップロードしようとすると、buffer overflowで
+	// 落ちる問題への対処。(2005.3.18 yutaka)
+	// cf. http://sourceforge.jp/tracker/index.php?func=detail&aid=5713&group_id=1412&atid=5333
+	double Num; 
+	char NumStr[10]; 
+
+	if (b==0) 
+		Num = 100.0; 
+	else 
+		Num = 100.0 * (double)a / (double)b; 
+	sprintf(NumStr,"%3.1f%%",Num); 
+	SetDlgItemText(HDlg, id_Item, NumStr); 
+#endif
 }
 
 void SetDropDownList(HWND HDlg, int Id_Item, PCHAR far *List, int nsel)
@@ -125,3 +140,7 @@ LONG GetCurSel(HWND HDlg, int Id_Item)
 
   return n;
 }
+
+/*
+ * $Log: not supported by cvs2svn $
+ */
