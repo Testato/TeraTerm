@@ -1031,10 +1031,14 @@ BOOL SSH_handle_server_ID(PTInstVar pvar, char FAR * ID, int ID_len)
 			} else {
 				char TTSSH_ID[1024];
 				int TTSSH_ID_len;
+				int a, b, c, d;
+
+				// 自分自身のバージョンを取得する (2005.3.3 yutaka)
+				get_file_version("ttxssh.dll", &a, &b, &c, &d);
 
 				_snprintf(TTSSH_ID, sizeof(TTSSH_ID),
-						  "SSH-%d.%d-TTSSH/1.5.4 Win32\n",
-						  pvar->protocol_major, pvar->protocol_minor);
+						  "SSH-%d.%d-TTSSH/%d.%d Win32\n",
+						  pvar->protocol_major, pvar->protocol_minor, a, b);
 				TTSSH_ID_len = strlen(TTSSH_ID);
 
 				// for SSH2(yutaka)
@@ -5136,6 +5140,11 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  2005/01/24 14:07:07  yutakakn
+ * ・keyboard-interactive認証をサポートした。
+ * 　それに伴い、teraterm.iniに "KeyboardInteractive" エントリを追加した。
+ * ・バージョンダイアログに OpenSSLバージョン を追加
+ *
  * Revision 1.14  2005/01/06 12:29:07  yutakakn
  * telnet接続時にターミナルサイズ変更を行うと、アプリケーションエラーとなるバグを修正。
  *

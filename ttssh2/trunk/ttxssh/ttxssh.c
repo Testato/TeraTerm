@@ -1381,7 +1381,7 @@ static void append_about_text(HWND dlg, char FAR * prefix, char FAR * msg)
 }
 
 // 実行ファイルからバージョン情報を得る (2005.2.28 yutaka)
-static void get_file_version(char *exefile, int *major, int *minor, int *release, int *build)
+void get_file_version(char *exefile, int *major, int *minor, int *release, int *build)
 {
 	typedef struct {
 		WORD wLanguage;
@@ -2184,6 +2184,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2005/02/28 14:51:44  yutakakn
+ * バージョンダイアログに表示するTTSSHのバージョンを、ttxssh.dllの
+ * バージョン情報から取得するようにした。
+ *
  * Revision 1.11  2005/02/22 08:48:11  yutakakn
  * TTSSH setupダイアログに HeartBeat 設定を追加。
  * TTSSH authentication setupダイアログに keyboard-interactive 設定を追加。

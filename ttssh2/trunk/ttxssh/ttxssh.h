@@ -228,11 +228,17 @@ void notify_verbose_message(PTInstVar pvar, char FAR * msg, int level);
 
 void get_teraterm_dir_relative_name(char FAR * buf, int bufsize, char FAR * basename);
 int copy_teraterm_dir_relative_path(char FAR * dest, int destsize, char FAR * basename);
+void get_file_version(char *exefile, int *major, int *minor, int *release, int *build);
 
 #endif
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2005/01/27 13:30:33  yutakakn
+ * 公開鍵認証自動ログインをサポート。
+ * /auth=publickey, /keyfile オプションを新規追加した。
+ * また、空白を含む引数をサポート。
+ *
  * Revision 1.6  2005/01/24 14:07:07  yutakakn
  * ・keyboard-interactive認証をサポートした。
  * 　それに伴い、teraterm.iniに "KeyboardInteractive" エントリを追加した。
