@@ -353,6 +353,11 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  ts->TmpColor[2][i*3]	 = GetRValue(ts->VTBlinkColor[i]);
 	  ts->TmpColor[2][i*3+1] = GetGValue(ts->VTBlinkColor[i]);
 	  ts->TmpColor[2][i*3+2] = GetBValue(ts->VTBlinkColor[i]);
+      /* begin - ishizaki */
+	  ts->TmpColor[3][i*3]	 = GetRValue(ts->URLColor[i]);
+	  ts->TmpColor[3][i*3+1] = GetGValue(ts->URLColor[i]);
+	  ts->TmpColor[3][i*3+2] = GetBValue(ts->URLColor[i]);
+      /* end - ishizaki */
 	}
 	ShowDlgItem(Dialog,IDC_WINATTRTEXT,IDC_WINATTR);
 	SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
@@ -361,6 +366,10 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			   0, (LPARAM)"Bold");
 	SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
 			   0, (LPARAM)"Blink");
+    /* begin - ishizaki */
+	SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
+			   0, (LPARAM)"URL");
+    /* end - ishizaki */
 	SendDlgItemMessage(Dialog, IDC_WINATTR, CB_SETCURSEL,
 			   0,0);
       }
@@ -431,9 +440,18 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		  RGB(ts->TmpColor[2][i*3],
 		      ts->TmpColor[2][i*3+1],
 		      ts->TmpColor[2][i*3+2]);
+        /* begin - ishizaki */
+		ts->URLColor[i] =
+		  RGB(ts->TmpColor[3][i*3],
+		      ts->TmpColor[3][i*3+1],
+		      ts->TmpColor[3][i*3+2]);
+        /* end - ishizaki */
 		ts->VTColor[i] = GetNearestColor(DC,ts->VTColor[i]);
 		ts->VTBoldColor[i] = GetNearestColor(DC,ts->VTBoldColor[i]);
 		ts->VTBlinkColor[i] = GetNearestColor(DC,ts->VTBlinkColor[i]);
+        /* begin - ishizaki */
+		ts->URLColor[i] = GetNearestColor(DC,ts->URLColor[i]);
+        /* end - ishizaki */
 	      }
 	    }
 	    else {
@@ -1763,6 +1781,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2005/03/14 13:29:40  yutakakn
+ * 2つめ以降のプロセスで、TeraTermバージョンが正しく取得されない問題への対処。
+ *
  * Revision 1.3  2005/02/28 14:30:35  yutakakn
  * バージョンダイアログに表示するTeraTermのバージョンを、ttermpro.exeの
  * バージョン情報から取得するようにした。

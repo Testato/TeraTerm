@@ -17,6 +17,9 @@
 
 #include "buffer.h"
 
+// URLを強調する（石崎氏パッチ 2005/4/2）
+#define URL_EMPHASIS 1
+
 #define BuffXMax 300
 #ifdef TERATERM32
 //#define BuffYMax 100000
@@ -1113,6 +1116,83 @@ void BuffDumpCurrentLine(BYTE TERM)
   }
 }
 
+
+/* begin - ishizaki */
+static void markURL(int x)
+{
+#ifdef URL_EMPHASIS
+	// by sakura editor 1.5.2.1: etc_uty.cpp
+	static const char	url_char[] = {
+	  /* +0  +1  +2  +3  +4  +5  +6  +7  +8  +9  +A  +B  +C  +D  +E  +F */
+		  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,	/* +00: */
+		  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,	/* +10: */
+		  0, -1,  0, -1, -1, -1, -1,  0,  0,  0,  0, -1, -1, -1, -1, -1,	/* +20: " !"#$%&'()*+,-./" */
+		 -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  0, -1,  0, -1,	/* +30: "0123456789:;<=>?" */
+		 -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,	/* +40: "@ABCDEFGHIJKLMNO" */
+		 -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  0, -1,  0,  0, -1,	/* +50: "PQRSTUVWXYZ[\]^_" */
+		  0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,	/* +60: "`abcdefghijklmno" */
+		 -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  0,  0,  0, -1,  0,	/* +70: "pqrstuvwxyz{|}~ " */
+		/* 0    : not url char
+		 * -1   : url char
+		 * other: url head char --> url_table array number + 1
+		 */
+	};
+	unsigned char ch = CodeLine[x];
+
+	if (ts.EnableClickableUrl == FALSE)
+		return;
+
+	// 直前の行から連結しているか。
+	// TODO: 1つ前の行の終端文字が URL の一部なら、強制的に現在の行頭文字もURLの一部とみなす。
+	// (2005.4.3 yutaka)
+	if (x == 0) {
+		if (AttrLine > AttrBuff && (AttrLine[x-1] & AttrURL)) {
+			if (!(ch & 0x80 || url_char[ch]==0)) { // かつURL構成文字なら
+				AttrLine[x] |= AttrURL; 
+			}
+		}
+		return;
+	}
+
+	if ((x-1>=0) && (AttrLine[x-1] & AttrURL) &&
+		!(ch & 0x80 || url_char[ch]==0)) {
+//		!((CodeLine[x] <= ' ') && !(AttrLine[x] & AttrKanji))) {
+			AttrLine[x] |= AttrURL; 
+//		AttrLine[x] |= (AttrURL | AttrUnder); 
+		return;
+	}
+
+	if ((x-2>=0) && !strncmp(&CodeLine[x-2], "://", 3)) {
+		int i, len = 0;
+		if ((x-6>=0) && !strncmp(&CodeLine[x-6], "http", 4)) {
+			len = 6;
+		}
+		if ((x-7>=0) && !strncmp(&CodeLine[x-7], "https", 5)) {
+			len = 7;
+		}
+		if ((x-6>=0) && !strncmp(&CodeLine[x-6], "news", 4)) {
+			len = 6;
+		}
+		if ((x-5>=0) && !strncmp(&CodeLine[x-5], "ftp", 3)) {
+			len = 5;
+		}
+		if ((x-5>=0) && !strncmp(&CodeLine[x-5], "mms", 3)) {
+			len = 5;
+		}
+#if 0
+		if ((x-5>=0) && !strncmp(&CodeLine[x-5], "ttp", 3)) {
+			len = 5;
+		}
+#endif
+		for (i = 0; i <= len; i++) {
+				AttrLine[x-i] |= AttrURL; 
+//			AttrLine[x-i] |= (AttrURL | AttrUnder); 
+		}
+	}
+#endif
+}
+/* end - ishizaki */
+
 void BuffPutChar(BYTE b, BYTE Attr, BYTE Attr2, BOOL Insert)
 // Put a character in the buffer at the current position
 //   b: character
@@ -1144,6 +1224,10 @@ void BuffPutChar(BYTE b, BYTE Attr, BYTE Attr2, BOOL Insert)
       AttrLine[NumOfColumns-1] = AttrDefault;
       AttrLine2[NumOfColumns-1] = AttrDefault2;
     }
+    /* begin - ishizaki */
+    markURL(CursorX+1);
+    markURL(CursorX);
+    /* end - ishizaki */
 
     if (StrChangeCount==0) XStart = CursorX;
 		      else XStart = StrChangeStart;
@@ -1154,6 +1238,9 @@ void BuffPutChar(BYTE b, BYTE Attr, BYTE Attr2, BOOL Insert)
     CodeLine[CursorX] = b;
     AttrLine[CursorX] = Attr;
     AttrLine2[CursorX] = Attr2;
+    /* begin - ishizaki */
+    markURL(CursorX);
+    /* end - ishizaki */
 
     if (StrChangeCount==0)
       StrChangeStart = CursorX;
@@ -1187,6 +1274,10 @@ void BuffPutKanji(WORD w, BYTE Attr, BYTE Attr2, BOOL Insert)
       AttrLine[CursorX+1] = Attr;
       AttrLine2[CursorX+1] = Attr2;
     }
+    /* begin - ishizaki */
+    markURL(CursorX);
+    markURL(CursorX+1);
+    /* end - ishizaki */
 
     /* last char in current line is kanji first? */
     if ((AttrLine[NumOfColumns-1] & AttrKanji) != 0)
@@ -1212,6 +1303,10 @@ void BuffPutKanji(WORD w, BYTE Attr, BYTE Attr2, BOOL Insert)
       AttrLine[CursorX+1] = Attr;
       AttrLine2[CursorX+1] = Attr2;
     }
+    /* begin - ishizaki */
+    markURL(CursorX);
+    markURL(CursorX+1);
+    /* end - ishizaki */
 
     if (StrChangeCount==0)
       StrChangeStart = CursorX;
@@ -1523,6 +1618,31 @@ void GetMinMax(int i1, int i2, int i3,
     *max = i3;
 }
 
+/* start - ishizaki */
+static void invokeBrowser(LONG ptr)
+{
+#ifdef URL_EMPHASIS
+    LONG i, start, end;
+    char url[1024];
+
+    start = ptr;
+    while (AttrBuff[start] & AttrURL) start--;
+    start++;
+
+    end = ptr;
+    while (AttrBuff[end] & AttrURL) end++;
+    end--;
+ 
+    if (start + 1024 <= end) end = start + 1023;
+    for (i = 0; i < end - start + 1; i++) {
+	url[i] = CodeBuff[start + i];
+    }
+    url[i] = '\0';
+    ShellExecute(NULL, NULL, url, NULL, NULL,SW_SHOWNORMAL);
+#endif
+}
+/* end - ishizaki */
+
 void ChangeSelectRegion()
 {
   POINT TempStart, TempEnd;
@@ -1591,7 +1711,7 @@ void ChangeSelectRegion()
   SelectEndOld = SelectEnd;
 }
 
-void BuffDblClk(int Xw, int Yw)
+int BuffDblClk(int Xw, int Yw)
 //  Select a word at (Xw, Yw) by mouse double click
 //    Xw: horizontal position in window coordinate (pixels)
 //    Yw: vertical
@@ -1601,12 +1721,13 @@ void BuffDblClk(int Xw, int Yw)
   LONG TmpPtr;
   BYTE b;
   BOOL DBCS;
+  int url_invoked = 0;
 
   CaretOff();
 
   DispConvWinToScreen(Xw,Yw,&X,&Y,NULL);
   Y = Y + PageStart;
-  if ((Y<0) || (Y>=BuffEnd)) return;
+  if ((Y<0) || (Y>=BuffEnd)) return 0;
   if (X<0) X = 0;
   if (X>=NumOfColumns) X = NumOfColumns-1;
 
@@ -1618,6 +1739,23 @@ void BuffDblClk(int Xw, int Yw)
   if ((Y>=0) && (Y<BuffEnd))
   {
     TmpPtr = GetLinePtr(Y);
+#if 1
+    /* start - ishizaki */
+	if (ts.EnableClickableUrl && (AttrBuff[TmpPtr+X] & AttrURL)) {
+      url_invoked = 1;
+      invokeBrowser(TmpPtr+X);
+
+      SelectStart.x = 0;
+      SelectStart.y = 0;
+      SelectEnd.x = 0;
+      SelectEnd.y = 0;
+      SelectEndOld.x = 0;
+      SelectEndOld.y = 0;
+      Selected = FALSE;
+      goto end;
+    }
+    /* end - ishizaki */
+#endif
 
     IStart = X;
     IStart = LeftHalfOfDBCS(TmpPtr,IStart);
@@ -1672,7 +1810,11 @@ void BuffDblClk(int Xw, int Yw)
       ChangeSelectRegion();
     }
   }
+/* start - ishizaki */
+end:
+/* end - ishizaki */
   UnlockBuffer();
+  return url_invoked;
 }
 
 void BuffTplClk(int Yw)
@@ -1755,137 +1897,177 @@ void BuffChangeSelect(int Xw, int Yw, int NClick)
 //			in window coordinate
 //    Yw: vertical
 {
-  int X, Y;
-  BOOL Right;
-  LONG TmpPtr;
-  int i;
-  BYTE b;
-  BOOL DBCS;
+	int X, Y;
+	BOOL Right;
+	LONG TmpPtr;
+	int i;
+	BYTE b;
+	BOOL DBCS;
 
-  DispConvWinToScreen(Xw,Yw,&X,&Y,&Right);
-  Y = Y + PageStart;
+	DispConvWinToScreen(Xw,Yw,&X,&Y,&Right);
+	Y = Y + PageStart;
 
-  if (X<0) X = 0;
-  if (X > NumOfColumns)
-    X = NumOfColumns;
-  if (Y < 0) Y = 0;
-  if (Y >= BuffEnd)
-    Y = BuffEnd - 1;
+	if (X<0) X = 0;
+	if (X > NumOfColumns)
+		X = NumOfColumns;
+	if (Y < 0) Y = 0;
+	if (Y >= BuffEnd)
+		Y = BuffEnd - 1;
 
-  TmpPtr = GetLinePtr(Y);
-  LockBuffer();
-  // check if the cursor is on the right half of a character
-  if ((X>0) &&
-      ((AttrBuff[TmpPtr+X-1] & AttrKanji) != 0) ||
-      (X<NumOfColumns) &&
-      ((AttrBuff[TmpPtr+X] & AttrKanji) == 0) &&
-      Right) X++;
+	TmpPtr = GetLinePtr(Y);
+	LockBuffer();
+	// check if the cursor is on the right half of a character
+	if ((X>0) &&
+		((AttrBuff[TmpPtr+X-1] & AttrKanji) != 0) ||
+		(X<NumOfColumns) &&
+		((AttrBuff[TmpPtr+X] & AttrKanji) == 0) &&
+		Right) X++;
 
-  if (X > NumOfColumns)
-    X = NumOfColumns;
+	if (X > NumOfColumns)
+		X = NumOfColumns;
 
-  SelectEnd.x = X;
-  SelectEnd.y = Y;
+	// check URL string on mouse over(2005/4/3 yutaka)
+	if (NClick == 0) {
+		extern void SetMouseCursor(char *cursor);
 
-  if (NClick==2) // drag after double click
-  {
-    if ((SelectEnd.y>SelectStart.y) ||
-	(SelectEnd.y==SelectStart.y) &&
-	(SelectEnd.x>=SelectStart.x))
-    {
-      if (SelectStart.x==DblClkEnd.x)
-      {
-	SelectEnd = DblClkStart;
-	ChangeSelectRegion();
-	SelectStart = DblClkStart;
+		if ((AttrBuff[TmpPtr+X] & AttrURL)) {
+			SetMouseCursor("HAND");
+
+		} else {
+			SetMouseCursor(ts.MouseCursorName);
+			//SetCursor(LoadCursor(NULL, IDC_IBEAM));
+
+		}
+
+		UnlockBuffer();
+		return;
+	}
+
+#if 0
+	/* start - ishizaki */
+	if (ts.EnableClickableUrl && (NClick == 2) && (AttrBuff[TmpPtr+X] & AttrURL)) {
+		invokeBrowser(TmpPtr+X);
+
+		SelectStart.x = 0;
+		SelectStart.y = 0;
+		SelectEnd.x = 0;
+		SelectEnd.y = 0;
+		SelectEndOld.x = 0;
+		SelectEndOld.y = 0;
+		Selected = FALSE;
+		goto end;
+	}
+	/* end - ishizaki */
+#endif
+
 	SelectEnd.x = X;
 	SelectEnd.y = Y;
-      }
-      MoveCharPtr(TmpPtr,&X,-1);
-      if (X<SelectStart.x) X = SelectStart.x;
 
-      i = 1;
-      if (IsDelimiter(TmpPtr,X))
-      {
-	b = CodeBuff[TmpPtr+X];
-	DBCS = (AttrBuff[TmpPtr+X] & AttrKanji) != 0;
-	while ((i!=0) &&
-	       ((b==CodeBuff[TmpPtr+SelectEnd.x]) ||
-		DBCS &&
-		((AttrBuff[TmpPtr+SelectEnd.x] & AttrKanji)!=0)))
-	  i = MoveCharPtr(TmpPtr,(int *)&SelectEnd.x,1); // move right
-      }
-      else {
-	while ((i!=0) &&
-	       ! IsDelimiter(TmpPtr,SelectEnd.x))
-	  i = MoveCharPtr(TmpPtr,(int *)&SelectEnd.x,1); // move right
-      }
-      if (i==0)
-	SelectEnd.x = NumOfColumns;
-    }
-    else {
-      if (SelectStart.x==DblClkStart.x)
-      {
-	SelectEnd = DblClkEnd;
-	ChangeSelectRegion();
-	SelectStart = DblClkEnd;
-	SelectEnd.x = X;
-	SelectEnd.y = Y; 
-      }
-      if (IsDelimiter(TmpPtr,SelectEnd.x))
-      {
-	b = CodeBuff[TmpPtr+SelectEnd.x];
-	DBCS = (AttrBuff[TmpPtr+SelectEnd.x] & AttrKanji) != 0;
-	while ((SelectEnd.x>0) &&
-	       ((b==CodeBuff[TmpPtr+SelectEnd.x]) ||
-		DBCS &&
-		((AttrBuff[TmpPtr+SelectEnd.x] & AttrKanji)!=0)))
-	  MoveCharPtr(TmpPtr,(int *)&SelectEnd.x,-1); // move left
-	if ((b!=CodeBuff[TmpPtr+SelectEnd.x]) &&
-	    ! (DBCS &&
-	       ((AttrBuff[TmpPtr+SelectEnd.x] & AttrKanji)!=0)))
-	  MoveCharPtr(TmpPtr,(int *)&SelectEnd.x,1);
-      }
-      else {
-	while ((SelectEnd.x>0) &&
-	       ! IsDelimiter(TmpPtr,SelectEnd.x))
-	  MoveCharPtr(TmpPtr,(int *)&SelectEnd.x,-1); // move left
-	if (IsDelimiter(TmpPtr,SelectEnd.x))
-	  MoveCharPtr(TmpPtr,(int *)&SelectEnd.x,1); 
-      }
-    }
-  }
-  else if (NClick==3) // drag after tripple click
-  {
-    if ((SelectEnd.y>SelectStart.y) ||
-	(SelectEnd.y==SelectStart.y) &&
-	(SelectEnd.x>=SelectStart.x))
-    {
-      if (SelectStart.x==DblClkEnd.x)
-      {
-	SelectEnd = DblClkStart;
-	ChangeSelectRegion();
-	SelectStart = DblClkStart;
-	SelectEnd.x = X;
-	SelectEnd.y = Y;
-      }
-      SelectEnd.x = NumOfColumns;
-    }
-    else {
-      if (SelectStart.x==DblClkStart.x)
-      {
-	SelectEnd = DblClkEnd;
-	ChangeSelectRegion();
-	SelectStart = DblClkEnd;
-	SelectEnd.x = X;
-	SelectEnd.y = Y;
-      }
-      SelectEnd.x = 0;
-    }
-  }
+	if (NClick==2) // drag after double click
+	{
+		if ((SelectEnd.y>SelectStart.y) ||
+			(SelectEnd.y==SelectStart.y) &&
+			(SelectEnd.x>=SelectStart.x))
+		{
+			if (SelectStart.x==DblClkEnd.x)
+			{
+				SelectEnd = DblClkStart;
+				ChangeSelectRegion();
+				SelectStart = DblClkStart;
+				SelectEnd.x = X;
+				SelectEnd.y = Y;
+			}
+			MoveCharPtr(TmpPtr,&X,-1);
+			if (X<SelectStart.x) X = SelectStart.x;
 
-  ChangeSelectRegion();
-  UnlockBuffer();
+			i = 1;
+			if (IsDelimiter(TmpPtr,X))
+			{
+				b = CodeBuff[TmpPtr+X];
+				DBCS = (AttrBuff[TmpPtr+X] & AttrKanji) != 0;
+				while ((i!=0) &&
+					((b==CodeBuff[TmpPtr+SelectEnd.x]) ||
+					DBCS &&
+					((AttrBuff[TmpPtr+SelectEnd.x] & AttrKanji)!=0)))
+					i = MoveCharPtr(TmpPtr,(int *)&SelectEnd.x,1); // move right
+			}
+			else {
+				while ((i!=0) &&
+					! IsDelimiter(TmpPtr,SelectEnd.x))
+					i = MoveCharPtr(TmpPtr,(int *)&SelectEnd.x,1); // move right
+			}
+			if (i==0)
+				SelectEnd.x = NumOfColumns;
+		}
+		else {
+			if (SelectStart.x==DblClkStart.x)
+			{
+				SelectEnd = DblClkEnd;
+				ChangeSelectRegion();
+				SelectStart = DblClkEnd;
+				SelectEnd.x = X;
+				SelectEnd.y = Y; 
+			}
+			if (IsDelimiter(TmpPtr,SelectEnd.x))
+			{
+				b = CodeBuff[TmpPtr+SelectEnd.x];
+				DBCS = (AttrBuff[TmpPtr+SelectEnd.x] & AttrKanji) != 0;
+				while ((SelectEnd.x>0) &&
+					((b==CodeBuff[TmpPtr+SelectEnd.x]) ||
+					DBCS &&
+					((AttrBuff[TmpPtr+SelectEnd.x] & AttrKanji)!=0)))
+					MoveCharPtr(TmpPtr,(int *)&SelectEnd.x,-1); // move left
+				if ((b!=CodeBuff[TmpPtr+SelectEnd.x]) &&
+					! (DBCS &&
+					((AttrBuff[TmpPtr+SelectEnd.x] & AttrKanji)!=0)))
+					MoveCharPtr(TmpPtr,(int *)&SelectEnd.x,1);
+			}
+			else {
+				while ((SelectEnd.x>0) &&
+					! IsDelimiter(TmpPtr,SelectEnd.x))
+					MoveCharPtr(TmpPtr,(int *)&SelectEnd.x,-1); // move left
+				if (IsDelimiter(TmpPtr,SelectEnd.x))
+					MoveCharPtr(TmpPtr,(int *)&SelectEnd.x,1); 
+			}
+		}
+	}
+	else if (NClick==3) // drag after tripple click
+	{
+		if ((SelectEnd.y>SelectStart.y) ||
+			(SelectEnd.y==SelectStart.y) &&
+			(SelectEnd.x>=SelectStart.x))
+		{
+			if (SelectStart.x==DblClkEnd.x)
+			{
+				SelectEnd = DblClkStart;
+				ChangeSelectRegion();
+				SelectStart = DblClkStart;
+				SelectEnd.x = X;
+				SelectEnd.y = Y;
+			}
+			SelectEnd.x = NumOfColumns;
+		}
+		else {
+			if (SelectStart.x==DblClkStart.x)
+			{
+				SelectEnd = DblClkEnd;
+				ChangeSelectRegion();
+				SelectStart = DblClkEnd;
+				SelectEnd.x = X;
+				SelectEnd.y = Y;
+			}
+			SelectEnd.x = 0;
+		}
+	}
+
+#if 0
+	/* start - ishizaki */
+end:
+	/* end - ishizaki */
+#endif
+
+	ChangeSelectRegion();
+	UnlockBuffer();
 }
 
 void BuffEndSelect()
@@ -2228,5 +2410,9 @@ void ShowStatusLine(int Show)
 }
 
 /*
- * $Log: not supported by cvs2svn $ 
+ * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/11/28 13:14:23  yutakakn
+ * スクロールバッファの最大長を 100000 から 500000 へ拡張した。
+ * ＃teraterm.iniの MaxBuffSize も拡張しておく必要あり。
+ * 
  */

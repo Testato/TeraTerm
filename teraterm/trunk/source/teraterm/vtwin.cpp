@@ -234,16 +234,15 @@ static BOOL MySetLayeredWindowAttributes(HWND hwnd, COLORREF crKey, BYTE bAlpha,
 }
 
 
-static void SetWindowStyle(TTTSet *ts)
+// TeraTerm起動時とURL文字列mouse over時に呼ばれる (2005.4.2 yutaka)
+extern "C" void SetMouseCursor(char *cursor)
 {
 	HCURSOR hc;
-	char *Temp = ts->MouseCursorName;
 	LPCTSTR name = NULL;
-	LONG_PTR lp;
 	int i;
 
 	for (i = 0 ; MouseCursor[i].name ; i++) {
-		if (stricmp(Temp, MouseCursor[i].name) == 0) {
+		if (stricmp(cursor, MouseCursor[i].name) == 0) {
 			name = MouseCursor[i].id;
 			break;
 		}
@@ -262,6 +261,14 @@ static void SetWindowStyle(TTTSet *ts)
 	if (hc != NULL) {
 		SetClassLongPtr(HVTWin, GCLP_HCURSOR, (LONG_PTR)hc);
 	}
+}
+
+
+static void SetWindowStyle(TTTSet *ts)
+{
+	LONG_PTR lp;
+
+	SetMouseCursor(ts->MouseCursorName);
 
 	if (ts->AlphaBlend < 255) {
 		lp = GetWindowLongPtr(HVTWin, GWL_EXSTYLE);
@@ -405,7 +412,8 @@ CVTWindow::CVTWindow()
   wc.cbWndExtra = 0;
   wc.hInstance = AfxGetInstanceHandle();
   wc.hIcon = LoadIcon(wc.hInstance, MAKEINTRESOURCE(IDI_VT));
-  wc.hCursor = LoadCursor(NULL,IDC_IBEAM);
+  //wc.hCursor = LoadCursor(NULL,IDC_IBEAM);
+  wc.hCursor = NULL; // マウスカーソルは動的に変更する (2005.4.2 yutaka)
   wc.hbrBackground = NULL;
   wc.lpszMenuName = NULL;
   wc.lpszClassName = VTClassName;
@@ -1247,7 +1255,10 @@ void CVTWindow::OnLButtonDblClk(UINT nFlags, CPoint point)
 
   DblClkX = point.x;
   DblClkY = point.y;
-  BuffDblClk(DblClkX, DblClkY);
+
+  if (BuffDblClk(DblClkX, DblClkY)) // ブラウザ呼び出しの場合は何もしない。 (2005.4.3 yutaka)
+	  return;
+
   LButton = TRUE;
   DblClk = TRUE;
   AfterDblClk = TRUE;
@@ -1300,7 +1311,13 @@ int CVTWindow::OnMouseActivate(CWnd* pDesktopWnd, UINT nHitTest, UINT message)
 void CVTWindow::OnMouseMove(UINT nFlags, CPoint point)
 {
   int i;
-  if (! (LButton || MButton || RButton)) return;
+
+  if (! (LButton || MButton || RButton)) {
+	  // マウスカーソル直下にURL文字列があるかを走査する (2005.4.2 yutaka)
+	  BuffChangeSelect(point.x, point.y,0);
+	  return;
+  }
+
   if (DblClk)
     i = 2;
   else if (TplClk)
@@ -2833,6 +2850,14 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
 			}
 
+			// (9)EnableClickableUrl
+			hWnd = GetDlgItem(hDlgWnd, IDC_CLICKABLE_URL);
+			if (ts.EnableClickableUrl == TRUE) {
+				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
+			} else {
+				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
+			}
+
 			// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
 			SetFocus(GetDlgItem(hDlgWnd, IDC_LINECOPY));
 
@@ -2952,6 +2977,14 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 						ts.DisablePasteMouseRButton = TRUE;
 					} else {
 						ts.DisablePasteMouseRButton = FALSE;
+					}
+
+					// (9)
+					hWnd = GetDlgItem(hDlgWnd, IDC_CLICKABLE_URL);
+					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
+						ts.EnableClickableUrl = TRUE;
+					} else {
+						ts.EnableClickableUrl = FALSE;
 					}
 
                     EndDialog(hDlgWnd, IDOK);
@@ -3578,6 +3611,10 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2005/03/16 14:10:39  yutakakn
+ * マウス右ボタン押下でのペーストを制御する設定項目を追加。
+ * teraterm.iniに DisablePasteMouseRButton エントリを追加。
+ *
  * Revision 1.12  2005/02/22 11:46:46  yutakakn
  * Additional settingsをtab control化した
  *

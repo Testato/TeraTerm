@@ -405,6 +405,20 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 			      (BYTE)ts->TmpColor[0][i*3+1],
 			      (BYTE)ts->TmpColor[0][i*3+2]);
 
+  /* begin - ishizaki */
+  ts->EnableClickableUrl = GetOnOff(Section,"EnableClickableUrl",FName,FALSE);
+
+  /* URL Color */
+  GetPrivateProfileString(Section,"URLColor","0,255,0,255,255,255",
+			  Temp,sizeof(Temp),FName);
+  for (i = 0; i<=5; i++)
+    GetNthNum(Temp,i+1,(int far *)&(ts->TmpColor[0][i]));
+  for (i = 0; i<=1; i++)
+    ts->URLColor[i] = RGB((BYTE)ts->TmpColor[0][i*3],
+			  (BYTE)ts->TmpColor[0][i*3+1],
+			  (BYTE)ts->TmpColor[0][i*3+2]);
+  /* end - ishizaki */
+
   /* TEK Color */
   GetPrivateProfileString(Section,"TEKColor","0,0,0,255,255,255",
 			  Temp,sizeof(Temp),FName);
@@ -509,6 +523,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
     ts->VTBlinkColor[i] = GetNearestColor(TmpDC, ts->VTBlinkColor[i]);
   for (i = 0; i<=1; i++)
     ts->TEKColor[i] = GetNearestColor(TmpDC, ts->TEKColor[i]);
+  /* begin - ishizaki */
+  for (i = 0; i<=1; i++)
+    ts->URLColor[i] = GetNearestColor(TmpDC, ts->URLColor[i]);
+  /* end - ishizaki */
 #ifndef NO_ANSI_COLOR_EXTENSION
   for (i = 0; i<16; i++)
     ts->ANSIColor[i] = GetNearestColor(TmpDC, ts->ANSIColor[i]);
@@ -1202,6 +1220,21 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
   WriteInt6(Section,"VTBlinkColor",FName,
     ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
     ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
+
+  /* start - ishizaki */
+  WriteOnOff(Section, "EnableClickableUrl", FName, ts->EnableClickableUrl);
+
+  /* URL color */
+  for (i = 0;i<=1;i++)
+  {
+    ts->TmpColor[0][i*3]   = GetRValue(ts->URLColor[i]);
+    ts->TmpColor[0][i*3+1] = GetGValue(ts->URLColor[i]);
+    ts->TmpColor[0][i*3+2] = GetBValue(ts->URLColor[i]);
+  }
+  WriteInt6(Section,"URLColor",FName,
+    ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
+    ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
+  /* end - ishizaki */
 
   /* TEK Color */
   for (i = 0;i<=1;i++)
@@ -2353,6 +2386,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2005/03/16 14:10:39  yutakakn
+ * マウス右ボタン押下でのペーストを制御する設定項目を追加。
+ * teraterm.iniに DisablePasteMouseRButton エントリを追加。
+ *
  * Revision 1.4  2005/01/29 05:27:35  yutakakn
  * "View Log"メニューの追加。
  * "Additional settings"にView Log Editorボックスを追加。

@@ -102,6 +102,9 @@ char BGSPIPath[MAX_PATH];
 COLORREF BGVTColor[2];
 COLORREF BGVTBoldColor[2];
 COLORREF BGVTBlinkColor[2];
+/* begin - ishizaki */
+COLORREF BGURLColor[2];
+/* end - ishizaki */
 
 RECT BGPrevRect;
 BOOL BGReverseText;
@@ -1036,6 +1039,11 @@ void BGReadTextColorConfig(char *file)
 
   BGVTBoldColor[0]  = BGGetColor("VTBoldFore" ,BGVTBoldColor[0],file);
   BGVTBoldColor[1]  = BGGetColor("VTBoldBack" ,BGVTBoldColor[1],file);
+
+  /* begin - ishizaki */
+  BGURLColor[0]     = BGGetColor("URLFore" ,BGURLColor[0],file);
+  BGURLColor[1]     = BGGetColor("URLBack" ,BGURLColor[1],file);
+  /* end - ishizaki */
 }
 
 void BGReadIniFile(char *file)
@@ -1125,6 +1133,18 @@ void BGInitialize(void)
 
   BGVTBlinkColor[0] = ts.VTBlinkColor[0];
   BGVTBlinkColor[1] = ts.VTBlinkColor[1];
+
+#if 0
+  /* begin - ishizaki */
+  BGURLColor[0] = ts.URLColor[0];
+  BGURLColor[1] = ts.URLColor[1];
+  /* end - ishizaki */
+#else
+  // TODO: ハイパーリンクの描画がリアルタイムに行われないことがあるので、
+  // 色属性変更はいったん取りやめることにする。将来、対応する。(2005.4.3 yutaka)
+  BGURLColor[0] = ts.VTColor[0];
+  BGURLColor[1] = ts.VTColor[1];
+#endif
 
   // ANSI color設定のほうを優先させる (2005.2.3 yutaka)
 #ifndef NO_ANSI_COLOR_EXTENSION
@@ -2014,6 +2034,22 @@ void DispSetupDC(BYTE Attr, BYTE Attr2, BOOL Reverse)
   BackColor = ts.VTBoldColor[1];
 #endif
 	}
+    /* begin - ishizaki */
+	else if ((Attr & AttrURL) != 0)
+	{
+#ifdef ALPHABLEND_TYPE2
+//<!--by AKASI
+//  TextColor = ts.VTBoldColor[0];
+//  BackColor = ts.VTBoldColor[1];
+	  TextColor = BGURLColor[0];
+	  BackColor = BGURLColor[1];
+//-->
+#else
+  TextColor = ts.URLColor[0];
+  BackColor = ts.URLColor[1];
+#endif
+	}
+    /* end - ishizaki */
 	else {
 	  if ((Attr2 & Attr2Fore) != 0)
 	  {
@@ -2071,6 +2107,10 @@ void DispSetupDC(BYTE Attr, BYTE Attr2, BOOL Reverse)
 //  TextColor = ts.VTBoldColor[0];
     TextColor = BGVTBoldColor[0];
 //-->
+    /* begin - ishizaki */
+	else if ((Attr & AttrURL) != 0)
+    TextColor = BGURLColor[0];
+    /* end - ishizaki */
   else
 //<!--by AKASI
 //  TextColor = ts.VTColor[0];
@@ -2080,6 +2120,10 @@ void DispSetupDC(BYTE Attr, BYTE Attr2, BOOL Reverse)
   TextColor = ts.VTBlinkColor[0];
 	else if ((Attr & AttrBold) != 0)
   TextColor = ts.VTBoldColor[0];
+    /* begin - ishizaki */
+	else if ((Attr & AttrURL) != 0)
+  TextColor = ts.URLColor[0];
+    /* end - ishizaki */
   else
   TextColor = ts.VTColor[0];
 #endif
@@ -2108,12 +2152,20 @@ void DispSetupDC(BYTE Attr, BYTE Attr2, BOOL Reverse)
 //  BackColor = ts.VTBoldColor[1];
     BackColor = BGVTBoldColor[1];
 //-->
+    /* begin - ishizaki */
+	else if ((Attr & AttrURL) != 0)
+    BackColor = BGURLColor[1];
+    /* end - ishizaki */
   else
   BackColor = ts.VTColor[1];
 #else
   BackColor = ts.VTBlinkColor[1];
 	else if ((Attr & AttrBold) != 0)
   BackColor = ts.VTBoldColor[1];
+    /* begin - ishizaki */
+	else if ((Attr & AttrURL) != 0)
+  BackColor = ts.URLColor[1];
+    /* end - ishizaki */
   else
   BackColor = ts.VTColor[1];
 #endif
@@ -2814,6 +2866,9 @@ void DispSetActive(BOOL ActiveFlag)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2005/02/03 14:46:23  yutakakn
+ * CVSログIDの追加。
+ *
  *
  * AKASI氏によるEterm風透過ウィンドウ機能を追加。
  * VTColorの初期値は、teraterm.iniのANSI Colorを優先させた。

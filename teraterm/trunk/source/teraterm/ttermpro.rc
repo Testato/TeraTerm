@@ -89,6 +89,8 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,227,22,33,14
     CONTROL         "DisableMouseRButtonPaste",IDC_DISABLE_PASTE_RBUTTON,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,147,71,102,10
+    CONTROL         "EnableClickableURL",IDC_CLICKABLE_URL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,147,88,100,10
 END
 
 IDD_BROADCAST_DIALOG DIALOGEX 0, 0, 252, 40

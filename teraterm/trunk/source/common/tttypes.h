@@ -42,6 +42,9 @@
 #ifndef NO_COPYLINE_FIX
 #define AttrLineContinued 0x20 /* valid only at the beggining or end of a line */
 #endif /* NO_COPYLINE_FIX */
+/* begin - ishizaki */
+#define AttrURL 0x40
+/* end - ishizaki */
 #define AttrKanji 0x80
   /* Color attribute bit masks */
 #define Attr2Fore 0x08
@@ -248,7 +251,10 @@ struct tttset {
 /*------ WinSet --------*/
   WORD VTFlag;
   HFONT SampleFont;
-  WORD TmpColor[3][6];
+  /* begin - ishizaki */
+  /* WORD TmpColor[3][6]; */
+  WORD TmpColor[4][6];
+  /* end - ishizaki */
   /* Tera Term window setup variables */
   char Title[50];
   WORD TitleFormat;
@@ -263,6 +269,9 @@ struct tttset {
   WORD TEKColorEmu;
   COLORREF VTColor[2];
   COLORREF TEKColor[2];
+/* begin - ishizaki */
+  COLORREF URLColor[2];
+/* end   - ishizaki */
   COLORREF VTBoldColor[2];
   COLORREF VTBlinkColor[2];
   WORD Beep;
@@ -318,6 +327,7 @@ struct tttset {
   char ViewlogEditor[MAX_PATH];
   WORD LogTypePlainText;
   int DisablePasteMouseRButton;
+  int EnableClickableUrl;
 };
 
 typedef struct tttset TTTSet, *PTTSet;

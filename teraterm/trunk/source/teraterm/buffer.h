@@ -42,7 +42,7 @@ void BuffScrollNLines(int n);
 void BuffClearScreen();
 void BuffUpdateScroll();
 void CursorUpWithScroll();
-void BuffDblClk(int Xw, int Yw);
+int BuffDblClk(int Xw, int Yw);
 void BuffTplClk(int Yw);
 void BuffStartSelect(int Xw, int Yw, BOOL Box);
 void BuffChangeSelect(int Xw, int Yw, int NClick);
