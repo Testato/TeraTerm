@@ -5,7 +5,7 @@ CreateFolder=C:\Program Files\Matsuoka\einstall2\Project\ExeFile
 MajorVersion=3
 MinorVersion=9
 CreateDateTime=2004/12/07 23:52:51
-UpdateDateTime=2004/12/11 17:52:14
+UpdateDateTime=2004/12/15 23:24:09
 Generator=EINSTALL 2.0
 CreateFileType=4
 CreateFileAddVersionInfo=1
@@ -150,7 +150,7 @@ InfoFileMethod=1
 38=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\utf8_readme-j.txt|||0|0|127|||||||||||
 
 [ProgramItems]
-0=1|%InstallDir%\|copyfont.bat||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
+0=1|%InstallDir%\|copyfont.bat||0|3|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
 1=1|%InstallDir%\|utf8_readme-j.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
 2=1|%InstallDir%\|ssh2_readme-j.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
 3=1|%InstallDir%|utf8_readme.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
