@@ -117,6 +117,7 @@
   - added the focus COM input box when you open new connection using COM port.
   - added SSH log data(TTSSH.LOG).
   - added NetScreen(HITACHI) workaround. Sending SSH2_MSG_CHANNEL_REQUEST message to server is disabled wantconfirm entry.
+  - upgraded OpenSSL to 0.9.7f
 
 2005.3.13 (Ver 2.10)
   - upgraded ttxssh.dll version information from 1.5.4 to 2.10.

@@ -107,6 +107,7 @@
   ・シリアルポートを開いた状態からAlt-Nで新規接続を開こうとしたとき、フォーカスを当てるようにした。
   ・SSHログファイル(TTSSH.LOG)の採取データを増加した
   ・SSH2_MSG_CHANNEL_REQUEST送信時において、wantconfirmをfalseにした（サーバからのリプライを期待しない）。NetScreen(HITACHI) workaround対応。
+  ・OpenSSL 0.9.7fへ差し替えた
 
 
 2005.3.13 (Ver 2.10)
