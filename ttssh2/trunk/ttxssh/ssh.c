@@ -1845,7 +1845,8 @@ void SSH_notify_win_size(PTInstVar pvar, int cols, int rows)
 			finish_send_packet(pvar);
 		}
 
-	} else { // ターミナルサイズ変更通知の追加 (2005.1.4 yutaka)
+	} else if (SSHv2(pvar)) { // ターミナルサイズ変更通知の追加 (2005.1.4 yutaka)
+		                      // SSH2かどうかのチェックも行う。(2005.1.5 yutaka)
 		buffer_t *msg;
 		char *s;
 		unsigned char *outmsg;
@@ -1870,7 +1871,11 @@ void SSH_notify_win_size(PTInstVar pvar, int cols, int rows)
 		finish_send_packet(pvar);
 		buffer_free(msg);
 
+	} else {
+		// SSHでない場合は何もしない。
+
 	}
+
 }
 
 int SSH_get_min_packet_size(PTInstVar pvar)
@@ -5002,6 +5007,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2005/01/04 16:09:45  yutakakn
+ * キー再作成時にMAC corruptとなるバグを修正（メモリの二重フリーが原因）。
+ *
  * Revision 1.12  2005/01/04 13:57:01  yutakakn
  * SSH2ターミナルサイズ変更通知の追加
  *
