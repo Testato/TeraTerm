@@ -302,10 +302,15 @@ BOOL FAR PASCAL GetTransFname
 		char buf[80];
 
 		// ログのデフォルト値(log_YYYYMMDD_HHMMSS.txt)を設定する (2005.1.21 yutaka)
+		// デフォルトファイル名を teraterm.log へ変更 (2005.2.22 yutaka)
+#if 0
 		GetLocalTime(&time);
 		_snprintf(buf, sizeof(buf), "log_%4d%02d%02d_%02d%02d%02d.txt", 
 			time.wYear, time.wMonth, time.wDay,
 			time.wHour, time.wMinute, time.wSecond);
+#else
+		strcpy(buf, "teraterm.log");
+#endif
 		strcpy(fv->FullName, buf);
 		ofn.lpstrFile = fv->FullName;
 		ofn.nMaxFile = sizeof(fv->FullName);
@@ -955,6 +960,19 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2005/02/20 14:51:29  yutakakn
+ * ログファイルの種別に"plain text"を追加。このオプションが有効の場合は、ログファイルに
+ * ASCII非表示文字の採取をしない。
+ *
+ * 現在、無視するキャラクタは以下のとおり。
+ * 　・BS
+ * 　・ASCII(0x00-0x1f)のうち非表示なもの
+ *
+ * ただし、例外として以下のものはログ採取対象。
+ * 　・HT
+ * 　・CR
+ * 　・LF
+ *
  * Revision 1.4  2005/01/26 11:16:24  yutakakn
  * 初期ファイルディレクトリを読み込まれたteraterm.iniがあるディレクトリに固定するように、変更した。
  *
