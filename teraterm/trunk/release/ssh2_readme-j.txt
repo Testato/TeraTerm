@@ -105,6 +105,8 @@
 2005.4.?? (Ver 2.11)
   ・SSH2認証ダイアログの Use challenge/response to log in にアクセラレータキーを割り当てた。
   ・シリアルポートを開いた状態からAlt-Nで新規接続を開こうとしたとき、フォーカスを当てるようにした。
+  ・SSHログファイル(TTSSH.LOG)の採取データを増加した
+  ・SSH2_MSG_CHANNEL_REQUEST送信時において、wantconfirmをfalseにした（サーバからのリプライを期待しない）。NetScreen(HITACHI) workaround対応。
 
 
 2005.3.13 (Ver 2.10)

@@ -115,6 +115,8 @@
 2005.4.?? (Ver 2.11)
   - added the accelerator key at 'Use challenge/response to log in' on SSH2 authentication dialog.
   - added the focus COM input box when you open new connection using COM port.
+  - added SSH log data(TTSSH.LOG).
+  - added NetScreen(HITACHI) workaround. Sending SSH2_MSG_CHANNEL_REQUEST message to server is disabled wantconfirm entry.
 
 2005.3.13 (Ver 2.10)
   - upgraded ttxssh.dll version information from 1.5.4 to 2.10.
