@@ -70,6 +70,10 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
+// ウィンドウ最大化ボタンを有効にする (2005.1.15 yutaka)
+#define WINDOW_MAXMIMUM_ENABLED 1
+
+
 typedef struct {
 	char *name;
 	LPCTSTR id;
@@ -364,9 +368,15 @@ CVTWindow::CVTWindow()
     Style = WS_VSCROLL | WS_HSCROLL |
 			WS_BORDER | WS_THICKFRAME | WS_POPUP;
   else
+#ifdef WINDOW_MAXMIMUM_ENABLED
+    Style = WS_VSCROLL | WS_HSCROLL |
+	    WS_BORDER | WS_THICKFRAME |
+	    WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
+#else
     Style = WS_VSCROLL | WS_HSCROLL |
 	    WS_BORDER | WS_THICKFRAME |
 	    WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
+#endif
 
   wc.style = CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW;
   wc.lpfnWndProc = AfxWndProc;
@@ -1120,10 +1130,12 @@ void CVTWindow::OnDropFiles(HDROP hDropInfo)
 
 void CVTWindow::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI)
 {
-  lpMMI->ptMaxSize.x = 10000;
-  lpMMI->ptMaxSize.y = 10000;
-  lpMMI->ptMaxTrackSize.x = 10000;
-  lpMMI->ptMaxTrackSize.y = 10000;
+#ifndef WINDOW_MAXMIMUM_ENABLED
+	lpMMI->ptMaxSize.x = 10000;
+	lpMMI->ptMaxSize.y = 10000;
+	lpMMI->ptMaxTrackSize.x = 10000;
+	lpMMI->ptMaxTrackSize.y = 10000;
+#endif
 }
 
 void CVTWindow::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
@@ -1354,35 +1366,41 @@ void CVTWindow::OnSetFocus(CWnd* pOldWnd)
 
 void CVTWindow::OnSize(UINT nType, int cx, int cy)
 {
-  RECT R;
-  int w, h;
+	RECT R;
+	int w, h;
 
-  Minimized = (nType==SIZE_MINIMIZED);
+	Minimized = (nType==SIZE_MINIMIZED);
 
-  if (FirstPaint && Minimized)
-  {
-    if (strlen(TopicName)>0)
-    {
-      InitDDE();
-      SendDDEReady();
-    }
-    FirstPaint = FALSE;
-    Startup();
-    return;
-  }
-  if (Minimized || DontChangeSize) return;
+	if (FirstPaint && Minimized)
+	{
+		if (strlen(TopicName)>0)
+		{
+			InitDDE();
+			SendDDEReady();
+		}
+		FirstPaint = FALSE;
+		Startup();
+		return;
+	}
+	if (Minimized || DontChangeSize) return;
 
-  ::GetWindowRect(HVTWin,&R);
-  w = R.right - R.left;
-  h = R.bottom - R.top;
-  if (AdjustSize)
-    ResizeWindow(R.left,R.top,w,h,cx,cy);
-  else {
-    w = cx / FontWidth;
-    h = cy / FontHeight;
-    HideStatusLine();
-    BuffChangeWinSize(w,h);
-  }
+	::GetWindowRect(HVTWin,&R);
+	w = R.right - R.left;
+	h = R.bottom - R.top;
+	if (AdjustSize)
+		ResizeWindow(R.left,R.top,w,h,cx,cy);
+	else {
+		w = cx / FontWidth;
+		h = cy / FontHeight;
+		HideStatusLine();
+		BuffChangeWinSize(w,h);
+	}
+
+#ifdef WINDOW_MAXMIMUM_ENABLED
+	if (nType == SIZE_MAXIMIZED) {
+		AdjustSize = 0;
+	}
+#endif
 }
 
 void CVTWindow::OnSysChar(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -1736,12 +1754,23 @@ LONG CVTWindow::OnChangeTBar(UINT wParam, LONG lParam)
   Style = GetWindowLong (HVTWin, GWL_STYLE);
   TBar = ((Style & WS_SYSMENU)!=0);
   if (TBar == (ts.HideTitle==0)) return 0;
+
+#ifndef WINDOW_MAXMIMUM_ENABLED
   if (ts.HideTitle>0)
     Style = Style & ~(WS_SYSMENU | WS_CAPTION |
 		      WS_MINIMIZEBOX) | WS_BORDER | WS_POPUP;
   else
     Style = Style & ~WS_POPUP | WS_SYSMENU | WS_CAPTION |
 	    WS_MINIMIZEBOX;
+#else
+  if (ts.HideTitle>0)
+    Style = Style & ~(WS_SYSMENU | WS_CAPTION |
+	WS_MINIMIZEBOX | WS_MAXIMIZEBOX) | WS_BORDER | WS_POPUP;
+  else
+    Style = Style & ~WS_POPUP | WS_SYSMENU | WS_CAPTION |
+	    WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
+#endif
+
   AdjustSize = TRUE;
   SetWindowLong(HVTWin, GWL_STYLE, Style);
   ::SetWindowPos(HVTWin, NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE |
@@ -2889,6 +2918,10 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2004/12/07 14:27:21  yutakakn
+ * Additional settingsダイアログにフォーカスを当てるようにした。
+ * また、tab orderの調整。
+ *
  * Revision 1.3  2004/12/07 13:39:54  yutakakn
  * External SetupをSetupメニュー配下へ移動。
  * LogMeInの起動メニューを追加。
