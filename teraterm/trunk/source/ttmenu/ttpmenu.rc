@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -27,18 +27,18 @@ LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE 
 BEGIN
     "\r\n"
     "\0"
@@ -54,32 +54,32 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-TTERM_ICON              ICON    DISCARDABLE     "teraterm.ico"
-ICON_LEFT               ICON    DISCARDABLE     "left.ico"
-ICON_RIGHT              ICON    DISCARDABLE     "right.ico"
+TTERM_ICON              ICON                    "teraterm.ico"
+ICON_LEFT               ICON                    "left.ico"
+ICON_RIGHT              ICON                    "right.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Menu
 //
 
-TTERM_MENU MENU DISCARDABLE 
+TTERM_MENU MENU 
 BEGIN
     POPUP "MENU"
     BEGIN
-        MENUITEM "リスト編集",                  ID_TMENU_ADD
-        POPUP "設定"
+        MENUITEM "List Configuration",          ID_TMENU_ADD
+        POPUP "Setting"
         BEGIN
-            MENUITEM "大きいアイコンで表示",        ID_ICON
-            MENUITEM "フォントを指定",              ID_FONT
-            MENUITEM "左クリックでリスト表示",      ID_LEFTPOPUP
-            MENUITEM "リスト表示ホットキー(Ctl+Alt+M)", ID_HOTKEY
+            MENUITEM "showing large icon",          ID_ICON
+            MENUITEM "specifying font",             ID_FONT
+            MENUITEM "showing list by left-click",  ID_LEFTPOPUP
+            MENUITEM "showing list hotkey(Ctl+Alt+M)", ID_HOTKEY
         END
-        MENUITEM "バージョン情報",              ID_VERSION
+        MENUITEM "Version ",                    ID_VERSION
         MENUITEM SEPARATOR
-        MENUITEM "実行",                        ID_EXEC
+        MENUITEM "Execute",                     ID_EXEC
         MENUITEM SEPARATOR
-        MENUITEM "終了",                        ID_TMENU_CLOSE
+        MENUITEM "Quit",                        ID_TMENU_CLOSE
     END
 END
 
@@ -89,93 +89,94 @@ END
 // Dialog
 //
 
-DIALOG_CONFIG DIALOG DISCARDABLE  0, 0, 287, 227
-STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "リスト編集"
-FONT 9, "ＭＳ Ｐゴシック"
+DIALOG_CONFIG DIALOGEX 0, 0, 287, 227
+STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "List Cofiguration"
+FONT 9, "ＭＳ Ｐゴシック", 400, 0, 0x80
 BEGIN
-    LTEXT           " リスト項目",IDC_STATIC,8,4,116,12,SS_CENTERIMAGE | 
+    LTEXT           "List Item",IDC_STATIC,8,4,116,12,SS_CENTERIMAGE | 
                     SS_SUNKEN
     LISTBOX         LIST_HOST,8,16,116,204,LBS_OWNERDRAWVARIABLE | 
                     LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | 
                     LBS_DISABLENOSCROLL | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "",BUTTON_SET,132,64,20,20,BS_ICON
     PUSHBUTTON      "",BUTTON_DELETE,132,128,20,20,BS_ICON
-    GROUPBOX        "設定内容",IDC_STATIC,160,4,124,216
-    CTEXT           "登録名",IDC_STATIC,164,16,32,12,SS_CENTERIMAGE | 
+    GROUPBOX        "Configuration",IDC_STATIC,160,4,124,216
+    CTEXT           "Name",IDC_STATIC,164,16,32,12,SS_CENTERIMAGE | 
                     SS_SUNKEN
     EDITTEXT        EDIT_ENTRY,200,16,80,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "詳細設定",BUTTON_ETC,168,192,44,16
-    CONTROL         "自動ログイン",RADIO_LOGIN,"Button",BS_AUTORADIOBUTTON | 
+    PUSHBUTTON      "details",BUTTON_ETC,168,192,44,16
+    CONTROL         "autologin",RADIO_LOGIN,"Button",BS_AUTORADIOBUTTON | 
                     BS_LEFT | BS_VCENTER | WS_GROUP,168,52,108,16
-    CTEXT           "ホスト名",IDC_STATIC,176,68,40,12,SS_CENTERIMAGE | 
+    CTEXT           "Host Name",IDC_STATIC,176,68,40,12,SS_CENTERIMAGE | 
                     SS_SUNKEN | NOT WS_GROUP
     EDITTEXT        EDIT_HOST,220,68,56,12,ES_AUTOHSCROLL
-    CONTROL         "ユーザ名",CHECK_USER,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "User Name",CHECK_USER,"Button",BS_AUTOCHECKBOX | 
                     BS_CENTER | BS_VCENTER | BS_PUSHLIKE | WS_TABSTOP,176,84,
                     40,12
     EDITTEXT        EDIT_USER,220,84,56,12,ES_AUTOHSCROLL
-    CONTROL         "パスワード",CHECK_PASSWORD,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "Password",CHECK_PASSWORD,"Button",BS_AUTOCHECKBOX | 
                     BS_CENTER | BS_VCENTER | BS_PUSHLIKE | WS_TABSTOP,176,
                     100,40,12
     EDITTEXT        EDIT_PASSWORD,220,100,56,12,ES_PASSWORD | ES_AUTOHSCROLL
-    CONTROL         "マクロファイルを指定して実行",RADIO_MACRO,"Button",
+    CONTROL         "specified macro file",RADIO_MACRO,"Button",
                     BS_AUTORADIOBUTTON | BS_LEFT | BS_VCENTER,168,124,108,12
     EDITTEXT        EDIT_MACRO,176,136,84,12,ES_AUTOHSCROLL
     PUSHBUTTON      "....",BUTTON_MACRO,264,136,12,12
-    CONTROL         "起動のみ",RADIO_DIRECT,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "launch only",RADIO_DIRECT,"Button",BS_AUTORADIOBUTTON | 
                     BS_LEFT | BS_VCENTER,168,160,108,12
-    CONTROL         "ttsshを使う",CHECK_TTSSH,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "use ttssh",CHECK_TTSSH,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,220,200,56,16
-    GROUPBOX        "起動の種類",IDC_STATIC,164,40,116,140
-    CONTROL         "起動時に実行",CHECK_STARTUP,"Button",BS_AUTOCHECKBOX | 
+    GROUPBOX        "Launch Pattern",IDC_STATIC,164,40,116,140
+    CONTROL         "execute",CHECK_STARTUP,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,220,184,56,16
 END
 
-DIALOG_ETC DIALOG DISCARDABLE  0, 0, 214, 175
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "詳細設定"
-FONT 9, "ＭＳ Ｐゴシック"
+DIALOG_ETC DIALOGEX 0, 0, 214, 175
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Configuration Details"
+FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,100,156,33,14
-    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,172,156,33,14
-    CTEXT           "起動アプリ",IDC_STATIC,8,8,44,12,SS_CENTERIMAGE | 
+    PUSHBUTTON      "Cancel",IDCANCEL,172,156,33,14
+    CTEXT           "Application",IDC_STATIC,8,8,44,12,SS_CENTERIMAGE | 
                     SS_SUNKEN
     EDITTEXT        EDIT_TTMPATH,56,8,132,12,ES_AUTOHSCROLL
     PUSHBUTTON      "....",BUTTON_TTMPATH,192,8,12,12
     EDITTEXT        EDIT_INITFILE,12,56,172,12,ES_AUTOHSCROLL
     PUSHBUTTON      "....",BUTTON_INITFILE,188,56,12,12
-    CTEXT           "ユーザ名",IDC_STATIC,16,124,40,12,SS_CENTERIMAGE | 
+    CTEXT           "User Name",IDC_STATIC,16,124,40,12,SS_CENTERIMAGE | 
                     SS_SUNKEN
-    CTEXT           "パスワード",IDC_STATIC,108,124,40,12,SS_CENTERIMAGE | 
+    CTEXT           "Password",IDC_STATIC,108,124,40,12,SS_CENTERIMAGE | 
                     SS_SUNKEN
     EDITTEXT        EDIT_PROMPT_USER,60,124,44,12,ES_AUTOHSCROLL
     EDITTEXT        EDIT_PROMPT_PASS,152,124,44,12,ES_AUTOHSCROLL
-    CTEXT           "オプション",IDC_STATIC,8,24,44,12,SS_CENTERIMAGE | 
+    CTEXT           "Option",IDC_STATIC,8,24,44,12,SS_CENTERIMAGE | 
                     SS_SUNKEN
     EDITTEXT        EDIT_OPTION,56,24,148,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "ﾃﾞﾌｫﾙﾄ",BUTTON_DEFAULT,136,156,33,14
-    GROUPBOX        "自動ログイン用設定項目",IDC_STATIC,8,84,196,68
-    GROUPBOX        "TeraTerm設定ファイル(「起動のみ」以外)",IDC_STATIC,8,44,
-                    196,32
+    PUSHBUTTON      "Default",BUTTON_DEFAULT,136,156,33,14
+    GROUPBOX        "Configuration for autologin",IDC_STATIC,8,84,196,68
+    GROUPBOX        "TeraTerm Configuration File(except launching)",
+                    IDC_STATIC,8,44,196,32
     EDITTEXT        EDIT_LOG,60,96,124,12,ES_AUTOHSCROLL
-    CTEXT           "ログファイル",IDC_STATIC,12,96,44,12,SS_CENTERIMAGE | 
+    CTEXT           "log file",IDC_STATIC,12,96,44,12,SS_CENTERIMAGE | 
                     SS_SUNKEN
     PUSHBUTTON      "....",BUTTON_LOG,188,96,12,12
-    GROUPBOX        "プロンプト",IDC_STATIC,12,112,188,32
+    GROUPBOX        "Prompt",IDC_STATIC,12,112,188,32
 END
 
-DIALOG_VERSION DIALOG DISCARDABLE  0, 0, 149, 66
-STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "バージョン情報"
-FONT 9, "ＭＳ Ｐゴシック"
+DIALOG_VERSION DIALOGEX 0, 0, 150, 74
+STYLE DS_SETFONT | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Version Information"
+FONT 9, "ＭＳ Ｐゴシック", 400, 0, 0x80
 BEGIN
-    DEFPUSHBUTTON   "閉じる",IDOK,52,48,44,14
-    CTEXT           "Tera Term 支援ツール\r\nTeraTerm Menu Version 0.94r2",
+    DEFPUSHBUTTON   "OK",IDOK,51,53,44,14
+    CTEXT           "Tera Term launch tool\r\nTeraTerm Menu Version 0.94r2",
                     IDC_STATIC,24,9,124,20
-    CTEXT           "Copyright(C) 1997-2003 S.Hayakawa",IDC_STATIC,4,33,144,
-                    8,SS_CENTERIMAGE
-    ICON            TTERM_ICON,STATIC_ICON,4,8,20,20
+    LTEXT           "Copyright(C) 1997-2003 S.Hayakawa\r\nSSH2 support 1.00 (Y.Hirata), 2004",
+                    IDC_STATIC,27,31,116,18
+    ICON            TTERM_ICON,STATIC_ICON,4,8,18,21
 END
 
 
@@ -185,7 +186,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
+GUIDELINES DESIGNINFO 
 BEGIN
     DIALOG_CONFIG, DIALOG
     BEGIN
@@ -206,15 +207,14 @@ BEGIN
     DIALOG_VERSION, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 142
+        RIGHTMARGIN, 143
         TOPMARGIN, 7
-        BOTTOMMARGIN, 59
+        BOTTOMMARGIN, 67
     END
 END
 #endif    // APSTUDIO_INVOKED
 
 
-#ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
@@ -237,18 +237,15 @@ BEGIN
     BEGIN
         BLOCK "041104b0"
         BEGIN
-            VALUE "Comments", "TeraTerm支援ツール\0"
-            VALUE "CompanyName", "Shinpei Hayakawa\0"
-            VALUE "FileDescription", "TeraTerm Menu\0"
-            VALUE "FileVersion", "0.94r2\0"
-            VALUE "InternalName", "ttpmenu\0"
-            VALUE "LegalCopyright", "Copyright (C) 1997-2003 Shinpei Hayakawa\0"
-            VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "ttpmenu.exe\0"
-            VALUE "PrivateBuild", "\0"
-            VALUE "ProductName", "TeraTerm Menu\0"
-            VALUE "ProductVersion", "0.94r2\0"
-            VALUE "SpecialBuild", "\0"
+            VALUE "Comments", "TeraTerm支援ツール"
+            VALUE "CompanyName", "Shinpei Hayakawa"
+            VALUE "FileDescription", "TeraTerm Menu"
+            VALUE "FileVersion", "0.94r2"
+            VALUE "InternalName", "ttpmenu"
+            VALUE "LegalCopyright", "Copyright (C) 1997-2003 Shinpei Hayakawa"
+            VALUE "OriginalFilename", "ttpmenu.exe"
+            VALUE "ProductName", "TeraTerm Menu"
+            VALUE "ProductVersion", "0.94r2"
         END
     END
     BLOCK "VarFileInfo"
@@ -256,8 +253,6 @@ BEGIN
         VALUE "Translation", 0x411, 1200
     END
 END
-
-#endif    // !_MAC
 
 #endif    // 日本語 resources
 /////////////////////////////////////////////////////////////////////////////

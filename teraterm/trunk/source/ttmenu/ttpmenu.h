@@ -76,10 +76,10 @@
 #define		KEY_LOG					"Log"
 #define		KEY_STARTUP				"Startup"
 
-#define		STR_ICONMODE			"大きいアイコンで表示"
-#define		STR_LEFTBUTTONPOPUP		"左クリックでリスト表示"
-#define		STR_HOTKEY				"リスト表示ホットキー(Ctl+Alt+M)"
-#define		STR_NOENTRY				"(なし)"
+#define		STR_ICONMODE			"showing large icon"
+#define		STR_LEFTBUTTONPOPUP		"showing list by left-click"
+#define		STR_HOTKEY				"showing list hotkey(Ctl+Alt+M)"
+#define		STR_NOENTRY				"(none)"
 
 // 設定情報構造体
 struct JobInfo {

@@ -16,6 +16,8 @@
 #include	"winmisc.h"
 #include	"resource.h"
 
+// UTF-8 TeraTermでは、デフォルトインストール先を下記に変更した。(2004.12.2 yutaka)
+#define DEFAULT_PATH "C:\\PROGRAM FILES\\teraterm"
 
 // グローバル変数
 HWND		g_hWnd;				// メインのハンドル
@@ -123,7 +125,7 @@ BOOL SetMenuFont(HWND hWnd)
 	static int	open = 0;
 
 	if (open == 1) {
-		while ((hFontWnd = ::FindWindow(NULL, "ﾌｫﾝﾄ")) != NULL) {
+		while ((hFontWnd = ::FindWindow(NULL, "Font")) != NULL) {
 			if (hWnd == ::GetParent(hFontWnd)) {
 				::SetForceForegroundWindow(hFontWnd);
 				break;
@@ -201,7 +203,8 @@ BOOL ExtractAssociatedIconEx(char *szPath, HICON *hLargeIcon, HICON *hSmallIcon)
 BOOL GetApplicationFilename(char *szName, char *szPath)
 {
 	char	szSubKey[MAX_PATH];
-	char	szDefault[MAX_PATH] = "C:\\PROGRAM FILES\\TTERMPRO";
+	char	szDefault[MAX_PATH] = DEFAULT_PATH;
+
 	char	szTTermPath[MAX_PATH];
 	BOOL	bRet;
 	BOOL	bTtssh = FALSE;
@@ -465,16 +468,16 @@ BOOL ManageWMNotify_Config(LPARAM lParam)
 		lpttt	= (LPTOOLTIPTEXT) lParam;
 		switch (idCtrl) {
 		case BUTTON_SET:
-			lpttt->lpszText	= "登録";
+			lpttt->lpszText	= "Regist";
 			return TRUE; 
 		case BUTTON_DELETE:
-			lpttt->lpszText	= "削除";
+			lpttt->lpszText	= "Delete";
 			return TRUE; 
 		case BUTTON_ETC:
-			lpttt->lpszText	= "詳細設定";
+			lpttt->lpszText	= "Configure";
 			return TRUE; 
 		case CHECK_TTSSH:
-			lpttt->lpszText	= "ttsshが実行されるだけで、自動ログイン等には対応していませんので、ご注意下さい。";
+			lpttt->lpszText	= "use TTSSH";
 			return TRUE; 
 		}
     }
@@ -616,7 +619,7 @@ BOOL InitConfigDlg(HWND hWnd)
    ======1=========2=========3=========4=========5=========6=========7======= */
 BOOL InitEtcDlg(HWND hWnd)
 {
-	char	szDefault[MAX_PATH] = "C:\\PROGRAM FILES\\TTERMPRO";
+	char	szDefault[MAX_PATH] = DEFAULT_PATH;
 	char	szTTermPath[MAX_PATH];
 
 	if (::lstrlen(g_JobInfo.szTeraTerm) == 0) {
@@ -677,7 +680,7 @@ BOOL InitVersionDlg(HWND hWnd)
    ======1=========2=========3=========4=========5=========6=========7======= */
 BOOL SetDefaultEtcDlg(HWND hWnd)
 {
-	char	szDefault[MAX_PATH] = "C:\\PROGRAM FILES\\TTERMPRO";
+	char	szDefault[MAX_PATH] = DEFAULT_PATH;
 	char	szTTermPath[MAX_PATH];
 
 	::GetProfileString("Tera Term Pro", "Path", szDefault, szTTermPath, MAX_PATH);
@@ -806,7 +809,8 @@ BOOL MakeTTL(char *TTLName, JobInfo *jobInfo)
 BOOL ConnectHost(HWND hWnd, UINT idItem, char *szJobName)
 {
 	char	szName[MAX_PATH];
-	char	szDefault[MAX_PATH] = "C:\\PROGRAM FILES\\TTERMPRO";
+	char	szDefault[MAX_PATH] = DEFAULT_PATH;
+
 	char	szDirectory[MAX_PATH];
 	char	szHostName[MAX_PATH];
 	char	szTempPath[MAX_PATH];
@@ -844,7 +848,7 @@ BOOL ConnectHost(HWND hWnd, UINT idItem, char *szJobName)
 		::GetTempPath(MAX_PATH, szTempPath);
 		::GetTempFileName(szTempPath, "ttm", 0, szMacroFile);
 		if (MakeTTL(szMacroFile, &jobInfo) == FALSE) {
-			ErrorMessage(hWnd, "ttpmenu.TTLの作成に失敗しました。\r\n");
+			ErrorMessage(hWnd, "Could not make 'ttpmenu.TTL'\r\n");
 			return FALSE;
 		}
 		break;
@@ -877,7 +881,7 @@ BOOL ConnectHost(HWND hWnd, UINT idItem, char *szJobName)
 	ExecInfo.hInstApp		= g_hI;
 
 	if (::ShellExecuteEx(&ExecInfo) == FALSE) {
-		ErrorMessage(hWnd, "アプリケーションの実行に失敗しました。\r\n");
+		ErrorMessage(hWnd, "Launching the application was failure.\r\n");
 		::DeleteFile(szTempPath);
 	}
 
@@ -916,7 +920,7 @@ BOOL InitMenu(void)
 		g_hConfigMenu	= ::GetSubMenu(g_hSubMenu, 1);
 		if (g_hMenu == NULL || g_hSubMenu == NULL || g_hListMenu == NULL)
 			return FALSE;
-		::ModifyMenu(g_hSubMenu, ID_EXEC, MF_BYCOMMAND | MF_POPUP, (UINT) g_hListMenu, (LPCTSTR) "実行");
+		::ModifyMenu(g_hSubMenu, ID_EXEC, MF_BYCOMMAND | MF_POPUP, (UINT) g_hListMenu, (LPCTSTR) "Execute");
 	}
 
 	return TRUE;
@@ -1175,17 +1179,19 @@ BOOL SaveEtcInformation(HWND hWnd)
 BOOL SaveLoginHostInformation(HWND hWnd)
 {
 	long	index;
-	char	szDefault[MAX_PATH] = "C:\\PROGRAM FILES\\TTERMPRO";
+	char	szDefault[MAX_PATH] = DEFAULT_PATH;
 	char	szTTermPath[MAX_PATH];
 	char	szName[MAX_PATH];
 	DWORD	dwErr;
 
 	if (::GetDlgItemText(hWnd, EDIT_ENTRY, g_JobInfo.szName, MAX_PATH) == 0) {
-		::MessageBox(hWnd, "登録名を入力して下さい。", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
+//		::MessageBox(hWnd, "登録名を入力して下さい。", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
+		::MessageBox(hWnd, "error: no registry name", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
 		return FALSE;
 	}
 	if (_tcschr(g_JobInfo.szName, '\\') != NULL) {
-		::MessageBox(hWnd, "登録名に\"\\\"は使用できません。", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
+//		::MessageBox(hWnd, "登録名に\"\\\"は使用できません。", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
+		::MessageBox(hWnd, "can't use \"\\\" in registry name", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
 		return FALSE;
 	}
 
@@ -1197,7 +1203,8 @@ BOOL SaveLoginHostInformation(HWND hWnd)
 		g_JobInfo.dwMode = MODE_DIRECT;
 
 	if (::GetDlgItemText(hWnd, EDIT_HOST, g_JobInfo.szHostName, MAX_PATH) == 0 && g_JobInfo.dwMode == MODE_AUTOLOGIN) {
-		::MessageBox(hWnd, "ホスト名を入力して下さい。", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
+//		::MessageBox(hWnd, "ホスト名を入力して下さい。", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
+		::MessageBox(hWnd, "error: no host name", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
 		return FALSE;
 	}
 
@@ -1208,7 +1215,8 @@ BOOL SaveLoginHostInformation(HWND hWnd)
 	::GetDlgItemText(hWnd, EDIT_PASSWORD, g_JobInfo.szPassword, MAX_PATH);
 
 	if (::GetDlgItemText(hWnd, EDIT_MACRO, g_JobInfo.szMacroFile, MAX_PATH) == 0 && g_JobInfo.dwMode == MODE_MACRO) {
-		::MessageBox(hWnd, "マクロファイル名を入力して下さい。", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
+//		::MessageBox(hWnd, "マクロファイル名を入力して下さい。", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
+		::MessageBox(hWnd, "error: no macro filename", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
 		return FALSE;
 	}
 
@@ -1434,7 +1442,8 @@ BOOL ManageWMCommand_Config(HWND hWnd, WPARAM wParam)
 		return TRUE;
 	case BUTTON_MACRO:
 		::GetDlgItemText(hWnd, EDIT_MACRO, g_JobInfo.szMacroFile, MAX_PATH);
-		OpenFileDlg(hWnd, EDIT_MACRO, "マクロファイルを指定", "マクロファイル(*.ttl)\0*.ttl\0すべてのファイル(*.*)\0*.*\0\0", g_JobInfo.szMacroFile);
+//		OpenFileDlg(hWnd, EDIT_MACRO, "マクロファイルを指定", "マクロファイル(*.ttl)\0*.ttl\0すべてのファイル(*.*)\0*.*\0\0", g_JobInfo.szMacroFile);
+		OpenFileDlg(hWnd, EDIT_MACRO, "specifying macro file", "macro file(*.ttl)\0*.ttl\0all files(*.*)\0*.*\0\0", g_JobInfo.szMacroFile);
 		return TRUE;
 	case RADIO_LOGIN:
 		EnableItem(hWnd, EDIT_HOST, TRUE);
@@ -1504,15 +1513,18 @@ BOOL ManageWMCommand_Etc(HWND hWnd, WPARAM wParam)
 		return TRUE;
 	case BUTTON_TTMPATH:
 		::GetDlgItemText(hWnd, EDIT_TTMPATH, szPath, MAX_PATH);
-		OpenFileDlg(hWnd, EDIT_TTMPATH, "TeraTermを指定", "実行ファイル(*.exe)\0*.exe\0すべてのファイル(*.*)\0*.*\0\0", szPath);
+//		OpenFileDlg(hWnd, EDIT_TTMPATH, "TeraTermを指定", "実行ファイル(*.exe)\0*.exe\0すべてのファイル(*.*)\0*.*\0\0", szPath);
+		OpenFileDlg(hWnd, EDIT_TTMPATH, "specifying TeraTerm", "execute file(*.exe)\0*.exe\0all files(*.*)\0*.*\0\0", szPath);
 		return TRUE;
 	case BUTTON_INITFILE:
 		::GetDlgItemText(hWnd, EDIT_INITFILE, szPath, MAX_PATH);
-		OpenFileDlg(hWnd, EDIT_INITFILE, "設定ファイルを指定", "設定ファイル(*.ini)\0*.ini\0すべてのファイル(*.*)\0*.*\0\0", szPath);
+//		OpenFileDlg(hWnd, EDIT_INITFILE, "設定ファイルを指定", "設定ファイル(*.ini)\0*.ini\0すべてのファイル(*.*)\0*.*\0\0", szPath);
+		OpenFileDlg(hWnd, EDIT_INITFILE, "specifying config file", "config file(*.ini)\0*.ini\0all files(*.*)\0*.*\0\0", szPath);
 		return TRUE;
 	case BUTTON_LOG:
 		::GetDlgItemText(hWnd, EDIT_LOG, szPath, MAX_PATH);
-		OpenFileDlg(hWnd, EDIT_LOG, "ログファイルを指定", "ログファイル(*.log)\0*.ini\0すべてのファイル(*.*)\0*.*\0\0", szPath);
+//		OpenFileDlg(hWnd, EDIT_LOG, "ログファイルを指定", "ログファイル(*.log)\0*.ini\0すべてのファイル(*.*)\0*.*\0\0", szPath);
+		OpenFileDlg(hWnd, EDIT_LOG, "specifying log file", "log file(*.log)\0*.ini\0all files(*.*)\0*.*\0\0", szPath);
 		return TRUE;
 	}
 
@@ -1952,3 +1964,7 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR nCmdLine, int nCmdShow)
 
 	return TRUE;
 }
+
+/*
+ * $Log: not supported by cvs2svn $
+ */
