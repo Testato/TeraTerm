@@ -196,6 +196,9 @@ typedef struct _TInstVar {
   int kexgex_min;
   int kexgex_bits;
   int kexgex_max;
+  int ssh2_autologin;
+  char ssh2_username[MAX_PATH];
+  char ssh2_password[MAX_PATH];
 
 } TInstVar;
 
@@ -218,3 +221,7 @@ void get_teraterm_dir_relative_name(char FAR * buf, int bufsize, char FAR * base
 int copy_teraterm_dir_relative_path(char FAR * dest, int destsize, char FAR * basename);
 
 #endif
+
+/*
+ * $Log: not supported by cvs2svn $
+ */

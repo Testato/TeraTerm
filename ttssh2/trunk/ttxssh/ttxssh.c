@@ -1116,6 +1116,7 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 			} else if (stricmp(option + 4, "-autologin") == 0
 					   || stricmp(option + 4, "-autologon") == 0) {
 				pvar->settings.TryDefaultAuth = TRUE;
+
 			} else if (MATCH_STR(option + 4, "-consume=") == 0) {
 				read_ssh_options_from_user_file(pvar, option + 13);
 				DeleteFile(option + 13);
@@ -1154,6 +1155,29 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 			// TERATERM.INI でSSHが有効になっている場合、うまくCygtermが起動しないことが
 			// あることへの対処。(2004.10.11 yutaka)
 			pvar->settings.Enabled = 0;
+
+		} else if (MATCH_STR(option + 1, "auth") == 0) {
+			// SSH2自動ログインオプションの追加 (2004.11.30 yutaka)
+			//
+			// SYNOPSIS: /ssh /auth=認証メソッド /user=ユーザ名 /passwd=パスワード
+			// EXAMPLE: /ssh /auth=password /user=nike "/passwd=a b c"
+			// NOTICE: パスワードに空白が含まれる場合は、オプション全体を引用符で囲むこと。
+			//
+			pvar->ssh2_autologin = 1; // for SSH2 (2004.11.30 yutaka)
+
+			if (MATCH_STR(option + 5, "=password") == 0) { // パスワード認証
+				pvar->auth_state.cur_cred.method = SSH_AUTH_PASSWORD;
+
+			} else {
+				// TODO:
+
+			}
+
+		} else if (MATCH_STR(option + 1, "user=") == 0) {
+			_snprintf(pvar->ssh2_username, sizeof(pvar->ssh2_username), "%s", option + 6);
+
+		} else if (MATCH_STR(option + 1, "passwd=") == 0) {
+			_snprintf(pvar->ssh2_password, sizeof(pvar->ssh2_password), "%s", option + 8);
 
 		}
 
@@ -1977,6 +2001,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2004/11/29 15:52:37  yutakakn
+ * SSHのdefault protocolをSSH2にした。
+ *
  * Revision 1.2  2004/11/23 14:32:26  yutakakn
  * 接続ダイアログの起動時に、TCP/IPの「ホスト名」にフォーカスが当たるようにした。
  *

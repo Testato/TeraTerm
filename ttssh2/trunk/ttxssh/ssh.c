@@ -1738,6 +1738,7 @@ void SSH_init(PTInstVar pvar)
 	pvar->settings.ssh_protocol_version = 2;  // SSH2(default)
 	pvar->rekeying = 0;
 	pvar->key_done = 0;
+	pvar->ssh2_autologin = 0;  // autologin disabled(default)
 
 }
 
@@ -2263,8 +2264,10 @@ static char *myproposal[PROPOSAL_MAX] = {
 	"ssh-dss,ssh-rsa",
 	"3des-cbc,aes128-cbc",
 	"3des-cbc,aes128-cbc",
-	"hmac-sha1,hmac-md5",
-	"hmac-sha1,hmac-md5",
+	"hmac-sha1",
+//	"hmac-sha1,hmac-md5",
+	"hmac-sha1",
+//	"hmac-sha1,hmac-md5",
 	"none",
 	"none",
 	"",
@@ -4010,20 +4013,24 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 
 	// ペイロードの構築
 	// TODO:
-	s = pvar->auth_state.user;  // ユーザ名
-#ifdef SSH2_DEBUG
-	s = "nike";
-#endif
+	if (pvar->ssh2_autologin == 1) { // SSH2自動ログイン
+		s = pvar->ssh2_username;
+	} else {
+		s = pvar->auth_state.user;  // ユーザ名
+	}
+
 	buffer_put_string(msg, s, strlen(s));
 	s = "ssh-connection";
 	buffer_put_string(msg, s, strlen(s));
 	s = "password";
 	buffer_put_string(msg, s, strlen(s));
 	buffer_put_char(msg, 0); // 0
-	s = pvar->auth_state.cur_cred.password;  // パスワード
-#ifdef SSH2_DEBUG
-	s = "kukuri";
-#endif
+
+	if (pvar->ssh2_autologin == 1) { // SSH2自動ログイン
+		s = pvar->ssh2_password;
+	} else {
+		s = pvar->auth_state.cur_cred.password;  // パスワード
+	}
 	buffer_put_string(msg, s, strlen(s));
 
 	// パケット送信
@@ -4399,5 +4406,8 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 }
 
 /*
- * $Log: not supported by cvs2svn $ 
+ * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/11/29 15:52:37  yutakakn
+ * SSHのdefault protocolをSSH2にした。
+ * 
  */

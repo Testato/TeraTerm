@@ -208,6 +208,26 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 				   pvar->session_settings.DefaultRhostsLocalUserName);
 
 	update_server_supported_types(pvar, dlg);
+
+	// SSH2 autologin (2004.12.1 yutaka)
+	// ユーザ、パスワード、認証メソッドを自動設定して、一定時間後にOKボタンを押下する。
+	if (pvar->ssh2_autologin == 1) {
+		SetDlgItemText(dlg, IDC_SSHUSERNAME, pvar->ssh2_username);
+		EnableWindow(GetDlgItem(dlg, IDC_SSHUSERNAME), FALSE);
+		EnableWindow(GetDlgItem(dlg, IDC_SSHUSERNAMELABEL), FALSE);
+
+		SetDlgItemText(dlg, IDC_SSHPASSWORD, pvar->ssh2_password);
+		EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORD), FALSE);
+		EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORDCAPTION), FALSE);
+
+		if (pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) {
+			CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL, IDC_SSHUSEPASSWORD);
+		} else {
+			// TODO
+
+		}
+	}
+
 }
 
 static char FAR *alloc_control_text(HWND ctl)
@@ -385,6 +405,8 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 								   LPARAM lParam)
 {
+	const int IDC_TIMER1 = 300;
+	const int autologin_timeout = 1000; // ミリ秒
 	PTInstVar pvar;
 
 	switch (msg) {
@@ -394,7 +416,17 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		SetWindowLong(dlg, DWL_USER, lParam);
 
 		init_auth_dlg(pvar, dlg);
+
+		// SSH2 autologinが有効の場合は、タイマを仕掛ける。 (2004.12.1 yutaka)
+		if (pvar->ssh2_autologin == 1) {
+			SetTimer(dlg, IDC_TIMER1, autologin_timeout, 0);
+		}
 		return FALSE;			/* because we set the focus */
+
+	case WM_TIMER:
+		KillTimer(dlg, IDC_TIMER1);
+		SendMessage(dlg, WM_COMMAND, IDOK, 0);
+		return TRUE;
 
 	case WM_COMMAND:
 		pvar = (PTInstVar) GetWindowLong(dlg, DWL_USER);
@@ -477,6 +509,7 @@ int AUTH_set_supported_auth_types(PTInstVar pvar, int types)
 
 static void start_user_auth(PTInstVar pvar)
 {
+	// 認証ダイアログを表示させる (2004.12.1 yutaka)
 	PostMessage(pvar->NotificationWindow, WM_COMMAND, (WPARAM) ID_SSHAUTH,
 				(LPARAM) NULL);
 	pvar->auth_state.cur_cred.method = SSH_AUTH_NONE;
@@ -566,10 +599,14 @@ void AUTH_advance_to_next_cred(PTInstVar pvar)
 				pvar->auth_state.flags |=
 					AUTH_START_USER_AUTH_ON_ERROR_END;
 			} else {
+				// ここで認証ダイアログを出現させる (2004.12.1 yutaka)
+				// コマンドライン指定なしの場合
 				start_user_auth(pvar);
 			}
 		}
 	} else {
+		// ここで認証ダイアログを出現させる (2004.12.1 yutaka)
+		// コマンドライン指定あり(/auth=xxxx)の場合
 		start_user_auth(pvar);
 	}
 }
@@ -880,3 +917,7 @@ void AUTH_end(PTInstVar pvar)
 
 	AUTH_destroy_cur_cred(pvar);
 }
+
+/*
+ * $Log: not supported by cvs2svn $
+ */
