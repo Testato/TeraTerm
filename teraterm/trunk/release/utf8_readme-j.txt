@@ -179,6 +179,47 @@ MaxBuffSize=500000
     ttermpro.exe /KR=utf8 /4 192.168.1.3:22 /ssh /2
 
 
+●マクロリファレンス: connect
+
+There are 3 types of connection you can establish from TeraTerm macro: 
+
+- Telnet connection (port 23) 
+- SSH1 or SSH2 connection (port 22) 
+- Connection via COM port 
+
+Telnet connections 
+
+connect 'myserver /nossh' 
+or 
+connect 'myserver' 
+
+Using /nossh is strongly recommended. Without this parameter TeraTerm will start connecting with the same method (telnet or SSH) that was used during last time when teraterm.ini file was saved. In case it was SSH than your macro will try to connect via SSH and will eventually fail. 
+
+SSH connections 
+
+connect 'myserver /ssh' 
+or 
+connect 'myserver /ssh /1' 
+or 
+connect 'myserver /ssh /2' 
+or 
+connect 'myserver /ssh /auth=password /user=username /passwd=password'' 
+or 
+connect 'myserver /ssh /1 /auth=password /user=username /passwd=password'' 
+or 
+connect 'myserver /ssh /2 /auth=password /user=username /passwd=password'' 
+
+The first way will start SSH connection without defining whether SSH1 or SSH2 has to be used. Parameters /1 and /2 force to use SSH1 or SSH2 method. The last 3 ways allow to skip popup dialog and pass username and password directly from macro. Please note that /auth=password is the parameter saying that authentication will be done by entering password thus you should not replace the word 'password' in it with actual password. Only the words shown above with italic font has to be substituted with actual values. 
+Please remember that entering actual username and password in TeraTerm macro will cause them to be stored as an open text and it is your responsibility to keep such macro is secure location. 
+
+Connections via COM port 
+
+connect '/C=x' 
+
+Here x represents COM port number. For example to connect via COM port 1 the command will look like: connect '/C=1'
+
+  source URL: http://www.neocom.ca/forum/viewtopic.php?t=6
+
 
 ■開発環境
   OS: Windows XP Professional
