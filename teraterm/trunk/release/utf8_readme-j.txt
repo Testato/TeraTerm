@@ -190,24 +190,42 @@ CygwinDirectory = c:\cygwin
   IPv6版TeraTerm Proは加藤淳也氏の著作物です。
   CygtermはNSym氏の著作物です。
   TTSSHはRobert O'Callahan氏の著作物です。
+  TeraTerm Menuは早川信平氏の著作物です。
+  LogMeInはNeoCom Solutionsの著作物です。
   本プログラムは無償で利用できますが、作者は本プログラムの使用にあたり
   生じる障害や問題に対して一切の責任を負いません。
 
   e-mail : yutakakn@mail.goo.ne.jp
   URL    : http://hp.vector.co.jp/authors/VA013320/
+  CVS    : http://sourceforge.jp/projects/ttssh2/
   TeraTerm Pro: http://hp.vector.co.jp/authors/VA002416/
   ANSIカラー色変更＆行連結パッチ: http://www.sakurachan.org/ml/teraterm/msg00264.html
   IPv6版TeraTerm Pro: http://win6.jp/TeraTerm/index.html
   Cygterm: http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
+  TeraTerm Menu: http://park11.wakwak.com/~shinpei/freesoft/index.html
+  LogMeIn: http://www.neocom.ca/freeware/LogMeIn/
+
+
+■注意事項
+  ・UTF-8からShift_JISへ変換できない文字は疑問符表示となります。
+  ・UTF-8環境でのEUC出力が画面に反映されないことがあります。
 
 
 ■制限事項
-  ・UTF-8からShift_JISへ変換できない文字は疑問符表示となります。
-  ・UTF-8環境でのEUC出力が画面に反映されないことがあります。
   ・UTF-8対応は現在日本語のみです。
 
 
 ■改版履歴
+
+2004.12.8 (Ver 2.07)
+  ・"External setup"をsetup menu配下へ"Additional settings"として移動
+  ・File menuに"Duplicate session"を追加（/DUPLICATEオプションを追加）
+  ・ttmacro.exeのプロセス優先度は、ログ採取中のみに下げるようにした。
+  ・行が連結している場合は、ログファイルに改行コードを含めないようにした（EnableContinuedLineCopy機能が有効の場合のみ）。
+  ・スクロールバッファの最大ライン数を400000までに拡張した。
+  ・LogMeIn 1.21を同梱した。収録許可をBoris氏よりいただきました。感謝します。
+  ・TeraTerm Menu 0.94r2(+SSH2 support 1.00)を同梱した。収録許可を早川様よりいただきました。感謝します。
+  ・その他細かいバグ修正
 
 2004.11.6 (Ver 2.06)
   ・DEC特殊フォントによる罫線描画時にゴミが残る問題を修正した。これにより、UTF-8環境では日本語以外の言語には未対応となる。また、BOLD styleを使用すると、文字列の右端が切れなくなる。

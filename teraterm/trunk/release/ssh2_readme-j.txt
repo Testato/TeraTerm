@@ -44,6 +44,20 @@
   ４．ユーザ認証に成功すれば、サーバ側のプロンプトが出てくる。
 
 
+●SSH自動ログイン
+  以下のコマンドライン・オプションの使用により、SSH1およびSSH2を利用してユーザの
+  自動ログインが可能となります。ただし、パスワードに空白を含めることはできません。
+  また、password認証のみのサポートとなっています。
+  
+  書式）
+     ttermpro.exe ホスト名:22 /ssh [/1|/2] /auth=password /user=ユーザ名 /passwd=パスワード
+
+  例）SSH1
+     ttermpro.exe 192.168.1.3:22 /ssh /1 /auth=password /user=nike /passwd=kukuri
+
+  例）SSH2
+     ttermpro.exe 192.168.1.3:22 /ssh /2 /auth=password /user=nike /passwd=kukuri
+
 
 ■開発環境
   OS: Windows XP Professional
@@ -75,13 +89,17 @@
   ・パケットの圧縮はサポートしていません
   ・認証機構は password authentication にのみ対応しています
   ・サポートしているメッセージ認証は HMAC-SHA1 のみです
+  ・ポートフォワーディングはサポートしていません
 
 
 ■改版履歴
 
-2004.??.?? (Ver 1.00 beta2)
+2004.12.8 (Ver 1.00)
+  ・SSH1/SSH2自動ログインをサポート（password認証のみ）。/auth, /username, /passwdオプションを追加。
+  ・SSHのデフォルトバージョンを SSH2 に変更した
   ・接続ダイアログのtab orderを修正した。
   ・接続ダイアログの起動時、ホスト名にフォーカスが当たるようにした。
+  ・SSH2自動ログイン・サンプルマクロ(ssh2login.ttl)を同梱した
 
 2004.11.7 (Ver 1.00 beta1)
   ・暗号アルゴリズム AES128 をサポートした

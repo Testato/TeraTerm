@@ -194,6 +194,8 @@ CygwinDirectory = c:\cygwin
   Copyright of IPv6 version of TeraTerm Pro belongs to J.Kato.
   Copyright of Cygterm belongs to NSym.
   Copyright of original TTSSH belongs to Robert O'Callahan.
+  Copyright of original TeraTerm Menu to Shinpei Hayakawa.
+  Copyright of LogMeIn to NeoCom Solutions.
 
   This program is provided "as is" without warranties of any kind, either expressed or 
   implied, including, but not limited to, the implied warranties of merchantability and fitness 
@@ -207,19 +209,35 @@ CygwinDirectory = c:\cygwin
 
   e-mail : yutakakn@mail.goo.ne.jp
   URL    : http://hp.vector.co.jp/authors/VA013320/
+  CVS    : http://sourceforge.jp/projects/ttssh2/
   TeraTerm Pro: http://hp.vector.co.jp/authors/VA002416/
   ANSI color change & concatenating multi-line patch: http://www.sakurachan.org/ml/teraterm/msg00264.html
   IPv6 version TeraTerm Pro: http://win6.jp/TeraTerm/index.html
   Cygterm: http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
+  TeraTerm Menu: http://park11.wakwak.com/~shinpei/freesoft/index.html
+  LogMeIn: http://www.neocom.ca/freeware/LogMeIn/
+
+
+* Notes of current release
+  - The characters that can't be converted from UTF-8 to Shift_JIS will be shown as '?'.
+  - The EUC output in UTF-8 environment may not be shown on TeraTerm screen.
 
 
 * Limitations of current release
-  - The characters that can't be converted from UTF-8 to Shift_JIS will be shown as '?'.
-  - The EUC output in UTF-8 environment may not be shown on TeraTerm screen.
   - UTF-8 version is only Japanese characters now.
 
 
 * History
+
+2004.12.8 (Ver 2.07)
+  - renamed "External setup" "Additional settings and removed the dialog to "Setup" menu
+  - added "Duplicate session" to "File" menu (add /DUPLICATE option)
+  - changed downing ttmacro.exe process priority only with logging
+  - didn't include CR+LF in log file when multiple line has concatenated (as EnableContinuedLineCopy enabled)
+  - extended the max line of scroll buffer to 400000 line
+  - added LogMeIn 1.21. It is thankful to Boris Maisuradze.
+  - added TeraTerm Menu 0.94r2(+SSH2 support 1.00). It is thankful to Shinpei Hayakawa.
+  - in addition, fine bug fix
 
 2004.11.6 (Ver 2.06)
   - fixed drawing ruled line with DEC special font remains garbage graphics, moreover UTF-8 feature to display only Japanese characters. And also fixed BOLD style of font problem.

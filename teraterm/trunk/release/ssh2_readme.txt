@@ -44,7 +44,22 @@
   2. Enter username and password in "SSH Authentication" dialog and press OK button.
   
   3. If you successfully pass authentication, UNIX shell will appear on TeraTerm terminal. 
+
+* SSH autologin
+  Perform the following command line options to be able to autologin with SSH protocol.
+  But now you can't include the blank in the passphrase. And also supporting method 
+  is only password authentication method.
   
+  SYNOPSIS:
+     ttermpro.exe HOSTNAME:22 /ssh [/1|/2] /auth=password /user=USERNAME /passwd=PASSPHRASE
+
+  EXAMPLE: SSH1
+     ttermpro.exe 192.168.1.3:22 /ssh /1 /auth=password /user=nike /passwd=kukuri
+
+  EXAMPLE: SSH2
+     ttermpro.exe 192.168.1.3:22 /ssh /2 /auth=password /user=nike /passwd=kukuri
+
+
 
 * Development Environment
   OS: Windows XP Professional
@@ -85,9 +100,17 @@
   - does not support packet compression
   - supports only password authentication
   - supports only HMAC-SHA1 message authentication code
+  - does not support port forwarding
 
 
 * History
+
+2004.12.8 (Ver 1.00)
+  - added support of SSH1/SSH2 autologin (only password authentication). And also added /auth, /username, /passwd options.
+  - changed SSH default version to SSH2
+  - fixed tab order of connection dialog 
+  - changed the focus of connection dialog to hostname
+  - added SSH2 autologin sample macro(ssh2login.ttl)
 
 2004.11.7 (Ver 1.00 beta1)
   - added support of encryption algorithm AES128
