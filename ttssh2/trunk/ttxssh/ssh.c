@@ -41,6 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 #include <stdlib.h>
 #include <process.h>
+#include <time.h>
 #include "buffer.h"
 #include "ssh.h"
 #include "crypt.h"
@@ -49,6 +50,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define SSH2_DEBUG
 #endif
 
+// SSH2 macro
 #define INTBLOB_LEN 20
 #define SIGBLOB_LEN (2*INTBLOB_LEN)
 
@@ -111,6 +113,192 @@ void ssh_heartbeat_unlock(void)
 {
 	LeaveCriticalSection(&g_ssh_heartbeat_lock);
 }
+
+
+//
+// SSH memory dump (for debug)
+//
+// (2005.3.7 yutaka)
+//
+#define MEMTAG_MAX 100
+#define LOGDUMP "ssh2dump.log"
+#define SENDTOME "Please send '"LOGDUMP"' file to TeraTerm developer team."
+
+typedef struct memtag {
+	char *name;
+	char *desc;
+	int len;
+	char *data;
+} memtag_t;
+
+static memtag_t memtags[MEMTAG_MAX];
+static int memtag_count = 0;
+
+/* ダンプラインをフォーマット表示する */
+static void displine_memdump(FILE *fp, int addr, int *bytes, int byte_cnt)
+{
+	int i, c;
+
+	/* 先頭のアドレス表示 */
+	fprintf(fp, "%08X : ", addr);
+
+	/* バイナリ表示（4バイトごとに空白を挿入）*/
+	for (i = 0 ; i < byte_cnt ; i++) {
+		if (i > 0 && i % 4 == 0)
+			fprintf(fp, " ");
+
+		fprintf(fp, "%02X", bytes[i]);
+	}
+
+	/* ASCII表示部分までの空白を補う */
+	fprintf(fp, "   %*s%*s", (16-byte_cnt)*2+1, " ", (16-byte_cnt+3)/4, " ");
+
+	/* ASCII表示 */
+	for (i = 0 ; i < byte_cnt ; i++) {
+		c = bytes[i];
+		if (c >= 0x20 && c <= 0x7f) {
+			fprintf(fp, "%c", c);
+		} else {
+			fprintf(fp, ".");
+		}
+	}
+
+	fprintf(fp, "\n");
+}
+
+
+/* ダンプルーチン */
+static void dump_memdump(FILE *fp, char *data, int len)
+{
+	int c, addr;
+	int bytes[16], *ptr;
+	int byte_cnt;
+	int i;
+
+	addr = 0;
+	byte_cnt = 0;
+	ptr = bytes;
+	for (i = 0 ; i < len ; i++) {
+		c = data[i];
+		*ptr++ = c & 0xff;
+		byte_cnt++;
+
+		if (byte_cnt == 16) {
+			displine_memdump(fp, addr, bytes, byte_cnt);
+
+			addr += 16;
+			byte_cnt = 0;
+			ptr = bytes;
+		}
+	}
+
+	if (byte_cnt > 0) {
+		displine_memdump(fp, addr, bytes, byte_cnt);
+	}
+}
+
+void init_memdump(void)
+{
+	int i;
+
+	for (i = 0 ; i < MEMTAG_MAX ; i++) {
+		memtags[i].name = NULL;
+		memtags[i].desc = NULL;
+		memtags[i].data = NULL;
+		memtags[i].len = 0;
+	}
+}
+
+void finish_memdump(void)
+{
+	int i;
+
+	for (i = 0 ; i < MEMTAG_MAX ; i++) {
+		free(memtags[i].name);
+		free(memtags[i].desc);
+		free(memtags[i].data);
+		memtags[i].len = 0;
+	}
+}
+
+void save_memdump(char *filename)
+{
+	FILE *fp;
+	int i;
+	time_t t;
+	struct tm *tm;
+
+	fp = fopen(filename, "w");
+	if (fp == NULL)
+		return;
+
+	t = time(NULL);
+	tm = localtime(&t);
+
+	fprintf(fp, "<<< TeraTerm SSH2 log dump >>>\n");
+	fprintf(fp, "saved time: %04d/%02d/%02d %02d:%02d:%02d\n",
+			tm->tm_year + 1900,
+			tm->tm_mon + 1,
+			tm->tm_mday,
+			tm->tm_hour,
+			tm->tm_min,
+			tm->tm_sec);
+	fprintf(fp, "\n");
+
+	for (i = 0 ; i < memtag_count ; i++) {
+		fprintf(fp, "============================================\n");
+		fprintf(fp, "name: %s\n", memtags[i].name);
+		fprintf(fp, "--------------------------------------------\n");
+		fprintf(fp, "description: %s\n", memtags[i].desc);
+		fprintf(fp, "============================================\n");
+		dump_memdump(fp, memtags[i].data, memtags[i].len);
+		fprintf(fp, "\n\n\n");
+	}
+
+	fprintf(fp, "[EOF]\n");
+
+	fclose(fp);
+}
+
+void push_memdump(char *name, char *desc, char *data, int len)
+{
+	memtag_t *ptr;
+	char *dp;
+
+	dp = malloc(len);
+	if (dp == NULL)
+		return;
+	memcpy(dp, data, len);
+
+	if (memtag_count >= MEMTAG_MAX)
+		return;
+
+	ptr = &memtags[memtag_count];
+	memtag_count++;
+	ptr->name = strdup(name);
+	ptr->desc = strdup(desc);
+	ptr->data = dp;
+	ptr->len = len;
+}
+
+void push_bignum_memdump(char *name, char *desc, BIGNUM *bignum)
+{
+	int len;
+	char *buf;
+
+	len = BN_num_bytes(bignum);
+	buf = malloc(len); // allocate
+	if (buf == NULL)
+		return;
+	BN_bn2bin(bignum, buf);
+	push_memdump(name, desc, buf, len); // at push_bignum_memdump()
+	free(buf); // free
+}
+
+
+//
+//
+//
 
 
 static int get_predecryption_amount(PTInstVar pvar)
@@ -985,6 +1173,10 @@ BOOL SSH_handle_server_ID(PTInstVar pvar, char FAR * ID, int ID_len)
 {
 	static const char prefix[] = "Received server prologue string: ";
 
+	// initialize SSH2 memory dump (2005.3.7 yutaka)
+	init_memdump();
+	push_memdump("pure server ID", "プロトコル識別文字列交換開始", ID, ID_len);
+
 	if (ID_len <= 0) {
 		return FALSE;
 	} else {
@@ -1056,12 +1248,15 @@ BOOL SSH_handle_server_ID(PTInstVar pvar, char FAR * ID, int ID_len)
 					pvar->server_version_string[--ID_len] = 0;
 					pvar->client_version_string[--TTSSH_ID_len] = 0;
 
+					push_memdump("server ID", NULL, pvar->server_version_string, strlen(pvar->server_version_string));
+					push_memdump("client ID", NULL, pvar->client_version_string, strlen(pvar->client_version_string));
+
 					// SSHハンドラの登録を行う
 					init_protocol(pvar);
 
 					SSH2_dispatch_init(1);
 					SSH2_dispatch_add_message(SSH2_MSG_KEXINIT);
-					SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.3 yutaka)
+					SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.3 yutaka)
 				}
 			}
 
@@ -2743,6 +2938,7 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 	len = pvar->ssh_state.payloadlen;
 
 	//write_buffer_file(data, len);
+	push_memdump("KEXINIT", "アルゴリズムリストの交換", data, len);
 
 	if (offset + 20 >= len) {
 		msg = "payload size too small @ handle_SSH2_kexinit()";
@@ -3075,7 +3271,7 @@ static void SSH2_dh_kex_init(PTInstVar pvar)
 
 	SSH2_dispatch_init(2);
 	SSH2_dispatch_add_message(SSH2_MSG_KEXDH_REPLY);
-	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.5 yutaka)
+	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
 
 	buffer_free(msg);
 	return;
@@ -3136,9 +3332,16 @@ static void SSH2_dh_gex_kex_init(PTInstVar pvar)
 	pvar->kexgex_bits = bits;
 	pvar->kexgex_max = max;
 
+	{
+		char tmp[128];
+		_snprintf(tmp, sizeof(tmp), "we_need %d min %d bits %d max %d", 
+			pvar->we_need, min, bits, max);
+		push_memdump("DH_GEX_REQUEST", "requested key bits", tmp, strlen(tmp));
+	}
+
 	SSH2_dispatch_init(2);
 	SSH2_dispatch_add_message(SSH2_MSG_KEX_DH_GEX_GROUP);
-	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.5 yutaka)
+	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
 
 	buffer_free(msg);
 	return;
@@ -3196,9 +3399,15 @@ static BOOL handle_SSH2_dh_gex_group(PTInstVar pvar)
 	// ここで作成したDH鍵は、あとでハッシュ計算に使うため取っておく。(2004.10.31 yutaka)
 	pvar->kexdh = dh;
 
+	{
+		push_bignum_memdump("DH_GEX_GROUP", "p", dh->p);
+		push_bignum_memdump("DH_GEX_GROUP", "g", dh->g);
+		push_bignum_memdump("DH_GEX_GROUP", "pub_key", dh->pub_key);
+	}
+
 	SSH2_dispatch_init(2);
 	SSH2_dispatch_add_message(SSH2_MSG_KEX_DH_GEX_REPLY);
-	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.5 yutaka)
+	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
 
 	buffer_free(msg);
 
@@ -3415,7 +3624,7 @@ static int ssh_dss_verify(
 	OpenSSL_add_all_digests();
 
 	if (key == NULL) {
-		return -1;
+		return -2;
 	}
 
 	ptr = signature;
@@ -3424,7 +3633,7 @@ static int ssh_dss_verify(
 	len = get_uint32_MSBfirst(ptr);
 	ptr += 4;
 	if (strncmp("ssh-dss", ptr, len) != 0) {
-		return -1;
+		return -3;
 	}
 	ptr += len;
 
@@ -3435,16 +3644,16 @@ static int ssh_dss_verify(
 	ptr += len;
 
 	if (len != SIGBLOB_LEN) {
-		return -1;
+		return -4;
 	}
 
 	/* parse signature */
 	if ((sig = DSA_SIG_new()) == NULL)
-		return -1;
+		return -5;
 	if ((sig->r = BN_new()) == NULL)
-		return -1;
+		return -6;
 	if ((sig->s = BN_new()) == NULL)
-		return -1;
+		return -7;
 	BN_bin2bn(sigblob, INTBLOB_LEN, sig->r);
 	BN_bin2bn(sigblob+ INTBLOB_LEN, INTBLOB_LEN, sig->s);
 
@@ -3573,10 +3782,10 @@ static int ssh_rsa_verify(RSA *key, u_char *signature, u_int signaturelen,
 	OpenSSL_add_all_digests();
 
 	if (key == NULL) {
-		return -1;
+		return -2;
 	}
 	if (BN_num_bits(key->n) < SSH_RSA_MINIMUM_MODULUS_SIZE) {
-		return -1;
+		return -3;
 	}
 	//debug_print(41, signature, signaturelen);
 	ptr = signature;
@@ -3585,7 +3794,7 @@ static int ssh_rsa_verify(RSA *key, u_char *signature, u_int signaturelen,
 	len = get_uint32_MSBfirst(ptr);
 	ptr += 4;
 	if (strncmp("ssh-rsa", ptr, len) != 0) {
-		return -1;
+		return -4;
 	}
 	ptr += len;
 
@@ -3604,7 +3813,7 @@ static int ssh_rsa_verify(RSA *key, u_char *signature, u_int signaturelen,
 	/* RSA_verify expects a signature of RSA_size */
 	modlen = RSA_size(key);
 	if (len > modlen) {
-		return -1;
+		return -5;
 
 	} else if (len < modlen) {
 		u_int diff = modlen - len;
@@ -3617,7 +3826,7 @@ static int ssh_rsa_verify(RSA *key, u_char *signature, u_int signaturelen,
 	nid = NID_sha1;
 	if ((evp_md = EVP_get_digestbynid(nid)) == NULL) {
 		//error("ssh_rsa_verify: EVP_get_digestbynid %d failed", nid);
-		return -1;
+		return -6;
 	}
 	EVP_DigestInit(&md, evp_md);
 	EVP_DigestUpdate(&md, data, datalen);
@@ -3814,12 +4023,11 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 		}
 	}
 
-#if 1
 	if (key_verify(rsa, dsa, signature, siglen, hash, 20) != 1) {
 		emsg = "key verify error @ handle_SSH2_dh_kex_reply()";
+		save_memdump(LOGDUMP);
 		goto error;
 	}
-#endif
 
 	kex_derive_keys(pvar, pvar->we_need, hash, share_key, pvar->session_id, pvar->session_id_len);
 
@@ -3851,7 +4059,7 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 
 	SSH2_dispatch_init(3);
 	SSH2_dispatch_add_message(SSH2_MSG_NEWKEYS);
-	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.5 yutaka)
+	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
 
 	BN_free(dh_server_pub);
 	RSA_free(rsa);
@@ -3959,6 +4167,7 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 	BIGNUM *share_key = NULL;
 	char *hash;
 	char *emsg, emsg_tmp[1024];  // error message
+	int ret;
 
 
 	// TODO: buffer overrun check
@@ -3968,12 +4177,16 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 	// パケットサイズ - (パディングサイズ+1)；真のパケットサイズ
 	len = pvar->ssh_state.payloadlen;
 
+	push_memdump("DH_GEX_REPLY", "full dump", data, len);
+
 	// for debug
 	//write_buffer_file(data, len);
 
 	bloblen = get_uint32_MSBfirst(data);
 	data += 4;
 	server_host_key_blob = data; // for hash
+
+	push_memdump("DH_GEX_REPLY", "server_host_key_blob", server_host_key_blob, bloblen);
 
 	keynamelen = get_uint32_MSBfirst(data);
 	if (keynamelen >= 128) {
@@ -3984,6 +4197,8 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 	memcpy(key, data, keynamelen);
 	key[keynamelen] = 0;
 	data += keynamelen;
+
+	push_memdump("DH_GEX_REPLY", "keyname", key, keynamelen);
 
 	// RSA key
 	if (strcmp(key, "ssh-rsa") == 0) {
@@ -4046,6 +4261,7 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 	signature = data;
 	data += siglen;
 
+	push_memdump("DH_GEX_REPLY", "signature", signature, siglen);
 
 	// check DH public value
 	if (!dh_pub_is_valid(pvar->kexdh, dh_server_pub)) {
@@ -4088,6 +4304,18 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 		dh_server_pub,        
 		share_key
     );
+
+	
+	{
+		push_memdump("DH_GEX_REPLY kex_dh_gex_hash", "my_kex", buffer_ptr(pvar->my_kex), buffer_len(pvar->my_kex));
+		push_memdump("DH_GEX_REPLY kex_dh_gex_hash", "peer_kex", buffer_ptr(pvar->peer_kex), buffer_len(pvar->peer_kex));
+
+		push_bignum_memdump("DH_GEX_REPLY kex_dh_gex_hash", "dh_server_pub", dh_server_pub);
+		push_bignum_memdump("DH_GEX_REPLY kex_dh_gex_hash", "share_key", share_key);
+
+		push_memdump("DH_GEX_REPLY kex_dh_gex_hash", "hash", hash, 20);
+	}
+
 	//debug_print(30, hash, 20);
 	//debug_print(31, pvar->client_version_string, strlen(pvar->client_version_string));
 	//debug_print(32, pvar->server_version_string, strlen(pvar->server_version_string));
@@ -4106,12 +4334,12 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 		}
 	}
 
-#if 1
-	if (key_verify(rsa, dsa, signature, siglen, hash, 20) != 1) {
-		emsg = "key verify error @ handle_SSH2_dh_kex_reply()";
+	if ((ret = key_verify(rsa, dsa, signature, siglen, hash, 20)) != 1) {
+		_snprintf(emsg_tmp, sizeof(emsg_tmp), "key verify error(%d) @ SSH2_DH_GEX\r\n%s", ret, SENDTOME);
+		emsg = emsg_tmp;
+		save_memdump(LOGDUMP);
 		goto error;
 	}
-#endif
 
 	kex_derive_keys(pvar, pvar->we_need, hash, share_key, pvar->session_id, pvar->session_id_len);
 
@@ -4143,7 +4371,7 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 
 	SSH2_dispatch_init(3);
 	SSH2_dispatch_add_message(SSH2_MSG_NEWKEYS);
-	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.5 yutaka)
+	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
 
 	BN_free(dh_server_pub);
 	RSA_free(rsa);
@@ -4199,6 +4427,9 @@ static BOOL handle_SSH2_newkeys(PTInstVar pvar)
 {
 	int supported_ciphers = (1 << SSH_CIPHER_3DES_CBC | 1 << SSH_CIPHER_AES128);
 	int type = (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA);
+
+	// ログ採取の終了 (2005.3.7 yutaka)
+	finish_memdump();
 
 	// finish key exchange
 	pvar->key_done = 1;
@@ -4260,7 +4491,7 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 
 	SSH2_dispatch_init(4);
 	SSH2_dispatch_add_message(SSH2_MSG_SERVICE_ACCEPT);
-	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.5 yutaka)
+	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
 
 	return TRUE;
 }
@@ -4577,7 +4808,7 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	buffer_free(msg);
 
 	SSH2_dispatch_init(5);
-	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workground (2005.3.5 yutaka)
+	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
 	if (kbdint == 1) { // keyboard-interactive method
 		SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_INFO_REQUEST);
 	} 
@@ -5149,6 +5380,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  2005/03/05 10:19:05  yutakakn
+ * Tru64 UNIX(HP-UX)向けworkaroundを追加。
+ *
  * Revision 1.17  2005/03/03 13:37:31  yutakakn
  * Tru64 UNIX(HP-UX)向けworkaroundを追加。
  * KEXINIT時にSSH2_MSG_IGNOREを受信可能とした。
