@@ -3317,13 +3317,18 @@ skip:;
 
 static void ssh2_set_newkeys(PTInstVar pvar, int mode)
 {
+#if 1
 	// free already allocated buffer
-	if (pvar->ssh2_keys[mode].enc.iv != NULL)
+	if (pvar->ssh2_keys[mode].enc.iv != NULL) {
 		free(pvar->ssh2_keys[mode].enc.iv);
-	if (pvar->ssh2_keys[mode].enc.key != NULL)
+	}
+	if (pvar->ssh2_keys[mode].enc.key != NULL) {
 		free(pvar->ssh2_keys[mode].enc.key);
-	if (pvar->ssh2_keys[mode].mac.key != NULL)
+	}
+	if (pvar->ssh2_keys[mode].mac.key != NULL) {
 		free(pvar->ssh2_keys[mode].mac.key);
+	}
+#endif
 
 	pvar->ssh2_keys[mode] = current_keys[mode];
 }
@@ -3346,13 +3351,16 @@ void kex_derive_keys(PTInstVar pvar, int need, u_char *hash, BIGNUM *shared_secr
 		else
 			ctos = 0;
 
+#if 0
 		// free already allocated buffer (2004.12.27 yutaka)
+		// キー再作成時にMAC corruptとなるので削除。(2005.1.5 yutaka)
 		if (current_keys[mode].enc.iv != NULL)
 			free(current_keys[mode].enc.iv);
 		if (current_keys[mode].enc.key != NULL)
 			free(current_keys[mode].enc.key);
 		if (current_keys[mode].mac.key != NULL)
 			free(current_keys[mode].mac.key);
+#endif
 
 		// setting
 		current_keys[mode].enc.iv  = keys[ctos ? 0 : 1];
@@ -4994,6 +5002,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2005/01/04 13:57:01  yutakakn
+ * SSH2ターミナルサイズ変更通知の追加
+ *
  * Revision 1.11  2004/12/27 14:22:16  yutakakn
  * メモリリークを修正。
  *
