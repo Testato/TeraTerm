@@ -2811,3 +2811,14 @@ void DispSetActive(BOOL ActiveFlag)
       SetConversionWindow(HVTWin,-1,0);
   }
 }
+
+/*
+ * $Log: not supported by cvs2svn $
+ *
+ * AKASI氏によるEterm風透過ウィンドウ機能を追加。
+ * VTColorの初期値は、teraterm.iniのANSI Colorを優先させた。
+ *
+ * マルチディスプレイ環境において、ウィンドウのリサイズを行うとプライマリディスプレイへ
+ * 戻ってしまう現象への対処。
+ * ＃パッチを送っていただいた安藤氏に感謝
+ */
