@@ -322,6 +322,7 @@ MaxBuffSize=500000
 
 2005.4.?? (Ver 4.13)
   ・2つめ以降のTeraTermプロセスにおいて、バージョン情報が正しく取得されない問題へ対処した。
+  ・マウスの右ボタン押下でのペーストを禁止する設定を teraterm.ini(DisablePasteMouseRButton) および Additional settings に追加した。
   ・LogMeTT 2.2.4へ差し替え。
 
 2005.3.13 (Ver 4.12)
