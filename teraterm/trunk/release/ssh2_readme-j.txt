@@ -102,6 +102,12 @@
 
 ■改版履歴
 
+2005.3.?? (Ver 2.10)
+   ・ttxssh.dllのバージョン情報が古いままだったので修正した。
+   ・SSH Client ID(SSH-2.0-TTSSH/X.XX Win32)にバージョン情報を含めるようにした。
+   ・Tru64 UNIX workaroundを追加
+   ・SSH2 log dump機構を追加した
+
 2005.2.22 (Ver 1.09)
   ・ドットで始まるディレクトリにあるSSH2秘密鍵ファイルが読み込めない問題へ対処した。
   ・HeartBeat(keep-alive), SSH2 keyboard-interactiveの設定をTTSSHのダイアログ上から行えるようにした。
