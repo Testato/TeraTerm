@@ -286,6 +286,7 @@ MaxBuffSize=500000
   ・"File"配下に"View Log"メニューを追加した。
   ・"Additional settings"に"View Log Editor"ボックスを追加した。
   ・teraterm.iniの[Tera Term]セクションに、"ViewlogEditor"エントリを追加した。
+  ・SSH2対応TTSSH(1.08)へ差し替え
   ・TeraTerm Menu 1.02へ差し替え。
      - デフォルトオプションに漢字コード(/KT=UTF8 /KR=UTF8)を追加した。
      - SSH自動ログインにおいて、ユーザパラメータを指定できるようにした。

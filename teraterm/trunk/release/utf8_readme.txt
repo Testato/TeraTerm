@@ -301,6 +301,7 @@ There are 3 types of connection you can establish from TeraTerm macro:
   - added "View Log" menu under File menu
   - added "View Log Editor" text-box on "Additional settings" dialog
   - added the "ViewlogEditor" entry at [Tera Term] section of teraterm.ini
+  - upgraded TTSSH version supporting SSH2 to 1.08
   - upgraded TeraTerm Menu supporting SSH2 to 1.02.
      -- added Kanji code(/KT=UTF8 /KR=UTF8) of default option
      -- added specify of user paramater at SSH autologin
