@@ -98,6 +98,7 @@ protected:
 	afx_msg LONG OnProtoEnd(UINT wParam, LONG lParam);
 	afx_msg void OnFileNewConnection();
 	afx_msg void OnCygwinConnection();
+	afx_msg void OnTTMenuLaunch();
 	afx_msg void OnFileLog();
 	afx_msg void OnCommentToLog();
 	afx_msg void OnExternalSetup();

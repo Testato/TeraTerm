@@ -139,6 +139,7 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_MESSAGE(WM_USER_PROTOCANCEL,OnProtoEnd)
 	ON_COMMAND(ID_FILE_NEWCONNECTION, OnFileNewConnection)
 	ON_COMMAND(ID_FILE_CYGWINCONNECTION, OnCygwinConnection)
+	ON_COMMAND(ID_FILE_TERATERMMENU, OnTTMenuLaunch)
 	ON_COMMAND(ID_FILE_LOG, OnFileLog)
 	ON_COMMAND(ID_FILE_COMMENTTOLOG, OnCommentToLog)
 	ON_COMMAND(ID_FILE_SENDFILE, OnFileSend)
@@ -2044,6 +2045,33 @@ found_path:;
 	}
 }
 
+
+//
+// TeraTerm Menu‚Ì‹N“®
+//
+void CVTWindow::OnTTMenuLaunch()
+{
+	char *exename = "ttpmenu.exe";
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+
+	memset(&si, 0, sizeof(si));
+	GetStartupInfo(&si);
+	memset(&pi, 0, sizeof(pi));
+
+	if (CreateProcess(
+			NULL, 
+			exename, 
+			NULL, NULL, FALSE, 0,
+			NULL, NULL,
+			&si, &pi) == 0) {
+		char buf[80];
+		_snprintf(buf, sizeof(buf), "Can't execute TeraTerm Menu. (%d)", GetLastError());
+		::MessageBox(NULL, buf, "ERROR", MB_OK | MB_ICONWARNING);
+	}
+}
+
+
 void CVTWindow::OnFileLog()
 {
   HelpId = HlpFileLog;
@@ -2766,3 +2794,7 @@ void CVTWindow::OnHelpAbout()
   (*AboutDialog)(HVTWin);
   FreeTTDLG();
 }
+
+/*
+ * $Log: not supported by cvs2svn $
+ */
