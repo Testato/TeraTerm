@@ -316,6 +316,7 @@ struct tttset {
   int CodePage;
   int DuplicateSession;
   char ViewlogEditor[MAX_PATH];
+  WORD LogTypePlainText;
 };
 
 typedef struct tttset TTTSet, *PTTSet;

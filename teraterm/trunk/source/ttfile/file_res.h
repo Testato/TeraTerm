@@ -1,10 +1,11 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
-// Used by Ttfile.rc
+// Microsoft Visual C++ generated include file.
+// Used by ttpfile.rc
 //
 #define IDD_FOPT                        1000
 #define IDC_FOPTBIN                     1001
 #define IDC_FOPTAPPEND                  1002
+#define IDC_PLAINTEXT                   1003
 #define IDD_XOPT                        1100
 #define IDC_XOPTCHECK                   1101
 #define IDC_XOPTCRC                     1102
@@ -24,7 +25,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        102
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1001
+#define _APS_NEXT_CONTROL_VALUE         1004
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -284,13 +284,17 @@ void BackSpace()
 	((ts.TermFlag & TF_BACKWRAP)!=0))
     {
       MoveCursor(NumOfColumns-1,CursorY-1);
-      if (cv.HLogBuf!=0) Log1Byte(BS);
+//      if (cv.HLogBuf!=0) Log1Byte(BS);
+// (2005.2.20 yutaka)
+	  if (cv.HLogBuf!=0 && !ts.LogTypePlainText) Log1Byte(BS);
     }
   }
   else if (CursorX > 0)
   {
     MoveCursor(CursorX-1,CursorY);
-    if (cv.HLogBuf!=0) Log1Byte(BS);
+//    if (cv.HLogBuf!=0) Log1Byte(BS);
+// (2005.2.20 yutaka)
+	  if (cv.HLogBuf!=0 && !ts.LogTypePlainText) Log1Byte(BS);
   }
 }
 
@@ -362,7 +366,19 @@ void PutChar(BYTE b)
     CharAttrTmp = 0;
 #endif /* NO_COPYLINE_FIX */
   }
-  if (cv.HLogBuf!=0) Log1Byte(b);
+
+//  if (cv.HLogBuf!=0) Log1Byte(b);
+// (2005.2.20 yutaka)
+  if (ts.LogTypePlainText) {
+	  if (__isascii(b) && !isprint(b)) {
+		  // ASCII文字で、非表示な文字はログ採取しない。
+	  } else {
+		if (cv.HLogBuf!=0) Log1Byte(b);
+	  }
+  } else {
+	  if (cv.HLogBuf!=0) Log1Byte(b);
+  }
+
   Wrap = FALSE;
 
   SpecialNew = FALSE;
@@ -2571,5 +2587,9 @@ int VTParse()
 }
 
 /*
- * $Log: not supported by cvs2svn $ 
+ * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/12/07 14:31:13  yutakakn
+ * 行が連結している場合は、ログファイルに改行コードを含めないようにした。
+ * ただし、EnableContinuedLineCopy 機能が有効の場合に限る。
+ * 
  */

@@ -146,64 +146,80 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 /* Hook function for file name dialog box */
 BOOL CALLBACK TFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
-  LPOPENFILENAME ofn;
-  WORD Lo, Hi;
-  LPLONG pl;
+	LPOPENFILENAME ofn;
+	WORD Lo, Hi;
+	LPLONG pl;
 #ifdef TERATERM32
-  LPOFNOTIFY notify;
+	LPOFNOTIFY notify;
 #endif
 
-  switch (Message) {
-    case WM_INITDIALOG:
-      ofn = (LPOPENFILENAME)lParam;
-      pl = (LPLONG)(ofn->lCustData);
-      SetWindowLong(Dialog, DWL_USER, (LONG)pl);
-      Lo = LOWORD(*pl) & 1;
-      Hi = HIWORD(*pl);
-      SetRB(Dialog,Lo,IDC_FOPTBIN,IDC_FOPTBIN);
-      if (Hi!=0xFFFF)
-      {
-	ShowDlgItem(Dialog,IDC_FOPTAPPEND,IDC_FOPTAPPEND);
-	SetRB(Dialog,Hi & 1,IDC_FOPTAPPEND,IDC_FOPTAPPEND);
-      }
-      return TRUE;
-    case WM_COMMAND: // for old style dialog
-      switch (LOWORD(wParam)) {
+	switch (Message) {
+	case WM_INITDIALOG:
+		ofn = (LPOPENFILENAME)lParam;
+		pl = (LPLONG)(ofn->lCustData);
+		SetWindowLong(Dialog, DWL_USER, (LONG)pl);
+		Lo = LOWORD(*pl) & 1;
+		Hi = HIWORD(*pl);
+		SetRB(Dialog,Lo,IDC_FOPTBIN,IDC_FOPTBIN);
+		if (Hi!=0xFFFF)
+		{
+			ShowDlgItem(Dialog,IDC_FOPTAPPEND,IDC_FOPTAPPEND);
+			SetRB(Dialog,Hi & 1,IDC_FOPTAPPEND,IDC_FOPTAPPEND);
+
+			// plain textチェックボックスはデフォルトでON (2005.2.20 yutaka)
+			if (Hi & 0x1000) {
+				ShowDlgItem(Dialog,IDC_PLAINTEXT,IDC_PLAINTEXT);
+				SetRB(Dialog,1,IDC_PLAINTEXT,IDC_PLAINTEXT);
+			}
+		}
+		return TRUE;
+
+	case WM_COMMAND: // for old style dialog
+		switch (LOWORD(wParam)) {
 	case IDOK:
-	  pl = (LPLONG)GetWindowLong(Dialog,DWL_USER);
-	  if (pl!=NULL)
-	  {
-	    GetRB(Dialog,&Lo,IDC_FOPTBIN,IDC_FOPTBIN);
-	    Hi = HIWORD(*pl);
-	    if (Hi!=0xFFFF)
-	      GetRB(Dialog,&Hi,IDC_FOPTAPPEND,IDC_FOPTAPPEND);
-	    *pl = MAKELONG(Lo,Hi);
-	  }
-	  break;
+		pl = (LPLONG)GetWindowLong(Dialog,DWL_USER);
+		if (pl!=NULL)
+		{
+			GetRB(Dialog,&Lo,IDC_FOPTBIN,IDC_FOPTBIN);
+			Hi = HIWORD(*pl);
+			if (Hi!=0xFFFF)
+				GetRB(Dialog,&Hi,IDC_FOPTAPPEND,IDC_FOPTAPPEND);
+			*pl = MAKELONG(Lo,Hi);
+		}
+		break;
 	case IDCANCEL:
-	  break;
-      }
-      break;
+		break;
+		}
+		break;
 #ifdef TERATERM32
-    case WM_NOTIFY:	// for Explorer-style dialog
-      notify = (LPOFNOTIFY)lParam;
-      switch (notify->hdr.code) {
+	case WM_NOTIFY:	// for Explorer-style dialog
+		notify = (LPOFNOTIFY)lParam;
+		switch (notify->hdr.code) {
 	case CDN_FILEOK:
-	  pl = (LPLONG)GetWindowLong(Dialog,DWL_USER);
-	  if (pl!=NULL)
-	  {
-	    GetRB(Dialog,&Lo,IDC_FOPTBIN,IDC_FOPTBIN);
-	    Hi = HIWORD(*pl);
-	    if (Hi!=0xFFFF)
-	      GetRB(Dialog,&Hi,IDC_FOPTAPPEND,IDC_FOPTAPPEND);
-	    *pl = MAKELONG(Lo,Hi);
-	  }
-	  break;
-      }
-      break;
+		pl = (LPLONG)GetWindowLong(Dialog,DWL_USER);
+		if (pl!=NULL)
+		{
+			WORD val = 0;
+
+			GetRB(Dialog,&Lo,IDC_FOPTBIN,IDC_FOPTBIN);
+			Hi = HIWORD(*pl);
+			if (Hi!=0xFFFF)
+				GetRB(Dialog,&Hi,IDC_FOPTAPPEND,IDC_FOPTAPPEND);
+
+			// plain text check-box
+			GetRB(Dialog,&val,IDC_PLAINTEXT,IDC_PLAINTEXT);
+			if (val > 0) { // checked
+				Hi |= 0x1000;
+			}
+
+			*pl = MAKELONG(Lo,Hi);
+		}
+		break;
+		}
+		break;
 #endif
-  }
-  return FALSE;
+	}
+	return FALSE;
 }
 
 #ifndef TERATERM32
@@ -939,6 +955,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2005/01/26 11:16:24  yutakakn
+ * 初期ファイルディレクトリを読み込まれたteraterm.iniがあるディレクトリに固定するように、変更した。
+ *
  * Revision 1.3  2005/01/21 07:46:41  yutakakn
  * ログ採取時のデフォルト名(log_YYYYMMDD_HHMMSS.txt)を設定するようにした。
  *
