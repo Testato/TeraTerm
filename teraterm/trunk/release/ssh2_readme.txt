@@ -106,6 +106,10 @@
 
 * History
 
+2004.12.16 (Ver 1.02)
+  - fixed application fault when using SSH autologin mode
+  - fixed application fault when pressing ESC key at "SECURITY WARNING" dialog
+
 2004.12.11 (Ver 1.01)
   - added support of SSH heartbeat(keep-alive). You can configurate the heartbeat interval "HeartBeat" entry of TTSSH section in the 'teraterm.ini' file. A measure of heartbeat is per second(default 60 seconds).
 

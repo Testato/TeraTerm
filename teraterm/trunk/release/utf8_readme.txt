@@ -237,11 +237,12 @@ MaxBuffSize=500000
   - UTF-8 version is only Japanese characters now.
   - At "Duplicate session" on SSH2 connected communication, TeraTerm always try to 
     connect the server with SSH2 protocol.
-  - TeraTerm may crash by a cause of the application segmentation fault when push 
-    ESC key at "SECURITY WARNING" dialog with SSH1 protocol.
 
 
 * History
+
+2004.12.16 (Ver 2.07d)
+  - upgraded TTSSH version supporting SSH2 to 1.02
 
 2004.12.15 (Ver 2.07c)
   - fixed the attribute of font file in the installed directory
