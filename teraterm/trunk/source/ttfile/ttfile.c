@@ -298,7 +298,7 @@ BOOL FAR PASCAL GetTransFname
 
 	// loggingの場合、オープンダイアログをセーブダイアログへ変更 (2005.1.6 yutaka)
 	if (FuncId == GTF_LOG) {
-		SYSTEMTIME time;
+		//SYSTEMTIME time;
 		char buf[80];
 
 		// ログのデフォルト値(log_YYYYMMDD_HHMMSS.txt)を設定する (2005.1.21 yutaka)
@@ -960,6 +960,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2005/02/22 11:53:57  yutakakn
+ * ログ採取においてデフォルトファイル名を teraterm.log へ変更した。
+ * 将来的には teraterm.ini でファイル名を指定できるようにする予定。
+ *
  * Revision 1.5  2005/02/20 14:51:29  yutakakn
  * ログファイルの種別に"plain text"を追加。このオプションが有効の場合は、ログファイルに
  * ASCII非表示文字の採取をしない。
