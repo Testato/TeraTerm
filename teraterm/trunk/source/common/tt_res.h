@@ -9,6 +9,7 @@
 #define IDI_TEK                         102
 #define IDD_COMMENT_DIALOG              110
 #define IDD_EXTERNAL_SETUP              111
+#define IDD_BROADCAST_DIALOG            112
 #define IDR_TEKMENU                     1000
 #define IDC_EDIT_COMMENT                1000
 #define IDC_EDIT_FULLPATH               1001
@@ -24,6 +25,13 @@
 #define IDC_COLOR_GREEN                 1014
 #define IDC_COLOR_BLUE                  1015
 #define IDC_SAMPLE_COLOR                1016
+#define IDC_COMMAND_EDIT                1017
+#define IDC_ENTERKEY_CHECK              1018
+#define IDC_RADIO_CRLF                  1019
+#define IDC_RADIO_CR                    1020
+#define IDC_RADIO3                      1021
+#define IDC_RADIO_LF                    1021
+#define IDC_ENTERGROUP                  1022
 #define IDD_PRNABORTDLG                 2100
 #define IDD_FILETRANSDLG                2200
 #define IDC_TRANSFNAME                  2201
@@ -110,15 +118,16 @@
 #define ID_FILE_LOGMEIN                 52010
 #define ID_FILE_DUPLICATESESSION        52013
 #define ID_SETUP_ADDITIONALSETTINGS     52016
+#define ID_CONTROL_BROADCASTCOMMAND     52017
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        112
-#define _APS_NEXT_COMMAND_VALUE         52017
-#define _APS_NEXT_CONTROL_VALUE         1017
+#define _APS_NEXT_RESOURCE_VALUE        113
+#define _APS_NEXT_COMMAND_VALUE         52018
+#define _APS_NEXT_CONTROL_VALUE         1023
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -96,6 +96,7 @@ protected:
 	afx_msg LONG OnGetSerialNo(UINT wParam, LONG lParam);
 	afx_msg LONG OnKeyCode(UINT wParam, LONG lParam);
 	afx_msg LONG OnProtoEnd(UINT wParam, LONG lParam);
+	afx_msg LONG OnReceiveIpcMessage(UINT wParam, LONG lParam);
 	afx_msg void OnFileNewConnection();
 	afx_msg void OnDuplicateSession();
 	afx_msg void OnCygwinConnection();
@@ -139,6 +140,7 @@ protected:
 	afx_msg void OnSetupRestore();
 	afx_msg void OnSetupLoadKeyMap();
 	afx_msg void OnControlResetTerminal();
+	afx_msg void OnControlBroadcastCommand();
 	afx_msg void OnControlAreYouThere();
 	afx_msg void OnControlSendBreak();
 	afx_msg void OnControlResetPort();

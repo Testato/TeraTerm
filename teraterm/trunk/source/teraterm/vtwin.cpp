@@ -73,6 +73,9 @@ static char THIS_FILE[] = __FILE__;
 // ウィンドウ最大化ボタンを有効にする (2005.1.15 yutaka)
 #define WINDOW_MAXMIMUM_ENABLED 1
 
+// WM_COPYDATAによるプロセス間通信の種別 (2005.1.22 yutaka)
+#define IPC_BROADCAST_COMMAND 1
+
 
 typedef struct {
 	char *name;
@@ -141,6 +144,7 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_MESSAGE(WM_USER_GETSERIALNO,OnGetSerialNo)
 	ON_MESSAGE(WM_USER_KEYCODE,OnKeyCode)
 	ON_MESSAGE(WM_USER_PROTOCANCEL,OnProtoEnd)
+	ON_MESSAGE(WM_COPYDATA,OnReceiveIpcMessage)
 	ON_COMMAND(ID_FILE_NEWCONNECTION, OnFileNewConnection)
 	ON_COMMAND(ID_FILE_DUPLICATESESSION, OnDuplicateSession)
 	ON_COMMAND(ID_FILE_CYGWINCONNECTION, OnCygwinConnection)
@@ -187,6 +191,7 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_COMMAND(ID_CONTROL_AREYOUTHERE, OnControlAreYouThere)
 	ON_COMMAND(ID_CONTROL_SENDBREAK, OnControlSendBreak)
 	ON_COMMAND(ID_CONTROL_RESETPORT, OnControlResetPort)
+	ON_COMMAND(ID_CONTROL_BROADCASTCOMMAND, OnControlBroadcastCommand)
 	ON_COMMAND(ID_CONTROL_OPENTEK, OnControlOpenTEK)
 	ON_COMMAND(ID_CONTROL_CLOSETEK, OnControlCloseTEK)
 	ON_COMMAND(ID_CONTROL_MACRO, OnControlMacro)
@@ -2869,6 +2874,183 @@ void CVTWindow::OnControlResetPort()
   CommResetSerial(&ts,&cv);
 }
 
+
+
+//
+// すべてのターミナルへ同一コマンドを送信するモードレスダイアログの表示
+// (2005.1.22 yutaka)
+//
+static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
+{
+	char buf[256 + 3];
+	UINT ret;
+	LRESULT checked;
+
+    switch (msg) {
+        case WM_INITDIALOG:
+			// ラジオボタンのデフォルトは CR にする。
+			SendMessage(GetDlgItem(hWnd, IDC_RADIO_CR), BM_SETCHECK, BST_CHECKED, 0);
+			// デフォルトでチェックボックスを checked 状態にする。
+			SendMessage(GetDlgItem(hWnd, IDC_ENTERKEY_CHECK), BM_SETCHECK, BST_CHECKED, 0);
+
+			// エディットコントロールにフォーカスをあてる
+			SetFocus(GetDlgItem(hWnd, IDC_COMMAND_EDIT));
+
+			return FALSE;
+
+        case WM_COMMAND:
+			switch (wp) {
+			case IDC_ENTERKEY_CHECK | (BN_CLICKED << 16):
+				// チェックの有無により、ラジオボタンの有効・無効を決める。
+				checked = SendMessage(GetDlgItem(hWnd, IDC_ENTERKEY_CHECK), BM_GETCHECK, 0, 0);
+				if (checked & BST_CHECKED) { // 改行コードあり
+					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_CRLF), TRUE);
+					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_CR), TRUE);
+					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_LF), TRUE);
+
+				} else {
+					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_CRLF), FALSE);
+					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_CR), FALSE);
+					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_LF), FALSE);
+				}
+				return TRUE;
+			}
+
+            switch (LOWORD(wp)) {
+                case IDOK:
+					{
+					int i;
+					HWND hd;
+					COPYDATASTRUCT cds;
+
+					memset(buf, 0, sizeof(buf));
+					ret = GetDlgItemText(hWnd, IDC_COMMAND_EDIT, buf, 256 - 1);
+					if (ret == 0) { // error
+						memset(buf, 0, sizeof(buf));
+					}
+
+					checked = SendMessage(GetDlgItem(hWnd, IDC_ENTERKEY_CHECK), BM_GETCHECK, 0, 0);
+					if (checked & BST_CHECKED) { // 改行コードあり
+						if (SendMessage(GetDlgItem(hWnd, IDC_RADIO_CRLF), BM_GETCHECK, 0, 0) & BST_CHECKED) {
+							strcat(buf, "\r\n");
+
+						} else if (SendMessage(GetDlgItem(hWnd, IDC_RADIO_CR), BM_GETCHECK, 0, 0) & BST_CHECKED) {
+							strcat(buf, "\r");
+
+						} else if (SendMessage(GetDlgItem(hWnd, IDC_RADIO_LF), BM_GETCHECK, 0, 0) & BST_CHECKED) {
+							strcat(buf, "\n");
+
+						} else {
+							strcat(buf, "\r");
+
+						}
+					}
+
+					// すべてのTeraTermにメッセージとデータを送る
+					for (i = 0 ; i < 50 ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
+						hd = GetNthWin(i);
+						if (hd == NULL)
+							break;
+
+						ZeroMemory(&cds, sizeof(cds));
+						cds.dwData = IPC_BROADCAST_COMMAND;
+						cds.cbData = strlen(buf);
+						cds.lpData = buf;
+
+						// WM_COPYDATAを使って、プロセス間通信を行う。
+						SendMessage(hd, WM_COPYDATA, (WPARAM)HVTWin, (LPARAM)&cds);
+
+						// 送信先TeraTermウィンドウのリフレッシュを行う。
+						// これをしないと、送り込んだデータが反映されない模様。暫定処置。
+						if (hd != HVTWin) {
+							ShowWindow(hd, SW_MINIMIZE);
+							ShowWindow(hd, SW_RESTORE);
+						}
+					}
+
+					// FIXME: 自分自身をアクティブにする。でも、どうも効かないらしい。
+					BringWindowToTop(HVTWin);
+					ShowWindow(HVTWin, SW_SHOW);
+
+					}
+
+                    //EndDialog(hDlgWnd, IDOK);
+                    return TRUE;
+
+                case IDCANCEL:
+				    EndDialog(hWnd, 0);
+					//DestroyWindow(hWnd);
+					return TRUE;
+
+                default:
+                    return FALSE;
+            }
+			break;
+
+        case WM_CLOSE:
+			//DestroyWindow(hWnd);
+		    EndDialog(hWnd, 0);
+			return TRUE;
+
+        default:
+            return FALSE;
+    }
+    return TRUE;
+
+}
+
+void CVTWindow::OnControlBroadcastCommand(void)
+{
+	// TODO: モードレスダイアログのハンドルは、親プロセスが DestroyWindow() APIで破棄する
+	// 必要があるが、ここはOS任せとする。
+	static HWND hDlgWnd = NULL;
+
+	if (hDlgWnd != NULL)
+		goto activate;
+
+	hDlgWnd = CreateDialog(
+				hInst, 
+				MAKEINTRESOURCE(IDD_BROADCAST_DIALOG), 
+				HVTWin, 
+				(DLGPROC)BroadcastCommandDlgProc
+				);
+
+	if (hDlgWnd == NULL)
+		return;
+
+activate:;
+	::ShowWindow(hDlgWnd, SW_SHOW);
+
+}
+
+// WM_COPYDATAの受信
+LONG CVTWindow::OnReceiveIpcMessage(UINT wParam, LONG lParam)
+{
+	int i, len;
+	COPYDATASTRUCT *cds;
+	char *buf;
+
+	if (!cv.Ready)
+		return 0;
+
+	cds = (COPYDATASTRUCT *)lParam;
+	len = cds->cbData;
+	buf = (char *)cds->lpData;
+	if (cds->dwData == IPC_BROADCAST_COMMAND) {
+		// 端末へ文字列を送り込む
+		for (i = 0 ; i < len ; i++) {
+			FSOut1(buf[i]);
+			if (ts.LocalEcho > 0) {
+				FSEcho1(buf[i]);
+			}
+		}
+	}
+
+	return 0;
+}
+
+
+
 void CVTWindow::OnControlOpenTEK()
 {
   OpenTEK();
@@ -2918,6 +3100,11 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2005/01/15 13:29:29  yutakakn
+ * TeraTermウィンドウの最大化ボタンを有効にした。
+ * ただし、タイトルバーをダブルクリックしても最大化はしない。
+ * また、TEKには未対応。
+ *
  * Revision 1.4  2004/12/07 14:27:21  yutakakn
  * Additional settingsダイアログにフォーカスを当てるようにした。
  * また、tab orderの調整。

@@ -63,8 +63,8 @@ END
 
 IDD_EXTERNAL_SETUP DIALOGEX 0, 0, 295, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Additional settings"
-FONT 10, "System", 400, 0, 0x80
+CAPTION "Tera Term: Additional settings"
+FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
     CONTROL         "EnableContinuedLineCopy",IDC_LINECOPY,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,18,11,99,10
@@ -92,6 +92,25 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,238,29,50,14
 END
 
+IDD_BROADCAST_DIALOG DIALOGEX 0, 0, 264, 45
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Tera Term: Broadcast command"
+FONT 8, "Tahoma", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "Submit",IDOK,205,5,50,14
+    EDITTEXT        IDC_COMMAND_EDIT,5,5,187,14,ES_AUTOHSCROLL
+    CONTROL         "Enter key",IDC_ENTERKEY_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,149,26,44,10
+    DEFPUSHBUTTON   "Close",IDCANCEL,205,23,50,14
+    CONTROL         "CRLF",IDC_RADIO_CRLF,"Button",BS_AUTORADIOBUTTON,47,26,
+                    33,10
+    GROUPBOX        "",IDC_ENTERGROUP,42,20,102,18
+    CONTROL         "CR",IDC_RADIO_CR,"Button",BS_AUTORADIOBUTTON,81,26,25,
+                    10
+    CONTROL         "LF",IDC_RADIO_LF,"Button",BS_AUTORADIOBUTTON,112,26,23,
+                    10
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -114,6 +133,14 @@ BEGIN
         RIGHTMARGIN, 288
         TOPMARGIN, 7
         BOTTOMMARGIN, 143
+    END
+
+    IDD_BROADCAST_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 8
+        RIGHTMARGIN, 257
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 42
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -343,6 +370,7 @@ BEGIN
         MENUITEM "Are you &there\tAlt+T",       ID_CONTROL_AREYOUTHERE
         MENUITEM "&Send break\tAlt+B",          ID_CONTROL_SENDBREAK
         MENUITEM "Reset &port",                 ID_CONTROL_RESETPORT
+        MENUITEM "Broadcast command",           ID_CONTROL_BROADCASTCOMMAND
         MENUITEM SEPARATOR
         MENUITEM "&Open TEK",                   ID_CONTROL_OPENTEK
         MENUITEM "&Close TEK",                  ID_CONTROL_CLOSETEK
