@@ -835,6 +835,7 @@ void RunMacro(PCHAR FName, BOOL Startup)
 	char Cmnd[MAXPATHLEN+40];
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
+	DWORD pri = NORMAL_PRIORITY_CLASS;
 
 	SetTopic();
 	if (! InitDDE()) return;
@@ -864,6 +865,11 @@ void RunMacro(PCHAR FName, BOOL Startup)
 #else
 	// TeraTerm本体でログ採取中にマクロを実行すると、マクロの動作が停止することが
 	// あるため、プロセスの優先度を1つ下げて実行させる。(2004/9/5 yutaka)
+	// ログ採取中のみに下げる。(2004/11/28 yutaka)
+	if (FileLog || BinLog) {
+		pri = BELOW_NORMAL_PRIORITY_CLASS;
+	}
+
 	ZeroMemory(&si, sizeof(si));
 	ZeroMemory(&pi, sizeof(pi));
 	GetStartupInfo(&si);
@@ -875,10 +881,14 @@ void RunMacro(PCHAR FName, BOOL Startup)
 		NULL, 
 		NULL,
 		FALSE,
-		BELOW_NORMAL_PRIORITY_CLASS,
+		pri,
 		NULL, NULL,
 		&si, &pi) == 0) {
 			EndDDE();
 	}
 #endif
 }
+
+/*
+ * $Log: not supported by cvs2svn $
+ */
