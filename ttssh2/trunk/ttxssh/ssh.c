@@ -46,11 +46,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ssh.h"
 #include "crypt.h"
 
+// SSH2 macro
 #ifdef _DEBUG
 #define SSH2_DEBUG
 #endif
 
-// SSH2 macro
+#define DONT_WANTCONFIRM 1  // (2005.3.28 yutaka)
 #define INTBLOB_LEN 20
 #define SIGBLOB_LEN (2*INTBLOB_LEN)
 
@@ -5173,6 +5174,11 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	int len;
 	char *data;
 	int id, remote_id;
+#ifdef DONT_WANTCONFIRM
+	int wantconfirm = 0; // false 
+#else
+	int wantconfirm = 1; // true 
+#endif
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
@@ -5205,7 +5211,7 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	buffer_put_int(msg, remote_id);  
 	s = "pty-req";  // pseudo terminalのリクエスト
 	buffer_put_string(msg, s, strlen(s));  
-	buffer_put_char(msg, 1);  
+	buffer_put_char(msg, wantconfirm);  // wantconfirm (disableに変更 2005/3/28 yutaka)
 	s = pvar->ts->TermType; // TERM
 	buffer_put_string(msg, s, strlen(s));  
 	buffer_put_int(msg, pvar->ssh_state.win_cols);  // columns
@@ -5221,6 +5227,10 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	buffer_free(msg);
 
 	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_REQUEST was sent at handle_SSH2_open_confirm().", LOG_LEVEL_VERBOSE);
+
+	if (wantconfirm == 0) {
+		handle_SSH2_channel_success(pvar);
+	}
 
 	return TRUE;
 }
@@ -5246,6 +5256,12 @@ static BOOL handle_SSH2_channel_success(PTInstVar pvar)
 	}
 
 	if (pvar->session_nego_status == 1) {
+#ifdef DONT_WANTCONFIRM
+		int wantconfirm = 0; // false 
+#else
+		int wantconfirm = 1; // true
+#endif
+
 		pvar->session_nego_status = 2;  
 		msg = buffer_init();
 		if (msg == NULL) {
@@ -5255,7 +5271,7 @@ static BOOL handle_SSH2_channel_success(PTInstVar pvar)
 		buffer_put_int(msg, pvar->remote_id);  
 		s = "shell";
 		buffer_put_string(msg, s, strlen(s));  // ctype
-		buffer_put_char(msg, 1);  
+		buffer_put_char(msg, wantconfirm);   // wantconfirm (disableに変更 2005/3/28 yutaka)
 
 		len = buffer_len(msg);
 		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_REQUEST, len);
@@ -5264,6 +5280,10 @@ static BOOL handle_SSH2_channel_success(PTInstVar pvar)
 		buffer_free(msg);
 
 		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_REQUEST was sent at handle_SSH2_channel_success().", LOG_LEVEL_VERBOSE);
+
+		if (wantconfirm == 0) {
+			handle_SSH2_channel_success(pvar);
+		}
 
 	} else if (pvar->session_nego_status == 2) {
 		pvar->session_nego_status = 3;
@@ -5465,6 +5485,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.23  2005/03/27 04:39:55  yutakakn
+ * SSH2のログ採取(verbose)のデータを追加した。
+ *
  * Revision 1.22  2005/03/12 15:07:33  yutakakn
  * SSH2 keyboard-interactive認証をTISダイアログに実装した。
  *
