@@ -689,7 +689,9 @@ BOOL SetDefaultEtcDlg(HWND hWnd)
 
 	::SetDlgItemText(hWnd, EDIT_TTMPATH, szTTermPath);
 	::SetDlgItemText(hWnd, EDIT_INITFILE, "");
-	::SetDlgItemText(hWnd, EDIT_OPTION, "");
+	// デフォルトオプションに /KT , /KR を追加 (2005.1.25 yutaka)
+	::SetDlgItemText(hWnd, EDIT_OPTION, "/KT=UTF8 /KR=UTF8");
+//	::SetDlgItemText(hWnd, EDIT_OPTION, "");
 	::SetDlgItemText(hWnd, EDIT_PROMPT_USER, LOGIN_PROMPT);
 	::SetDlgItemText(hWnd, EDIT_PROMPT_PASS, PASSWORD_PROMPT);
 
@@ -859,20 +861,29 @@ BOOL ConnectHost(HWND hWnd, UINT idItem, char *szJobName)
 		break;
 	}
 
-	if (jobInfo.dwMode != MODE_DIRECT)
-		::wsprintf(szArgment, "%s /M=\"%s\"", szArgment, szMacroFile);
+	// SSH自動ログインの場合はマクロは不要 (2005.1.25 yutaka)
+	if (jobInfo.bTtssh != TRUE) {
+		if (jobInfo.dwMode != MODE_DIRECT)
+			::wsprintf(szArgment, "%s /M=\"%s\"", szArgment, szMacroFile);
+	}
 
 	if (::lstrlen(jobInfo.szOption) != 0)
 		::wsprintf(szArgment, "%s %s", szArgment, jobInfo.szOption);
 
 	// TTSSHが有効の場合は、自動ログインのためのコマンドラインを付加する。(2004.12.3 yutaka)
+	// ユーザのパラメータを指定できるようにする (2005.1.25 yutaka)
 	if (jobInfo.dwMode == MODE_AUTOLOGIN) {
 		if (jobInfo.bTtssh == TRUE) {
+			char tmp[MAX_PATH];
+
+			strcpy(tmp, szArgment);
+
 			// 現在、SSH2のpassword認証のみサポート。
-			_snprintf(szArgment, sizeof(szArgment), "%s:22 /ssh /auth=password /user=%s /passwd=%s", 
+			_snprintf(szArgment, sizeof(szArgment), "%s:22 /ssh /auth=password /user=%s /passwd=%s %s", 
 				jobInfo.szHostName,
 				jobInfo.szUsername,
-				jobInfo.szPassword
+				jobInfo.szPassword,
+				tmp
 				);
 
 		} else {
@@ -1991,6 +2002,10 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR nCmdLine, int nCmdShow)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2004/12/14 13:23:40  yutakakn
+ * ttermpro.exe の初期フォルダパスをカレントに変更。
+ * 'use TTSSH' -> 'use SSH'へリネーム。
+ *
  * Revision 1.3  2004/12/03 13:35:41  yutakakn
  * SSH2自動ログインをサポートした
  * ただし、現在はpassword認証のみ。
