@@ -406,7 +406,7 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 								   LPARAM lParam)
 {
 	const int IDC_TIMER1 = 300;
-	const int autologin_timeout = 1000; // ミリ秒
+	const int autologin_timeout = 10; // ミリ秒
 	PTInstVar pvar;
 
 	switch (msg) {
@@ -424,8 +424,12 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		return FALSE;			/* because we set the focus */
 
 	case WM_TIMER:
-		KillTimer(dlg, IDC_TIMER1);
-		SendMessage(dlg, WM_COMMAND, IDOK, 0);
+		pvar = (PTInstVar) GetWindowLong(dlg, DWL_USER);
+		// 認証準備ができてから、認証データを送信する。早すぎると、落ちる。(2004.12.16 yutaka)
+		if (!(pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME)) {
+			KillTimer(dlg, IDC_TIMER1);
+			SendMessage(dlg, WM_COMMAND, IDOK, 0);
+		}
 		return TRUE;
 
 	case WM_COMMAND:
@@ -920,4 +924,10 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/12/01 15:37:49  yutakakn
+ * SSH2自動ログイン機能を追加。
+ * 現状、パスワード認証のみに対応。
+ * ・コマンドライン
+ *   /ssh /auth=認証メソッド /user=ユーザ名 /passwd=パスワード
+ *
  */
