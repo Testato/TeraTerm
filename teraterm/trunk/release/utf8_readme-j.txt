@@ -227,6 +227,9 @@ MaxBuffSize=500000
 
 ¡‰ü”Å—š—ð
 
+2005.1.5 (Ver 2.07h)
+  ESSH2‘Î‰žTTSSH(1.06)‚Ö·‚µ‘Ö‚¦
+
 2004.12.27 (Ver 2.07g)
   ESSH2‘Î‰žTTSSH(1.05)‚Ö·‚µ‘Ö‚¦
 

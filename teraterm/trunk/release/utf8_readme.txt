@@ -241,6 +241,9 @@ MaxBuffSize=500000
 
 * History
 
+2005.1.5 (Ver 2.07h)
+  - upgraded TTSSH version supporting SSH2 to 1.06
+
 2004.12.27 (Ver 2.07g)
   - upgraded TTSSH version supporting SSH2 to 1.05
 
