@@ -327,6 +327,7 @@ CRYPTKeyPair *read_SSH2_private_key(PTInstVar pvar,
 							char *errmsg,
 							int errmsg_len)
 {
+	char filename[2048];
 	FILE *fp = NULL;
 	CRYPTKeyPair *result = NULL;
 	EVP_PKEY *pk = NULL;
@@ -336,7 +337,12 @@ CRYPTKeyPair *read_SSH2_private_key(PTInstVar pvar,
 	ERR_load_crypto_strings();
 	//seed_prng();
 
-	fp = fopen(relative_name, "r");
+	// 相対パスを絶対パスへ変換する。こうすることにより、「ドットで始まる」ディレクトリに
+	// あるファイルを読み込むことができる。(2005.2.7 yutaka)
+	get_teraterm_dir_relative_name(filename, sizeof(filename),
+								   relative_name);
+
+	fp = fopen(filename, "r");
 	if (fp == NULL) {
 		_snprintf(errmsg, errmsg_len, strerror(errno));
 		goto error;
@@ -395,6 +401,9 @@ error:
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2004/12/27 14:35:41  yutakakn
+ * SSH2秘密鍵読み込み失敗時のエラーメッセージを強化した。
+ *
  * Revision 1.2  2004/12/22 17:28:14  yutakakn
  * SSH2公開鍵認証(RSA/DSA)をサポートした。
  *
