@@ -64,6 +64,11 @@
 #define IDC_SSH_VERSION                 1049
 #define IDC_SSH_VERSION_LABEL           1050
 #define IDC_OPENSSL_VERSION             1051
+#define IDC_HEARTBEATLABEL              1052
+#define IDC_HEARTBEAT_EDIT              1053
+#define IDC_HEARTBEATLABEL2             1054
+#define IDC_CHECK1                      1055
+#define IDC_KEYBOARD_INTERACTIVE_CHECK  1055
 #define IDC_LOCALUSERNAMELABEL          1100
 #define IDC_LOCALUSERNAME               1101
 #define IDC_CHOOSEHOSTRSAFILE           1102
@@ -80,7 +85,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        104
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1052
+#define _APS_NEXT_CONTROL_VALUE         1056
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

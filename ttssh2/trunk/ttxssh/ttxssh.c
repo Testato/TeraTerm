@@ -1561,6 +1561,14 @@ static void init_setup_dlg(PTInstVar pvar, HWND dlg)
 		SetDlgItemText(dlg, IDC_READWRITEFILENAME,
 					   pvar->settings.KnownHostsFiles);
 	}
+
+	// SSH2 HeartBeat(keep-alive)を追加 (2005.2.22 yutaka)
+	{
+		char buf[10];
+		_snprintf(buf, sizeof(buf), "%d", pvar->settings.ssh_heartbeat_overtime);
+		SetDlgItemText(dlg, IDC_HEARTBEAT_EDIT, buf);
+	}
+
 }
 
 void get_teraterm_dir_relative_name(char FAR * buf, int bufsize,
@@ -1698,6 +1706,14 @@ static void complete_setup_dlg(PTInstVar pvar, HWND dlg)
 											   KnownHostsFiles) - j,
 										buf + bufindex);
 	}
+
+	// get SSH HeartBeat(keep-alive)
+	SendMessage(GetDlgItem(dlg, IDC_HEARTBEAT_EDIT), WM_GETTEXT, sizeof(buf), (LPARAM)buf);
+	i = atoi(buf);
+	if (i < 0)
+		i = 60;
+	pvar->settings.ssh_heartbeat_overtime = i;
+
 }
 
 static void move_cur_sel_delta(HWND listbox, int delta)
@@ -2103,6 +2119,11 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2005/01/27 13:30:33  yutakakn
+ * 公開鍵認証自動ログインをサポート。
+ * /auth=publickey, /keyfile オプションを新規追加した。
+ * また、空白を含む引数をサポート。
+ *
  * Revision 1.9  2005/01/24 14:07:07  yutakakn
  * ・keyboard-interactive認証をサポートした。
  * 　それに伴い、teraterm.iniに "KeyboardInteractive" エントリを追加した。

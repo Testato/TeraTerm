@@ -783,6 +783,12 @@ static void init_default_auth_dlg(PTInstVar pvar, HWND dlg)
 				   pvar->settings.DefaultRhostsHostPrivateKeyFile);
 	SetDlgItemText(dlg, IDC_LOCALUSERNAME,
 				   pvar->settings.DefaultRhostsLocalUserName);
+
+	// SSH2 keyboard-interactive method (2005.2.22 yutaka)
+	if (pvar->settings.ssh2_keyboard_interactive) {
+		SendMessage(GetDlgItem(dlg, IDC_KEYBOARD_INTERACTIVE_CHECK), BM_SETCHECK, BST_CHECKED, 0);
+	}
+
 }
 
 static BOOL end_default_auth_dlg(PTInstVar pvar, HWND dlg)
@@ -812,6 +818,17 @@ static BOOL end_default_auth_dlg(PTInstVar pvar, HWND dlg)
 	GetDlgItemText(dlg, IDC_LOCALUSERNAME,
 				   pvar->settings.DefaultRhostsLocalUserName,
 				   sizeof(pvar->settings.DefaultRhostsLocalUserName));
+
+	// SSH2 keyboard-interactive method (2005.2.22 yutaka)
+	{
+		LRESULT ret;
+		ret = SendMessage(GetDlgItem(dlg, IDC_KEYBOARD_INTERACTIVE_CHECK), BM_GETCHECK, 0, 0);
+		if (ret & BST_CHECKED) {
+			pvar->settings.ssh2_keyboard_interactive = 1;
+		} else {
+			pvar->settings.ssh2_keyboard_interactive = 0;
+		}
+	}
 
 	EndDialog(dlg, 1);
 	return TRUE;
@@ -993,6 +1010,11 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2005/01/27 13:30:33  yutakakn
+ * 公開鍵認証自動ログインをサポート。
+ * /auth=publickey, /keyfile オプションを新規追加した。
+ * また、空白を含む引数をサポート。
+ *
  * Revision 1.7  2005/01/25 13:38:22  yutakakn
  * SSH認証ダイアログで、Rhosts/TISがグレーになる前に、Enterキーを押下すると、
  * アプリケーションエラーとなる現象に対処した。
