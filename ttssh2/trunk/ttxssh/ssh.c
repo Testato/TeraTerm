@@ -1833,15 +1833,43 @@ void SSH_notify_win_size(PTInstVar pvar, int cols, int rows)
 	pvar->ssh_state.win_cols = cols;
 	pvar->ssh_state.win_rows = rows;
 
-	if (get_handler(pvar, SSH_SMSG_STDOUT_DATA) == handle_data) {
-		unsigned char FAR *outmsg =
-			begin_send_packet(pvar, SSH_CMSG_WINDOW_SIZE, 16);
+	if (SSHv1(pvar)) {
+		if (get_handler(pvar, SSH_SMSG_STDOUT_DATA) == handle_data) {
+			unsigned char FAR *outmsg =
+				begin_send_packet(pvar, SSH_CMSG_WINDOW_SIZE, 16);
 
-		set_uint32(outmsg, rows);
-		set_uint32(outmsg + 4, cols);
-		set_uint32(outmsg + 8, 0);
-		set_uint32(outmsg + 12, 0);
+			set_uint32(outmsg, rows);
+			set_uint32(outmsg + 4, cols);
+			set_uint32(outmsg + 8, 0);
+			set_uint32(outmsg + 12, 0);
+			finish_send_packet(pvar);
+		}
+
+	} else { // ターミナルサイズ変更通知の追加 (2005.1.4 yutaka)
+		buffer_t *msg;
+		char *s;
+		unsigned char *outmsg;
+		int len;
+
+		msg = buffer_init();
+		if (msg == NULL) {
+			// TODO: error check
+			return;
+		}
+		buffer_put_int(msg, pvar->remote_id);  
+		s = "window-change";  
+		buffer_put_string(msg, s, strlen(s));  
+		buffer_put_char(msg, 0);  // wantconfirm
+		buffer_put_int(msg, pvar->ssh_state.win_cols);  // columns
+		buffer_put_int(msg, pvar->ssh_state.win_rows);  // lines
+		buffer_put_int(msg, 480);  // XXX:
+		buffer_put_int(msg, 640);  // XXX:
+		len = buffer_len(msg);
+		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_REQUEST, len);
+		memcpy(outmsg, buffer_ptr(msg), len);
 		finish_send_packet(pvar);
+		buffer_free(msg);
+
 	}
 }
 
@@ -4966,6 +4994,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2004/12/27 14:22:16  yutakakn
+ * メモリリークを修正。
+ *
  * Revision 1.10  2004/12/27 14:05:08  yutakakn
  * 'Auto window close'が有効の場合、切断後の接続ができない問題を修正した。
  * 　・スレッドの終了待ち合わせ処理の追加
