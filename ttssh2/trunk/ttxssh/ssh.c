@@ -1982,6 +1982,7 @@ void SSH_init(PTInstVar pvar)
 	pvar->rekeying = 0;
 	pvar->key_done = 0;
 	pvar->ssh2_autologin = 0;  // autologin disabled(default)
+	pvar->userauth_retry_count = 0;
 
 }
 
@@ -4472,12 +4473,20 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 	int len;
 	int mode;
 
+	// SSH2 keyboard-interactive methodの初期化 (2005.1.22 yutaka)
+	pvar->keyboard_interactive_done = 0;
+
+	// すでにログイン処理を行っている場合は、SSH2_MSG_SERVICE_REQUESTの送信は
+	// しないことにする。OpenSSHでは支障ないが、Tru64 UNIXではサーバエラーとなってしまうため。
+	// (2005.3.10 yutaka)
+	if (pvar->userauth_retry_count > 0) {
+		return handle_SSH2_authrequest(pvar);
+		/* NOT REACHED */
+	}
+
 	for (mode = 0 ; mode < MODE_MAX ; mode++) {
 		pvar->ssh2_keys[mode].mac.enabled = 1;
 	}
-
-	// SSH2 keyboard-interactive methodの初期化 (2005.1.22 yutaka)
-	pvar->keyboard_interactive_done = 0;
 
 	// start user authentication
 	msg = buffer_init();
@@ -4970,6 +4979,9 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 	// TCP connection closed
 	//notify_closed_connection(pvar);
 
+	// retry countの追加 (2005.3.10 yutaka)
+	pvar->userauth_retry_count++;
+
 	// keyboard-interactive methodでトライして失敗した場合、次にpassword authentication method
 	// で無条件にトライしてみる。(2005.1.22 yutaka)
 	if (pvar->keyboard_interactive_done == 1) {
@@ -5385,6 +5397,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.20  2005/03/09 14:14:25  yutakakn
+ * サーバIDに CR+LF が含まれていた場合、CRの除去ができていなかったバグを修正。
+ *
  * Revision 1.19  2005/03/08 14:24:11  yutakakn
  * SSH2 log dump機構の追加。
  * とりあえず、DH_GEXにおけるkey verifyまでにトレース採取を組み込んだ。

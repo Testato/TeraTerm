@@ -208,6 +208,7 @@ typedef struct _TInstVar {
   time_t ssh_heartbeat_tick;
   HANDLE ssh_heartbeat_thread;
   int keyboard_interactive_done;
+  int userauth_retry_count;
 
 } TInstVar;
 
@@ -234,6 +235,9 @@ void get_file_version(char *exefile, int *major, int *minor, int *release, int *
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2005/03/03 13:28:23  yutakakn
+ * クライアントのSSHバージョンを ttxssh.dll から取得して、サーバへ送るようにした。
+ *
  * Revision 1.7  2005/01/27 13:30:33  yutakakn
  * 公開鍵認証自動ログインをサポート。
  * /auth=publickey, /keyfile オプションを新規追加した。
