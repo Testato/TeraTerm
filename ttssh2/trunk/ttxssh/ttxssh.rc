@@ -60,7 +60,7 @@ BEGIN
     LTEXT           "This extension uses code by Eric A. Young (LIBEAY32.DLL).\r\nThanks also to Ian Goldberg for his Pilot SSH code, which was a very handy reference. Special thanks to Takashi Teranishi for his cooperation.",
                     IDC_STATIC,6,100,248,35
     DEFPUSHBUTTON   "OK",IDOK,106,224,50,14
-    LTEXT           "TTSSH\r\nTeraterm Secure Shell extension, version 1.5.4\r\nCompatible with SSH protocol version 1.5\r\nCopyright Robert O'Callahan (roc+tt@cs.cmu.edu), 1998-1999\r\nIPv6 extention version 0.81 (kato@win6.jp), 2000-2003\r\nSSH2 support 1.06 (Y.Hirata), 2004-2005",
+    LTEXT           "TTSSH\r\nTeraterm Secure Shell extension, version 1.5.4\r\nCompatible with SSH protocol version 1.5\r\nCopyright Robert O'Callahan (roc+tt@cs.cmu.edu), 1998-1999\r\nIPv6 extention version 0.81 (kato@win6.jp), 2000-2003\r\nSSH2 support 1.07 (Y.Hirata), 2004-2005",
                     IDC_STATIC,6,7,219,50
     LTEXT           "THIS EXTENSION INCORPORATES STRONG CRYPTOGRAPHY. POSESSION, USE, AND/OR EXPORT OF THIS EXTENSION MAY BE ILLEGAL IN YOUR COUNTRY.",
                     IDC_STATIC,6,71,248,29
