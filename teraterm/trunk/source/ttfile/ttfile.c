@@ -26,6 +26,7 @@
 #endif
 
 #include <stdlib.h>
+#include <stdio.h>
 
 static HANDLE hInst;
 
@@ -278,6 +279,18 @@ BOOL FAR PASCAL GetTransFname
 
 	// loggingの場合、オープンダイアログをセーブダイアログへ変更 (2005.1.6 yutaka)
 	if (FuncId == GTF_LOG) {
+		SYSTEMTIME time;
+		char buf[80];
+
+		// ログのデフォルト値(log_YYYYMMDD_HHMMSS.txt)を設定する (2005.1.21 yutaka)
+		GetLocalTime(&time);
+		_snprintf(buf, sizeof(buf), "log_%4d%02d%02d_%02d%02d%02d.txt", 
+			time.wYear, time.wMonth, time.wDay,
+			time.wHour, time.wMinute, time.wSecond);
+		strcpy(fv->FullName, buf);
+		ofn.lpstrFile = fv->FullName;
+		ofn.nMaxFile = sizeof(fv->FullName);
+
 		Ok = GetSaveFileName(&ofn);
 	} else {
 		Ok = GetOpenFileName(&ofn);
@@ -923,4 +936,8 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2005/01/06 13:06:45  yutakakn
+ * "save setup"ダイアログの初期ファイルディレクトリをプログラム本体がある箇所に固定。
+ * ログ採取のオープンダイアログをセーブダイアログへ変更した。
+ *
  */
