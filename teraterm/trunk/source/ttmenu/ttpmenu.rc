@@ -126,7 +126,7 @@ BEGIN
     PUSHBUTTON      "....",BUTTON_MACRO,264,136,12,12
     CONTROL         "launch only",RADIO_DIRECT,"Button",BS_AUTORADIOBUTTON | 
                     BS_LEFT | BS_VCENTER,168,160,108,12
-    CONTROL         "use ttssh",CHECK_TTSSH,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "use SSH",CHECK_TTSSH,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,220,200,56,16
     GROUPBOX        "Launch Pattern",IDC_STATIC,164,40,116,140
     CONTROL         "kick at starting",CHECK_STARTUP,"Button",
@@ -174,9 +174,9 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,51,53,44,14
     CTEXT           "Tera Term launch tool\r\nTeraTerm Menu Version 0.94r2",
                     IDC_STATIC,24,9,124,20
-    LTEXT           "Copyright(C) 1997-2003 S.Hayakawa\r\nSSH2 support 1.00 (Y.Hirata), 2004",
+    LTEXT           "Copyright(C) 1997-2003 S.Hayakawa\r\nSSH2 support 1.01 (Y.Hirata), 2004",
                     IDC_STATIC,27,31,116,18
-    ICON            TTERM_ICON,STATIC_ICON,4,8,18,21
+    ICON            TTERM_ICON,STATIC_ICON,4,8,20,20
 END
 
 
