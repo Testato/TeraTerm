@@ -3,35 +3,12 @@
 ==============================================================================
 
 * Introduction
-  This software package adds UTF-8 support to terminal emulator "TeraTerm Pro".
-
-
-* Content of archive file
-  Archive (zip) file contains:
-
-  File name               Description  
-  ---------------------+-----------------------------------
-  readme.txt              this file
-  cygterm.exe             "Cygterm" main program
-  cygterm.cfg             "Cygterm" configuration file
-  TERATERM_sample.INI     sample ini file
-  ttp*.dll                TeraTerm DLL files
-  tt*.exe                 TeraTerm executable files
-  keycode.exe             keycode program
-  ttxssh.dll              SSH2 supporting version of TTSSH
-  msvcr71.dll             MFC7.1 runtime library
-  ---------------------+-----------------------------------
+  This software package adds UTF-8 & SSH2 support to terminal emulator "TeraTerm Pro".
 
 
 * Installation
-
-  1. Original version of TeraTerm Pro has to be installed before applying this package.  
-     It can be downloaded from http://hp.vector.co.jp/authors/VA002416/ttermp23.zip
-  2. Backup all files from TeraTerm directory. 
-  3. Extract content of UTF-8 support package archive into the TeraTerm directory. 
-     Overwrite existing files if prompted. 
-  4. Make sure that "cygterm.exe" and "cygterm.cfg" files are extracted into the TeraTerm 
-     directory.
+  If you use TeraTerm installer program, click installer program and install TeraTerm according to the instruction of the installer.
+  If you use TeraTerm archives, extract TeraTerm zip file and copy all files to your directory.
   
   [NOTE]
     UTF-8 function also supports the Japanese mode however to be able to use it you have 
