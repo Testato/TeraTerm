@@ -1735,7 +1735,7 @@ void SSH_init(PTInstVar pvar)
 	memset(pvar->ssh2_keys, 0, sizeof(pvar->ssh2_keys));
 	pvar->userauth_success = 0;
 	pvar->session_nego_status = 0;
-//	pvar->settings.ssh_protocol_version = 0;
+	pvar->settings.ssh_protocol_version = 2;  // SSH2(default)
 	pvar->rekeying = 0;
 	pvar->key_done = 0;
 
@@ -2263,8 +2263,8 @@ static char *myproposal[PROPOSAL_MAX] = {
 	"ssh-dss,ssh-rsa",
 	"3des-cbc,aes128-cbc",
 	"3des-cbc,aes128-cbc",
-	"hmac-sha1",
-	"hmac-sha1",
+	"hmac-sha1,hmac-md5",
+	"hmac-sha1,hmac-md5",
 	"none",
 	"none",
 	"",
@@ -4398,3 +4398,6 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 	return TRUE;
 }
 
+/*
+ * $Log: not supported by cvs2svn $ 
+ */

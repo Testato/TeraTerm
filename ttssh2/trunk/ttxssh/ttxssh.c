@@ -362,7 +362,8 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 		read_BOOL_option(fileName, "LocalForwardingIdentityCheck", TRUE);
 
 	// SSH protocol version (2004.10.11 yutaka)
-	settings->ssh_protocol_version = GetPrivateProfileInt("TTSSH", "ProtocolVersion", 1, fileName);
+	// default is SSH2 (2004.11.30 yutaka)
+	settings->ssh_protocol_version = GetPrivateProfileInt("TTSSH", "ProtocolVersion", 2, fileName);
 
 	clear_local_settings(pvar);
 }
@@ -1976,5 +1977,8 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/11/23 14:32:26  yutakakn
+ * 接続ダイアログの起動時に、TCP/IPの「ホスト名」にフォーカスが当たるようにした。
+ *
  *
  */
