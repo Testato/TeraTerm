@@ -645,16 +645,6 @@ void CVTWindow::InitMenuPopup(HMENU SubMenu)
 			EnableMenuItem(FileMenu,ID_FILE_NEWCONNECTION,MF_BYCOMMAND | MF_ENABLED);
 		}
 
-		if (LogVar!=NULL) { // ログ採取モードの場合
-			EnableMenuItem(FileMenu,ID_FILE_LOG,MF_BYCOMMAND | MF_GRAYED);
-			EnableMenuItem(FileMenu,ID_FILE_COMMENTTOLOG, MF_BYCOMMAND | MF_ENABLED);
-			EnableMenuItem(FileMenu,ID_FILE_VIEWLOG, MF_BYCOMMAND | MF_ENABLED);
-		} else {
-			EnableMenuItem(FileMenu,ID_FILE_LOG,MF_BYCOMMAND | MF_ENABLED);
-			EnableMenuItem(FileMenu,ID_FILE_COMMENTTOLOG, MF_BYCOMMAND | MF_GRAYED);
-			EnableMenuItem(FileMenu,ID_FILE_VIEWLOG, MF_BYCOMMAND | MF_GRAYED);
-		}
-
 		if ( (! cv.Ready) || (SendVar!=NULL) || (FileVar!=NULL) ||
 			(cv.PortType==IdFile) )
 		{
@@ -676,6 +666,17 @@ void CVTWindow::InitMenuPopup(HMENU SubMenu)
 		EnableMenuItem(FileMenu,ID_FILE_CYGWINCONNECTION,MF_BYCOMMAND | MF_ENABLED);
 		EnableMenuItem(FileMenu,ID_FILE_TERATERMMENU,MF_BYCOMMAND | MF_ENABLED);
 		EnableMenuItem(FileMenu,ID_FILE_LOGMEIN,MF_BYCOMMAND | MF_ENABLED);
+
+		// XXX: この位置にしないと、logがグレイにならない。 (2005.2.1 yutaka)
+		if (LogVar!=NULL) { // ログ採取モードの場合
+			EnableMenuItem(FileMenu,ID_FILE_LOG,MF_BYCOMMAND | MF_GRAYED);
+			EnableMenuItem(FileMenu,ID_FILE_COMMENTTOLOG, MF_BYCOMMAND | MF_ENABLED);
+			EnableMenuItem(FileMenu,ID_FILE_VIEWLOG, MF_BYCOMMAND | MF_ENABLED);
+		} else {
+			EnableMenuItem(FileMenu,ID_FILE_LOG,MF_BYCOMMAND | MF_ENABLED);
+			EnableMenuItem(FileMenu,ID_FILE_COMMENTTOLOG, MF_BYCOMMAND | MF_GRAYED);
+			EnableMenuItem(FileMenu,ID_FILE_VIEWLOG, MF_BYCOMMAND | MF_GRAYED);
+		}
 
 	}
 	else if ( SubMenu == TransMenu )
@@ -3162,6 +3163,10 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2005/01/29 16:13:42  yutakakn
+ * "Additional settings"の"Viewlog Editor"で、OKボタン押下時にテキストボックスから
+ * コピーしていなかったバグを修正。
+ *
  * Revision 1.7  2005/01/29 05:27:35  yutakakn
  * "View Log"メニューの追加。
  * "Additional settings"にView Log Editorボックスを追加。
