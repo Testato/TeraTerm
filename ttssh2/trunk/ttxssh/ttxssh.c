@@ -854,10 +854,10 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		SendDlgItemMessage(dlg, IDC_SSH_VERSION, EM_LIMITTEXT,
 						   NUM_ELEM(ssh_version) - 1, 0);
 
-		if (pvar->settings.ssh_protocol_version == 2) {
-			SendDlgItemMessage(dlg, IDC_SSH_VERSION, CB_SETCURSEL, 1, 0); // SSH2
-		} else {
+		if (pvar->settings.ssh_protocol_version == 1) {
 			SendDlgItemMessage(dlg, IDC_SSH_VERSION, CB_SETCURSEL, 0, 0); // SSH1
+		} else {
+			SendDlgItemMessage(dlg, IDC_SSH_VERSION, CB_SETCURSEL, 1, 0); // SSH2
 		}
 
 		if (IsDlgButtonChecked(dlg, IDC_HOSTSSH)) {
@@ -902,12 +902,18 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		// Host dialogにフォーカスをあてる (2004.10.2 yutaka)
 		{
 		HWND hwnd = GetDlgItem(dlg, IDC_HOSTNAME);
-		SetFocus(dlg);
+
 		SetFocus(hwnd);
-		//SendMessage(dlg, WM_COMMAND, IDC_HOSTTCPIP, 0);
+		//SendMessage(hwnd, BM_SETCHECK, BST_CHECKED, 0);
+		//style = GetClassLongPtr(hwnd, GCL_STYLE);
+		//SetClassLongPtr(hwnd, GCL_STYLE, style | WS_TABSTOP);
 		}
 
-		return TRUE;
+		// SetFocus()でフォーカスをあわせた場合、FALSEを返す必要がある。
+		// TRUEを返すと、TABSTOP対象の一番はじめのコントロールが選ばれる。
+		// (2004.11.23 yutaka)
+		return FALSE;
+		//return TRUE;
 
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
@@ -985,17 +991,11 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 #endif							/* INET6 */
 			enable_dlg_items(dlg, IDC_HOSTCOMLABEL, IDC_HOSTCOM, FALSE);
 
+			enable_dlg_items(dlg, IDC_SSH_VERSION_LABEL, IDC_SSH_VERSION_LABEL, TRUE); // disabled (2004.11.23 yutaka)
 			if (IsDlgButtonChecked(dlg, IDC_HOSTSSH)) {
 				enable_dlg_items(dlg, IDC_SSH_VERSION, IDC_SSH_VERSION, TRUE);
 			} else {
 				enable_dlg_items(dlg, IDC_SSH_VERSION, IDC_SSH_VERSION, FALSE); // disabled
-			}
-
-			// Host dialogにフォーカスをあてる (2004.10.2 yutaka)
-			{
-			HWND hwnd = GetDlgItem(dlg, IDC_HOSTNAME);
-			SetFocus(dlg);
-			SetFocus(hwnd);
 			}
 
 			return TRUE;
@@ -1009,6 +1009,7 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 							 IDC_HOSTTCPPROTOCOL, FALSE);
 #endif							/* INET6 */
 			enable_dlg_items(dlg, IDC_SSH_VERSION, IDC_SSH_VERSION, FALSE); // disabled
+			enable_dlg_items(dlg, IDC_SSH_VERSION_LABEL, IDC_SSH_VERSION_LABEL, FALSE); // disabled (2004.11.23 yutaka)
 
 			return TRUE;
 
@@ -1971,3 +1972,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 	return (1);
 }
 #endif
+
+
+/*
+ * $Log: not supported by cvs2svn $
+ *
+ */
