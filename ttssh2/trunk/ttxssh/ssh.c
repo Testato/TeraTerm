@@ -71,7 +71,6 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar);
 static BOOL handle_SSH2_userauth_success(PTInstVar pvar);
 static BOOL handle_SSH2_userauth_failure(PTInstVar pvar);
 static BOOL handle_SSH2_userauth_banner(PTInstVar pvar);
-static BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar);
 static BOOL handle_SSH2_open_confirm(PTInstVar pvar);
 static BOOL handle_SSH2_request_success(PTInstVar pvar);
 static BOOL handle_SSH2_channel_success(PTInstVar pvar);
@@ -1750,6 +1749,10 @@ static void try_send_credentials(PTInstVar pvar)
 		static const SSHPacketHandler TIS_handlers[]
 		= { handle_TIS_challenge, handle_auth_failure };
 
+		// SSH2の場合は以下の処理をスキップ
+		if (SSHv2(pvar)) 
+			goto skip_ssh2;
+
 		switch (cred->method) {
 		case SSH_AUTH_NONE:
 			return;
@@ -1836,24 +1839,25 @@ static void try_send_credentials(PTInstVar pvar)
 						begin_send_packet(pvar, SSH_CMSG_AUTH_TIS, 0);
 
 					notify_verbose_message(pvar,
-										   "Trying TIS authentication...",
-										   LOG_LEVEL_VERBOSE);
+										"Trying TIS authentication...",
+										LOG_LEVEL_VERBOSE);
 					enque_handlers(pvar, 2, TIS_msgs, TIS_handlers);
 				} else {
 					int len = strlen(cred->password);
 					int obfuscated_len = obfuscating_round_up(pvar, len);
 					unsigned char FAR *outmsg =
 						begin_send_packet(pvar, SSH_CMSG_AUTH_TIS_RESPONSE,
-										  4 + obfuscated_len);
+										4 + obfuscated_len);
 
 					notify_verbose_message(pvar, "Sending TIS response",
-										   LOG_LEVEL_VERBOSE);
+										LOG_LEVEL_VERBOSE);
 
 					set_uint32(outmsg, obfuscated_len);
 					memcpy(outmsg + 4, cred->password, len);
 					memset(outmsg + 4 + len, 0, obfuscated_len - len);
 					enque_simple_auth_handlers(pvar);
 				}
+
 				AUTH_destroy_cur_cred(pvar);
 				break;
 			}
@@ -1864,6 +1868,8 @@ static void try_send_credentials(PTInstVar pvar)
 		}
 
 		finish_send_packet(pvar);
+
+skip_ssh2:;
 		destroy_packet_buf(pvar);
 
 		pvar->ssh_state.status_flags |= STATUS_DONT_SEND_CREDENTIALS;
@@ -4432,7 +4438,7 @@ static void do_SSH2_dispatch_setup_for_transfer(void)
 static BOOL handle_SSH2_newkeys(PTInstVar pvar)
 {
 	int supported_ciphers = (1 << SSH_CIPHER_3DES_CBC | 1 << SSH_CIPHER_AES128);
-	int type = (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA);
+	int type = (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA) | (1 << SSH_AUTH_TIS);
 
 	// ログ採取の終了 (2005.3.7 yutaka)
 	finish_memdump();
@@ -4475,6 +4481,8 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 
 	// SSH2 keyboard-interactive methodの初期化 (2005.1.22 yutaka)
 	pvar->keyboard_interactive_done = 0;
+	// パスワードが入力されたら 1 を立てる (2005.3.12 yutaka)
+	pvar->keyboard_interactive_password_input = 0;
 
 	// すでにログイン処理を行っている場合は、SSH2_MSG_SERVICE_REQUESTの送信は
 	// しないことにする。OpenSSHでは支障ないが、Tru64 UNIXではサーバエラーとなってしまうため。
@@ -4750,6 +4758,19 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 
 		}
 
+	} else if (pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) { // keyboard-interactive (2005.3.12 yutaka)
+		pvar->keyboard_interactive_done = 1;
+		kbdint = 1;
+
+		//s = "ssh-userauth";  // service name
+		s = connect_id;
+		buffer_put_string(msg, s, strlen(s));
+		s = "keyboard-interactive";  // method name
+		buffer_put_string(msg, s, strlen(s));
+		s = "";  // language tag
+		buffer_put_string(msg, s, strlen(s));
+		s = "";  // submethods
+		buffer_put_string(msg, s, strlen(s));
 
 	} else if (pvar->auth_state.cur_cred.method == SSH_AUTH_RSA) { // 公開鍵認証
 		buffer_t *signbuf = NULL;
@@ -5029,16 +5050,15 @@ static BOOL handle_SSH2_userauth_banner(PTInstVar pvar)
 //UsePAM yes
 //
 // (2005.1.23 yutaka)
-static BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar)
+BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar)
 {
 	int len;
 	char *data;
-	int slen, num, echo;
-	char *s, *prompt;
+	int slen = 0, num, echo;
+	char *s, *prompt = NULL;
 	buffer_t *msg;
 	unsigned char *outmsg;
 	int i;
-
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
@@ -5090,6 +5110,17 @@ static BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar)
 		// get boolean
 		echo = data[0];
 		data += 1;
+
+		// keyboard-interactive method (2005.3.12 yutaka)
+		if (pvar->keyboard_interactive_password_input == 0 &&
+			pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
+			AUTH_set_TIS_mode(pvar, prompt, slen);
+			AUTH_advance_to_next_cred(pvar);
+			pvar->ssh_state.status_flags &= ~STATUS_DONT_SEND_CREDENTIALS;
+			//try_send_credentials(pvar);
+			buffer_free(msg);
+			return TRUE;
+		}
 
 		// TODO: ここでプロンプトを表示してユーザから入力させるのが正解。
 		s = pvar->auth_state.cur_cred.password;
@@ -5397,6 +5428,10 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.21  2005/03/10 13:40:39  yutakakn
+ * すでにログイン処理を行っている場合は、SSH2_MSG_SERVICE_REQUESTの送信は
+ * しないことにする。OpenSSHでは支障ないが、Tru64 UNIXではサーバエラーとなってしまうため。
+ *
  * Revision 1.20  2005/03/09 14:14:25  yutakakn
  * サーバIDに CR+LF が含まれていた場合、CRの除去ができていなかったバグを修正。
  *

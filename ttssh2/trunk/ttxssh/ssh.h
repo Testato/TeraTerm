@@ -384,5 +384,6 @@ void ssh_heartbeat_lock_finalize(void);
 void ssh_heartbeat_lock(void);
 void ssh_heartbeat_unlock(void);
 void halt_ssh_heartbeat_thread(PTInstVar pvar);
+BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar);
 
 #endif

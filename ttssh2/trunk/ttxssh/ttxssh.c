@@ -346,6 +346,7 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 	settings->DefaultAuthMethod = atoi(buf);
 	if (settings->DefaultAuthMethod != SSH_AUTH_PASSWORD
 		&& settings->DefaultAuthMethod != SSH_AUTH_RSA
+		&& settings->DefaultAuthMethod != SSH_AUTH_TIS  // add (2005.3.12 yutaka)
 		&& settings->DefaultAuthMethod != SSH_AUTH_RHOSTS) {
 		/* this default can never be SSH_AUTH_RHOSTS_RSA because that is not a
 		   selection in the dialog box; SSH_AUTH_RHOSTS_RSA is automatically chosen
@@ -2186,6 +2187,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2005/03/12 12:08:05  yutakakn
+ * パスワード認証の前に行うkeyboard-interactiveメソッドで、デフォルト設定値を無効(0)にした。
+ * また、認証ダイアログのラベル名を設定の有無により変更するようにした。
+ *
  * Revision 1.13  2005/03/03 13:28:23  yutakakn
  * クライアントのSSHバージョンを ttxssh.dll から取得して、サーバへ送るようにした。
  *

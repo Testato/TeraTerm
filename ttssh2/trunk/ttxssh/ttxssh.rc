@@ -96,9 +96,9 @@ BEGIN
                     BS_AUTORADIOBUTTON | WS_TABSTOP,13,99,98,10
     CONTROL         "Use r&hosts to log in (SSH1)",IDC_SSHUSERHOSTS,"Button",
                     BS_AUTORADIOBUTTON | WS_TABSTOP,13,128,96,10
-    CONTROL         "Use challenge/response (&TIS) to log in (SSH1)",
+    CONTROL         "Use challenge/response to log in (SSH1:&TIS, SSH2:keyboard-interactive)",
                     IDC_SSHUSETIS,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,
-                    14,172,191,10
+                    14,172,255,10
     PUSHBUTTON      "Private &key file:",IDC_CHOOSERSAFILE,118,97,58,14,
                     WS_GROUP
     EDITTEXT        IDC_RSAFILENAME,182,98,112,13,ES_AUTOHSCROLL | WS_GROUP
@@ -244,9 +244,9 @@ BEGIN
                     BS_AUTORADIOBUTTON | WS_TABSTOP,13,76,100,10
     CONTROL         "Use r&hosts to log in (SSH1)",IDC_SSHUSERHOSTS,"Button",
                     BS_AUTORADIOBUTTON | WS_TABSTOP,13,105,99,10
-    CONTROL         "Use challenge/response (&TIS) to log in (SSH1)",
+    CONTROL         "Use challenge/response to log in (SSH1:&TIS, SSH2:keyboard-interactive)",
                     IDC_SSHUSETIS,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,
-                    14,150,191,10
+                    14,150,254,10
     PUSHBUTTON      "Private &key file:",IDC_CHOOSERSAFILE,115,73,55,14,
                     WS_GROUP
     EDITTEXT        IDC_RSAFILENAME,175,73,119,13,ES_AUTOHSCROLL | WS_GROUP

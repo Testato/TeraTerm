@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "ttxssh.h"
 #include "util.h"
+#include "ssh.h"
 
 #include <io.h>
 #include <fcntl.h>
@@ -239,11 +240,19 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 		}
 	}
 
+#if 1
 	// パスワード認証を試す前に、keyboard-interactiveメソッドを試す場合は、ラベル名を
 	// 変更する。(2005.3.12 yutaka)
 	if (pvar->settings.ssh2_keyboard_interactive == 1) {
 		SetDlgItemText(dlg, IDC_SSHUSEPASSWORD, "Use p&lain password to log in (with keyboard-interactive)");
 	}
+
+	if (pvar->settings.ssh_protocol_version == 1) {
+		SetDlgItemText(dlg, IDC_SSHUSETIS, "Use challenge/response to log in(&TIS)");
+	} else {
+		SetDlgItemText(dlg, IDC_SSHUSETIS, "Use challenge/response to log in(keyboard-interactive)");
+	}
+#endif
 
 }
 
@@ -541,8 +550,10 @@ int AUTH_set_supported_auth_types(PTInstVar pvar, int types)
 		// for SSH2(yutaka)
 //		types &= (1 << SSH_AUTH_PASSWORD);
 		// 公開鍵認証を有効にする (2004.12.18 yutaka)
+		// TISを追加。SSH2ではkeyboard-interactiveとして扱う。(2005.3.12 yutaka)
 		types &= (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA)
-			| (1 << SSH_AUTH_DSA);
+			| (1 << SSH_AUTH_DSA)
+			| (1 << SSH_AUTH_TIS);
 	}
 	pvar->auth_state.supported_types = types;
 
@@ -688,6 +699,12 @@ static BOOL end_TIS_dlg(PTInstVar pvar, HWND dlg)
 	pvar->auth_state.cur_cred.method = SSH_AUTH_TIS;
 	pvar->auth_state.cur_cred.password = password;
 	pvar->auth_state.auth_dialog = NULL;
+
+	// add
+	if (SSHv2(pvar)) {
+		pvar->keyboard_interactive_password_input = 1;
+		handle_SSH2_userauth_inforeq(pvar);
+	} 
 
 	SSH_notify_cred(pvar);
 
@@ -968,10 +985,14 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 			_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user,
 					get_auth_method_name(pvar->auth_state.cur_cred.method));
 
-		} else { // SSH2:認証メソッドの判別 (2004.12.23 yutaka)
-			if (pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) {
+		} else { 
+			// SSH2:認証メソッドの判別 (2004.12.23 yutaka)
+			// keyboard-interactiveメソッドを追加 (2005.3.12 yutaka)
+			if (pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD ||
+				pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
 				// keyboard-interactiveメソッドを追加 (2005.1.24 yutaka)
-				if (pvar->keyboard_interactive_done == 1) {
+				if (pvar->keyboard_interactive_done == 1 ||
+					pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
 					method = "keyboard-interactive";
 				} else {
 					method = get_auth_method_name(pvar->auth_state.cur_cred.method);
@@ -1016,6 +1037,10 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2005/03/12 12:08:05  yutakakn
+ * パスワード認証の前に行うkeyboard-interactiveメソッドで、デフォルト設定値を無効(0)にした。
+ * また、認証ダイアログのラベル名を設定の有無により変更するようにした。
+ *
  * Revision 1.9  2005/02/22 08:48:11  yutakakn
  * TTSSH setupダイアログに HeartBeat 設定を追加。
  * TTSSH authentication setupダイアログに keyboard-interactive 設定を追加。

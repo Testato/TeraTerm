@@ -208,6 +208,7 @@ typedef struct _TInstVar {
   time_t ssh_heartbeat_tick;
   HANDLE ssh_heartbeat_thread;
   int keyboard_interactive_done;
+  int keyboard_interactive_password_input;
   int userauth_retry_count;
 
 } TInstVar;
@@ -235,6 +236,10 @@ void get_file_version(char *exefile, int *major, int *minor, int *release, int *
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2005/03/10 13:40:39  yutakakn
+ * すでにログイン処理を行っている場合は、SSH2_MSG_SERVICE_REQUESTの送信は
+ * しないことにする。OpenSSHでは支障ないが、Tru64 UNIXではサーバエラーとなってしまうため。
+ *
  * Revision 1.8  2005/03/03 13:28:23  yutakakn
  * クライアントのSSHバージョンを ttxssh.dll から取得して、サーバへ送るようにした。
  *
