@@ -243,6 +243,11 @@ MaxBuffSize=500000
 
 * History
 
+2004.12.14 (Ver 2.07b)
+  - changed the initial value of scroll buffer size from 400000 to 20000 in the 'teraterm.ini' file.
+  - added changing the attribute of font file to ReadOnly.
+  - upgraded TeraTerm Menu supporting SSH2 to 1.01. Changed the initial folder path of ttermpro.exe to current directory.
+
 2004.12.11 (Ver 2.07a)
   - upgraded TTSSH version supporting SSH2 to 1.01
 
