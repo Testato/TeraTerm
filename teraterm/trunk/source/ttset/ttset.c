@@ -953,6 +953,11 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 			  Temp,sizeof(Temp),FName);
   strncpy(ts->CygwinDirectory, Temp, sizeof(Temp));
 
+  // Viewlog Editor path
+  GetPrivateProfileString(Section,"ViewlogEditor ","notepad.exe",
+			  Temp,sizeof(Temp),FName);
+  strncpy(ts->ViewlogEditor, Temp, sizeof(Temp));
+
   // Locale for UTF-8
   GetPrivateProfileString(Section,"Locale ", DEFAULT_LOCALE,
 			  Temp,sizeof(Temp),FName);
@@ -1093,6 +1098,7 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
   _snprintf(Temp, sizeof(Temp), "%d", ts->AlphaBlend);
   WritePrivateProfileString(Section,"AlphaBlend", Temp, FName);
   WritePrivateProfileString(Section,"CygwinDirectory", ts->CygwinDirectory, FName);
+  WritePrivateProfileString(Section,"ViewlogEditor", ts->ViewlogEditor, FName);
   WritePrivateProfileString(Section,"Locale", ts->Locale, FName);
   _snprintf(Temp, sizeof(Temp), "%d", ts->CodePage);
   WritePrivateProfileString(Section,"CodePage", Temp, FName);
@@ -2343,6 +2349,11 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2005/01/08 15:20:15  yutakakn
+ * マルチディスプレイ環境において、ウィンドウのリサイズを行うとプライマリディスプレイへ
+ * 戻ってしまう現象への対処。
+ * ＃パッチを送っていただいた安藤氏に感謝
+ *
  * Revision 1.2  2004/12/07 13:41:30  yutakakn
  * External SetupをSetupメニュー配下へ移動。
  * LogMeInの起動メニューを追加。

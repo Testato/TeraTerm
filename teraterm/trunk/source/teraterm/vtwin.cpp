@@ -152,6 +152,7 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_COMMAND(ID_FILE_LOGMEIN, OnLogMeInLaunch)
 	ON_COMMAND(ID_FILE_LOG, OnFileLog)
 	ON_COMMAND(ID_FILE_COMMENTTOLOG, OnCommentToLog)
+	ON_COMMAND(ID_FILE_VIEWLOG, OnViewLog)
 	ON_COMMAND(ID_FILE_SENDFILE, OnFileSend)
 	ON_COMMAND(ID_FILE_KERMITRCV, OnFileKermitRcv)
 	ON_COMMAND(ID_FILE_KERMITGET, OnFileKermitGet)
@@ -647,9 +648,11 @@ void CVTWindow::InitMenuPopup(HMENU SubMenu)
 		if (LogVar!=NULL) { // ログ採取モードの場合
 			EnableMenuItem(FileMenu,ID_FILE_LOG,MF_BYCOMMAND | MF_GRAYED);
 			EnableMenuItem(FileMenu,ID_FILE_COMMENTTOLOG, MF_BYCOMMAND | MF_ENABLED);
+			EnableMenuItem(FileMenu,ID_FILE_VIEWLOG, MF_BYCOMMAND | MF_ENABLED);
 		} else {
 			EnableMenuItem(FileMenu,ID_FILE_LOG,MF_BYCOMMAND | MF_ENABLED);
 			EnableMenuItem(FileMenu,ID_FILE_COMMENTTOLOG, MF_BYCOMMAND | MF_GRAYED);
+			EnableMenuItem(FileMenu,ID_FILE_VIEWLOG, MF_BYCOMMAND | MF_GRAYED);
 		}
 
 		if ( (! cv.Ready) || (SendVar!=NULL) || (FileVar!=NULL) ||
@@ -2252,6 +2255,39 @@ void CVTWindow::OnCommentToLog()
 }
 
 
+// ログの閲覧 (2005.1.29 yutaka)
+void CVTWindow::OnViewLog()
+{
+	char command[MAX_PATH];
+	char *file;
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+
+	if (LogVar == NULL || !LogVar->FileOpen) {
+		return;
+	}
+
+	file = LogVar->FullName;
+
+	memset(&si, 0, sizeof(si));
+	GetStartupInfo(&si);
+	memset(&pi, 0, sizeof(pi));
+
+	_snprintf(command, sizeof(command), "%s %s", ts.ViewlogEditor, file);
+
+	if (CreateProcess(
+			NULL, 
+			command, 
+			NULL, NULL, FALSE, 0,
+			NULL, NULL,
+			&si, &pi) == 0) {
+		char buf[80];
+		_snprintf(buf, sizeof(buf), "Can't view logging file. (%d)", GetLastError());
+		::MessageBox(NULL, buf, "ERROR", MB_OK | MB_ICONWARNING);
+	}
+}
+
+
 void CVTWindow::OnFileSend()
 {
   HelpId = HlpFileSend;
@@ -2536,6 +2572,10 @@ static LRESULT CALLBACK OnExtSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 			}
 			SetupRGBbox(hDlgWnd, 0);
 
+			// (7)Viewlog Editor path (2005.1.29 yutaka)
+			hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
+			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.ViewlogEditor);
+
 			// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
 			SetFocus(GetDlgItem(hDlgWnd, IDC_LINECOPY));
 
@@ -2552,6 +2592,25 @@ static LRESULT CALLBACK OnExtSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					// (4)Cygwin install path
 					hWnd = GetDlgItem(hDlgWnd, IDC_CYGWIN_PATH);
 					SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.CygwinDirectory);
+					return TRUE;
+
+				case IDC_VIEWLOG_PATH | (BN_CLICKED << 16):
+					{
+					OPENFILENAME ofn;
+
+					ZeroMemory(&ofn, sizeof(ofn));
+					ofn.lStructSize = sizeof(ofn);
+					ofn.hwndOwner = hDlgWnd;
+					ofn.lpstrFilter = "exe(*.exe)\0*.exe\0all(*.*)\0*.*\0\0";
+					ofn.lpstrFile = ts.ViewlogEditor;
+					ofn.nMaxFile = sizeof(ts.ViewlogEditor);
+					ofn.lpstrTitle = "Choose a executing file with launching logging file";
+					ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_FORCESHOWHIDDEN | OFN_HIDEREADONLY;
+					if (GetOpenFileName(&ofn) != 0) {
+						hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
+						SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.ViewlogEditor);
+					}
+					}
 					return TRUE;
 
 				case IDC_ANSI_COLOR | (LBN_SELCHANGE << 16):
@@ -3100,6 +3159,11 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2005/01/22 06:44:34  yutakakn
+ * すべてのTeraTermへ同一コマンドを送信することができる 'Broadcast command' を
+ * Control menu配下に追加した。
+ * 'Additional settings'のフォントを tahoma(8) へ変更した。
+ *
  * Revision 1.5  2005/01/15 13:29:29  yutakakn
  * TeraTermウィンドウの最大化ボタンを有効にした。
  * ただし、タイトルバーをダブルクリックしても最大化はしない。

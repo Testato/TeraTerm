@@ -29,9 +29,12 @@
 #define IDC_ENTERKEY_CHECK              1018
 #define IDC_RADIO_CRLF                  1019
 #define IDC_RADIO_CR                    1020
-#define IDC_RADIO3                      1021
 #define IDC_RADIO_LF                    1021
 #define IDC_ENTERGROUP                  1022
+#define IDC_VIEWLOG_LABEL               1023
+#define IDC_VIEWLOG_EDITOR              1024
+#define IDC_BUTTON1                     1025
+#define IDC_VIEWLOG_PATH                1025
 #define IDD_PRNABORTDLG                 2100
 #define IDD_FILETRANSDLG                2200
 #define IDC_TRANSFNAME                  2201
@@ -119,6 +122,7 @@
 #define ID_FILE_DUPLICATESESSION        52013
 #define ID_SETUP_ADDITIONALSETTINGS     52016
 #define ID_CONTROL_BROADCASTCOMMAND     52017
+#define ID_FILE_VIEWLOG                 52018
 
 // Next default values for new objects
 // 
@@ -126,8 +130,8 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        113
-#define _APS_NEXT_COMMAND_VALUE         52018
-#define _APS_NEXT_CONTROL_VALUE         1023
+#define _APS_NEXT_COMMAND_VALUE         52019
+#define _APS_NEXT_CONTROL_VALUE         1026
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

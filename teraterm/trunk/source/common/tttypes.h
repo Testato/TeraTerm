@@ -309,12 +309,13 @@ struct tttset {
 #endif /* INET6 */
   char MouseCursorName[16];
   int AlphaBlend;
-  char CygwinDirectory[MAXPATHLEN];
+  char CygwinDirectory[MAX_PATH];
 #define DEFAULT_LOCALE "japanese"
   char Locale[80];
 #define DEFAULT_CODEPAGE 932
   int CodePage;
   int DuplicateSession;
+  char ViewlogEditor[MAX_PATH];
 };
 
 typedef struct tttset TTTSet, *PTTSet;
