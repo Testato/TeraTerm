@@ -252,8 +252,8 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE |
 CAPTION "About Tera Term"
 FONT 8, "System", 400, 0, 0x80
 BEGIN
-    ICON            IDI_TTERM,IDC_STATIC,6,6,16,14
-    CONTROL         "Tera Term Professional\nVersion 4.10",IDC_STATIC,"Static",
+    ICON            IDI_TTERM,IDC_STATIC,6,6,20,20
+    CONTROL         "Tera Term Professional\nVersion 4.11",IDC_STATIC,"Static",
                     SS_LEFTNOWORDWRAP | WS_GROUP,38,1,78,19
     CONTROL         "version 2.3 + IPv6 0.81",IDC_STATIC,"Static",
                     SS_LEFTNOWORDWRAP | WS_GROUP,38,32,80,8
