@@ -250,7 +250,7 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 	if (pvar->settings.ssh_protocol_version == 1) {
 		SetDlgItemText(dlg, IDC_SSHUSETIS, "Use challenge/response to log in(&TIS)");
 	} else {
-		SetDlgItemText(dlg, IDC_SSHUSETIS, "Use challenge/response to log in(keyboard-interactive)");
+		SetDlgItemText(dlg, IDC_SSHUSETIS, "Use challenge/response to log in(&keyboard-interactive)");
 	}
 #endif
 
@@ -1037,6 +1037,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2005/03/12 15:07:33  yutakakn
+ * SSH2 keyboard-interactive認証をTISダイアログに実装した。
+ *
  * Revision 1.10  2005/03/12 12:08:05  yutakakn
  * パスワード認証の前に行うkeyboard-interactiveメソッドで、デフォルト設定値を無効(0)にした。
  * また、認証ダイアログのラベル名を設定の有無により変更するようにした。
