@@ -2137,6 +2137,11 @@ BOOL ParseFirstJP(BYTE b)
     }
     else if ((ts.TermFlag & TF_CTRLINKANJI)==0)
       KanjiIn = FALSE;
+    else if ((b==CR) && Wrap) { // iwamoto patch (http://www.freeml.com/message/teraterm@freeml.com/0000142)
+      CarriageReturn();
+      LineFeed(LF);
+      Wrap = FALSE;
+    }
   }
 	
   if (SSflag)
@@ -2588,6 +2593,19 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2005/02/20 14:51:29  yutakakn
+ * ログファイルの種別に"plain text"を追加。このオプションが有効の場合は、ログファイルに
+ * ASCII非表示文字の採取をしない。
+ *
+ * 現在、無視するキャラクタは以下のとおり。
+ * 　・BS
+ * 　・ASCII(0x00-0x1f)のうち非表示なもの
+ *
+ * ただし、例外として以下のものはログ採取対象。
+ * 　・HT
+ * 　・CR
+ * 　・LF
+ *
  * Revision 1.2  2004/12/07 14:31:13  yutakakn
  * 行が連結している場合は、ログファイルに改行コードを含めないようにした。
  * ただし、EnableContinuedLineCopy 機能が有効の場合に限る。
