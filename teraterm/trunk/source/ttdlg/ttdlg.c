@@ -1187,6 +1187,66 @@ BOOL CALLBACK DirDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   return FALSE;
 }
 
+// 実行ファイルからバージョン情報を得る (2005.2.28 yutaka)
+static void get_file_version(char *exefile, int *major, int *minor, int *release, int *build)
+{
+	typedef struct {
+		WORD wLanguage;
+		WORD wCodePage;
+	} LANGANDCODEPAGE, *LPLANGANDCODEPAGE;
+	LPLANGANDCODEPAGE lplgcode;
+	UINT unLen;
+	DWORD size;
+	char *buf = NULL;
+	BOOL ret;
+	int i;
+	char fmt[80];
+	char *pbuf;
+
+	size = GetFileVersionInfoSize(exefile, NULL);
+	if (size == 0) {
+		goto error;
+	}
+	buf = malloc(size);
+	ZeroMemory(buf, size);
+
+	if (GetFileVersionInfo(exefile, 0, size, buf) == FALSE) {
+		goto error;
+	}
+
+	ret = VerQueryValue(buf,
+			"\\VarFileInfo\\Translation", 
+			(LPVOID *)&lplgcode, &unLen);
+	if (ret == FALSE)
+		goto error;
+
+	for (i = 0 ; i < (int)(unLen / sizeof(LANGANDCODEPAGE)) ; i++) {
+		_snprintf(fmt, sizeof(fmt), "\\StringFileInfo\\%04x%04x\\FileVersion", 
+			lplgcode[i].wLanguage, lplgcode[i].wCodePage);
+		VerQueryValue(buf, fmt, &pbuf, &unLen);
+		if (unLen > 0) { // get success
+			int n, a, b, c, d;
+
+			n = sscanf(pbuf, "%d, %d, %d, %d", &a, &b, &c, &d);
+			if (n == 4) { // convert success
+				*major = a;
+				*minor = b;
+				*release = c;
+				*build = d;
+				break;
+			}
+		}
+	}
+
+	free(buf);
+	return;
+
+error:
+	free(buf);
+	*major = *minor = *release = *build = 0;
+}
+
+
 #ifdef WATCOM
   #pragma off (unreferenced);
 #endif
@@ -1195,21 +1255,29 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   #pragma on (unreferenced);
 #endif
 {
-  switch (Message) {
-    case WM_INITDIALOG:
-      return TRUE;
-    case WM_COMMAND:
-      switch (LOWORD(wParam)) {
+	int a, b, c, d;
+	char buf[30];
+
+	switch (Message) {
+	case WM_INITDIALOG:
+		// TeraTermのバージョンを設定する (2005.2.28 yutaka)
+		get_file_version(__argv[0], &a, &b, &c, &d);
+		_snprintf(buf, sizeof(buf), "Version %d.%d", a, b);
+		SendMessage(GetDlgItem(Dialog, IDC_TT_VERSION), WM_SETTEXT, 0, (LPARAM)buf);
+		return TRUE;
+
+	case WM_COMMAND:
+		switch (LOWORD(wParam)) {
 	case IDOK:
-	  EndDialog(Dialog, 1);
-	  return TRUE;
+		EndDialog(Dialog, 1);
+		return TRUE;
 
 	case IDCANCEL:
-	  EndDialog(Dialog, 0);
-	  return TRUE;
-      }
-  }
-  return FALSE;
+		EndDialog(Dialog, 0);
+		return TRUE;
+		}
+	}
+	return FALSE;
 }
 
 static PCHAR far LangList[] = {"English","Japanese","Russian",NULL};
@@ -1693,5 +1761,8 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 #endif
 
 /*
- * $Log: not supported by cvs2svn $ 
+ * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/11/28 13:14:51  yutakakn
+ * スクロールバッファの入力桁数を5から8へ拡張した。
+ * 
  */

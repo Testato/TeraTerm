@@ -253,8 +253,8 @@ CAPTION "About Tera Term"
 FONT 8, "System", 400, 0, 0x80
 BEGIN
     ICON            IDI_TTERM,IDC_STATIC,6,6,20,20
-    CONTROL         "Tera Term Professional\nVersion 4.12",IDC_STATIC,"Static",
-                    SS_LEFTNOWORDWRAP | WS_GROUP,38,1,78,19
+    CONTROL         "Tera Term Professional",IDC_STATIC,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,38,1,78,8
     CONTROL         "version 2.3 + IPv6 0.81",IDC_STATIC,"Static",
                     SS_LEFTNOWORDWRAP | WS_GROUP,38,32,80,8
     CONTROL         "Mar 10, 1998 T. Teranishi",IDC_STATIC,"Static",
@@ -269,6 +269,7 @@ BEGIN
     LTEXT           "Yutaka's Webpage:\nhttp://hp.vector.co.jp/authors/VA013320/\nTeraTerm forum:\nhttp://www.neocom.ca/forum/index.php",
                     IDC_STATIC,37,75,143,35,SS_SUNKEN
     LTEXT           "Includes:",IDC_STATIC,38,25,31,8
+    LTEXT           "Version",IDC_TT_VERSION,38,10,68,8
 END
 
 IDD_FONTDLG DIALOG  20, 20, 207, 144

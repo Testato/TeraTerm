@@ -112,6 +112,7 @@
 #define IDC_CODEPAGE_LABEL              1025
 #define IDC_EDIT2                       1026
 #define IDC_CODEPAGE_EDIT               1026
+#define IDC_TT_VERSION                  1027
 #define IDC_GENHELP                     1099
 #define IDD_TERMDLG                     1100
 #define IDD_WINLISTDLG                  1200
@@ -129,7 +130,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        102
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1027
+#define _APS_NEXT_CONTROL_VALUE         1028
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

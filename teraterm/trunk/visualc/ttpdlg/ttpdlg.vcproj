@@ -38,6 +38,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="Version.lib"
 				OutputFile=".\..\bin\Release/ttpdlg.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -102,6 +103,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="Version.lib"
 				OutputFile=".\..\bin\Debug/ttpdlg.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
