@@ -64,14 +64,16 @@ BEGIN
                     IDC_STATIC,6,36,219,34
     LTEXT           "THIS EXTENSION INCORPORATES STRONG CRYPTOGRAPHY. POSESSION, USE, AND/OR EXPORT OF THIS EXTENSION MAY BE ILLEGAL IN YOUR COUNTRY.",
                     IDC_STATIC,6,102,248,26
-    ICON            IDI_SECURETT,IDC_STATIC,234,7,21,20
+    ICON            IDI_SECURETT,IDC_STATIC,234,7,20,20
     EDITTEXT        IDC_ABOUTTEXT,6,159,248,87,ES_MULTILINE | ES_AUTOVSCROLL | 
                     ES_AUTOHSCROLL | ES_READONLY
     LTEXT           "TTSSH home page:      http://www.zip.com.au/~roca/ttssh.html\nOpenSource Project:   http://sourceforge.jp/projects/ttssh2/",
                     IDC_STATIC,6,78,248,20,SS_SUNKEN
     LTEXT           "OpenSSL:",IDC_OPENSSL_VERSION,6,69,175,8
-    LTEXT           "TTSSH\r\nTeraterm Secure Shell extension, version 2.10\r\nCompatible with SSH protocol version 1.5 and 2.0",
-                    IDC_STATIC,6,7,222,26
+    LTEXT           "Compatible with SSH protocol version 1.5 and 2.0",
+                    IDC_STATIC,6,23,162,11
+    LTEXT           "Teraterm Secure Shell extension, ",IDC_TTSSH_VERSION,6,
+                    7,145,15
 END
 
 IDD_SSHAUTH DIALOGEX 0, 0, 309, 214
@@ -454,12 +456,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "TTXSSH"
-            VALUE "FileVersion", "2.10"
+            VALUE "FileVersion", "2, 10, 0, 0"
             VALUE "InternalName", "TTXSSH"
             VALUE "LegalCopyright", "(C)2004-2005 Yutaka Hirata, (C)1998-1999 Robert O'Callahan"
             VALUE "OriginalFilename", "TTXSSH.dll"
             VALUE "ProductName", "TTSSH"
-            VALUE "ProductVersion", "2.10"
+            VALUE "ProductVersion", "2, 10, 0, 0"
         END
     END
     BLOCK "VarFileInfo"

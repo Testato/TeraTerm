@@ -1380,9 +1380,74 @@ static void append_about_text(HWND dlg, char FAR * prefix, char FAR * msg)
 					   (LPARAM) (char FAR *) "\r\n");
 }
 
+// 実行ファイルからバージョン情報を得る (2005.2.28 yutaka)
+static void get_file_version(char *exefile, int *major, int *minor, int *release, int *build)
+{
+	typedef struct {
+		WORD wLanguage;
+		WORD wCodePage;
+	} LANGANDCODEPAGE, *LPLANGANDCODEPAGE;
+	LPLANGANDCODEPAGE lplgcode;
+	UINT unLen;
+	DWORD size;
+	char *buf = NULL;
+	BOOL ret;
+	int i;
+	char fmt[80];
+	char *pbuf;
+
+	size = GetFileVersionInfoSize(exefile, NULL);
+	if (size == 0) {
+		goto error;
+	}
+	buf = malloc(size);
+	ZeroMemory(buf, size);
+
+	if (GetFileVersionInfo(exefile, 0, size, buf) == FALSE) {
+		goto error;
+	}
+
+	ret = VerQueryValue(buf,
+			"\\VarFileInfo\\Translation", 
+			(LPVOID *)&lplgcode, &unLen);
+	if (ret == FALSE)
+		goto error;
+
+	for (i = 0 ; i < (int)(unLen / sizeof(LANGANDCODEPAGE)) ; i++) {
+		_snprintf(fmt, sizeof(fmt), "\\StringFileInfo\\%04x%04x\\FileVersion", 
+			lplgcode[i].wLanguage, lplgcode[i].wCodePage);
+		VerQueryValue(buf, fmt, &pbuf, &unLen);
+		if (unLen > 0) { // get success
+			int n, a, b, c, d;
+
+			n = sscanf(pbuf, "%d, %d, %d, %d", &a, &b, &c, &d);
+			if (n == 4) { // convert success
+				*major = a;
+				*minor = b;
+				*release = c;
+				*build = d;
+				break;
+			}
+		}
+	}
+
+	free(buf);
+	return;
+
+error:
+	free(buf);
+	*major = *minor = *release = *build = 0;
+}
+
 static void init_about_dlg(PTInstVar pvar, HWND dlg)
 {
 	char buf[1024];
+	int a, b, c, d;
+
+	// TTSSHのバージョンを設定する (2005.2.28 yutaka)
+	get_file_version("ttxssh.dll", &a, &b, &c, &d);
+	_snprintf(buf, sizeof(buf), "TTSSH\r\nTeraterm Secure Shell extension, %d.%d", a, b);
+	SendMessage(GetDlgItem(dlg, IDC_TTSSH_VERSION), WM_SETTEXT, 0, (LPARAM)buf);
 
 	// OpenSSLのバージョンを設定する (2005.1.24 yutaka)
 	SendMessage(GetDlgItem(dlg, IDC_OPENSSL_VERSION), WM_SETTEXT, 0, (LPARAM)OPENSSL_VERSION_TEXT);
@@ -2119,6 +2184,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2005/02/22 08:48:11  yutakakn
+ * TTSSH setupダイアログに HeartBeat 設定を追加。
+ * TTSSH authentication setupダイアログに keyboard-interactive 設定を追加。
+ *
  * Revision 1.10  2005/01/27 13:30:33  yutakakn
  * 公開鍵認証自動ログインをサポート。
  * /auth=publickey, /keyfile オプションを新規追加した。
