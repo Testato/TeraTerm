@@ -17,7 +17,8 @@
 #include	"resource.h"
 
 // UTF-8 TeraTermでは、デフォルトインストール先を下記に変更した。(2004.12.2 yutaka)
-#define DEFAULT_PATH "C:\\PROGRAM FILES\\teraterm"
+// さらに、デフォルトインストール先はカレントディレクトリに変更。(2004.12.14 yutaka)
+#define DEFAULT_PATH "."
 
 // グローバル変数
 HWND		g_hWnd;				// メインのハンドル
@@ -477,7 +478,7 @@ BOOL ManageWMNotify_Config(LPARAM lParam)
 			lpttt->lpszText	= "Configure";
 			return TRUE; 
 		case CHECK_TTSSH:
-			lpttt->lpszText	= "use TTSSH";
+			lpttt->lpszText	= "use SSH";
 			return TRUE; 
 		}
     }
@@ -1251,7 +1252,8 @@ BOOL SaveLoginHostInformation(HWND hWnd)
 	if (::GetFileAttributes(g_JobInfo.szTeraTerm) == 0xFFFFFFFF) {
 		dwErr = ::GetLastError();
 		if (dwErr == ERROR_FILE_NOT_FOUND || dwErr == ERROR_PATH_NOT_FOUND) {
-			ErrorMessage(hWnd, "ファイル[%s]のチェックに失敗しました。\n", g_JobInfo.szTeraTerm);
+			ErrorMessage(hWnd, "checking [%s] file was failure.\n", g_JobInfo.szTeraTerm);
+//			ErrorMessage(hWnd, "ファイル[%s]のチェックに失敗しました。\n", g_JobInfo.szTeraTerm);
 			return FALSE;
 		}
 	}
@@ -1989,6 +1991,10 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR nCmdLine, int nCmdShow)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2004/12/03 13:35:41  yutakakn
+ * SSH2自動ログインをサポートした
+ * ただし、現在はpassword認証のみ。
+ *
  * Revision 1.2  2004/12/02 14:01:27  yutakakn
  * メニュー文字列の英語化
  *
