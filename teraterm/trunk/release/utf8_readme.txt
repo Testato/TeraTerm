@@ -241,6 +241,9 @@ MaxBuffSize=500000
 
 * History
 
+2005.1.10 (Ver 2.09)
+  - fixed the bug of switching back to primary display when changing terminal size on multi display environment. It is thankful to Tsuruhiko Ando.
+
 2005.1.6 (Ver 2.08)
   - changed the logging dialog type from open-dialog to save-dialog
   - fixed the initial directory of "Save setup" dialog at program directory
