@@ -315,11 +315,11 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
-2005.4.?? (Ver 4.13)
+2005.3.31 (Ver 4.13)
   - fixed TeraTerm version information can't be shown in version dialog at second later instance.
   - added the configuration of disabling paste string by clicking mouse right button in teraterm.ini(DisablePasteMouseRButton) and Additional settings dialog.
   - fixed the TeraTerm crashing problem when the sending file size exceeded 20MB with ZMODEM protocol. Special thanks to Thorsten Behrens.
-  - upgraded LogMeTT to 2.4.1
+  - upgraded LogMeTT to 2.4.2
 
 2005.3.13 (Ver 4.12)
   - upgraded ttermpro.exe version information from 2.3 to 4.12.

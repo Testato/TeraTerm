@@ -303,11 +303,11 @@ MaxBuffSize=500000
 
 ■改版履歴
 
-2005.4.?? (Ver 4.13)
+2005.3.31 (Ver 4.13)
   ・2つめ以降のTeraTermプロセスにおいて、バージョン情報が正しく取得されない問題へ対処した。
   ・マウスの右ボタン押下でのペーストを禁止する設定を teraterm.ini(DisablePasteMouseRButton) および Additional settings に追加した。
   ・ZMODEMの送信において、ファイルサイズが20MBを超えるとクラッシュする問題へ対処した。Thorsten Behrens氏に感謝します。
-  ・LogMeTT 2.4.1へ差し替え。
+  ・LogMeTT 2.4.2へ差し替え。
 
 2005.3.13 (Ver 4.12)
   ・ttermpro.exeのバージョン情報が古いままだったので修正した。

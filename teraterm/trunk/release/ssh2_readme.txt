@@ -112,7 +112,7 @@
 
 * History
 
-2005.4.?? (Ver 2.11)
+2005.3.31 (Ver 2.11)
   - added the accelerator key at 'Use challenge/response to log in' on SSH2 authentication dialog.
   - added the focus COM input box when you open new connection using COM port.
   - added SSH log data(TTSSH.LOG).
