@@ -282,6 +282,8 @@ There are 3 types of connection you can establish from TeraTerm macro:
   - The characters that can't be converted from UTF-8 to Shift_JIS will be shown as '?'.
   - The EUC output in UTF-8 environment may not be shown on TeraTerm screen.
 
+NOTE: The links above contain Japanese version of installer. Users from other countries just press all default buttons that will show up during installation. When installation will complete, start Teraterm and switch the Language setting under Settings->General menu to meet your preference. Finally save changes into teraterm.ini file.
+
 
 * Limitations of current release
   - UTF-8 version is only Japanese characters now.
