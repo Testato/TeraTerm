@@ -19,8 +19,11 @@
 
 #define BuffXMax 300
 #ifdef TERATERM32
-#define BuffYMax 100000
-#define BuffSizeMax 8000000
+//#define BuffYMax 100000
+//#define BuffSizeMax 8000000
+// スクロールバッファの最大長を拡張 (2004.11.28 yutaka)
+#define BuffYMax 500000
+#define BuffSizeMax (BuffYMax * 80)
 #else
 #define BuffYMax 800
 #define BuffSizeMax 65535
@@ -2223,3 +2226,7 @@ void ShowStatusLine(int Show)
 
   MoveCursor(CursorX,CursorY);
 }
+
+/*
+ * $Log: not supported by cvs2svn $ 
+ */
