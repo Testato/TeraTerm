@@ -227,6 +227,44 @@ MaxBuffSize=500000
   source URL: http://www.neocom.ca/forum/viewtopic.php?t=6
 
 
+■透過ウィンドウ
+  TeraTermはウィンドウの半透明をサポートしています。現在、半透明ウィンドウは2種類のタイプがあり、ユーザは好きな方を選択することができます。
+  
+  (1) 半透明ウィンドウ
+  この機能を使うと、TeraTermのウィンドウを半透明にすることができます。透明度は0～255の範囲で指定することができ、teraterm.iniのAlphaBlendエントリで設定します。値を小さくするほど、透明度は強くなります。以下に設定例を示します。
+  
+	; Translucent window (0 - 255)
+	AlphaBlend =255
+  
+  (2) Eterm風半透明ウィンドウ
+  この機能を使うと、Eterm風の半透明ウィンドウを使用することができます。この機能を有効にすると、TeraTermのウィンドウは半透明化され、壁紙と指定した画像ファイル(*.jpg)と混合されて描画されるようになります。この機能を有効にするには、teraterm.iniの[BG]セクションのBGEnableエントリで設定します。
+
+	[BG]
+	; Use Background extension (On / Off)
+	BGEnable = Off
+
+  そのほかの設定については以下に示します。
+
+	; Use AlphaBlend API (On / Off)
+	BGUseAlphaBlendAPI = On
+
+	; Susie plugin path
+	BGSPIPath = plugin
+
+	; Fast window sizing/moving
+	BGFastSizeMove = On
+
+	; Flickerless window moving
+	BGFlickerlessMove = On
+
+	; If HideTitle = on and BGNoFrame = on,use window without frame
+	; you can resize window with Alt + Shift + LeftDrag
+	BGNoFrame = On
+
+	; wildcard => random select
+	BGThemeFile = theme\*.ini
+
+
 ■開発環境
   OS: Windows XP Professional
   コンパイラ: Visual Studio .NET 2003
@@ -281,6 +319,9 @@ MaxBuffSize=500000
 
 
 ■改版履歴
+
+2005.3.?? (Ver 4.12)
+  ・ttermpro.exeのバージョン情報が古いままだったので修正した。
 
 2005.2.22 (Ver 4.11)
   ・ログ採取中に File -> log がグレイ表示にならない問題へ対処した。

@@ -232,6 +232,47 @@ There are 3 types of connection you can establish from TeraTerm macro:
   source URL: http://www.neocom.ca/forum/viewtopic.php?t=6
 
 
+
+* background transparency
+  TeraTerm supports window background transparency. Now TeraTerm has two types of transparency function. You can select either function. 
+  
+  (1) AlphaBlend window
+  In this type TeraTerm window can be background transparency. You can setup the value of transparency. The range of transparency is from 0 to 255. The more transparency reduces the value, the more window transparency is blinding. You can configure the value in teraterm.ini file. The entry is 'AlphaBlend' of [teraterm] section. I show the example in the following:
+  
+	; Translucent window (0 - 255)
+	AlphaBlend =255
+     
+  As a point that should be noted, this function is enabled on only Windows2000 later.
+  
+  (2) Eterm lookfeel window
+  In this type TeraTerm window looks like Eterm background transparency. If this function is enabled, TeraTerm window becomes background transparency and mixs the wallpaper with your specified image file(*.jpg). And also this function is also enabled on Windows9x or NT4.0. You can configure this function in [BG] section of teraterm.ini file. If you switch it on or off, you should change 'BGEnable' value.
+
+	[BG]
+	; Use Background extension (On / Off)
+	BGEnable = Off
+
+  Other settings are the following entries.
+
+	; Use AlphaBlend API (On / Off)
+	BGUseAlphaBlendAPI = On
+
+	; Susie plugin path
+	BGSPIPath = plugin
+
+	; Fast window sizing/moving
+	BGFastSizeMove = On
+
+	; Flickerless window moving
+	BGFlickerlessMove = On
+
+	; If HideTitle = on and BGNoFrame = on,use window without frame
+	; you can resize window with Alt + Shift + LeftDrag
+	BGNoFrame = On
+
+	; wildcard => random select
+	BGThemeFile = theme\*.ini
+
+
 * Development Environment
   OS: Windows XP Professional
   Compiler: Visual Studio .NET 2003
@@ -296,6 +337,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 
 * History
+
+2005.3.?? (Ver 4.12)
+  - upgraded ttermpro.exe version information from 2.3 to 4.12.
 
 2005.2.22 (Ver 4.11)
   - fixed the problem that log menu doesn't become gray on logging
