@@ -112,7 +112,10 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 	switch (FuncId) {
 	case GSF_SAVE:
 		// 初期ファイルディレクトリをプログラム本体がある箇所に固定する (2005.1.6 yutaka)
-		ofn.lpstrInitialDir = __argv[0];
+		// 読み込まれたteraterm.iniがあるディレクトリに固定する。
+		// これにより、/F= で指定された位置に保存されるようになる。(2005.1.26 yutaka)
+//		ofn.lpstrInitialDir = __argv[0];
+		ofn.lpstrInitialDir = ts->SetupFName;
 		ofn.lpstrTitle = "Tera Term: Save setup";
 		Ok = GetSaveFileName(&ofn);
 		if (Ok)
@@ -936,6 +939,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2005/01/21 07:46:41  yutakakn
+ * ログ採取時のデフォルト名(log_YYYYMMDD_HHMMSS.txt)を設定するようにした。
+ *
  * Revision 1.2  2005/01/06 13:06:45  yutakakn
  * "save setup"ダイアログの初期ファイルディレクトリをプログラム本体がある箇所に固定。
  * ログ採取のオープンダイアログをセーブダイアログへ変更した。
