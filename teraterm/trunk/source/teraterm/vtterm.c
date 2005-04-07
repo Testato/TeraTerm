@@ -1402,66 +1402,75 @@ void EscapeSequence(BYTE b)
     }
   }
 
-  void CSSetAttr()
-  {
-    int i, P;
+void CSSetAttr()
+{
+	int i, P;
 
-    UpdateStr();
-    for (i=1 ; i<=NParam ; i++)
-    {
-      P = Param[i];
-      if (P<0) P = 0;
-      switch (P) {
-	/* Clear */
-	case 0:
-	  CharAttr = AttrDefault;
-	  CharAttr2 = AttrDefault2;
-	  break;
-	/* Bold */
-	case 1:
-	  CharAttr = CharAttr | AttrBold;
-	  break;
-	/* Under line */
-	case 4:
-	  CharAttr = CharAttr | AttrUnder;
-	  break;
-	/* Blink */
-	case 5:
-	  CharAttr = CharAttr | AttrBlink;
-	  break;
-	/* Reverse */
-	case 7:
-	  CharAttr = CharAttr | AttrReverse;
-	  break;
-	/* Bold off */
-	case 22:
-	  CharAttr = CharAttr & ~ AttrBold;
-	  break;
-	/* Under line off */
-	case 24:
-	  CharAttr = CharAttr & ~ AttrUnder;
-	  break;
-	/* Blink off */
-	case 25:
-	  CharAttr = CharAttr & ~ AttrBlink;
-	  break;
-	/* Reverse off */
-	case 27:
-	  CharAttr = CharAttr & ~ AttrReverse;
-	  break;
-	default:
-	  /* Text color */
-	  if ((P>=30) && (P<=37))
-	    CharAttr2 = CharAttr2 & (Attr2Back | Attr2BackMask)
-	      | (P-30) | Attr2Fore;
-	  else if ((P>=40) && (P<=47)) /* Back color */
-	    CharAttr2 = CharAttr2 & (Attr2Fore | Attr2ForeMask)
-	      | ((P-40) << SftAttrBack) | Attr2Back;
-	  else if (P==100) /* Reset color attributes */
-	    CharAttr2 = AttrDefault2;
-      }
-    }
-  }
+	UpdateStr();
+	for (i=1 ; i<=NParam ; i++)
+	{
+		P = Param[i];
+		if (P<0) P = 0;
+		switch (P) {
+			/* Clear */
+		case 0:
+			CharAttr = AttrDefault;
+			CharAttr2 = AttrDefault2;
+			break;
+			/* Bold */
+		case 1:
+			CharAttr = CharAttr | AttrBold;
+			break;
+			/* Under line */
+		case 4:
+			CharAttr = CharAttr | AttrUnder;
+			break;
+			/* Blink */
+		case 5:
+			CharAttr = CharAttr | AttrBlink;
+			break;
+			/* Reverse */
+		case 7:
+			CharAttr = CharAttr | AttrReverse;
+			break;
+			/* Bold off */
+		case 22:
+			CharAttr = CharAttr & ~ AttrBold;
+			break;
+			/* Under line off */
+		case 24:
+			CharAttr = CharAttr & ~ AttrUnder;
+			break;
+			/* Blink off */
+		case 25:
+			CharAttr = CharAttr & ~ AttrBlink;
+			break;
+			/* Reverse off */
+		case 27:
+			CharAttr = CharAttr & ~ AttrReverse;
+			break;
+		default:
+			// ESC[39mが前景色のリセットでESC[49mが背景色であるtermcap xtermの
+			// エスケープシーケンスを追加（岩本氏パッチ）。 
+			// これによりscreen上でw3mを使用した場合、色が戻らない現象が改善される。
+			// (2005/4/7 yutaka)
+
+			/* Text color */
+			if ((P>=30) && (P<=37))
+				CharAttr2 = CharAttr2 & (Attr2Back | Attr2BackMask)
+				| (P-30) | Attr2Fore;
+			else if ((P>=40) && (P<=47)) /* Back color */
+				CharAttr2 = CharAttr2 & (Attr2Fore | Attr2ForeMask)
+				| ((P-40) << SftAttrBack) | Attr2Back;
+			else if (P==39) /* Reset foreground color */
+				CharAttr2 = CharAttr2 & (Attr2Back | Attr2BackMask);
+			else if (P==49) /* Reset background color */
+				CharAttr2 = CharAttr2 & (Attr2Fore | Attr2ForeMask);
+			else if (P==100) /* Reset color attributes */
+				CharAttr2 = AttrDefault2;
+		}
+	}
+}
 
   void CSSetScrollRegion()
   {
@@ -2593,6 +2602,10 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2005/02/28 13:54:47  yutakakn
+ * 全角文字が行末を跨ると、上方へスクロールしてしまう問題への対処（岩本氏パッチ）。
+ * http://www.freeml.com/message/teraterm@freeml.com/0000142
+ *
  * Revision 1.3  2005/02/20 14:51:29  yutakakn
  * ログファイルの種別に"plain text"を追加。このオプションが有効の場合は、ログファイルに
  * ASCII非表示文字の採取をしない。
