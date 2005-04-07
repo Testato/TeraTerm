@@ -260,6 +260,16 @@ There are 3 types of connection you can establish from TeraTerm macro:
   4. TeraTerm execution program will be generated in teraterm\visualc\bin directory if the building is successful.
 
 
+* How to build TeraTerm Menu
+  To build TeraTerm Menu source code is shown in the following step:
+  And you need Visual Studio .NET 2003(VC++7.1) to build.
+  
+  1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
+  2. Open teraterm\source\ttmenu\ttpmenu.sln with Visual Studio.
+  3. Build TeraTerm Menu solution.
+  4. TeraTerm Menu execution program will be generated in teraterm\source\ttmenu directory if the building is successful.
+
+
 * Development Environment
   OS: Windows XP Professional
   Compiler: Visual Studio .NET 2003
@@ -319,14 +329,18 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * Limitations of current release
   - UTF-8 version is only Japanese characters now.
-  - At "Duplicate session" on SSH2 connected communication, TeraTerm always try to 
-    connect the server with SSH2 protocol.
 
 
 * History
 
 2005.4.?? (Ver 4.14)
   - added clickable URL mechanism that mouse pointer overs on URL string. Special thanks to Kazuaki Ishizaki. And also added URLColor, EnableClickableUrl entry in teraterm.ini file.
+  - added support of escape sequence(ESC[39m:foreground color reset, ESC[49m:background color reset). This support solves the problem that color can't be clear using w3m on screen(1) command. Special thanks to Iwamoto Kouichi.
+  - added mouse cursor dynamically changing on Additional settings.
+  - added support of clickable URL on TeraTerm version dialog.
+  - cancelled the limitation that at "Duplicate session" on SSH2 connected communication, TeraTerm always try to connect the server with SSH2 protocol.
+  - added SSH autologin with "Duplicate session".
+
 
 2005.3.31 (Ver 4.13)
   - fixed TeraTerm version information can't be shown in version dialog at second later instance.

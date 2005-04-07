@@ -137,6 +137,7 @@
 2005.4.?? (Ver 2.12)
   - added SSH2 channel lookup mechanism for port forwading.
   - fixed the bug of application fault at DH key re-creation (degradation at TTSSH version supporting SSH2 2.10).
+  - added SSH autologin with "Duplicate session".
 
 2005.3.31 (Ver 2.11)
   - added the accelerator key at 'Use challenge/response to log in' on SSH2 authentication dialog.

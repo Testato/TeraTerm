@@ -257,6 +257,14 @@ MaxBuffSize=500000
   4. ビルドに成功するとteraterm\visualc\bin ディレクトリに実行プログラムが生成される
 
 
+■TeraTerm Menuのビルド方法
+  TeraTerm Menuのビルド方法について以下に示します。ビルドにはVisual Studio .NET 2003(VC++7.1)が必要です。
+  
+  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
+  2. teraterm\source\ttmenu\ttpmenu.sln をVisual Studioで開く
+  3. ソリューションをビルドする
+  4. ビルドに成功すると teraterm\source\ttmenu ディレクトリに実行プログラムが生成される
+
 
 ■開発環境
   OS: Windows XP Professional
@@ -308,13 +316,18 @@ MaxBuffSize=500000
 
 ■制限事項
   ・UTF-8対応は現在日本語のみです。
-  ・SSHに対する"Duplicate session"では常に SSH2 での接続を試みます。
 
 
 ■改版履歴
 
 2005.4.?? (Ver 4.14)
   ・URL文字列をダブルクリックするとブラウザが起動するしかけを追加した。石崎氏に感謝します。teraterm.iniにURLColor, EnableClickableUrlを追加。
+  ・エスケープシーケンス（ESC[39m:foreground color reset, ESC[49m:background color reset）をサポートした。これによりscreen上でw3mを使用した場合、色が戻らない現象が改善される。岩本氏に感謝します。
+  ・Additional settingsでのマウスカーソル種別を設定時に変更されるようにした。
+  ・バージョン情報ダイアログのURLをダブルクリックすると、ブラウザが起動されるようにした。
+  ・制限事項「SSHに対する"Duplicate session"では常にSSH2での接続を試みる」を解除した。
+  ・"Duplicate session"においてSSH自動ログインを行うようにした。
+
 
 2005.3.31 (Ver 4.13)
   ・2つめ以降のTeraTermプロセスにおいて、バージョン情報が正しく取得されない問題へ対処した。
