@@ -134,7 +134,7 @@
 
 * History
 
-2005.4.?? (Ver 2.12)
+2005.4.9 (Ver 2.12)
   - added SSH2 channel lookup mechanism for port forwading.
   - fixed the bug of application fault at DH key re-creation (degradation at TTSSH version supporting SSH2 2.10).
   - added SSH autologin with "Duplicate session".

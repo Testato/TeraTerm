@@ -320,7 +320,7 @@ MaxBuffSize=500000
 
 ■改版履歴
 
-2005.4.?? (Ver 4.14)
+2005.4.9 (Ver 4.14)
   ・URL文字列をダブルクリックするとブラウザが起動するしかけを追加した。石崎氏に感謝します。teraterm.iniにURLColor, EnableClickableUrlを追加。
   ・エスケープシーケンス（ESC[39m:foreground color reset, ESC[49m:background color reset）をサポートした。これによりscreen上でw3mを使用した場合、色が戻らない現象が改善される。岩本氏に感謝します。
   ・Additional settingsでのマウスカーソル種別を設定時に変更されるようにした。
