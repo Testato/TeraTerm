@@ -2180,7 +2180,7 @@ void CVTWindow::OnDuplicateSession()
 	char *exec = "ttermpro";
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
-
+	
 	// 現在の設定内容を共有メモリへコピーしておく
 	CopyTTSetToShmem(&ts);
 
@@ -2190,8 +2190,11 @@ void CVTWindow::OnDuplicateSession()
 
 	} else if (ts.TCPPort == 22) { // SSH
 		// ここの処理は TTSSH 側にやらせるべき (2004.12.7 yutaka)
-		_snprintf(Command, sizeof(Command), "%s %s:%d /DUPLICATE /ssh", 
+		// TTSSH側でのオプション生成を追加。(2005.4.8 yutaka)
+		_snprintf(Command, sizeof(Command), "%s %s:%d /DUPLICATE", 
 			exec, ts.HostName, ts.TCPPort);
+
+		TTXSetCommandLine(Command, sizeof(Command), NULL); /* TTPLUG */
 
 	} else {
 		return;
@@ -3611,6 +3614,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2005/04/03 13:42:07  yutakakn
+ * URL文字列をダブルクリックするとブラウザが起動するしかけを追加（石崎氏パッチがベース）。
+ *
  * Revision 1.13  2005/03/16 14:10:39  yutakakn
  * マウス右ボタン押下でのペーストを制御する設定項目を追加。
  * teraterm.iniに DisablePasteMouseRButton エントリを追加。
