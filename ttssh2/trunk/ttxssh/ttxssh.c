@@ -2010,6 +2010,39 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 	}
 }
 
+
+// 以下はTeraTerm Menuのコード(ttpmenu.cpp)と同一。
+// 空白を @ に置き換える。@自身は@@にする。(2005.1.28 yutaka)
+static void replace_blank_to_mark(char *str, char *dst, int dst_len)
+{
+	int i, len, n;
+
+	len = strlen(str);
+	n = 0;
+	for (i = 0 ; i < len ; i++) {
+		if (str[i] == '@')
+			n++;
+	}
+	if (dst_len < (len + 2*n)) 
+		return;
+
+	for (i = 0 ; i < len ; i++) {
+		if (str[i] == '@') {
+			*dst++ = '@';
+			*dst++ = '@';
+
+		} else if (str[i] == ' ') {
+			*dst++ = '@';
+
+		} else {
+			*dst++ = str[i];
+
+		}
+	}
+	*dst = '\0';
+
+}
+
 static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 										 PGetHNRec rec)
 {
@@ -2047,6 +2080,42 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 			}
 
 		}
+
+		// セッション複製の場合は、自動ログイン用パラメータを付ける。(2005.4.8 yutaka)
+		if (strstr(buf, "DUPLICATE")) {
+			char mark[MAX_PATH];
+			char tmp[MAX_PATH*2];
+
+			// 自動ログインの場合は下記フラグが0のため、必要なコマンドを付加する。
+			if (!pvar->hostdlg_Enabled) {
+				_snprintf(tmp, sizeof(tmp), " /ssh /%d", pvar->settings.ssh_protocol_version);
+				strncat(cmd, tmp, cmdlen);
+			}
+
+			if (pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) {
+				replace_blank_to_mark(pvar->auth_state.cur_cred.password, mark, sizeof(mark));
+				_snprintf(tmp, sizeof(tmp), " /auth=password /user=%s /passwd=%s", pvar->auth_state.user, mark);
+				strncat(cmd, tmp, cmdlen);
+
+			} else if (pvar->auth_state.cur_cred.method == SSH_AUTH_RSA) {
+				replace_blank_to_mark(pvar->auth_state.cur_cred.password, mark, sizeof(mark));
+				_snprintf(tmp, sizeof(tmp), " /auth=publickey /user=%s /passwd=%s", pvar->auth_state.user, mark);
+				strncat(cmd, tmp, cmdlen);
+
+				replace_blank_to_mark(pvar->session_settings.DefaultRSAPrivateKeyFile, mark, sizeof(mark));
+				_snprintf(tmp, sizeof(tmp), " /keyfile=%s", mark);
+				strncat(cmd, tmp, cmdlen);
+
+			} else if (pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
+				// keyboard-interactive認証の場合は何もしない。
+
+			} else {
+				// don't come here
+
+			}
+
+		}
+
 	}
 }
 
@@ -2195,6 +2264,11 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  2005/04/03 14:39:48  yutakakn
+ * SSH2 channel lookup機構の追加（ポートフォワーディングのため）。
+ * TTSSH 2.10で追加したlog dump機構において、DH鍵再作成時にbuffer freeで
+ * アプリケーションが落ちてしまうバグを修正。
+ *
  * Revision 1.17  2005/03/27 04:39:55  yutakakn
  * SSH2のログ採取(verbose)のデータを追加した。
  *

@@ -410,7 +410,10 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 		pvar->auth_state.user =
 			alloc_control_text(GetDlgItem(dlg, IDC_SSHUSERNAME));
 	}
-	if (method == SSH_AUTH_PASSWORD) {
+
+	// 公開鍵認証の場合、セッション複製時にパスワードを使い回したいので解放しないようにする。
+	// (2005.4.8 yutaka)
+	if (method == SSH_AUTH_PASSWORD || method == SSH_AUTH_RSA) {
 		pvar->auth_state.cur_cred.password = password;
 	} else {
 		destroy_malloced_string(&password);
@@ -1037,6 +1040,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2005/03/23 12:39:35  yutakakn
+ * SSH2認証ダイアログの Use challenge/response to log in にアクセラレータキーを割り当てた。
+ *
  * Revision 1.11  2005/03/12 15:07:33  yutakakn
  * SSH2 keyboard-interactive認証をTISダイアログに実装した。
  *

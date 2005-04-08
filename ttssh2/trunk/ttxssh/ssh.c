@@ -1748,7 +1748,13 @@ static BOOL handle_rsa_challenge(PTInstVar pvar)
 
 		if (CRYPT_generate_RSA_challenge_response
 			(pvar, pvar->ssh_state.payload + 2, challenge_bytes, outmsg)) {
-			AUTH_destroy_cur_cred(pvar);
+
+			// セッション複製時にパスワードを使い回したいので、ここでのリソース解放はやめる。
+			// socket close時にもこの関数は呼ばれているので、たぶん問題ない。(2005.4.8 yutaka)
+#if 0
+			//AUTH_destroy_cur_cred(pvar);
+#endif
+
 			finish_send_packet(pvar);
 
 			enque_simple_auth_handlers(pvar);
@@ -1804,7 +1810,13 @@ static void try_send_credentials(PTInstVar pvar)
 				set_uint32(outmsg, obfuscated_len);
 				memcpy(outmsg + 4, cred->password, len);
 				memset(outmsg + 4 + len, 0, obfuscated_len - len);
-				AUTH_destroy_cur_cred(pvar);
+				
+				// セッション複製時にパスワードを使い回したいので、ここでのリソース解放はやめる。
+				// socket close時にもこの関数は呼ばれているので、たぶん問題ない。(2005.4.8 yutaka)
+#if 0
+				//AUTH_destroy_cur_cred(pvar);
+#endif
+				
 				enque_simple_auth_handlers(pvar);
 				break;
 			}
@@ -5658,6 +5670,11 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.25  2005/04/03 14:39:48  yutakakn
+ * SSH2 channel lookup機構の追加（ポートフォワーディングのため）。
+ * TTSSH 2.10で追加したlog dump機構において、DH鍵再作成時にbuffer freeで
+ * アプリケーションが落ちてしまうバグを修正。
+ *
  * Revision 1.24  2005/03/28 13:52:05  yutakakn
  * SSH2_MSG_CHANNEL_REQUEST送信時において、wantconfirmをfalseにした（サーバからのリプライを期待しない）。
  * NetScreen(HITACHI) workaround対応。
