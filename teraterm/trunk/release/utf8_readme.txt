@@ -340,7 +340,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
   - added support of clickable URL on TeraTerm version dialog.
   - cancelled the limitation that at "Duplicate session" on SSH2 connected communication, TeraTerm always try to connect the server with SSH2 protocol.
   - added SSH autologin with "Duplicate session".
-
+  - upgraded LogMeTT to 2.4.3
 
 2005.3.31 (Ver 4.13)
   - fixed TeraTerm version information can't be shown in version dialog at second later instance.
