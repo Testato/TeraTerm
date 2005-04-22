@@ -1,11 +1,11 @@
 [Project]
-ProjectName=UTF-8 TeraTerm Pro
+ProjectName=UTF-8 TeraTerm Pro with TTSSH2
 CreateFileName=teraterm_utf8_
 CreateFolder=C:\Program Files\Matsuoka\einstall2\Project\ExeFile
 MajorVersion=3
 MinorVersion=20
 CreateDateTime=2004/12/07 23:52:51
-UpdateDateTime=2005/03/05 22:47:10
+UpdateDateTime=2005/04/23 0:04:14
 Generator=EINSTALL 2.0
 CreateFileType=4
 CreateFileAddVersionInfo=1
@@ -44,11 +44,11 @@ LogoNoHeaderMes=0
 LogoTransparent=0
 MajorVersion=4
 MinorVersion=1
-ReleaseVersion=1
+ReleaseVersion=5
 BuildVersion=0
 OtherVersion=0
 DocumentFile=
-LicenseFile=
+LicenseFile=license.txt
 AlwaysAgree=0
 
 [Installer]
@@ -79,7 +79,7 @@ OSVersion=127
 [ScreenSetting]
 Panel01=1
 Panel02=0
-Panel03=0
+Panel03=1
 Panel04=1
 Panel05=1
 Panel06=1
@@ -91,6 +91,7 @@ Panel10=1
 [ProgramSetting]
 CheckBoxCaption=ç°Ç∑ÇÆé¿çsÇ∑ÇÈ(&R)
 DefaultCheckBoxState=0
+EnableGroupCheckBox=1
 
 [InstallLimit]
 User=0
@@ -102,14 +103,6 @@ PersonalSettingDeleteConfirm=0
 SystemFileDelete=0
 SystemFileDeleteMessage=1
 InfoFileMethod=1
-
-[ProgramItems]
-0=1|%InstallDir%\|copyfont.bat||0|3|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
-1=1|%InstallDir%\|utf8_readme-j.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
-2=1|%InstallDir%\|ssh2_readme-j.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
-3=1|%InstallDir%|utf8_readme.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
-4=1|%InstallDir%|ssh2_readme.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
-5=1|%InstallDir%|faq-j.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
 
 [ShortCutItems]
 0=UTF-8 TeraTerm Pro|%InstallDir%\ttermpro.exe||||0||0|35|0|||||||||||
@@ -167,4 +160,13 @@ InfoFileMethod=1
 48=1|0|%InstallDir%|theme|C:\usr\src\utf8_teraterm_installer\theme\Advanced.sample|||0|0|127|||||||||||
 49=1|0|%InstallDir%|theme|C:\usr\src\utf8_teraterm_installer\theme\Scale.INI|||0|0|127|||||||||||
 50=1|0|%InstallDir%|theme|C:\usr\src\utf8_teraterm_installer\theme\Tile.INI|||0|0|127|||||||||||
+51=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\license.txt|||0|0|127|||||||||||
+
+[ProgramItems]
+0=1|%InstallDir%\|copyfont.bat||0|3|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
+1=1|%InstallDir%\|utf8_readme-j.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
+2=1|%InstallDir%\|ssh2_readme-j.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
+3=1|%InstallDir%|utf8_readme.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
+4=1|%InstallDir%|ssh2_readme.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
+5=1|%InstallDir%|faq-j.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
 
