@@ -80,6 +80,7 @@ HANDLE hInst; /* Instance handle of TTXSSH.DLL */
 #define ID_SSHAUTHSETUPMENU 62506
 #define ID_SSHASYNCMESSAGEBOX 62507
 #define ID_SSHFWDSETUPMENU 62508
+#define ID_SSHKEYGENMENU 62509
 
 /*
 These are the fields that WOULD go in Teraterm's 'ts' structure, if
@@ -239,6 +240,11 @@ void get_file_version(char *exefile, int *major, int *minor, int *release, int *
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2005/04/03 14:39:48  yutakakn
+ * SSH2 channel lookup機構の追加（ポートフォワーディングのため）。
+ * TTSSH 2.10で追加したlog dump機構において、DH鍵再作成時にbuffer freeで
+ * アプリケーションが落ちてしまうバグを修正。
+ *
  * Revision 1.10  2005/03/12 15:07:34  yutakakn
  * SSH2 keyboard-interactive認証をTISダイアログに実装した。
  *

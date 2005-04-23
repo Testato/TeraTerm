@@ -134,6 +134,54 @@ char *buffer_ptr(buffer_t *msg)
 	return (msg->buf);
 }
 
+char *buffer_tail_ptr(buffer_t *msg)
+{
+	return (char *)(msg->buf + msg->offset);
+}
+
+int buffer_overflow_verify(buffer_t *msg, int len)
+{
+	if (msg->offset + len > msg->maxlen) {
+		return -1;  // error
+	}
+	return 0; // no problem
+}
+
+// for SSH1
+void buffer_put_bignum(buffer_t *buffer, BIGNUM *value)
+{
+    unsigned int bits, bin_size;
+    unsigned char *buf;
+    int oi;
+    char msg[2];
+	
+    bits = BN_num_bits(value);
+	bin_size = (bits + 7) / 8;
+    buf = malloc(bin_size);
+	if (buf == NULL) {
+		*buf = 0;
+		goto error;
+	}
+
+    buf[0] = '\0';
+    /* Get the value of in binary */
+    oi = BN_bn2bin(value, buf);
+	if (oi != bin_size) {
+		goto error;
+	}
+
+    /* Store the number of bits in the buffer in two bytes, msb first. */
+	set_ushort16_MSBfirst(msg, bits);
+	buffer_append(buffer, msg, 2);
+
+    /* Store the binary data. */
+    buffer_append(buffer, (char *)buf, oi);
+
+error:
+    free(buf);
+}
+
+// for SSH2
 void buffer_put_bignum2(buffer_t *msg, BIGNUM *value)
 {
     unsigned int bytes;
@@ -189,4 +237,7 @@ void buffer_dump(FILE *fp, buffer_t *buf)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/12/19 15:37:37  yutakakn
+ * CVS LogID‚Ì’Ç‰Á
+ *
  */

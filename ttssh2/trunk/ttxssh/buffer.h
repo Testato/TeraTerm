@@ -21,9 +21,10 @@ void buffer_put_padding(buffer_t *msg, int size);
 void buffer_put_int(buffer_t *msg, int value);
 int buffer_len(buffer_t *msg);
 char *buffer_ptr(buffer_t *msg);
+void buffer_put_bignum(buffer_t *buffer, BIGNUM *value);
 void buffer_put_bignum2(buffer_t *msg, BIGNUM *value);
-
 void buffer_get_bignum2(char **data, BIGNUM *value);
-
+char *buffer_tail_ptr(buffer_t *msg);
+int buffer_overflow_verify(buffer_t *msg, int len);
 
 #endif				/* BUFFER_H */
