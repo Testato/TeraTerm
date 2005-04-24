@@ -333,6 +333,16 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2005.4.24 (Ver 4.15)
+  - added the accelerator key(ALT+Enter) that it enables window to maximize.
+  - added saving Eterm lookfeel alphablend settings to teraterm.ini file.
+  - added changing Eterm lookfeel alphablend on/off on Additional settings dialog.
+  - fixed the installer problem not copying font file on Windows98. Special thanks to Boris.
+  - added TeraTerm License file(license.txt).
+  - upgraded macro help file(English version). Special thanks to Boris.
+  - upgraded LogMeTT to 2.4.4
+
+
 2005.4.9 (Ver 4.14)
   - added clickable URL mechanism that mouse pointer overs on URL string. Special thanks to Kazuaki Ishizaki. And also added URLColor, EnableClickableUrl entry in teraterm.ini file.
   - added support of escape sequence(ESC[39m:foreground color reset, ESC[49m:background color reset). This support solves the problem that color can't be clear using w3m on screen(1) command. Special thanks to Iwamoto Kouichi.

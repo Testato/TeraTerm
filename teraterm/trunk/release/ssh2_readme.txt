@@ -134,6 +134,10 @@
 
 * History
 
+2005.4.24 (Ver 2.13)
+  - added SSH key generator dialog(Setup - SSH KeyGenerator).
+  - upgraded OpenSSL to 0.9.7g
+
 2005.4.9 (Ver 2.12)
   - added SSH2 channel lookup mechanism for port forwading.
   - fixed the bug of application fault at DH key re-creation (degradation at TTSSH version supporting SSH2 2.10).

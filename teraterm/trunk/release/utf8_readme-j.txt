@@ -320,6 +320,15 @@ MaxBuffSize=500000
 
 ■改版履歴
 
+2005.4.24 (Ver 4.15)
+  ・ALT + Enterキー（トグル）押下でウィンドウを最大化できるようにした。
+  ・Eterm lookfeel alphablendの設定内容を teraterm.ini へ保存するようにした。
+  ・Eterm lookfeel alphablendのon/offを Additional settings ダイアログ上から設定できるようにした。
+  ・Windows98においてフォントがインストールされない問題を修正した。Boris氏に感謝します。
+  ・ライセンス文を追加した
+  ・マクロヘルプファイル（英語版）を更新した。Boris氏に感謝します。
+  ・LogMeTT 2.4.4へ差し替えた
+
 2005.4.9 (Ver 4.14)
   ・URL文字列をダブルクリックするとブラウザが起動するしかけを追加した。石崎氏に感謝します。teraterm.iniにURLColor, EnableClickableUrlを追加。
   ・エスケープシーケンス（ESC[39m:foreground color reset, ESC[49m:background color reset）をサポートした。これによりscreen上でw3mを使用した場合、色が戻らない現象が改善される。岩本氏に感謝します。
