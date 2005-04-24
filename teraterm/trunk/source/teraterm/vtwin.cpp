@@ -2669,7 +2669,7 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 
 			// (2)[BG] BGEnable 
 			hWnd = GetDlgItem(hDlgWnd, IDC_ETERM_LOOKFEEL);
-			if (BGEnable) {
+			if (ts.EtermLookfeel.BGEnable) {
 				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
 			} else {
 				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
@@ -3626,6 +3626,10 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  2005/04/24 11:03:42  yutakakn
+ * Eterm lookfeel alphablendの設定内容を teraterm.ini へ保存するようにした。
+ * また、Additional settingsダイアログから on/off できるようにした。
+ *
  * Revision 1.16  2005/04/24 05:37:05  yutakakn
  * ALT + Enterキー（トグル）でウィンドウの最大化を行えるようにした。
  *
