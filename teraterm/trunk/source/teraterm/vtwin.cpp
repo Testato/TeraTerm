@@ -1481,27 +1481,37 @@ void CVTWindow::OnSize(UINT nType, int cx, int cy)
 
 void CVTWindow::OnSysChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-  char e = ESC;
-  char Code;
-  unsigned int i;
+	char e = ESC;
+	char Code;
+	unsigned int i;
 
-  if (ts.MetaKey>0)
-  {
-    if (!KeybEnabled || (TalkStatus!=IdTalkKeyb)) return;
-    Code = nChar;
-    for (i=1 ; i<=nRepCnt ; i++)
-    {
-      CommTextOut(&cv,&e,1);
-      CommTextOut(&cv,&Code,1);
-      if (ts.LocalEcho>0)
-      {
-	CommTextEcho(&cv,&e,1);
-	CommTextEcho(&cv,&Code,1);
-      }
-    }
-    return;
-  }
-  CFrameWnd::OnSysChar(nChar, nRepCnt, nFlags);
+	// ALT + xを押下すると WM_SYSCHAR が飛んでくる。
+	// ALT + Enterでウィンドウの最大化 (2005.4.24 yutaka)
+	if (AltKey() && nChar == 13) {
+		if (IsZoomed()) { // window is maximum
+			ShowWindow(SW_RESTORE);
+		} else {
+			ShowWindow(SW_MAXIMIZE);
+		}
+	}
+
+	if (ts.MetaKey>0)
+	{
+		if (!KeybEnabled || (TalkStatus!=IdTalkKeyb)) return;
+		Code = nChar;
+		for (i=1 ; i<=nRepCnt ; i++)
+		{
+			CommTextOut(&cv,&e,1);
+			CommTextOut(&cv,&Code,1);
+			if (ts.LocalEcho>0)
+			{
+				CommTextEcho(&cv,&e,1);
+				CommTextEcho(&cv,&Code,1);
+			}
+		}
+		return;
+	}
+	CFrameWnd::OnSysChar(nChar, nRepCnt, nFlags);
 }
 
 void CVTWindow::OnSysColorChange()
@@ -3614,6 +3624,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  2005/04/08 14:53:28  yutakakn
+ * "Duplicate session"においてSSH自動ログインを行うようにした。
+ *
  * Revision 1.14  2005/04/03 13:42:07  yutakakn
  * URL文字列をダブルクリックするとブラウザが起動するしかけを追加（石崎氏パッチがベース）。
  *
