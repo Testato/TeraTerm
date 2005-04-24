@@ -1177,7 +1177,18 @@ void BGInitialize(void)
   BGDestruct();
 
   //BG が有効かチェック
-  BGEnable = BGGetOnOff("BGEnable",FALSE,ts.SetupFName);
+  ts.EtermLookfeel.BGEnable = BGEnable = BGGetOnOff("BGEnable",FALSE,ts.SetupFName);
+  ts.EtermLookfeel.BGUseAlphaBlendAPI = BGGetOnOff("BGUseAlphaBlendAPI",TRUE ,ts.SetupFName);
+  ts.EtermLookfeel.BGNoFrame = BGGetOnOff("BGNoFrame"         ,FALSE,ts.SetupFName);
+  ts.EtermLookfeel.BGFastSizeMove = BGGetOnOff("BGFastSizeMove"    ,TRUE ,ts.SetupFName);
+  ts.EtermLookfeel.BGNoCopyBits = BGGetOnOff("BGFlickerlessMove" ,TRUE ,ts.SetupFName);
+
+  GetPrivateProfileString(BG_SECTION,"BGSPIPath","plugin",BGSPIPath,MAX_PATH,ts.SetupFName);
+  strcpy(ts.EtermLookfeel.BGSPIPath, BGSPIPath);
+
+  //コンフィグファイルの決定
+  GetPrivateProfileString(BG_SECTION,"BGThemeFile","",path,MAX_PATH,ts.SetupFName);
+  strcpy(ts.EtermLookfeel.BGThemeFile, path);
 
   if(!BGEnable)
     return;
@@ -1186,12 +1197,15 @@ void BGInitialize(void)
   srand(time(NULL));
 
   //BGシステム設定読み出し
-  BGUseAlphaBlendAPI = BGGetOnOff("BGUseAlphaBlendAPI",TRUE ,ts.SetupFName);
-  BGNoFrame          = BGGetOnOff("BGNoFrame"         ,FALSE,ts.SetupFName);
-  BGFastSizeMove     = BGGetOnOff("BGFastSizeMove"    ,TRUE ,ts.SetupFName);
-  BGNoCopyBits       = BGGetOnOff("BGFlickerlessMove" ,TRUE ,ts.SetupFName);
+  BGUseAlphaBlendAPI = ts.EtermLookfeel.BGUseAlphaBlendAPI;
+  BGNoFrame = ts.EtermLookfeel.BGNoFrame;
+  BGFastSizeMove = ts.EtermLookfeel.BGFastSizeMove;
+  BGNoCopyBits = ts.EtermLookfeel.BGNoCopyBits;
   
+#if 0
   GetPrivateProfileString(BG_SECTION,"BGSPIPath","plugin",BGSPIPath,MAX_PATH,ts.SetupFName);
+  strcpy(ts.EtermLookfeel.BGSPIPath, BGSPIPath);
+#endif
 
   //テンポラリーファイル名を生成
   GetTempPath(MAX_PATH,tempPath);
@@ -2866,6 +2880,9 @@ void DispSetActive(BOOL ActiveFlag)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2005/04/03 13:42:07  yutakakn
+ * URL文字列をダブルクリックするとブラウザが起動するしかけを追加（石崎氏パッチがベース）。
+ *
  * Revision 1.4  2005/02/03 14:46:23  yutakakn
  * CVSログIDの追加。
  *

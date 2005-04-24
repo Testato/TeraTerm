@@ -2689,12 +2689,14 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					ts.AlphaBlend = atoi(buf);
 
 					// (2)
+					// グローバル変数 BGEnable を直接書き換えると、プログラムが落ちることが
+					// あるのでコピーを修正するのみとする。(2005.4.24 yutaka)
 					hWnd = GetDlgItem(hDlgWnd, IDC_ETERM_LOOKFEEL);
 					ret = SendMessage(hWnd, BM_GETCHECK , 0, 0);
 					if (ret & BST_CHECKED) {
-						BGEnable = 1;
+						ts.EtermLookfeel.BGEnable = 1;
 					} else {
-						BGEnable = 0;
+						ts.EtermLookfeel.BGEnable = 0;
 					}
 
                     EndDialog(hDlgWnd, IDOK);
@@ -3624,6 +3626,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  2005/04/24 05:37:05  yutakakn
+ * ALT + Enterキー（トグル）でウィンドウの最大化を行えるようにした。
+ *
  * Revision 1.15  2005/04/08 14:53:28  yutakakn
  * "Duplicate session"においてSSH自動ログインを行うようにした。
  *

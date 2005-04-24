@@ -170,6 +170,17 @@
 #define PF_CONFIRMDISCONN 1
 #define PF_BEEPONCONNECT  2
 
+// Eterm lookfeel alphablend structure
+typedef struct {
+	int BGEnable;
+	int BGUseAlphaBlendAPI;
+	char BGSPIPath[MAX_PATH];
+	int BGFastSizeMove;
+	int BGNoCopyBits;
+	int BGNoFrame;
+	char BGThemeFile[MAX_PATH];
+} eterm_lookfeel_t;
+
 /* TTTSet */
 //
 // NOTE: â∫ãLÇÃÉGÉâÅ[Ç™Ç≈ÇÈÇ±Ç∆Ç™Ç†ÇÈ
@@ -328,6 +339,7 @@ struct tttset {
   WORD LogTypePlainText;
   int DisablePasteMouseRButton;
   int EnableClickableUrl;
+  eterm_lookfeel_t EtermLookfeel;
 };
 
 typedef struct tttset TTTSet, *PTTSet;

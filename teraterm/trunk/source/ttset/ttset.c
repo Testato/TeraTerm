@@ -1568,6 +1568,17 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* update file */
   WritePrivateProfileString(NULL,NULL,NULL,FName);
+
+  // Eterm lookfeel alphablend (2005.4.24 yutaka)
+#define ETERM_SECTION "BG"
+  WriteOnOff(ETERM_SECTION, "BGEnable", FName, ts->EtermLookfeel.BGEnable);
+  WriteOnOff(ETERM_SECTION, "BGUseAlphaBlendAPI", FName, ts->EtermLookfeel.BGUseAlphaBlendAPI);
+  WritePrivateProfileString(ETERM_SECTION,"BGSPIPath", ts->EtermLookfeel.BGSPIPath, FName);
+  WriteOnOff(ETERM_SECTION, "BGFastSizeMove", FName, ts->EtermLookfeel.BGFastSizeMove);
+  WriteOnOff(ETERM_SECTION, "BGFlickerlessMove", FName, ts->EtermLookfeel.BGNoCopyBits);
+  WriteOnOff(ETERM_SECTION, "BGNoFrame", FName, ts->EtermLookfeel.BGNoFrame);
+  WritePrivateProfileString(ETERM_SECTION,"BGThemeFile", ts->EtermLookfeel.BGThemeFile, FName);
+
 }
 
 #define VTEditor "VT editor keypad"
@@ -2386,6 +2397,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2005/04/03 13:42:07  yutakakn
+ * URL文字列をダブルクリックするとブラウザが起動するしかけを追加（石崎氏パッチがベース）。
+ *
  * Revision 1.5  2005/03/16 14:10:39  yutakakn
  * マウス右ボタン押下でのペーストを制御する設定項目を追加。
  * teraterm.iniに DisablePasteMouseRButton エントリを追加。
