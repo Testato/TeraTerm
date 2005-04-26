@@ -134,6 +134,9 @@
 
 * History
 
+2005.5.?? (Ver 2.14)
+  - added three file filter on private key saving dialog.
+
 2005.4.24 (Ver 2.13)
   - added SSH key generator dialog(Setup - SSH KeyGenerator).
   - upgraded OpenSSL to 0.9.7g

@@ -320,6 +320,9 @@ MaxBuffSize=500000
 
 ■改版履歴
 
+2005.5.?? (Ver 4.16)
+
+
 2005.4.24 (Ver 4.15)
   ・ALT + Enterキー（トグル）押下でウィンドウを最大化できるようにした。
   ・Eterm lookfeel alphablendの設定内容を teraterm.ini へ保存するようにした。

@@ -333,8 +333,10 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2005.5.?? (Ver 4.16)
+
 2005.4.24 (Ver 4.15)
-  - added the accelerator key(ALT+Enter) that it enables window to maximize.
+  - added the accelerator key(ALT+Enter) that maximizes TeraTerm window.
   - added saving Eterm lookfeel alphablend settings to teraterm.ini file.
   - added changing Eterm lookfeel alphablend on/off on Additional settings dialog.
   - fixed the installer problem not copying font file on Windows98. Special thanks to Boris.
