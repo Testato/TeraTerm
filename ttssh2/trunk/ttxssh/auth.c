@@ -279,7 +279,8 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize)
 	params.lStructSize = sizeof(OPENFILENAME);
 	params.hwndOwner = parent;
 	// フィルタの追加 (2004.12.19 yutaka)
-	params.lpstrFilter = "identity(RSA1)\0identity\0id_rsa(SSH2)\0id_rsa\0id_dsa(SSH2)\0id_dsa\0all(*.*)\0*.*\0\0";
+	// 3ファイルフィルタの追加 (2005.4.26 yutaka)
+	params.lpstrFilter = "identity files\0identity;id_rsa;id_dsa\0identity(RSA1)\0identity\0id_rsa(SSH2)\0id_rsa\0id_dsa(SSH2)\0id_dsa\0all(*.*)\0*.*\0\0";
 	params.lpstrCustomFilter = NULL;
 	params.nFilterIndex = 0;
 	buf[0] = 0;
@@ -287,7 +288,7 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize)
 	params.nMaxFile = sizeof(fullname_buf);
 	params.lpstrFileTitle = NULL;
 	params.lpstrInitialDir = NULL;
-	params.lpstrTitle = "Choose a file with the RSA private key";
+	params.lpstrTitle = "Choose a file with the RSA/DSA private key";
 	params.Flags =
 		OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
 	params.lpstrDefExt = NULL;
@@ -1040,6 +1041,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2005/04/08 14:55:03  yutakakn
+ * "Duplicate session"においてSSH自動ログインを行うようにした。
+ *
  * Revision 1.12  2005/03/23 12:39:35  yutakakn
  * SSH2認証ダイアログの Use challenge/response to log in にアクセラレータキーを割り当てた。
  *
