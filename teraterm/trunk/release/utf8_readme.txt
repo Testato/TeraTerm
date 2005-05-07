@@ -334,6 +334,8 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 * History
 
 2005.5.?? (Ver 4.16)
+  - added saving log type(plain text) information to teraterm.ini(LogTypePlainText).
+  - added CygTerm settings on Additional settings dialog.
 
 2005.4.24 (Ver 4.15)
   - added the accelerator key(ALT+Enter) that maximizes TeraTerm window.
