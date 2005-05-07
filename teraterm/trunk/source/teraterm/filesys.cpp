@@ -239,7 +239,8 @@ void LogStart()
 	if (strlen(&(LogVar->FullName[LogVar->DirLen]))==0)
 	{
 		// 0x1000 = plain text (2005.2.20 yutaka)
-		Option = MAKELONG(ts.TransBin,ts.Append | 0x1000);
+		// teraterm.iniの設定を見てからデフォルトオプションを決める。(2005.5.7 yutaka)
+		Option = MAKELONG(ts.TransBin,ts.Append | (0x1000 * ts.LogTypePlainText));
 		if (! (*GetTransFname)(LogVar, ts.FileDir, GTF_LOG, &Option))
 		{
 			FreeFileVar(&LogVar);
@@ -1074,5 +1075,18 @@ void QVStart(int mode)
 }
 
 /*
- * $Log: not supported by cvs2svn $ 
+ * $Log: not supported by cvs2svn $
+ * Revision 1.2  2005/02/20 14:51:29  yutakakn
+ * ログファイルの種別に"plain text"を追加。このオプションが有効の場合は、ログファイルに
+ * ASCII非表示文字の採取をしない。
+ *
+ * 現在、無視するキャラクタは以下のとおり。
+ * 　・BS
+ * 　・ASCII(0x00-0x1f)のうち非表示なもの
+ *
+ * ただし、例外として以下のものはログ採取対象。
+ * 　・HT
+ * 　・CR
+ * 　・LF
+ * 
  */

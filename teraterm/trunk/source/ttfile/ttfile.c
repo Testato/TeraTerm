@@ -167,8 +167,8 @@ BOOL CALLBACK TFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			SetRB(Dialog,Hi & 1,IDC_FOPTAPPEND,IDC_FOPTAPPEND);
 
 			// plain textチェックボックスはデフォルトでON (2005.2.20 yutaka)
+			ShowDlgItem(Dialog,IDC_PLAINTEXT,IDC_PLAINTEXT);
 			if (Hi & 0x1000) {
-				ShowDlgItem(Dialog,IDC_PLAINTEXT,IDC_PLAINTEXT);
 				SetRB(Dialog,1,IDC_PLAINTEXT,IDC_PLAINTEXT);
 			}
 		}
@@ -960,6 +960,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2005/02/22 11:55:39  yutakakn
+ * 警告の抑止（未使用のローカル変数を削除）
+ *
  * Revision 1.6  2005/02/22 11:53:57  yutakakn
  * ログ採取においてデフォルトファイル名を teraterm.log へ変更した。
  * 将来的には teraterm.ini でファイル名を指定できるようにする予定。

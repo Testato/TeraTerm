@@ -643,6 +643,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   /* Log append */
   ts->Append = GetOnOff(Section,"LogAppend",FName,FALSE);
 
+  /* Log plain text (2005.5.7 yutaka) */
+  ts->LogTypePlainText = GetOnOff(Section,"LogTypePlainText",FName,FALSE);
+
   /* XMODEM option */
   GetPrivateProfileString(Section,"XmodemOpt","",
 			  Temp,sizeof(Temp),FName);
@@ -1350,6 +1353,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* Log append */
   WriteOnOff(Section,"LogAppend",FName,ts->Append);
+
+  /* File transfer binary flag */
+  WriteOnOff(Section,"LogTypePlainText",FName,ts->LogTypePlainText);
 
   /* XMODEM option */
   switch (ts->XmodemOpt) {
@@ -2397,6 +2403,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2005/04/24 11:03:42  yutakakn
+ * Eterm lookfeel alphablendの設定内容を teraterm.ini へ保存するようにした。
+ * また、Additional settingsダイアログから on/off できるようにした。
+ *
  * Revision 1.6  2005/04/03 13:42:07  yutakakn
  * URL文字列をダブルクリックするとブラウザが起動するしかけを追加（石崎氏パッチがベース）。
  *
