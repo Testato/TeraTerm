@@ -14,6 +14,7 @@
 #define IDD_ADDITIONAL_SETUPTAB         114
 #define IDD_TABSHEET_VISUAL             116
 #define IDD_TABSHEET_LOG                117
+#define IDD_TABSHEET_CYGWIN             118
 #define IDR_TEKMENU                     1000
 #define IDC_EDIT_COMMENT                1000
 #define IDC_EDIT_FULLPATH               1001
@@ -42,8 +43,15 @@
 #define IDC_SETUP_TAB                   1028
 #define IDC_ETERM_LOOKFEEL              1030
 #define IDC_DISABLE_PASTE_RBUTTON       1032
-#define IDC_CHECK1                      1033
 #define IDC_CLICKABLE_URL               1033
+#define IDC_TERM_TYPE                   1035
+#define IDC_PORT_START                  1036
+#define IDC_PORT_RANGE                  1037
+#define IDC_SHELL                       1038
+#define IDC_TERM_EDIT                   1039
+#define IDC_ENV1                        1040
+#define IDC_EDIT7                       1041
+#define IDC_ENV2                        1041
 #define IDD_PRNABORTDLG                 2100
 #define IDD_FILETRANSDLG                2200
 #define IDC_TRANSFNAME                  2201
@@ -138,9 +146,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        118
+#define _APS_NEXT_RESOURCE_VALUE        119
 #define _APS_NEXT_COMMAND_VALUE         52019
-#define _APS_NEXT_CONTROL_VALUE         1034
+#define _APS_NEXT_CONTROL_VALUE         1042
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

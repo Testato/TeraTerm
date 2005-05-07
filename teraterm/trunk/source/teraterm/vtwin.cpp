@@ -2586,6 +2586,245 @@ void CVTWindow::OnSelectAllBuffer()
 // Additional settingsで使うタブコントロールの親ハンドル
 static HWND gTabControlParent;
 
+//
+// cf. http://homepage2.nifty.com/DSS/VCPP/API/SHBrowseForFolder.htm
+//
+static void doSelectFolder(HWND hWnd, char *path, int pathlen)
+{
+	BROWSEINFO      bi;
+	LPSTR           lpBuffer;
+	LPITEMIDLIST    pidlRoot;      // ブラウズのルートPIDL
+	LPITEMIDLIST    pidlBrowse;    // ユーザーが選択したPIDL
+	LPMALLOC        lpMalloc = NULL;
+
+	HRESULT hr = SHGetMalloc(&lpMalloc);
+	if (FAILED(hr)) 
+		return;
+
+	// ブラウズ情報受け取りバッファ領域の確保
+	if ((lpBuffer = (LPSTR) lpMalloc->Alloc(_MAX_PATH)) == NULL) {
+		return;
+	}
+	// ダイアログ表示時のルートフォルダのPIDLを取得
+	// ※以下はデスクトップをルートとしている。デスクトップをルートとする
+	//   場合は、単に bi.pidlRoot に０を設定するだけでもよい。その他の特
+	//   殊フォルダをルートとする事もできる。詳細はSHGetSpecialFolderLoca
+	//   tionのヘルプを参照の事。
+	if (!SUCCEEDED(SHGetSpecialFolderLocation(  hWnd,
+		CSIDL_DESKTOP,
+		&pidlRoot))) { 
+			lpMalloc->Free(lpBuffer);
+			return;
+	}
+
+	// BROWSEINFO構造体の初期値設定
+	// ※BROWSEINFO構造体の各メンバの詳細説明もヘルプを参照
+	bi.hwndOwner = hWnd;
+	bi.pidlRoot = pidlRoot;
+	bi.pszDisplayName = lpBuffer;
+	bi.lpszTitle = "select folder";
+	bi.ulFlags = 0;
+	bi.lpfn = 0;
+	bi.lParam = 0;
+	// フォルダ選択ダイアログの表示 
+	pidlBrowse = SHBrowseForFolder(&bi);
+	if (pidlBrowse != NULL) {  
+		// PIDL形式の戻り値のファイルシステムのパスに変換
+		if (SHGetPathFromIDList(pidlBrowse, lpBuffer)) {
+			// 取得成功
+			strncpy(path, lpBuffer, pathlen);
+		}
+		// SHBrowseForFolderの戻り値PIDLを解放
+		lpMalloc->Free(pidlBrowse);
+	}
+	// クリーンアップ処理
+	lpMalloc->Free(pidlRoot); 
+	lpMalloc->Free(lpBuffer);
+	lpMalloc->Release();
+}
+
+
+static void split_buffer(char *buffer, int delimiter, char **head, char **body)
+{
+	char *p = buffer;
+
+	*head = *body = NULL;
+
+	while (*p) {
+		if (isspace(*p)) {
+			*p = '\0'; 
+			*head = buffer;
+		}
+		if (*p == delimiter) {
+			p++;
+			break;
+		}
+		p++;
+	}
+
+	// skip space
+	while (*p && isspace(*p)) 
+		p++;
+
+	*body = p;
+}
+
+
+// Cygwin tab
+static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
+{
+	HWND hWnd;
+	char *cfgfile = "cygterm.cfg"; // CygTerm configuration file
+	FILE *fp;
+	typedef struct cygterm {
+		char term[128];
+		char term_type[80];
+		char port_start[80];
+		char port_range[80];
+		char shell[80];
+		char env1[128];
+		char env2[128];
+	} cygterm_t;
+	cygterm_t settings;
+	char buf[256], *head, *body;
+
+    switch (msg) {
+        case WM_INITDIALOG:
+			// try to read CygTerm config file
+			memset(&settings, 0, sizeof(settings));
+			_snprintf(settings.term, sizeof(settings.term), ".\\ttermpro.exe %%s %%d /KR=SJIS /KT=SJIS /nossh");
+			_snprintf(settings.term_type, sizeof(settings.term_type), "vt100");
+			_snprintf(settings.port_start, sizeof(settings.port_start), "20000");
+			_snprintf(settings.port_range, sizeof(settings.port_range), "40");
+			_snprintf(settings.shell, sizeof(settings.shell), "/bin/tcsh");
+			_snprintf(settings.env1, sizeof(settings.env1), "MAKE_MODE=unix");
+			_snprintf(settings.env2, sizeof(settings.env2), "HOME=/home/yutaka");
+
+			fp = fopen(cfgfile, "r");
+			if (fp != NULL) { 
+				while (fgets(buf, sizeof(buf), fp) != NULL) {
+					int len = strlen(buf);
+
+					if (buf[len - 1] == '\n')
+						buf[len - 1] = '\0';
+
+					split_buffer(buf, '=', &head, &body);
+					if (head == NULL || body == NULL)
+						continue;
+
+					if (strcmp(head, "TERM") == 0) {
+						_snprintf(settings.term, sizeof(settings.term), "%s", body);
+
+					} else if (strcmp(head, "TERM_TYPE") == 0) {
+						_snprintf(settings.term_type, sizeof(settings.term_type), "%s", body);
+
+					} else if (strcmp(head, "PORT_START") == 0) {
+						_snprintf(settings.port_start, sizeof(settings.port_start), "%s", body);
+
+					} else if (strcmp(head, "PORT_RANGE") == 0) {
+						_snprintf(settings.port_range, sizeof(settings.port_range), "%s", body);
+
+					} else if (strcmp(head, "SHELL") == 0) {
+						_snprintf(settings.shell, sizeof(settings.shell), "%s", body);
+
+					} else if (strcmp(head, "ENV_1") == 0) {
+						_snprintf(settings.env1, sizeof(settings.env1), "%s", body);
+
+					} else if (strcmp(head, "ENV_2") == 0) {
+						_snprintf(settings.env2, sizeof(settings.env2), "%s", body);
+
+					} else {
+						// TODO: error check
+
+					}
+				}
+				fclose(fp);
+			} 
+			SendMessage(GetDlgItem(hDlgWnd, IDC_TERM_EDIT), WM_SETTEXT , 0, (LPARAM)settings.term);
+			SendMessage(GetDlgItem(hDlgWnd, IDC_TERM_TYPE), WM_SETTEXT , 0, (LPARAM)settings.term_type);
+			SendMessage(GetDlgItem(hDlgWnd, IDC_PORT_START), WM_SETTEXT , 0, (LPARAM)settings.port_start);
+			SendMessage(GetDlgItem(hDlgWnd, IDC_PORT_RANGE), WM_SETTEXT , 0, (LPARAM)settings.port_range);
+			SendMessage(GetDlgItem(hDlgWnd, IDC_SHELL), WM_SETTEXT , 0, (LPARAM)settings.shell);
+			SendMessage(GetDlgItem(hDlgWnd, IDC_ENV1), WM_SETTEXT , 0, (LPARAM)settings.env1);
+			SendMessage(GetDlgItem(hDlgWnd, IDC_ENV2), WM_SETTEXT , 0, (LPARAM)settings.env2);
+
+
+			// (4)Cygwin install path
+			hWnd = GetDlgItem(hDlgWnd, IDC_CYGWIN_PATH);
+			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.CygwinDirectory);
+
+			// ダイアログにフォーカスを当てる 
+			SetFocus(GetDlgItem(hDlgWnd, IDC_CYGWIN_PATH));
+
+			return FALSE;
+
+        case WM_COMMAND:
+			switch (wp) {
+				case IDC_SELECT_FILE | (BN_CLICKED << 16):
+					// Cygwin install ディレクトリの選択ダイアログ
+					doSelectFolder(hDlgWnd, ts.CygwinDirectory, sizeof(ts.CygwinDirectory));
+					// (4)Cygwin install path
+					hWnd = GetDlgItem(hDlgWnd, IDC_CYGWIN_PATH);
+					SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.CygwinDirectory);
+					return TRUE;
+			}
+
+			switch (LOWORD(wp)) {
+                case IDOK:
+					// writing to CygTerm config file
+					SendMessage(GetDlgItem(hDlgWnd, IDC_TERM_EDIT), WM_GETTEXT , sizeof(settings.term), (LPARAM)settings.term);
+					SendMessage(GetDlgItem(hDlgWnd, IDC_TERM_TYPE), WM_GETTEXT , sizeof(settings.term_type), (LPARAM)settings.term_type);
+					SendMessage(GetDlgItem(hDlgWnd, IDC_PORT_START), WM_GETTEXT , sizeof(settings.port_start), (LPARAM)settings.port_start);
+					SendMessage(GetDlgItem(hDlgWnd, IDC_PORT_RANGE), WM_GETTEXT , sizeof(settings.port_range), (LPARAM)settings.port_range);
+					SendMessage(GetDlgItem(hDlgWnd, IDC_SHELL), WM_GETTEXT , sizeof(settings.shell), (LPARAM)settings.shell);
+					SendMessage(GetDlgItem(hDlgWnd, IDC_ENV1), WM_GETTEXT , sizeof(settings.env1), (LPARAM)settings.env1);
+					SendMessage(GetDlgItem(hDlgWnd, IDC_ENV2), WM_GETTEXT , sizeof(settings.env2), (LPARAM)settings.env2);
+
+					fp = fopen(cfgfile, "w");
+					if (fp == NULL) { 
+						_snprintf(buf, sizeof(buf), "Can't write CygTerm configuration file (%d).", GetLastError());
+						MessageBox(hDlgWnd, buf, "ERROR", MB_ICONEXCLAMATION);
+
+					} else {
+						fputs("# CygTerm setting\n", fp);
+						fputs("\n", fp);
+						fprintf(fp, "TERM = %s\n", settings.term);
+						fprintf(fp, "TERM_TYPE = %s\n", settings.term_type);
+						fprintf(fp, "PORT_START = %s\n", settings.port_start);
+						fprintf(fp, "PORT_RANGE = %s\n", settings.port_range);
+						fprintf(fp, "SHELL = %s\n", settings.shell);
+						fprintf(fp, "ENV_1 = %s\n", settings.env1);
+						fprintf(fp, "ENV_2 = %s\n", settings.env2);
+						fclose(fp);
+					}
+
+					// (4)
+					hWnd = GetDlgItem(hDlgWnd, IDC_CYGWIN_PATH);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.CygwinDirectory), (LPARAM)ts.CygwinDirectory);
+
+                    EndDialog(hDlgWnd, IDOK);
+					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
+                    break;
+
+                case IDCANCEL:
+                    EndDialog(hDlgWnd, IDCANCEL);
+					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
+                    break;
+
+                default:
+                    return FALSE;
+            }
+
+        case WM_CLOSE:
+		    EndDialog(hDlgWnd, 0);
+			return TRUE;
+
+        default:
+            return FALSE;
+    }
+    return TRUE;
+}
+
 // log tab
 static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
@@ -2722,64 +2961,6 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
     return TRUE;
 }
 
-
-//
-// cf. http://homepage2.nifty.com/DSS/VCPP/API/SHBrowseForFolder.htm
-//
-static void doSelectFolder(HWND hWnd, char *path, int pathlen)
-{
-	BROWSEINFO      bi;
-	LPSTR           lpBuffer;
-	LPITEMIDLIST    pidlRoot;      // ブラウズのルートPIDL
-	LPITEMIDLIST    pidlBrowse;    // ユーザーが選択したPIDL
-	LPMALLOC        lpMalloc = NULL;
-
-	HRESULT hr = SHGetMalloc(&lpMalloc);
-	if (FAILED(hr)) 
-		return;
-
-	// ブラウズ情報受け取りバッファ領域の確保
-	if ((lpBuffer = (LPSTR) lpMalloc->Alloc(_MAX_PATH)) == NULL) {
-		return;
-	}
-	// ダイアログ表示時のルートフォルダのPIDLを取得
-	// ※以下はデスクトップをルートとしている。デスクトップをルートとする
-	//   場合は、単に bi.pidlRoot に０を設定するだけでもよい。その他の特
-	//   殊フォルダをルートとする事もできる。詳細はSHGetSpecialFolderLoca
-	//   tionのヘルプを参照の事。
-	if (!SUCCEEDED(SHGetSpecialFolderLocation(  hWnd,
-		CSIDL_DESKTOP,
-		&pidlRoot))) { 
-			lpMalloc->Free(lpBuffer);
-			return;
-	}
-
-	// BROWSEINFO構造体の初期値設定
-	// ※BROWSEINFO構造体の各メンバの詳細説明もヘルプを参照
-	bi.hwndOwner = hWnd;
-	bi.pidlRoot = pidlRoot;
-	bi.pszDisplayName = lpBuffer;
-	bi.lpszTitle = "select folder";
-	bi.ulFlags = 0;
-	bi.lpfn = 0;
-	bi.lParam = 0;
-	// フォルダ選択ダイアログの表示 
-	pidlBrowse = SHBrowseForFolder(&bi);
-	if (pidlBrowse != NULL) {  
-		// PIDL形式の戻り値のファイルシステムのパスに変換
-		if (SHGetPathFromIDList(pidlBrowse, lpBuffer)) {
-			// 取得成功
-			strncpy(path, lpBuffer, pathlen);
-		}
-		// SHBrowseForFolderの戻り値PIDLを解放
-		lpMalloc->Free(pidlBrowse);
-	}
-	// クリーンアップ処理
-	lpMalloc->Free(pidlRoot); 
-	lpMalloc->Free(lpBuffer);
-	lpMalloc->Release();
-}
-
 static void SetupRGBbox(HWND hDlgWnd, int index)
 {
 	HWND hWnd;
@@ -2835,10 +3016,6 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
 #endif
 
-			// (4)Cygwin install path
-			hWnd = GetDlgItem(hDlgWnd, IDC_CYGWIN_PATH);
-			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.CygwinDirectory);
-
 			// (5)delimiter characters
 			hWnd = GetDlgItem(hDlgWnd, IDC_DELIM_LIST);
 			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.DelimList);
@@ -2881,14 +3058,6 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
         case WM_COMMAND:
             switch (wp) {
 				case IDC_LINECOPY | (BN_CLICKED << 16):
-					return TRUE;
-
-				case IDC_SELECT_FILE | (BN_CLICKED << 16):
-					// Cygwin install ディレクトリの選択ダイアログ
-					doSelectFolder(hDlgWnd, ts.CygwinDirectory, sizeof(ts.CygwinDirectory));
-					// (4)Cygwin install path
-					hWnd = GetDlgItem(hDlgWnd, IDC_CYGWIN_PATH);
-					SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.CygwinDirectory);
 					return TRUE;
 
 #if 0
@@ -2972,10 +3141,6 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 					ts.AlphaBlend = atoi(buf);
 #endif
 
-					// (4)
-					hWnd = GetDlgItem(hDlgWnd, IDC_CYGWIN_PATH);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.CygwinDirectory), (LPARAM)ts.CygwinDirectory);
-
 					// (5)
 					hWnd = GetDlgItem(hDlgWnd, IDC_DELIM_LIST);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.DelimList), (LPARAM)ts.DelimList);
@@ -3056,21 +3221,9 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
     return TRUE;
 }
 
-#if 0
-// tab control: child
-static LRESULT CALLBACK OnTabSheetDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
-{
-	switch (msg) {
-        case WM_INITDIALOG:
-			return TRUE;
-
-		default:
-			return FALSE;
-	}
-}
-#endif
-
 // tab control: main
+//
+// タブシートのプロパティで、Style=子、Border=なし、Control=trueにする必要がある。
 // cf. http://home.a03.itscom.net/tsuzu/programing/tips28.htm
 static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
@@ -3079,10 +3232,10 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 	LPPOINT pt = (LPPOINT)&rect;
 	NMHDR *nm = (NMHDR *)lp;
 	// dialog handle
+#define MAX_TABSHEET 4
 	static HWND hTabCtrl; // parent
-	static HWND hTabSheetGeneral; // 0
-	static HWND hTabSheetVisual; // 1
-	static HWND hTabSheetLog; // 2
+	static HWND hTabSheet[MAX_TABSHEET]; //0:general 1:visual 2:log 3:Cygwin
+	int i;
 
 	switch (msg) {
         case WM_INITDIALOG:
@@ -3108,26 +3261,38 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 			tc.pszText = "Log";
 			TabCtrl_InsertItem(hTabCtrl, 2, &tc);
 
+			ZeroMemory(&tc, sizeof(tc));
+			tc.mask = TCIF_TEXT;
+			tc.pszText = "Cygwin";
+			TabCtrl_InsertItem(hTabCtrl, 3, &tc);
+
 			// シートに載せる子ダイアログの作成
-			hTabSheetGeneral = CreateDialog(
+			hTabSheet[0] = CreateDialog(
 							hInst, 
 							MAKEINTRESOURCE(IDD_TABSHEET_GENERAL), 
 							hDlgWnd,
 							(DLGPROC)OnTabSheetGeneralProc
 							);
 
-			hTabSheetVisual = CreateDialog(
+			hTabSheet[1] = CreateDialog(
 							hInst, 
 							MAKEINTRESOURCE(IDD_TABSHEET_VISUAL), 
 							hDlgWnd,
 							(DLGPROC)OnTabSheetVisualProc
 							);
 
-			hTabSheetLog = CreateDialog(
+			hTabSheet[2] = CreateDialog(
 							hInst, 
 							MAKEINTRESOURCE(IDD_TABSHEET_LOG), 
 							hDlgWnd,
 							(DLGPROC)OnTabSheetLogProc
+							);
+
+			hTabSheet[3] = CreateDialog(
+							hInst, 
+							MAKEINTRESOURCE(IDD_TABSHEET_CYGWIN), 
+							hDlgWnd,
+							(DLGPROC)OnTabSheetCygwinProc
 							);
 
 			// タブコントロールの矩形座標を取得
@@ -3138,14 +3303,12 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 
 			// 生成した子ダイアログをタブシートの上に貼り付ける
 			// 実際は子ダイアログの表示位置をシート上に移動しているだけ
-			MoveWindow(hTabSheetGeneral, 
-				rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, FALSE);
-			MoveWindow(hTabSheetVisual, 
-				rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, FALSE);
-			MoveWindow(hTabSheetLog, 
-				rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, FALSE);
+			for (i = 0 ; i < MAX_TABSHEET ; i++) {
+				MoveWindow(hTabSheet[i], 
+					rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, FALSE);
+			}
 		
-			ShowWindow(hTabSheetGeneral, SW_SHOW);
+			ShowWindow(hTabSheet[0], SW_SHOW);
 
 			return FALSE;
 
@@ -3154,36 +3317,22 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
         	switch (nm->code) {
         	case TCN_SELCHANGE:
             	if (nm->hwndFrom == hTabCtrl) {
+					int n;
                 	// 現在表示されているのシートの番号を判別
-                	switch (TabCtrl_GetCurSel(hTabCtrl)) {
-                	case 0:
-                    	// シートの切り替え
-                    	ShowWindow(hTabSheetGeneral, SW_SHOW);
-                    	ShowWindow(hTabSheetVisual, SW_HIDE);
-                    	ShowWindow(hTabSheetLog, SW_HIDE);
-                    	break;
-
-                	case 1:
-                    	ShowWindow(hTabSheetGeneral, SW_HIDE);
-                    	ShowWindow(hTabSheetVisual, SW_SHOW);
-                    	ShowWindow(hTabSheetLog, SW_HIDE);
-                    	break;
-
-                	case 2:
-                    	ShowWindow(hTabSheetGeneral, SW_HIDE);
-                    	ShowWindow(hTabSheetVisual, SW_HIDE);
-                    	ShowWindow(hTabSheetLog, SW_SHOW);
-                    	break;
-                	}
+					n = TabCtrl_GetCurSel(hTabCtrl);
+					for (i = 0 ; i < MAX_TABSHEET ; i++) {
+                    	ShowWindow(hTabSheet[i], SW_HIDE);
+					}
+                    ShowWindow(hTabSheet[n], SW_SHOW);
             	}
             	break;
         	}
 			return TRUE;
 
 		case WM_CLOSE:
-			EndDialog(hTabSheetGeneral, FALSE);
-			EndDialog(hTabSheetVisual, FALSE);
-			EndDialog(hTabSheetLog, FALSE);
+			for (i = 0 ; i < MAX_TABSHEET ; i++) {
+				EndDialog(hTabSheet[i], FALSE);
+			}
 			EndDialog(hDlgWnd, FALSE);
 			return TRUE;
 
@@ -3626,6 +3775,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  2005/04/24 11:16:31  yutakakn
+ * Eterm lookfeelの初期値が ttset から反映していなかったバグを修正。
+ *
  * Revision 1.17  2005/04/24 11:03:42  yutakakn
  * Eterm lookfeel alphablendの設定内容を teraterm.ini へ保存するようにした。
  * また、Additional settingsダイアログから on/off できるようにした。
