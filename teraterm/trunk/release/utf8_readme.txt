@@ -133,7 +133,7 @@ CygwinDirectory = c:\cygwin
 
 
 * line buffer
-  If you configurate 10000 lines over of TeraTerm line buffer, you need to 
+  If you configure 10000 lines over of TeraTerm line buffer, you need to 
   setup MaxBuffSize entry in the 'teraterm.ini' file. See example of this value below.
 
 ------------------------------------------------------------------------------------
@@ -222,7 +222,7 @@ There are 3 types of connection you can establish from TeraTerm macro:
   As a point that should be noted, this function is enabled on only Windows2000 later.
   
   (2) Eterm lookfeel window
-  In this type TeraTerm window looks like Eterm background transparency. If this function is enabled, TeraTerm window becomes background transparency and mixs the wallpaper with your specified image file(*.jpg). And also this function is also enabled on Windows9x or NT4.0. You can configure this function in [BG] section of teraterm.ini file. If you switch it on or off, you should change 'BGEnable' value.
+  In this type TeraTerm window looks like Eterm background transparency. If this function is enabled, TeraTerm window becomes background transparency and mixes the wallpaper with your specified image file(*.jpg). And also this function is also enabled on Windows9x or NT4.0. You can configure this function in [BG] section of teraterm.ini file. If you switch it on or off, you should change 'BGEnable' value.
 
 	[BG]
 	; Use Background extension (On / Off)
@@ -458,7 +458,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
   - added MFC7.1 runtime library
   - setup environmental variable 'TERATERM_EXTENSIONS' is now ignored, TTSSH is always loaded.
   - fixed UTF-8 encoding of HANKAKU KANA.
-  - added /nossh option (fixed problem that doesn't start Cyterm with TTSSH section(Enabled=1) of TERATERM.INI file)
+  - added /nossh option (fixed problem that doesn't start Cygterm with TTSSH section(Enabled=1) of TERATERM.INI file)
 
 2004.9.29 (Ver 2.04a)
   - changed patch to binary files for distribution
