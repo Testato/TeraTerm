@@ -136,6 +136,7 @@
 
 2005.5.?? (Ver 2.14)
   - added three file filter on private key saving dialog.
+  - added zlib version information on TTSSH version dialog.
 
 2005.4.24 (Ver 2.13)
   - added SSH key generator dialog(Setup - SSH KeyGenerator).

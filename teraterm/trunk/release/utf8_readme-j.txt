@@ -248,6 +248,68 @@ MaxBuffSize=500000
 	BGThemeFile = theme\*.ini
 
 
+
+■キーボード＆マウス操作
+
+  Ctrl + Tab, Ctrl + Shift + Tab
+    TeraTermウィンドウの切り替え
+  
+  Alt + Enter
+    ウィンドウの最大化（トグル）
+  
+  Alt + N
+    新しい接続を開く
+    
+  Alt + D
+    セッションの複製（SSH2, telnetのみ）
+    
+  Alt + G
+    Cygwin接続
+  
+  Ctrl + 上下カーソル
+    上下方向へ一行スクロール
+
+  Ctrl + PageUp/PageDown
+    上下方向へページ単位スクロール
+
+  Ctrl + Home
+    バッファの先頭へ移動
+
+  Ctrl + End
+    バッファの末尾へ移動
+
+  Alt + C, Ctrl + Insert, マウスドラッグ
+    選択文字列をクリップボードへコピーする
+
+  Alt + V, Shift + Insert, マウスホイールボタン・右クリック
+    クリップボードからペーストする
+  
+  F1キー
+    Num pad NumLockキー押下
+
+  F2キー
+    Num pad '/'キー押下
+    
+  F3キー
+    Num pad '*' キー押下
+
+  F4キー
+    Num pad '-' キー押下
+
+  Shift + マウスドラッグ
+    ブロック選択
+    
+  マウスホイールボタンスクロール
+    上下方向へ一行スクロール
+
+  ファイルをウィンドウへドラッグ
+    ファイルの内容を貼り付ける
+    
+  フォルダをウィンドウへドラッグ
+    フォルダのフルパスを貼り付ける
+
+
+
 ■TeraTermのビルド方法
   TeraTermのビルド方法について以下に示します。ビルドにはVisual Studio .NET 2003(VC++7.1)が必要です。
   

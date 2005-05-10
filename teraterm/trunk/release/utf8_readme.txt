@@ -250,6 +250,66 @@ There are 3 types of connection you can establish from TeraTerm macro:
 	BGThemeFile = theme\*.ini
 
 
+* Keyboard & Mouse operation
+
+  Ctrl + Tab, Ctrl + Shift + Tab
+    Switch to TeraTerm next/prev window
+  
+  Alt + Enter
+    Maximize TeraTerm window(toggle)
+  
+  Alt + N
+    New connection
+    
+  Alt + D
+    Duplicate session (SSH2, telnet only)
+    
+  Alt + G
+    Cygwin connection
+    
+  Ctrl + Up/Down cursor
+    LineUp or LineDown
+
+  Ctrl + PageUp/PageDown
+    PageUp or PageDown
+
+  Ctrl + Home
+    Move to buffer top
+
+  Ctrl + End
+    Move to buffer bottom
+
+  Alt + C, Ctrl + Insert, MouseDrag
+    Copy selected string to the clipboard
+
+  Alt + V, Shift + Insert, マウスホイールボタン・右クリック
+    Paste from the clipboard
+  
+  F1 key
+    Push Num pad NumLock key
+
+  F2 key
+    Push Num pad '/'
+    
+  F3 key
+    Push Num pad '*'
+
+  F4 key
+    Push Num pad '-' 
+
+  Shift + MouseDrag
+    Select rectangular block of text
+    
+  Mouse wheel button scrolling
+    LineUp or LineDown
+
+  Dragging a text file and dropping it into the window
+    Sends text in the file to the host.
+
+  Dragging a folder and dropping it into the window
+    Sends the folder full-path to the host.
+
+
 * How to build TeraTerm
   To build TeraTerm source code is shown in the following step:
   And you need Visual Studio .NET 2003(VC++7.1) to build.
