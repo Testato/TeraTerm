@@ -67,6 +67,9 @@ static char FAR *ProtocolFamilyList[] = { "UNSPEC", "IPv6", "IPv4", NULL };
 #include <openssl/rand.h>
 #include <openssl/rc4.h>
 
+// include ZLib header file
+#include <zlib.h>
+
 #include "buffer.h"
 #include "cipher.h"
 
@@ -1477,7 +1480,21 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 	SendMessage(GetDlgItem(dlg, IDC_TTSSH_VERSION), WM_SETTEXT, 0, (LPARAM)buf);
 
 	// OpenSSLのバージョンを設定する (2005.1.24 yutaka)
+	// 条件文追加 (2005.5.11 yutaka)
+#ifdef OPENSSL_VERSION_TEXT
 	SendMessage(GetDlgItem(dlg, IDC_OPENSSL_VERSION), WM_SETTEXT, 0, (LPARAM)OPENSSL_VERSION_TEXT);
+#else
+	SendMessage(GetDlgItem(dlg, IDC_OPENSSL_VERSION), WM_SETTEXT, 0, (LPARAM)"Unknown");
+#endif
+
+	// zlibのバージョンを設定する (2005.5.11 yutaka)
+#ifdef ZLIB_VERSION
+	_snprintf(buf, sizeof(buf), "zlib: %s", ZLIB_VERSION);
+#else
+	_snprintf(buf, sizeof(buf), "zlib: Unknown");
+#endif
+	SendMessage(GetDlgItem(dlg, IDC_ZLIB_VERSION), WM_SETTEXT, 0, (LPARAM)buf);
+
 
 	// TTSSHダイアログに表示するSSHに関する情報 (2004.10.30 yutaka)
 	if (pvar->socket != INVALID_SOCKET) {
@@ -3063,6 +3080,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.20  2005/04/23 17:26:57  yutakakn
+ * キー作成ダイアログの追加。
+ *
  * Revision 1.19  2005/04/08 14:55:03  yutakakn
  * "Duplicate session"においてSSH自動ログインを行うようにした。
  *

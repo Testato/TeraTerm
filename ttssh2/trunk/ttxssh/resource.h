@@ -82,6 +82,7 @@
 #define IDC_SAVE_PUBLIC_KEY             1065
 #define IDC_SAVE_PRIBATE_KEY            1066
 #define IDC_SAVE_PRIVATE_KEY            1066
+#define IDC_ZLIB_VERSION                1067
 #define IDC_LOCALUSERNAMELABEL          1100
 #define IDC_LOCALUSERNAME               1101
 #define IDC_CHOOSEHOSTRSAFILE           1102
@@ -98,7 +99,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        105
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1067
+#define _APS_NEXT_CONTROL_VALUE         1068
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
