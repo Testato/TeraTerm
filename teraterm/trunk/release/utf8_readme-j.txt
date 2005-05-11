@@ -257,11 +257,14 @@ MaxBuffSize=500000
   Alt + Enter
     ウィンドウの最大化（トグル）
   
+  Ctrl + Space  Ctrl + X
+    ウィンドウの最大化
+  
   Alt + N
     新しい接続を開く
     
   Alt + D
-    セッションの複製（SSH2, telnetのみ）
+    セッションの複製（SSH, telnetのみ）
     
   Alt + G
     Cygwin接続

@@ -258,11 +258,14 @@ There are 3 types of connection you can establish from TeraTerm macro:
   Alt + Enter
     Maximize TeraTerm window(toggle)
   
+  Ctrl + Space  Ctrl + X
+    Maximize TeraTerm window
+  
   Alt + N
     New connection
     
   Alt + D
-    Duplicate session (SSH2, telnet only)
+    Duplicate session (SSH, telnet only)
     
   Alt + G
     Cygwin connection
