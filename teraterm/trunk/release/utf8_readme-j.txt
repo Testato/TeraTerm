@@ -257,7 +257,7 @@ MaxBuffSize=500000
   Alt + Enter
     ウィンドウの最大化（トグル）
   
-  Ctrl + Space  Ctrl + X
+  Alt + Space  Alt + X
     ウィンドウの最大化
   
   Alt + N

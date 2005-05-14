@@ -258,7 +258,7 @@ There are 3 types of connection you can establish from TeraTerm macro:
   Alt + Enter
     Maximize TeraTerm window(toggle)
   
-  Ctrl + Space  Ctrl + X
+  Alt + Space  Alt + X
     Maximize TeraTerm window
   
   Alt + N
