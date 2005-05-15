@@ -869,6 +869,8 @@ void RunMacro(PCHAR FName, BOOL Startup)
 	if (FileLog || BinLog) {
 		pri = BELOW_NORMAL_PRIORITY_CLASS;
 	}
+	// 暫定処置として、常に下げることにする。(2005/5/15 yutaka)
+	pri = BELOW_NORMAL_PRIORITY_CLASS;
 
 	ZeroMemory(&si, sizeof(si));
 	ZeroMemory(&pi, sizeof(pi));
@@ -891,4 +893,7 @@ void RunMacro(PCHAR FName, BOOL Startup)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/11/28 13:57:30  yutakakn
+ * TeraTerm本体からのマクロ実行において、ログ採取時のみにプロセス優先度を下げるようにした。
+ *
  */
