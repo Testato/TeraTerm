@@ -121,7 +121,7 @@ CygwinDirectory = c:\cygwin
   行うことができます。
 
   ※ヒント
-    SHIFTキーを押しながらマウスをドラッグすると「ブロック選択」ができるように
+    Altキーを押しながらマウスをドラッグすると「ブロック選択」ができるように
     なります。これはオリジナルからある機能です。
 
 
@@ -299,8 +299,11 @@ MaxBuffSize=500000
   F4キー
     Num pad '-' キー押下
 
-  Shift + マウスドラッグ
+  Alt + マウスドラッグ
     ブロック選択
+    
+  左クリック  Shift+左クリック
+    ページをまたぐテキスト選択
     
   マウスホイールボタンスクロール
     上下方向へ一行スクロール
@@ -388,7 +391,9 @@ MaxBuffSize=500000
 2005.5.?? (Ver 4.16)
   ・ログ種別のplain textの情報をteraterm.iniに LogTypePlainText として残すようにした。
   ・CygTermの設定を Additional settings ダイアログに追加した。
-
+  ・常にttpmacro.exeのプロセス優先度を下げるようにした。
+  ・ブロック選択のキーバインドを Shift+MouseDrag から Alt+MouseDrag へ変更した。
+  ・ページをまたぐテキスト選択をサポートした。選択範囲の開始位置は左クリック、終了位置はShift + 左クリックで指定する。
 
 2005.4.24 (Ver 4.15)
   ・ALT + Enterキー（トグル）押下でウィンドウを最大化できるようにした。
@@ -488,7 +493,7 @@ MaxBuffSize=500000
 2004.12.8 (Ver 2.07)
   ・"External setup"をsetup menu配下へ"Additional settings"として移動
   ・File menuに"Duplicate session"を追加（/DUPLICATEオプションを追加）
-  ・ttmacro.exeのプロセス優先度は、ログ採取中のみに下げるようにした。
+  ・ttpmacro.exeのプロセス優先度は、ログ採取中のみに下げるようにした。
   ・行が連結している場合は、ログファイルに改行コードを含めないようにした（EnableContinuedLineCopy機能が有効の場合のみ）。
   ・スクロールバッファの最大ライン数を400000までに拡張した。
   ・LogMeIn 1.21を同梱した。収録許可をBoris氏よりいただきました。感謝します。

@@ -118,7 +118,7 @@ CygwinDirectory = c:\cygwin
   into clipboard.
   
   [HINT]
-    Dragging the mouse while SHIFT key is pressed selects rectangular block of text.
+    Dragging the mouse while Alt key is pressed selects rectangular block of text.
     This function is from the original TeraTerm.
 
 
@@ -300,9 +300,12 @@ There are 3 types of connection you can establish from TeraTerm macro:
   F4 key
     Push Num pad '-' 
 
-  Shift + MouseDrag
+  Alt + MouseDrag
     Select rectangular block of text
-    
+  
+  Left click  Shift + Left click
+    Select several pages of output from TeraTerm window
+  
   Mouse wheel button scrolling
     LineUp or LineDown
 
@@ -399,6 +402,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 2005.5.?? (Ver 4.16)
   - added saving log type(plain text) information to teraterm.ini(LogTypePlainText).
   - added CygTerm settings on Additional settings dialog.
+  - changed ttpmacro.exe process priority always downs.
+  - changed keybind of selecting the rectangular region from Shift+MouseDrag to Alt+MouseDrag.
+  - added support of selecting several pages. Start selected region is saved with mouse left click. End selected region is saved with Shift + mouse left click.
 
 2005.4.24 (Ver 4.15)
   - added the accelerator key(ALT+Enter) that maximizes TeraTerm window.
@@ -499,7 +505,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 2004.12.8 (Ver 2.07)
   - renamed "External setup" "Additional settings and removed the dialog to "Setup" menu
   - added "Duplicate session" to "File" menu (add /DUPLICATE option)
-  - changed downing ttmacro.exe process priority only with logging
+  - changed downing ttpmacro.exe process priority only with logging
   - didn't include CR+LF in log file when multiple line has concatenated (as EnableContinuedLineCopy enabled)
   - extended the max line of scroll buffer to 400000 line
   - added LogMeIn 1.21. It is thankful to Boris Maisuradze.
