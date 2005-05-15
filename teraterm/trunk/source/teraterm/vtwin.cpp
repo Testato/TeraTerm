@@ -532,119 +532,133 @@ int CVTWindow::Parse()
 
 void CVTWindow::ButtonUp(BOOL Paste)
 {
-  /* disable autoscrolling */
-  ::KillTimer(HVTWin,IdScrollTimer);
-  ReleaseCapture();
+	/* disable autoscrolling */
+	::KillTimer(HVTWin,IdScrollTimer);
+	ReleaseCapture();
 
-  LButton = FALSE;
-  MButton = FALSE;
-  RButton = FALSE;
-  DblClk = FALSE;
-  TplClk = FALSE;
-  CaretOn();
+	LButton = FALSE;
+	MButton = FALSE;
+	RButton = FALSE;
+	DblClk = FALSE;
+	TplClk = FALSE;
+	CaretOn();
 
-  BuffEndSelect();
-  if (Paste)
-    CBStartPaste(HVTWin,FALSE,0,NULL,0);
+	BuffEndSelect();
+	if (Paste)
+		CBStartPaste(HVTWin,FALSE,0,NULL,0);
 }
 
 void CVTWindow::ButtonDown(POINT p, int LMR)
 {
-  HMENU PopupMenu, PopupBase;
+	HMENU PopupMenu, PopupBase;
 
-  if ((LMR==IdLeftButton) && ControlKey() && (MainMenu==NULL)
-      && ((ts.MenuFlag & MF_NOPOPUP)==0))
-  {
-    /* TTPLUG BEGIN*/
-    int i, numItems;
-    char itemText[256];
+	if ((LMR==IdLeftButton) && ControlKey() && (MainMenu==NULL)
+		&& ((ts.MenuFlag & MF_NOPOPUP)==0))
+	{
+		/* TTPLUG BEGIN*/
+		int i, numItems;
+		char itemText[256];
 
-    InitMenu(&PopupMenu);
+		InitMenu(&PopupMenu);
 
-    PopupBase = CreatePopupMenu();
-    numItems = GetMenuItemCount(PopupMenu);
+		PopupBase = CreatePopupMenu();
+		numItems = GetMenuItemCount(PopupMenu);
 
-    for (i = 0; i < numItems; i++) {
-      HMENU submenu = GetSubMenu(PopupMenu, i);
+		for (i = 0; i < numItems; i++) {
+			HMENU submenu = GetSubMenu(PopupMenu, i);
 
-      if (submenu != NULL) {
-        InitMenuPopup(submenu);
-      }
+			if (submenu != NULL) {
+				InitMenuPopup(submenu);
+			}
 
-      if (GetMenuString(PopupMenu, i, itemText, sizeof(itemText), MF_BYPOSITION) != 0) {
-        int state = GetMenuState(PopupMenu, i, MF_BYPOSITION) &
-          (MF_CHECKED | MF_DISABLED | MF_GRAYED | MF_HILITE | MF_MENUBARBREAK | MF_MENUBREAK | MF_SEPARATOR);
+			if (GetMenuString(PopupMenu, i, itemText, sizeof(itemText), MF_BYPOSITION) != 0) {
+				int state = GetMenuState(PopupMenu, i, MF_BYPOSITION) &
+					(MF_CHECKED | MF_DISABLED | MF_GRAYED | MF_HILITE | MF_MENUBARBREAK | MF_MENUBREAK | MF_SEPARATOR);
 
-        AppendMenu(PopupBase,
-          submenu != NULL ? LOBYTE(state) | MF_POPUP : state,
-          submenu != NULL ? (UINT)submenu : GetMenuItemID(PopupMenu, i),
-          itemText);
-      }
-    } /* TTPLUG END */
+				AppendMenu(PopupBase,
+					submenu != NULL ? LOBYTE(state) | MF_POPUP : state,
+					submenu != NULL ? (UINT)submenu : GetMenuItemID(PopupMenu, i),
+					itemText);
+			}
+		} /* TTPLUG END */
 
-//    InitMenu(&PopupMenu);
-//    InitMenuPopup(FileMenu);
-//    InitMenuPopup(EditMenu);
-//    InitMenuPopup(SetupMenu);
-//    InitMenuPopup(ControlMenu);
-//    if (WinMenu!=NULL)
-//      InitMenuPopup(WinMenu);
-//    PopupBase = CreatePopupMenu();
-//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-//	       (UINT)FileMenu, "&File");
-//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-//	       (UINT)EditMenu, "&Edit");
-//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-//	       (UINT)SetupMenu, "&Setup");
-//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-//	       (UINT)ControlMenu, "C&ontrol");
-//    if (WinMenu!=NULL)
-//      AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-//		 (UINT)WinMenu, "&Window");
-//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-//	       (UINT)HelpMenu, "&Help");
-    ::ClientToScreen(HVTWin, &p);
-    TrackPopupMenu(PopupBase,TPM_LEFTALIGN | TPM_LEFTBUTTON,
-		   p.x,p.y,0,HVTWin,NULL);
-    if (WinMenu!=NULL)
-    {
-      DestroyMenu(WinMenu);
-      WinMenu = NULL;
-    }
-    DestroyMenu(PopupBase);
-    DestroyMenu(PopupMenu);
-    PopupMenu = 0;
-    return;
-  }
+		//    InitMenu(&PopupMenu);
+		//    InitMenuPopup(FileMenu);
+		//    InitMenuPopup(EditMenu);
+		//    InitMenuPopup(SetupMenu);
+		//    InitMenuPopup(ControlMenu);
+		//    if (WinMenu!=NULL)
+		//      InitMenuPopup(WinMenu);
+		//    PopupBase = CreatePopupMenu();
+		//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
+		//	       (UINT)FileMenu, "&File");
+		//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
+		//	       (UINT)EditMenu, "&Edit");
+		//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
+		//	       (UINT)SetupMenu, "&Setup");
+		//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
+		//	       (UINT)ControlMenu, "C&ontrol");
+		//    if (WinMenu!=NULL)
+		//      AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
+		//		 (UINT)WinMenu, "&Window");
+		//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
+		//	       (UINT)HelpMenu, "&Help");
+		::ClientToScreen(HVTWin, &p);
+		TrackPopupMenu(PopupBase,TPM_LEFTALIGN | TPM_LEFTBUTTON,
+			p.x,p.y,0,HVTWin,NULL);
+		if (WinMenu!=NULL)
+		{
+			DestroyMenu(WinMenu);
+			WinMenu = NULL;
+		}
+		DestroyMenu(PopupBase);
+		DestroyMenu(PopupMenu);
+		PopupMenu = 0;
+		return;
+	}
 
-  if (AfterDblClk && (LMR==IdLeftButton) &&
-      (abs(p.x-DblClkX)<=GetSystemMetrics(SM_CXDOUBLECLK)) &&
-      (abs(p.y-DblClkY)<=GetSystemMetrics(SM_CYDOUBLECLK)))
-  {  /* triple click */
-    ::KillTimer(HVTWin, IdDblClkTimer);
-    AfterDblClk = FALSE;
-    BuffTplClk(p.y);
-    LButton = TRUE;
-    TplClk = TRUE;
-    /* for AutoScrolling */
-    ::SetCapture(HVTWin);
-    ::SetTimer(HVTWin, IdScrollTimer, 100, NULL);
-  }
-  else {
-    if (! (LButton || MButton || RButton))
-    {
-      BuffStartSelect(p.x,p.y,(LMR==IdLeftButton) & ShiftKey());
-      TplClk = FALSE;
-      /* for AutoScrolling */
-      ::SetCapture(HVTWin);
-      ::SetTimer(HVTWin, IdScrollTimer, 100, NULL);
-    }
-    switch (LMR) {
-      case IdRightButton: RButton = TRUE; break;
-      case IdMiddleButton: MButton = TRUE; break;
-      case IdLeftButton: LButton = TRUE; break;
-    }
-  }
+	if (AfterDblClk && (LMR==IdLeftButton) &&
+		(abs(p.x-DblClkX)<=GetSystemMetrics(SM_CXDOUBLECLK)) &&
+		(abs(p.y-DblClkY)<=GetSystemMetrics(SM_CYDOUBLECLK)))
+	{  /* triple click */
+		::KillTimer(HVTWin, IdDblClkTimer);
+		AfterDblClk = FALSE;
+		BuffTplClk(p.y);
+		LButton = TRUE;
+		TplClk = TRUE;
+		/* for AutoScrolling */
+		::SetCapture(HVTWin);
+		::SetTimer(HVTWin, IdScrollTimer, 100, NULL);
+	}
+	else {
+		if (! (LButton || MButton || RButton))
+		{
+			BOOL box = FALSE;
+
+			// select several pages of output from TeraTerm window (2005.5.15 yutaka)
+			if (LMR == IdLeftButton && ShiftKey()) {
+				BuffSeveralPagesSelect(p.x, p.y);
+
+			} else {
+				// Select rectangular block with Alt Key. Delete Shift key.(2005.5.15 yutaka)
+				if (LMR == IdLeftButton && AltKey()) {
+					box = TRUE;
+				}
+
+				BuffStartSelect(p.x,p.y, box);
+				TplClk = FALSE;
+				/* for AutoScrolling */
+				::SetCapture(HVTWin);
+				::SetTimer(HVTWin, IdScrollTimer, 100, NULL);
+			}
+		}
+
+		switch (LMR) {
+		case IdRightButton: RButton = TRUE; break;
+		case IdMiddleButton: MButton = TRUE; break;
+		case IdLeftButton: LButton = TRUE; break;
+		}
+	}
 }
 
 void CVTWindow::InitMenu(HMENU *Menu)
@@ -3775,6 +3789,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.19  2005/05/07 13:28:16  yutakakn
+ * CygTermの設定を Addtional settings 上で行えるようにした。
+ *
  * Revision 1.18  2005/04/24 11:16:31  yutakakn
  * Eterm lookfeelの初期値が ttset から反映していなかったバグを修正。
  *

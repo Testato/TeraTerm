@@ -63,6 +63,9 @@ static POINT DblClkStart, DblClkEnd;
 
 static int StrChangeStart, StrChangeCount;
 
+static BOOL SeveralPageSelect;  // add (2005.5.15 yutaka)
+
+
 LONG GetLinePtr(int Line)
 {
   LONG Ptr;
@@ -358,6 +361,8 @@ void BuffReset()
   StrChangeCount = 0;
   Wrap = FALSE;
   StatusLine = 0;
+
+  SeveralPageSelect = FALSE; // yutaka
 }
 
 void BuffScroll(int Count, int Bottom)
@@ -1845,6 +1850,30 @@ void BuffTplClk(int Yw)
   UnlockBuffer();
 }
 
+
+// The block of the text between old and new cursor positions is being selected.
+// This function enables to select several pages of output from TeraTerm window.
+// add (2005.5.15 yutaka)
+void BuffSeveralPagesSelect(int Xw, int Yw)
+//  Start text selection by mouse button down
+//    Xw: horizontal position in window coordinate (pixels)
+//    Yw: vertical
+{
+	int X, Y;
+	BOOL Right;
+
+	DispConvWinToScreen(Xw,Yw, &X,&Y,&Right);
+	Y = Y + PageStart;
+	if ((Y<0) || (Y>=BuffEnd)) return;
+	if (X<0) X = 0;
+	if (X>=NumOfColumns) X = NumOfColumns-1;
+
+	SelectEnd.x = X;
+	SelectEnd.y = Y;
+	BoxSelect = FALSE; // box selecting disabled
+	SeveralPageSelect = TRUE;
+}
+
 void BuffStartSelect(int Xw, int Yw, BOOL Box)
 //  Start text selection by mouse button down
 //    Xw: horizontal position in window coordinate (pixels)
@@ -2100,6 +2129,13 @@ void BuffEndSelect()
       SelectStart = SelectEnd;
       SelectEnd = SelectEndOld;
     }
+
+	if (SeveralPageSelect) { // yutaka
+		// ページをまたぐ選択の場合、Mouse button up時にリージョンを塗り替える。
+		ChangeSelectRegion();
+		SeveralPageSelect = FALSE;
+	}
+
     /* copy to the clipboard */
     if (ts.AutoTextCopy>0)
     {
@@ -2411,6 +2447,9 @@ void ShowStatusLine(int Show)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2005/04/03 13:42:07  yutakakn
+ * URL文字列をダブルクリックするとブラウザが起動するしかけを追加（石崎氏パッチがベース）。
+ *
  * Revision 1.2  2004/11/28 13:14:23  yutakakn
  * スクロールバッファの最大長を 100000 から 500000 へ拡張した。
  * ＃teraterm.iniの MaxBuffSize も拡張しておく必要あり。

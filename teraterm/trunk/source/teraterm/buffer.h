@@ -44,6 +44,7 @@ void BuffUpdateScroll();
 void CursorUpWithScroll();
 int BuffDblClk(int Xw, int Yw);
 void BuffTplClk(int Yw);
+void BuffSeveralPagesSelect(int Xw, int Yw);
 void BuffStartSelect(int Xw, int Yw, BOOL Box);
 void BuffChangeSelect(int Xw, int Yw, int NClick);
 void BuffEndSelect();
