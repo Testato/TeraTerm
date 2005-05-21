@@ -1870,7 +1870,7 @@ void BuffSeveralPagesSelect(int Xw, int Yw)
 
 	SelectEnd.x = X;
 	SelectEnd.y = Y;
-	BoxSelect = FALSE; // box selecting disabled
+	//BoxSelect = FALSE; // box selecting disabled
 	SeveralPageSelect = TRUE;
 }
 
@@ -2132,8 +2132,11 @@ void BuffEndSelect()
 
 	if (SeveralPageSelect) { // yutaka
 		// ページをまたぐ選択の場合、Mouse button up時にリージョンを塗り替える。
+	    LockBuffer();
 		ChangeSelectRegion();
+        UnlockBuffer();
 		SeveralPageSelect = FALSE;
+		InvalidateRect(HVTWin, NULL, TRUE); // ちょっと画面がちらつく
 	}
 
     /* copy to the clipboard */
@@ -2447,6 +2450,11 @@ void ShowStatusLine(int Show)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2005/05/15 11:49:32  yutakakn
+ * ブロック選択のキーバインドを Shift+MouseDrag から Alt+MouseDrag へ変更した。
+ * 左クリックで開始位置の記録、Shift+左クリックで終了位置を取得し、ページをまたぐ選択
+ * をできるようにした。
+ *
  * Revision 1.3  2005/04/03 13:42:07  yutakakn
  * URL文字列をダブルクリックするとブラウザが起動するしかけを追加（石崎氏パッチがベース）。
  *
