@@ -10,9 +10,6 @@
   If you use TeraTerm installer program, click installer program and install TeraTerm according to the instruction of the installer.
   If you use TeraTerm archives, extract TeraTerm zip file and copy all files to your directory.
   
-  [NOTE]
-    UTF-8 function also supports the Japanese mode however to be able to use it you have 
-    to install the original TeraTerm Pro with the Japanese language mode selected.
 
 * Unicode configuration
   To use UTF-8, select "Terminal" from the TeraTerm Pro "Setup" menu.
@@ -304,7 +301,7 @@ There are 3 types of connection you can establish from TeraTerm macro:
     Select rectangular block of text
   
   Left click  Shift + Left click
-    Select several pages of output from TeraTerm window
+    Select several pages of output from TeraTerm window. Or expand ans contract of text area that has been selected.
   
   Mouse wheel button scrolling
     LineUp or LineDown
@@ -402,9 +399,10 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 2005.5.?? (Ver 4.16)
   - added saving log type(plain text) information to teraterm.ini(LogTypePlainText).
   - added CygTerm settings on Additional settings dialog.
-  - changed ttpmacro.exe process priority always downs.
   - changed keybind of selecting the rectangular region from Shift+MouseDrag to Alt+MouseDrag.
-  - added support of selecting several pages. Start selected region is saved with mouse left click. End selected region is saved with Shift + mouse left click.
+  - added support of selecting several pages(also expansion ans contraction of text area that has been selected). Start selected region is saved with mouse left click. End selected region is saved with Shift + mouse left click.
+  - added scroll out the current buffer when TeraTerm clear screen at receiving <ESC>[J.
+  - added the workaround of CPU time 100% using TeraTerm macro(insert 100msec sleep after send and sendln). 
 
 2005.4.24 (Ver 4.15)
   - added the accelerator key(ALT+Enter) that maximizes TeraTerm window.
