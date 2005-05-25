@@ -1162,26 +1162,31 @@ void EscapeSequence(BYTE b)
     CSCursorDown();
   }
 
-  void CSScreenErase()
-  {
-    if (Param[1] == -1) Param[1] = 0;
-    BuffUpdateScroll();
-    switch (Param[1]) {
-      case 0:
-//	Erase characters from cursor to the end of screen
-	BuffEraseCurToEnd();
-	break;
-      case 1:
-//	Erase characters from home to cursor
-	BuffEraseHomeToCur();
-	break;
-      case 2:
-//	Erase screen (scroll out)
-	BuffClearScreen();
-	UpdateWindow(HVTWin);
-	break;
-    }
-  }
+void CSScreenErase()
+{
+	if (Param[1] == -1) Param[1] = 0;
+	BuffUpdateScroll();
+	switch (Param[1]) {
+#if 0
+	case 0:
+		//	Erase characters from cursor to the end of screen
+		BuffEraseCurToEnd();
+		break;
+#endif
+	case 1:
+		//	Erase characters from home to cursor
+		BuffEraseHomeToCur();
+		break;
+
+	// <ESC>[J 処理時、現行のバッファを残すようにする。(2005.5.22 yutaka)
+	case 0:
+	case 2:
+		//	Erase screen (scroll out)
+		BuffClearScreen();
+		UpdateWindow(HVTWin);
+		break;
+	}
+}
 
   void CSInsertLine()
   {
@@ -2602,6 +2607,9 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2005/04/07 12:51:34  yutakakn
+ * エスケープシーケンス（ESC[39m, ESC[49m）をサポートした。これによりscreen上でw3mを使用した場合、色が戻らない現象が改善される。岩本氏に感謝します。
+ *
  * Revision 1.4  2005/02/28 13:54:47  yutakakn
  * 全角文字が行末を跨ると、上方へスクロールしてしまう問題への対処（岩本氏パッチ）。
  * http://www.freeml.com/message/teraterm@freeml.com/0000142
