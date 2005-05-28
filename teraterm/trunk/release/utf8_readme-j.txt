@@ -384,7 +384,7 @@ MaxBuffSize=500000
 
 ■改版履歴
 
-2005.5.?? (Ver 4.16)
+2005.5.28 (Ver 4.16)
   ・ログ種別のplain textの情報をteraterm.iniに LogTypePlainText として残すようにした。
   ・CygTermの設定を Additional settings ダイアログに追加した。
   ・ブロック選択のキーバインドを Shift+MouseDrag から Alt+MouseDrag へ変更した。
