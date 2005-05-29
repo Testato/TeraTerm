@@ -89,7 +89,7 @@
 				AdditionalIncludeDirectories="..\..\source\common"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;INET6"
 				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough="teraterm.h"
 				PrecompiledHeaderFile=".\Debug/ttpmacro.pch"
 				AssemblerListingLocation=".\Debug/"
