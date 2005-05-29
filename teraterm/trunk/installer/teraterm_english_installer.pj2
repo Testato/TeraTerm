@@ -5,7 +5,7 @@ CreateFolder=C:\Program Files\Matsuoka\einstall2\Project\ExeFile
 MajorVersion=3
 MinorVersion=20
 CreateDateTime=2004/12/07 23:52:51
-UpdateDateTime=2005/04/23 0:43:45
+UpdateDateTime=2005/05/29 17:43:42
 Generator=EINSTALL 2.0
 CreateFileType=4
 CreateFileAddVersionInfo=1
@@ -44,7 +44,7 @@ LogoNoHeaderMes=0
 LogoTransparent=0
 MajorVersion=4
 MinorVersion=1
-ReleaseVersion=5
+ReleaseVersion=7
 BuildVersion=0
 OtherVersion=0
 DocumentFile=
@@ -73,8 +73,9 @@ EnableSelectUser=1
 DefaultCheckBox=11
 
 [OSSetting]
-CheckOSVersion=1
+CheckOSVersion=0
 OSVersion=127
+SPVersion=0,0,0,0,,,,,,,,,,,,,,,,,
 
 [ScreenSetting]
 Panel01=1
@@ -107,14 +108,6 @@ InfoFileMethod=1
 [ShortCutItems]
 0=UTF-8 TeraTerm Pro|%InstallDir%\ttermpro.exe||||0||0|35|0|||||||||||
 1=TeraTerm Menu|%InstallDir%\ttpmenu.exe||||0||0|8|0|||||||||||
-
-[ProgramItems]
-0=1|%InstallDir%\|copyfont.bat||0|3|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
-1=1|%InstallDir%\|utf8_readme-j.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
-2=1|%InstallDir%\|ssh2_readme-j.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
-3=1|%InstallDir%|utf8_readme.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
-4=1|%InstallDir%|ssh2_readme.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
-5=1|%InstallDir%|faq-j.txt||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
 
 [Files]
 0=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\copyfont.bat|||0|0|127|||||||||||
@@ -170,4 +163,7 @@ InfoFileMethod=1
 50=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\logmettversion.txt|||0|0|127|||||||||||
 51=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\LogMeTT_license.txt|||0|0|127|||||||||||
 52=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\LogMeTT_README.txt|||0|0|127|||||||||||
+
+[ProgramItems]
+0=1|%InstallDir%\|copyfont.bat||0|3|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127||||||||||||
 
