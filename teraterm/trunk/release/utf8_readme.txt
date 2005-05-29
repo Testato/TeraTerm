@@ -396,6 +396,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2005.5.29 (Ver 4.17)
+  -changed scroll out the current buffer when the cursor position is only located on left-upper screen at receiving <ESC>[J(Clear screen from cursor-position up to end).
+
 2005.5.28 (Ver 4.16)
   - added saving log type(plain text) information to teraterm.ini(LogTypePlainText).
   - added CygTerm settings on Additional settings dialog.

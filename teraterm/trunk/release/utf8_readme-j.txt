@@ -384,6 +384,9 @@ MaxBuffSize=500000
 
 ■改版履歴
 
+2005.5.29 (Ver 4.17)
+  ・<ESC>[J(Clear screen from cursor-position up to end)処理時において、カーソルが左上隅を指している場合にのみ、カレントバッファをスクロールアウトさせるようにした。
+
 2005.5.28 (Ver 4.16)
   ・ログ種別のplain textの情報をteraterm.iniに LogTypePlainText として残すようにした。
   ・CygTermの設定を Additional settings ダイアログに追加した。
