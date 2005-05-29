@@ -1167,19 +1167,26 @@ void CSScreenErase()
 	if (Param[1] == -1) Param[1] = 0;
 	BuffUpdateScroll();
 	switch (Param[1]) {
-#if 0
 	case 0:
-		//	Erase characters from cursor to the end of screen
-		BuffEraseCurToEnd();
+		// <ESC>[H(Cursor in left upper corner)によりカーソルが左上隅を指している場合、
+		// <ESC>[Jは<ESC>[2Jと同じことなので、処理を分け、現行バッファをスクロールアウト
+		// させるようにする。(2005.5.29 yutaka)
+		if (CursorX == 0 && CursorY == 0) {
+			//	Erase screen (scroll out)
+			BuffClearScreen();
+			UpdateWindow(HVTWin);
+
+		} else {
+			//	Erase characters from cursor to the end of screen
+			BuffEraseCurToEnd();
+		}
 		break;
-#endif
+
 	case 1:
 		//	Erase characters from home to cursor
 		BuffEraseHomeToCur();
 		break;
 
-	// <ESC>[J 処理時、現行のバッファを残すようにする。(2005.5.22 yutaka)
-	case 0:
 	case 2:
 		//	Erase screen (scroll out)
 		BuffClearScreen();
@@ -2607,6 +2614,9 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2005/05/25 14:46:33  yutakakn
+ * <ESC>[Jによる画面クリア時にカレントバッファをスクロールアウトさせるようにした。
+ *
  * Revision 1.5  2005/04/07 12:51:34  yutakakn
  * エスケープシーケンス（ESC[39m, ESC[49m）をサポートした。これによりscreen上でw3mを使用した場合、色が戻らない現象が改善される。岩本氏に感謝します。
  *
