@@ -134,7 +134,7 @@
 
 * History
 
-2005.5.?? (Ver 2.14)
+2005.5.28 (Ver 2.14)
   - added three file filter on private key saving dialog.
   - added zlib version information on TTSSH version dialog.
 
