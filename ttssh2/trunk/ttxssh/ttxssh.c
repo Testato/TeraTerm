@@ -1489,9 +1489,9 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 
 	// zlibのバージョンを設定する (2005.5.11 yutaka)
 #ifdef ZLIB_VERSION
-	_snprintf(buf, sizeof(buf), "ZLib: %s", ZLIB_VERSION);
+	_snprintf(buf, sizeof(buf), "ZLib %s", ZLIB_VERSION);
 #else
-	_snprintf(buf, sizeof(buf), "ZLib: Unknown");
+	_snprintf(buf, sizeof(buf), "ZLib Unknown");
 #endif
 	SendMessage(GetDlgItem(dlg, IDC_ZLIB_VERSION), WM_SETTEXT, 0, (LPARAM)buf);
 
@@ -3080,6 +3080,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.22  2005/05/15 09:14:04  yutakakn
+ * zlib versionの位置調整。
+ *
  * Revision 1.21  2005/05/10 16:44:08  yutakakn
  * zlibのバージョンをバージョン情報に追加した。
  *

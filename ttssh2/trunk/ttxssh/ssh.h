@@ -352,12 +352,13 @@ void SSH_get_protocol_version_info(PTInstVar pvar, char FAR * dest, int len);
 void SSH_get_compression_info(PTInstVar pvar, char FAR * dest, int len);
 
 /* len must be <= SSH_MAX_SEND_PACKET_SIZE */
-void SSH_channel_send(PTInstVar pvar, uint32 remote_channel_num,
-                      unsigned char FAR * buf, int len);
+void SSH_channel_send(PTInstVar pvar, int channel_num,
+					  uint32 remote_channel_num,
+					  unsigned char FAR * buf, int len);
 void SSH_fail_channel_open(PTInstVar pvar, uint32 remote_channel_num);
 void SSH_confirm_channel_open(PTInstVar pvar, uint32 remote_channel_num, uint32 local_channel_num);
 void SSH_channel_output_eof(PTInstVar pvar, uint32 remote_channel_num);
-void SSH_channel_input_eof(PTInstVar pvar, uint32 remote_channel_num);
+void SSH_channel_input_eof(PTInstVar pvar, uint32 remote_channel_num, uint32 local_channel_num);
 void SSH_request_forwarding(PTInstVar pvar, int from_server_port,
   char FAR * to_local_host, int to_local_port);
 void SSH_request_X11_forwarding(PTInstVar pvar,

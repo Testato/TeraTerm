@@ -255,7 +255,7 @@ static void send_local_connection_closure(PTInstVar pvar, int channel_num)
 
 	if ((channel->status & (FWD_REMOTE_CONNECTED | FWD_LOCAL_CONNECTED))
 		== (FWD_REMOTE_CONNECTED | FWD_LOCAL_CONNECTED)) {
-		SSH_channel_input_eof(pvar, channel->remote_num);
+		SSH_channel_input_eof(pvar, channel->remote_num, channel_num);
 		SSH_channel_output_eof(pvar, channel->remote_num);
 		channel->status |= FWD_CLOSED_LOCAL_IN | FWD_CLOSED_LOCAL_OUT;
 	}
@@ -892,7 +892,8 @@ static void read_local_connection(PTInstVar pvar, int channel_num)
 
 			if (amount > 0
 				&& (channel->status & FWD_CLOSED_REMOTE_OUT) == 0) {
-				SSH_channel_send(pvar, channel->remote_num, new_buf,
+				// ポートフォワーディングにおいてクライアントからの送信要求を、SSH通信に乗せてサーバまで送り届ける。
+				SSH_channel_send(pvar, channel_num, channel->remote_num, new_buf,
 								 amount);
 			}
 
@@ -1835,7 +1836,7 @@ void FWD_confirmed_open(PTInstVar pvar, uint32 local_channel_num,
 
 		read_local_connection(pvar, local_channel_num);
 	} else {
-		SSH_channel_input_eof(pvar, remote_channel_num);
+		SSH_channel_input_eof(pvar, remote_channel_num, local_channel_num);
 		SSH_channel_output_eof(pvar, remote_channel_num);
 		channel->status |= FWD_CLOSED_LOCAL_IN | FWD_CLOSED_LOCAL_OUT;
 	}
@@ -1976,6 +1977,11 @@ void FWD_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2005/04/03 14:39:48  yutakakn
+ * SSH2 channel lookup機構の追加（ポートフォワーディングのため）。
+ * TTSSH 2.10で追加したlog dump機構において、DH鍵再作成時にbuffer freeで
+ * アプリケーションが落ちてしまうバグを修正。
+ *
  * Revision 1.2  2004/12/19 15:39:26  yutakakn
  * CVS LogIDの追加
  *
