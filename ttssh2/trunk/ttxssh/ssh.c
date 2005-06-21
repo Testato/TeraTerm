@@ -2617,6 +2617,15 @@ void SSH_channel_input_eof(PTInstVar pvar, uint32 remote_channel_num, uint32 loc
 			int len;
 			Channel_t *c;
 
+			// SSH2鍵交換中の場合、パケットを捨てる。(2005.6.21 yutaka)
+			if (pvar->rekeying) {
+				// TODO: 理想としてはパケット破棄ではなく、パケット読み取り遅延にしたいところだが、
+				// 将来直すことにする。
+				c = NULL;
+
+				return;
+			}
+
 			c = ssh2_local_channel_lookup(local_channel_num);
 			if (c == NULL)
 				return;
@@ -2724,6 +2733,15 @@ void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
 			unsigned char *outmsg;
 			int len;
 			Channel_t *c;
+
+			// SSH2鍵交換中の場合、パケットを捨てる。(2005.6.21 yutaka)
+			if (pvar->rekeying) {
+				// TODO: 理想としてはパケット破棄ではなく、パケット読み取り遅延にしたいところだが、
+				// 将来直すことにする。
+				c = NULL;
+
+				return;
+			}
 
 			c = ssh2_channel_new(CHAN_SES_WINDOW_DEFAULT, CHAN_SES_PACKET_DEFAULT, TYPE_PORTFWD, local_channel_num);
 
@@ -5835,6 +5853,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.27  2005/06/19 09:17:47  yutakakn
+ * SSH2 port-fowarding(local to remote)をサポートした。
+ *
  * Revision 1.26  2005/04/08 14:55:03  yutakakn
  * "Duplicate session"においてSSH自動ログインを行うようにした。
  *
