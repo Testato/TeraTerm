@@ -1745,12 +1745,24 @@ void FWD_open(PTInstVar pvar, uint32 remote_channel_num,
 	for (i = 0; i < pvar->fwd_state.num_requests; i++) {
 		FWDRequest FAR *request = pvar->fwd_state.requests + i;
 
-		if ((request->status & FWD_DELETED) == 0
-			&& request->spec.type == FWD_REMOTE_TO_LOCAL
-			&& request->spec.to_port == local_port
-			&& strcmp(request->spec.to_host, local_hostname) == 0) {
-			create_local_channel(pvar, remote_channel_num, i, NULL, NULL);
-			return;
+		if (SSHv1(pvar)) {
+			if ((request->status & FWD_DELETED) == 0
+				&& request->spec.type == FWD_REMOTE_TO_LOCAL
+				&& request->spec.to_port == local_port
+				&& strcmp(request->spec.to_host, local_hostname) == 0) {
+				create_local_channel(pvar, remote_channel_num, i, NULL, NULL);
+				return;
+			}
+
+		} else { // SSH2
+			if ((request->status & FWD_DELETED) == 0
+				&& request->spec.type == FWD_REMOTE_TO_LOCAL
+				&& request->spec.from_port == local_port
+				//&& strcmp(request->spec.to_host, local_hostname) == 0) {
+				) {
+				create_local_channel(pvar, remote_channel_num, i, NULL, NULL);
+				return;
+			}
 		}
 	}
 
@@ -1977,6 +1989,9 @@ void FWD_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2005/06/19 09:17:47  yutakakn
+ * SSH2 port-fowarding(local to remote)をサポートした。
+ *
  * Revision 1.3  2005/04/03 14:39:48  yutakakn
  * SSH2 channel lookup機構の追加（ポートフォワーディングのため）。
  * TTSSH 2.10で追加したlog dump機構において、DH鍵再作成時にbuffer freeで

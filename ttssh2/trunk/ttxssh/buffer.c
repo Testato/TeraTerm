@@ -84,6 +84,33 @@ int buffer_append_length(buffer_t * msg, char *ptr, int size)
 	return (ret);
 }
 
+// getting string buffer.
+// NOTE: You should free the return pointer if it's unused.
+// (2005.6.26 yutaka)
+char *buffer_get_string(char **data_ptr, int *buflen_ptr)
+{
+	char *data = *data_ptr;
+	char *ptr;
+	int buflen;
+
+	buflen = get_uint32_MSBfirst(data);
+	data += 4;
+
+	ptr = malloc(buflen + 1);
+	if (ptr == NULL) {
+		*buflen_ptr = 0;
+		return NULL;
+	}
+	memcpy(ptr, data, buflen);
+	ptr[buflen] = '\0'; // null-terminate
+	data += buflen;
+
+	*data_ptr = data;
+	*buflen_ptr = buflen;
+
+	return(ptr);
+}
+
 void buffer_put_string(buffer_t *msg, char *ptr, int size)
 {
 	char buf[4];
@@ -237,6 +264,9 @@ void buffer_dump(FILE *fp, buffer_t *buf)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2005/04/23 17:26:57  yutakakn
+ * キー作成ダイアログの追加。
+ *
  * Revision 1.2  2004/12/19 15:37:37  yutakakn
  * CVS LogIDの追加
  *

@@ -74,11 +74,13 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar);
 static BOOL handle_SSH2_userauth_banner(PTInstVar pvar);
 static BOOL handle_SSH2_open_confirm(PTInstVar pvar);
 static BOOL handle_SSH2_request_success(PTInstVar pvar);
+static BOOL handle_SSH2_request_failure(PTInstVar pvar);
 static BOOL handle_SSH2_channel_success(PTInstVar pvar);
 static BOOL handle_SSH2_channel_data(PTInstVar pvar);
 static BOOL handle_SSH2_channel_extended_data(PTInstVar pvar);
 static BOOL handle_SSH2_channel_eof(PTInstVar pvar);
 static BOOL handle_SSH2_channel_close(PTInstVar pvar);
+static BOOL handle_SSH2_channel_open(PTInstVar pvar);
 static BOOL handle_SSH2_window_adjust(PTInstVar pvar);
 static BOOL handle_SSH2_channel_request(PTInstVar pvar);
 void SSH2_dispatch_init(int stage);
@@ -1275,14 +1277,14 @@ static void init_protocol(PTInstVar pvar)
 		enque_handler(pvar, SSH2_MSG_CHANNEL_DATA, handle_SSH2_channel_data);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_EOF, handle_SSH2_channel_eof);
 //		enque_handler(pvar, SSH2_MSG_CHANNEL_EXTENDED_DATA, handle_SSH2_channel_extended_data);
-//		enque_handler(pvar, SSH2_MSG_CHANNEL_OPEN, handle_unimplemented);
+		enque_handler(pvar, SSH2_MSG_CHANNEL_OPEN, handle_SSH2_channel_open);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_OPEN_CONFIRMATION, handle_SSH2_open_confirm);
 //		enque_handler(pvar, SSH2_MSG_CHANNEL_OPEN_FAILURE, handle_unimplemented);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_REQUEST, handle_SSH2_channel_request);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_WINDOW_ADJUST, handle_SSH2_window_adjust);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_SUCCESS, handle_SSH2_channel_success);
 //		enque_handler(pvar, SSH2_MSG_GLOBAL_REQUEST, handle_unimplemented);
-//		enque_handler(pvar, SSH2_MSG_REQUEST_FAILURE, handle_unimplemented);
+		enque_handler(pvar, SSH2_MSG_REQUEST_FAILURE, handle_SSH2_request_failure);
 		enque_handler(pvar, SSH2_MSG_REQUEST_SUCCESS, handle_SSH2_request_success);
 
 	}
@@ -2568,22 +2570,50 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 
 void SSH_fail_channel_open(PTInstVar pvar, uint32 remote_channel_num)
 {
-	unsigned char FAR *outmsg =
-		begin_send_packet(pvar, SSH_MSG_CHANNEL_OPEN_FAILURE, 4);
+	if (SSHv1(pvar)) {
+		unsigned char FAR *outmsg =
+			begin_send_packet(pvar, SSH_MSG_CHANNEL_OPEN_FAILURE, 4);
 
-	set_uint32(outmsg, remote_channel_num);
-	finish_send_packet(pvar);
+		set_uint32(outmsg, remote_channel_num);
+		finish_send_packet(pvar);
+
+	} else { // SSH2 (2005.6.26 yutaka)
+		int len;
+		Channel_t *c = NULL;
+		buffer_t *msg;
+		unsigned char *outmsg;
+
+		msg = buffer_init();
+		if (msg == NULL) {
+			// TODO: error check
+			return;
+		}
+		buffer_put_int(msg, remote_channel_num);  
+		buffer_put_int(msg, SSH2_OPEN_ADMINISTRATIVELY_PROHIBITED);  
+
+		len = buffer_len(msg);
+		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN_FAILURE, len);
+		memcpy(outmsg, buffer_ptr(msg), len);
+		finish_send_packet(pvar);
+		buffer_free(msg);
+
+	}
 }
 
 void SSH_confirm_channel_open(PTInstVar pvar, uint32 remote_channel_num,
 							  uint32 local_channel_num)
 {
-	unsigned char FAR *outmsg =
-		begin_send_packet(pvar, SSH_MSG_CHANNEL_OPEN_CONFIRMATION, 8);
+	if (SSHv1(pvar)) {
+		unsigned char FAR *outmsg =
+			begin_send_packet(pvar, SSH_MSG_CHANNEL_OPEN_CONFIRMATION, 8);
 
-	set_uint32(outmsg, remote_channel_num);
-	set_uint32(outmsg + 4, local_channel_num);
-	finish_send_packet(pvar);
+		set_uint32(outmsg, remote_channel_num);
+		set_uint32(outmsg + 4, local_channel_num);
+		finish_send_packet(pvar);
+
+	} else {
+
+	}
 }
 
 void SSH_channel_output_eof(PTInstVar pvar, uint32 remote_channel_num)
@@ -2649,18 +2679,47 @@ void SSH_channel_input_eof(PTInstVar pvar, uint32 remote_channel_num, uint32 loc
 void SSH_request_forwarding(PTInstVar pvar, int from_server_port,
 							char FAR * to_local_host, int to_local_port)
 {
-	int host_len = strlen(to_local_host);
-	unsigned char FAR *outmsg =
-		begin_send_packet(pvar, SSH_CMSG_PORT_FORWARD_REQUEST,
-						  12 + host_len);
+	if (SSHv1(pvar)) {
+		int host_len = strlen(to_local_host);
+		unsigned char FAR *outmsg =
+			begin_send_packet(pvar, SSH_CMSG_PORT_FORWARD_REQUEST,
+							12 + host_len);
 
-	set_uint32(outmsg, from_server_port);
-	set_uint32(outmsg + 4, host_len);
-	memcpy(outmsg + 8, to_local_host, host_len);
-	set_uint32(outmsg + 8 + host_len, to_local_port);
-	finish_send_packet(pvar);
+		set_uint32(outmsg, from_server_port);
+		set_uint32(outmsg + 4, host_len);
+		memcpy(outmsg + 8, to_local_host, host_len);
+		set_uint32(outmsg + 8 + host_len, to_local_port);
+		finish_send_packet(pvar);
 
-	enque_forwarding_request_handlers(pvar);
+		enque_forwarding_request_handlers(pvar);
+
+	} else {
+		// SSH2 port-forwading remote to local (2005.6.21 yutaka)
+		buffer_t *msg;
+		char *s;
+		unsigned char *outmsg;
+		int len;
+
+		msg = buffer_init();
+		if (msg == NULL) {
+			// TODO: error check
+			return;
+		}
+		s = "tcpip-forward";
+		buffer_put_string(msg, s, strlen(s)); // ctype
+		buffer_put_char(msg, 1);  // want reply
+		s = "0.0.0.0";
+		buffer_put_string(msg, s, strlen(s)); 
+
+		buffer_put_int(msg, from_server_port);  // listening port
+
+		len = buffer_len(msg);
+		outmsg = begin_send_packet(pvar, SSH2_MSG_GLOBAL_REQUEST, len);
+		memcpy(outmsg, buffer_ptr(msg), len);
+		finish_send_packet(pvar);
+		buffer_free(msg);
+
+	}
 }
 
 void SSH_request_X11_forwarding(PTInstVar pvar,
@@ -5222,7 +5281,8 @@ static BOOL handle_SSH2_userauth_success(PTInstVar pvar)
 	// 認証OK
 	pvar->userauth_success = 1;
 
-	// ポートフォワーディングの準備 (2005.2.26 yutaka)
+	// ポートフォワーディングの準備 (2005.2.26, 2005.6.21 yutaka) 
+	FWD_prep_forwarding(pvar);       
 	FWD_enter_interactive_mode(pvar);
 
 	// ディスパッチルーチンの再設定
@@ -5492,9 +5552,18 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	return TRUE;
 }
 
-
+// SSH2 port-forwarding (remote -> local)に対するリプライ（成功）
 static BOOL handle_SSH2_request_success(PTInstVar pvar)
 {	
+	// 必要であればログを取る。特に何もしなくてもよい。
+
+	return TRUE;
+}
+
+// SSH2 port-forwarding (remote -> local)に対するリプライ（失敗）
+static BOOL handle_SSH2_request_failure(PTInstVar pvar)
+{	
+	// 必要であればログを取る。特に何もしなくてもよい。
 
 	return TRUE;
 }
@@ -5697,6 +5766,105 @@ static BOOL handle_SSH2_channel_eof(PTInstVar pvar)
 }
 
 
+static BOOL handle_SSH2_channel_open(PTInstVar pvar)
+{	
+	int len;
+	char *data;
+	Channel_t *c = NULL;
+	int buflen;
+	char *ctype;
+	int remote_id;
+	int remote_window;
+	int remote_maxpacket;
+
+	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
+	data = pvar->ssh_state.payload;
+	// パケットサイズ - (パディングサイズ+1)；真のパケットサイズ
+	len = pvar->ssh_state.payloadlen;
+
+	// get string
+	ctype = buffer_get_string(&data, &buflen);
+
+	// get value
+	remote_id = get_uint32_MSBfirst(data);
+	data += 4;
+	remote_window = get_uint32_MSBfirst(data);
+	data += 4;
+	remote_maxpacket = get_uint32_MSBfirst(data);
+	data += 4;
+
+	// check Channel Type(string)
+	if (strcmp(ctype, "forwarded-tcpip") == 0) { // port-forwarding(remote to local)
+		char *listen_addr, *orig_addr;
+		int listen_port, orig_port;
+
+		listen_addr = buffer_get_string(&data, &buflen);  // 0.0.0.0
+		listen_port = get_uint32_MSBfirst(data); // 5000
+		data += 4;
+
+		orig_addr = buffer_get_string(&data, &buflen);  // 127.0.0.1
+		orig_port = get_uint32_MSBfirst(data);  // 32776
+		data += 4;
+
+		// searching request entry by listen_port & create_local_channel
+		FWD_open(pvar, remote_id, listen_addr, listen_port, orig_addr, orig_port);
+
+		free(listen_addr);
+		free(orig_addr);
+
+	} else if (strcmp(ctype, "x11") == 0) { // port-forwarding(X11)
+
+	} else {
+		// unknown type(unsupported)
+
+	}
+
+#if 0
+	if (c != NULL) {  // success
+		c->remote_id = remote_id;
+		c->remote_window = remote_window;
+		c->remote_maxpacket = remote_maxpacket;
+
+		msg = buffer_init();
+		if (msg == NULL) {
+			// TODO: error check
+			return FALSE;
+		}
+		buffer_put_int(msg, c->remote_id);  
+		buffer_put_int(msg, c->self_id);  
+		buffer_put_int(msg, c->local_window);  
+		buffer_put_int(msg, c->local_maxpacket);  
+
+		len = buffer_len(msg);
+		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN_CONFIRMATION, len);
+		memcpy(outmsg, buffer_ptr(msg), len);
+		finish_send_packet(pvar);
+		buffer_free(msg);
+
+	} else {  // failure
+		msg = buffer_init();
+		if (msg == NULL) {
+			// TODO: error check
+			return FALSE;
+		}
+		buffer_put_int(msg, c->remote_id);  
+		buffer_put_int(msg, SSH2_OPEN_ADMINISTRATIVELY_PROHIBITED);  
+
+		len = buffer_len(msg);
+		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN_FAILURE, len);
+		memcpy(outmsg, buffer_ptr(msg), len);
+		finish_send_packet(pvar);
+		buffer_free(msg);
+
+	}
+#endif
+
+	free(ctype);
+
+	return(TRUE);
+}
+
+
 static BOOL handle_SSH2_channel_close(PTInstVar pvar)
 {	
 	int len;
@@ -5853,6 +6021,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.28  2005/06/21 13:28:26  yutakakn
+ * SSH2鍵交換中の（鍵交換以外の）SSH2メッセージ送信を破棄するようにした。
+ *
  * Revision 1.27  2005/06/19 09:17:47  yutakakn
  * SSH2 port-fowarding(local to remote)をサポートした。
  *
