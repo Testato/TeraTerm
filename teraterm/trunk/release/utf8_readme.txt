@@ -568,6 +568,7 @@ There are 3 types of connection you can establish from TeraTerm macro:
   Copyright of LogMeTT to NeoCom Solutions.
   Copyright of Eterm lookfeel transparency window belongs to AKASI.
   Copyright of TTProxy to YebisuyaHompo.
+  Copyright of Localized TeraTerm belongs to Yasuhide Takahashi.
 
   This program is provided "as is" without warranties of any kind, either expressed or 
   implied, including, but not limited to, the implied warranties of merchantability and fitness 
@@ -600,9 +601,6 @@ There are 3 types of connection you can establish from TeraTerm macro:
 
 NOTE: The links above contain Japanese version of installer. Users from other countries just press all default buttons that will show up during installation. When installation will complete, start Teraterm and switch the Language setting under Settings->General menu to meet your preference. Finally save changes into teraterm.ini file.
 
-
-* Limitations of current release
-  - UTF-8 version is only Japanese characters now.
 
 
 * History
