@@ -73,6 +73,7 @@ static BOOL handle_SSH2_userauth_success(PTInstVar pvar);
 static BOOL handle_SSH2_userauth_failure(PTInstVar pvar);
 static BOOL handle_SSH2_userauth_banner(PTInstVar pvar);
 static BOOL handle_SSH2_open_confirm(PTInstVar pvar);
+static BOOL handle_SSH2_open_failure(PTInstVar pvar);
 static BOOL handle_SSH2_request_success(PTInstVar pvar);
 static BOOL handle_SSH2_request_failure(PTInstVar pvar);
 static BOOL handle_SSH2_channel_success(PTInstVar pvar);
@@ -1283,7 +1284,7 @@ static void init_protocol(PTInstVar pvar)
 //		enque_handler(pvar, SSH2_MSG_CHANNEL_EXTENDED_DATA, handle_SSH2_channel_extended_data);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_OPEN, handle_SSH2_channel_open);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_OPEN_CONFIRMATION, handle_SSH2_open_confirm);
-//		enque_handler(pvar, SSH2_MSG_CHANNEL_OPEN_FAILURE, handle_unimplemented);
+		enque_handler(pvar, SSH2_MSG_CHANNEL_OPEN_FAILURE, handle_SSH2_open_failure);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_REQUEST, handle_SSH2_channel_request);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_WINDOW_ADJUST, handle_SSH2_window_adjust);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_SUCCESS, handle_SSH2_channel_success);
@@ -5585,6 +5586,61 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	return TRUE;
 }
 
+
+// SSH2 port-forwarding においてセッションがオープンできない場合のサーバからのリプライ（失敗）
+static BOOL handle_SSH2_open_failure(PTInstVar pvar)
+{	
+	int len;
+	char *data;
+	int id;
+	Channel_t *c;
+	int reason;
+	char *cstring;
+	char tmpbuf[256];
+	char *rmsg;
+
+	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
+	data = pvar->ssh_state.payload;
+	// パケットサイズ - (パディングサイズ+1)；真のパケットサイズ
+	len = pvar->ssh_state.payloadlen;
+
+	id = get_uint32_MSBfirst(data);
+	data += 4;
+
+	c = ssh2_channel_lookup(id);
+	if (c == NULL) {
+		// TODO: SSH2_MSG_DISCONNECTを送る
+		return FALSE;
+	}
+
+	reason = get_uint32_MSBfirst(data);
+	data += 4;
+
+	if (reason == SSH2_OPEN_ADMINISTRATIVELY_PROHIBITED) {
+		rmsg = "administratively prohibited";
+	} else if (reason == SSH2_OPEN_CONNECT_FAILED) {
+		rmsg = "connect failed";
+	} else if (reason == SSH2_OPEN_UNKNOWN_CHANNEL_TYPE) {
+		rmsg = "unknown channel type";
+	} else if (reason == SSH2_OPEN_RESOURCE_SHORTAGE) {
+		rmsg = "resource shortage";
+	} else {
+		rmsg = "unknown reason";
+	}
+
+	cstring = buffer_get_string(&data, NULL);
+
+	_snprintf(tmpbuf, sizeof(tmpbuf), 
+		"SSH2_MSG_CHANNEL_OPEN_FAILURE was received.\r\nchannel [%d]: reason: %s(%d) message: %s", 
+		id, rmsg, reason, cstring);
+	notify_nonfatal_error(pvar, tmpbuf);
+
+	free(cstring);
+
+	return TRUE;
+}
+
+
 // SSH2 port-forwarding (remote -> local)に対するリプライ（成功）
 static BOOL handle_SSH2_request_success(PTInstVar pvar)
 {	
@@ -6061,6 +6117,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.30  2005/07/02 07:56:13  yutakakn
+ * update SSH2 port-forwading(remote to local)
+ *
  * Revision 1.29  2005/06/26 14:26:24  yutakakn
  * update: SSH2 port-forwarding (remote to local)
  *

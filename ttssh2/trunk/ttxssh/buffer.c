@@ -95,10 +95,13 @@ char *buffer_get_string(char **data_ptr, int *buflen_ptr)
 
 	buflen = get_uint32_MSBfirst(data);
 	data += 4;
+	if (buflen <= 0)
+		return NULL;
 
 	ptr = malloc(buflen + 1);
 	if (ptr == NULL) {
-		*buflen_ptr = 0;
+		if (buflen_ptr != NULL)
+			*buflen_ptr = 0;
 		return NULL;
 	}
 	memcpy(ptr, data, buflen);
@@ -106,7 +109,8 @@ char *buffer_get_string(char **data_ptr, int *buflen_ptr)
 	data += buflen;
 
 	*data_ptr = data;
-	*buflen_ptr = buflen;
+	if (buflen_ptr != NULL)
+		*buflen_ptr = buflen;
 
 	return(ptr);
 }
@@ -264,6 +268,9 @@ void buffer_dump(FILE *fp, buffer_t *buf)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2005/06/26 14:26:24  yutakakn
+ * update: SSH2 port-forwarding (remote to local)
+ *
  * Revision 1.3  2005/04/23 17:26:57  yutakakn
  * キー作成ダイアログの追加。
  *
