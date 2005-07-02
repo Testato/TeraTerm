@@ -35,6 +35,8 @@ See LICENSE.TXT for the license.
 
 #include "x11util.h"
 
+#include "fwd.h"
+
 #include <assert.h>
 #ifdef INET6
 #include "WSAAsyncGetAddrInfo.h"
@@ -1651,7 +1653,9 @@ void FWD_enter_interactive_mode(PTInstVar pvar)
 
 static void create_local_channel(PTInstVar pvar, uint32 remote_channel_num,
 								 int request_num, void *filter_closure,
-								 FWDFilter filter)
+								 FWDFilter filter,
+								 int *chan_num
+								 )
 {
 	char buf[1024];
 	int channel_num;
@@ -1724,6 +1728,11 @@ static void create_local_channel(PTInstVar pvar, uint32 remote_channel_num,
 	channel->filter_closure = filter_closure;
 	channel->filter = filter;
 
+	// save channel number (2005.7.2 yutaka)
+	if (chan_num != NULL) {
+		*chan_num = channel_num;
+	}
+
 #ifdef INET6
 	if (request->to_host_addrs != NULL) {
 		make_local_connection(pvar, channel_num);
@@ -1737,7 +1746,8 @@ static void create_local_channel(PTInstVar pvar, uint32 remote_channel_num,
 
 void FWD_open(PTInstVar pvar, uint32 remote_channel_num,
 			  char FAR * local_hostname, int local_port,
-			  char FAR * originator, int originator_len)
+			  char FAR * originator, int originator_len,
+			  int *chan_num)
 {
 	int i;
 	char buf[1024];
@@ -1750,7 +1760,7 @@ void FWD_open(PTInstVar pvar, uint32 remote_channel_num,
 				&& request->spec.type == FWD_REMOTE_TO_LOCAL
 				&& request->spec.to_port == local_port
 				&& strcmp(request->spec.to_host, local_hostname) == 0) {
-				create_local_channel(pvar, remote_channel_num, i, NULL, NULL);
+				create_local_channel(pvar, remote_channel_num, i, NULL, NULL, chan_num);
 				return;
 			}
 
@@ -1760,7 +1770,8 @@ void FWD_open(PTInstVar pvar, uint32 remote_channel_num,
 				&& request->spec.from_port == local_port
 				//&& strcmp(request->spec.to_host, local_hostname) == 0) {
 				) {
-				create_local_channel(pvar, remote_channel_num, i, NULL, NULL);
+				create_local_channel(pvar, remote_channel_num, i, NULL, NULL, 
+					chan_num);
 				return;
 			}
 		}
@@ -1806,7 +1817,8 @@ void FWD_X11_open(PTInstVar pvar, uint32 remote_channel_num,
 															pvar->
 															fwd_state.
 															X11_auth_data),
-								 X11_unspoofing_filter);
+								 X11_unspoofing_filter,
+								 NULL);
 			return;
 		}
 	}
@@ -1989,6 +2001,9 @@ void FWD_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2005/06/26 14:26:24  yutakakn
+ * update: SSH2 port-forwarding (remote to local)
+ *
  * Revision 1.4  2005/06/19 09:17:47  yutakakn
  * SSH2 port-fowarding(local to remote)をサポートした。
  *

@@ -98,6 +98,10 @@ static void start_ssh_heartbeat_thread(PTInstVar pvar);
 /* default window/packet sizes for tcp/x11-fwd-channel */
 #define CHAN_SES_PACKET_DEFAULT (32*1024)
 #define CHAN_SES_WINDOW_DEFAULT (2*CHAN_SES_PACKET_DEFAULT) // READAMOUNT @ pkt.cと同期を取ること
+#define CHAN_TCP_PACKET_DEFAULT	(32*1024)
+#define CHAN_TCP_WINDOW_DEFAULT	(4*CHAN_TCP_PACKET_DEFAULT)
+#define CHAN_X11_PACKET_DEFAULT	(16*1024)
+#define CHAN_X11_WINDOW_DEFAULT	(4*CHAN_X11_PACKET_DEFAULT)
 
 // channel data structure
 #define CHANNEL_MAX 100
@@ -153,7 +157,7 @@ static Channel_t *ssh2_channel_new(unsigned int window, unsigned int maxpack, en
 	c->remote_window = 0;
 	c->remote_maxpacket = 0;
 	c->type = type;
-	c->local_num = local_num;
+	c->local_num = local_num;  // alloc_channel()の返値を保存しておく
 
 	return (c);
 }
@@ -1428,7 +1432,8 @@ static BOOL handle_channel_open(PTInstVar pvar)
 			FWD_open(pvar, get_payload_uint32(pvar, 0),
 					 pvar->ssh_state.payload + 8, local_port,
 					 pvar->ssh_state.payload + 16 + host_len,
-					 originator_len);
+					 originator_len, 
+					 NULL);
 		}
 	} else {
 		if (grab_payload(pvar, 8)
@@ -1439,7 +1444,8 @@ static BOOL handle_channel_open(PTInstVar pvar)
 
 			pvar->ssh_state.payload[8 + host_len] = 0;
 			FWD_open(pvar, get_payload_uint32(pvar, 0),
-					 pvar->ssh_state.payload + 8, local_port, NULL, 0);
+					 pvar->ssh_state.payload + 8, local_port, NULL, 0,
+					 NULL);
 		}
 	}
 
@@ -2612,6 +2618,33 @@ void SSH_confirm_channel_open(PTInstVar pvar, uint32 remote_channel_num,
 		finish_send_packet(pvar);
 
 	} else {
+		buffer_t *msg;
+		unsigned char *outmsg;
+		int len;
+		Channel_t *c;
+
+		// port-forwarding(remote to local)のローカル接続への成功をサーバへ返す。(2005.7.2 yutaka)
+		c = ssh2_local_channel_lookup(local_channel_num);
+		if (c == NULL) {
+			// It is sure to be successful as long as it's not a program bug either.
+			return;
+		}
+
+		msg = buffer_init();
+		if (msg == NULL) {
+			// TODO: error check
+			return;
+		}
+		buffer_put_int(msg, c->remote_id);  
+		buffer_put_int(msg, c->self_id);  
+		buffer_put_int(msg, c->local_window);  
+		buffer_put_int(msg, c->local_maxpacket);  
+
+		len = buffer_len(msg);
+		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN_CONFIRMATION, len);
+		memcpy(outmsg, buffer_ptr(msg), len);
+		finish_send_packet(pvar);
+		buffer_free(msg);
 
 	}
 }
@@ -2802,7 +2835,7 @@ void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
 				return;
 			}
 
-			c = ssh2_channel_new(CHAN_SES_WINDOW_DEFAULT, CHAN_SES_PACKET_DEFAULT, TYPE_PORTFWD, local_channel_num);
+			c = ssh2_channel_new(CHAN_TCP_WINDOW_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_PORTFWD, local_channel_num);
 
 			msg = buffer_init();
 			if (msg == NULL) {
@@ -5765,7 +5798,6 @@ static BOOL handle_SSH2_channel_eof(PTInstVar pvar)
 	return TRUE;
 }
 
-
 static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 {	
 	int len;
@@ -5776,6 +5808,7 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 	int remote_id;
 	int remote_window;
 	int remote_maxpacket;
+	int chan_num = -1;
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
@@ -5807,10 +5840,17 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 		data += 4;
 
 		// searching request entry by listen_port & create_local_channel
-		FWD_open(pvar, remote_id, listen_addr, listen_port, orig_addr, orig_port);
+		FWD_open(pvar, remote_id, listen_addr, listen_port, orig_addr, orig_port,
+			&chan_num);
 
 		free(listen_addr);
 		free(orig_addr);
+
+		// channelをアロケートし、必要な情報（remote window size）をここで取っておく。
+		c = ssh2_channel_new(CHAN_TCP_WINDOW_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_PORTFWD, chan_num);
+		c->remote_id = remote_id;
+		c->remote_window = remote_window;
+		c->remote_maxpacket = remote_maxpacket;
 
 	} else if (strcmp(ctype, "x11") == 0) { // port-forwarding(X11)
 
@@ -6021,6 +6061,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.29  2005/06/26 14:26:24  yutakakn
+ * update: SSH2 port-forwarding (remote to local)
+ *
  * Revision 1.28  2005/06/21 13:28:26  yutakakn
  * SSH2鍵交換中の（鍵交換以外の）SSH2メッセージ送信を破棄するようにした。
  *
