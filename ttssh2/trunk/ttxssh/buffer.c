@@ -50,19 +50,36 @@ int buffer_append(buffer_t * buf, char *ptr, int size)
 {
 	int n;
 	int ret = -1;
+	int newlen;
 
-	n = buf->offset + size;
-	if (n < buf->maxlen) {
-		memcpy(buf->buf + buf->offset, ptr, size);
-		buf->offset += size;
-		buf->len = buf->offset;
-		ret = 0;
+	for (;;) {
+		n = buf->offset + size;
+		if (n < buf->maxlen) {
+			memcpy(buf->buf + buf->offset, ptr, size);
+			buf->offset += size;
+			buf->len = buf->offset;
+			ret = 0;
+			break;
 
-	} else {
-		char *p = NULL;
-		// TODO: realloc
-		*p = 0;
+		} else {
+			// バッファが足りないので補充する。(2005.7.2 yutaka)
+			newlen = buf->maxlen + size + 32*1024;
+			if (newlen > 0xa00000) { // 1MB over is not supported
+				goto panic;
+			}
+			buf->buf = realloc(buf->buf, newlen);
+			if (buf->buf == NULL)
+				goto panic;
+			buf->maxlen = newlen;
+		}
+	} 
 
+	return (ret);
+
+panic:
+	{
+	char *p = NULL;
+	*p = 0; // application fault
 	}
 
 	return (ret);
@@ -268,6 +285,9 @@ void buffer_dump(FILE *fp, buffer_t *buf)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2005/07/02 08:43:32  yutakakn
+ * SSH2_MSG_CHANNEL_OPEN_FAILURE ハンドラを追加した。
+ *
  * Revision 1.4  2005/06/26 14:26:24  yutakakn
  * update: SSH2 port-forwarding (remote to local)
  *
