@@ -5594,17 +5594,17 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	c->remote_maxpacket = get_uint32_MSBfirst(data);
 	data += 4;
 
-	// ポートフォワーディングの準備 (2005.2.26, 2005.6.21 yutaka) 
-	// シェルオープンしたあとに X11 の要求を出さなくてはならない。(2005.7.3 yutaka)
-	FWD_prep_forwarding(pvar);       
-	FWD_enter_interactive_mode(pvar);
-
 	if (c->type == TYPE_PORTFWD) {
 		// port-forwadingの"direct-tcpip"が成功。
 		FWD_confirmed_open(pvar, c->local_num, -1);
 		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_REQUEST was received. (port-fowarding)", LOG_LEVEL_VERBOSE);
 		return TRUE;
 	}
+
+	// ポートフォワーディングの準備 (2005.2.26, 2005.6.21 yutaka) 
+	// シェルオープンしたあとに X11 の要求を出さなくてはならない。(2005.7.3 yutaka)
+	FWD_prep_forwarding(pvar);       
+	FWD_enter_interactive_mode(pvar);
 
 	//debug_print(100, data, len);
 
@@ -5988,46 +5988,6 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 
 	}
 
-#if 0
-	if (c != NULL) {  // success
-		c->remote_id = remote_id;
-		c->remote_window = remote_window;
-		c->remote_maxpacket = remote_maxpacket;
-
-		msg = buffer_init();
-		if (msg == NULL) {
-			// TODO: error check
-			return FALSE;
-		}
-		buffer_put_int(msg, c->remote_id);  
-		buffer_put_int(msg, c->self_id);  
-		buffer_put_int(msg, c->local_window);  
-		buffer_put_int(msg, c->local_maxpacket);  
-
-		len = buffer_len(msg);
-		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN_CONFIRMATION, len);
-		memcpy(outmsg, buffer_ptr(msg), len);
-		finish_send_packet(pvar);
-		buffer_free(msg);
-
-	} else {  // failure
-		msg = buffer_init();
-		if (msg == NULL) {
-			// TODO: error check
-			return FALSE;
-		}
-		buffer_put_int(msg, c->remote_id);  
-		buffer_put_int(msg, SSH2_OPEN_ADMINISTRATIVELY_PROHIBITED);  
-
-		len = buffer_len(msg);
-		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN_FAILURE, len);
-		memcpy(outmsg, buffer_ptr(msg), len);
-		finish_send_packet(pvar);
-		buffer_free(msg);
-
-	}
-#endif
-
 	free(ctype);
 
 	return(TRUE);
@@ -6190,6 +6150,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.32  2005/07/03 12:07:53  yutakakn
+ * SSH2 X Window Systemのport forwardingをサポートした。
+ *
  * Revision 1.31  2005/07/02 08:43:32  yutakakn
  * SSH2_MSG_CHANNEL_OPEN_FAILURE ハンドラを追加した。
  *

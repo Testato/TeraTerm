@@ -1311,9 +1311,11 @@ static BOOL interactive_init_request(PTInstVar pvar, int request_num,
 		}
 		if (s == INVALID_SOCKET) {
 			if (report_error) {
-				notify_nonfatal_error(pvar,
-									  "Some socket(s) required for port forwarding could not be initialized.\n"
-									  "Some port forwarding services may not be available.");
+				char buf[256];
+				_snprintf(buf, sizeof(buf), "Some socket(s) required for port forwarding could not be initialized.\n"
+											"Some port forwarding services may not be available.\n"
+											"(errno %d)", WSAGetLastError());
+				notify_nonfatal_error(pvar,buf);
 			}
 			freeaddrinfo(res0);
 			/* free(request->listening_sockets); /* DO NOT FREE HERE, listening_sockets'll be freed in FWD_end */
@@ -2002,6 +2004,9 @@ void FWD_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2005/07/03 12:07:53  yutakakn
+ * SSH2 X Window Systemのport forwardingをサポートした。
+ *
  * Revision 1.6  2005/07/02 07:56:13  yutakakn
  * update SSH2 port-forwading(remote to local)
  *
