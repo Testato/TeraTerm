@@ -1463,11 +1463,11 @@ static BOOL handle_X11_channel_open(PTInstVar pvar)
 			&& grab_payload(pvar, originator_len =
 							get_payload_uint32(pvar, 4))) {
 			FWD_X11_open(pvar, get_payload_uint32(pvar, 0),
-						 pvar->ssh_state.payload + 8, originator_len);
+						 pvar->ssh_state.payload + 8, originator_len, NULL);
 		}
 	} else {
 		if (grab_payload(pvar, 4)) {
-			FWD_X11_open(pvar, get_payload_uint32(pvar, 0), NULL, 0);
+			FWD_X11_open(pvar, get_payload_uint32(pvar, 0), NULL, 0, NULL);
 		}
 	}
 
@@ -2761,26 +2761,81 @@ void SSH_request_X11_forwarding(PTInstVar pvar,
 								unsigned char FAR * auth_data,
 								int auth_data_len, int screen_num)
 {
-	int protocol_len = strlen(auth_protocol);
-	int data_len = auth_data_len * 2;
-	unsigned char FAR *outmsg =
-		begin_send_packet(pvar, SSH_CMSG_X11_REQUEST_FORWARDING,
-						  12 + protocol_len + data_len);
-	int i;
-	char FAR *auth_data_ptr;
+	if (SSHv1(pvar)) {
+		int protocol_len = strlen(auth_protocol);
+		int data_len = auth_data_len * 2;
+		unsigned char FAR *outmsg =
+			begin_send_packet(pvar, SSH_CMSG_X11_REQUEST_FORWARDING,
+							12 + protocol_len + data_len);
+		int i;
+		char FAR *auth_data_ptr;
 
-	set_uint32(outmsg, protocol_len);
-	memcpy(outmsg + 4, auth_protocol, protocol_len);
-	set_uint32(outmsg + 4 + protocol_len, data_len);
-	auth_data_ptr = outmsg + 8 + protocol_len;
-	for (i = 0; i < auth_data_len; i++) {
-		sprintf(auth_data_ptr + i * 2, "%.2x", auth_data[i]);
+		set_uint32(outmsg, protocol_len);
+		memcpy(outmsg + 4, auth_protocol, protocol_len);
+		set_uint32(outmsg + 4 + protocol_len, data_len);
+		auth_data_ptr = outmsg + 8 + protocol_len;
+		for (i = 0; i < auth_data_len; i++) {
+			sprintf(auth_data_ptr + i * 2, "%.2x", auth_data[i]);
+		}
+		set_uint32(outmsg + 8 + protocol_len + data_len, screen_num);
+
+		finish_send_packet(pvar);
+
+		enque_forwarding_request_handlers(pvar);
+
+	} else {
+		// SSH2: X11 port-forwarding (2005.7.2 yutaka)
+		buffer_t *msg;
+		char *s;
+		unsigned char *outmsg;
+		int len;
+		Channel_t *c;
+		int newlen;
+		char *newdata;
+		int i;
+
+		msg = buffer_init();
+		if (msg == NULL) {
+			// TODO: error check
+			return;
+		}
+
+		c = ssh2_channel_lookup(pvar->shell_id);
+		if (c == NULL) 
+			return;
+
+		// making the fake data	
+		newlen = 2 * auth_data_len + 1;
+		newdata = malloc(newlen);
+		if (newdata == NULL)
+			return;
+		for (i = 0 ; i < auth_data_len ; i++) {
+			_snprintf(newdata + i*2, newlen - i*2, "%02x", auth_data[i]);
+		}
+		newdata[newlen - 1] = '\0';
+
+		buffer_put_int(msg, c->remote_id);  
+		s = "x11-req";
+		buffer_put_string(msg, s, strlen(s)); // service name
+		buffer_put_char(msg, 0);  // want confirm (false)
+		buffer_put_char(msg, 0);  // XXX bool single connection
+
+		s = auth_protocol; // MIT-MAGIC-COOKIE-1
+		buffer_put_string(msg, s, strlen(s)); 
+		s = newdata;
+		buffer_put_string(msg, s, strlen(s)); 
+
+		buffer_put_int(msg, screen_num);  
+
+		len = buffer_len(msg);
+		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_REQUEST, len);
+		memcpy(outmsg, buffer_ptr(msg), len);
+		finish_send_packet(pvar);
+		buffer_free(msg);
+
+		free(newdata);
 	}
-	set_uint32(outmsg + 8 + protocol_len + data_len, screen_num);
 
-	finish_send_packet(pvar);
-
-	enque_forwarding_request_handlers(pvar);
 }
 
 void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
@@ -5315,23 +5370,18 @@ static BOOL handle_SSH2_userauth_success(PTInstVar pvar)
 	// 認証OK
 	pvar->userauth_success = 1;
 
-	// ポートフォワーディングの準備 (2005.2.26, 2005.6.21 yutaka) 
-	FWD_prep_forwarding(pvar);       
-	FWD_enter_interactive_mode(pvar);
-
-	// ディスパッチルーチンの再設定
-	do_SSH2_dispatch_setup_for_transfer(pvar);
-
-
 	// チャネル設定
+	// FWD_prep_forwarding()でshell IDを使うので、先に設定を持ってくる。(2005.7.3 yutaka)
 	c = ssh2_channel_new(CHAN_SES_WINDOW_DEFAULT, CHAN_SES_PACKET_DEFAULT, TYPE_SHELL, -1);
 	if (c == NULL) {
 		// TODO: error check
 		return FALSE;
 	}
-
 	// シェルのIDを取っておく
 	pvar->shell_id = c->self_id;
+
+	// ディスパッチルーチンの再設定
+	do_SSH2_dispatch_setup_for_transfer(pvar);
 
 	// シェルオープン
 	msg = buffer_init();
@@ -5543,6 +5593,11 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	data += 4;
 	c->remote_maxpacket = get_uint32_MSBfirst(data);
 	data += 4;
+
+	// ポートフォワーディングの準備 (2005.2.26, 2005.6.21 yutaka) 
+	// シェルオープンしたあとに X11 の要求を出さなくてはならない。(2005.7.3 yutaka)
+	FWD_prep_forwarding(pvar);       
+	FWD_enter_interactive_mode(pvar);
 
 	if (c->type == TYPE_PORTFWD) {
 		// port-forwadingの"direct-tcpip"が成功。
@@ -5909,6 +5964,24 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 		c->remote_maxpacket = remote_maxpacket;
 
 	} else if (strcmp(ctype, "x11") == 0) { // port-forwarding(X11)
+		// X applicationをターミナル上で実行すると、SSH2_MSG_CHANNEL_OPEN が送られてくる。
+		char *orig_str;
+		int orig_port;
+
+		orig_str = buffer_get_string(&data, NULL);  // "127.0.0.1"
+		orig_port = get_uint32_MSBfirst(data);  
+		data += 4;
+		free(orig_str);
+
+		// X server(port 6000)へ接続する。接続に失敗するとTeraTerm自身が切断される。
+		// TODO: 将来、切断されないようにしたい。(2005.7.3 yutaka)
+		FWD_X11_open(pvar, remote_id, NULL, 0, &chan_num);
+
+		// channelをアロケートし、必要な情報（remote window size）をここで取っておく。
+		c = ssh2_channel_new(CHAN_TCP_WINDOW_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_PORTFWD, chan_num);
+		c->remote_id = remote_id;
+		c->remote_window = remote_window;
+		c->remote_maxpacket = remote_maxpacket;
 
 	} else {
 		// unknown type(unsupported)
@@ -6117,6 +6190,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.31  2005/07/02 08:43:32  yutakakn
+ * SSH2_MSG_CHANNEL_OPEN_FAILURE ハンドラを追加した。
+ *
  * Revision 1.30  2005/07/02 07:56:13  yutakakn
  * update SSH2 port-forwading(remote to local)
  *

@@ -148,7 +148,8 @@ void FWD_open(PTInstVar pvar, uint32 remote_channel_num,
 			  char FAR * originator, int originator_len,
 			  int *chan_num);
 void FWD_X11_open(PTInstVar pvar, uint32 remote_channel_num,
-  char FAR * originator, int originator_len);
+				  char FAR * originator, int originator_len,
+				  int *chan_num);
 void FWD_confirmed_open(PTInstVar pvar, uint32 local_channel_num,
   uint32 remote_channel_num);
 void FWD_failed_open(PTInstVar pvar, uint32 local_channel_num);

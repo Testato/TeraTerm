@@ -1803,7 +1803,8 @@ void FWD_open(PTInstVar pvar, uint32 remote_channel_num,
 }
 
 void FWD_X11_open(PTInstVar pvar, uint32 remote_channel_num,
-				  char FAR * originator, int originator_len)
+				  char FAR * originator, int originator_len,
+				  int *chan_num)
 {
 	int i;
 
@@ -1818,7 +1819,7 @@ void FWD_X11_open(PTInstVar pvar, uint32 remote_channel_num,
 															fwd_state.
 															X11_auth_data),
 								 X11_unspoofing_filter,
-								 NULL);
+								 chan_num);
 			return;
 		}
 	}
@@ -2001,6 +2002,9 @@ void FWD_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2005/07/02 07:56:13  yutakakn
+ * update SSH2 port-forwading(remote to local)
+ *
  * Revision 1.5  2005/06/26 14:26:24  yutakakn
  * update: SSH2 port-forwarding (remote to local)
  *
