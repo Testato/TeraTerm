@@ -8,6 +8,7 @@
 #include "ttxssh.h"
 #include "util.h"
 #include <openssl/bn.h>
+#include <zlib.h>
 
 void buffer_clear(buffer_t *buf)
 {
@@ -283,8 +284,82 @@ void buffer_dump(FILE *fp, buffer_t *buf)
 	fprintf(fp, "\n");
 }
 
+// バッファのオフセットを進める。
+void buffer_consume(buffer_t *buf, int shift_byte)
+{
+	int n;
+
+	n = buf->offset + shift_byte;
+	if (n < buf->maxlen) {
+		buf->offset += shift_byte;
+	} else {
+		// TODO: fatal error
+	}
+}
+
+// パケットの圧縮
+int buffer_compress(z_stream *zstream, char *payload, int len, buffer_t *compbuf)
+{
+	unsigned char buf[4096];
+	int status;
+
+	// input buffer
+	zstream->next_in = payload;
+	zstream->avail_in = len;
+
+	do {
+		// output buffer
+		zstream->next_out = buf;
+		zstream->avail_out = sizeof(buf);
+
+		// バッファを圧縮する。圧縮すると、逆にサイズが大きくなることも考慮すること。
+		status = deflate(zstream, Z_PARTIAL_FLUSH);
+		if (status == Z_OK) {
+			buffer_append(compbuf, buf, sizeof(buf) - zstream->avail_out);
+		} else {
+			return -1; // error
+		}
+	} while (zstream->avail_out == 0);
+
+	return 0; // success
+}
+
+// パケットの展開
+int buffer_decompress(z_stream *zstream, char *payload, int len, buffer_t *compbuf)
+{
+	unsigned char buf[4096];
+	int status;
+
+	// input buffer
+	zstream->next_in = payload;
+	zstream->avail_in = len;
+
+	do {
+		// output buffer
+		zstream->next_out = buf;
+		zstream->avail_out = sizeof(buf);
+
+		// バッファを展開する。
+		status = inflate(zstream, Z_PARTIAL_FLUSH);
+		if (status == Z_OK) {
+			buffer_append(compbuf, buf, sizeof(buf) - zstream->avail_out);
+
+		} else if (status == Z_OK) {
+			break;
+
+		} else {
+			return -1; // error
+		}
+	} while (zstream->avail_out == 0);
+
+	return 0; // success
+}
+
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2005/07/02 12:46:41  yutakakn
+ * buffer_append()において4KB以上のバッファの再アロケート処理を追加した。
+ *
  * Revision 1.5  2005/07/02 08:43:32  yutakakn
  * SSH2_MSG_CHANNEL_OPEN_FAILURE ハンドラを追加した。
  *

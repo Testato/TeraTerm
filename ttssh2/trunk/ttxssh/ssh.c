@@ -609,26 +609,59 @@ static int prep_packet(PTInstVar pvar, char FAR * data, int len,
 
 	pvar->ssh_state.payload_grabbed = 0;
 
-	if (pvar->ssh_state.decompressing) {
-		if (pvar->ssh_state.decompress_stream.avail_in != 0) {
-			notify_nonfatal_error(pvar,
-								  "Internal error: a packet was not fully decompressed.\n"
-								  "This is a bug, please report it.");
+	if (SSHv1(pvar)) {
+		if (pvar->ssh_state.decompressing) {
+			if (pvar->ssh_state.decompress_stream.avail_in != 0) {
+				notify_nonfatal_error(pvar,
+									"Internal error: a packet was not fully decompressed.\n"
+									"This is a bug, please report it.");
+			}
+
+			pvar->ssh_state.decompress_stream.next_in =
+				pvar->ssh_state.payload;
+			pvar->ssh_state.decompress_stream.avail_in =
+				pvar->ssh_state.payloadlen;
+			pvar->ssh_state.decompress_stream.next_out =
+				pvar->ssh_state.postdecompress_inbuf;
+			pvar->ssh_state.payloadlen = -1;
+		} else {
+			pvar->ssh_state.payload++;
 		}
 
-		pvar->ssh_state.decompress_stream.next_in =
-			pvar->ssh_state.payload;
-		pvar->ssh_state.decompress_stream.avail_in =
-			pvar->ssh_state.payloadlen;
-		pvar->ssh_state.decompress_stream.next_out =
-			pvar->ssh_state.postdecompress_inbuf;
-		pvar->ssh_state.payloadlen = -1;
-	} else {
-		pvar->ssh_state.payload++;
-	}
+		if (!grab_payload_limited(pvar, 1)) {
+			return SSH_MSG_NONE;
+		}
 
-	if (!grab_payload_limited(pvar, 1)) {
-		return SSH_MSG_NONE;
+	} else {
+		// support of SSH2 packet compression (2005.7.9 yutaka)
+		if (pvar->stoc_compression && pvar->ssh2_keys[MODE_IN].comp.enabled) { // compression enabled
+			int ret;
+
+			if (pvar->decomp_buffer == NULL) {
+				pvar->decomp_buffer = buffer_init();
+				if (pvar->decomp_buffer == NULL) 
+					return SSH_MSG_NONE;
+			}
+			// 一度確保したバッファは使い回すので初期化を忘れずに。
+			buffer_clear(pvar->decomp_buffer);
+
+			// packet sizeとpaddingを取り除いたペイロード部分のみを展開する。
+			ret = buffer_decompress(&pvar->ssh_state.decompress_stream, 
+				pvar->ssh_state.payload, pvar->ssh_state.payloadlen, pvar->decomp_buffer);
+
+			// ポインタの更新。
+			pvar->ssh_state.payload = buffer_ptr(pvar->decomp_buffer);
+			pvar->ssh_state.payload++;
+			pvar->ssh_state.payloadlen = buffer_len(pvar->decomp_buffer);
+
+		} else {
+			pvar->ssh_state.payload++;
+		}
+
+		if (!grab_payload_limited(pvar, 1)) {
+			return SSH_MSG_NONE;
+		}
+
 	}
 
 	pvar->ssh_state.receiver_sequence_number++;
@@ -699,6 +732,7 @@ static void finish_send_packet_special(PTInstVar pvar, int skip_compress)
 	int len = pvar->ssh_state.outgoing_packet_len;
 	char FAR *data;
 	int data_length;
+	buffer_t *msg = NULL; // for SSH2 packet compression
 
 	if (pvar->ssh_state.compressing) {
 		if (!skip_compress) {
@@ -749,11 +783,53 @@ static void finish_send_packet_special(PTInstVar pvar, int skip_compress)
 		int padding;
 		BOOL ret;
 
+		/*
+		 データ構造
+		 pvar->ssh_state.outbuf:
+		 offset: 0 1 2 3 4 5 6 7 8 9 10 11 12 ...         EOD
+		         <--ignore---> ^^^^^^^^    <---- payload --->  
+				               packet length
+
+							            ^^padding
+
+							   <---------------------------->
+							      SSH2 sending data on TCP
+		 
+		 NOTE:
+		   payload = type(1) + raw-data
+		   len = ssh_state.outgoing_packet_len = payload size
+		 */
+		// パケット圧縮が有効の場合、パケットを圧縮してから送信パケットを構築する。(2005.7.9 yutaka)
+		if (pvar->ctos_compression && pvar->ssh2_keys[MODE_OUT].comp.enabled) {
+			// このバッファは packet-length(4) + padding(1) + payload(any) を示す。
+			msg = buffer_init(); 
+			if (msg == NULL) {
+				// TODO: error check
+				return;
+			}
+
+			// 圧縮対象はヘッダを除くペイロードのみ。
+			buffer_append(msg, "\0\0\0\0\0", 5);  // 5 = packet-length(4) + padding(1)
+			if (buffer_compress(&pvar->ssh_state.compress_stream, pvar->ssh_state.outbuf + 12, len, msg) == -1) {
+				notify_fatal_error(pvar,
+								   "An error occurred while compressing packet data.\n"
+								   "The connection will close.");
+				return;
+			}
+			data = buffer_ptr(msg);
+			len = buffer_len(msg) - 5;  // 'len' is overwritten.
+
+		} else {
+			// 無圧縮
+			data = pvar->ssh_state.outbuf + 7;
+
+		}
+
+		// 送信パケット構築(input parameter: data, len)
 		if (block_size < 8) {
 			block_size = 8;
 		}
 		encryption_size = ((len + 8) / block_size + 1) * block_size;
-		data = pvar->ssh_state.outbuf + 7;
 		data_length = encryption_size + CRYPT_get_sender_MAC_size(pvar);
 
 		set_uint32(data, encryption_size - 4);
@@ -773,6 +849,8 @@ static void finish_send_packet_special(PTInstVar pvar, int skip_compress)
 	}
 
 	send_packet_blocking(pvar, data, data_length);
+
+	buffer_free(msg);
 
 	pvar->ssh_state.sender_sequence_number++;
 
@@ -1717,6 +1795,13 @@ static void enable_compression(PTInstVar pvar)
 		buf_ensure_size(&pvar->ssh_state.postdecompress_inbuf,
 						&pvar->ssh_state.postdecompress_inbuflen, 1000);
 	}
+
+	// SSH2では圧縮・展開処理をSSH1とは別に行うので、下記フラグは落としておく。(2005.7.9 yutaka)
+	if (SSHv2(pvar)) {
+		pvar->ssh_state.compressing = FALSE;
+		pvar->ssh_state.decompressing = FALSE;
+	}
+
 }
 
 static BOOL handle_enable_compression(PTInstVar pvar)
@@ -1735,22 +1820,29 @@ static BOOL handle_disable_compression(PTInstVar pvar)
 static void prep_compression(PTInstVar pvar)
 {
 	if (pvar->session_settings.CompressionLevel > 0) {
-		static const int msgs[] = { SSH_SMSG_SUCCESS, SSH_SMSG_FAILURE };
-		static const SSHPacketHandler handlers[]
-		= { handle_enable_compression, handle_disable_compression };
+		// added if statement (2005.7.10 yutaka)
+		if (SSHv1(pvar)) {
+			static const int msgs[] = { SSH_SMSG_SUCCESS, SSH_SMSG_FAILURE };
+			static const SSHPacketHandler handlers[]
+			= { handle_enable_compression, handle_disable_compression };
 
-		unsigned char FAR *outmsg =
-			begin_send_packet(pvar, SSH_CMSG_REQUEST_COMPRESSION, 4);
+			unsigned char FAR *outmsg =
+				begin_send_packet(pvar, SSH_CMSG_REQUEST_COMPRESSION, 4);
 
-		set_uint32(outmsg, pvar->session_settings.CompressionLevel);
-		finish_send_packet(pvar);
+			set_uint32(outmsg, pvar->session_settings.CompressionLevel);
+			finish_send_packet(pvar);
+
+			enque_handlers(pvar, 2, msgs, handlers);
+		}
 
 		pvar->ssh_state.compression_level =
 			pvar->session_settings.CompressionLevel;
 
-		enque_handlers(pvar, 2, msgs, handlers);
 	} else {
-		prep_forwarding(pvar);
+		// added if statement (2005.7.10 yutaka)
+		if (SSHv1(pvar)) {
+			prep_forwarding(pvar);
+		}
 	}
 }
 
@@ -2065,6 +2157,7 @@ void SSH_init(PTInstVar pvar)
 	pvar->key_done = 0;
 	pvar->ssh2_autologin = 0;  // autologin disabled(default)
 	pvar->userauth_retry_count = 0;
+	pvar->decomp_buffer = NULL;
 
 }
 
@@ -2348,7 +2441,8 @@ void SSH_get_compression_info(PTInstVar pvar, char FAR * dest, int len)
 	char buf[1024];
 	char buf2[1024];
 
-	if (pvar->ssh_state.compressing) {
+	// added support of SSH2 packet compression (2005.7.10 yutaka)
+	if (pvar->ssh_state.compressing || pvar->ctos_compression) {
 		unsigned long total_in = pvar->ssh_state.compress_stream.total_in;
 		unsigned long total_out =
 			pvar->ssh_state.compress_stream.total_out;
@@ -2367,7 +2461,7 @@ void SSH_get_compression_info(PTInstVar pvar, char FAR * dest, int len)
 	}
 	buf[sizeof(buf) - 1] = 0;
 
-	if (pvar->ssh_state.decompressing) {
+	if (pvar->ssh_state.decompressing || pvar->stoc_compression) {
 		unsigned long total_in =
 			pvar->ssh_state.decompress_stream.total_in;
 		unsigned long total_out =
@@ -2485,6 +2579,11 @@ void SSH_end(PTInstVar pvar)
 		pvar->session_nego_status = 0;
 
 		pvar->ssh_heartbeat_tick = 0;
+
+		if (pvar->decomp_buffer != NULL) {
+			buffer_free(pvar->decomp_buffer);
+			pvar->decomp_buffer = NULL;
+		}
 	}
 #endif
 
@@ -2972,8 +3071,8 @@ static char *myproposal[PROPOSAL_MAX] = {
 //	"hmac-sha1,hmac-md5",
 //	"hmac-sha1",
 //	"hmac-sha1",
-	"none",
-	"none",
+	"none,zlib",
+	"none,zlib",
 	"",
 	"",
 };
@@ -2985,8 +3084,8 @@ static char *myproposal[PROPOSAL_MAX] = {
 	"3des-cbc,aes128-cbc",
 	"hmac-sha1,hmac-md5",
 	"hmac-sha1,hmac-md5",
-	"none",
-	"none",
+	"none,zlib",
+	"none,zlib",
 	"",
 	"",
 };
@@ -3137,6 +3236,22 @@ void SSH2_update_cipher_myproposal(PTInstVar pvar)
 }
 
 
+void SSH2_update_compression_myproposal(PTInstVar pvar)
+{
+	static char buf[128]; // TODO: malloc()にすべき
+
+	// 圧縮レベルに応じて、myproposal[]を書き換える。(2005.7.9 yutaka)
+	buf[0] = '\0';
+	if (pvar->ts_SSH->CompressionLevel > 0) {
+		_snprintf(buf, sizeof(buf), "zlib,none");
+	}
+	if (buf[0] != '\0') {
+		myproposal[PROPOSAL_COMP_ALGS_CTOS] = buf;  // Client To Server
+		myproposal[PROPOSAL_COMP_ALGS_STOC] = buf;  // Server To Client
+	}
+}
+
+
 // クライアントからサーバへのキー交換開始要求
 void SSH2_send_kexinit(PTInstVar pvar)
 {
@@ -3230,6 +3345,29 @@ static enum hmac_type choose_SSH2_hmac_algorithm(char *server_proposal, char *my
 }
 
 
+static int choose_SSH2_compression_algorithm(char *server_proposal, char *my_proposal)
+{
+	char tmp[1024], *ptr;
+	int ret = -1;
+
+	_snprintf(tmp, sizeof(tmp), my_proposal);
+	ptr = strtok(tmp, ","); // not thread-safe
+	while (ptr != NULL) {
+		// server_proposalにはサーバのproposalがカンマ文字列で格納されている
+		if (strstr(server_proposal, ptr)) { // match
+			break;
+		}
+		ptr = strtok(NULL, ",");
+	}
+	if (strstr(ptr, "zlib")) {
+		ret = 1; // packet compression enabled
+	} else if (strstr(ptr, "none")) {
+		ret = 0; // packet compression disabled
+	}
+
+	return (ret);
+}
+
 // 暗号アルゴリズムのキーサイズ、ブロックサイズ、MACサイズのうち最大値(we_need)を決定する。
 static void choose_SSH2_key_maxlength(PTInstVar pvar)
 {
@@ -3265,9 +3403,11 @@ static void choose_SSH2_key_maxlength(PTInstVar pvar)
 			current_keys[mode].enc.block_size = get_cipher_block_size(pvar->stoc_cipher);
 		}
 		current_keys[mode].mac.enabled = 0;
+		current_keys[mode].comp.enabled = 0; // (2005.7.9 yutaka)
 
 		// 現時点ではMACはdisable
 		pvar->ssh2_keys[mode].mac.enabled = 0;
+		pvar->ssh2_keys[mode].comp.enabled = 0; // (2005.7.9 yutaka)
 	}
 	need = 0;
 	for (mode = 0; mode < MODE_MAX; mode++) {
@@ -3497,6 +3637,40 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 	pvar->stoc_hmac = choose_SSH2_hmac_algorithm(buf, myproposal[PROPOSAL_MAC_ALGS_STOC]);
 	if (pvar->ctos_hmac == HMAC_UNKNOWN) { // not match
 		strcpy(tmp, "unknown HMAC algorithm: ");
+		strcat(tmp, buf);
+		msg = tmp;
+		goto error;
+	}
+
+
+	// 圧縮アルゴリズムの決定 
+	// pvar->ssh_state.compressing = FALSE; として下記メンバを使用する。
+	// (2005.7.9 yutaka)
+	size = get_payload_uint32(pvar, offset);
+	offset += 4;
+	for (i = 0; i < size; i++) {
+		buf[i] = data[offset + i];
+	}
+	buf[i] = 0;
+	offset += size;
+	pvar->ctos_compression = choose_SSH2_compression_algorithm(buf, myproposal[PROPOSAL_COMP_ALGS_CTOS]);
+	if (pvar->ctos_compression == -1) { // not match
+		strcpy(tmp, "unknown Packet Compression algorithm: ");
+		strcat(tmp, buf);
+		msg = tmp;
+		goto error;
+	}
+
+	size = get_payload_uint32(pvar, offset);
+	offset += 4;
+	for (i = 0; i < size; i++) {
+		buf[i] = data[offset + i];
+	}
+	buf[i] = 0;
+	offset += size;
+	pvar->stoc_compression = choose_SSH2_compression_algorithm(buf, myproposal[PROPOSAL_COMP_ALGS_STOC]);
+	if (pvar->stoc_compression == -1) { // not match
+		strcpy(tmp, "unknown Packet Compression algorithm: ");
 		strcat(tmp, buf);
 		msg = tmp;
 		goto error;
@@ -4450,6 +4624,7 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 		// まず、送信用だけ設定する。
 		ssh2_set_newkeys(pvar, MODE_OUT);
 		pvar->ssh2_keys[MODE_OUT].mac.enabled = 1;
+		pvar->ssh2_keys[MODE_OUT].comp.enabled = 1;
 		if (!CRYPT_start_encryption(pvar, 1, 0)) {
 			// TODO: error
 		}
@@ -4762,6 +4937,7 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 		// まず、送信用だけ設定する。
 		ssh2_set_newkeys(pvar, MODE_OUT);
 		pvar->ssh2_keys[MODE_OUT].mac.enabled = 1;
+		pvar->ssh2_keys[MODE_OUT].comp.enabled = 1;
 		if (!CRYPT_start_encryption(pvar, 1, 0)) {
 			// TODO: error
 		}
@@ -4852,6 +5028,7 @@ static BOOL handle_SSH2_newkeys(PTInstVar pvar)
 		// かつ、受信用の暗号鍵の再設定をここで行う。
 		ssh2_set_newkeys(pvar, MODE_IN);
 		pvar->ssh2_keys[MODE_IN].mac.enabled = 1;
+		pvar->ssh2_keys[MODE_IN].comp.enabled = 1;
 		if (!CRYPT_start_encryption(pvar, 0, 1)) {
 			// TODO: error
 		}
@@ -4895,7 +5072,11 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 
 	for (mode = 0 ; mode < MODE_MAX ; mode++) {
 		pvar->ssh2_keys[mode].mac.enabled = 1;
+		pvar->ssh2_keys[mode].comp.enabled = 1;
 	}
+	// パケット圧縮が有効なら初期化する。(2005.7.9 yutaka)
+	prep_compression(pvar);
+	enable_compression(pvar);
 
 	// start user authentication
 	msg = buffer_init();
@@ -6150,6 +6331,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.33  2005/07/03 13:32:00  yutakakn
+ * SSH2 port-forwardingの初期化タイミングを変更。
+ *
  * Revision 1.32  2005/07/03 12:07:53  yutakakn
  * SSH2 X Window Systemのport forwardingをサポートした。
  *

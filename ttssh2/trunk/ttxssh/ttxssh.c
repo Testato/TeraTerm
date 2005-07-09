@@ -328,7 +328,6 @@ static void read_string_option(PCHAR fileName, char FAR * keyName,
 
 static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 {
-	extern void SSH2_update_cipher_myproposal(PTInstVar pvar);
 	char buf[1024];
 	TS_SSH FAR *settings = pvar->ts_SSH;
 
@@ -354,6 +353,7 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 	READ_STD_STRING_OPTION(CipherOrder);
 	normalize_cipher_order(settings->CipherOrder);
 	SSH2_update_cipher_myproposal(pvar); // yutaka
+	SSH2_update_compression_myproposal(pvar);  // SSH2 packet compression (2005.7.9 yutaka)
 
 	read_string_option(fileName, "KnownHostsFiles", "ssh_known_hosts",
 					   settings->KnownHostsFiles,
@@ -3081,6 +3081,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.24  2005/07/09 05:16:06  yutakakn
+ * OpenSSL 0.9.8でビルドできるようにした。
+ *
  * Revision 1.23  2005/06/19 09:17:47  yutakakn
  * SSH2 port-fowarding(local to remote)をサポートした。
  *

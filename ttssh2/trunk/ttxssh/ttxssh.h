@@ -185,6 +185,8 @@ typedef struct _TInstVar {
   SSHCipher stoc_cipher;
   enum hmac_type ctos_hmac;
   enum hmac_type stoc_hmac;
+  int ctos_compression;
+  int stoc_compression;
   int we_need;
   int key_done;
   int rekeying;
@@ -219,7 +221,7 @@ typedef struct _TInstVar {
   int keyboard_interactive_done;
   int keyboard_interactive_password_input;
   int userauth_retry_count;
-
+  buffer_t *decomp_buffer;
 } TInstVar;
 
 #define LOG_LEVEL_FATAL      5
@@ -245,6 +247,9 @@ void get_file_version(char *exefile, int *major, int *minor, int *release, int *
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2005/07/09 05:16:06  yutakakn
+ * OpenSSL 0.9.8でビルドできるようにした。
+ *
  * Revision 1.12  2005/04/23 17:26:57  yutakakn
  * キー作成ダイアログの追加。
  *

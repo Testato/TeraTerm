@@ -45,11 +45,12 @@ See LICENSE.TXT for the license.
 /* Some of this code has been adapted from Ian Goldberg's Pilot SSH */
 
 typedef enum {
-    SSH_MSG_NONE, SSH_MSG_DISCONNECT, SSH_SMSG_PUBLIC_KEY,
-    SSH_CMSG_SESSION_KEY, SSH_CMSG_USER, SSH_CMSG_AUTH_RHOSTS,
+    SSH_MSG_NONE, SSH_MSG_DISCONNECT, SSH_SMSG_PUBLIC_KEY, //2
+    SSH_CMSG_SESSION_KEY, SSH_CMSG_USER, SSH_CMSG_AUTH_RHOSTS, // 5
     SSH_CMSG_AUTH_RSA, SSH_SMSG_AUTH_RSA_CHALLENGE,
     SSH_CMSG_AUTH_RSA_RESPONSE, SSH_CMSG_AUTH_PASSWORD,
-    SSH_CMSG_REQUEST_PTY, SSH_CMSG_WINDOW_SIZE, SSH_CMSG_EXEC_SHELL,
+    SSH_CMSG_REQUEST_PTY, // 10
+	SSH_CMSG_WINDOW_SIZE, SSH_CMSG_EXEC_SHELL,
     SSH_CMSG_EXEC_CMD, SSH_SMSG_SUCCESS, SSH_SMSG_FAILURE,
     SSH_CMSG_STDIN_DATA, SSH_SMSG_STDOUT_DATA, SSH_SMSG_STDERR_DATA,
     SSH_CMSG_EOF, SSH_SMSG_EXITSTATUS,
@@ -388,5 +389,7 @@ void ssh_heartbeat_unlock(void);
 void halt_ssh_heartbeat_thread(PTInstVar pvar);
 void ssh2_channel_free(void);
 BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar);
+void SSH2_update_compression_myproposal(PTInstVar pvar);
+void SSH2_update_cipher_myproposal(PTInstVar pvar);
 
 #endif
