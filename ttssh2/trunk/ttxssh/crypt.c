@@ -37,6 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <openssl/err.h>
 #include <openssl/des.h>
 #include <openssl/hmac.h> // for SSH2(yutaka)
+#include <openssl/dsa.h>
 #include "cipher.h"
 #include "ssh.h"
 
@@ -47,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.3 2004-12-22 17:28:14 yutakakn Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.4 2005-07-09 05:16:06 yutakakn Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -1422,4 +1423,7 @@ void CRYPT_free_key_pair(CRYPTKeyPair FAR * key_pair)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2004/12/22 17:28:14  yutakakn
+ * SSH2公開鍵認証(RSA/DSA)をサポートした。
+ *
  */

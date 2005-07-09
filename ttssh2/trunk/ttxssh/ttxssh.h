@@ -52,9 +52,6 @@ See LICENSE.TXT for the license.
 #include <stdlib.h>
 #include <crtdbg.h>
 
-#include "teraterm.h"
-#include "tttypes.h"
-#include "ttplugin.h"
 
 typedef struct _TInstVar FAR * PTInstVar;
 
@@ -69,6 +66,14 @@ typedef struct _TInstVar FAR * PTInstVar;
 #include <openssl/dh.h>
 #include <openssl/evp.h>
 #include "buffer.h"
+
+/* tttypes.h で定義されている EM マクロが openssl/rsa.h (OpenSSL 0.9.8)の関数プロトタイプ宣言に
+ * ある引数名と重複してしまうので、ビルドエラーとなる。下記3ヘッダのinclude位置を下記に移動した。
+ * (2005.7.9 yutaka)
+ */
+#include "teraterm.h"
+#include "tttypes.h"
+#include "ttplugin.h"
 
 HANDLE hInst; /* Instance handle of TTXSSH.DLL */
 
@@ -240,6 +245,9 @@ void get_file_version(char *exefile, int *major, int *minor, int *release, int *
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2005/04/23 17:26:57  yutakakn
+ * キー作成ダイアログの追加。
+ *
  * Revision 1.11  2005/04/03 14:39:48  yutakakn
  * SSH2 channel lookup機構の追加（ポートフォワーディングのため）。
  * TTSSH 2.10で追加したlog dump機構において、DH鍵再作成時にbuffer freeで

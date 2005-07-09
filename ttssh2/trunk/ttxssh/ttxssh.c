@@ -66,6 +66,7 @@ static char FAR *ProtocolFamilyList[] = { "UNSPEC", "IPv6", "IPv4", NULL };
 #include <openssl/pem.h>
 #include <openssl/rand.h>
 #include <openssl/rc4.h>
+#include <openssl/md5.h>
 
 // include ZLib header file
 #include <zlib.h>
@@ -3080,6 +3081,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.23  2005/06/19 09:17:47  yutakakn
+ * SSH2 port-fowarding(local to remote)をサポートした。
+ *
  * Revision 1.22  2005/05/15 09:14:04  yutakakn
  * zlib versionの位置調整。
  *
