@@ -1765,8 +1765,19 @@ static void prep_forwarding(PTInstVar pvar)
 	prep_pty(pvar);
 }
 
-static void enable_compression(PTInstVar pvar)
+
+//
+//
+// (2005.7.10 yutaka)
+static void enable_send_compression(PTInstVar pvar)
 {
+	static int initialize = 0;
+
+	if (initialize) {
+		deflateEnd(&pvar->ssh_state.compress_stream);
+	}
+	initialize = 1;
+
 	pvar->ssh_state.compress_stream.zalloc = NULL;
 	pvar->ssh_state.compress_stream.zfree = NULL;
 	pvar->ssh_state.compress_stream.opaque = NULL;
@@ -1778,8 +1789,23 @@ static void enable_compression(PTInstVar pvar)
 						   "The connection will close.");
 		return;
 	} else {
-		pvar->ssh_state.compressing = TRUE;
+		// SSH2では圧縮・展開処理をSSH1とは別に行うので、下記フラグは落としておく。(2005.7.9 yutaka)
+		if (SSHv2(pvar)) {
+			pvar->ssh_state.compressing = FALSE;
+		} else {
+			pvar->ssh_state.compressing = TRUE;
+		}
 	}
+}
+
+static void enable_recv_compression(PTInstVar pvar)
+{
+	static int initialize = 0;
+
+	if (initialize) {
+		deflateEnd(&pvar->ssh_state.decompress_stream);
+	}
+	initialize = 1;
 
 	pvar->ssh_state.decompress_stream.zalloc = NULL;
 	pvar->ssh_state.decompress_stream.zfree = NULL;
@@ -1791,10 +1817,22 @@ static void enable_compression(PTInstVar pvar)
 						   "The connection will close.");
 		return;
 	} else {
-		pvar->ssh_state.decompressing = TRUE;
+		// SSH2では圧縮・展開処理をSSH1とは別に行うので、下記フラグは落としておく。(2005.7.9 yutaka)
+		if (SSHv2(pvar)) {
+			pvar->ssh_state.decompressing = FALSE;
+		} else {
+			pvar->ssh_state.decompressing = TRUE;
+		}
+
 		buf_ensure_size(&pvar->ssh_state.postdecompress_inbuf,
 						&pvar->ssh_state.postdecompress_inbuflen, 1000);
 	}
+}
+
+static void enable_compression(PTInstVar pvar)
+{
+	enable_send_compression(pvar);
+	enable_recv_compression(pvar);
 
 	// SSH2では圧縮・展開処理をSSH1とは別に行うので、下記フラグは落としておく。(2005.7.9 yutaka)
 	if (SSHv2(pvar)) {
@@ -2535,11 +2573,11 @@ void SSH_end(PTInstVar pvar)
 	buf_destroy(&pvar->ssh_state.postdecompress_inbuf,
 				&pvar->ssh_state.postdecompress_inbuflen);
 
-	if (pvar->ssh_state.compressing) {
+	if (pvar->ssh_state.compressing || pvar->ctos_compression) { // add SSH2 flag (2005.7.10 yutaka)
 		deflateEnd(&pvar->ssh_state.compress_stream);
 		pvar->ssh_state.compressing = FALSE;
 	}
-	if (pvar->ssh_state.decompressing) {
+	if (pvar->ssh_state.decompressing || pvar->stoc_compression) { // add SSH2 flag (2005.7.10 yutaka)
 		inflateEnd(&pvar->ssh_state.decompress_stream);
 		pvar->ssh_state.decompressing = FALSE;
 	}
@@ -4625,6 +4663,7 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 		ssh2_set_newkeys(pvar, MODE_OUT);
 		pvar->ssh2_keys[MODE_OUT].mac.enabled = 1;
 		pvar->ssh2_keys[MODE_OUT].comp.enabled = 1;
+		enable_send_compression(pvar);
 		if (!CRYPT_start_encryption(pvar, 1, 0)) {
 			// TODO: error
 		}
@@ -4938,6 +4977,7 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 		ssh2_set_newkeys(pvar, MODE_OUT);
 		pvar->ssh2_keys[MODE_OUT].mac.enabled = 1;
 		pvar->ssh2_keys[MODE_OUT].comp.enabled = 1;
+		enable_send_compression(pvar);
 		if (!CRYPT_start_encryption(pvar, 1, 0)) {
 			// TODO: error
 		}
@@ -5029,6 +5069,7 @@ static BOOL handle_SSH2_newkeys(PTInstVar pvar)
 		ssh2_set_newkeys(pvar, MODE_IN);
 		pvar->ssh2_keys[MODE_IN].mac.enabled = 1;
 		pvar->ssh2_keys[MODE_IN].comp.enabled = 1;
+		enable_recv_compression(pvar);
 		if (!CRYPT_start_encryption(pvar, 0, 1)) {
 			// TODO: error
 		}
@@ -6331,6 +6372,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.34  2005/07/09 17:08:47  yutakakn
+ * SSH2 packet compressionをサポートした。
+ *
  * Revision 1.33  2005/07/03 13:32:00  yutakakn
  * SSH2 port-forwardingの初期化タイミングを変更。
  *
