@@ -127,12 +127,13 @@
   TTSSH: http://www.zip.com.au/~roca/ttssh.html
 
 
-* Limitations of current release
-  - does not support packet compression
-  - does not support port forwarding
-
-
 * History
+
+2005.7.?? (Ver 2.15)
+  - added support of SSH2 port forwarding
+  - added support of SSH2 packet compression
+  - upgraded OpenSSL to 0.9.8
+  - added the security fix(CAN-2005-2096) to zlib 1.2.2
 
 2005.5.28 (Ver 2.14)
   - added three file filter on private key saving dialog.

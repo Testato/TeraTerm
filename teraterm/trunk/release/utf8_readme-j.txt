@@ -591,6 +591,9 @@ MaxBuffSize=500000
 
 ■改版履歴
 
+2005.7.?? (Ver 4.18)
+
+
 2005.5.29 (Ver 4.17)
   ・<ESC>[J(Clear screen from cursor-position up to end)処理時において、カーソルが左上隅を指している場合にのみ、カレントバッファをスクロールアウトさせるようにした。
 
