@@ -179,7 +179,7 @@ BEGIN
     CONTROL         "&Append",IDC_FOPTAPPEND,"Button",BS_AUTOCHECKBOX | NOT 
                     WS_VISIBLE | WS_TABSTOP,87,7,43,16
     CONTROL         "plain text",IDC_PLAINTEXT,"Button",BS_AUTOCHECKBOX | 
-                    NOT WS_VISIBLE | WS_TABSTOP,137,11,44,10
+                    NOT WS_VISIBLE | WS_TABSTOP,137,10,44,10
 END
 
 IDD_ZOPTOLD DIALOG  20, 20, 265, 155
