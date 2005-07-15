@@ -606,6 +606,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 * History
 
 2005.7.?? (Ver 4.18)
+  - upgraded LogMeTT to 2.5.4
 
 
 2005.5.29 (Ver 4.17)
