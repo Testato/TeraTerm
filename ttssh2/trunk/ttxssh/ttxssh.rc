@@ -129,23 +129,25 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION |
 CAPTION "Tera Term: New connection"
 FONT 10, "System", 0, 0, 0x0
 BEGIN
-    CONTROL         "TCP/&IP",IDC_HOSTTCPIP,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,8,8,40,12
-    CONTROL         "S&erial",IDC_HOSTSERIAL,"Button",BS_AUTORADIOBUTTON | 
-                    WS_TABSTOP,8,86,36,12
     CONTROL         "Hos&t:",IDC_HOSTNAMELABEL,"Static",SS_LEFTNOWORDWRAP,56,
                     10,22,12
     COMBOBOX        IDC_HOSTNAME,81,8,126,54,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
                     WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    CONTROL         "Service:",IDC_SERVICELABEL,"Static",SS_LEFTNOWORDWRAP,
+                    47,25,26,12
     CONTROL         "Te&lnet",IDC_HOSTTELNET,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP | WS_TABSTOP,80,24,44,12
     CONTROL         "&SSH",IDC_HOSTSSH,"Button",BS_AUTORADIOBUTTON | 
                     WS_TABSTOP,80,35,28,12
     CONTROL         "Other",IDC_HOSTOTHER,"Button",BS_AUTORADIOBUTTON | 
                     WS_TABSTOP,80,46,32,12
+    CONTROL         "TCP &port#:",IDC_HOSTTCPPORTLABEL,"Static",
+                    SS_LEFTNOWORDWRAP,132,26,40,10
     EDITTEXT        IDC_HOSTTCPPORT,176,24,30,12,WS_GROUP
+    LTEXT           "SSH &version:",IDC_SSH_VERSION_LABEL,117,40,46,8
     COMBOBOX        IDC_SSH_VERSION,167,39,39,30,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Proto&col:",IDC_HOSTTCPPROTOCOLLABEL,130,57,32,8
     COMBOBOX        IDC_HOSTTCPPROTOCOL,166,56,40,43,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     CONTROL         " Po&rt:",IDC_HOSTCOMLABEL,"Static",SS_LEFTNOWORDWRAP,53,
@@ -157,12 +159,10 @@ BEGIN
     PUSHBUTTON      "&Help",IDC_HOSTHELP,131,109,32,14
     GROUPBOX        "",-1,4,0,208,78
     GROUPBOX        "",-1,4,79,208,26
-    CONTROL         "TCP &port#:",IDC_HOSTTCPPORTLABEL,"Static",
-                    SS_LEFTNOWORDWRAP,132,26,40,10
-    LTEXT           "Proto&col:",IDC_HOSTTCPPROTOCOLLABEL,130,57,32,8
-    CONTROL         "Service:",IDC_SERVICELABEL,"Static",SS_LEFTNOWORDWRAP,
-                    47,25,26,12
-    LTEXT           "SSH version:",IDC_SSH_VERSION_LABEL,117,40,46,8
+    CONTROL         "TCP/&IP",IDC_HOSTTCPIP,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,8,8,40,12
+    CONTROL         "S&erial",IDC_HOSTSERIAL,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,8,86,36,12
 END
 
 IDD_SSHSETUP DIALOGEX 0, 0, 223, 245
