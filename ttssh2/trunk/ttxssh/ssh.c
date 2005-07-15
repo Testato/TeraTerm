@@ -519,7 +519,10 @@ static BOOL grab_payload(PTInstVar pvar, int num_bytes)
 	} else {
 		pvar->ssh_state.payload_grabbed += num_bytes;
 		if (pvar->ssh_state.payload_grabbed > in_buffer) {
-			notify_fatal_error(pvar, "Received truncated packet");
+			char buf[128];
+			_snprintf(buf, sizeof(buf), "Received truncated packet (%ld > %d) @ grab_payload()", 
+				pvar->ssh_state.payload_grabbed, in_buffer);
+			notify_fatal_error(pvar, buf);
 			return FALSE;
 		} else {
 			return TRUE;
@@ -538,7 +541,10 @@ static BOOL grab_payload_limited(PTInstVar pvar, int num_bytes)
 		return FALSE;
 	} else {
 		if (pvar->ssh_state.payload_grabbed > in_buffer) {
-			notify_fatal_error(pvar, "Received truncated packet");
+			char buf[128];
+			_snprintf(buf, sizeof(buf), "Received truncated packet (%ld > %d) @ grab_payload_limited()", 
+				pvar->ssh_state.payload_grabbed, in_buffer);
+			notify_fatal_error(pvar, buf);
 			return FALSE;
 		} else {
 			return TRUE;
@@ -1001,6 +1007,9 @@ static BOOL handle_auth_failure(PTInstVar pvar)
 {
 	notify_verbose_message(pvar, "Authentication failed",
 						   LOG_LEVEL_VERBOSE);
+
+	// retry countの追加 (2005.7.15 yutaka)
+	pvar->userauth_retry_count++;
 
 	AUTH_set_generic_mode(pvar);
 	AUTH_advance_to_next_cred(pvar);
@@ -5846,8 +5855,10 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	buffer_put_int(msg, pvar->ssh_state.win_rows);  // lines
 	buffer_put_int(msg, 480);  // XXX:
 	buffer_put_int(msg, 640);  // XXX:
+	// TODO: TTY modeはここで渡すこと。
 	s = "";
 	buffer_put_string(msg, s, strlen(s));  
+
 	len = buffer_len(msg);
 	outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_REQUEST, len);
 	memcpy(outmsg, buffer_ptr(msg), len);
@@ -6372,6 +6383,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.35  2005/07/10 06:44:48  yutakakn
+ * キー再作成時にパケット圧縮が正常に動作せず、サーバ側で正しく解凍できないバグを修正。
+ *
  * Revision 1.34  2005/07/09 17:08:47  yutakakn
  * SSH2 packet compressionをサポートした。
  *

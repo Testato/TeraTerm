@@ -496,7 +496,7 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		switch (LOWORD(wParam)) {
 		case IDOK:
 			// 認証準備ができてから、認証データを送信する。早すぎると、落ちる。(2001.1.25 yutaka)
-			if ((pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME)) {
+			if (pvar->userauth_retry_count == 0 && (pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME)) {
 				return FALSE;
 			}
 			return end_auth_dlg(pvar, dlg);
@@ -1041,6 +1041,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2005/04/26 13:57:57  yutakakn
+ * private keyファイルダイアログに3ファイルフィルタを追加した。
+ *
  * Revision 1.13  2005/04/08 14:55:03  yutakakn
  * "Duplicate session"においてSSH自動ログインを行うようにした。
  *
