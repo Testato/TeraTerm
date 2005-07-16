@@ -5785,7 +5785,7 @@ BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar)
 
 static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 {	
-	buffer_t *msg;
+	buffer_t *msg, *ttymsg;
 	char *s;
 	unsigned char *outmsg;
 	int len;
@@ -5845,6 +5845,13 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 		// TODO: error check
 		return FALSE;
 	}
+	ttymsg = buffer_init();
+	if (ttymsg == NULL) {
+		// TODO: error check
+		buffer_free(msg);
+		return FALSE;
+	}
+
 	buffer_put_int(msg, remote_id);  
 	s = "pty-req";  // pseudo terminalのリクエスト
 	buffer_put_string(msg, s, strlen(s));  
@@ -5855,15 +5862,36 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	buffer_put_int(msg, pvar->ssh_state.win_rows);  // lines
 	buffer_put_int(msg, 480);  // XXX:
 	buffer_put_int(msg, 640);  // XXX:
-	// TODO: TTY modeはここで渡すこと。
+
+	// TTY modeはここで渡す (2005.7.17 yutaka)
+#if 0
 	s = "";
 	buffer_put_string(msg, s, strlen(s));  
+#else
+	buffer_put_char(ttymsg, 129);  // TTY_OP_OSPEED_PROTO2
+	buffer_put_int(ttymsg, 9600);  // baud rate
+	buffer_put_char(ttymsg, 128);  // TTY_OP_ISPEED_PROTO2
+	buffer_put_int(ttymsg, 9600);  // baud rate
+	// VERASE
+	buffer_put_char(ttymsg, 3);  
+	if (pvar->ts->BSKey == IdBS) {
+		buffer_put_int(ttymsg, 0x08); // BS key
+	} else {
+		buffer_put_int(ttymsg, 0x7F); // DEL key
+	}
+	// TTY_OP_END
+	buffer_put_char(ttymsg, 0);  
+
+	// SSH2では文字列として書き込む。
+	buffer_put_string(msg, buffer_ptr(ttymsg), buffer_len(ttymsg));
+#endif
 
 	len = buffer_len(msg);
 	outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_REQUEST, len);
 	memcpy(outmsg, buffer_ptr(msg), len);
 	finish_send_packet(pvar);
 	buffer_free(msg);
+	buffer_free(ttymsg);
 
 	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_REQUEST was sent at handle_SSH2_open_confirm().", LOG_LEVEL_VERBOSE);
 
@@ -6383,6 +6411,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.36  2005/07/15 14:58:04  yutakakn
+ * SSH1接続で一度ユーザ認証に失敗すると、その後認証ができなくなるバグを修正。
+ *
  * Revision 1.35  2005/07/10 06:44:48  yutakakn
  * キー再作成時にパケット圧縮が正常に動作せず、サーバ側で正しく解凍できないバグを修正。
  *
