@@ -46,6 +46,21 @@ static int SP; // Stack pointer
 static BINT LineStart;
 static BOOL NextFlag;
 
+static int LineNo;  // line number (2005.7.18 yutaka)
+static int NextLineNo;  // line number (2005.7.18 yutaka)
+
+void InitLineNo(void)
+{
+	LineNo = 1;
+	NextLineNo = 1;
+}
+
+int GetLineNo(void)
+{
+	return (LineNo);
+}
+
+
 BOOL LoadMacroFile(PCHAR FileName, int IBuff)
 {
   int F;
@@ -83,61 +98,68 @@ BOOL LoadMacroFile(PCHAR FileName, int IBuff)
 
 BOOL GetRawLine()
 {
-  int i;
-  BYTE b;
+	int i;
+	BYTE b;
 
-  LineStart = BuffPtr[INest];
-  Buff[INest] = GlobalLock(BuffHandle[INest]);
-  if (Buff[INest]==NULL) return FALSE;
+	LineStart = BuffPtr[INest];
+	Buff[INest] = GlobalLock(BuffHandle[INest]);
+	if (Buff[INest]==NULL) return FALSE;
 
-  if (BuffPtr[INest]<BuffLen[INest])
-    b = (Buff[INest])[BuffPtr[INest]];
+	if (BuffPtr[INest]<BuffLen[INest])
+		b = (Buff[INest])[BuffPtr[INest]];
 
-  i = 0;
-  while ((BuffPtr[INest]<BuffLen[INest]) &&
-         ((b>=0x20) || (b==0x09)))
-  {
-    LineBuff[i] = b;
-    i++;
-    BuffPtr[INest]++;
-    if (BuffPtr[INest]<BuffLen[INest])
-      b = (Buff[INest])[BuffPtr[INest]];
-  }
-  LineBuff[i] = 0;
-  LinePtr = 0;
-  LineLen = strlen(LineBuff);
+	i = 0;
+	while ((BuffPtr[INest]<BuffLen[INest]) &&
+		((b>=0x20) || (b==0x09)))
+	{
+		LineBuff[i] = b;
+		i++;
+		BuffPtr[INest]++;
+		if (BuffPtr[INest]<BuffLen[INest])
+			b = (Buff[INest])[BuffPtr[INest]];
+	}
+	LineBuff[i] = 0;
+	LinePtr = 0;
+	LineLen = strlen(LineBuff);
 
-  while ((BuffPtr[INest]<BuffLen[INest]) &&
-         (b<0x20) && (b!=0x09))
-  {
-    BuffPtr[INest]++;
-    if (BuffPtr[INest]<BuffLen[INest])
-      b = (Buff[INest])[BuffPtr[INest]];
-  }
-  GlobalUnlock(BuffHandle[INest]);
-  return ((LineLen>0) || (BuffPtr[INest]<BuffLen[INest]));
+	LineNo = NextLineNo; // current line number
+
+	while ((BuffPtr[INest]<BuffLen[INest]) &&
+		(b<0x20) && (b!=0x09))
+	{
+		BuffPtr[INest]++;
+		if (BuffPtr[INest]<BuffLen[INest])
+			b = (Buff[INest])[BuffPtr[INest]];
+
+		// ‰üs‚Ì”»’è (2005.7.18 yutaka)
+		if (b == 0x0A) { // LF
+			NextLineNo++;    // countup line number
+		}
+	}
+	GlobalUnlock(BuffHandle[INest]);
+	return ((LineLen>0) || (BuffPtr[INest]<BuffLen[INest]));
 }
 
 BOOL GetNewLine()
 {
-  BOOL Ok;
-  BYTE b;
+	BOOL Ok;
+	BYTE b;
 
-  do {
-    Ok = GetRawLine();
-    if (! Ok && (INest>0))
-      do {
-        CloseBuff(INest);
-        INest--;
-        Ok = GetRawLine();
-      } while (!Ok && (INest>0));
-    if (! Ok) return FALSE;
+	do {
+		Ok = GetRawLine();
+		if (! Ok && (INest>0))
+			do {
+				CloseBuff(INest);
+				INest--;
+				Ok = GetRawLine();
+			} while (!Ok && (INest>0));
+		if (! Ok) return FALSE;
 
-    b = GetFirstChar();
-    LinePtr--;
-  } while ((b==0) || (b==':'));
+		b = GetFirstChar();
+		LinePtr--;
+	} while ((b==0) || (b==':'));
 
-  return TRUE;
+	return TRUE;
 }
 
 BOOL RegisterLabels(int IBuff)
@@ -173,6 +195,7 @@ BOOL RegisterLabels(int IBuff)
     if (Err>0) DispErr(Err);
   }
   BuffPtr[IBuff] = 0;
+  InitLineNo(); // (2005.7.18 yutaka)
   GlobalUnlock(BuffHandle[IBuff]);
   return TRUE;
 }

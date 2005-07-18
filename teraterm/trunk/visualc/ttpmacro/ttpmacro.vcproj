@@ -322,6 +322,9 @@
 				RelativePath="..\..\source\common\ttlib.h">
 			</File>
 			<File
+				RelativePath="..\..\source\ttmacro\ttm_res.h">
+			</File>
+			<File
 				RelativePath="..\..\source\ttmacro\ttmacro.h">
 			</File>
 			<File

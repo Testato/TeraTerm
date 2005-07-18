@@ -28,6 +28,8 @@ int NextLoop();
 int SetWhileLoop();
 void EndWhileLoop();
 int BackToWhile();
+void InitLineNo(void);
+int GetLineNo(void);
 
 extern int EndWhileFlag;
 

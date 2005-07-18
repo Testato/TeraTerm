@@ -19,6 +19,8 @@
 
 #include "ttmmain.h"
 
+#include "ttmbuff.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -70,6 +72,7 @@ BOOL CCtrlWindow::OnIdle()
     (TTLStatus==IdTTLRun))
   {
     Exec();
+	Invalidate(TRUE);
     return TRUE;
   }
   else if (TTLStatus==IdTTLWait)
@@ -287,16 +290,21 @@ BOOL CCtrlWindow::OnEraseBkgnd(CDC* pDC)
 // for icon drawing in Win NT 3.5
 void CCtrlWindow::OnPaint()
 {
-  int OldMapMode;
-  CPaintDC dc(this);
+	int OldMapMode;
+	CPaintDC dc(this);
+	char buf[128];
 
-  OldMapMode = dc.GetMapMode();
-  dc.SetMapMode(MM_TEXT);
-  
-  if (!IsIconic()) return;
-  SendMessage(WM_ICONERASEBKGND,(UINT)(dc.m_hDC));
-  dc.DrawIcon(0, 0, m_hIcon);
-  dc.SetMapMode(OldMapMode);
+	// line number (2005.7.18 yutaka)
+	_snprintf(buf, sizeof(buf), "LineNo: %d", GetLineNo());
+	SetDlgItemText(IDC_LINENO, buf);
+
+	OldMapMode = dc.GetMapMode();
+	dc.SetMapMode(MM_TEXT);
+
+	if (!IsIconic()) return;
+	SendMessage(WM_ICONERASEBKGND,(UINT)(dc.m_hDC));
+	dc.DrawIcon(0, 0, m_hIcon);
+	dc.SetMapMode(OldMapMode);
 }
 
 // for icon drawing in Win NT 3.5
