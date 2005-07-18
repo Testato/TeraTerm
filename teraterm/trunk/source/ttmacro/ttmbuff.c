@@ -47,12 +47,10 @@ static BINT LineStart;
 static BOOL NextFlag;
 
 static int LineNo;  // line number (2005.7.18 yutaka)
-static int NextLineNo;  // line number (2005.7.18 yutaka)
 
 void InitLineNo(void)
 {
 	LineNo = 1;
-	NextLineNo = 1;
 }
 
 int GetLineNo(void)
@@ -96,6 +94,23 @@ BOOL LoadMacroFile(PCHAR FileName, int IBuff)
   return FALSE;
 }
 
+
+// 現在実行中のマクロファイルの行番号を返す (2005.7.18 yutaka)
+static int getCurrentLineNumber(CHAR *buf, BINT curpos)
+{
+	int no;
+	BINT i;
+
+	no = 0;
+	for (i = 0 ; i < curpos ; i++) {
+		if (buf[i] == 0x0A) { // LF
+			no++;
+		}
+	}
+	return (no + 1);
+}
+
+
 BOOL GetRawLine()
 {
 	int i;
@@ -122,7 +137,8 @@ BOOL GetRawLine()
 	LinePtr = 0;
 	LineLen = strlen(LineBuff);
 
-	LineNo = NextLineNo; // current line number
+	// current line number (2005.7.18 yutaka)
+	LineNo = getCurrentLineNumber(Buff[INest], BuffPtr[INest]); 
 
 	while ((BuffPtr[INest]<BuffLen[INest]) &&
 		(b<0x20) && (b!=0x09))
@@ -130,11 +146,6 @@ BOOL GetRawLine()
 		BuffPtr[INest]++;
 		if (BuffPtr[INest]<BuffLen[INest])
 			b = (Buff[INest])[BuffPtr[INest]];
-
-		// 改行の判定 (2005.7.18 yutaka)
-		if (b == 0x0A) { // LF
-			NextLineNo++;    // countup line number
-		}
 	}
 	GlobalUnlock(BuffHandle[INest]);
 	return ((LineLen>0) || (BuffPtr[INest]<BuffLen[INest]));
