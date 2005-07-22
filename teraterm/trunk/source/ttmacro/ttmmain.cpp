@@ -295,7 +295,8 @@ void CCtrlWindow::OnPaint()
 	char buf[128];
 
 	// line number (2005.7.18 yutaka)
-	_snprintf(buf, sizeof(buf), "LineNo: %d", GetLineNo());
+	// added line buffer (2005.7.22 yutaka)
+	_snprintf(buf, sizeof(buf), "%d:%s", GetLineNo(), GetLineBuffer());
 	SetDlgItemText(IDC_LINENO, buf);
 
 	OldMapMode = dc.GetMapMode();

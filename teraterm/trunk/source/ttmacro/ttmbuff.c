@@ -58,6 +58,15 @@ int GetLineNo(void)
 	return (LineNo);
 }
 
+char *GetLineBuffer(void)
+{
+	char *p = LineBuff;
+
+	while (*p == 0x20 || *p == 0x09) // space or tab
+		p++;
+	return (p);
+}
+
 
 BOOL LoadMacroFile(PCHAR FileName, int IBuff)
 {
