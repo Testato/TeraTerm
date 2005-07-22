@@ -493,7 +493,7 @@ There are 3 types of connection you can establish from TeraTerm macro:
   Alt + C, Ctrl + Insert, MouseDrag
     Copy selected string to the clipboard
 
-  Alt + V, Shift + Insert, マウスホイールボタン・右クリック
+  Alt + V, Shift + Insert, Mouse Middle/Right button
     Paste from the clipboard
   
   F1 key
@@ -605,9 +605,10 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
-2005.7.?? (Ver 4.18)
-  - upgraded LogMeTT to 2.5.4
-
+2005.7.24 (Ver 4.18)
+  - added showing the line number and data of TTL file on macro dialog.
+  - Bug fix: DAKUTEN(the dot marks) might not be correctly shown in UTF-8 for Mac OS X.
+  - upgraded LogMeTT to 2.5.6
 
 2005.5.29 (Ver 4.17)
   -changed scroll out the current buffer when the cursor position is only located on left-upper screen at receiving <ESC>[J(Clear screen from cursor-position up to end).

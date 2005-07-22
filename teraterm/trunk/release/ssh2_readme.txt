@@ -129,11 +129,12 @@
 
 * History
 
-2005.7.?? (Ver 2.15)
+2005.7.24 (Ver 2.15)
   - added support of SSH2 port forwarding
   - added support of SSH2 packet compression
-  - fixed the bug: The user can't login to the server since the second times when first user authentication is failed with SSH1 protocol.
-  - fixed the bug: The accelerator key(Alt + P or Alt + C) doesn't work on connection dialog.
+  - added sending TTY information(VERASE) to server with SSH2 connection.
+  - Bug fix: The user can't login to the server since the second times when first user authentication is failed with SSH1 protocol.
+  - Bug fix: The accelerator key(Alt + P or Alt + C) doesn't work on connection dialog.
   - upgraded OpenSSL to 0.9.8
   - added the security fix(CAN-2005-2096) to zlib 1.2.2
 
