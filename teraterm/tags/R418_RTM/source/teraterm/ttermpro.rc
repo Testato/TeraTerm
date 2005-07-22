@@ -1,0 +1,548 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "..\common\tt_res.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// ì˙ñ{åÍ resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "..\\common\\tt_res.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_COMMENT_DIALOG DIALOGEX 0, 0, 239, 19
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Comment to Log"
+FONT 10, "System", 400, 0, 0x80
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,201,3,32,12
+    EDITTEXT        IDC_EDIT_COMMENT,6,3,189,12,ES_AUTOHSCROLL
+END
+
+IDD_TABSHEET_GENERAL DIALOGEX 0, 0, 274, 139
+STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "Tahoma", 400, 0, 0x0
+BEGIN
+    CONTROL         "EnableContinuedLineCopy",IDC_LINECOPY,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,4,99,10
+    LTEXT           "MouseCursor",IDC_STATIC,116,5,48,8
+    LISTBOX         IDC_MOUSE_CURSOR,166,4,48,32,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Delimiter Characters",IDC_STATIC,6,52,73,8
+    EDITTEXT        IDC_DELIM_LIST,87,50,130,12,ES_AUTOHSCROLL
+    LTEXT           "ANSI color",IDC_STATIC,8,68,43,8
+    LISTBOX         IDC_ANSI_COLOR,8,82,28,48,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Red",IDC_STATIC,43,86,14,8
+    LTEXT           "Green",IDC_STATIC,43,100,22,8
+    LTEXT           "Blue",IDC_STATIC,43,115,14,8
+    EDITTEXT        IDC_COLOR_RED,67,83,20,14,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_COLOR_GREEN,67,98,20,14,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_COLOR_BLUE,67,115,20,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "SAMPLE TEXT",IDC_SAMPLE_COLOR,93,100,44,8
+    DEFPUSHBUTTON   "OK",IDOK,227,2,33,14
+    PUSHBUTTON      "Cancel",IDCANCEL,227,22,33,14
+    CONTROL         "DisableMouseRButtonPaste",IDC_DISABLE_PASTE_RBUTTON,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,147,71,102,10
+    CONTROL         "EnableClickableURL",IDC_CLICKABLE_URL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,147,88,100,10
+END
+
+IDD_BROADCAST_DIALOG DIALOGEX 0, 0, 252, 40
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Tera Term: Broadcast command"
+FONT 10, "System", 400, 0, 0x80
+BEGIN
+    DEFPUSHBUTTON   "Submit",IDOK,205,2,40,14
+    EDITTEXT        IDC_COMMAND_EDIT,5,2,187,12,ES_AUTOHSCROLL
+    CONTROL         "Enter key",IDC_ENTERKEY_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,149,21,44,10
+    DEFPUSHBUTTON   "Close",IDCANCEL,205,21,40,14
+    CONTROL         "CRLF",IDC_RADIO_CRLF,"Button",BS_AUTORADIOBUTTON,47,21,
+                    33,10
+    GROUPBOX        "",IDC_ENTERGROUP,42,15,102,18
+    CONTROL         "CR",IDC_RADIO_CR,"Button",BS_AUTORADIOBUTTON,81,21,25,
+                    10
+    CONTROL         "LF",IDC_RADIO_LF,"Button",BS_AUTORADIOBUTTON,112,21,23,
+                    10
+END
+
+IDD_ADDITIONAL_SETUPTAB DIALOGEX 0, 0, 298, 180
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Tera Term: Additional settings"
+FONT 8, "Tahoma", 400, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_SETUP_TAB,"SysTabControl32",WS_TABSTOP,7,7,284,
+                    166
+END
+
+IDD_TABSHEET_VISUAL DIALOGEX 0, 0, 186, 95
+STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "Tahoma", 400, 0, 0x0
+BEGIN
+    LTEXT           "AlphaBlend",IDC_STATIC,17,17,38,8
+    EDITTEXT        IDC_ALPHA_BLEND,61,15,28,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Eterm lookfeel",IDC_ETERM_LOOKFEEL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,18,39,63,10
+    DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,24,50,14
+END
+
+IDD_TABSHEET_LOG DIALOGEX 0, 0, 186, 95
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "View Log Editor",IDC_VIEWLOG_LABEL,19,16,53,8
+    EDITTEXT        IDC_VIEWLOG_EDITOR,20,27,77,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_VIEWLOG_PATH,102,28,15,10
+    DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,24,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_COMMENT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 17
+    END
+
+    IDD_TABSHEET_GENERAL, DIALOG
+    BEGIN
+        RIGHTMARGIN, 267
+        BOTTOMMARGIN, 137
+    END
+
+    IDD_BROADCAST_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 8
+        RIGHTMARGIN, 245
+        BOTTOMMARGIN, 37
+    END
+
+    IDD_ADDITIONAL_SETUPTAB, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 291
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 173
+    END
+
+    IDD_TABSHEET_VISUAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_TABSHEET_LOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // ì˙ñ{åÍ resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// âpåÍ (ïƒçë) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PRNABORTDLG DIALOG  20, 20, 71, 43
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+CAPTION "Tera Term"
+FONT 10, "System"
+BEGIN
+    CTEXT           "Printing",-1,17,7,37,12
+    DEFPUSHBUTTON   "Cancel",2,14,22,42,14
+END
+
+IDD_FILETRANSDLG DIALOGEX 20, 20, 176, 79
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | WS_MINIMIZEBOX | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CLASS "FTDlg32"
+FONT 10, "System", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "Close",2,18,58,40,14
+    PUSHBUTTON      "Pau&se",IDC_TRANSPAUSESTART,68,58,40,14
+    PUSHBUTTON      "&Help",IDC_TRANSHELP,118,58,40,14
+    CONTROL         "Filename:",-1,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,15,
+                    12,38,10
+    RTEXT           "",IDC_TRANSFNAME,97,12,64,10,SS_NOPREFIX
+    CONTROL         "Bytes transfered:",-1,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,15,38,76,10
+    RTEXT           "",IDC_TRANSBYTES,97,38,64,10
+    EDITTEXT        IDC_EDIT_FULLPATH,53,24,109,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER,WS_EX_CLIENTEDGE
+    LTEXT           "Fullpath:",IDC_FULLPATH_LABEL,15,26,38,8
+END
+
+IDD_PROTDLG DIALOG  20, 20, 142, 80
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+FONT 10, "System"
+BEGIN
+    LTEXT           "Filename:",-1,12,8,40,8
+    RTEXT           "",IDC_PROTOFNAME,64,8,66,8,SS_NOPREFIX
+    LTEXT           "Protocol:",-1,12,18,40,8
+    RTEXT           "",IDC_PROTOPROT,56,18,74,8
+    LTEXT           "Packet#:",-1,12,27,40,8
+    RTEXT           "",IDC_PROTOPKTNUM,90,27,40,8
+    CONTROL         "Bytes transfered:",-1,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,12,37,70,8
+    RTEXT           "",IDC_PROTOBYTECOUNT,90,37,40,8
+    RTEXT           "",IDC_PROTOPERCENT,90,47,40,8
+    DEFPUSHBUTTON   "Cancel",2,56,58,30,14
+END
+
+IDD_TABSHEET_CYGWIN DIALOGEX 0, 0, 257, 152
+STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "Tahoma", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,200,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,200,24,50,14
+    LTEXT           "Cygwin Install Path",IDC_STATIC,12,17,64,8
+    EDITTEXT        IDC_CYGWIN_PATH,76,15,64,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_SELECT_FILE,146,15,13,10
+    LTEXT           "TERM",IDC_STATIC,23,57,19,8
+    EDITTEXT        IDC_TERM_EDIT,52,54,167,14,ES_AUTOHSCROLL
+    LTEXT           "TERM_TYPE",IDC_STATIC,21,76,39,8
+    EDITTEXT        IDC_TERM_TYPE,66,74,40,14,ES_AUTOHSCROLL
+    LTEXT           "PORT START",IDC_STATIC,21,95,42,8
+    EDITTEXT        IDC_PORT_START,65,94,34,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "PORT RANGE",IDC_STATIC,20,115,44,8
+    EDITTEXT        IDC_PORT_RANGE,65,113,34,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "SHELL",IDC_STATIC,127,76,20,8
+    EDITTEXT        IDC_SHELL,151,74,54,14,ES_AUTOHSCROLL
+    GROUPBOX        "CygTerm",IDC_STATIC,15,43,225,101
+    LTEXT           "ENV_1",IDC_STATIC,127,98,22,8
+    EDITTEXT        IDC_ENV1,151,95,79,14,ES_AUTOHSCROLL
+    LTEXT           "ENV_2",IDC_STATIC,126,118,22,8
+    EDITTEXT        IDC_ENV2,152,115,78,14,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_FILETRANSDLG, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 73
+    END
+
+    IDD_TABSHEET_CYGWIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 250
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 145
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_TTERM               ICON                    "..\\common\\teraterm.ico"
+IDI_VT                  ICON                    "..\\common\\vt.ico"
+IDI_TEK                 ICON                    "..\\common\\tek.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 4,18,0,0
+ PRODUCTVERSION 4,18,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "Y.Hirata, T. Teranishi"
+            VALUE "FileDescription", "Tera Term Pro"
+            VALUE "FileVersion", "4, 18, 0, 0"
+            VALUE "InternalName", "TTERMPRO"
+            VALUE "LegalCopyright", "(C)Y.Hirata 2004-2005, (C)T. Teranishi 1994-1998"
+            VALUE "OriginalFilename", "TTERMPRO.EXE"
+            VALUE "ProductName", "Tera Term Pro"
+            VALUE "ProductVersion", "4, 18, 0, 0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New connection...\tAlt+N",   ID_FILE_NEWCONNECTION
+        MENUITEM "&Duplicate session\tAlt+D",   ID_FILE_DUPLICATESESSION
+        MENUITEM "Cy&gwin connection\tAlt+G",   ID_FILE_CYGWINCONNECTION
+        MENUITEM SEPARATOR
+        MENUITEM "&Log...",                     ID_FILE_LOG
+        MENUITEM "Comment to Log...",           ID_FILE_COMMENTTOLOG
+        MENUITEM "View Log",                    ID_FILE_VIEWLOG
+        MENUITEM "&Send file...",               ID_FILE_SENDFILE
+        POPUP "&Transfer"
+        BEGIN
+            POPUP "&Kermit"
+            BEGIN
+                MENUITEM "&Receive",                    ID_FILE_KERMITRCV
+                MENUITEM "&Get...",                     ID_FILE_KERMITGET
+                MENUITEM "&Send...",                    ID_FILE_KERMITSEND
+                MENUITEM "&Finish",                     ID_FILE_KERMITFINISH
+            END
+            POPUP "&XMODEM"
+            BEGIN
+                MENUITEM "&Receive...",                 ID_FILE_XRCV
+                MENUITEM "&Send...",                    ID_FILE_XSEND
+            END
+            POPUP "&ZMODEM"
+            BEGIN
+                MENUITEM "&Receive",                    ID_FILE_ZRCV
+                MENUITEM "&Send...",                    ID_FILE_ZSEND
+            END
+            POPUP "&B-Plus"
+            BEGIN
+                MENUITEM "&Receive",                    ID_FILE_BPRCV
+                MENUITEM "&Send...",                    ID_FILE_BPSEND
+            END
+            POPUP "&Quick-VAN"
+            BEGIN
+                MENUITEM "&Receive",                    ID_FILE_QVRCV
+                MENUITEM "&Send...",                    ID_FILE_QVSEND
+            END
+        END
+        MENUITEM "&Change directory...",        ID_FILE_CHANGEDIR
+        MENUITEM SEPARATOR
+        MENUITEM "TeraTerm &Menu",              ID_FILE_TERATERMMENU
+        MENUITEM "&LogMeTT",                    ID_FILE_LOGMEIN
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...\tAlt+P",            ID_FILE_PRINT2
+        MENUITEM SEPARATOR
+        MENUITEM "&Disconnect",                 ID_FILE_DISCONNECT
+        MENUITEM "E&xit\tAlt+Q",                ID_FILE_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy\tAlt+C",                ID_EDIT_COPY2
+        MENUITEM "Copy &table",                 ID_EDIT_COPYTABLE
+        MENUITEM SEPARATOR
+        MENUITEM "&Paste\tAlt+V",               ID_EDIT_PASTE2
+        MENUITEM "Paste<C&R>\tAlt+R",           ID_EDIT_PASTECR
+        MENUITEM SEPARATOR
+        MENUITEM "Clear &screen",               ID_EDIT_CLEARSCREEN
+        MENUITEM "Clear &buffer",               ID_EDIT_CLEARBUFFER
+        MENUITEM SEPARATOR
+        MENUITEM "Select &all",                 ID_EDIT_SELECTALL
+    END
+    POPUP "&Setup"
+    BEGIN
+        MENUITEM "&Terminal...",                ID_SETUP_TERMINAL
+        MENUITEM "&Window...",                  ID_SETUP_WINDOW
+        MENUITEM "&Font...",                    ID_SETUP_FONT
+        MENUITEM "&Keyboard...",                ID_SETUP_KEYBOARD
+        MENUITEM "Serial &port...",             ID_SETUP_SERIALPORT
+        MENUITEM "T&CP/IP...",                  ID_SETUP_TCPIP
+        MENUITEM "&General...",                 ID_SETUP_GENERAL
+        MENUITEM "Additional settings",         ID_SETUP_ADDITIONALSETTINGS
+        MENUITEM SEPARATOR
+        MENUITEM "&Save setup...",              ID_SETUP_SAVE
+        MENUITEM "&Restore setup...",           ID_SETUP_RESTORE
+        MENUITEM SEPARATOR
+        MENUITEM "&Load key map...",            ID_SETUP_LOADKEYMAP
+    END
+    POPUP "C&ontrol"
+    BEGIN
+        MENUITEM "&Reset terminal",             ID_CONTROL_RESETTERMINAL
+        MENUITEM SEPARATOR
+        MENUITEM "Are you &there\tAlt+T",       ID_CONTROL_AREYOUTHERE
+        MENUITEM "&Send break\tAlt+B",          ID_CONTROL_SENDBREAK
+        MENUITEM "Reset &port",                 ID_CONTROL_RESETPORT
+        MENUITEM "Broadcast command",           ID_CONTROL_BROADCASTCOMMAND
+        MENUITEM SEPARATOR
+        MENUITEM "&Open TEK",                   ID_CONTROL_OPENTEK
+        MENUITEM "&Close TEK",                  ID_CONTROL_CLOSETEK
+        MENUITEM SEPARATOR
+        MENUITEM "&Macro",                      ID_CONTROL_MACRO
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Index",                      ID_HELP_INDEX2
+        MENUITEM "Using &help",                 ID_HELP_USING2
+        MENUITEM SEPARATOR
+        MENUITEM "&About Tera Term...",         ID_HELP_ABOUT
+    END
+END
+
+IDR_TEKMENU MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Print...\tAlt+P",            ID_TEKFILE_PRINT
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit\tAlt+Q",                ID_TEKFILE_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy\tAlt+C",                ID_TEKEDIT_COPY
+        MENUITEM "Copy &screen",                ID_TEKEDIT_COPYSCREEN
+        MENUITEM "&Paste\tAlt+V",               ID_TEKEDIT_PASTE
+        MENUITEM "Paste<C&R>\tAlt+R",           ID_TEKEDIT_PASTECR
+        MENUITEM SEPARATOR
+        MENUITEM "C&lear screen",               ID_TEKEDIT_CLEARSCREEN
+    END
+    POPUP "&Setup"
+    BEGIN
+        MENUITEM "&Window...",                  ID_TEKSETUP_WINDOW
+        MENUITEM "&Font...",                    ID_TEKSETUP_FONT
+    END
+    MENUITEM "VT-wind&ow",                  ID_TEKVTWIN
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Index",                      ID_TEKHELP_INDEX
+        MENUITEM "Using &help",                 ID_TEKHELP_USING
+        MENUITEM SEPARATOR
+        MENUITEM "&About Tera Term...",         ID_TEKHELP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACC ACCELERATORS 
+BEGIN
+    "T",            ID_ACC_AREYOUTHERE,     VIRTKEY, ALT, NOINVERT
+    "C",            ID_ACC_COPY,            VIRTKEY, ALT, NOINVERT
+    "Q",            ID_ACC_EXIT,            VIRTKEY, ALT, NOINVERT
+    "N",            ID_ACC_NEWCONNECTION,   VIRTKEY, ALT, NOINVERT
+    "V",            ID_ACC_PASTE,           VIRTKEY, ALT, NOINVERT
+    "R",            ID_ACC_PASTECR,         VIRTKEY, ALT, NOINVERT
+    "P",            ID_ACC_PRINT,           VIRTKEY, ALT, NOINVERT
+    "B",            ID_ACC_SENDBREAK,       VIRTKEY, ALT, NOINVERT
+    "G",            ID_FILE_CYGWINCONNECTION, VIRTKEY, ALT, NOINVERT
+    "D",            ID_FILE_DUPLICATESESSION, VIRTKEY, ALT, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+1                       RT_MANIFEST             "teraterm.manifest"
+#endif    // âpåÍ (ïƒçë) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
