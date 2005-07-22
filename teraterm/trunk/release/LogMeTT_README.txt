@@ -1,52 +1,47 @@
-                 Introduction to LogMeTT
-                 =======================
+                      Introduction to LogMeTT
+                      =======================
 
-LogMeTT is freeware MS Windows application that works together with popular
-terminal emulator TeraTerm. LogMeTT takes care of establishing new telnet, ssh
-or serial port connection through TeraTerm. It helps creating connection scripts
-written on TeraTerm Macro language and makes them easily accessible from Windows
-desktop. Obviously each connection macro still has to be created and tested
-prior using it, however once this job is completed user enjoys running macros as
-many times as he likes using LogMeTT popup menu. LogMeTT stores set of
-connection macros in binary file that can be distributed among the group of
-people connecting to the same remote nodes. LogMeTT allows to associate specific
-color schema to each connection that reduces the chance of human error while
-working with multiple TeraTerm windows on the same desktop. LogMeTT has TeraTerm
-Macro language key word highlighter that assists in creting new macros and
-improves their readability. With LogMeTT user can start multiple connections at
-once and all opened TeraTerm windows will be arranged automatically on the
-desktop. This is extremely convenient if TeraTerm Broadcast mode has to be used.
-LogMeTT allows building hierarchy of connections that at certain degree
-graphically represents network topology. LogMeTT extends TeraTerm macro language
-with the set of keywords that can contain user and connection specific
-variables. LogMeTT also helps to duplicate, modify, rearrange, group and test
-connection macros or their parts. Starting version 2.4.x LogMeTT contains
-scheduler for each macro, that allows to execute macros automatically. This
-feature is very useful when used with macros that perform file transfers from
-remote sites on the regular basis.
+LogMeTT is the application that works together with popular freeware terminal 
+emulator TeraTerm.
 
-                      LogMeTT basics
-                      ==============
+LogMeTT helps to create, keep organized and easily accessible connection scripts 
+written on TeraTerm Macro language. Those who frequently connect to the same 
+remote sites using telnet, SSH1/SSH2 or modem connections can find LogMeTT as 
+the very useful tool saving them a lot of time.
 
-LogMeTT Ver.2.x is compatible with MS Windows version Windows 98 and later. It
-consists of two executable files LogMeTT.exe and LogMeTTc.exe.
+LogMeTT keeps TeraTerm macro scripts in a hierarchical tree structure that at 
+certain degree can be considered as graphical representation of network topology. 
+Every script has corresponding item in LogMeTT popup menu that appears from the 
+icon in Windows system tray. Thus each predefined connection scenario is always 
+just 2 clicks away from the user. Tree type of script organization allows to 
+reuse "parent" scripts while connecting to the "child" nodes and saves additional 
+time while creating and keeping updated TeraTerm macros. Any connection or whole 
+tree of connections can be saved in a binary file and distributed among the group 
+of people that need to access the same remote nodes.
 
-LogMeTT.exe – is the application represented by the icon in Windows system tray
-area (next to the clock). By right-clicking on the icon user accesses
-configurable multilevel connection menu. This menu also allows to open LogMeTT
-configuration window, start TeraTerm or Exit from LogMeTT application. Double
-click on the icon executes one of actions like open configuration window, start
-screen saver, start TeraTerm and others.
+LogMeTT has built in TeraTerm Macro language command highlighter and context 
+sensitive Macro language help that assists in creating new scripts and improves 
+their readability. It also provides several typical connection templates that can 
+be studied and used as the examples while writing TeraTerm macros.
 
-LogMeTTc.exe takes care of configuring multilevel connection menu that shows up
-in LogMeTT.exe. Once connections are created in LogMeTTc they have to be saved
-into the file with extension LTT. Connection data from the last opened file in
-LogMeTTc will be presented in LogMeTT menu.
+LogMeTT allows to associate specific color schema to each connection that reduces 
+the chance of human error while working with multiple TeraTerm windows on the 
+same desktop.
 
-Both executable files LogMeTT.exe and LogMeTTc.exe have to be stored in TeraTerm
-directory and executed from there. LTT files can be saved at any place that
-LogMeTT will be able to access when application starts.
+With LogMeTT user can select group of connection macros and execute them together. 
+Multiple TeraTerm windows will be opened and tiled automatically on the desktop. 
+This feature is especially convenient if TeraTerm Broadcast mode has to be used.
 
+LogMeTT allows to run the scripts based on predefined schedules that can automate 
+lots of routine tasks like periodic data collection from remote sites, performing 
+configuration backups etc.
+
+LogMeTT extends TeraTerm macro language with the set of keywords that can contain 
+user and connection specific variables.
+
+LogMeTT is freeware application distributed without the source code.
+
+More details can be found in LogMeTT.hlp file.
 
 
 Please visit LogMeTT support forum for more information: 
@@ -57,6 +52,98 @@ http://www.neocom.ca/forum/index.php
                  =============================
                  (in reverse chronological order)
 
+2005-07-22 (Ver 2.5 Release 6) 
+New features added: 
+- None.
+Bugs fixed: 
+- Memory utilisation issues were addressed. In some cases allocated memory was 
+reduced up to 20 times.
+- Hourglass icon was mistakenly appearing in tray area when new releases of 
+LogMeTT or TeraTerm are published on the web.
+
+
+2005-07-19 (Ver 2.5 Release 5) 
+New features added: 
+- LogMeTT icon has the shape of hourglass while reloading data.
+- Further improvement of LogMeTT popup menu redrawing function.
+- Added filter on $phone$, $mobile$ and $pager$ variables to pass into macro only 
+the following characters: 0..9 # * + , P p. Other characters can still appear on 
+Settings page but will be stripped from the macro code. 
+Example: "(123) 456-7890" will be converted to "1234567890". Help file was updated.
+- LogMeTT_README.txt file updated.
+Bugs fixed: 
+- Interaction between LogMeTT.exe and LogMeTTc.exe was optimized.
+- Double click on tray icon under certain conditions was causing application to crash.
+
+2005-07-13 (Ver 2.5 Release 4) 
+New features added: 
+- None. 
+Bugs fixed: 
+- It was not possible to drag and drop connection between 2 separator lines. 
+- Additional restrictions were added on drag and drop operations inside the 
+  connection tree. 
+- Fixed the bug in 'Reverse Colors' function. 
+- The function checking for duplicate connection names was not working correctly 
+under certain conditions. 
+
+2005-07-04 (Ver 2.5 Release 3) 
+New features added: 
+- LogMeTT popup menu redrawing function was improved. 
+- LogMeTT installer created. 
+
+Bugs fixed: 
+- Parent level macro was being executed twice when started from LogMeTT popup menu. 
+Thanks to suibian for reporting this bug. 
+
+2005-06-28 (Ver 2.5 Release 2) 
+New features added: 
+- None. 
+Bugs fixed: 
+- 'Run All Selected' function from 'Actions' menu was not working correctly. 
+
+2005-06-21 (Ver 2.5 Release 1) 
+New features added: 
+- LogMeTT.hlp file was created. LogMeTT Configuration window is supporting now 
+context sensitive help that can be called by pressing <F1>. 
+- Context sensitive help for LogMeTT key words in Macro editor was added. It can 
+be called by placing cursor on the word and pressing <Ctrl-F1> (the same applies 
+to TeraTerm macro commands). 
+- Current value of LogMeTT key words appears on <Ctrl-Click> on these key words 
+in Macro editor. 
+- LogMeTT key words are being highlighted in Macro editor with red color. 
+- Current line is being highlighted in Macro editor. 
+- Further improvement of 'Run to cursor' function. From now it does not depend 
+on selection within Macro editor but runs from the first line of the macro down 
+to the line containing the cursor (inclusive). 
+- TeraTerm.ini file backup/restore functions were added into 
+'File' -> 'TeraTerm Configuration' menu. They help to preserve user's settings 
+during TeraTerm upgrades. 
+- $CONNECTION$, $ttdir$, $windir$, $logfilename$ and $LOGFILENAME$ key words were 
+added. See LogMeTT help for their descriptions. 
+- URL color was added. This feature is still not fully supported by TeraTerm. 
+- 'CygWin' menu was added to LogMeTT popup menu and to 'Actions' menu of 
+Configuration Screen. It is only visible if Cygwin is installed. 
+- Additional option 'Start CygWin' was added to the list of functions called on 
+double click on tray icon. 
+- Logging when checkbox 'Start logging when macro ends' is selected is now disabled 
+when 'Run to cursor' or 'Run branch to cursor' function is executed from 
+Configuration window. 
+- The second page of Settings was added. 
+- Most recently used files can appear with or without full path in 'File' menu based 
+on configuration setting. 
+- Fonts of menus and Macro editor are configurable. The font from Macro editor will 
+also be used in TeraTerm main window. Preferable character set can be also selected. 
+- The behaviour of <Tab> key in macro editor is now configurable. 
+- The format of LTT file changed. The files created by earlier versions of LogMeTT 
+will be backed up and converted automatically when first opened in Configuration 
+window. 
+Bugs fixed: 
+- Temporary file were not clean up properly. 
+- Fixed bug with scheduler starting 3 copies of the macro in some cases. 
+- Lots of other minor fixes and code optimisation. 
+
+
+2005-04-13 (Ver 2.4 Release 4) 
 New features added:
 - Context sensitive help was added to macro editor. When macro command is
 selected in macro editor, pressing <Ctrl-F1> will open corresponding page in
@@ -235,5 +322,5 @@ released. About 95% of the source code was rewritten.
 
 ========================= 
 LogMeTT is freeware application distributed without the source from 
-NeoCom Solutions web site www.neocom.ca NeoCom Solutions is the solo 
-Copyright owner of LogMeTT.
+NeoCom Solutions web site www.neocom.ca 
+NeoCom Solutions is the solo Copyright owner of LogMeTT.
