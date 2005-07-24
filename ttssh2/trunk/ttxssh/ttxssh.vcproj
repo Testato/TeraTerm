@@ -416,6 +416,9 @@
 					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"/>
 			</FileConfiguration>
 		</File>
+		<File
+			RelativePath="..\zlib\projects\visualc6\Win32_LIB_Release\zlib.lib">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
