@@ -551,8 +551,34 @@ MaxBuffSize=500000
   TTSSH 1.5.4
   
 
+■ライセンス
+Copyright (c) 2004-2005 Yutaka Hirata, TeraTerm Project. 
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, 
+are permitted provided that the following conditions are met:
+
+  1. Redistributions of source code must retain the above copyright notice, 
+     this list of conditions and the following disclaimer. 
+  2. Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution. 
+  3. The name of the author may not be used to endorse or promote products derived 
+     from this software without specific prior written permission. 
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR 
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY 
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
+OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+OF SUCH DAMAGE.
+
+
 ■著作権
-  本プログラムはフリーソフトウェアです。
+  本プログラムはフリーソフトウェアです。BSDライセンスのもとに配布されています。
   TeraTerm Proは寺西高氏の著作物です。
   ANSIカラー色変更＆行連結パッチは多賀奈由太氏に著作権があります。
   UTF-8化のコードについては、著作権は平田豊にあります。
@@ -564,6 +590,9 @@ MaxBuffSize=500000
   Eterm風透過ウィンドウ機能はAKASI氏に著作権があります。
   TTProxyは蛭子屋双六氏の著作物です。
   日本語版TeraTermは高橋靖英氏に著作権があります。
+  クリッカブルURLパッチは石崎氏に著作権があります。
+  行末スクロール抑止パッチはいわもとこういち氏に著作権があります。
+  マルチディスプレイ対応パッチは安藤弦彦氏に著作権があります。
   本プログラムは無償で利用できますが、作者は本プログラムの使用にあたり
   生じる障害や問題に対して一切の責任を負いません。
 
