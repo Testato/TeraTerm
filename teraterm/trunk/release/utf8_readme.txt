@@ -634,6 +634,11 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2005.8.?? (Ver 4.19)
+  - Buf fix: division result is invalid in TeraTerm macro script. Special thanks to Takashi SHIRAI.
+  - changed not downing ttpmacro.exe process priority with logging
+  - upgraded LogMeTT to 2.6.1
+
 2005.7.24 (Ver 4.18)
   - added showing the line number and data of TTL file on macro dialog.
   - Bug fix: DAKUTEN(the dot marks) might not be correctly shown in UTF-8 for Mac OS X.
