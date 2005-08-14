@@ -52,6 +52,17 @@ http://www.neocom.ca/forum/index.php
                  =============================
                  (in reverse chronological order)
 
+2005-07-31 (Ver 2.5 Release 7) 
+New features added: 
+- Additional option "Do not connect the Internet to check for newer versions" 
+was added to Settings page of Configuration window. Thanks to PaVel for 
+suggesting this feature. By default this option is not selected and LogMeTT 
+connects to neocom.ca web site to check for updated versions of TeraTerm and 
+LogMeTT. The first check is performed on application startut and the every 
+3 hours.
+Bugs fixed: 
+- None.
+
 2005-07-22 (Ver 2.5 Release 6) 
 New features added: 
 - None.
@@ -74,6 +85,20 @@ Example: "(123) 456-7890" will be converted to "1234567890". Help file was updat
 Bugs fixed: 
 - Interaction between LogMeTT.exe and LogMeTTc.exe was optimized.
 - Double click on tray icon under certain conditions was causing application to crash.
+
+2005-08-08 (Ver 2.6 Release 1)
+New features added: 
+- Print, Print Preview and Printer Setup functions were added. They are reachable from 
+File menu of LogMeTT Configuration window and allow to print the macro associated to 
+currently selected node. Functions are available only when Macro page is visible.
+- As per request of LogMeTT users the functionality of checking for updated versions 
+of TeraTerm and LogMeTT was changed. LogMeTT now check for updates on startup and then 
+once every 24 hours of running. This functionality can be disabled by selecting newly
+added checkbox "Do not connect the Internet to check for newer versions" on Settings 
+page of Configuration window. 
+- Help file was updated to reflect these new changes.
+Bugs fixed: 
+- None.
 
 2005-07-13 (Ver 2.5 Release 4) 
 New features added: 

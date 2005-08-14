@@ -18,6 +18,7 @@
 2 Color Editor Page=coloreditorpage>Main
 2 Schedule Editor Page=scheduleeditorpage>Main
 2 Status Bar=statusbar>Main
+2 Print Preview Window=printpreviewwindow>Main
 1 Building Connections Tree
 2 Adding, Modifying and Deleting Nodes=addingmodifyinganddeletingnodes>Main
 2 Importing and Exporting Nodes=importingandexportingnodes>Main
