@@ -713,80 +713,82 @@ BOOL GetFactor(LPWORD ValType, int far *Val, LPWORD Err)
 
 BOOL GetTerm(LPWORD ValType, int far *Val, LPWORD Err)
 {
-  WORD P1, P2, Type1, Type2, Er;
-  int Val1, Val2;
-  WORD WId;
+	WORD P1, P2, Type1, Type2, Er;
+	int Val1, Val2;
+	WORD WId;
 
-  P1 = LinePtr;
-  if (! GetFactor(&Type1,&Val1,&Er)) return FALSE;
-  *ValType = Type1;
-  *Val = Val1;
-  *Err = Er;
-  if (Er!=0)
-  {
-    LinePtr = P1;
-    return TRUE;
-  }
-  if (Type1!=TypInteger) return TRUE;
-
-  do {
-    P2 = LinePtr;
-    if (! GetOperator(&WId)) return TRUE;
-
-    switch (WId) {
-      case RsvAnd:
-      case RsvMul:
-      case RsvDiv:
-      case RsvMod: break;
-      default:
-	LinePtr = P2;
-	return TRUE;
-    }
-
-    if (! GetFactor(&Type2,&Val2,&Er))
-    {
-      *Err = ErrSyntax;
-      LinePtr = P1;
-      return TRUE;
-    }
-
-    if (Er!=0)
-    {
-      *Err = Er;
-      LinePtr = P1;
-      return TRUE;
-    }
-
-    if (Type2!=TypInteger)
-    {
-      *Err = ErrTypeMismatch;
-      LinePtr = P1;
-      return TRUE;
-    }
-
-    switch (WId) {
-      case RsvAnd: Val1 = Val1 & Val2; break;
-      case RsvMul: Val1 = Val1 * Val2; break;
-      case RsvDiv:
-	if (Val2!=0)
-	  Val1 = Val1 / Val2;
-	else {
-	  *Err = ErrDivByZero;
-	  LinePtr = P1;
-	  return TRUE;
+	P1 = LinePtr;
+	if (! GetFactor(&Type1,&Val1,&Er)) return FALSE;
+	*ValType = Type1;
+	*Val = Val1;
+	*Err = Er;
+	if (Er!=0)
+	{
+		LinePtr = P1;
+		return TRUE;
 	}
-      case RsvMod:
-	if (Val2!=0)
-	  Val1 = Val1 % Val2;
-	else {
-	  *Err = ErrDivByZero;
-	  LinePtr = P1;
-	  return TRUE;
-	}
-    }
+	if (Type1!=TypInteger) return TRUE;
 
-    *Val = Val1;
-  } while (TRUE);
+	do {
+		P2 = LinePtr;
+		if (! GetOperator(&WId)) return TRUE;
+
+		switch (WId) {
+		case RsvAnd:
+		case RsvMul:
+		case RsvDiv:
+		case RsvMod: break;
+		default:
+			LinePtr = P2;
+			return TRUE;
+		}
+
+		if (! GetFactor(&Type2,&Val2,&Er))
+		{
+			*Err = ErrSyntax;
+			LinePtr = P1;
+			return TRUE;
+		}
+
+		if (Er!=0)
+		{
+			*Err = Er;
+			LinePtr = P1;
+			return TRUE;
+		}
+
+		if (Type2!=TypInteger)
+		{
+			*Err = ErrTypeMismatch;
+			LinePtr = P1;
+			return TRUE;
+		}
+
+		switch (WId) {
+		case RsvAnd: Val1 = Val1 & Val2; break;
+		case RsvMul: Val1 = Val1 * Val2; break;
+		case RsvDiv:
+			if (Val2!=0)
+				Val1 = Val1 / Val2;
+			else {
+				*Err = ErrDivByZero;
+				LinePtr = P1;
+				return TRUE;
+			}
+			break;  // 追加。除算結果がおかしくなるバグの修正。(2005.8.14 yutaka)
+
+		case RsvMod:
+			if (Val2!=0)
+				Val1 = Val1 % Val2;
+			else {
+				*Err = ErrDivByZero;
+				LinePtr = P1;
+				return TRUE;
+			}
+		}
+
+		*Val = Val1;
+	} while (TRUE);
 }
 
 BOOL GetSimpleExpression(LPWORD ValType, int far *Val, LPWORD Err)
