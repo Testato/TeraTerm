@@ -863,6 +863,9 @@ void RunMacro(PCHAR FName, BOOL Startup)
 	if (WinExec(Cmnd,SW_MINIMIZE) < 32)
 		EndDDE();
 #else
+
+	// ログ採取中も下げないことにする。(2005.8.14 yutaka)
+#if 0
 	// TeraTerm本体でログ採取中にマクロを実行すると、マクロの動作が停止することが
 	// あるため、プロセスの優先度を1つ下げて実行させる。(2004/9/5 yutaka)
 	// ログ採取中のみに下げる。(2004/11/28 yutaka)
@@ -871,7 +874,6 @@ void RunMacro(PCHAR FName, BOOL Startup)
 	}
 	// 暫定処置として、常に下げることにする。(2005/5/15 yutaka)
 	// マクロによるtelnet自動ログインが失敗することがあるので、下げないことにする。(2005/5/23 yutaka)
-#if 0
 	pri = BELOW_NORMAL_PRIORITY_CLASS;
 #endif
 
@@ -896,6 +898,9 @@ void RunMacro(PCHAR FName, BOOL Startup)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2005/05/23 14:48:57  yutakakn
+ * ttpmacro.exeのプロセス優先度を下げないようにした。
+ *
  * Revision 1.3  2005/05/15 09:23:19  yutakakn
  * 暫定処置として ttermpro.exe のプロセス優先度は常に下げることにした。
  *
