@@ -3,9 +3,9 @@ ProjectName=UTF-8 TeraTerm Pro with TTSSH2
 CreateFileName=teraterm_utf8_
 CreateFolder=C:\Program Files\Matsuoka\einstall2\Project\ExeFile
 MajorVersion=3
-MinorVersion=30
+MinorVersion=40
 CreateDateTime=2004/12/07 23:52:51
-UpdateDateTime=2005/07/23 14:18:01
+UpdateDateTime=2005/08/16 0:05:43
 Generator=EINSTALL 2.0
 CreateFileType=4
 CreateFileAddVersionInfo=1
@@ -48,12 +48,13 @@ LogoNoHeaderMes=0
 LogoTransparent=0
 MajorVersion=4
 MinorVersion=1
-ReleaseVersion=8
+ReleaseVersion=9
 BuildVersion=0
 OtherVersion=0
 DocumentFile=
 LicenseFile=license.txt
 AlwaysAgree=0
+ReadLicenseTillTheLast=1
 
 [Installer]
 EnableShortCutSetting=1
@@ -176,5 +177,5 @@ InfoFileMethod=1
 6=LogMeTT Document|%InstallDir%\LogMeTT_README.txt||||0||0|2|0|||||||||||
 
 [ProgramItems]
-0=1|%InstallDir%\|copyfont.bat||0|1|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127|0,0,0,0,,,,,,,,,,,,,,,,,|1,1,é¿çsÇ∑ÇÈ,,,,,,,,,,,,,,,,,,||||||||||
+0=1|%InstallDir%\|copyfont.bat||0|3|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127|0,0,0,0,,,,,,,,,,,,,,,,,|1,1,é¿çsÇ∑ÇÈ,,,,,,,,,,,,,,,,,,||||||||||
 

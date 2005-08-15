@@ -155,6 +155,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2005.8.?? (Ver 2.16)
+  - upgraded zlib to 1.2.3
+
 2005.7.24 (Ver 2.15)
   - added support of SSH2 port forwarding
   - added support of SSH2 packet compression
