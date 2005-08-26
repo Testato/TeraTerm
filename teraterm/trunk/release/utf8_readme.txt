@@ -595,7 +595,7 @@ OF SUCH DAMAGE.
   Copyright of Eterm lookfeel transparency window belongs to AKASI.
   Copyright of TTProxy to YebisuyaHompo.
   Copyright of Localized TeraTerm belongs to Yasuhide Takahashi.
-  Copyright of Clickable URL to ISHIZAKI kazuaki.
+  Copyright of Clickable URL to monkey magic.
   Copyright of preventing scroll at end of line to IWAMOTO Kouichi.
   Copyright of supporting multi display to Tsuruhiko Ando.
 
@@ -634,7 +634,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
-2005.8.?? (Ver 4.19)
+2005.8.27 (Ver 4.19)
   - Buf fix: division result is invalid in TeraTerm macro script. Special thanks to Takashi SHIRAI.
   - changed not downing ttpmacro.exe process priority with logging
   - upgraded LogMeTT to 2.6.1
@@ -666,7 +666,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 
 2005.4.9 (Ver 4.14)
-  - added clickable URL mechanism that mouse pointer overs on URL string. Special thanks to Kazuaki Ishizaki. And also added URLColor, EnableClickableUrl entry in teraterm.ini file.
+  - added clickable URL mechanism that mouse pointer overs on URL string. Special thanks to monkey magic. And also added URLColor, EnableClickableUrl entry in teraterm.ini file.
   - added support of escape sequence(ESC[39m:foreground color reset, ESC[49m:background color reset). This support solves the problem that color can't be clear using w3m on screen(1) command. Special thanks to Iwamoto Kouichi.
   - added mouse cursor dynamically changing on Additional settings.
   - added support of clickable URL on TeraTerm version dialog.

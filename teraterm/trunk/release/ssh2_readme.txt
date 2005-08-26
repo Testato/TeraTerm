@@ -155,7 +155,8 @@ OF SUCH DAMAGE.
 
 * History
 
-2005.8.?? (Ver 2.16)
+2005.8.27 (Ver 2.16)
+  - added minimizing the SSH authentication dialog with autologin mode. Special thanks to Tomoo Takahashi.
   - upgraded zlib to 1.2.3
 
 2005.7.24 (Ver 2.15)

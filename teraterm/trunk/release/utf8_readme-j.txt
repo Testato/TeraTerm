@@ -590,7 +590,7 @@ OF SUCH DAMAGE.
   Eterm風透過ウィンドウ機能はAKASI氏に著作権があります。
   TTProxyは蛭子屋双六氏の著作物です。
   日本語版TeraTermは高橋靖英氏に著作権があります。
-  クリッカブルURLパッチは石崎氏に著作権があります。
+  クリッカブルURLパッチはmonkey magic氏に著作権があります。
   行末スクロール抑止パッチはいわもとこういち氏に著作権があります。
   マルチディスプレイ対応パッチは安藤弦彦氏に著作権があります。
   本プログラムは無償で利用できますが、作者は本プログラムの使用にあたり
@@ -620,7 +620,7 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
-2005.8.?? (Ver 4.19)
+2005.8.27 (Ver 4.19)
   ・macroの除算結果が不正となるバグを修正した。白井隆氏に感謝します。
   ・ttpmacro.exeのプロセス優先度は、ログ採取中も下げないようにした。
   ・LogMeTT 2.6.1へ差し替えた
@@ -651,7 +651,7 @@ OF SUCH DAMAGE.
   ・LogMeTT 2.4.4へ差し替えた
 
 2005.4.9 (Ver 4.14)
-  ・URL文字列をダブルクリックするとブラウザが起動するしかけを追加した。石崎氏に感謝します。teraterm.iniにURLColor, EnableClickableUrlを追加。
+  ・URL文字列をダブルクリックするとブラウザが起動するしかけを追加した。monkey magic氏に感謝します。teraterm.iniにURLColor, EnableClickableUrlを追加。
   ・エスケープシーケンス（ESC[39m:foreground color reset, ESC[49m:background color reset）をサポートした。これによりscreen上でw3mを使用した場合、色が戻らない現象が改善される。岩本氏に感謝します。
   ・Additional settingsでのマウスカーソル種別を設定時に変更されるようにした。
   ・バージョン情報ダイアログのURLをダブルクリックすると、ブラウザが起動されるようにした。
