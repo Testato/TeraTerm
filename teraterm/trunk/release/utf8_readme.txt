@@ -634,6 +634,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2005.9.5 (Ver 4.20)
+  - upgraded TTSSH version supporting SSH2 to 2.17
+
 2005.8.27 (Ver 4.19)
   - Buf fix: division result is invalid in TeraTerm macro script. Special thanks to Takashi SHIRAI.
   - changed not downing ttpmacro.exe process priority with logging
