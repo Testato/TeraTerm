@@ -223,9 +223,13 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 		SetDlgItemText(dlg, IDC_SSHPASSWORD, pvar->ssh2_password);
 		EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORD), FALSE);
 		EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORDCAPTION), FALSE);
-		//20050822追加 start T.Takahashi
-		ShowWindow(dlg,SW_MINIMIZE);
-		//20050822追加 end T.Takahashi
+
+		// '/I' 指定があるときのみ最小化する (2005.9.5 yutaka)
+		if (pvar->ts->Minimize) {
+			//20050822追加 start T.Takahashi
+			ShowWindow(dlg,SW_MINIMIZE);
+			//20050822追加 end T.Takahashi
+		}
 
 		if (pvar->ssh2_authmethod == SSH_AUTH_PASSWORD) {
 			CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL, IDC_SSHUSEPASSWORD);
@@ -1044,6 +1048,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  2005/08/26 16:26:02  yutakakn
+ * 自動ログイン時にSSH認証ダイアログを最小化するようにした。
+ *
  * Revision 1.15  2005/07/15 14:58:04  yutakakn
  * SSH1接続で一度ユーザ認証に失敗すると、その後認証ができなくなるバグを修正。
  *
