@@ -1634,22 +1634,32 @@ void CVTWindow::OnTimer(UINT nIDEvent)
 
 void CVTWindow::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
-  int Func;
+	int Func;
+	SCROLLINFO si;
 
-  switch (nSBCode) {
-    case SB_BOTTOM: Func = SCROLL_BOTTOM; break;
-    case SB_ENDSCROLL: return;
-    case SB_LINEDOWN: Func = SCROLL_LINEDOWN; break;
-    case SB_LINEUP: Func = SCROLL_LINEUP; break;
-    case SB_PAGEDOWN: Func = SCROLL_PAGEDOWN; break;
-    case SB_PAGEUP: Func = SCROLL_PAGEUP; break;
-    case SB_THUMBPOSITION:
-    case SB_THUMBTRACK: Func = SCROLL_POS; break;
-    case SB_TOP: Func = SCROLL_TOP; break;
-    default:
-      return;
-  }
-  DispVScroll(Func,nPos);
+	switch (nSBCode) {
+	case SB_BOTTOM: Func = SCROLL_BOTTOM; break;
+	case SB_ENDSCROLL: return;
+	case SB_LINEDOWN: Func = SCROLL_LINEDOWN; break;
+	case SB_LINEUP: Func = SCROLL_LINEUP; break;
+	case SB_PAGEDOWN: Func = SCROLL_PAGEDOWN; break;
+	case SB_PAGEUP: Func = SCROLL_PAGEUP; break;
+	case SB_THUMBPOSITION:
+	case SB_THUMBTRACK: Func = SCROLL_POS; break;
+	case SB_TOP: Func = SCROLL_TOP; break;
+	default:
+		return;
+	}
+
+	// スクロールレンジを 16bit から 32bit へ拡張した (2005.10.4 yutaka)
+	ZeroMemory(&si, sizeof(SCROLLINFO));
+    si.cbSize = sizeof(SCROLLINFO);
+    si.fMask = SIF_TRACKPOS;
+	if (::GetScrollInfo(HVTWin, SB_VERT, &si)) { // success
+		nPos = si.nTrackPos;
+	}
+
+	DispVScroll(Func,nPos);
 }
 
 //<!--by AKASI
@@ -3789,6 +3799,11 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.20  2005/05/15 11:49:32  yutakakn
+ * ブロック選択のキーバインドを Shift+MouseDrag から Alt+MouseDrag へ変更した。
+ * 左クリックで開始位置の記録、Shift+左クリックで終了位置を取得し、ページをまたぐ選択
+ * をできるようにした。
+ *
  * Revision 1.19  2005/05/07 13:28:16  yutakakn
  * CygTermの設定を Addtional settings 上で行えるようにした。
  *
