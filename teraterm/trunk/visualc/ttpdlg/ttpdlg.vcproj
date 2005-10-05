@@ -21,7 +21,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\..\source\common"
+				AdditionalIncludeDirectories="..\..\source\oniguruma; ..\..\source\common"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
