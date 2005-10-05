@@ -22,7 +22,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\..\source\common"
+				AdditionalIncludeDirectories="..\..\source\oniguruma;..\..\source\common"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
@@ -86,7 +86,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\source\common"
+				AdditionalIncludeDirectories="..\..\source\oniguruma;..\..\source\common"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;INET6"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
@@ -375,6 +375,9 @@
 		<Filter
 			Name="Source Files (C)"
 			Filter="c">
+			<File
+				RelativePath="..\..\source\oniguruma\onig_s.lib">
+			</File>
 			<File
 				RelativePath="..\..\Source\Ttmacro\ttl.c">
 				<FileConfiguration

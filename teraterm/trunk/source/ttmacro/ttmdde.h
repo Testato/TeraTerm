@@ -80,6 +80,15 @@ extern int OutLen;
 extern TStrVal Wait2Str;
 extern BOOL Wait2Found;
 
+enum regex_type {
+	REGEX_NONE,
+	REGEX_WAIT,
+	REGEX_WAITLN,
+	REGEX_WAITRECV,
+	REGEX_WAITEVENT,
+};
+extern enum regex_type RegexActionType;
+
 #ifdef __cplusplus
 }
 #endif

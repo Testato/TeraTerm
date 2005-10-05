@@ -1983,6 +1983,8 @@ WORD TTLUnlink()
   return 0;
 }
 
+
+
 WORD TTLWait(BOOL Ln)
 {
   TStrVal Str;
@@ -2050,6 +2052,27 @@ WORD TTLWait(BOOL Ln)
 
   return Err;
 }
+
+
+// 'ewait'(Enhanced wait): wait command with regular expression
+//
+// This command has almost same function of 'wait' command. Additionally 'ewait' can search 
+// the keyword with regular expression. TeraTerm uses a regex library that is called 'Oniguruma'.
+// cf. http://www.geocities.jp/kosako3/oniguruma/
+//
+// (2005.10.5 yutaka)
+WORD TTLEWait(BOOL Ln)
+{
+	WORD ret;
+
+	ret = TTLWait(Ln);
+
+	RegexActionType = REGEX_WAIT; // regex enabled
+
+	return (ret);
+}
+
+
 
 WORD TTLWaitEvent()
 {
@@ -2383,6 +2406,7 @@ int ExecCmnd()
       case RsvStrScan:	  Err = TTLStrScan(); break;
       case RsvTestLink:	  Err = TTLTestLink(); break;
       case RsvUnlink:	  Err = TTLUnlink(); break;
+      case RsvEWait:	  Err = TTLEWait(FALSE); break;  // add 'ewait' (2005.10.5 yutaka)
       case RsvWait:	  Err = TTLWait(FALSE); break;
       case RsvWaitEvent:  Err = TTLWaitEvent(); break;
       case RsvWaitLn:	  Err = TTLWait(TRUE); break;

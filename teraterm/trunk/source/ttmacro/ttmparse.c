@@ -214,6 +214,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
   else if (stricmp(Str,"testlink")==0) *WordId = RsvTestLink;
   else if (stricmp(Str,"then")==0) *WordId = RsvThen;
   else if (stricmp(Str,"unlink")==0) *WordId = RsvUnlink;
+  else if (stricmp(Str,"ewait")==0) *WordId = RsvEWait;  // add 'ewait' (2005.10.5 yutaka)
   else if (stricmp(Str,"wait")==0) *WordId = RsvWait;
   else if (stricmp(Str,"waitevent")==0) *WordId = RsvWaitEvent;
   else if (stricmp(Str,"waitln")==0) *WordId = RsvWaitLn;

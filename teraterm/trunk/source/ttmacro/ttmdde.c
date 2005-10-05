@@ -15,6 +15,11 @@
 
 #include "ttmdde.h"
 
+// Oniguruma: Regular expression library
+#define ONIG_EXTERN extern
+#include "oniguruma.h"
+#undef ONIG_EXTERN
+
 BOOL Linked = FALSE;
 WORD ComReady = 0;
 int OutLen;
@@ -67,6 +72,10 @@ static int Wait2SubLen, Wait2SubPos;
 static TStrVal RecvLnBuff;
 static int RecvLnPtr = 0;
 static BYTE RecvLnLast = 0;
+
+// regex action flag
+enum regex_type RegexActionType;
+
 
 // ring buffer
 void Put1Byte(BYTE b)
@@ -372,6 +381,8 @@ void ClearWait()
     WaitStrLen[i] = 0;
     WaitCount[i] = 0;
   }
+
+  RegexActionType = REGEX_NONE; // regex disabled
 }
 
 void SetWait(int Index, PCHAR Str)
@@ -419,37 +430,146 @@ void SetWait2(PCHAR Str, int Len, int Pos)
   Wait2Found = (Wait2SubStr[0]==0);
 }
 
+
+// 正規表現によるパターンマッチを行う（Oniguruma使用）
+int FindRegexStringOne(char *regex, int regex_len, char *target, int target_len)
+{
+	int r;
+	unsigned char *start, *range, *end;
+	regex_t* reg;
+	OnigErrorInfo einfo;
+	OnigRegion *region;
+	UChar* pattern = (UChar* )regex;
+	UChar* str     = (UChar* )target;
+	int matched = 0;
+
+
+	r = onig_new(&reg, pattern, pattern + regex_len,
+		ONIG_OPTION_DEFAULT, ONIG_ENCODING_ASCII, ONIG_SYNTAX_DEFAULT, &einfo);
+	if (r != ONIG_NORMAL) {
+		char s[ONIG_MAX_ERROR_MESSAGE_LEN];
+		onig_error_code_to_str(s, r, &einfo);
+		fprintf(stderr, "ERROR: %s\n", s);
+		return -1;
+	}
+
+	region = onig_region_new();
+
+	end   = str + target_len;
+	start = str;
+	range = end;
+	r = onig_search(reg, str, end, start, range, region, ONIG_OPTION_NONE);
+	if (r >= 0) {
+		int i;
+
+		fprintf(stderr, "match at %d\n", r);
+		for (i = 0; i < region->num_regs; i++) {
+			fprintf(stderr, "%d: (%d-%d)\n", i, region->beg[i], region->end[i]);
+		}
+
+		matched = 1;
+	}
+	else if (r == ONIG_MISMATCH) {
+		fprintf(stderr, "search fail\n");
+	}
+	else { /* error */
+		char s[ONIG_MAX_ERROR_MESSAGE_LEN];
+		onig_error_code_to_str(s, r);
+		fprintf(stderr, "ERROR: %s\n", s);
+		return -1;
+	}
+
+	onig_region_free(region, 1 /* 1:free self, 0:free contents only */);
+	onig_free(reg);
+	onig_end();
+
+	return (matched);
+}
+
+// 正規表現によるパターンマッチを行う
+int FindRegexString(void)
+{
+	int i, Found = 0;
+	PCHAR Str;
+
+	if (RegexActionType == REGEX_NONE)
+		return 0;  // not match
+
+	if (RecvLnPtr == 0)
+		return 0;  // not match
+
+	for (i = 9 ; i >= 0 ; i--) {
+		Str = PWaitStr[i]; // regex pattern
+		if (Str!=NULL) {
+			if (FindRegexStringOne(Str, strlen(Str), RecvLnBuff, RecvLnPtr) > 0) { // matched
+				Found = i+1;
+				break;
+			}
+		}
+	}
+
+	return (Found);
+}
+
+
+// 'wait': 
+// ttmacro process sleeps to wait specified word(s).
+// 
+// 'ewait': 
+// ttmacro process sleeps to wait specified word(s) with regular expression.
+//
+// add 'ewait' command (2005.10.5 yutaka)
 int Wait()
 {
-  BYTE b;
-  int i, Found;
-  PCHAR Str;
+	BYTE b;
+	int i, Found, ret;
+	PCHAR Str;
 
-  Found = 0;
-  while ((Found==0) && Read1Byte(&b))
-  {
-    PutRecvLnBuff(b);
-    for (i = 9 ; i >= 0 ; i--)
-    {
-      Str = PWaitStr[i];
-      if (Str!=NULL)
-      {
-	if ((BYTE)Str[WaitCount[i]]==b)
-	  WaitCount[i]++;
-	else if (WaitCount[i]>0) {
-	  WaitCount[i] = 0;
-	  if ((BYTE)Str[0]==b)
-	    WaitCount[i] = 1;
+	Found = 0;
+	while ((Found==0) && Read1Byte(&b))
+	{
+		if (b == 0x0a) { // 改行が来たら、バッファをクリアするのでその前にパターンマッチを行う。(ewait command)
+			ret = FindRegexString();
+			if (ret > 0) {
+				Found = ret;
+				break;
+			}
+		}
+
+		PutRecvLnBuff(b);
+
+		if (RegexActionType == REGEX_NONE) { // 正規表現なしの場合は1バイトずつ検索する(wait command)
+			for (i = 9 ; i >= 0 ; i--)
+			{
+				Str = PWaitStr[i];
+				if (Str!=NULL)
+				{
+					if ((BYTE)Str[WaitCount[i]]==b)
+						WaitCount[i]++;
+					else if (WaitCount[i]>0) {
+						WaitCount[i] = 0;
+						if ((BYTE)Str[0]==b)
+							WaitCount[i] = 1;
+					}
+					if (WaitCount[i]==WaitStrLen[i])
+						Found = i+1;
+				}
+			}
+		}
 	}
-	if (WaitCount[i]==WaitStrLen[i])
-	  Found = i+1;
-      }
-    }
-  }
-  if (Found>0) ClearWait();
-  SendSync();
 
-  return Found;
+	// 改行なしで文字列が流れてくる場合にもパターンマッチを試みる
+	if (Found == 0) {
+		ret = FindRegexString();
+		if (ret > 0) {
+			Found = ret;
+		}
+	}
+
+	if (Found>0) ClearWait();
+	SendSync();
+
+	return Found;
 }
 
 BOOL Wait2()
