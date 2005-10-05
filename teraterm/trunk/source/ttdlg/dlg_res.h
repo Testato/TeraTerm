@@ -116,6 +116,7 @@
 #define IDC_AUTHOR_URL                  1028
 #define IDC_FORUM_LABEL                 1029
 #define IDC_FORUM_URL                   1030
+#define IDC_ONIGURUMA_LABEL             1031
 #define IDC_GENHELP                     1099
 #define IDD_TERMDLG                     1100
 #define IDD_WINLISTDLG                  1200
@@ -134,7 +135,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        102
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1031
+#define _APS_NEXT_CONTROL_VALUE         1032
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

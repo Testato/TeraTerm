@@ -246,7 +246,7 @@ BEGIN
     PUSHBUTTON      "&Help",IDC_DIRHELP,115,34,32,14
 END
 
-IDD_ABOUTDLG DIALOGEX 20, 20, 187, 100
+IDD_ABOUTDLG DIALOGEX 20, 20, 187, 113
 STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION | WS_SYSMENU
 CAPTION "About Tera Term"
@@ -255,25 +255,26 @@ BEGIN
     ICON            IDI_TTERM,IDC_AUTHOR_LABEL,6,6,20,20
     CONTROL         "Tera Term Professional",IDC_AUTHOR_LABEL,"Static",
                     SS_LEFTNOWORDWRAP | WS_GROUP,38,1,78,8
-    CONTROL         "version 2.3 + IPv6 0.81",IDC_AUTHOR_LABEL,"Static",
-                    SS_LEFTNOWORDWRAP | WS_GROUP,38,32,80,8
+    CONTROL         "TeraTerm version 2.3 + IPv6 0.81",IDC_AUTHOR_LABEL,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,38,43,119,8
     CONTROL         "Mar 10, 1998 T. Teranishi",IDC_AUTHOR_LABEL,"Static",
-                    SS_LEFTNOWORDWRAP | WS_GROUP,38,40,90,8
+                    SS_LEFTNOWORDWRAP | WS_GROUP,38,51,90,8
     CONTROL         "Copyright (C) 1994-1998 T. Teranishi",IDC_AUTHOR_LABEL,
-                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,38,48,134,8
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,38,59,134,8
     DEFPUSHBUTTON   "OK",IDOK,136,6,32,16,WS_GROUP
     CONTROL         "All Rights Reserved.",IDC_AUTHOR_LABEL,"Static",
-                    SS_LEFTNOWORDWRAP | WS_GROUP,38,64,76,8
+                    SS_LEFTNOWORDWRAP | WS_GROUP,38,75,76,8
     CONTROL         "Copyright (C) 2004-2005 Y.Hirata",IDC_AUTHOR_LABEL,
-                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,38,56,122,9
-    LTEXT           "Includes:",IDC_AUTHOR_LABEL,38,25,31,8
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,38,67,122,9
+    LTEXT           "Includes:",IDC_AUTHOR_LABEL,38,26,31,8
     LTEXT           "Version",IDC_TT_VERSION,38,10,68,8
-    LTEXT           "Author:",IDC_AUTHOR_LABEL,6,75,28,8
+    LTEXT           "Author:",IDC_AUTHOR_LABEL,6,86,28,8
     LTEXT           "http://hp.vector.co.jp/authors/VA013320/",
-                    IDC_AUTHOR_URL,37,75,141,8,SS_NOTIFY | WS_TABSTOP
-    LTEXT           "Forum:",IDC_FORUM_LABEL,9,85,25,8
+                    IDC_AUTHOR_URL,37,86,141,8,SS_NOTIFY | WS_TABSTOP
+    LTEXT           "Forum:",IDC_FORUM_LABEL,9,96,25,8
     LTEXT           "http://www.neocom.ca/forum/index.php",IDC_FORUM_URL,37,
-                    85,132,8,SS_NOTIFY | WS_TABSTOP
+                    96,132,8,SS_NOTIFY | WS_TABSTOP
+    LTEXT           "Oniguruma: ",IDC_ONIGURUMA_LABEL,38,35,114,8
 END
 
 IDD_FONTDLG DIALOG  20, 20, 207, 144
@@ -535,7 +536,7 @@ BEGIN
     IDD_ABOUTDLG, DIALOG
     BEGIN
         RIGHTMARGIN, 186
-        BOTTOMMARGIN, 95
+        BOTTOMMARGIN, 108
     END
 
     IDD_WINLISTDLG, DIALOG

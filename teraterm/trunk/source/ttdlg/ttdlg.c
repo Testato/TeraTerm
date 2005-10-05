@@ -19,6 +19,12 @@
 #else
   #include "dlg_re16.h"
 #endif
+
+// Oniguruma: Regular expression library
+#define ONIG_EXTERN extern
+#include "oniguruma.h"
+#undef ONIG_EXTERN
+
 #ifdef INET6
 #include <winsock2.h>
 static char FAR * ProtocolFamilyList[] = { "UNSPEC", "IPv6", "IPv4", NULL };
@@ -1484,6 +1490,13 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		_snprintf(buf, sizeof(buf), "Version %d.%d", a, b);
 		SendMessage(GetDlgItem(Dialog, IDC_TT_VERSION), WM_SETTEXT, 0, (LPARAM)buf);
 
+		// Onigurumaのバージョンを設定する (2005.10.6 yutaka)
+		_snprintf(buf, sizeof(buf), "Oniguruma: %d.%d.%d",
+					ONIGURUMA_VERSION_MAJOR,
+					ONIGURUMA_VERSION_MINOR,
+					ONIGURUMA_VERSION_TEENY);
+		SendMessage(GetDlgItem(Dialog, IDC_ONIGURUMA_LABEL), WM_SETTEXT, 0, (LPARAM)buf);
+
 		// static textをサブクラス化する。ただし、tabstop, notifyプロパティを有効にしておかないと
 		// メッセージが拾えない。(2005.4.5 yutaka)
 		do_subclass_window(GetDlgItem(Dialog, IDC_AUTHOR_URL), &author_url_class);
@@ -1987,6 +2000,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2005/04/07 14:13:23  yutakakn
+ * ・Additional settingsでのマウスカーソル種別を設定時に変更されるようにした。
+ * ・バージョン情報ダイアログのURLをダブルクリックすると、ブラウザが起動されるようにした。
+ *
  * Revision 1.5  2005/04/03 13:42:07  yutakakn
  * URL文字列をダブルクリックするとブラウザが起動するしかけを追加（石崎氏パッチがベース）。
  *
