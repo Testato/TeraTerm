@@ -21,6 +21,7 @@ extern "C" {
 BOOL InitTTL(HWND HWin);
 void EndTTL();
 void Exec();
+void SetMatchStr(PCHAR Str);
 void SetInputStr(PCHAR Str);
 void SetResult(int ResultCode);
 BOOL CheckTimeout();

@@ -147,7 +147,7 @@
 #define RsvYesNoBox   107
 #define RsvZmodemRecv 108
 #define RsvZmodemSend 109
-#define RsvEWait      110   // add 'ewait' (2005.10.5 yutaka)
+#define RsvWaitRegex  110   // add 'waitregex' (2005.10.5 yutaka)
 
 #define RsvOperator   150
 #define RsvNot	      151
