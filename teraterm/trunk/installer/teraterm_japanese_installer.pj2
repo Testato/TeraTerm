@@ -1,11 +1,11 @@
 [Project]
 ProjectName=UTF-8 TeraTerm Pro with TTSSH2
-CreateFileName=teraterm_utf8_
+CreateFileName=teratermj_utf8_
 CreateFolder=C:\Program Files\Matsuoka\einstall2\Project\ExeFile
 MajorVersion=3
 MinorVersion=50
 CreateDateTime=2004/12/07 23:52:51
-UpdateDateTime=2005/10/07 1:59:59
+UpdateDateTime=2005/10/07 2:04:20
 Generator=EINSTALL 2.0
 CreateFileType=4
 CreateFileAddVersionInfo=1
@@ -75,7 +75,7 @@ UnInstallerFileName=eiunin21.exe
 UnInstallerOptions=1
 
 [ShortCutSetting]
-GroupName=UTF-8 TeraTerm Pro
+GroupName=UTF-8 TeraTerm Pro(Japanese)
 ShowCheckBox=1
 VisibleSelectUser=1
 CheckSelectUser=0
