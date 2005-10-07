@@ -416,6 +416,43 @@ MaxBuffSize=500000
   source URL: http://www.neocom.ca/forum/viewtopic.php?t=6
 
 
+
+●マクロリファレンス: waitregex
+
+形式：
+       waitregex <string1 with regular expression> <string2 with regular expression> ...
+
+       使用できる正規表現： http://www.geocities.jp/kosako3/oniguruma/doc/RE.txt
+
+正規表現文字列 <string1 with regular expression>, <string2 with regular expression>, ...  のうち1つ以上を含む行（最大256文字）をホストから受信するか、タイムアウトが発生するまで MACRO を停止させる。正規表現文字列は最大10個まで指定できる。
+
+システム変数 timeout が0より大きい場合、<timeout> 秒の時間がすぎるとタイムアウトが発生する。 timeout の値が0以下の場合は、タイムアウトは発生しない。
+
+このコマンドの実行結果はシステム変数 result , inputstr, matchstr に格納される。
+
+変数 result の値の意味は以下のとおり。
+値		意味
+0		タイムアウト。どの文字列も来なかった。
+1		<string1 with regular expression> を受信した。
+2		<string2 with regular expression> を受信した。
+.		.
+.		.
+
+変数 inputstr は受信した行が格納される。
+変数 matchstr は最初にマッチしたパターンが格納される。
+
+
+例:
+timeout = 30
+waitregex 'Longhorn' '.*@sai' 'Pentium\d+' 'TeraTermX{3}'
+int2str s result
+messagebox s 'result'
+messagebox inputstr 'inputstr'
+messagebox matchstr 'matchstr'
+
+
+
+
 ■透過ウィンドウ
   TeraTermはウィンドウの半透明をサポートしています。現在、半透明ウィンドウは2種類のタイプがあり、ユーザは好きな方を選択することができます。
   
@@ -526,9 +563,15 @@ MaxBuffSize=500000
   TeraTermのビルド方法について以下に示します。ビルドにはVisual Studio .NET 2003(VC++7.1)が必要です。
   
   1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
-  2. teraterm\visualc\ttermpro.sln をVisual Studioで開く
-  3. ソリューションをビルドする
-  4. ビルドに成功するとteraterm\visualc\bin ディレクトリに実行プログラムが生成される
+  2. Onigurumaのソースコード(http://www.geocities.jp/kosako3/oniguruma/)を source\oniguruma ディレクトリに展開する。Onigurumaをビルドする（以下参照）。
+  
+       (1) copy win32\Makefile Makefile
+       (2) copy win32\config.h config.h
+       (3) nmake
+  
+  3. teraterm\visualc\ttermpro.sln をVisual Studioで開く
+  4. ソリューションをビルドする
+  5. ビルドに成功するとteraterm\visualc\bin ディレクトリに実行プログラムが生成される
 
 
 ■TeraTerm Menuのビルド方法
@@ -593,6 +636,7 @@ OF SUCH DAMAGE.
   クリッカブルURLパッチはmonkey magic氏に著作権があります。
   行末スクロール抑止パッチはいわもとこういち氏に著作権があります。
   マルチディスプレイ対応パッチは安藤弦彦氏に著作権があります。
+  鬼車はK.Kosako氏の著作物です。
   本プログラムは無償で利用できますが、作者は本プログラムの使用にあたり
   生じる障害や問題に対して一切の責任を負いません。
 
@@ -607,6 +651,7 @@ OF SUCH DAMAGE.
   LogMeTT: http://www.neocom.ca/freeware/LogMeIn/
   Eterm風透過ウィンドウ機能パッチ：http://www.geocities.co.jp/SiliconValley-PaloAlto/4954/av.html
   TTProxy: http://yebisuya.dip.jp/Software/TTProxy/
+  Oniguruma: http://www.geocities.jp/kosako3/oniguruma/
   TeraTerm forum: http://www.neocom.ca/forum/index.php
   TeraTerm ML: http://www.freeml.com/info/teraterm@freeml.com
 
@@ -619,6 +664,13 @@ OF SUCH DAMAGE.
 
 
 ■改版履歴
+
+2005.10.7 (Ver 4.21)
+  ・スクロールレンジを 16bit から 32bit へ拡張した
+  ・マクロコマンド 'waitregex' を追加した。正規表現を使った文字列の wait が可能となる。
+  ・システム変数 'matchstr' を追加した。正規表現でマッチしたパターンが格納される。
+  ・サンプルマクロ wait_regex.ttl を追加した。
+  ・正規表現ライブラリ Oniguruma のバージョンをバージョン情報に追加した
 
 2005.9.5 (Ver 4.20)
   ・SSH2対応TTSSH(2.17)へ差し替え

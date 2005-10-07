@@ -418,6 +418,41 @@ There are 3 types of connection you can establish from TeraTerm macro:
 
 
 
+* macro reference: waitregex
+
+Format: 
+        waitregex <string1 with regular expression> <string2 with regular expression> ...
+        
+        supported regular expression: http://www.geocities.jp/kosako3/oniguruma/doc/RE.txt
+Pauses until a line(maximum 256 characters) which contains one or more character strings with regular expression is received from the host, or until the timeout occurs. Maximum number of the regular expression strings is 10.
+
+If the system variable "timeout" is greater than zero, the timeout occurs when <timeout> seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.
+
+The result of this command are stored in the system variable "result", "inputstr" and "matchstr".
+
+The meaning of the system variable "result" is as follows:
+Value   Meaning 
+----------------------- 
+0       Timeout. No string has received. 
+1       <string1 with regular expression> has received.
+2       <string2 with regular expression> has received.
+:       :
+:       :
+
+And also the received line is stored in the system variable "inputstr".
+The first matched pattern is stored in the system variable "matchstr".
+
+
+Example:
+timeout = 30
+waitregex 'Longhorn' '.*@sai' 'Pentium\d+' 'TeraTermX{3}'
+int2str s result
+messagebox s 'result'
+messagebox inputstr 'inputstr'
+messagebox matchstr 'matchstr'
+
+
+
 * background transparency
   TeraTerm supports window background transparency. Now TeraTerm has two types of transparency function. You can select either function. 
   
@@ -529,9 +564,15 @@ There are 3 types of connection you can establish from TeraTerm macro:
   And you need Visual Studio .NET 2003(VC++7.1) to build.
   
   1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
-  2. Open teraterm\visualc\ttermpro.sln with Visual Studio.
-  3. Build TeraTerm solution.
-  4. TeraTerm execution program will be generated in teraterm\visualc\bin directory if the building is successful.
+  2. Download 'Oniguruma' source code(http://www.geocities.jp/kosako3/oniguruma/) and extract at 'source\oniguruma' directory. Build 'Oniguruma' regular expression library(see below).
+  
+       (1) copy win32\Makefile Makefile
+       (2) copy win32\config.h config.h
+       (3) nmake
+       
+  3. Open teraterm\visualc\ttermpro.sln with Visual Studio.
+  4. Build TeraTerm solution.
+  5. TeraTerm execution program will be generated in teraterm\visualc\bin directory if the building is successful.
 
 
 * How to build TeraTerm Menu
@@ -596,6 +637,7 @@ OF SUCH DAMAGE.
   Copyright of TTProxy to YebisuyaHompo.
   Copyright of Localized TeraTerm belongs to Yasuhide Takahashi.
   Copyright of Clickable URL to monkey magic.
+  Copyright of Oniguruma to K.Kosako.
   Copyright of preventing scroll at end of line to IWAMOTO Kouichi.
   Copyright of supporting multi display to Tsuruhiko Ando.
 
@@ -620,6 +662,7 @@ OF SUCH DAMAGE.
   LogMeTT: http://www.neocom.ca/freeware/LogMeIn/
   Eterm lookfeel transparency window patch: http://www.geocities.co.jp/SiliconValley-PaloAlto/4954/av.html
   TTProxy: http://yebisuya.dip.jp/Software/TTProxy/
+  Oniguruma: http://www.geocities.jp/kosako3/oniguruma/
   TeraTerm forum: http://www.neocom.ca/forum/index.php
   TeraTerm ML: http://www.freeml.com/info/teraterm@freeml.com
 
@@ -633,6 +676,13 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 
 * History
+
+2005.10.7 (Ver 4.21)
+  - expanded scroll range width from 16bit to 32bit.
+  - added 'waitregex' macro command. This command enables the macro script to wait the specified keyword with regular expression. 
+  - added the system variable 'matchstr' which will store the matched pattern with regular expression.
+  - added the sample TTL macro 'wait_regex.ttl'.
+  - added regular expression library 'Oniguruma' version information on TeraTerm version dialog.
 
 2005.9.5 (Ver 4.20)
   - upgraded TTSSH version supporting SSH2 to 2.17
