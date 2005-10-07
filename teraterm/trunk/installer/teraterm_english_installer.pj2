@@ -5,16 +5,16 @@ CreateFolder=C:\Program Files\Matsuoka\einstall2\Project\ExeFile
 MajorVersion=3
 MinorVersion=50
 CreateDateTime=2004/12/07 23:52:51
-UpdateDateTime=2005/10/07 1:59:59
+UpdateDateTime=2005/10/08 0:39:20
 Generator=EINSTALL 2.0
 CreateFileType=4
 CreateFileAddVersionInfo=1
 CreateFileNameOption=0
 CreateFolderBeforeBackup=1
-UseUniqueKey=1
+UseUniqueKey=0
 InstallerModuleName=EI_MODERN
 InstallerModuleKey=
-InstallerModuleLanguage=1041
+InstallerModuleLanguage=1033
 
 [SupportInfo]
 Publisher=Yutaka Hirata
@@ -34,11 +34,11 @@ URLUpdateInfo=
 7=Å~
 
 [Software]
-SoftName=UTF-8 TeraTerm Pro with TTSSH2(Japanese)
-InstallerTitle=UTF-8 TeraTerm Pro with TTSSH2(Japanese)
+SoftName=UTF-8 TeraTerm Pro with TTSSH2
+InstallerTitle=UTF-8 TeraTerm Pro with TTSSH2
 MainFileName=%InstallDir%\ttermpro.exe
 Copyright=Copyright (C)2004-2005 Yutaka Hirata
-Folder=%ProgramFilesDir%|teratermj
+Folder=%ProgramFilesDir%|teraterm
 SearchFileDir=%ProgramFilesDir%|
 LogoFileName=
 LogoEnabled=0
@@ -73,6 +73,7 @@ UnInstallerStoreFolder=%WindowsDirectory%
 UnInstallerStoreSubFolder=
 UnInstallerFileName=eiunin21.exe
 UnInstallerOptions=1
+EnableUnDeleteRegistrySetting=0
 
 [ShortCutSetting]
 GroupName=UTF-8 TeraTerm Pro
@@ -173,15 +174,15 @@ InfoFileMethod=1
 54=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\dialup.ttl|||0|0|127|0,0,0,0,,,,,,,,,,,,,,,,,||||||||||
 55=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\wait_regex.ttl|||0|0|127|0,0,0,0,,,,,,,,,,,,,,,,,||||||||||
 
-[ProgramItems]
-0=1|%InstallDir%\|copyfont.bat||0|3|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127|0,0,0,0,,,,,,,,,,,,,,,,,|1,1,é¿çsÇ∑ÇÈ,,,,,,,,,,,,,,,,,,||||||||||
-
 [ShortCutItems]
-0=UTF-8 TeraTerm Pro(Japanese)|%InstallDir%\ttermpro.exe||||0||0|35|0|||||||||||
+0=UTF-8 TeraTerm Pro|%InstallDir%\ttermpro.exe||||0||0|35|0|||||||||||
 1=TeraTerm Menu|%InstallDir%\ttpmenu.exe||||0||0|8|0|||||||||||
 2=TeraTerm Document(Japanese)|%InstallDir%\utf8_readme-j.txt||||0||0|2|0|||||||||||
 3=TeraTerm Document|%InstallDir%\utf8_readme.txt||||0||0|2|0|||||||||||
 4=TTSSH Document|%InstallDir%\ssh2_readme.txt||||0||0|2|0|||||||||||
 5=TTSSH Document(Japanese)|%InstallDir%\ssh2_readme-j.txt||||0||0|2|0|||||||||||
 6=LogMeTT Document|%InstallDir%\LogMeTT_README.txt||||0||0|2|0|||||||||||
+
+[ProgramItems]
+0=1|%InstallDir%\|copyfont.bat||0|3|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127|0,0,0,0,,,,,,,,,,,,,,,,,|1,1,é¿çsÇ∑ÇÈ,,,,,,,,,,,,,,,,,,||||||||||
 
