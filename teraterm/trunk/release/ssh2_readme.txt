@@ -133,7 +133,9 @@ OF SUCH DAMAGE.
   Copyright of original TeraTerm Pro belongs to T.Teranishi.
   Copyright of IPv6 version TeraTerm Pro belongs to J.Kato.
   Copyright of original TTSSH belongs to Robert O'Callahan.
-  Copyright of TTSSH supporing SSH2 belongs Yutaka Hirata.
+  Copyright of TTSSH supporing SSH2 belongs to Yutaka Hirata.
+  Copyright of OpenSSL belongs to OpenSSL project.
+  Copyright of zlib belongs to Greg Roelofs and Jean-loup Gaill.
 
   This program is provided "as is" without warranties of any kind, either expressed or 
   implied, including, but not limited to, the implied warranties of merchantability and fitness 
