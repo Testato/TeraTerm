@@ -5,7 +5,7 @@ CreateFolder=C:\Program Files\Matsuoka\einstall2\Project\ExeFile
 MajorVersion=3
 MinorVersion=50
 CreateDateTime=2004/12/07 23:52:51
-UpdateDateTime=2005/10/08 0:39:20
+UpdateDateTime=2005/10/09 0:00:33
 Generator=EINSTALL 2.0
 CreateFileType=4
 CreateFileAddVersionInfo=1
@@ -48,7 +48,7 @@ LogoNoHeaderMes=0
 LogoTransparent=0
 MajorVersion=4
 MinorVersion=2
-ReleaseVersion=1
+ReleaseVersion=2
 BuildVersion=0
 OtherVersion=0
 DocumentFile=
@@ -116,6 +116,18 @@ SystemFileDelete=0
 SystemFileDeleteMessage=1
 InfoFileMethod=1
 
+[ShortCutItems]
+0=UTF-8 TeraTerm Pro|%InstallDir%\ttermpro.exe||||0||0|35|0|||||||||||
+1=TeraTerm Menu|%InstallDir%\ttpmenu.exe||||0||0|8|0|||||||||||
+2=TeraTerm Document(Japanese)|%InstallDir%\utf8_readme-j.txt||||0||0|2|0|||||||||||
+3=TeraTerm Document|%InstallDir%\utf8_readme.txt||||0||0|2|0|||||||||||
+4=TTSSH Document|%InstallDir%\ssh2_readme.txt||||0||0|2|0|||||||||||
+5=TTSSH Document(Japanese)|%InstallDir%\ssh2_readme-j.txt||||0||0|2|0|||||||||||
+6=LogMeTT Document|%InstallDir%\LogMeTT_README.txt||||0||0|2|0|||||||||||
+
+[ProgramItems]
+0=1|%InstallDir%\|copyfont.bat||0|3|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127|0,0,0,0,,,,,,,,,,,,,,,,,|1,1,é¿çsÇ∑ÇÈ,,,,,,,,,,,,,,,,,,||||||||||
+
 [Files]
 0=1|0|%InstallDir%|plugin|C:\usr\src\utf8_teraterm_installer\plugin\ttAKJpeg.dll|||0|0|127|||||||||||
 1=1|0|%InstallDir%|plugin|C:\usr\src\utf8_teraterm_installer\plugin\ttAKJpeg.txt|||0|0|127|||||||||||
@@ -173,16 +185,5 @@ InfoFileMethod=1
 53=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\login.ttl|||0|0|127|0,0,0,0,,,,,,,,,,,,,,,,,||||||||||
 54=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\dialup.ttl|||0|0|127|0,0,0,0,,,,,,,,,,,,,,,,,||||||||||
 55=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\wait_regex.ttl|||0|0|127|0,0,0,0,,,,,,,,,,,,,,,,,||||||||||
-
-[ShortCutItems]
-0=UTF-8 TeraTerm Pro|%InstallDir%\ttermpro.exe||||0||0|35|0|||||||||||
-1=TeraTerm Menu|%InstallDir%\ttpmenu.exe||||0||0|8|0|||||||||||
-2=TeraTerm Document(Japanese)|%InstallDir%\utf8_readme-j.txt||||0||0|2|0|||||||||||
-3=TeraTerm Document|%InstallDir%\utf8_readme.txt||||0||0|2|0|||||||||||
-4=TTSSH Document|%InstallDir%\ssh2_readme.txt||||0||0|2|0|||||||||||
-5=TTSSH Document(Japanese)|%InstallDir%\ssh2_readme-j.txt||||0||0|2|0|||||||||||
-6=LogMeTT Document|%InstallDir%\LogMeTT_README.txt||||0||0|2|0|||||||||||
-
-[ProgramItems]
-0=1|%InstallDir%\|copyfont.bat||0|3|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127|0,0,0,0,,,,,,,,,,,,,,,,,|1,1,é¿çsÇ∑ÇÈ,,,,,,,,,,,,,,,,,,||||||||||
+56=1|0|%InstallDir%||C:\usr\cvs\teraterm\release\RE.txt|||0|0|127|0,0,0,0,,,,,,,,,,,,,,,,,||||||||||
 
