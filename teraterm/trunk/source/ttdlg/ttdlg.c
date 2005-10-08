@@ -1490,8 +1490,12 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		_snprintf(buf, sizeof(buf), "Version %d.%d", a, b);
 		SendMessage(GetDlgItem(Dialog, IDC_TT_VERSION), WM_SETTEXT, 0, (LPARAM)buf);
 
-		// Onigurumaのバージョンを設定する (2005.10.6 yutaka)
-		_snprintf(buf, sizeof(buf), "Oniguruma: %d.%d.%d",
+		// Onigurumaのバージョンを設定する 
+		// バージョンの取得は onig_version() を呼び出すのが適切だが、そのためだけにライブラリを
+		// リンクしたくなかったので、以下のようにした。Onigurumaのバージョンが上がった場合、
+		// ビルドエラーとなるかもしれない。
+		// (2005.10.8 yutaka)
+		_snprintf(buf, sizeof(buf), "Oniguruma %d.%d.%d",
 					ONIGURUMA_VERSION_MAJOR,
 					ONIGURUMA_VERSION_MINOR,
 					ONIGURUMA_VERSION_TEENY);
@@ -2000,6 +2004,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2005/10/05 17:01:41  yutakakn
+ * Onigurumaのバージョンをバージョン情報に追加。
+ *
  * Revision 1.6  2005/04/07 14:13:23  yutakakn
  * ・Additional settingsでのマウスカーソル種別を設定時に変更されるようにした。
  * ・バージョン情報ダイアログのURLをダブルクリックすると、ブラウザが起動されるようにした。
