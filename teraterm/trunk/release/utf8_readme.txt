@@ -423,7 +423,8 @@ There are 3 types of connection you can establish from TeraTerm macro:
 Format: 
         waitregex <string1 with regular expression> <string2 with regular expression> ...
         
-        supported regular expression: http://www.geocities.jp/kosako3/oniguruma/doc/RE.txt
+        supported regular expression: RE.txt
+
 Pauses until a line(maximum 256 characters) which contains one or more character strings with regular expression is received from the host, or until the timeout occurs. Maximum number of the regular expression strings is 10.
 
 If the system variable "timeout" is greater than zero, the timeout occurs when <timeout> seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.

@@ -422,7 +422,7 @@ MaxBuffSize=500000
 形式：
        waitregex <string1 with regular expression> <string2 with regular expression> ...
 
-       使用できる正規表現： http://www.geocities.jp/kosako3/oniguruma/doc/RE.txt
+       使用できる正規表現： RE.txt
 
 正規表現文字列 <string1 with regular expression>, <string2 with regular expression>, ...  のうち1つ以上を含む行（最大256文字）をホストから受信するか、タイムアウトが発生するまで MACRO を停止させる。正規表現文字列は最大10個まで指定できる。
 
