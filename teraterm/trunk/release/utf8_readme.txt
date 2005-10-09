@@ -423,24 +423,24 @@ There are 3 types of connection you can establish from TeraTerm macro:
 Format: 
         waitregex <string1 with regular expression> <string2 with regular expression> ...
         
-        supported regular expression: RE.txt
+        Supports Oniguruma regular expressions: RE.txt
 
-Pauses until a line(maximum 256 characters) which contains one or more character strings with regular expression is received from the host, or until the timeout occurs. Maximum number of the regular expression strings is 10.
+Pauses until the string(maximum 256 characters), which matches one or more character strings with regular expression is received from the host, or until the timeout occurs. Maximum number of the regular expression strings is 10.
 
 If the system variable "timeout" is greater than zero, the timeout occurs when <timeout> seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.
 
-The result of this command are stored in the system variable "result", "inputstr" and "matchstr".
+The "waitregex" command returns one of the following values in the system variable "result":
 
-The meaning of the system variable "result" is as follows:
 Value   Meaning 
 ----------------------- 
-0       Timeout. No string has received. 
+0       Timeout. No string, which satisfies the condition, has been received. 
 1       <string1 with regular expression> has received.
 2       <string2 with regular expression> has received.
 :       :
 :       :
+n       <stringn with regular expression> has received. n=1..10.
 
-And also the received line is stored in the system variable "inputstr".
+The received line is stored in the system variable "inputstr".
 The first matched pattern is stored in the system variable "matchstr".
 
 
