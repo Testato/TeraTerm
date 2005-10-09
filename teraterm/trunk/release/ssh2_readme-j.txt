@@ -72,7 +72,7 @@
   TTSSHのビルド方法について以下に示します。ビルドにはVisual Studio .NET 2003(VC++7.1)、ActivePerlが必要です。
   
   1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
-  2. zlibのソースコード(http://www.gzip.org/zlib/)を ttssh2\zlib ディレクトリに展開する
+  2. zlibのソースコード(http://www.zlib.net/)を ttssh2\zlib ディレクトリに展開する
   3. OpenSSLのソースコード(http://www.openssl.org/)を ttssh2\openssl ディレクトリに展開する。OpenSSLをビルドする（以下参照）。
 
       - Build OpenSSL.

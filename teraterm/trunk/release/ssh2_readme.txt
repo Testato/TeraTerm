@@ -74,7 +74,7 @@
   And you need Visual Studio .NET 2003(VC++7.1) and ActivePerl to build.
   
   1. Checkout TTSSH source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
-  2. Extract zlib source code(http://www.gzip.org/zlib/) to ttssh2\zlib directory.
+  2. Extract zlib source code(http://www.zlib.net/) to ttssh2\zlib directory.
   3. Extract OpenSSL source code(http://www.openssl.org/) to ttssh2\openssl directory. Build OpenSSL in the following step:
   
       - Build OpenSSL.
