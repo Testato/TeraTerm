@@ -170,16 +170,16 @@ BEGIN
     GROUPBOX        "Prompt",IDC_STATIC,12,112,188,32
 END
 
-DIALOG_VERSION DIALOGEX 0, 0, 158, 74
+DIALOG_VERSION DIALOGEX 0, 0, 158, 90
 STYLE DS_SETFONT | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "Version Information"
 FONT 9, "‚l‚r ‚oƒSƒVƒbƒN", 400, 0, 0x80
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,55,54,44,14
-    CTEXT           "Tera Term launch tool\r\nTeraTerm Menu Version 0.94r2",
-                    IDC_STATIC,20,9,124,20
-    LTEXT           "Copyright(C) 1997-2003 S.Hayakawa\r\nSSH2 support 1.02 (Y.Hirata), 2004-2005",
-                    IDC_STATIC,27,31,122,20
+    DEFPUSHBUTTON   "OK",IDOK,54,69,44,14
+    CTEXT           "Tera Term launch tool\r\nTeraTerm Menu Version 1.03",
+                    IDC_STATIC,20,9,124,19
+    LTEXT           "Includes:\nversion 0.94r2\nCopyright(C) 1997-2003 S.Hayakawa\r\nCopyright(C) 2004-2005 Y.Hirata",
+                    IDC_STATIC,26,31,122,35
     ICON            TTERM_ICON,STATIC_ICON,4,8,18,21
 END
 
@@ -213,7 +213,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 156
         TOPMARGIN, 7
-        BOTTOMMARGIN, 70
+        BOTTOMMARGIN, 86
     END
 END
 #endif    // APSTUDIO_INVOKED
