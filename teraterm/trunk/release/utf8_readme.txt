@@ -678,6 +678,10 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2005.??.?? (Ver 4.22)
+  - Bug fix: TeraTerm Menu popup menu couldn't be shown at right position using multi monitor system. upgraded TeraTerm Menu to 1.03.
+  - upgraded LogMeTT to 2.7.1
+
 2005.10.7 (Ver 4.21)
   - expanded scroll range width from 16bit to 32bit.
   - added 'waitregex' macro command. This command enables the macro script to wait the specified keyword with regular expression. 
