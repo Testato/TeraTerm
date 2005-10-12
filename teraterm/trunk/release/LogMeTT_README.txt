@@ -52,6 +52,53 @@ http://www.neocom.ca/forum/index.php
                  =============================
                  (in reverse chronological order)
 
+2005-10-11 (Ver 2.7 Release 1) 
+New features added:
+- The 3rd page of settings was added to LogMeTT Configuration Window. 
+Press 'Next' button 2 times to reach it. The page contains default settings 
+for Colors and Logging for newly created connections.
+- Teraterm.ini color settings were added to the set of predefined color 
+schemas on Colors tab.
+- The whole algorithm of checking for updated versions via Internet was 
+replaced. Manual check option was added to 'Help' menu. Also the interval 
+to check for updates can be set on the first 'Settings' page. Available 
+options are:  every day, every 3 days, every 7 days, every 14 days, every 
+30 days, never. At maiden installation the option 'Never' is selected by 
+default (as per suggestion of PaVel). Before performing actual upgrade user 
+will get the list of new features and bugs fixed in newly released version. 
+Upgrade procedure will automatically shut down LogMeTT and start downloading 
+new version of TeraTerm or LogMeTT. While upgrading TeraTerm user gets option 
+to perform teraterm.ini backup.
+- 'waitregex' macro command and variable 'matchstr' were added to syntax 
+ighlighter.
+- Both LogMeTT and Macro help files were updated.
+
+Bugs fixed:
+- The major problem with checking for newer releases introduced in the previous 
+release was fixed.
+- If no default printer installed, application interface was crashing and error 
+message was popping up all the time.
+- The problem with scheduler was fixed when day of the month setting was 
+overwriting day of the week setting. Thanks to Victor for reporting.
+- Lots of other minor fixes and code optimisation. 
+
+
+2005-08-08 (Ver 2.6 Release 1) 
+New features added: 
+- Print, Print Preview and Printer Setup functions were added. They are 
+reachable from File menu of LogMeTT Configuration window and allow to print 
+the macro associated to currently selected node. Functions are available only 
+when Macro page is visible. 
+- As per request of LogMeTT users the functionality of checking for updated 
+versions of TeraTerm and LogMeTT was changed. LogMeTT now check for updates 
+on startup and then once every 24 hours of running. This functionality can be 
+disabled by selecting newly added checkbox "Do not connect the Internet to 
+check for newer versions" on Settings page of Configuration window. 
+- Help file was updated to reflect these new changes. 
+Bugs fixed: 
+- None. 
+
+
 2005-07-31 (Ver 2.5 Release 7) 
 New features added: 
 - Additional option "Do not connect the Internet to check for newer versions" 
