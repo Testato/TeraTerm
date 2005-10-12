@@ -10,6 +10,7 @@
 
 #include	<windows.h>
 #include	<commctrl.h>
+#include	<windowsx.h>  // for GET_X_LPARAM(), GET_Y_LPARAM()
 
 #include	"ttpmenu.h"
 #include	"registry.h"
@@ -503,10 +504,11 @@ void PopupMenu(HWND hWnd)
 
 	::SetForceForegroundWindow(hWnd);
 
+	// マルチモニタ環境では LOWORD(), HIWORD() を使ってはいけない。(2005.10.13 yutaka)
 	::TrackPopupMenu(g_hSubMenu,
 						TPM_LEFTALIGN | TPM_RIGHTBUTTON,
-						LOWORD(dwPos),
-						HIWORD(dwPos),
+						GET_X_LPARAM(dwPos),
+						GET_Y_LPARAM(dwPos),
 						0,
 						hWnd,
 						NULL);
@@ -529,10 +531,11 @@ void PopupListMenu(HWND hWnd)
 
 	::SetForceForegroundWindow(hWnd);
 
+	// マルチモニタ環境では LOWORD(), HIWORD() を使ってはいけない。(2005.10.13 yutaka)
 	::TrackPopupMenu(g_hListMenu,
 						TPM_LEFTALIGN | TPM_RIGHTBUTTON,
-						LOWORD(dwPos),
-						HIWORD(dwPos),
+						GET_X_LPARAM(dwPos),
+						GET_Y_LPARAM(dwPos),
 						0,
 						hWnd,
 						NULL);
@@ -2106,6 +2109,9 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR nCmdLine, int nCmdShow)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2005/01/28 13:58:28  yutakakn
+ *  SSH自動ログインにおいて、秘密鍵の指定をできるようにした。
+ *
  * Revision 1.5  2005/01/25 14:06:06  yutakakn
  * SSH自動ログインにおいて、ユーザパラメータを指定できるようにした。
  * また、マクロの指定を削除した。
