@@ -679,6 +679,8 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 * History
 
 2005.??.?? (Ver 4.22)
+  - added duplicating Cygwin connection using Alt + D accelerator key.
+  - Bug fix: DAKUTEN(the dot marks) might not be correctly shown in UTF-8 for Mac OS X.
   - Bug fix: TeraTerm Menu popup menu couldn't be shown at right position using multi monitor system. upgraded TeraTerm Menu to 1.03.
   - upgraded LogMeTT to 2.7.1
 
