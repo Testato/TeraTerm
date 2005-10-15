@@ -2231,6 +2231,13 @@ void CVTWindow::OnDuplicateSession()
 		TTXSetCommandLine(Command, sizeof(Command), NULL); /* TTPLUG */
 
 	} else {
+		// 接続先が localhost ならCygwin接続の複製を行う。
+		// (2005.10.15 yutaka)
+		if (strcmp(ts.HostName, "127.0.0.1") == 0 || 
+			strcmp(ts.HostName, "localhost") == 0) {
+			OnCygwinConnection();
+		}
+
 		return;
 
 	}
@@ -3799,6 +3806,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.21  2005/10/03 16:57:21  yutakakn
+ * スクロールレンジを 16bit から 32bit へ拡張した
+ *
  * Revision 1.20  2005/05/15 11:49:32  yutakakn
  * ブロック選択のキーバインドを Shift+MouseDrag から Alt+MouseDrag へ変更した。
  * 左クリックで開始位置の記録、Shift+左クリックで終了位置を取得し、ページをまたぐ選択
