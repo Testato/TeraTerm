@@ -72,6 +72,15 @@ BOOL InitTTL(HWND HWin)
   NewIntVar("timeout",0);
   NewStrVar("inputstr","");
   NewStrVar("matchstr","");   // for 'waitregex' command (2005.10.7 yutaka)
+  NewStrVar("groupmatchstr1","");   // for 'waitregex' command (2005.10.15 yutaka)
+  NewStrVar("groupmatchstr2","");   // for 'waitregex' command (2005.10.15 yutaka)
+  NewStrVar("groupmatchstr3","");   // for 'waitregex' command (2005.10.15 yutaka)
+  NewStrVar("groupmatchstr4","");   // for 'waitregex' command (2005.10.15 yutaka)
+  NewStrVar("groupmatchstr5","");   // for 'waitregex' command (2005.10.15 yutaka)
+  NewStrVar("groupmatchstr6","");   // for 'waitregex' command (2005.10.15 yutaka)
+  NewStrVar("groupmatchstr7","");   // for 'waitregex' command (2005.10.15 yutaka)
+  NewStrVar("groupmatchstr8","");   // for 'waitregex' command (2005.10.15 yutaka)
+  NewStrVar("groupmatchstr9","");   // for 'waitregex' command (2005.10.15 yutaka)
 
   NewStrVar("param2",Param2);
   NewStrVar("param3",Param3);
@@ -2504,6 +2513,20 @@ void SetMatchStr(PCHAR Str)
   if (CheckVar("matchstr",&VarType,&VarId) &&
       (VarType==TypString))
     SetStrVal(VarId,Str);
+}
+
+// 正規表現でグループマッチした文字列を記録する
+// (2005.10.15 yutaka)
+void SetGroupMatchStr(int no, PCHAR Str)
+{
+	WORD VarType, VarId;
+	char buf[128];
+
+	_snprintf(buf, sizeof(buf), "groupmatchstr%d", no);
+
+	if (CheckVar(buf,&VarType,&VarId) &&
+		(VarType==TypString))
+		SetStrVal(VarId,Str);
 }
 
 void SetInputStr(PCHAR Str)

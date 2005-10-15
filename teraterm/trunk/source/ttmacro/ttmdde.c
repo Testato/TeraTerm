@@ -434,7 +434,7 @@ void SetWait2(PCHAR Str, int Len, int Pos)
 
 
 // 正規表現によるパターンマッチを行う（Oniguruma使用）
-int FindRegexStringOne(char *regex, int regex_len, char *target, int target_len, int *match_start, int *match_end)
+int FindRegexStringOne(char *regex, int regex_len, char *target, int target_len)
 {
 	int r;
 	unsigned char *start, *range, *end;
@@ -444,6 +444,8 @@ int FindRegexStringOne(char *regex, int regex_len, char *target, int target_len,
 	UChar* pattern = (UChar* )regex;
 	UChar* str     = (UChar* )target;
 	int matched = 0;
+	char ch;
+	int mstart, mend;
 
 
 	r = onig_new(&reg, pattern, pattern + regex_len,
@@ -464,12 +466,29 @@ int FindRegexStringOne(char *regex, int regex_len, char *target, int target_len,
 	if (r >= 0) {
 		int i;
 
-		fprintf(stderr, "match at %d\n", r);
 		for (i = 0; i < region->num_regs; i++) {
-			fprintf(stderr, "%d: (%d-%d)\n", i, region->beg[i], region->end[i]);
-			*match_start = region->beg[i];
-			*match_end = region->end[i];
-			break; // 最初にマッチしたものだけ記録する
+			mstart = region->beg[i];
+			mend = region->end[i];
+
+			// マッチパターン全体を matchstr へ格納する
+			if (i == 0) {
+				ch = target[mend];
+				target[mend] = 0; // null terminate
+				LockVar();
+				SetMatchStr(target + mstart);
+				UnlockVar();
+				target[mend] = ch;  // restore
+
+			} else { // 残りのマッチパターンは groupmatchstr[1-9] へ格納する
+				ch = target[mend];
+				target[mend] = 0; // null terminate
+				LockVar();
+				SetGroupMatchStr(i, target + mstart);
+				UnlockVar();
+				target[mend] = ch;  // restore
+
+			}
+
 		}
 
 		matched = 1;
@@ -496,8 +515,6 @@ int FindRegexString(void)
 {
 	int i, Found = 0;
 	PCHAR Str;
-	int mstart, mend;
-	CHAR ch;
 
 	if (RegexActionType == REGEX_NONE)
 		return 0;  // not match
@@ -508,18 +525,8 @@ int FindRegexString(void)
 	for (i = 9 ; i >= 0 ; i--) {
 		Str = PWaitStr[i]; // regex pattern
 		if (Str!=NULL) {
-			if (FindRegexStringOne(Str, strlen(Str), RecvLnBuff, RecvLnPtr, &mstart, &mend) > 0) { // matched
+			if (FindRegexStringOne(Str, strlen(Str), RecvLnBuff, RecvLnPtr) > 0) { // matched
 				Found = i+1;
-
-				// マッチしたパターンを matchstr へ格納する
-				if (mend <= RecvLnPtr && mstart < mend) {
-					ch = RecvLnBuff[mend]; // backup
-					RecvLnBuff[mend] = 0;  // null terminate
-					LockVar();
-					SetMatchStr(RecvLnBuff + mstart);
-					UnlockVar();
-					RecvLnBuff[mend] = ch;  // restore
-				}
 
 				// マッチした行を inputstr へ格納する
 				LockVar();
