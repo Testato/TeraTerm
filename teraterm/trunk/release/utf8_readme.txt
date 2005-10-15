@@ -679,6 +679,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 * History
 
 2005.??.?? (Ver 4.22)
+  - added the system variable from 'groupmatchstr1' to 'groupmatchstr9' which will store the group matched pattern with regular expression.
   - added duplicating Cygwin connection using Alt + D accelerator key.
   - Bug fix: DAKUTEN(the dot marks) might not be correctly shown in UTF-8 for Mac OS X.
   - Bug fix: TeraTerm Menu popup menu couldn't be shown at right position using multi monitor system. upgraded TeraTerm Menu to 1.03.
