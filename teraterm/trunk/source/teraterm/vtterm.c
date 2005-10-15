@@ -2292,12 +2292,17 @@ extern unsigned short ConvertUnicode(unsigned short code, codemap_t *table, int 
 //
 #include "hfs_plus.map"
 
-unsigned short GetIllegalUnicode(int start_index, unsigned short code, hfsplus_codemap_t *table, int tmax)
+unsigned short GetIllegalUnicode(int start_index, unsigned short first_code, unsigned short code, 
+								 hfsplus_codemap_t *table, int tmax)
 {
 	unsigned short result = 0;
 	int i;
 
 	for (i = start_index ; i < tmax ; i++) {
+		if (table[i].first_code != first_code) { // 1文字目が異なるなら、以降はもう調べなくてよい。
+			break;
+		}
+
 		if (table[i].second_code == code) {
 			result = table[i].illegal_code;
 			break;
@@ -2479,11 +2484,25 @@ BOOL ParseFirstUTF8(BYTE b, int hfsplus_mode)
 				}
 			} else {
 				maybe_hfsplus = 0;
-				cset = GetIllegalUnicode(first_code_index, code, mapHFSPlusUnicode, sizeof(mapHFSPlusUnicode)/sizeof(mapHFSPlusUnicode[0]));
+				cset = GetIllegalUnicode(first_code_index, first_code, code, mapHFSPlusUnicode, sizeof(mapHFSPlusUnicode)/sizeof(mapHFSPlusUnicode[0]));
 				if (cset != 0) { // success
 					code = cset;
 
 				} else { // error
+					// 2つめの文字が半濁点の1文字目に相当する場合は、再度検索を続ける。(2005.10.15 yutaka)
+					if ((first_code_index = GetIndexOfHFSPlusFirstCode(
+							code, mapHFSPlusUnicode, sizeof(mapHFSPlusUnicode)/sizeof(mapHFSPlusUnicode[0])
+							)) != -1) {
+
+						// 1つめの文字はそのまま出力する
+						UnicodeToCP932(first_code, 3);
+
+						maybe_hfsplus = 1;
+						first_code = code;
+						count = 0;
+						return (TRUE);
+					}
+
 					UnicodeToCP932(first_code, 3);
 					UnicodeToCP932(code, 3);
 					count = 0;
@@ -2614,6 +2633,11 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2005/05/29 05:48:19  yutakakn
+ * <ESC>[H(Cursor in left upper corner)によりカーソルが左上隅を指している場合、
+ * <ESC>[Jは<ESC>[2Jと同じことなので、処理を分け、現行バッファをスクロールアウト
+ * させるようにする。
+ *
  * Revision 1.6  2005/05/25 14:46:33  yutakakn
  * <ESC>[Jによる画面クリア時にカレントバッファをスクロールアウトさせるようにした。
  *
