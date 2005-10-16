@@ -52,6 +52,18 @@ http://www.neocom.ca/forum/index.php
                  =============================
                  (in reverse chronological order)
 
+2005-10-15 (Ver 2.7 Release 2) 
+New features added:
+- 9 new TeraTerm Macro system variables from 'groupmatchstr1' to 'groupmatchstr9' 
+that are introduced in TeraTerm 4.22 were added to syntax highlighter.
+
+Bugs fixed: 
+- Job scheduler was starting to work from the second minute after LogMeTT start
+instead of starting from the end of the current minute.
+- The problem with check for updates algorithm was fixed when tray icon was
+keeping to flash if upgrade to the latest version was done from "outside" LogMeTT.
+
+
 2005-10-11 (Ver 2.7 Release 1) 
 New features added:
 - The 3rd page of settings was added to LogMeTT Configuration Window. 

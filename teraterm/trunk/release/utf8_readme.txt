@@ -442,7 +442,7 @@ n       <stringn with regular expression> has received. n=1..10.
 
 The received line is stored in the system variable "inputstr".
 The first matched pattern is stored in the system variable "matchstr".
-
+Group matched patterns of regular expressions are stored in 9 system variables from "groupmatchstr1" to "groupmatchstr9".
 
 Example:
 timeout = 30
@@ -683,7 +683,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
   - added duplicating Cygwin connection using Alt + D accelerator key.
   - Bug fix: DAKUTEN(the dot marks) might not be correctly shown in UTF-8 for Mac OS X.
   - Bug fix: TeraTerm Menu popup menu couldn't be shown at right position using multi monitor system. upgraded TeraTerm Menu to 1.03.
-  - upgraded LogMeTT to 2.7.1
+  - upgraded LogMeTT to 2.7.2
 
 2005.10.7 (Ver 4.21)
   - expanded scroll range width from 16bit to 32bit.

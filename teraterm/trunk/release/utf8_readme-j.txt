@@ -440,6 +440,7 @@ MaxBuffSize=500000
 
 変数 inputstr は受信した行が格納される。
 変数 matchstr は最初にマッチしたパターンが格納される。
+変数 groupmatchstr1～groupmatchstr9 にはグループマッチしたパターンが格納される。
 
 
 例:
@@ -670,7 +671,7 @@ OF SUCH DAMAGE.
   ・Cygwin接続の複製ができるようにした
   ・Mac OS X向けUTF-8において、濁点が正しく表示されないことがある問題を修正した。
   ・TeraTerm Menuをマルチモニタ環境で使用すると、ポップアップメニューが正しいモニタに表示されないバグを修正した（TeraTerm Menu 1.03）。
-  ・LogMeTT 2.7.1へ差し替えた
+  ・LogMeTT 2.7.2へ差し替えた
 
 2005.10.7 (Ver 4.21)
   ・スクロールレンジを 16bit から 32bit へ拡張した
