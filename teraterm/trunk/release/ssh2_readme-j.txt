@@ -68,6 +68,37 @@
     記述してください。
 
 
+●コマンドラインパラメータ
+  TTSSHでは以下のコマンドラインパラメータが使用できます。
+  
+  パラメータ                説明
+  ------------------------+-------------------------------------------------------
+  /ssh-Lport1:host:port2    ローカルポート(port1)からリモートポート(port2)へポートフォワーディングする
+  /ssh-Rport1:host:port2    リモートポート(port1)からローカルポート(port2)へポートフォワーディングする
+  /ssh-X                    X11をポートフォワーディングする
+  /ssh-f=file               teraterm.iniファイル(file)を読み込む
+  /ssh-v                    ログレベルを VERBOSE モードにする
+  /ssh-autologin            空のパスワードでの自動ログインを試みる
+  /ssh-autologon            同上
+  /ssh-consume=file         teraterm.iniファイル(file)の読み込み後、当該ファイルを削除する。
+  /t=value                  TTSSHを有効にする(value=2)、無効にする(value=2以外)
+  /f=file                   teraterm.iniファイル(file)を読み込む
+  /1                        SSH1で接続する
+  /2                        SSH2で接続する
+  /nossh                    TTSSHを無効にする
+  /auth=mode                自動ログインを試みる(mode=password, publickey)
+  /user=username            ユーザ名を指定する
+  /passwd=password          パスワードを指定する
+  /keyfile=file             秘密鍵を指定する
+
+
+  例）
+  ttermpro.exe server1:22 /ssh /ssh-L30025:smtpsrv1:25 /ssh-L30110:pop3srv1:110
+  ttermpro.exe server2:22 /ssh /ssh-X
+  ttermpro.exe server3:22 /ssh /2 /auth=password /user=guest /passwd=guest
+
+
+
 ■TTSSHのビルド方法
   TTSSHのビルド方法について以下に示します。ビルドにはVisual Studio .NET 2003(VC++7.1)、ActivePerlが必要です。
   

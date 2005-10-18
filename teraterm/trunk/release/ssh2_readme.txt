@@ -69,6 +69,38 @@
     And also if you use the atmark character in them, write two continuation '@@' instead of '@'.
 
 
+
+* Command line parameters
+  You can use the following command line parameters on TTSSH.
+  
+  parameter                 description
+  ------------------------+-------------------------------------------------------
+  /ssh-Lport1:host:port2    port-fowarding from local port(port1) to remote port(port2)
+  /ssh-Rport1:host:port2    port-fowarding from remote port(port1) to local port(port2)
+  /ssh-X                    X11 port-fowarding
+  /ssh-f=file               read teraterm.ini(file)
+  /ssh-v                    setup the log level to VERBOSE mode
+  /ssh-autologin            try to autologin with empty password
+  /ssh-autologon            the same as the above
+  /ssh-consume=file         After teraterm.ini file is read, it is erased.
+  /t=value                  TTSSH is enabled(value=2), disable(value=excluding 2)
+  /f=file                   read teraterm.ini(file)
+  /1                        connect to server with SSH1 protocol
+  /2                        connect to server with SSH2 protocol
+  /nossh                    TTSSH is disabled
+  /auth=mode                try to autologin(mode=password, publickey)
+  /user=username            your username is specified
+  /passwd=password          your password is specified
+  /keyfile=file             your private key file is specified
+
+
+  Example:
+  ttermpro.exe server1:22 /ssh /ssh-L30025:smtpsrv1:25 /ssh-L30110:pop3srv1:110
+  ttermpro.exe server2:22 /ssh /ssh-X
+  ttermpro.exe server3:22 /ssh /2 /auth=password /user=guest /passwd=guest
+
+
+
 * How to build TTSSH
   To build TTSSH source code is shown in the following step:
   And you need Visual Studio .NET 2003(VC++7.1) and ActivePerl to build.
