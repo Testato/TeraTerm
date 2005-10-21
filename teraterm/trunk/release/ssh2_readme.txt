@@ -189,6 +189,10 @@ OF SUCH DAMAGE.
 
 * History
 
+2005.10.21 (Ver 2.18)
+  - added the host history check button on connection dialog.
+  - upgraded OpenSSL to 0.9.8a
+
 2005.9.5 (Ver 2.17)
   - added minimizing the SSH authentication dialog with autologin mode only using '/I' option.
 
