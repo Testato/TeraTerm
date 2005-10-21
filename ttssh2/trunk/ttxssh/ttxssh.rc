@@ -133,22 +133,24 @@ BEGIN
                     10,22,12
     COMBOBOX        IDC_HOSTNAME,81,8,126,54,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
                     WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    CONTROL         "H&istory",IDC_HISTORY,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,81,20,40,10
     CONTROL         "Service:",IDC_SERVICELABEL,"Static",SS_LEFTNOWORDWRAP,
-                    47,25,26,12
+                    47,31,26,12
     CONTROL         "Te&lnet",IDC_HOSTTELNET,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,80,24,44,12
+                    WS_GROUP | WS_TABSTOP,80,30,44,12
     CONTROL         "&SSH",IDC_HOSTSSH,"Button",BS_AUTORADIOBUTTON | 
-                    WS_TABSTOP,80,35,28,12
+                    WS_TABSTOP,80,42,28,12
     CONTROL         "Other",IDC_HOSTOTHER,"Button",BS_AUTORADIOBUTTON | 
-                    WS_TABSTOP,80,46,32,12
+                    WS_TABSTOP,80,53,32,12
     CONTROL         "TCP &port#:",IDC_HOSTTCPPORTLABEL,"Static",
-                    SS_LEFTNOWORDWRAP,132,26,40,10
-    EDITTEXT        IDC_HOSTTCPPORT,176,24,30,12,WS_GROUP
-    LTEXT           "SSH &version:",IDC_SSH_VERSION_LABEL,117,40,46,8
-    COMBOBOX        IDC_SSH_VERSION,167,39,39,30,CBS_DROPDOWNLIST | 
+                    SS_LEFTNOWORDWRAP,132,31,40,10
+    EDITTEXT        IDC_HOSTTCPPORT,176,29,30,12,WS_GROUP
+    LTEXT           "SSH &version:",IDC_SSH_VERSION_LABEL,117,46,46,8
+    COMBOBOX        IDC_SSH_VERSION,167,45,39,30,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Proto&col:",IDC_HOSTTCPPROTOCOLLABEL,130,57,32,8
-    COMBOBOX        IDC_HOSTTCPPROTOCOL,166,56,40,43,CBS_DROPDOWNLIST | 
+    LTEXT           "Proto&col:",IDC_HOSTTCPPROTOCOLLABEL,130,63,32,8
+    COMBOBOX        IDC_HOSTTCPPROTOCOL,166,62,40,43,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     CONTROL         " Po&rt:",IDC_HOSTCOMLABEL,"Static",SS_LEFTNOWORDWRAP,53,
                     89,26,12
@@ -471,8 +473,8 @@ IDI_SECURETT            ICON                    "ttsecure.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,17,0,0
- PRODUCTVERSION 2,17,0,0
+ FILEVERSION 2,18,0,0
+ PRODUCTVERSION 2,18,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -488,12 +490,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "TTXSSH"
-            VALUE "FileVersion", "2, 17, 0, 0"
+            VALUE "FileVersion", "2, 18, 0, 0"
             VALUE "InternalName", "TTXSSH"
             VALUE "LegalCopyright", "(C)2004-2005 Yutaka Hirata, (C)1998-1999 Robert O'Callahan"
             VALUE "OriginalFilename", "TTXSSH.dll"
             VALUE "ProductName", "TTSSH"
-            VALUE "ProductVersion", "2, 17, 0, 0"
+            VALUE "ProductVersion", "2, 18, 0, 0"
         END
     END
     BLOCK "VarFileInfo"

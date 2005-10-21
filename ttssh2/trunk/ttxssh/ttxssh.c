@@ -864,6 +864,13 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		GetHNRec = (PGetHNRec) lParam;
 		SetWindowLong(dlg, DWL_USER, lParam);
 
+		// ホストヒストリのチェックボックスを追加 (2005.10.21 yutaka)
+		if (pvar->ts->HistoryList > 0) {
+			SendMessage(GetDlgItem(dlg, IDC_HISTORY), BM_SETCHECK, BST_CHECKED, 0);
+		} else {
+			SendMessage(GetDlgItem(dlg, IDC_HISTORY), BM_SETCHECK, BST_UNCHECKED, 0);
+		}
+
 		if (GetHNRec->PortType == IdFile)
 			GetHNRec->PortType = IdTCPIP;
 		CheckRadioButton(dlg, IDC_HOSTTCPIP, IDC_HOSTSERIAL,
@@ -1025,6 +1032,14 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 							pvar->settings.ssh_protocol_version = 2;
 						}
 					}
+
+					// host history check button
+					if (SendMessage(GetDlgItem(dlg, IDC_HISTORY), BM_GETCHECK, 0, 0) == BST_CHECKED) {
+						pvar->ts->HistoryList = 1;
+					} else {
+						pvar->ts->HistoryList = 0;
+					}
+
 				} else {
 					GetHNRec->PortType = IdSerial;
 					GetHNRec->HostName[0] = 0;
@@ -3081,6 +3096,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.25  2005/07/09 17:08:47  yutakakn
+ * SSH2 packet compressionをサポートした。
+ *
  * Revision 1.24  2005/07/09 05:16:06  yutakakn
  * OpenSSL 0.9.8でビルドできるようにした。
  *
