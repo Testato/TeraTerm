@@ -133,7 +133,7 @@ BEGIN
                     10,22,12
     COMBOBOX        IDC_HOSTNAME,81,8,126,54,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
                     WS_VSCROLL | WS_GROUP | WS_TABSTOP
-    CONTROL         "H&istory",IDC_HISTORY,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "Hist&ory",IDC_HISTORY,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,81,20,40,10
     CONTROL         "Service:",IDC_SERVICELABEL,"Static",SS_LEFTNOWORDWRAP,
                     47,31,26,12

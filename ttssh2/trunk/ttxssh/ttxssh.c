@@ -1076,6 +1076,8 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 				enable_dlg_items(dlg, IDC_SSH_VERSION, IDC_SSH_VERSION, FALSE); // disabled
 			}
 
+			enable_dlg_items(dlg, IDC_HISTORY, IDC_HISTORY, TRUE); // disabled
+
 			return TRUE;
 
 		case IDC_HOSTSERIAL:
@@ -1088,6 +1090,8 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 #endif							/* INET6 */
 			enable_dlg_items(dlg, IDC_SSH_VERSION, IDC_SSH_VERSION, FALSE); // disabled
 			enable_dlg_items(dlg, IDC_SSH_VERSION_LABEL, IDC_SSH_VERSION_LABEL, FALSE); // disabled (2004.11.23 yutaka)
+
+			enable_dlg_items(dlg, IDC_HISTORY, IDC_HISTORY, FALSE); // disabled
 
 			return TRUE;
 
@@ -3096,6 +3100,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.26  2005/10/21 13:36:46  yutakakn
+ * 接続ダイアログに History チェックボックスを追加した。
+ * 2.18へアップデート。
+ *
  * Revision 1.25  2005/07/09 17:08:47  yutakakn
  * SSH2 packet compressionをサポートした。
  *
