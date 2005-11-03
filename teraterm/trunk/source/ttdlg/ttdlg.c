@@ -776,8 +776,8 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       SendDlgItemMessage(Dialog, IDC_TCPIPTERMTYPE, EM_LIMITTEXT,
 			 sizeof(ts->TermType)-1, 0);
 
-      if ( ts->Telnet==0 )
-	DisableDlgItem(Dialog,IDC_TCPIPTERMTYPELABEL,IDC_TCPIPTERMTYPE);
+      // SSH接続のときにも TERM を送るので、telnetが無効でも disabled にしない。(2005.11.3 yutaka)
+      EnableDlgItem(Dialog,IDC_TCPIPTERMTYPELABEL,IDC_TCPIPTERMTYPE);
 
       return TRUE;
 
@@ -929,8 +929,11 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	    if (ts!=NULL)
 	      SetDlgItemInt(Dialog,IDC_TCPIPPORT,ts->TelPort,FALSE);
 	  }
-	  else
-	    DisableDlgItem(Dialog,IDC_TCPIPTERMTYPELABEL,IDC_TCPIPTERMTYPE);
+	  else 
+	  {
+	    // SSH接続のときにも TERM を送るので、telnetが無効でも disabled にしない。(2005.11.3 yutaka)
+	    EnableDlgItem(Dialog,IDC_TCPIPTERMTYPELABEL,IDC_TCPIPTERMTYPE);
+	  }
 	  break;
 
 	case IDC_TCPIPHELP:
@@ -2004,6 +2007,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2005/10/08 14:56:06  yutakakn
+ * Onigurumaのバージョン情報表示を少し変更。
+ *
  * Revision 1.7  2005/10/05 17:01:41  yutakakn
  * Onigurumaのバージョンをバージョン情報に追加。
  *

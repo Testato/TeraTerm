@@ -678,6 +678,10 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2005.11.3 (Ver 4.23)
+  - added checking the writable permission if saving teraterm.ini file.
+  - changed "Term type" edit box on TCP/IP setup dialog to be always enabled.
+
 2005.10.21 (Ver 4.22)
   - added the system variable from 'groupmatchstr1' to 'groupmatchstr9' which will store the group matched pattern with regular expression.
   - added duplicating Cygwin connection using Alt + D accelerator key.

@@ -43,6 +43,7 @@
 #include <locale.h>
 
 #include <shlobj.h>
+#include <io.h>
 
 #ifdef TERATERM32
 #include "tt_res.h"
@@ -3491,26 +3492,33 @@ void CVTWindow::OnSetupGeneral()
 
 void CVTWindow::OnSetupSave()
 {
-  BOOL Ok;
-  char TmpSetupFN[MAXPATHLEN];
+	BOOL Ok;
+	char TmpSetupFN[MAXPATHLEN];
 
-  strcpy(TmpSetupFN,ts.SetupFName);
-  if (! LoadTTFILE()) return;
-  HelpId = HlpSetupSave;
-  Ok = (*GetSetupFname)(HVTWin,GSF_SAVE,&ts);
-  FreeTTFILE();
-  if (! Ok) return;
+	strcpy(TmpSetupFN,ts.SetupFName);
+	if (! LoadTTFILE()) return;
+	HelpId = HlpSetupSave;
+	Ok = (*GetSetupFname)(HVTWin,GSF_SAVE,&ts);
+	FreeTTFILE();
+	if (! Ok) return;
 
-  if (LoadTTSET())
-  {
-    /* write current setup values to file */
-    (*WriteIniFile)(ts.SetupFName,&ts);
-    /* copy host list */
-    (*CopyHostList)(TmpSetupFN,ts.SetupFName);
-    FreeTTSET();
-  }
+	// 書き込みできるかの判別を追加 (2005.11.3 yutaka)
+	if (_access(ts.SetupFName, 0x02) != 0) {
+		MessageBox("Teraterm.ini file doesn't have the writable permission.", 
+			"Tera Term: ERROR", MB_OK|MB_ICONEXCLAMATION);
+		return;
+	}
 
-  ChangeDefaultSet(&ts,NULL);
+	if (LoadTTSET())
+	{
+		/* write current setup values to file */
+		(*WriteIniFile)(ts.SetupFName,&ts);
+		/* copy host list */
+		(*CopyHostList)(TmpSetupFN,ts.SetupFName);
+		FreeTTSET();
+	}
+
+	ChangeDefaultSet(&ts,NULL);
 }
 
 void CVTWindow::OnSetupRestore()
@@ -3806,6 +3814,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.22  2005/10/15 10:29:33  yutakakn
+ * Cygwin接続の複製ができるようにした
+ *
  * Revision 1.21  2005/10/03 16:57:21  yutakakn
  * スクロールレンジを 16bit から 32bit へ拡張した
  *

@@ -666,6 +666,10 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
+2005.11.3 (Ver 4.23)
+  ・teraterm.iniを保存するときに書き込みできるかどうかの判別を追加した。
+  ・TCP/IP setupダイアログの"Term type"を常に有効とするようにした。
+
 2005.10.21 (Ver 4.22)
   ・システム変数 'groupmatchstr1'～'groupmatchstr9' を追加した。正規表現でグループマッチしたパターンが格納される。
   ・Cygwin接続の複製ができるようにした
