@@ -2,14 +2,14 @@
                       --------------------------
 
 This Freeware Software License Agreement, applies to all software products
-available  for download from NeoCom.ca website that are labelled as freeware.
-All software available  for download from NeoCom.ca website are copyright NeoCom
-Solutions unless stated otherwise.  Copyright law protects this software program
-and all associated materials. NeoCom Solutions  retains title to and ownership
+available for download from NeoCom.ca website that are labeled as freeware.
+All software available for download from NeoCom.ca website are copyright NeoCom
+Ltd. unless stated otherwise.  Copyright law protects this software program
+and all associated materials. NeoCom Ltd.  retains title to and ownership
 in the copyright of the software program and the associated  materials.
 
 Freeware License Rights: All software products available for download from
-NeoCom.ca website,  unless labelled otherwise, are provided as freeware.
+NeoCom.ca website,  unless labeled otherwise, are provided as freeware.
 Freeware products are provided free of  charge. Occasionally the copyright
 holder may post a request for a donation in support of  this software. This type
 of request does not change the classification of this software as  freeware.
@@ -46,7 +46,7 @@ basis.
 
 Code distribution: Occasionally portions of the source code of this software may
 be provided via  e-mail or posting on associated website. Any such source code
-is provided as public domain, unless  labelled otherwise. Public domain code is
+is provided as public domain, unless  labeled otherwise. Public domain code is
 not copyrighted. Such code is released to the public  domain as a service to the
 programming community. You may use it for any purpose whatsoever without 
 restriction, for free, and without giving credit to the author(s).
@@ -65,4 +65,4 @@ associated website or in  software products may be copyright, trademarked or
 registered trademarked by their respective  owners.
 
 
-Copyright (C) 2005, NeoCom Solutions.
+Copyright (C) 2005, NeoCom Ltd.

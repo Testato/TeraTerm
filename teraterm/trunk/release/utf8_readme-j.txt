@@ -666,6 +666,9 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
+2005.11.16 (Ver 4.24)
+  ・LogMeTT 2.7.3へ差し替えた
+
 2005.11.3 (Ver 4.23)
   ・teraterm.iniを保存するときに書き込みできるかどうかの判別を追加した。
   ・TCP/IP setupダイアログの"Term type"を常に有効とするようにした。

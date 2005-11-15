@@ -678,6 +678,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2005.11.16 (Ver 4.24)
+  - upgraded LogMeTT to 2.7.3
+
 2005.11.3 (Ver 4.23)
   - added checking the writable permission if saving teraterm.ini file.
   - changed "Term type" edit box on TCP/IP setup dialog to be always enabled.

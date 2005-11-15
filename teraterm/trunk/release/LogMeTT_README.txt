@@ -52,6 +52,23 @@ http://www.neocom.ca/forum/index.php
                  =============================
                  (in reverse chronological order)
 
+2005-11-14 (Ver 2.7 Release 3)
+New features added:
+- Two new node related key words were added. They are $parent$ and $PARENT$. 
+These key words are similar to key words $connection$ and $CONNECTION$ with only 
+difference that parent node's captions are being substituted instead. Keyword 
+highlighter and LogMeTT help file were updated to reflect this new feature.
+
+Bugs fixed: 
+- Few minor fixes and code optimization not affecting the functionality.
+
+Other issues:
+- Starting November 7th, 2005 Neocom Solutions carries new name "Neocom Ltd." From 
+this date Neocom Ltd. appears as copyright owner of all software products 
+distributed from NeoCom.ca web site unless stated otherwise. It also owns 
+NeoCom.ca web site itself.  
+
+
 2005-10-15 (Ver 2.7 Release 2) 
 New features added:
 - 9 new TeraTerm Macro system variables from 'groupmatchstr1' to 'groupmatchstr9' 
@@ -406,5 +423,5 @@ released. About 95% of the source code was rewritten.
 
 ========================= 
 LogMeTT is freeware application distributed without the source from 
-NeoCom Solutions web site www.neocom.ca 
-NeoCom Solutions is the solo Copyright owner of LogMeTT.
+NeoCom Ltd. web site www.neocom.ca 
+NeoCom Ltd. is the solo Copyright owner of LogMeTT.
