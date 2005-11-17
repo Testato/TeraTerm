@@ -52,6 +52,18 @@ http://www.neocom.ca/forum/index.php
                  =============================
                  (in reverse chronological order)
 
+2005-11-16 (Ver 2.7 Release 4)
+New features added:
+- None.
+
+Bugs fixed: 
+- The bug was fixed when after dragging and dropping the node with subnodes in 
+Connection tree subnode level related data was becoming corrupted.
+- Virtual Tree component from Soft-Gems used in Configuration window was upgraded 
+to version 4.4.2. For list of improvements and bug fixes visit 
+http://www.soft-gems.net/VirtualTreeview/VTHistory.php
+
+
 2005-11-14 (Ver 2.7 Release 3)
 New features added:
 - Two new node related key words were added. They are $parent$ and $PARENT$. 
