@@ -410,6 +410,10 @@ typedef struct tttset TTTSet, *PTTSet;
 #define IdBaud38400 10
 #define IdBaud57600 11
 #define IdBaud115200 12
+// expansion (2005.11.30 yutaka)
+#define IdBaud230400 13
+#define IdBaud460800 14
+#define IdBaud921600 15
 
   /* Parity ID */
 #define IdParityEven 1

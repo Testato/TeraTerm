@@ -20,9 +20,11 @@
 static PCHAR far TermList[] =
   {"VT100","VT100J","VT101","VT102","VT102J","VT220J","VT282","VT320","VT382",NULL};
 #ifdef TERATERM32
+// expansion (2005.11.30 yutaka)
 static PCHAR BaudList[] =
   {"110","300","600","1200","2400","4800","9600",
-   "14400","19200","38400","57600","115200",NULL};
+   "14400","19200","38400","57600","115200",
+   "230400", "460800", "921600", NULL};
 #else
 static PCHAR far BaudList[] =
   {"110","300","600","1200","2400","4800","9600",
@@ -789,7 +791,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   ts->MaxComPort =
     GetPrivateProfileInt(Section,"MaxComPort",4,FName);
   if (ts->MaxComPort < 4) ts->MaxComPort = 4;
-  if (ts->MaxComPort > 16) ts->MaxComPort = 16;
+  // COM16から99へ拡張 (2005.11.30 yutaka)
+  if (ts->MaxComPort > 99) ts->MaxComPort = 99;
   if ((ts->ComPort<1) || (ts->ComPort>ts->MaxComPort))
     ts->ComPort = 1;
 
@@ -2403,6 +2406,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2005/05/07 09:49:24  yutakakn
+ * teraterm.iniに LogTypePlainText を追加した。
+ *
  * Revision 1.7  2005/04/24 11:03:42  yutakakn
  * Eterm lookfeel alphablendの設定内容を teraterm.ini へ保存するようにした。
  * また、Additional settingsダイアログから on/off できるようにした。

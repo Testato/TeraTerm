@@ -194,6 +194,10 @@ void CommResetSerial(PTTSet ts, PComVar cv)
 #ifdef TERATERM32
     case IdBaud115200: dcb.BaudRate = 115200; break;
 #endif
+	// add (2005.11.30 yutaka)
+    case IdBaud230400: dcb.BaudRate = 230400; break;
+    case IdBaud460800: dcb.BaudRate = 460800; break;
+    case IdBaud921600: dcb.BaudRate = 921600; break;
   }
   dcb.fBinary = TRUE;
   switch (ts->Parity) {

@@ -648,9 +648,11 @@ BOOL CALLBACK KeybDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   return FALSE;
 }
 
+// ボーレートの上限を拡張した (2005.11.30 yutaka)
 static PCHAR far BaudList[] =
   {"110","300","600","1200","2400","4800","9600",
-   "14400","19200","38400","57600","115200",NULL};
+   "14400","19200","38400","57600","115200",
+   "230400", "460800", "921600", NULL};
 static PCHAR far DataList[] = {"7 bit","8 bit",NULL};
 static PCHAR far ParityList[] = {"even","odd","none",NULL};
 static PCHAR far StopList[] = {"1 bit","2 bit",NULL};
@@ -2007,6 +2009,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2005/11/03 13:34:26  yutakakn
+ *   ・teraterm.iniを保存するときに書き込みできるかどうかの判別を追加した。
+ *   ・TCP/IP setupダイアログの"Term type"を常に有効とするようにした。
+ *
  * Revision 1.8  2005/10/08 14:56:06  yutakakn
  * Onigurumaのバージョン情報表示を少し変更。
  *
