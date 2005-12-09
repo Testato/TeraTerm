@@ -678,7 +678,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
-2005.12.1 (Ver 4.25)
+2005.12.1 (Ver 4.24)
   - expanded serial connection maximum to COM99.
   - added new serial baud rate(230400, 460800, 921600).
   - upgraded LogMeTT to 2.7.4
