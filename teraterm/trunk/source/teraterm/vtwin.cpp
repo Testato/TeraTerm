@@ -44,6 +44,7 @@
 
 #include <shlobj.h>
 #include <io.h>
+#include <errno.h>
 
 #ifdef TERATERM32
 #include "tt_res.h"
@@ -3494,6 +3495,7 @@ void CVTWindow::OnSetupSave()
 {
 	BOOL Ok;
 	char TmpSetupFN[MAXPATHLEN];
+	int ret;
 
 	strcpy(TmpSetupFN,ts.SetupFName);
 	if (! LoadTTFILE()) return;
@@ -3503,10 +3505,12 @@ void CVTWindow::OnSetupSave()
 	if (! Ok) return;
 
 	// 書き込みできるかの判別を追加 (2005.11.3 yutaka)
-	if (_access(ts.SetupFName, 0x02) != 0) {
-		MessageBox("Teraterm.ini file doesn't have the writable permission.", 
-			"Tera Term: ERROR", MB_OK|MB_ICONEXCLAMATION);
-		return;
+	if ((ret = _access(ts.SetupFName, 0x02)) != 0) {
+		if (errno != ENOENT) {  // ファイルがすでに存在する場合のみエラーとする (2005.12.13 yutaka)
+			MessageBox("Teraterm.ini file doesn't have the writable permission.", 
+				"Tera Term: ERROR", MB_OK|MB_ICONEXCLAMATION);
+			return;
+		}
 	}
 
 	if (LoadTTSET())
@@ -3814,6 +3818,10 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.23  2005/11/03 13:34:27  yutakakn
+ *   ・teraterm.iniを保存するときに書き込みできるかどうかの判別を追加した。
+ *   ・TCP/IP setupダイアログの"Term type"を常に有効とするようにした。
+ *
  * Revision 1.22  2005/10/15 10:29:33  yutakakn
  * Cygwin接続の複製ができるようにした
  *
