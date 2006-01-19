@@ -598,7 +598,7 @@ messagebox matchstr 'matchstr'
   
 
 * License
-Copyright (c) 2004-2005 Yutaka Hirata, TeraTerm Project. 
+Copyright (c) Yutaka Hirata, TeraTerm Project. 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, 

@@ -596,7 +596,7 @@ messagebox matchstr 'matchstr'
   
 
 ■ライセンス
-Copyright (c) 2004-2005 Yutaka Hirata, TeraTerm Project. 
+Copyright (c) Yutaka Hirata, TeraTerm Project. 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, 
@@ -638,7 +638,7 @@ OF SUCH DAMAGE.
   行末スクロール抑止パッチはいわもとこういち氏に著作権があります。
   マルチディスプレイ対応パッチは安藤弦彦氏に著作権があります。
   鬼車はK.Kosako氏の著作物です。
-  本プログラムは無償で利用できますが、作者は本プログラムの使用にあたり
+  本プログラムは商用利用問わず無償で利用できますが、作者は本プログラムの使用にあたり
   生じる障害や問題に対して一切の責任を負いません。
 
   e-mail : yutakakn@mail.goo.ne.jp
