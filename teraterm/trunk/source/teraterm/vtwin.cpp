@@ -1188,9 +1188,18 @@ void CVTWindow::OnDropFiles(HDROP hDropInfo)
 				FreeFileVar(&SendVar); // 解放を忘れずに
 
 			} else {
-				SendVar->DirLen = 0;
-				ts.TransBin = 0;
-				FileSendStart();
+				// いきなりファイルの内容を送り込む前に、ユーザに問い合わせを行う。(2006.1.21 yutaka)
+				if (MessageBox(
+					"Are you sure that you want to send the file content?", 
+					"Tera Term: File Drag and Drop", MB_YESNO | MB_DEFBUTTON2) == IDYES) {
+						SendVar->DirLen = 0;
+						ts.TransBin = 0;
+						FileSendStart();
+
+					} else {
+						FreeFileVar(&SendVar);
+
+					}
 			}
 		}
 		else
@@ -3818,6 +3827,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.24  2005/12/12 15:40:25  yutakakn
+ * 設定内容がteraterm.ini以外のファイル名で保存できないバグを修正した。
+ *
  * Revision 1.23  2005/11/03 13:34:27  yutakakn
  *   ・teraterm.iniを保存するときに書き込みできるかどうかの判別を追加した。
  *   ・TCP/IP setupダイアログの"Term type"を常に有効とするようにした。
