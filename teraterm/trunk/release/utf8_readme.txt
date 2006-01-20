@@ -678,6 +678,11 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.1.21 (Ver 4.26)
+  - added the user confirmation dialog before sending file content with Drag and Drop to TeraTerm window.
+  - upgraded LogMeTT to 2.8.1
+  - upgraded Oniguruma to 3.9.1
+
 2005.12.13 (Ver 4.25)
   - Bug fix: can't save TeraTerm configuration to ini file without 'teraterm.ini' filename.
 
