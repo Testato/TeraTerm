@@ -52,6 +52,31 @@ http://www.neocom.ca/forum/index.php
                  =============================
                  (in reverse chronological order)
 
+2006-01-17 (Ver 2.8 Release 1)
+New features added:
+- Added Operation Highlighting ( + - * / % and or xor not).
+- Added text search and replace functionalities in currently open Macro. Menu items Find, Find Next, Find Previous, Replace under menu Search.
+- Added Maximize, Hide and Restore options for Connection Tree.
+- Added View menu.
+- Added multi tab navigation among pages with Settings.
+- Added Syntax highlighting setup page.
+- Added ability to start macro from configuration window when other then Macro editor page is selected.
+- Updated LogMeTT help file to reflect these changes. 
+
+Bugs fixed: 
+- None.
+
+
+2006-01-12 (Ver 2.7 Release 5)
+New features added:
+- In addition to TeraTerm.ini file backup and restore, LogMeTT now also performs backup
+and restore of cygterm.cfg file.
+
+Bugs fixed: 
+- The bug was fixed when after importing .LTT file with the connection having non-unique 
+name the existing connection was being renamed as "Copy of" instead of newly imported connection.
+
+
 2005-11-16 (Ver 2.7 Release 4)
 New features added:
 - None.
