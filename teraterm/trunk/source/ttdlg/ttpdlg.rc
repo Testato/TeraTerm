@@ -264,7 +264,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,136,6,32,16,WS_GROUP
     CONTROL         "All Rights Reserved.",IDC_AUTHOR_LABEL,"Static",
                     SS_LEFTNOWORDWRAP | WS_GROUP,38,75,76,8
-    CONTROL         "Copyright (C) 2004-2005 Y.Hirata",IDC_AUTHOR_LABEL,
+    CONTROL         "Copyright (C) 2004-2006 Y.Hirata",IDC_AUTHOR_LABEL,
                     "Static",SS_LEFTNOWORDWRAP | WS_GROUP,38,67,122,9
     LTEXT           "Includes:",IDC_AUTHOR_LABEL,38,26,31,8
     LTEXT           "Version",IDC_TT_VERSION,38,10,68,8
