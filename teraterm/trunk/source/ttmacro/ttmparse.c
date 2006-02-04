@@ -15,9 +15,10 @@ TStrVal LineBuff;
 WORD LinePtr;
 WORD LineLen;
 
-#define MaxNumOfIntVar (LONG)128
-#define MaxNumOfStrVar (LONG)128
-#define MaxNumOfLabVar (LONG)256
+// ïœêîÇÃå¬êîÇ128->256ÅAÉâÉxÉãÇÃå¬êîÇ256->512Ç÷ägí£ÇµÇΩÅB(2006.2.1 yutaka)
+#define MaxNumOfIntVar (LONG)128*2
+#define MaxNumOfStrVar (LONG)128*2
+#define MaxNumOfLabVar (LONG)256*2
 
 #define IntVarIdOff (LONG)0
 #define StrVarIdOff (IntVarIdOff+MaxNumOfIntVar)

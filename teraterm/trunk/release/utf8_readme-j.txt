@@ -338,7 +338,7 @@ CygwinDirectory = c:\cygwin
 
 
 ●設定ダイアログ
-  Editメニューから"External setup"を選択すると、UTF-8化以降に追加した機能に関する
+  Editメニューから"Additional settings"を選択すると、UTF-8化以降に追加した機能に関する
   オプション設定が行えます。
 
 
@@ -559,6 +559,13 @@ messagebox matchstr 'matchstr'
     フォルダのフルパスを貼り付ける
 
 
+■マクロエラーメッセージ
+
+エラーメッセージ           意味
+-------------------------+------------------------------------------------------
+Too many labels.           ラベルの数が多すぎる。(最大512個)
+Too many variables.        変数の数が多すぎる。(整数型、文字列型それぞれ最大256個ずつ)
+
 
 ■TeraTermのビルド方法
   TeraTermのビルド方法について以下に示します。ビルドにはVisual Studio .NET 2003(VC++7.1)が必要です。
@@ -567,10 +574,10 @@ messagebox matchstr 'matchstr'
   2. Onigurumaのソースコード(http://www.geocities.jp/kosako3/oniguruma/)を source\oniguruma ディレクトリに展開する。Onigurumaをビルドする（以下参照）。
   
        (1) copy win32\Makefile Makefile
-       (2) copy win32\config.h config.h
-       (3) nmake
   
-  3. teraterm\visualc\ttermpro.sln をVisual Studioで開く
+  3. tera
+       (2) copy win32\config.h config.h
+       (3) nmaketerm\visualc\ttermpro.sln をVisual Studioで開く
   4. ソリューションをビルドする
   5. ビルドに成功するとteraterm\visualc\bin ディレクトリに実行プログラムが生成される
 
@@ -665,6 +672,9 @@ OF SUCH DAMAGE.
 
 
 ■改版履歴
+
+2006.2.xx (Ver 4.27)
+  ・マクロで使用できる変数の個数を128から256へ、ラベルの個数を256から512へ拡張した。
 
 2006.1.21 (Ver 4.26)
   ・ウィンドウへのドラッグ＆ドロップでファイル送信する前に、問い合わせダイアログを出すようにした。

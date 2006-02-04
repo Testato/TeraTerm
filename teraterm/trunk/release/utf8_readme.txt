@@ -335,8 +335,8 @@ CygwinDirectory = c:\cygwin
   Maximum allowed length of comment is 255 characters.
 
 
-* External Setup dialog
-  Select "External setup" from "Edit" menu to configure the new TeraTerm options 
+* Additional settings dialog
+  Select "Additional settings" from "Edit" menu to configure the new TeraTerm options 
   introduced by the UTF-8 package.
 
 
@@ -560,6 +560,15 @@ messagebox matchstr 'matchstr'
     Sends the folder full-path to the host.
 
 
+* macro error message
+
+Error message              Meaning
+-------------------------+------------------------------------------------------
+Too many labels.           MACRO can not handle more than 512 labels.
+Too many variables.        MACRO can not handle more than 256 integer variables and 256 string variables.
+
+
+
 * How to build TeraTerm
   To build TeraTerm source code is shown in the following step:
   And you need Visual Studio .NET 2003(VC++7.1) to build.
@@ -677,6 +686,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 
 * History
+
+2006.2.xx (Ver 4.27)
+  - expanded the number of macro variable from 128 to 256 and the number of macro label from 256 to 512.
 
 2006.1.21 (Ver 4.26)
   - added the user confirmation dialog before sending file content with Drag and Drop to TeraTerm window.
