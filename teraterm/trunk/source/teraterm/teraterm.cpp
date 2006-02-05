@@ -68,92 +68,103 @@ int CTeraApp::ExitInstance()
 // Tera Term main engine
 BOOL CTeraApp::OnIdle(LONG lCount)
 {
-  static int Busy = 2;
-  int Change, nx, ny;
-  BOOL Size;
+	static int Busy = 2;
+	int Change, nx, ny;
+	BOOL Size;
 
-  if (lCount==0) Busy = 2;
+	if (lCount==0) Busy = 2;
 
-  if (cv.Ready)
-  {
-    /* Sender */
-    CommSend(&cv);
+	if (cv.Ready)
+	{
+		/* Sender */
+		CommSend(&cv);
 
-    /* Parser */
-    if ((cv.HLogBuf!=NULL) && (cv.LogBuf==NULL))
-      cv.LogBuf = (PCHAR)GlobalLock(cv.HLogBuf);
+		/* Parser */
+		if ((cv.HLogBuf!=NULL) && (cv.LogBuf==NULL))
+			cv.LogBuf = (PCHAR)GlobalLock(cv.HLogBuf);
 
-    if ((cv.HBinBuf!=NULL) && (cv.BinBuf==NULL))
-      cv.BinBuf = (PCHAR)GlobalLock(cv.HBinBuf);
+		if ((cv.HBinBuf!=NULL) && (cv.BinBuf==NULL))
+			cv.BinBuf = (PCHAR)GlobalLock(cv.HBinBuf);
 
-    if ((TelStatus==TelIdle) && cv.TelMode)
-      TelStatus = TelIAC;
+		if ((TelStatus==TelIdle) && cv.TelMode)
+			TelStatus = TelIAC;
 
-    if (TelStatus != TelIdle)
-    {
-      ParseTel(&Size,&nx,&ny);
-      if (Size) {
-	LockBuffer();
-	ChangeTerminalSize(nx,ny);
-	UnlockBuffer();
-      }
-    }
-    else {
-      if (cv.ProtoFlag) Change = ProtoDlgParse();
-      else {
-	switch (ActiveWin) {
-	  case IdVT: Change =  ((CVTWindow*)pVTWin)->Parse(); break;
-	  case IdTEK:
-	    if (pTEKWin != NULL)
-	      Change = ((CTEKWindow*)pTEKWin)->Parse();
-	    else
-	      Change = IdVT;
-	    break;
-	  default:
-	    Change = 0;
+		if (TelStatus != TelIdle)
+		{
+			ParseTel(&Size,&nx,&ny);
+			if (Size) {
+				LockBuffer();
+				ChangeTerminalSize(nx,ny);
+				UnlockBuffer();
+			}
+		}
+		else {
+			if (cv.ProtoFlag) Change = ProtoDlgParse();
+			else {
+				switch (ActiveWin) {
+				case IdVT: 
+					Change =  ((CVTWindow*)pVTWin)->Parse(); 
+					// TEK windowのアクティブ中に pause を使うと、CPU使用率100%となる
+					// 現象への暫定対処。(2006.2.6 yutaka)
+					Sleep(1);
+					break;
+
+				case IdTEK:
+					if (pTEKWin != NULL) {
+						Change = ((CTEKWindow*)pTEKWin)->Parse();
+						// TEK windowのアクティブ中に pause を使うと、CPU使用率100%となる
+						// 現象への暫定対処。(2006.2.6 yutaka)
+						Sleep(1);
+					}
+					else
+						Change = IdVT;
+					break;
+
+				default:
+					Change = 0;
+				}
+
+				switch (Change) {
+				case IdVT: VTActivate(); break;
+				case IdTEK: ((CVTWindow*)pVTWin)->OpenTEK(); break;
+				}
+			}
+		}
+
+		if (cv.LogBuf!=NULL)
+		{
+			if (FileLog) LogToFile();
+			if (DDELog && AdvFlag) DDEAdv();
+			GlobalUnlock(cv.HLogBuf);
+			cv.LogBuf = NULL;
+		}
+
+		if (cv.BinBuf!=NULL)
+		{
+			if (BinLog) LogToFile();
+			GlobalUnlock(cv.HBinBuf);
+			cv.BinBuf = NULL;
+		}
+
+		/* Talker */
+		switch (TalkStatus) {
+		case IdTalkCB: CBSend(); break; /* clip board */
+		case IdTalkFile: FileSend(); break; /* file */
+		}
+
+		/* Receiver */
+		CommReceive(&cv);
+
 	}
 
-	switch (Change) {
-	  case IdVT: VTActivate(); break;
-	  case IdTEK: ((CVTWindow*)pVTWin)->OpenTEK(); break;
-	}
-      }
-    }
+	if (cv.Ready &&
+		(cv.RRQ || (cv.OutBuffCount>0) || (cv.InBuffCount>0) ||
+		(cv.LCount>0) || (cv.BCount>0) || (cv.DCount>0)) )
+		Busy = 2;
+	else
+		Busy--;
 
-    if (cv.LogBuf!=NULL)
-    {
-      if (FileLog) LogToFile();
-      if (DDELog && AdvFlag) DDEAdv();
-      GlobalUnlock(cv.HLogBuf);
-      cv.LogBuf = NULL;
-    }
-
-    if (cv.BinBuf!=NULL)
-    {
-      if (BinLog) LogToFile();
-      GlobalUnlock(cv.HBinBuf);
-      cv.BinBuf = NULL;
-    }
-
-    /* Talker */
-    switch (TalkStatus) {
-      case IdTalkCB: CBSend(); break; /* clip board */
-      case IdTalkFile: FileSend(); break; /* file */
-    }
-
-    /* Receiver */
-    CommReceive(&cv);
-
-  }
-
-  if (cv.Ready &&
-      (cv.RRQ || (cv.OutBuffCount>0) || (cv.InBuffCount>0) ||
-       (cv.LCount>0) || (cv.BCount>0) || (cv.DCount>0)) )
-    Busy = 2;
-  else
-    Busy--;
-
-  return (Busy>0);
+	return (Busy>0);
 }
 
 BOOL CTeraApp::PreTranslateMessage(MSG* pMsg)

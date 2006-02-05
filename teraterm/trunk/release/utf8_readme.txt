@@ -689,6 +689,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 2006.2.xx (Ver 4.27)
   - expanded the number of macro variable from 128 to 256 and the number of macro label from 256 to 512.
+  - added the workaround about CPU load goes up to 100% using 'pause' macro on TEK active window.
 
 2006.1.21 (Ver 4.26)
   - added the user confirmation dialog before sending file content with Drag and Drop to TeraTerm window.
