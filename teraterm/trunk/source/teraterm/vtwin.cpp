@@ -3687,17 +3687,11 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 						// WM_COPYDATAを使って、プロセス間通信を行う。
 						SendMessage(hd, WM_COPYDATA, (WPARAM)HVTWin, (LPARAM)&cds);
 
-						// 送信先TeraTermウィンドウのリフレッシュを行う。
-						// これをしないと、送り込んだデータが反映されない模様。暫定処置。
-						if (hd != HVTWin) {
-							ShowWindow(hd, SW_MINIMIZE);
-							ShowWindow(hd, SW_RESTORE);
-						}
+						// 送信先TeraTermウィンドウに適当なメッセージを送る。
+						// これをしないと、送り込んだデータが反映されない模様。
+						// (2006.2.7 yutaka)
+						PostMessage(hd, WM_SETFOCUS, NULL, 0);
 					}
-
-					// FIXME: 自分自身をアクティブにする。でも、どうも効かないらしい。
-					BringWindowToTop(HVTWin);
-					ShowWindow(HVTWin, SW_SHOW);
 
 					}
 
@@ -3765,12 +3759,8 @@ LONG CVTWindow::OnReceiveIpcMessage(UINT wParam, LONG lParam)
 	buf = (char *)cds->lpData;
 	if (cds->dwData == IPC_BROADCAST_COMMAND) {
 		// 端末へ文字列を送り込む
-		for (i = 0 ; i < len ; i++) {
-			FSOut1(buf[i]);
-			if (ts.LocalEcho > 0) {
-				FSEcho1(buf[i]);
-			}
-		}
+		// DDE通信に使う関数に変更。(2006.2.7 yutaka)
+		CBStartPaste(HVTWin, FALSE, 300/*CBBufSize*/, buf, len);
 	}
 
 	return 0;
@@ -3827,6 +3817,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.25  2006/01/20 16:35:54  yutakakn
+ * ファイル送信前にダイアログを追加
+ *
  * Revision 1.24  2005/12/12 15:40:25  yutakakn
  * 設定内容がteraterm.ini以外のファイル名で保存できないバグを修正した。
  *
