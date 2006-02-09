@@ -693,6 +693,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
   - deleted 'TeraTerm Menu' under File menu.
   - fixed the flicker phenomenon of TeraTerm window when 'Broadcast Command' is used. 
   - upgraded CygTerm supporting load ~/.cygtermrc and /etc/cygterm.conf to 1.06_1. Special thanks to BabyDaemon.
+  - changed the accelerator key bind under Setup menu.
 
 2006.1.21 (Ver 4.26)
   - added the user confirmation dialog before sending file content with Drag and Drop to TeraTerm window.

@@ -679,6 +679,7 @@ OF SUCH DAMAGE.
   ・Fileメニューから TeraTerm Menu を削除した。
   ・Broadcast Command使用時にウィンドウがちらつく動作を改善した。
   ・CygTerm 1.06_1へアップデートした。~/.cygtermrcおよび/etc/cygterm.confの読み込みをサポートした。BabyDaemon氏に感謝します。
+  ・Setupメニューのアクセラレータキーを変更した。
 
 2006.1.21 (Ver 4.26)
   ・ウィンドウへのドラッグ＆ドロップでファイル送信する前に、問い合わせダイアログを出すようにした。
