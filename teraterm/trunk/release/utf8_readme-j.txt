@@ -453,6 +453,29 @@ messagebox matchstr 'matchstr'
 
 
 
+●マクロリファレンス: mpause
+
+形式:
+      mpause <time>
+
+TTL の実行を <time> ミリ秒だけ休止する。
+
+例:
+mpause 100               100ミリ秒休止
+
+
+
+●マクロリファレンス: random
+
+形式:
+      random <intvar> <value>
+
+0から<value>までの整数の一様乱数を生成し、整数変数<intvar>へ代入する。
+
+例:
+random val 100           0から100までの乱数を変数valへ格納する
+
+
 
 ■透過ウィンドウ
   TeraTermはウィンドウの半透明をサポートしています。現在、半透明ウィンドウは2種類のタイプがあり、ユーザは好きな方を選択することができます。
@@ -673,13 +696,29 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
-2006.2.xx (Ver 4.27)
+2006.2.11 (Ver 4.27)
   ・マクロで使用できる変数の個数を128から256へ、ラベルの個数を256から512へ拡張した。
   ・TEK windowをアクティブにした状態で pause マクロを使用すると、CPU使用率が100%となる現象への暫定対処を施した(workaround)。
   ・Fileメニューから TeraTerm Menu を削除した。
   ・Broadcast Command使用時にウィンドウがちらつく動作を改善した。
-  ・CygTerm 1.06_1へアップデートした。~/.cygtermrcおよび/etc/cygterm.confの読み込みをサポートした。BabyDaemon氏に感謝します。
   ・Setupメニューのアクセラレータキーを変更した。
+  ・マクロコマンド 'mpause' を追加した。ミリ秒単位での休止が可能となる。
+  ・サンプルマクロ mpause.ttl を追加した。
+  ・マクロコマンド 'random' を追加した。乱数の生成が可能となる。
+  ・サンプルマクロ random.ttl を追加した。
+  ・CygTerm 1.06_2へ差し替えた。BabyDaemon氏に感謝します。
+        * CygTermのアイコンが作成されました。（"DotWork 2.50"にて作成）
+          "DotWork 2.50" は右記のURLより入手可能です。 http://www5a.biglobe.ne.jp/~suuta
+          すばらしいソフトウェアを公開していただき、
+          "suuta at hamal dot freemal dot ne dot jp"に感謝致します。
+        * Makefileが修正されました。"clean"ターゲットでcygterm.icoを削除しないように。
+        * 以下の設定ファイルの読み込みをサポート:
+            + /etc/cygterm.conf
+            + ~/.cygtermrc
+        * シェルがユーザのホームディレクトリで起動されるように。
+        * アカウントの設定情報を/etc/passwdからgetpwnam(3)で読み込むように。
+          アカウント名は環境変数USERNAMEからgetenv(3)で取得してます。
+        * Makefile修正：ディフォルトでアイコンつきの.exeをビルドします。
 
 2006.1.21 (Ver 4.26)
   ・ウィンドウへのドラッグ＆ドロップでファイル送信する前に、問い合わせダイアログを出すようにした。

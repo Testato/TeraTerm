@@ -453,6 +453,30 @@ messagebox inputstr 'inputstr'
 messagebox matchstr 'matchstr'
 
 
+* macro reference: mpause
+
+Format:
+        mpause <time>
+
+Pauses for <time> milliseconds.
+
+Example:
+mpause 100              Pause for 100 milliseconds.
+
+
+
+* macro reference: random
+
+Format:
+      random <intvar> <value>
+
+Generates the random number from 0 to <value>.
+The value is returned in the integer variable <intvar>.
+
+Example:
+random val 100            val=0..100
+
+
 
 * background transparency
   TeraTerm supports window background transparency. Now TeraTerm has two types of transparency function. You can select either function. 
@@ -687,13 +711,28 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
-2006.2.xx (Ver 4.27)
+2006.2.11 (Ver 4.27)
   - expanded the number of macro variable from 128 to 256 and the number of macro label from 256 to 512.
   - added the workaround about CPU load goes up to 100% using 'pause' macro on TEK active window.
   - deleted 'TeraTerm Menu' under File menu.
   - fixed the flicker phenomenon of TeraTerm window when 'Broadcast Command' is used. 
-  - upgraded CygTerm supporting load ~/.cygtermrc and /etc/cygterm.conf to 1.06_1. Special thanks to BabyDaemon.
   - changed the accelerator key bind under Setup menu.
+  - added 'mpause' macro command. This command enables the macro script to pause the specified time in millisecond. 
+  - added the sample TTL macro 'mpause.ttl'.
+  - added 'random' macro command. This command enables the macro script to generate the random value.
+  - added the sample TTL macro 'random.ttl'.
+  - upgraded CygTerm to 1.06_2. Special thanks to BabyDaemon.
+        * Generated CygTerm's ICON by "DotWork 2.50".
+          "DotWork 2.50" is available at http://www5a.biglobe.ne.jp/~suuta
+          Special Thanks to "suuta at hamal dot freemal dot ne dot jp"
+        * Makefile was changed, "clean" target was changed to don't remove cygterm.ico.
+        * The following configuration file reading was supported:
+            + /etc/cygterm.conf
+            + ~/.cygtermrc
+        * Shell is invoked with user's home-directory.
+        * Get account configuration from /etc/passwd by getpwnam(3),
+          getting account name from USERNAME environment by getenv(3).
+        * Makefile was changed, default build is with icon executable.
 
 2006.1.21 (Ver 4.26)
   - added the user confirmation dialog before sending file content with Drag and Drop to TeraTerm window.
