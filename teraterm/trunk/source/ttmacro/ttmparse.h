@@ -148,6 +148,7 @@
 #define RsvZmodemRecv 108
 #define RsvZmodemSend 109
 #define RsvWaitRegex  110   // add 'waitregex' (2005.10.5 yutaka)
+#define RsvMilliPause 111   // add 'mpause' (2006.2.10 yutaka)
 
 #define RsvOperator   150
 #define RsvNot	      151

@@ -184,6 +184,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
   else if (stricmp(Str,"next")==0) *WordId = RsvNext;
   else if (stricmp(Str,"passwordbox")==0) *WordId = RsvPasswordBox;
   else if (stricmp(Str,"pause")==0) *WordId = RsvPause;
+  else if (stricmp(Str,"mpause")==0) *WordId = RsvMilliPause;
   else if (stricmp(Str,"quickvanrecv")==0) *WordId = RsvQuickVANRecv;
   else if (stricmp(Str,"quickvansend")==0) *WordId = RsvQuickVANSend;
   else if (stricmp(Str,"recvln")==0) *WordId = RsvRecvLn;

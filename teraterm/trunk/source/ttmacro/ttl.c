@@ -1471,6 +1471,28 @@ WORD TTLPause()
   return Err;
 }
 
+// add 'mpause' command
+// SYNOPSIS: mpause millisecoand
+// DESCRIPTION: This command would sleep TeraTerm macro program by specified millisecond time.
+// (2006.2.10 yutaka)
+WORD TTLMilliPause()
+{
+	int TimeOut;
+	WORD Err;
+
+	Err = 0;
+	GetIntVal(&TimeOut,&Err);
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	if (TimeOut > 0) {
+		Sleep(TimeOut);
+	}
+
+	return Err;
+}
+
 WORD TTLRecvLn()
 {
   TStrVal Str;
@@ -2379,6 +2401,7 @@ int ExecCmnd()
       case RsvNext:	  Err = TTLNext(); break;
       case RsvPasswordBox: Err = TTLInputBox(TRUE); break;
       case RsvPause:	  Err = TTLPause(); break;
+      case RsvMilliPause:	  Err = TTLMilliPause(); break;  // add 'mpause'
       case RsvQuickVANRecv:
 	Err = TTLCommCmd(CmdQVRecv,IdTTLWaitCmndResult); break;
       case RsvQuickVANSend:
