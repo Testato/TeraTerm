@@ -26,8 +26,17 @@
 //  (English) http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index-e.html
 // (Japanese) http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
 //
+/////////////////////////////////////////////////////////////////////////////
+// patch level 01 - support for "~/.cygtermrc" and "/etc/cygterm.conf"
+//   Written by BabyDaemon. (babydamons@yahoo.co.jp)
+//
+//                         *** Web Pages ***
+// (Japanese) http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
+// Sorry, Japanese web pages only, but I will try read English e-mail,
+// If I recieved it.
+
 static char Program[] = "CygTerm";
-static char Version[] = "version 1.06 (2004/01/24)";
+static char Version[] = "version 1.06_01 (2006/02/08)";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -126,58 +135,58 @@ void c_error(char* string = "")
 //----------------------------------//
 void parse_cfg_line(char *buf)
 {
-	// "KEY = VALUE" format in each line.
-	// skip leading/trailing blanks. KEY is not case-sensitive.
-	char* p1;
-	for (p1 = buf; isspace(*p1); ++p1);
-	if (!isalpha(*p1)) {
-	    return; // comment line with non-alphabet 1st char
-	}
-	char* name = p1;
-	for (++p1; isalnum(*p1) || *p1 == '_'; ++p1);
-	char* p2;
-	for (p2 = p1; isspace(*p2); ++p2);
-	if (*p2 != '=') {
-	    return;	// igonore line without '='
-	}
-	for (++p2; isspace(*p2); ++p2);
-	char* val = p2;
-	for (p2 += strlen(p2); isspace(*(p2-1)); --p2);
-	*p1 = *p2 = 0;
+    // "KEY = VALUE" format in each line.
+    // skip leading/trailing blanks. KEY is not case-sensitive.
+    char* p1;
+    for (p1 = buf; isspace(*p1); ++p1);
+    if (!isalpha(*p1)) {
+        return; // comment line with non-alphabet 1st char
+    }
+    char* name = p1;
+    for (++p1; isalnum(*p1) || *p1 == '_'; ++p1);
+    char* p2;
+    for (p2 = p1; isspace(*p2); ++p2);
+    if (*p2 != '=') {
+        return; // igonore line without '='
+    }
+    for (++p2; isspace(*p2); ++p2);
+    char* val = p2;
+    for (p2 += strlen(p2); isspace(*(p2-1)); --p2);
+    *p1 = *p2 = 0;
 
-	if (!strcasecmp(name, "TERM")) {
-	    // terminal emulator command line (host:%s, port#:%d)
-	    strncpy(cmd_term, val, sizeof(cmd_term)-1);
-	    cmd_term[sizeof(cmd_term)-1] = 0;
-	}
-	else if (!strcasecmp(name, "SHELL")) {
-	    // shell command line
-	    strncpy(cmd_shell, val, sizeof(cmd_shell)-1);
-	    cmd_shell[sizeof(cmd_shell)-1] = 0;
-	}
-	else if (!strcasecmp(name, "PORT_START")) {
-	    // minimum port# for TELNET
-	    port_start = atoi(val);
-	}
-	else if (!strcasecmp(name, "PORT_RANGE")) {
-	    // number of ports for TELNET
-	    port_range = atoi(val);
-	}
-	else if (!strcasecmp(name, "TERM_TYPE")) {
-	    // terminal type name (maybe overridden by TELNET negotiation.)
-	    strncpy(term_type, val, sizeof(term_type)-1);
-	    term_type[sizeof(term_type)-1] = 0;
-	}
-	else if (!strncasecmp(name, "ENV_", 4)) {
-	    // additional env vars given to a shell
-	    sh_env_t* e = (sh_env_t*)malloc(sizeof(sh_env_t)+strlen(val));
-	    if (e != NULL) {
-	        strcpy(e->env, val);
-	        e->next = NULL;
-	        sh_envp = (sh_envp->next = e);
-	    }
-	}
-	return;
+    if (!strcasecmp(name, "TERM")) {
+        // terminal emulator command line (host:%s, port#:%d)
+        strncpy(cmd_term, val, sizeof(cmd_term)-1);
+        cmd_term[sizeof(cmd_term)-1] = 0;
+    }
+    else if (!strcasecmp(name, "SHELL")) {
+        // shell command line
+        strncpy(cmd_shell, val, sizeof(cmd_shell)-1);
+        cmd_shell[sizeof(cmd_shell)-1] = 0;
+    }
+    else if (!strcasecmp(name, "PORT_START")) {
+        // minimum port# for TELNET
+        port_start = atoi(val);
+    }
+    else if (!strcasecmp(name, "PORT_RANGE")) {
+        // number of ports for TELNET
+        port_range = atoi(val);
+    }
+    else if (!strcasecmp(name, "TERM_TYPE")) {
+        // terminal type name (maybe overridden by TELNET negotiation.)
+        strncpy(term_type, val, sizeof(term_type)-1);
+        term_type[sizeof(term_type)-1] = 0;
+    }
+    else if (!strncasecmp(name, "ENV_", 4)) {
+        // additional env vars given to a shell
+        sh_env_t* e = (sh_env_t*)malloc(sizeof(sh_env_t)+strlen(val));
+        if (e != NULL) {
+            strcpy(e->env, val);
+            e->next = NULL;
+            sh_envp = (sh_envp->next = e);
+        }
+    }
+    return;
 }
 
 //====================//
@@ -203,62 +212,73 @@ void load_cfg()
         strcpy(dot, ".cfg");
     }
 
-	static char sys_conf[] = "/etc/cygterm.conf";
+    static char sys_conf[] = "/etc/cygterm.conf";
 
     // user configuration file (~/.*rc) path
-    char usr_conf[MAX_PATH];
+    static char usr_conf[MAX_PATH] = "";
 
-	// auto generated configuration file path
-	static char tmp_conf[MAX_PATH] = "/tmp/cygtermrc.XXXXXX";
+    // auto generated configuration file path
+    static char tmp_conf[MAX_PATH] = "/tmp/cygtermrc.XXXXXX";
 
-	// get user name form Windows ENVIRONMENT
-	const char* username = getenv("USERNAME");
-	if (username != 0) {
-		struct passwd* pw_ent = getpwnam(username);
-		strcpy(usr_conf, pw_ent->pw_dir);
-		strcat(usr_conf, "/.");
-		strcat(usr_conf, bs + 1);
-	    char* dot = strrchr(usr_conf, '.');
-	    if (dot == NULL) {
-	        strcat(bs, "rc");
-	    } else {
-	        strcpy(dot, "rc");
-	    }
-	    mktemp(tmp_conf);
-	    FILE* fp = fopen(tmp_conf, "w");
-	    if (fp != NULL) {
-			fprintf(fp, "ENV_1=HOME=%s\n",  pw_ent->pw_dir);
-			fprintf(fp, "ENV_2=SHELL=%s\n", pw_ent->pw_shell);
-			fclose(fp);
-		}
-	}
-	else {
-		strcpy(usr_conf, "");
-		strcpy(tmp_conf, "");
-	}
+    // get user name form Windows ENVIRONMENT,
+    // and get /etc/passwd information by getpwnam(3) with USERNAME,
+    // and generate temporary configuration file by mktemp(3).
+    const char* username = getenv("USERNAME");
+    if (username != NULL) {
+        struct passwd* pw_ent = getpwnam(username);
+        if (pw_ent != NULL) {
+            strcpy(usr_conf, pw_ent->pw_dir);
+            strcat(usr_conf, "/.");
+            strcat(usr_conf, bs + 1);
+            char* dot = strrchr(usr_conf, '.');
+            if (dot == NULL) {
+                strcat(bs, "rc");
+            } else {
+                strcpy(dot, "rc");
+            }
+        }
+        mktemp(tmp_conf);
+        FILE* fp = fopen(tmp_conf, "w");
+        if (fp != NULL) {
+            if (pw_ent != NULL) {
+                fprintf(fp, "ENV_1=HOME=%s\n",  pw_ent->pw_dir);
+                fprintf(fp, "ENV_2=USER=%s\n",  pw_ent->pw_name);
+                fprintf(fp, "ENV_3=SHELL=%s\n", pw_ent->pw_shell);
+            } else {
+                fprintf(fp, "ENV_1=HOME=/home/%s\n", username);
+                fprintf(fp, "ENV_2=USER=%s\n",       username);
+            }
+            fclose(fp);
+        }
+    }
 
-	char *conf_path[] = { win_conf, sys_conf, tmp_conf, usr_conf };
-	for (int i = 0; i < 4; i++) {
-	    // ignore empty configuration file path
-		if (strcmp(conf_path[i], "") == 0) {
-			continue;
-		}
-	    // read each setting parameter
-	    FILE* fp;
-	    if ((fp = fopen(conf_path[i], "r")) == NULL) {
-	        continue;
-	    }
-	    char buf[BUFSIZ];
-	    while (fgets(buf, sizeof(buf), fp) != NULL) {
-			parse_cfg_line(buf);
-	    }
-	    fclose(fp);
-	}
+    if (strcmp(usr_conf, "") == 0) {
+        strcpy(usr_conf, "");
+        strcpy(tmp_conf, "");
+    }
 
-	// remove temporary configuration file, if it was generated.
-	if (strcmp(tmp_conf, "") != 0) {
-		unlink(tmp_conf);
-	}
+    char *conf_path[] = { win_conf, sys_conf, tmp_conf, usr_conf };
+    for (int i = 0; i < 4; i++) {
+        // ignore empty configuration file path
+        if (strcmp(conf_path[i], "") == 0) {
+            continue;
+        }
+        // read each setting parameter
+        FILE* fp;
+        if ((fp = fopen(conf_path[i], "r")) == NULL) {
+            continue;
+        }
+        char buf[BUFSIZ];
+        while (fgets(buf, sizeof(buf), fp) != NULL) {
+            parse_cfg_line(buf);
+        }
+        fclose(fp);
+    }
+
+    // remove temporary configuration file, if it was generated.
+    if (strcmp(tmp_conf, "") != 0) {
+        unlink(tmp_conf);
+    }
 }
 
 //=======================//
@@ -512,6 +532,12 @@ int exec_shell(int* sh_pid)
         sh_env_t* e;
         for (e = sh_env.next; e != NULL; e = e->next) {
             putenv(e->env);
+        }
+        // chdir to home directory
+        const char *home_dir = getenv("HOME");
+        if (home_dir != NULL) {
+            // ignore chdir(2) system-call error.
+            chdir(home_dir);
         }
         // execute a shell
         char *argv[32];
@@ -872,6 +898,9 @@ int main(int argc, char** argv)
 
 /**
  * To avoid bellow error, disable follow codes.
+ * NOTE: To avoid display console window as cygwin application,
+ *       you must build without "gcc -g"
+ * -----------------------------------------------------------------------------
  * gcc -g -fno-exceptions -o cygterm.exe cygterm.cc  -mwindows -lc -ltk
  * /tmp/ccfWqjPN.o: In function `WinMainCRTStartup':
  * /build/cygterm106/cygterm.cc:877: multiple definition of `_WinMainCRTStartup'

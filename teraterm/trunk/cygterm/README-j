@@ -206,6 +206,25 @@
                 zsh 4.1.1
 
 // 変 更 履 歴 //
+v1.06_02 2006/02/09 (by babydamons@yahoo.co.jp)
+        * CygTermのアイコンが作成されました。（"DotWork 2.50"にて作成）
+          "DotWork 2.50" は右記のURLより入手可能です。 http://www5a.biglobe.ne.jp/~suuta.
+          すばらしいソフトウェアを公開していただき、
+          "suuta at hamal dot freemal dot ne dot jp"に感謝致します。
+
+        * Makefileが修正されました。"clean"ターゲットでcygterm.icoを削除しないように。
+
+v1.06_01 2006/02/08 (by babydamons@yahoo.co.jp)
+        * 以下の設定ファイルの読み込みをサポート:
+            + /etc/cygterm.conf
+            + ~/.cygtermrc
+
+        * シェルがユーザのホームディレクトリで起動されるように。
+
+        * アカウントの設定情報を/etc/passwdからgetpwnam(3)で読み込むように。
+          アカウント名は環境変数USERNAMEからgetenv(3)で取得してます。
+
+        * Makefile修正：ディフォルトでアイコンつきの.exeをビルドします。
 
 v1.06 2004/01/24
         * コマンドライン・オプションを追加。

@@ -10,24 +10,22 @@ LIBS = -mwindows
 EXE = cygterm.exe
 SRC = $(EXE:.exe=.cc)
 CFG = $(EXE:.exe=.cfg)
+RES = $(EXE:.exe=.res)
+ICO = $(EXE:.exe=.ico)
+RC  = $(EXE:.exe=.rc)
 
 $(EXE) : $(SRC) $(RES)
 	$(CC) $(CFLAGS) -o $(EXE) $(SRC) $(RES) $(LIBS)
 	strip $(EXE)
 
-## icon test
-TEST_ICO = /cygwin.ico
-with-icon :
-	@echo "(Use $(TEST_ICO))"
-	@cp $(TEST_ICO) x.ico
-	@echo 'icon ICON x.ico' > x.rc
-	windres -O coff -o x.res x.rc
-	@rm -f x.rc x.ico
-	@make RES=x.res
-	@rm -f x.res
+$(RC):
+	echo 'icon ICON $(ICO)' > $(RC)
+
+$(RES):	$(ICO) $(RC)
+	windres -O coff -o $(RES) $(RC)
 
 clean :
-	rm -f $(EXE)
+	rm -f $(EXE) $(RC) $(RES)
 
 install : $(EXE)
 	@ install -v $(EXE) $(BINDIR)/$(EXE)

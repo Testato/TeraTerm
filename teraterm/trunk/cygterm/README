@@ -212,6 +212,24 @@
                 zsh 4.1.1
 
 // C H A N G E S //
+v1.06_02 2006/02/09 (by babydamons@yahoo.co.jp)
+        * Generated CygTerm's ICON by "DotWork 2.50".
+          "DotWork 2.50" is available at http://www5a.biglobe.ne.jp/~suuta.
+          Special Thanks to "suuta at hamal dot freemal dot ne dot jp"
+
+        * Makefile was changed, "clean" target was changed to don't remove cygterm.ico.
+
+v1.06_01 2006/02/08 (by babydamons@yahoo.co.jp)
+        * The following configuration file reading was supported:
+            + /etc/cygterm.conf
+            + ~/.cygtermrc
+
+        * Shell is invoked with user's home-directory.
+
+        * Get account configuration from /etc/passwd by getpwnam(3),
+          getting account name from USERNAME environment by getenv(3).
+
+        * Makefile was changed, default build is with icon executable.
 
 v1.06 2004/01/24
         * The following command line options were added:
