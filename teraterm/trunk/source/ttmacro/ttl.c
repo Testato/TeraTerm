@@ -1493,6 +1493,44 @@ WORD TTLMilliPause()
 	return Err;
 }
 
+
+// add 'random' command
+// SYNOPSIS: random <intvar> <value>
+// DESCRIPTION: 
+// This command generates the random value from 0 to <value> and
+// stores the value to <intvar>.
+// (2006.2.11 yutaka)
+WORD TTLRecvRandom()
+{
+	static int srand_init = 0;
+	WORD VarId, Err;
+	int MaxNum, Num;
+	double d;
+
+	Err = 0;
+	GetIntVar(&VarId,&Err);
+	GetIntVal(&MaxNum,&Err);
+
+	if ( ((Err==0) && (GetFirstChar()!=0)) || MaxNum <= 0)
+	    Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	// —” 0 ` <intvar> ‚ð¶¬‚·‚é
+	if (srand_init == 0) {
+		srand_init = 1;
+		srand(time(NULL));
+	}
+	//d = (1.0 / (RAND_MAX + 1.0)) * (rand() + 0.5);
+	d = rand();
+	d = (rand() / (double)RAND_MAX) * MaxNum;
+	Num = (int)d;
+
+    SetIntVal(VarId,Num);
+
+	return Err;
+}
+
+
 WORD TTLRecvLn()
 {
   TStrVal Str;
@@ -2262,250 +2300,251 @@ WORD TTLZmodemSend()
 
 int ExecCmnd()
 {
-  WORD WId, Err;
-  BOOL StrConst, E;
-  TStrVal Str;
-  TName Cmnd;
-  WORD ValType, VarType, VarId;
-  int Val;
+	WORD WId, Err;
+	BOOL StrConst, E;
+	TStrVal Str;
+	TName Cmnd;
+	WORD ValType, VarType, VarId;
+	int Val;
 
-  if (EndWhileFlag>0)
-  {
-    if (! GetReservedWord(&WId))
-      WId = 0;
-    if (WId==RsvWhile)
-      EndWhileFlag++;
-    else if (WId==RsvEndWhile)
-      EndWhileFlag--;
-    return 0;
-  }
-
-  if (EndIfFlag>0)
-  {
-    Err = 0;
-    if (! GetReservedWord(&WId))
-      WId = 0;
-    if ((WId==RsvIf) && CheckThen(&Err))
-      EndIfFlag++;
-    else if (WId==RsvEndIf)
-      EndIfFlag--;
-    return Err;
-  }
-
-  if (ElseFlag>0)
-  {
-    Err = 0;
-    if (! GetReservedWord(&WId))
-      WId = 0;
-    if ((WId==RsvIf) && CheckThen(&Err))
-      EndIfFlag++;
-    else if (WId==RsvElse)
-      ElseFlag--;
-    else if (WId==RsvElseIf)
-    {
-      if (CheckElseIf(&Err)!=0)
-	ElseFlag--;
-    }
-    else if (WId==RsvEndIf)
-    {
-      ElseFlag--;
-      if (ElseFlag==0)
-	IfNest--;
-    }
-    return Err;
-  }
-
-  Err = 0;
-  if (GetReservedWord(&WId))
-    switch (WId) {
-      case RsvBeep:	  Err = TTLBeep(); break;
-      case RsvBPlusRecv:
-	Err = TTLCommCmd(CmdBPlusRecv,IdTTLWaitCmndResult); break;
-      case RsvBPlusSend:
-	Err = TTLCommCmdFile(CmdBPlusSend,IdTTLWaitCmndResult); break;
-      case RsvCall:	  Err = TTLCall(); break;
-      case RsvChangeDir:
-	Err = TTLCommCmdFile(CmdChangeDir,0); break;
-      case RsvClearScreen:
-	Err = TTLCommCmdInt(CmdClearScreen,0); break;
-      case RsvCloseSBox:  Err = TTLCloseSBox(); break;
-      case RsvCloseTT:	  Err = TTLCloseTT(); break;
-      case RsvCode2Str:   Err = TTLCode2Str(); break;
-      case RsvConnect:	  Err = TTLConnect(); break;
-      case RsvDelPassword: Err = TTLDelPassword(); break;
-      case RsvDisconnect:
-	Err = TTLCommCmd(CmdDisconnect,0); break;
-      case RsvElse:	  Err = TTLElse(); break;
-      case RsvElseIf:	  Err = TTLElseIf(); break;
-      case RsvEnableKeyb:
-	Err = TTLCommCmdBin(CmdEnableKeyb,0); break;
-      case RsvEnd:	  Err = TTLEnd(); break;
-      case RsvEndIf:	  Err = TTLEndIf(); break;
-      case RsvEndWhile:   Err = TTLEndWhile(); break;
-      case RsvExec:	  Err = TTLExec(); break;
-      case RsvExecCmnd:   Err = TTLExecCmnd(); break;
-      case RsvExit:	  Err = TTLExit(); break;
-      case RsvFileClose:  Err = TTLFileClose(); break;
-      case RsvFileConcat: Err = TTLFileConcat(); break;
-      case RsvFileCopy:   Err = TTLFileCopy(); break;
-      case RsvFileCreate: Err = TTLFileCreate(); break;
-      case RsvFileDelete: Err = TTLFileDelete(); break;
-      case RsvFileMarkPtr: Err = TTLFileMarkPtr(); break;
-      case RsvFileOpen:   Err = TTLFileOpen(); break;
-      case RsvFileReadln: Err = TTLFileReadln(); break;
-      case RsvFileRename: Err = TTLFileRename(); break;
-      case RsvFileSearch: Err = TTLFileSearch(); break;
-      case RsvFileSeek:   Err = TTLFileSeek(); break;
-      case RsvFileSeekBack: Err = TTLFileSeekBack(); break;
-      case RsvFileStrSeek: Err = TTLFileStrSeek(); break;
-      case RsvFileStrSeek2: Err = TTLFileStrSeek2(); break;
-      case RsvFileWrite:  Err = TTLFileWrite(); break;
-      case RsvFileWriteLn: Err = TTLFileWriteLn(); break;
-      case RsvFindClose:  Err = TTLFindClose(); break;
-      case RsvFindFirst:  Err = TTLFindFirst(); break;
-      case RsvFindNext:   Err = TTLFindNext(); break;
-      case RsvFlushRecv:  Err = TTLFlushRecv(); break;
-      case RsvFor:	  Err = TTLFor(); break;
-      case RsvGetDate:	  Err = TTLGetDate(); break;
-      case RsvGetDir:	  Err = TTLGetDir(); break;
-      case RsvGetEnv:	  Err = TTLGetEnv(); break;
-      case RsvGetPassword: Err = TTLGetPassword(); break;
-      case RsvGetTime:	  Err = TTLGetTime(); break;
-      case RsvGetTitle:   Err = TTLGetTitle(); break;
-      case RsvGoto:	  Err = TTLGoto(); break;
-      case RsvIf:	  Err = TTLIf(); break;
-      case RsvInclude:	  Err = TTLInclude(); break;
-      case RsvInputBox:   Err = TTLInputBox(FALSE); break;
-      case RsvInt2Str:	  Err = TTLInt2Str(); break;
-      case RsvKmtFinish:
-	Err = TTLCommCmd(CmdKmtFinish,IdTTLWaitCmndResult); break;
-      case RsvKmtGet:
-	Err = TTLCommCmdFile(CmdKmtGet,IdTTLWaitCmndResult); break;
-      case RsvKmtRecv:
-	Err = TTLCommCmd(CmdKmtRecv,IdTTLWaitCmndResult); break;
-      case RsvKmtSend:
-	Err = TTLCommCmdFile(CmdKmtSend,IdTTLWaitCmndResult); break;
-      case RsvLoadKeyMap:
-	Err = TTLCommCmdFile(CmdLoadKeyMap,0); break;
-      case RsvLogClose:
-	Err = TTLCommCmd(CmdLogClose,0); break;
-      case RsvLogOpen:	  Err = TTLLogOpen(); break;
-      case RsvLogPause:
-	Err = TTLCommCmd(CmdLogPause,0); break;
-      case RsvLogStart:
-	Err = TTLCommCmd(CmdLogStart,0); break;
-      case RsvLogWrite:
-	Err = TTLCommCmdFile(CmdLogWrite,0); break;
-      case RsvMakePath:   Err = TTLMakePath(); break;
-      case RsvMessageBox: Err = TTLMessageBox(); break;
-      case RsvNext:	  Err = TTLNext(); break;
-      case RsvPasswordBox: Err = TTLInputBox(TRUE); break;
-      case RsvPause:	  Err = TTLPause(); break;
-      case RsvMilliPause:	  Err = TTLMilliPause(); break;  // add 'mpause'
-      case RsvQuickVANRecv:
-	Err = TTLCommCmd(CmdQVRecv,IdTTLWaitCmndResult); break;
-      case RsvQuickVANSend:
-	Err = TTLCommCmdFile(CmdQVSend,IdTTLWaitCmndResult); break;
-      case RsvRecvLn:	  Err = TTLRecvLn(); break;
-      case RsvRestoreSetup:
-	Err = TTLCommCmdFile(CmdRestoreSetup,0); break;
-      case RsvReturn:	  Err = TTLReturn(); break;
-      case RsvSend:	  Err = TTLSend(); break;
-      case RsvSendBreak:
-	Err = TTLCommCmd(CmdSendBreak,0); break;
-      case RsvSendFile:   Err = TTLSendFile(); break;
-      case RsvSendKCode:  Err = TTLSendKCode(); break;
-      case RsvSendLn:	  Err = TTLSendLn(); break;
-      case RsvSetDate:	  Err = TTLSetDate(); break;
-      case RsvSetDir:	  Err = TTLSetDir(); break;
-      case RsvSetDlgPos:  Err = TTLSetDlgPos(); break;
-      case RsvSetEcho:
-	Err = TTLCommCmdBin(CmdSetEcho,0); break;
-      case RsvSetExitCode: Err = TTLSetExitCode(); break;
-      case RsvSetSync:	  Err = TTLSetSync(); break;
-      case RsvSetTime:	  Err = TTLSetTime(); break;
-      case RsvSetTitle:
-	Err = TTLCommCmdFile(CmdSetTitle,0); break;
-      case RsvShow:	  Err = TTLShow(); break;
-      case RsvShowTT:
-	Err = TTLCommCmdInt(CmdShowTT,0); break;
-      case RsvStatusBox:  Err = TTLStatusBox(); break;
-      case RsvStr2Code:	  Err = TTLStr2Code(); break;
-      case RsvStr2Int:	  Err = TTLStr2Int(); break;
-      case RsvStrCompare: Err = TTLStrCompare(); break;
-      case RsvStrConcat:  Err = TTLStrConcat(); break;
-      case RsvStrCopy:	  Err = TTLStrCopy(); break;
-      case RsvStrLen:	  Err = TTLStrLen(); break;
-      case RsvStrScan:	  Err = TTLStrScan(); break;
-      case RsvTestLink:	  Err = TTLTestLink(); break;
-      case RsvUnlink:	  Err = TTLUnlink(); break;
-      case RsvWaitRegex:	  Err = TTLWaitRegex(FALSE); break;  // add 'waitregex' (2005.10.5 yutaka)
-      case RsvWait:	  Err = TTLWait(FALSE); break;
-      case RsvWaitEvent:  Err = TTLWaitEvent(); break;
-      case RsvWaitLn:	  Err = TTLWait(TRUE); break;
-      case RsvWaitRecv:   Err = TTLWaitRecv(); break;
-      case RsvWhile:	  Err = TTLWhile(); break;
-      case RsvXmodemRecv: Err = TTLXmodemRecv(); break;
-      case RsvXmodemSend: Err = TTLXmodemSend(); break;
-      case RsvYesNoBox:   Err = TTLYesNoBox(); break;
-      case RsvZmodemRecv:
-	Err = TTLCommCmd(CmdZmodemRecv,IdTTLWaitCmndResult); break;
-      case RsvZmodemSend: Err = TTLZmodemSend(); break;
-      default:
-	Err = ErrSyntax;
-    }
-  else if (GetIdentifier(Cmnd))
-  {
-    if (GetFirstChar()=='=')
-    {
-      StrConst = GetString(Str,&Err);
-      if (StrConst)
-	ValType = TypString;
-      else
-	if (! GetExpression(&ValType,&Val,&Err))
-	  Err = ErrSyntax;
-
-      if (Err==0)
-      {
-	if (CheckVar(Cmnd,&VarType,&VarId))
+	if (EndWhileFlag>0)
 	{
-	  if (VarType==ValType)
-	    switch (ValType) {
-	      case TypInteger: SetIntVal(VarId,Val); break;
-	      case TypString:
-		if (StrConst)
-		  SetStrVal(VarId,Str);
-		else
-		  strcpy(StrVarPtr(VarId),StrVarPtr((WORD)Val));
-		break;
-	    }
-	  else
-	    Err = ErrTypeMismatch;
+		if (! GetReservedWord(&WId))
+			WId = 0;
+		if (WId==RsvWhile)
+			EndWhileFlag++;
+		else if (WId==RsvEndWhile)
+			EndWhileFlag--;
+		return 0;
 	}
-	else {
-	  switch (ValType) {
-	    case TypInteger: E = NewIntVar(Cmnd,Val); break;
-	    case TypString:
-	      if (StrConst)
-		E = NewStrVar(Cmnd,Str);
-	      else
-		E = NewStrVar(Cmnd,StrVarPtr((WORD)Val));
-	      break;
-	    default: 
-	      E = FALSE;
-	  }
-	  if (! E) Err = ErrTooManyVar;
-	}
-	if ((Err==0) && (GetFirstChar()!=0))
-	  Err = ErrSyntax;
-      }
-    }
-    else Err = ErrSyntax;
-  }
-  else
-    Err = ErrSyntax;
 
-  return Err;
+	if (EndIfFlag>0)
+	{
+		Err = 0;
+		if (! GetReservedWord(&WId))
+			WId = 0;
+		if ((WId==RsvIf) && CheckThen(&Err))
+			EndIfFlag++;
+		else if (WId==RsvEndIf)
+			EndIfFlag--;
+		return Err;
+	}
+
+	if (ElseFlag>0)
+	{
+		Err = 0;
+		if (! GetReservedWord(&WId))
+			WId = 0;
+		if ((WId==RsvIf) && CheckThen(&Err))
+			EndIfFlag++;
+		else if (WId==RsvElse)
+			ElseFlag--;
+		else if (WId==RsvElseIf)
+		{
+			if (CheckElseIf(&Err)!=0)
+				ElseFlag--;
+		}
+		else if (WId==RsvEndIf)
+		{
+			ElseFlag--;
+			if (ElseFlag==0)
+				IfNest--;
+		}
+		return Err;
+	}
+
+	Err = 0;
+	if (GetReservedWord(&WId)) 
+		switch (WId) {
+		case RsvBeep:	  Err = TTLBeep(); break;
+		case RsvBPlusRecv:
+			Err = TTLCommCmd(CmdBPlusRecv,IdTTLWaitCmndResult); break;
+		case RsvBPlusSend:
+			Err = TTLCommCmdFile(CmdBPlusSend,IdTTLWaitCmndResult); break;
+		case RsvCall:	  Err = TTLCall(); break;
+		case RsvChangeDir:
+			Err = TTLCommCmdFile(CmdChangeDir,0); break;
+		case RsvClearScreen:
+			Err = TTLCommCmdInt(CmdClearScreen,0); break;
+		case RsvCloseSBox:  Err = TTLCloseSBox(); break;
+		case RsvCloseTT:	  Err = TTLCloseTT(); break;
+		case RsvCode2Str:   Err = TTLCode2Str(); break;
+		case RsvConnect:	  Err = TTLConnect(); break;
+		case RsvDelPassword: Err = TTLDelPassword(); break;
+		case RsvDisconnect:
+			Err = TTLCommCmd(CmdDisconnect,0); break;
+		case RsvElse:	  Err = TTLElse(); break;
+		case RsvElseIf:	  Err = TTLElseIf(); break;
+		case RsvEnableKeyb:
+			Err = TTLCommCmdBin(CmdEnableKeyb,0); break;
+		case RsvEnd:	  Err = TTLEnd(); break;
+		case RsvEndIf:	  Err = TTLEndIf(); break;
+		case RsvEndWhile:   Err = TTLEndWhile(); break;
+		case RsvExec:	  Err = TTLExec(); break;
+		case RsvExecCmnd:   Err = TTLExecCmnd(); break;
+		case RsvExit:	  Err = TTLExit(); break;
+		case RsvFileClose:  Err = TTLFileClose(); break;
+		case RsvFileConcat: Err = TTLFileConcat(); break;
+		case RsvFileCopy:   Err = TTLFileCopy(); break;
+		case RsvFileCreate: Err = TTLFileCreate(); break;
+		case RsvFileDelete: Err = TTLFileDelete(); break;
+		case RsvFileMarkPtr: Err = TTLFileMarkPtr(); break;
+		case RsvFileOpen:   Err = TTLFileOpen(); break;
+		case RsvFileReadln: Err = TTLFileReadln(); break;
+		case RsvFileRename: Err = TTLFileRename(); break;
+		case RsvFileSearch: Err = TTLFileSearch(); break;
+		case RsvFileSeek:   Err = TTLFileSeek(); break;
+		case RsvFileSeekBack: Err = TTLFileSeekBack(); break;
+		case RsvFileStrSeek: Err = TTLFileStrSeek(); break;
+		case RsvFileStrSeek2: Err = TTLFileStrSeek2(); break;
+		case RsvFileWrite:  Err = TTLFileWrite(); break;
+		case RsvFileWriteLn: Err = TTLFileWriteLn(); break;
+		case RsvFindClose:  Err = TTLFindClose(); break;
+		case RsvFindFirst:  Err = TTLFindFirst(); break;
+		case RsvFindNext:   Err = TTLFindNext(); break;
+		case RsvFlushRecv:  Err = TTLFlushRecv(); break;
+		case RsvFor:	  Err = TTLFor(); break;
+		case RsvGetDate:	  Err = TTLGetDate(); break;
+		case RsvGetDir:	  Err = TTLGetDir(); break;
+		case RsvGetEnv:	  Err = TTLGetEnv(); break;
+		case RsvGetPassword: Err = TTLGetPassword(); break;
+		case RsvGetTime:	  Err = TTLGetTime(); break;
+		case RsvGetTitle:   Err = TTLGetTitle(); break;
+		case RsvGoto:	  Err = TTLGoto(); break;
+		case RsvIf:	  Err = TTLIf(); break;
+		case RsvInclude:	  Err = TTLInclude(); break;
+		case RsvInputBox:   Err = TTLInputBox(FALSE); break;
+		case RsvInt2Str:	  Err = TTLInt2Str(); break;
+		case RsvKmtFinish:
+			Err = TTLCommCmd(CmdKmtFinish,IdTTLWaitCmndResult); break;
+		case RsvKmtGet:
+			Err = TTLCommCmdFile(CmdKmtGet,IdTTLWaitCmndResult); break;
+		case RsvKmtRecv:
+			Err = TTLCommCmd(CmdKmtRecv,IdTTLWaitCmndResult); break;
+		case RsvKmtSend:
+			Err = TTLCommCmdFile(CmdKmtSend,IdTTLWaitCmndResult); break;
+		case RsvLoadKeyMap:
+			Err = TTLCommCmdFile(CmdLoadKeyMap,0); break;
+		case RsvLogClose:
+			Err = TTLCommCmd(CmdLogClose,0); break;
+		case RsvLogOpen:	  Err = TTLLogOpen(); break;
+		case RsvLogPause:
+			Err = TTLCommCmd(CmdLogPause,0); break;
+		case RsvLogStart:
+			Err = TTLCommCmd(CmdLogStart,0); break;
+		case RsvLogWrite:
+			Err = TTLCommCmdFile(CmdLogWrite,0); break;
+		case RsvMakePath:   Err = TTLMakePath(); break;
+		case RsvMessageBox: Err = TTLMessageBox(); break;
+		case RsvNext:	  Err = TTLNext(); break;
+		case RsvPasswordBox: Err = TTLInputBox(TRUE); break;
+		case RsvPause:	  Err = TTLPause(); break;
+		case RsvMilliPause:	  Err = TTLMilliPause(); break;  // add 'mpause'
+		case RsvQuickVANRecv:
+			Err = TTLCommCmd(CmdQVRecv,IdTTLWaitCmndResult); break;
+		case RsvQuickVANSend:
+			Err = TTLCommCmdFile(CmdQVSend,IdTTLWaitCmndResult); break;
+		case RsvRandom:	  Err = TTLRecvRandom(); break; // add 'random'
+		case RsvRecvLn:	  Err = TTLRecvLn(); break;
+		case RsvRestoreSetup:
+			Err = TTLCommCmdFile(CmdRestoreSetup,0); break;
+		case RsvReturn:	  Err = TTLReturn(); break;
+		case RsvSend:	  Err = TTLSend(); break;
+		case RsvSendBreak:
+			Err = TTLCommCmd(CmdSendBreak,0); break;
+		case RsvSendFile:   Err = TTLSendFile(); break;
+		case RsvSendKCode:  Err = TTLSendKCode(); break;
+		case RsvSendLn:	  Err = TTLSendLn(); break;
+		case RsvSetDate:	  Err = TTLSetDate(); break;
+		case RsvSetDir:	  Err = TTLSetDir(); break;
+		case RsvSetDlgPos:  Err = TTLSetDlgPos(); break;
+		case RsvSetEcho:
+			Err = TTLCommCmdBin(CmdSetEcho,0); break;
+		case RsvSetExitCode: Err = TTLSetExitCode(); break;
+		case RsvSetSync:	  Err = TTLSetSync(); break;
+		case RsvSetTime:	  Err = TTLSetTime(); break;
+		case RsvSetTitle:
+			Err = TTLCommCmdFile(CmdSetTitle,0); break;
+		case RsvShow:	  Err = TTLShow(); break;
+		case RsvShowTT:
+			Err = TTLCommCmdInt(CmdShowTT,0); break;
+		case RsvStatusBox:  Err = TTLStatusBox(); break;
+		case RsvStr2Code:	  Err = TTLStr2Code(); break;
+		case RsvStr2Int:	  Err = TTLStr2Int(); break;
+		case RsvStrCompare: Err = TTLStrCompare(); break;
+		case RsvStrConcat:  Err = TTLStrConcat(); break;
+		case RsvStrCopy:	  Err = TTLStrCopy(); break;
+		case RsvStrLen:	  Err = TTLStrLen(); break;
+		case RsvStrScan:	  Err = TTLStrScan(); break;
+		case RsvTestLink:	  Err = TTLTestLink(); break;
+		case RsvUnlink:	  Err = TTLUnlink(); break;
+		case RsvWaitRegex:	  Err = TTLWaitRegex(FALSE); break;  // add 'waitregex' (2005.10.5 yutaka)
+		case RsvWait:	  Err = TTLWait(FALSE); break;
+		case RsvWaitEvent:  Err = TTLWaitEvent(); break;
+		case RsvWaitLn:	  Err = TTLWait(TRUE); break;
+		case RsvWaitRecv:   Err = TTLWaitRecv(); break;
+		case RsvWhile:	  Err = TTLWhile(); break;
+		case RsvXmodemRecv: Err = TTLXmodemRecv(); break;
+		case RsvXmodemSend: Err = TTLXmodemSend(); break;
+		case RsvYesNoBox:   Err = TTLYesNoBox(); break;
+		case RsvZmodemRecv:
+			Err = TTLCommCmd(CmdZmodemRecv,IdTTLWaitCmndResult); break;
+		case RsvZmodemSend: Err = TTLZmodemSend(); break;
+		default:
+			Err = ErrSyntax;
+		}
+	else if (GetIdentifier(Cmnd))
+	{
+		if (GetFirstChar()=='=')
+		{
+			StrConst = GetString(Str,&Err);
+			if (StrConst)
+				ValType = TypString;
+			else
+				if (! GetExpression(&ValType,&Val,&Err))
+					Err = ErrSyntax;
+
+			if (Err==0)
+			{
+				if (CheckVar(Cmnd,&VarType,&VarId))
+				{
+					if (VarType==ValType)
+						switch (ValType) {
+						case TypInteger: SetIntVal(VarId,Val); break;
+						case TypString:
+							if (StrConst)
+								SetStrVal(VarId,Str);
+							else
+								strcpy(StrVarPtr(VarId),StrVarPtr((WORD)Val));
+							break;
+						}
+					else
+						Err = ErrTypeMismatch;
+				}
+				else {
+					switch (ValType) {
+					case TypInteger: E = NewIntVar(Cmnd,Val); break;
+					case TypString:
+						if (StrConst)
+							E = NewStrVar(Cmnd,Str);
+						else
+							E = NewStrVar(Cmnd,StrVarPtr((WORD)Val));
+						break;
+					default: 
+						E = FALSE;
+					}
+					if (! E) Err = ErrTooManyVar;
+				}
+				if ((Err==0) && (GetFirstChar()!=0))
+					Err = ErrSyntax;
+			}
+		}
+		else Err = ErrSyntax;
+	}
+	else
+		Err = ErrSyntax;
+
+	return Err;
 }
 
 void Exec()

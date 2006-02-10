@@ -187,6 +187,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
   else if (stricmp(Str,"mpause")==0) *WordId = RsvMilliPause;
   else if (stricmp(Str,"quickvanrecv")==0) *WordId = RsvQuickVANRecv;
   else if (stricmp(Str,"quickvansend")==0) *WordId = RsvQuickVANSend;
+  else if (stricmp(Str,"random")==0) *WordId = RsvRandom;  // add 'random' (2006.2.11 yutaka)
   else if (stricmp(Str,"recvln")==0) *WordId = RsvRecvLn;
   else if (stricmp(Str,"restoresetup")==0) *WordId = RsvRestoreSetup;
   else if (stricmp(Str,"return")==0) *WordId = RsvReturn;
