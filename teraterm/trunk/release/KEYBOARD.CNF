@@ -11,15 +11,15 @@ Right=333
 ;Left arrow key
 Left=331
 ;Insert key
-Find=338
+Insert=338
 ;Home key
-Insert=327
+Find=327
 ;PageUp key
-Remove=329
+Prev=329
 ;Delete key
-Select=339
+Remove=339
 ;End key
-Prev=335
+Select=335
 ;PageDown key
 Next=337
 
