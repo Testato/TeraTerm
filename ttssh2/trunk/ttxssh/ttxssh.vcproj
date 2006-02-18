@@ -50,7 +50,7 @@
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\Teraterm\source\common;..\openssl\inc32;..\..\Teraterm\source\teraterm;..\zlib;..\matcher"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;_CRT_SECURE_NO_DEPRECATE"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Debug/ttxssh.pch"
 				AssemblerListingLocation=".\Debug/"
@@ -76,7 +76,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="Version.lib /NODEFAULTLIB:&quot;MSVCRT&quot;&#x0D;&#x0A;&#x0D;&#x0A;"
+				AdditionalOptions="Version.lib &#x0D;&#x0A;&#x0D;&#x0A;"
 				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib"
 				OutputFile=".\Debug/ttxssh.dll"
 				LinkIncremental="1"
@@ -152,7 +152,7 @@
 				AdditionalIncludeDirectories="..\..\Teraterm\source\common,..\openssl\inc32,..\..\Teraterm\source\teraterm,..\zlib,..\matcher"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;_CRT_SECURE_NO_DEPRECATE"
 				StringPooling="true"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Release/ttxssh.pch"
@@ -178,7 +178,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="Version.lib /NODEFAULTLIB:&quot;LIBCMT&quot;&#x0D;&#x0A;"
+				AdditionalOptions="Version.lib &#x0D;&#x0A;"
 				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib"
 				OutputFile=".\Release/ttxssh.dll"
 				LinkIncremental="1"
