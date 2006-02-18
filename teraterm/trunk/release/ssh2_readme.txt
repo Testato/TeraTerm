@@ -103,17 +103,21 @@
 
 * How to build TTSSH
   To build TTSSH source code is shown in the following step:
-  And you need Visual Studio .NET 2003(VC++7.1) and ActivePerl to build.
+  And you need Visual Studio 2005(VC++8.0) and ActivePerl to build.
   
   1. Checkout TTSSH source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
+  
   2. Extract zlib source code(http://www.zlib.net/) to ttssh2\zlib directory.
-  3. Extract OpenSSL source code(http://www.openssl.org/) to ttssh2\openssl directory. Build OpenSSL in the following step:
+     The build target is 'LIB Release' and TTSSH links to zlib\projects\visualc6\Win32_LIB_Release\zlib.lib (compile option /MT must be specified).
+     
+  3. Extract OpenSSL source code(http://www.openssl.org/) to ttssh2\openssl directory. Build OpenSSL in the following step(TTSSH links to openssl\out32\libeay32.lib):
   
       - Build OpenSSL.
             + cd openssl
             + perl Configure VC-WIN32
                 (Yes, you need perl to build OpenSSL!)
             + ms\do_ms
+            + Open ms\nt.mak and modify CFLAG line from /MD to /MT.
             + nmake -f ms\nt.mak
             + cd ..
                 (Now you are back in PortForwarder folder.)

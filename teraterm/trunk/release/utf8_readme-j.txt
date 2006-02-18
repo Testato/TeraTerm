@@ -591,7 +591,7 @@ Too many variables.        •Ï”‚Ì”‚ª‘½‚·‚¬‚éB(®”Œ^A•¶š—ñŒ^‚»‚ê‚¼‚êÅ‘å256Œ
 
 
 ¡TeraTerm‚Ìƒrƒ‹ƒh•û–@
-  TeraTerm‚Ìƒrƒ‹ƒh•û–@‚É‚Â‚¢‚ÄˆÈ‰º‚É¦‚µ‚Ü‚·Bƒrƒ‹ƒh‚É‚ÍVisual Studio .NET 2003(VC++7.1)‚ª•K—v‚Å‚·B
+  TeraTerm‚Ìƒrƒ‹ƒh•û–@‚É‚Â‚¢‚ÄˆÈ‰º‚É¦‚µ‚Ü‚·Bƒrƒ‹ƒh‚É‚ÍVisual Studio 2005(VC++8.0)‚ª•K—v‚Å‚·B
   
   1. ƒ\[ƒXƒR[ƒh‚ğSourceForge(http://sourceforge.jp/projects/ttssh2/)‚©‚çƒ`ƒFƒbƒNƒAƒEƒg‚·‚é
   2. Oniguruma‚Ìƒ\[ƒXƒR[ƒh(http://www.geocities.jp/kosako3/oniguruma/)‚ğ source\oniguruma ƒfƒBƒŒƒNƒgƒŠ‚É“WŠJ‚·‚éBOniguruma‚ğƒrƒ‹ƒh‚·‚éiˆÈ‰ºQÆjB
@@ -606,7 +606,7 @@ Too many variables.        •Ï”‚Ì”‚ª‘½‚·‚¬‚éB(®”Œ^A•¶š—ñŒ^‚»‚ê‚¼‚êÅ‘å256Œ
 
 
 ¡TeraTerm Menu‚Ìƒrƒ‹ƒh•û–@
-  TeraTerm Menu‚Ìƒrƒ‹ƒh•û–@‚É‚Â‚¢‚ÄˆÈ‰º‚É¦‚µ‚Ü‚·Bƒrƒ‹ƒh‚É‚ÍVisual Studio .NET 2003(VC++7.1)‚ª•K—v‚Å‚·B
+  TeraTerm Menu‚Ìƒrƒ‹ƒh•û–@‚É‚Â‚¢‚ÄˆÈ‰º‚É¦‚µ‚Ü‚·Bƒrƒ‹ƒh‚É‚ÍVisual Studio 2005(VC++8.0)‚ª•K—v‚Å‚·B
   
   1. ƒ\[ƒXƒR[ƒh‚ğSourceForge(http://sourceforge.jp/projects/ttssh2/)‚©‚çƒ`ƒFƒbƒNƒAƒEƒg‚·‚é
   2. teraterm\source\ttmenu\ttpmenu.sln ‚ğVisual Studio‚ÅŠJ‚­

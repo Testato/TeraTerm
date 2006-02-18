@@ -595,7 +595,7 @@ Too many variables.        MACRO can not handle more than 256 integer variables 
 
 * How to build TeraTerm
   To build TeraTerm source code is shown in the following step:
-  And you need Visual Studio .NET 2003(VC++7.1) to build.
+  And you need Visual Studio 2005(VC++8.0) to build.
   
   1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
   2. Download 'Oniguruma' source code(http://www.geocities.jp/kosako3/oniguruma/) and extract at 'source\oniguruma' directory. Build 'Oniguruma' regular expression library(see below).
@@ -611,7 +611,7 @@ Too many variables.        MACRO can not handle more than 256 integer variables 
 
 * How to build TeraTerm Menu
   To build TeraTerm Menu source code is shown in the following step:
-  And you need Visual Studio .NET 2003(VC++7.1) to build.
+  And you need Visual Studio 2005(VC++8.0) to build.
   
   1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
   2. Open teraterm\source\ttmenu\ttpmenu.sln with Visual Studio.
