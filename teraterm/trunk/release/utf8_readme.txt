@@ -711,6 +711,18 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.2.18 (Ver 4.28)
+  - changed the compiler to Visual Studio 2005 Standard Edition.
+  - replaced stricmp() to _stricmp().
+  - replaced strnicmp() to _strnicmp().
+  - replaced strdup() to _strdup().
+  - replaced chdir() to _chdir().
+  - replaced getcwd() to _getcwd().
+  - replaced strupr() to _strupr().
+  - deleted compiler warning message for time_t has 64bit size.
+  - fixed TeraTerm Menu build error.
+  - upgraded Oniguruma to 4.0.1
+
 2006.2.11 (Ver 4.27)
   - expanded the number of macro variable from 128 to 256 and the number of macro label from 256 to 512.
   - added the workaround about CPU load goes up to 100% using 'pause' macro on TEK active window.

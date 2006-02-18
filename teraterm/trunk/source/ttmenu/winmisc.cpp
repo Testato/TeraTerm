@@ -516,7 +516,9 @@ TCHAR *lstrstri(TCHAR *s1, TCHAR *s2)
 	DWORD	dwLen2= ::lstrlen(s2);
 
 	for (DWORD dwCnt = 0; dwCnt <= dwLen1; dwCnt++) {
-		for (DWORD dwCnt2 = 0; dwCnt2 <= dwLen2; dwCnt2++)
+		// VS2005でビルドエラーとなるため dwCnt2 宣言を追加 (2006.2.18 yutaka)
+		DWORD dwCnt2;
+		for (dwCnt2 = 0; dwCnt2 <= dwLen2; dwCnt2++)
 			if (tolower(s1[dwCnt + dwCnt2]) != tolower(s2[dwCnt2]))
 				break;
 		if (dwCnt2 > dwLen2)

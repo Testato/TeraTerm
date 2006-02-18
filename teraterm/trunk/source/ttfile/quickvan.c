@@ -783,7 +783,7 @@ void QVSendVFILE(PFileVar fv, PQVVar qv, PComVar cv)
   QVPutNum2(qv,qv->FileNum,&i);
   /* file name */
   SetDlgItemText(fv->HWin, IDC_PROTOFNAME, &(fv->FullName[fv->DirLen]));
-  strcpy(&(qv->PktOut[i]),strupr(&(fv->FullName[fv->DirLen])));
+  strcpy(&(qv->PktOut[i]),_strupr(&(fv->FullName[fv->DirLen])));
   FTConvFName(&(qv->PktOut[i]));  // replace ' ' by '_' in FName
   i = strlen(&(qv->PktOut[i])) + i;
   qv->PktOut[i] = 0;

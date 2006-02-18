@@ -2370,7 +2370,7 @@ static void UnicodeToCP932(unsigned int code, int byte)
 		}
 	} else {
 		cset = 0;
-		if (stricmp(ts.Locale, DEFAULT_LOCALE) == 0) {
+		if (_stricmp(ts.Locale, DEFAULT_LOCALE) == 0) {
 			// U+301Cなどは変換できない。Unicode -> Shift_JISへ変換してみる。
 			cset = ConvertUnicode(code, mapUnicodeToSJIS, sizeof(mapUnicodeToSJIS)/sizeof(mapUnicodeToSJIS[0]));
 			if (cset != 0) {
@@ -2633,6 +2633,9 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2005/10/15 09:24:00  yutakakn
+ * UTF-8(Mac OS X)において半濁点文字が表示されないことがあるバグを修正した。
+ *
  * Revision 1.7  2005/05/29 05:48:19  yutakakn
  * <ESC>[H(Cursor in left upper corner)によりカーソルが左上隅を指している場合、
  * <ESC>[Jは<ESC>[2Jと同じことなので、処理を分け、現行バッファをスクロールアウト

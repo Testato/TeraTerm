@@ -288,7 +288,8 @@ BOOL RegSetBinary(HKEY hKey, LPCTSTR lpszValueName, void *buf, DWORD dwSize)
 	Attention		: 
 	Up Date			: 
    ======1=========2=========3=========4=========5=========6=========7======= */
-RegGetBinary(HKEY hKey, LPCTSTR lpszValueName, void *buf, LPDWORD lpdwSize)
+// ä÷êîÇÃï‘ílÇÃå^Çí«â¡ (2006.2.18 yutaka)
+int RegGetBinary(HKEY hKey, LPCTSTR lpszValueName, void *buf, LPDWORD lpdwSize)
 {
 	long	lError;
 	DWORD	dwType = REG_BINARY;

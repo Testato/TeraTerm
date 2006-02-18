@@ -69,7 +69,7 @@ BOOL PASCAL FAR StartTeraTerm(PTTSet ts)
     /* Get home directory */
     GetModuleFileName(hInst,Temp,sizeof(Temp));
     ExtractDirName(Temp, pm->ts.HomeDir);
-    chdir(pm->ts.HomeDir);
+    _chdir(pm->ts.HomeDir);
     strcpy(pm->ts.SetupFName, pm->ts.HomeDir);
     AppendSlash(pm->ts.SetupFName);
     strcat(pm->ts.SetupFName, "TERATERM.INI");
@@ -108,7 +108,7 @@ BOOL PASCAL FAR StartTeraTerm(PTTSet ts)
 void PASCAL FAR ChangeDefaultSet(PTTSet ts, PKeyMap km)
 {
   if ((ts!=NULL) &&
-      (stricmp(ts->SetupFName, pm->ts.SetupFName) == 0))
+      (_stricmp(ts->SetupFName, pm->ts.SetupFName) == 0))
     memcpy(&(pm->ts),ts,sizeof(TTTSet));
   if (km!=NULL)
     memcpy(&(pm->km),km,sizeof(TKeyMap));
@@ -1411,4 +1411,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/12/07 13:41:30  yutakakn
+ * External SetupをSetupメニュー配下へ移動。
+ * LogMeInの起動メニューを追加。
+ * Duplication sessionメニューを追加。
+ *
  */

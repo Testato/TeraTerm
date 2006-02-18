@@ -244,7 +244,7 @@ extern "C" void SetMouseCursor(char *cursor)
 	int i;
 
 	for (i = 0 ; MouseCursor[i].name ; i++) {
-		if (stricmp(cursor, MouseCursor[i].name) == 0) {
+		if (_stricmp(cursor, MouseCursor[i].name) == 0) {
 			name = MouseCursor[i].id;
 			break;
 		}
@@ -3747,7 +3747,7 @@ activate:;
 // WM_COPYDATAの受信
 LONG CVTWindow::OnReceiveIpcMessage(UINT wParam, LONG lParam)
 {
-	int i, len;
+	int len;
 	COPYDATASTRUCT *cds;
 	char *buf;
 
@@ -3817,6 +3817,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.26  2006/02/07 14:42:12  yutakakn
+ * Broadcast Command使用時にウィンドウがちらつく動作を改善した。
+ *
  * Revision 1.25  2006/01/20 16:35:54  yutakakn
  * ファイル送信前にダイアログを追加
  *

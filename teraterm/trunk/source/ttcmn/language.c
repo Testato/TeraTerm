@@ -57,7 +57,7 @@ unsigned int FAR PASCAL SJIS2UTF8(WORD KCode, int *byte, char *locale)
 	ret = mbtowc(&wchar, buf, 2);
 	if (ret <= 0) { // •ÏŠ·Ž¸”s
 		cset = 0;
-		if (stricmp(locale, DEFAULT_LOCALE) == 0) {
+		if (_stricmp(locale, DEFAULT_LOCALE) == 0) {
 			cset = ConvertUnicode(KCode, mapSJISToUnicode, sizeof(mapSJISToUnicode)/sizeof(mapSJISToUnicode[0]));
 		}
 		if (cset == 0) {

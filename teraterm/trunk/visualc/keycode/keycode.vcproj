@@ -1,134 +1,199 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="keycode"
-	SccProjectName=""
-	SccLocalPath="">
+	ProjectGUID="{B31BF2E8-79E6-4735-BEA2-C1B4041C2D2E}"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\..\bin\Release"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\..\bin\Release/keycode.tlb"
+				HeaderFileName=""
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/D&quot;_CRT_SECURE_NO_DEPRECATE&quot;&#x0D;&#x0A;"
 				Optimization="4"
 				AdditionalIncludeDirectories="..\..\source\common"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6"
-				RuntimeLibrary="4"
+				RuntimeLibrary="0"
 				PrecompiledHeaderFile=".\Release/keycode.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
+				SuppressStartupBanner="true"
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile=".\..\bin\Release/keycode.exe"
 				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				ProgramDatabaseFile=".\..\bin\Release/keycode.pdb"
 				SubSystem="2"
-				TargetMachine="1"/>
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\..\bin\Release/keycode.tlb"
-				HeaderFileName=""/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="1033"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCWebDeploymentTool"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\..\bin\Debug"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\..\bin\Debug/keycode.tlb"
+				HeaderFileName=""
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/D&quot;_CRT_SECURE_NO_DEPRECATE&quot;"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\source\common"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;INET6"
-				RuntimeLibrary="5"
+				RuntimeLibrary="1"
 				PrecompiledHeaderFile=".\Debug/keycode.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile=".\..\bin\Debug/keycode.exe"
 				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
+				SuppressStartupBanner="true"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\bin\Debug/keycode.pdb"
 				SubSystem="2"
-				TargetMachine="1"/>
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\..\bin\Debug/keycode.tlb"
-				HeaderFileName=""/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1033"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCWebDeploymentTool"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -136,55 +201,69 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cxx;rc;def;r;odl;hpj;bat;for;f90">
+			Filter="cpp;c;cxx;rc;def;r;odl;hpj;bat;for;f90"
+			>
 			<File
-				RelativePath="..\..\source\keycode\keycode.c">
+				RelativePath="..\..\source\keycode\keycode.c"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
+						PreprocessorDefinitions=""
+					/>
 				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
-			Filter="ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe">
+			Filter="ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe"
+			>
 			<File
-				RelativePath="..\..\source\keycode\keycode.ico">
+				RelativePath="..\..\source\keycode\keycode.ico"
+				>
 			</File>
 			<File
-				RelativePath="..\..\Source\Keycode\keycode.rc">
+				RelativePath="..\..\Source\Keycode\keycode.rc"
+				>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Release|Win32"
+					>
 					<Tool
 						Name="VCResourceCompilerTool"
 						PreprocessorDefinitions=""
 						Culture="1041"
-						AdditionalIncludeDirectories="\Documents and Settings\kato\My Documents\home\install\IPv6\TeraTerm\0.81\TeraTerm-2.3\Source\Keycode;\DEV\TERATERM\Source\Keycode;C:\DEV\TERATERM\source\keycode"/>
+						AdditionalIncludeDirectories="\Documents and Settings\kato\My Documents\home\install\IPv6\TeraTerm\0.81\TeraTerm-2.3\Source\Keycode;\DEV\TERATERM\Source\Keycode;C:\DEV\TERATERM\source\keycode"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Debug|Win32"
+					>
 					<Tool
 						Name="VCResourceCompilerTool"
 						PreprocessorDefinitions=""
 						Culture="1041"
-						AdditionalIncludeDirectories="\Documents and Settings\kato\My Documents\home\install\IPv6\TeraTerm\0.81\TeraTerm-2.3\Source\Keycode;\DEV\TERATERM\Source\Keycode;C:\DEV\TERATERM\source\keycode"/>
+						AdditionalIncludeDirectories="\Documents and Settings\kato\My Documents\home\install\IPv6\TeraTerm\0.81\TeraTerm-2.3\Source\Keycode;\DEV\TERATERM\Source\Keycode;C:\DEV\TERATERM\source\keycode"
+					/>
 				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;fi;fd">
+			Filter="h;hpp;hxx;hm;inl;fi;fd"
+			>
 		</Filter>
 	</Files>
 	<Globals>

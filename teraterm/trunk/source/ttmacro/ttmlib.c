@@ -60,11 +60,11 @@ void TTMSetDir(PCHAR Dir)
 {
   char Temp[MAXPATHLEN];
 
-  getcwd(Temp,sizeof(Temp));
-  chdir(CurrentDir);
-  chdir(Dir);
-  getcwd(CurrentDir,sizeof(CurrentDir));
-  chdir(Temp);
+  _getcwd(Temp,sizeof(Temp));
+  _chdir(CurrentDir);
+  _chdir(Dir);
+  _getcwd(CurrentDir,sizeof(CurrentDir));
+  _chdir(Temp);
 }
 
 void GetAbsPath(PCHAR FName)

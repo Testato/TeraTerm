@@ -189,6 +189,11 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.2.18 (Ver 2.19)
+  - changed the compiler to Visual Studio 2005 Standard Edition.
+  - replaced stricmp() to _stricmp().
+  - replaced strdup() to _strdup().
+
 2005.10.21 (Ver 2.18)
   - added the host history check button on connection dialog.
   - upgraded OpenSSL to 0.9.8a

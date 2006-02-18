@@ -85,7 +85,7 @@ void ParseParam(PBOOL IOption, PBOOL VOption)
   // Get home directory
   GetModuleFileName(AfxGetInstanceHandle(),FileName,sizeof(FileName));
   ExtractDirName(FileName,HomeDir);
-  chdir(HomeDir);
+  _chdir(HomeDir);
 
   // Get command line parameters
   FileName[0] = 0;
@@ -110,13 +110,13 @@ void ParseParam(PBOOL IOption, PBOOL VOption)
 
   while (NextParam(Param, &i, Temp, sizeof(Temp)))
   {
-    if (strnicmp(Temp,"/D=",3)==0) // DDE option
+    if (_strnicmp(Temp,"/D=",3)==0) // DDE option
       strcpy(TopicName,&Temp[3]);
-    else if (strnicmp(Temp,"/I",2)==0)
+    else if (_strnicmp(Temp,"/I",2)==0)
       *IOption = TRUE;
-    else if (strnicmp(Temp,"/S",2)==0)
+    else if (_strnicmp(Temp,"/S",2)==0)
       SleepFlag = TRUE;
-    else if (strnicmp(Temp,"/V",2)==0)
+    else if (_strnicmp(Temp,"/V",2)==0)
       *VOption = TRUE;
     else {
       j++;

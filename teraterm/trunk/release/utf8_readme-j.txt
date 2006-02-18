@@ -597,10 +597,10 @@ Too many variables.        •Ï”‚Ì”‚ª‘½‚·‚¬‚éB(®”Œ^A•¶š—ñŒ^‚»‚ê‚¼‚êÅ‘å256Œ
   2. Oniguruma‚Ìƒ\[ƒXƒR[ƒh(http://www.geocities.jp/kosako3/oniguruma/)‚ğ source\oniguruma ƒfƒBƒŒƒNƒgƒŠ‚É“WŠJ‚·‚éBOniguruma‚ğƒrƒ‹ƒh‚·‚éiˆÈ‰ºQÆjB
   
        (1) copy win32\Makefile Makefile
-  
-  3. tera
        (2) copy win32\config.h config.h
-       (3) nmaketerm\visualc\ttermpro.sln ‚ğVisual Studio‚ÅŠJ‚­
+       (3) nmake
+       
+  3. teraterm\visualc\ttermpro.sln ‚ğVisual Studio‚ÅŠJ‚­
   4. ƒ\ƒŠƒ…[ƒVƒ‡ƒ“‚ğƒrƒ‹ƒh‚·‚é
   5. ƒrƒ‹ƒh‚É¬Œ÷‚·‚é‚Æteraterm\visualc\bin ƒfƒBƒŒƒNƒgƒŠ‚ÉÀsƒvƒƒOƒ‰ƒ€‚ª¶¬‚³‚ê‚é
 
@@ -695,6 +695,18 @@ OF SUCH DAMAGE.
 
 
 ¡‰ü”Å—š—ğ
+
+2006.2.18 (Ver 4.28)
+  EƒRƒ“ƒpƒCƒ‰‚ğ Visual Studio 2005 Standard Edition ‚ÉØ‚è‘Ö‚¦‚½B
+  Estricmp()‚ğ_stricmp()‚Ö’uŠ·‚µ‚½
+  Estrnicmp()‚ğ_strnicmp()‚Ö’uŠ·‚µ‚½
+  Estrdup()‚ğ_strdup()‚Ö’uŠ·‚µ‚½
+  Echdir()‚ğ_chdir()‚Ö’uŠ·‚µ‚½
+  Egetcwd()‚ğ_getcwd()‚Ö’uŠ·‚µ‚½
+  Estrupr()‚ğ_strupr()‚Ö’uŠ·‚µ‚½
+  Etime_t‚Ì64ƒrƒbƒg‰»‚É‚Æ‚à‚È‚¤ŒxƒƒbƒZ[ƒW‚ğ—}~‚µ‚½
+  ETeraTerm Menu‚ªƒrƒ‹ƒhƒGƒ‰[‚Æ‚È‚éŒ»Û‚É‘Îˆ‚µ‚½
+  EOniguruma 4.0.1‚Ö·‚µ‘Ö‚¦‚½
 
 2006.2.11 (Ver 4.27)
   Eƒ}ƒNƒ‚Åg—p‚Å‚«‚é•Ï”‚ÌŒÂ”‚ğ128‚©‚ç256‚ÖAƒ‰ƒxƒ‹‚ÌŒÂ”‚ğ256‚©‚ç512‚ÖŠg’£‚µ‚½B

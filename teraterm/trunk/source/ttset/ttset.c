@@ -40,7 +40,7 @@ WORD str2id(PCHAR far * List, PCHAR str, WORD DefId)
 {
   WORD i;
   i = 0;
-  while ((List[i] != NULL) && (stricmp(List[i],str) != 0))
+  while ((List[i] != NULL) && (_stricmp(List[i],str) != 0))
     i++;
   if (List[i] == NULL)
     i = DefId;
@@ -104,13 +104,13 @@ WORD GetOnOff(PCHAR Sect, PCHAR Key, PCHAR FName, BOOL Default)
 			  Temp,sizeof(Temp),FName);
   if ( Default )
   {
-    if ( stricmp(Temp,"off")==0 )
+    if ( _stricmp(Temp,"off")==0 )
       return 0;
     else
       return 1;
   }
   else {
-    if ( stricmp(Temp,"on")==0 )
+    if ( _stricmp(Temp,"on")==0 )
       return 1;
     else
       return 0;
@@ -198,11 +198,11 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   /* Language */
   GetPrivateProfileString(Section,"Language","",
 			  Temp,sizeof(Temp),FName);
-  if (stricmp(Temp,"Japanese")==0)
+  if (_stricmp(Temp,"Japanese")==0)
     ts->Language = IdJapanese;
-  else if (stricmp(Temp,"Russian")==0)
+  else if (_stricmp(Temp,"Russian")==0)
     ts->Language = IdRussian;
-  else if (stricmp(Temp,"English")==0)
+  else if (_stricmp(Temp,"English")==0)
     ts->Language = IdEnglish;
   else {
 #ifdef TERATERM32
@@ -229,9 +229,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   /* Port type */
   GetPrivateProfileString(Section,"Port","",
 			  Temp,sizeof(Temp),FName);
-  if ( stricmp(Temp,"tcpip")==0 )
+  if ( _stricmp(Temp,"tcpip")==0 )
     ts->PortType = IdTCPIP;
-  else if ( stricmp(Temp,"serial")==0 )
+  else if ( _stricmp(Temp,"serial")==0 )
     ts->PortType = IdSerial;
   else {
     ts->PortType = IdTCPIP;
@@ -266,12 +266,12 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   /* CR Receive */
   GetPrivateProfileString(Section,"CRReceive","",
 			  Temp,sizeof(Temp),FName);
-  if ( stricmp(Temp,"CRLF")==0 ) ts->CRReceive = IdCRLF;
+  if ( _stricmp(Temp,"CRLF")==0 ) ts->CRReceive = IdCRLF;
 			    else ts->CRReceive = IdCR;
   /* CR Send */
   GetPrivateProfileString(Section,"CRSend","",
 			  Temp,sizeof(Temp),FName);
-  if (stricmp(Temp,"CRLF")==0)
+  if (_stricmp(Temp,"CRLF")==0)
     ts->CRSend = IdCRLF;
   else
     ts->CRSend = IdCR;
@@ -288,44 +288,44 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   /* Kanji Code (receive) */
   GetPrivateProfileString(Section,"KanjiReceive","",
 			  Temp,sizeof(Temp),FName);
-  if (	    stricmp(Temp,"EUC")==0 ) ts->KanjiCode = IdEUC;
-  else if ( stricmp(Temp,"JIS")==0 ) ts->KanjiCode = IdJIS;
-  else if ( stricmp(Temp,"UTF-8")==0 ) ts->KanjiCode = IdUTF8;
-  else if ( stricmp(Temp,"UTF-8m")==0 ) ts->KanjiCode = IdUTF8m;
+  if (	    _stricmp(Temp,"EUC")==0 ) ts->KanjiCode = IdEUC;
+  else if ( _stricmp(Temp,"JIS")==0 ) ts->KanjiCode = IdJIS;
+  else if ( _stricmp(Temp,"UTF-8")==0 ) ts->KanjiCode = IdUTF8;
+  else if ( _stricmp(Temp,"UTF-8m")==0 ) ts->KanjiCode = IdUTF8m;
   else ts->KanjiCode = IdSJIS;
 
   /* Katakana (receive) */
   GetPrivateProfileString(Section,"KatakanaReceive","",
 			  Temp,sizeof(Temp),FName);
-  if (	    stricmp(Temp,"7")==0 ) ts->JIS7Katakana = 1;
+  if (	    _stricmp(Temp,"7")==0 ) ts->JIS7Katakana = 1;
   else ts->JIS7Katakana = 0;
 
   /* Kanji Code (transmit) */
   GetPrivateProfileString(Section,"KanjiSend","",
 			  Temp,sizeof(Temp),FName);
-  if (	    stricmp(Temp,"EUC")==0 ) ts->KanjiCodeSend = IdEUC;
-  else if ( stricmp(Temp,"JIS")==0 ) ts->KanjiCodeSend = IdJIS;
-  else if ( stricmp(Temp,"UTF-8")==0 ) ts->KanjiCodeSend = IdUTF8;
+  if (	    _stricmp(Temp,"EUC")==0 ) ts->KanjiCodeSend = IdEUC;
+  else if ( _stricmp(Temp,"JIS")==0 ) ts->KanjiCodeSend = IdJIS;
+  else if ( _stricmp(Temp,"UTF-8")==0 ) ts->KanjiCodeSend = IdUTF8;
   else ts->KanjiCodeSend = IdSJIS;
 
   /* Katakana (receive) */
   GetPrivateProfileString(Section,"KatakanaSend","",
 			  Temp,sizeof(Temp),FName);
-  if (	    stricmp(Temp,"7")==0 ) ts->JIS7KatakanaSend = 1;
+  if (	    _stricmp(Temp,"7")==0 ) ts->JIS7KatakanaSend = 1;
   else ts->JIS7KatakanaSend = 0;
 
   /* KanjiIn */
   GetPrivateProfileString(Section,"KanjiIn","",
 			  Temp,sizeof(Temp),FName);
-  if ( stricmp(Temp,"@")==0 ) ts->KanjiIn = IdKanjiInA;
+  if ( _stricmp(Temp,"@")==0 ) ts->KanjiIn = IdKanjiInA;
   else ts->KanjiIn = IdKanjiInB;
 
   /* KanjiOut */
   GetPrivateProfileString(Section,"KanjiOut","",
 			  Temp,sizeof(Temp),FName);
-  if (stricmp(Temp,"B")==0)
+  if (_stricmp(Temp,"B")==0)
     ts->KanjiOut = IdKanjiOutB;
-  else if (stricmp(Temp,"H")==0)
+  else if (_stricmp(Temp,"H")==0)
     ts->KanjiOut = IdKanjiOutH;
   else
     ts->KanjiOut = IdKanjiOutJ;
@@ -355,8 +355,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   /* Cursor shape */
   GetPrivateProfileString(Section,"CursorShape","",
 			  Temp,sizeof(Temp),FName);
-       if ( stricmp(Temp,"vertical"  )==0 ) ts->CursorShape = IdVCur;
-  else if ( stricmp(Temp,"horizontal")==0 ) ts->CursorShape = IdHCur;
+       if ( _stricmp(Temp,"vertical"  )==0 ) ts->CursorShape = IdVCur;
+  else if ( _stricmp(Temp,"horizontal")==0 ) ts->CursorShape = IdHCur;
   else ts->CursorShape = IdBlkCur;
 
   /* Hide title */
@@ -566,7 +566,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   /* BS key */
   GetPrivateProfileString(Section,"BSKey","",
 			  Temp,sizeof(Temp),FName);
-  if ( stricmp(Temp,"DEL")==0 ) ts->BSKey = IdDEL;
+  if ( _stricmp(Temp,"DEL")==0 ) ts->BSKey = IdDEL;
 			   else ts->BSKey = IdBS;
   /* Delete key */
   ts->DelKey = GetOnOff(Section,"DeleteKey",FName,FALSE);
@@ -591,27 +591,27 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   /* Parity */
   GetPrivateProfileString(Section,"Parity","",
 			  Temp,sizeof(Temp),FName);
-  if (	    stricmp(Temp,"even")==0 ) ts->Parity = IdParityEven;
-  else if ( stricmp(Temp,"odd" )==0 ) ts->Parity = IdParityOdd;
+  if (	    _stricmp(Temp,"even")==0 ) ts->Parity = IdParityEven;
+  else if ( _stricmp(Temp,"odd" )==0 ) ts->Parity = IdParityOdd;
   else ts->Parity = IdParityNone;
 
   /* Data bit */
   GetPrivateProfileString(Section,"DataBit","",
 			  Temp,sizeof(Temp),FName);
-  if ( stricmp(Temp,"7")==0 ) ts->DataBit = IdDataBit7;
+  if ( _stricmp(Temp,"7")==0 ) ts->DataBit = IdDataBit7;
   else ts->DataBit = IdDataBit8;
 
   /* Stop bit */
   GetPrivateProfileString(Section,"StopBit","",
 			  Temp,sizeof(Temp),FName);
-  if ( stricmp(Temp,"2")==0 ) ts->StopBit = IdStopBit2;
+  if ( _stricmp(Temp,"2")==0 ) ts->StopBit = IdStopBit2;
   else ts->StopBit = IdStopBit1;
 
   /* Flow control */
   GetPrivateProfileString(Section,"FlowCtrl","",
 			  Temp,sizeof(Temp),FName);
-  if (	    stricmp(Temp,"x"   )==0 ) ts->Flow = IdFlowX;
-  else if ( stricmp(Temp,"hard")==0 ) ts->Flow = IdFlowHard;
+  if (	    _stricmp(Temp,"x"   )==0 ) ts->Flow = IdFlowX;
+  else if ( _stricmp(Temp,"hard")==0 ) ts->Flow = IdFlowHard;
   else ts->Flow = IdFlowNone;
 
   /* Delay per character */
@@ -651,8 +651,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   /* XMODEM option */
   GetPrivateProfileString(Section,"XmodemOpt","",
 			  Temp,sizeof(Temp),FName);
-  if (	    stricmp(Temp,"crc"	 )==0 ) ts->XmodemOpt = XoptCRC;
-  else if ( stricmp(Temp,"1k")==0 ) ts->XmodemOpt = Xopt1K;
+  if (	    _stricmp(Temp,"crc"	 )==0 ) ts->XmodemOpt = XoptCRC;
+  else if ( _stricmp(Temp,"1k")==0 ) ts->XmodemOpt = Xopt1K;
   else ts->XmodemOpt = XoptCheck;
 
   /* XMODEM binary file */
@@ -664,10 +664,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   if ( strlen(ts->FileDir)==0 )
     strcpy(ts->FileDir,ts->HomeDir);
   else {
-    getcwd(Temp,sizeof(Temp));
-    if	(chdir(ts->FileDir) != 0)
+    _getcwd(Temp,sizeof(Temp));
+    if	(_chdir(ts->FileDir) != 0)
       strcpy(ts->FileDir,ts->HomeDir);
-    chdir(Temp);
+    _chdir(Temp);
   }
 
 /*--------------------------------------------------*/
@@ -881,9 +881,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   /* "new-line (transmit)" option for non-telnet -- special option */
   GetPrivateProfileString(Section,"TCPCRSend","",
 			  Temp,sizeof(Temp),FName);
-  if (stricmp(Temp,"CR")==0)
+  if (_stricmp(Temp,"CR")==0)
     ts->TCPCRSend = IdCR;
-  else if (stricmp(Temp,"CRLF")==0)
+  else if (_stricmp(Temp,"CRLF")==0)
     ts->TCPCRSend = IdCRLF;
   else
     ts->TCPCRSend = 0; // disabled
@@ -1605,7 +1605,7 @@ void GetInt(PKeyMap KeyMap, int KeyId, PCHAR Sect, PCHAR Key, PCHAR FName)
 			  Temp,sizeof(Temp),FName);
   if (Temp[0]==0)
     Num = 0xFFFF;
-  else if (stricmp(Temp,"off")==0)
+  else if (_stricmp(Temp,"off")==0)
     Num = 0xFFFF;
   else if (sscanf(Temp,"%d",&Num) !=1)
     Num = 0xFFFF;
@@ -1814,7 +1814,7 @@ void FAR PASCAL ReadKeyboardCnf
     {
       /* scan code */
       GetNthString(TempStr,1,sizeof(KStr),KStr);
-      if (stricmp(KStr,"off")==0)
+      if (_stricmp(KStr,"off")==0)
 	KeyMap->Map[i-1] = 0xFFFF;
       else {
 	GetNthNum(TempStr,1,&j);
@@ -1860,7 +1860,7 @@ void FAR PASCAL CopyHostList(PCHAR IniSrc, PCHAR IniDest)
   char EntName[7];
   char TempHost[HostNameMaxLength+1];
 
-  if ( stricmp(IniSrc,IniDest)==0 ) return;
+  if ( _stricmp(IniSrc,IniDest)==0 ) return;
 
   WritePrivateProfileString("Hosts",NULL,NULL,IniDest);
   strcpy(EntName,"Host");
@@ -1909,7 +1909,7 @@ void FAR PASCAL AddHostToList(PCHAR FName, PCHAR Host)
       GetPrivateProfileString("Hosts",EntName,"",
                               &MemP[j],HostNameMaxLength+1,FName);
       Len = strlen(&MemP[j]);
-      if (stricmp(&MemP[j],Host)==0)
+      if (_stricmp(&MemP[j],Host)==0)
       {
         if (i==1) Update = FALSE;
       }
@@ -2038,8 +2038,8 @@ static void ParseHostName(char *HostStr, WORD *port)
   char b;
 
   /* strlen("telnet://") == 9 */
-  if ((strnicmp(HostStr, "telnet://", 9) == 0) ||
-      (strnicmp(HostStr, "tn3270://", 9) == 0)) {
+  if ((_strnicmp(HostStr, "telnet://", 9) == 0) ||
+      (_strnicmp(HostStr, "tn3270://", 9) == 0)) {
     /* trim "telnet://" and tail "/" */
     memmove(HostStr, &(HostStr[9]), strlen(HostStr) - 8);
     i = strlen(HostStr);
@@ -2139,12 +2139,12 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
       HostNameFlag = FALSE;
     }
 
-    if ( strnicmp(Temp,"/B",2)==0 ) /* telnet binary */
+    if ( _strnicmp(Temp,"/B",2)==0 ) /* telnet binary */
     {
       ParamPort = IdTCPIP;
       ParamBin = 1;
     }
-    else if ( strnicmp(Temp,"/C=",3)==0 ) /* COM port num */
+    else if ( _strnicmp(Temp,"/C=",3)==0 ) /* COM port num */
     {
       ParamPort = IdSerial;
       if (strlen(&Temp[3])>=1)
@@ -2154,82 +2154,82 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
       if ((ParamCom<1) || (ParamCom>ts->MaxComPort))
 	ParamCom = 0;
     }
-    else if ( strnicmp(Temp,"/D=",3)==0 )
+    else if ( _strnicmp(Temp,"/D=",3)==0 )
     {
       if (DDETopic != NULL)
 	strcpy(DDETopic,&Temp[3]);
     }
-    else if ( strnicmp(Temp,"/F=",3)==0 ) /* setup filename */
+    else if ( _strnicmp(Temp,"/F=",3)==0 ) /* setup filename */
     {
       Dequote(&Temp[3],Temp2);
       if (strlen(Temp2)>0)
       {
 	ConvFName(ts->HomeDir,Temp2,".INI",Temp);
-	if (stricmp(ts->SetupFName,Temp)!=0)
+	if (_stricmp(ts->SetupFName,Temp)!=0)
 	{
 	  strcpy(ts->SetupFName,Temp);
 	  ReadIniFile(ts->SetupFName,ts);
 	}
       }
     }
-    else if ( strnicmp(Temp,"/FD=",4)==0 ) /* file transfer directory */
+    else if ( _strnicmp(Temp,"/FD=",4)==0 ) /* file transfer directory */
     {
       Dequote(&Temp[4],Temp2);
       if (strlen(Temp2)>0)
       {
-	getcwd(TempDir,sizeof(TempDir));
-	if (chdir(Temp2) == 0)
+	_getcwd(TempDir,sizeof(TempDir));
+	if (_chdir(Temp2) == 0)
 	  strcpy(ts->FileDir,Temp2);
-	chdir(TempDir);
+	_chdir(TempDir);
       }
     }
-    else if ( strnicmp(Temp,"/H",2)==0 ) /* hide title bar */
+    else if ( _strnicmp(Temp,"/H",2)==0 ) /* hide title bar */
       ts->HideTitle = 1;
-    else if ( strnicmp(Temp,"/I",2)==0 ) /* iconize */
+    else if ( _strnicmp(Temp,"/I",2)==0 ) /* iconize */
       ts->Minimize = 1;
-    else if ( strnicmp(Temp,"/K=",3)==0 ) /* Keyboard setup file */
+    else if ( _strnicmp(Temp,"/K=",3)==0 ) /* Keyboard setup file */
     {  
       Dequote(&Temp[3],Temp2);
       ConvFName(ts->HomeDir,Temp2, ".CNF", ts->KeyCnfFN);
     }
-    else if ( (strnicmp(Temp,"/KR=",4)==0)  ||
-	      (strnicmp(Temp,"/KT=",4)==0) ) /* kanji code */
+    else if ( (_strnicmp(Temp,"/KR=",4)==0)  ||
+	      (_strnicmp(Temp,"/KT=",4)==0) ) /* kanji code */
     {
-		if ( strnicmp(&Temp[4],"UTF8m",5) == 0 )
+		if ( _strnicmp(&Temp[4],"UTF8m",5) == 0 )
 			c = IdUTF8m;
-		else  if ( strnicmp(&Temp[4],"UTF8",4) == 0 )
+		else  if ( _strnicmp(&Temp[4],"UTF8",4) == 0 )
 			c = IdUTF8;
-		else if ( strnicmp(&Temp[4],"SJIS",4)==0 )
+		else if ( _strnicmp(&Temp[4],"SJIS",4)==0 )
 			c = IdSJIS;
-		else if ( strnicmp(&Temp[4],"EUC",3)==0 )
+		else if ( _strnicmp(&Temp[4],"EUC",3)==0 )
 			c = IdEUC;
-		else if ( strnicmp(&Temp[4],"JIS",3)==0 )
+		else if ( _strnicmp(&Temp[4],"JIS",3)==0 )
 			c = IdJIS;
 		else
 			c = -1;
 		if ( c!=-1 )
 		{
-			if ( strnicmp(Temp,"/KR=",4)==0 )
+			if ( _strnicmp(Temp,"/KR=",4)==0 )
 				ts->KanjiCode = c;
 			else
 				ts->KanjiCodeSend = c;
 		}
     }
-    else if ( strnicmp(Temp,"/L=",3)==0 ) /* log file */
+    else if ( _strnicmp(Temp,"/L=",3)==0 ) /* log file */
     {
       Dequote(&Temp[3],Temp2);
       ConvFName(ts->HomeDir,Temp2,"",ts->LogFN);
     }
-    else if ( strnicmp(Temp,"/LA=",4)==0 ) /* language */
+    else if ( _strnicmp(Temp,"/LA=",4)==0 ) /* language */
     {
-      if (strnicmp(&Temp[4],"E",1)==0)
+      if (_strnicmp(&Temp[4],"E",1)==0)
 	ts->Language = IdEnglish;
-      else if (strnicmp(&Temp[4],"J",1)==0)
+      else if (_strnicmp(&Temp[4],"J",1)==0)
 	ts->Language = IdJapanese;
-      else if (strnicmp(&Temp[4],"R",1)==0)
+      else if (_strnicmp(&Temp[4],"R",1)==0)
 	ts->Language = IdRussian;
     }
-    else if ( strnicmp(Temp,"/M=",3)==0 ) /* macro filename */
+    else if ( _strnicmp(Temp,"/M=",3)==0 ) /* macro filename */
     {
       if ((Temp[3]==0) || (Temp[3]=='*'))
 	strcpy(ts->MacroFN,"*");
@@ -2238,42 +2238,42 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 	ConvFName(ts->HomeDir,Temp2,".TTL",ts->MacroFN);
       }
     }
-    else if ( strnicmp(Temp,"/M",2)==0 )
+    else if ( _strnicmp(Temp,"/M",2)==0 )
     {  /* macro option without file name */
       strcpy(ts->MacroFN,"*");
     }
-    else if ( strnicmp(Temp,"/P=",3)==0 ) /* TCP port num */
+    else if ( _strnicmp(Temp,"/P=",3)==0 ) /* TCP port num */
     {
       ParamPort = IdTCPIP;
       if (sscanf(&Temp[3],"%d",&ParamTCP)!=1)
 	ParamTCP = 65535;
     }
-    else if ( strnicmp(Temp,"/R=",3)==0 ) /* Replay filename */
+    else if ( _strnicmp(Temp,"/R=",3)==0 ) /* Replay filename */
     {
       Dequote(&Temp[3],Temp2);
       ConvFName(ts->HomeDir,Temp2, "", ts->HostName);
       if ( strlen(ts->HostName)>0 )
 	ParamPort = IdFile;
     }
-    else if ( strnicmp(Temp,"/T=0",4)==0 ) /* telnet disable */
+    else if ( _strnicmp(Temp,"/T=0",4)==0 ) /* telnet disable */
     {
       ParamPort = IdTCPIP;
       ParamTel = 0;
     }
-    else if ( strnicmp(Temp,"/T=1",4)==0 ) /* telnet enable */
+    else if ( _strnicmp(Temp,"/T=1",4)==0 ) /* telnet enable */
     {
       ParamPort = IdTCPIP;
       ParamTel = 1;
     }
-    else if ( strnicmp(Temp,"/V=",2)==0 ) /* invisible */
+    else if ( _strnicmp(Temp,"/V=",2)==0 ) /* invisible */
     {
       ts->HideWindow = 1;
     }
-    else if ( strnicmp(Temp,"/W=",3)==0 ) /* Window title */
+    else if ( _strnicmp(Temp,"/W=",3)==0 ) /* Window title */
     {
       Dequote(&Temp[3],ts->Title);
     }
-    else if ( strnicmp(Temp,"/X=",3)==0 ) /* Window pos (X) */
+    else if ( _strnicmp(Temp,"/X=",3)==0 ) /* Window pos (X) */
     {
       if (sscanf(&Temp[3],"%d",&pos)==1)
       {
@@ -2282,7 +2282,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 	  ts->VTPos.y = 0;
       }
     }
-    else if ( strnicmp(Temp,"/Y=",3)==0 ) /* Window pos (Y) */
+    else if ( _strnicmp(Temp,"/Y=",3)==0 ) /* Window pos (Y) */
     {
       if (sscanf(&Temp[3],"%d",&pos)==1)
       {
@@ -2292,12 +2292,12 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
       }
     }
 #ifdef INET6
-    else if ( strnicmp(Temp,"/4", 2)==0 ) /* Protocol TeraTerm speaking */
+    else if ( _strnicmp(Temp,"/4", 2)==0 ) /* Protocol TeraTerm speaking */
       ts->ProtocolFamily = AF_INET;
-    else if ( strnicmp(Temp,"/6", 2)==0 )
+    else if ( _strnicmp(Temp,"/6", 2)==0 )
       ts->ProtocolFamily = AF_INET6;
 #endif
-	else if (strnicmp(Temp, "/DUPLICATE", 9) == 0 ) { // duplicate session (2004.12.7. yutaka)
+	else if (_strnicmp(Temp, "/DUPLICATE", 9) == 0 ) { // duplicate session (2004.12.7. yutaka)
 		ts->DuplicateSession = 1;
 
 	} 
@@ -2325,8 +2325,8 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 #ifdef INET6
     ParseHostName(ts->HostName, &ParamTCP);
 #else /* INET6 */
-    if ((strnicmp(ts->HostName,"telnet://",9)==0) ||
-	(strnicmp(ts->HostName,"tn3270://",9)==0))
+    if ((_strnicmp(ts->HostName,"telnet://",9)==0) ||
+	(_strnicmp(ts->HostName,"tn3270://",9)==0))
     {
       memmove(ts->HostName,&(ts->HostName[9]),
       strlen(ts->HostName)-8);
@@ -2406,6 +2406,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2005/11/30 15:32:13  yutakakn
+ * シリアル接続のCOM最大ポートを99まで拡張した。
+ * ボーレートに230400, 460800, 921600を追加した。
+ *
  * Revision 1.8  2005/05/07 09:49:24  yutakakn
  * teraterm.iniに LogTypePlainText を追加した。
  *

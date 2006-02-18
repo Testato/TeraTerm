@@ -984,7 +984,7 @@ BG_PATTERN BGGetStrIndex(char *name,BG_PATTERN def,char *file,char **strList,int
   GetPrivateProfileString(BG_SECTION,name,defstr,str,64,file);
 
   for(i = 0;i < nList;i++)
-    if(!stricmp(str,strList[i]))
+    if(!_stricmp(str,strList[i]))
       return i;
 
   return 0;
@@ -1194,7 +1194,8 @@ void BGInitialize(void)
     return;
 
   //乱数初期化
-  srand(time(NULL));
+  // add cast (2006.2.18 yutaka)
+  srand((unsigned int)time(NULL));
 
   //BGシステム設定読み出し
   BGUseAlphaBlendAPI = ts.EtermLookfeel.BGUseAlphaBlendAPI;
@@ -2880,6 +2881,10 @@ void DispSetActive(BOOL ActiveFlag)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2005/04/24 11:03:42  yutakakn
+ * Eterm lookfeel alphablendの設定内容を teraterm.ini へ保存するようにした。
+ * また、Additional settingsダイアログから on/off できるようにした。
+ *
  * Revision 1.5  2005/04/03 13:42:07  yutakakn
  * URL文字列をダブルクリックするとブラウザが起動するしかけを追加（石崎氏パッチがベース）。
  *

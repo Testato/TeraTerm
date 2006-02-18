@@ -1185,22 +1185,22 @@ BOOL CALLBACK DirDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  CurDir = (PCHAR)GetWindowLong(Dialog,DWL_USER);
 	  if ( CurDir!=NULL )
 	  {
-	    getcwd(HomeDir,sizeof(HomeDir));
-	    chdir(CurDir);
+	    _getcwd(HomeDir,sizeof(HomeDir));
+	    _chdir(CurDir);
 	    GetDlgItemText(Dialog, IDC_DIRNEW, TmpDir,
 			   sizeof(TmpDir));
 	    if ( strlen(TmpDir)>0 )
 	    {
-	      if (chdir(TmpDir) != 0)
+	      if (_chdir(TmpDir) != 0)
 	      {
 		MessageBox(Dialog,"Cannot find directory",
 		  "Tera Term: Error",MB_ICONEXCLAMATION);
-		chdir(HomeDir);
+		_chdir(HomeDir);
 		return TRUE;
 	      }
-	      getcwd(CurDir,MAXPATHLEN);
+	      _getcwd(CurDir,MAXPATHLEN);
 	    }
-	    chdir(HomeDir);
+	    _chdir(HomeDir);
 	  }
 	  EndDialog(Dialog, 1);
 	  return TRUE;
@@ -2009,6 +2009,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2005/11/30 15:32:12  yutakakn
+ * シリアル接続のCOM最大ポートを99まで拡張した。
+ * ボーレートに230400, 460800, 921600を追加した。
+ *
  * Revision 1.9  2005/11/03 13:34:26  yutakakn
  *   ・teraterm.iniを保存するときに書き込みできるかどうかの判別を追加した。
  *   ・TCP/IP setupダイアログの"Term type"を常に有効とするようにした。

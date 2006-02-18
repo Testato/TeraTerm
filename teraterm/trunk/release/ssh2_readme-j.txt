@@ -179,6 +179,11 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
+2006.2.18 (Ver 2.19)
+  ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
+  ・stricmp()を_stricmp()へ置換した
+  ・strdup()を_strdup()へ置換した
+
 2005.10.21 (Ver 2.18)
   ・接続ダイアログに History チェックボックスを追加した。
   ・OpenSSL 0.9.8aへ差し替えた

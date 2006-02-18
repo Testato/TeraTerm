@@ -62,8 +62,8 @@ void SetKeyMap()
       (*ReadKeyboardCnf)(ts.KeyCnfFN, KeyMap, TRUE);
     FreeTTSET();
   }
-  if ((stricmp(TempDir,ts.HomeDir)==0) &&
-      (stricmp(TempName,"KEYBOARD.CNF")==0))
+  if ((_stricmp(TempDir,ts.HomeDir)==0) &&
+      (_stricmp(TempName,"KEYBOARD.CNF")==0))
   {
      ChangeDefaultSet(NULL,KeyMap);
      free(KeyMap);

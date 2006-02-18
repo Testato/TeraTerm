@@ -552,7 +552,7 @@ WORD TTLFileConcat()
 
   GetAbsPath(FName1);
   GetAbsPath(FName2);
-  if (stricmp(FName1,FName2)==0) return Err;
+  if (_stricmp(FName1,FName2)==0) return Err;
 
   FH1 = _lopen(FName1,OF_WRITE);
   if (FH1<0)
@@ -597,7 +597,7 @@ WORD TTLFileCopy()
 
   GetAbsPath(FName1);
   GetAbsPath(FName2);
-  if (stricmp(FName1,FName2)==0) return Err;
+  if (_stricmp(FName1,FName2)==0) return Err;
 
 #ifdef TERATERM32
   CopyFile(FName1,FName2,FALSE);
@@ -777,7 +777,7 @@ WORD TTLFileRename()
        (GetFirstChar()!=0)))
     Err = ErrSyntax;
   if (Err!=0) return Err;
-  if (stricmp(FName1,FName2)==0) return Err;
+  if (_stricmp(FName1,FName2)==0) return Err;
 
   GetAbsPath(FName1);
   rename(FName1,FName2);
@@ -1276,7 +1276,7 @@ BOOL CheckThen(LPWORD Err)
     LinePtr--;
     if (! GetIdentifier(Temp)) return FALSE;
 
-  } while (stricmp(Temp,"then")!=0);
+  } while (_stricmp(Temp,"then")!=0);
 
   if (GetFirstChar()!=0)
     *Err = ErrSyntax;
@@ -1518,7 +1518,8 @@ WORD TTLRecvRandom()
 	// 乱数 0 ～ <intvar> を生成する
 	if (srand_init == 0) {
 		srand_init = 1;
-		srand(time(NULL));
+		// VS2005では time_t が64ビット化されたので、キャストを追加。(2006.2.18 yutaka)
+		srand((unsigned int)time(NULL));
 	}
 	//d = (1.0 / (RAND_MAX + 1.0)) * (rand() + 0.5);
 	d = rand();

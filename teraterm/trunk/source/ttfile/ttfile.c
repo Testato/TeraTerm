@@ -54,7 +54,7 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 	BOOL Ok;
 
 	/* save current dir */
-	getcwd(TempDir,sizeof(TempDir));
+	_getcwd(TempDir,sizeof(TempDir));
 
 	/* File name filter */
 	memset(FNameFilter, 0, sizeof(FNameFilter));
@@ -89,7 +89,7 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 		memcpy(Dir,ts->KeyCnfFN,i);
 		Dir[i] = 0;
 
-		if ((strlen(Name)==0) || (stricmp(Name,"KEYBOARD.CNF")==0))
+		if ((strlen(Name)==0) || (_stricmp(Name,"KEYBOARD.CNF")==0))
 			strcpy(Name,"KEYBOARD.CNF");
 	}
 	else {
@@ -99,14 +99,14 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 		memcpy(Dir,ts->SetupFName,i);
 		Dir[i] = 0;
 
-		if ((strlen(Name)==0) || (stricmp(Name,"TERATERM.INI")==0))
+		if ((strlen(Name)==0) || (_stricmp(Name,"TERATERM.INI")==0))
 			strcpy(Name,"TERATERM.INI");
 	}
 
 	if (strlen(Dir)==0)
 		strcpy(Dir,ts->HomeDir);
 
-	chdir(Dir);
+	_chdir(Dir);
 
 	ofn.Flags = OFN_SHOWHELP | OFN_HIDEREADONLY;
 	switch (FuncId) {
@@ -138,7 +138,7 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 	}
 
 	/* restore dir */
-	chdir(TempDir);
+	_chdir(TempDir);
 
 	return Ok;
 }
@@ -236,7 +236,7 @@ BOOL FAR PASCAL GetTransFname
 	BOOL Ok;
 
 	/* save current dir */
-	getcwd(TempDir,sizeof(TempDir));
+	_getcwd(TempDir,sizeof(TempDir));
 
 	fv->FullName[0] = 0;
 	memset(FNFilter, 0, sizeof(FNFilter));  /* Set up for double null at end */
@@ -344,7 +344,7 @@ BOOL FAR PASCAL GetTransFname
 		}
 	}
 	/* restore dir */
-	chdir(TempDir);
+	_chdir(TempDir);
 	return Ok;
 }
 
@@ -400,7 +400,7 @@ BOOL FAR PASCAL GetMultiFname
   BOOL Ok;
 
   /* save current dir */
-  getcwd(TempDir,sizeof(TempDir));
+  _getcwd(TempDir,sizeof(TempDir));
 
   fv->NumFname = 0;
 
@@ -540,7 +540,7 @@ BOOL FAR PASCAL GetMultiFname
   }
 
   /* restore dir */
-  chdir(TempDir);
+  _chdir(TempDir);
 
   return Ok;
 }
@@ -732,7 +732,7 @@ BOOL FAR PASCAL GetXFname
   BOOL Ok;
 
   /* save current dir */
-  getcwd(TempDir,sizeof(TempDir));
+  _getcwd(TempDir,sizeof(TempDir));
 
   fv->FullName[0] = 0;
   memset(FNFilter, 0, sizeof(FNFilter));  /* Set up for double null at end */
@@ -799,7 +799,7 @@ BOOL FAR PASCAL GetXFname
   }
 
   /* restore dir */
-  chdir(TempDir);
+  _chdir(TempDir);
 
   return Ok;
 }
@@ -960,6 +960,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2005/05/07 09:49:24  yutakakn
+ * teraterm.iniに LogTypePlainText を追加した。
+ *
  * Revision 1.7  2005/02/22 11:55:39  yutakakn
  * 警告の抑止（未使用のローカル変数を削除）
  *
