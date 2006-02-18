@@ -401,8 +401,8 @@ void push_memdump(char *name, char *desc, char *data, int len)
 
 	ptr = &memtags[memtag_count];
 	memtag_count++;
-	ptr->name = strdup(name);
-	ptr->desc = strdup(desc);
+	ptr->name = _strdup(name);
+	ptr->desc = _strdup(desc);
 	ptr->data = dp;
 	ptr->len = len;
 }
@@ -6411,6 +6411,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.37  2005/07/16 17:01:48  yutakakn
+ * SSH2接続時に TTY 情報を渡すようにした。
+ *
  * Revision 1.36  2005/07/15 14:58:04  yutakakn
  * SSH1接続で一度ユーザ認証に失敗すると、その後認証ができなくなるバグを修正。
  *

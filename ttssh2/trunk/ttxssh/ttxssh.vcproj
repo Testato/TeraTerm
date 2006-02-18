@@ -1,423 +1,556 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="8.00"
 	Name="ttxssh"
+	ProjectGUID="{5638BB89-44E3-4D55-BA98-A01142B4223E}"
 	RootNamespace="ttxssh"
-	SccProjectName=""
-	SccLocalPath="">
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\Debug"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Debug/ttxssh.tlb"
+				HeaderFileName=""
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/D&quot;_CRT_SECURE_NO_DEPRECATE&quot;&#x0D;&#x0A;"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\Teraterm\source\common;..\openssl\inc32;..\..\Teraterm\source\teraterm;..\zlib;..\matcher"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;_CRT_SECURE_NO_DEPRECATE"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Debug/ttxssh.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
 				BrowseInformation="1"
 				WarningLevel="3"
-				WarnAsError="FALSE"
-				SuppressStartupBanner="TRUE"
+				WarnAsError="false"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalOptions="Version.lib /NODEFAULTLIB:&quot;MSVCRT&quot;
-
-"
-				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib"
-				OutputFile=".\Debug/ttxssh.dll"
-				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\Debug/ttxssh.pdb"
-				GenerateMapFile="TRUE"
-				SubSystem="2"
-				BaseAddress="0x12500000"
-				ImportLibrary=".\Debug/ttxssh.lib"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/ttxssh.tlb"
-				HeaderFileName=""/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				Culture="1033"/>
+				Culture="1033"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCLinkerTool"
+				AdditionalOptions="Version.lib /NODEFAULTLIB:&quot;MSVCRT&quot;&#x0D;&#x0A;&#x0D;&#x0A;"
+				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib"
+				OutputFile=".\Debug/ttxssh.dll"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\Debug/ttxssh.pdb"
+				GenerateMapFile="true"
+				SubSystem="2"
+				BaseAddress="0x12500000"
+				ImportLibrary=".\Debug/ttxssh.lib"
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\Release"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Release/ttxssh.tlb"
+				HeaderFileName=""
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/D&quot;_CRT_SECURE_NO_DEPRECATE&quot; &#x0D;&#x0A;"
 				Optimization="2"
 				InlineFunctionExpansion="2"
 				AdditionalIncludeDirectories="..\..\Teraterm\source\common,..\openssl\inc32,..\..\Teraterm\source\teraterm,..\zlib,..\matcher"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6"
-				StringPooling="TRUE"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;_CRT_SECURE_NO_DEPRECATE"
+				StringPooling="true"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Release/ttxssh.pch"
 				AssemblerOutput="2"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
-				CompileAs="0"/>
+				CompileAs="0"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="Version.lib /NODEFAULTLIB:&quot;LIBCMT&quot;
-"
+				AdditionalOptions="Version.lib /NODEFAULTLIB:&quot;LIBCMT&quot;&#x0D;&#x0A;"
 				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib"
 				OutputFile=".\Release/ttxssh.dll"
 				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
+				SuppressStartupBanner="true"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Release/ttxssh.pdb"
 				SubSystem="2"
 				BaseAddress="0x12500000"
 				ImportLibrary=".\Release/ttxssh.lib"
-				TargetMachine="1"/>
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Release/ttxssh.tlb"
-				HeaderFileName=""/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="1033"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCWebDeploymentTool"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
 		<File
-			RelativePath="auth.c">
+			RelativePath="auth.c"
+			>
 			<FileConfiguration
-				Name="Debug|Win32">
+				Name="Debug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					AdditionalIncludeDirectories=""
 					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;$(NoInherit)"
-					BrowseInformation="1"/>
+					BrowseInformation="1"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32">
+				Name="Release|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"/>
+					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
+				/>
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath=".\buffer.c">
+			RelativePath=".\buffer.c"
+			>
 		</File>
 		<File
-			RelativePath="crypt.c">
+			RelativePath="crypt.c"
+			>
 			<FileConfiguration
-				Name="Debug|Win32">
+				Name="Debug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					AdditionalIncludeDirectories=""
 					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;$(NoInherit)"
-					BrowseInformation="1"/>
+					BrowseInformation="1"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32">
+				Name="Release|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"/>
+					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
+				/>
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="fwd.c">
+			RelativePath="fwd.c"
+			>
 			<FileConfiguration
-				Name="Debug|Win32">
+				Name="Debug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					AdditionalIncludeDirectories=""
 					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;$(NoInherit)"
-					BrowseInformation="1"/>
+					BrowseInformation="1"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32">
+				Name="Release|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"/>
+					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
+				/>
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="fwdui.c">
+			RelativePath="fwdui.c"
+			>
 			<FileConfiguration
-				Name="Debug|Win32">
+				Name="Debug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					AdditionalIncludeDirectories=""
 					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;$(NoInherit)"
-					BrowseInformation="1"/>
+					BrowseInformation="1"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32">
+				Name="Release|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"/>
+					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
+				/>
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="hosts.c">
+			RelativePath="hosts.c"
+			>
 			<FileConfiguration
-				Name="Debug|Win32">
+				Name="Debug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					AdditionalIncludeDirectories=""
 					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;$(NoInherit)"
-					BrowseInformation="1"/>
+					BrowseInformation="1"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32">
+				Name="Release|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"/>
+					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
+				/>
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="keyfiles.c">
+			RelativePath="keyfiles.c"
+			>
 			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;$(NoInherit)"
-					BrowseInformation="1"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\openssl\out32\libeay32.lib">
-		</File>
-		<File
-			RelativePath="..\matcher\matcher.c">
-			<FileConfiguration
-				Name="Debug|Win32">
+				Name="Debug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					AdditionalIncludeDirectories=""
 					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;$(NoInherit)"
-					BrowseInformation="1"/>
+					BrowseInformation="1"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32">
+				Name="Release|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"/>
+					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
+				/>
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="pkt.c">
+			RelativePath="..\openssl\out32\libeay32.lib"
+			>
+		</File>
+		<File
+			RelativePath="..\matcher\matcher.c"
+			>
 			<FileConfiguration
-				Name="Debug|Win32">
+				Name="Debug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					AdditionalIncludeDirectories=""
 					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;$(NoInherit)"
-					BrowseInformation="1"/>
+					BrowseInformation="1"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32">
+				Name="Release|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"/>
+					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
+				/>
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath=".\resource.h">
-		</File>
-		<File
-			RelativePath="ssh.c">
+			RelativePath="pkt.c"
+			>
 			<FileConfiguration
-				Name="Debug|Win32">
+				Name="Debug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					AdditionalIncludeDirectories=""
 					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;$(NoInherit)"
-					BrowseInformation="1"/>
+					BrowseInformation="1"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32">
+				Name="Release|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"/>
+					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
+				/>
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="ttsecure.ico">
+			RelativePath=".\resource.h"
+			>
 		</File>
 		<File
-			RelativePath="ttxssh.c">
+			RelativePath="ssh.c"
+			>
 			<FileConfiguration
-				Name="Debug|Win32">
+				Name="Debug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					AdditionalIncludeDirectories=""
 					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;$(NoInherit)"
-					BrowseInformation="1"/>
+					BrowseInformation="1"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32">
+				Name="Release|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"/>
+					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
+				/>
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="ttxssh.rc">
+			RelativePath="ttsecure.ico"
+			>
 		</File>
 		<File
-			RelativePath="util.c">
+			RelativePath="ttxssh.c"
+			>
 			<FileConfiguration
-				Name="Debug|Win32">
+				Name="Debug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					AdditionalIncludeDirectories=""
 					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;$(NoInherit)"
-					BrowseInformation="1"/>
+					BrowseInformation="1"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32">
+				Name="Release|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"/>
+					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
+				/>
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="..\..\teraterm\source\teraterm\WSAAsyncGetAddrInfo.c">
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					ObjectFile="$(IntDir)/$(InputName)1.obj"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					ObjectFile="$(IntDir)/$(InputName)1.obj"/>
-			</FileConfiguration>
+			RelativePath="ttxssh.rc"
+			>
 		</File>
 		<File
-			RelativePath="x11util.c">
+			RelativePath="util.c"
+			>
 			<FileConfiguration
-				Name="Debug|Win32">
+				Name="Debug|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					Optimization="0"
 					AdditionalIncludeDirectories=""
 					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;$(NoInherit)"
-					BrowseInformation="1"/>
+					BrowseInformation="1"
+				/>
 			</FileConfiguration>
 			<FileConfiguration
-				Name="Release|Win32">
+				Name="Release|Win32"
+				>
 				<Tool
 					Name="VCCLCompilerTool"
 					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"/>
+					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
+				/>
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="..\zlib\projects\visualc6\Win32_LIB_Release\zlib.lib">
+			RelativePath="..\..\teraterm\source\teraterm\WSAAsyncGetAddrInfo.c"
+			>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					ObjectFile="$(IntDir)/$(InputName)1.obj"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					ObjectFile="$(IntDir)/$(InputName)1.obj"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="x11util.c"
+			>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					Optimization="0"
+					AdditionalIncludeDirectories=""
+					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;$(NoInherit)"
+					BrowseInformation="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					AdditionalIncludeDirectories=""
+					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\zlib\projects\visualc6\Win32_LIB_Release\zlib.lib"
+			>
 		</File>
 	</Files>
 	<Globals>

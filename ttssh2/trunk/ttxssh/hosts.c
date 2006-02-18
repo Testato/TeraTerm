@@ -656,7 +656,7 @@ BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname,
 	int found_different_key = 0;
 
 	if (pvar->hosts_state.prefetched_hostname != NULL
-		&& stricmp(pvar->hosts_state.prefetched_hostname, hostname) == 0
+		&& _stricmp(pvar->hosts_state.prefetched_hostname, hostname) == 0
 		&& match_key(pvar, bits, exp, mod)) {
 		SSH_notify_host_OK(pvar);
 		return TRUE;
@@ -727,4 +727,7 @@ void HOSTS_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/12/19 15:39:42  yutakakn
+ * CVS LogID‚Ì’Ç‰Á
+ *
  */

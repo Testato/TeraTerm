@@ -314,7 +314,7 @@ static BOOL read_BOOL_option(PCHAR fileName, char FAR * keyName, BOOL def)
 		return def;
 	} else {
 		return atoi(buf) != 0 ||
-			stricmp(buf, "yes") == 0 || stricmp(buf, "y") == 0;
+			_stricmp(buf, "yes") == 0 || _stricmp(buf, "y") == 0;
 	}
 }
 
@@ -1026,7 +1026,7 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 						// check SSH protocol version 
 						memset(afstr, 0, sizeof(afstr));
 						GetDlgItemText(dlg, IDC_SSH_VERSION, afstr, sizeof(afstr));
-						if (stricmp(afstr, "SSH1") == 0) {
+						if (_stricmp(afstr, "SSH1") == 0) {
 							pvar->settings.ssh_protocol_version = 1;
 						} else {
 							pvar->settings.ssh_protocol_version = 2;
@@ -1208,7 +1208,7 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 				pvar->settings.Enabled = 1;
 			} else if (MATCH_STR(option + 4, "-L") == 0
 					   || MATCH_STR(option + 4, "-R") == 0
-					   || stricmp(option + 4, "-X") == 0) {
+					   || _stricmp(option + 4, "-X") == 0) {
 				if (pvar->settings.DefaultForwarding[0] == 0) {
 					strcpy(pvar->settings.DefaultForwarding, option + 5);
 				} else {
@@ -1219,8 +1219,8 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 				read_ssh_options_from_user_file(pvar, option + 7);
 			} else if (MATCH_STR(option + 4, "-v") == 0) {
 				pvar->settings.LogLevel = LOG_LEVEL_VERBOSE;
-			} else if (stricmp(option + 4, "-autologin") == 0
-					   || stricmp(option + 4, "-autologon") == 0) {
+			} else if (_stricmp(option + 4, "-autologin") == 0
+					   || _stricmp(option + 4, "-autologon") == 0) {
 				pvar->settings.TryDefaultAuth = TRUE;
 
 			} else if (MATCH_STR(option + 4, "-consume=") == 0) {
@@ -3100,6 +3100,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.27  2005/10/21 13:43:08  yutakakn
+ * Historyチェックボックスのenable / disable追加。
+ *
  * Revision 1.26  2005/10/21 13:36:46  yutakakn
  * 接続ダイアログに History チェックボックスを追加した。
  * 2.18へアップデート。
