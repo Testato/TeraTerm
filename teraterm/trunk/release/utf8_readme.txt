@@ -720,8 +720,10 @@ NOTE: The links above contain Japanese version of installer. Users from other co
   - replaced getcwd() to _getcwd().
   - replaced strupr() to _strupr().
   - deleted compiler warning message for time_t has 64bit size.
-  - fixed TeraTerm Menu build error.
   - upgraded Oniguruma to 4.0.1
+  - upgraded TeraTerm Menu to 1.0.4
+     * fixed build error with VS2005.
+     * updated version information in .exe file.
 
 2006.2.11 (Ver 4.27)
   - expanded the number of macro variable from 128 to 256 and the number of macro label from 256 to 512.
