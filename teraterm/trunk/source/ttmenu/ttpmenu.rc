@@ -90,49 +90,33 @@ END
 //
 
 DIALOG_CONFIG DIALOGEX 0, 0, 287, 239
-STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "List Cofiguration"
 FONT 9, "ÇlÇr ÇoÉSÉVÉbÉN", 400, 0, 0x80
 BEGIN
-    LTEXT           "List Item",IDC_STATIC,8,4,116,12,SS_CENTERIMAGE | 
-                    SS_SUNKEN
-    LISTBOX         LIST_HOST,8,17,116,218,LBS_OWNERDRAWVARIABLE | 
-                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | 
-                    LBS_DISABLENOSCROLL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "List Item",IDC_STATIC,8,4,116,12,SS_CENTERIMAGE | SS_SUNKEN
+    LISTBOX         LIST_HOST,8,17,116,218,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | LBS_DISABLENOSCROLL | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "",BUTTON_SET,132,64,20,20,BS_ICON
     PUSHBUTTON      "",BUTTON_DELETE,132,128,20,20,BS_ICON
     GROUPBOX        "Configuration",IDC_STATIC,160,1,124,234
-    CTEXT           "Name",IDC_STATIC,164,16,32,12,SS_CENTERIMAGE | 
-                    SS_SUNKEN
+    CTEXT           "Name",IDC_STATIC,164,16,32,12,SS_CENTERIMAGE | SS_SUNKEN
     EDITTEXT        EDIT_ENTRY,200,16,80,12,ES_AUTOHSCROLL
     PUSHBUTTON      "details",BUTTON_ETC,168,192,44,16
-    CONTROL         "autologin",RADIO_LOGIN,"Button",BS_AUTORADIOBUTTON | 
-                    BS_LEFT | BS_VCENTER | WS_GROUP,168,52,108,16
-    CTEXT           "Host Name",IDC_STATIC,176,68,40,12,SS_CENTERIMAGE | 
-                    SS_SUNKEN | NOT WS_GROUP
+    CONTROL         "autologin",RADIO_LOGIN,"Button",BS_AUTORADIOBUTTON | BS_LEFT | BS_VCENTER | WS_GROUP,168,52,108,16
+    CTEXT           "Host Name",IDC_STATIC,176,68,40,12,SS_CENTERIMAGE | SS_SUNKEN | NOT WS_GROUP
     EDITTEXT        EDIT_HOST,220,68,56,12,ES_AUTOHSCROLL
-    CONTROL         "User Name",CHECK_USER,"Button",BS_AUTOCHECKBOX | 
-                    BS_CENTER | BS_VCENTER | BS_PUSHLIKE | WS_TABSTOP,176,84,
-                    40,12
+    CONTROL         "User Name",CHECK_USER,"Button",BS_AUTOCHECKBOX | BS_CENTER | BS_VCENTER | BS_PUSHLIKE | WS_TABSTOP,176,84,40,12
     EDITTEXT        EDIT_USER,220,84,56,12,ES_AUTOHSCROLL
-    CONTROL         "Password",CHECK_PASSWORD,"Button",BS_AUTOCHECKBOX | 
-                    BS_CENTER | BS_VCENTER | BS_PUSHLIKE | WS_TABSTOP,176,
-                    100,40,12
+    CONTROL         "Password",CHECK_PASSWORD,"Button",BS_AUTOCHECKBOX | BS_CENTER | BS_VCENTER | BS_PUSHLIKE | WS_TABSTOP,176,100,40,12
     EDITTEXT        EDIT_PASSWORD,220,100,56,12,ES_PASSWORD | ES_AUTOHSCROLL
-    CONTROL         "specified macro file",RADIO_MACRO,"Button",
-                    BS_AUTORADIOBUTTON | BS_LEFT | BS_VCENTER,168,124,108,12
+    CONTROL         "specified macro file",RADIO_MACRO,"Button",BS_AUTORADIOBUTTON | BS_LEFT | BS_VCENTER,168,124,108,12
     EDITTEXT        EDIT_MACRO,176,136,84,12,ES_AUTOHSCROLL
     PUSHBUTTON      "....",BUTTON_MACRO,264,136,12,12
-    CONTROL         "launch only",RADIO_DIRECT,"Button",BS_AUTORADIOBUTTON | 
-                    BS_LEFT | BS_VCENTER,168,160,108,12
-    CONTROL         "use SSH",CHECK_TTSSH,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,220,200,56,16
+    CONTROL         "launch only",RADIO_DIRECT,"Button",BS_AUTORADIOBUTTON | BS_LEFT | BS_VCENTER,168,160,108,12
+    CONTROL         "use SSH",CHECK_TTSSH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,220,200,56,16
     GROUPBOX        "Launch Pattern",IDC_STATIC,164,40,116,140
-    CONTROL         "kick at starting",CHECK_STARTUP,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,220,184,56,16
-    EDITTEXT        IDC_KEYFILE_PATH,193,216,66,14,ES_AUTOHSCROLL | 
-                    WS_DISABLED
+    CONTROL         "kick at starting",CHECK_STARTUP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,220,184,56,16
+    EDITTEXT        IDC_KEYFILE_PATH,193,216,66,14,ES_AUTOHSCROLL | WS_DISABLED
     LTEXT           "Keyfile",IDC_KEYFILE_LABEL,169,219,21,8
     PUSHBUTTON      "...",IDC_KEYFILE_BUTTON,265,215,12,14,WS_DISABLED
 END
@@ -144,28 +128,22 @@ FONT 9, "ÇlÇr ÇoÉSÉVÉbÉN", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,100,156,33,14
     PUSHBUTTON      "Cancel",IDCANCEL,172,156,33,14
-    CTEXT           "Application",IDC_STATIC,8,8,44,12,SS_CENTERIMAGE | 
-                    SS_SUNKEN
+    CTEXT           "Application",IDC_STATIC,8,8,44,12,SS_CENTERIMAGE | SS_SUNKEN
     EDITTEXT        EDIT_TTMPATH,56,8,132,12,ES_AUTOHSCROLL
     PUSHBUTTON      "....",BUTTON_TTMPATH,192,8,12,12
     EDITTEXT        EDIT_INITFILE,12,56,172,12,ES_AUTOHSCROLL
     PUSHBUTTON      "....",BUTTON_INITFILE,188,56,12,12
-    CTEXT           "User Name",IDC_STATIC,16,124,40,12,SS_CENTERIMAGE | 
-                    SS_SUNKEN
-    CTEXT           "Password",IDC_STATIC,108,124,40,12,SS_CENTERIMAGE | 
-                    SS_SUNKEN
+    CTEXT           "User Name",IDC_STATIC,16,124,40,12,SS_CENTERIMAGE | SS_SUNKEN
+    CTEXT           "Password",IDC_STATIC,108,124,40,12,SS_CENTERIMAGE | SS_SUNKEN
     EDITTEXT        EDIT_PROMPT_USER,60,124,44,12,ES_AUTOHSCROLL
     EDITTEXT        EDIT_PROMPT_PASS,152,124,44,12,ES_AUTOHSCROLL
-    CTEXT           "Option",IDC_STATIC,8,24,44,12,SS_CENTERIMAGE | 
-                    SS_SUNKEN
+    CTEXT           "Option",IDC_STATIC,8,24,44,12,SS_CENTERIMAGE | SS_SUNKEN
     EDITTEXT        EDIT_OPTION,56,24,148,12,ES_AUTOHSCROLL
     PUSHBUTTON      "Default",BUTTON_DEFAULT,136,156,33,14
     GROUPBOX        "Configuration for autologin",IDC_STATIC,8,84,196,68
-    GROUPBOX        "TeraTerm Configuration File(except launching)",
-                    IDC_STATIC,8,44,196,32
+    GROUPBOX        "TeraTerm Configuration File(except launching)",IDC_STATIC,8,44,196,32
     EDITTEXT        EDIT_LOG,60,96,124,12,ES_AUTOHSCROLL
-    CTEXT           "log file",IDC_STATIC,12,96,44,12,SS_CENTERIMAGE | 
-                    SS_SUNKEN
+    CTEXT           "log file",IDC_STATIC,12,96,44,12,SS_CENTERIMAGE | SS_SUNKEN
     PUSHBUTTON      "....",BUTTON_LOG,188,96,12,12
     GROUPBOX        "Prompt",IDC_STATIC,12,112,188,32
 END
@@ -176,11 +154,9 @@ CAPTION "Version Information"
 FONT 9, "ÇlÇr ÇoÉSÉVÉbÉN", 400, 0, 0x80
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,54,69,44,14
-    CTEXT           "Tera Term launch tool\r\nTeraTerm Menu Version 1.03",
-                    IDC_STATIC,20,9,124,19
-    LTEXT           "Includes:\nversion 0.94r2\nCopyright(C) 1997-2003 S.Hayakawa\r\nCopyright(C) 2004-2005 Y.Hirata",
-                    IDC_STATIC,26,31,122,35
-    ICON            TTERM_ICON,STATIC_ICON,4,8,18,21
+    CTEXT           "Tera Term launch tool\r\nTeraTerm Menu Version 1.04",IDC_STATIC,20,9,124,19
+    LTEXT           "Includes:\nversion 0.94r2\nCopyright(C) 1997-2003 S.Hayakawa\r\nCopyright(C) 2004-2006 Y.Hirata",IDC_STATIC,26,31,122,35
+    ICON            TTERM_ICON,STATIC_ICON,4,8,20,20
 END
 
 
@@ -225,8 +201,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,9,4,1
- PRODUCTVERSION 0,9,4,1
+ FILEVERSION 1,0,4,0
+ PRODUCTVERSION 1,0,4,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -242,14 +218,13 @@ BEGIN
         BLOCK "041104b0"
         BEGIN
             VALUE "Comments", "TeraTerméxâáÉcÅ[Éã"
-            VALUE "CompanyName", "Shinpei Hayakawa"
+            VALUE "CompanyName", "Yutaka Hirata, Shinpei Hayakawa"
             VALUE "FileDescription", "TeraTerm Menu"
-            VALUE "FileVersion", "0.94r2"
+            VALUE "FileVersion", "1.04"
             VALUE "InternalName", "ttpmenu"
-            VALUE "LegalCopyright", "Copyright (C) 1997-2003 Shinpei Hayakawa"
+            VALUE "LegalCopyright", "Copyright (C) 2004-2006 Yutaka Hirata, 1997-2003 Shinpei Hayakawa"
             VALUE "OriginalFilename", "ttpmenu.exe"
             VALUE "ProductName", "TeraTerm Menu"
-            VALUE "ProductVersion", "0.94r2"
         END
     END
     BLOCK "VarFileInfo"
