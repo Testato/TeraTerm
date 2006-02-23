@@ -197,6 +197,7 @@ OF SUCH DAMAGE.
   - changed the compiler to Visual Studio 2005 Standard Edition.
   - replaced stricmp() to _stricmp().
   - replaced strdup() to _strdup().
+  - added support for "command=" in authorized_keys file.
 
 2005.10.21 (Ver 2.18)
   - added the host history check button on connection dialog.

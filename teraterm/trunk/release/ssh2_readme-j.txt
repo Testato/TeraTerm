@@ -187,6 +187,7 @@ OF SUCH DAMAGE.
   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
   ・stricmp()を_stricmp()へ置換した
   ・strdup()を_strdup()へ置換した
+  ・authorized_keysファイルの"command="をサポートした
 
 2005.10.21 (Ver 2.18)
   ・接続ダイアログに History チェックボックスを追加した。
