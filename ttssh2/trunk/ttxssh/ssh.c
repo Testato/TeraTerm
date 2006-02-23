@@ -5486,6 +5486,7 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_SUCCESS);
 	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_FAILURE);
 	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_BANNER);
+	SSH2_dispatch_add_message(SSH2_MSG_DEBUG);  // support for authorized_keys command (2006.2.23 yutaka)
 
 	{
 	char buf[128];
@@ -6411,6 +6412,11 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.38  2006/02/18 07:37:02  yutakakn
+ *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
+ *   ・stricmp()を_stricmp()へ置換した
+ *   ・strdup()を_strdup()へ置換した
+ *
  * Revision 1.37  2005/07/16 17:01:48  yutakakn
  * SSH2接続時に TTY 情報を渡すようにした。
  *
