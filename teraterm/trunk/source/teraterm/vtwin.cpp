@@ -3426,7 +3426,18 @@ void CVTWindow::OnSetupWindow()
   Ok = (*SetupWin)(HVTWin, &ts);
   FreeTTDLG();
 
-  if (Ok) ChangeWin();
+  if (Ok) {
+	  ChangeWin();
+
+	  // Eterm lookfeelの画面情報も更新することで、リアルタイムでの背景色変更が
+	  // 可能となる。(2006.2.24 yutaka)
+#ifdef ALPHABLEND_TYPE2
+  	  BGInitialize();
+	  BGSetupPrimary(TRUE);
+	  ResetSetup();
+#endif
+  }
+
 }
 
 void CVTWindow::OnSetupFont()
@@ -3817,6 +3828,18 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.27  2006/02/18 08:40:07  yutakakn
+ *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
+ *   ・stricmp()を_stricmp()へ置換した
+ *   ・strnicmp()を_strnicmp()へ置換した
+ *   ・strdup()を_strdup()へ置換した
+ *   ・chdir()を_chdir()へ置換した
+ *   ・getcwd()を_getcwd()へ置換した
+ *   ・strupr()を_strupr()へ置換した
+ *   ・time_tの64ビット化にともなう警告メッセージを抑止した
+ *   ・TeraTerm Menuがビルドエラーとなる現象に対処した
+ *   ・Oniguruma 4.0.1へ差し替えた
+ *
  * Revision 1.26  2006/02/07 14:42:12  yutakakn
  * Broadcast Command使用時にウィンドウがちらつく動作を改善した。
  *
