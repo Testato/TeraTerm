@@ -72,7 +72,12 @@ BOOL CCtrlWindow::OnIdle()
     (TTLStatus==IdTTLRun))
   {
     Exec();
-	Invalidate(TRUE);
+
+	// 更新対象のマクロコマンドの場合のみ、ウィンドウに更新指示を出す。
+	// 毎度 WM_PAINT を送っているとマクロの動作が遅くなるため。(2006.2.24 yutaka)
+	if (IsUpdateMacroCommand()) {
+		Invalidate(TRUE);
+	}
     return TRUE;
   }
   else if (TTLStatus==IdTTLWait)

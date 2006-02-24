@@ -31,6 +31,7 @@ int BackToWhile();
 void InitLineNo(void);
 int GetLineNo(void);
 char *GetLineBuffer(void);
+int IsUpdateMacroCommand(void);
 
 extern int EndWhileFlag;
 

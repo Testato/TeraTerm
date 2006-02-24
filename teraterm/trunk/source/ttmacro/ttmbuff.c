@@ -67,6 +67,24 @@ char *GetLineBuffer(void)
 	return (p);
 }
 
+// マクロウィンドウに表示するコマンドかどうか判別する (2006.2.24 yutaka)
+int IsUpdateMacroCommand(void)
+{
+	char *p = GetLineBuffer();
+
+	// 原則としてウェイト・スリープ系コマンドを対象とする
+	if (_strnicmp(p, "wait", 4) == 0)
+		return 1;
+
+	if (_strnicmp(p, "pause", 5) == 0)
+		return 1;
+
+	if (_strnicmp(p, "mpause", 6) == 0)
+		return 1;
+
+	return 0;
+}
+
 
 BOOL LoadMacroFile(PCHAR FileName, int IBuff)
 {
