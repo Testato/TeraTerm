@@ -711,7 +711,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
-2006.2.18 (Ver 4.28)
+2006.2.24 (Ver 4.28)
   - changed the compiler to Visual Studio 2005 Standard Edition.
   - replaced stricmp() to _stricmp().
   - replaced strnicmp() to _strnicmp().
@@ -720,6 +720,8 @@ NOTE: The links above contain Japanese version of installer. Users from other co
   - replaced getcwd() to _getcwd().
   - replaced strupr() to _strupr().
   - deleted compiler warning message for time_t has 64bit size.
+  - added the color change on Window setup dialog was in real time done.
+  - limited the macro commands displaying on macro window for the speed-up of the macro operation.
   - upgraded Oniguruma to 4.0.1
   - upgraded TeraTerm Menu to 1.0.4
      * fixed build error with VS2005.

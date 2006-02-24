@@ -696,7 +696,7 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
-2006.2.18 (Ver 4.28)
+2006.2.24 (Ver 4.28)
   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
   ・stricmp()を_stricmp()へ置換した
   ・strnicmp()を_strnicmp()へ置換した
@@ -705,6 +705,8 @@ OF SUCH DAMAGE.
   ・getcwd()を_getcwd()へ置換した
   ・strupr()を_strupr()へ置換した
   ・time_tの64ビット化にともなう警告メッセージを抑止した
+  ・Window setupでのカラー変更がリアルタイムに行われるようにした。
+  ・マクロ動作の高速化のため、マクロウィンドウへのコマンド表示をウェイト系に限定した。
   ・Oniguruma 4.0.1へ差し替えた
   ・TeraTerm Menu 1.04へ差し替えた
      * VS2005でビルドエラーとなる問題を修正した
