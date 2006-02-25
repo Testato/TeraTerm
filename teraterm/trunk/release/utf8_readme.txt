@@ -723,6 +723,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
   - added the color change on Window setup dialog was in real time done.
   - limited the macro commands displaying on macro window for the speed-up of the macro operation.
   - upgraded Oniguruma to 4.0.1
+  - upgraded TTSSH version supporting SSH2 to 2.19
   - upgraded TeraTerm Menu to 1.0.4
      * fixed build error with VS2005.
      * updated version information in .exe file.
