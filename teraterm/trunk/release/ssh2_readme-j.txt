@@ -13,13 +13,12 @@
   ---------------------+-----------------------------------
   readme-j.txt            いまお読みのテキストファイル
   ttxssh.dll              DLL本体
-  msvcr71.dll             MFC7.1ランタイム
   TERATERM_sample.INI     INIファイルサンプル
   ---------------------+-----------------------------------
 
 
 ●インストール方法
-  TeraTermがインストールされているフォルダへDLL本体とMFC7.1ランタイムをコピーします。
+  TeraTermがインストールされているフォルダへDLL本体をコピーします。
   すでにオリジナル版TTSSHが格納されている場合は、事前にバックアップを取っておいてから
   上書きしてください。
   
@@ -32,7 +31,7 @@
   以下の手順によりSSH(Secure Shell)を使った通信を行うことができます。
   
   １．DLLのコピー
-      UTF-8対応TeraTerm Proがインストールされているフォルダへ"ttxssh.dll", "msvcr71.dll"を
+      UTF-8対応TeraTerm Proがインストールされているフォルダへ"ttxssh.dll" を
       コピーします。
   
   ２．TeraTermメニューの"New connection"を呼び出し、"Service"で'SSH'を
@@ -128,7 +127,7 @@
 
 ■開発環境
   OS: Windows XP Professional
-  コンパイラ: Visual Studio .NET 2003
+  コンパイラ: Visual Studio 2005 Standard Edition
   
   ソフトウェア：
   TeraTerm Pro 2.3

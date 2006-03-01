@@ -616,7 +616,7 @@ Too many variables.        •Ï”‚Ì”‚ª‘½‚·‚¬‚éB(®”Œ^A•¶š—ñŒ^‚»‚ê‚¼‚êÅ‘å256Œ
 
 ¡ŠJ”­ŠÂ‹«
   OS: Windows XP Professional
-  ƒRƒ“ƒpƒCƒ‰: Visual Studio .NET 2003
+  ƒRƒ“ƒpƒCƒ‰: Visual Studio 2005 Standard Edition
   
   ƒ\ƒtƒgƒEƒFƒAF
   TeraTerm Pro 2.3

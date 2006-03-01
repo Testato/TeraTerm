@@ -621,7 +621,7 @@ Too many variables.        MACRO can not handle more than 256 integer variables 
 
 * Development Environment
   OS: Windows XP Professional
-  Compiler: Visual Studio .NET 2003
+  Compiler: Visual Studio 2005 Standard Edition
   
   Software:
   TeraTerm Pro 2.3

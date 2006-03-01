@@ -14,7 +14,6 @@
   ---------------------+-----------------------------------
   readme.txt              this file
   ttxssh.dll              DLL
-  msvcr71.dll             MFC7.1 runtime library
   TERATERM_sample.INI     sample ini file
   ---------------------+-----------------------------------
 
@@ -30,7 +29,7 @@
   
   2. Backup all files from the TeraTerm directory.
   
-  3. Extract ttxssh.dll and msvcr71.dll files from the archive into the TeraTerm directory.
+  3. Extract ttxssh.dll file from the archive into the TeraTerm directory.
   
   !! IMPORTANT !!
     SSH2 version of TTSSH is compatible only with UTF-8 version of TeraTerm Pro.
@@ -129,7 +128,7 @@
 
 * Development Environment
   OS: Windows XP Professional
-  Compiler: Visual Studio .NET 2003
+  Compiler: Visual Studio 2005 Standard Edition
   
   Software:
   TeraTerm Pro 2.3
