@@ -17,7 +17,7 @@ Find=327
 ;PageUp key
 Prev=329
 ;Delete key
-Select=339
+Remove=339
 ;End key
 Select=335
 ;PageDown key
