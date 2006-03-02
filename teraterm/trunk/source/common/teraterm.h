@@ -13,6 +13,9 @@
 // AKASI氏によるEterm風透過ウィンドウ
 #define ALPHABLEND_TYPE2
 
+// Added by 337 2006/03/01
+#define USE_NORMAL_BGCOLOR
+
 #ifdef __WATCOMC__
   #if defined(__WINDOWS__)
     #define TERATERM16

@@ -340,6 +340,9 @@ struct tttset {
   int DisablePasteMouseRButton;
   int EnableClickableUrl;
   eterm_lookfeel_t EtermLookfeel;
+#ifdef USE_NORMAL_BGCOLOR
+  WORD UseNormalBGColor;
+#endif
 };
 
 typedef struct tttset TTTSet, *PTTSet;

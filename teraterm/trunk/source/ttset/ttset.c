@@ -992,6 +992,11 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 
   // CodePage
   ts->CodePage = GetPrivateProfileInt(Section,"CodePage ", DEFAULT_CODEPAGE, FName);
+
+#ifdef USE_NORMAL_BGCOLOR
+  // UseNormalBGColor
+  ts->UseNormalBGColor = GetOnOff(Section,"UseNormalBGColor",FName,FALSE);
+#endif
 }
 
 void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
@@ -1588,6 +1593,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
   WriteOnOff(ETERM_SECTION, "BGNoFrame", FName, ts->EtermLookfeel.BGNoFrame);
   WritePrivateProfileString(ETERM_SECTION,"BGThemeFile", ts->EtermLookfeel.BGThemeFile, FName);
 
+#ifdef USE_NORMAL_BGCOLOR
+  // UseNormalBGColor
+  WriteOnOff(Section,"UseNormalBGColor",FName,ts->UseNormalBGColor);
+#endif
 }
 
 #define VTEditor "VT editor keypad"
@@ -2406,6 +2415,18 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2006/02/18 08:40:07  yutakakn
+ *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
+ *   ・stricmp()を_stricmp()へ置換した
+ *   ・strnicmp()を_strnicmp()へ置換した
+ *   ・strdup()を_strdup()へ置換した
+ *   ・chdir()を_chdir()へ置換した
+ *   ・getcwd()を_getcwd()へ置換した
+ *   ・strupr()を_strupr()へ置換した
+ *   ・time_tの64ビット化にともなう警告メッセージを抑止した
+ *   ・TeraTerm Menuがビルドエラーとなる現象に対処した
+ *   ・Oniguruma 4.0.1へ差し替えた
+ *
  * Revision 1.9  2005/11/30 15:32:13  yutakakn
  * シリアル接続のCOM最大ポートを99まで拡張した。
  * ボーレートに230400, 460800, 921600を追加した。

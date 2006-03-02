@@ -711,6 +711,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.3.3 (Ver 4.29)
+  - added the background color of text matches the background color of screen. And added "Always use Normal text's BG" checkbox on Window setup dialog. And also added UseNormalBGColor entry in teraterm.ini file. Special thanks to 337.
+
 2006.2.24 (Ver 4.28)
   - changed the compiler to Visual Studio 2005 Standard Edition.
   - replaced stricmp() to _stricmp().

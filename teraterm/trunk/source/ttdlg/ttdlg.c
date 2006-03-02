@@ -261,7 +261,11 @@ BOOL CALLBACK TermDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
     TestRect.left = Rect.left + (int)((Rect.right-Rect.left)*0.65);
     TestRect.right = Rect.left + (int)((Rect.right-Rect.left)*0.93);
     TestRect.top = Rect.top + (int)((Rect.bottom-Rect.top)*0.54);
+#ifdef USE_NORMAL_BGCOLOR
+    TestRect.bottom = Rect.top + (int)((Rect.bottom-Rect.top)*0.90);
+#else
     TestRect.bottom = Rect.top + (int)((Rect.bottom-Rect.top)*0.94);
+#endif
     x = (int)((TestRect.left+TestRect.right) / 2 - FW * 1.5);
     y = (TestRect.top+TestRect.bottom-FH) / 2;
     ExtTextOut(DC, x,y, ETO_CLIPPED | ETO_OPAQUE,
@@ -404,7 +408,10 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       HBlue = GetDlgItem(Dialog, IDC_WINBLUEBAR);
       SetScrollRange(HBlue,SB_CTL,0,255,TRUE);
 
-      ChangeSB(Dialog,ts,IAttr,IOffset);
+#ifdef USE_NORMAL_BGCOLOR
+      SetRB(Dialog,ts->UseNormalBGColor,IDC_WINUSENORMALBG,IDC_WINUSENORMALBG);
+#endif
+	  ChangeSB(Dialog,ts,IAttr,IOffset);
 
       return TRUE;
 
@@ -475,6 +482,9 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 	    GetRB(Dialog,&ts->CursorShape,IDC_WINBLOCK,IDC_WINHORZ);
 
+#ifdef USE_NORMAL_BGCOLOR
+        GetRB(Dialog,&ts->UseNormalBGColor,IDC_WINUSENORMALBG,IDC_WINUSENORMALBG);
+#endif
 	  }
 	  EndDialog(Dialog, 1);
 	  return TRUE;
@@ -2009,6 +2019,18 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2006/02/18 08:40:07  yutakakn
+ *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
+ *   ・stricmp()を_stricmp()へ置換した
+ *   ・strnicmp()を_strnicmp()へ置換した
+ *   ・strdup()を_strdup()へ置換した
+ *   ・chdir()を_chdir()へ置換した
+ *   ・getcwd()を_getcwd()へ置換した
+ *   ・strupr()を_strupr()へ置換した
+ *   ・time_tの64ビット化にともなう警告メッセージを抑止した
+ *   ・TeraTerm Menuがビルドエラーとなる現象に対処した
+ *   ・Oniguruma 4.0.1へ差し替えた
+ *
  * Revision 1.10  2005/11/30 15:32:12  yutakakn
  * シリアル接続のCOM最大ポートを99まで拡張した。
  * ボーレートに230400, 460800, 921600を追加した。

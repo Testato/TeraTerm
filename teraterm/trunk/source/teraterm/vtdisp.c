@@ -2172,7 +2172,7 @@ void DispSetupDC(BYTE Attr, BYTE Attr2, BOOL Reverse)
     BackColor = BGURLColor[1];
     /* end - ishizaki */
   else
-  BackColor = ts.VTColor[1];
+  BackColor = ts.VTColor[1]; // BGVTColor[1] dewa naika?
 #else
   BackColor = ts.VTBlinkColor[1];
 	else if ((Attr & AttrBold) != 0)
@@ -2185,6 +2185,15 @@ void DispSetupDC(BYTE Attr, BYTE Attr2, BOOL Reverse)
   BackColor = ts.VTColor[1];
 #endif
   }
+#ifdef USE_NORMAL_BGCOLOR
+  if (ts.UseNormalBGColor != 0) {
+ #ifdef ALPHABLEND_TYPE2
+    BackColor = BGVTColor[1];
+ #else
+    BackColor = ts.VTColor[1];
+ #endif
+  }
+#endif
 
   if (Reverse != ((Attr & AttrReverse) != 0))
   {
@@ -2881,6 +2890,18 @@ void DispSetActive(BOOL ActiveFlag)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2006/02/18 08:40:07  yutakakn
+ *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
+ *   ・stricmp()を_stricmp()へ置換した
+ *   ・strnicmp()を_strnicmp()へ置換した
+ *   ・strdup()を_strdup()へ置換した
+ *   ・chdir()を_chdir()へ置換した
+ *   ・getcwd()を_getcwd()へ置換した
+ *   ・strupr()を_strupr()へ置換した
+ *   ・time_tの64ビット化にともなう警告メッセージを抑止した
+ *   ・TeraTerm Menuがビルドエラーとなる現象に対処した
+ *   ・Oniguruma 4.0.1へ差し替えた
+ *
  * Revision 1.6  2005/04/24 11:03:42  yutakakn
  * Eterm lookfeel alphablendの設定内容を teraterm.ini へ保存するようにした。
  * また、Additional settingsダイアログから on/off できるようにした。

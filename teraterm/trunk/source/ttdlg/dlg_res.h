@@ -48,6 +48,7 @@
 #define IDC_WINBLUEBAR                  219
 #define IDC_WINATTRTEXT                 220
 #define IDC_WINATTR                     221
+#define IDC_WINUSENORMALBG              231
 #define IDC_WINHELP                     299
 #define IDD_KEYBDLG                     300
 #define IDC_KEYBBS                      301

@@ -696,6 +696,9 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
+2006.3.3 (Ver 4.29)
+  ・文字の背景色をスクリーンの背景色と一致させるようにした。それにともないWindow setupダイアログに"Always use Normal text's BG"チェックボックスを追加した。また、teraterm.iniにUseNormalBGColorエントリを追加した。パッチ作成に感謝します＞337氏
+
 2006.2.24 (Ver 4.28)
   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
   ・stricmp()を_stricmp()へ置換した
