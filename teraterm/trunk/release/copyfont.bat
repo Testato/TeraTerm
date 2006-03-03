@@ -7,10 +7,5 @@ if exist %file% attrib -R %file%
 copy /b /y %file% %WinDir%\fonts
 attrib +R %WinDir%\fonts\%file% 
 
-if exist %WinDir%\system32\taskkill.exe goto skip
-goto end
-
-:skip
+if not exist %WinDir%\system32\taskkill.exe exit
 taskkill /f /im ttermpro.exe /im ttpmacro.exe /im ttpmenu.exe /im LogMeTT.exe /im LogMeTTc.exe /im cygterm.exe /im keycode.exe > NUL 2>&1
-
-:end

@@ -713,6 +713,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 2006.3.3 (Ver 4.29)
   - added the background color of text matches the background color of screen. And added "Always use Normal text's BG" checkbox on Window setup dialog. And also added UseNormalBGColor entry in teraterm.ini file. Special thanks to 337.
+  - Bug fix: don't work the font copying batch file on Windows9x. Special thanks to Takashi SHIRAI.
 
 2006.2.24 (Ver 4.28)
   - changed the compiler to Visual Studio 2005 Standard Edition.
