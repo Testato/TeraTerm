@@ -192,6 +192,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.3.6 (Ver 2.20)
+  - Improved SSH2 communication throughput by changing the window size adjustment.
+
 2006.2.24 (Ver 2.19)
   - changed the compiler to Visual Studio 2005 Standard Edition.
   - replaced stricmp() to _stricmp().

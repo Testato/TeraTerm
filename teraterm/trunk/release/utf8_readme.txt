@@ -711,6 +711,10 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.3.6 (Ver 4.30)
+  - upgraded TTSSH version supporting SSH2 to 2.20
+  - upgraded ttpmacro.exe version information.
+
 2006.3.3 (Ver 4.29)
   - added the background color of text matches the background color of screen. And added "Always use Normal text's BG" checkbox on Window setup dialog. And also added UseNormalBGColor entry in teraterm.ini file. Special thanks to 337.
   - Bug fix: don't work the font copying batch file on Windows9x. Special thanks to Takashi SHIRAI.

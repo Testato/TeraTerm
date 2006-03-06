@@ -182,6 +182,9 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
+2006.3.6 (Ver 2.20)
+  ・SSH2ウィンドウ制御の見直しにより、スループットを向上させた。
+
 2006.2.24 (Ver 2.19)
   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
   ・stricmp()を_stricmp()へ置換した

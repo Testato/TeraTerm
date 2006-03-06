@@ -696,6 +696,10 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
+2006.3.6 (Ver 4.30)
+  ・SSH2対応TTSSH(2.20)へ差し替えた
+  ・ttpmacro.exeのバージョン情報を更新した
+
 2006.3.3 (Ver 4.29)
   ・文字の背景色をスクリーンの背景色と一致させるようにした。それにともないWindow setupダイアログに"Always use Normal text's BG"チェックボックスを追加した。また、teraterm.iniにUseNormalBGColorエントリを追加した。パッチ作成に感謝します＞337氏
   ・Windows9x上においてインストーラから起動されるバッチファイルがうまく動かないバグを修正した。白井隆氏に感謝します。
