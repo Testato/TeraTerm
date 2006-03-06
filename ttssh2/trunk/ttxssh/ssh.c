@@ -3037,7 +3037,8 @@ void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
 				return;
 			}
 
-			c = ssh2_channel_new(CHAN_TCP_WINDOW_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_PORTFWD, local_channel_num);
+			// changed window size from 128KB to 32KB. (2006.3.6 yutaka)
+			c = ssh2_channel_new(CHAN_TCP_PACKET_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_PORTFWD, local_channel_num);
 
 			msg = buffer_init();
 			if (msg == NULL) {
@@ -5604,7 +5605,8 @@ static BOOL handle_SSH2_userauth_success(PTInstVar pvar)
 
 	// チャネル設定
 	// FWD_prep_forwarding()でshell IDを使うので、先に設定を持ってくる。(2005.7.3 yutaka)
-	c = ssh2_channel_new(CHAN_SES_WINDOW_DEFAULT, CHAN_SES_PACKET_DEFAULT, TYPE_SHELL, -1);
+	// changed window size from 64KB to 32KB. (2006.3.6 yutaka)
+	c = ssh2_channel_new(CHAN_SES_PACKET_DEFAULT, CHAN_SES_PACKET_DEFAULT, TYPE_SHELL, -1);
 	if (c == NULL) {
 		// TODO: error check
 		return FALSE;
@@ -6041,13 +6043,16 @@ static BOOL handle_SSH2_channel_success(PTInstVar pvar)
 // クライアントのwindow sizeをサーバへ知らせる
 static void do_SSH2_adjust_window_size(PTInstVar pvar, Channel_t *c)
 {
-	const unsigned int window_size = CHAN_SES_PACKET_DEFAULT;
+	// window sizeを32KBへ変更し、local windowの判別を修正。
+	// これによりSSH2のスループットが向上する。(2006.3.6 yutaka)
+	const unsigned int window_size = CHAN_TCP_PACKET_DEFAULT;
 	buffer_t *msg;
 	unsigned char *outmsg;
 	int len;
 
 	// ローカルのwindow sizeにまだ余裕があるなら、何もしない。
-	if (c->local_window > window_size)
+	// added /2 (2006.3.6 yutaka)
+	if (c->local_window > window_size/2)
 		return;
 
 	{
@@ -6220,7 +6225,8 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 		free(orig_addr);
 
 		// channelをアロケートし、必要な情報（remote window size）をここで取っておく。
-		c = ssh2_channel_new(CHAN_TCP_WINDOW_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_PORTFWD, chan_num);
+		// changed window size from 128KB to 32KB. (2006.3.6 yutaka)
+		c = ssh2_channel_new(CHAN_TCP_PACKET_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_PORTFWD, chan_num);
 		c->remote_id = remote_id;
 		c->remote_window = remote_window;
 		c->remote_maxpacket = remote_maxpacket;
@@ -6240,7 +6246,8 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 		FWD_X11_open(pvar, remote_id, NULL, 0, &chan_num);
 
 		// channelをアロケートし、必要な情報（remote window size）をここで取っておく。
-		c = ssh2_channel_new(CHAN_TCP_WINDOW_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_PORTFWD, chan_num);
+		// changed window size from 128KB to 32KB. (2006.3.6 yutaka)
+		c = ssh2_channel_new(CHAN_TCP_PACKET_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_PORTFWD, chan_num);
 		c->remote_id = remote_id;
 		c->remote_window = remote_window;
 		c->remote_maxpacket = remote_maxpacket;
@@ -6412,6 +6419,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.39  2006/02/23 14:13:57  yutakakn
+ * authorized_keysファイルの"command="をサポートした
+ *
  * Revision 1.38  2006/02/18 07:37:02  yutakakn
  *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
  *   ・stricmp()を_stricmp()へ置換した
