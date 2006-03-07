@@ -5,7 +5,7 @@ CreateFolder=C:\Program Files\Matsuoka\einstall2\Project\ExeFile
 MajorVersion=3
 MinorVersion=61
 CreateDateTime=2004/12/07 23:52:51
-UpdateDateTime=2006/03/07 1:11:33
+UpdateDateTime=2006/03/07 22:55:23
 Generator=EINSTALL 2.0
 CreateFileType=4
 CreateFileAddVersionInfo=1
@@ -54,7 +54,7 @@ OtherVersion=0
 DocumentFile=
 LicenseFile=license.txt
 AlwaysAgree=0
-ReadLicenseTillTheLast=1
+ReadLicenseTillTheLast=0
 
 [Installer]
 EnableShortCutSetting=1
@@ -125,9 +125,6 @@ InfoFileMethod=1
 5=TTSSH Document(Japanese)|%InstallDir%\ssh2_readme-j.txt||||0||0|2|0|||||||||||
 6=LogMeTT Document|%InstallDir%\LogMeTT_README.txt||||0||0|2|0|||||||||||
 
-[ProgramItems]
-0=1|%InstallDir%\|copyfont.bat||0|3|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127|0,0,0,0,,,,,,,,,,,,,,,,,|1,1,é¿çsÇ∑ÇÈ,,,,,,,,,,,,,,,,,,||||||||||
-
 [Files]
 0=1|0|%InstallDir%|plugin|C:\usr\src\utf8_teraterm_installer\plugin\ttAKJpeg.dll|||0|0|127|||||||||||
 1=1|0|%InstallDir%|plugin|C:\usr\src\utf8_teraterm_installer\plugin\ttAKJpeg.txt|||0|0|127|||||||||||
@@ -186,4 +183,7 @@ InfoFileMethod=1
 54=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\TSPECIAL1.TTF|||0|0|127|0,0,0,0,,,,,,,,,,,,,,,,,||||||||||
 55=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\login.ttl|||0|0|127|0,0,0,0,,,,,,,,,,,,,,,,,||||||||||
 56=1|0|%InstallDir%||C:\usr\src\utf8_teraterm_installer\dialup.ttl|||0|0|127|0,0,0,0,,,,,,,,,,,,,,,,,||||||||||
+
+[ProgramItems]
+0=1|%InstallDir%\|copyfont.bat||0|3|0|0,0,HKEY_CURRENT_USER,,,,0,,,,,,,,,,,,,,|127|0,0,0,0,,,,,,,,,,,,,,,,,|1,1,é¿çsÇ∑ÇÈ,,,,,,,,,,,,,,,,,,||||||||||
 
