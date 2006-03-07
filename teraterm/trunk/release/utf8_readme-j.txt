@@ -591,15 +591,15 @@ Too many variables.        •Ï”‚Ì”‚ª‘½‚·‚¬‚éB(®”Œ^A•¶š—ñŒ^‚»‚ê‚¼‚êÅ‘å256Œ
 
 
 ¡TeraTerm‚Ìƒrƒ‹ƒh•û–@
-  TeraTerm‚Ìƒrƒ‹ƒh•û–@‚É‚Â‚¢‚ÄˆÈ‰º‚É¦‚µ‚Ü‚·Bƒrƒ‹ƒh‚É‚ÍVisual Studio 2005(VC++8.0)‚ª•K—v‚Å‚·B
+  TeraTerm‚Ìƒrƒ‹ƒh•û–@‚É‚Â‚¢‚ÄˆÈ‰º‚É¦‚µ‚Ü‚·Bƒrƒ‹ƒh‚É‚ÍVisual Studio 2005 Standard EditionˆÈã‚ª•K—v‚Å‚·iVisual Studio 2005 Express Edition‚Í•s‰ÂjB
   
-  1. ƒ\[ƒXƒR[ƒh‚ğSourceForge(http://sourceforge.jp/projects/ttssh2/)‚©‚çƒ`ƒFƒbƒNƒAƒEƒg‚·‚é
-  2. Oniguruma‚Ìƒ\[ƒXƒR[ƒh(http://www.geocities.jp/kosako3/oniguruma/)‚ğ source\oniguruma ƒfƒBƒŒƒNƒgƒŠ‚É“WŠJ‚·‚éBOniguruma‚ğƒrƒ‹ƒh‚·‚éiˆÈ‰ºQÆjB
+  1. ƒ\[ƒXƒR[ƒh‚ğSourceForge(http://sourceforge.jp/projects/ttssh2/)‚©‚çƒ`ƒFƒbƒNƒAƒEƒg‚·‚éB
+  2. Oniguruma‚Ìƒ\[ƒXƒR[ƒh(http://www.geocities.jp/kosako3/oniguruma/)‚ğ teraterm\source\oniguruma ƒfƒBƒŒƒNƒgƒŠ‚É“WŠJ‚·‚éBƒXƒ^[ƒgƒƒjƒ…[‚©‚çuVisual Studio 2005 ƒRƒ}ƒ“ƒh ƒvƒƒ“ƒvƒgv‚ğ‹N“®‚·‚éBƒRƒ}ƒ“ƒhƒvƒƒ“ƒvƒgã‚©‚ç teraterm\source\oniguruma ƒfƒBƒŒƒNƒgƒŠ‚ÉˆÚ“®‚·‚éBƒRƒ}ƒ“ƒhƒvƒƒ“ƒvƒg‚©‚çˆÈ‰º‚Ì“ü—Í‚ğs‚¢AOniguruma‚ğƒrƒ‹ƒh‚·‚éionig_s.lib‚ªƒŠƒ“ƒN‚³‚ê‚éjB
   
        (1) copy win32\Makefile Makefile
        (2) copy win32\config.h config.h
        (3) nmake
-       
+          
   3. teraterm\visualc\ttermpro.sln ‚ğVisual Studio‚ÅŠJ‚­
   4. ƒ\ƒŠƒ…[ƒVƒ‡ƒ“‚ğƒrƒ‹ƒh‚·‚é
   5. ƒrƒ‹ƒh‚É¬Œ÷‚·‚é‚Æteraterm\visualc\bin ƒfƒBƒŒƒNƒgƒŠ‚ÉÀsƒvƒƒOƒ‰ƒ€‚ª¶¬‚³‚ê‚é

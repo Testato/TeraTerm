@@ -595,10 +595,10 @@ Too many variables.        MACRO can not handle more than 256 integer variables 
 
 * How to build TeraTerm
   To build TeraTerm source code is shown in the following step:
-  And you need Visual Studio 2005(VC++8.0) to build.
+  And you should use Visual Studio 2005 Standard Edition later version to build TeraTerm because TeraTerm program links MFC library (Visual Studio 2005 Express Edition can't be used).
   
   1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
-  2. Download 'Oniguruma' source code(http://www.geocities.jp/kosako3/oniguruma/) and extract at 'source\oniguruma' directory. Build 'Oniguruma' regular expression library(see below).
+  2. Download 'Oniguruma' source code(http://www.geocities.jp/kosako3/oniguruma/) and extract at 'teraterm\source\oniguruma' directory. Launch 'Visual Studio 2005 Command Prompt' batch file from start menu. Move 'teraterm\source\oniguruma' directory on the command prompt. And input the following command lines to build 'Oniguruma' regular expression library(links to onig_s.lib).
   
        (1) copy win32\Makefile Makefile
        (2) copy win32\config.h config.h
