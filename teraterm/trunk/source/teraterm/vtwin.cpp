@@ -3811,12 +3811,22 @@ void CVTWindow::OnWindowWindow()
 
 void CVTWindow::OnHelpIndex()
 {
-  OpenHelp(HVTWin,HELP_INDEX,0);	
+	// 英語版HTML helpの表示 (2006.3.11 yutaka)
+#if 0
+	OpenHelp(HVTWin,HELP_INDEX,0);	
+#else
+	OpenHtmlHelp(HVTWin, HTML_HELP_EN);
+#endif
 }
 
 void CVTWindow::OnHelpUsing()
 {
-  ::WinHelp(HVTWin, "", HELP_HELPONHELP, 0);	
+	// 日本語版HTML helpの表示 (2006.3.11 yutaka)
+#if 0
+	::WinHelp(HVTWin, "", HELP_HELPONHELP, 0);	
+#else
+	OpenHtmlHelp(HVTWin, HTML_HELP_JP);
+#endif
 }
 
 void CVTWindow::OnHelpAbout()
@@ -3828,6 +3838,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.28  2006/02/24 13:20:47  yutakakn
+ * Window setupでのカラー変更がリアルタイムに行われるようにした。
+ *
  * Revision 1.27  2006/02/18 08:40:07  yutakakn
  *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
  *   ・stricmp()を_stricmp()へ置換した

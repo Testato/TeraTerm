@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="ttermpro"
 	ProjectGUID="{BC4CDBE3-6269-47A8-BD74-EEB3A6160E06}"
+	RootNamespace="ttermpro"
 	Keyword="MFCProj"
 	>
 	<Platforms>
@@ -887,6 +888,10 @@
 		<Filter
 			Name="Lib Files"
 			>
+			<File
+				RelativePath="..\source\htmlhelp\htmlhelp.lib"
+				>
+			</File>
 			<File
 				RelativePath=".\bin\debug\ttpcmn.lib"
 				>

@@ -11,6 +11,7 @@
 #include <malloc.h>
 #include "ttlib.h"
 #include "helpid.h"
+#include "htmlhelp.h"
 
 HWND HVTWin = NULL;
 HWND HTEKWin = NULL;
@@ -238,8 +239,27 @@ void OpenHelp(HWND HWin, UINT Command, DWORD Data)
   WinHelp(HWin, HelpFN, Command, Data);
 }
 
+// HTML help を開く 
+// HTML Help workshopに含まれる htmlhelp.h と htmlhelp.lib の2つのファイルが、ビルド時に必要。
+// (2006.3.11 yutaka)
+void OpenHtmlHelp(HWND HWin, char *filename)
+{
+	char HelpFN[MAXPATHLEN];
+
+	_snprintf(HelpFN, sizeof(HelpFN), "%s\\%s", ts.HomeDir, filename);
+	if (HtmlHelp(HWin, HelpFN, HH_DISPLAY_TOPIC, 0) == NULL) {
+		char buf[MAXPATHLEN];
+		_snprintf(buf, sizeof(buf), "Can't open HTML help file(%s).", HelpFN);
+		MessageBox(HWin, buf, "Tera Term: HTML help", MB_OK | MB_ICONERROR);
+	}
+}
+
+
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2005/03/13 04:05:11  yutakakn
+ * タイトルバーに日本語を設定する場合、Shift_JIS(CP932)へ変換するようにした（EUC-JPのみに対応）。
+ *
  * Revision 1.3  2005/02/21 14:52:11  yutakakn
  * TitleFormat=13において、COMの場合も入れ替えるようにした。
  *

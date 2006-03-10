@@ -711,6 +711,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.3.11 (Ver 4.31)
+  - changed TeraTerm Help file from .hlp to .chm style.
+
 2006.3.6 (Ver 4.30)
   - upgraded TTSSH version supporting SSH2 to 2.20
   - upgraded ttpmacro.exe version information.
