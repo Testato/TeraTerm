@@ -711,8 +711,10 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
-2006.3.11 (Ver 4.31)
+2006.3.12 (Ver 4.31)
   - changed TeraTerm Help file from .hlp to .chm style.
+  - enabled the transparency value of TeraTerm window to immediately changing on Additional settings dialog(only in case of AlphaBlend=256 in teraterm.ini).
+  - Bug fix: The background color of text matches the background color of screen patch. Special thanks to 337.
 
 2006.3.6 (Ver 4.30)
   - upgraded TTSSH version supporting SSH2 to 2.20

@@ -484,6 +484,13 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 #ifdef USE_NORMAL_BGCOLOR
         GetRB(Dialog,&ts->UseNormalBGColor,IDC_WINUSENORMALBG,IDC_WINUSENORMALBG);
+		// 2006/03/11 by 337
+		if (ts->UseNormalBGColor) {
+			ts->VTBoldColor[1] = 
+			ts->VTBlinkColor[1] = 
+			ts->URLColor[1] = 
+				ts->VTColor[1];
+		}
 #endif
 	  }
 	  EndDialog(Dialog, 1);
@@ -2019,6 +2026,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2006/03/02 16:15:49  yutakakn
+ *   ・文字の背景色をスクリーンの背景色と一致させるようにした。それにともないWindow setupダイアログに"Always use Normal text's BG"チェックボックスを追加した。また、teraterm.iniにUseNormalBGColorエントリを追加した。パッチ作成に感謝します＞337氏
+ *
  * Revision 1.11  2006/02/18 08:40:07  yutakakn
  *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
  *   ・stricmp()を_stricmp()へ置換した

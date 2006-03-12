@@ -2185,7 +2185,7 @@ void DispSetupDC(BYTE Attr, BYTE Attr2, BOOL Reverse)
   BackColor = ts.VTColor[1];
 #endif
   }
-#ifdef USE_NORMAL_BGCOLOR
+#ifdef USE_NORMAL_BGCOLOR_REJECT
   if (ts.UseNormalBGColor != 0) {
  #ifdef ALPHABLEND_TYPE2
     BackColor = BGVTColor[1];
@@ -2890,6 +2890,9 @@ void DispSetActive(BOOL ActiveFlag)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2006/03/02 16:15:49  yutakakn
+ *   ・文字の背景色をスクリーンの背景色と一致させるようにした。それにともないWindow setupダイアログに"Always use Normal text's BG"チェックボックスを追加した。また、teraterm.iniにUseNormalBGColorエントリを追加した。パッチ作成に感謝します＞337氏
+ *
  * Revision 1.7  2006/02/18 08:40:07  yutakakn
  *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
  *   ・stricmp()を_stricmp()へ置換した

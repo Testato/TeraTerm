@@ -272,11 +272,13 @@ static void SetWindowStyle(TTTSet *ts)
 
 	SetMouseCursor(ts->MouseCursorName);
 
-	if (ts->AlphaBlend < 255) {
+	// 2006/03/11 by 337: 256ならば不透明かつLayered属性とする
+	// if (ts->AlphaBlend < 255) {
+	if (ts->AlphaBlend != 255) {
 		lp = GetWindowLongPtr(HVTWin, GWL_EXSTYLE);
 		if (lp != 0) {
 			SetWindowLongPtr(HVTWin, GWL_EXSTYLE, lp | WS_EX_LAYERED);
-			MySetLayeredWindowAttributes(HVTWin, 0, ts->AlphaBlend, LWA_ALPHA);
+			MySetLayeredWindowAttributes(HVTWin, 0, (ts->AlphaBlend > 255) ? 255: ts->AlphaBlend, LWA_ALPHA);
 		}
 	}
 }
@@ -2982,7 +2984,10 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 
                     EndDialog(hDlgWnd, IDOK);
 					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
-                    break;
+					// 2006/03/11 by 337 : Alpha値も即時変更
+					// 窓作成時に255だった場合はLayered窓になっていないため効果が無い
+					MySetLayeredWindowAttributes(HVTWin, 0, (ts.AlphaBlend > 255) ? 255: ts.AlphaBlend, LWA_ALPHA);
+					break;
 
                 case IDCANCEL:
                     EndDialog(hDlgWnd, IDCANCEL);
@@ -3838,6 +3843,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.29  2006/03/10 15:44:29  yutakakn
+ * ヘルプファイルを .hlp から .chm へ変更した
+ *
  * Revision 1.28  2006/02/24 13:20:47  yutakakn
  * Window setupでのカラー変更がリアルタイムに行われるようにした。
  *
