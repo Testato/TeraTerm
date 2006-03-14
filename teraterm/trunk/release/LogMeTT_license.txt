@@ -1,4 +1,4 @@
-                      Freeware License Agreement                                     
+                      Freeware License Agreement
                       --------------------------
 
 This Freeware Software License Agreement, applies to all software products
@@ -41,21 +41,21 @@ Technical Support: Technical support may be provided via e-mail and/or website
 postings. While  every effort will be made to provide timely technical support
 no guarantees whatsoever are implied  that technical support will be provided or
 that technical support, when provided, will be accurate.  Freeware software
-offered from NeoCom.ca website is basically unsupported and supplied on an as-is 
+offered from NeoCom.ca website is basically unsupported and supplied on an as-is
 basis.
 
 Code distribution: Occasionally portions of the source code of this software may
 be provided via  e-mail or posting on associated website. Any such source code
 is provided as public domain, unless  labeled otherwise. Public domain code is
 not copyrighted. Such code is released to the public  domain as a service to the
-programming community. You may use it for any purpose whatsoever without 
+programming community. You may use it for any purpose whatsoever without
 restriction, for free, and without giving credit to the author(s).
 
 Agreement: By using this software product you are automatically agreeing to and
 show that you have  read and understood the terms and conditions contained
 within this Freeware Software License  Agreement. This Freeware Software License
 Agreement is then effective while you use and continue to  make use of these
-software products. If you do not agree with this Freeware Software License 
+software products. If you do not agree with this Freeware Software License
 Agreement you must not use software products downloaded from NeoCom.ca website -
 this Freeware  Software License Agreement will then not apply to you. This
 Freeware Software License Agreement is  subject to change without notice.
@@ -65,4 +65,4 @@ associated website or in  software products may be copyright, trademarked or
 registered trademarked by their respective  owners.
 
 
-Copyright (C) 2004-2206, NeoCom Ltd.
+Copyright (C) 2004-2006, NeoCom Ltd.
