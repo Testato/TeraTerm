@@ -700,6 +700,7 @@ OF SUCH DAMAGE.
   ・ヘルプファイルを .hlp から .chm へ変更した
   ・Additional settingsダイアログにおけるウィンドウの半透明変更を即座に反映させるようにした（teraterm.ini の AlphaBlend=256 の場合のみ）。
   ・文字の背景色をスクリーンの背景色と一致させるパッチのバグを修正した。パッチ作成に感謝します＞337氏
+  ・VisualStyleが有効となるようにした
   ・LogMeTT 2.8.2へ差し替えた
 
 2006.3.6 (Ver 4.30)
