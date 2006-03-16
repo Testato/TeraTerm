@@ -272,13 +272,13 @@ static void SetWindowStyle(TTTSet *ts)
 
 	SetMouseCursor(ts->MouseCursorName);
 
-	// 2006/03/11 by 337: 256ならば不透明かつLayered属性とする
+	// 2006/03/16 by 337: BGUseAlphaBlendAPIがOnならばLayered属性とする
 	// if (ts->AlphaBlend < 255) {
-	if (ts->AlphaBlend != 255) {
+	if (ts->EtermLookfeel.BGUseAlphaBlendAPI) {
 		lp = GetWindowLongPtr(HVTWin, GWL_EXSTYLE);
 		if (lp != 0) {
 			SetWindowLongPtr(HVTWin, GWL_EXSTYLE, lp | WS_EX_LAYERED);
-			MySetLayeredWindowAttributes(HVTWin, 0, (ts->AlphaBlend > 255) ? 255: ts->AlphaBlend, LWA_ALPHA);
+			MySetLayeredWindowAttributes(HVTWin, 0, ts->AlphaBlend, LWA_ALPHA);
 		}
 	}
 }
@@ -2985,8 +2985,10 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
                     EndDialog(hDlgWnd, IDOK);
 					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
 					// 2006/03/11 by 337 : Alpha値も即時変更
-					// 窓作成時に255だった場合はLayered窓になっていないため効果が無い
-					MySetLayeredWindowAttributes(HVTWin, 0, (ts.AlphaBlend > 255) ? 255: ts.AlphaBlend, LWA_ALPHA);
+					// Layered窓になっていない場合は効果が無い
+					if (ts.EtermLookfeel.BGUseAlphaBlendAPI) {
+						MySetLayeredWindowAttributes(HVTWin, 0, (ts.AlphaBlend > 255) ? 255: ts.AlphaBlend, LWA_ALPHA);
+					}
 					break;
 
                 case IDCANCEL:
@@ -3843,6 +3845,10 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.30  2006/03/12 14:27:41  yutakakn
+ *   ・Additional settingsダイアログにおけるウィンドウの半透明変更を即座に反映させるようにした（teraterm.ini の AlphaBlend=256 の場合のみ）。
+ *   ・文字の背景色をスクリーンの背景色と一致させるパッチのバグを修正した。パッチ作成に感謝します＞337氏
+ *
  * Revision 1.29  2006/03/10 15:44:29  yutakakn
  * ヘルプファイルを .hlp から .chm へ変更した
  *

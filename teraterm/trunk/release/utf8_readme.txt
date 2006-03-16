@@ -713,7 +713,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 2006.3.12 (Ver 4.31)
   - changed TeraTerm Help file from .hlp to .chm style.
-  - enabled the transparency value of TeraTerm window to immediately changing on Additional settings dialog(only in case of AlphaBlend=256 in teraterm.ini).
+  - enabled the transparency value of TeraTerm window to immediately changing on Additional settings dialog.
   - Bug fix: The background color of text matches the background color of screen patch. Special thanks to 337.
   - enabled VisualStyle feature on WindowsXP.
   - upgraded LogMeTT to 2.8.2
