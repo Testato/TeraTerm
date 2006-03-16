@@ -14,8 +14,39 @@
 		<param name="ImageNumber" value="1">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Copyright and Notice">
+		<param name="Name" value="License and Copyright ">
 		<param name="Local" value="html\copyright.html">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Requirements ">
+		<param name="Local" value="html\requirements.html">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Emulations ">
+		<param name="Local" value="html\emulations.html">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="History ">
+		<param name="Local" value="html\history.html">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Q &amp; A">
+		<param name="Local" value="html\qanda.html">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Requests ">
+		<param name="Local" value="html\requests.html">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Contacting the author ">
+		<param name="Local" value="html\contacts.html">
+		<param name="ImageNumber" value="11">
 		</OBJECT>
 </UL>
 </BODY></HTML>
