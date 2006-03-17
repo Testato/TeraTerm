@@ -877,6 +877,11 @@ void CVTWindow::RestoreSetup()
 #ifdef ALPHABLEND_TYPE2
   BGInitialize();
   BGSetupPrimary(TRUE);
+  // 2006/03/17 by 337 : Alpha値も即時変更
+  // Layered窓になっていない場合は効果が無い
+  if (ts.EtermLookfeel.BGUseAlphaBlendAPI) {
+	MySetLayeredWindowAttributes(HVTWin, 0, ts.AlphaBlend, LWA_ALPHA);
+  }
 #endif
 
   ChangeDefaultSet(&ts,NULL);
@@ -3845,6 +3850,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.31  2006/03/16 15:35:00  yutakakn
+ * (none)
+ *
  * Revision 1.30  2006/03/12 14:27:41  yutakakn
  *   ・Additional settingsダイアログにおけるウィンドウの半透明変更を即座に反映させるようにした（teraterm.ini の AlphaBlend=256 の場合のみ）。
  *   ・文字の背景色をスクリーンの背景色と一致させるパッチのバグを修正した。パッチ作成に感謝します＞337氏
