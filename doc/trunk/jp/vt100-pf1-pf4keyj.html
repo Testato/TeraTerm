@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<TITLE>UTF-8 TeraTerm Pro with TTSSH2 Help Index</TITLE>
+<link rel="stylesheet" href="./style.css" type="text/css">
+</HEAD>
+<BODY>
+<div class="topic"><FONT COLOR="#cc0066"></FONT></div>
+
+
+<pre>
+VT100 の PF1-PF4 キー
+
+キーボードの初期設定では VT100 の PF1-PF4 キーの機能はテンキーの一番上の列の４つのキー (IBM/PC の場合 "Num Lock", "/", "*", "-" ; PC98 の場合 "HOME CLR", "HELP" "-", "/")に割り当てられています。これを F1-F4 キーに割り当てるように変更するには以下のようにキーボード設定ファイル KEYBOARD.CNF を書き換えてください。詳しくは、<A HREF="keycodej.txt">KEYCODEJ.TXT</A>を読んでください。
+
+以下は IBM-PC キーボードの場合(PC98 の場合は KEYCODE.EXE を使用してキーコードを調べてください)。
+
+[Numeric keypad]
+PF1=59
+PF2=60
+PF3=61
+PF4=62
+; 59-62 は F1-F4 key のキーコード
+
+[X function keys]
+XF1=off
+XF2=off
+XF3=off
+XF4=off
+; キーコード 59-62 を二重使用しないようにするため XF1-XF4 を "off" にする。
+</pre>
+
+
+</BODY>
+</HTML>

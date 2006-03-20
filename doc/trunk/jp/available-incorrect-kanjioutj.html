@@ -1,0 +1,26 @@
+<HTML>
+<HEAD>
+<TITLE>UTF-8 TeraTerm Pro with TTSSH2 Help Index</TITLE>
+<link rel="stylesheet" href="./style.css" type="text/css">
+</HEAD>
+<BODY>
+<div class="topic"><FONT COLOR="#cc0066">正しくない "kanji-out" を使用可能にする</FONT></div>
+
+
+<pre>
+一部のシステムで用いられている "kanji-out" シーケンス ^[(H は、JIS/ISO の規格に従っていません。本当に必要のある場合以外は使用しないでください。初期設定では間違いを防ぐため [Setup] terminal ダイアログボックスで ^[(H 
+が選択できないようになっています。
+
+^[(H を選択できるようにするには、設定ファイルの [Tera Term] セクションの AllowWrongSequence 行を、
+
+AllowWrongSequence=on
+
+のように変更してください。ダイアログボックスで選択できるようになります。
+
+省略時:
+AllowWrongSequence=off
+</pre>
+
+
+</BODY>
+</HTML>

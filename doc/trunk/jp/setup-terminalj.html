@@ -1,0 +1,82 @@
+<HTML>
+<HEAD>
+<TITLE>UTF-8 TeraTerm Pro with TTSSH2 Help Index</TITLE>
+<link rel="stylesheet" href="./style.css" type="text/css">
+</HEAD>
+<BODY>
+<div class="topic"><FONT COLOR="#cc0066">Terminal ([Setup] メニュー)</FONT></div>
+
+
+<pre>
+"Terminal setup" ダイアログボックス
+
+Terminal size
+
+ターミナルサイズ(端末画面の論理サイズ)。横 X 縦 の文字数で指定します。ウインドウサイズ(実際の画面の大きさ)と必ずしも同じではありません。
+
+Term size = win size
+
+このオプションを選択した場合、ターミナルサイズとウィンドウサイズを常に等しくします。
+
+Auto window resize
+
+このオプションを選択した場合、ターミナルサイズが変更されたときに、ウインドウサイズも同じ大きさに自動的に変更されます。
+
+New-line (receive)
+
+CR+LF を選択した場合、受信された 改行文字 CR ($0D) を CR+LF ($0D $0A)に変換します。
+
+New-line (transmit)
+
+CR+LF を選択した場合、送信時に改行文字 CR ($0D) を CR+LF ($0D $0A) に変換します。
+
+Terminal ID
+
+ホストに報告する Terminal ID。Terminal ID は telnet の terminal type とは違います。Telnet の terminal type を変更するには [Setup] TCP/IP コマンドを使用してください。
+
+Local echo
+
+キー入力等により送出する文字をそのまま画面に表示します。
+
+Answerback
+
+ホストから ENQ ($05) 文字が送られてきた時に、送り返す文字列。文字列中に含まれる表示不可能な文字(制御文字)は、"$" と それにつづく ASCII コード(2桁の16進数) で表現してください。例えば、文字列 "ABC <CR> <LF>" をアンサーバックする場合、次のように入力してください。
+
+
+ABC$0D$0A
+
+Auto switch (VT<->TEK)
+
+エスケープシーケンスを判別して、自動的に VT window から TEK window へ制御を移します(逆も同様)。
+
+Kanji (receive)
+
+ホストから送られてくる漢字コード (SJIS, EUC, JIS の3種類)。
+
+7bit katakana (receive)
+
+ホストから送られてくる"半角"片仮名コードが 7 bit で表現されている (SO/SI を用いたシフト制御を用いている)場合に選択してください。Kanji (receive) が JIS の場合のみ有効です。
+
+Kanji (transmit)
+
+送出する漢字コード (SJIS, EUC, JIS の3種類)。
+
+7bit katakana (transmit)
+
+送出する"半角"片仮名コードを7bitで表現する (SO/SI を用いたシフト制御を用いる)場合に選択してください。Kanji (transmit) が JIS の場合のみ有効です。
+
+Kanji-in (transmit)
+
+Kanji (transmit) が JIS のときに使用するエスケープシーケンス(漢字コードを G0 に指示するシーケンス。 ^[$@ または ^[$B )。ホストから送られてくるエスケープシーケンスはどちらでも構いません。
+
+Kanji-out (transmit)
+
+Kanji (transmit) が JIS のときに使用するエスケープシーケンス (ASCII または JIS ローマ字コードを G0 に指示するシーケンス。^[(B または ^[(J )。ホストから送られてくるエスケープシーケンスはどちらでも構いません。
+
+注意:	 ^[(H は初期設定では選択できません。
+	→ ^[(H を選択可能にする。
+</pre>
+
+
+</BODY>
+</HTML>
