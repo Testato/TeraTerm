@@ -52,6 +52,16 @@ http://www.neocom.ca/forum/index.php
                  =============================
                  (in reverse chronological order)
 
+2006-03-19 (Ver 2.8 Release 3)
+New features added:
+- Added Information window under "File -> Information for" menu. It shows statistical
+information about currently loaded Connections tree.
+- Minor other changes and code optimization.
+
+Bugs fixed:
+- None.
+
+
 2006-03-13 (Ver 2.8 Release 2)
 New features added:
 - Added mpause and random macro commands to syntax highlighter.
