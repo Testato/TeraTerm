@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>UTF-8 TeraTerm Pro with TTSSH2 Help Index</title>
+    <link rel="stylesheet" href="./style.css" type="text/css">
+  </head>
+
+  <body>
+    <h1>Proxy 接続</h1>
+
+    <p>
+      UTF-8 TeraTerm Pro with TTSSH2 で実装された Proxy 接続について解説します。
+    </p>
+
+    <h2>前提知識</h2>
+
+    <p>
+      Proxy とは、下図のようにインターネット環境とLAN環境が切り離されたネットワーク構成のとき、外部との接続に用いる手段です。<br>
+      <img src="./image/connection.png" alt="Proxy 接続"><br>
+      このような形態で使われる Proxy の種類にはいくつもの種類があり、UTF-8 TeraTerm Pro with TTSSH2 では次のような種類の Proxy に対応しています。
+    </p>
+
+    <ul>
+      <li>HTTP（SSH1、SSH2 用）</li>
+      <li>TELNET（telnet 用）</li>
+      <li>SOCKS4</li>
+      <li>SOCKS5</li>
+    </ul>
+
+    <h2>設定方法</h2>
+
+    <h3>ご注意</h3>
+
+    <p>
+      HTTP Proxy を使用するためには、「相手方の SSH サーバのコネクション受付ポートが443番ポートであること」が必要です。通常の設定では SSH は22番ポートでコネクションを待ちます。これは HTTPS に見せかけて SSH の通信を行うためにこのようになっています（HTTPS のポートが443番です）。
+    </p>
+
+    <h3>設定の手順</h3>
+
+    <p>
+      具体的な設定方法ですが、まず、[Setup] メニューから「Proxy...」を選択します。<br>
+      <img src="./image/Proxy.png" alt="Proxy"><br>
+      次に、下図の「Proxy Setup」ダイアログが現れますので、「Type」に使用する Proxy の種類を、「Hostname」に Proxy サーバのホスト名（もしくは IP アドレス）を指定、「Port number」に Proxy のポート番号を入力して「OK」をクリックします。「Username」と「Password」は Proxy での認証が必要な場合にのみ入力してください。<br>
+      <img src="./image/ProxySetup.png" alt="Proxy 設定"><br>
+      これで Proxy の設定は完了ですから、通常の接続を行います。（HTTPを指定した場合、接続ダイアログの「TCP port#」に443番を指定することをお忘れなく…。）
+    </p>
+  </body>
+</html>
