@@ -1,6 +1,6 @@
 <HTML>
 <HEAD>
-<TITLE>UTF-8 TeraTerm Pro with TTSSH2 Help Index(English)</TITLE>
+<TITLE>UTF-8 TeraTerm Pro with TTSSH2 Help Index</TITLE>
 <link rel="stylesheet" href="./style.css" type="text/css">
 </HEAD>
 <BODY>
@@ -77,7 +77,7 @@ stty pass8		(SunOS等の unix の場合)
 
 Q.	漢字モードを JIS や EUC にしたとき Shift-JIS の漢字を受信すると Tera Term がハングアップする。
 
-A. 	<A HREF="not-c1-charej.htm">「C1 制御文字を使用しない」</A>を読んでください
+A. 	<A HREF="not-c1-charej.html">「C1 制御文字を使用しない」</A>を読んでください
 
 Q.	<A HREF="setup-terminalj.html">[Setup] Terminal</A>で Kanji-Out で ^[(H を設定できるようにしてほしい。
 A.	<A HREF="available-incorrect-kanjioutj.html">「正しくない "Kanji-Out" を使用可能にする。」</A>「正しくない "Kanji-Out" を使用可能にする。」を読んでください。
@@ -94,21 +94,21 @@ Q.	F1-F4 キーが使えない。
 A.「F1-F4 キー」を押すことによって VT100 の PF1-PF4 キーの機能を実現させたいという意味ならば、<A HREF="vt100-pf1-pf4keyj.html">「
 VT100 の PF1-PF4 キー」</A>を読んでください。
 Q.	何々キーが使えない。
-A.	この種の質問はたいていの場合答えられません。そのキーを押した時に送出されるべき文字(列)あるいは実行されるべき機能がわからないことが多いからです。もしそれがわかる場合は、キーボード設定ファイルを設定することによってそのキーを使えるようにすることができます。 KEYCODEJ.TXT を読んでください。
+A.	この種の質問はたいていの場合答えられません。そのキーを押した時に送出されるべき文字(列)あるいは実行されるべき機能がわからないことが多いからです。もしそれがわかる場合は、キーボード設定ファイルを設定することによってそのキーを使えるようにすることができます。<A HREF="keycodej.txt"> KEYCODEJ.TXT</A> を読んでください。
 
 Q.	某社の unix に接続し、DEL キーを押して実行中のプログラムを中断しようとしたができない。
 A.	[Setup] Keyboard の Delete key を on にしてください。
 
 Q.	[Edit] Paste (Copy) の ショートカットキーは Alt+V (Alt+C) になっているが、他のアプリケーションと同じ Ctrl+V (Ctrl+C) にしたい。
-A.	Ctrl+V は、ホストに ^V 文字を送出するために使うことがあるので、初期設定では、ショートカットキーになっていません。Ctrl+V を [Edit] Paste のショートカットキーにする方法は、「ユーザー・ショートカット・キー」と KEYCODEJ.TXT を読んでください。
+A.	Ctrl+V は、ホストに ^V 文字を送出するために使うことがあるので、初期設定では、ショートカットキーになっていません。Ctrl+V を [Edit] Paste のショートカットキーにする方法は、<A HREF="user-shortcutkeyj.html">「ユーザー・ショートカット・キー」</A>と <A HREF="keycodej.txt">KEYCODEJ.TXT</A> を読んでください。
 
-[ファイル転送]
+<b>[ファイル転送]</b>
 Q.	XMODEM/ZMODEM/B-Plus/Quick-VAN によるファイル転送がうまくいかない。
 Q.	メニューの XMODEM/ZMODEM/B-Plus/Quick-VAN が灰色になっていて使えない。
-A.	「XMODEM のヒント」
-	「ZMODEM のヒント」
-	「B-Plus のヒント」
-	「Quick-VAN のヒント」
+A.	<A HREF="xmodemj.html">「XMODEM のヒント」</A>
+	<A HREF="zmodemj.html">「ZMODEM のヒント」</A>
+	<A HREF="b-plusj.html">「B-Plus のヒント」</A>
+	<A HREF="quick-vanj.html">「Quick-VAN のヒント」</A>
 を読んでください。
 
 Q.	あるホストへログインし、そこから他のホストへログインした場合、終端ホストと Tera Term の間でのファイル転送がうまくいかない。
@@ -137,17 +137,17 @@ Q.	文字が横倒しになって表示されてしまう。
 A.	[Setup] Font ダイアログボックスでフォント名の先頭に "@" がついたフォントを選択すると文字が横倒しになって表示されます。"@" がつかないフォントを選択してください。
 
 Q.	ダブルクリックで単語を選択するときの単語の区切り方を以前のバージョンの Tera Term と同じにしてほしい。
-A.	「ダブルクリックによる単語選択の区切り文字」を読んでください。
+A.	<A HREF="double-clickj.html">「ダブルクリックによる単語選択の区切り文字」</A>を読んでください。
 
 Q.	何かの拍子に TEK window が勝手に開いてしまって困る。
-A.	[Setup] Terminal で Auto change (VT<->TEK) という項目を off にしてください。On になっていると、TEK4010 というグラフィック端末のコントロールシーケンスを受信したとき TEK window が自動的に開きます。
+A.	<A HREF="setup-terminalj.html">[Setup] Terminal</A> で Auto change (VT<->TEK) という項目を off にしてください。On になっていると、TEK4010 というグラフィック端末のコントロールシーケンスを受信したとき TEK window が自動的に開きます。
 
 Q.	Tera Term 1.X ではスクロールバッファの量を800行以上にできませんが、もっと増やせませんか?
 A.	Win 3.1 用の Tera Term ではできません。Win 95, Win NT 用の Tera Term Pro ではスクロールバッファの量を800行以上に設定できます。
 
 Q.	マクロをつかって、モデムに設定コマンド (AT...)を複数行送ろうとしたが、送るのが速すぎてモデムがコマンドを正常にうけつけない。
 A.	モデムによっては、あるコマンド行を処理してる間に、次のコマンドが送られてくると、処理中のコマンドをキャンセルする、というようなものがあります。モデムから「OK」が来たのを確認した後に次のコマンドを送るようにするか、
-[Setup]Serial port で Transmit delay の msec/line の値を増やしてみてください。(例えば 200 msec/line にする)
+<A HREF="serial-portmenuj.html">[Setup]Serial port</A> で Transmit delay の msec/line の値を増やしてみてください。(例えば 200 msec/line にする)
 
 Q.	MS Net meeting をインストールしたところ、キーボード設定ファイル (*.CNF) のアイコンが Net meeting のものに変わってしまったが、問題はないか?
 A.	アイコンが変わっただけで内容は変化しませんし、Tera Term はキーボード設定ファイルを読むことができるので問題ありません。ただしアイコンをダブルクリックすると Net meeting が起動してしまいますので、しないでください。

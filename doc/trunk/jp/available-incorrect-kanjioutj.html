@@ -4,21 +4,48 @@
 <link rel="stylesheet" href="./style.css" type="text/css">
 </HEAD>
 <BODY>
-<div class="topic"><FONT COLOR="#cc0066">正しくない "kanji-out" を使用可能にする</FONT></div>
+<div class="topic"><FONT COLOR="#cc0066">ユーザー・ショートカット・キー</FONT></div>
 
 
 <pre>
-一部のシステムで用いられている "kanji-out" シーケンス ^[(H は、JIS/ISO の規格に従っていません。本当に必要のある場合以外は使用しないでください。初期設定では間違いを防ぐため [Setup] terminal ダイアログボックスで ^[(H 
-が選択できないようになっています。
+<A HREF="keyboard-setfilej.html">キーボード設定ファイルの</A><b>[Shortcut keys]</b> と <b>[VT function keys]</b> セクションの項目を書き換えると、以下のショートカット・キーを自分の好きなキーに割り当てることができます。詳しくは、<A HREF="keycodej.txt>"KEYCODEJ.TXT</A>を読んでください。
 
-^[(H を選択できるようにするには、設定ファイルの [Tera Term] セクションの AllowWrongSequence 行を、
 
-AllowWrongSequence=on
+<b>[Shortcut keys]</b>
+セクションの項目	機能					初期設定
+<b>EditCopy</b>	[Edit] Copy コマンド <b>*1)</b>	Ctrl+Insert
+<b>EditPaste</b>	[Edit] Paste コマンド<b> *1)</b>	Shift+Insert
+<b>EditPasteCR</<b>	[Edit] Paste&lt;CR&gt; コマンド *1)	なし
+<b>EditCLS</b> 		[Edit] Clear screen コマンド		なし
+<b>EditCLB</b> 		[Edit] Clear buffer コマンド		なし
+<b>ControlOpenTEK</b> 		[Control] Open TEK コマンド	なし
+<b>ControlCloseTEK</b> 	[Control] Close TEK コマンド		なし
+<b>LineUp</b>		一行スクロールアップ			Ctrl+↑
+<b>LineDown</b>		一行スクロールダウン			Ctrl+↓
+<b>PageUp</b>		一ページスクロールアップ		Ctrl+PageUp
+<b>PageDown</b>		一ページスクロールダウン		Ctrl+PageDown
+<b>BuffTop</b>		バッファの先頭へスクロール		Ctrl+Home
+<b>BuffBottom</b>	バッファの最後へスクロール		Ctrl+End
+<b>NextWin</b>		次の Tera Term ウィンドウへ移動		Ctrl+Tab
+<b>PrevWin</b>		前の Tera Term ウィンドウへ移動		Ctrl+Shift+Tab
+<b>LocalEcho</b>	ローカルエコーを on/off にする。	なし
+[VT function keys]
+セクションの項目	機能					初期設定
+<HR>
+Hold		受信ポートをロック/ロック解除			なし
+Print		[File] Print コマンド *1)			なし
+Break	ブレーク信号送出 *1)					なし
 
-のように変更してください。ダイアログボックスで選択できるようになります。
+<b>*1)</b> これらの機能には<A HREF="keyboardj.html>"システム・ショートカット・キー</A>が割り当てられています。
 
-省略時:
-AllowWrongSequence=off
+例えば、Ctrl+V を <b>[Edit] Paste</b> に割り当てたい場合は、
+キーボード設定ファイルの <b>[Shortcut keys]</b> セクションで、
+
+<b>EditPaste=1071</b>
+
+としてください (IBM PC/AT キーボードの場合)。
+
+また <b>[User keys]</b> セクションでは、ユーザーキーを使ってすべてのメニューコマンドに対してショートカット・キーを設定することができます
 </pre>
 
 
