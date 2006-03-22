@@ -1,0 +1,47 @@
+<HTML>
+<HEAD>
+<TITLE>UTF-8 TeraTerm Pro with TTSSH2 Help Index</TITLE>
+<link rel="stylesheet" href="./style.css" type="text/css">
+</HEAD>
+<BODY>
+<div class="topic"><FONT COLOR="#cc0066">ダブルクリックによる単語選択の区切り文字</FONT></div>
+
+
+<pre>
+左マウスボタンで単語をダブルクリックすると、その単語を選択することができます。設定ファイルの [Tera Term] セクションの DelimList 行を以下のように変更することによって単語の区切り文字を指定することができます。
+
+DelimList=<区切り文字のリスト>
+
+例えば、
+
+DelimList=<>()[]
+
+は6つの区切り文字 "<", ">", "(", ")", "[", "]" を指定します。
+ただし、スペース文字と "$" はそれぞれ、"$20", "$24" という形式で指定しなければなりません。
+
+
+DelimList=$20	; スペース文字
+
+省略時:
+DelimList=$20!"#$24%&'()*+,-./:;<=>?@[\]^`{|}~
+
+この "DelimList" 行には、1バイトコード文字(いわゆる半角文字)しか指定できません。2バイトコード文字(いわゆる全角文字)は区切り文字として取り扱われます。2バイトコード文字を区切り文字としないようにするには、DelimDBCS 
+行を以下のように変更してください。
+
+DelimDBCS=off
+
+省略時:
+DelimDBCS=on
+
+
+以前のバージョンの Tera Term と単語選択の仕方を同じにするには、
+
+DelimList=$20	
+DelimDBCS=off
+
+としてください。
+</pre>
+
+
+</BODY>
+</HTML>
