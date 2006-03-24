@@ -7,7 +7,7 @@ body{
 }
 
 
-div.topic{ font-weight: bold;font-size: larger;color: #000000;margin-top: 2pt;margin-bottom: 2pt; }
+div.topic{ font-weight: bold;font-size: medium;color: #000000;margin-top: 2pt;margin-bottom: 2pt; }
 
 ul {
 	margin-top: 0pt;margin-bottom: 0pt; 
@@ -17,7 +17,9 @@ dt{ font-weight: bold;font-style: normal;font-size: larger;color: black;border-c
 
 pre { 
 	/*font-family: "Lucida Console"; */
-	font-size: smaller;
+	font-weight: medium;
+        font-style: normal;
+	font-size:  small;			
 	white-space:pre; 
 	/*border:double black; */
 	background: #ffffff; 
