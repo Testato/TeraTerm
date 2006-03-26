@@ -194,6 +194,7 @@ OF SUCH DAMAGE.
 
 2006.3.27 (Ver 2.21)
   - added support for known_hosts on SSH2 connection.
+  - added showing the server's fingerprint on known_hosts dialog.
 
 2006.3.6 (Ver 2.20)
   - Improved SSH2 communication throughput by changing the window size adjustment.

@@ -184,6 +184,7 @@ OF SUCH DAMAGE.
 
 2006.3.27 (Ver 2.21)
   ・SSH2のknown_hosts対応を追加した。
+  ・known_hostsダイアログにサーバの fingerprint を表示するようにした
 
 2006.3.6 (Ver 2.20)
   ・SSH2ウィンドウ制御の見直しにより、スループットを向上させた。
