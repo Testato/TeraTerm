@@ -413,5 +413,6 @@ Key *key_from_blob(char *data, int blen);
 void key_free(Key *key);
 RSA *duplicate_RSA(RSA *src);
 DSA *duplicate_DSA(DSA *src);
+char *key_fingerprint(Key *key);
 
 #endif

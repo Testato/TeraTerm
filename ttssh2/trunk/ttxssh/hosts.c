@@ -775,7 +775,9 @@ static void init_hosts_dlg(PTInstVar pvar, HWND dlg)
 	char buf2[2048];
 	int i, j;
 	int ch;
+	char *fp;
 
+	// static textの # 部分をホスト名に置換する
 	GetDlgItemText(dlg, IDC_HOSTWARNING, buf, sizeof(buf));
 	for (i = 0; (ch = buf[i]) != 0 && ch != '#'; i++) {
 		buf2[i] = ch;
@@ -793,6 +795,10 @@ static void init_hosts_dlg(PTInstVar pvar, HWND dlg)
 	buf2[sizeof(buf2) - 1] = 0;
 
 	SetDlgItemText(dlg, IDC_HOSTWARNING, buf2);
+
+	// fingerprintを設定する
+	fp = key_fingerprint(&pvar->hosts_state.hostkey);
+	SendMessage(GetDlgItem(dlg, IDC_FINGER_PRINT), WM_SETTEXT, 0, (LPARAM)fp);
 }
 
 static int print_mp_int(char FAR * buf, unsigned char FAR * mp)
@@ -1131,6 +1137,9 @@ void HOSTS_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2006/03/26 15:43:58  yutakakn
+ * SSH2のknown_hosts対応を追加した。
+ *
  * Revision 1.3  2006/02/18 07:37:02  yutakakn
  *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
  *   ・stricmp()を_stricmp()へ置換した

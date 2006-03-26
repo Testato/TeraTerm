@@ -170,5 +170,8 @@ int CRYPT_get_encryption_block_size(PTInstVar pvar);
 
 BOOL CRYPT_detect_attack(PTInstVar pvar, unsigned char FAR * buf, int bytes);
 int CRYPT_passphrase_decrypt(int cipher, char FAR * passphrase, char FAR * buf, int len);
+RSA FAR *make_key(PTInstVar pvar,
+						 int bits, unsigned char FAR * exp,
+						 unsigned char FAR * mod);
 
 #endif

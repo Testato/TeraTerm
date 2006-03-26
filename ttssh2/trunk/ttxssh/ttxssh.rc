@@ -156,30 +156,34 @@ BEGIN
     LTEXT           "sec.(0 to turn off)",IDC_HEARTBEATLABEL2,151,197,60,8
 END
 
-IDD_SSHUNKNOWNHOST DIALOGEX 0, 0, 215, 116
+IDD_SSHUNKNOWNHOST DIALOGEX 0, 0, 215, 135
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "SECURITY WARNING"
 FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "&Continue",IDC_CONTINUE,49,95,50,14,WS_GROUP
-    PUSHBUTTON      "Disconnect",IDCANCEL,115,95,50,14,WS_GROUP
+    DEFPUSHBUTTON   "&Continue",IDC_CONTINUE,49,118,50,14,WS_GROUP
+    PUSHBUTTON      "Disconnect",IDCANCEL,115,118,50,14,WS_GROUP
     CONTROL         "&Add this machine and its key to the known hosts list",IDC_ADDTOKNOWNHOSTS,
-                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,18,74,181,13
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,18,102,181,13
     LTEXT           "There is no entry for the server ""#####################################"" in your list of known hosts. The machine you have contacted may be a hostile machine pretending to be the server.",IDC_HOSTWARNING,15,7,184,41
     LTEXT           "If you choose to add this machine to the known hosts list and continue, then you will not receive this warning again.",IDC_STATIC,15,48,184,26
+    EDITTEXT        IDC_FINGER_PRINT,15,86,179,12,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "The server's host key fingerprint is:",IDC_STATIC,16,75,176,8
 END
 
-IDD_SSHDIFFERENTHOST DIALOGEX 0, 0, 215, 114
+IDD_SSHDIFFERENTHOST DIALOGEX 0, 0, 215, 135
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "SECURITY WARNING"
 FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "Disconnect",IDCANCEL,115,93,50,14,WS_GROUP
+    DEFPUSHBUTTON   "Disconnect",IDCANCEL,115,117,50,14,WS_GROUP
     CONTROL         "&Add this new key to the known hosts list",IDC_ADDTOKNOWNHOSTS,
-                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,34,74,153,13
-    PUSHBUTTON      "&Continue",IDC_CONTINUE,49,93,50,14,WS_GROUP
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,34,101,153,13
+    PUSHBUTTON      "&Continue",IDC_CONTINUE,49,117,50,14,WS_GROUP
     LTEXT           "Your known hosts list has an entry for the server ""####################################"", but the machine you have contacted has presented a DIFFERENT KEY to the one in your known hosts list. A hostile machine may be pretending to be the server.",IDC_HOSTWARNING,15,7,184,43
-    LTEXT           "If you choose to add this new key to the known hosts list and continue, then you will not receive this warning again.",-1,15,50,184,24
+    LTEXT           "If you choose to add this new key to the known hosts list and continue, then you will not receive this warning again.",IDC_STATIC,15,50,184,24
+    LTEXT           "The server's host key fingerprint is:",IDC_STATIC,15,75,176,8
+    EDITTEXT        IDC_FINGER_PRINT,15,86,179,12,ES_AUTOHSCROLL | ES_READONLY
 END
 
 IDD_SSHAUTHSETUP DIALOGEX 0, 0, 309, 193
@@ -325,7 +329,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 208
         TOPMARGIN, 7
-        BOTTOMMARGIN, 109
+        BOTTOMMARGIN, 132
     END
 
     IDD_SSHDIFFERENTHOST, DIALOG
@@ -333,7 +337,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 208
         TOPMARGIN, 7
-        BOTTOMMARGIN, 107
+        BOTTOMMARGIN, 131
     END
 
     IDD_SSHAUTHSETUP, DIALOG

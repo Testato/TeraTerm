@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.4 2005-07-09 05:16:06 yutakakn Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.5 2006-03-26 17:07:17 yutakakn Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -563,7 +563,8 @@ static BIGNUM FAR *get_bignum(unsigned char FAR * bytes)
 	return BN_bin2bn(bytes + 2, (bits + 7) / 8, NULL);
 }
 
-static RSA FAR *make_key(PTInstVar pvar,
+// make_key()を fingerprint 生成でも利用するので、staticを削除。(2006.3.27 yutaka)
+RSA FAR *make_key(PTInstVar pvar,
 						 int bits, unsigned char FAR * exp,
 						 unsigned char FAR * mod)
 {
@@ -1423,6 +1424,9 @@ void CRYPT_free_key_pair(CRYPTKeyPair FAR * key_pair)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2005/07/09 05:16:06  yutakakn
+ * OpenSSL 0.9.8でビルドできるようにした。
+ *
  * Revision 1.3  2004/12/22 17:28:14  yutakakn
  * SSH2公開鍵認証(RSA/DSA)をサポートした。
  *

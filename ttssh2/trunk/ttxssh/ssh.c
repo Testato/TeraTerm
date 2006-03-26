@@ -3112,10 +3112,10 @@ void debug_print(int no, char *msg, int len)
 // クライアントからサーバへの提案事項
 #ifdef SSH2_DEBUG
 static char *myproposal[PROPOSAL_MAX] = {
-	"diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1",
-//	"diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1",
-	"ssh-rsa,ssh-dss",
-//	"ssh-dss,ssh-rsa",
+//	"diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1",
+	"diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1",
+//	"ssh-rsa,ssh-dss",
+	"ssh-dss,ssh-rsa",
 	"3des-cbc,aes128-cbc",
 	"3des-cbc,aes128-cbc",
 	"hmac-md5,hmac-sha1",
@@ -4554,6 +4554,99 @@ DSA *duplicate_DSA(DSA *src)
 
 error:
 	return (dsa);
+}
+
+
+static char* key_fingerprint_raw(Key *k, int *dgst_raw_length)
+{
+	const EVP_MD *md = NULL;
+	EVP_MD_CTX ctx;
+	char *blob = NULL;
+	char *retval = NULL;
+	int len = 0;
+	int nlen, elen;
+	RSA *rsa;
+
+	*dgst_raw_length = 0;
+
+	// MD5アルゴリズムを使用する
+	md = EVP_md5();
+
+	switch (k->type) {
+	case KEY_RSA1:
+		rsa = make_key(NULL, k->bits, k->exp, k->mod);
+		nlen = BN_num_bytes(rsa->n);
+		elen = BN_num_bytes(rsa->e);
+		len = nlen + elen;
+		blob = malloc(len);
+		if (blob == NULL) {
+			// TODO:
+		}
+		BN_bn2bin(rsa->n, blob);
+		BN_bn2bin(rsa->e, blob + nlen);
+		RSA_free(rsa);
+		break;
+
+	case KEY_DSA:
+	case KEY_RSA:
+		key_to_blob(k, &blob, &len);
+		break;
+
+	case KEY_UNSPEC:
+		return retval;
+		break;
+
+	default:
+		//fatal("key_fingerprint_raw: bad key type %d", k->type);
+		break;
+	}
+
+	if (blob != NULL) {
+		retval = malloc(EVP_MAX_MD_SIZE);
+		if (retval == NULL) {
+			// TODO: 
+		}
+		EVP_DigestInit(&ctx, md);
+		EVP_DigestUpdate(&ctx, blob, len);
+		EVP_DigestFinal(&ctx, retval, dgst_raw_length);
+		memset(blob, 0, len);
+		free(blob);
+	} else {
+		//fatal("key_fingerprint_raw: blob is null");
+	}
+	return retval;
+}
+
+
+//
+// fingerprint（指紋：ホスト公開鍵のハッシュ）を生成する
+//
+char *key_fingerprint(Key *key)
+{
+	char *retval = NULL;
+	unsigned char *dgst_raw;
+	int dgst_raw_len;
+	int i;
+
+	// fingerprintのハッシュ値（バイナリ）を求める
+	dgst_raw = key_fingerprint_raw(key, &dgst_raw_len);
+
+	// 16進表記へ変換する
+	retval = malloc(dgst_raw_len * 3 + 1);
+	retval[0] = '\0';
+	for (i = 0; i < dgst_raw_len; i++) {
+		char hex[4];
+		_snprintf(hex, sizeof(hex), "%02x:", dgst_raw[i]);
+		strcat(retval, hex);  // TODO: 代わりに strcat_s() を使うか?
+	}
+
+	/* Remove the trailing ':' character */
+	retval[(dgst_raw_len * 3) - 1] = '\0';
+
+	memset(dgst_raw, 0, dgst_raw_len);
+	free(dgst_raw);
+
+	return (retval);
 }
 
 
@@ -6721,6 +6814,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.41  2006/03/26 15:43:58  yutakakn
+ * SSH2のknown_hosts対応を追加した。
+ *
  * Revision 1.40  2006/03/06 14:43:49  yutakakn
  * SSH2ウィンドウ制御の見直しにより、スループットを向上させた。
  *
