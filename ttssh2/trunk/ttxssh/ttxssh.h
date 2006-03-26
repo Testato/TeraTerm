@@ -242,60 +242,7 @@ void notify_verbose_message(PTInstVar pvar, char FAR * msg, int level);
 void get_teraterm_dir_relative_name(char FAR * buf, int bufsize, char FAR * basename);
 int copy_teraterm_dir_relative_path(char FAR * dest, int destsize, char FAR * basename);
 void get_file_version(char *exefile, int *major, int *minor, int *release, int *build);
+int uuencode(unsigned char *src, int srclen, unsigned char *target, int targsize);
 
 #endif
 
-/*
- * $Log: not supported by cvs2svn $
- * Revision 1.13  2005/07/09 05:16:06  yutakakn
- * OpenSSL 0.9.8でビルドできるようにした。
- *
- * Revision 1.12  2005/04/23 17:26:57  yutakakn
- * キー作成ダイアログの追加。
- *
- * Revision 1.11  2005/04/03 14:39:48  yutakakn
- * SSH2 channel lookup機構の追加（ポートフォワーディングのため）。
- * TTSSH 2.10で追加したlog dump機構において、DH鍵再作成時にbuffer freeで
- * アプリケーションが落ちてしまうバグを修正。
- *
- * Revision 1.10  2005/03/12 15:07:34  yutakakn
- * SSH2 keyboard-interactive認証をTISダイアログに実装した。
- *
- * Revision 1.9  2005/03/10 13:40:39  yutakakn
- * すでにログイン処理を行っている場合は、SSH2_MSG_SERVICE_REQUESTの送信は
- * しないことにする。OpenSSHでは支障ないが、Tru64 UNIXではサーバエラーとなってしまうため。
- *
- * Revision 1.8  2005/03/03 13:28:23  yutakakn
- * クライアントのSSHバージョンを ttxssh.dll から取得して、サーバへ送るようにした。
- *
- * Revision 1.7  2005/01/27 13:30:33  yutakakn
- * 公開鍵認証自動ログインをサポート。
- * /auth=publickey, /keyfile オプションを新規追加した。
- * また、空白を含む引数をサポート。
- *
- * Revision 1.6  2005/01/24 14:07:07  yutakakn
- * ・keyboard-interactive認証をサポートした。
- * 　それに伴い、teraterm.iniに "KeyboardInteractive" エントリを追加した。
- * ・バージョンダイアログに OpenSSLバージョン を追加
- *
- * Revision 1.5  2004/12/27 14:05:08  yutakakn
- * 'Auto window close'が有効の場合、切断後の接続ができない問題を修正した。
- * 　・スレッドの終了待ち合わせ処理の追加
- * 　・確保済みSSHリソースの解放
- *
- * Revision 1.4  2004/12/17 14:05:55  yutakakn
- * パケット受信時のHMACチェックを追加。
- * KEXにおけるHMACアルゴリズムチェックを追加。
- *
- * Revision 1.3  2004/12/11 07:31:00  yutakakn
- * SSH heartbeatスレッドの追加した。これにより、IPマスカレード環境において、ルータの
- * NATテーブルクリアにより、SSHコネクションが切断される現象が回避される。
- * それに合わせて、teraterm.iniのTTSSHセクションに、HeartBeat エントリを追加。
- *
- * Revision 1.2  2004/12/01 15:37:49  yutakakn
- * SSH2自動ログイン機能を追加。
- * 現状、パスワード認証のみに対応。
- * ・コマンドライン
- *   /ssh /auth=認証メソッド /user=ユーザ名 /passwd=パスワード
- *
- */

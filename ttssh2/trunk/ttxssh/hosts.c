@@ -35,13 +35,51 @@ See LICENSE.TXT for the license.
 #include "util.h"
 #include "resource.h"
 #include "matcher.h"
+#include "ssh.h"
+#include "hosts.h"
 
 #include <openssl/bn.h>
+#include <openssl/evp.h>
+#include <openssl/rsa.h>
+#include <openssl/dsa.h>
 
 #include <fcntl.h>
 #include <io.h>
 #include <errno.h>
 #include <sys/stat.h>
+
+
+// BASE64構成文字列（ここでは'='は含まれていない）
+static char base64[] ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+
+// ホストキーの初期化 (2006.3.21 yutaka)
+static void init_hostkey(Key *key)
+{
+	key->type = KEY_UNSPEC;
+
+	// SSH1
+	key->bits = 0;
+	if (key->exp != NULL) {
+		free(key->exp);
+		key->exp = NULL;
+	}
+	if (key->mod != NULL) {
+		free(key->mod);
+		key->mod = NULL;
+	}
+
+	// SSH2
+	if (key->dsa != NULL) {
+		DSA_free(key->dsa);
+		key->dsa = NULL;
+	}
+	if (key->rsa != NULL) {
+		RSA_free(key->rsa);
+		key->rsa = NULL;
+	}
+}
+
 
 static char FAR *FAR * parse_multi_path(char FAR * buf)
 {
@@ -82,8 +120,12 @@ static char FAR *FAR * parse_multi_path(char FAR * buf)
 void HOSTS_init(PTInstVar pvar)
 {
 	pvar->hosts_state.prefetched_hostname = NULL;
+#if 0
 	pvar->hosts_state.key_exp = NULL;
 	pvar->hosts_state.key_mod = NULL;
+#else
+	init_hostkey(&pvar->hosts_state.hostkey);
+#endif
 	pvar->hosts_state.hosts_dialog = NULL;
 	pvar->hosts_state.file_names = NULL;
 }
@@ -94,6 +136,9 @@ void HOSTS_open(PTInstVar pvar)
 		parse_multi_path(pvar->session_settings.KnownHostsFiles);
 }
 
+//
+// known_hostsファイルの内容をすべて pvar->hosts_state.file_data へ読み込む
+//
 static int begin_read_file(PTInstVar pvar, char FAR * name,
 						   int suppress_errors)
 {
@@ -172,6 +217,25 @@ static int begin_read_host_files(PTInstVar pvar, int suppress_errors)
 	return 1;
 }
 
+// MIME64の文字列をスキップする
+static int eat_base64(char FAR * data)
+{
+	int index = 0;
+	int ch;
+
+	for (;;) {
+		ch = data[index];
+		if (ch == '=' || strchr(base64, ch)) {
+			// BASE64の構成文字が見つかったら index を進める
+			index++;
+		} else {
+			break;
+		}
+	}
+
+	return index;
+}
+
 static int eat_spaces(char FAR * data)
 {
 	int index = 0;
@@ -222,6 +286,163 @@ static int eat_to_end_of_pattern(char FAR * data)
 	return index;
 }
 
+// 
+// BASE64デコード処理を行う。(rfc1521)
+// srcバッファは null-terminate している必要あり。
+//
+static int uudecode(unsigned char *src, int srclen, unsigned char *target, int targsize)
+{
+	char pad = '=';
+	int tarindex, state, ch;
+	char *pos;
+
+	state = 0;
+	tarindex = 0;
+
+	while ((ch = *src++) != '\0') {
+		if (isspace(ch))	/* Skip whitespace anywhere. */
+			continue;
+
+		if (ch == pad)
+			break;
+
+		pos = strchr(base64, ch);
+		if (pos == 0) 		/* A non-base64 character. */
+			return (-1);
+
+		switch (state) {
+		case 0:
+			if (target) {
+				if (tarindex >= targsize)
+					return (-1);
+				target[tarindex] = (pos - base64) << 2;
+			}
+			state = 1;
+			break;
+		case 1:
+			if (target) {
+				if (tarindex + 1 >= targsize)
+					return (-1);
+				target[tarindex]   |=  (pos - base64) >> 4;
+				target[tarindex+1]  = ((pos - base64) & 0x0f) << 4 ;
+			}
+			tarindex++;
+			state = 2;
+			break;
+		case 2:
+			if (target) {
+				if (tarindex + 1 >= targsize)
+					return (-1);
+				target[tarindex]   |=  (pos - base64) >> 2;
+				target[tarindex+1]  = ((pos - base64) & 0x03) << 6;
+			}
+			tarindex++;
+			state = 3;
+			break;
+		case 3:
+			if (target) {
+				if (tarindex >= targsize)
+					return (-1);
+				target[tarindex] |= (pos - base64);
+			}
+			tarindex++;
+			state = 0;
+			break;
+		}
+	}
+
+	/*
+	 * We are done decoding Base-64 chars.  Let's see if we ended
+	 * on a byte boundary, and/or with erroneous trailing characters.
+	 */
+
+	if (ch == pad) {		/* We got a pad char. */
+		ch = *src++;		/* Skip it, get next. */
+		switch (state) {
+		case 0:		/* Invalid = in first position */
+		case 1:		/* Invalid = in second position */
+			return (-1);
+
+		case 2:		/* Valid, means one byte of info */
+			/* Skip any number of spaces. */
+			for (; ch != '\0'; ch = *src++)
+				if (!isspace(ch))
+					break;
+			/* Make sure there is another trailing = sign. */
+			if (ch != pad)
+				return (-1);
+			ch = *src++;		/* Skip the = */
+			/* Fall through to "single trailing =" case. */
+			/* FALLTHROUGH */
+
+		case 3:		/* Valid, means two bytes of info */
+			/*
+			 * We know this char is an =.  Is there anything but
+			 * whitespace after it?
+			 */
+			for (; ch != '\0'; ch = *src++)
+				if (!isspace(ch))
+					return (-1);
+
+			/*
+			 * Now make sure for cases 2 and 3 that the "extra"
+			 * bits that slopped past the last full byte were
+			 * zeros.  If we don't check them, they become a
+			 * subliminal channel.
+			 */
+			if (target && target[tarindex] != 0)
+				return (-1);
+		}
+	} else {
+		/*
+		 * We ended by seeing the end of the string.  Make sure we
+		 * have no partial bytes lying around.
+		 */
+		if (state != 0)
+			return (-1);
+	}
+
+	return (tarindex);
+}
+
+
+// SSH2鍵は BASE64 形式で格納されている
+static Key *parse_uudecode(char *data)
+{
+	int count;
+	unsigned char *blob = NULL;
+	int len, n;
+	Key *key = NULL;
+	char ch;
+
+	// BASE64文字列のサイズを得る
+	count = eat_base64(data);
+	len = 2 * count;
+	blob = malloc(len);
+	if (blob == NULL)
+		goto error;
+
+	// BASE64デコード
+	ch = data[count];
+	data[count] = '\0';  // ここは改行コードのはずなので書き潰しても問題ないはず
+	n = uudecode(data, count, blob, len);
+	data[count] = ch;
+	if (n < 0) {
+		goto error;
+	}
+
+	key = key_from_blob(blob, n);
+	if (key == NULL)
+		goto error;
+
+error:
+	if (blob != NULL)
+		free(blob);
+
+	return (key);
+}
+
+
 static char FAR *parse_bignum(char FAR * data)
 {
 	uint32 digits = 0;
@@ -268,6 +489,9 @@ static char FAR *parse_bignum(char FAR * data)
 	return result;
 }
 
+//
+// known_hostsファイルの内容を解析し、指定したホストの公開鍵を探す。
+//
 static int check_host_key(PTInstVar pvar, char FAR * hostname,
 						  char FAR * data)
 {
@@ -303,30 +527,92 @@ static int check_host_key(PTInstVar pvar, char FAR * hostname,
 	if (!matched) {
 		return index + eat_to_end_of_line(data + index);
 	} else {
+		// 鍵の種類によりフォーマットが異なる
+		// また、最初に一致したエントリを取得することになる。
+		/*
+		[SSH1]
+		192.168.1.2 1024 35 13032....
+
+		[SSH2]
+		192.168.1.2 ssh-rsa AAAAB3NzaC1....
+		192.168.1.2 ssh-dss AAAAB3NzaC1....
+		192.168.1.2 rsa AAAAB3NzaC1....
+		192.168.1.2 dsa AAAAB3NzaC1....
+		192.168.1.2 rsa1 AAAAB3NzaC1....
+		 */
+		int rsa1_key_bits;
+
 		index += eat_spaces(data + index);
 
-		pvar->hosts_state.key_bits = atoi(data + index);
-		index += eat_digits(data + index);
-		index += eat_spaces(data + index);
+		rsa1_key_bits = atoi(data + index);
+		if (rsa1_key_bits > 0) { // RSA1である
+			if (!SSHv1(pvar)) { // SSH2接続であれば無視する
+				return index + eat_to_end_of_line(data + index);
+			}
 
-		pvar->hosts_state.key_exp = parse_bignum(data + index);
-		index += eat_digits(data + index);
-		index += eat_spaces(data + index);
+			pvar->hosts_state.hostkey.type = KEY_RSA1;
 
-		pvar->hosts_state.key_mod = parse_bignum(data + index);
+			pvar->hosts_state.hostkey.bits = rsa1_key_bits;
+			index += eat_digits(data + index);
+			index += eat_spaces(data + index);
 
-		if (pvar->hosts_state.key_bits < 0
-			|| pvar->hosts_state.key_exp == NULL
-			|| pvar->hosts_state.key_mod == NULL) {
-			pvar->hosts_state.key_bits = 0;
-			free(pvar->hosts_state.key_exp);
-			free(pvar->hosts_state.key_mod);
+			pvar->hosts_state.hostkey.exp = parse_bignum(data + index);
+			index += eat_digits(data + index);
+			index += eat_spaces(data + index);
+
+			pvar->hosts_state.hostkey.mod = parse_bignum(data + index);
+
+			/*
+			if (pvar->hosts_state.key_bits < 0
+				|| pvar->hosts_state.key_exp == NULL
+				|| pvar->hosts_state.key_mod == NULL) {
+				pvar->hosts_state.key_bits = 0;
+				free(pvar->hosts_state.key_exp);
+				free(pvar->hosts_state.key_mod);
+			}*/
+
+		} else {
+			char *cp, *p;
+			Key *key;
+
+			if (!SSHv2(pvar)) { // SSH1接続であれば無視する
+				return index + eat_to_end_of_line(data + index);
+			}
+
+			cp = data + index;
+			p = strchr(cp, ' ');
+			if (p == NULL) {
+				return index + eat_to_end_of_line(data + index);
+			}
+			index += (p - cp);  // setup index
+			*p = '\0';
+			pvar->hosts_state.hostkey.type = get_keytype_from_name(cp);
+			*p = ' ';
+
+			index += eat_spaces(data + index);  // update index
+
+			// uudecode
+			key = parse_uudecode(data + index);
+			if (key == NULL) {
+				return index + eat_to_end_of_line(data + index);
+			}
+
+			// setup
+			pvar->hosts_state.hostkey.type = key->type;
+			pvar->hosts_state.hostkey.dsa = key->dsa;
+			pvar->hosts_state.hostkey.rsa = key->rsa;
+
+			index += eat_base64(data + index);
+			index += eat_spaces(data + index);
 		}
 
 		return index + eat_to_end_of_line(data + index);
 	}
 }
 
+//
+// known_hostsファイルからホスト名に合致する行を読む
+//
 static int read_host_key(PTInstVar pvar, char FAR * hostname,
 						 int suppress_errors)
 {
@@ -353,11 +639,16 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 		return 0;
 	}
 
+#if 0
 	pvar->hosts_state.key_bits = 0;
 	free(pvar->hosts_state.key_exp);
 	pvar->hosts_state.key_exp = NULL;
 	free(pvar->hosts_state.key_mod);
 	pvar->hosts_state.key_mod = NULL;
+#else
+	// hostkey type is KEY_UNSPEC.
+	init_hostkey(&pvar->hosts_state.hostkey);
+#endif
 
 	do {
 		if (pvar->hosts_state.file_data == NULL
@@ -395,7 +686,7 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 			check_host_key(pvar, hostname,
 						   pvar->hosts_state.file_data +
 						   pvar->hosts_state.file_data_index);
-	} while (pvar->hosts_state.key_bits == 0);
+	} while (pvar->hosts_state.hostkey.type == KEY_UNSPEC);  // 有効なキーが見つかるまで
 
 	return 1;
 }
@@ -407,6 +698,7 @@ static void finish_read_host_files(PTInstVar pvar, int suppress_errors)
 	}
 }
 
+// サーバへ接続する前に、known_hostsファイルからホスト公開鍵を先読みしておく。
 void HOSTS_prefetch_host_key(PTInstVar pvar, char FAR * hostname)
 {
 	if (!begin_read_host_files(pvar, 1)) {
@@ -439,13 +731,42 @@ static BOOL equal_mp_ints(unsigned char FAR * num1,
 	}
 }
 
-static BOOL match_key(PTInstVar pvar,
-					  int bits, unsigned char FAR * exp,
-					  unsigned char FAR * mod)
+// 公開鍵が等しいかを検証する
+static BOOL match_key(PTInstVar pvar, Key *key)
 {
-	/* just check for equal exponent and modulus */
-	return equal_mp_ints(exp, pvar->hosts_state.key_exp)
-		&& equal_mp_ints(mod, pvar->hosts_state.key_mod);
+	int bits;
+	unsigned char FAR * exp;
+	unsigned char FAR * mod;
+
+	if (key->type == KEY_RSA1) {  // SSH1 host public key
+		bits = key->bits;
+		exp = key->exp;
+		mod = key->mod;
+
+		/* just check for equal exponent and modulus */
+		return equal_mp_ints(exp, pvar->hosts_state.hostkey.exp)
+			&& equal_mp_ints(mod, pvar->hosts_state.hostkey.mod);
+		/*
+		return equal_mp_ints(exp, pvar->hosts_state.key_exp)
+			&& equal_mp_ints(mod, pvar->hosts_state.key_mod);
+			*/
+
+	} else if (key->type == KEY_RSA) {  // SSH2 RSA host public key
+
+		return key->rsa != NULL && pvar->hosts_state.hostkey.rsa != NULL &&
+			   BN_cmp(key->rsa->e, pvar->hosts_state.hostkey.rsa->e) == 0 && 
+			   BN_cmp(key->rsa->n, pvar->hosts_state.hostkey.rsa->n) == 0;
+
+	} else { // // SSH2 DSA host public key
+
+		return key->dsa != NULL && pvar->hosts_state.hostkey.dsa && 
+			   BN_cmp(key->dsa->p, pvar->hosts_state.hostkey.dsa->p) == 0 && 
+			   BN_cmp(key->dsa->q, pvar->hosts_state.hostkey.dsa->q) == 0 &&
+			   BN_cmp(key->dsa->g, pvar->hosts_state.hostkey.dsa->g) == 0 &&
+			   BN_cmp(key->dsa->pub_key, pvar->hosts_state.hostkey.dsa->pub_key) == 0;
+
+	}
+
 }
 
 static void init_hosts_dlg(PTInstVar pvar, HWND dlg)
@@ -498,31 +819,72 @@ static int print_mp_int(char FAR * buf, unsigned char FAR * mp)
 	return i;
 }
 
+//
+// known_hosts ファイルへ保存するエントリを作成する。
+//
 static char FAR *format_host_key(PTInstVar pvar)
 {
 	int host_len = strlen(pvar->hosts_state.prefetched_hostname);
-	char FAR *result = (char FAR *) malloc(host_len
-										   + 50 +
-										   get_ushort16_MSBfirst(pvar->
-																 hosts_state.
-																 key_exp) /
-										   3 +
-										   get_ushort16_MSBfirst(pvar->
-																 hosts_state.
-																 key_mod) /
-										   3);
+	char *result = NULL;
 	int index;
+	enum hostkey_type type = pvar->hosts_state.hostkey.type;
 
-	strcpy(result, pvar->hosts_state.prefetched_hostname);
-	index = host_len;
+	if (type == KEY_RSA1) {
+		result = (char FAR *) malloc(host_len
+										   + 50 +
+										   get_ushort16_MSBfirst(pvar->hosts_state.hostkey.exp) /
+										   3 +
+										   get_ushort16_MSBfirst(pvar->hosts_state.hostkey.mod) /
+										   3);
 
-	sprintf(result + index, " %d ", pvar->hosts_state.key_bits);
-	index += strlen(result + index);
-	index += print_mp_int(result + index, pvar->hosts_state.key_exp);
-	result[index] = ' ';
-	index++;
-	index += print_mp_int(result + index, pvar->hosts_state.key_mod);
-	strcpy(result + index, " \r\n");
+		strcpy(result, pvar->hosts_state.prefetched_hostname);
+		index = host_len;
+
+		sprintf(result + index, " %d ", pvar->hosts_state.hostkey.bits);
+		index += strlen(result + index);
+		index += print_mp_int(result + index, pvar->hosts_state.hostkey.exp);
+		result[index] = ' ';
+		index++;
+		index += print_mp_int(result + index, pvar->hosts_state.hostkey.mod);
+		strcpy(result + index, " \r\n");
+
+	} else if (type == KEY_RSA || type == KEY_DSA) {
+		Key *key = &pvar->hosts_state.hostkey;
+		char *blob = NULL;
+		int blen, uulen, msize;
+		char *uu = NULL;
+		int n;
+
+		key_to_blob(key, &blob, &blen);
+		uulen = 2 * blen;
+		uu = malloc(uulen);
+		if (uu == NULL) {
+			goto error;
+		}
+		n = uuencode(blob, blen, uu, uulen);
+		if (n > 0) {
+			msize = host_len + 50 + uulen;
+			result = malloc(msize);
+			if (result == NULL) {
+				goto error;
+			}
+
+			// setup
+			_snprintf(result, msize, "%s %s %s\r\n", 
+				pvar->hosts_state.prefetched_hostname, 
+				get_sshname_from_key(key),
+				uu);
+		}
+error:
+		if (blob != NULL)
+			free(blob);
+		if (uu != NULL)
+			free(uu);
+
+	} else {
+		return NULL;
+
+	}
 
 	return result;
 }
@@ -571,6 +933,12 @@ static void add_host_key(PTInstVar pvar)
 	}
 }
 
+//
+// Unknown hostのホスト公開鍵を known_hosts ファイルへ保存するかどうかを
+// ユーザに確認させる。
+// TODO: finger printの表示も行う。
+// (2006.3.25 yutaka)
+//
 static BOOL CALLBACK hosts_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 									LPARAM lParam)
 {
@@ -583,6 +951,10 @@ static BOOL CALLBACK hosts_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		SetWindowLong(dlg, DWL_USER, lParam);
 
 		init_hosts_dlg(pvar, dlg);
+
+		// add host check boxにチェックをデフォルトで入れておく 
+		SendMessage(GetDlgItem(dlg, IDC_ADDTOKNOWNHOSTS), BM_SETCHECK, BST_CHECKED, 0);
+
 		return TRUE;			/* because we do not set the focus */
 
 	case WM_COMMAND:
@@ -593,7 +965,12 @@ static BOOL CALLBACK hosts_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			if (IsDlgButtonChecked(dlg, IDC_ADDTOKNOWNHOSTS)) {
 				add_host_key(pvar);
 			}
-			SSH_notify_host_OK(pvar);
+
+			if (SSHv1(pvar)) {
+				SSH_notify_host_OK(pvar);
+			} else { // SSH2
+				// SSH2ではあとで SSH_notify_host_OK() を呼ぶ。
+			}
 
 			pvar->hosts_state.hosts_dialog = NULL;
 
@@ -649,42 +1026,65 @@ void HOSTS_do_different_host_dialog(HWND wnd, PTInstVar pvar)
 	}
 }
 
-BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname,
-						  int bits, unsigned char FAR * exp,
-						  unsigned char FAR * mod)
+//
+// サーバから送られてきたホスト公開鍵の妥当性をチェックする
+//
+// SSH2対応を追加 (2006.3.24 yutaka)
+//
+BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname, Key *key)
 {
 	int found_different_key = 0;
 
+	// すでに known_hosts ファイルからホスト公開鍵を読み込んでいるなら、それと比較する。
 	if (pvar->hosts_state.prefetched_hostname != NULL
 		&& _stricmp(pvar->hosts_state.prefetched_hostname, hostname) == 0
-		&& match_key(pvar, bits, exp, mod)) {
-		SSH_notify_host_OK(pvar);
+		&& match_key(pvar, key)) {
+
+		if (SSHv1(pvar)) {
+			SSH_notify_host_OK(pvar);
+		} else {
+			// SSH2ではあとで SSH_notify_host_OK() を呼ぶ。
+		}
 		return TRUE;
 	}
 
+	// 先読みされていない場合は、この時点でファイルから読み込む
 	if (begin_read_host_files(pvar, 0)) {
 		do {
 			if (!read_host_key(pvar, hostname, 0)) {
 				break;
 			}
 
-			if (pvar->hosts_state.key_bits > 0) {
-				if (match_key(pvar, bits, exp, mod)) {
+			if (pvar->hosts_state.hostkey.type != KEY_UNSPEC) {
+				if (match_key(pvar, key)) {
 					finish_read_host_files(pvar, 0);
 					SSH_notify_host_OK(pvar);
 					return TRUE;
 				} else {
+					// キーは known_hosts に見つかったが、キーの内容が異なる。
 					found_different_key = 1;
 				}
 			}
-		} while (pvar->hosts_state.key_bits > 0);
+		} while (pvar->hosts_state.hostkey.type != KEY_UNSPEC);  // キーが見つかっている間はループする
 
 		finish_read_host_files(pvar, 0);
 	}
 
-	pvar->hosts_state.key_bits = bits;
-	pvar->hosts_state.key_exp = copy_mp_int(exp);
-	pvar->hosts_state.key_mod = copy_mp_int(mod);
+
+	// known_hosts に存在しないキーはあとでファイルへ書き込むために、ここで保存しておく。
+	pvar->hosts_state.hostkey.type = key->type;
+	if (key->type == KEY_RSA1) { // SSH1
+		pvar->hosts_state.hostkey.bits = key->bits;
+		pvar->hosts_state.hostkey.exp = copy_mp_int(key->exp);
+		pvar->hosts_state.hostkey.mod = copy_mp_int(key->mod);
+
+	} else if (key->type == KEY_RSA) { // SSH2 RSA
+		pvar->hosts_state.hostkey.rsa = duplicate_RSA(key->rsa);
+
+	} else { // SSH2 DSA
+		pvar->hosts_state.hostkey.dsa = duplicate_DSA(key->dsa);
+
+	}
 	free(pvar->hosts_state.prefetched_hostname);
 	pvar->hosts_state.prefetched_hostname = _strdup(hostname);
 
@@ -714,8 +1114,12 @@ void HOSTS_end(PTInstVar pvar)
 	int i;
 
 	free(pvar->hosts_state.prefetched_hostname);
+#if 0
 	free(pvar->hosts_state.key_exp);
 	free(pvar->hosts_state.key_mod);
+#else
+	init_hostkey(&pvar->hosts_state.hostkey);
+#endif
 
 	if (pvar->hosts_state.file_names != NULL) {
 		for (i = 0; pvar->hosts_state.file_names[i] != NULL; i++) {
@@ -727,6 +1131,11 @@ void HOSTS_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2006/02/18 07:37:02  yutakakn
+ *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
+ *   ・stricmp()を_stricmp()へ置換した
+ *   ・strdup()を_strdup()へ置換した
+ *
  * Revision 1.2  2004/12/19 15:39:42  yutakakn
  * CVS LogIDの追加
  *

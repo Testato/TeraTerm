@@ -257,6 +257,20 @@ enum kex_modes {
 };
 
 
+// ホストキー(SSH1, SSH2含む)のデータ構造 (2006.3.21 yutaka)
+typedef struct Key {
+	// host key type
+	enum hostkey_type type;
+	// SSH2 RSA
+	RSA *rsa;
+	// SSH2 DSA
+	DSA *dsa;
+	// SSH1 RSA
+	int bits;
+	unsigned char *exp;
+	unsigned char *mod;
+} Key;
+
 
 /* The packet handler returns TRUE to keep the handler in place,
    FALSE to remove the handler. */
@@ -391,5 +405,13 @@ void ssh2_channel_free(void);
 BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar);
 void SSH2_update_compression_myproposal(PTInstVar pvar);
 void SSH2_update_cipher_myproposal(PTInstVar pvar);
+
+enum hostkey_type get_keytype_from_name(char *name);
+char *get_sshname_from_key(Key *key);
+int key_to_blob(Key *key, char **blobp, int *lenp);
+Key *key_from_blob(char *data, int blen);
+void key_free(Key *key);
+RSA *duplicate_RSA(RSA *src);
+DSA *duplicate_DSA(DSA *src);
 
 #endif

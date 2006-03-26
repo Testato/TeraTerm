@@ -2312,7 +2312,7 @@ static void ssh_make_comment(char *comment, int maxlen)
 }
 
 // uuencode (rfc1521)
-static int uuencode(unsigned char *src, int srclen, unsigned char *target, int targsize)
+int uuencode(unsigned char *src, int srclen, unsigned char *target, int targsize)
 {
 	char base64[] ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 	char pad = '=';
@@ -3100,6 +3100,11 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.28  2006/02/18 07:37:02  yutakakn
+ *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
+ *   ・stricmp()を_stricmp()へ置換した
+ *   ・strdup()を_strdup()へ置換した
+ *
  * Revision 1.27  2005/10/21 13:43:08  yutakakn
  * Historyチェックボックスのenable / disable追加。
  *

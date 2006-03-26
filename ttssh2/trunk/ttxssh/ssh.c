@@ -1213,6 +1213,7 @@ static BOOL handle_server_public_key(PTInstVar pvar)
 	int protocol_flags_pos;
 	int supported_ciphers;
 	char FAR *inmsg;
+	Key hostkey;
 
 	if (!grab_payload(pvar, 14))
 		return FALSE;
@@ -1268,10 +1269,11 @@ static BOOL handle_server_public_key(PTInstVar pvar)
 
 	/* this must be the LAST THING in this function, since it can cause
 	   host_is_OK to be called. */
-	HOSTS_check_host_key(pvar, pvar->ssh_state.hostname,
-						 get_uint32(inmsg + host_key_bits_pos),
-						 inmsg + host_key_bits_pos + 4,
-						 inmsg + host_key_public_modulus_pos);
+	hostkey.type = KEY_RSA1;
+	hostkey.bits = get_uint32(inmsg + host_key_bits_pos);
+	hostkey.exp = inmsg + host_key_bits_pos + 4;
+	hostkey.mod = inmsg + host_key_public_modulus_pos;
+	HOSTS_check_host_key(pvar, pvar->ssh_state.hostname, &hostkey);
 
 	return FALSE;
 }
@@ -1338,7 +1340,10 @@ static BOOL negotiate_protocol(PTInstVar pvar)
 static void init_protocol(PTInstVar pvar)
 {
 	CRYPT_initialize_random_numbers(pvar);
+
+	// known_hostsファイルからホスト公開鍵を先読みしておく
 	HOSTS_prefetch_host_key(pvar, pvar->ssh_state.hostname);
+
 	/* while we wait for a response from the server... */
 
 	if (SSHv1(pvar)) {
@@ -3107,10 +3112,10 @@ void debug_print(int no, char *msg, int len)
 // クライアントからサーバへの提案事項
 #ifdef SSH2_DEBUG
 static char *myproposal[PROPOSAL_MAX] = {
-//	"diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1",
-	"diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1",
-//	"ssh-rsa,ssh-dss",
-	"ssh-dss,ssh-rsa",
+	"diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1",
+//	"diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1",
+	"ssh-rsa,ssh-dss",
+//	"ssh-dss,ssh-rsa",
 	"3des-cbc,aes128-cbc",
 	"3des-cbc,aes128-cbc",
 	"hmac-md5,hmac-sha1",
@@ -4493,7 +4498,264 @@ static int key_verify(
 	return (ret);   // success
 }
 
+//
+// RSA構造体の複製
+// 
+RSA *duplicate_RSA(RSA *src)
+{
+	RSA *rsa = NULL;
 
+	rsa = RSA_new();
+	if (rsa == NULL)
+		goto error;
+	rsa->n = BN_new();
+	rsa->e = BN_new();
+	if (rsa->n == NULL || rsa->e == NULL) {
+		RSA_free(rsa);
+		goto error;
+	}
+
+	// 深いコピー(deep copy)を行う。浅いコピー(shallow copy)はNG。
+	BN_copy(rsa->n, src->n);
+	BN_copy(rsa->e, src->e);
+
+error:
+	return (rsa);
+}
+
+
+//
+// DSA構造体の複製
+// 
+DSA *duplicate_DSA(DSA *src)
+{
+	DSA *dsa = NULL;
+
+	dsa = DSA_new();
+	if (dsa == NULL)
+		goto error;
+	dsa->p = BN_new();
+	dsa->q = BN_new();
+	dsa->g = BN_new();
+	dsa->pub_key = BN_new();
+	if (dsa->p == NULL || 
+		dsa->q == NULL ||
+		dsa->g == NULL ||
+		dsa->pub_key == NULL) {
+		DSA_free(dsa);
+		goto error;
+	}
+
+	// 深いコピー(deep copy)を行う。浅いコピー(shallow copy)はNG。
+	BN_copy(dsa->p, src->p);
+	BN_copy(dsa->q, src->q);
+	BN_copy(dsa->g, src->g);
+	BN_copy(dsa->pub_key, src->pub_key);
+
+error:
+	return (dsa);
+}
+
+
+//
+// キーのメモリ領域解放 
+//
+void key_free(Key *key)
+{
+	switch (key->type) {
+		case KEY_RSA1:
+		case KEY_RSA:
+			if (key->rsa != NULL)
+				RSA_free(key->rsa);
+			key->rsa = NULL;
+			break;
+
+		case KEY_DSA:
+			if (key->dsa != NULL)
+				DSA_free(key->dsa);
+			key->dsa = NULL;
+			break;
+	}
+	free(key);
+}
+
+//
+// キーから文字列を返却する
+//
+char *get_sshname_from_key(Key *key)
+{
+	if (key->type == KEY_RSA) {
+		return "ssh-rsa";
+	} else if (key->type == KEY_DSA) {
+		return "ssh-dss";
+	} else {
+		return "ssh-unknown";
+	}
+}
+
+
+//
+// キー文字列から種別を判定する
+//
+enum hostkey_type get_keytype_from_name(char *name)
+{
+	if (strcmp(name, "rsa1") == 0) {
+		return KEY_RSA1;
+	} else if (strcmp(name, "rsa") == 0) {
+		return KEY_RSA;
+	} else if (strcmp(name, "dsa") == 0) {
+		return KEY_DSA;
+	} else if (strcmp(name, "ssh-rsa") == 0) {
+		return KEY_RSA;
+	} else if (strcmp(name, "ssh-dss") == 0) {
+		return KEY_DSA;
+	}
+	return KEY_UNSPEC;
+}
+
+
+//
+// キー情報からバッファへ変換する (for SSH2) 
+// NOTE: 
+// 
+int key_to_blob(Key *key, char **blobp, int *lenp)
+{
+	buffer_t *b;
+	char *sshname;
+	int len;
+	int ret = 1;  // success
+
+	b = buffer_init();
+	sshname = get_sshname_from_key(key);
+
+	if (key->type == KEY_RSA) {
+		buffer_put_string(b, sshname, strlen(sshname));
+		buffer_put_bignum2(b, key->rsa->e);
+		buffer_put_bignum2(b, key->rsa->n);
+
+	} else if (key->type == KEY_DSA) {
+		buffer_put_string(b, sshname, strlen(sshname));
+		buffer_put_bignum2(b, key->dsa->p);
+		buffer_put_bignum2(b, key->dsa->q);
+		buffer_put_bignum2(b, key->dsa->g);
+		buffer_put_bignum2(b, key->dsa->pub_key);
+
+	} else {
+		ret = 0;
+		goto error;
+
+	}
+
+	len = buffer_len(b);
+	if (lenp != NULL)
+		*lenp = len;
+	if (blobp != NULL) {
+		*blobp = malloc(len);
+		if (*blobp == NULL) {
+			ret = 0;
+			goto error;
+		}
+		memcpy(*blobp, buffer_ptr(b), len);
+	}
+
+error:
+	buffer_free(b);
+
+	return (ret);
+}
+
+
+//
+// バッファからキー情報を取り出す(for SSH2) 
+// NOTE: 返値はアロケート領域になるので、呼び出し側で解放すること。
+// 
+Key *key_from_blob(char *data, int blen)
+{
+	int keynamelen;
+	char key[128];
+	RSA *rsa = NULL;
+	DSA *dsa = NULL;
+	Key *hostkey;  // hostkey 
+	enum hostkey_type type;
+
+	hostkey = malloc(sizeof(Key));
+	if (hostkey == NULL)
+		goto error;
+
+	memset(hostkey, 0, sizeof(Key));
+
+	keynamelen = get_uint32_MSBfirst(data);
+	if (keynamelen >= sizeof(key)) {
+		goto error;
+	}
+	data += 4;
+	memcpy(key, data, keynamelen);
+	key[keynamelen] = 0;
+	data += keynamelen;
+
+	type = get_keytype_from_name(key);
+
+		// RSA key
+	if (type == KEY_RSA) {
+		rsa = RSA_new();
+		if (rsa == NULL) {
+			goto error;
+		}
+		rsa->n = BN_new();
+		rsa->e = BN_new();
+		if (rsa->n == NULL || rsa->e == NULL) {
+			goto error;
+		}
+
+		buffer_get_bignum2(&data, rsa->e);
+		buffer_get_bignum2(&data, rsa->n);
+
+		hostkey->type = type;
+		hostkey->rsa = rsa;
+
+	} else if (type == KEY_DSA) { // DSA key
+		dsa = DSA_new();
+		if (dsa == NULL) {
+			goto error;
+		}
+		dsa->p = BN_new();
+		dsa->q = BN_new();
+		dsa->g = BN_new();
+		dsa->pub_key = BN_new();
+		if (dsa->p == NULL || 
+			dsa->q == NULL ||
+			dsa->g == NULL ||
+			dsa->pub_key == NULL) {
+			goto error;
+		}
+
+		buffer_get_bignum2(&data, dsa->p);
+		buffer_get_bignum2(&data, dsa->q);
+		buffer_get_bignum2(&data, dsa->g);
+		buffer_get_bignum2(&data, dsa->pub_key);
+
+		hostkey->type = type;
+		hostkey->dsa = dsa;
+
+	} else {
+		// unknown key
+		goto error;
+
+	}
+
+	return (hostkey);
+
+error:
+	if (rsa != NULL)
+		RSA_free(rsa);
+	if (dsa != NULL)
+		DSA_free(dsa);
+
+	return NULL;
+}
+
+
+//
 // Diffie-Hellman Key Exchange Reply(SSH2_MSG_KEXDH_REPLY:31)
 //
 static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
@@ -4513,7 +4775,9 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 	BIGNUM *share_key = NULL;
 	char *hash;
 	char *emsg, emsg_tmp[1024];  // error message
+	Key hostkey;  // hostkey 
 
+	memset(&hostkey, 0, sizeof(hostkey));
 
 	// TODO: buffer overrun check
 
@@ -4529,6 +4793,8 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 	data += 4;
 	server_host_key_blob = data; // for hash
 
+	// key_from_blob()#key.c の処理が以下から始まる。
+	// known_hosts検証用の server_host_key は rsa or dsa となる。
 	keynamelen = get_uint32_MSBfirst(data);
 	if (keynamelen >= 128) {
 		emsg = "keyname length too big @ handle_SSH2_dh_kex_reply()";
@@ -4556,6 +4822,9 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 		buffer_get_bignum2(&data, rsa->e);
 		buffer_get_bignum2(&data, rsa->n);
 
+		hostkey.type = KEY_RSA;
+		hostkey.rsa = rsa;
+
 	} else if (strcmp(key, "ssh-dss") == 0) { // DSA key
 		dsa = DSA_new();
 		if (dsa == NULL) {
@@ -4579,6 +4848,9 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 		buffer_get_bignum2(&data, dsa->g);
 		buffer_get_bignum2(&data, dsa->pub_key);
 
+		hostkey.type = KEY_DSA;
+		hostkey.dsa = dsa;
+
 	} else {
 		// unknown key
 		_snprintf(emsg_tmp, sizeof(emsg_tmp), "Unknown key type(%s) @ handle_SSH2_dh_kex_reply()", key);
@@ -4586,6 +4858,15 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 		goto error;
 
 	}
+
+	// known_hosts対応 (2006.3.20 yutaka)
+	if (hostkey.type != pvar->hostkey_type) {  // ホストキーの種別比較
+		_snprintf(emsg_tmp, sizeof(emsg_tmp), "type mismatch for decoded server_host_key_blob @ %s", __FUNCTION__);
+		emsg = emsg_tmp;
+		goto error;
+	}
+	HOSTS_check_host_key(pvar, pvar->ssh_state.hostname, &hostkey);
+
 
 	dh_server_pub = BN_new();
 	if (dh_server_pub == NULL) {
@@ -4661,6 +4942,7 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 
 	kex_derive_keys(pvar, pvar->we_need, hash, share_key, pvar->session_id, pvar->session_id_len);
 
+
 	// KEX finish
 	begin_send_packet(pvar, SSH2_MSG_NEWKEYS, 0);
 	finish_send_packet(pvar);
@@ -4712,6 +4994,7 @@ error:
 
 	return FALSE;
 }
+
 
 
 
@@ -4800,7 +5083,9 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 	char *hash;
 	char *emsg, emsg_tmp[1024];  // error message
 	int ret;
+	Key hostkey;  // hostkey 
 
+	memset(&hostkey, 0, sizeof(hostkey));
 
 	// TODO: buffer overrun check
 
@@ -4820,6 +5105,8 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 
 	push_memdump("DH_GEX_REPLY", "server_host_key_blob", server_host_key_blob, bloblen);
 
+	// key_from_blob()#key.c の処理が以下から始まる。
+	// known_hosts検証用の server_host_key は rsa or dsa となる。
 	keynamelen = get_uint32_MSBfirst(data);
 	if (keynamelen >= 128) {
 		emsg = "keyname length too big @ handle_SSH2_dh_kex_reply()";
@@ -4849,6 +5136,9 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 		buffer_get_bignum2(&data, rsa->e);
 		buffer_get_bignum2(&data, rsa->n);
 
+		hostkey.type = KEY_RSA;
+		hostkey.rsa = rsa;
+
 	} else if (strcmp(key, "ssh-dss") == 0) { // DSA key
 		dsa = DSA_new();
 		if (dsa == NULL) {
@@ -4872,6 +5162,9 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 		buffer_get_bignum2(&data, dsa->g);
 		buffer_get_bignum2(&data, dsa->pub_key);
 
+		hostkey.type = KEY_DSA;
+		hostkey.dsa = dsa;
+
 	} else {
 		// unknown key
 		_snprintf(emsg_tmp, sizeof(emsg_tmp), "Unknown key type(%s) @ handle_SSH2_dh_kex_reply()", key);
@@ -4879,6 +5172,15 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 		goto error;
 
 	}
+
+	// known_hosts対応 (2006.3.20 yutaka)
+	if (hostkey.type != pvar->hostkey_type) {  // ホストキーの種別比較
+		_snprintf(emsg_tmp, sizeof(emsg_tmp), "type mismatch for decoded server_host_key_blob @ %s", __FUNCTION__);
+		emsg = emsg_tmp;
+		goto error;
+	}
+	HOSTS_check_host_key(pvar, pvar->ssh_state.hostname, &hostkey);
+
 
 	dh_server_pub = BN_new();
 	if (dh_server_pub == NULL) {
@@ -6419,6 +6721,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.40  2006/03/06 14:43:49  yutakakn
+ * SSH2ウィンドウ制御の見直しにより、スループットを向上させた。
+ *
  * Revision 1.39  2006/02/23 14:13:57  yutakakn
  * authorized_keysファイルの"command="をサポートした
  *

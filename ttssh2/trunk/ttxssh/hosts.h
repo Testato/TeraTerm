@@ -36,15 +36,21 @@ See LICENSE.TXT for the license.
 
 typedef struct {
   char FAR * prefetched_hostname;
+
+#if 0
   int key_bits;
   /* The key exponent and modulus, in SSH mp_int format */
   unsigned char FAR * key_exp;
   unsigned char FAR * key_mod;
+#else
+  // ホストキー(SSH1,SSH2)は Key 構造体に集約する
+  Key hostkey;
+#endif
 
   int file_num;
   char FAR * FAR * file_names;
   int file_data_index;
-  char FAR * file_data;
+  char FAR * file_data;  // known_hostsファイルの内容がすべて格納される
 
   HWND hosts_dialog;
 } HOSTSState;
@@ -52,11 +58,14 @@ typedef struct {
 void HOSTS_init(PTInstVar pvar);
 void HOSTS_open(PTInstVar pvar);
 void HOSTS_prefetch_host_key(PTInstVar pvar, char FAR * hostname);
+#if 0
 BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname,
                          int bits, unsigned char FAR * exp, unsigned char FAR * mod);
+#else
+BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname, Key *key);
+#endif
 void HOSTS_do_unknown_host_dialog(HWND wnd, PTInstVar pvar);
 void HOSTS_do_different_host_dialog(HWND wnd, PTInstVar pvar);
 void HOSTS_notify_disconnecting(PTInstVar pvar);
 void HOSTS_end(PTInstVar pvar);
-
 #endif
