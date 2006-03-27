@@ -11,42 +11,74 @@
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="index">
 		<param name="Local" value="html\index.html">
+		<param name="ImageNumber" value="9">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="About Tera Term">
 		<param name="ImageNumber" value="1">
 		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="License and Copyright ">
+			<param name="Local" value="html\copyright.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Requirements ">
+			<param name="Local" value="html\requirements.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Emulations ">
+			<param name="Local" value="html\emulations.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="History ">
+			<param name="Local" value="html\history.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Q &amp; A ">
+			<param name="Local" value="html\qanda.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Requests ">
+			<param name="Local" value="html\requests.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Contacting the author ">
+			<param name="Local" value="html\contacts.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Document writer ">
+			<param name="Local" value="html\writer.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+	</UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="License and Copyright ">
-		<param name="Local" value="html\copyright.html">
-		<param name="ImageNumber" value="11">
+		<param name="Name" value="Usage">
+		<param name="ImageNumber" value="1">
 		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Requirements ">
-		<param name="Local" value="html\requirements.html">
-		<param name="ImageNumber" value="11">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Emulations ">
-		<param name="Local" value="html\emulations.html">
-		<param name="ImageNumber" value="11">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="History ">
-		<param name="Local" value="html\history.html">
-		<param name="ImageNumber" value="11">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Q &amp; A">
-		<param name="Local" value="html\qanda.html">
-		<param name="ImageNumber" value="11">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Requests ">
-		<param name="Local" value="html\requests.html">
-		<param name="ImageNumber" value="11">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Contacting the author ">
-		<param name="Local" value="html\contacts.html">
-		<param name="ImageNumber" value="11">
-		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Keyboard">
+			<param name="Local" value="html\keyboard.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Mouse">
+			<param name="Local" value="html\mouse.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Tips">
+			<param name="Local" value="html\tips.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+	</UL>
 </UL>
 </BODY></HTML>
