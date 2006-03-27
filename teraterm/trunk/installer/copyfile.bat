@@ -15,6 +15,8 @@ copy /y C:\usr\cvs\teraterm\visualc\bin\release\*.exe %dst%
 copy /y C:\usr\cvs\teraterm\visualc\bin\release\*.dll %dst%
 copy /y C:\usr\cvs\ttssh2\ttxssh\Release\ttxssh.dll %dst%
 copy /y C:\usr\cvs\teraterm\source\ttmenu\Release\ttpmenu.exe %dst%
+copy /y C:\usr\cvs\doc\jp\teratermj.chm %dst%
+copy /y C:\usr\cvs\doc\en\teraterm.chm %dst%
 
 copy /y C:\usr\cvs\teraterm\release\*.* %dst%
 xcopy /s /e /y /i C:\usr\cvs\teraterm\release\theme %dst%\theme
