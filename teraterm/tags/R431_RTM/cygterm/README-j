@@ -1,0 +1,278 @@
+
+                CygTerm  -  yet another Cygwin console
+
+                ターミナル・エミュレータで Cygwin を使う。
+
+                Copyright (C) 2000-2004 NSym
+
+                nsym@dd.iij4u.or.jp
+
+      (English) http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index-e.html
+
+     (Japanese) http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
+
+
+// は じ め に //
+
+    CygwinコンソールであるDOS窓をターミナル・エミュレータで置き替えてみよう、
+    という試みです。 ただし『リモートログインのしくみを利用せずに』という
+    前提です。 したがって inetd とか in.telnetd とか login 等は使用しません。
+
+// 考 え 方 //
+
+    ターミナル・エミュレータとCygwin上のシェルを起動し、両者を中継する。
+    これを行うプログラムを作ればよい。
+
+// 仕 様 //
+
+    1. このプログラムを実行すると、ターミナル・エミュレータが立ち上がり、
+       そこにシェルのプロンプトが現れ、Cygwinコンソールとして使えること。
+
+    2. 起動するターミナル・エミュレータとシェルは選択可能であること。
+
+    3. シェル側の画面制御が正常に動作し、ターミナル・エミュレータ側の
+       画面サイズ変更にも追随すること。
+
+// 設 計 //
+
+    cygterm.exe 処理詳細
+
+      [1] TELNET接続を待ち受けるリスナーソケットを用意する。
+          ソケットに割り当てる未使用ポート番号は指定範囲内から探し出す。
+
+      [2] 別スレッドでターミナル・エミュレータを起動する。
+          このとき起動引数に IPアドレス 127.0.0.1 と [1]のポート番号を指定する。
+
+      [3] ターミナル・エミュレータからの接続を受け入れる。
+          セキュリティー上 127.0.0.1 以外からの接続は却下する。
+
+      [4] fork()した子プロセス上、PTY(擬似端末)スレーブ側でシェルを起動する。
+
+      [5] [3]の TELNET接続ソケットと [4]の PTYマスター側の入出力を橋渡しする。
+
+    TELNETプロトコルへの対応 (option negotiation)
+
+        ターミナル・エミュレータからターミナルタイプの通知を受け、
+        シェル上 TERM 環境変数にセットする。
+
+        ターミナル・エミュレータからターミナルサイズの通知を受け、
+        PTYのウィンドウサイズを同サイズに変更する。
+
+        [参照: RFC854 TELNET PROTOCOL SPECIFICATION]
+
+    cygterm.exe はウィンドウを持たない Win32アプリとして実装する。
+
+// ソ ー ス //
+
+    README-j     -  このファイル
+    README       -  README-j英訳
+    Makefile     -  メイクファイル
+    cygterm.cc   -  ソースコード
+    cygterm.cfg  -  設定ファイル
+
+    ※ Free Software Foundation 発行 GNU General Public License (GPL)
+       に準拠するフリーソフトウェアとして配布します。
+       http://www.gnu.org/copyleft/gpl.html 参照。
+
+       補足: 他プログラムが CygTerm実行形式(cygterm.exe)を起動し通信して
+             使用することは、それが非GPLプログラムの場合でも許可されます。 
+
+// イ ン ス ト ー ル //
+
+    Cygwin環境下で make install を実行します。
+
+    ※ インストール先ディレクトリは Makefile 中 BINDIR で設定しておきます。
+       BINDIR に cygterm.exe と cygterm.cfg がインストールされます。
+       cygterm.cfg は上書きされません。
+
+// 設 定 フ ァ イ ル //
+
+    cygterm.cfg は設定ファイルです。 使用する端末エミュレータのコマンドライン
+    や起動するシェルのコマンドライン等を設定します。
+    cygterm.cfg は cygterm.exe と同じディレクトリにないといけません。
+
+      cygterm.cfg の例
+      +-----------------------------------------------------------------------
+      | TERM = C:\program files\ttermpro\ttermpro.exe %s %d /KR=SJIS /KT=SJIS
+      | TERM_TYPE = vt100
+      | PORT_START = 20000
+      | PORT_RANGE = 40
+      | SHELL = /bin/bash
+      | ENV_1 = MAKE_MODE=unix
+      | ENV_2 = HOME=/home
+      |   :         :
+
+    TERM
+    ----
+        ターミナル・エミュレータの起動コマンドラインです。
+        コマンド名は Windows環境でパスが通ってなければフルパスで書きます。
+        ホスト指定のところは %s とし、ポート指定のところは %d とします。
+
+    TERM_TYPE
+    ---------
+        ターミナル・エミュレータがターミナルタイプを与えてくれなかった
+        場合に採用するターミナルタイプです。 (デフォルト:vt100)
+        シェル上、環境変数 TERM にセットされます。
+
+    PORT_START
+    ----------
+        使い始める (使ってよい最小の) ポート番号です。 (デフォルト:20000)
+
+    PORT_RANGE
+    ----------
+        使ってよいポート番号の個数です。 (デフォルト:40)
+
+        PORT_START 〜 PORT_START+PORT_RANGE の範囲で空きポートを探します。
+        この数だけ同時実行できることになります。
+
+    SHELL
+    -----
+        Cygwin側シェル (通常 /bin/bash) の起動コマンドラインです。
+        コマンド名はフルパスでなければいけません。
+
+    ENV_X
+    -----
+        シェル起動時に設定しておきたい環境変数です。「変数名=値」の形式
+        (putenv形式) で記述します。 ENV_ で始めればいくつでも記述できます。
+
+// 起 動 方 法 //
+
+    コマンドライン・オプション
+
+        cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
+                    [-s 'shell'] [-v 'env-var' ...]
+
+        -t 'terminal-emulator'
+                ターミナル・エミュレータを指定します。
+                指定形式は設定ファイルの TERM と同じです。
+                空白文字を含む場合は必ずクォートで囲みます。
+
+        -p port-number
+                ターミナル・エミュレータを起動するのではなく、
+                ローカルホストのこのポート番号への接続を試みます。
+                他のアプリケーション・プログラムが -p オプションを使って、
+                cygterm.exe 経由で Cygwinを利用する、等が考えられます。
+
+        -dumb
+                TELNETオプション・ネゴシエーションを行いません。
+                さらに TELNETコマンドが送信されてきても無視します。
+                シェル側の環境変数 TERM は 'dumb' となります。
+
+        -s 'shell'
+                Cygwin上のシェルを指定します。
+                指定形式は設定ファイルの SHELL と同じです。
+                空白文字を含む場合は必ずクォートで囲みます。
+                必ずしもシェルコマンドである必要はありません。
+
+        -v 'env-var'
+                シェル起動時に設定しておきたい環境変数を指定します。
+                指定形式は設定ファイルの ENV_X と同じです。
+                空白文字を含む場合は必ずクォートで囲みます。
+                -v オプションはいくつでも指定できます。
+
+    ターミナル・エミュレータもしくは接続先ポート番号、と Cygwin側シェルの
+    指定が最低必要となります。 これらがコマンドライン・オプションによって
+    与えられるならば、設定ファイル cygterm.cfg が無くても実行できます。
+
+    cygterm.exe は cygwin1.dll を利用する Win32アプリケーションです。
+    Cygwin上から実行することも、Windows上のショートカットから実行することも
+    できます。
+
+    ※ Windows上から実行するには cygwin1.dll のディレクトリパスが
+       Windows環境変数 PATH に追加されている必要があります。
+       (通常 Cygwinルートディレクトリ\bin)
+
+// 注 意 事 項 //
+
+    * TeraTerm使用時の注意
+
+    ターミナル・エミュレータが TeraTerm の場合、cygterm.exe から起動された
+    状態で設定保存 [Setup][Save setup] を行わないよう注意してください。
+    TCP/IP設定の Telnetポート番号が 23 以外で保存され、通常の Telnet目的の
+    実行時に接続できず、慌てることになってしまいます。
+    TCP/IP Port# に 23 を指定して設定保存し直せば元に戻ります。
+
+// 動 作 確 認 //
+
+    2004年 1月現在、以下の環境で動作が確認できています。
+
+        Windows 2000 SP4 + Cygwin 1.5.5(0.94/3/2)
+
+        ターミナルエミュレータ
+                Windows 2000 telnet.exe
+                TeraTermPro 2.3
+        シェル
+                bash 2.05b
+                zsh 4.1.1
+
+// 変 更 履 歴 //
+v1.06_02 2006/02/09 (by babydamons@yahoo.co.jp)
+        * CygTermのアイコンが作成されました。（"DotWork 2.50"にて作成）
+          "DotWork 2.50" は右記のURLより入手可能です。 http://www5a.biglobe.ne.jp/~suuta.
+          すばらしいソフトウェアを公開していただき、
+          "suuta at hamal dot freemal dot ne dot jp"に感謝致します。
+
+        * Makefileが修正されました。"clean"ターゲットでcygterm.icoを削除しないように。
+
+v1.06_01 2006/02/08 (by babydamons@yahoo.co.jp)
+        * 以下の設定ファイルの読み込みをサポート:
+            + /etc/cygterm.conf
+            + ~/.cygtermrc
+
+        * シェルがユーザのホームディレクトリで起動されるように。
+
+        * アカウントの設定情報を/etc/passwdからgetpwnam(3)で読み込むように。
+          アカウント名は環境変数USERNAMEからgetenv(3)で取得してます。
+
+        * Makefile修正：ディフォルトでアイコンつきの.exeをビルドします。
+
+v1.06 2004/01/24
+        * コマンドライン・オプションを追加。
+            -t 'terminal-emulator' (ターミナル・エミュレータ指定)
+            -p port-number (接続先ポート番号指定)
+            -dumb (ダムターミナル指定)
+            -s 'shell' (シェル指定)
+            -v 'env-var' (環境変数指定)
+
+        * Makefile修正
+          make install で BINDIR が存在しなければエラーになるように。
+
+        * ソースファイル英文化 (cygterm.cc, README.txt)
+
+v1.05 2003/01/14
+        * Ctrl+SPACE(NUL)が送信できるように修正。
+          改行コード CR+NUL を処理する方法として単純に NUL文字を無視していた              ため、Ctrl+SPACE 押下時でも NUL が送信されなかった。
+
+v1.04 2002/12/08
+        * ターミナル・エミュレータおよびシェルの起動に失敗したときに
+          エラーメッセージを表示するようにした。
+
+        * Makefile修正
+          make install で cygterm.cfg を上書きしないように。
+          gccオプションに -fno-exceptions を追加、GCC-3のリンクエラー回避。
+
+v1.03 2002/07/24
+        * ターミナル・エミュレータが通知してくるターミナルタイプに、大文字が
+          含まれていれば、それを小文字に変換するように修正。
+          ターミナル・エミュレータによっては環境変数 TERM の値が 'ANSI' 'VT100'
+          のように大文字にり terminfo にマッチしないため。
+          (Windows 2000 telnet.exe 等)
+
+v1.02 2002/07/22
+        * ターミナル・エミュレータがコンソール・アプリケーションのときに起動
+          できなかったのを修正。(Windows 2000 telnet.exe 等)
+          CreateProcess()呼出しミス。
+
+        * ターミナル・エミュレータから CR+LF が送られてきたら LF は転送しない
+          ようにし、改行が２回発生するのを修正。(Windows 98 telnet.exe 等)
+
+        * バージョン番号を cygterm.exe に埋め込むようにした。
+          確認方法は $ strings cygterm.exe | grep version
+
+v1.01 2002/07/19
+        * zsh, tcsh で動作しなかったのを修正。擬似端末のオープン方法が悪く、
+          zsh, tcsh では起動とともに入力がブロックされた。
+
+v1.00 2000/12/17
+        * 初期バージョン完成
+
