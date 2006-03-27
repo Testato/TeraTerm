@@ -717,6 +717,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
   - Bug fix: The background color of text matches the background color of screen patch. Special thanks to 337.
   - enabled VisualStyle feature on WindowsXP.
   - deleted one millisecond sleep on VT window.
+  - upgraded TTSSH version supporting SSH2 to 2.21
   - upgraded LogMeTT to 2.8.3
 
 2006.3.6 (Ver 4.30)
