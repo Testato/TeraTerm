@@ -3,6 +3,7 @@ Compatibility=1.1 or later
 Compiled file=teratermj.chm
 Contents file=Table of Contents.hhc
 Default Window=help
+Default topic=indexj.html
 Display compile progress=No
 Full-text search=Yes
 Index file=Index.hhk
