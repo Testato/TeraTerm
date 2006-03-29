@@ -711,6 +711,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.3.30 (Ver 4.32)
+  - upgraded TTSSH version supporting SSH2 to 2.22
+
 2006.3.28 (Ver 4.31)
   - changed TeraTerm Help file from .hlp to .chm style.
   - enabled the transparency value of TeraTerm window to immediately changing on Additional settings dialog.
