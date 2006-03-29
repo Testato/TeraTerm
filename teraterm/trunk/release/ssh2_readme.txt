@@ -192,6 +192,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.3.29 (Ver 2.22)
+  - Bug fix: application error when known_hosts file contains the multiple entrys including the different host key type.
+
 2006.3.27 (Ver 2.21)
   - added support for known_hosts on SSH2 connection.
   - added showing the server's fingerprint on known_hosts dialog.

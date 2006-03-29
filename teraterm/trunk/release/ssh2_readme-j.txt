@@ -182,6 +182,9 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
+2006.3.29 (Ver 2.22)
+  ・known_hostsファイルにキー種別の異なる同一ホストのエントリがあると、アプリケーションエラーとなるバグを修正した。
+
 2006.3.27 (Ver 2.21)
   ・SSH2のknown_hosts対応を追加した。
   ・known_hostsダイアログにサーバの fingerprint を表示するようにした
