@@ -1064,7 +1064,13 @@ BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname, Key *key)
 			if (pvar->hosts_state.hostkey.type != KEY_UNSPEC) {
 				if (match_key(pvar, key)) {
 					finish_read_host_files(pvar, 0);
-					SSH_notify_host_OK(pvar);
+					// すべてのエントリを参照して、合致するキーが見つかったら戻る。
+					// SSH2の場合はここでは何もしない。(2006.3.29 yutaka)
+					if (SSHv1(pvar)) {
+						SSH_notify_host_OK(pvar);
+					} else {
+						// SSH2ではあとで SSH_notify_host_OK() を呼ぶ。
+					}
 					return TRUE;
 				} else {
 					// キーは known_hosts に見つかったが、キーの内容が異なる。
@@ -1137,6 +1143,9 @@ void HOSTS_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2006/03/26 17:07:17  yutakakn
+ * fingerprint表示を追加
+ *
  * Revision 1.4  2006/03/26 15:43:58  yutakakn
  * SSH2のknown_hosts対応を追加した。
  *

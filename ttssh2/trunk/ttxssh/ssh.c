@@ -3114,8 +3114,8 @@ void debug_print(int no, char *msg, int len)
 static char *myproposal[PROPOSAL_MAX] = {
 //	"diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1",
 	"diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1",
-//	"ssh-rsa,ssh-dss",
-	"ssh-dss,ssh-rsa",
+	"ssh-rsa,ssh-dss",
+//	"ssh-dss,ssh-rsa",
 	"3des-cbc,aes128-cbc",
 	"3des-cbc,aes128-cbc",
 	"hmac-md5,hmac-sha1",
@@ -6814,6 +6814,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.42  2006/03/26 17:07:18  yutakakn
+ * fingerprintï\é¶Çí«â¡
+ *
  * Revision 1.41  2006/03/26 15:43:58  yutakakn
  * SSH2ÇÃknown_hostsëŒâûÇí«â¡ÇµÇΩÅB
  *
