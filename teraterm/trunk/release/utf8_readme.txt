@@ -711,6 +711,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.4.1 (Ver 4.33)
+  - Bug fix: TeraTerm window flickers though the user doesn't use transparency window.
+
 2006.3.30 (Ver 4.32)
   - upgraded TTSSH version supporting SSH2 to 2.22
 

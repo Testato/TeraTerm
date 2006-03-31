@@ -273,8 +273,9 @@ static void SetWindowStyle(TTTSet *ts)
 	SetMouseCursor(ts->MouseCursorName);
 
 	// 2006/03/16 by 337: BGUseAlphaBlendAPIがOnならばLayered属性とする
-	// if (ts->AlphaBlend < 255) {
-	if (ts->EtermLookfeel.BGUseAlphaBlendAPI) {
+	//if (ts->EtermLookfeel.BGUseAlphaBlendAPI) {
+	// アルファ値が255の場合、画面のちらつきを抑えるため何もしないこととする。(2006.4.1 yutaka)
+	if (ts->AlphaBlend < 255) {
 		lp = GetWindowLongPtr(HVTWin, GWL_EXSTYLE);
 		if (lp != 0) {
 			SetWindowLongPtr(HVTWin, GWL_EXSTYLE, lp | WS_EX_LAYERED);
@@ -2992,7 +2993,9 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					// 2006/03/11 by 337 : Alpha値も即時変更
 					// Layered窓になっていない場合は効果が無い
 					if (ts.EtermLookfeel.BGUseAlphaBlendAPI) {
-						MySetLayeredWindowAttributes(HVTWin, 0, (ts.AlphaBlend > 255) ? 255: ts.AlphaBlend, LWA_ALPHA);
+						// 起動時に半透明レイヤにしていない場合でも、即座に半透明となるようにする。(2006.4.1 yutaka)
+						//MySetLayeredWindowAttributes(HVTWin, 0, (ts.AlphaBlend > 255) ? 255: ts.AlphaBlend, LWA_ALPHA);
+						SetWindowStyle(&ts);
 					}
 					break;
 
@@ -3850,6 +3853,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.32  2006/03/17 14:26:57  yutakakn
+ * (none)
+ *
  * Revision 1.31  2006/03/16 15:35:00  yutakakn
  * (none)
  *
