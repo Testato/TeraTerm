@@ -1,0 +1,35 @@
+<HTML>
+<HEAD>
+<TITLE>UTF-8 TeraTerm Pro with TTSSH2 Help Index</TITLE>
+<link rel="stylesheet" href="./style.css" type="text/css">
+</HEAD>
+<BODY>
+<div class="topic"><FONT COLOR="#cc0066">XMODEM のヒント</FONT></div>
+
+
+<pre>
+XMODEM は、8 bit コード ($00-$FF の文字すべて)を完全に通す回線を用いないと使用できません。
+
+シリアルポートの場合
+
+Dataが 7 bit だったり、フロー制御が Xon/Xoff だったりすると、XMODEM が使えません。[Setup] Serial port で 
+Data を 8 bit にし、Flow control を hard (CTS/RTS) か none にしてください。モデム(ホスト)側の設定も同じにしてください。
+
+Telnet の場合
+
+もし正しく転送できない場合はバイナリオプションで telnet 接続してみてください。バイナリオプションで接続するには、
+
+コマンドラインに /B オプションをつけるか、
+
+Tera Term 設定ファイルを書き換えてください。
+
+→ Telnet のバイナリオプション
+
+どうしても正常に転送できない場合は、ホスト側の XMODEM コマンドを正しく設定および使用していることを確認した上で、XMODEM のログを取り、作者に送ってください。
+
+参考: 中間ホストを経由してホストに接続した場合のファイル転送
+</pre>
+
+
+</BODY>
+</HTML>
