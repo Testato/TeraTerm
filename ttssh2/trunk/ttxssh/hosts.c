@@ -614,9 +614,10 @@ static int check_host_key(PTInstVar pvar, char FAR * hostname,
 // known_hostsファイルからホスト名に合致する行を読む
 //
 static int read_host_key(PTInstVar pvar, char FAR * hostname,
-						 int suppress_errors)
+						 int suppress_errors, int return_always)
 {
 	int i;
+	int while_flg;
 
 	for (i = 0; hostname[i] != 0; i++) {
 		int ch = hostname[i];
@@ -686,7 +687,15 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 			check_host_key(pvar, hostname,
 						   pvar->hosts_state.file_data +
 						   pvar->hosts_state.file_data_index);
-	} while (pvar->hosts_state.hostkey.type == KEY_UNSPEC);  // 有効なキーが見つかるまで
+
+		if (!return_always) {
+			// 有効なキーが見つかるまで
+			while_flg = (pvar->hosts_state.hostkey.type == KEY_UNSPEC);
+		}
+		else {
+			while_flg = 0;
+		}
+	} while (while_flg);
 
 	return 1;
 }
@@ -705,7 +714,7 @@ void HOSTS_prefetch_host_key(PTInstVar pvar, char FAR * hostname)
 		return;
 	}
 
-	if (!read_host_key(pvar, hostname, 1)) {
+	if (!read_host_key(pvar, hostname, 1, 0)) {
 		return;
 	}
 
@@ -939,14 +948,199 @@ static void add_host_key(PTInstVar pvar)
 	}
 }
 
+static char FAR *copy_mp_int(char FAR * num)
+{
+	int len = (get_ushort16_MSBfirst(num) + 7) / 8 + 2;
+	char FAR *result = (char FAR *) malloc(len);
+
+	if (result != NULL) {
+		memcpy(result, num, len);
+	}
+
+	return result;
+}
+
+//
+// 同じホストで内容の異なるキーを削除する
+// add_host_key のあとに呼ぶこと
+//
+static void delete_different_key(PTInstVar pvar)
+{
+	char FAR *name = pvar->hosts_state.file_names[0];
+
+	if (name == NULL || name[0] == 0) {
+		notify_nonfatal_error(pvar,
+							  "The host and its key cannot be added, because no known-hosts file has been specified.\n"
+							  "Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
+	}
+	else {
+		Key key; // 接続中のホストのキー
+		int length = strlen(name);
+		char filename[L_tmpnam];
+		int fd;
+		int amount_written = 0;
+		int close_result;
+		int data_index = 0;
+
+		// 書き込み一時ファイルを開く
+		tmpnam(filename);
+		fd =
+			_open(filename,
+				  _O_CREAT | _O_WRONLY | _O_SEQUENTIAL | _O_BINARY |
+				  _O_TRUNC,
+				  _S_IREAD | _S_IWRITE);
+
+		if (fd == -1) {
+			if (errno == EACCES) {
+				notify_nonfatal_error(pvar,
+									  "An error occurred while trying to write the host key.\n"
+									  "You do not have permission to write to the known-hosts file.");
+			} else {
+				notify_nonfatal_error(pvar,
+									  "An error occurred while trying to write the host key.\n"
+									  "The host key could not be written.");
+			}
+			free(filename);
+			return;
+		}
+
+		// 接続中のサーバのキーを読み込む
+		if (pvar->hosts_state.hostkey.type == KEY_RSA1) { // SSH1
+			key.type = KEY_RSA1;
+			key.bits = pvar->hosts_state.hostkey.bits;
+			key.exp = copy_mp_int(pvar->hosts_state.hostkey.exp);
+			key.mod = copy_mp_int(pvar->hosts_state.hostkey.mod);
+		} else if (pvar->hosts_state.hostkey.type == KEY_RSA) { // SSH2 RSA
+			key.type = KEY_RSA;
+			key.rsa = duplicate_RSA(pvar->hosts_state.hostkey.rsa);
+		} else { // SSH2 DSA
+			key.type = KEY_DSA;
+			key.dsa = duplicate_DSA(pvar->hosts_state.hostkey.dsa);
+		}
+
+		// ファイルから読み込む
+		begin_read_host_files(pvar, 0);
+		do {
+			int host_index = 0;
+			int matched = 0;
+			int keybits = 0;
+			char FAR *data;
+			int do_write = 0;
+			length = amount_written = 0;
+
+			if (!read_host_key(pvar, pvar->ssh_state.hostname, 0, 1)) {
+				break;
+			}
+
+			if (data_index == pvar->hosts_state.file_data_index) {
+				// index が進まない == 最後まで読んだ
+				break;
+			}
+
+			data = pvar->hosts_state.file_data + data_index;
+			host_index = eat_spaces(data);
+
+			if (data[host_index] == '#') {
+				do_write = 1;
+			}
+			else {
+				// ホストの照合
+				host_index--;
+				do {
+					int negated;
+
+					host_index++;
+					negated = data[host_index] == '!';
+
+					if (negated) {
+						host_index++;
+						if (match_pattern(data + host_index,
+										  pvar->ssh_state.hostname)) {
+							matched = 0;
+							// 接続バージョンチェックのために host_index を進めてから抜ける
+							host_index--;
+							do {
+								host_index++;
+								host_index += eat_to_end_of_pattern(data + host_index);
+							} while (data[host_index] == ',');
+							break;
+						}
+					}
+					else if (match_pattern(data + host_index,
+									  pvar->ssh_state.hostname)) {
+						matched = 1;
+					}
+					host_index += eat_to_end_of_pattern(data + host_index);
+				} while (data[host_index] == ',');
+
+				// ホストが等しくて合致するキーが見つかる
+				if (match_key(pvar, &key)) {
+					do_write = 1;
+				}
+				// ホストが等しくない
+				else if (!matched) {
+					do_write = 1;
+				}
+				// ホストが等しい and 接続のバージョンが違う
+				else {
+					int rsa1_key_bits=0;
+					rsa1_key_bits = atoi(data + host_index + eat_spaces(data + host_index));
+					
+					if (rsa1_key_bits > 0) { // ファイルのキーは ssh1
+						if (!SSHv1(pvar)) {
+							do_write = 1;
+						}
+					}
+					else { // ファイルのキーは ssh2
+						if (!SSHv2(pvar)) {
+							do_write = 1;
+						}
+					}
+				}
+			}
+
+			// 書き込み処理
+			if (do_write) {
+				length = pvar->hosts_state.file_data_index - data_index;
+				amount_written =
+					_write(fd, pvar->hosts_state.file_data + data_index,
+						   length);
+
+				if (amount_written != length) {
+					goto error1;
+				}
+			}
+			data_index = pvar->hosts_state.file_data_index;
+		} while (1); // 最後まで読む
+
+error1:
+		close_result = _close(fd);
+		if (amount_written != length || close_result == -1) {
+			notify_nonfatal_error(pvar,
+								  "An error occurred while trying to write the host key.\n"
+								  "The host key could not be written.");
+			goto error2;
+		}
+
+		// 書き込み一時ファイルからリネーム
+		_unlink(pvar->hosts_state.file_names[0]);
+		rename(filename, pvar->hosts_state.file_names[0]);
+
+error2:
+		_unlink(filename);
+
+		finish_read_host_files(pvar, 0);
+	}
+}
+
 //
 // Unknown hostのホスト公開鍵を known_hosts ファイルへ保存するかどうかを
 // ユーザに確認させる。
 // TODO: finger printの表示も行う。
 // (2006.3.25 yutaka)
 //
-static BOOL CALLBACK hosts_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
-									LPARAM lParam)
+static BOOL CALLBACK hosts_add_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
+										LPARAM lParam)
 {
 	PTInstVar pvar;
 
@@ -998,16 +1192,59 @@ static BOOL CALLBACK hosts_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 	}
 }
 
-static char FAR *copy_mp_int(char FAR * num)
+//
+// 置き換え時の確認ダイアログを分離
+//
+static BOOL CALLBACK hosts_replace_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
+											LPARAM lParam)
 {
-	int len = (get_ushort16_MSBfirst(num) + 7) / 8 + 2;
-	char FAR *result = (char FAR *) malloc(len);
+	PTInstVar pvar;
 
-	if (result != NULL) {
-		memcpy(result, num, len);
+	switch (msg) {
+	case WM_INITDIALOG:
+		pvar = (PTInstVar) lParam;
+		pvar->hosts_state.hosts_dialog = dlg;
+		SetWindowLong(dlg, DWL_USER, lParam);
+
+		init_hosts_dlg(pvar, dlg);
+
+		// デフォルトでチェックは入れない
+		return TRUE;			/* because we do not set the focus */
+
+	case WM_COMMAND:
+		pvar = (PTInstVar) GetWindowLong(dlg, DWL_USER);
+
+		switch (LOWORD(wParam)) {
+		case IDC_CONTINUE:
+			if (IsDlgButtonChecked(dlg, IDC_ADDTOKNOWNHOSTS)) {
+				add_host_key(pvar);
+				delete_different_key(pvar);
+			}
+
+			if (SSHv1(pvar)) {
+				SSH_notify_host_OK(pvar);
+			} else { // SSH2
+				// SSH2ではあとで SSH_notify_host_OK() を呼ぶ。
+			}
+
+			pvar->hosts_state.hosts_dialog = NULL;
+
+			EndDialog(dlg, 1);
+			return TRUE;
+
+		case IDCANCEL:			/* kill the connection */
+			pvar->hosts_state.hosts_dialog = NULL;
+			notify_closed_connection(pvar);
+			EndDialog(dlg, 0);
+			return TRUE;
+
+		default:
+			return FALSE;
+		}
+
+	default:
+		return FALSE;
 	}
-
-	return result;
 }
 
 void HOSTS_do_unknown_host_dialog(HWND wnd, PTInstVar pvar)
@@ -1017,7 +1254,7 @@ void HOSTS_do_unknown_host_dialog(HWND wnd, PTInstVar pvar)
 
 		DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SSHUNKNOWNHOST),
 					   cur_active != NULL ? cur_active : wnd,
-					   hosts_dlg_proc, (LPARAM) pvar);
+					   hosts_add_dlg_proc, (LPARAM) pvar);
 	}
 }
 
@@ -1028,7 +1265,7 @@ void HOSTS_do_different_host_dialog(HWND wnd, PTInstVar pvar)
 
 		DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SSHDIFFERENTHOST),
 					   cur_active != NULL ? cur_active : wnd,
-					   hosts_dlg_proc, (LPARAM) pvar);
+					   hosts_replace_dlg_proc, (LPARAM) pvar);
 	}
 }
 
@@ -1057,7 +1294,7 @@ BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname, Key *key)
 	// 先読みされていない場合は、この時点でファイルから読み込む
 	if (begin_read_host_files(pvar, 0)) {
 		do {
-			if (!read_host_key(pvar, hostname, 0)) {
+			if (!read_host_key(pvar, hostname, 0, 0)) {
 				break;
 			}
 
@@ -1143,6 +1380,9 @@ void HOSTS_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2006/03/29 14:56:52  yutakakn
+ * known_hostsファイルにキー種別の異なる同一ホストのエントリがあると、アプリケーションエラーとなるバグを修正した。
+ *
  * Revision 1.5  2006/03/26 17:07:17  yutakakn
  * fingerprint表示を追加
  *
