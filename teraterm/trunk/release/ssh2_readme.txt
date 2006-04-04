@@ -192,6 +192,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.4.4 (Ver 2.23)
+  - added the user dialog option that delete the old entry in known_hosts file contains the multiple entrys including the different host key type. Special thanks to NAGATA Shinya.
+
 2006.3.29 (Ver 2.22)
   - Bug fix: application error when known_hosts file contains the multiple entrys including the different host key type.
 
