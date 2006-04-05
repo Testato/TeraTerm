@@ -1,111 +1,462 @@
 <HTML>
 <HEAD>
-<TITLE>UTF-8 TeraTerm Pro with TTSSH2 Help Index(English)</TITLE>
+<TITLE>history</TITLE>
 <link rel="stylesheet" href="./style.css" type="text/css">
 </HEAD>
 <BODY>
 
 <FONT SIZE="+2">History</FONT><BR><BR>
 
+<b>TeraTerm</b>
 <pre>
-Tera Term Pro ver. 2.3	Mar 10, 1998
-Tera Term ver. 1.4	Mar 10, 1998
+2006.4.4 (Ver 4.34)
+  - upgraded TTSSH version supporting SSH2 to 2.23
 
-Serial ports larger than COM4
-Baud rate of 14400
-User shortcut keys "EditCLS", "EditCLS", "ControlOpenTEK" and "ControlCloseTEK".
-Macro commands "clearscreen", "code2str", "enablekeyb", "filemarkptr", "fileseekback", "filestrseek2", "findclose", "findfirst", "findnext", "getdir", "kmtfinish", "kmtget", "makepath", "sendkcode", "setdir", "setexitcode", "str2code" and "testlink".
-Macro operator "%".
-Macro: a comment can be placed in any line.
-Pass-through printing directly to a port.
-Special options in the setup file "AutoFileRename", "BackWrap", "Beep", "EnableStatusLine", "MaxComPort", "PassThruDelay", "PassThruPort", "PrnConvFF", "RussPrint" and "TitleFormat".
+2006.4.1 (Ver 4.33)
+  - Bug fix: TeraTerm window flickers though the user doesn't use transparency window.
 
-New [Setup] TCP/IP dialog box.
-History list of hosts.
-New Russian character sets (CP 866,and ISO 8859-5).
-New icons.
-Selecting text in a rectangular region.
-Executing menu commands by user defined keys.
-Tera Term extension interface.
+2006.3.30 (Ver 4.32)
+  - upgraded TTSSH version supporting SSH2 to 2.22
 
-Tera Term Pro ver. 2.2	Jul 2, 1997
+2006.3.28 (Ver 4.31)
+  - changed TeraTerm Help file from .hlp to .chm style.
+  - enabled the transparency value of TeraTerm window to immediately changing on Additional settings dialog.
+  - Bug fix: The background color of text matches the background color of screen patch. Special thanks to 337.
+  - enabled VisualStyle feature on WindowsXP.
+  - deleted one millisecond sleep on VT window.
+  - upgraded TTSSH version supporting SSH2 to 2.21
+  - upgraded LogMeTT to 2.8.3
 
-Bug fixes.
+2006.3.6 (Ver 4.30)
+  - upgraded TTSSH version supporting SSH2 to 2.20
+  - upgraded ttpmacro.exe version information.
 
-Tera Term Pro ver. 2.1	Jun 30, 1997
+2006.3.3 (Ver 4.29)
+  - added the background color of text matches the background color of screen. And added "Always use Normal text's BG" checkbox on Window setup dialog. And also added UseNormalBGColor entry in teraterm.ini file. Special thanks to 337.
+  - Bug fix: don't work the font copying batch file on Windows9x. Special thanks to Takashi SHIRAI.
 
-Installer and uninstaller
-32-bit versions of TTPMACRO.EXE and KEYCODE.EXE
-Russian mode
-"[Edit] Copy table", "[Setup] Load key map" and "[Window]" commands
-Status line of the VT terminal
-Pass-through printing
-ANSI full color
-New command-line options (/I, /L=<log file>, /LA=<language>, /M=<macro file> and /V)
-Port number just after a host name in the command line (such as "myhost.mydomain 23")
-New read-only options in the Tera Term setup file
-New items in the keyboard setup file
-Macro execution by pressing a user defined key
-New command-line options of TTPMACRO (/I and /V)
-New macro commands
+2006.2.24 (Ver 4.28)
+  - changed the compiler to Visual Studio 2005 Standard Edition.
+  - replaced stricmp() to _stricmp().
+  - replaced strnicmp() to _strnicmp().
+  - replaced strdup() to _strdup().
+  - replaced chdir() to _chdir().
+  - replaced getcwd() to _getcwd().
+  - replaced strupr() to _strupr().
+  - deleted compiler warning message for time_t has 64bit size.
+  - added the color change on Window setup dialog was in real time done.
+  - limited the macro commands displaying on macro window for the speed-up of the macro operation.
+  - upgraded Oniguruma to 4.0.1
+  - upgraded TTSSH version supporting SSH2 to 2.19
+  - upgraded TeraTerm Menu to 1.0.4
+     * fixed build error with VS2005.
+     * updated version information in .exe file.
 
-Tera Term Pro ver. 2.0	Jun 7, 1996
+2006.2.11 (Ver 4.27)
+  - expanded the number of macro variable from 128 to 256 and the number of macro label from 256 to 512.
+  - added the workaround about CPU load goes up to 100% using 'pause' macro on TEK active window.
+  - deleted 'TeraTerm Menu' under File menu.
+  - fixed the flicker phenomenon of TeraTerm window when 'Broadcast Command' is used. 
+  - changed the accelerator key bind under Setup menu.
+  - added 'mpause' macro command. This command enables the macro script to pause the specified time in millisecond. 
+  - added the sample TTL macro 'mpause.ttl'.
+  - added 'random' macro command. This command enables the macro script to generate the random value.
+  - added the sample TTL macro 'random.ttl'.
+  - upgraded CygTerm to 1.06_2. Special thanks to BabyDaemon.
+        * Generated CygTerm's ICON by "DotWork 2.50".
+          "DotWork 2.50" is available at http://www5a.biglobe.ne.jp/~suuta
+          Special Thanks to "suuta at hamal dot freemal dot ne dot jp"
+        * Makefile was changed, "clean" target was changed to don't remove cygterm.ico.
+        * The following configuration file reading was supported:
+            + /etc/cygterm.conf
+            + ~/.cygtermrc
+        * Shell is invoked with user's home-directory.
+        * Get account configuration from /etc/passwd by getpwnam(3),
+          getting account name from USERNAME environment by getenv(3).
+        * Makefile was changed, default build is with icon executable.
 
-32-bit version, telnet break signal, new item in the keyboard setup file (SendBreak=), host name with a port number in the command line (such as "myhost.mydomain:23"), comment in the command line, new [Setup] Serial port dialog box and Alt+[mouse right button].
+2006.1.21 (Ver 4.26)
+  - added the user confirmation dialog before sending file content with Drag and Drop to TeraTerm window.
+  - upgraded LogMeTT to 2.8.1
+  - upgraded Oniguruma to 3.9.1
 
-Tera Term ver. 1.3	Jun 7, 1996
+2005.12.13 (Ver 4.25)
+  - Bug fix: can't save TeraTerm configuration to ini file without 'teraterm.ini' filename.
 
-Telnet break signal, new item in the keyboard setup file (SendBreak=), host name with a port number in the command line (such as "myhost.mydomain:23"), comment in the command line, new [Setup] Serial port dialog box and Alt+[mouse right button].
+2005.12.1 (Ver 4.24)
+  - expanded serial connection maximum to COM99.
+  - added new serial baud rate(230400, 460800, 921600).
+  - upgraded LogMeTT to 2.7.4
 
-Ver. 1.2	Dec 18, 1995
+2005.11.3 (Ver 4.23)
+  - added checking the writable permission if saving teraterm.ini file.
+  - changed "Term type" edit box on TCP/IP setup dialog to be always enabled.
 
-English mode and Quick-VAN protocols.
+2005.10.21 (Ver 4.22)
+  - added the system variable from 'groupmatchstr1' to 'groupmatchstr9' which will store the group matched pattern with regular expression.
+  - added duplicating Cygwin connection using Alt + D accelerator key.
+  - Bug fix: DAKUTEN(the dot marks) might not be correctly shown in UTF-8 for Mac OS X.
+  - Bug fix: TeraTerm Menu popup menu couldn't be shown at right position using multi monitor system. upgraded TeraTerm Menu to 1.03.
+  - upgraded LogMeTT to 2.7.2
+  - upgraded TTSSH version supporting SSH2 to 2.18
 
-Ver. 1.1	Jul 22, 1995
+2005.10.7 (Ver 4.21)
+  - expanded scroll range width from 16bit to 32bit.
+  - added 'waitregex' macro command. This command enables the macro script to wait the specified keyword with regular expression. 
+  - added the system variable 'matchstr' which will store the matched pattern with regular expression.
+  - added the sample TTL macro 'wait_regex.ttl'.
+  - added regular expression library 'Oniguruma' version information on TeraTerm version dialog.
 
-Ver. 1.0	Jul 3, 1995
+2005.9.5 (Ver 4.20)
+  - upgraded TTSSH version supporting SSH2 to 2.17
 
-ZMODEM and B-Plus protocols.
+2005.8.27 (Ver 4.19)
+  - Buf fix: division result is invalid in TeraTerm macro script. Special thanks to Takashi SHIRAI.
+  - changed not downing ttpmacro.exe process priority with logging
+  - upgraded LogMeTT to 2.6.1
 
-Ver. 0.9	Apr 25, 1995
+2005.7.24 (Ver 4.18)
+  - added showing the line number and data of TTL file on macro dialog.
+  - Bug fix: DAKUTEN(the dot marks) might not be correctly shown in UTF-8 for Mac OS X.
+  - upgraded LogMeTT to 2.5.6
 
-XMODEM protocol.
+2005.5.29 (Ver 4.17)
+  -changed scroll out the current buffer when the cursor position is only located on left-upper screen at receiving &lt;ESC&gt;[J(Clear screen from cursor-position up to end).
 
-Ver. 0.8	Feb 17, 1995
+2005.5.28 (Ver 4.16)
+  - added saving log type(plain text) information to teraterm.ini(LogTypePlainText).
+  - added CygTerm settings on Additional settings dialog.
+  - changed keybind of selecting the rectangular region from Shift+MouseDrag to Alt+MouseDrag.
+  - added support of selecting several pages(also expansion ans contraction of text area that has been selected). Start selected region is saved with mouse left click. End selected region is saved with Shift + mouse left click.
+  - added scroll out the current buffer when TeraTerm clear screen at receiving &lt;ESC&gt;[J.
+  - added the workaround of CPU time 100% using TeraTerm macro(insert 100msec sleep after send and sendln). 
 
-Macro language "Tera Term Language".
+2005.4.24 (Ver 4.15)
+  - added the accelerator key(ALT+Enter) that maximizes TeraTerm window.
+  - added saving Eterm lookfeel alphablend settings to teraterm.ini file.
+  - added changing Eterm lookfeel alphablend on/off on Additional settings dialog.
+  - fixed the installer problem not copying font file on Windows98. Special thanks to Boris.
+  - added TeraTerm License file(license.txt).
+  - upgraded macro help file(English version). Special thanks to Boris.
+  - upgraded LogMeTT to 2.4.4
 
-Ver. 0.7	Jan 27, 1995
 
-Ver. 0.6	Oct 31, 1994
+2005.4.9 (Ver 4.14)
+  - added clickable URL mechanism that mouse pointer overs on URL string. Special thanks to monkey magic. And also added URLColor, EnableClickableUrl entry in teraterm.ini file.
+  - added support of escape sequence(ESC[39m:foreground color reset, ESC[49m:background color reset). This support solves the problem that color can't be clear using w3m on screen(1) command. Special thanks to Iwamoto Kouichi.
+  - added mouse cursor dynamically changing on Additional settings.
+  - added support of clickable URL on TeraTerm version dialog.
+  - cancelled the limitation that at "Duplicate session" on SSH2 connected communication, TeraTerm always try to connect the server with SSH2 protocol.
+  - added SSH autologin with "Duplicate session".
+  - upgraded LogMeTT to 2.4.3
 
-User keys.
+2005.3.31 (Ver 4.13)
+  - fixed TeraTerm version information can't be shown in version dialog at second later instance.
+  - added the configuration of disabling paste string by clicking mouse right button in teraterm.ini(DisablePasteMouseRButton) and Additional settings dialog.
+  - fixed the TeraTerm crashing problem when the sending file size exceeded 20MB with ZMODEM protocol. Special thanks to Thorsten Behrens.
+  - upgraded LogMeTT to 2.4.2
 
-Ver. 0.5	Oct 3, 1994
+2005.3.13 (Ver 4.12)
+  - upgraded ttermpro.exe version information from 2.3 to 4.12.
+  - fixed the multibyte problem that the cursor scrolls to upper direction when ZENKAKU(Japanese character) cross the end of line. Special thanks to Iwamoto Kouichi.
+  - added TeraTerm title multibyte character converting EUC-JP to Shift_JIS(CP932).
+  - upgraded LogMeTT to 2.1.2.
 
-Kermit protocol, file transfer without protocol and Kanji (JIS).
+2005.2.22 (Ver 4.11)
+  - fixed the problem that log menu doesn't become gray on logging
+  - added Eterm lookfeel alphablend. Special thanks to AKASI.
+  - added support of VisualStyle(WindowsXP)
+  - added new Title Format ID(13). i.e, &lt;host/port&gt; - &lt;title&gt; VT/TEK
+  - added the show of COM5 over when the caption was displayed
+  - added new logginf type "plain text" on log saving dialog. If the option is enabled(default), TeraTerm doesn't include ASCII non-display characters in log file. Exceptionally the following characters(HT, CR, LF) include at any mode.
+  - added TTProxy(2004/1/22 version) supporting to TELNET/HTTP/SOCK proxying. Special thanks to YebisuyaHompo.
+  - added newly LogMeTT 2.02beta. Special thanks to Boris.
+  - deleted LogMeIn
+  - changed "Additional settings" dialog to tab control dialog
+  - changed the setting default file name of logging to "teraterm.log"
 
-Ver. 0.4	May 16, 1994
+2005.1.30 (Ver 4.10)
+  - enabled maximum button
+  - deleted the accelerator key of TeraTerm Menu and LogMeIn
+  - added the setting default file name(log_YYYYMMDD_HHMMSS.txt) of logging
+  - added the Broadcast command menu under Control menu
+  - added the homepage URL at version dialog
+  - fixed the initial directory of "Save setup" dialog at reading teraterm.ini directory
+  - added "View Log" menu under File menu
+  - added "View Log Editor" text-box on "Additional settings" dialog
+  - added the "ViewlogEditor" entry at [Tera Term] section of teraterm.ini
+  - upgraded TTSSH version supporting SSH2 to 1.08
+  - upgraded TeraTerm Menu supporting SSH2 to 1.02.
+     -- added Kanji code(/KT=UTF8 /KR=UTF8) of default option
+     -- added specify of user paramater at SSH autologin
+     -- deleted macro specification at SSH autologin
+     -- added specify of private-key-file at SSH autologin
 
-Keyboard setup.
+2005.1.10 (Ver 2.09)
+  - fixed the bug of switching back to primary display when changing terminal size on multi display environment. Special thanks to Tsuruhiko Ando.
 
-Ver. 0.3	Mar 29, 1994
+2005.1.6 (Ver 2.08)
+  - changed the logging dialog type from open-dialog to save-dialog
+  - fixed the initial directory of "Save setup" dialog at program directory
+  - upgraded TTSSH version supporting SSH2 to 1.07
 
-Telnet option negotiation.
+2005.1.5 (Ver 2.07h)
+  - upgraded TTSSH version supporting SSH2 to 1.06
 
-Ver. 0.2	X X, 1994
+2004.12.27 (Ver 2.07g)
+  - upgraded TTSSH version supporting SSH2 to 1.05
 
-Port setup dialog box and help file.
+2004.12.23 (Ver 2.07f)
+  - upgraded TTSSH version supporting SSH2 to 1.04
 
-Ver. 0.1	X X, 1994
+2004.12.18 (Ver 2.07e)
+  - upgraded TTSSH version supporting SSH2 to 1.03
 
-TCP/IP connection (Winsock).
+2004.12.16 (Ver 2.07d)
+  - upgraded TTSSH version supporting SSH2 to 1.02
 
-Ver. 0.0	Feb 24, 1994
+2004.12.15 (Ver 2.07c)
+  - fixed the attribute of font file in the installed directory
+  - added killing the process relation to TeraTerm at installation (using taskkill command)
 
-Serial port connection, Kanji (SJIS & EUC), VT100 and TEK4010.
+2004.12.14 (Ver 2.07b)
+  - changed the initial value of scroll buffer size from 400000 to 20000 in the 'teraterm.ini' file.
+  - added changing the attribute of font file to ReadOnly.
+  - upgraded TeraTerm Menu supporting SSH2 to 1.01. Changed the initial folder path of ttermpro.exe to current directory.
+
+2004.12.11 (Ver 2.07a)
+  - upgraded TTSSH version supporting SSH2 to 1.01
+
+2004.12.8 (Ver 2.07)
+  - renamed "External setup" "Additional settings and removed the dialog to "Setup" menu
+  - added "Duplicate session" to "File" menu (add /DUPLICATE option)
+  - changed downing ttpmacro.exe process priority only with logging
+  - didn't include CR+LF in log file when multiple line has concatenated (as EnableContinuedLineCopy enabled)
+  - extended the max line of scroll buffer to 400000 line
+  - added LogMeIn 1.21. It is thankful to Boris Maisuradze.
+  - added TeraTerm Menu 0.94r2(+SSH2 support 1.00). It is thankful to Shinpei Hayakawa.
+  - upgraded TTSSH version supporting SSH2 to 1.00(RTM)
+  - in addition, fine bug fix
+
+2004.11.6 (Ver 2.06)
+  - fixed drawing ruled line with DEC special font remains garbage graphics, moreover UTF-8 feature to display only Japanese characters. And also fixed BOLD style of font problem.
+  - TeraTerm second later instances can read configuration from TERATERM.INI.
+  - added drag&drop directory path in teraterm from explorer.
+  - rewrote README(English). Special thanks to Boris Maisuradze for his cooperation.
+
+2004.10.25 (Ver 2.05a)
+  - upgraded TTSSH version supporting SSH2 to 1.00alpha4
+
+2004.10.11 (Ver 2.05)
+  - added SSH2 version TTSSH(1.00alpha2)
+  - added MFC7.1 runtime library
+  - setup environmental variable 'TERATERM_EXTENSIONS' is now ignored, TTSSH is always loaded.
+  - fixed UTF-8 encoding of HANKAKU KANA.
+  - added /nossh option (fixed problem that doesn't start Cygterm with TTSSH section(Enabled=1) of TERATERM.INI file)
+
+2004.9.29 (Ver 2.04a)
+  - changed patch to binary files for distribution
+    I replied permission from the TeraTerm original author (Mr.Teranishi). I appreciate.
+
+2004.9.5 (Ver 2.04)
+  - fixed running macro halt problem on logging
+  - added "External setup" dialog to "Edit" menu
+  - saved ANSI color setting to ini file
+
+2004.8.6 (Ver 2.03)
+  - assigned the accelerator key to Cygwin connection menu to 'Alt + G'
+  - added show of the full path in logging dialog
+  - added support of users comments that can be included into log file 
+  - replaced static link to dynamic load of SetLayeredWindowAttributes() API (for NT4.0)
+  - replaced WDiff with udm of difference making tool
+
+2004.4.12 (Ver 2.02)
+  - added support of UTF-8 for Mac OS X(HFS+)
+  - added feature to display other than Japanese characters (locale and codepage have to be set up)
+  - added feature to input other than Japanese characters (link 'imm32.lib')
+  - removed BOM(Byte Order Mark) in receive mode
+  - In addition, fine bug fix
+
+2004.3.19 (Ver 2.00a)
+  - fixed README file
+
+2004.3.18 (Ver 2.00)
+  - changed original source to IPv6 version (thanks to Mr.J.Kato).
+  - added support of translucence window
+  - added support of Cygwin connection
+  - added support of selecting all buffer
+  - added support of different mouse cursor types and their configuration
+  - switched from WinSock1.1 to 2.2
+  - In addition, fine bug fix
+
+2004.3.13 (Ver 1.02)
+  - reverted hostname max-length to 80.
+  - added support of UTF-8 for sending
+
+2004.3.9 (Ver 1.01a)
+  - fixed README file
+  - checked that SSH is operational with TTSSH 1.5.4 + IPv6 0.81
+
+2004.3.6 (Ver 1.01)
+  - added support of wheel mouse button
+  - added "UTF8" value for /KR option of command line
+  - powered up UTF-8 conversion (addition referrer table)
+  - extended hostname max-length from 80 to 1024
+
+2004.3.2 (Ver 1.00)
+  - first release
 </pre>
 
+
+
+<b>TTSSH</b>
+<pre>
+2006.4.4 (Ver 2.23)
+  - added the user dialog option that delete the old entry in known_hosts file contains the multiple entrys including the different host key type. Special thanks to NAGATA Shinya.
+
+2006.3.29 (Ver 2.22)
+  - Bug fix: application error when known_hosts file contains the multiple entrys including the different host key type.
+
+2006.3.27 (Ver 2.21)
+  - added support for known_hosts on SSH2 connection.
+  - added showing the server's fingerprint on known_hosts dialog.
+
+2006.3.6 (Ver 2.20)
+  - Improved SSH2 communication throughput by changing the window size adjustment.
+
+2006.2.24 (Ver 2.19)
+  - changed the compiler to Visual Studio 2005 Standard Edition.
+  - replaced stricmp() to _stricmp().
+  - replaced strdup() to _strdup().
+  - added support for "command=" in authorized_keys file.
+  - upgraded OpenSSL to 0.9.8b snapshot
+
+2005.10.21 (Ver 2.18)
+  - added the host history check button on connection dialog.
+  - upgraded OpenSSL to 0.9.8a
+
+2005.9.5 (Ver 2.17)
+  - added minimizing the SSH authentication dialog with autologin mode only using '/I' option.
+
+2005.8.27 (Ver 2.16)
+  - added minimizing the SSH authentication dialog with autologin mode. Special thanks to Tomoo Takahashi.
+  - upgraded zlib to 1.2.3
+
+2005.7.24 (Ver 2.15)
+  - added support of SSH2 port forwarding
+  - added support of SSH2 packet compression
+  - added sending TTY information(VERASE) to server with SSH2 connection.
+  - Bug fix: The user can't login to the server since the second times when first user authentication is failed with SSH1 protocol.
+  - Bug fix: The accelerator key(Alt + P or Alt + C) doesn't work on connection dialog.
+  - upgraded OpenSSL to 0.9.8
+  - added the security fix(CAN-2005-2096) to zlib 1.2.2
+
+2005.5.28 (Ver 2.14)
+  - added three file filter on private key saving dialog.
+  - added zlib version information on TTSSH version dialog.
+
+2005.4.24 (Ver 2.13)
+  - added SSH key generator dialog(Setup - SSH KeyGenerator).
+  - upgraded OpenSSL to 0.9.7g
+
+2005.4.9 (Ver 2.12)
+  - added SSH2 channel lookup mechanism for port forwading.
+  - fixed the bug of application fault at DH key re-creation (degradation at TTSSH version supporting SSH2 2.10).
+  - added SSH autologin with "Duplicate session".
+
+2005.3.31 (Ver 2.11)
+  - added the accelerator key at 'Use challenge/response to log in' on SSH2 authentication dialog.
+  - added the focus COM input box when you open new connection using COM port.
+  - added SSH log data(TTSSH.LOG).
+  - added NetScreen(HITACHI) workaround. Sending SSH2_MSG_CHANNEL_REQUEST message to server is disabled wantconfirm entry.
+  - upgraded OpenSSL to 0.9.7f
+
+2005.3.13 (Ver 2.10)
+  - upgraded ttxssh.dll version information from 1.5.4 to 2.10.
+  - changed SSH client ID(SSH-2.0-TTSSH/X.XX Win32) including TTSSH version information.
+  - added Tru64 UNIX workaround. Special thanks to Miguel.
+  - added SSH2 dump logging
+  - fixed the bug of being not able to get rid of CR when CR+LF code is included in SSH server ID.
+  - changed TTSSH don't send SSH2_MSG_SERVICE_REQUEST to server once the client try to login.
+  - changed the default value of [TTSSH] KeyboardInteractive to 0(disabled) because SSH connection is closed by server then the invalid method is used in OpenSSH 4.0. And also the passowrd authentication label of SSH authentication dialog is dynamically changed.
+  - added support of challenge/response login on SSH2 connection.
+
+2005.2.22 (Ver 1.09)
+  - fixed the SSH2 public key problem that TTSSH can't read the private key file in the directory starting by the dot.
+  - added the configuration of HeartBeat(keep-alive), SSH2 keyboard-interactive on TTSSH setup dialog
+
+2005.1.30 (Ver 1.08)
+  - added support of keyboard-interactive authentication. You can configurate the its authentication enabling flag by "KeyboardInteractive" entry of TTSSH section in the 'teraterm.ini' file.
+  - added show of Project Homepage URL and OpenSSL version at version dialog.
+  - fixed the application fault of pushing enter key before be grayed at rhosts and TIS in SSH2 authentication dailog.
+  - added support of public-key authentication auto-login. And also added /auth=publickey and /keyfile command line option.
+
+2005.1.6 (Ver 1.07)
+  - fixed application fault when changing terminal size on telnet connection (degradation at TTSSH version supporting SSH2 1.06)
+
+2005.1.5 (Ver 1.06)
+  - added support of changing terminal size 
+  - fixed application fault at DH key re-creation (degradation at TTSSH version supporting SSH2 1.05)
+
+2004.12.27 (Ver 1.05)
+  - fixed the bug of can't connect the server after disconnecting when 'Auto window close' function is disabled
+  - fixed the memory leak of SSH2 KEX procedure
+  - upgraded the error message string when reading the SSH2 private key is failure
+
+2004.12.23 (Ver 1.04)
+  - added support of public key authentication method
+
+2004.12.18 (Ver 1.03)
+  - added checking HMAC at received packet
+  - added support of HMAC-MD5 message authentication code
+  - added verifying the key of RSA and DSA at KEX procedure
+
+2004.12.16 (Ver 1.02)
+  - fixed application fault when using SSH autologin mode
+  - fixed application fault when pressing ESC key at "SECURITY WARNING" dialog
+
+2004.12.11 (Ver 1.01)
+  - added support of SSH heartbeat(keep-alive). You can configurate the heartbeat interval "HeartBeat" entry of TTSSH section in the 'teraterm.ini' file. A measure of heartbeat is per second(default 60 seconds).
+
+2004.12.8 (Ver 1.00)
+  - added support of SSH1/SSH2 autologin (only password authentication). And also added /auth, /username, /passwd options.
+  - changed SSH default version to SSH2
+  - fixed tab order of connection dialog 
+  - changed the focus of connection dialog to hostname
+  - added SSH2 autologin sample macro(ssh2login.ttl)
+
+2004.11.7 (Ver 1.00 beta1)
+  - added support of encryption algorithm AES128
+  - added support of KEX algorithm diffie-hellman-group14-sha(OpenSSH 3.9 later version)
+  - added support of KEX algorithm diffie-hellman-group-exchange-sha1
+  - added support of server host key algorithm ssh-dss
+  - added show of SSH2 information in version dialog
+  - upgraded OpenSSL to 0.9.7e
+  - rewrote README(English). Special thanks to Boris Maisuradze for his cooperation.
+
+2004.10.25 (Ver 1.00 alpha4)
+  - fixed the bug of window size control flow
+  - added support of DH key re-creation after data-communication establishment
+  - in addition, fine bug fix
+
+2004.10.17 (Ver 1.00 alpha3)
+  - added support of window size control flow
+  - added send SSH2_MSG_CHANNEL_CLOSE to server on disconnect.
+  - terminal type is now passed to the environment variable TERM.
+
+2004.10.11 (Ver 1.00 alpha2)
+  - added support of SSH1
+  - fixed the bug of suddenly disconnecting SSH session (the message 
+    "Oversized packet received from server" was appearing in dialog box)
+  - added /1, /2 command line options
+  - added SSH protocol version related entry in TERATERM.INI file
+
+2004.8.8 (Ver 1.00 alpha1a)
+  - replaced DLL release build version
+
+2004.8.5 (Ver 1.00 alpha1)
+  - first release
+</pre>
 
 </BODY>
 </HTML>
