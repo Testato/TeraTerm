@@ -90,5 +90,10 @@
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="MACRO help index">
+		<param name="Local" value="html\macro\index.html">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
 </UL>
 </BODY></HTML>
