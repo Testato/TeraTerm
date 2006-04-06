@@ -97,6 +97,23 @@
   ttermpro.exe server3:22 /ssh /2 /auth=password /user=guest /passwd=guest
 
 
+●known_hostsファイル
+　known_hostsファイルの書式は以下のとおりです。
+　
+　書式：
+　  ホスト名  キー種別  ホスト公開鍵
+　  
+　  # コメント
+　  ! 否定
+
+　例：
+    192.168.1.2 ssh-rsa AAAAB3NzaC1...nXIDE=
+    192.168.1.2 ssh-dss AAAAB3NzaC1...nXIDE=
+    192.168.1.2 1024 35 13032138...794461 
+    #192.168.1.3 ssh-rsa AAAAB3NzaC1...nXIDE=
+    192.168.1.2 1024 35 13032138...794461 
+    *.example.com,!mail.example.com ssh-rsa AAAAB3NzaC1...nXIDE=
+
 
 ■TTSSHのビルド方法
   TTSSHのビルド方法について以下に示します。ビルドにはVisual Studio 2005(VC++8.0)、ActivePerlが必要です。

@@ -100,6 +100,25 @@
 
 
 
+* known_hosts file
+  The synopsis of 'known_hosts' file is as follows:
+  
+  SYNOPSIS:
+    hostname key-type host-public-key
+    
+    #  comment
+    !  negate
+
+   EXAMPLE:
+    192.168.1.2 ssh-rsa AAAAB3NzaC1...nXIDE=
+    192.168.1.2 ssh-dss AAAAB3NzaC1...nXIDE=
+    192.168.1.2 1024 35 13032138...794461 
+    #192.168.1.3 ssh-rsa AAAAB3NzaC1...nXIDE=
+    192.168.1.2 1024 35 13032138...794461 
+    *.example.com,!mail.example.com ssh-rsa AAAAB3NzaC1...nXIDE=
+
+
+
 * How to build TTSSH
   To build TTSSH source code is shown in the following step:
   And you need Visual Studio 2005(VC++8.0) and ActivePerl to build.
