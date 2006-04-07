@@ -5452,6 +5452,8 @@ static void do_SSH2_dispatch_setup_for_transfer(PTInstVar pvar)
 	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX
 	// OpenSSH 3.9ではデータ通信中のDH鍵交換要求が、サーバから送られてくることがある。
 	SSH2_dispatch_add_message(SSH2_MSG_KEXINIT);
+	// HP-UXでX11 forwardingが失敗した場合、下記のメッセージが送られてくる。(2006.4.7 yutaka)
+	SSH2_dispatch_add_message(SSH2_MSG_DEBUG);
 }
 
 
@@ -6814,6 +6816,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.43  2006/03/29 14:56:52  yutakakn
+ * known_hostsファイルにキー種別の異なる同一ホストのエントリがあると、アプリケーションエラーとなるバグを修正した。
+ *
  * Revision 1.42  2006/03/26 17:07:18  yutakakn
  * fingerprint表示を追加
  *
