@@ -247,7 +247,8 @@ void OpenHtmlHelp(HWND HWin, char *filename)
 	char HelpFN[MAXPATHLEN];
 
 	_snprintf(HelpFN, sizeof(HelpFN), "%s\\%s", ts.HomeDir, filename);
-	if (HtmlHelp(HWin, HelpFN, HH_DISPLAY_TOPIC, 0) == NULL) {
+	// HTMLヘルプのオーナーをTeraTermからデスクトップへ変更 (2006.4.7 yutaka)
+	if (HtmlHelp(GetDesktopWindow(), HelpFN, HH_DISPLAY_TOPIC, 0) == NULL) {
 		char buf[MAXPATHLEN];
 		_snprintf(buf, sizeof(buf), "Can't open HTML help file(%s).", HelpFN);
 		MessageBox(HWin, buf, "Tera Term: HTML help", MB_OK | MB_ICONERROR);
@@ -257,6 +258,9 @@ void OpenHtmlHelp(HWND HWin, char *filename)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2006/03/10 15:44:29  yutakakn
+ * ヘルプファイルを .hlp から .chm へ変更した
+ *
  * Revision 1.4  2005/03/13 04:05:11  yutakakn
  * タイトルバーに日本語を設定する場合、Shift_JIS(CP932)へ変換するようにした（EUC-JPのみに対応）。
  *
