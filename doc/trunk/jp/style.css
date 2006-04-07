@@ -1,6 +1,10 @@
 
 body{ 
-	color: black;background: white;
+	margin: 5ex;
+	background: rgb(255, 255, 240);
+	color: black;
+	font-family: "MS US Gothic";
+	font-size: 12pt;
 	/*
 	scrollbar-face-color: #DEE3E7;scrollbar-highlight-color: #FFFFFF;scrollbar-shadow-color: #DEE3E7;scrollbar-3dlight-color: #D1D7DC;scrollbar-arrow-color: #006699;scrollbar-track-color: #EFEFEF;scrollbar-darkshadow-color: #98AAB1; 
 	*/
