@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<TITLE>macro exe howtoj</TITLE>
+<link rel="stylesheet" href="./style.css" type="text/css">
+</HEA>
+<BODY>
+
+<div class="topic"><FONT COLOR="#cc0066"><b>マクロ実行法</b></FONT></div>
+
+
+<pre>
+TTPMACRO.EXE は TTERMPRO.EXE があるディレクトリに置かれていなければなりません。
+
+マクロファイルを実行するには、2通りの方法があります。
+
+<b>1) Tera Term からマクロを実行する。</b>
+
+Tera Term の [Control] Macro コマンドを実行してください。すると、MACRO が起動し、マクロファイル (*.TTL) を
+選択するダイアログボックスが現れるので、実行したいマクロファイルを選択してください。
+
+<b>2) MACRO を直接起動し、マクロを実行する。 (Tera Term はマクロから起動。)</b>
+
+TTPMACRO.EXE を起動するときのコマンドライン(ショートカットのリンク先)でマクロファイル名を指定することが
+できます。例えばマクロファイル "DIALUP.TTL"を実行したい場合、コマンドライン(ショートカットのリンク先)は、
+
+                  <b>TTPMACRO DIALUP.TTL</b>
+
+と指定してください。マクロファイル名の拡張子 ".TTL" は省略可能です。マクロファイル名を省略すると、MACRO 
+起動後にマクロファイルを選択するダイアログボックスが現れます。よく使用するマクロは、アイコン(ショートカット)
+を作成しておくと便利です。
+
+方法 2) で、MACRO を起動した場合、マクロコマンド<A HREF="connectj.html">connect</A>によって、Tera Term を
+起動することができます。
+
+マクロ実行中は、「MACRO - <マクロファイル名>」というアイコンまたはダイアログボックスがあらわれます。
+ダイアログボックスの「Pause」/「Start」/「End]ボタンを押すとマクロを停止/再開/終了することができます。
+</pre>
+
+
+</BODY>
+</HTML>
