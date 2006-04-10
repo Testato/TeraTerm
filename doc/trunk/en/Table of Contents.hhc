@@ -91,6 +91,17 @@
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Commands">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Setup] menu">
+			<param name="Local" value="html\setup\setup-menu.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="MACRO help index">
 		<param name="Local" value="html\macro\index.html">
 		<param name="ImageNumber" value="11">
