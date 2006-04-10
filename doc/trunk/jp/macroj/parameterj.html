@@ -1,23 +1,33 @@
 <HTML>
 <HEAD>
-<TITLE>command line</TITLE>
+<TITLE>UTF=8 TeraTerm Pro with TTSSH2 Help Index</TITLE>
 <link rel="stylesheet" href="./style.css" type="text/css">
 </HEAD>
 <BODY>
-<div class="topic"><FONT COLOR="#cc0066">コマンドライン</FONT></div>
+<div class="topic"><FONT COLOR="#cc0066">変数</FONT></div>
 
 
 <pre>
-<b>TTPMACRO.EXE [/I] [/V] [&lt;macro file&gt; [&lt;second param&gt;] [&lt;third param&gt;]]</b>
+<b>1) ユーザー変数</b>
 
-ここで:
+ユーザーにより定義される。型および値は初めて値が代入されたときに決まる。いったん型が決まると違う型の値を代入することはできない。
 
-       <b>/I</b>                                                     起動時に MACRO をアイコン化
-       <b>/V</b>                                                     起動時に MACRO を隠す
-       <b>&lt;macro file&gt;</b>                                          マクロファイル名
-       <b>&lt;second param&gt;</b>                                        システム変数 param2 に格納される文字列
-       <b>&lt;third param&gt;</b>                                         システム変数 param3 に格納される文字列
-システム変数 param2, param3 については<A HREF="parameterj.html">"変数" </A>参照。
+<b>2) システム変数</b>
+
+あらかじめ型と値が定義され、特定のコマンドと共に使用される。
+
+名前		型		初期値		システム変数を使用するコマンド
+<HR> 
+<b>inputstr</b>	文字列		""		recvln, waitln, waitrecv, passwordbox, inputbox
+<b>param2</b>		文字列		<b>*1</b>		<b>*1</b>
+<b>param3</b>		文字列		<b>*1</b>		<b>*1</b>
+<b>result</b>		整数		0	bplussend, bplusrecv, kmtfinish, kmtget, kmtrecv, kmtsend, quickvanrecv, quickvansend, recvln, wait,
+					        waitevent, waitln,waitrecv, xmodemrecv, xmodemsend, zmodemrecv, zmodemsend, str2int, strcompare, 
+						strlen, strscan, filereadln, filesearch,filestrseek, yesnobox
+<b>timeout</b>		整数		0		recvln, wait, waitevent, waitln, waitrecv
+		
+	<b>*1</b> MACRO 起動時のコマンドラインパラメータの2, 3番目がシステム変数 param2, param3 の初期値となる。1番目の文字列はマクロファイル名。
+	<A HREF="macro_commandlinej.html">"コマンドライン"</A> 参照。
 </pre>
 
 
