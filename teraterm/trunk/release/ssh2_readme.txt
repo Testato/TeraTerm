@@ -212,7 +212,7 @@ OF SUCH DAMAGE.
 * History
 
 2006.4.7 (Ver 2.24)
-  - Bug fix: disconnected with SSH2 protocol when X11 forwarding was failure on HP-UX.
+  - Bug fix: disconnection of SSH2 protocol after X11 forwarding failure on HP-UX.
 
 2006.4.4 (Ver 2.23)
   - added the user dialog option that delete the old entry in known_hosts file contains the multiple entrys including the different host key type. Special thanks to NAGATA Shinya.
