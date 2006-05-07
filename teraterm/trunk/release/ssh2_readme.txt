@@ -211,6 +211,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.5.7 (Ver 2.25)
+  - upgraded OpenSSL to 0.9.8b
+
 2006.4.7 (Ver 2.24)
   - Bug fix: disconnection of SSH2 protocol after X11 forwarding failure on HP-UX.
 

@@ -711,6 +711,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.5.7 (Ver 4.35a)
+  - upgraded TTSSH version supporting SSH2 to 2.25
+
 2006.4.7 (Ver 4.35)
   - changed the owner of HTML help file from TeraTerm instance to Windows desktop.
   - upgraded TTSSH version supporting SSH2 to 2.24
