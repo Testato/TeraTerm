@@ -711,6 +711,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.5.25 (Ver 4.35b)
+  - added 'Collector  3.2.3'(tabbed multi window tool) to TeraTerm installation package. Special thanks to Hiroshi Takahashi.
+
 2006.5.7 (Ver 4.35a)
   - upgraded TTSSH version supporting SSH2 to 2.25
 

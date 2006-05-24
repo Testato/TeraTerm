@@ -24,6 +24,7 @@ copy /y C:\usr\cvs\doc\en\teraterm.chm %dst%
 copy /y C:\usr\cvs\teraterm\release\*.* %dst%
 xcopy /s /e /y /i C:\usr\cvs\teraterm\release\theme %dst%\theme
 xcopy /s /e /y /i C:\usr\cvs\teraterm\release\plugin %dst%\plugin
+xcopy /s /e /y /i C:\usr\cvs\teraterm\release\Collector %dst%\Collector
 rmdir /s /q %dst%\plugin\CVS
 rmdir /s /q %dst%\theme\CVS
 rmdir /s /q %dst%\theme\scale\CVS
