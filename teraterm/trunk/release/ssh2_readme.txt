@@ -211,6 +211,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.6.6 (Ver 2.26)
+  - Bug fix: Alt key was not available for SSH Port Forward dialog. Special thanks to NAGATA Shinya.
+
 2006.5.7 (Ver 2.25)
   - upgraded OpenSSL to 0.9.8b
 
