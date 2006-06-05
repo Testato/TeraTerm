@@ -242,20 +242,20 @@ BEGIN
     CONTROL         "Forward &remote server port",IDC_SSHFWDREMOTETOLOCAL,
                     "Button",BS_AUTORADIOBUTTON | WS_TABSTOP,13,81,101,10
     COMBOBOX        IDC_SSHLTRFROMPORT,87,31,56,126,CBS_DROPDOWN | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    LTEXT           "to remote &machine",IDC_STATIC,23,48,60,15
     EDITTEXT        IDC_SSHLTRTOHOST,87,48,80,13,ES_AUTOHSCROLL
+    LTEXT           "&port",IDC_STATIC,175,50,18,11
     COMBOBOX        IDC_SSHLTRTOPORT,198,48,56,136,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     COMBOBOX        IDC_SSHRTLFROMPORT,115,80,56,135,CBS_DROPDOWN | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    LTEXT           "to local m&achine",IDC_STATIC,26,98,55,15
     EDITTEXT        IDC_SSHRTLTOHOST,88,98,80,13,ES_AUTOHSCROLL
+    LTEXT           "p&ort",IDC_STATIC,176,99,18,11
     COMBOBOX        IDC_SSHRTLTOPORT,197,98,56,124,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     DEFPUSHBUTTON   "OK",IDOK,96,125,50,14,WS_GROUP
     PUSHBUTTON      "Cancel",IDCANCEL,162,125,50,14
     GROUPBOX        "",IDC_STATIC,6,21,296,46
     LTEXT           "Select direction for forwarded port:",IDC_STATIC,6,7,176,11
-    LTEXT           "to remote &machine",IDC_STATIC,23,48,60,15
-    LTEXT           "&port",IDC_STATIC,175,50,18,11
     GROUPBOX        "",IDC_STATIC,6,71,296,46
-    LTEXT           "to local &machine",IDC_STATIC,26,98,55,15
-    LTEXT           "&port",IDC_STATIC,176,99,18,11
 END
 
 IDD_SSHTISAUTH DIALOGEX 0, 0, 216, 109
@@ -398,8 +398,8 @@ IDI_SECURETT            ICON                    "ttsecure.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,25,0,0
- PRODUCTVERSION 2,25,0,0
+ FILEVERSION 2,26,0,0
+ PRODUCTVERSION 2,26,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -415,12 +415,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "TTXSSH"
-            VALUE "FileVersion", "2, 25, 0, 0"
+            VALUE "FileVersion", "2, 26, 0, 0"
             VALUE "InternalName", "TTXSSH"
             VALUE "LegalCopyright", "(C)2004-2006 Yutaka Hirata, (C)1998-1999 Robert O'Callahan"
             VALUE "OriginalFilename", "TTXSSH.dll"
             VALUE "ProductName", "TTSSH"
-            VALUE "ProductVersion", "2, 25, 0, 0"
+            VALUE "ProductVersion", "2, 26, 0, 0"
         END
     END
     BLOCK "VarFileInfo"
