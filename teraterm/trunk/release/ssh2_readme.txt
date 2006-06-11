@@ -211,8 +211,9 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.6.6 (Ver 2.26)
+2006.6.11 (Ver 2.26)
   - Bug fix: Alt key was not available for SSH Port Forward dialog. Special thanks to NAGATA Shinya.
+  - Bug fix: Message box dialog doesn't been quickly shown when TeraTerm does not connect to the server for SSH Port Forward dialog.
 
 2006.5.7 (Ver 2.25)
   - upgraded OpenSSL to 0.9.8b

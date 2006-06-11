@@ -711,7 +711,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
-2006.6.7 (Ver 4.36)
+2006.6.11 (Ver 4.36)
   - upgraded TTSSH version supporting SSH2 to 2.26
 
 2006.5.25 (Ver 4.35b)
