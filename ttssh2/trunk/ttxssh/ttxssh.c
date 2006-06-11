@@ -731,8 +731,16 @@ static void add_err_msg(PTInstVar pvar, char FAR * msg)
 void notify_nonfatal_error(PTInstVar pvar, char FAR * msg)
 {
 	if (!pvar->showing_err) {
-		PostMessage(pvar->NotificationWindow, WM_COMMAND,
-					ID_SSHASYNCMESSAGEBOX, 0);
+		// 未接続の状態では通知先ウィンドウがないので、デスクトップをオーナーとして
+		// メッセージボックスを出現させる。(2006.6.11 yutaka)
+		if (pvar->NotificationWindow == NULL) {
+			MessageBox(NULL, msg, "Tera Term: not fatal error", MB_OK|MB_ICONINFORMATION);
+			msg[0] = '\0';
+
+		} else {
+			PostMessage(pvar->NotificationWindow, WM_COMMAND,
+						ID_SSHASYNCMESSAGEBOX, 0);
+		}
 	}
 	if (msg[0] != 0) {
 		notify_verbose_message(pvar, msg, LOG_LEVEL_ERROR);
@@ -3100,6 +3108,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.29  2006/03/26 15:43:58  yutakakn
+ * SSH2のknown_hosts対応を追加した。
+ *
  * Revision 1.28  2006/02/18 07:37:02  yutakakn
  *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
  *   ・stricmp()を_stricmp()へ置換した
