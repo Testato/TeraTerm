@@ -3400,18 +3400,30 @@ static enum hmac_type choose_SSH2_hmac_algorithm(char *server_proposal, char *my
 
 static int choose_SSH2_compression_algorithm(char *server_proposal, char *my_proposal)
 {
-	char tmp[1024], *ptr;
+	char tmp[1024], *ptr, *q, *index;
 	int ret = -1;
+
+	// OpenSSH 4.3では遅延パケット圧縮("zlib@openssh.com")が新規追加されているため、
+	// マッチしないように修正した。
+	// 現TeraTermでは遅延パケット圧縮は将来的にサポートする予定。
+	// (2006.6.14 yutaka)
 
 	_snprintf(tmp, sizeof(tmp), my_proposal);
 	ptr = strtok(tmp, ","); // not thread-safe
 	while (ptr != NULL) {
 		// server_proposalにはサーバのproposalがカンマ文字列で格納されている
-		if (strstr(server_proposal, ptr)) { // match
-			break;
+		for (index = server_proposal; index < server_proposal + strlen(server_proposal) ; index++) {
+			if (q = strstr(index, ptr)) { // match
+				q = q + strlen(ptr);
+				if (*q == '\0' || *q == ',')  // 単語の区切りであればマッチ
+					goto found;
+				index = q;  // pointer update
+			}
 		}
 		ptr = strtok(NULL, ",");
 	}
+
+found:
 	if (strstr(ptr, "zlib")) {
 		ret = 1; // packet compression enabled
 	} else if (strstr(ptr, "none")) {
@@ -6816,6 +6828,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.44  2006/04/07 13:24:16  yutakakn
+ * HP-UXにおいてX11 fowardingが失敗した場合に、SSH2セッションが切断されないようにした。
+ *
  * Revision 1.43  2006/03/29 14:56:52  yutakakn
  * known_hostsファイルにキー種別の異なる同一ホストのエントリがあると、アプリケーションエラーとなるバグを修正した。
  *
