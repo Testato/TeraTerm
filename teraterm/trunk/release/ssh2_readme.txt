@@ -211,6 +211,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.6.14 (Ver 2.27)
+  - Bug fix: TeraTerm enabled SSH compression could not connect to the server when OpenSSH 4.3 later was configured as delay SSH compression.
+
 2006.6.11 (Ver 2.26)
   - Bug fix: Alt key was not available for SSH Port Forward dialog. Special thanks to NAGATA Shinya.
   - Bug fix: Message box dialog doesn't been quickly shown when TeraTerm does not connect to the server for SSH Port Forward dialog.

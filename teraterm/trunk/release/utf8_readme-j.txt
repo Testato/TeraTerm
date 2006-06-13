@@ -696,6 +696,9 @@ OF SUCH DAMAGE.
 
 ¡‰ü”Å—š—ð
 
+2006.6.14 (Ver 4.37)
+  ESSH2‘Î‰žTTSSH(2.27)‚Ö·‚µ‘Ö‚¦‚½
+
 2006.6.11 (Ver 4.36)
   ESSH2‘Î‰žTTSSH(2.26)‚Ö·‚µ‘Ö‚¦‚½
 
