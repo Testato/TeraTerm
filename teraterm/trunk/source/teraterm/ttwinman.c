@@ -47,7 +47,7 @@ void VTActivate()
 // タイトルバーのCP932への変換を行う
 // 現在、SJIS、EUCのみに対応。
 // (2005.3.13 yutaka)
-static void ConvertToCP932(char *str, int len)
+void ConvertToCP932(char *str, int len)
 {
 #define IS_SJIS(n) (ts.KanjiCode == IdSJIS && IsDBCSLeadByte(n))
 #define IS_EUC(n) (ts.KanjiCode == IdEUC && (n & 0x80))
@@ -108,15 +108,13 @@ static void ConvertToCP932(char *str, int len)
 //
 // (2005.2.19 yutaka) format ID=13の新規追加、COM5以上の表示に対応
 // (2005.3.13 yutaka) タイトルのSJISへの変換（日本語）を追加
+// (2006.6.15 maya)   ts.KanjiCodeがEUCだと、SJISでもEUCとして
+//                    変換してしまうので、ここでは変換しない
 void ChangeTitle()
 {
 	int i;
 	char TempTitle[HostNameMaxLength + 50 + 1]; // バッファ拡張
 	char Num[11];
-	char *title = _alloca(sizeof(ts.Title));
-
-	strcpy(title, ts.Title);
-	ConvertToCP932(title, strlen(title));
 
 	strcpy(TempTitle, ts.Title);
 
@@ -136,7 +134,7 @@ void ChangeTitle()
 			_snprintf(str, sizeof(str), "COM%d", ts.ComPort);
 
 			if (ts.TitleFormat & 8) {
-				_snprintf(TempTitle, sizeof(TempTitle), "%s - %s", str, title);
+				_snprintf(TempTitle, sizeof(TempTitle), "%s - %s", str, ts.Title);
 			} else {
 				strncat(TempTitle, str, i); 
 			}
@@ -153,7 +151,7 @@ void ChangeTitle()
 		else {
 			if (ts.TitleFormat & 8) {
 				// format ID = 13(8 + 5): <hots/port> - <title>
-				_snprintf(TempTitle, sizeof(TempTitle), "%s - %s", ts.HostName, title);
+				_snprintf(TempTitle, sizeof(TempTitle), "%s - %s", ts.HostName, ts.Title);
 
 			} else {
 				strncat(TempTitle,ts.HostName,i);
@@ -258,6 +256,9 @@ void OpenHtmlHelp(HWND HWin, char *filename)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2006/04/07 13:16:39  yutakakn
+ * HTMLヘルプファイルのオーナーをデスクトップへ変更した
+ *
  * Revision 1.5  2006/03/10 15:44:29  yutakakn
  * ヘルプファイルを .hlp から .chm へ変更した
  *

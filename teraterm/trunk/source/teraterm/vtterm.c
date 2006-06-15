@@ -2071,6 +2071,8 @@ void XSequence(BYTE b)
       if (Param[1]<=2)
       {
 	ts.Title[NParam-2] = 0;
+	// (2006.6.15 maya) タイトルに渡す文字列をSJISに変換
+	ConvertToCP932(ts.Title, strlen(ts.Title));
 	ChangeTitle();
       }
       ParseMode = ModeFirst;
@@ -2633,6 +2635,18 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2006/02/18 08:40:07  yutakakn
+ *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
+ *   ・stricmp()を_stricmp()へ置換した
+ *   ・strnicmp()を_strnicmp()へ置換した
+ *   ・strdup()を_strdup()へ置換した
+ *   ・chdir()を_chdir()へ置換した
+ *   ・getcwd()を_getcwd()へ置換した
+ *   ・strupr()を_strupr()へ置換した
+ *   ・time_tの64ビット化にともなう警告メッセージを抑止した
+ *   ・TeraTerm Menuがビルドエラーとなる現象に対処した
+ *   ・Oniguruma 4.0.1へ差し替えた
+ *
  * Revision 1.8  2005/10/15 09:24:00  yutakakn
  * UTF-8(Mac OS X)において半濁点文字が表示されないことがあるバグを修正した。
  *
