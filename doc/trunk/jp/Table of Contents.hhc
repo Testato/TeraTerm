@@ -9,6 +9,10 @@
 </OBJECT>
 <UL>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="index">
+		<param name="Local" value="indexj.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Tera Tarm について">
 		<param name="ImageNumber" value="1">
 		</OBJECT>
@@ -54,6 +58,28 @@
 		<param name="Name" value="使いかた">
 		<param name="ImageNumber" value="1">
 		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="キーボード">
+			<param name="Local" value="keyboardj.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="マウス">
+			<param name="Local" value="mousej.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="SSH 接続">
+			<param name="Local" value="sshj.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Proxy 接続">
+			<param name="Local" value="proxyj.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="ヒント">
+			<param name="Local" value="tipsj.html">
+			</OBJECT>
+	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="コマンド">
 		<param name="ImageNumber" value="1">
@@ -71,8 +97,8 @@
 		<param name="ImageNumber" value="1">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="アンインストール ">
-		<param name="ImageNumber" value="1">
+		<param name="Name" value="アンインストール">
+		<param name="Local" value="uninstallj.html">
 		</OBJECT>
 </UL>
 </BODY></HTML>

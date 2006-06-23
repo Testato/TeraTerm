@@ -338,7 +338,7 @@ CygwinDirectory = c:\cygwin
 
 
 ●設定ダイアログ
-  Editメニューから"External setup"を選択すると、UTF-8化以降に追加した機能に関する
+  Editメニューから"Additional settings"を選択すると、UTF-8化以降に追加した機能に関する
   オプション設定が行えます。
 
 
@@ -440,6 +440,7 @@ MaxBuffSize=500000
 
 変数 inputstr は受信した行が格納される。
 変数 matchstr は最初にマッチしたパターンが格納される。
+変数 groupmatchstr1～groupmatchstr9 にはグループマッチしたパターンが格納される。
 
 
 例:
@@ -450,6 +451,29 @@ messagebox s 'result'
 messagebox inputstr 'inputstr'
 messagebox matchstr 'matchstr'
 
+
+
+●マクロリファレンス: mpause
+
+形式:
+      mpause <time>
+
+TTL の実行を <time> ミリ秒だけ休止する。
+
+例:
+mpause 100               100ミリ秒休止
+
+
+
+●マクロリファレンス: random
+
+形式:
+      random <intvar> <value>
+
+0から<value>までの整数の一様乱数を生成し、整数変数<intvar>へ代入する。
+
+例:
+random val 100           0から100までの乱数を変数valへ格納する
 
 
 
@@ -558,24 +582,31 @@ messagebox matchstr 'matchstr'
     フォルダのフルパスを貼り付ける
 
 
+■マクロエラーメッセージ
+
+エラーメッセージ           意味
+-------------------------+------------------------------------------------------
+Too many labels.           ラベルの数が多すぎる。(最大512個)
+Too many variables.        変数の数が多すぎる。(整数型、文字列型それぞれ最大256個ずつ)
+
 
 ■TeraTermのビルド方法
-  TeraTermのビルド方法について以下に示します。ビルドにはVisual Studio .NET 2003(VC++7.1)が必要です。
+  TeraTermのビルド方法について以下に示します。ビルドにはVisual Studio 2005 Standard Edition以上が必要です（Visual Studio 2005 Express Editionは不可）。
   
-  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
-  2. Onigurumaのソースコード(http://www.geocities.jp/kosako3/oniguruma/)を source\oniguruma ディレクトリに展開する。Onigurumaをビルドする（以下参照）。
+  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする。
+  2. Onigurumaのソースコード(http://www.geocities.jp/kosako3/oniguruma/)を teraterm\source\oniguruma ディレクトリに展開する。スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。コマンドプロンプト上から teraterm\source\oniguruma ディレクトリに移動する。コマンドプロンプトから以下の入力を行い、Onigurumaをビルドする（onig_s.libがリンクされる）。
   
        (1) copy win32\Makefile Makefile
        (2) copy win32\config.h config.h
        (3) nmake
-  
+          
   3. teraterm\visualc\ttermpro.sln をVisual Studioで開く
   4. ソリューションをビルドする
   5. ビルドに成功するとteraterm\visualc\bin ディレクトリに実行プログラムが生成される
 
 
 ■TeraTerm Menuのビルド方法
-  TeraTerm Menuのビルド方法について以下に示します。ビルドにはVisual Studio .NET 2003(VC++7.1)が必要です。
+  TeraTerm Menuのビルド方法について以下に示します。ビルドにはVisual Studio 2005(VC++8.0)が必要です。
   
   1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
   2. teraterm\source\ttmenu\ttpmenu.sln をVisual Studioで開く
@@ -585,7 +616,7 @@ messagebox matchstr 'matchstr'
 
 ■開発環境
   OS: Windows XP Professional
-  コンパイラ: Visual Studio .NET 2003
+  コンパイラ: Visual Studio 2005 Standard Edition
   
   ソフトウェア：
   TeraTerm Pro 2.3
@@ -595,7 +626,7 @@ messagebox matchstr 'matchstr'
   
 
 ■ライセンス
-Copyright (c) 2004-2005 Yutaka Hirata, TeraTerm Project. 
+Copyright (c) Yutaka Hirata, TeraTerm Project. 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, 
@@ -637,7 +668,7 @@ OF SUCH DAMAGE.
   行末スクロール抑止パッチはいわもとこういち氏に著作権があります。
   マルチディスプレイ対応パッチは安藤弦彦氏に著作権があります。
   鬼車はK.Kosako氏の著作物です。
-  本プログラムは無償で利用できますが、作者は本プログラムの使用にあたり
+  本プログラムは商用利用問わず無償で利用できますが、作者は本プログラムの使用にあたり
   生じる障害や問題に対して一切の責任を負いません。
 
   e-mail : yutakakn@mail.goo.ne.jp
@@ -664,6 +695,120 @@ OF SUCH DAMAGE.
 
 
 ■改版履歴
+
+2006.6.23 (Ver 4.38)
+  ・SSH2対応TTSSH(2.28)へ差し替えた
+  ・HTMLヘルプを更新した
+
+2006.6.18 (Ver 4.37)
+  ・タイトルに日本語を入力すると、文字化けするバグを修正した。パッチ作成に感謝します＞永田氏
+  ・SSH2対応TTSSH(2.27)へ差し替えた
+  ・Collectorのリソース英文漏れの修正を行った
+
+2006.6.11 (Ver 4.36)
+  ・SSH2対応TTSSH(2.26)へ差し替えた
+
+2006.5.25 (Ver 4.35b)
+  ・タブ化ソフト「Collector 3.2.3」を英語化し、同梱した。収録許可をいただいた高橋弘氏に感謝します。
+
+2006.5.7 (Ver 4.35a)
+  ・SSH2対応TTSSH(2.25)へ差し替えた
+
+2006.4.7 (Ver 4.35)
+  ・HTMLヘルプファイルのオーナーをデスクトップへ変更した
+  ・SSH2対応TTSSH(2.24)へ差し替えた
+
+2006.4.4 (Ver 4.34)
+  ・SSH2対応TTSSH(2.23)へ差し替えた
+
+2006.4.1 (Ver 4.33)
+  ・半透明化を行わない場合に画面がちらつかないようにした。
+
+2006.3.30 (Ver 4.32)
+  ・SSH2対応TTSSH(2.22)へ差し替えた
+
+2006.3.28 (Ver 4.31)
+  ・ヘルプファイルを .hlp から .chm へ変更した
+  ・Additional settingsダイアログにおけるウィンドウの半透明変更を即座に反映させるようにした。
+  ・文字の背景色をスクリーンの背景色と一致させるパッチのバグを修正した。パッチ作成に感謝します＞337氏
+  ・VisualStyleが有効となるようにした
+  ・VT windowでの1ミリ秒スリープを削除した
+  ・SSH2対応TTSSH(2.21)へ差し替えた
+  ・LogMeTT 2.8.3へ差し替えた
+
+2006.3.6 (Ver 4.30)
+  ・SSH2対応TTSSH(2.20)へ差し替えた
+  ・ttpmacro.exeのバージョン情報を更新した
+
+2006.3.3 (Ver 4.29)
+  ・文字の背景色をスクリーンの背景色と一致させるようにした。それにともないWindow setupダイアログに"Always use Normal text's BG"チェックボックスを追加した。また、teraterm.iniにUseNormalBGColorエントリを追加した。パッチ作成に感謝します＞337氏
+  ・Windows9x上においてインストーラから起動されるバッチファイルがうまく動かないバグを修正した。白井隆氏に感謝します。
+
+2006.2.24 (Ver 4.28)
+  ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
+  ・stricmp()を_stricmp()へ置換した
+  ・strnicmp()を_strnicmp()へ置換した
+  ・strdup()を_strdup()へ置換した
+  ・chdir()を_chdir()へ置換した
+  ・getcwd()を_getcwd()へ置換した
+  ・strupr()を_strupr()へ置換した
+  ・time_tの64ビット化にともなう警告メッセージを抑止した
+  ・Window setupでのカラー変更がリアルタイムに行われるようにした。
+  ・マクロ動作の高速化のため、マクロウィンドウへのコマンド表示をウェイト系に限定した。
+  ・Oniguruma 4.0.1へ差し替えた
+  ・SSH2対応TTSSH(2.19)へ差し替えた
+  ・TeraTerm Menu 1.04へ差し替えた
+     * VS2005でビルドエラーとなる問題を修正した
+     * EXEファイルのバージョン情報を更新した
+
+2006.2.11 (Ver 4.27)
+  ・マクロで使用できる変数の個数を128から256へ、ラベルの個数を256から512へ拡張した。
+  ・TEK windowをアクティブにした状態で pause マクロを使用すると、CPU使用率が100%となる現象への暫定対処を施した(workaround)。
+  ・Fileメニューから TeraTerm Menu を削除した。
+  ・Broadcast Command使用時にウィンドウがちらつく動作を改善した。
+  ・Setupメニューのアクセラレータキーを変更した。
+  ・マクロコマンド 'mpause' を追加した。ミリ秒単位での休止が可能となる。
+  ・サンプルマクロ mpause.ttl を追加した。
+  ・マクロコマンド 'random' を追加した。乱数の生成が可能となる。
+  ・サンプルマクロ random.ttl を追加した。
+  ・CygTerm 1.06_2へ差し替えた。BabyDaemon氏に感謝します。
+        * CygTermのアイコンが作成されました。（"DotWork 2.50"にて作成）
+          "DotWork 2.50" は右記のURLより入手可能です。 http://www5a.biglobe.ne.jp/~suuta
+          すばらしいソフトウェアを公開していただき、
+          "suuta at hamal dot freemal dot ne dot jp"に感謝致します。
+        * Makefileが修正されました。"clean"ターゲットでcygterm.icoを削除しないように。
+        * 以下の設定ファイルの読み込みをサポート:
+            + /etc/cygterm.conf
+            + ~/.cygtermrc
+        * シェルがユーザのホームディレクトリで起動されるように。
+        * アカウントの設定情報を/etc/passwdからgetpwnam(3)で読み込むように。
+          アカウント名は環境変数USERNAMEからgetenv(3)で取得してます。
+        * Makefile修正：ディフォルトでアイコンつきの.exeをビルドします。
+
+2006.1.21 (Ver 4.26)
+  ・ウィンドウへのドラッグ＆ドロップでファイル送信する前に、問い合わせダイアログを出すようにした。
+  ・LogMeTT 2.8.1へ差し替えた
+  ・Oniguruma 3.9.1へ差し替えた
+
+2005.12.13 (Ver 4.25)
+  ・設定内容がteraterm.ini以外のファイル名で保存できないバグを修正した。
+
+2005.12.1 (Ver 4.24)
+  ・シリアル接続のCOM最大ポートを99まで拡張した。
+  ・シリアル接続のボーレートに230400, 460800, 921600を追加した。
+  ・LogMeTT 2.7.4へ差し替えた
+
+2005.11.3 (Ver 4.23)
+  ・teraterm.iniを保存するときに書き込みできるかどうかの判別を追加した。
+  ・TCP/IP setupダイアログの"Term type"を常に有効とするようにした。
+
+2005.10.21 (Ver 4.22)
+  ・システム変数 'groupmatchstr1'～'groupmatchstr9' を追加した。正規表現でグループマッチしたパターンが格納される。
+  ・Cygwin接続の複製ができるようにした
+  ・Mac OS X向けUTF-8において、濁点が正しく表示されないことがある問題を修正した。
+  ・TeraTerm Menuをマルチモニタ環境で使用すると、ポップアップメニューが正しいモニタに表示されないバグを修正した（TeraTerm Menu 1.03）。
+  ・LogMeTT 2.7.2へ差し替えた
+  ・SSH2対応TTSSH(2.18)へ差し替えた
 
 2005.10.7 (Ver 4.21)
   ・スクロールレンジを 16bit から 32bit へ拡張した
