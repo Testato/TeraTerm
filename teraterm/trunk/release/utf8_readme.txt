@@ -711,6 +711,10 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.6.23 (Ver 4.38)
+  - upgraded TTSSH version supporting SSH2 to 2.28
+  - updated HTML help document.
+
 2006.6.18 (Ver 4.37)
   - Bug fix: Title string could not been shown as Japanese character from TeraTerm setup dialog. Special thanks to NAGATA Shinya.
   - upgraded TTSSH version supporting SSH2 to 2.27
