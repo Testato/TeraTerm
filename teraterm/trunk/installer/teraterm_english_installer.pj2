@@ -5,7 +5,7 @@ CreateFolder=C:\Program Files\Matsuoka\einstall2\Project\ExeFile
 MajorVersion=3
 MinorVersion=70
 CreateDateTime=2004/12/07 23:52:51
-UpdateDateTime=2006/06/18 20:59:39
+UpdateDateTime=2006/06/23 23:51:24
 Generator=EINSTALL 2.0
 CreateFileType=4
 CreateFileAddVersionInfo=1
@@ -48,7 +48,7 @@ LogoNoHeaderMes=0
 LogoTransparent=0
 MajorVersion=4
 MinorVersion=3
-ReleaseVersion=7
+ReleaseVersion=8
 BuildVersion=0
 OtherVersion=0
 DocumentFile=
@@ -67,7 +67,7 @@ FileCopyOptions=0
 EnableUninstallSetting=1
 EnableUnDeleteFileSetting=0
 EnableDeleteFileSetting=0
-EnableDeleteRegistrySetting=0
+EnableDeleteRegistrySetting=1
 UnInstallerAutoSetting=1
 UnInstallerStoreFolder=%WindowsDirectory%
 UnInstallerStoreSubFolder=
@@ -337,4 +337,7 @@ InfoFileMethod=1
 4=TTSSH Document|%InstallDir%\ssh2_readme.txt||||0||0|2|0|||||||||||
 5=TTSSH Document(Japanese)|%InstallDir%\ssh2_readme-j.txt||||0||0|2|0|||||||||||
 6=Collector for TeraTerm|%InstallDir%\Collector\Collector.exe||||0||0|8|0|||||||||||
+
+[DeleteRegistryItems]
+0=0|HKEY_CURRENT_USER|Software\ShinpeiTools||2||127|0,0,0,0,,,,,,,,,,,,,,,,,|||||||||||||
 
