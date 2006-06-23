@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+<TITLE>About new-line characters</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">About new-line characters</FONT><BR><BR>
+</div>
+
+New-line characters (CR or CR+LF) received from the host are converted to CR+LF pairs by Tera Term, and then Tera Term sends them to MACRO.
+<P></P>
+
+You should use the pair (CR+LF) as a new-line character to send to Tera Term.
+<P></P>
+
+ASCII code 13 (decimal) is for CR, and 10 is for LF.
+<P></P>
+
+<pre>
+Example:
+	send 'abc'#13#10	Same as the statement "sendln 'abc'". The actual new-line character to be sent to the host is determined by Tera Term.
+	Wait #10'abc' 'def'#13	Waits for a line beginning with "abc" or a line ending with "def".
+	Logwrite 'abc'#13#10	Writes line "abc" to the log file.
+</pre>
+
+</BODY>
+</HTML>
+

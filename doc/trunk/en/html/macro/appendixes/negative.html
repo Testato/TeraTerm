@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<TITLE>Note on negative integer constants</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">Note on negative integer constants</FONT><BR><BR>
+</div>
+
+Using a negative integer constant may cause a problem like the following:
+<P></P>
+
+<pre>
+For example,
+
+<B>for i -10 0</B>
+
+causes the syntax error, because the second parameter is regarded as "i-10" instead of "i". To avoid this problem, take one of the following solutions:
+
+1) Put "0" before "-".
+<B>for i 0-10 0</B>
+
+2) Assign the negative constant to a variable.
+<B>A = -10
+for i A 0</B>
+</pre>
+
+</BODY>
+</HTML>
+
