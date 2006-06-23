@@ -1587,8 +1587,13 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 			append_about_text(dlg, "Server keys: ", buf);
 			AUTH_get_auth_info(pvar, buf, sizeof(buf));
 			append_about_text(dlg, "Authentication: ", buf);
+
 			SSH_get_compression_info(pvar, buf, sizeof(buf));
-			append_about_text(dlg, "Compression: ", buf);
+			if (pvar->ctos_compression == COMP_DELAYED) { // 遅延パケット圧縮の場合 (2006.6.23 yutaka)
+				append_about_text(dlg, "Delayed Compression: ", buf);
+			} else {
+				append_about_text(dlg, "Compression: ", buf);
+			}
 
 		}
 	}
@@ -3108,6 +3113,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.30  2006/06/11 14:26:30  yutakakn
+ * SSH Port Forward の編集画面で、TeraTermが未接続状態の場合、ポート番号不正を即座にメッセージボックスが表示されないバグを修正した。
+ *
  * Revision 1.29  2006/03/26 15:43:58  yutakakn
  * SSH2のknown_hosts対応を追加した。
  *

@@ -167,6 +167,12 @@ typedef enum {
 #define KEX_DH14    "diffie-hellman-group14-sha1"
 #define KEX_DHGEX   "diffie-hellman-group-exchange-sha1"
 
+// support of "Compression delayed" (2006.6.23 maya)
+#define COMP_UNKNOWN	-1
+#define COMP_NONE		0
+#define COMP_ZLIB		1
+#define COMP_DELAYED	2
+
 enum kex_exchange {
     KEX_DH_GRP1_SHA1,
     KEX_DH_GRP14_SHA1,
@@ -199,7 +205,8 @@ enum hmac_type {
 	"hmac-md5,hmac-sha1,hmac-ripemd160," \
 	"hmac-ripemd160@openssh.com," \
 	"hmac-sha1-96,hmac-md5-96"
-#define	KEX_DEFAULT_COMP	"none,zlib"
+// support of "Compression delayed" (2006.6.23 maya)
+#define	KEX_DEFAULT_COMP	"none,zlib@openssh.com,zlib"
 #define	KEX_DEFAULT_LANG	""
 
 /* Minimum modulus size (n) for RSA keys. */

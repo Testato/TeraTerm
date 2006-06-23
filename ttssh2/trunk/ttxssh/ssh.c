@@ -640,7 +640,10 @@ static int prep_packet(PTInstVar pvar, char FAR * data, int len,
 
 	} else {
 		// support of SSH2 packet compression (2005.7.9 yutaka)
-		if (pvar->stoc_compression && pvar->ssh2_keys[MODE_IN].comp.enabled) { // compression enabled
+		// support of "Compression delayed" (2006.6.23 maya)
+		if ((pvar->stoc_compression == COMP_ZLIB ||
+			 pvar->stoc_compression == COMP_DELAYED && pvar->userauth_success) &&
+			pvar->ssh2_keys[MODE_IN].comp.enabled) { // compression enabled
 			int ret;
 
 			if (pvar->decomp_buffer == NULL) {
@@ -806,7 +809,10 @@ static void finish_send_packet_special(PTInstVar pvar, int skip_compress)
 		   len = ssh_state.outgoing_packet_len = payload size
 		 */
 		// パケット圧縮が有効の場合、パケットを圧縮してから送信パケットを構築する。(2005.7.9 yutaka)
-		if (pvar->ctos_compression && pvar->ssh2_keys[MODE_OUT].comp.enabled) {
+		// support of "Compression delayed" (2006.6.23 maya)
+		if ((pvar->ctos_compression == COMP_ZLIB ||
+			 pvar->ctos_compression == COMP_DELAYED && pvar->userauth_success) &&
+			pvar->ssh2_keys[MODE_OUT].comp.enabled) {
 			// このバッファは packet-length(4) + padding(1) + payload(any) を示す。
 			msg = buffer_init(); 
 			if (msg == NULL) {
@@ -2494,7 +2500,10 @@ void SSH_get_compression_info(PTInstVar pvar, char FAR * dest, int len)
 	char buf2[1024];
 
 	// added support of SSH2 packet compression (2005.7.10 yutaka)
-	if (pvar->ssh_state.compressing || pvar->ctos_compression) {
+	// support of "Compression delayed" (2006.6.23 maya)
+	if (pvar->ssh_state.compressing ||
+		pvar->ctos_compression == COMP_ZLIB ||
+		pvar->ctos_compression == COMP_DELAYED && pvar->userauth_success) {
 		unsigned long total_in = pvar->ssh_state.compress_stream.total_in;
 		unsigned long total_out =
 			pvar->ssh_state.compress_stream.total_out;
@@ -2513,7 +2522,10 @@ void SSH_get_compression_info(PTInstVar pvar, char FAR * dest, int len)
 	}
 	buf[sizeof(buf) - 1] = 0;
 
-	if (pvar->ssh_state.decompressing || pvar->stoc_compression) {
+	// support of "Compression delayed" (2006.6.23 maya)
+	if (pvar->ssh_state.decompressing ||
+		pvar->stoc_compression == COMP_ZLIB ||
+		pvar->stoc_compression == COMP_DELAYED && pvar->userauth_success) {
 		unsigned long total_in =
 			pvar->ssh_state.decompress_stream.total_in;
 		unsigned long total_out =
@@ -2587,11 +2599,17 @@ void SSH_end(PTInstVar pvar)
 	buf_destroy(&pvar->ssh_state.postdecompress_inbuf,
 				&pvar->ssh_state.postdecompress_inbuflen);
 
-	if (pvar->ssh_state.compressing || pvar->ctos_compression) { // add SSH2 flag (2005.7.10 yutaka)
+	// support of "Compression delayed" (2006.6.23 maya)
+	if (pvar->ssh_state.compressing ||
+		pvar->ctos_compression == COMP_ZLIB || // add SSH2 flag (2005.7.10 yutaka)
+		pvar->ctos_compression == COMP_DELAYED && pvar->userauth_success) {
 		deflateEnd(&pvar->ssh_state.compress_stream);
 		pvar->ssh_state.compressing = FALSE;
 	}
-	if (pvar->ssh_state.decompressing || pvar->stoc_compression) { // add SSH2 flag (2005.7.10 yutaka)
+	// support of "Compression delayed" (2006.6.23 maya)
+	if (pvar->ssh_state.decompressing ||
+		pvar->stoc_compression == COMP_ZLIB || // add SSH2 flag (2005.7.10 yutaka)
+		pvar->stoc_compression == COMP_DELAYED && pvar->userauth_success) {
 		inflateEnd(&pvar->ssh_state.decompress_stream);
 		pvar->ssh_state.decompressing = FALSE;
 	}
@@ -3124,8 +3142,8 @@ static char *myproposal[PROPOSAL_MAX] = {
 //	"hmac-sha1,hmac-md5",
 //	"hmac-sha1",
 //	"hmac-sha1",
-	"none,zlib",
-	"none,zlib",
+	KEX_DEFAULT_COMP,
+	KEX_DEFAULT_COMP,
 	"",
 	"",
 };
@@ -3137,8 +3155,8 @@ static char *myproposal[PROPOSAL_MAX] = {
 	"3des-cbc,aes128-cbc",
 	"hmac-sha1,hmac-md5",
 	"hmac-sha1,hmac-md5",
-	"none,zlib",
-	"none,zlib",
+	KEX_DEFAULT_COMP,
+	KEX_DEFAULT_COMP,
 	"",
 	"",
 };
@@ -3296,7 +3314,8 @@ void SSH2_update_compression_myproposal(PTInstVar pvar)
 	// 圧縮レベルに応じて、myproposal[]を書き換える。(2005.7.9 yutaka)
 	buf[0] = '\0';
 	if (pvar->ts_SSH->CompressionLevel > 0) {
-		_snprintf(buf, sizeof(buf), "zlib,none");
+		// 将来的に圧縮アルゴリズムの優先度をユーザが変えられるようにする。
+		_snprintf(buf, sizeof(buf), "zlib@openssh.com,zlib,none");
 	}
 	if (buf[0] != '\0') {
 		myproposal[PROPOSAL_COMP_ALGS_CTOS] = buf;  // Client To Server
@@ -3401,12 +3420,14 @@ static enum hmac_type choose_SSH2_hmac_algorithm(char *server_proposal, char *my
 static int choose_SSH2_compression_algorithm(char *server_proposal, char *my_proposal)
 {
 	char tmp[1024], *ptr, *q, *index;
-	int ret = -1;
+	int ret = COMP_UNKNOWN;
 
 	// OpenSSH 4.3では遅延パケット圧縮("zlib@openssh.com")が新規追加されているため、
 	// マッチしないように修正した。
 	// 現TeraTermでは遅延パケット圧縮は将来的にサポートする予定。
 	// (2006.6.14 yutaka)
+	// 遅延パケット圧縮に対応。
+	// (2006.6.23 maya)
 
 	_snprintf(tmp, sizeof(tmp), my_proposal);
 	ptr = strtok(tmp, ","); // not thread-safe
@@ -3424,10 +3445,13 @@ static int choose_SSH2_compression_algorithm(char *server_proposal, char *my_pro
 	}
 
 found:
-	if (strstr(ptr, "zlib")) {
-		ret = 1; // packet compression enabled
+	// support of "Compression delayed" (2006.6.23 maya)
+	if (strstr(ptr, "zlib@openssh.com")) {
+		ret = COMP_DELAYED;
+	} else if (strstr(ptr, "zlib")) {
+		ret = COMP_ZLIB; // packet compression enabled
 	} else if (strstr(ptr, "none")) {
-		ret = 0; // packet compression disabled
+		ret = COMP_NONE; // packet compression disabled
 	}
 
 	return (ret);
@@ -3719,7 +3743,7 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 	buf[i] = 0;
 	offset += size;
 	pvar->ctos_compression = choose_SSH2_compression_algorithm(buf, myproposal[PROPOSAL_COMP_ALGS_CTOS]);
-	if (pvar->ctos_compression == -1) { // not match
+	if (pvar->ctos_compression == COMP_UNKNOWN) { // not match
 		strcpy(tmp, "unknown Packet Compression algorithm: ");
 		strcat(tmp, buf);
 		msg = tmp;
@@ -3734,7 +3758,7 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 	buf[i] = 0;
 	offset += size;
 	pvar->stoc_compression = choose_SSH2_compression_algorithm(buf, myproposal[PROPOSAL_COMP_ALGS_STOC]);
-	if (pvar->stoc_compression == -1) { // not match
+	if (pvar->stoc_compression == COMP_UNKNOWN) { // not match
 		strcpy(tmp, "unknown Packet Compression algorithm: ");
 		strcat(tmp, buf);
 		msg = tmp;
@@ -6828,6 +6852,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.45  2006/06/13 15:21:00  yutakakn
+ * OpenSSH 4.3以降で遅延パケット圧縮が設定されている場合、従来のパケット圧縮を有効にした状態でのサーバへの接続ができないバグを修正した。
+ *
  * Revision 1.44  2006/04/07 13:24:16  yutakakn
  * HP-UXにおいてX11 fowardingが失敗した場合に、SSH2セッションが切断されないようにした。
  *
