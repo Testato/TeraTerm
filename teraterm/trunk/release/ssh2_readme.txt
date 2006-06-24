@@ -212,7 +212,7 @@ OF SUCH DAMAGE.
 * History
 
 2006.6.23 (Ver 2.28)
-  - added support for SSH delayed compression(OpenSSH 4.2 later).  Special thanks to NAGATA Shinya.
+  - added support for SSH2 delayed compression(OpenSSH 4.2 later).  Special thanks to NAGATA Shinya.
   
 2006.6.14 (Ver 2.27)
   - Bug fix: TeraTerm enabled SSH compression could not connect to the server when OpenSSH 4.3 later was configured as delay SSH compression.
