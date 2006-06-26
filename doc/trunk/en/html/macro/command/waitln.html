@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<TITLE>waitln</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">waitln</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+ <B>waitln &lt;string1&gt; &lt;string2&gt; ...</B>
+</UL>
+<P></P>
+
+Pauses until a line which contains one of the character strings is received from the host, or until the timeout occurs. Maximum number of the strings is 10.
+<P></P>
+
+If the system variable "timeout" is greater than zero, the timeout occurs when &lt;timeout&gt; seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.
+<P></P>
+
+The "waitln" command returns the received line in the system variable "inputstr" and one of the following values in the system variable "result":
+<P></P>
+
+<pre>
+Value	Meaning
+<hr>
+0	Timeout.
+1	A line which contains &lt;string1&gt; has received.
+2	A line which contains &lt;string2&gt; has received.
+</pre>
+
+<P></P>
+
+</BODY>
+</HTML>
+

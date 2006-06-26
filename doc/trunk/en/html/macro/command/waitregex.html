@@ -27,12 +27,14 @@ If the system variable "timeout" is greater than zero, the timeout occurs when &
 The "waitregex" command returns one of the following values in the system variable "result":
 <P></P>
 
+<pre>
 Value	Meaning
 <hr>
-0	Timeout. No string, which satisfies the condition, has been received.<BR>
-1	&lt;string1 with regular expression&gt; has received.<BR>
-2	&lt;string2 with regular expression&gt; has received.<BR>
-n	&lt;stringn with regular expression&gt; has received. n=1..10.<BR>
+0	Timeout. No string, which satisfies the condition, has been received.
+1	&lt;string1 with regular expression&gt; has received.
+2	&lt;string2 with regular expression&gt; has received.
+n	&lt;stringn with regular expression&gt; has received. n=1..10.
+</pre>
 <P></P>
 
 The received line is stored in the system variable "inputstr".
