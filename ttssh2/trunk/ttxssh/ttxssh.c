@@ -352,8 +352,6 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 
 	READ_STD_STRING_OPTION(CipherOrder);
 	normalize_cipher_order(settings->CipherOrder);
-	SSH2_update_cipher_myproposal(pvar); // yutaka
-	SSH2_update_compression_myproposal(pvar);  // SSH2 packet compression (2005.7.9 yutaka)
 
 	read_string_option(fileName, "KnownHostsFiles", "ssh_known_hosts",
 					   settings->KnownHostsFiles,
@@ -825,6 +823,10 @@ static void PASCAL FAR TTXOpenTCP(TTXSockHooks FAR * hooks)
 		SSH_open(pvar);
 		HOSTS_open(pvar);
 		FWDUI_open(pvar);
+
+		// 設定を myproposal に反映するのは、接続直前のここだけ。 (2006.6.26 maya)
+		SSH2_update_cipher_myproposal(pvar);
+		SSH2_update_compression_myproposal(pvar);
 	}
 }
 
@@ -1675,7 +1677,6 @@ static void init_setup_dlg(PTInstVar pvar, HWND dlg)
 				pvar->settings.CompressionLevel);
 
 	normalize_cipher_order(pvar->settings.CipherOrder);
-	SSH2_update_cipher_myproposal(pvar); // yutaka
 
 	for (i = 0; pvar->settings.CipherOrder[i] != 0; i++) {
 		int cipher = pvar->settings.CipherOrder[i] - '0';
@@ -1815,7 +1816,6 @@ static void complete_setup_dlg(PTInstVar pvar, HWND dlg)
 	buf2[buf2index] = 0;
 	normalize_cipher_order(buf2);
 	strcpy(pvar->settings.CipherOrder, buf2);
-	SSH2_update_cipher_myproposal(pvar); // yutaka
 
 	buf[0] = 0;
 	GetDlgItemText(dlg, IDC_READWRITEFILENAME, buf, sizeof(buf));
@@ -3113,6 +3113,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.31  2006/06/23 13:57:24  yutakakn
+ * TTSSH 2.28にて遅延パケット圧縮をサポートした。
+ *
  * Revision 1.30  2006/06/11 14:26:30  yutakakn
  * SSH Port Forward の編集画面で、TeraTermが未接続状態の場合、ポート番号不正を即座にメッセージボックスが表示されないバグを修正した。
  *

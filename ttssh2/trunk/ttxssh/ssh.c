@@ -3285,10 +3285,15 @@ void SSH2_update_cipher_myproposal(PTInstVar pvar)
 	int cipher;
 	int len, i;
 
+	// 通信中には呼ばれないはずだが、念のため。(2006.6.26 maya)
+	if (pvar->socket != INVALID_SOCKET) {
+		return;
+	}
+
 	// 暗号アルゴリズム優先順位に応じて、myproposal[]を書き換える。(2004.11.6 yutaka)
 	buf[0] = '\0';
-	for (i = 0 ; pvar->ts_SSH->CipherOrder[i] != 0 ; i++) {
-		cipher = pvar->ts_SSH->CipherOrder[i] - '0';
+	for (i = 0 ; pvar->settings.CipherOrder[i] != 0 ; i++) {
+		cipher = pvar->settings.CipherOrder[i] - '0';
 		if (cipher == 0) // disabled line
 			break;
 		if (cipher == SSH_CIPHER_AES128) {
@@ -3311,11 +3316,19 @@ void SSH2_update_compression_myproposal(PTInstVar pvar)
 {
 	static char buf[128]; // TODO: malloc()にすべき
 
+	// 通信中には呼ばれないはずだが、念のため。(2006.6.26 maya)
+	if (pvar->socket != INVALID_SOCKET) {
+		return;
+	}
+
 	// 圧縮レベルに応じて、myproposal[]を書き換える。(2005.7.9 yutaka)
 	buf[0] = '\0';
-	if (pvar->ts_SSH->CompressionLevel > 0) {
+	if (pvar->settings.CompressionLevel > 0) {
 		// 将来的に圧縮アルゴリズムの優先度をユーザが変えられるようにする。
 		_snprintf(buf, sizeof(buf), "zlib@openssh.com,zlib,none");
+	}
+	else {
+		_snprintf(buf, sizeof(buf), KEX_DEFAULT_COMP);
 	}
 	if (buf[0] != '\0') {
 		myproposal[PROPOSAL_COMP_ALGS_CTOS] = buf;  // Client To Server
@@ -5964,8 +5977,8 @@ static unsigned __stdcall ssh_heartbeat_thread(void FAR * p)
 		// 一定時間無通信であれば、サーバへダミーパケットを送る
 		// 閾値が0であれば何もしない。
 		tick = time(NULL) - pvar->ssh_heartbeat_tick;
-		if (pvar->ts_SSH->ssh_heartbeat_overtime > 0 && 
-			tick > pvar->ts_SSH->ssh_heartbeat_overtime) { 
+		if (pvar->session_settings.ssh_heartbeat_overtime > 0 && 
+			tick > pvar->session_settings.ssh_heartbeat_overtime) { 
 			buffer_t *msg;
 			char *s;
 			unsigned char *outmsg;
@@ -6852,6 +6865,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.46  2006/06/23 13:57:24  yutakakn
+ * TTSSH 2.28にて遅延パケット圧縮をサポートした。
+ *
  * Revision 1.45  2006/06/13 15:21:00  yutakakn
  * OpenSSH 4.3以降で遅延パケット圧縮が設定されている場合、従来のパケット圧縮を有効にした状態でのサーバへの接続ができないバグを修正した。
  *
