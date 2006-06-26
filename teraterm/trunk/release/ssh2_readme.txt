@@ -211,6 +211,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.6.26 (Ver 2.29)
+  - Bug fix: Using SSH2 protocol, changes of the TTSSH setup dialog could not feedback on next ssh session. Special thanks to NAGATA Shinya.
+
 2006.6.23 (Ver 2.28)
   - added support for SSH2 delayed compression(OpenSSH 4.2 later).  Special thanks to NAGATA Shinya.
   
