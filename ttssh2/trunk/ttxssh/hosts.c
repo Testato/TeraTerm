@@ -906,9 +906,11 @@ error:
 
 static void add_host_key(PTInstVar pvar)
 {
+	char buf[FILENAME_MAX];
 	char FAR *name = pvar->hosts_state.file_names[0];
+	get_teraterm_dir_relative_name(buf, sizeof(buf), name);
 
-	if (name == NULL || name[0] == 0) {
+	if (buf == NULL || buf[0] == 0) {
 		notify_nonfatal_error(pvar,
 							  "The host and its key cannot be added, because no known-hosts file has been specified.\n"
 							  "Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
@@ -916,7 +918,7 @@ static void add_host_key(PTInstVar pvar)
 		char FAR *keydata = format_host_key(pvar);
 		int length = strlen(keydata);
 		int fd =
-			_open(name,
+			_open(buf,
 				  _O_APPEND | _O_CREAT | _O_WRONLY | _O_SEQUENTIAL |
 				  _O_BINARY,
 				  _S_IREAD | _S_IWRITE);
@@ -966,16 +968,18 @@ static char FAR *copy_mp_int(char FAR * num)
 //
 static void delete_different_key(PTInstVar pvar)
 {
+	char buf[FILENAME_MAX];
 	char FAR *name = pvar->hosts_state.file_names[0];
+	get_teraterm_dir_relative_name(buf, sizeof(buf), name);
 
-	if (name == NULL || name[0] == 0) {
+	if (buf == NULL || buf[0] == 0) {
 		notify_nonfatal_error(pvar,
 							  "The host and its key cannot be added, because no known-hosts file has been specified.\n"
 							  "Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
 	}
 	else {
 		Key key; // 接続中のホストのキー
-		int length = strlen(name);
+		int length;
 		char filename[L_tmpnam];
 		int fd;
 		int amount_written = 0;
@@ -1123,8 +1127,8 @@ error1:
 		}
 
 		// 書き込み一時ファイルからリネーム
-		_unlink(pvar->hosts_state.file_names[0]);
-		rename(filename, pvar->hosts_state.file_names[0]);
+		_unlink(buf);
+		rename(filename, buf);
 
 error2:
 		_unlink(filename);
@@ -1380,6 +1384,9 @@ void HOSTS_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2006/04/04 13:52:52  yutakakn
+ * known_hostsファイルにおいてキー種別の異なる同一ホストのエントリがあった場合、古いキーを削除する機能を追加した。
+ *
  * Revision 1.6  2006/03/29 14:56:52  yutakakn
  * known_hostsファイルにキー種別の異なる同一ホストのエントリがあると、アプリケーションエラーとなるバグを修正した。
  *
