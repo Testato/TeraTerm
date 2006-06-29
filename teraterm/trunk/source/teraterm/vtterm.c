@@ -2453,8 +2453,16 @@ BOOL ParseFirstUTF8(BYTE b, int hfsplus_mode)
 
 		UnicodeToCP932(code, 2);
 
-		buf[0] = b;
-		count = 1;
+		// 次のバイトがASCIIならそのまま表示 (2006.6.30 yutaka)
+		if ((b & 0x80) != 0x80) { // ASCII(0x00-0x7f)
+			ParseASCII(b);
+			count = 0;  // reset counter
+
+		} else {
+			// ASCIIでないのなら、マルチバイト文字の始まりと見なす。
+			buf[0] = b;
+			count = 1;
+		}
 
 		return TRUE;
 	} 
@@ -2635,6 +2643,9 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2006/06/29 16:13:49  yutakakn
+ * ファイルの改行コードを　LF にした。
+ *
  * Revision 1.10  2006/06/15 16:27:59  yutakakn
  * タイトルに日本語を入力すると、文字化けするバグを修正した。パッチ作成に感謝します＞永田氏
  *
