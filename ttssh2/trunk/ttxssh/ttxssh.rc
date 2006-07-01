@@ -59,7 +59,7 @@ FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
     LTEXT           "This extension uses code by Eric A. Young (LIBEAY32.DLL).\r\nThanks also to Ian Goldberg for his Pilot SSH code, which was a very handy reference. Special thanks to Takashi Teranishi for his cooperation.",IDC_STATIC,6,140,248,27
     DEFPUSHBUTTON   "OK",IDOK,106,262,50,14
-    LTEXT           "Includes: TTSSH 1.5.4\r\nCopyright Robert O'Callahan (roc+tt@cs.cmu.edu), 1998-1999\r\nIPv6 extention version 0.81 (kato@win6.jp), 2000-2003\r\nSSH2 support (Y.Hirata), 2004-2006",IDC_STATIC,6,36,219,34
+    LTEXT           "Includes: TTSSH 1.5.4\r\nCopyright Robert O'Callahan (roc+tt@cs.cmu.edu), 1998-1999\r\nIPv6 extention version 0.81 (kato@win6.jp), 2000-2003\r\nSSH2 support (TeraTerm Project), 2004-2006",IDC_STATIC,6,36,219,34
     LTEXT           "THIS EXTENSION INCORPORATES STRONG CRYPTOGRAPHY. POSESSION, USE, AND/OR EXPORT OF THIS EXTENSION MAY BE ILLEGAL IN YOUR COUNTRY.",IDC_STATIC,6,113,248,26
     ICON            IDI_SECURETT,IDC_STATIC,234,7,20,20
     EDITTEXT        IDC_ABOUTTEXT,6,170,248,87,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY

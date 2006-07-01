@@ -51,6 +51,7 @@
 				AdditionalIncludeDirectories="..\..\Teraterm\source\common;..\openssl\inc32;..\..\Teraterm\source\teraterm;..\zlib;..\matcher"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;INET6;_CRT_SECURE_NO_DEPRECATE"
 				RuntimeLibrary="1"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Debug/ttxssh.pch"
 				AssemblerListingLocation=".\Debug/"
