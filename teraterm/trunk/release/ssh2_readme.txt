@@ -214,6 +214,7 @@ OF SUCH DAMAGE.
 2006.6.29 (Ver 2.29)
   - Bug fix: Using SSH2 protocol, changes of the TTSSH setup dialog could not feedback on next ssh session. Special thanks to NAGATA Shinya.
   - Bug fix: The 'ssh_known_files' file might not be saved in TeraTerm installation directory. Special thanks to NAGATA Shinya.
+  - changed Copyright string.
 
 2006.6.23 (Ver 2.28)
   - added support for SSH2 delayed compression(OpenSSH 4.2 later).  Special thanks to NAGATA Shinya.
