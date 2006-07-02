@@ -78,7 +78,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="Version.lib &#x0D;&#x0A;&#x0D;&#x0A;"
-				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib ..\openssl\out32.dbg\libeay32.lib ..\zlib\projects\visualc6\Win32_LIB_Debug\zlibd.lib"
 				OutputFile=".\Debug/ttxssh.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -180,7 +180,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="Version.lib &#x0D;&#x0A;"
-				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib ..\openssl\out32\libeay32.lib ..\zlib\projects\visualc6\Win32_LIB_Release\zlib.lib"
 				OutputFile=".\Release/ttxssh.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -370,10 +370,6 @@
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="..\openssl\out32\libeay32.lib"
-			>
-		</File>
-		<File
 			RelativePath="..\matcher\matcher.c"
 			>
 			<FileConfiguration
@@ -548,10 +544,6 @@
 					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
 				/>
 			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\zlib\projects\visualc6\Win32_LIB_Release\zlib.lib"
-			>
 		</File>
 	</Files>
 	<Globals>
