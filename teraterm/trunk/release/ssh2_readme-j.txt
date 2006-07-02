@@ -121,17 +121,22 @@
   1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする。
   
   2. zlibのソースコード(http://www.zlib.net/)を ttssh2\zlib ディレクトリに展開する。
-     ビルド対象となるのは LIB Release で zlib\projects\visualc6\Win32_LIB_Release\zlib.lib がリンクされることになる（コンパイルオプションに /MT が指定されていること）。
+     Release では zlib\projects\visualc6\Win32_LIB_Release\zlib.lib が、Debug では zlib\projects\visualc6\Win32_LIB_Release\zlibd.lib がリンクされることになる（コンパイルオプションに /MT が指定されていること）。
   
-  3. OpenSSLのソースコード(http://www.openssl.org/)を ttssh2\openssl ディレクトリに展開する。OpenSSLをビルドする（以下参照）。openssl\out32\libeay32.lib がリンクされることになる。
+  3. OpenSSLのソースコード(http://www.openssl.org/)を ttssh2\openssl ディレクトリに展開する。OpenSSLをビルドする（以下参照）。
+     Release では openssl\out32\libeay32.lib が、Debug では openssl\out32.dbg\libeay32.lib がリンクされることになる。
 
       - Build OpenSSL.
             + cd openssl
             + perl Configure VC-WIN32
                 (Yes, you need perl to build OpenSSL!)
+            + ms\do_ms をエディタで開いて、ms\nt.mak の次の行に下記の内容を追記する
+              perl util\mk1mf.pl no-asm debug VC-WIN32 >ms\ntd.mak
             + ms\do_ms
             + ms\nt.mak をエディタで開いて、CFLAG行の /MD を /MT に変更する
+            + ms\ntd.mak をエディタで開いて、CFLAG行の /MDd を /MTd に変更する
             + nmake -f ms\nt.mak
+            + nmake -f ms\ntd.mak
             + cd ..
                 (Now you are back in PortForwarder folder.)
         See the instruction in the OpenSSL documentation for details.
