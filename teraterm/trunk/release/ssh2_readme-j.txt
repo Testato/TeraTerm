@@ -130,7 +130,7 @@
             + cd openssl
             + perl Configure VC-WIN32
                 (Yes, you need perl to build OpenSSL!)
-            + ms\do_ms をエディタで開いて、ms\nt.mak の次の行に下記の内容を追記する
+            + ms\do_ms.bat をエディタで開いて、ms\nt.mak の次の行に下記の内容を追記する
               perl util\mk1mf.pl no-asm debug VC-WIN32 >ms\ntd.mak
             + ms\do_ms
             + ms\nt.mak をエディタで開いて、CFLAG行の /MD を /MT に変更する
@@ -158,7 +158,7 @@
   
 
 ■ライセンス
-Copyright (c) Yutaka Hirata, TeraTerm Project. 
+Copyright (c) TeraTerm Project. 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, 

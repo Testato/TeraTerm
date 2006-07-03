@@ -126,17 +126,22 @@
   1. Checkout TTSSH source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
   
   2. Extract zlib source code(http://www.zlib.net/) to ttssh2\zlib directory.
-     The build target is 'LIB Release' and TTSSH links to zlib\projects\visualc6\Win32_LIB_Release\zlib.lib (compile option /MT must be specified).
+     The build target is 'Release' and TTSSH links to zlib\projects\visualc6\Win32_LIB_Release\zlib.lib (compile option /MT must be specified).
+     The build target is 'Debug' and TTSSH links to  zlib\projects\visualc6\Win32_LIB_Release\zlibd.lib (compile option /MT must be specified).
      
-  3. Extract OpenSSL source code(http://www.openssl.org/) to ttssh2\openssl directory. Build OpenSSL in the following step(TTSSH links to openssl\out32\libeay32.lib):
+  3. Extract OpenSSL source code(http://www.openssl.org/) to ttssh2\openssl directory. Build OpenSSL in the following step(Release:TTSSH links to openssl\out32\libeay32.lib, Debug:openssl\out32.dbg\libeay32.lib):
   
       - Build OpenSSL.
             + cd openssl
             + perl Configure VC-WIN32
                 (Yes, you need perl to build OpenSSL!)
+            + Open ms\do_ms.bat and append the following line at the next line of 'ms\nt.mak' line.
+              "perl util\mk1mf.pl no-asm debug VC-WIN32 >ms\ntd.mak"
             + ms\do_ms
             + Open ms\nt.mak and modify CFLAG line from /MD to /MT.
+            + Open ms\ntd.mak and modify CFLAG line from /MD to /MT.
             + nmake -f ms\nt.mak
+            + nmake -f ms\ntd.mak
             + cd ..
                 (Now you are back in PortForwarder folder.)
         See the instruction in the OpenSSL documentation for details.
@@ -156,7 +161,7 @@
 
 
 * License
-Copyright (c) Yutaka Hirata, TeraTerm Project. 
+Copyright (c) TeraTerm Project. 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, 
