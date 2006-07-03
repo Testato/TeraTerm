@@ -80,7 +80,7 @@
 				AdditionalOptions="Version.lib &#x0D;&#x0A;&#x0D;&#x0A;"
 				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib ..\openssl\out32.dbg\libeay32.lib ..\zlib\projects\visualc6\Win32_LIB_Debug\zlibd.lib"
 				OutputFile=".\Debug/ttxssh.dll"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/ttxssh.pdb"
