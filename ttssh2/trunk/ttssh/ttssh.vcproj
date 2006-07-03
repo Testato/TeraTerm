@@ -72,7 +72,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile=".\Debug/ttssh.exe"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/ttssh.pdb"

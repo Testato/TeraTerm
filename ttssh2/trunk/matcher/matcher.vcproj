@@ -157,7 +157,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile=".\Debug/matcher.exe"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/matcher.pdb"
