@@ -127,7 +127,7 @@
   
   2. Extract zlib source code(http://www.zlib.net/) to ttssh2\zlib directory.
      The build target is 'Release' and TTSSH links to zlib\projects\visualc6\Win32_LIB_Release\zlib.lib (compile option /MT must be specified).
-     The build target is 'Debug' and TTSSH links to  zlib\projects\visualc6\Win32_LIB_Release\zlibd.lib (compile option /MT must be specified).
+     The build target is 'Debug' and TTSSH links to  zlib\projects\visualc6\Win32_LIB_Release\zlibd.lib (compile option /MTd must be specified).
      
   3. Extract OpenSSL source code(http://www.openssl.org/) to ttssh2\openssl directory. Build OpenSSL in the following step(Release:TTSSH links to openssl\out32\libeay32.lib, Debug:openssl\out32.dbg\libeay32.lib):
   
@@ -139,7 +139,7 @@
               "perl util\mk1mf.pl no-asm debug VC-WIN32 >ms\ntd.mak"
             + ms\do_ms
             + Open ms\nt.mak and modify CFLAG line from /MD to /MT.
-            + Open ms\ntd.mak and modify CFLAG line from /MD to /MT.
+            + Open ms\ntd.mak and modify CFLAG line from /MDd to /MTd.
             + nmake -f ms\nt.mak
             + nmake -f ms\ntd.mak
             + cd ..

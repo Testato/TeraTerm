@@ -121,7 +121,8 @@
   1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする。
   
   2. zlibのソースコード(http://www.zlib.net/)を ttssh2\zlib ディレクトリに展開する。
-     Release では zlib\projects\visualc6\Win32_LIB_Release\zlib.lib が、Debug では zlib\projects\visualc6\Win32_LIB_Release\zlibd.lib がリンクされることになる（コンパイルオプションに /MT が指定されていること）。
+     Release では zlib\projects\visualc6\Win32_LIB_Release\zlib.lib がリンクされることになる（コンパイルオプションに /MT が指定されていること）。
+     Debug では zlib\projects\visualc6\Win32_LIB_Release\zlibd.lib がリンクされることになる（コンパイルオプションに /MTd が指定されていること）。
   
   3. OpenSSLのソースコード(http://www.openssl.org/)を ttssh2\openssl ディレクトリに展開する。OpenSSLをビルドする（以下参照）。
      Release では openssl\out32\libeay32.lib が、Debug では openssl\out32.dbg\libeay32.lib がリンクされることになる。
