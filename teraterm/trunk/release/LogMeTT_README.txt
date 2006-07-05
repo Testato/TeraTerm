@@ -52,6 +52,15 @@ http://www.neocom.ca/forum/index.php
                  =============================
                  (in reverse chronological order)
 
+2006-07-03 (Ver 2.8 Release 4)
+New features added:
+- Added progress bar to LogMeTT Configuration Utility splash screen.
+
+Bugs fixed:
+- Reduced startup time of LogMeTT Configuration Utility.
+- Fixed (hopefully) sporadic application error that was happening while closing Configuration Utility.
+
+
 2006-03-19 (Ver 2.8 Release 3)
 New features added:
 - Added Information window under "File -> Information for" menu. It shows statistical

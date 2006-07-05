@@ -711,6 +711,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.7.5 (Ver 4.40)
+  - upgraded LogMeTT to 2.8.4
+
 2006.7.1 (Ver 4.39)
   - Bug fix: UTF-8 miss deconding when the one byte character(ASCII) comes after the two byte characters.
   - changed Copyright string.
