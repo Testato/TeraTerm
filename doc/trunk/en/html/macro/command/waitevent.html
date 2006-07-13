@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+<TITLE>waitevent</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">waitevent</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+ <B>waitevent &lt;events&gt;</B>
+</UL>
+<P></P>
+
+Pauses until one of the events specified by &lt;events&gt; occurs.
+
+&lt;events&gt; can be combination of the following event identifiers.
+<P></P>
+
+<pre>
+Event		Event identifier
+<hr>
+timeout		1
+unlink		2
+disconnection	4
+connection	8
+</pre>
+
+<P></P>
+
+The timeout event occurs when &lt;timeout&gt; seconds have passed.
+&lt;timeout&gt; is the value of the system variable "timeout".
+If &lt;timeout&gt; is less than or equal to zero, this event never occurs.
+<P></P>
+The unlink event occurs when Tera Term is closed.
+<P></P>
+The disconnection (connection) event occurs when the communication between Tera Term and the host is closed (opend).
+<P></P>
+The "waitevent" command returns the identifier of the actual event in the system variable "result".
+<P></P>
+
+<pre>
+Example:
+	waitevent 4	Wait the disconnection event
+	waitevent	2 or 8	Wait the unlink or connection events
+	if result=2 goto label1	The unlink event occured
+	if result=8 goto label2	The connection event occured
+</pre>
+
+</BODY>
+</HTML>
+

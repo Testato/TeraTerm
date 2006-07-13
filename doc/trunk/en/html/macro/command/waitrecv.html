@@ -1,0 +1,46 @@
+<HTML>
+<HEAD>
+<TITLE>waitrecv</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">waitrecv</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+ <B>waitrecv&lt;sub-string&gt; &lt;len&gt; &lt;pos&gt;</B>
+</UL>
+<P></P>
+
+Pauses until a string, which satisfies a condition, is received from the host, or until the timeout occurs.
+<P></P>
+
+The condition is:
+	The length of the string is &lt;len&gt;, and the string contains
+	the &lt;sub-string&gt; beginning at the &lt;pos&gt;th character.
+<P></P>
+
+For example, if &lt;sub-string&gt; is "def" and &lt;len&gt; is 9 and &lt;pos&gt; is 4, the string "abcdefghi" satisfies the condition.
+<P></P>
+
+If such a string is received, it is saved in the system variable "inputstr".
+<P></P>
+If the system variable "timeout" is greater than zero, the timeout occurs when &lt;timeout&gt; seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.
+<P></P>
+The "waitrecv" command returns one of the following values in the system variable "result":
+
+<pre>
+Value	Meaning
+<hr>
+-1	A string, which contains the <sub-string> beginning at the <pos>th character, 
+	has been received, and saved in the "inputstr", but its length is less than <len> because of the timeout.
+0	Timeout. No string, which satisfies the condition, has been received.
+1	A string, which satisfies the condition, has been received, and saved in the "inputstr".
+</pre>
+
+</BODY>
+</HTML>
+

@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<TITLE>send</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">send</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+ <B>send &lt;data1&gt; &lt;data2&gt; ....</B>
+</UL>
+<P></P>
+
+Causes Tera Term to send characters to the host.
+<P></P>
+
+If &lt;data&gt; is a string, the string is sent to the host. If &lt;data&gt; is an integer, its lowest-order byte (0-255) is regarded as an ASCII code of the character, and the character is sent to the host.
+
+<pre>
+Example:
+	send 'ABC'	
+
+	send  65 66 67	Send "ABC". (ASCII code of the character "A" is 65.)
+	myname='Tera Term'	
+	send 'My name is ' myname '.'
+</pre>
+
+</BODY>
+</HTML>
+

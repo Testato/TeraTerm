@@ -1,0 +1,35 @@
+<HTML>
+<HEAD>
+<TITLE>sendln</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">sendln</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+ <B>sendln &lt;data1&gt; &lt;data2&gt; ....</B>
+</UL>
+<P></P>
+
+Causes Tera Term to send characters followed by a new-line character to the host.
+<P></P>
+
+Format of &lt;data&gt; is the same as the "send" command.
+
+<pre>
+Example:
+	sendln			Only a new-line character is sent.
+
+	sendln 'abc'	
+
+	Password='mypassword'	
+	sendln Password
+</pre>
+
+</BODY>
+</HTML>
+
