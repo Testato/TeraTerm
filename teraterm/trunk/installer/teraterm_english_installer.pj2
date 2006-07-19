@@ -5,7 +5,7 @@ CreateFolder=C:\Program Files\Matsuoka\einstall2\Project\ExeFile
 MajorVersion=3
 MinorVersion=70
 CreateDateTime=2004/12/07 23:52:51
-UpdateDateTime=2006/07/01 13:59:58
+UpdateDateTime=2006/07/20 0:00:15
 Generator=EINSTALL 2.0
 CreateFileType=4
 CreateFileAddVersionInfo=1
@@ -17,11 +17,11 @@ InstallerModuleKey=
 InstallerModuleLanguage=1033
 
 [SupportInfo]
-Publisher=Yutaka Hirata
+Publisher=TeraTerm Project
 Corporation=
 HelpLink=
 HelpTelephon=
-URLInfoAbout=http://hp.vector.co.jp/authors/VA013320/
+URLInfoAbout=http://sourceforge.jp/projects/ttssh2/
 URLUpdateInfo=
 
 [ButtonStatus]
@@ -47,8 +47,8 @@ LogoNoCenter=0
 LogoNoHeaderMes=0
 LogoTransparent=0
 MajorVersion=4
-MinorVersion=3
-ReleaseVersion=9
+MinorVersion=4
+ReleaseVersion=0
 BuildVersion=0
 OtherVersion=0
 DocumentFile=
