@@ -238,9 +238,16 @@ void LogStart()
 
 	if (strlen(&(LogVar->FullName[LogVar->DirLen]))==0)
 	{
+		// LOWORD
+		// 0x0001 = Binary
+		// HIWORD
+		// 0x0001 = Append
 		// 0x1000 = plain text (2005.2.20 yutaka)
+		// 0x2000 = timestamp (2006.7.23 maya)
 		// teraterm.iniの設定を見てからデフォルトオプションを決める。(2005.5.7 yutaka)
-		Option = MAKELONG(ts.TransBin,ts.Append | (0x1000 * ts.LogTypePlainText));
+		Option = MAKELONG(ts.TransBin,ts.Append |
+						  (0x1000 * ts.LogTypePlainText) |
+						  (0x2000 * ts.LogTimestamp));
 		if (! (*GetTransFname)(LogVar, ts.FileDir, GTF_LOG, &Option))
 		{
 			FreeFileVar(&LogVar);
@@ -255,6 +262,14 @@ void LogStart()
 		} else {
 			ts.LogTypePlainText = 0;
 		}
+
+		if (ts.Append & 0x2000) {
+			ts.LogTimestamp = 1;
+		}
+		else {
+			ts.LogTimestamp = 0;
+		}
+
 		ts.Append &= 0x1; // 1bitにマスクする
 
 	}
@@ -430,6 +445,26 @@ void LogToFile()
 	{
 		if (((cv.FilePause & OpLog)==0) && (! cv.ProtoFlag))
 		{
+			// 時刻を書き出す(2006.7.23 maya)
+			if (ts.LogTimestamp &&
+				(Start == 1 || Buf[Start-2] == 0x0a)) {
+				SYSTEMTIME	LocalTime;
+				GetLocalTime(&LocalTime);
+				char strtime[27];
+
+				// format time
+				sprintf(strtime, "[%04d/%02d/%02d %02d:%02d:%02d.%03d] ",
+						LocalTime.wYear, LocalTime.wMonth,LocalTime.wDay,
+						LocalTime.wHour, LocalTime.wMinute, LocalTime.wSecond,
+						LocalTime.wMilliseconds);
+
+				// write to file
+				if (Start == 1 && ts.Append) {
+					_lwrite(LogVar->FileHandle,"\r\n",strlen("\r\n"));
+				}
+				_lwrite(LogVar->FileHandle,strtime,strlen(strtime));
+			}
+
 			_lwrite(LogVar->FileHandle,(PCHAR)&b,1);
 			(LogVar->ByteCount)++;
 		}
@@ -1076,6 +1111,9 @@ void QVStart(int mode)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2005/05/07 09:49:24  yutakakn
+ * teraterm.iniに LogTypePlainText を追加した。
+ *
  * Revision 1.2  2005/02/20 14:51:29  yutakakn
  * ログファイルの種別に"plain text"を追加。このオプションが有効の場合は、ログファイルに
  * ASCII非表示文字の採取をしない。

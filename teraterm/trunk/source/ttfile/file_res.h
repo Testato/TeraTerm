@@ -6,6 +6,7 @@
 #define IDC_FOPTBIN                     1001
 #define IDC_FOPTAPPEND                  1002
 #define IDC_PLAINTEXT                   1003
+#define IDC_TIMESTAMP                   1004
 #define IDD_XOPT                        1100
 #define IDC_XOPTCHECK                   1101
 #define IDC_XOPTCRC                     1102

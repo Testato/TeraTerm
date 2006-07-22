@@ -337,6 +337,7 @@ struct tttset {
   int DuplicateSession;
   char ViewlogEditor[MAX_PATH];
   WORD LogTypePlainText;
+  WORD LogTimestamp;
   int DisablePasteMouseRButton;
   int EnableClickableUrl;
   eterm_lookfeel_t EtermLookfeel;

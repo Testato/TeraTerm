@@ -648,6 +648,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   /* Log plain text (2005.5.7 yutaka) */
   ts->LogTypePlainText = GetOnOff(Section,"LogTypePlainText",FName,FALSE);
 
+  /* Log with timestamp (2006.7.23 maya) */
+  ts->LogTimestamp = GetOnOff(Section,"LogTimestamp",FName,FALSE);
+
   /* XMODEM option */
   GetPrivateProfileString(Section,"XmodemOpt","",
 			  Temp,sizeof(Temp),FName);
@@ -1371,6 +1374,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* File transfer binary flag */
   WriteOnOff(Section,"LogTypePlainText",FName,ts->LogTypePlainText);
+
+  /* Log with timestamp (2006.7.23 maya) */
+  WriteOnOff(Section,"LogTimestamp",FName,ts->LogTimestamp);
 
   /* XMODEM option */
   switch (ts->XmodemOpt) {
@@ -2422,6 +2428,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2006/03/16 15:35:00  yutakakn
+ * (none)
+ *
  * Revision 1.12  2006/03/12 14:27:41  yutakakn
  *   ・Additional settingsダイアログにおけるウィンドウの半透明変更を即座に反映させるようにした（teraterm.ini の AlphaBlend=256 の場合のみ）。
  *   ・文字の背景色をスクリーンの背景色と一致させるパッチのバグを修正した。パッチ作成に感謝します＞337氏

@@ -696,6 +696,9 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
+2006.7.23 (Ver 4.41)
+  ・ログに時刻を記録する機能を追加した。また、teraterm.iniに LogTimestamp エントリを追加した。
+
 2006.7.19 (Ver 4.40)
   ・LogMeTT 2.8.4へ差し替えた
   ・HTMLヘルプを更新した

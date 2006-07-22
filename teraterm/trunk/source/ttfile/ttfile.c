@@ -171,6 +171,12 @@ BOOL CALLBACK TFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			if (Hi & 0x1000) {
 				SetRB(Dialog,1,IDC_PLAINTEXT,IDC_PLAINTEXT);
 			}
+
+			// timestampチェックボックス (2006.7.23 maya)
+			ShowDlgItem(Dialog,IDC_TIMESTAMP,IDC_TIMESTAMP);
+			if (Hi & 0x2000) {
+				SetRB(Dialog,1,IDC_TIMESTAMP,IDC_TIMESTAMP);
+			}
 		}
 		return TRUE;
 
@@ -210,6 +216,12 @@ BOOL CALLBACK TFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			GetRB(Dialog,&val,IDC_PLAINTEXT,IDC_PLAINTEXT);
 			if (val > 0) { // checked
 				Hi |= 0x1000;
+			}
+
+			// timestampチェックボックス (2006.7.23 maya)
+			GetRB(Dialog,&val,IDC_TIMESTAMP,IDC_TIMESTAMP);
+			if (val > 0) {
+				Hi |= 0x2000;
 			}
 
 			*pl = MAKELONG(Lo,Hi);
@@ -960,6 +972,18 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2006/02/18 08:40:07  yutakakn
+ *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
+ *   ・stricmp()を_stricmp()へ置換した
+ *   ・strnicmp()を_strnicmp()へ置換した
+ *   ・strdup()を_strdup()へ置換した
+ *   ・chdir()を_chdir()へ置換した
+ *   ・getcwd()を_getcwd()へ置換した
+ *   ・strupr()を_strupr()へ置換した
+ *   ・time_tの64ビット化にともなう警告メッセージを抑止した
+ *   ・TeraTerm Menuがビルドエラーとなる現象に対処した
+ *   ・Oniguruma 4.0.1へ差し替えた
+ *
  * Revision 1.8  2005/05/07 09:49:24  yutakakn
  * teraterm.iniに LogTypePlainText を追加した。
  *
