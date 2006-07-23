@@ -711,6 +711,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.7.23 (Ver 4.41)
+  - added timestamp option on log saving dialog. And also added LogTimestamp entry in teraterm.ini file.
+
 2006.7.19 (Ver 4.40)
   - upgraded LogMeTT to 2.8.4
   - updated HTML help document.
