@@ -446,8 +446,10 @@ void LogToFile()
 		if (((cv.FilePause & OpLog)==0) && (! cv.ProtoFlag))
 		{
 			// 時刻を書き出す(2006.7.23 maya)
+			// 日付フォーマットを日本ではなく世界標準に変更した (2006.7.23 yutaka)
 			if (ts.LogTimestamp &&
 				(Start == 1 || Buf[Start-2] == 0x0a)) {
+#if 0
 				SYSTEMTIME	LocalTime;
 				GetLocalTime(&LocalTime);
 				char strtime[27];
@@ -457,12 +459,19 @@ void LogToFile()
 						LocalTime.wYear, LocalTime.wMonth,LocalTime.wDay,
 						LocalTime.wHour, LocalTime.wMinute, LocalTime.wSecond,
 						LocalTime.wMilliseconds);
+#else
+					time_t tick = time(NULL);
+					char *strtime = ctime(&tick); 
+#endif
 
 				// write to file
 				if (Start == 1 && ts.Append) {
 					_lwrite(LogVar->FileHandle,"\r\n",strlen("\r\n"));
 				}
-				_lwrite(LogVar->FileHandle,strtime,strlen(strtime));
+				_lwrite(LogVar->FileHandle,"[",1);
+				// 変換した文字列の終端に \n が含まれているので取り除く。
+				_lwrite(LogVar->FileHandle, strtime, strlen(strtime) - 1);
+				_lwrite(LogVar->FileHandle,"] ",2);
 			}
 
 			_lwrite(LogVar->FileHandle,(PCHAR)&b,1);
@@ -1111,6 +1120,9 @@ void QVStart(int mode)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2006/07/22 16:15:54  maya
+ * ログ記録時に時刻も書き込む機能を追加した。
+ *
  * Revision 1.3  2005/05/07 09:49:24  yutakakn
  * teraterm.iniに LogTypePlainText を追加した。
  *
