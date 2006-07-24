@@ -1,4 +1,4 @@
-Oniguruma Regular Expressions Version 3.6.0    2005/02/01
+Oniguruma Regular Expressions Version 4.2.0    2006/07/18
 
 syntax: ONIG_SYNTAX_RUBY (default)
 
@@ -225,6 +225,32 @@ syntax: ONIG_SYNTAX_RUBY (default)
     in the pattern and ONIG_OPTION_CAPTURE_GROUP is not setted.
 
 
+  back reference with nest level
+
+    \k<name+n>     n: 0, 1, 2, ...
+    \k<name-n>     n: 0, 1, 2, ...
+
+    Destinate relative nest level from back reference position.    
+
+    ex 1.
+
+      /\A(?<a>|.|(?:(?<b>.)\g<a>\k<b+0>))\z/.match("reer")
+
+    ex 2.
+
+      r = Regexp.compile(<<'__REGEXP__'.strip, Regexp::EXTENDED)
+      (?<element> \g<stag> \g<content>* \g<etag> ){0}
+      (?<stag> < \g<name> \s* > ){0}
+      (?<name> [a-zA-Z_:]+ ){0}
+      (?<content> [^<&]+ (\g<element> | [^<&]+)* ){0}
+      (?<etag> </ \k<name+1> >){0}
+      \g<element>
+      __REGEXP__
+
+      p r.match('<foo>f<bar>bbb</bar>f</foo>').captures
+
+
+
 9. Subexp call ("Tanaka Akira special")
 
   \g<name>    call by group name
@@ -352,6 +378,8 @@ A-4. Differences with Japanized GNU regex(version 0.12) of Ruby
      and the maximum is not allowed. (/a{,}/)
    + /a{n}?/ is not a non-greedy operator.
      /a{n}?/ == /(?:a{n})?/
+   + invalid back reference is checked and cause error.
+     /\1/, /(a)\2/
    + Zero-length match in infinite repeat stops the repeat,
      then changes of the capture group status are checked as stop condition.
      /(?:()|())*\1\2/ =~ ""

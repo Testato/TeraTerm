@@ -1517,10 +1517,9 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		// リンクしたくなかったので、以下のようにした。Onigurumaのバージョンが上がった場合、
 		// ビルドエラーとなるかもしれない。
 		// (2005.10.8 yutaka)
-		_snprintf(buf, sizeof(buf), "Oniguruma %d.%d.%d",
-					ONIGURUMA_VERSION_MAJOR,
-					ONIGURUMA_VERSION_MINOR,
-					ONIGURUMA_VERSION_TEENY);
+		// ライブラリをリンクし、正規の手順でバージョンを得ることにした。
+		// (2006.7.24 yutaka)
+		_snprintf(buf, sizeof(buf), "Oniguruma %s", onig_version());
 		SendMessage(GetDlgItem(Dialog, IDC_ONIGURUMA_LABEL), WM_SETTEXT, 0, (LPARAM)buf);
 
 		// static textをサブクラス化する。ただし、tabstop, notifyプロパティを有効にしておかないと
@@ -2026,6 +2025,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2006/03/12 14:27:41  yutakakn
+ *   ・Additional settingsダイアログにおけるウィンドウの半透明変更を即座に反映させるようにした（teraterm.ini の AlphaBlend=256 の場合のみ）。
+ *   ・文字の背景色をスクリーンの背景色と一致させるパッチのバグを修正した。パッチ作成に感謝します＞337氏
+ *
  * Revision 1.12  2006/03/02 16:15:49  yutakakn
  *   ・文字の背景色をスクリーンの背景色と一致させるようにした。それにともないWindow setupダイアログに"Always use Normal text's BG"チェックボックスを追加した。また、teraterm.iniにUseNormalBGColorエントリを追加した。パッチ作成に感謝します＞337氏
  *

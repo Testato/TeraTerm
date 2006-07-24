@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="ttpdlg"
 	ProjectGUID="{47CB840D-85C8-460F-9101-BEB54BEF9D56}"
+	RootNamespace="ttpdlg"
 	>
 	<Platforms>
 		<Platform
@@ -76,10 +77,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="Version.lib"
+				AdditionalOptions="Version.lib onig_s.lib"
 				OutputFile=".\..\bin\Release/ttpdlg.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="C:\usr\cvs\teraterm\source\oniguruma"
 				ModuleDefinitionFile=".\ttpdlg.def"
 				ProgramDatabaseFile=".\..\bin\Release/ttpdlg.pdb"
 				SubSystem="2"
@@ -172,10 +174,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="Version.lib"
+				AdditionalOptions="Version.lib onig_s.lib"
 				OutputFile=".\..\bin\Debug/ttpdlg.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="C:\usr\cvs\teraterm\source\oniguruma"
 				ModuleDefinitionFile=".\ttpdlg.def"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\bin\Debug/ttpdlg.pdb"
