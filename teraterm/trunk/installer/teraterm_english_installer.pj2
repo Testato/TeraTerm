@@ -3,9 +3,9 @@ ProjectName=UTF-8 TeraTerm Pro with TTSSH2
 CreateFileName=teraterm_utf8_
 CreateFolder=C:\Program Files\Matsuoka\einstall2\Project\ExeFile
 MajorVersion=3
-MinorVersion=70
+MinorVersion=80
 CreateDateTime=2004/12/07 23:52:51
-UpdateDateTime=2006/07/20 0:00:15
+UpdateDateTime=2006/07/24 21:11:39
 Generator=EINSTALL 2.0
 CreateFileType=4
 CreateFileAddVersionInfo=1
@@ -28,7 +28,7 @@ URLUpdateInfo=
 1=Å~
 2=Å~
 3=Å~
-4=
+4=Å~
 5=
 6=Å~
 7=Å~
@@ -38,8 +38,8 @@ SoftName=UTF-8 TeraTerm Pro with TTSSH2
 InstallerTitle=UTF-8 TeraTerm Pro with TTSSH2
 MainFileName=%InstallDir%\ttermpro.exe
 Copyright=Copyright (C)2004-2006 TeraTerm Project
-Folder=%ProgramFilesDir%|teraterm
-SearchFileDir=%ProgramFilesDir%|
+Folder=%Registry%|HKEY_LOCAL_MACHINESoftware\TeratermProject\InstallDirteraterm
+SearchFileDir=%ProgramFilesDir%|teraterm
 LogoFileName=
 LogoEnabled=0
 LogoNoResize=0
@@ -74,6 +74,7 @@ UnInstallerStoreSubFolder=
 UnInstallerFileName=eiunin21.exe
 UnInstallerOptions=1
 EnableUnDeleteRegistrySetting=0
+EnableRegistrySetting=1
 
 [ShortCutSetting]
 GroupName=UTF-8 TeraTerm Pro with TTSSH2
@@ -343,4 +344,7 @@ InfoFileMethod=1
 
 [DeleteFileItems]
 0=0|%WindowsDirectory%|Fonts|TSPECIAL1.TTF|||0|127|0,0,0,0,,,,,,,,,,,,,,,,,||||||||||||
+
+[RegistryItems]
+0=HKEY_LOCAL_MACHINE|Software\TeratermProject\InstallDir|teraterm|%InstallDir%|0|0,0,HKEY_CURRENT_USER,,,,0,,,0,,,,,,,,,,,|127|0,0,0,0,,,,,,,,,,,,,,,,,|||||||||||||
 
