@@ -711,9 +711,11 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
-2006.7.23 (Ver 4.41)
+2006.7.24 (Ver 4.41)
   - added timestamp option on log saving dialog. And also added LogTimestamp entry in teraterm.ini file.
-  - when upgrade installation, installer sets previous installed folder as install folder by default.
+  - upgraded Kantan Installer version to 2.30a. The installer could record the previous installed folder when TeraTerm installation package was upgraded.
+  - Bug fix: Collector resource english text.
+  - upgraded Oniguruma to 4.2.0
 
 2006.7.19 (Ver 4.40)
   - upgraded LogMeTT to 2.8.4

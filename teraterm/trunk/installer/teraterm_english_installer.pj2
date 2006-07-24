@@ -5,7 +5,7 @@ CreateFolder=C:\Program Files\Matsuoka\einstall2\Project\ExeFile
 MajorVersion=3
 MinorVersion=80
 CreateDateTime=2004/12/07 23:52:51
-UpdateDateTime=2006/07/24 21:11:39
+UpdateDateTime=2006/07/24 23:37:50
 Generator=EINSTALL 2.0
 CreateFileType=4
 CreateFileAddVersionInfo=1
@@ -48,7 +48,7 @@ LogoNoHeaderMes=0
 LogoTransparent=0
 MajorVersion=4
 MinorVersion=4
-ReleaseVersion=0
+ReleaseVersion=1
 BuildVersion=0
 OtherVersion=0
 DocumentFile=
@@ -339,12 +339,12 @@ InfoFileMethod=1
 5=TTSSH Document(Japanese)|%InstallDir%\ssh2_readme-j.txt||||0||0|2|0|||||||||||
 6=Collector for TeraTerm|%InstallDir%\Collector\Collector.exe||||0||0|8|0|||||||||||
 
+[RegistryItems]
+0=HKEY_LOCAL_MACHINE|Software\TeratermProject\InstallDir|teraterm|%InstallDir%|0|0,0,HKEY_CURRENT_USER,,,,0,,,0,,,,,,,,,,,|127|0,0,0,0,,,,,,,,,,,,,,,,,|||||||||||||
+
 [DeleteRegistryItems]
-0=0|HKEY_CURRENT_USER|Software\ShinpeiTools||0||127|0,0,0,0,,,,,,,,,,,,,,,,,|||||||||||||
+0=0|HKEY_CURRENT_USER|Software\ShinpeiTools||2||127|0,0,0,0,,,,,,,,,,,,,,,,,|||||||||||||
 
 [DeleteFileItems]
 0=0|%WindowsDirectory%|Fonts|TSPECIAL1.TTF|||0|127|0,0,0,0,,,,,,,,,,,,,,,,,||||||||||||
-
-[RegistryItems]
-0=HKEY_LOCAL_MACHINE|Software\TeratermProject\InstallDir|teraterm|%InstallDir%|0|0,0,HKEY_CURRENT_USER,,,,0,,,0,,,,,,,,,,,|127|0,0,0,0,,,,,,,,,,,,,,,,,|||||||||||||
 
