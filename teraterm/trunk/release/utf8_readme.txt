@@ -711,6 +711,11 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.7.25 (Ver 4.42)
+  - updated to new TeraTerm icon file(teraterm.ico, vt.ico). Special thanks to Tatsu Sakamoto.
+  - upgraded LogMeTT to 2.8.5
+  - Bug fix: Collector resource english text.
+
 2006.7.24 (Ver 4.41)
   - added timestamp option on log saving dialog. And also added LogTimestamp entry in teraterm.ini file.
   - upgraded Kantan Installer version to 2.30a. The installer could record the previous installed folder when TeraTerm installation package was upgraded.
