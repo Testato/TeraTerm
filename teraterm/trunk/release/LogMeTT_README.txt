@@ -52,6 +52,16 @@ http://www.neocom.ca/forum/index.php
                  =============================
                  (in reverse chronological order)
 
+2006-07-24 (Ver 2.8 Release 5)
+New features added:
+- None.
+
+Bugs fixed:
+- Fixed (finally) sporadic application error that was happening while closing Configuration
+Utility. The error was triggered by the conflict of 2 freeware Delphi components (SynEdit
+and XPMenu) that are used in LogMeTTc.
+
+
 2006-07-03 (Ver 2.8 Release 4)
 New features added:
 - Added progress bar to LogMeTT Configuration Utility splash screen.
