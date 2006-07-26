@@ -711,6 +711,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.7.26 (Ver 4.43)
+  - changed the number of macro variables to 256 which can be used by user, because some variables ware used to system variable.
+
 2006.7.26 (Ver 4.42)
   - updated to new TeraTerm icon file(teraterm.ico, vt.ico). Special thanks to Tatsu Sakamoto.
   - upgraded LogMeTT to 2.8.5
