@@ -216,6 +216,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.7.26 (Ver 2.30)
+  - updated to new TTSSH icon file(ttsecure.ico). Special thanks to Tatsu Sakamoto.
+
 2006.6.29 (Ver 2.29)
   - Bug fix: Using SSH2 protocol, changes of the TTSSH setup dialog could not feedback on next ssh session. Special thanks to NAGATA Shinya.
   - Bug fix: The 'ssh_known_files' file might not be saved in TeraTerm installation directory. Special thanks to NAGATA Shinya.
