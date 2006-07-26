@@ -712,7 +712,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 * History
 
 2006.7.26 (Ver 4.43)
-  - changed the number of macro variables to 256 which can be used by user, because some variables ware used to system variable.
+  - expanded the number of macro variables which can be used as user variable from 241 to 256. This is bug because some variables were used as system variable.
 
 2006.7.26 (Ver 4.42)
   - updated to new TeraTerm icon file(teraterm.ico, vt.ico). Special thanks to Tatsu Sakamoto.
