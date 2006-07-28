@@ -76,9 +76,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="ttpcmn.lib"
 				OutputFile=".\..\bin\Release/ttpfile.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="..\bin\release"
 				ModuleDefinitionFile=".\ttpfile.def"
 				ProgramDatabaseFile=".\..\bin\Release/ttpfile.pdb"
 				SubSystem="2"
@@ -171,9 +173,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="ttpcmn.lib"
 				OutputFile=".\..\bin\Debug/ttpfile.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="..\bin\debug"
 				ModuleDefinitionFile=".\ttpfile.def"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\bin\Debug/ttpfile.pdb"
@@ -499,15 +503,6 @@
 						AdditionalIncludeDirectories="\Documents and Settings\kato\My Documents\home\install\IPv6\TeraTerm\0.81\TeraTerm-2.3\Source\Ttfile;\DEV\TERATERM\Source\Ttfile;C:\DEV\TERATERM\source\ttfile;$(NoInherit)"
 					/>
 				</FileConfiguration>
-			</File>
-		</Filter>
-		<Filter
-			Name="Lib Files"
-			Filter="lib"
-			>
-			<File
-				RelativePath="..\bin\debug\ttpcmn.lib"
-				>
 			</File>
 		</Filter>
 		<Filter

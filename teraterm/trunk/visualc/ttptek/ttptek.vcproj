@@ -74,9 +74,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="ttpcmn.lib"
 				OutputFile=".\..\bin\Debug/ttptek.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="..\bin\debug"
 				ModuleDefinitionFile=".\ttptek.def"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\bin\Debug/ttptek.pdb"
@@ -172,9 +174,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="ttpcmn.lib"
 				OutputFile=".\..\bin\Release/ttptek.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="..\bin\debug"
 				ModuleDefinitionFile=".\ttptek.def"
 				ProgramDatabaseFile=".\..\bin\Release/ttptek.pdb"
 				SubSystem="2"
@@ -269,15 +273,6 @@
 			>
 			<File
 				RelativePath="..\..\source\tttek\tekesc.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Lib Files"
-			Filter="lib"
-			>
-			<File
-				RelativePath="..\bin\debug\ttpcmn.lib"
 				>
 			</File>
 		</Filter>

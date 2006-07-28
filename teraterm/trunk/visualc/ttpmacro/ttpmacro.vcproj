@@ -78,9 +78,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="onig_s.lib"
 				OutputFile=".\..\bin\Release/ttpmacro.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="..\..\source\oniguruma"
 				ProgramDatabaseFile=".\..\bin\Release/ttpmacro.pdb"
 				SubSystem="2"
 				TargetMachine="1"
@@ -172,9 +174,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="onig_s.lib"
 				OutputFile=".\..\bin\Debug/ttpmacro.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="..\..\source\oniguruma\debug"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\bin\Debug/ttpmacro.pdb"
 				SubSystem="2"
@@ -459,7 +463,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\source\ttmacro\ttmlib.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\source\ttmacro\ttmmain.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\source\ttmacro\ttmmsg.h"
 				>
 			</File>
 			<File
@@ -504,10 +516,6 @@
 			Name="Source Files (C)"
 			Filter="c"
 			>
-			<File
-				RelativePath="..\..\source\oniguruma\onig_s.lib"
-				>
-			</File>
 			<File
 				RelativePath="..\..\Source\Ttmacro\ttl.c"
 				>

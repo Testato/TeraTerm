@@ -77,11 +77,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="Version.lib onig_s.lib"
+				AdditionalDependencies="Version.lib onig_s.lib ttpcmn.lib"
 				OutputFile=".\..\bin\Release/ttpdlg.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\source\oniguruma"
+				AdditionalLibraryDirectories="..\..\source\oniguruma;..\bin\release"
 				ModuleDefinitionFile=".\ttpdlg.def"
 				ProgramDatabaseFile=".\..\bin\Release/ttpdlg.pdb"
 				SubSystem="2"
@@ -174,11 +174,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="Version.lib onig_s.lib"
+				AdditionalDependencies="Version.lib onig_s.lib ttpcmn.lib"
 				OutputFile=".\..\bin\Debug/ttpdlg.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\source\oniguruma"
+				AdditionalLibraryDirectories="..\..\source\oniguruma\debug;..\bin\debug"
 				ModuleDefinitionFile=".\ttpdlg.def"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\bin\Debug/ttpdlg.pdb"
@@ -340,15 +340,6 @@
 						AdditionalIncludeDirectories="\Documents and Settings\kato\My Documents\home\install\IPv6\TeraTerm\0.81\TeraTerm-2.3\Source\Ttdlg;\DEV\TERATERM\Source\Ttdlg;C:\DEV\TERATERM\source\ttdlg;$(NoInherit)"
 					/>
 				</FileConfiguration>
-			</File>
-		</Filter>
-		<Filter
-			Name="Lib Files"
-			Filter="lib"
-			>
-			<File
-				RelativePath="..\bin\debug\ttpcmn.lib"
-				>
 			</File>
 		</Filter>
 		<Filter

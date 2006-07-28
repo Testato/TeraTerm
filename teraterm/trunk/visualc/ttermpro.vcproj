@@ -78,10 +78,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib imm32.lib"
+				AdditionalDependencies="ws2_32.lib imm32.lib ttpcmn.lib"
 				OutputFile=".\bin\Debug/ttermpro.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="bin\debug"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\bin\Debug/ttermpro.pdb"
 				SubSystem="2"
@@ -176,10 +177,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wsock32.lib imm32.lib"
+				AdditionalDependencies="wsock32.lib imm32.lib ttpcmn.lib"
 				OutputFile=".\bin\Release/ttermpro.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="bin\release"
 				ProgramDatabaseFile=".\bin\Release/ttermpro.pdb"
 				SubSystem="2"
 				TargetMachine="1"
@@ -890,10 +892,6 @@
 			>
 			<File
 				RelativePath="..\source\htmlhelp\htmlhelp.lib"
-				>
-			</File>
-			<File
-				RelativePath=".\bin\debug\ttpcmn.lib"
 				>
 			</File>
 		</Filter>

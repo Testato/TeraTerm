@@ -602,7 +602,14 @@ Too many variables.        MACRO can not handle more than 256 integer variables 
   
        (1) copy win32\Makefile Makefile
        (2) copy win32\config.h config.h
-       (3) nmake
+       (3) Open Makefile and append /MT at end of CFLAGS line.
+       (4) copy Makefile Makefile.debug
+       (5) Open Makefile.debug and modify CFLAG line from /MT to /MTd.
+           And modify libname to debug\$(libbase)_s.lib.
+       (6) mkdir debug
+       (7) nmake -f Makefile.debug
+       (8) nmake clean
+       (9) nmake
        
   3. Open teraterm\visualc\ttermpro.sln with Visual Studio.
   4. Build TeraTerm solution.

@@ -598,7 +598,14 @@ Too many variables.        •Ï”‚Ì”‚ª‘½‚·‚¬‚éB(®”Œ^A•¶š—ñŒ^‚»‚ê‚¼‚êÅ‘å256Œ
   
        (1) copy win32\Makefile Makefile
        (2) copy win32\config.h config.h
-       (3) nmake
+       (3) Makefile ‚ğƒGƒfƒBƒ^‚ÅŠJ‚¢‚ÄACFLAGS ‚Ìs‚É /MT ‚ğ’Ç‰Á‚·‚é
+       (4) copy Makefile Makefile.debug
+       (5) Makefile.debug ‚ğƒGƒfƒBƒ^‚ÅŠJ‚¢‚ÄACFLAGS ‚Ìs‚Ì /MT ‚ğ /MTd ‚É•ÏX‚·‚é
+           ‚Ü‚½Alibname ‚ğ debug\$(libbase)_s.lib ‚É•ÏX‚·‚é
+       (6) mkdir debug
+       (7) nmake -f Makefile.debug
+       (8) nmake clean
+       (9) nmake
           
   3. teraterm\visualc\ttermpro.sln ‚ğVisual Studio‚ÅŠJ‚­
   4. ƒ\ƒŠƒ…[ƒVƒ‡ƒ“‚ğƒrƒ‹ƒh‚·‚é
