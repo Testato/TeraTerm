@@ -720,6 +720,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 2006.7.26 (Ver 4.43)
   - expanded the number of macro variables which can be used as user variable from 241 to 256. This is bug because some variables were used as system variable.
+  - expanded the inputbox dialog of macro. It is resized automaticaly when the message is long than default size.
 
 2006.7.26 (Ver 4.42)
   - updated to new TeraTerm icon file(teraterm.ico, vt.ico). Special thanks to Tatsu Sakamoto.
