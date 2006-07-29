@@ -11,6 +11,7 @@
 #else
 #include "ttm_re16.h"
 #endif
+#include "ttmlib.h"
 
 #include "inpdlg.h"
 
@@ -29,6 +30,7 @@ CInpDlg::CInpDlg(PCHAR Input, PCHAR Text, PCHAR Title,
 {
   //{{AFX_DATA_INIT(CInpDlg)
   //}}AFX_DATA_INIT
+  RestoreNewLine(Text); // (2006.7.29 maya)
   InputStr = Input;
   TextStr = Text;
   TitleStr = Title;
@@ -44,7 +46,7 @@ END_MESSAGE_MAP()
 
 // CInpDlg message handler
 
-// msgdlg のように、メッセージが長い場合にはダイアログを拡げるようにした (2006.7.xx maya)
+// msgdlg のように、メッセージが長い場合にはダイアログを拡げるようにした (2006.7.29 maya)
 BOOL CInpDlg::OnInitDialog()
 {
   RECT R;

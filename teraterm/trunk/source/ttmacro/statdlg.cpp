@@ -30,6 +30,7 @@ END_MESSAGE_MAP()
 
 BOOL CStatDlg::Create(PCHAR Text, PCHAR Title, int x, int y)
 {
+  RestoreNewLine(Text); // (2006.7.29 maya)
   TextStr = Text;
   TitleStr = Title;
   PosX = x;

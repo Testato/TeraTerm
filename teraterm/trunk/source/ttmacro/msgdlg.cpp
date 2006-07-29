@@ -28,6 +28,7 @@ CMsgDlg::CMsgDlg(PCHAR Text, PCHAR Title, BOOL YesNo, int x, int y)
 {
   //{{AFX_DATA_INIT(CMsgDlg)
   //}}AFX_DATA_INIT
+  RestoreNewLine(Text); // (2006.7.29 maya)
   TextStr = Text;
   TitleStr = Title;
   YesNoFlag = YesNo;
