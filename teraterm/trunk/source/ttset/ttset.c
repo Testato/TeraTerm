@@ -2055,7 +2055,7 @@ static void ParseHostName(char *HostStr, WORD *port)
    * tn3270:// .... /
    */
 
-  int i;
+  int i, is_handler=0, is_port=0;
   char *s;
   char b;
 
@@ -2067,6 +2067,7 @@ static void ParseHostName(char *HostStr, WORD *port)
     i = strlen(HostStr);
     if (i > 0 && (HostStr[i - 1] == '/'))
       HostStr[i - 1] = '\0';
+	is_handler=1;
   }
 
   /* parsing string enclosed by [ ] */
@@ -2118,6 +2119,10 @@ static void ParseHostName(char *HostStr, WORD *port)
     s[i - 1] = '\0';
     if (sscanf(&(s[i]), "%d", port) != 1)
       *port = 65535;
+	is_port=1;
+  }
+  if (is_handler == 1 && is_port == 0) {
+    *port = 23;
   }
 }
 #endif /* INET6 */
@@ -2428,6 +2433,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2006/07/22 16:15:54  maya
+ * ログ記録時に時刻も書き込む機能を追加した。
+ *
  * Revision 1.13  2006/03/16 15:35:00  yutakakn
  * (none)
  *
