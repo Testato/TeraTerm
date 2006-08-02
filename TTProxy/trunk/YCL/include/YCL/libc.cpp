@@ -1,5 +1,5 @@
 /*
- * $Id: libc.cpp,v 1.1.1.1 2006-08-01 15:01:48 yutakakn Exp $
+ * $Id: libc.cpp,v 1.2 2006-08-02 14:40:19 yutakakn Exp $
  */
 
 #include <YCL/common.h>
@@ -500,7 +500,13 @@ BOOL WINAPI DllEntryPoint(HINSTANCE instance, DWORD reason, LPVOID reserved) {
 BOOL WINAPI DllEntryPoint(HINSTANCE instance, DWORD reason, LPVOID reserved) {
 	if (reason == DLL_PROCESS_ATTACH)
 		ycl_startup(instance);
+	// VS2005(VC++8.0)では error C3767 となるため、呼ばないようにする（暫定処置）。
+	// (2006.8.2 yutaka)
+#if 0
 	BOOL result = YCL_DllMain(reason);
+#else
+	BOOL result = true;
+#endif
 	if (reason == DLL_PROCESS_DETACH)
 		ycl_exit();
 	return result;
@@ -577,6 +583,9 @@ extern "C" int stricmp(const char* s1, const char* s2) {
 /*
  * Changes:
  * $Log: not supported by cvs2svn $
+ * Revision 1.1.1.1  2006/08/01 15:01:48  yutakakn
+ * no message
+ *
  * Revision 1.6  2003/11/28 11:14:10  sugoroku
  * CVSキーワードを追加
  *
