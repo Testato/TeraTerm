@@ -621,6 +621,16 @@ Too many variables.        •Ï”‚Ì”‚ª‘½‚·‚¬‚éB(®”Œ^A•¶š—ñŒ^‚»‚ê‚¼‚êÅ‘å256Œ
   4. ƒrƒ‹ƒh‚É¬Œ÷‚·‚é‚Æ teraterm\source\ttmenu ƒfƒBƒŒƒNƒgƒŠ‚ÉÀsƒvƒƒOƒ‰ƒ€‚ª¶¬‚³‚ê‚é
 
 
+¡TTProxy‚Ìƒrƒ‹ƒh•û–@
+  TTProxy‚Ìƒrƒ‹ƒh•û–@‚É‚Â‚¢‚ÄˆÈ‰º‚É¦‚µ‚Ü‚·Bƒrƒ‹ƒh‚É‚ÍVisual Studio 2005(VC++8.0)‚ª•K—v‚Å‚·B
+  
+  1. ƒ\[ƒXƒR[ƒh‚ğSourceForge(http://sourceforge.jp/projects/ttssh2/)‚©‚çƒ`ƒFƒbƒNƒAƒEƒg‚·‚é
+  2. TTProxy\TTProxy.sln ‚ğVisual Studio‚ÅŠJ‚­
+  3. ƒ\ƒŠƒ…[ƒVƒ‡ƒ“‚ğƒrƒ‹ƒh‚·‚é
+  4. ƒrƒ‹ƒh‚É¬Œ÷‚·‚é‚Æ TTProxy ƒfƒBƒŒƒNƒgƒŠ‚ÉDLL‚ª¶¬‚³‚ê‚é
+
+
+
 ¡ŠJ”­ŠÂ‹«
   OS: Windows XP Professional
   ƒRƒ“ƒpƒCƒ‰: Visual Studio 2005 Standard Edition
@@ -633,7 +643,7 @@ Too many variables.        •Ï”‚Ì”‚ª‘½‚·‚¬‚éB(®”Œ^A•¶š—ñŒ^‚»‚ê‚¼‚êÅ‘å256Œ
   
 
 ¡ƒ‰ƒCƒZƒ“ƒX
-Copyright (c) Yutaka Hirata, TeraTerm Project. 
+Copyright (c) TeraTerm Project. 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, 

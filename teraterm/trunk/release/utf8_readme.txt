@@ -626,6 +626,16 @@ Too many variables.        MACRO can not handle more than 256 integer variables 
   4. TeraTerm Menu execution program will be generated in teraterm\source\ttmenu directory if the building is successful.
 
 
+* How to build TTProxy
+  To build TTProxy source code is shown in the following step:
+  And you need Visual Studio 2005(VC++8.0) to build.
+  
+  1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
+  2. Open TTProxy\TTProxy.sln with Visual Studio.
+  3. Build TTProxy solution.
+  4. TTProxy DLL module will be generated in TTProxy directory if the building is successful.
+
+
 * Development Environment
   OS: Windows XP Professional
   Compiler: Visual Studio 2005 Standard Edition
@@ -638,7 +648,7 @@ Too many variables.        MACRO can not handle more than 256 integer variables 
   
 
 * License
-Copyright (c) Yutaka Hirata, TeraTerm Project. 
+Copyright (c) TeraTerm Project. 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, 
