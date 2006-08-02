@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
-// Used by ttx.rc
+// Microsoft Visual C++ generated include file.
+// Used by TTProxy.rc
 //
 #define IDS_MENUCAPTION                 1
 #define IDS_ABOUT                       2

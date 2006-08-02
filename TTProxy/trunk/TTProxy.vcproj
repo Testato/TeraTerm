@@ -319,6 +319,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\resource.h"
+				>
+			</File>
+			<File
 				RelativePath="SSLSocket.h"
 				>
 			</File>
