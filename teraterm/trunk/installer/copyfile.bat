@@ -17,6 +17,7 @@ copy /y C:\usr\cvs\teraterm\cygterm\cygterm.exe %dst%
 copy /y C:\usr\cvs\teraterm\cygterm\cygterm.cfg %dst%
 
 copy /y C:\usr\cvs\ttssh2\ttxssh\Release\ttxssh.dll %dst%
+copy /y C:\usr\cvs\TTProxy\Release\TTXProxy.dll %dst%
 copy /y C:\usr\cvs\teraterm\source\ttmenu\Release\ttpmenu.exe %dst%
 copy /y C:\usr\cvs\doc\jp\teratermj.chm %dst%
 copy /y C:\usr\cvs\doc\en\teraterm.chm %dst%

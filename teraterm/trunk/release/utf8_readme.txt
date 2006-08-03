@@ -734,6 +734,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
   - changed '\n' character not raw character but meta character as LF code.
   - changed the message box of macro from dialog border to resizable.
   - set '23' to port number when the hostname start with 'telnet://' and port number was not specified.
+  - upgraded TTProxy to 2006/8/23 version. Special thanks to YebisuyaHompo.
 
 2006.7.26 (Ver 4.42)
   - updated to new TeraTerm icon file(teraterm.ico, vt.ico). Special thanks to Tatsu Sakamoto.
