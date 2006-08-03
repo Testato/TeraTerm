@@ -1,5 +1,5 @@
 /*
- * $Id: common.h,v 1.1.1.1 2006-08-01 15:01:47 yutakakn Exp $
+ * $Id: common.h,v 1.1.1.2 2006-08-03 13:28:53 yutakakn Exp $
  */
 
 #ifndef _YCL_COMMON_H_
@@ -90,14 +90,6 @@ void _free_dbg(void* pointer, const char* filename, int lineno);
 #define realloc(p, l) _realloc_dbg((p), (l), __FILE__, __LINE__)
 #define calloc(c, s)  _calloc_dbg((c), (s), __FILE__, __LINE__)
 #define free(p)       _free_dbg((p), __FILE__, __LINE__)
-
-#ifdef __cplusplus
-void* operator new(size_t length, const char* filename, int lineno);
-void operator delete(void* pointer, const char* filename, int lineno);
-
-#define new new(__FILE__, __LINE__)
-#define delete(__FILE__, __LINE__)
-#endif
 
 //}
 #else

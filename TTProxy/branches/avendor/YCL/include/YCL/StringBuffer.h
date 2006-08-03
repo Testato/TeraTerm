@@ -1,5 +1,5 @@
 /*
- * $Id: StringBuffer.h,v 1.1.1.1 2006-08-01 15:01:48 yutakakn Exp $
+ * $Id: StringBuffer.h,v 1.1.1.2 2006-08-03 13:28:54 yutakakn Exp $
  */
 
 #ifndef _YCL_STRINGBUFFER_H_
@@ -45,7 +45,7 @@ private:
 		}else{
 			buffer = new char[bufferSize];
 		}
-		strncpy(buffer, source, validLength);
+		memcpy(buffer, source, validLength);
 		memset(buffer + validLength, '\0', bufferSize - validLength);
 	}
 public:
@@ -161,7 +161,7 @@ public:
 	StringBuffer& append(const char* source, size_t length) {
 		size_t oldLength = validLength;
 		ensureCapacity(validLength + length);
-		strncpy(buffer + oldLength, source, length);
+		memcpy(buffer + oldLength, source, length);
 		validLength += length;
 		return *this;
 	}
@@ -184,7 +184,7 @@ public:
 			start = 0;
 		if (start < end) {
 			if (end < validLength){
-				strncpy(buffer + start, buffer + end, validLength - end);
+				memcpy(buffer + start, buffer + end, validLength - end);
 				validLength -= end - start;
 			}else{
 				validLength = start;
@@ -208,8 +208,8 @@ public:
 			size_t length = strlen(source);
 			size_t oldLength = validLength;
 			ensureCapacity(validLength += length - (end - start));
-			strncpy(buffer + start + length, buffer + end, oldLength - end);
-			strncpy(buffer + start, source, length);
+			memcpy(buffer + start + length, buffer + end, oldLength - end);
+			memcpy(buffer + start, source, length);
 		}
 		return *this;
 	}
@@ -291,7 +291,7 @@ public:
 				*--dst = *src++;
 			}
 		}
-		strncpy(buffer, temporary, validLength);
+		memcpy(buffer, temporary, validLength);
 		return *this;
 	}
 	// •¶Žš—ñ‚ðŽæ“¾‚·‚éB
@@ -320,7 +320,7 @@ public:
 	StringBuffer& set(const char* source) {
 		size_t length = strlen(source);
 		ensureCapacity(validLength = length);
-		strncpy(buffer, source, length);
+		memcpy(buffer, source, length);
 		return *this;
 	}
 

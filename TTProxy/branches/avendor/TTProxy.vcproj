@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="TTProxy"
-	ProjectGUID="{188C9A75-1086-4C61-BF43-CDBF1851B0E3}"
+	ProjectGUID="{C4DE5FDF-DB00-4C73-9D4F-359BFCA3F2FB}"
 	RootNamespace="TTProxy"
 	>
 	<Platforms>
@@ -16,7 +16,7 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\."
+			OutputDirectory=".\Release"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
@@ -50,7 +50,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="../teraterm/source/teraterm,../teraterm/source/common,YCL/include,../ttssh2/openssl/inc32"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;TTX_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;TTX_EXPORTS"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -77,8 +77,8 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="odbc32.lib odbccp32.lib wsock32.lib"
-				OutputFile="TTXProxy.dll"
+				AdditionalDependencies="wsock32.lib"
+				OutputFile="Release/TTXProxy.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\TTX.def"
@@ -150,7 +150,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../teraterm/source/teraterm,../teraterm/source/common,YCL/include,../ttssh2/openssl/inc32"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TTX_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TTX_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -178,7 +178,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="odbc32.lib odbccp32.lib wsock32.lib"
+				AdditionalDependencies="wsock32.lib"
 				OutputFile="Debug/TTXProxy.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"

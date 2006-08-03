@@ -1,5 +1,5 @@
 /*
- * $Id: IniFile.h,v 1.1.1.1 2006-08-01 15:01:47 yutakakn Exp $
+ * $Id: IniFile.h,v 1.1.1.2 2006-08-03 13:28:54 yutakakn Exp $
  */
 
 #ifndef _YCL_INIFILE_H_
@@ -54,8 +54,7 @@ private:
 			while (*name != '\0') {
 				if (strncmp(name, section, section_len) == 0) {
 					if (name[section_len] == '\\') {
-						int i; // VC++8では外に出さないとエラーになる (2006.8.1 yutaka)
-
+						int i;
 						name += section_len + 1;
 						for (i = 0; name[i] != '\0'; i++) {
 							if (name[i] == '\\')

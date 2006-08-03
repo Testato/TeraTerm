@@ -172,10 +172,9 @@ public:
 	                        X509_EXTENSION* ex = X509_get_ext(x509, id);
 	                        STACK_OF(GENERAL_NAME)* alt = (STACK_OF(GENERAL_NAME)*) X509V3_EXT_d2i(ex);
 	                        if (alt != NULL) {
+								int i;
                                 int count = 0;
 	                            int n = sk_GENERAL_NAME_num(alt);
-								int i; // VC++8では外に出さないとエラーになる (2006.8.1 yutaka)
-
 	                            for (i = 0; i < n; i++) {
 		                            GENERAL_NAME* gn = sk_GENERAL_NAME_value(alt, i);
 		                            if (gn->type == GEN_DNS) {

@@ -184,7 +184,7 @@ private:
         }
 
         static String parse(const char* url, ProxyInfo& proxy) {
-            char* p = (char *)strstr(url, "://");
+            char* p = strstr((char*) url, "://");
             if (p == NULL) {
                 proxy.type = TYPE_NONE;
                 return NULL;
@@ -367,7 +367,7 @@ private:
         ~ConnectionInfo() {
             delete[] buffer;
         }
-        void fillBuffer(char* buffer) {
+        void fillBuffer(char* buffer, int bufferLength) {
             DUMMYHOSTENT* dst = (DUMMYHOSTENT*) buffer;
             dst->addr = addr;
             dst->addrlist[0] = (char*) &dst->addr;
@@ -378,7 +378,7 @@ private:
             dst->entry.h_addrtype = AF_INET;
             dst->entry.h_length = sizeof (in_addr);
             dst->entry.h_name = dst->hostname;
-            strcpy(dst->hostname, realhost);
+            strcpy_s(dst->hostname, bufferLength - sizeof (DUMMYHOSTENT), realhost);
         }
     };
     class ConnectionInfoHolder {
@@ -513,7 +513,7 @@ private:
                 static String title = Resource::loadString(IDS_LOGFILE_SELECT);
                 ofn.lpstrTitle = title;
                 if (logfile != NULL) {
-                    strcpy(buffer, logfile);
+                    strcpy_s(buffer, sizeof buffer, logfile);
                 }else{
                     buffer[0] = '\0';
                 }
@@ -655,7 +655,7 @@ private:
                     host.SetWindowText(proxy.host);
                     if (proxy.port != 0) {
                         char buffer[16];
-                        _itoa(proxy.port, buffer, 10);
+                        _itoa_s(proxy.port, buffer, sizeof buffer, 10);
                         port.SetWindowText(buffer);
                     }
                     if (proxy.user != NULL) {
@@ -929,9 +929,9 @@ private:
             char *dst = encoded;
             int bits = 0;
             int data = 0;
-            strcpy(auth, proxy.user);
-            auth[userlen + 1] = ':';
-            strcpy(auth + userlen + 2, proxy.pass);
+            strcpy_s(auth, userlen + 1, proxy.user);
+            auth[userlen] = ':';
+            strcpy_s(auth + userlen + 1, passlen, proxy.pass);
         
             /* make base64 string */
             while (*src != '\0') {
@@ -1046,11 +1046,11 @@ private:
             *ptr++ = SOCKS5_AUTH_SUBNEGOVER;
             len = proxy.user.length();
             *ptr++ = len;
-            strcpy((char*) ptr, proxy.user);
+            strcpy_s((char*) ptr, sizeof buf - (ptr - buf), proxy.user);
             ptr += len;
             len = proxy.pass.length();
             *ptr++ = len;
-            strcpy((char*) ptr, proxy.pass);
+            strcpy_s((char*) ptr, sizeof buf - (ptr - buf), proxy.pass);
             ptr += len;
 
             /* send it and get answer */
@@ -1196,14 +1196,14 @@ private:
         }
         /* username */
         if (proxy.user != NULL) {
-            strcpy((char*) ptr, proxy.user);
+            strcpy_s((char*) ptr, sizeof buf - (ptr - buf), proxy.user);
             ptr += proxy.user.length() + 1;
         }else{
             *ptr++ = '\0';
         }
         if (addr.s_addr == INADDR_NONE) {
             /* destination host name (for protocol 4a) */
-            strcpy((char*) ptr, realhost);
+            strcpy_s((char*) ptr, sizeof buf - (ptr - buf), realhost);
             ptr += strlen(realhost) + 1;
         }
         /* send command and get response
@@ -1430,8 +1430,9 @@ private:                                                   \
                     }
                 }
                 if (info->buffer == NULL) {
-                    info->buffer = new char[sizeof (DUMMYHOSTENT) + strlen(info->realhost)];
-                    info->fillBuffer(info->buffer);
+                    int bufferLength = sizeof (DUMMYHOSTENT) + strlen(info->realhost);
+                    info->buffer = new char[bufferLength];
+                    info->fillBuffer(info->buffer, bufferLength);
                 }
                 return (struct hostent*) info->buffer;
             }
@@ -1461,7 +1462,7 @@ private:                                                   \
             ::WSASetLastError(WSAENOBUFS);
             return handle;
         }
-        info->fillBuffer(buffer);
+        info->fillBuffer(buffer, bufferLength);
         ::PostMessage(window, message, (WPARAM) handle, MAKELPARAM(len, 0));
         return handle;
     }
@@ -1589,7 +1590,7 @@ private:                                                   \
             host = defaultProxy.host;
             if (defaultProxy.port != 0) {
                 char* buffer = (char*) alloca(5);
-                _itoa(defaultProxy.port, buffer, 10);
+                _itoa_s(defaultProxy.port, buffer, 5, 10);
                 port = buffer;
             }
             if (defaultProxy.user != NULL) {
@@ -1629,7 +1630,7 @@ private:                                                   \
         ini.setString("DebugLog", logfile);
     }
 public:
-    static void setOwner(HWND owner) {  // void‚ð’Ç‰Á (2006.8.1 yutaka)
+    static void setOwner(HWND owner) {
         instance().owner = owner;
     }
     static void setMessageShower(MessageShower* shower) {

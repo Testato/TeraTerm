@@ -149,7 +149,7 @@ private:
 		}
 		getInstance().ORIG_ParseParam(param, ts, DDETopic);
 		if (getInstance().ts->HostName[0] == '\0' && getInstance().realhost != NULL) {
-			strcpy(getInstance().ts->HostName, getInstance().realhost);
+			strcpy_s(getInstance().ts->HostName, sizeof getInstance().ts->HostName, getInstance().realhost);
 		}
 	}
 
@@ -239,8 +239,8 @@ private:
 		if (url != NULL) {
 			if (strlen(cmd) + 8 + url.length() >= (unsigned) cmdlen)
 				return;
-			strcat(cmd, " -proxy=");
-			strcat(cmd, url);
+			strcat_s(cmd, cmdlen, " -proxy=");
+			strcat_s(cmd, cmdlen, url);
 		}
 	}
 

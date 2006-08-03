@@ -1,5 +1,5 @@
 /*
- * $Id: DynamicLinkLibrary.h,v 1.1.1.1 2006-08-01 15:01:47 yutakakn Exp $
+ * $Id: DynamicLinkLibrary.h,v 1.1.1.2 2006-08-03 13:28:54 yutakakn Exp $
  */
 
 #ifndef _YCL_DYNAMICLINKLIBRARY_H_
@@ -34,19 +34,6 @@ public:
 	}
 	bool threadDetach() {
 		return true;
-	}
-	friend bool YCL_DllMain(int reason) {
-		switch (reason) {
-		case DLL_PROCESS_ATTACH:
-			return DynamicLinkLibrary<IMPLEMENT>::getInstance().processAttach();
-		case DLL_PROCESS_DETACH:
-			return DynamicLinkLibrary<IMPLEMENT>::getInstance().processDetach();
-		case DLL_THREAD_ATTACH:
-			return DynamicLinkLibrary<IMPLEMENT>::getInstance().threadAttach();
-		case DLL_THREAD_DETACH:
-			return DynamicLinkLibrary<IMPLEMENT>::getInstance().threadDetach();
-		}
-		return false;
 	}
 };
 
