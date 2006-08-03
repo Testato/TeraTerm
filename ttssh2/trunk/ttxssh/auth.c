@@ -42,7 +42,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define MAX_AUTH_CONTROL IDC_SSHUSETIS
 
-static void destroy_malloced_string(char FAR * FAR * str)
+void destroy_malloced_string(char FAR * FAR * str)
 {
 	if (*str != NULL) {
 		memset(*str, 0, strlen(*str));
@@ -261,6 +261,13 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 	}
 #endif
 
+	// パスワードを覚えておくチェックボックスにはデフォルトで有効とする (2006.8.3 yutaka)
+	if (pvar->auth_state.cur_cred.remeber_password != 0) {
+		SendMessage(GetDlgItem(dlg, IDC_REMEMBER_PASSWORD), BM_SETCHECK, BST_CHECKED, 0);
+	} else {
+		SendMessage(GetDlgItem(dlg, IDC_REMEMBER_PASSWORD), BM_SETCHECK, BST_UNCHECKED, 0);
+	}
+
 }
 
 static char FAR *alloc_control_text(HWND ctl)
@@ -417,6 +424,13 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 	if (pvar->auth_state.user == NULL) {
 		pvar->auth_state.user =
 			alloc_control_text(GetDlgItem(dlg, IDC_SSHUSERNAME));
+	}
+
+	// パスワードの保存をするかどうかを決める (2006.8.3 yutaka)
+	if (SendMessage(GetDlgItem(dlg, IDC_REMEMBER_PASSWORD), BM_GETCHECK, 0,0) == BST_CHECKED) {
+		pvar->auth_state.cur_cred.remeber_password = 1;  // 覚えておく
+	} else {
+		pvar->auth_state.cur_cred.remeber_password = 0;  // ここですっかり忘れる
 	}
 
 	// 公開鍵認証の場合、セッション複製時にパスワードを使い回したいので解放しないようにする。
@@ -921,6 +935,7 @@ void AUTH_init(PTInstVar pvar)
 	pvar->auth_state.cur_cred.password = NULL;
 	pvar->auth_state.cur_cred.rhosts_client_user = NULL;
 	pvar->auth_state.cur_cred.key_pair = NULL;
+	pvar->auth_state.cur_cred.remeber_password = 1;  // パスワードを覚える (2006.8.3 yutaka)
 	AUTH_set_generic_mode(pvar);
 }
 
@@ -1048,6 +1063,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  2005/09/05 10:46:22  yutakakn
+ * '/I' 指定があるときのみ認証ダイアログを最小化するようにした。
+ *
  * Revision 1.16  2005/08/26 16:26:02  yutakakn
  * 自動ログイン時にSSH認証ダイアログを最小化するようにした。
  *

@@ -42,6 +42,9 @@ buffer_t *buffer_init(void)
 void buffer_free(buffer_t * buf)
 {
 	if (buf != NULL) {
+		// セキュリティ対策 (2006.8.3 yutaka)
+		int len =  buffer_len(buf);
+		memset(buf->buf, 'x', len);
 		free(buf->buf);
 		free(buf);
 	}
@@ -357,6 +360,9 @@ int buffer_decompress(z_stream *zstream, char *payload, int len, buffer_t *compb
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2005/07/09 17:08:47  yutakakn
+ * SSH2 packet compressionをサポートした。
+ *
  * Revision 1.6  2005/07/02 12:46:41  yutakakn
  * buffer_append()において4KB以上のバッファの再アロケート処理を追加した。
  *

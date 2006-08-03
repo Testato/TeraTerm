@@ -2941,12 +2941,15 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 				strncat(cmd, tmp, cmdlen);
 			}
 
-			if (pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) {
+			// パスワードを覚えている場合のみ、コマンドラインに渡す。(2006.8.3 yutaka)
+			if (pvar->auth_state.cur_cred.remeber_password != 0 &&
+				pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) {
 				replace_blank_to_mark(pvar->auth_state.cur_cred.password, mark, sizeof(mark));
 				_snprintf(tmp, sizeof(tmp), " /auth=password /user=%s /passwd=%s", pvar->auth_state.user, mark);
 				strncat(cmd, tmp, cmdlen);
 
-			} else if (pvar->auth_state.cur_cred.method == SSH_AUTH_RSA) {
+			} else if (pvar->auth_state.cur_cred.remeber_password != 0 &&
+						pvar->auth_state.cur_cred.method == SSH_AUTH_RSA) {
 				replace_blank_to_mark(pvar->auth_state.cur_cred.password, mark, sizeof(mark));
 				_snprintf(tmp, sizeof(tmp), " /auth=publickey /user=%s /passwd=%s", pvar->auth_state.user, mark);
 				strncat(cmd, tmp, cmdlen);
@@ -3113,6 +3116,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.32  2006/06/26 13:26:49  yutakakn
+ * TTSSHのsetupダイアログの変更内容が次回接続時から反映されるようにした。
+ *
  * Revision 1.31  2006/06/23 13:57:24  yutakakn
  * TTSSH 2.28にて遅延パケット圧縮をサポートした。
  *

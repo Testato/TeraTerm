@@ -5925,6 +5925,11 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	finish_send_packet(pvar);
 	buffer_free(msg);
 
+	// パスワードの破棄 (2006.8.3 yutaka)
+	if (pvar->auth_state.cur_cred.remeber_password == 0) {
+		destroy_malloced_string(&pvar->auth_state.cur_cred.password);
+	}
+
 	SSH2_dispatch_init(5);
 	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
 	if (kbdint == 1) { // keyboard-interactive method
@@ -6227,6 +6232,11 @@ BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar)
 	memcpy(outmsg, buffer_ptr(msg), len);
 	finish_send_packet(pvar);
 	buffer_free(msg);
+
+	// パスワードの破棄 (2006.8.3 yutaka)
+	if (pvar->auth_state.cur_cred.remeber_password == 0) {
+		destroy_malloced_string(&pvar->auth_state.cur_cred.password);
+	}
 
 	return TRUE;
 }
@@ -6865,6 +6875,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.47  2006/06/26 13:26:49  yutakakn
+ * TTSSHのsetupダイアログの変更内容が次回接続時から反映されるようにした。
+ *
  * Revision 1.46  2006/06/23 13:57:24  yutakakn
  * TTSSH 2.28にて遅延パケット圧縮をサポートした。
  *

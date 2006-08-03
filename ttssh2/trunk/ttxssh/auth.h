@@ -41,6 +41,7 @@ typedef struct {
   char FAR * password;
   char FAR * rhosts_client_user;
   struct _CRYPTKeyPair FAR * key_pair;
+  int remeber_password;  // add (2006.8.3 yutaka)
 } AUTHCred;
 
 typedef enum { GENERIC_AUTH_MODE, TIS_AUTH_MODE } AuthMode;
@@ -70,6 +71,7 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len);
 void AUTH_notify_disconnecting(PTInstVar pvar);
 void AUTH_notify_end_error(PTInstVar pvar);
 void AUTH_end(PTInstVar pvar);
+void destroy_malloced_string(char FAR * FAR * str);
 
 #define AUTH_get_cur_cred(pvar) (&(pvar)->auth_state.cur_cred)
 
