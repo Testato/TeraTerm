@@ -23,11 +23,14 @@ public:
 
 protected:
 	PCHAR TextStr, TitleStr;
-	int  PosX, PosY;
+	int  PosX, PosY, init_WW, WW, WH, TW, TH;
+	SIZE s;
 
 	//{{AFX_MSG(CStatDlg)
 	virtual BOOL OnInitDialog();
+	afx_msg LONG OnExitSizeMove(UINT wParam, LONG lParam);
 	//}}AFX_MSG
+	void Relocation(BOOL is_init, int WW);
 	DECLARE_MESSAGE_MAP()
 };
 

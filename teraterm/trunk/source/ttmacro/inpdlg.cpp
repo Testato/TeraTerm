@@ -41,6 +41,7 @@ CInpDlg::CInpDlg(PCHAR Input, PCHAR Text, PCHAR Title,
 
 BEGIN_MESSAGE_MAP(CInpDlg, CDialog)
 	//{{AFX_MSG_MAP(CInpDlg)
+	ON_MESSAGE(WM_EXITSIZEMOVE, OnExitSizeMove)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -51,15 +52,11 @@ BOOL CInpDlg::OnInitDialog()
 {
   RECT R;
   HDC TmpDC;
-  SIZE s;
-  HWND HText, HEdit, HOk;
-  int WW, WH, CW, CH, TW, TH, BW, BH, EW, EH;
+  HWND HEdit, HOk;
 
   CDialog::OnInitDialog();
   SetWindowText(TitleStr);
   SetDlgItemText(IDC_INPTEXT,TextStr);
-
-  HText = ::GetDlgItem(GetSafeHwnd(), IDC_INPTEXT);
 
   TmpDC = ::GetDC(GetSafeHwnd());
   CalcTextExtent(TmpDC,TextStr,&s);
@@ -80,15 +77,74 @@ BOOL CInpDlg::OnInitDialog()
   GetWindowRect(&R);
   WW = R.right-R.left;
   WH = R.bottom-R.top;
+
+  Relocation(TRUE, WW);
+
+#ifdef TERATERM32
+  SetForegroundWindow();
+#else
+  SetActiveWindow();
+#endif
+  return TRUE;
+}
+
+void CInpDlg::OnOK()
+{
+  GetDlgItemText(IDC_INPEDIT,InputStr,MaxStrLen-1);
+  EndDialog(IDOK);
+}
+
+LONG CInpDlg::OnExitSizeMove(UINT wParam, LONG lParam)
+{
+  RECT R;
+
+  GetWindowRect(&R);
+  if (R.bottom-R.top == WH && R.right-R.left == WW) {
+    // サイズが変わっていなければ何もしない
+  }
+  else if (R.bottom-R.top != WH || R.right-R.left < init_WW) {
+    // 高さが変更されたか、最初より幅が狭くなった場合は元に戻す
+    SetWindowPos(&wndTop,R.left,R.top,WW,WH,0);
+  }
+  else {
+    // そうでなければ再配置する
+    Relocation(FALSE, R.right-R.left);
+  }
+
+  return CDialog::DefWindowProc(WM_EXITSIZEMOVE,wParam,lParam);
+}
+
+void CInpDlg::Relocation(BOOL is_init, int new_WW)
+{
+  RECT R;
+  HDC TmpDC;
+  HWND HText, HOk, HEdit;
+  int CW, CH;
+
   GetClientRect(&R);
   CW = R.right-R.left;
   CH = R.bottom-R.top;
-  if (TW < CW)
+
+  // 初回のみ
+  if (is_init) {
+    // テキストコントロールサイズを補正
+    if (TW < CW)
+      TW = CW;
+    if (EW < s.cx)
+      EW = s.cx;
+	// ウインドウサイズの計算
+    WW = WW + TW - CW;
+    WH = WH + 2*TH+3*BH/2 - CH + EH/2+BH/2+12;
+	init_WW = WW;
+  }
+  else {
     TW = CW;
-  if (EW < s.cx)
-    EW = s.cx;
-  WW = WW + TW - CW;
-  WH = WH + 2*TH+3*BH/2 - CH + EH/2+BH/2+12;
+    WW = new_WW;
+  }
+
+  HText = ::GetDlgItem(GetSafeHwnd(), IDC_INPTEXT);
+  HOk = ::GetDlgItem(GetSafeHwnd(), IDOK);
+  HEdit = ::GetDlgItem(GetSafeHwnd(), IDC_INPEDIT);
 
   ::MoveWindow(HText,(TW-s.cx)/2,TH/2,TW,TH,TRUE);
   ::MoveWindow(HEdit,(WW-EW)/2-4,2*TH+5,EW,EH,TRUE);
@@ -108,16 +164,6 @@ BOOL CInpDlg::OnInitDialog()
     ::ReleaseDC(GetSafeHwnd(),TmpDC);
   }
   SetWindowPos(&wndTop,PosX,PosY,WW,WH,0);
-#ifdef TERATERM32
-  SetForegroundWindow();
-#else
-  SetActiveWindow();
-#endif
-  return TRUE;
-}
 
-void CInpDlg::OnOK()
-{
-  GetDlgItemText(IDC_INPEDIT,InputStr,MaxStrLen-1);
-  EndDialog(IDOK);
+  InvalidateRect(NULL);
 }

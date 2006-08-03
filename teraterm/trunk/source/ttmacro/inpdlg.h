@@ -20,12 +20,15 @@ public:
 protected:
 	PCHAR InputStr, TextStr, TitleStr;
 	BOOL PaswdFlag;
-	int PosX, PosY;
+	int PosX, PosY, init_WW, WW, WH, TW, TH, BH, BW, EW, EH;
+	SIZE s;
 
 	//{{AFX_MSG(CInpDlg)
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
+	afx_msg LONG OnExitSizeMove(UINT wParam, LONG lParam);
 	//}}AFX_MSG
+	void Relocation(BOOL is_init, int WW);
 	DECLARE_MESSAGE_MAP()
 };
 typedef CInpDlg *PInpDlg;

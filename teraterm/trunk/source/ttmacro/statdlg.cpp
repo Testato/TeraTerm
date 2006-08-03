@@ -25,6 +25,7 @@ static char THIS_FILE[] = __FILE__;
 
 BEGIN_MESSAGE_MAP(CStatDlg, CDialog)
 	//{{AFX_MSG_MAP(CStatDlg)
+	ON_MESSAGE(WM_EXITSIZEMOVE, OnExitSizeMove)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -42,12 +43,11 @@ void CStatDlg::Update(PCHAR Text, PCHAR Title, int x, int y)
 {
   RECT R;
   HDC TmpDC;
-  SIZE s;
-  HWND HText;
-  int WW, WH, CW, CH, TW, TH;
 
-  if (Title!=NULL)
+  if (Title!=NULL) {
     SetWindowText(Title);
+	TitleStr = Title;
+  }
 
   GetWindowRect(&R);
   PosX = R.left;
@@ -55,27 +55,15 @@ void CStatDlg::Update(PCHAR Text, PCHAR Title, int x, int y)
   WW = R.right-R.left;
   WH = R.bottom-R.top;
 
-  if (Text!=NULL)
-  {
-    SetDlgItemText(IDC_STATTEXT,Text);
-
-    HText = ::GetDlgItem(GetSafeHwnd(), IDC_STATTEXT);
-
+  if (Text!=NULL) {
     TmpDC = ::GetDC(GetSafeHwnd());
     CalcTextExtent(TmpDC,Text,&s);
     ::ReleaseDC(GetSafeHwnd(),TmpDC);
     TW = s.cx + s.cx/10;
     TH = s.cy;
 
-    GetClientRect(&R);
-    CW = R.right-R.left;
-    CH = R.bottom-R.top;
-    if (TW < CW)
-      TW = CW;
-    WW = WW + TW - CW;
-    WH = WH + 2*TH - CH;
-
-    ::MoveWindow(HText,(TW-s.cx)/2,TH/2,TW,TH,TRUE);
+    SetDlgItemText(IDC_STATTEXT,Text);
+	TextStr = Text;
   }
 
   if (x!=32767)
@@ -83,14 +71,8 @@ void CStatDlg::Update(PCHAR Text, PCHAR Title, int x, int y)
     PosX = x;
     PosY = y;
   }
-  if (PosX<=-100)
-  {
-    TmpDC = ::GetDC(GetSafeHwnd());
-    PosX = (GetDeviceCaps(TmpDC,HORZRES)-WW) / 2;
-    PosY = (GetDeviceCaps(TmpDC,VERTRES)-WH) / 2;
-    ::ReleaseDC(GetSafeHwnd(),TmpDC);
-  }
-  SetWindowPos(&wndTop,PosX,PosY,WW,WH,SWP_NOZORDER);
+
+  Relocation(TRUE, WW);
 }
 
 // CStatDlg message handler
@@ -127,4 +109,68 @@ BOOL CStatDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 void CStatDlg::PostNcDestroy()
 {
   delete this;
+}
+
+LONG CStatDlg::OnExitSizeMove(UINT wParam, LONG lParam)
+{
+  RECT R;
+
+  GetWindowRect(&R);
+  if (R.bottom-R.top == WH && R.right-R.left == WW) {
+    // サイズが変わっていなければ何もしない
+  }
+  else if (R.bottom-R.top != WH || R.right-R.left < init_WW) {
+    // 高さが変更されたか、最初より幅が狭くなった場合は元に戻す
+    SetWindowPos(&wndTop,R.left,R.top,WW,WH,0);
+  }
+  else {
+    // そうでなければ再配置する
+    Relocation(FALSE, R.right-R.left);
+  }
+
+  return CDialog::DefWindowProc(WM_EXITSIZEMOVE,wParam,lParam);
+}
+
+void CStatDlg::Relocation(BOOL is_init, int new_WW)
+{
+  RECT R;
+  HDC TmpDC;
+  HWND HText;
+  int CW, CH;
+
+  if (TextStr != NULL) {
+    HText = ::GetDlgItem(GetSafeHwnd(), IDC_STATTEXT);
+
+    GetClientRect(&R);
+    CW = R.right-R.left;
+    CH = R.bottom-R.top;
+
+    // 初回のみ
+    if (is_init) {
+      // テキストコントロールサイズを補正
+	  if (TW < CW)
+        TW = CW;
+      // ウインドウサイズの計算
+      WW = WW + TW - CW;
+      WH = WH + 2*TH - CH;
+	  init_WW = WW;
+    }
+    else {
+      TW = CW;
+      WW = new_WW;
+    }
+
+    ::MoveWindow(HText,(TW-s.cx)/2,TH/2,TW,TH,TRUE);
+  }
+
+  if (PosX<=-100)
+  {
+    TmpDC = ::GetDC(GetSafeHwnd());
+    PosX = (GetDeviceCaps(TmpDC,HORZRES)-WW) / 2;
+    PosY = (GetDeviceCaps(TmpDC,VERTRES)-WH) / 2;
+    ::ReleaseDC(GetSafeHwnd(),TmpDC);
+  }
+  SetWindowPos(&wndTop,PosX,PosY,WW,WH,SWP_NOZORDER);
+
+  InvalidateRect(NULL);
 }
