@@ -728,13 +728,14 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
-2006.7.26 (Ver 4.43)
+2006.8.4 (Ver 4.43)
   - expanded the number of macro variables which can be used as user variable from 241 to 256. This is bug because some variables were used as system variable.
   - expanded the inputbox dialog of macro. It is resized automaticaly when the message is long than default size.
   - changed '\n' character not raw character but meta character as LF code.
   - changed the message box of macro from dialog border to resizable.
   - set '23' to port number when the hostname start with 'telnet://' and port number was not specified.
   - upgraded TTProxy to 2006/8/23 version. Special thanks to YebisuyaHompo.
+  - upgraded TTSSH version supporting SSH2 to 2.31
 
 2006.7.26 (Ver 4.42)
   - updated to new TeraTerm icon file(teraterm.ico, vt.ico). Special thanks to Tatsu Sakamoto.

@@ -216,6 +216,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.8.4 (Ver 2.31)
+  - added the checkbox on SSH authentication dialog whether the user password string would be stored on heap memory.
+
 2006.7.26 (Ver 2.30)
   - updated to new TTSSH icon file(ttsecure.ico). Special thanks to Tatsu Sakamoto.
 
