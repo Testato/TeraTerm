@@ -400,6 +400,10 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 	// 当該メソッドを使うとコネクションが切られてしまう。(2005.3.12 yutaka)
 	settings->ssh2_keyboard_interactive = GetPrivateProfileInt("TTSSH", "KeyboardInteractive", 0, fileName);
 
+	// パスワード認証および公開鍵認証に使うパスワードをメモリ上に保持しておくかどうかを
+	// 表す。(2006.8.5 yutaka)
+	settings->remember_password = GetPrivateProfileInt("TTSSH", "RememberPassword", 1, fileName);
+
 	clear_local_settings(pvar);
 }
 
@@ -466,6 +470,10 @@ static void write_ssh_options(PTInstVar pvar, PCHAR fileName,
 		settings->ssh2_keyboard_interactive ? "1" : "0", 
 		fileName);
 
+	// Remember password (2006.8.5 yutaka)
+	WritePrivateProfileString("TTSSH", "RememberPassword", 
+		settings->remember_password ? "1" : "0", 
+		fileName);
 }
 
 
@@ -2942,13 +2950,13 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 			}
 
 			// パスワードを覚えている場合のみ、コマンドラインに渡す。(2006.8.3 yutaka)
-			if (pvar->auth_state.cur_cred.remeber_password != 0 &&
+			if (pvar->settings.remember_password &&
 				pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) {
 				replace_blank_to_mark(pvar->auth_state.cur_cred.password, mark, sizeof(mark));
 				_snprintf(tmp, sizeof(tmp), " /auth=password /user=%s /passwd=%s", pvar->auth_state.user, mark);
 				strncat(cmd, tmp, cmdlen);
 
-			} else if (pvar->auth_state.cur_cred.remeber_password != 0 &&
+			} else if (pvar->settings.remember_password &&
 						pvar->auth_state.cur_cred.method == SSH_AUTH_RSA) {
 				replace_blank_to_mark(pvar->auth_state.cur_cred.password, mark, sizeof(mark));
 				_snprintf(tmp, sizeof(tmp), " /auth=publickey /user=%s /passwd=%s", pvar->auth_state.user, mark);
@@ -3116,6 +3124,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.33  2006/08/03 15:04:37  yutakakn
+ * パスワードをメモリ上に保持するかどうかを決めるチェックボックスを認証ダイアログに追加した。
+ *
  * Revision 1.32  2006/06/26 13:26:49  yutakakn
  * TTSSHのsetupダイアログの変更内容が次回接続時から反映されるようにした。
  *

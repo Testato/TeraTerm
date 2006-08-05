@@ -5926,7 +5926,7 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	buffer_free(msg);
 
 	// パスワードの破棄 (2006.8.3 yutaka)
-	if (pvar->auth_state.cur_cred.remeber_password == 0) {
+	if (pvar->settings.remember_password == 0) {
 		destroy_malloced_string(&pvar->auth_state.cur_cred.password);
 	}
 
@@ -6234,7 +6234,7 @@ BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar)
 	buffer_free(msg);
 
 	// パスワードの破棄 (2006.8.3 yutaka)
-	if (pvar->auth_state.cur_cred.remeber_password == 0) {
+	if (pvar->settings.remember_password == 0) {
 		destroy_malloced_string(&pvar->auth_state.cur_cred.password);
 	}
 
@@ -6875,6 +6875,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.48  2006/08/03 15:04:37  yutakakn
+ * パスワードをメモリ上に保持するかどうかを決めるチェックボックスを認証ダイアログに追加した。
+ *
  * Revision 1.47  2006/06/26 13:26:49  yutakakn
  * TTSSHのsetupダイアログの変更内容が次回接続時から反映されるようにした。
  *

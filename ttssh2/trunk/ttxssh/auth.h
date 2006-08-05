@@ -41,7 +41,6 @@ typedef struct {
   char FAR * password;
   char FAR * rhosts_client_user;
   struct _CRYPTKeyPair FAR * key_pair;
-  int remeber_password;  // add (2006.8.3 yutaka)
 } AUTHCred;
 
 typedef enum { GENERIC_AUTH_MODE, TIS_AUTH_MODE } AuthMode;

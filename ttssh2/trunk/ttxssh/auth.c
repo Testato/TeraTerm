@@ -262,7 +262,7 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 #endif
 
 	// パスワードを覚えておくチェックボックスにはデフォルトで有効とする (2006.8.3 yutaka)
-	if (pvar->auth_state.cur_cred.remeber_password != 0) {
+	if (pvar->ts_SSH->remember_password) {
 		SendMessage(GetDlgItem(dlg, IDC_REMEMBER_PASSWORD), BM_SETCHECK, BST_CHECKED, 0);
 	} else {
 		SendMessage(GetDlgItem(dlg, IDC_REMEMBER_PASSWORD), BM_SETCHECK, BST_UNCHECKED, 0);
@@ -428,9 +428,11 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 
 	// パスワードの保存をするかどうかを決める (2006.8.3 yutaka)
 	if (SendMessage(GetDlgItem(dlg, IDC_REMEMBER_PASSWORD), BM_GETCHECK, 0,0) == BST_CHECKED) {
-		pvar->auth_state.cur_cred.remeber_password = 1;  // 覚えておく
+		pvar->settings.remember_password = 1;  // 覚えておく
+		pvar->ts_SSH->remember_password = 1;
 	} else {
-		pvar->auth_state.cur_cred.remeber_password = 0;  // ここですっかり忘れる
+		pvar->settings.remember_password = 0;  // ここですっかり忘れる
+		pvar->ts_SSH->remember_password = 0;
 	}
 
 	// 公開鍵認証の場合、セッション複製時にパスワードを使い回したいので解放しないようにする。
@@ -935,7 +937,6 @@ void AUTH_init(PTInstVar pvar)
 	pvar->auth_state.cur_cred.password = NULL;
 	pvar->auth_state.cur_cred.rhosts_client_user = NULL;
 	pvar->auth_state.cur_cred.key_pair = NULL;
-	pvar->auth_state.cur_cred.remeber_password = 1;  // パスワードを覚える (2006.8.3 yutaka)
 	AUTH_set_generic_mode(pvar);
 }
 
@@ -1063,6 +1064,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  2006/08/03 15:04:37  yutakakn
+ * パスワードをメモリ上に保持するかどうかを決めるチェックボックスを認証ダイアログに追加した。
+ *
  * Revision 1.17  2005/09/05 10:46:22  yutakakn
  * '/I' 指定があるときのみ認証ダイアログを最小化するようにした。
  *
