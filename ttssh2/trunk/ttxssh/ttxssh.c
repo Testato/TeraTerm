@@ -3124,6 +3124,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.34  2006/08/05 03:47:49  yutakakn
+ * パスワードをメモリ上に覚えておくかどうかの設定は teraterm.ini に反映させるようにした。
+ *
  * Revision 1.33  2006/08/03 15:04:37  yutakakn
  * パスワードをメモリ上に保持するかどうかを決めるチェックボックスを認証ダイアログに追加した。
  *
