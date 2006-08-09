@@ -7,6 +7,8 @@
 #define IDR_MENU                        100
 #define IDI_VT                          101
 #define IDI_TEK                         102
+#define IDI_TTERM_CLASSIC               103
+#define IDI_VT_CLASSIC                  104
 #define IDD_COMMENT_DIALOG              110
 #define IDD_EXTERNAL_SETUP              111
 #define IDD_TABSHEET_GENERAL            111

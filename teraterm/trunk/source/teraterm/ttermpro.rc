@@ -306,6 +306,9 @@ END
 IDI_TTERM               ICON                    "..\\common\\teraterm.ico"
 IDI_VT                  ICON                    "..\\common\\vt.ico"
 IDI_TEK                 ICON                    "..\\common\\tek.ico"
+IDI_TTERM_CLASSIC       ICON                    "..\\common\\teraterm_classic.ico"
+IDI_VT_CLASSIC          ICON                    "..\\common\\vt_classic.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
