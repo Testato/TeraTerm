@@ -686,6 +686,8 @@ static int PASCAL FAR TTXsend(SOCKET s, char const FAR * buf, int len,
 void notify_established_secure_connection(PTInstVar pvar)
 {
 #ifdef TERATERM32
+	// LoadIcon ではなく LoadImage を使うようにし、
+	// 16x16 のアイコンを明示的に取得するようにした (2006.8.9 maya)
 	if (SecureLargeIcon == NULL) {
 		SecureLargeIcon = LoadImage(hInst, MAKEINTRESOURCE(IDI_SECURETT),
 									IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR);
@@ -696,12 +698,13 @@ void notify_established_secure_connection(PTInstVar pvar)
 	}
 
 	if (SecureLargeIcon != NULL && SecureSmallIcon != NULL) {
+		// 大きいアイコンは WNDCLASS にセットしているので取り出し方が違う (2006.8.10 maya)
+		pvar->OldLargeIcon =
+			(HICON) GetClassLong(pvar->NotificationWindow, GCL_HICON);
 		pvar->OldSmallIcon =
 			(HICON) SendMessage(pvar->NotificationWindow, WM_GETICON,
 								ICON_SMALL, 0);
-		pvar->OldLargeIcon =
-			(HICON) SendMessage(pvar->NotificationWindow, WM_GETICON,
-								ICON_BIG, 0);
+
 		PostMessage(pvar->NotificationWindow, WM_SETICON, ICON_BIG,
 					(LPARAM) SecureLargeIcon);
 		PostMessage(pvar->NotificationWindow, WM_SETICON, ICON_SMALL,
@@ -3130,6 +3133,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.36  2006/08/09 09:13:49  maya
+ * タイトルバーのアイコンに小さいアイコンが使用されていなかったのを修正した
+ *
  * Revision 1.35  2006/08/05 03:50:59  yutakakn
  * 改行コードをLFへ変換した。
  *
