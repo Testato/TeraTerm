@@ -13,6 +13,8 @@ body{
 
 div.topic{ font-weight: bold;font-size: larger;color: #000000;margin-top: 2pt;margin-bottom: 2pt; }
 
+font.new{ font-weight: bold;font-size: smaller;color: teal; }
+
 ul {
 	margin-top: 0pt;margin-bottom: 0pt; 
 }

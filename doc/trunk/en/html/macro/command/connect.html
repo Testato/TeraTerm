@@ -1,0 +1,95 @@
+<HTML>
+<HEAD>
+<TITLE>connect</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">connect</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+ <B>connect &lt;command line parameters&gt;</B>
+</UL>
+<P></P>
+
+If MACRO is not linked to Tera Term, this command runs Tera Term with &lt;command line parameters&gt;, and links it to MACRO.
+<P></P>
+
+f MACRO has already been linked to Tera Term and Tera Term is not connected to the host, this command causes Tera Term to connect to the host specified by &lt;command line parameters&gt;.
+<P></P>
+
+See Tera Term help for the format of &lt;command line parameters&gt;.
+<P></P>
+
+If MACRO has already been linked to Tera Term and Tera Term has already been connected to the host, this command is ignored.
+<P></P>
+
+As a result of this command, the system variable "result" is set to one of the following values depending on the link and connection status:
+<P></P>
+
+<pre>
+Value	Status
+<hr>
+0	Link to Tera Term has not been made.
+1	Connection to the host has not been made, but link to Tera Term has been made.
+2	Both connection and link have been made.
+</pre>
+
+To test the current link and connect status before executing the "connect" command, use the "testlink" command.
+<P></P>
+
+Communication commands except "connect" and "testlink" can not be executed before the link is established.
+<P></P>
+
+<pre>
+See also:
+	"closett"
+	"disconnect"
+	"testlink"
+	"unlink"
+</pre>
+
+<pre>
+Examples:*
+	connect ''	No command line parameter
+
+	connect 'myserver:23 /nossh'	Run Tera Term and open telnet session
+
+	connect 'myserver /ssh'	Run Tera Term and open SSH session
+
+	connect 'myserver /ssh /1'	Run Tera Term and open SSH1 session
+
+	connect 'myserver /ssh /2'	Run Tera Term and open SSH2 session
+
+	connect 'myserver /ssh /auth=password /user=username /passwd=password'	Run Tera Term,open SSH session and do not prompt for user name and password**
+
+	connect 'myserver /ssh /1 /auth=password /user=username /passwd=password'	Run Tera Term, open SSH1 session and do not prompt for user name and password**
+
+	connect 'myserver /ssh /2 /auth=password /user=username /passwd=password'	Run Tera Term, open SSH2 session and do not prompt for user name and password**
+
+	connect 'myserver /ssh /auth=publickey/user=username /passwd=password /keyfile=private-key-file'	Run Tera Term, open SSH session and, not prompt for user name and password** and use private key file
+
+	connect 'myserver /ssh /1 /auth=publickey/user=username /passwd=password /keyfile=private-key-file'	Run Tera Term, open SSH1 session and, not prompt for user name and password**and use private key file
+
+	connect 'myserver /ssh /2 /auth=publickey /user=username /passwd=password /keyfile=private-key-file'	Run Tera Term, open SSH2 session and, not prompt for user name and password** and use private key file
+
+	connect '/C=x'	RunTera Term and open serial port connection. Port number is x=1..99
+
+	CommandLine = '111.111.11.11'	
+	connect CommandLine
+
+<hr>
+* In these examples parameters shown with Italic font have to be replaced with their actual values.
+
+** The password can contain space character. To represent space inside the password replace it 
+   with @ character. If @ character itself is part of the password than it has to be replaced 
+   with 2 consecutive @ characters @@.
+</pre>
+
+
+</BODY>
+</HTML>
+
