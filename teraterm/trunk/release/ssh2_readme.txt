@@ -218,6 +218,7 @@ OF SUCH DAMAGE.
 
 2006.8.5 (Ver 2.31)
   - added the checkbox on SSH authentication dialog whether the user password string would be stored on heap memory. You can configurate the its function enabling flag by "RememberPassword" entry of TTSSH section in the 'teraterm.ini' file.
+  - Bug fix: Title bar didn't use the small(16x16 dot) icon.
 
 2006.7.26 (Ver 2.30)
   - updated to new TTSSH icon file(ttsecure.ico). Special thanks to Tatsu Sakamoto.
