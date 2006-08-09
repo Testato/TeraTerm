@@ -81,7 +81,8 @@ static char FAR *ProtocolFamilyList[] = { "UNSPEC", "IPv6", "IPv4", NULL };
 #define ORDER 2500
 
 #ifdef TERATERM32
-static HICON SecureIcon = NULL;
+static HICON SecureLargeIcon = NULL;
+static HICON SecureSmallIcon = NULL;
 #endif
 
 static TInstVar FAR *pvar;
@@ -685,11 +686,16 @@ static int PASCAL FAR TTXsend(SOCKET s, char const FAR * buf, int len,
 void notify_established_secure_connection(PTInstVar pvar)
 {
 #ifdef TERATERM32
-	if (SecureIcon == NULL) {
-		SecureIcon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_SECURETT));
+	if (SecureLargeIcon == NULL) {
+		SecureLargeIcon = LoadImage(hInst, MAKEINTRESOURCE(IDI_SECURETT),
+									IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR);
+	}
+	if (SecureSmallIcon == NULL) {
+		SecureSmallIcon = LoadImage(hInst, MAKEINTRESOURCE(IDI_SECURETT),
+									IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	}
 
-	if (SecureIcon != NULL) {
+	if (SecureLargeIcon != NULL && SecureSmallIcon != NULL) {
 		pvar->OldSmallIcon =
 			(HICON) SendMessage(pvar->NotificationWindow, WM_GETICON,
 								ICON_SMALL, 0);
@@ -697,9 +703,9 @@ void notify_established_secure_connection(PTInstVar pvar)
 			(HICON) SendMessage(pvar->NotificationWindow, WM_GETICON,
 								ICON_BIG, 0);
 		PostMessage(pvar->NotificationWindow, WM_SETICON, ICON_BIG,
-					(LPARAM) SecureIcon);
+					(LPARAM) SecureLargeIcon);
 		PostMessage(pvar->NotificationWindow, WM_SETICON, ICON_SMALL,
-					(LPARAM) SecureIcon);
+					(LPARAM) SecureSmallIcon);
 	}
 #endif
 
@@ -3124,6 +3130,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.35  2006/08/05 03:50:59  yutakakn
+ * 改行コードをLFへ変換した。
+ *
  * Revision 1.34  2006/08/05 03:47:49  yutakakn
  * パスワードをメモリ上に覚えておくかどうかの設定は teraterm.ini に反映させるようにした。
  *
