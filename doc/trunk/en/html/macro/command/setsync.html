@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+<TITLE>setsync</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">setsync</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+ <B>setsync &lt;sync flag&gt;</B>
+</UL>
+<P></P>
+
+Enters the synchronous communication mode if &lt;sync flag&gt; is non-zero, or enters the asynchronous communication mode if &lt;sync flag&gt; is zero.
+<P></P>
+
+Tera Term transfers received characters from the host to MACRO. MACRO stores the characters in the buffer. The character-reading commands, such as the "wait" command, read out the characters from the buffer.
+<P></P>
+
+Initially, MACRO is in the asynchronous mode. In this mode, the buffer may overflow if no character-reading command is executed for a long time, or the receiving speed is too fast.
+<P></P>
+
+In the synchronous mode, the buffer never overflows. If the buffer becomes full, Tera Term stops receiving characters from the host and stops transferring them to MACRO. When the buffer regains enough space,Tera Term restarts receiving and transferring.
+<P></P>
+
+Enter the synchronous mode only when it is necessary and re-enter the asynchronous mode when the synchronous operation is no longer needed.
+<P></P>
+
+For a macro operation, which requires reliability, something like processing lines of received characters without loss of data, you need to enter the synchronous mode. However, the synchronous mode makes Tera Term slow in speed of receiving characters and causes Tera Term freeze if no character-reading command is executed for a long time. On the other hand, a simple macro operation, such as auto login, works with almost no problem in the asynchronous mode, because the buffer size is large enough (4096 bytes) and
+all received characters are processed by character-reading commands before the buffer overflows.
+<P></P>
+
+See also "flushrecv" for clearing the buffer.
+
+<P></P>
+
+<pre>
+Example:
+	setsync 1		enter the synchronous mode
+	setsync 0		enter the asynchronous mode
+</pre>
+
+</BODY>
+</HTML>
+

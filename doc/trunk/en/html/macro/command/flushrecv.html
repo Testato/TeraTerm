@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+<TITLE>flushrecv</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">flushrecv</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+ <B>flushrecv</B>
+</UL>
+<P></P>
+
+Clears received characters in the buffer of MACRO.
+<P></P>
+
+Characters received from the host are transferred to MACRO. MACRO stores the characters in the buffer. Character-reading commands, such as the "wait" command, read out them from the buffer. Characters in the buffer are kept until character-reading commands process them or the buffer overflows or the flushrecv command clears the buffer.
+<P></P>
+
+The "flushrecv" command can be used to avoid unexpected results of character-reading commands caused by old characters in the buffer.
+Retrieves a line of received characters from the host and stores it in the system variable "inputstr".
+<P></P>
+
+</BODY>
+</HTML>
+
