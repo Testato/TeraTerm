@@ -592,61 +592,6 @@ Too many labels.           MACRO can not handle more than 512 labels.
 Too many variables.        MACRO can not handle more than 256 integer variables and 256 string variables.
 
 
-
-* How to build TeraTerm
-  To build TeraTerm source code is shown in the following step:
-  And you should use Visual Studio 2005 Standard Edition later version to build TeraTerm because TeraTerm program links MFC library (Visual Studio 2005 Express Edition can't be used).
-  
-  1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
-  2. Download 'Oniguruma' source code(http://www.geocities.jp/kosako3/oniguruma/) and extract at 'teraterm\source\oniguruma' directory. Launch 'Visual Studio 2005 Command Prompt' batch file from start menu. Move 'teraterm\source\oniguruma' directory on the command prompt. And input the following command lines to build 'Oniguruma' regular expression library(links to onig_s.lib).
-  
-       (1) copy win32\Makefile Makefile
-       (2) copy win32\config.h config.h
-       (3) Open Makefile and append /MT at end of CFLAGS line.
-       (4) copy Makefile Makefile.debug
-       (5) Open Makefile.debug and modify CFLAG line from /MT to /MTd.
-           And modify libname to debug\$(libbase)_s.lib.
-       (6) mkdir debug
-       (7) nmake -f Makefile.debug
-       (8) nmake clean
-       (9) nmake
-       
-  3. Open teraterm\visualc\ttermpro.sln with Visual Studio.
-  4. Build TeraTerm solution.
-  5. TeraTerm execution program will be generated in teraterm\visualc\bin directory if the building is successful.
-
-
-* How to build TeraTerm Menu
-  To build TeraTerm Menu source code is shown in the following step:
-  And you need Visual Studio 2005(VC++8.0) to build.
-  
-  1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
-  2. Open teraterm\source\ttmenu\ttpmenu.sln with Visual Studio.
-  3. Build TeraTerm Menu solution.
-  4. TeraTerm Menu execution program will be generated in teraterm\source\ttmenu directory if the building is successful.
-
-
-* How to build TTProxy
-  To build TTProxy source code is shown in the following step:
-  And you need Visual Studio 2005(VC++8.0) to build.
-  
-  1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
-  2. Open TTProxy\TTProxy.sln with Visual Studio.
-  3. Build TTProxy solution.
-  4. TTProxy DLL module will be generated in TTProxy directory if the building is successful.
-
-
-* Development Environment
-  OS: Windows XP Professional
-  Compiler: Visual Studio 2005 Standard Edition
-  
-  Software:
-  TeraTerm Pro 2.3
-  IPv6 0.81
-  Cygterm 1.06
-  TTSSH 1.5.4
-  
-
 * License
 Copyright (c) TeraTerm Project. 
 All rights reserved.

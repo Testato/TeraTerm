@@ -115,49 +115,6 @@
     *.example.com,!mail.example.com ssh-rsa AAAAB3NzaC1...nXIDE=
 
 
-■TTSSHのビルド方法
-  TTSSHのビルド方法について以下に示します。ビルドにはVisual Studio 2005(VC++8.0)、ActivePerlが必要です。
-  
-  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする。
-  
-  2. zlibのソースコード(http://www.zlib.net/)を ttssh2\zlib ディレクトリに展開する。
-     Release では zlib\projects\visualc6\Win32_LIB_Release\zlib.lib がリンクされることになる（コンパイルオプションに /MT が指定されていること）。
-     Debug では zlib\projects\visualc6\Win32_LIB_Release\zlibd.lib がリンクされることになる（コンパイルオプションに /MTd が指定されていること）。
-  
-  3. OpenSSLのソースコード(http://www.openssl.org/)を ttssh2\openssl ディレクトリに展開する。OpenSSLをビルドする（以下参照）。
-     Release では openssl\out32\libeay32.lib が、Debug では openssl\out32.dbg\libeay32.lib がリンクされることになる。
-
-      - Build OpenSSL.
-            + cd openssl
-            + perl Configure VC-WIN32
-                (Yes, you need perl to build OpenSSL!)
-            + ms\do_ms.bat をエディタで開いて、ms\nt.mak の次の行に下記の内容を追記する
-              perl util\mk1mf.pl no-asm debug VC-WIN32 >ms\ntd.mak
-            + ms\do_ms
-            + ms\nt.mak をエディタで開いて、CFLAG行の /MD を /MT に変更する
-            + ms\ntd.mak をエディタで開いて、CFLAG行の /MDd を /MTd に変更する
-            + nmake -f ms\nt.mak
-            + nmake -f ms\ntd.mak
-            + cd ..
-                (Now you are back in PortForwarder folder.)
-        See the instruction in the OpenSSL documentation for details.
-
-  4. ttssh2\ttssh.sln をVisual Studioで開く
-  5. ソリューションをビルドする
-  6. ビルドに成功するとttssh2\ttxssh ディレクトリにDLLが生成される
-
-
-
-■開発環境
-  OS: Windows XP Professional
-  コンパイラ: Visual Studio 2005 Standard Edition
-  
-  ソフトウェア：
-  TeraTerm Pro 2.3
-  IPv6 0.81
-  TTSSH 1.5.4
-  
-
 ■ライセンス
 Copyright (c) TeraTerm Project. 
 All rights reserved.

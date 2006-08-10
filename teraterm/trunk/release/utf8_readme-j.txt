@@ -590,58 +590,6 @@ Too many labels.           ラベルの数が多すぎる。(最大512個)
 Too many variables.        変数の数が多すぎる。(整数型、文字列型それぞれ最大256個ずつ)
 
 
-■TeraTermのビルド方法
-  TeraTermのビルド方法について以下に示します。ビルドにはVisual Studio 2005 Standard Edition以上が必要です（Visual Studio 2005 Express Editionは不可）。
-  
-  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする。
-  2. Onigurumaのソースコード(http://www.geocities.jp/kosako3/oniguruma/)を teraterm\source\oniguruma ディレクトリに展開する。スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。コマンドプロンプト上から teraterm\source\oniguruma ディレクトリに移動する。コマンドプロンプトから以下の入力を行い、Onigurumaをビルドする（onig_s.libがリンクされる）。
-  
-       (1) copy win32\Makefile Makefile
-       (2) copy win32\config.h config.h
-       (3) Makefile をエディタで開いて、CFLAGS の行に /MT を追加する
-       (4) copy Makefile Makefile.debug
-       (5) Makefile.debug をエディタで開いて、CFLAGS の行の /MT を /MTd に変更する
-           また、libname を debug\$(libbase)_s.lib に変更する
-       (6) mkdir debug
-       (7) nmake -f Makefile.debug
-       (8) nmake clean
-       (9) nmake
-          
-  3. teraterm\visualc\ttermpro.sln をVisual Studioで開く
-  4. ソリューションをビルドする
-  5. ビルドに成功するとteraterm\visualc\bin ディレクトリに実行プログラムが生成される
-
-
-■TeraTerm Menuのビルド方法
-  TeraTerm Menuのビルド方法について以下に示します。ビルドにはVisual Studio 2005(VC++8.0)が必要です。
-  
-  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
-  2. teraterm\source\ttmenu\ttpmenu.sln をVisual Studioで開く
-  3. ソリューションをビルドする
-  4. ビルドに成功すると teraterm\source\ttmenu ディレクトリに実行プログラムが生成される
-
-
-■TTProxyのビルド方法
-  TTProxyのビルド方法について以下に示します。ビルドにはVisual Studio 2005(VC++8.0)が必要です。
-  
-  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
-  2. TTProxy\TTProxy.sln をVisual Studioで開く
-  3. ソリューションをビルドする
-  4. ビルドに成功すると TTProxy ディレクトリにDLLが生成される
-
-
-
-■開発環境
-  OS: Windows XP Professional
-  コンパイラ: Visual Studio 2005 Standard Edition
-  
-  ソフトウェア：
-  TeraTerm Pro 2.3
-  IPv6 0.81
-  Cygterm 1.06
-  TTSSH 1.5.4
-  
-
 ■ライセンス
 Copyright (c) TeraTerm Project. 
 All rights reserved.
