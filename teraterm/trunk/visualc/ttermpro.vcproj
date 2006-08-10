@@ -449,6 +449,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\source\common\teraterm_classic.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Source\Teraterm\ttermpro.rc"
 				>
 				<FileConfiguration
@@ -472,6 +476,10 @@
 			</File>
 			<File
 				RelativePath="..\Source\Common\vt.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\source\common\vt_classic.ico"
 				>
 			</File>
 		</Filter>
