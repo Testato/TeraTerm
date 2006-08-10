@@ -1,5 +1,5 @@
 #define AppName "UTF-8 TeraTerm Pro with TTSSH2"
-#define AppVer "4.43"
+#define AppVer "4.44"
 
 [Setup]
 AppCopyright=TeraTerm Project
@@ -141,7 +141,7 @@ en.type_standard=Standard installation
 en.type_full=Full installation
 en.type_compact=Compact installation
 en.type_custom=Custom installation
-en.type_standard=標準インストール
-en.type_full=フルインストール
-en.type_compact=コンパクトインストール
-en.type_custom=カスタムインストール
+ja.type_standard=標準インストール
+ja.type_full=フルインストール
+ja.type_compact=コンパクトインストール
+ja.type_custom=カスタムインストール
