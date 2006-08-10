@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<TITLE>recvln</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">recvln</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+ <B>recvln</B>
+</UL>
+<P></P>
+
+Retrieves a line of received characters from the host and stores it in the system variable "inputstr".
+<P></P>
+
+This command waits until a line is received or the communication between Tera Term and the host is terminated or the timeout occurs. If the system variable "timeout" is greater than zero, the timeout occurs when &lt;timeout&gt; seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.
+<P></P>
+
+If the line is received successfully, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
+<P></P>
+
+<pre>
+Example:
+	fileopen file 'log.txt' 0		<B>open the log file</B>
+	setsync 1				<B>enter synchronous mode</B>
+	result=1	
+	while result=1	
+	  recvln				<B>receive one line</B>
+	  filewriteln file inputstr		<B>write it to the log file</B>
+	endwhile	
+	setsync 0				<B>enter asynchronous mode</B>
+
+See also "setsync" for the synchronous mode.</pre>
+</BODY>
+</HTML>
+
