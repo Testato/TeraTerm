@@ -53,6 +53,7 @@ Source: ..\visualc\bin\release\ttpmacro.exe; DestDir: {app}; Components: TeraTer
 Source: ..\release\macro.hlp; DestDir: {app}; Components: TeraTerm
 Source: ..\release\macroj.hlp; DestDir: {app}; Components: TeraTerm
 Source: ..\release\RE.txt; DestDir: {app}; Components: TeraTerm
+Source: ..\release\RE-ja.txt; DestDir: {app}; Components: TeraTerm
 Source: ..\release\delpassw.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\dialup.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\login.ttl; DestDir: {app}; Components: TeraTerm
@@ -60,12 +61,15 @@ Source: ..\release\mpause.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\random.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\ssh2login.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\wait_regex.ttl; DestDir: {app}; Components: TeraTerm
-Source: ..\cygterm\cygterm.exe; DestDir: {app}; Components: TeraTerm
-Source: ..\cygterm\cygterm.cfg; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist; Permissions: authusers-modify
 Source: ..\..\ttssh2\ttxssh\Release\ttxssh.dll; DestDir: {app}; Components: TTSSH
 Source: ..\release\ssh2_readme.txt; DestDir: {app}; Components: TTSSH
 Source: ..\release\ssh2_readme-j.txt; DestDir: {app}; Components: TTSSH
 Source: ..\release\ssh_known_hosts; DestDir: {app}; Components: TTSSH; Flags: onlyifdoesntexist; Permissions: authusers-modify
+Source: ..\release\OpenSSL-LICENSE.txt; DestDir: {app}; Components: TTSSH
+Source: ..\cygterm\cygterm.exe; DestDir: {app}; Components: cygterm
+Source: ..\cygterm\cygterm.cfg; DestDir: {app}; Components: cygterm; Flags: onlyifdoesntexist; Permissions: authusers-modify
+Source: ..\cygterm\README; DestDir: {app}; Components: cygterm; DestName: cygterm-README.txt
+Source: ..\cygterm\README-j; DestDir: {app}; Components: cygterm; DestName: cygterm-README-j.txt
 Source: ..\release\LogMeTT_license.txt; DestDir: {app}; Components: LogMeTT
 Source: ..\release\LogMeTT_README.txt; DestDir: {app}; Components: LogMeTT
 Source: ..\release\LogMeTTc.exe; DestDir: {app}; Components: LogMeTT
