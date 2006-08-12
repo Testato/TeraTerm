@@ -46,6 +46,11 @@ CTeraApp theApp;
 // CTeraApp initialization
 BOOL CTeraApp::InitInstance()
 {
+  // インストーラで実行を検出するために mutex を作成する (2006.8.12 maya)
+  // 2重起動防止のためではないので、特に返り値は見ない
+  HANDLE hMutex;
+  hMutex = CreateMutex(NULL, TRUE, "TeraTermProAppMutex");
+
   hInst = m_hInstance;
 #ifndef TERATERM32
   LoadCtl3d(m_hInstance);

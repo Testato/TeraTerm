@@ -2062,6 +2062,11 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR nCmdLine, int nCmdShow)
 	HWND		hWnd;
 	WNDCLASS	winClass;
 
+	// インストーラで実行を検出するために mutex を作成する (2006.8.12 maya)
+	// 2重起動防止のためではないので、特に返り値は見ない
+	HANDLE hMutex;
+	hMutex = CreateMutex(NULL, TRUE, "TeraTermMenuAppMutex");
+
 	g_hI	= hI;
 	g_hIcon	= ::LoadIcon(g_hI, (LPCSTR) TTERM_ICON);
 
@@ -2109,6 +2114,9 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR nCmdLine, int nCmdShow)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2005/10/12 15:35:47  yutakakn
+ * マルチモニタ環境において、ポップアップメニューの座標計算が間違っていたバグを修正した。
+ *
  * Revision 1.6  2005/01/28 13:58:28  yutakakn
  *  SSH自動ログインにおいて、秘密鍵の指定をできるようにした。
  *

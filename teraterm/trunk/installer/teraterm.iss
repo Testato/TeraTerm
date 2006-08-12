@@ -10,8 +10,8 @@ DefaultDirName={pf}\teraterm
 DefaultGroupName={#AppName}
 ShowLanguageDialog=yes
 AllowNoIcons=true
-SetupIconFile=
 UninstallDisplayIcon={app}\ttermpro.exe
+AppMutex=TeraTermProAppMutex, TeraTermProMacroAppMutex, TeraTermProKeycodeAppMutex, TeraTermMenuAppMutex
 OutputBaseFilename=teraterm_utf8-{#AppVer}
 
 [Languages]
