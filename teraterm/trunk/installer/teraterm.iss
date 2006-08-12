@@ -120,7 +120,8 @@ Name: {userstartup}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app
 Name: {userstartup}\Collector; Filename: {app}\collector\collector.exe; WorkingDir: {app}; IconFilename: {app}\collector\collector.exe; Components: Collector; Tasks: startupcollectoricon; IconIndex: 0
 
 [Registry]
-Root: HKCU; Subkey: Software\ShinpeiTools\TTermMenu; ValueType: none; Flags: uninsdeletekey; Components: TeraTerm_Menu
+Root: HKCU; Subkey: Software\ShinpeiTools; Flags: uninsdeletekeyifempty; Components: TeraTerm_Menu
+Root: HKCU; Subkey: Software\ShinpeiTools\TTermMenu; Flags: uninsdeletekey; Components: TeraTerm_Menu
 
 [Tasks]
 Name: desktopicon; Description: {cm:task_desktopicon}; Components: TeraTerm
