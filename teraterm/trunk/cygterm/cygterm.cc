@@ -78,6 +78,10 @@ int cl_port = 0;
 //-------------------
 bool dumb = false;
 
+// don't chdir to HOME
+//-------------------
+int nochdir = 0;
+
 // terminal type & size
 //---------------------
 char term_type[41] = "";
@@ -185,6 +189,10 @@ void parse_cfg_line(char *buf)
             e->next = NULL;
             sh_envp = (sh_envp->next = e);
         }
+    }
+    else if (!strcasecmp(name, "NO_CHDIR")) {
+        // number of ports for TELNET
+        nochdir = atoi(val);
     }
     return;
 }
@@ -535,7 +543,7 @@ int exec_shell(int* sh_pid)
         }
         // chdir to home directory
         const char *home_dir = getenv("HOME");
-        if (home_dir != NULL) {
+        if (!nochdir && home_dir != NULL) {
             // ignore chdir(2) system-call error.
             chdir(home_dir);
         }
