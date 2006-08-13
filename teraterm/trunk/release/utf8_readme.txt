@@ -673,6 +673,9 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.8.14 (Ver 4.44)
+  ÅEBug fix: on Windows98/NT, ttpmacro.exe terminated shortly after startup.
+
 2006.8.4 (Ver 4.43)
   - expanded the number of macro variables which can be used as user variable from 241 to 256. This is bug because some variables were used as system variable.
   - expanded the inputbox dialog of macro. It is resized automaticaly when the message is long than default size.

@@ -163,7 +163,8 @@ BOOL GetFileName(HWND HWin)
   strcpy(FNFilter, "Macro files (*.ttl)");
   strcpy(&(FNFilter[strlen(FNFilter)+1]), "*.ttl");
 
-  FNameRec.lStructSize	 = sizeof(OPENFILENAME);
+  // sizeof(OPENFILENAME) Ç≈ÇÕ Windows98/NT Ç≈èIóπÇµÇƒÇµÇ‹Ç§ÇΩÇﬂ (2006.8.14 maya)
+  FNameRec.lStructSize	 = OPENFILENAME_SIZE_VERSION_400;
   FNameRec.hwndOwner	 = HWin;
   FNameRec.lpstrFilter	 = FNFilter;
   FNameRec.nFilterIndex  = 1;
