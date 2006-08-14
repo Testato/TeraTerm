@@ -68,8 +68,8 @@ Source: ..\release\ssh_known_hosts; DestDir: {app}; Components: TTSSH; Flags: on
 Source: ..\release\OpenSSL-LICENSE.txt; DestDir: {app}; Components: TTSSH
 Source: ..\cygterm\cygterm.exe; DestDir: {app}; Components: cygterm
 Source: ..\cygterm\cygterm.cfg; DestDir: {app}; Components: cygterm; Flags: onlyifdoesntexist; Permissions: authusers-modify
-Source: ..\cygterm\README; DestDir: {app}; Components: cygterm; DestName: cygterm-README.txt
-Source: ..\cygterm\README-j; DestDir: {app}; Components: cygterm; DestName: cygterm-README-j.txt
+Source: ..\release\cygterm-README.txt; DestDir: {app}; Components: cygterm
+Source: ..\release\cygterm-README-j.txt; DestDir: {app}; Components: cygterm
 Source: ..\release\LogMeTT_license.txt; DestDir: {app}; Components: LogMeTT
 Source: ..\release\LogMeTT_README.txt; DestDir: {app}; Components: LogMeTT
 Source: ..\release\LogMeTTc.exe; DestDir: {app}; Components: LogMeTT
