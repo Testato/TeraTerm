@@ -34,9 +34,13 @@
 // patch level 02 - change directory to home only if HOME_CHDIR is set
 //   Written by IWAMOTO Kouichi. (sue@iwmt.org)
 //
+/////////////////////////////////////////////////////////////////////////////
+// patch level 03 - add login shell option
+//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
+//
 
 static char Program[] = "CygTerm";
-static char Version[] = "version 1.06_02 (2006/08/15)";
+static char Version[] = "version 1.06_03 (2006/08/15)";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -81,6 +85,10 @@ bool dumb = false;
 // chdir to HOME
 //--------------
 bool home_chdir = false;
+
+// login shell flag
+//-----------------
+bool enable_loginshell = false;
 
 // terminal type & size
 //---------------------
@@ -196,6 +204,13 @@ void parse_cfg_line(char *buf)
             home_chdir = true;
         }
     }
+    else if (!strcasecmp(name, "LOGIN_SHELL")) {
+        // execute a shell as a login shell
+        if (strchr("YyTt", *val) != NULL || atoi(val) > 0) {
+            enable_loginshell = true;
+        }
+    }
+
     return;
 }
 
@@ -324,6 +339,15 @@ void get_args(int argc, char** argv)
         }
         else if (!strcmp(*argv, "+cd")) {       // +cd
 	    home_chdir = false;
+        }
+        else if (!strcmp(*argv, "-ls")) {       // -ls
+            enable_loginshell = true;
+        }
+        else if (!strcmp(*argv, "-nols")) {     // -nols
+            enable_loginshell = false;
+        }
+        else if (!strcmp(*argv, "+ls")) {       // +ls
+            enable_loginshell = false;
         }
         else if (!strcmp(*argv, "-v")) {        // -v <additional env var>
             if (*(argv+1) != NULL) {
@@ -561,7 +585,19 @@ int exec_shell(int* sh_pid)
         // execute a shell
         char *argv[32];
         get_argv(argv, 32, cmd_shell);
-        execv(argv[0], argv);
+        if (enable_loginshell) {
+                char shell_path[128];
+                char *pos;
+                strcpy(shell_path, argv[0]);
+                if ((pos = strrchr(argv[0], '/')) != NULL) {
+                        *pos = '-';
+                        argv[0] = pos;
+                }
+                execv(shell_path, argv);
+        }
+        else {
+                execv(argv[0], argv);
+        }
         // no error, exec() doesn't return
         c_error(argv[0]);
         exit(0);
