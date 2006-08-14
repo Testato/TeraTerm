@@ -30,13 +30,13 @@
 // patch level 01 - support for "~/.cygtermrc" and "/etc/cygterm.conf"
 //   Written by BabyDaemon. (babydamons@yahoo.co.jp)
 //
-//                         *** Web Pages ***
-// (Japanese) http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
-// Sorry, Japanese web pages only, but I will try read English e-mail,
-// If I recieved it.
+/////////////////////////////////////////////////////////////////////////////
+// patch level 02 - change directory to home only if HOME_CHDIR is set
+//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
+//
 
 static char Program[] = "CygTerm";
-static char Version[] = "version 1.06_01 (2006/02/08)";
+static char Version[] = "version 1.06_02 (2006/08/15)";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -78,9 +78,9 @@ int cl_port = 0;
 //-------------------
 bool dumb = false;
 
-// don't chdir to HOME
-//-------------------
-int nochdir = 0;
+// chdir to HOME
+//--------------
+bool home_chdir = false;
 
 // terminal type & size
 //---------------------
@@ -190,9 +190,11 @@ void parse_cfg_line(char *buf)
             sh_envp = (sh_envp->next = e);
         }
     }
-    else if (!strcasecmp(name, "NO_CHDIR")) {
-        // number of ports for TELNET
-        nochdir = atoi(val);
+    else if (!strcasecmp(name, "HOME_CHDIR")) {
+        // change directory to home
+        if (strchr("YyTt", *val) != NULL || atoi(val) > 0) {
+            home_chdir = true;
+        }
     }
     return;
 }
@@ -313,6 +315,15 @@ void get_args(int argc, char** argv)
             if (*(argv+1) != NULL) {
                 ++argv, strcpy(cmd_shell, *argv);
             }
+        }
+        else if (!strcmp(*argv, "-cd")) {       // -cd
+	    home_chdir = true;
+        }
+        else if (!strcmp(*argv, "-nocd")) {     // -nocd
+	    home_chdir = false;
+        }
+        else if (!strcmp(*argv, "+cd")) {       // +cd
+	    home_chdir = false;
         }
         else if (!strcmp(*argv, "-v")) {        // -v <additional env var>
             if (*(argv+1) != NULL) {
@@ -543,7 +554,7 @@ int exec_shell(int* sh_pid)
         }
         // chdir to home directory
         const char *home_dir = getenv("HOME");
-        if (!nochdir && home_dir != NULL) {
+        if (home_chdir && home_dir != NULL) {
             // ignore chdir(2) system-call error.
             chdir(home_dir);
         }
