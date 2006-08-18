@@ -41,7 +41,6 @@ Source: ..\..\doc\jp\teratermj.chm; DestDir: {app}; Components: TeraTerm
 Source: ..\release\license.txt; DestDir: {app}; Components: TeraTerm
 Source: ..\release\utf8_readme.txt; DestDir: {app}; Components: TeraTerm
 Source: ..\release\utf8_readme-j.txt; DestDir: {app}; Components: TeraTerm
-Source: ..\release\faq-j.txt; DestDir: {app}; Components: TeraTerm
 Source: ..\release\IBMKEYB.CNF; DestDir: {app}; Components: TeraTerm
 Source: ..\release\KEYBOARD.CNF; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist; Permissions: authusers-modify
 Source: ..\release\NT98KEYB.CNF; DestDir: {app}; Components: TeraTerm
