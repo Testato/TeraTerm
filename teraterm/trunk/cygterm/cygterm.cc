@@ -31,20 +31,20 @@
 //   Written by BabyDaemon. (babydamons@yahoo.co.jp)
 //
 /////////////////////////////////////////////////////////////////////////////
-// patch level 02 - change directory to home only if HOME_CHDIR is set
+// patch level 03 - change directory to home only if HOME_CHDIR is set
 //   Written by IWAMOTO Kouichi. (sue@iwmt.org)
 //
 /////////////////////////////////////////////////////////////////////////////
-// patch level 03 - add login shell option
+// patch level 04 - add login shell option
 //   Written by IWAMOTO Kouichi. (sue@iwmt.org)
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 05 - add mutex
-//   Written by NAGATA Shinya. (maya dot negeta at gmail dot com)
+//   Written by NAGATA Shinya. (maya.negeta@mail.com)
 //
 
 static char Program[] = "CygTerm";
-static char Version[] = "version 1.06_03 (2006/08/15)";
+static char Version[] = "version 1.06_05 (2006/08/18)";
 
 #include <stdio.h>
 #include <stdlib.h>
