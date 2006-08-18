@@ -1,5 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
-// CygTerm - yet another Cygwin console
+// CygTerm+ - yet another Cygwin console
+// Copyright (c) 2006 TeraTerm Project
 // Copyright (C) 2000-2004 NSym.
 //---------------------------------------------------------------------------
 // This program is free software; you can redistribute it and/or modify it
@@ -18,10 +19,13 @@
 //---------------------------------------------------------------------------
 
 /////////////////////////////////////////////////////////////////////////////
-// CygTerm - yet another Cygwin console
+// CygTerm+ - yet another Cygwin console
 //
 //   Using Cygwin with a terminal emulator.
-//   Written by NSym.
+//   
+//   Writtern by TeraTerm Project.
+//   
+//   Original written by NSym.
 //                         *** Web Pages ***
 //  (English) http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index-e.html
 // (Japanese) http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
@@ -43,7 +47,7 @@
 //   Written by NAGATA Shinya. (maya.negeta@mail.com)
 //
 
-static char Program[] = "CygTerm";
+static char Program[] = "CygTerm+";
 static char Version[] = "version 1.06_05 (2006/08/18)";
 
 #include <stdio.h>

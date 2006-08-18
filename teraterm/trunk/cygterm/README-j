@@ -1,14 +1,15 @@
 
-                CygTerm  -  yet another Cygwin console
+                CygTerm+  -  yet another Cygwin console
 
                 ターミナル・エミュレータで Cygwin を使う。
 
+                Copyright (c) 2006 TeraTerm Project
+                http://sourceforge.jp/projects/ttssh2/
+
+                Based on CygTerm by Original developer:
                 Copyright (C) 2000-2004 NSym
-
                 nsym@dd.iij4u.or.jp
-
       (English) http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index-e.html
-
      (Japanese) http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
 
 
@@ -135,6 +136,16 @@
         シェル起動時に設定しておきたい環境変数です。「変数名=値」の形式
         (putenv形式) で記述します。 ENV_ で始めればいくつでも記述できます。
 
+    LOGIN_SHELL
+    -----------
+        シェルをログインシェルとして起動するかどうかを指定します。
+        デフォルトは有効です。
+
+    HOME_CHDIR
+    ----------
+        patch level 01 に含まれる"ホームディレクトリへの移動"を機能させるか
+        どうかを指定します。デフォルトは無効です。
+
 // 起 動 方 法 //
 
     コマンドライン・オプション
@@ -208,6 +219,12 @@
 // 変 更 履 歴 //
 v1.06_05 2006/08/18 (by maya.negeta@gmail.com)
         * インストーラから起動チェックをするため、mutex を作成した。
+
+v1.06_04 2006/08/15 (by sue@iwmt.org)
+        * シェルをログインシェルとして呼び出すオプションを追加した。
+
+v1.06_03 2006/08/15 (by sue@iwmt.org)
+        * ホームディレクトリで起動するのを選択するオプションを追加した。
 
 v1.06_02 2006/02/09 (by babydamons@yahoo.co.jp)
         * CygTermのアイコンが作成されました。（"DotWork 2.50"にて作成）
