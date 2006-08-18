@@ -46,9 +46,13 @@
 // patch level 05 - add mutex
 //   Written by NAGATA Shinya. (maya.negeta@mail.com)
 //
+/////////////////////////////////////////////////////////////////////////////
+// patch level 06 - limit a parameter length of -s and -t option
+//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
+//
 
 static char Program[] = "CygTerm+";
-static char Version[] = "version 1.06_05 (2006/08/18)";
+static char Version[] = "version 1.06_06 (2006/08/18)";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -321,9 +325,10 @@ void get_args(int argc, char** argv)
 {
     for (++argv; *argv != NULL; ++argv) {
         if (!strcmp(*argv, "-t")) {             // -t <terminal emulator>
-            if (*(argv+1) != NULL) {
-                ++argv, strcpy(cmd_term, *argv);
-            }
+            if (*++argv == NULL)
+                break;
+            strncpy(cmd_term, *argv, sizeof(cmd_term)-1);
+            cmd_term[sizeof(cmd_term)-1] = '\0';
         }
         else if (!strcmp(*argv, "-p")) {        // -p <port#>
             if (*(argv+1) != NULL) {
@@ -335,18 +340,19 @@ void get_args(int argc, char** argv)
             strcpy(term_type, "dumb");
         }
         else if (!strcmp(*argv, "-s")) {        // -s <shell>
-            if (*(argv+1) != NULL) {
-                ++argv, strcpy(cmd_shell, *argv);
-            }
+            if (*++argv == NULL)
+                break;
+            strncpy(cmd_shell, *argv, sizeof(cmd_shell)-1);
+            cmd_shell[sizeof(cmd_shell)-1] = '\0';
         }
         else if (!strcmp(*argv, "-cd")) {       // -cd
-	    home_chdir = true;
+            home_chdir = true;
         }
         else if (!strcmp(*argv, "-nocd")) {     // -nocd
-	    home_chdir = false;
+            home_chdir = false;
         }
         else if (!strcmp(*argv, "+cd")) {       // +cd
-	    home_chdir = false;
+            home_chdir = false;
         }
         else if (!strcmp(*argv, "-ls")) {       // -ls
             enable_loginshell = true;

@@ -136,6 +136,12 @@
         This is the command line to execute a shell in Cygwin side (normally
         /bin/bash).  Specify the full path to the shell.
 
+    LOGIN_SHELL
+    -----------
+
+    HOME_CHDIR
+    ----------
+
     ENV_X
     -----
         This is the environment variable to be set when starting the shell.
@@ -169,6 +175,18 @@
             This format is the same as SHELL in the configuration file.
             The command line should be enclosed in quotes to include spaces.
             Any command can be spedicied even if a non-shell command.
+
+    -ls
+            Execute a shell as a login shell.
+
+    -nols
+            Execute a shell as a normal (not login) shell.
+
+    -cd
+            Shell is invoked with user's home-directory.
+
+    -nocd
+            Shell is invoked without changing directory.
 
     -v 'env-var'
             Specify the environment variable to be set when starting the shell.
@@ -212,12 +230,21 @@
                 zsh 4.1.1
 
 // C H A N G E S //
+v1.06_06 2006/08/18 (by sue@iwmt.org)
+        * Limit a parameter length of -s and -t option.
+
 v1.06_05 2006/08/18 (by maya.negeta@gmail.com)
         * Create mutex for running check by installer.
 
+v1.06_04 2006/08/15 (by sue@iwmt.org)
+        * Add login shell mode option.
+
+v1.06_03 2006/08/15 (by sue@iwmt.org)
+        * Change directory to home only if HOME_CHDIR is set.
+
 v1.06_02 2006/02/09 (by babydamons@yahoo.co.jp)
         * Generated CygTerm's ICON by "DotWork 2.50".
-          "DotWork 2.50" is available at http://www5a.biglobe.ne.jp/~suuta.
+          "DotWork 2.50" is available at http://www5a.biglobe.ne.jp/~suuta/.
           Special Thanks to "suuta at hamal dot freemal dot ne dot jp"
 
         * Makefile was changed, "clean" target was changed to don't remove cygterm.ico.
