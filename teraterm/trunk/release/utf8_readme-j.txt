@@ -661,8 +661,19 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
-2006.8.14 (Ver 4.44)
-  ・Windows98/NT において ttpmacro.exe が起動直後に終了してしまう問題を修正した。
+2006.8.19 (Ver 4.44)
+  ・Windows98/NT4.0 において ttpmacro.exe が起動直後に終了してしまう問題を修正した。
+  ・ttermpro.exe, ttpmacro.exe, ttpmenu.exe, keycode.exe, cygterm.exeに mutex を追加した。
+  ・SSH2対応TTSSH(2.32)へ差し替えた
+  ・インストーラを InnoSetup へ変更した
+  ・HTMLヘルプを更新した
+  ・CygTerm+ 1.06_6へ差し替えた。
+        * -sと-tオプションのパラメータの長さを制限した。
+        * インストーラから起動チェックをするため、mutex を作成した。
+        * シェルをログインシェルとして呼び出すオプション LOGIN_SHELL を追加した。
+          LOGIN_SHELL: yes | no
+        * ホームディレクトリで起動するのを選択するオプション HOME_CHDIR を追加した。
+          HOME_CHDIR: yes | no
 
 2006.8.4 (Ver 4.43)
   ・いくつかの変数がシステム変数に使われていたので、ユーザが使えるマクロ変数が256個になるようにした。

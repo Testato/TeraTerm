@@ -673,8 +673,18 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
-2006.8.14 (Ver 4.44)
-  ÅEBug fix: on Windows98/NT, ttpmacro.exe terminated shortly after startup.
+2006.8.19 (Ver 4.44)
+  - Bug fix: 'ttpmacro.exe' terminated after startup on Windows98/NT4.0.
+  - added the mutex object to ttermpro.exe, ttpmacro.exe, ttpmenu.exe, keycode.exe and cygterm.exe.
+  - upgraded TTSSH version supporting SSH2 to 2.32.
+  - Changed TeraTerm installer software to InnoSetup.
+  - updated HTML help document.
+  - upgraded CygTerm+ to 1.06_6.
+        * Limit a parameter length of both '-s' and '-t' option.
+        * Create mutex object for running check by installer.
+        * Add 'LOGIN_SHELL' entry which the shell is invoked as the login shell in cygterm          LOGIN_SHELL: yes | no
+        * Add 'HOME_CHDIR' entry which home directory is changed in cygterm.cfg file.
+          HOME_CHDIR: yes | no
 
 2006.8.4 (Ver 4.43)
   - expanded the number of macro variables which can be used as user variable from 241 to 256. This is bug because some variables were used as system variable.
