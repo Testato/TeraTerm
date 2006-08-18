@@ -2,7 +2,11 @@
                 CygTerm - yet another Cygwin console
 
                 Using Cygwin with a terminal emulator.
+                
+                Copyright (c) 2006 TeraTerm Project
+                http://sourceforge.jp/projects/ttssh2/
 
+                Based on CygTerm by Original developer:
                 Copyright (C) 2000-2004 NSym
 
                 nsym@dd.iij4u.or.jp
@@ -183,10 +187,11 @@
             Execute a shell as a normal (not login) shell.
 
     -cd
-            Shell is invoked with user's home-directory.
+            The current directory is moved to the user home directory and
+            the shell is invoked.
 
     -nocd
-            Shell is invoked without changing directory.
+            The shell is invoked without changing the current directory.
 
     -v 'env-var'
             Specify the environment variable to be set when starting the shell.
@@ -231,16 +236,18 @@
 
 // C H A N G E S //
 v1.06_06 2006/08/18 (by sue@iwmt.org)
-        * Limit a parameter length of -s and -t option.
+        * Limit a parameter length of both '-s' and '-t' option.
 
 v1.06_05 2006/08/18 (by maya.negeta@gmail.com)
-        * Create mutex for running check by installer.
+        * Create mutex object for running check by installer.
 
 v1.06_04 2006/08/15 (by sue@iwmt.org)
-        * Add login shell mode option.
+        * Add 'LOGIN_SHELL' entry which the shell is invoked as the login shell in cygterm.cfg file.
+          LOGIN_SHELL: yes | no
 
 v1.06_03 2006/08/15 (by sue@iwmt.org)
-        * Change directory to home only if HOME_CHDIR is set.
+        * Add 'HOME_CHDIR' entry which home directory is changed in cygterm.cfg file.
+          HOME_CHDIR: yes | no
 
 v1.06_02 2006/02/09 (by babydamons@yahoo.co.jp)
         * Generated CygTerm's ICON by "DotWork 2.50".
