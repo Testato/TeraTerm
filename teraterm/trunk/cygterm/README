@@ -212,6 +212,9 @@
                 zsh 4.1.1
 
 // C H A N G E S //
+v1.06_05 2006/08/18 (by maya.negeta@gmail.com)
+        * Create mutex for running check by installer.
+
 v1.06_02 2006/02/09 (by babydamons@yahoo.co.jp)
         * Generated CygTerm's ICON by "DotWork 2.50".
           "DotWork 2.50" is available at http://www5a.biglobe.ne.jp/~suuta.

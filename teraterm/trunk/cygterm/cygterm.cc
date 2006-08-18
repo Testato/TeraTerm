@@ -38,6 +38,10 @@
 // patch level 03 - add login shell option
 //   Written by IWAMOTO Kouichi. (sue@iwmt.org)
 //
+/////////////////////////////////////////////////////////////////////////////
+// patch level 05 - add mutex
+//   Written by NAGATA Shinya. (maya dot negeta at gmail dot com)
+//
 
 static char Program[] = "CygTerm";
 static char Version[] = "version 1.06_03 (2006/08/15)";
@@ -869,6 +873,10 @@ int main(int argc, char** argv)
     int sh_pty = -1;
     HANDLE hTerm = NULL;
     int sh_pid;
+
+    // Create mutex for running check by installer (2006.8.18 maya)
+    HANDLE hMutex;
+    hMutex = CreateMutex(NULL, TRUE, "CygTermAppMutex");
 
     // load configuration
     load_cfg();
