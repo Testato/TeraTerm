@@ -236,7 +236,7 @@
 
 // C H A N G E S //
 v1.06_07 2006/08/19 (by maya.negeta@gmail.com)
-        * If setted Windows enviroment variable `HOME', cygterm use it.
+        * Use `HOME' environment variable for changing home directory if the variable will be set.
 
 v1.06_06 2006/08/18 (by sue@iwmt.org)
         * Limit a parameter length of both '-s' and '-t' option.
