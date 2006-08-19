@@ -585,14 +585,24 @@ int exec_shell(int* sh_pid)
             sprintf(env_term, "TERM=%s", term_type);
             putenv(env_term);
         }
+        // get %HOME%
+        const char *home_dir = getenv("HOME");
         // set other additional env vars
         sh_env_t* e;
         for (e = sh_env.next; e != NULL; e = e->next) {
             putenv(e->env);
         }
-        // chdir to home directory
-        const char *home_dir = getenv("HOME");
-        if (home_chdir && home_dir != NULL) {
+        if (home_dir != NULL && strstr(home_dir, "/cygdrive") == home_dir) {
+            // set %HOME% to HOME env
+            char *buf = (char *)calloc(strlen(home_dir)+6, sizeof(char));
+            strcat(buf, "HOME=");
+            strcat(buf, home_dir);
+            putenv(buf);
+            free(buf);
+        }
+        if (home_chdir) {
+            // chdir to home directory
+            home_dir = getenv("HOME");
             // ignore chdir(2) system-call error.
             chdir(home_dir);
         }
