@@ -1226,6 +1226,37 @@ static void replace_to_blank(char *src, char *dst, int dst_len)
 	*dst = '\0';
 }
 
+// copy from ttermpro/ttset.c (2006.8.21 maya)
+void Dequote(PCHAR Source, PCHAR Dest)
+{
+	int i, j;
+	char q, c;
+
+	Dest[0] = 0;
+	if (Source[0]==0) return;
+	i = 0;
+	/* quoting char */
+	q = Source[i];
+	/* only '"' is used as quoting char */
+	if (q!='"')
+		q = 0;
+	else
+		i++;
+
+	c = Source[i];
+	i++;
+	j = 0;
+	while ((c!=0) && (c!=q))
+	{
+		Dest[j] = c;
+		j++;
+		c = Source[i];
+		i++;
+	}
+
+	Dest[j] = 0;
+}
+
 /* returns 1 if the option text must be deleted */
 static int parse_option(PTInstVar pvar, char FAR * option)
 {
@@ -1243,7 +1274,11 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 					strcat(pvar->settings.DefaultForwarding, option + 5);
 				}
 			} else if (MATCH_STR(option + 4, "-f=") == 0) {
-				read_ssh_options_from_user_file(pvar, option + 7);
+				// ファイル名が `"' で囲まれていたら取り出す (2006.8.21 maya)
+				char* buf = (char *)calloc(strlen(option), sizeof(char));
+				Dequote(option + 7, buf);
+				read_ssh_options_from_user_file(pvar, buf);
+				free(buf);
 			} else if (MATCH_STR(option + 4, "-v") == 0) {
 				pvar->settings.LogLevel = LOG_LEVEL_VERBOSE;
 			} else if (_stricmp(option + 4, "-autologin") == 0
@@ -1251,7 +1286,11 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 				pvar->settings.TryDefaultAuth = TRUE;
 
 			} else if (MATCH_STR(option + 4, "-consume=") == 0) {
-				read_ssh_options_from_user_file(pvar, option + 13);
+				// ファイル名が `"' で囲まれていたら取り出す (2006.8.21 maya)
+				char* buf = (char *)calloc(strlen(option), sizeof(char));
+				Dequote(option + 13, buf);
+				read_ssh_options_from_user_file(pvar, buf);
+				free(buf);
 				DeleteFile(option + 13);
 			} else {
 				char buf[1024];
@@ -1272,7 +1311,11 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 				pvar->settings.Enabled = 0;
 			}
 		} else if (MATCH_STR(option + 1, "f=") == 0) {
-			read_ssh_options_from_user_file(pvar, option + 3);
+			// ファイル名が `"' で囲まれていたら取り出す (2006.8.21 maya)
+			char* buf = (char *)calloc(strlen(option), sizeof(char));
+			Dequote(option + 3, buf);
+			read_ssh_options_from_user_file(pvar, buf);
+			free(buf);
 
 		// /1 および /2 オプションの新規追加 (2004.10.3 yutaka)
 		} else if (MATCH_STR(option + 1, "1") == 0) {
@@ -3133,6 +3176,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.37  2006/08/09 15:13:17  maya
+ * ttermpro.exe のアイコンハンドルを取得できない問題を修正した
+ *
  * Revision 1.36  2006/08/09 09:13:49  maya
  * タイトルバーのアイコンに小さいアイコンが使用されていなかったのを修正した
  *
