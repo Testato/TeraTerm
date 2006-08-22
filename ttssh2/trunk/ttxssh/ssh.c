@@ -5925,11 +5925,6 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	finish_send_packet(pvar);
 	buffer_free(msg);
 
-	// パスワードの破棄 (2006.8.3 yutaka)
-	if (pvar->settings.remember_password == 0) {
-		destroy_malloced_string(&pvar->auth_state.cur_cred.password);
-	}
-
 	SSH2_dispatch_init(5);
 	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
 	if (kbdint == 1) { // keyboard-interactive method
@@ -6050,6 +6045,11 @@ static BOOL handle_SSH2_userauth_success(PTInstVar pvar)
 	unsigned char *outmsg;
 	int len;
 	Channel_t *c;
+
+	// パスワードの破棄 (2006.8.22 yutaka)
+	if (pvar->settings.remember_password == 0) {
+		destroy_malloced_string(&pvar->auth_state.cur_cred.password);
+	}
 
 	// 認証OK
 	pvar->userauth_success = 1;
@@ -6232,11 +6232,6 @@ BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar)
 	memcpy(outmsg, buffer_ptr(msg), len);
 	finish_send_packet(pvar);
 	buffer_free(msg);
-
-	// パスワードの破棄 (2006.8.3 yutaka)
-	if (pvar->settings.remember_password == 0) {
-		destroy_malloced_string(&pvar->auth_state.cur_cred.password);
-	}
 
 	return TRUE;
 }
@@ -6875,6 +6870,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.49  2006/08/05 03:47:49  yutakakn
+ * パスワードをメモリ上に覚えておくかどうかの設定は teraterm.ini に反映させるようにした。
+ *
  * Revision 1.48  2006/08/03 15:04:37  yutakakn
  * パスワードをメモリ上に保持するかどうかを決めるチェックボックスを認証ダイアログに追加した。
  *
