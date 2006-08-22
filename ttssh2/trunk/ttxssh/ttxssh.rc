@@ -79,7 +79,7 @@ BEGIN
     EDITTEXT        IDC_SSHUSERNAME,59,29,145,12,ES_AUTOHSCROLL | WS_GROUP
     LTEXT           "&Passphrase:",IDC_SSHPASSWORDCAPTION,14,48,40,8,0,WS_EX_RIGHT
     EDITTEXT        IDC_SSHPASSWORD,59,46,145,12,ES_PASSWORD | ES_AUTOHSCROLL | WS_GROUP
-    CONTROL         "Remember password on memory",IDC_REMEMBER_PASSWORD,
+    CONTROL         "Remember password on &memory",IDC_REMEMBER_PASSWORD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,59,61,132,10
     CONTROL         "Use p&lain password to log in",IDC_SSHUSEPASSWORD,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,78,219,10
