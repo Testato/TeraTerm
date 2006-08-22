@@ -636,6 +636,7 @@ OF SUCH DAMAGE.
   Copyright of Oniguruma to K.Kosako.
   Copyright of preventing scroll at end of line to IWAMOTO Kouichi.
   Copyright of supporting multi display to Tsuruhiko Ando.
+  Copyright of general patch on both TeraTerm and TTSSH to NAGATA Shinya.
 
   This program is provided "as is" without warranties of any kind, either expressed or 
   implied, including, but not limited to, the implied warranties of merchantability and fitness 

@@ -174,8 +174,9 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.8.21 (Ver 2.33)
-  - parse double-quoted filename in command line parameter.
+2006.8.22 (Ver 2.33)
+  - added parsing double-quoted filename in the command line parameter.
+  - Bug fix: Free the user password on heap memory after user authentication.
 
 2006.8.9 (Ver 2.32)
   - Bug fix: Title bar didn't use the small(16x16 dot) icon.
