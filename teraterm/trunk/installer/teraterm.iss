@@ -32,7 +32,7 @@ Source: ..\visualc\bin\release\ttpdlg.dll; DestDir: {app}; Components: TeraTerm
 Source: ..\visualc\bin\release\ttpfile.dll; DestDir: {app}; Components: TeraTerm
 Source: ..\visualc\bin\release\ttpset.dll; DestDir: {app}; Components: TeraTerm
 Source: ..\visualc\bin\release\ttptek.dll; DestDir: {app}; Components: TeraTerm
-Source: ..\release\TERATERM.INI; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist; Permissions: authusers-modify
+Source: ..\release\TERATERM.INI; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\release\TSPECIAL1.TTF; DestDir: {fonts}; Components: TeraTerm; Attribs: readonly; Flags: overwritereadonly uninsremovereadonly
 Source: ..\release\ttermp.hlp; DestDir: {app}; Components: TeraTerm
 Source: ..\release\ttermpj.hlp; DestDir: {app}; Components: TeraTerm
@@ -42,7 +42,7 @@ Source: ..\release\license.txt; DestDir: {app}; Components: TeraTerm
 Source: ..\release\utf8_readme.txt; DestDir: {app}; Components: TeraTerm
 Source: ..\release\utf8_readme-j.txt; DestDir: {app}; Components: TeraTerm
 Source: ..\release\IBMKEYB.CNF; DestDir: {app}; Components: TeraTerm
-Source: ..\release\KEYBOARD.CNF; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist; Permissions: authusers-modify
+Source: ..\release\KEYBOARD.CNF; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\release\NT98KEYB.CNF; DestDir: {app}; Components: TeraTerm
 Source: ..\release\PC98KEYB.CNF; DestDir: {app}; Components: TeraTerm
 Source: ..\visualc\bin\release\keycode.exe; DestDir: {app}; Components: TeraTerm
@@ -63,10 +63,10 @@ Source: ..\release\wait_regex.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\..\ttssh2\ttxssh\Release\ttxssh.dll; DestDir: {app}; Components: TTSSH
 Source: ..\release\ssh2_readme.txt; DestDir: {app}; Components: TTSSH
 Source: ..\release\ssh2_readme-j.txt; DestDir: {app}; Components: TTSSH
-Source: ..\release\ssh_known_hosts; DestDir: {app}; Components: TTSSH; Flags: onlyifdoesntexist; Permissions: authusers-modify
+Source: ..\release\ssh_known_hosts; DestDir: {app}; Components: TTSSH; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\release\OpenSSL-LICENSE.txt; DestDir: {app}; Components: TTSSH
 Source: ..\cygterm\cygterm.exe; DestDir: {app}; Components: cygterm
-Source: ..\cygterm\cygterm.cfg; DestDir: {app}; Components: cygterm; Flags: onlyifdoesntexist; Permissions: authusers-modify
+Source: ..\cygterm\cygterm.cfg; DestDir: {app}; Components: cygterm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\release\cygterm-README.txt; DestDir: {app}; Components: cygterm
 Source: ..\release\cygterm-README-j.txt; DestDir: {app}; Components: cygterm
 Source: ..\release\LogMeTT_license.txt; DestDir: {app}; Components: LogMeTT
@@ -149,3 +149,45 @@ ja.type_standard=標準インストール
 ja.type_full=フルインストール
 ja.type_compact=コンパクトインストール
 ja.type_custom=カスタムインストール
+
+[Code]
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var
+  ini     : array[0..3] of String;
+  buf     : String;
+  conf    : String;
+  confmsg : String;
+  app     : String;
+  i, res  : integer;
+begin
+  case CurUninstallStep of
+    usPostUninstall:
+      begin
+        ini[0] := '\TERATERM.INI';
+        ini[1] := '\KEYBOARD.CNF';
+        ini[2] := '\ssh_known_hosts';
+        ini[3] := '\cygterm.cfg';
+
+        case ActiveLanguage of
+        'en': conf := 'Do you want to delete %s ?';
+        'ja': conf := '%s を削除しますか？';
+        end;
+
+        app := ExpandConstant('{app}');
+        for i := 0 to 3 do
+        begin
+          buf := app + ini[i];
+
+          if FileExists(buf) then begin
+            confmsg := Format(conf, [buf]);
+            res := MsgBox(confmsg, mbInformation, MB_YESNO or MB_DEFBUTTON2);
+            if res = IDYES then
+              DeleteFile(buf);
+          end;
+        end;
+        
+        // 空でなければ削除されない
+        RemoveDir(app);
+      end;
+  end;
+end;
