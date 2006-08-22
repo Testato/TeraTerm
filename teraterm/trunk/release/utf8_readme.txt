@@ -623,7 +623,7 @@ OF SUCH DAMAGE.
   
   Copyright of original TeraTerm Pro belongs to T.Teranishi.
   Copyright of ANSI color change & concatenating multi-line patch belongs to N.Taga.
-  Copyright of UTF-8 code belongs to Yutaka Hirata.
+  Copyright of UTF-8 and SSH2 codes belongs to Yutaka Hirata.
   Copyright of IPv6 version of TeraTerm Pro belongs to J.Kato.
   Copyright of Cygterm belongs to NSym.
   Copyright of original TTSSH belongs to Robert O'Callahan.
@@ -631,12 +631,14 @@ OF SUCH DAMAGE.
   Copyright of LogMeTT to NeoCom Solutions.
   Copyright of Eterm lookfeel transparency window belongs to AKASI.
   Copyright of TTProxy to YebisuyaHompo.
-  Copyright of Localized TeraTerm belongs to Yasuhide Takahashi.
+  Copyright of Japanized TeraTerm belongs to Yasuhide Takahashi and Taketo Hashii.
   Copyright of Clickable URL to monkey magic.
   Copyright of Oniguruma to K.Kosako.
   Copyright of preventing scroll at end of line to IWAMOTO Kouichi.
   Copyright of supporting multi display to Tsuruhiko Ando.
-  Copyright of general patch on both TeraTerm and TTSSH to NAGATA Shinya.
+  Copyright of general patch about both TeraTerm and TTSSH to NAGATA Shinya.
+  Copyright of TeraTerm and TTSSH icon file to Tatsuhiko Sakamoto.
+  Copyright of HTML help file to Mitsuyasu Ichimura, Masateru KUWATA, Taketo Hashii and Yutaka Hirata.
 
   This program is provided "as is" without warranties of any kind, either expressed or 
   implied, including, but not limited to, the implied warranties of merchantability and fitness 
