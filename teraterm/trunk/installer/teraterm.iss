@@ -169,7 +169,7 @@ begin
         ini[3] := '\cygterm.cfg';
 
         case ActiveLanguage of
-        'en': conf := 'Do you want to delete %s ?';
+        'en': conf := 'Are you sure that you want to delete %s ?';
         'ja': conf := '%s ‚ğíœ‚µ‚Ü‚·‚©H';
         end;
 
