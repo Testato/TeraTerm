@@ -24,8 +24,17 @@
   And you should use Visual Studio 2005 Standard Edition later version to build TeraTerm because TeraTerm program links MFC library (Visual Studio 2005 Express Edition can't be used).
   
   1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
-  2. Download 'Oniguruma' source code(http://www.geocities.jp/kosako3/oniguruma/) and extract at 'teraterm\source\oniguruma' directory. Launch 'Visual Studio 2005 Command Prompt' batch file from start menu. Move 'teraterm\source\oniguruma' directory on the command prompt. And input the following command lines to build 'Oniguruma' regular expression library(links to onig_s.lib).
+  2. Download 'Oniguruma' source code(http://www.geocities.jp/kosako3/oniguruma/) and extract at 'teraterm\source\oniguruma' directory.
   
+       - Automatic procedure of build is following step:
+       Launch 'Visual Studio 2005 Command Prompt' batch file from start menu.
+       Move 'teraterm\source' directory on the command prompt.
+       Run buildoniguruma.bat.
+  
+       - Manual procedure of build is following step:
+       Launch 'Visual Studio 2005 Command Prompt' batch file from start menu.
+       Move 'teraterm\source\oniguruma' directory on the command prompt.
+       And input the following command lines to build 'Oniguruma' regular expression library(links to onig_s.lib).
        (1) copy win32\Makefile Makefile
        (2) copy win32\config.h config.h
        (3) Open Makefile and append /MT at end of CFLAGS line.
@@ -74,19 +83,24 @@
      
   3. Extract OpenSSL source code(http://www.openssl.org/) to ttssh2\openssl directory. Build OpenSSL in the following step(Release:TTSSH links to openssl\out32\libeay32.lib, Debug:openssl\out32.dbg\libeay32.lib):
   
-      - Build OpenSSL.
-            + cd openssl
-            + perl Configure VC-WIN32
-                (Yes, you need perl to build OpenSSL!)
-            + Open ms\do_ms.bat and append the following line at the next line of 'ms\nt.mak' line.
-              "perl util\mk1mf.pl no-asm debug VC-WIN32 >ms\ntd.mak"
-            + ms\do_ms
-            + Open ms\nt.mak and modify CFLAG line from /MD to /MT.
-            + Open ms\ntd.mak and modify CFLAG line from /MDd to /MTd.
-            + nmake -f ms\nt.mak
-            + nmake -f ms\ntd.mak
-            + cd ..
-                (Now you are back in PortForwarder folder.)
+      - Build OpenSSL automatically.
+      + Launch 'Visual Studio 2005 Command Prompt' batch file from start menu.
+      + Move 'ttssh2' directory on the command prompt.
+      + Run buildopenssl.bat.
+  
+      - Build OpenSSL manually.
+      + cd openssl
+      + perl Configure VC-WIN32
+          (Yes, you need perl to build OpenSSL!)
+      + Open ms\do_ms.bat and append the following line at the next line of 'ms\nt.mak' line.
+        "perl util\mk1mf.pl no-asm debug VC-WIN32 >ms\ntd.mak"
+      + ms\do_ms
+      + Open ms\nt.mak and modify CFLAG line from /MD to /MT.
+      + Open ms\ntd.mak and modify CFLAG line from /MDd to /MTd.
+      + nmake -f ms\nt.mak
+      + nmake -f ms\ntd.mak
+      + cd ..
+          (Now you are back in PortForwarder folder.)
         See the instruction in the OpenSSL documentation for details.
   
   4. Open ttssh2\ttssh.sln with Visual Studio.

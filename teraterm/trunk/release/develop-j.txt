@@ -21,8 +21,17 @@
   TeraTermのビルド方法について以下に示します。ビルドにはVisual Studio 2005 Standard Edition以上が必要です（Visual Studio 2005 Express Editionは不可）。
   
   1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする。
-  2. Onigurumaのソースコード(http://www.geocities.jp/kosako3/oniguruma/)を teraterm\source\oniguruma ディレクトリに展開する。スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。コマンドプロンプト上から teraterm\source\oniguruma ディレクトリに移動する。コマンドプロンプトから以下の入力を行い、Onigurumaをビルドする（onig_s.libがリンクされる）。
+  2. Onigurumaのソースコード(http://www.geocities.jp/kosako3/oniguruma/)を teraterm\source\oniguruma ディレクトリに展開する。
   
+       自動で行う場合
+       スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
+       コマンドプロンプト上から teraterm\source ディレクトリに移動する。
+       buildoniguruma.bat を実行する。
+  
+       手動で行う場合
+       スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
+       コマンドプロンプト上から teraterm\source\oniguruma ディレクトリに移動する。
+       コマンドプロンプトから以下の入力を行い、Onigurumaをビルドする（onig_s.libがリンクされる）。
        (1) copy win32\Makefile Makefile
        (2) copy win32\config.h config.h
        (3) Makefile をエディタで開いて、CFLAGS の行に /MT を追加する
@@ -69,19 +78,25 @@
   3. OpenSSLのソースコード(http://www.openssl.org/)を ttssh2\openssl ディレクトリに展開する。OpenSSLをビルドする（以下参照）。
      Release では openssl\out32\libeay32.lib が、Debug では openssl\out32.dbg\libeay32.lib がリンクされることになる。
 
-      - Build OpenSSL.
-            + cd openssl
-            + perl Configure VC-WIN32
-                (Yes, you need perl to build OpenSSL!)
-            + ms\do_ms.bat をエディタで開いて、ms\nt.mak の次の行に下記の内容を追記する
-              perl util\mk1mf.pl no-asm debug VC-WIN32 >ms\ntd.mak
-            + ms\do_ms
-            + ms\nt.mak をエディタで開いて、CFLAG行の /MD を /MT に変更する
-            + ms\ntd.mak をエディタで開いて、CFLAG行の /MDd を /MTd に変更する
-            + nmake -f ms\nt.mak
-            + nmake -f ms\ntd.mak
-            + cd ..
-                (Now you are back in PortForwarder folder.)
+       自動で行う場合
+       スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
+       コマンドプロンプト上から ttssh2 ディレクトリに移動する。
+       buildopenssl.bat を実行する。
+
+       手動で行う場合
+       スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
+       + cd openssl
+       + perl Configure VC-WIN32
+           (Yes, you need perl to build OpenSSL!)
+       + ms\do_ms.bat をエディタで開いて、ms\nt.mak の次の行に下記の内容を追記する
+         perl util\mk1mf.pl no-asm debug VC-WIN32 >ms\ntd.mak
+       + ms\do_ms
+       + ms\nt.mak をエディタで開いて、CFLAG行の /MD を /MT に変更する
+       + ms\ntd.mak をエディタで開いて、CFLAG行の /MDd を /MTd に変更する
+       + nmake -f ms\nt.mak
+       + nmake -f ms\ntd.mak
+       + cd ..
+           (Now you are back in PortForwarder folder.)
         See the instruction in the OpenSSL documentation for details.
 
   4. ttssh2\ttssh.sln をVisual Studioで開く
