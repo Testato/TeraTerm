@@ -9,8 +9,8 @@
     It is included in QuickStart Pack.
   Japanese-5-5.1.0.isl (http://innosetup.org/files/istrans/)
 - others
-  ActivePerl 5.8 or higher version
-    For build OpenSSL, convert character-code and retrun-code of documents.
+  ActivePerl 5.8 later version
+    converts character-code and return-code of documents for building OpenSSL.
 
 
 * Libraries
