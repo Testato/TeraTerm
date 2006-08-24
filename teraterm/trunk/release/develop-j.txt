@@ -6,6 +6,9 @@
   ISTool 5.1.6 (http://innosetup.org/isdl.php#qsp)
     QuickStart Pack の中に入っています。
   Japanese-5-5.1.0.isl (http://innosetup.org/files/istrans/)
+・その他
+  ActivePerl 5.8 以上
+    OpenSSL のコンパイル、ドキュメントファイルの文字コード・改行コード変換に必要です。
 
 
 ■ライブラリ

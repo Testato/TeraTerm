@@ -8,6 +8,9 @@
   ISTool 5.1.6 (http://innosetup.org/isdl.php#qsp)
     It is included in QuickStart Pack.
   Japanese-5-5.1.0.isl (http://innosetup.org/files/istrans/)
+- others
+  ActivePerl 5.8 or higher version
+    For build OpenSSL, convert character-code and retrun-code of documents.
 
 
 * Libraries
