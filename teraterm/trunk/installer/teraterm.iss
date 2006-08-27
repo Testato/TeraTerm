@@ -122,10 +122,6 @@ Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\UTF-8 TeraTerm Pro;
 Name: {userstartup}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; Components: TeraTerm_Menu; Tasks: startupttmenuicon; IconIndex: 0
 Name: {userstartup}\Collector; Filename: {app}\collector\collector.exe; WorkingDir: {app}; IconFilename: {app}\collector\collector.exe; Components: Collector; Tasks: startupcollectoricon; IconIndex: 0
 
-[Registry]
-Root: HKCU; Subkey: Software\ShinpeiTools; Flags: uninsdeletekeyifempty; Components: TeraTerm_Menu
-Root: HKCU; Subkey: Software\ShinpeiTools\TTermMenu; Flags: uninsdeletekey; Components: TeraTerm_Menu
-
 [Tasks]
 Name: desktopicon; Description: {cm:task_desktopicon}; Components: TeraTerm
 Name: quicklaunchicon; Description: {cm:task_quicklaunchicon}; Components: TeraTerm
@@ -174,10 +170,11 @@ begin
         end;
 
         app := ExpandConstant('{app}');
+
+        // 設定ファイルの削除
         for i := 0 to 3 do
         begin
           buf := app + ini[i];
-
           if FileExists(buf) then begin
             confmsg := Format(conf, [buf]);
             res := MsgBox(confmsg, mbInformation, MB_YESNO or MB_DEFBUTTON2);
@@ -185,7 +182,17 @@ begin
               DeleteFile(buf);
           end;
         end;
-        
+
+        // レジストリの削除
+        if RegKeyExists(HKEY_CURRENT_USER, 'Software\ShinpeiTools\TTermMenu') then begin
+          confmsg := Format(conf, ['HKEY_CURRENT_USER' + '\Software\ShinpeiTools\TTermMenu']);
+          res := MsgBox(confmsg, mbInformation, MB_YESNO or MB_DEFBUTTON2);
+          if res = IDYES then begin
+            RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, 'Software\ShinpeiTools\TTermMenu');
+            RegDeleteKeyIfEmpty(HKEY_CURRENT_USER, 'Software\ShinpeiTools');
+          end;
+        end;
+
         // 空でなければ削除されない
         RemoveDir(app);
       end;
