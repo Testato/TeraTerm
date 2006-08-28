@@ -40,8 +40,9 @@
 #define IDC_ENTERGROUP                  1022
 #define IDC_VIEWLOG_LABEL               1023
 #define IDC_VIEWLOG_EDITOR              1024
-#define IDC_BUTTON1                     1025
 #define IDC_VIEWLOG_PATH                1025
+#define IDC_DEFAULTNAME_LABEL           1026
+#define IDC_DEFAULTNAME_EDITOR          1027
 #define IDC_SETUP_TAB                   1028
 #define IDC_ETERM_LOOKFEEL              1030
 #define IDC_DISABLE_PASTE_RBUTTON       1032

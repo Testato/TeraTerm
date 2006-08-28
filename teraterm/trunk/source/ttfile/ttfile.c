@@ -250,7 +250,6 @@ BOOL FAR PASCAL GetTransFname
 	/* save current dir */
 	_getcwd(TempDir,sizeof(TempDir));
 
-	fv->FullName[0] = 0;
 	memset(FNFilter, 0, sizeof(FNFilter));  /* Set up for double null at end */
 	memset(&ofn, 0, sizeof(OPENFILENAME));
 
@@ -310,23 +309,9 @@ BOOL FAR PASCAL GetTransFname
 
 	// loggingの場合、オープンダイアログをセーブダイアログへ変更 (2005.1.6 yutaka)
 	if (FuncId == GTF_LOG) {
-		//SYSTEMTIME time;
-		char buf[80];
-
 		// ログのデフォルト値(log_YYYYMMDD_HHMMSS.txt)を設定する (2005.1.21 yutaka)
 		// デフォルトファイル名を teraterm.log へ変更 (2005.2.22 yutaka)
-#if 0
-		GetLocalTime(&time);
-		_snprintf(buf, sizeof(buf), "log_%4d%02d%02d_%02d%02d%02d.txt", 
-			time.wYear, time.wMonth, time.wDay,
-			time.wHour, time.wMinute, time.wSecond);
-#else
-		strcpy(buf, "teraterm.log");
-#endif
-		strcpy(fv->FullName, buf);
-		ofn.lpstrFile = fv->FullName;
-		ofn.nMaxFile = sizeof(fv->FullName);
-
+		// デフォルトファイル名の設定場所を呼び出し元へ移動 (2006.8.28 maya)
 		Ok = GetSaveFileName(&ofn);
 	} else {
 		Ok = GetOpenFileName(&ofn);
@@ -972,6 +957,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2006/07/22 16:15:54  maya
+ * ログ記録時に時刻も書き込む機能を追加した。
+ *
  * Revision 1.9  2006/02/18 08:40:07  yutakakn
  *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
  *   ・stricmp()を_stricmp()へ置換した

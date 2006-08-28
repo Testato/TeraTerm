@@ -127,6 +127,8 @@ BEGIN
     LTEXT           "View Log Editor",IDC_VIEWLOG_LABEL,19,16,53,8
     EDITTEXT        IDC_VIEWLOG_EDITOR,20,27,77,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_VIEWLOG_PATH,102,28,15,10
+    LTEXT           "Default Log File Name",IDC_DEFAULTNAME_LABEL,19,47,76,8
+    EDITTEXT        IDC_DEFAULTNAME_EDITOR,19,58,77,12,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,129,24,50,14
 END
@@ -315,8 +317,8 @@ IDI_VT_CLASSIC          ICON                    "..\\common\\vt_classic.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,44,0,0
- PRODUCTVERSION 4,44,0,0
+ FILEVERSION 4,45,0,0
+ PRODUCTVERSION 4,45,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -333,12 +335,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "TeraTerm Project T. Teranishi"
             VALUE "FileDescription", "Tera Term Pro"
-            VALUE "FileVersion", "4, 44, 0, 0"
+            VALUE "FileVersion", "4, 45, 0, 0"
             VALUE "InternalName", "TTERMPRO"
             VALUE "LegalCopyright", "(C)TeraTerm Project 2004-2006, (C)T. Teranishi 1994-1998"
             VALUE "OriginalFilename", "TTERMPRO.EXE"
             VALUE "ProductName", "Tera Term Pro"
-            VALUE "ProductVersion", "4, 44, 0, 0"
+            VALUE "ProductVersion", "4, 45, 0, 0"
         END
     END
     BLOCK "VarFileInfo"

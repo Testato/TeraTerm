@@ -338,6 +338,7 @@ struct tttset {
   char ViewlogEditor[MAX_PATH];
   WORD LogTypePlainText;
   WORD LogTimestamp;
+  char LogDefaultName[80];
   int DisablePasteMouseRButton;
   int EnableClickableUrl;
   eterm_lookfeel_t EtermLookfeel;

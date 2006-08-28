@@ -6,6 +6,7 @@
 #include "teraterm.h"
 #include <sys/stat.h>
 #include <string.h>
+#include <time.h>
 #include <stdio.h>
 
 #ifndef TERATERM32
@@ -274,3 +275,193 @@ void QuoteFName(PCHAR FName)
   FName[i+2] = 0;
 }
 #endif
+
+// ファイル名に使用できない文字が含まれているか確かめる (2006.8.28 maya)
+int isInvalidFileNameChar(PCHAR FName)
+{
+  if (strchr(FName, '\\') != NULL ||
+      strchr(FName, '/')  != NULL ||
+      strchr(FName, ':')  != NULL ||
+      strchr(FName, '*')  != NULL ||
+      strchr(FName, '?')  != NULL ||
+      strchr(FName, '"')  != NULL ||
+      strchr(FName, '<')  != NULL ||
+      strchr(FName, '<')  != NULL ||
+      strchr(FName, '|')  != NULL) {
+    return 1;
+  }
+  return 0;
+}
+
+// ファイル名に使用できない文字を削除する (2006.8.28 maya)
+void deleteInvalidFileNameChar(PCHAR FName)
+{
+  int i, j=0, len;
+  
+  len = strlen(FName);
+  for (i=0; i<len; i++) {
+    switch (FName[i]) {
+      case '\\':
+      case '/':
+      case ':':
+      case '*':
+      case '?':
+      case '"':
+      case '<':
+      case '>':
+      case '|':
+        break;
+      default:
+        FName[j] = FName[i];
+        j++;
+    }
+  }
+  FName[j] = 0;
+}
+
+// strftime に渡せない文字が含まれているか確かめる (2006.8.28 maya)
+int isInvalidStrftimeChar(PCHAR FName)
+{
+  int i, len, p;
+
+  len = strlen(FName);
+  for (i=0; i<len; i++) {
+    if (FName[i] == '%') {
+      if (FName[i+1] != 0) {
+        p = i+1;
+        if (FName[i+2] != 0 && FName[i+1] == '#') {
+          p = i+2;
+        }
+        switch (FName[p]) {
+          case 'a':
+          case 'A':
+          case 'b':
+          case 'B':
+          case 'c':
+          case 'd':
+          case 'H':
+          case 'I':
+          case 'j':
+          case 'm':
+          case 'M':
+          case 'p':
+          case 'S':
+          case 'U':
+          case 'w':
+          case 'W':
+          case 'x':
+          case 'X':
+          case 'y':
+          case 'Y':
+          case 'z':
+          case 'Z':
+          case '%':
+            i = p;
+            break;
+          default:
+            return 1;
+        }
+      }
+      else {
+        return 1;
+      }
+    }
+  }
+  
+  return 0;
+}
+
+// strftime に渡せない文字を削除する (2006.8.28 maya)
+void deleteInvalidStrftimeChar(PCHAR FName)
+{
+  int i, j=0, len, p;
+
+  len = strlen(FName);
+  for (i=0; i<len; i++) {
+    if (FName[i] == '%') {
+      if (FName[i+1] != 0) {
+        p = i+1;
+        if (FName[i+2] != 0 && FName[i+1] == '#') {
+          p = i+2;
+        }
+        switch (FName[p]) {
+          case 'a':
+          case 'A':
+          case 'b':
+          case 'B':
+          case 'c':
+          case 'd':
+          case 'H':
+          case 'I':
+          case 'j':
+          case 'm':
+          case 'M':
+          case 'p':
+          case 'S':
+          case 'U':
+          case 'w':
+          case 'W':
+          case 'x':
+          case 'X':
+          case 'y':
+          case 'Y':
+          case 'z':
+          case 'Z':
+          case '%':
+            if (p-i == 2) {
+              FName[j] = FName[i];
+              j++;
+              i++;
+            }
+            FName[j] = FName[i];
+            j++;
+			i++;
+            FName[j] = FName[i];
+            j++;
+            break;
+          default:
+            if (p-i == 2) {
+              i++;
+			}
+            i++;
+        }
+      }
+    }
+    else {
+      FName[j] = FName[i];
+      j++;
+    }
+  }
+
+  FName[j] = 0;
+}
+
+// フルパスから、ファイル名部分のみを strftime で変換する (2006.8.28 maya)
+void ParseStrftimeFileName(PCHAR FName)
+{
+  char filename[MAX_PATH];
+  char buf[80];
+  char *c;
+  time_t time_local;
+  struct tm *tm_local;
+
+  ExtractFileName(FName, filename);
+
+  // strftime に使用できない文字を削除
+  deleteInvalidStrftimeChar(filename);
+
+  // 現在時刻を取得
+  time(&time_local);
+  tm_local = localtime(&time_local);
+
+  // 時刻文字列に変換
+  if (strftime(buf, sizeof(buf), filename, tm_local) == 0) {
+    strcpy(buf, filename);
+  }
+
+  // ファイル名に使用できない文字を削除
+  deleteInvalidFileNameChar(filename);
+
+  c = strrchr(FName, '\\') + 1;
+  strncpy(c, buf, MAXPATHLEN-(c-FName)-1);
+}

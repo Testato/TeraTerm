@@ -248,6 +248,11 @@ void LogStart()
 		Option = MAKELONG(ts.TransBin,ts.Append |
 						  (0x1000 * ts.LogTypePlainText) |
 						  (0x2000 * ts.LogTimestamp));
+
+		// ログのデフォルトファイル名を設定 (2006.8.28 maya)
+		strncat(LogVar->FullName, ts.LogDefaultName, sizeof(LogVar->FullName));
+		ParseStrftimeFileName(LogVar->FullName);
+
 		if (! (*GetTransFname)(LogVar, ts.FileDir, GTF_LOG, &Option))
 		{
 			FreeFileVar(&LogVar);
@@ -574,6 +579,7 @@ void FileSendStart()
   if (strlen(&(SendVar->FullName[SendVar->DirLen]))==0)
   {
     Option = MAKELONG(ts.TransBin,0);
+	SendVar->FullName[0] = 0;
     if (! (*GetTransFname)(SendVar, ts.FileDir, GTF_SEND, &Option))
     {
       FileTransEnd(OpSendFile);
@@ -1060,6 +1066,7 @@ void BPStart(int mode)
     FileVar->OpId = OpBPSend;
     if (strlen(&(FileVar->FullName[FileVar->DirLen]))==0)
     {
+	  FileVar->FullName[0] = 0;
       if (! (*GetTransFname)(FileVar, ts.FileDir, GTF_BP, &Option))
       {
 	ProtoEnd();
@@ -1120,6 +1127,9 @@ void QVStart(int mode)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2006/07/23 14:12:26  yutakakn
+ * ログに含める日付フォーマットを世界標準書式に変更した。
+ *
  * Revision 1.4  2006/07/22 16:15:54  maya
  * ログ記録時に時刻も書き込む機能を追加した。
  *

@@ -651,6 +651,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   /* Log with timestamp (2006.7.23 maya) */
   ts->LogTimestamp = GetOnOff(Section,"LogTimestamp",FName,FALSE);
 
+  /* Default Log file name (2006.8.28 maya) */
+  GetPrivateProfileString(Section,"LogDefaultName","teraterm.log",ts->LogDefaultName,
+			  sizeof(ts->LogDefaultName),FName);
+
   /* XMODEM option */
   GetPrivateProfileString(Section,"XmodemOpt","",
 			  Temp,sizeof(Temp),FName);
@@ -1377,6 +1381,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* Log with timestamp (2006.7.23 maya) */
   WriteOnOff(Section,"LogTimestamp",FName,ts->LogTimestamp);
+
+  /* Default Log file name (2006.8.28 maya) */
+  WritePrivateProfileString(Section,"LogDefaultName",ts->LogDefaultName,FName);
 
   /* XMODEM option */
   switch (ts->XmodemOpt) {
@@ -2246,6 +2253,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
     {
       Dequote(&Temp[3],Temp2);
       ConvFName(ts->HomeDir,Temp2,"",ts->LogFN);
+	  ParseStrftimeFileName(ts->LogFN);
     }
     else if ( _strnicmp(Temp,"/LA=",4)==0 ) /* language */
     {
@@ -2433,6 +2441,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  2006/07/31 13:51:44  maya
+ * 接続先ホストが 'telnet://' で始まってポート番号の指定がない場合、ポート番号 23 を設定するようにした。
+ *
  * Revision 1.14  2006/07/22 16:15:54  maya
  * ログ記録時に時刻も書き込む機能を追加した。
  *

@@ -2886,6 +2886,10 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 			hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
 			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.ViewlogEditor);
 
+			// Log Default File Name (2006.8.28 maya)
+			hWnd = GetDlgItem(hDlgWnd, IDC_DEFAULTNAME_EDITOR);
+			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.LogDefaultName);
+
 			// ダイアログにフォーカスを当てる 
 			SetFocus(GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR));
 
@@ -2911,13 +2915,42 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					}
 					}
 					return TRUE;
+
 			}
 
 			switch (LOWORD(wp)) {
                 case IDOK:
+					char buf[80], buf2[80], msg[80];
+					time_t time_local;
+					struct tm *tm_local;
+
 					// (6)
 					hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.ViewlogEditor), (LPARAM)ts.ViewlogEditor);
+
+					// Log Default File Name (2006.8.28 maya)
+					hWnd = GetDlgItem(hDlgWnd, IDC_DEFAULTNAME_EDITOR);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+					if (isInvalidStrftimeChar(buf)) {
+						strncpy(msg, "Invalid character is included in log file name.", sizeof(msg));
+						MessageBox(hDlgWnd, msg, "ERROR", MB_ICONEXCLAMATION);
+						return FALSE;
+					}
+					// 現在時刻を取得
+					time(&time_local);
+					tm_local = localtime(&time_local);
+					// 時刻文字列に変換
+					if (strftime(buf2, sizeof(buf2), buf, tm_local) == 0) {
+						strncpy(msg, "The log file name is too long.", sizeof(msg));
+						MessageBox(hDlgWnd, msg, "ERROR", MB_ICONEXCLAMATION);
+						return FALSE;
+					}
+					if (isInvalidFileNameChar(buf2)) {
+						strncpy(msg, "Invalid character is included in log file name.", sizeof(msg));
+						MessageBox(hDlgWnd, msg, "ERROR", MB_ICONEXCLAMATION);
+						return FALSE;
+					}
+					strncpy(ts.LogDefaultName, buf, sizeof(ts.LogDefaultName));
 
                     EndDialog(hDlgWnd, IDOK);
 					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
@@ -3853,6 +3886,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.33  2006/03/31 16:33:45  yutakakn
+ * 半透明化を行わない場合に画面がちらつかないようにした。
+ *
  * Revision 1.32  2006/03/17 14:26:57  yutakakn
  * (none)
  *

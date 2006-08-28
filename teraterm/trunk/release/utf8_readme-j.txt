@@ -664,6 +664,12 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
+2006.8.28 (Ver 4.45)
+  ・デフォルトのログファイル名を指定できるようにした。
+        * エディットコントロールを "Additional settings" ダイアログに追加した。
+        * teraterm.ini ファイルに LogDefaultName エントリを追加した。
+        * ファイル名に strftime のフォーマットを使えるようにした。
+
 2006.8.19 (Ver 4.44)
   ・Windows98/NT4.0 において ttpmacro.exe が起動直後に終了してしまう問題を修正した。
   ・ttermpro.exe, ttpmacro.exe, ttpmenu.exe, keycode.exe, cygterm.exeに mutex を追加した。

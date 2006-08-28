@@ -482,6 +482,7 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 	LogVar->DirLen = 0;
 	LogVar->NoMsg = TRUE;
 	strcpy(LogVar->FullName,ParamFileName);
+	ParseStrftimeFileName(LogVar->FullName);
 	ts.TransBin = ParamBinaryFlag;
 	ts.Append = ParamAppendFlag;
 	LogStart();
@@ -898,6 +899,9 @@ void RunMacro(PCHAR FName, BOOL Startup)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2005/08/14 12:41:04  yutakakn
+ * ログ採取中には ttpmacro.exe のプロセス優先度を下げないようにした。
+ *
  * Revision 1.4  2005/05/23 14:48:57  yutakakn
  * ttpmacro.exeのプロセス優先度を下げないようにした。
  *

@@ -676,6 +676,12 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
+2006.8.28 (Ver 4.45)
+  - add default log filename setting.
+        * added new edit control to 'Additional settings' dialog.
+        * added LogDefaultName entry in teraterm.ini file.
+        * expanded the log filename which can include a format of strftime.
+
 2006.8.19 (Ver 4.44)
   - Bug fix: 'ttpmacro.exe' terminated after startup on Windows98/NT4.0.
   - added the mutex object to ttermpro.exe, ttpmacro.exe, ttpmenu.exe, keycode.exe and cygterm.exe.

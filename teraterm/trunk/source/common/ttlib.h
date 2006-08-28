@@ -22,6 +22,11 @@ void uint2str(UINT i, PCHAR Str, int len);
 #ifdef WIN32
 void QuoteFName(PCHAR FName);
 #endif
+int isInvalidFileNameChar(PCHAR FName);
+void deleteInvalidFileNameChar(PCHAR FName);
+int isInvalidStrftimeChar(PCHAR FName);
+int deleteInvalidStrftimeChar(PCHAR FName);
+void ParseStrftimeFileName(PCHAR FName);
 
 #ifdef __cplusplus
 }
