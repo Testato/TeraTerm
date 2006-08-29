@@ -33,7 +33,7 @@ Source: ..\visualc\bin\release\ttpfile.dll; DestDir: {app}; Components: TeraTerm
 Source: ..\visualc\bin\release\ttpset.dll; DestDir: {app}; Components: TeraTerm
 Source: ..\visualc\bin\release\ttptek.dll; DestDir: {app}; Components: TeraTerm
 Source: ..\release\TERATERM.INI; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
-Source: ..\release\TSPECIAL1.TTF; DestDir: {fonts}; Components: TeraTerm; Attribs: readonly; Flags: overwritereadonly uninsremovereadonly
+Source: ..\release\TSPECIAL1.TTF; DestDir: {fonts}; Components: TeraTerm; Attribs: readonly; Flags: overwritereadonly uninsneveruninstall; FontInstall: "Tera Special"; Check: CanInstallFont
 Source: ..\release\ttermp.hlp; DestDir: {app}; Components: TeraTerm
 Source: ..\release\ttermpj.hlp; DestDir: {app}; Components: TeraTerm
 Source: ..\..\doc\en\teraterm.chm; DestDir: {app}; Components: TeraTerm
@@ -196,5 +196,26 @@ begin
         // ‹ó‚Å‚È‚¯‚ê‚Îíœ‚³‚ê‚È‚¢
         RemoveDir(app);
       end;
+  end;
+end;
+
+function CanInstallFont : Boolean;
+var
+  Version: TWindowsVersion;
+  s : String;
+begin;
+  GetWindowsVersionEx(Version);
+  if not Version.NTPlatform then begin
+    Result := True;
+  end else begin
+    if Version.Major >= 5 then begin
+      if IsAdminLoggedOn() or IsPowerUserLoggedOn() then begin
+        Result := True;
+      end else begin
+        Result := False
+      end;
+    end else begin
+      Result := True;
+    end;
   end;
 end;
