@@ -117,6 +117,8 @@ Name: {group}\TeraTerm Document(Japanese); Filename: {app}\utf8_readme-j.txt; Co
 Name: {group}\{cm:UninstallProgram,{#AppName}}; Filename: {uninstallexe}; Components: TeraTerm
 Name: {group}\TTSSH Document; Filename: {app}\ssh2_readme.txt; Components: TTSSH
 Name: {group}\TTSSH Document(Japanese); Filename: {app}\ssh2_readme-j.txt; Components: TTSSH
+Name: {group}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; IconIndex: 0; Components: TeraTerm_Menu
+Name: {group}\Collector; Filename: {app}\Collector\Collector.exe; WorkingDir: {app}; IconFilename: {app}\Collector\Collector.exe; IconIndex: 0; Components: Collector
 Name: {userdesktop}\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: desktopicon
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: quicklaunchicon
 Name: {userstartup}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; Components: TeraTerm_Menu; Tasks: startupttmenuicon; IconIndex: 0
