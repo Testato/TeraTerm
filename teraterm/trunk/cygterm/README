@@ -235,6 +235,9 @@
                 zsh 4.1.1
 
 // C H A N G E S //
+v1.06_08 2006/08/30 (by maya.negeta@gmail.com)
+        * Changed the priority of config files. cygterm.cfg is top priority config file.
+
 v1.06_07 2006/08/19 (by maya.negeta@gmail.com)
         * Use `HOME' environment variable for changing home directory if the variable will be set.
 

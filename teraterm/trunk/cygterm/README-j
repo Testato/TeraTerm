@@ -241,6 +241,9 @@
                 zsh 4.1.1
 
 // 変 更 履 歴 //
+v1.06_08 2006/08/30 (by maya.negeta@gmail.com)
+        * cygterm.cfg を設定ファイルの中で最優先されるようにした。
+
 v1.06_07 2006/08/19 (by maya.negeta@gmail.com)
         * Windows の 環境変数 HOME が設定されていれば使うようにした。
 

@@ -44,15 +44,23 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 05 - add mutex
-//   Written by NAGATA Shinya. (maya.negeta@mail.com)
+//   Written by NAGATA Shinya. (maya.negeta@gmail.com)
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 06 - limit a parameter length of -s and -t option
 //   Written by IWAMOTO Kouichi. (sue@iwmt.org)
 //
+/////////////////////////////////////////////////////////////////////////////
+// patch level 07 - use %HOME% for home directory
+//   Written by NAGATA Shinya. (maya.negeta@gmail.com)
+//
+/////////////////////////////////////////////////////////////////////////////
+// patch level 08 - change the priority of config file
+//   Written by NAGATA Shinya. (maya.negeta@gmail.com)
+//
 
 static char Program[] = "CygTerm+";
-static char Version[] = "version 1.06_06 (2006/08/18)";
+static char Version[] = "version 1.06_08 (2006/08/30)";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -294,7 +302,7 @@ void load_cfg()
         strcpy(tmp_conf, "");
     }
 
-    char *conf_path[] = { win_conf, sys_conf, tmp_conf, usr_conf };
+    char *conf_path[] = { sys_conf, tmp_conf, usr_conf , win_conf };
     for (int i = 0; i < 4; i++) {
         // ignore empty configuration file path
         if (strcmp(conf_path[i], "") == 0) {
