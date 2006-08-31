@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<TITLE>logopen</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">logopen</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+ <B>logopen &lt;filename&gt; &lt;binary flag&gt; &lt;append flag&gt;</B>
+</UL>
+<P></P>
+
+Causes Tera Term to start logging. Received characters are written to the file &lt;filename&gt;.
+<P></P>
+
+If &lt;binary flag&gt; is zero, received new-line characters are converted (CR -&gt; CR/CRLF) and escape sequences are stripped out. If &lt;binary flag&gt; is non-zero, received characters are written without any modifications.
+<P></P>
+
+If &lt;append flag&gt; is non-zero and the file &lt;filename&gt; already exists, received characters are appended to it. If &lt;append flag&gt; is zero and the file &lt;filename&gt; already exists, the file is overwritten.
+<P></P>
+
+<pre>
+Example:
+	logopen 'myhost.log' 0 0
+</pre>
+
+</BODY>
+</HTML>
+

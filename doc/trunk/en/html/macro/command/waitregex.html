@@ -40,6 +40,17 @@ n	&lt;stringn with regular expression&gt; has received. n=1..10.
 The received line is stored in the system variable "inputstr".
 The first matched pattern is stored in the system variable "matchstr".
 Group matched patterns of regular expressions are stored in 9 system variables from "groupmatchstr1" to "groupmatchstr9".
+<P></P>
+
+<pre>
+Example:
+	timeout = 30
+	waitregex 'Longhorn' '.*@sai' 'Pentium\d+' 'TeraTermX{3}'
+	int2str s result
+	messagebox s 'result'
+	messagebox inputstr 'inputstr'
+	messagebox matchstr 'matchstr'
+</pre>
 
 </BODY>
 </HTML>

@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<TITLE>sendfile</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">sendfile</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+ <B>sendfile &lt;filename&gt; &lt;binary flag&gt;</B>
+</UL>
+<P></P>
+
+Causes Tera Term to send the file &lt;filename&gt; to the host. Pauses until the end of the file transfer.
+<P></P>
+
+If &lt;binary flag&gt; is non-zero, the file is sent without any modifications.
+If &lt;binary flag&gt; is zero, new-line characters are converted (CR -&gt; CR/CRLF) and control characters except TAB, LF and CR are stripped out.
+<P></P>
+
+<pre>
+Example:
+	sendfile 'data.dat' 1
+</pre>
+
+</BODY>
+</HTML>
+
