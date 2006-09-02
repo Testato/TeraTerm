@@ -317,6 +317,7 @@ struct tttset {
   WORD DelayPerChar;
   WORD DelayPerLine;
   WORD MaxComPort;
+  WORD ComAutoConnect;
 #ifndef NO_COPYLINE_FIX
   WORD EnableContinuedLineCopy;
 #endif /* NO_COPYLINE_FIX */

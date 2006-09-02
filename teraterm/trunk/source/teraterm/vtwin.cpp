@@ -2067,7 +2067,8 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 
 LONG CVTWindow::OnCommStart(UINT wParam, LONG lParam)
 {
-  if ((ts.PortType!=IdSerial) && (ts.HostName[0]==0))
+  if ((ts.PortType!=IdSerial) && (ts.HostName[0]==0) ||
+	  (ts.PortType==IdSerial) && (ts.ComAutoConnect != TRUE))
     OnFileNewConnection();
   else {
     Connecting = TRUE;
@@ -3886,6 +3887,12 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.34  2006/08/28 12:27:16  maya
+ * デフォルトのログファイル名を指定できるようにした。
+ *   エディットコントロールを "Additional settings" ダイアログに追加した。
+ *   teraterm.ini ファイルに LogDefaultName エントリを追加した。
+ *   ファイル名に strftime のフォーマットを使えるようにした。
+ *
  * Revision 1.33  2006/03/31 16:33:45  yutakakn
  * 半透明化を行わない場合に画面がちらつかないようにした。
  *

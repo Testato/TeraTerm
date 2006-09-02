@@ -706,6 +706,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
               %Y  Year with century, as decimal number 
               %z, %Z  Either the time-zone name or time zone abbreviation, depending on registry settings; no characters if time zone is unknown 
               %%  Percent sign 
+  - added ComAutoConnect entry in teraterm.ini file.
 
 2006.8.19 (Ver 4.44)
   - Bug fix: 'ttpmacro.exe' terminated after startup on Windows98/NT4.0.

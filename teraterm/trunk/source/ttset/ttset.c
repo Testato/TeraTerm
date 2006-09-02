@@ -622,6 +622,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   ts->DelayPerLine =
     GetPrivateProfileInt(Section,"DelayPerLine",0,FName);
 
+  /* Connect automatically when startup program (2006.9.2 maya) */
+  ts->ComAutoConnect = GetOnOff(Section,"ComAutoConnect",FName,TRUE);
+
   /* Telnet flag */
   ts->Telnet = GetOnOff(Section,"Telnet",FName,TRUE);
 
@@ -1354,6 +1357,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* Delay per line */
   WriteInt(Section,"DelayPerLine",FName,ts->DelayPerLine);
+
+  /* Connect automatically when startup program (2006.9.2 maya) */
+  WriteOnOff(Section,"ComAutoConnect",FName,ts->ComAutoConnect);
 
   /* Telnet flag */
   WriteOnOff(Section,"Telnet",FName,ts->Telnet);
@@ -2441,6 +2447,12 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  2006/08/28 12:27:17  maya
+ * デフォルトのログファイル名を指定できるようにした。
+ *   エディットコントロールを "Additional settings" ダイアログに追加した。
+ *   teraterm.ini ファイルに LogDefaultName エントリを追加した。
+ *   ファイル名に strftime のフォーマットを使えるようにした。
+ *
  * Revision 1.15  2006/07/31 13:51:44  maya
  * 接続先ホストが 'telnet://' で始まってポート番号の指定がない場合、ポート番号 23 を設定するようにした。
  *
