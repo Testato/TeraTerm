@@ -363,6 +363,7 @@ int isInvalidStrftimeChar(PCHAR FName)
         }
       }
       else {
+        // % で終わっている場合はエラーとする
         return 1;
       }
     }
@@ -408,24 +409,25 @@ void deleteInvalidStrftimeChar(PCHAR FName)
           case 'z':
           case 'Z':
           case '%':
+            FName[j] = FName[i]; // %
+            j++;
+            i++;
             if (p-i == 2) {
-              FName[j] = FName[i];
+              FName[j] = FName[i]; // #
               j++;
               i++;
             }
             FName[j] = FName[i];
             j++;
-			i++;
-            FName[j] = FName[i];
-            j++;
             break;
           default:
+            i++; // %
             if (p-i == 2) {
-              i++;
-			}
-            i++;
+              i++; // #
+            }
         }
       }
+      // % で終わっている場合はコピーしない
     }
     else {
       FName[j] = FName[i];
