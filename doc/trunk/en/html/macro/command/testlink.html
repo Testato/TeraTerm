@@ -1,0 +1,47 @@
+<HTML>
+<HEAD>
+<TITLE>testlink</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">testlink</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+ <B>testlink</B>
+</UL>
+<P></P>
+
+Reports the current link and connection status.
+The system variable "result" is set to one of the following values depending on the link and connection status:
+<P></P>
+
+<pre>
+Value	Status
+<hr>
+0	Link to Tera Term has not been made.
+1	Connection to the host has not been made, but link to Tera Term has been made.
+2	Both connection and link have been made.
+</pre>
+
+<pre>
+See also:
+	"<A HREF="closett.html">closett</A>"
+	"<A HREF="connect.html">connect</A>"
+	"<A HREF="disconnect.html">disconnect</A>"
+	"<A HREF="unlink.html">unlink</A>"
+</pre>
+
+<pre>
+Example:
+	testlink	
+	if result=0 connect 'host'			If MACRO is not linked to Tera Term, 
+							execute the connect command.
+</pre>
+
+</BODY>
+</HTML>
+

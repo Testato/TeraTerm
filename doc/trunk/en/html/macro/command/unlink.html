@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<TITLE>unlink</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">unlink</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+ <B>unlink</B>
+</UL>
+<P></P>
+
+Terminates the link between the current Tera Term window and MACRO.
+MACRO enters the unlinked state and can not controll the Tera Term window any more.
+<P></P>
+
+In the unlinked state, the "connect" command can open a new Tera Term window and link MACRO to it.
+<P></P>
+
+<pre>
+See also:
+	"<A HREF="closett.html">closett</A>"
+	"<A HREF="connect.html">connect</A>"
+	"<A HREF="disconnect.html">disconnect</A>"
+	"<A HREF="testlink.html">testlink</A>"
+</pre>
+
+<pre>
+Example:
+	connect 'host1'			open a Tera Term window and link MACRO to it
+	unlink				terminate the link
+	connect 'host2'			open another Tera Term window and link MACRO to it
+</pre>
+
+</BODY>
+</HTML>
+
