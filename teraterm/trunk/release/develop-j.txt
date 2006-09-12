@@ -2,8 +2,8 @@
 ・コンパイラ
   Visual Studio 2005 (Standard Edition 以上)
 ・インストーラ
-  Inno Setup 5.1.6 (http://innosetup.org/isinfo.php)
-  ISTool 5.1.6 (http://innosetup.org/isdl.php#qsp)
+  Inno Setup 5.1.7 (http://innosetup.org/isinfo.php)
+  ISTool 5.1.7 (http://innosetup.org/isdl.php#qsp)
     QuickStart Pack の中に入っています。
   Japanese-5-5.1.0.isl (http://innosetup.org/files/istrans/)
 ・その他
@@ -12,8 +12,8 @@
 
 
 ■ライブラリ
-・oniguruma 4.2.0 (http://www.geocities.jp/kosako3/oniguruma/)
-・openssl 0.9.8b (http://www.openssl.org/)
+・oniguruma 4.4.1 (http://www.geocities.jp/kosako3/oniguruma/)
+・openssl 0.9.8c (http://www.openssl.org/)
 ・zlib 1.2.3 (http://www.zlib.net/)
 
 
