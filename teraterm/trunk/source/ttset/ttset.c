@@ -622,9 +622,6 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   ts->DelayPerLine =
     GetPrivateProfileInt(Section,"DelayPerLine",0,FName);
 
-  /* Connect automatically when startup program (2006.9.2 maya) */
-  ts->ComAutoConnect = GetOnOff(Section,"ComAutoConnect",FName,TRUE);
-
   /* Telnet flag */
   ts->Telnet = GetOnOff(Section,"Telnet",FName,TRUE);
 
@@ -1357,9 +1354,6 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* Delay per line */
   WriteInt(Section,"DelayPerLine",FName,ts->DelayPerLine);
-
-  /* Connect automatically when startup program (2006.9.2 maya) */
-  WriteOnOff(Section,"ComAutoConnect",FName,ts->ComAutoConnect);
 
   /* Telnet flag */
   WriteOnOff(Section,"Telnet",FName,ts->Telnet);
@@ -2278,10 +2272,14 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 	Dequote(&Temp[3],Temp2);
 	ConvFName(ts->HomeDir,Temp2,".TTL",ts->MacroFN);
       }
+	  /* Disable auto connect to serial when macro mode (2006.9.15 maya) */
+	  ts->ComAutoConnect = FALSE;
     }
     else if ( _strnicmp(Temp,"/M",2)==0 )
     {  /* macro option without file name */
       strcpy(ts->MacroFN,"*");
+	  /* Disable auto connect to serial when macro mode (2006.9.15 maya) */
+	  ts->ComAutoConnect = FALSE;
     }
     else if ( _strnicmp(Temp,"/P=",3)==0 ) /* TCP port num */
     {
@@ -2399,8 +2397,11 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
       break;
     case IdSerial:
       ts->PortType = IdSerial;
-      if (ParamCom>0)
+      if (ParamCom>0) {
 	ts->ComPort = ParamCom;
+	/* Don't display new connection dialog if COM port is specified explicitly (2006.9.15 maya) */
+	ts->ComAutoConnect = TRUE;
+      }
       break;
     case IdFile:
       ts->PortType = IdFile;
@@ -2447,6 +2448,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  2006/09/02 08:14:04  maya
+ * シリアルポート接続が保存されている場合、自動的に接続するかどうかを設定するオプションを追加した。
+ *
  * Revision 1.16  2006/08/28 12:27:17  maya
  * デフォルトのログファイル名を指定できるようにした。
  *   エディットコントロールを "Additional settings" ダイアログに追加した。

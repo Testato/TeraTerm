@@ -2067,9 +2067,11 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 
 LONG CVTWindow::OnCommStart(UINT wParam, LONG lParam)
 {
-  if ((ts.PortType!=IdSerial) && (ts.HostName[0]==0) ||
-	  (ts.PortType==IdSerial) && (ts.ComAutoConnect != TRUE))
+  // 自動接続が無効のときも接続ダイアログを出すようにした (2006.9.15 maya)
+  if (((ts.PortType!=IdSerial) && (ts.HostName[0]==0)) ||
+	  ((ts.PortType==IdSerial) && (ts.ComAutoConnect == FALSE))) {
     OnFileNewConnection();
+  }
   else {
     Connecting = TRUE;
     ChangeTitle();
@@ -3887,6 +3889,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.35  2006/09/02 08:14:04  maya
+ * シリアルポート接続が保存されている場合、自動的に接続するかどうかを設定するオプションを追加した。
+ *
  * Revision 1.34  2006/08/28 12:27:16  maya
  * デフォルトのログファイル名を指定できるようにした。
  *   エディットコントロールを "Additional settings" ダイアログに追加した。

@@ -676,7 +676,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
 
 * History
 
-2006.9.1 (Ver 4.45)
+2006.9.15 (Ver 4.45)
   - updated HTML help document.
   - upgraded TTSSH version supporting SSH2 to 2.33.
   - add default log filename setting.
@@ -706,8 +706,7 @@ NOTE: The links above contain Japanese version of installer. Users from other co
               %Y  Year with century, as decimal number 
               %z, %Z  Either the time-zone name or time zone abbreviation, depending on registry settings; no characters if time zone is unknown 
               %%  Percent sign 
-  - added 'ComAutoConnect' entry of [Tera Term] section in teraterm.ini file. This entry is flag whether TeraTerm automatically connects to serial port on startup.
-    SYNOPSIS: on/off
+  - disable automatically connection to serial port on startup when /M command line parameter is specified.
 
 2006.8.19 (Ver 4.44)
   - Bug fix: 'ttpmacro.exe' terminated after startup on Windows98/NT4.0.

@@ -424,8 +424,9 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
     case CmdInit: // initialization signal from TTMACRO
       if (StartupFlag) // in case of startup macro
       { // TTMACRO is waiting for connecting to the host
-	if ((ts.PortType==IdSerial) ||
-	    (ts.HostName[0]!=0))
+	// シリアル接続で自動接続が無効の場合は、接続ダイアログを出さない (2006.9.15 maya)
+	if (!((ts.PortType==IdSerial) && (ts.ComAutoConnect == FALSE)) &&
+	    ((ts.PortType==IdSerial) || (ts.HostName[0]!=0)))
 	{
 	  cv.NoMsg = 1;
 	  // start connecting
@@ -899,6 +900,12 @@ void RunMacro(PCHAR FName, BOOL Startup)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2006/08/28 12:27:16  maya
+ * デフォルトのログファイル名を指定できるようにした。
+ *   エディットコントロールを "Additional settings" ダイアログに追加した。
+ *   teraterm.ini ファイルに LogDefaultName エントリを追加した。
+ *   ファイル名に strftime のフォーマットを使えるようにした。
+ *
  * Revision 1.5  2005/08/14 12:41:04  yutakakn
  * ログ採取中には ttpmacro.exe のプロセス優先度を下げないようにした。
  *
