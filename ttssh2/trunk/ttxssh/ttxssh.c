@@ -1292,6 +1292,13 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 				read_ssh_options_from_user_file(pvar, buf);
 				free(buf);
 				DeleteFile(option + 13);
+
+			// /ssh1 と /ssh2 オプションの新規追加 (2006.9.16 maya)
+			} else if (MATCH_STR(option + 4, "1") == 0) {
+				pvar->settings.ssh_protocol_version = 1;
+			} else if (MATCH_STR(option + 4, "2") == 0) {
+				pvar->settings.ssh_protocol_version = 2;
+
 			} else {
 				char buf[1024];
 
@@ -1330,6 +1337,11 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 			// '/nossh' オプションの追加。
 			// TERATERM.INI でSSHが有効になっている場合、うまくCygtermが起動しないことが
 			// あることへの対処。(2004.10.11 yutaka)
+			pvar->settings.Enabled = 0;
+
+		} else if (MATCH_STR(option + 1, "telnet") == 0) {
+			// '/telnet' が指定されているときには '/nossh' と同じく
+			// SSHを無効にする (2006.9.16 maya)
 			pvar->settings.Enabled = 0;
 
 		} else if (MATCH_STR(option + 1, "auth") == 0) {
@@ -3176,6 +3188,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.38  2006/08/21 12:21:33  maya
+ * コマンドラインパラメータにおいて、ダブルクォーテーションで囲まれたファイル名を正しく認識するようにした。
+ *
  * Revision 1.37  2006/08/09 15:13:17  maya
  * ttermpro.exe のアイコンハンドルを取得できない問題を修正した
  *
