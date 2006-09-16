@@ -1,0 +1,108 @@
+* Development Environment
+- OS
+  Windows XP Professional
+- Compiler
+  Visual Studio 2005 Standard Edition (or higher edition)
+- Installer
+  Inno Setup 5.1.7 (http://innosetup.org/isinfo.php)
+  ISTool 5.1.7 (http://innosetup.org/isdl.php#qsp)
+    It is included in QuickStart Pack.
+  Japanese-5-5.1.0.isl (http://innosetup.org/files/istrans/)
+- others
+  ActivePerl 5.8 later version
+    converts character-code and return-code of documents for building OpenSSL.
+
+
+* Libraries
+- oniguruma 4.4.1 (http://www.geocities.jp/kosako3/oniguruma/)
+- openssl 0.9.8c (http://www.openssl.org/)
+- zlib 1.2.3 (http://www.zlib.net/)
+
+
+* How to build TeraTerm
+  To build TeraTerm source code is shown in the following step:
+  And you should use Visual Studio 2005 Standard Edition later version to build TeraTerm because TeraTerm program links MFC library (Visual Studio 2005 Express Edition can't be used).
+  
+  1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
+  2. Download 'Oniguruma' source code(http://www.geocities.jp/kosako3/oniguruma/) and extract at 'teraterm\source\oniguruma' directory.
+  
+       - Automatic procedure of build is following step:
+       Launch 'Visual Studio 2005 Command Prompt' batch file from start menu.
+       Move 'teraterm\source' directory on the command prompt.
+       Run buildoniguruma.bat.
+  
+       - Manual procedure of build is following step:
+       Launch 'Visual Studio 2005 Command Prompt' batch file from start menu.
+       Move 'teraterm\source\oniguruma' directory on the command prompt.
+       And input the following command lines to build 'Oniguruma' regular expression library(links to onig_s.lib).
+       (1) copy win32\Makefile Makefile
+       (2) copy win32\config.h config.h
+       (3) Open Makefile and append /MT at end of CFLAGS line.
+       (4) copy Makefile Makefile.debug
+       (5) Open Makefile.debug and modify CFLAG line from /MT to /MTd.
+           And modify libname to debug\$(libbase)_s.lib.
+       (6) mkdir debug
+       (7) nmake -f Makefile.debug
+       (8) nmake clean
+       (9) nmake
+       
+  3. Open teraterm\visualc\ttermpro.sln with Visual Studio.
+  4. Build TeraTerm solution.
+  5. TeraTerm execution program will be generated in teraterm\visualc\bin directory if the building is successful.
+
+
+* How to build TeraTerm Menu
+  To build TeraTerm Menu source code is shown in the following step:
+  And you need Visual Studio 2005(VC++8.0) to build.
+  
+  1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
+  2. Open teraterm\source\ttmenu\ttpmenu.sln with Visual Studio.
+  3. Build TeraTerm Menu solution.
+  4. TeraTerm Menu execution program will be generated in teraterm\source\ttmenu directory if the building is successful.
+
+
+* How to build TTProxy
+  To build TTProxy source code is shown in the following step:
+  And you need Visual Studio 2005(VC++8.0) to build.
+  
+  1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
+  2. Open TTProxy\TTProxy.sln with Visual Studio.
+  3. Build TTProxy solution.
+  4. TTProxy DLL module will be generated in TTProxy directory if the building is successful.
+
+
+* How to build TTSSH
+  To build TTSSH source code is shown in the following step:
+  And you need Visual Studio 2005(VC++8.0) and ActivePerl to build.
+  
+  1. Checkout TTSSH source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
+  
+  2. Extract zlib source code(http://www.zlib.net/) to ttssh2\zlib directory.
+     The build target is 'Release' and TTSSH links to zlib\projects\visualc6\Win32_LIB_Release\zlib.lib (compile option /MT must be specified).
+     The build target is 'Debug' and TTSSH links to  zlib\projects\visualc6\Win32_LIB_Release\zlibd.lib (compile option /MTd must be specified).
+     
+  3. Extract OpenSSL source code(http://www.openssl.org/) to ttssh2\openssl directory. Build OpenSSL in the following step(Release:TTSSH links to openssl\out32\libeay32.lib, Debug:openssl\out32.dbg\libeay32.lib):
+  
+      - Build OpenSSL automatically.
+      + Launch 'Visual Studio 2005 Command Prompt' batch file from start menu.
+      + Move 'ttssh2' directory on the command prompt.
+      + Run buildopenssl.bat.
+  
+      - Build OpenSSL manually.
+      + cd openssl
+      + perl Configure VC-WIN32
+          (Yes, you need perl to build OpenSSL!)
+      + Open ms\do_ms.bat and append the following line at the next line of 'ms\nt.mak' line.
+        "perl util\mk1mf.pl no-asm debug VC-WIN32 >ms\ntd.mak"
+      + ms\do_ms
+      + Open ms\nt.mak and modify CFLAG line from /MD to /MT.
+      + Open ms\ntd.mak and modify CFLAG line from /MDd to /MTd.
+      + nmake -f ms\nt.mak
+      + nmake -f ms\ntd.mak
+      + cd ..
+          (Now you are back in PortForwarder folder.)
+        See the instruction in the OpenSSL documentation for details.
+  
+  4. Open ttssh2\ttssh.sln with Visual Studio.
+  5. Build TTSSH solution.
+  6. TTSSH DLL will be generated in ttssh2\ttxssh directory if the building is successful.
