@@ -174,6 +174,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.9.16 (Ver 2.34)
+  - added /ssh1, /ssh2, /telnet command line options.
+
 2006.9.16 (Ver 2.33)
   - added parsing double-quoted filename in the command line parameter.
   - Bug fix: Free the user password on heap memory after user authentication.
