@@ -114,8 +114,11 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 		// 初期ファイルディレクトリをプログラム本体がある箇所に固定する (2005.1.6 yutaka)
 		// 読み込まれたteraterm.iniがあるディレクトリに固定する。
 		// これにより、/F= で指定された位置に保存されるようになる。(2005.1.26 yutaka)
+		// Windows Vista ではファイル名まで指定すると NULL と同じ挙動をするようなので、
+		// ファイル名を含まない形でディレクトリを指定するようにした。(2006.9.16 maya)
 //		ofn.lpstrInitialDir = __argv[0];
-		ofn.lpstrInitialDir = ts->SetupFName;
+//		ofn.lpstrInitialDir = ts->SetupFName;
+		ofn.lpstrInitialDir = Dir;
 		ofn.lpstrTitle = "Tera Term: Save setup";
 		Ok = GetSaveFileName(&ofn);
 		if (Ok)
@@ -957,6 +960,12 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2006/08/28 12:27:17  maya
+ * デフォルトのログファイル名を指定できるようにした。
+ *   エディットコントロールを "Additional settings" ダイアログに追加した。
+ *   teraterm.ini ファイルに LogDefaultName エントリを追加した。
+ *   ファイル名に strftime のフォーマットを使えるようにした。
+ *
  * Revision 1.10  2006/07/22 16:15:54  maya
  * ログ記録時に時刻も書き込む機能を追加した。
  *

@@ -662,6 +662,9 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
+2006.9.16 (Ver 4.46)
+  ・Windows Vista で teraterm.ini の保存先のデフォルトがデスクトップになるのを修正した。
+
 2006.9.16 (Ver 4.45)
   ・HTMLヘルプを更新した
   ・SSH2対応TTSSH(2.33)へ差し替えた

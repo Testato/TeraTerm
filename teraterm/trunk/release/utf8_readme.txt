@@ -672,6 +672,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.9.16 (Ver 4.46)
+  - Bug fix: default save dir of teraterm.ini is setted to desktop on Windows Vista.
+
 2006.9.16 (Ver 4.45)
   - updated HTML help document.
   - upgraded TTSSH version supporting SSH2 to 2.33.
