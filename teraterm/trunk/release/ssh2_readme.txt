@@ -174,9 +174,10 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.8.22 (Ver 2.33)
+2006.9.16 (Ver 2.33)
   - added parsing double-quoted filename in the command line parameter.
   - Bug fix: Free the user password on heap memory after user authentication.
+  - upgraded OpenSSL to 0.9.8b
 
 2006.8.9 (Ver 2.32)
   - Bug fix: Title bar didn't use the small(16x16 dot) icon.

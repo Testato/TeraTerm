@@ -650,7 +650,6 @@ OF SUCH DAMAGE.
   inaccurate or losses sustained by you or third parties or a failure of the program to operate 
   with any other programs).
 
-  e-mail : yutakakn@mail.goo.ne.jp
   URL    : http://hp.vector.co.jp/authors/VA013320/
   CVS    : http://sourceforge.jp/projects/ttssh2/
   TeraTerm Pro: http://hp.vector.co.jp/authors/VA002416/
@@ -670,15 +669,14 @@ OF SUCH DAMAGE.
   - The characters that can't be converted from UTF-8 to Shift_JIS will be shown as '?'.
   - The EUC output in UTF-8 environment may not be shown on TeraTerm screen.
 
-NOTE: The links above contain Japanese version of installer. Users from other countries just press all default buttons that will show up during installation. When installation will complete, start Teraterm and switch the Language setting under Settings->General menu to meet your preference. Finally save changes into teraterm.ini file.
-
-
 
 * History
 
-2006.9.15 (Ver 4.45)
+2006.9.16 (Ver 4.45)
   - updated HTML help document.
   - upgraded TTSSH version supporting SSH2 to 2.33.
+  - upgraded CygTerm+ to 1.06_8.
+  - upgraded Oniguruma to 4.4.1
   - add default log filename setting.
         * added new edit control to 'Additional settings' dialog.
         * added LogDefaultName entry in teraterm.ini file.

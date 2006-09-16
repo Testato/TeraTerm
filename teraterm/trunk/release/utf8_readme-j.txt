@@ -422,7 +422,7 @@ MaxBuffSize=500000
 形式：
        waitregex <string1 with regular expression> <string2 with regular expression> ...
 
-       使用できる正規表現： RE.txt
+       使用できる正規表現： RE-ja.txt
 
 正規表現文字列 <string1 with regular expression>, <string2 with regular expression>, ...  のうち1つ以上を含む行（最大256文字）をホストから受信するか、タイムアウトが発生するまで MACRO を停止させる。正規表現文字列は最大10個まで指定できる。
 
@@ -633,7 +633,7 @@ OF SUCH DAMAGE.
   行末スクロール抑止パッチはいわもとこういち氏に著作権があります。
   マルチディスプレイ対応パッチは安藤弦彦氏に著作権があります。
   鬼車はK.Kosako氏の著作物です。
-  TeraTermおよびTTSSHに関するパッチの一部はNAGATA Shinya氏に著作権があります。
+  TeraTermおよびTTSSHに関するパッチの一部は永田真也に著作権があります。
   TeraTermおよびTTSSHのアイコンは坂本龍彦氏に著作権があります
   HTMLヘルプの一部は市村光康氏、桑田政輝氏、橋井健人氏、平田豊に著作権があります
   本プログラムは商用利用問わず無償で利用できますが、作者は本プログラムの使用にあたり
@@ -659,14 +659,14 @@ OF SUCH DAMAGE.
   ・UTF-8からShift_JISへ変換できない文字は疑問符表示となります。
   ・UTF-8環境でのEUC出力が画面に反映されないことがあります。
 
-  ※インストーラは日本語バージョンとなっています。日本以外のユーザは、インストーラのウィザードにおいて、すべてデフォルトのボタンを押下してください。インストーラが完了したあと、TeraTermを起動し、Settings->Generaメニュー配下のLanguage設定を変更してください。最後に、teraterm.iniファイルに保存してください。
-
 
 ■改版履歴
 
-2006.9.15 (Ver 4.45)
+2006.9.16 (Ver 4.45)
   ・HTMLヘルプを更新した
   ・SSH2対応TTSSH(2.33)へ差し替えた
+  ・CygTerm+ 1.06_8へ差し替えた
+  ・Oniguruma 4.4.1へ差し替えた
   ・デフォルトのログファイル名を指定できるようにした。
         * エディットコントロールを "Additional settings" ダイアログに追加した。
         * teraterm.ini ファイルに LogDefaultName エントリを追加した。
