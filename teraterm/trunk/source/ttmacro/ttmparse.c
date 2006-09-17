@@ -123,6 +123,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
   else if (_stricmp(Str,"call")==0) *WordId = RsvCall;
   else if (_stricmp(Str,"changedir")==0) *WordId = RsvChangeDir;
   else if (_stricmp(Str,"clearscreen")==0) *WordId = RsvClearScreen;
+  else if (_stricmp(Str,"clipb2var")==0) *WordId = RsvClipb2Var;    // add 'clipb2var' (2006.9.17 maya)
   else if (_stricmp(Str,"closesbox")==0) *WordId = RsvCloseSBox;
   else if (_stricmp(Str,"closett")==0) *WordId = RsvCloseTT;
   else if (_stricmp(Str,"code2str")==0) *WordId = RsvCode2Str;
@@ -218,6 +219,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
   else if (_stricmp(Str,"testlink")==0) *WordId = RsvTestLink;
   else if (_stricmp(Str,"then")==0) *WordId = RsvThen;
   else if (_stricmp(Str,"unlink")==0) *WordId = RsvUnlink;
+  else if (_stricmp(Str,"var2clipb")==0) *WordId = RsvVar2Clipb;  // add 'var2clipb' (2006.9.17 maya)
   else if (_stricmp(Str,"waitregex")==0) *WordId = RsvWaitRegex;  // add 'waitregex' (2005.10.5 yutaka)
   else if (_stricmp(Str,"wait")==0) *WordId = RsvWait;
   else if (_stricmp(Str,"waitevent")==0) *WordId = RsvWaitEvent;

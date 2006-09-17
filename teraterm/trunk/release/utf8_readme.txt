@@ -478,6 +478,38 @@ random val 100            val=0..100
 
 
 
+* macro reference: clipb2var
+
+Format:
+      clipb2var <strvar>
+
+Copys text data in clipboard to <strvar>.
+
+The "clipb2var" command returns one of the following values in the system variable "result":
+
+Value   Meaning 
+----------------------- 
+0       Couldn't open the clipboard, or data is not a text data.
+1       Copy to <strvar> was successful.
+
+
+
+* macro reference: var2clipb
+
+Format:
+      var2clipb <string>
+
+Copys <strvar> to clipboard.
+
+The "clipb2var" command returns one of the following values in the system variable "result":
+
+Value   Meaning 
+----------------------- 
+0       Couldn't open the clipboard.
+1       Copy to clipboard was successful.
+
+
+
 * background transparency
   TeraTerm supports window background transparency. Now TeraTerm has two types of transparency function. You can select either function. 
   
@@ -672,8 +704,10 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.9.16 (Ver 4.46)
+2006.9.17 (Ver 4.46)
   - Bug fix: default save dir of teraterm.ini is setted to desktop on Windows Vista.
+  - added 'clipb2var' macro command. This command enables the macro script to get data from clipboard.
+  - added 'var2clipb' macro command. This command enables the macro script to set data to clipboard.
 
 2006.9.16 (Ver 4.45)
   - updated HTML help document.

@@ -150,6 +150,8 @@
 #define RsvWaitRegex  110   // add 'waitregex' (2005.10.5 yutaka)
 #define RsvMilliPause 111   // add 'mpause' (2006.2.10 yutaka)
 #define RsvRandom     112   // add 'random' (2006.2.11 yutaka)
+#define RsvClipb2Var  113   // add 'clipb2var' (2006.9.17 maya)
+#define RsvVar2Clipb  114   // add 'var2clipb' (2006.9.17 maya)
 
 #define RsvOperator   150
 #define RsvNot	      151

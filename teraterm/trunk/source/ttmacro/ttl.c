@@ -257,6 +257,68 @@ WORD TTLCall()
   return Err;
 }
 
+// add 'clipb2var' (2006.9.17 maya)
+WORD TTLClipb2Var()
+{
+  WORD VarId, Err;
+  HANDLE hText;
+  PTSTR clipbText;
+  char buf[MaxStrLen];
+  
+  Err = 0;
+  GetStrVar(&VarId,&Err);
+  if (Err!=0) return Err;
+  
+  if (OpenClipboard(NULL) == 0) {
+    SetResult(0);
+    return Err;
+  }
+  hText = GetClipboardData(CF_TEXT);
+  if (hText != NULL) {
+    clipbText = GlobalLock(hText);
+    strncpy(buf,clipbText,MaxStrLen-1);
+    GlobalUnlock(hText);
+    SetStrVal(VarId,buf);
+    SetResult(1);
+  }
+  else {
+    SetResult(0);
+  }
+  CloseClipboard();
+  
+  return Err;
+}
+
+// add 'var2clipb' (2006.9.17 maya)
+WORD TTLVar2Clipb()
+{
+  WORD Err;
+  TStrVal Str;
+  HGLOBAL hText;
+  PTSTR clipbText;
+  
+  Err = 0;
+  GetStrVal(Str,&Err);
+  if (Err!=0) return Err;
+  
+  hText = GlobalAlloc(GHND, sizeof(Str));
+  clipbText = GlobalLock(hText);
+  lstrcpy(clipbText, Str);
+  GlobalUnlock(hText);
+  
+  if (OpenClipboard(NULL) == 0) {
+    SetResult(0);
+  }
+  else {
+    EmptyClipboard();
+    SetClipboardData(CF_TEXT, hText);
+    CloseClipboard();
+    SetResult(1);
+  }
+
+  return Err;
+}
+
 WORD TTLCloseSBox()
 {
   if (GetFirstChar()!=0)
@@ -2367,6 +2429,7 @@ int ExecCmnd()
 			Err = TTLCommCmdFile(CmdChangeDir,0); break;
 		case RsvClearScreen:
 			Err = TTLCommCmdInt(CmdClearScreen,0); break;
+		case RsvClipb2Var:	Err = TTLClipb2Var(); break;	// add 'clipb2var' (2006.9.17 maya)
 		case RsvCloseSBox:  Err = TTLCloseSBox(); break;
 		case RsvCloseTT:	  Err = TTLCloseTT(); break;
 		case RsvCode2Str:   Err = TTLCode2Str(); break;
@@ -2479,6 +2542,7 @@ int ExecCmnd()
 		case RsvStrScan:	  Err = TTLStrScan(); break;
 		case RsvTestLink:	  Err = TTLTestLink(); break;
 		case RsvUnlink:	  Err = TTLUnlink(); break;
+		case RsvVar2Clipb:	Err = TTLVar2Clipb(); break;	// add 'var2clipb' (2006.9.17 maya)
 		case RsvWaitRegex:	  Err = TTLWaitRegex(FALSE); break;  // add 'waitregex' (2005.10.5 yutaka)
 		case RsvWait:	  Err = TTLWait(FALSE); break;
 		case RsvWaitEvent:  Err = TTLWaitEvent(); break;
