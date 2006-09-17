@@ -83,8 +83,11 @@
   /t=value                  TTSSHを有効にする(value=2)、無効にする(value=2以外)
   /f=file                   teraterm.iniファイル(file)を読み込む
   /1                        SSH1で接続する
+  /ssh1                     SSH1で接続する
   /2                        SSH2で接続する
+  /ssh2                     SSH2で接続する
   /nossh                    TTSSHを無効にする
+  /telnet                   TTSSHを無効にする
   /auth=mode                自動ログインを試みる(mode=password, publickey)
   /user=username            ユーザ名を指定する
   /passwd=password          パスワードを指定する

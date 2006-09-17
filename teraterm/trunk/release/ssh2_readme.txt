@@ -85,8 +85,11 @@
   /t=value                  TTSSH is enabled(value=2), disable(value=excluding 2)
   /f=file                   read teraterm.ini(file)
   /1                        connect to server with SSH1 protocol
+  /ssh1                     connect to server with SSH1 protocol
   /2                        connect to server with SSH2 protocol
+  /ssh2                     connect to server with SSH2 protocol
   /nossh                    TTSSH is disabled
+  /telnet                   TTSSH is disabled
   /auth=mode                try to autologin(mode=password, publickey)
   /user=username            your username is specified
   /passwd=password          your password is specified
