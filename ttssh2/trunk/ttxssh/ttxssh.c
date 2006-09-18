@@ -409,7 +409,7 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 }
 
 static void write_ssh_options(PTInstVar pvar, PCHAR fileName,
-							  TS_SSH FAR * settings)
+							  TS_SSH FAR * settings, BOOL copy_forward)
 {
 	char buf[1024];
 
@@ -422,8 +422,10 @@ static void write_ssh_options(PTInstVar pvar, PCHAR fileName,
 	WritePrivateProfileString("TTSSH", "DefaultUserName",
 							  settings->DefaultUserName, fileName);
 
-	WritePrivateProfileString("TTSSH", "DefaultForwarding",
-							  settings->DefaultForwarding, fileName);
+	if (copy_forward) {
+		WritePrivateProfileString("TTSSH", "DefaultForwarding",
+								  settings->DefaultForwarding, fileName);
+	}
 
 	WritePrivateProfileString("TTSSH", "CipherOrder",
 							  settings->CipherOrder, fileName);
@@ -1182,7 +1184,7 @@ static void FAR PASCAL TTXWriteINIFile(PCHAR fileName, PTTSet ts)
 	*pvar->ts_SSH = pvar->settings;
 	clear_local_settings(pvar);
 	notify_verbose_message(pvar, "Writing INI file", LOG_LEVEL_VERBOSE);
-	write_ssh_options(pvar, fileName, pvar->ts_SSH);
+	write_ssh_options(pvar, fileName, pvar->ts_SSH, TRUE);
 }
 
 static void read_ssh_options_from_user_file(PTInstVar pvar,
@@ -2993,7 +2995,7 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 		strncpy(buf, cmd + i, sizeof(buf));
 		cmd[i] = 0;
 
-		write_ssh_options(pvar, tmpFile, &pvar->settings);
+		write_ssh_options(pvar, tmpFile, &pvar->settings, FALSE);
 
 		strncat(cmd, " /ssh-consume=", cmdlen);
 		strncat(cmd, tmpFile, cmdlen);
@@ -3198,6 +3200,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.40  2006/09/18 05:08:04  maya
+ * コマンドラインパラメータ '/ask4passwd' を追加した。
+ *
  * Revision 1.39  2006/09/16 07:24:06  maya
  * /ssh1, /ssh2, /telnet オプションを追加した。
  *
