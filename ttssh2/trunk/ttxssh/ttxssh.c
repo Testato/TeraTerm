@@ -1382,6 +1382,16 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 		} else if (MATCH_STR(option + 1, "keyfile=") == 0) {
 			replace_to_blank(option + 9, pvar->ssh2_keyfile, sizeof(pvar->ssh2_keyfile));
 
+		} else if (MATCH_STR(option + 1, "ask4passwd") == 0) {
+			// パスワードを聞く (2006.9.18 maya)
+			pvar->ask4passwd = 1;
+
+		}
+
+		// パスワードを聞く場合は自動ログインが無効になる
+		// /auth は認証メソッドの指定としては利用される (2006.9.18 maya)
+		if (pvar->ask4passwd == 1) {
+			pvar->ssh2_autologin = 0;
 		}
 
 	}
@@ -3188,6 +3198,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.39  2006/09/16 07:24:06  maya
+ * /ssh1, /ssh2, /telnet オプションを追加した。
+ *
  * Revision 1.38  2006/08/21 12:21:33  maya
  * コマンドラインパラメータにおいて、ダブルクォーテーションで囲まれたファイル名を正しく認識するようにした。
  *

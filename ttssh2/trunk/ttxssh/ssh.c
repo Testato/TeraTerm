@@ -2214,6 +2214,7 @@ void SSH_init(PTInstVar pvar)
 	pvar->rekeying = 0;
 	pvar->key_done = 0;
 	pvar->ssh2_autologin = 0;  // autologin disabled(default)
+	pvar->ask4passwd = 0; // disabled(default) (2006.9.18 maya)
 	pvar->userauth_retry_count = 0;
 	pvar->decomp_buffer = NULL;
 
@@ -6870,6 +6871,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.50  2006/08/22 14:46:58  yutakakn
+ * パスワードの破棄はユーザ認証後に行うようにした。
+ *
  * Revision 1.49  2006/08/05 03:47:49  yutakakn
  * パスワードをメモリ上に覚えておくかどうかの設定は teraterm.ini に反映させるようにした。
  *

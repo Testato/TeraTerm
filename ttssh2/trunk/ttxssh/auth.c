@@ -215,14 +215,23 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 	// 
 	// (2004.12.1 yutaka)
 	// (2005.1.26 yutaka) 公開鍵認証サポート
+	// 自動ログインでないときは、自動設定はするが変更可能 (2006.9.18 maya)
+#if 0
 	if (pvar->ssh2_autologin == 1) {
-		SetDlgItemText(dlg, IDC_SSHUSERNAME, pvar->ssh2_username);
-		EnableWindow(GetDlgItem(dlg, IDC_SSHUSERNAME), FALSE);
-		EnableWindow(GetDlgItem(dlg, IDC_SSHUSERNAMELABEL), FALSE);
+#endif
+		if (strlen(pvar->ssh2_username) > 0) {
+			SetDlgItemText(dlg, IDC_SSHUSERNAME, pvar->ssh2_username);
+		}
+		if (pvar->ssh2_autologin == 1) {
+			EnableWindow(GetDlgItem(dlg, IDC_SSHUSERNAME), FALSE);
+			EnableWindow(GetDlgItem(dlg, IDC_SSHUSERNAMELABEL), FALSE);
+		}
 
 		SetDlgItemText(dlg, IDC_SSHPASSWORD, pvar->ssh2_password);
-		EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORD), FALSE);
-		EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORDCAPTION), FALSE);
+		if (pvar->ssh2_autologin == 1) {
+			EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORD), FALSE);
+			EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORDCAPTION), FALSE);
+		}
 
 		// '/I' 指定があるときのみ最小化する (2005.9.5 yutaka)
 		if (pvar->ts->Minimize) {
@@ -238,14 +247,18 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 			CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL, IDC_SSHUSERSA);
 
 			SetDlgItemText(dlg, IDC_RSAFILENAME, pvar->ssh2_keyfile);
-			EnableWindow(GetDlgItem(dlg, IDC_CHOOSERSAFILE), FALSE);
-			EnableWindow(GetDlgItem(dlg, IDC_RSAFILENAME), FALSE);
+			if (pvar->ssh2_autologin == 1) {
+				EnableWindow(GetDlgItem(dlg, IDC_CHOOSERSAFILE), FALSE);
+				EnableWindow(GetDlgItem(dlg, IDC_RSAFILENAME), FALSE);
+			}
 
 		} else {
 			// TODO
 
 		}
+#if 0
 	}
+#endif
 
 #if 1
 	// パスワード認証を試す前に、keyboard-interactiveメソッドを試す場合は、ラベル名を
@@ -1064,6 +1077,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.19  2006/08/05 03:47:49  yutakakn
+ * パスワードをメモリ上に覚えておくかどうかの設定は teraterm.ini に反映させるようにした。
+ *
  * Revision 1.18  2006/08/03 15:04:37  yutakakn
  * パスワードをメモリ上に保持するかどうかを決めるチェックボックスを認証ダイアログに追加した。
  *

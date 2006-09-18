@@ -213,6 +213,7 @@ typedef struct _TInstVar {
   int kexgex_bits;
   int kexgex_max;
   int ssh2_autologin;
+  int ask4passwd;
   SSHAuthMethod ssh2_authmethod;
   char ssh2_username[MAX_PATH];
   char ssh2_password[MAX_PATH];
