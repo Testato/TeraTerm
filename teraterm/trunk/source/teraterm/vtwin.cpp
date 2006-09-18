@@ -2005,6 +2005,14 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
   ChangeTitle();
   if (! cv.Ready) return 0;
 
+  /* ログ採取が有効で開始していなければ開始する (2006.9.18 maya) */
+  if ((ts.LogFN[0]!=0) && (LogVar==NULL) && NewFileVar(&LogVar))
+  {
+    LogVar->DirLen = 0;
+    strcpy(LogVar->FullName,ts.LogFN);
+    LogStart();
+  }
+
   if ((ts.PortType==IdTCPIP) &&
       ((ts.PortFlag & PF_BEEPONCONNECT) != 0))
     MessageBeep(0);
@@ -3889,6 +3897,10 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.36  2006/09/14 17:01:09  maya
+ * ComAutoConnect セクションを削除した。
+ * /M コマンドラインパラメータが指定されている場合、TeraTerm 起動時に自動的にシリアルポートへ接続しないようにした。
+ *
  * Revision 1.35  2006/09/02 08:14:04  maya
  * シリアルポート接続が保存されている場合、自動的に接続するかどうかを設定するオプションを追加した。
  *

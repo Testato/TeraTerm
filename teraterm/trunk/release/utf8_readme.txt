@@ -704,10 +704,11 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.9.17 (Ver 4.46)
+2006.9.18 (Ver 4.46)
   - Bug fix: default save dir of teraterm.ini is setted to desktop on Windows Vista.
   - added 'clipb2var' macro command. This command enables the macro script to get data from clipboard.
   - added 'var2clipb' macro command. This command enables the macro script to set data to clipboard.
+  - Bug fix: /L= paramter in New Connection dialog is not used on first TeraTerm window.
 
 2006.9.16 (Ver 4.45)
   - updated HTML help document.
