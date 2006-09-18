@@ -92,12 +92,15 @@
   /user=username            ユーザ名を指定する
   /passwd=password          パスワードを指定する
   /keyfile=file             秘密鍵を指定する
+  /ask4passwd               自動ログインをせず、パスワードを聞く
+                            /auth=mode は認証方式のみを意味するようになる
 
 
   例）
   ttermpro.exe server1:22 /ssh /ssh-L30025:smtpsrv1:25 /ssh-L30110:pop3srv1:110
   ttermpro.exe server2:22 /ssh /ssh-X
   ttermpro.exe server3:22 /ssh /2 /auth=password /user=guest /passwd=guest
+  ttermpro.exe server4:22 /ssh /2 /auth=publickey /user=admin keyfile=pathofkeyfile /ask4passwd
 
 
 ●known_hostsファイル
@@ -167,6 +170,7 @@ OF SUCH DAMAGE.
 
 2006.9.16 (Ver 2.34)
   ・/ssh1, /ssh2, /telnet オプションを追加した。
+  ・/ask4passwd オプションを追加した。
 
 2006.9.16 (Ver 2.33)
   ・コマンドラインパラメータにおいて、ダブルクォーテーションで囲まれたファイル名を正しく認識するようにした。

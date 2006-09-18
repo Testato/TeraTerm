@@ -94,12 +94,15 @@
   /user=username            your username is specified
   /passwd=password          your password is specified
   /keyfile=file             your private key file is specified
+  /ask4passwd               disable autologin and ask for password
+                            '/auth=mode' means only authentication method
 
 
   Example:
   ttermpro.exe server1:22 /ssh /ssh-L30025:smtpsrv1:25 /ssh-L30110:pop3srv1:110
   ttermpro.exe server2:22 /ssh /ssh-X
   ttermpro.exe server3:22 /ssh /2 /auth=password /user=guest /passwd=guest
+  ttermpro.exe server4:22 /ssh /2 /auth=publickey /user=admin keyfile=pathofkeyfile /ask4passwd
 
 
 
@@ -179,6 +182,7 @@ OF SUCH DAMAGE.
 
 2006.9.16 (Ver 2.34)
   - added /ssh1, /ssh2, /telnet command line options.
+  - added /ask4passwd command line option.
 
 2006.9.16 (Ver 2.33)
   - added parsing double-quoted filename in the command line parameter.
