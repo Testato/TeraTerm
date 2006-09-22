@@ -152,6 +152,7 @@
 #define RsvRandom     112   // add 'random' (2006.2.11 yutaka)
 #define RsvClipb2Var  113   // add 'clipb2var' (2006.9.17 maya)
 #define RsvVar2Clipb  114   // add 'var2clipb' (2006.9.17 maya)
+#define RsvIfDefined  115   // add 'ifdefined' (2006.9.23 maya)
 
 #define RsvOperator   150
 #define RsvNot	      151
@@ -215,6 +216,7 @@ void GetStrVal(PCHAR Str, LPWORD Err);
 void GetStrVar(LPWORD VarId, LPWORD Err);
 void SetStrVal(WORD VarId, PCHAR Str);
 PCHAR StrVarPtr(WORD VarId);
+void GetVarType(LPWORD ValType, int far *Val, LPWORD Err);
 
 extern WORD TTLStatus;
 extern TStrVal LineBuff;

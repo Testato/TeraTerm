@@ -1322,6 +1322,19 @@ WORD TTLGoto()
   return Err;
 }
 
+// add 'ifdefined' (2006.9.23 maya)
+WORD TTLIfDefined()
+{
+  WORD VarType, Err;
+  int Val;
+  
+  GetVarType(&VarType,&Val,&Err);
+  
+  SetResult(VarType);
+  
+  return Err;
+}
+
 BOOL CheckThen(LPWORD Err)
 {
   BYTE b;
@@ -2475,6 +2488,7 @@ int ExecCmnd()
 		case RsvGetTime:	  Err = TTLGetTime(); break;
 		case RsvGetTitle:   Err = TTLGetTitle(); break;
 		case RsvGoto:	  Err = TTLGoto(); break;
+		case RsvIfDefined:	Err = TTLIfDefined(); break;
 		case RsvIf:	  Err = TTLIf(); break;
 		case RsvInclude:	  Err = TTLInclude(); break;
 		case RsvInputBox:   Err = TTLInputBox(FALSE); break;

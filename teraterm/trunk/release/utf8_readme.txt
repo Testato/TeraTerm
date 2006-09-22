@@ -510,6 +510,22 @@ Value   Meaning
 
 
 
+* macro reference: ifdefined
+
+Format:
+      ifdefined <var>
+
+Sets the type of <var>. One of the following values in the system variable "result":
+
+Value   Meaning 
+----------------------- 
+0       undefined
+1       integer
+3       string
+4       label
+
+
+
 * background transparency
   TeraTerm supports window background transparency. Now TeraTerm has two types of transparency function. You can select either function. 
   
@@ -704,11 +720,12 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.9.18 (Ver 4.46)
+2006.9.23 (Ver 4.46)
   - Bug fix: default save dir of teraterm.ini is setted to desktop on Windows Vista.
   - added 'clipb2var' macro command. This command enables the macro script to get data from clipboard.
   - added 'var2clipb' macro command. This command enables the macro script to set data to clipboard.
   - Bug fix: /L= paramter in New Connection dialog is not used on first TeraTerm window.
+  - added 'ifdefined' macro command. This command returns the type of variable.
 
 2006.9.16 (Ver 4.45)
   - updated HTML help document.

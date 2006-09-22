@@ -168,6 +168,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
   else if (_stricmp(Str,"gettitle")==0) *WordId = RsvGetTitle;
   else if (_stricmp(Str,"goto")==0) *WordId = RsvGoto;
   else if (_stricmp(Str,"if")==0) *WordId = RsvIf;
+  else if (_stricmp(Str,"ifdefined")==0) *WordId = RsvIfDefined;
   else if (_stricmp(Str,"include")==0) *WordId = RsvInclude ;
   else if (_stricmp(Str,"inputbox")==0) *WordId = RsvInputBox;
   else if (_stricmp(Str,"int2str")==0) *WordId = RsvInt2Str;
@@ -1035,4 +1036,16 @@ void SetStrVal(WORD VarId, PCHAR Str)
 PCHAR StrVarPtr(WORD VarId)
 {
   return (&StrBuff[VarId*MaxStrLen]);
+}
+
+// for ifdefined (2006.9.23 maya)
+void GetVarType(LPWORD ValType, int far *Val, LPWORD Err)
+{
+  GetFactor(ValType,Val,Err);
+  
+  if (*Err == ErrVarNotInit) {
+    ValType = TypUnknown;
+  }
+
+  *Err = 0;
 }
