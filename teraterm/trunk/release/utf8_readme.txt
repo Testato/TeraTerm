@@ -698,9 +698,9 @@ OF SUCH DAMAGE.
   inaccurate or losses sustained by you or third parties or a failure of the program to operate 
   with any other programs).
 
-  URL    : http://hp.vector.co.jp/authors/VA013320/
-  CVS    : http://sourceforge.jp/projects/ttssh2/
-  TeraTerm Pro: http://hp.vector.co.jp/authors/VA002416/
+  URL: http://ttssh2.sourceforge.jp/
+  Project: http://sourceforge.jp/projects/ttssh2/
+  TeraTerm Pro(original): http://hp.vector.co.jp/authors/VA002416/
   ANSI color change & concatenating multi-line patch: http://www.sakurachan.org/ml/teraterm/msg00264.html
   IPv6 version TeraTerm Pro: http://win6.jp/TeraTerm/index.html
   Cygterm: http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
@@ -711,6 +711,13 @@ OF SUCH DAMAGE.
   Oniguruma: http://www.geocities.jp/kosako3/oniguruma/
   TeraTerm forum: http://www.neocom.ca/forum/index.php
   TeraTerm ML: http://www.freeml.com/info/teraterm@freeml.com
+
+  Special thanks to ...
+  ÅET.Teranishi - the author of original TeraTerm Pro
+    URL: http://hp.vector.co.jp/authors/VA002416/
+  ÅEYutaka Hirata - adds UTF-8 support
+    URL: http://hp.vector.co.jp/authors/VA013320/
+    E-mail: yutakakn@gmail.com
 
 
 * Notes of current release

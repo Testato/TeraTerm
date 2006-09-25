@@ -666,6 +666,7 @@ OF SUCH DAMAGE.
 
 ■著作権
   本プログラムはフリーソフトウェアです。BSDライセンスのもとに配布されています。
+  
   TeraTerm Proは寺西高氏の著作物です。
   ANSIカラー色変更＆行連結パッチは多賀奈由太氏に著作権があります。
   UTF-8化およびSSH2化のコードについては、著作権は平田豊にあります。
@@ -687,10 +688,9 @@ OF SUCH DAMAGE.
   本プログラムは商用利用問わず無償で利用できますが、作者は本プログラムの使用にあたり
   生じる障害や問題に対して一切の責任を負いません。
 
-  e-mail : yutakakn@mail.goo.ne.jp
-  URL    : http://hp.vector.co.jp/authors/VA013320/
-  CVS    : http://sourceforge.jp/projects/ttssh2/
-  TeraTerm Pro: http://hp.vector.co.jp/authors/VA002416/
+  URL: http://ttssh2.sourceforge.jp/
+  Project: http://sourceforge.jp/projects/ttssh2/
+  TeraTerm Pro(オリジナル): http://hp.vector.co.jp/authors/VA002416/
   ANSIカラー色変更＆行連結パッチ: http://www.sakurachan.org/ml/teraterm/msg00264.html
   IPv6版TeraTerm Pro: http://win6.jp/TeraTerm/index.html
   Cygterm: http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
@@ -699,8 +699,15 @@ OF SUCH DAMAGE.
   Eterm風透過ウィンドウ機能パッチ：http://www.geocities.co.jp/SiliconValley-PaloAlto/4954/av.html
   TTProxy: http://yebisuya.dip.jp/Software/TTProxy/
   Oniguruma: http://www.geocities.jp/kosako3/oniguruma/
-  TeraTerm forum: http://www.neocom.ca/forum/index.php
-  TeraTerm ML: http://www.freeml.com/info/teraterm@freeml.com
+  TeraTerm forum(カナダ): http://www.neocom.ca/forum/index.php
+  TeraTerm ML(日本語): http://www.freeml.com/info/teraterm@freeml.com
+
+  Special thanks to ... (敬称略)
+  ・寺西高 (T.Teranishi) - オリジナルの TeraTerm Pro の作者
+    URL: http://hp.vector.co.jp/authors/VA002416/
+  ・平田豊 (Yutaka Hirata) - UTF-8対応
+    URL: http://hp.vector.co.jp/authors/VA013320/
+    E-mail: yutakakn@gmail.com
 
 
 ■注意事項
