@@ -58,9 +58,13 @@
 // patch level 08 - change the priority of config file
 //   Written by NAGATA Shinya. (maya.negeta@gmail.com)
 //
+/////////////////////////////////////////////////////////////////////////////
+// patch level 09 - get shell from /etc/passwd if SHELL is not specified
+//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
+//
 
 static char Program[] = "CygTerm+";
-static char Version[] = "version 1.06_08 (2006/08/30)";
+static char Version[] = "version 1.06_09 (2006/09/25)";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -127,7 +131,7 @@ sh_env_t* sh_envp = &sh_env;
 //================//
 // message output //
 //----------------//
-void msg_print(char* msg)
+void msg_print(const char* msg)
 {
     MessageBox(NULL, msg, Program, MB_OK | MB_ICONINFORMATION | MB_TOPMOST);
 }
@@ -193,8 +197,10 @@ void parse_cfg_line(char *buf)
     }
     else if (!strcasecmp(name, "SHELL")) {
         // shell command line
-        strncpy(cmd_shell, val, sizeof(cmd_shell)-1);
-        cmd_shell[sizeof(cmd_shell)-1] = 0;
+        if (strcasecmp(val, "AUTO") != 0) {
+            strncpy(cmd_shell, val, sizeof(cmd_shell)-1);
+            cmd_shell[sizeof(cmd_shell)-1] = 0;
+        }
     }
     else if (!strcasecmp(name, "PORT_START")) {
         // minimum port# for TELNET
@@ -289,6 +295,7 @@ void load_cfg()
                 fprintf(fp, "ENV_1=HOME=%s\n",  pw_ent->pw_dir);
                 fprintf(fp, "ENV_2=USER=%s\n",  pw_ent->pw_name);
                 fprintf(fp, "ENV_3=SHELL=%s\n", pw_ent->pw_shell);
+                fprintf(fp, "SHELL=%s\n", pw_ent->pw_shell);
             } else {
                 fprintf(fp, "ENV_1=HOME=/home/%s\n", username);
                 fprintf(fp, "ENV_2=USER=%s\n",       username);

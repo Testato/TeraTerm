@@ -138,7 +138,8 @@
     SHELL
     -----
         This is the command line to execute a shell in Cygwin side (normally
-        /bin/bash).  Specify the full path to the shell.
+        /bin/bash). (default: get from /etc/passwd)
+        Specify the full path to the shell or keyword "AUTO".
 
     LOGIN_SHELL
     -----------
@@ -235,6 +236,9 @@
                 zsh 4.1.1
 
 // C H A N G E S //
+v1.06_09 2006/09/25 (by sue@iwmt.org)
+        * Get shell information from /etc/passwd if SHELL parameter is not specified.
+
 v1.06_08 2006/08/30 (by maya.negeta@gmail.com)
         * Changed the priority of config files. cygterm.cfg is top priority config file.
 
