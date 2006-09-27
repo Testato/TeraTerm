@@ -119,6 +119,9 @@ bool enable_loginshell = false;
 char term_type[41] = "";
 struct winsize win_size = {0,0,0,0};
 
+// terminal type to $TERM
+char env_term[64];
+
 // additional env vars given to a shell
 //-------------------------------------
 struct sh_env_t {
@@ -263,13 +266,13 @@ void load_cfg()
         strcpy(dot, ".cfg");
     }
 
-    static char sys_conf[] = "/etc/cygterm.conf";
+    char sys_conf[] = "/etc/cygterm.conf";
 
     // user configuration file (~/.*rc) path
-    static char usr_conf[MAX_PATH] = "";
+    char usr_conf[MAX_PATH] = "";
 
     // auto generated configuration file path
-    static char tmp_conf[MAX_PATH] = "/tmp/cygtermrc.XXXXXX";
+    char tmp_conf[MAX_PATH] = "/tmp/cygtermrc.XXXXXX";
 
     // get user name form Windows ENVIRONMENT,
     // and get /etc/passwd information by getpwnam(3) with USERNAME,
@@ -292,13 +295,11 @@ void load_cfg()
         FILE* fp = fopen(tmp_conf, "w");
         if (fp != NULL) {
             if (pw_ent != NULL) {
-                fprintf(fp, "ENV_1=HOME=%s\n",  pw_ent->pw_dir);
-                fprintf(fp, "ENV_2=USER=%s\n",  pw_ent->pw_name);
-                fprintf(fp, "ENV_3=SHELL=%s\n", pw_ent->pw_shell);
+                fprintf(fp, "ENV_1=USER=%s\n",  pw_ent->pw_name);
+                fprintf(fp, "ENV_2=SHELL=%s\n", pw_ent->pw_shell);
                 fprintf(fp, "SHELL=%s\n", pw_ent->pw_shell);
             } else {
-                fprintf(fp, "ENV_1=HOME=/home/%s\n", username);
-                fprintf(fp, "ENV_2=USER=%s\n",       username);
+                fprintf(fp, "ENV_1=USER=%s\n",       username);
             }
             fclose(fp);
         }
@@ -309,7 +310,7 @@ void load_cfg()
         strcpy(tmp_conf, "");
     }
 
-    char *conf_path[] = { sys_conf, tmp_conf, usr_conf , win_conf };
+    char *conf_path[] = { tmp_conf, win_conf, sys_conf, usr_conf };
     for (int i = 0; i < 4; i++) {
         // ignore empty configuration file path
         if (strcmp(conf_path[i], "") == 0) {
@@ -596,28 +597,17 @@ int exec_shell(int* sh_pid)
         // set env vars
         if (*term_type != 0) {
             // set terminal type to $TERM
-            char env_term[64];
             sprintf(env_term, "TERM=%s", term_type);
             putenv(env_term);
         }
-        // get %HOME%
-        const char *home_dir = getenv("HOME");
         // set other additional env vars
         sh_env_t* e;
         for (e = sh_env.next; e != NULL; e = e->next) {
             putenv(e->env);
         }
-        if (home_dir != NULL && strstr(home_dir, "/cygdrive") == home_dir) {
-            // set %HOME% to HOME env
-            char *buf = (char *)calloc(strlen(home_dir)+6, sizeof(char));
-            strcat(buf, "HOME=");
-            strcat(buf, home_dir);
-            putenv(buf);
-            free(buf);
-        }
         if (home_chdir) {
             // chdir to home directory
-            home_dir = getenv("HOME");
+            const char *home_dir = getenv("HOME");
             // ignore chdir(2) system-call error.
             chdir(home_dir);
         }
@@ -897,6 +887,18 @@ void telnet_session(int te_sock, int sh_pty)
     }
 }
 
+//======================//
+// free sh_envp utility //
+//----------------------//
+void free_sh_envp(sh_env_t* envp)
+{
+    if (envp->next != NULL) {
+        free_sh_envp(envp);
+    }
+    free(envp);
+    return;
+}
+
 //=========================================================//
 // connection of TELNET terminal emulator and Cygwin shell //
 //---------------------------------------------------------//
@@ -991,6 +993,7 @@ int main(int argc, char** argv)
         WaitForSingleObject(hTerm, INFINITE);
         CloseHandle(hTerm);
     }
+    free_sh_envp(sh_envp);
     return 0;
 }
 
