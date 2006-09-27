@@ -119,9 +119,6 @@ bool enable_loginshell = false;
 char term_type[41] = "";
 struct winsize win_size = {0,0,0,0};
 
-// terminal type to $TERM
-char env_term[64];
-
 // additional env vars given to a shell
 //-------------------------------------
 struct sh_env_t {
@@ -597,6 +594,7 @@ int exec_shell(int* sh_pid)
         // set env vars
         if (*term_type != 0) {
             // set terminal type to $TERM
+            char env_term[64];
             sprintf(env_term, "TERM=%s", term_type);
             putenv(env_term);
         }
@@ -887,18 +885,6 @@ void telnet_session(int te_sock, int sh_pty)
     }
 }
 
-//======================//
-// free sh_envp utility //
-//----------------------//
-void free_sh_envp(sh_env_t* envp)
-{
-    if (envp->next != NULL) {
-        free_sh_envp(envp);
-    }
-    free(envp);
-    return;
-}
-
 //=========================================================//
 // connection of TELNET terminal emulator and Cygwin shell //
 //---------------------------------------------------------//
@@ -993,7 +979,6 @@ int main(int argc, char** argv)
         WaitForSingleObject(hTerm, INFINITE);
         CloseHandle(hTerm);
     }
-    free_sh_envp(sh_envp);
     return 0;
 }
 
