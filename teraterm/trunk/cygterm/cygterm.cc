@@ -62,9 +62,13 @@
 // patch level 09 - get shell from /etc/passwd if SHELL is not specified
 //   Written by IWAMOTO Kouichi. (sue@iwmt.org)
 //
+/////////////////////////////////////////////////////////////////////////////
+// patch level 10 - to get user name, use getlogin() instead of $USERNAME
+//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
+//
 
 static char Program[] = "CygTerm+";
-static char Version[] = "version 1.06_09 (2006/09/25)";
+static char Version[] = "version 1.06_10 (2006/09/28)";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -271,10 +275,12 @@ void load_cfg()
     // auto generated configuration file path
     char tmp_conf[MAX_PATH] = "/tmp/cygtermrc.XXXXXX";
 
-    // get user name form Windows ENVIRONMENT,
-    // and get /etc/passwd information by getpwnam(3) with USERNAME,
+    // get user name from getloin().  if it fails, use $USERNAME instead.
+    // and get /etc/passwd information by getpwnam(3) with user name,
     // and generate temporary configuration file by mktemp(3).
-    const char* username = getenv("USERNAME");
+    const char* username = getlogin();
+    if (username == NULL)
+        username = getenv("USERNAME");
     if (username != NULL) {
         struct passwd* pw_ent = getpwnam(username);
         if (pw_ent != NULL) {
