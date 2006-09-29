@@ -236,6 +236,12 @@
                 zsh 4.1.1
 
 // C H A N G E S //
+v1.06_11 2006/09/29 (by maya.negeta@gmail.com)
+        * Stopped using HOME from environment variable and /etc/passwd.
+          CygTerm passes HOME which is set by Cygwin. See also /etc/profile
+        * Changed the priority of config files.
+          command line arguments > ~/.cygtermrc > /etc/cygterm.conf > cygterm.cfg > /etc/passwd
+
 v1.06_10 2006/09/28 (by sue@iwmt.org)
         * Use getlogin() instead of environment variable USERNAME to get user name.
 

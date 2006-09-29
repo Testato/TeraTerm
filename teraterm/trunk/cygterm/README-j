@@ -242,6 +242,12 @@
                 zsh 4.1.1
 
 // 変 更 履 歴 //
+v1.06_11 2006/09/29 (by maya.negeta@gmail.com)
+        * 環境変数と /etc/passwd の HOME を使わないようにした。
+          Cygwin によってセットされた HOME が利用される。関連項目 /etc/profile
+        * 設定ファイルの優先順位を変更した。
+          コマンドライン引数 > ~/.cygtermrc > /etc/cygterm.conf > cygterm.cfg > /etc/passwd
+
 v1.06_10 2006/09/28 (by sue@iwmt.org)
         * ユーザ名を得るのに、環境変数USERNAMEの代わりにgetlogin()を使うようにした。
 
