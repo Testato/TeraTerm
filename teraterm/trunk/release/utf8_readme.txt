@@ -700,6 +700,10 @@ OF SUCH DAMAGE.
 
   URL: http://ttssh2.sourceforge.jp/
   Project: http://sourceforge.jp/projects/ttssh2/
+  e-mail: yutakakn@gmail.com (Yutaka Hirata)
+  forum: http://www.neocom.ca/forum/index.php
+  ML(Japanese): http://www.freeml.com/info/teraterm@freeml.com
+
   TeraTerm Pro(original): http://hp.vector.co.jp/authors/VA002416/
   ANSI color change & concatenating multi-line patch: http://www.sakurachan.org/ml/teraterm/msg00264.html
   IPv6 version TeraTerm Pro: http://win6.jp/TeraTerm/index.html
@@ -709,15 +713,13 @@ OF SUCH DAMAGE.
   Eterm lookfeel transparency window patch: http://www.geocities.co.jp/SiliconValley-PaloAlto/4954/av.html
   TTProxy: http://yebisuya.dip.jp/Software/TTProxy/
   Oniguruma: http://www.geocities.jp/kosako3/oniguruma/
-  TeraTerm forum: http://www.neocom.ca/forum/index.php
-  TeraTerm ML: http://www.freeml.com/info/teraterm@freeml.com
 
   Special thanks to ...
-  ÅET.Teranishi - the author of original TeraTerm Pro
+  - T.Teranishi - author of original TeraTerm Pro
     URL: http://hp.vector.co.jp/authors/VA002416/
-  ÅEYutaka Hirata - adds UTF-8 support
+  - Yutaka Hirata - added UTF-8 and SSH2 support
+    e-mail: yutakakn@gmail.com
     URL: http://hp.vector.co.jp/authors/VA013320/
-    E-mail: yutakakn@gmail.com
 
 
 * Notes of current release

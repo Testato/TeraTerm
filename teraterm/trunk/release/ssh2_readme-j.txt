@@ -160,14 +160,15 @@ OF SUCH DAMAGE.
 
   URL: http://ttssh2.sourceforge.jp/
   Project: http://sourceforge.jp/projects/ttssh2/
-  TeraTerm Pro: http://hp.vector.co.jp/authors/VA002416/
-  IPv6版TeraTerm Pro: http://win6.jp/TeraTerm/index.html
-  TTSSH original:http://www.zip.com.au/~roca/ttssh.html
+  e-mail: yutakakn@gmail.com (平田豊)
+  forum(英語): http://www.neocom.ca/forum/index.php
+  ML: http://www.freeml.com/info/teraterm@freeml.com
 
   Special thanks to ... (敬称略)
+  ・Robert O'Callahan - オリジナルの TTSSH の作者
   ・平田豊 (Yutaka Hirata) - SSH2対応
+    e-mail: yutakakn@gmail.com
     URL: http://hp.vector.co.jp/authors/VA013320/
-    E-mail: yutakakn@gmail.com
 
 
 ■改版履歴

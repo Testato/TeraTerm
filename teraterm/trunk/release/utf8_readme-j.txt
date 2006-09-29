@@ -690,6 +690,10 @@ OF SUCH DAMAGE.
 
   URL: http://ttssh2.sourceforge.jp/
   Project: http://sourceforge.jp/projects/ttssh2/
+  e-mail: yutakakn@gmail.com (平田豊)
+  forum(英語): http://www.neocom.ca/forum/index.php
+  ML: http://www.freeml.com/info/teraterm@freeml.com
+
   TeraTerm Pro(オリジナル): http://hp.vector.co.jp/authors/VA002416/
   ANSIカラー色変更＆行連結パッチ: http://www.sakurachan.org/ml/teraterm/msg00264.html
   IPv6版TeraTerm Pro: http://win6.jp/TeraTerm/index.html
@@ -699,15 +703,13 @@ OF SUCH DAMAGE.
   Eterm風透過ウィンドウ機能パッチ：http://www.geocities.co.jp/SiliconValley-PaloAlto/4954/av.html
   TTProxy: http://yebisuya.dip.jp/Software/TTProxy/
   Oniguruma: http://www.geocities.jp/kosako3/oniguruma/
-  TeraTerm forum(カナダ): http://www.neocom.ca/forum/index.php
-  TeraTerm ML(日本語): http://www.freeml.com/info/teraterm@freeml.com
 
   Special thanks to ... (敬称略)
   ・寺西高 (T.Teranishi) - オリジナルの TeraTerm Pro の作者
     URL: http://hp.vector.co.jp/authors/VA002416/
-  ・平田豊 (Yutaka Hirata) - UTF-8対応
+  ・平田豊 (Yutaka Hirata) - UTF-8対応 & SSH2対応
+    e-mail: yutakakn@gmail.com
     URL: http://hp.vector.co.jp/authors/VA013320/
-    E-mail: yutakakn@gmail.com
 
 
 ■注意事項
@@ -722,7 +724,7 @@ OF SUCH DAMAGE.
   ・マクロコマンド 'clipb2var' を追加した。クリップボードからデータのコピーが可能となる。
   ・マクロコマンド 'var2clipb' を追加した。クリップボードへのデータのコピーが可能となる。
   ・最初のウインドウで、接続ダイアログの /L= パラメータが使用されないバグを修正した。
-  ・マクロコマンド 'ifdefined' を追加した。変数の型を返す。
+  ・マクロコマンド 'ifdefined' を追加した。このコマンドは変数の型を返す。
 
 2006.9.16 (Ver 4.45)
   ・HTMLヘルプを更新した

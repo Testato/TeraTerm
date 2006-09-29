@@ -172,17 +172,15 @@ OF SUCH DAMAGE.
 
   URL: http://ttssh2.sourceforge.jp/
   Project: http://sourceforge.jp/projects/ttssh2/
-  CVS    : http://sourceforge.jp/projects/ttssh2/
-  TeraTerm Pro: http://hp.vector.co.jp/authors/VA002416/
-  IPv6 version TeraTerm Pro: http://win6.jp/TeraTerm/index.html
-  TTSSH: http://www.zip.com.au/~roca/ttssh.html
+  e-mail: yutakakn@gmail.com (Yutaka Hirata)
+  forum: http://www.neocom.ca/forum/index.php
+  ML(Japanese): http://www.freeml.com/info/teraterm@freeml.com
 
   Special thanks to ...
-  ÅET.Teranishi - the author of original TeraTerm Pro
-    URL: http://hp.vector.co.jp/authors/VA002416/
-  ÅEYutaka Hirata - adds SSH2 support
+  - Robert O'Callahan - author of original TTSSH
+  - Yutaka Hirata - added SSH2 support
+    e-mail: yutakakn@gmail.com
     URL: http://hp.vector.co.jp/authors/VA013320/
-    E-mail: yutakakn@gmail.com
 
 
 * History
