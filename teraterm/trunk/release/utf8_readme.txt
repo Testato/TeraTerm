@@ -8,8 +8,7 @@
 
 * Installation
   If you use TeraTerm installer program, click installer program and install TeraTerm according to the instruction of the installer.
-  If you use TeraTerm archives, extract TeraTerm zip file and copy all files to your directory.
-  
+
 
 * Unicode configuration
   To use UTF-8, select "Terminal" from the TeraTerm Pro "Setup" menu.
@@ -379,34 +378,57 @@ There are 3 types of connection you can establish from TeraTerm macro:
   
   Telnet connections 
   
-  connect 'myserver:23 /nossh' 
-  or 
-  connect 'myserver:23' 
+  connect 'myserver:23 /nossh'
+  or
+  connect 'myserver:23 /telnet'
+  or
+  connect 'myserver:23'
   
-  Using /nossh is strongly recommended. Without this parameter TeraTerm will start connecting with the same method (telnet or SSH) that was used during last time when teraterm.ini file was saved. In case it was SSH than your macro will try to connect via SSH and will eventually fail. 
+  Using /nossh is strongly recommended. Without this parameter TeraTerm will start connecting with the same method (telnet or SSH) that was used during last time when teraterm.ini file was saved. In case it was SSH than your macro will try to connect via SSH and will eventually fail.
   
-  SSH connections 
   
-  connect 'myserver /ssh' 
-  or 
-  connect 'myserver /ssh /1' 
-  or 
-  connect 'myserver /ssh /2' 
-  or 
-  connect 'myserver /ssh /auth=password /user=username /passwd=password'' 
-  or 
-  connect 'myserver /ssh /1 /auth=password /user=username /passwd=password'' 
-  or 
-  connect 'myserver /ssh /2 /auth=password /user=username /passwd=password'' 
-  or 
-  connect 'myserver /ssh /auth=publickey /user=username /passwd=password /keyfile=private-key-file' 
-  or 
-  connect 'myserver /ssh /1 /auth=publickey /user=username /passwd=password /keyfile=private-key-file' 
-  or 
-  connect 'myserver /ssh /2 /auth=publickey /user=username /passwd=password /keyfile=private-key-file' 
+  SSH connections
   
-  The first way will start SSH connection without defining whether SSH1 or SSH2 has to be used. Parameters /1 and /2 force to use SSH1 or SSH2 method. The last 6 ways allow to skip popup dialog and pass username and password directly from macro. Please note that /auth=password or /auth=publickey is the parameter saying that authentication will be done by entering password or private-key-file thus you should not replace the word 'password' or the word 'RSA/DSA' in it with actual password. Only the words shown above with italic font has to be substituted with actual values. 
+  connect 'myserver /ssh'
+  
+  This way will start SSH connection without defining whether SSH1 or SSH2 has to be used.
+  
+  connect 'myserver /ssh /1'
+  or
+  connect 'myserver /ssh /2'
+  
+  Parameters /1 and /2 force to use SSH1 or SSH2 method.
+  
+  connect 'myserver /ssh /auth=password /user=username /passwd=password'
+  or
+  connect 'myserver /ssh /1 /auth=password /user=username /passwd=password'
+  or
+  connect 'myserver /ssh /2 /auth=password /user=username /passwd=password'
+  or
+  connect 'myserver /ssh /auth=publickey /user=username /passwd=password /keyfile=private-key-file'
+  or
+  connect 'myserver /ssh /1 /auth=publickey /user=username /passwd=password /keyfile=private-key-file'
+  or
+  connect 'myserver /ssh /2 /auth=publickey /user=username /passwd=password /keyfile=private-key-file'
+  
+  Above 6 ways allow to skip popup dialog and pass username and password directly from macro. Please note that /auth=password or /auth=publickey is the parameter saying that authentication will be done by entering password or private-key-file thus you should not replace the word 'password' or the word 'publickey' in it with actual password.
+  Important note: The password can contain space character. To represent space inside the password replace it with @ character. If @ character itself is part of the password than it has to be replaced with 2 consecutive @ characters @@.
   Please remember that entering actual username and password in TeraTerm macro will cause them to be stored as an open text and it is your responsibility to keep such macro is secure location. 
+  
+  connect 'myserver /ssh /auth=password /user=username /ask4passwd'
+  or
+  connect 'myserver /ssh /1 /auth=password /user=username /ask4passwd'
+  or
+  connect 'myserver /ssh /2 /auth=password /user=username /ask4passwd'
+  or
+  connect 'myserver /ssh /auth=publickey /user=username /ask4passwd /keyfile=private-key-file'
+  or
+  connect 'myserver /ssh /1 /auth=publickey /user=username /ask4passwd /keyfile=private-key-file'
+  or
+  connect 'myserver /ssh /2 /auth=publickey /user=username /ask4passwd /keyfile=private-key-file'
+  
+  Above 6 ways pass username and authentication method directly from macro, and the popup asks for password.
+  
   
   Connections via COM port 
   
@@ -414,7 +436,7 @@ There are 3 types of connection you can establish from TeraTerm macro:
   
   Here x represents COM port number. For example to connect via COM port 1 the command will look like: connect '/C=1'
   
-  source URL: http://www.neocom.ca/forum/viewtopic.php?t=6
+  source URL: http://www.neocom.ca/forum/viewtopic.php?t=28
 
 
 

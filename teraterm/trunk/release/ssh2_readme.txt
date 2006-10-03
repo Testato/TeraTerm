@@ -7,33 +7,6 @@
   version 2 (SSH2) protocol support to TeraTerm. This version of TTSSH replaces the
   original version created by Robert O'Callahan that supported only SSH1.
 
-* Content of archive file
-  Archive (zip) file contains:
-
-  File name               Description  
-  ---------------------+-----------------------------------
-  readme.txt              this file
-  ttxssh.dll              DLL
-  TERATERM_sample.INI     sample ini file
-  ---------------------+-----------------------------------
-
-* Installation
-  1. To add SSH2 support to TeraTerm you should already have installed the 
-     original version of TeraTerm Pro with additional package supporting UTF-8.
-     
-     The original version of TeraTerm Pro can be downloaded from: 
-         http://hp.vector.co.jp/authors/VA002416/ttermp23.zip
-         
-     Additional package for UTF-8 support can be downloaded from:
-         http://sleep.mat-yan.jp/~yutaka/windows/index.html
-  
-  2. Backup all files from the TeraTerm directory.
-  
-  3. Extract ttxssh.dll file from the archive into the TeraTerm directory.
-  
-  !! IMPORTANT !!
-    SSH2 version of TTSSH is compatible only with UTF-8 version of TeraTerm Pro.
-    
 
 * How to use SSH
   Perform the following steps to establish network communication using SSH (Secure Shell):
@@ -43,6 +16,7 @@
   2. Enter username and password in "SSH Authentication" dialog and press OK button.
   
   3. If you successfully pass authentication, UNIX shell will appear on TeraTerm terminal. 
+
 
 * SSH autologin
   Perform the following command line options to be able to autologin with SSH protocol.
@@ -62,11 +36,9 @@
   EXAMPLE: SSH2 public-key authentication auto-login (username kitakita  password oyaji 28  private-key-file d:\tmp\id_rsa)
      ttermpro.exe 192.168.1.3:22 /ssh /2 /auth=publickey /user=kitakita /passwd=oyaji@28 /keyfile=d:\tmp\id_rsa
 
-
   NOTICE: blank operation
     If you include the blank in the password or file path, replace the blank(' ') to '@'.
     And also if you use the atmark character in them, write two continuation '@@' instead of '@'.
-
 
 
 * Command line parameters
@@ -103,7 +75,6 @@
   ttermpro.exe server2:22 /ssh /ssh-X
   ttermpro.exe server3:22 /ssh /2 /auth=password /user=guest /passwd=guest
   ttermpro.exe server4:22 /ssh /2 /auth=publickey /user=admin keyfile=pathofkeyfile /ask4passwd
-
 
 
 * known_hosts file
@@ -159,6 +130,7 @@ OF SUCH DAMAGE.
   Copyright of TTSSH supporing SSH2 belongs to Yutaka Hirata.
   Copyright of OpenSSL belongs to OpenSSL project.
   Copyright of zlib belongs to Greg Roelofs and Jean-loup Gaill.
+  Copyright of TTSSH icon file to Tatsuhiko Sakamoto.
 
   This program is provided "as is" without warranties of any kind, either expressed or 
   implied, including, but not limited to, the implied warranties of merchantability and fitness 
@@ -370,4 +342,3 @@ OF SUCH DAMAGE.
 
 2004.8.5 (Ver 1.00 alpha1)
   - first release
-

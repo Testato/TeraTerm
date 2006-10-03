@@ -8,7 +8,6 @@
 
 ●インストール方法
   インストーラを利用する場合は、インストーラの指示に従ってインストールしてください。
-  アーカイブを利用する場合は、アーカイブを解凍して、適当なディレクトリへコピーしてください。
   
   
 ●Unicode設定
@@ -377,34 +376,56 @@ MaxBuffSize=500000
   
   ・telnet接続
   
-  connect 'myserver:23 /nossh' 
-  or 
-  connect 'myserver:23' 
+  connect 'myserver:23 /nossh'
+  or
+  connect 'myserver:23 /telnet'
+  or
+  connect 'myserver:23'
   
   /nossh を使う方を強く推奨します。このオプションがない場合、TeraTermは teraterm.ini が最後に保存されたときと同じメソッド（telnet もしくは SSH）を使って、接続しようとします。もし、SSHを使って接続しようとするならば、connectマクロは失敗するでしょう。
   
   
   ・SSH接続
   
-  connect 'myserver /ssh' 
-  or 
-  connect 'myserver /ssh /1' 
-  or 
-  connect 'myserver /ssh /2' 
-  or 
-  connect 'myserver /ssh /auth=password /user=username /passwd=password'
-  or 
-  connect 'myserver /ssh /1 /auth=password /user=username /passwd=password'
-  or 
-  connect 'myserver /ssh /2 /auth=password /user=username /passwd=password'
-  or 
-  connect 'myserver /ssh /auth=publickey /user=username /passwd=password /keyfile=private-key-file' 
-  or 
-  connect 'myserver /ssh /1 /auth=publickey /user=username /passwd=password /keyfile=private-key-file' 
-  or 
-  connect 'myserver /ssh /2 /auth=publickey /user=username /passwd=password /keyfile=private-key-file' 
+  connect 'myserver /ssh'
   
-  最初の方法は、SSHバージョンを指定せずにSSH接続をします。/1 と /2 のオプションは、SSH1およびSSH2であることを指定します。最後の6つの方法は、マクロからユーザ名とパスワードを渡すことにより、SSH認証ダイアログをスキップさせることができます。/auth=passwordはパスワード認証、/auth=publickeyは公開鍵認証であることを表します。TeraTermマクロにユーザ名とパスワードを指定した場合、そのマクロファイルをプレーンテキストとして保存したのなら、セキュリティ的に安全な場所に置く必要があることを肝に銘じておいてください。
+  この方法は、SSHバージョンを指定せずにSSH接続をします。
+  
+  connect 'myserver /ssh /1'
+  or
+  connect 'myserver /ssh /2'
+  
+  /1 と /2 のオプションは、SSH1およびSSH2であることを指定します。
+  
+  connect 'myserver /ssh /auth=password /user=username /passwd=password'
+  or
+  connect 'myserver /ssh /1 /auth=password /user=username /passwd=password'
+  or
+  connect 'myserver /ssh /2 /auth=password /user=username /passwd=password'
+  or
+  connect 'myserver /ssh /auth=publickey /user=username /passwd=password /keyfile=private-key-file'
+  or
+  connect 'myserver /ssh /1 /auth=publickey /user=username /passwd=password /keyfile=private-key-file'
+  or
+  connect 'myserver /ssh /2 /auth=publickey /user=username /passwd=password /keyfile=private-key-file'
+  
+  この6つの方法は、マクロからユーザ名とパスワードを渡すことにより、SSH認証ダイアログをスキップさせることができます。/auth=passwordはパスワード認証、/auth=publickeyは公開鍵認証であることを表します。
+  注意: パスワードにはスペースを含むことが可能です。パスワードの中でスペースを表すには、"@"で置き換えてください。もし"@"がパスワードの一部である場合は、連続した"@" つまり"@@"で置き換えてください。
+  TeraTermマクロにユーザ名とパスワードを指定した場合、そのマクロファイルをプレーンテキストとして保存したのなら、セキュリティ的に安全な場所に置く必要があることを肝に銘じておいてください。
+  
+  connect 'myserver /ssh /auth=password /user=username /ask4passwd'
+  or
+  connect 'myserver /ssh /1 /auth=password /user=username /ask4passwd'
+  or
+  connect 'myserver /ssh /2 /auth=password /user=username /ask4passwd'
+  or
+  connect 'myserver /ssh /auth=publickey /user=username /ask4passwd /keyfile=private-key-file'
+  or
+  connect 'myserver /ssh /1 /auth=publickey /user=username /ask4passwd /keyfile=private-key-file'
+  or
+  connect 'myserver /ssh /2 /auth=publickey /user=username /ask4passwd /keyfile=private-key-file'
+  
+  この6つの方法は、マクロからユーザ名と認証方法を渡して、ポップアップでパスワードの入力を促します。
   
   
   ・COMポート接続
@@ -413,7 +434,7 @@ MaxBuffSize=500000
   
   xはCOMポート番号を表します。たとえば、COM1に接続したいのなら、 connect '/C=1' とします。
   
-  source URL: http://www.neocom.ca/forum/viewtopic.php?t=6
+  source URL: http://www.neocom.ca/forum/viewtopic.php?t=28
 
 
 

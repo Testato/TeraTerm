@@ -7,40 +7,16 @@
   TeraTerm上でSSH2(Secure Shell version 2)を利用することが可能となります。
 
 
-●収録ファイル
-  アーカイブを解凍すると次に示すファイルがあります。
-
-  ---------------------+-----------------------------------
-  readme-j.txt            いまお読みのテキストファイル
-  ttxssh.dll              DLL本体
-  TERATERM_sample.INI     INIファイルサンプル
-  ---------------------+-----------------------------------
-
-
-●インストール方法
-  TeraTermがインストールされているフォルダへDLL本体をコピーします。
-  すでにオリジナル版TTSSHが格納されている場合は、事前にバックアップを取っておいてから
-  上書きしてください。
-  
-  ※注意：
-    SSH2対応TTSSHはUTF-8対応TeraTerm Pro上でしか動作しません。
-    UTF-8対応TeraTerm Pro: http://hp.vector.co.jp/authors/VA013320/
-  
-  
 ●SSHの利用方法
   以下の手順によりSSH(Secure Shell)を使った通信を行うことができます。
   
-  １．DLLのコピー
-      UTF-8対応TeraTerm Proがインストールされているフォルダへ"ttxssh.dll" を
-      コピーします。
-  
-  ２．TeraTermメニューの"New connection"を呼び出し、"Service"で'SSH'を
+  １．TeraTermメニューの"New connection"を呼び出し、"Service"で'SSH'を
       選択する（ポート番号は22）。
       
-  ３．"SSH Authentication"ダイアログが出てくるので、ユーザ名とパスワードを
+  ２．"SSH Authentication"ダイアログが出てくるので、ユーザ名とパスワードを
       入力して、OKボタンを押下する。
       
-  ４．ユーザ認証に成功すれば、サーバ側のプロンプトが出てくる。
+  ３．ユーザ認証に成功すれば、サーバ側のプロンプトが出てくる。
 
 
 ●SSH自動ログイン
@@ -155,6 +131,7 @@ OF SUCH DAMAGE.
   TTSSHのSSH2化のコードについては、著作権は平田豊にあります。
   OpenSSLはOpenSSL Projectの著作物です。
   zlibはGreg RoelofsとJean-loup Gailly氏の著作物です。
+  TTSSHのアイコンは坂本龍彦氏に著作権があります
   本プログラムは無償で利用できますが、作者は本プログラムの使用にあたり
   生じる障害や問題に対して一切の責任を負いません。
 
