@@ -102,3 +102,28 @@
   4. ttssh2\ttssh.sln をVisual Studioで開く
   5. ソリューションをビルドする
   6. ビルドに成功するとttssh2\ttxssh ディレクトリにDLLが生成される
+
+
+
+■CygTermのビルド方法
+  CygTermのビルド方法について以下に示します。
+  
+   1. Cygwin(http://www.cygwin.com/)をインストールする
+   2. Cygwinのシェルを起動し、teraterm\cygterm ディレクトリへ移動する。
+      # cd teraterm/cygterm
+   3. CygTermをコンパイルする
+      # make
+
+
+■ヘルプファイルのビルド方法
+  ヘルプファイルのビルド方法について以下に示します。
+  
+  1. HTML Help Workshopを以下のサイトから入手しインストールする。
+     http://msdn.microsoft.com/library/default.asp?url=/library/en-us/htmlhelp/html/hwMicrosoftHTMLHelpDownloads.asp
+     
+  2. FileのOpenから doc\en\teraterm.hhp および doc\jp\teratermj.hhp を開く
+  
+  3. FileのCompileでヘルプファイルをコンパイルする
+
+
+

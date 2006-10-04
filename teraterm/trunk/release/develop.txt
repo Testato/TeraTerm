@@ -106,3 +106,25 @@
   4. Open ttssh2\ttssh.sln with Visual Studio.
   5. Build TTSSH solution.
   6. TTSSH DLL will be generated in ttssh2\ttxssh directory if the building is successful.
+
+* How to build CygTerm
+  To build CygTerm source code is shown in the following step:
+
+   1. Install Cygwin(http://www.cygwin.com/) to your PC.
+   2. Launch Cygwin shell and go to teraterm\cygterm directory.
+      # cd teraterm/cygterm
+   3. Compile Cygterm.
+      # make
+
+
+* How to build HTML help file
+  To build  HTML help file is shown in the following step:
+
+  1. Intall HTML Help Workshop from below site:
+     http://msdn.microsoft.com/library/default.asp?url=/library/en-us/htmlhelp/html/hwMicrosoftHTMLHelpDownloads.asp
+     
+  2. Select Open of File menu and open doc\en\teraterm.hhp file or doc\jp\teratermj.hhp.
+  
+  3. Select Compile of File menu and HTML help file will be created.
+
+
