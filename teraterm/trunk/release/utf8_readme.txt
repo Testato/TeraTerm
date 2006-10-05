@@ -505,14 +505,18 @@ random val 100            val=0..100
 Format:
       clipb2var <strvar>
 
-Copys text data in clipboard to <strvar>.
+Copys the text data in clipboard to <strvar>.
 
 The "clipb2var" command returns one of the following values in the system variable "result":
 
 Value   Meaning 
 ----------------------- 
-0       Couldn't open the clipboard, or data is not a text data.
-1       Copy to <strvar> was successful.
+0       Can not open the clipboard. Or the clipboard content is not a text data.
+1       Copying to <strvar> is successful.
+
+Example:
+	clipb2var data
+	messagebox data 'clipboard data'
 
 
 
@@ -523,12 +527,17 @@ Format:
 
 Copys <strvar> to clipboard.
 
-The "clipb2var" command returns one of the following values in the system variable "result":
+The "var2clipb" command returns one of the following values in the system variable "result":
 
 Value   Meaning 
 ----------------------- 
-0       Couldn't open the clipboard.
-1       Copy to clipboard was successful.
+0       Can not open the clipboard.
+1       Copying to clipboard is successful.
+
+Example:
+	var2clipb 'TeraTerm 4.46'
+	clipb2var data
+	messagebox data 'clipboard data'
 
 
 
@@ -545,6 +554,11 @@ Value   Meaning
 1       integer
 3       string
 4       label
+
+Example:
+	ifdefined data
+	int2str valstr result
+	messagebox valstr 'variable type'
 
 
 
