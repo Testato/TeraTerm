@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<TITLE>var2clipb</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">var2clipb</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>var2clipb &lt;string&gt;</B>
+</UL>
+<P></P>
+
+Copys &lt;strvar&gt; to clipboard.
+<P></P>
+
+The "var2clipb" command returns one of the following values in the system variable "result":
+<P></P>
+
+<pre>
+Value   Meaning 
+<hr>
+0       Can not open the clipboard.
+1       Copying to clipboard is successful.
+</pre>
+
+<pre>
+Example:
+	var2clipb 'TeraTerm 4.46'
+	clipb2var data
+	messagebox data 'clipboard data'
+</pre>
+
+</BODY>
+</HTML>
+

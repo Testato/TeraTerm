@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<TITLE>clipb2var</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">clipb2var</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>clipb2var &lt;strvar&gt;</B>
+</UL>
+<P></P>
+
+Copys the text data in clipboard to &lt;strvar&gt;.
+<P></P>
+
+The "clipb2var" command returns one of the following values in the system variable "result":
+<P></P>
+
+<pre>
+Value   Meaning 
+<hr>
+0       Can not open the clipboard. Or the clipboard content is not a text data.
+1       Copying to &lt;strvar&gt; is successful.
+</pre>
+
+<pre>
+Example:
+	clipb2var data
+	messagebox data 'clipboard data'
+</pre>
+
+</BODY>
+</HTML>
+
