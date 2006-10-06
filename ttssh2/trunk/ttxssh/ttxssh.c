@@ -1228,37 +1228,6 @@ static void replace_to_blank(char *src, char *dst, int dst_len)
 	*dst = '\0';
 }
 
-// copy from ttermpro/ttset.c (2006.8.21 maya)
-void Dequote(PCHAR Source, PCHAR Dest)
-{
-	int i, j;
-	char q, c;
-
-	Dest[0] = 0;
-	if (Source[0]==0) return;
-	i = 0;
-	/* quoting char */
-	q = Source[i];
-	/* only '"' is used as quoting char */
-	if (q!='"')
-		q = 0;
-	else
-		i++;
-
-	c = Source[i];
-	i++;
-	j = 0;
-	while ((c!=0) && (c!=q))
-	{
-		Dest[j] = c;
-		j++;
-		c = Source[i];
-		i++;
-	}
-
-	Dest[j] = 0;
-}
-
 /* returns 1 if the option text must be deleted */
 static int parse_option(PTInstVar pvar, char FAR * option)
 {
@@ -1276,11 +1245,7 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 					strcat(pvar->settings.DefaultForwarding, option + 5);
 				}
 			} else if (MATCH_STR(option + 4, "-f=") == 0) {
-				// ファイル名が `"' で囲まれていたら取り出す (2006.8.21 maya)
-				char* buf = (char *)calloc(strlen(option), sizeof(char));
-				Dequote(option + 7, buf);
-				read_ssh_options_from_user_file(pvar, buf);
-				free(buf);
+				read_ssh_options_from_user_file(pvar, option + 7);
 			} else if (MATCH_STR(option + 4, "-v") == 0) {
 				pvar->settings.LogLevel = LOG_LEVEL_VERBOSE;
 			} else if (_stricmp(option + 4, "-autologin") == 0
@@ -1288,11 +1253,7 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 				pvar->settings.TryDefaultAuth = TRUE;
 
 			} else if (MATCH_STR(option + 4, "-consume=") == 0) {
-				// ファイル名が `"' で囲まれていたら取り出す (2006.8.21 maya)
-				char* buf = (char *)calloc(strlen(option), sizeof(char));
-				Dequote(option + 13, buf);
-				read_ssh_options_from_user_file(pvar, buf);
-				free(buf);
+				read_ssh_options_from_user_file(pvar, option + 13);
 				DeleteFile(option + 13);
 
 			// /ssh1 と /ssh2 オプションの新規追加 (2006.9.16 maya)
@@ -1320,11 +1281,7 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 				pvar->settings.Enabled = 0;
 			}
 		} else if (MATCH_STR(option + 1, "f=") == 0) {
-			// ファイル名が `"' で囲まれていたら取り出す (2006.8.21 maya)
-			char* buf = (char *)calloc(strlen(option), sizeof(char));
-			Dequote(option + 3, buf);
-			read_ssh_options_from_user_file(pvar, buf);
-			free(buf);
+			read_ssh_options_from_user_file(pvar, option + 3);
 
 		// /1 および /2 オプションの新規追加 (2004.10.3 yutaka)
 		} else if (MATCH_STR(option + 1, "1") == 0) {
@@ -1404,9 +1361,11 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
 									 PCHAR DDETopic)
 {
+	// スペースを含むファイル名を認識するように修正 (2006.10.7 maya)
 	int i;
 	BOOL inParam = FALSE;
 	BOOL inQuotes = FALSE;
+	BOOL inFileParam = FALSE;
 	PCHAR option = NULL;
 	GET_VAR();
 
@@ -1415,22 +1374,39 @@ static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
 	}
 
 	for (i = 0; param[i] != 0; i++) {
-		if (inQuotes ? param[i] ==
-			'"' : (param[i] == ' ' || param[i] == '\t')) {
+		if (inQuotes ? param[i] == '"'
+					 : (param[i] == ' ' || param[i] == '\t')) {
 			if (option != NULL) {
 				char ch = param[i];
+				PCHAR Equal;
 
 				param[i] = 0;
-				if (parse_option
-					(pvar, *option == '"' ? option + 1 : option)) {
-					memset(option, ' ', i + 1 - (option - param));
-				} else {
-					param[i] = ch;
+				Equal = strchr(option, '=');
+				if (inFileParam && Equal != NULL && *(Equal + 1) == '"') {
+					char *buf = (char *)calloc(strlen(option), sizeof(char));
+					strncat(buf, option, Equal - option + 1);
+					strcat(buf, Equal + 2);
+					if (parse_option
+						(pvar, *buf == '"' ? buf + 1 : buf)) {
+						memset(option, ' ', i + 1 - (option - param));
+					} else {
+						param[i] = ch;
+					}
+					free(buf);
+				}
+				else {
+					if (parse_option
+						(pvar, *option == '"' ? option + 1 : option)) {
+						memset(option, ' ', i + 1 - (option - param));
+					} else {
+						param[i] = ch;
+					}
 				}
 				option = NULL;
 			}
 			inParam = FALSE;
 			inQuotes = FALSE;
+			inFileParam = FALSE;
 		} else if (!inParam) {
 			if (param[i] == '"') {
 				inQuotes = TRUE;
@@ -1440,12 +1416,38 @@ static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
 				inParam = TRUE;
 				option = param + i;
 			}
+		} else {
+			if (option == NULL) {
+				continue;
+			}
+			if ((option[0] == '-' || option[0] == '/') &&
+				(MATCH_STR(option + 1, "ssh-f=") == 0 ||
+				 MATCH_STR(option + 1, "ssh-consume=") == 0 ||
+				 MATCH_STR(option + 1, "f=") == 0)) {
+				if (param[i] == '"') {
+					inQuotes = TRUE;
+				}
+				inFileParam = TRUE;
+			}
 		}
 	}
 
 	if (option != NULL) {
-		if (parse_option(pvar, option)) {
-			memset(option, ' ', i - (option - param));
+		PCHAR Equal = strchr(option, '=');
+		if (inFileParam && Equal != NULL && *(Equal + 1) == '"') {
+			char *buf = (char *)calloc(strlen(option), sizeof(char));
+			strncat(buf, option, Equal - option + 1);
+			strcat(buf, Equal + 2);
+			if (parse_option
+				(pvar, *buf == '"' ? buf + 1 : buf)) {
+				memset(option, ' ', i + 1 - (option - param));
+			}
+			free(buf);
+		}
+		else {
+			if (parse_option(pvar, option)) {
+				memset(option, ' ', i - (option - param));
+			}
 		}
 	}
 
@@ -3200,6 +3202,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.42  2006/10/06 09:05:59  maya
+ * ttermpro の /F パラメータの値にスペースが含まれると、TTSSH の設定内容が読み込まれないバグを修正した。
+ *
  * Revision 1.41  2006/09/18 06:14:48  maya
  * ポートフォワードしているウインドウから新規接続するとエラーが出る問題を修正した。
  *
