@@ -74,7 +74,7 @@ static char FAR *ProtocolFamilyList[] = { "UNSPEC", "IPv6", "IPv4", NULL };
 #include "buffer.h"
 #include "cipher.h"
 
-#define MATCH_STR(s, o) _strnicmp((s), (o), NUM_ELEM(o) - 1)
+#define MATCH_STR(s, o) strncmp((s), (o), NUM_ELEM(o) - 1)
 
 /* This extension implements SSH, so we choose a load order in the
    "protocols" range. */
@@ -3200,6 +3200,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.41  2006/09/18 06:14:48  maya
+ * ポートフォワードしているウインドウから新規接続するとエラーが出る問題を修正した。
+ *
  * Revision 1.40  2006/09/18 05:08:04  maya
  * コマンドラインパラメータ '/ask4passwd' を追加した。
  *
