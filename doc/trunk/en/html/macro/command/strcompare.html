@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<TITLE>strcompare</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">strcompare</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>strcompare &lt;string1&gt; &lt;string2&gt;</B>
+</UL>
+<P></P>
+
+Compares two strings. Depending on the relation between them, one of the following result code is returned in the system variable "result":
+<P></P>
+
+<pre>
+Relation	Result
+<hr>
+<string1> < <string2>	-1
+<string1> = <string2>	0
+<string1> > <string2>	1
+</pre>
+
+
+<pre>
+Example:
+	strcompare 'abc' 'def'	result = -1
+
+	strcompare command 'next'	
+	if result=0 goto label	
+	strcompare command 'end'	
+	if result=0 end
+</pre>
+
+</BODY>
+</HTML>
+

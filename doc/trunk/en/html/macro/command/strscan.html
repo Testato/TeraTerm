@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<TITLE>strscan</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">strscan</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>strscan &lt;string&gt; &lt;substring&gt;</B>
+</UL>
+<P></P>
+
+Searches for &lt;substring&gt; in &lt;string&gt;.
+If &lt;substring&gt; is found, its position is returned in the system variable "result". If &lt;string&gt; contains more than one occurrence of &lt;substring&gt;, the position of the first one is returned. If &lt;substring&gt; is not found, "result" is set to zero.
+<P></P>
+
+<pre>
+Example:
+  strscan 'tera term' 'term'		result = 6
+</pre>
+
+</BODY>
+</HTML>
+

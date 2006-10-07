@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<TITLE>str2code</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">str2code</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>str2code &lt;intvar&gt; &lt;string&gt;</B>
+</UL>
+<P></P>
+
+If the &lt;string&gt; consists of one character, this function copies the ASCII code for the character to the integer variable &lt;intvar&gt;.
+<P></P>
+
+If the length of &lt;string&gt; is longer than one, this function converts &lt;string&gt; to its ASCII code sequence and copies it to &lt;intvar&gt;. The variable &lt;intvar&gt; can store n ASCII codes at maximum, where n is 2 for TTMACRO.EXE and 4 for TTPMACRO.EXE. If the length of &lt;string&gt; is longer than n, the last n bytes of ASCII code sequence is copied to &lt;intvar&gt;.
+<P></P>
+
+<pre>
+Example:
+  str2code val 'A'		val=65 (ASCII code for "A")
+  str2code val 'AB'		val=65*256+66
+</pre>
+
+</BODY>
+</HTML>
+

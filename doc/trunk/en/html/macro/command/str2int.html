@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+<TITLE>str2int</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">str2int</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>str2int &lt;intvar&gt; &lt;string&gt;</B>
+</UL>
+<P></P>
+
+Converts the &lt;string&gt; which represents a decimal number to its numeric value.
+The value is returned in the integer variable &lt;intvar&gt;. If the string is converted successfully, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
+<P></P>
+
+<pre>
+Example:
+	str2int val '123'		val=123, result=1
+	str2int val '123abc'		result=0
+</pre>
+
+</BODY>
+</HTML>
+

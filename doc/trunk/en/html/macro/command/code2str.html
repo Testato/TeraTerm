@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<TITLE>code2str</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">code2str</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>code2str &lt;strvar&gt; &lt;ASCII code&gt;</B>
+</UL>
+<P></P>
+
+If the integer value &lt;ASCII code&gt; is 1-255, this command copies a character with the &lt;ASCII code&gt; to the string variable &lt;strvar&gt;,
+<P></P>
+
+This command converts an ASCII code sequence expressed by &lt;ASCII code&gt; to a character string and copies it to &lt;strvar&gt;. The non-zero highest-order byte of &lt;ASCII code&gt; is regarded as the first byte of the ASCII code sequence. If &lt;ASCII code&gt; is zero, &lt;strvar&gt;.is set to null (""). The maximum length of the character string is 2 for TTMACRO.EXE and 4 for TTPMACRO.EXE.
+<P></P>
+
+<pre>
+Example:
+   code2str str $41		The character "A" is stored in the variable "str". The ASCII code for "A" is $41.
+   code2str str $4142		The character string "AB" is stored in the variable "str". The ASCII code $41 is for "A" and $42 for "B".
+</pre>
+
+</BODY>
+</HTML>
+
