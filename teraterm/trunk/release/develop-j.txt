@@ -12,8 +12,8 @@
 
 
 ■ライブラリ
-・oniguruma 4.4.1 (http://www.geocities.jp/kosako3/oniguruma/)
-・openssl 0.9.8c (http://www.openssl.org/)
+・oniguruma 4.4.4 (http://www.geocities.jp/kosako3/oniguruma/)
+・openssl 0.9.8d (http://www.openssl.org/)
 ・zlib 1.2.3 (http://www.zlib.net/)
 
 
