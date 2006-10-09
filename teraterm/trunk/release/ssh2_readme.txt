@@ -157,12 +157,13 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.10.07 (Ver 2.34)
+2006.10.09 (Ver 2.34)
   - added /ssh1, /ssh2, /telnet command line options.
   - added /ask4passwd command line option.
   - Bug fix: an error occurs at new connection from a window which is port-forwarding.
   - Bug fix: differentiate the case of command line parameter name.
   - Bug fix: parse the filename which includes white space.
+  - upgraded OpenSSL to 0.9.8d
 
 2006.9.16 (Ver 2.33)
   - added parsing double-quoted filename in the command line parameter.
