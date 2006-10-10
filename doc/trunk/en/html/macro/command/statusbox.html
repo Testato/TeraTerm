@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<TITLE>statusbox</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">statusbox</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>statusbox &lt;message&gt; &lt;title&gt;</B>
+</UL>
+<P></P>
+
+Displays the status dialog box if it has not been displayed yet.
+Changes the message to &lt;message&gt; and title to &lt;title&gt;.
+<P></P>
+
+The "<A HREF="setdlgpos.html">setdlgpos</A>" command changes the position of status
+dialog box.<BR>
+The "<A HREF="closebox.html">closesbox</A>" command closes the status dialog box.
+<P></P>
+
+<pre>
+Example:
+  setdlgpos 200 200		Set the initial position.
+  statusbox 'Message' 'Title'	Display the status dialog box.
+  pause 3	
+  setdlgpos 0 0			Move the dialog box.
+  pause 3	
+  closesbox			Close the dialog box.
+</pre>
+
+</BODY>
+</HTML>
+

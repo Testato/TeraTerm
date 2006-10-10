@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<TITLE>setdlgpos</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">setdlgpos</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>setdlgpos &lt;x&gt; &lt;y&gt;</B>
+</UL>
+<P></P>
+
+Changes the initial position for dialog boxes opend by the "<A HREF="inputbox.html">inputbox</A>", "<A HREF="messagebox.html">messagebox</A>", "<A HREF="passwordbox.html">passwordbox</A>" and "<A HREF="statusbox.html">statusbox</A>" commands. If the status dialog box is displayed, the "setdlgpos" command also moves the dialog box.
+<P></P>
+
+<x> and <y> specify the position (x,y) in the screen coordinate.
+The origin (0,0) is upper left corner of the screen.
+<P></P>
+
+<pre>
+Example:
+  setdlgpos 0 0	
+  messagebox 'Message' 'Title'		Message box at the upper left corner.
+
+  setdlgpos 0 200			Open the status box.
+  statusbox 'Message' 'Title'	
+  for i 0 200	
+    setdlgpos i 200			Moves the status box.
+  next
+</pre>
+
+</BODY>
+</HTML>
+
