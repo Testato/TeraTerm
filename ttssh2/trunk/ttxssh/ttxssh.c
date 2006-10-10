@@ -1283,6 +1283,10 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 		} else if (MATCH_STR(option + 1, "f=") == 0) {
 			read_ssh_options_from_user_file(pvar, option + 3);
 
+		// ttermpro.exe の /F= 指定でも TTSSH の設定を読むようにした (2006.10.11 maya)
+		} else if (MATCH_STR(option + 1, "F=") == 0) {
+			read_ssh_options_from_user_file(pvar, option + 3);
+
 		// /1 および /2 オプションの新規追加 (2004.10.3 yutaka)
 		} else if (MATCH_STR(option + 1, "1") == 0) {
 			// command line: /ssh /1 is SSH1 only
@@ -1423,7 +1427,8 @@ static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
 			if ((option[0] == '-' || option[0] == '/') &&
 				(MATCH_STR(option + 1, "ssh-f=") == 0 ||
 				 MATCH_STR(option + 1, "ssh-consume=") == 0 ||
-				 MATCH_STR(option + 1, "f=") == 0)) {
+				 MATCH_STR(option + 1, "f=") == 0 ||
+				 MATCH_STR(option + 1, "F=") == 0)) {
 				if (param[i] == '"') {
 					inQuotes = TRUE;
 				}
@@ -3202,6 +3207,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.43  2006/10/06 16:35:25  maya
+ * スペースを含むファイル名を認識するよう修正した。
+ *
  * Revision 1.42  2006/10/06 09:05:59  maya
  * ttermpro の /F パラメータの値にスペースが含まれると、TTSSH の設定内容が読み込まれないバグを修正した。
  *
