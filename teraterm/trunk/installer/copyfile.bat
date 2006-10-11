@@ -1,31 +1,25 @@
-goto skip
 
-set dst="C:\Program Files\teraterm"
-copy /y C:\usr\cvs\teraterm\visualc\bin\release\*.exe %dst%
-copy /y C:\usr\cvs\teraterm\visualc\bin\release\*.dll %dst%
-copy /y C:\usr\cvs\ttssh2\ttxssh\Release\ttxssh.dll %dst%
-copy /y C:\usr\cvs\teraterm\source\ttmenu\Release\ttpmenu.exe %dst%
+set dst=archive
 
-:skip
-set dst="C:\usr\src\utf8_teraterm_installer"
 del /s /q %dst%\*.*
+mkdir %dst%
 
-copy /y C:\usr\cvs\teraterm\visualc\bin\release\*.exe %dst%
-copy /y C:\usr\cvs\teraterm\visualc\bin\release\*.dll %dst%
+copy /y ..\..\teraterm\visualc\bin\release\*.exe %dst%
+copy /y ..\..\teraterm\visualc\bin\release\*.dll %dst%
 
-copy /y C:\usr\cvs\teraterm\cygterm\cygterm.exe %dst%
-copy /y C:\usr\cvs\teraterm\cygterm\cygterm.cfg %dst%
+copy /y ..\..\teraterm\cygterm\cygterm.exe %dst%
+copy /y ..\..\teraterm\cygterm\cygterm.cfg %dst%
 
-copy /y C:\usr\cvs\ttssh2\ttxssh\Release\ttxssh.dll %dst%
-copy /y C:\usr\cvs\TTProxy\Release\TTXProxy.dll %dst%
-copy /y C:\usr\cvs\teraterm\source\ttmenu\Release\ttpmenu.exe %dst%
-copy /y C:\usr\cvs\doc\jp\teratermj.chm %dst%
-copy /y C:\usr\cvs\doc\en\teraterm.chm %dst%
+copy /y ..\..\ttssh2\ttxssh\Release\ttxssh.dll %dst%
+copy /y ..\..\TTProxy\Release\TTXProxy.dll %dst%
+copy /y ..\..\teraterm\source\ttmenu\Release\ttpmenu.exe %dst%
+copy /y ..\..\doc\jp\teratermj.chm %dst%
+copy /y ..\..\doc\en\teraterm.chm %dst%
 
-copy /y C:\usr\cvs\teraterm\release\*.* %dst%
-xcopy /s /e /y /i C:\usr\cvs\teraterm\release\theme %dst%\theme
-xcopy /s /e /y /i C:\usr\cvs\teraterm\release\plugin %dst%\plugin
-xcopy /s /e /y /i C:\usr\cvs\teraterm\release\Collector %dst%\Collector
+copy /y ..\..\teraterm\release\*.* %dst%
+xcopy /s /e /y /i ..\..\teraterm\release\theme %dst%\theme
+xcopy /s /e /y /i ..\..\teraterm\release\plugin %dst%\plugin
+xcopy /s /e /y /i ..\..\teraterm\release\Collector %dst%\Collector
 rmdir /s /q %dst%\plugin\CVS
 rmdir /s /q %dst%\theme\CVS
 rmdir /s /q %dst%\theme\scale\CVS
