@@ -52,6 +52,16 @@ http://www.neocom.ca/forum/index.php
                  =============================
                  (in reverse chronological order)
 
+2006-10-10 (Ver 2.8 Release 6)
+New features added:
+- Included 3 new macro commands: clipb2var, var2clipb and ifdefined into syntax highlighter.
+- Updated macro.hlp file, added description of new macro commands.
+- Updated TeraTerm icon in LogMeTT popup menu.
+
+Bugs fixed:
+- None.
+
+
 2006-07-24 (Ver 2.8 Release 5)
 New features added:
 - None.
