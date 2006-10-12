@@ -703,7 +703,13 @@ int FAR PASCAL CommRead1Byte(PComVar cv, LPBYTE b)
 
   if ((cv->HLogBuf!=NULL) &&
       ((cv->LCount>=InBuffSize-10) ||
-       (cv->DCount>=InBuffSize-10))) return 0;
+	  (cv->DCount>=InBuffSize-10))) {
+		  // 自分のバッファに余裕がない場合は、CPUスケジューリングを他に回し、
+		  // CPUがストールするの防ぐ。
+		  // (2006.10.13 yutaka)
+		  Sleep(1);
+		  return 0;
+  }
 
   if ((cv->HBinBuf!=NULL) &&
       (cv->BCount>=InBuffSize-10)) return 0;
@@ -1411,6 +1417,18 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2006/02/18 08:40:07  yutakakn
+ *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
+ *   ・stricmp()を_stricmp()へ置換した
+ *   ・strnicmp()を_strnicmp()へ置換した
+ *   ・strdup()を_strdup()へ置換した
+ *   ・chdir()を_chdir()へ置換した
+ *   ・getcwd()を_getcwd()へ置換した
+ *   ・strupr()を_strupr()へ置換した
+ *   ・time_tの64ビット化にともなう警告メッセージを抑止した
+ *   ・TeraTerm Menuがビルドエラーとなる現象に対処した
+ *   ・Oniguruma 4.0.1へ差し替えた
+ *
  * Revision 1.2  2004/12/07 13:41:30  yutakakn
  * External SetupをSetupメニュー配下へ移動。
  * LogMeInの起動メニューを追加。

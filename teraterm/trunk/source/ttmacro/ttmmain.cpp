@@ -65,7 +65,9 @@ BOOL CCtrlWindow::OnIdle()
 	// Windows2000/XP（シングルプロセッサ環境）においてマクロ実行中にCPU使用率が100%になってしまう
 	// 現象への暫定処置。ttermpro.exeへのDDE送信後に無条件に100ミリ秒のスリープを追加。
 	// (2005.5.25 yutaka)
-	Sleep(100);
+	// 以下の暫定処置は解除。
+	// (2006.10.13 yutaka)
+	//Sleep(100);
     return TRUE;
   }
   else if (! Pause &&
