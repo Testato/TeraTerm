@@ -42,3 +42,12 @@
   /* version 1.4 */
   #define TTVERSION (WORD)14
 #endif
+
+#define DEBUG_PRINT(val) { \
+	FILE *fp; \
+	fp = fopen("debugmsg.txt", "a+"); \
+	if (fp != NULL) { \
+		fprintf(fp, "%s = %d\n", #val, val); \
+		fclose(fp); \
+	} \
+}
