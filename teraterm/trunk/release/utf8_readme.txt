@@ -765,8 +765,9 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.10.11 (Ver 4.47)
+2006.10.12 (Ver 4.47)
   - upgraded LogMeTT to 2.8.6
+  - deleted duplication of accelerator key bind under File menu.
 
 2006.10.9 (Ver 4.46)
   - Bug fix: default save dir of teraterm.ini is setted to desktop on Windows Vista.

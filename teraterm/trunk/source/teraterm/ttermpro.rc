@@ -360,7 +360,7 @@ BEGIN
     POPUP "&File"
     BEGIN
         MENUITEM "&New connection...\tAlt+N",   ID_FILE_NEWCONNECTION
-        MENUITEM "&Duplicate session\tAlt+D",   ID_FILE_DUPLICATESESSION
+        MENUITEM "D&uplicate session\tAlt+D",   ID_FILE_DUPLICATESESSION
         MENUITEM "Cy&gwin connection\tAlt+G",   ID_FILE_CYGWINCONNECTION
         MENUITEM SEPARATOR
         MENUITEM "&Log...",                     ID_FILE_LOG
