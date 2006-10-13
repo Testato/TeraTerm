@@ -104,7 +104,7 @@ Name: custom; Description: {cm:type_custom}; Flags: iscustom
 [Components]
 Name: TeraTerm; Description: TeraTerm & Macro; Flags: fixed; Types: custom compact full standard
 Name: TTSSH; Description: TTSSH; Types: compact full standard
-Name: cygterm; Description: CygTerm+; Types: full standard
+Name: cygterm; Description: CygTerm+; Types: full standard; Check: not isIA64
 Name: LogMeTT; Description: LogMeTT; Types: full standard
 Name: TeraTerm_Menu; Description: TeraTerm Menu; Types: full
 Name: TTProxy; Description: TTProxy; Types: full standard
@@ -220,4 +220,12 @@ begin;
       Result := True;
     end;
   end;
+end;
+
+function isIA64 : Boolean;
+begin
+  if ProcessorArchitecture = paIA64 then
+    Result := True
+  else
+    Result := False;
 end;
