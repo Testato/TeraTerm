@@ -130,15 +130,19 @@ Name: quicklaunchicon; Description: {cm:task_quicklaunchicon}; Components: TeraT
 Name: startupttmenuicon; Description: {cm:task_startupttmenuicon}; Components: TeraTerm_Menu
 Name: startupcollectoricon; Description: {cm:task_startupcollectoricon}; Components: Collector
 
+[Run]
+Filename: {app}\ttpmenu.exe; Flags: nowait postinstall skipifsilent; Description: {cm:launch_ttmenu}; Components: TeraTerm_Menu
+Filename: {app}\Collector\Collector.exe; Flags: nowait postinstall skipifsilent; Description: {cm:launch_collector}; Components: Collector
+
 [CustomMessages]
-en.task_desktopicon=Create TeraTerm shortcut to Desktop
-en.task_quicklaunchicon=Create TeraTerm shortcut to Quick Launch
-en.task_startupttmenuicon=Create TeraTerm Menu shortcut to Startup
-en.task_startupcollectoricon=Create Collector shortcut to Startup
-ja.task_desktopicon=デスクトップに TeraTerm のショートカットを作る
-ja.task_quicklaunchicon=クイック起動に TeraTerm のショートカットを作る
-ja.task_startupttmenuicon=スタートアップに TeraTerm Menu のショートカットを作る
-ja.task_startupcollectoricon=スタートアップに Collector のショートカットを作る
+en.task_desktopicon=Create TeraTerm shortcut to &Desktop
+en.task_quicklaunchicon=Create TeraTerm shortcut to &Quick Launch
+en.task_startupttmenuicon=Create TeraTerm &Menu shortcut to Startup
+en.task_startupcollectoricon=Create &Collector shortcut to Startup
+ja.task_desktopicon=デスクトップに TeraTerm のショートカットを作る(&D)
+ja.task_quicklaunchicon=クイック起動に TeraTerm のショートカットを作る(&Q)
+ja.task_startupttmenuicon=スタートアップに TeraTerm &Menu のショートカットを作る
+ja.task_startupcollectoricon=スタートアップに &Collector のショートカットを作る
 en.type_standard=Standard installation
 en.type_full=Full installation
 en.type_compact=Compact installation
@@ -147,6 +151,10 @@ ja.type_standard=標準インストール
 ja.type_full=フルインストール
 ja.type_compact=コンパクトインストール
 ja.type_custom=カスタムインストール
+en.launch_ttmenu=Launch TeraTerm &Menu
+en.launch_collector=Launch &Collector
+ja.launch_ttmenu=今すぐ TeraTerm &Menu を実行する
+ja.launch_collector=今すぐ &Collector を実行する
 
 [Code]
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
