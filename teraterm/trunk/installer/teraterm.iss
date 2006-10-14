@@ -122,14 +122,12 @@ Name: {group}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; Ico
 Name: {group}\Collector; Filename: {app}\Collector\Collector.exe; WorkingDir: {app}; IconFilename: {app}\Collector\Collector.exe; IconIndex: 0; Components: Collector
 Name: {userdesktop}\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: desktopicon
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: quicklaunchicon
-Name: {userstartup}\LogMeTT; Filename: {app}\LogMeTT.exe; WorkingDir: {app}; IconFilename: {app}\LogMeTT.exe; IconIndex: 0; Components: LogMeTT; Tasks: startuplogmetticon
 Name: {userstartup}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; Components: TeraTerm_Menu; IconIndex: 0; Tasks: startupttmenuicon
 Name: {userstartup}\Collector; Filename: {app}\collector\collector.exe; WorkingDir: {app}; IconFilename: {app}\collector\collector.exe; Components: Collector; Tasks: startupcollectoricon; IconIndex: 0
 
 [Tasks]
 Name: desktopicon; Description: {cm:task_desktopicon}; Components: TeraTerm
 Name: quicklaunchicon; Description: {cm:task_quicklaunchicon}; Components: TeraTerm
-Name: startuplogmetticon; Description: {cm:task_startuplogmetticon}; Components: LogMeTT; Languages: 
 Name: startupttmenuicon; Description: {cm:task_startupttmenuicon}; Components: TeraTerm_Menu
 Name: startupcollectoricon; Description: {cm:task_startupcollectoricon}; Components: Collector
 
@@ -142,12 +140,10 @@ Filename: {app}\Collector\Collector.exe; Flags: nowait postinstall skipifsilent 
 [CustomMessages]
 en.task_desktopicon=Create TeraTerm shortcut to &Desktop
 en.task_quicklaunchicon=Create TeraTerm shortcut to &Quick Launch
-en.task_startuplogmetticon=Create &LogMeTT shortcut to Startup
 en.task_startupttmenuicon=Create TeraTerm &Menu shortcut to Startup
 en.task_startupcollectoricon=Create &Collector shortcut to Startup
 ja.task_desktopicon=デスクトップに TeraTerm のショートカットを作る(&D)
 ja.task_quicklaunchicon=クイック起動に TeraTerm のショートカットを作る(&Q)
-ja.task_startuplogmetticon=スタートアップに &LogMeTT のショートカットを作る
 ja.task_startupttmenuicon=スタートアップに TeraTerm &Menu のショートカットを作る
 ja.task_startupcollectoricon=スタートアップに &Collector のショートカットを作る
 en.type_standard=Standard installation
