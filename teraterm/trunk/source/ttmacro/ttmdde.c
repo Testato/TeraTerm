@@ -35,8 +35,12 @@ BOOL Wait2Found;
 #define ItemName2 "PARAM"
 
 #define OutBufSize 512
-#define RingBufSize 4096
-#define RCountLimit 3072
+// リングバッファを 4KB から 16KB へ拡張した (2006.10.15 yutaka)
+// TeraTerm本体へ SendSync を送るときの上限チェックを 8KB にした。
+// TeraTerm本体側のDDEバッファは 1KB なので、それよりも大きな値にすることで、
+// TeraTermとマクロがスラッシング状態になることを防ぐ。
+#define RingBufSize (4096*4)
+#define RCountLimit (RingBufSize/2)
 
 static HWND HMainWin = NULL;
 #ifndef TERATERM32

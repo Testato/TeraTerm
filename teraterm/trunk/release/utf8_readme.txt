@@ -765,11 +765,12 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.10.13 (Ver 4.47)
+2006.10.15 (Ver 4.47)
   - upgraded LogMeTT to 2.8.6
   - deleted duplication of accelerator key bind under File menu.
   - Workaround: insert 1msec sleep to OnIdle engine while DDE buffer is full.
   - deleted 100msec sleep after send and sendln macro command.
+  - expaned the ring buffer size of macro program(ttpmacro.exe) from 4KB to 16KB. And also changed the macro synchronization timing to TeraTerm(ttermpro.exe).
 
 2006.10.9 (Ver 4.46)
   - Bug fix: default save dir of teraterm.ini is setted to desktop on Windows Vista.
