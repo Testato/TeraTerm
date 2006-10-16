@@ -1,0 +1,33 @@
+<HTML>
+<HEAD>
+<TITLE>yesnobox</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">yesnobox</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>yesnobox &lt;message&gt; &lt;title&gt;</B>
+</UL>
+<P></P>
+
+Displays a dialog box with the &lt;message&gt;, &lt;title&gt;, "Yes" button and "No" button.
+<P></P>
+
+If the user clicks on the "Yes" button, the system variable "result" is set to 1. If the user clicks on the "No" button, "result" is set to zero.
+<P></P>
+
+<pre>
+Example:
+	yesnobox 'Try agian?' 'Tera Term'
+	if result goto retry
+	end
+</pre>
+
+</BODY>
+</HTML>
+
