@@ -1,0 +1,35 @@
+<HTML>
+<HEAD>
+<TITLE>call</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">call</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>call &lt;label&gt;</B>
+</UL>
+<P></P>
+
+Calls a subroutine beginning with the &lt;label&gt; line.
+<P></P>
+
+<pre>
+Example:
+	messagebox "I'm in main." "test"	
+	call sub					Jump to ":sub".
+	messagebox "Now I'm in main" "test"	
+	end	
+
+	:sub						Start of the subroutine.
+	messagebox "Now I'm in sub" "test"	
+	return						Go back to the main routine.
+</pre>
+
+</BODY>
+</HTML>
+

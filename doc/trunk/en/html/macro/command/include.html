@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<TITLE>include</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">include</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>include &lt;include file name&gt;</B>
+</UL>
+<P></P>
+
+Moves control to the include file.
+<P></P>
+
+<pre>
+Example:
+----- Main file "main.ttl" ------
+	i=10	
+	:loop	
+	include 'sub.ttl'		Move to the include file.
+	if i>=0 goto loop	
+	end	
+----- End of "main.ttl" ---------
+
+----- Include file "sub.ttl" ----
+	if i<0 then	
+	  messagebox 'error!' 'sub'	
+	  exit				Go back to the main file.
+	endif	
+	i = i - 1			Go back to the main file.
+----- End of "sub.ttl" ----------
+</pre>
+
+</BODY>
+</HTML>
+
