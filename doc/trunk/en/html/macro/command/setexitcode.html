@@ -1,0 +1,51 @@
+<HTML>
+<HEAD>
+<TITLE>setexitcode</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">setexitcode</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>
+setexitcode &lt;exit code&gt;
+</B>
+</UL>
+<P></P>
+
+Sets the exit code of MACRO to the integer value &lt;exit code&gt;.
+<P></P>
+
+<B>For Windows 3.1</B>: There is no way to utilize the exit code of MACRO because MACRO can not be run by a batch file. This command is provided just for compatibility with the 32-bit version of MACRO.
+<P></P>
+
+<B>For Windows 95/98</B>: If MACRO is run from a batch file by the command line "start /w ttpmacro &lt;ttl filename&gt;" (the option /w is necessary), the exit code can be tested by the DOS command "if errorlevel n".
+<P></P>
+
+<B>For Windows NT4.0/2000/XP</B>: If MACRO is run from a batch file by the command line "ttpmacro &lt;ttl filename&gt;", the exit code can be tested by the DOS command "if errorlevel n".
+<P></P>
+
+<pre>
+Example:
+----- Batch file "test.bat" for Win 95 ------
+start /w ttpmacro test.ttl		Run MACRO using the "start /w" command.
+if errorlevel 1 echo Error!		Display message if the exit code is greater than 0.
+----- End of "test.bat" ---------
+
+----- Batch file "test.bat" for Win NT4.0/2000/XP ------
+ttpmacro test.ttl			Run MACRO. No need to use the "start" command.
+if errorlevel 1 echo Error!		Display message if the exit code is greater than 0.
+----- End of "test.bat" ---------
+
+----- Macro file "test.ttl" ----
+setexitcode 1				Set the exit code to 1.
+----- End of "test.ttl" ----------
+</pre>
+
+</BODY>
+</HTML>
+
