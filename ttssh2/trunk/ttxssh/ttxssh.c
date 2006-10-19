@@ -75,6 +75,7 @@ static char FAR *ProtocolFamilyList[] = { "UNSPEC", "IPv6", "IPv4", NULL };
 #include "cipher.h"
 
 #define MATCH_STR(s, o) strncmp((s), (o), NUM_ELEM(o) - 1)
+#define MATCH_STR_I(s, o) _strnicmp((s), (o), NUM_ELEM(o) - 1)
 
 /* This extension implements SSH, so we choose a load order in the
    "protocols" range. */
@@ -1273,18 +1274,18 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 			}
 
 			return 1;
-		} else if (MATCH_STR(option + 1, "t=") == 0) {
+
+		// ttermpro.exe の /T= 指定の流用なので、大文字も許す (2006.10.19 maya)
+		} else if (MATCH_STR_I(option + 1, "t=") == 0) {
 			if (strcmp(option + 3, "2") == 0) {
 				pvar->settings.Enabled = 1;
 				return 1;
 			} else {
 				pvar->settings.Enabled = 0;
 			}
-		} else if (MATCH_STR(option + 1, "f=") == 0) {
-			read_ssh_options_from_user_file(pvar, option + 3);
 
-		// ttermpro.exe の /F= 指定でも TTSSH の設定を読むようにした (2006.10.11 maya)
-		} else if (MATCH_STR(option + 1, "F=") == 0) {
+		// ttermpro.exe の /F= 指定でも TTSSH の設定を読む (2006.10.11 maya)
+		} else if (MATCH_STR_I(option + 1, "f=") == 0) {
 			read_ssh_options_from_user_file(pvar, option + 3);
 
 		// /1 および /2 オプションの新規追加 (2004.10.3 yutaka)
@@ -1427,8 +1428,7 @@ static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
 			if ((option[0] == '-' || option[0] == '/') &&
 				(MATCH_STR(option + 1, "ssh-f=") == 0 ||
 				 MATCH_STR(option + 1, "ssh-consume=") == 0 ||
-				 MATCH_STR(option + 1, "f=") == 0 ||
-				 MATCH_STR(option + 1, "F=") == 0)) {
+				 MATCH_STR_I(option + 1, "f=") == 0)) {
 				if (param[i] == '"') {
 					inQuotes = TRUE;
 				}
@@ -3207,6 +3207,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.44  2006/10/10 16:54:54  maya
+ * ttermpro.exeの/Fパラメータで指定されたファイルからTTSSHの設定が読まれなくなっていたのを修正した。
+ *
  * Revision 1.43  2006/10/06 16:35:25  maya
  * スペースを含むファイル名を認識するよう修正した。
  *
