@@ -159,6 +159,7 @@ OF SUCH DAMAGE.
 
 2006.10.11 (Ver 2.35)
   - Bug fix: TTSSH settings wasn't read from ini file which is specified by /F parameter of ttermpro.exe. Enbuged at 2.34.
+  - Bug fix: Couldn't start a telnet session from 'New connection' dialog when main windows is connected with SSH protocol. Enbuged at 2.34.
 
 2006.10.09 (Ver 2.34)
   - added /ssh1, /ssh2, /telnet command line options.
