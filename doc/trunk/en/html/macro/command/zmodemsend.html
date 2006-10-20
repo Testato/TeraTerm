@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<TITLE>zmodemsend</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">zmodemsend</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>
+zmodemsend &lt;filename&gt; &lt;binary flag&gt;
+</B>
+</UL>
+<P></P>
+
+Causes Tera Term to send the file &lt;filename&gt; to the host with the ZMODEM protocol. Pauses until the end of the file transfer.<BR>
+If the file is transferred successfully, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
+<P></P>
+
+If the file is a binary file, &lt;binary flag&gt; must be non-zero. If the file is a text file, &lt;binary flag&gt; must be zero.
+<P></P>
+
+<PRE>
+Example:
+	zmodem 'readme.txt' 0
+</PRE>
+
+</BODY>
+</HTML>
+
