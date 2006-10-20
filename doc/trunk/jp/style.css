@@ -39,4 +39,13 @@ pre.console{
 	padding: .5ex .5ex .5ex .5ex; 
 }
 
-
+p {
+	/*font-family: "Lucida Console"; */
+	font-weight: medium;
+        font-style: normal;
+	font-size:  small;			
+	white-space:pre; 
+	/*border:double black; */
+	background: #ffffff; 
+	padding: .5ex;
+}
