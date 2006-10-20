@@ -1,13 +1,18 @@
 <HTML>
 <HEAD>
 <TITLE>UTF-8 TeraTerm Pro with TTSSH2 Help Index</TITLE>
+
+<META http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<META http-equiv="Content-Style-Type" content="text/css">
+
 <link rel="stylesheet" href="./style.css" type="text/css">
 </HEAD>
+
 <BODY>
 <div class="topic"><FONT COLOR="#cc0066">中間ホストを経由してホストに接続した場合のファイル転送</FONT></div>
 
-
-<pre>
+<p>
+<p>
 あるホストにログインして、そこからさらに他のホストへログインした場合、終端ホストと Tera Term の間のファイル転送 (Kermit, XMODEM, ZMODEM, B-PLUS, Quick-VAN) がうまくいかないことがあります。
 
 Tera Term 作者はこのような状況でのファイル転送を想定してませんので、他の転送法(直接終端ホストに接続する、一旦中間ホストのディスクへアップロード/ダウンロードする、ftp を使用する等)を取ることをお勧めします。
@@ -28,8 +33,8 @@ Kermit ではこのことは通常問題になりません。B-Plus と ZMODEM では、すべての制御文
 中間ホストから telnet コマンドで終端ホストに接続した場合、Tera Term が送出した制御文字の一部は中間ホストの telnet コマンドにより吸収されてしまい、終端ホストに伝わらないことがあります。これらの制御文字は通常 telnet の "echo", "escape", "erase", "flushoutput", "interrupt", "kill", "quit", "areyouthere" 等の機能に割り当てられています。ホストからファイルのダウンロードはできるが、ホストへのアップロードはできないというような場合、このような状況が原因になっている可能性が高いです。この問題を解決するには telnet コマンドの各機能に対して割り当てられた制御文字を解除するか、あるいは上述のように ZMODEM と B-Plus の場合はすべての制御文字をエスケープするようにしてください。ただし telnet コマンドによっては、各機能に割り当てられた制御文字をうまく解除できない場合があります。
 
 いずれの場合も中間ホスト <-> 終端ホスト間の通信の設定は Tera Term から直接することができません。この問題はいくつかの原因が重なっておきている場合もあり、Tera Term 作者に解決法を質問されてもお答えできない場合が多いです。上記のヒントを参考にしても解決できない(上記の内容が理解できない)場合は、残念ですがあきらめてください。
-</pre>
-
+</p>
+<p>
 
 </BODY>
 </HTML>
