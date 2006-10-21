@@ -3938,6 +3938,9 @@ static void SSH2_dh_kex_init(PTInstVar pvar)
 	memcpy(outmsg, buffer_ptr(msg), len);
 	finish_send_packet(pvar);
 
+	if (pvar->kexdh != NULL) {   
+         DH_free(pvar->kexdh);   
+    } 
 	pvar->kexdh = dh;
 
 	SSH2_dispatch_init(2);
@@ -6863,6 +6866,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.52  2006/10/21 14:02:50  maya
+ * 取っておくべき値が解放されているようなので修正した。
+ *
  * Revision 1.51  2006/09/18 05:08:04  maya
  * コマンドラインパラメータ '/ask4passwd' を追加した。
  *
