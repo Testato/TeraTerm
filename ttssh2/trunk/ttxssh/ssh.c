@@ -3909,7 +3909,6 @@ error:;
 static void SSH2_dh_kex_init(PTInstVar pvar)
 {
 	DH *dh = NULL;
-	char *s, *t;
 	buffer_t *msg = NULL;
 	unsigned char *outmsg;
 	int len;
@@ -3926,10 +3925,6 @@ static void SSH2_dh_kex_init(PTInstVar pvar)
 	// 秘密にすべき乱数(X)を生成
 	dh_gen_key(pvar, dh, pvar->we_need);
 
-	s = BN_bn2hex(dh->priv_key);
-	t = BN_bn2hex(dh->pub_key);
-
-
 	msg = buffer_init();
 	if (msg == NULL) {
 		// TODO: error check
@@ -3943,9 +3938,6 @@ static void SSH2_dh_kex_init(PTInstVar pvar)
 	memcpy(outmsg, buffer_ptr(msg), len);
 	finish_send_packet(pvar);
 
-	if (pvar->kexdh != NULL) {
-		DH_free(dh);
-	}
 	pvar->kexdh = dh;
 
 	SSH2_dispatch_init(2);
@@ -6871,6 +6863,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.51  2006/09/18 05:08:04  maya
+ * コマンドラインパラメータ '/ask4passwd' を追加した。
+ *
  * Revision 1.50  2006/08/22 14:46:58  yutakakn
  * パスワードの破棄はユーザ認証後に行うようにした。
  *
