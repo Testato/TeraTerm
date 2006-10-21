@@ -168,10 +168,12 @@ typedef enum {
 #define KEX_DHGEX   "diffie-hellman-group-exchange-sha1"
 
 // support of "Compression delayed" (2006.6.23 maya)
-#define COMP_UNKNOWN	-1
-#define COMP_NONE		0
-#define COMP_ZLIB		1
-#define COMP_DELAYED	2
+enum compression_algorithm {
+	COMP_NONE,
+	COMP_ZLIB,
+	COMP_DELAYED,
+	COMP_UNKNOWN
+};
 
 enum kex_exchange {
     KEX_DH_GRP1_SHA1,
