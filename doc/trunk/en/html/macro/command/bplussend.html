@@ -1,0 +1,31 @@
+<HTML>
+<HEAD>
+<TITLE>bplussend</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">bplussend</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>
+bplussend &lt;filename&gt;
+</B>
+</UL>
+<P></P>
+
+Causes Tera Term to send the file &lt;filename&gt; to the host with the B-Plus protocol. Pauses until the end of the file transfer.
+If the file is transferred successfully, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
+<P></P>
+
+<PRE>
+Example:
+	bplussend 'readme.txt'
+</PRE>
+
+</BODY>
+</HTML>
+
