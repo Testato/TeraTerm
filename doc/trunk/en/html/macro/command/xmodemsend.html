@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<TITLE>xmodemsend</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">xmodemsend</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>
+xmodemsend &lt;filename&gt; &lt;option&gt;
+</B>
+</UL>
+<P></P>
+
+Causes Tera Term to send the file &lt;filename&gt; to the host with the XMODEM protocol. Pauses until the end of the file transfer.
+If the file is transferred successfully, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
+<P></P>
+
+&lt;option&gt; specifies the XMODEM option, and can be one of the following:
+<P></P>
+
+<PRE>
+&lt;option&gt;	XMODEM option
+1	Checksum
+2	CRC
+3	1K
+others	Checksum
+
+Example:
+	xmodemsend 'readme.txt' 1		XMODEM send, checksum
+</PRE>
+
+</BODY>
+</HTML>
+

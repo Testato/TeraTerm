@@ -1,0 +1,43 @@
+<HTML>
+<HEAD>
+<TITLE>xmodemrecv</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">xmodemrecv</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>
+xmodemrecv &lt;filename&gt; &lt;binary flag&gt; &lt;option&gt;
+</B>
+</UL>
+<P></P>
+
+Causes Tera Term to receive the file &lt;filename&gt; from the host with the XMODEM protocol. Pauses until the end of the file transfer.
+If the file is transferred successfully, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
+<P></P>
+
+If the file is a binary file, &lt;binary flag&gt; must be non-zero. If the file is a text file, &lt;binary flag&gt; must be zero.
+<P></P>
+
+&lt;option&gt; specifies the XMODEM option, and can be one of the following:
+<P></P>
+
+<PRE>
+&lt;option&gt;	XMODEM option
+1	Checksum
+2	CRC
+3	1K
+others	Checksum
+
+Example:
+	xmodemrecv 'readme.txt' 0 2		XMODEM receive, text file, CRC
+</PRE>
+
+</BODY>
+</HTML>
+

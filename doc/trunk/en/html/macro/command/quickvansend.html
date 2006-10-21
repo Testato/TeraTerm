@@ -1,0 +1,31 @@
+<HTML>
+<HEAD>
+<TITLE>quickvansend</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">quickvansend</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>
+quickvansend &lt;filename&gt;
+</B>
+</UL>
+<P></P>
+
+Causes Tera Term to send the file &lt;filename&gt; to the host with the Quick-VAN protocol. Pauses until the end of the file transfer.
+If the file is transferred successfully, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
+<P></P>
+
+<PRE>
+Example:
+	quickvansend 'readme.txt'
+</PRE>
+
+</BODY>
+</HTML>
+
