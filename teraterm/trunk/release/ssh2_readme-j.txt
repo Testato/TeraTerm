@@ -150,9 +150,10 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
-2006.10.11 (Ver 2.35)
+2006.10.23 (Ver 2.35)
   ・ttermpro.exeの/Fパラメータで指定されたファイルからTTSSHの設定が読まれなくなっていたのを修正した。2.34でエンバグしました。
   ・SSHで接続中にNew connectionダイアログからtelnet接続できないのを修正した。2.34でエンバグしました。
+  ・KEX_DH_GRP1_SHA1 or KEX_DH_GRP14_SHA1における不正なメモリ解放を修正した。
 
 2006.10.09 (Ver 2.34)
   ・/ssh1, /ssh2, /telnet オプションを追加した。
