@@ -1,35 +1,36 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-  <head>
-    <title>UTF-8 TeraTerm Pro with TTSSH2 Help Index</title>
+  <HEAD>
+    <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+    <TITLE>UTF-8 TeraTerm Pro with TTSSH2 Help Index</title>
     <link rel="stylesheet" href="../style.css" type="text/css">
   </head>
 
   <body>
-    <h1>SSH Authentication$B!J(B[Setup] $B%a%K%e!<!K(B</h1>
+    <h1>SSH Authentication（[Setup] メニュー）</h1>
 
-    <h2>"TTSSH: Authentication Setup" $B%@%$%"%m%0%\%C%/%9(B</h2>
+    <h2>"TTSSH: Authentication Setup" ダイアログボックス</h2>
 
     <dl>
       <dt>User name</dt>
-      <dd>SSH $B@\B3$GMQ$$$k%f!<%6L>$r;XDj$7$^$9!#(B</dd>
+      <dd>SSH 接続で用いるユーザ名を指定します。</dd>
 
       <dt>Use plain passwd to log in</dt>
       <dd>
-	$B%Q%9%o!<%IG'>Z$rMQ$$$k>l9g$K;XDj$7$^$9!#(BSSH2 $B@\B3$N>l9g$G$O(B "keyboard-interactive (SSH2)" $B$r;XDj$G$-$^$9!#$3$N>l9g!"DL?.O)$K$O%Q%9%o!<%I$=$N$b$N$ON.$l$^$;$s!#!JDL>o$N%Q%9%o!<%IG'>Z$N>l9g$O!"0E9f2=$5$l$?>e$G%Q%9%o!<%I$=$N$b$N$,N.$l$^$9!#!K(B
+	パスワード認証を用いる場合に指定します。SSH2 接続の場合では "keyboard-interactive (SSH2)" を指定できます。この場合、通信路にはパスワードそのものは流れません。（通常のパスワード認証の場合は、暗号化された上でパスワードそのものが流れます。）
       </dd>
 
       <dt>Use RSA/DSA key to login</dt>
-      <dd>$B$"$i$+$8$a:n@.$7$?(B RSA/DSA $B80$rMQ$$$?G'>ZJ}K!$rA*Br$7$^$9!#(B</dd>
+      <dd>あらかじめ作成した RSA/DSA 鍵を用いた認証方法を選択します。</dd>
 
       <dt>Use rhost to login (SSH1)</dt>
-      <dd>$B%[%9%H$N@_Dj$G(B rhost $B$,MxMQ$G$-$k>l9g$KA*Br$7$^$9!#(B</dd>
+      <dd>ホストの設定で rhost が利用できる場合に選択します。</dd>
 
       <dt>
 	Use challenge/response to log in (SSH1:TIS, SSH2:keyboard-interactive)
       </dt>
-      <dd>$B%A%c%l%s%8!?%l%9%]%s%9G'>Z$rMQ$$$k>l9g$K;XDj$7$^$9!#(B</dd>
+      <dd>チャレンジ／レスポンス認証を用いる場合に指定します。</dd>
     </dl>
   </body>
 </html>

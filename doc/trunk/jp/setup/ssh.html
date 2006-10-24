@@ -1,36 +1,37 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-  <head>
-    <title>UTF-8 TeraTerm Pro with TTSSH2 Help Index</title>
+  <HEAD>
+    <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+    <TITLE>UTF-8 TeraTerm Pro with TTSSH2 Help Index</title>
     <link rel="stylesheet" href="../style.css" type="text/css">
   </head>
 
   <body>
-    <h1>SSH$B!J(B[Setup] $B%a%K%e!<!K(B</h1>
+    <h1>SSH（[Setup] メニュー）</h1>
 
-    <h2>"TTSSH: Setup" $B%@%$%"%m%0%\%C%/%9(B</h2>
+    <h2>"TTSSH: Setup" ダイアログボックス</h2>
 
     <dl>
       <dt>Compression level</dt>
       <dd>
-	$BDL?.O)$N05=L%l%Y%k$r;XDj$7$^$9!#1&$K%9%i%$%I$5$;$k$[$I05=L$,6/$/$+$+$j$^$9!#!JC"$7!"(BADSL $B$d(B FTTH $BEy9bB.$J2s@~$G$O%l%9%]%s%9$,0-$/$J$k>l9g$b$"$j$^$9!#!K(B
+	通信路の圧縮レベルを指定します。右にスライドさせるほど圧縮が強くかかります。（但し、ADSL や FTTH 等高速な回線ではレスポンスが悪くなる場合もあります。）
       </dd>
 
       <dt>Prefered cihper order</dt>
       <dd>
-	SSH $B@\B3$G;HMQ$9$k0E9f$N<oN`$r=g=x$rIU$1$F;XDj$7$^$9!#(B<br/>
-	&lt;ciphers below this line are disabled&gt;$B0J2<$N0E9f$O;HMQ$5$l$^$;$s!#(B
+	SSH 接続で使用する暗号の種類を順序を付けて指定します。<br/>
+	&lt;ciphers below this line are disabled&gt;以下の暗号は使用されません。
       </dd>
 
       <dt>SSH Known Hosts</dt>
       <dd>
-	SSH $B$G@\B3$7$?%[%9%H!J$H%[%9%H8x3+80!K$,3JG<$5$l$k%U%!%$%k$r;XDj$7$^$9!#(B
+	SSH で接続したホスト（とホスト公開鍵）が格納されるファイルを指定します。
       </dd>
 
       <dt>HeartBeat (keep-alive)</dt>
       <dd>
-	$B0lDj;~4V$4$H$K%Q%1%C%H$r%[%9%H$KAw?.$7!"@\B3$r0];}$7$^$9!#!JFC$K(B NAT $B4D6-2<$GM-8z!#!K(B0$B$r;XDj$9$k$HEv3:5!G=$rL58z2=$7$^$9!#(B
+	一定時間ごとにパケットをホストに送信し、接続を維持します。（特に NAT 環境下で有効。）0を指定すると当該機能を無効化します。
       </dd>
     </dl>
   </body>

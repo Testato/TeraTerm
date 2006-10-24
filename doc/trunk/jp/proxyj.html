@@ -2,48 +2,49 @@
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
     <title>UTF-8 TeraTerm Pro with TTSSH2 Help Index</title>
     <link rel="stylesheet" href="./style.css" type="text/css">
   </head>
 
   <body>
-    <div class="topic"><FONT COLOR="#cc0066">Proxy $B@\B3(B</FONT></div>
+    <div class="topic"><FONT COLOR="#cc0066">Proxy 接続</FONT></div>
 
     <p>
-      UTF-8 TeraTerm Pro with TTSSH2 $B$G<BAu$5$l$?(B Proxy $B@\B3$K$D$$$F2r@b$7$^$9!#(B
+      UTF-8 TeraTerm Pro with TTSSH2 で実装された Proxy 接続について解説します。
     </p>
 
-   <div class="topic"><FONT COLOR="#cc0066">$BA0DsCN<1(B</FONT></div> 
+   <div class="topic"><FONT COLOR="#cc0066">前提知識</FONT></div> 
 
     <p>
-      Proxy $B$H$O!"2<?^$N$h$&$K%$%s%?!<%M%C%H4D6-$H(BLAN$B4D6-$,@Z$jN%$5$l$?%M%C%H%o!<%/9=@.$N$H$-!"30It$H$N@\B3$KMQ$$$k<jCJ$G$9!#(B<br>
-      <img src="./image/connection.png" alt="Proxy $B@\B3(B"><br>
-      $B$3$N$h$&$J7ABV$G;H$o$l$k(B Proxy $B$N<oN`$K$O$$$/$D$b$N<oN`$,$"$j!"(BUTF-8 TeraTerm Pro with TTSSH2 $B$G$O<!$N$h$&$J<oN`$N(B Proxy $B$KBP1~$7$F$$$^$9!#(B
+      Proxy とは、下図のようにインターネット環境とLAN環境が切り離されたネットワーク構成のとき、外部との接続に用いる手段です。<br>
+      <img src="./image/connection.png" alt="Proxy 接続"><br>
+      このような形態で使われる Proxy の種類にはいくつもの種類があり、UTF-8 TeraTerm Pro with TTSSH2 では次のような種類の Proxy に対応しています。
     </p>
 
     <ul>
-      <li>HTTP$B!J(BSSH1$B!"(BSSH2 $BMQ!K(B</li>
-      <li>TELNET$B!J(Btelnet $BMQ!K(B</li>
+      <li>HTTP（SSH1、SSH2 用）</li>
+      <li>TELNET（telnet 用）</li>
       <li>SOCKS4</li>
       <li>SOCKS5</li>
     </ul>
 
-    <div class="topic"><FONT COLOR="#cc0066">$B@_DjJ}K!(B</FONT></div>
+    <div class="topic"><FONT COLOR="#cc0066">設定方法</FONT></div>
 
-    <h3>$B$4Cm0U(B</h3>
+    <h3>ご注意</h3>
 
     <p>
-      HTTP Proxy $B$r;HMQ$9$k$?$a$K$O!"!VAj<jJ}$N(B SSH $B%5!<%P$N%3%M%/%7%g%s<uIU%]!<%H$,(B443$BHV%]!<%H$G$"$k$3$H!W$,I,MW$G$9!#DL>o$N@_Dj$G$O(B SSH $B$O(B22$BHV%]!<%H$G%3%M%/%7%g%s$rBT$A$^$9!#$3$l$O(B HTTPS $B$K8+$;$+$1$F(B SSH $B$NDL?.$r9T$&$?$a$K$3$N$h$&$K$J$C$F$$$^$9!J(BHTTPS $B$N%]!<%H$,(B443$BHV$G$9!K!#(B
+      HTTP Proxy を使用するためには、「相手方の SSH サーバのコネクション受付ポートが443番ポートであること」が必要です。通常の設定では SSH は22番ポートでコネクションを待ちます。これは HTTPS に見せかけて SSH の通信を行うためにこのようになっています（HTTPS のポートが443番です）。
     </p>
 
-    <div class="topic"><FONT COLOR="#cc0066">$B@_Dj$N<j=g(B</FONT></div>
+    <div class="topic"><FONT COLOR="#cc0066">設定の手順</FONT></div>
 
     <p>
-      $B6qBNE*$J@_DjJ}K!$G$9$,!"$^$:!"(B[Setup] $B%a%K%e!<$+$i!V(BProxy...$B!W$rA*Br$7$^$9!#(B<br>
+      具体的な設定方法ですが、まず、[Setup] メニューから「Proxy...」を選択します。<br>
       <img src="./image/Proxy.png" alt="Proxy"><br>
-      $B<!$K!"2<?^$N!V(BProxy Setup$B!W%@%$%"%m%0$,8=$l$^$9$N$G!"!V(BType$B!W$K;HMQ$9$k(B Proxy $B$N<oN`$r!"!V(BHostname$B!W$K(B Proxy $B%5!<%P$N%[%9%HL>!J$b$7$/$O(B IP $B%"%I%l%9!K$r;XDj!"!V(BPort number$B!W$K(B Proxy $B$N%]!<%HHV9f$rF~NO$7$F!V(BOK$B!W$r%/%j%C%/$7$^$9!#!V(BUsername$B!W$H!V(BPassword$B!W$O(B Proxy $B$G$NG'>Z$,I,MW$J>l9g$K$N$_F~NO$7$F$/$@$5$$!#(B<br>
-      <img src="./image/ProxySetup.png" alt="Proxy $B@_Dj(B"><br>
-      $B$3$l$G(B Proxy $B$N@_Dj$O40N;$G$9$+$i!"DL>o$N@\B3$r9T$$$^$9!#!J(BHTTP$B$r;XDj$7$?>l9g!"@\B3%@%$%"%m%0$N!V(BTCP port#$B!W$K(B443$BHV$r;XDj$9$k$3$H$r$*K:$l$J$/!D!#!K(B
+      次に、下図の「Proxy Setup」ダイアログが現れますので、「Type」に使用する Proxy の種類を、「Hostname」に Proxy サーバのホスト名（もしくは IP アドレス）を指定、「Port number」に Proxy のポート番号を入力して「OK」をクリックします。「Username」と「Password」は Proxy での認証が必要な場合にのみ入力してください。<br>
+      <img src="./image/ProxySetup.png" alt="Proxy 設定"><br>
+      これで Proxy の設定は完了ですから、通常の接続を行います。（HTTPを指定した場合、接続ダイアログの「TCP port#」に443番を指定することをお忘れなく…。）
     </p>
   </body>
 </html>

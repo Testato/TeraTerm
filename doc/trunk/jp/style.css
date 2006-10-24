@@ -22,11 +22,11 @@ dt{ font-weight: bold;font-style: normal;font-size: larger;color: black;border-c
 pre { 
 	/*font-family: "Lucida Console"; */
 	font-weight: medium;
-        font-style: normal;
-	font-size:  small;			
-	white-space:pre; 
+	font-style: normal;
+	font-size:  small;
+	white-space:pre;
 	/*border:double black; */
-	background: #ffffff; 
+	background: #ffffff;
 	padding: .5ex;
 }
 
@@ -36,14 +36,14 @@ pre.console{
 	background: #000000;
 	margin-top: 1;margin-bottom: 1;
 	border: #ccccff 1px solid;
-	padding: .5ex .5ex .5ex .5ex; 
+	padding: .5ex .5ex .5ex .5ex;
 }
 
 p {
 	/*font-family: "Lucida Console"; */
 	font-weight: medium;
-        font-style: normal;
-	font-size:  small;			
+	font-style: normal;
+	font-size:  small;
 	white-space:pre; 
 	/*border:double black; */
 	background: #ffffff; 

@@ -1,66 +1,67 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-  <head>
-    <title>UTF-8 TeraTerm Pro with TTSSH2 Help Index</title>
+  <HEAD>
+    <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+    <TITLE>UTF-8 TeraTerm Pro with TTSSH2 Help Index</title>
     <link rel="stylesheet" href="./style.css" type="text/css">
   </head>
 
   <body>
-    <h1>SSH $B@\B3(B</h1>
+    <h1>SSH 接続</h1>
 
     <p>
-      UTF-8 TeraTerm Pro with TTSSH2 $B$NFCD'$H$b8@$($k(B SSH $B@\B3$K$D$$$F2r@b$7$^$9!#(B
+      UTF-8 TeraTerm Pro with TTSSH2 の特徴とも言える SSH 接続について解説します。
     </p>
 
-    <h2>$BA0DsCN<1(B</h2>
+    <h2>前提知識</h2>
 
     <p>
-      SSH $B$K$O(B SSH1$B!"(BSSH2 $B$N(B2$B<oN`$N%W%m%H%3%k$,$"$j$^$9!#(BSSH2 $B$O(B SSH1 $B$N>e0L8_49$G$O$J$$$N$GCm0U$,I,MW$G$9!#@\B3$9$k%[%9%H$K1~$8$FE,@Z$KA*Br$9$kI,MW$,$"$j$^$9!#(BUTF-8 TeraTerm Pro with TTSSH2 $B$ON>J}$N%P!<%8%g%s$KBP1~$7$F$$$^$9!#(B
+      SSH には SSH1、SSH2 の2種類のプロトコルがあります。SSH2 は SSH1 の上位互換ではないので注意が必要です。接続するホストに応じて適切に選択する必要があります。UTF-8 TeraTerm Pro with TTSSH2 は両方のバージョンに対応しています。
     </p>
 
     <p>
-      $B$^$?!"(BSSH $B$N@\B3J}K!$K$O(B
+      また、SSH の接続方法には
       <ul>
-	<li>$B%Q%9%o!<%IG'>Z(B</li>
-	<li>$B8x3+80$HHkL)80!J%-!<!&%Z%"!K$K$h$kG'>Z(B</li>
-	<li>SSH1 $B$K$*$1$k(B rhosts $BG'>Z(B</li>
-	<li>challenge/response (SSH1), keyboard-interactive (SSH2) $BG'>Z(B</li>
+	<li>パスワード認証</li>
+	<li>公開鍵と秘密鍵（キー・ペア）による認証</li>
+	<li>SSH1 における rhosts 認証</li>
+	<li>challenge/response (SSH1), keyboard-interactive (SSH2) 認証</li>
       </ul>
-      $B$,$"$j$^$9$,!"$3$3$G$O<{MW$,B?$$$H;W$o$l$k%Q%9%o!<%IG'>Z$H%-!<!&%Z%"G'>Z$K$D$$$F?($l$?$$$H;W$$$^$9!#(B
+      がありますが、ここでは需要が多いと思われるパスワード認証とキー・ペア認証について触れたいと思います。
     </p>
 
-    <h2>$B@\B3$N<j=g(B</h2>
+    <h2>接続の手順</h2>
 
     <p>
-      UTF-8 TeraTerm Pro with TTSSH2 $B$r5/F0$9$k$H!"2<?^$N$h$&$J%@%$%"%m%0$K$h$j%m%0%$%sJ}K!$rA*$V$3$H$,$G$-$^$9!#(B<br>
-    <img src="./image/NewConnection.png" alt="$B@\B3%@%$%"%m%0(B"><br>
-    SSH $B$G@\B3$9$k>l9g!"%G%U%)%k%H$+$iJQ99$9$k2U=j$O!V(BSSH version$B!W$G$9!#@\B3@h$N%5!<%P$K$"$o$;$FA*Br$7$F$/$@$5$$!#(B
-    </p>
-
-    <p>
-      $B@\B3$9$k$H!":#EY$OG'>ZJ}K!$rA*Br$9$k%@%$%"%m%0$,8=$l$^$9!#(B<br>
-      <img src="./image/Authentication.png" alt="$BG'>ZJ}K!(B"><br>
-      $B$3$3$G!"%Q%9%o!<%IG'>Z$r;HMQ$9$k>l9g$O!V(BUse plain password to log in$B!W$K%A%'%C%/$,$D$$$F$$$k$3$H$r3NG'$7!"%f!<%6L>$H%Q%9%o!<%I$rF~NO$7$^$9!#$3$l$i$,@5$7$1$l$PL5;v%m%0%$%s$G$-$^$9!#(B<br>
-      $B%-!<!&%Z%"G'>Z$rMQ$$$k>l9g$O!">e$+$i(B2$BHVL\$N!V(BUse RSA/DSA key to log in$B!W$K%A%'%C%/$r$D$1!"!V(BPrivate key file:$B!W%\%?%s$r2!$7$FHkL)%-!<$N%U%!%$%k$r;XDj$7$^$9!#$=$N8e%f!<%6L>$HHkL)%-!<$N%Q%9%U%l!<%:$rF~NO$7$F%m%0%$%s$7$^$9!#(B
-    </p>
-
-    <h2>$B%-!<$N@8@.(B</h2>
-
-    <p>
-      $B$3$3$G!"%-!<!&%Z%"G'>Z$KMQ$$$k8x3+80!&HkL)80$N@8@.J}K!$r@bL@$7$^$9!#80%U%!%$%k$r@8@.$9$k$K$O(B [Setup] $B%a%K%e!<$+$i!V(BSSH KeyGenerator...$B!W$rA*Br$7$^$9!#(B<br>
-      <img src="./image/SelectKeyGenerator.png" alt="$B%-!<@8@.$rA*Br(B"><br>
-      $BA*Br$9$k$H!"80$N@8@.%@%$%"%m%0$,8=$l$^$9!#(B<br>
-      <img src="./image/KeyGenerator.png" alt="$B%-!<@8@.%@%$%"%m%0(B"><br>
-      $B!V(BKey type$B!W$G%-!<$N<oN`$rA*$Y$^$9$,!"(BSSH1 $B%W%m%H%3%k$G;HMQ$9$k>l9g$K$O!V(BRSA1$B!W$r!"(BSSH2 $B%W%m%H%3%k$G;HMQ$9$k>l9g$K$O!V(BRSA$B!W$^$?$O!V(BDSA$B!W$rA*Br$7$^$9!#A*Br8e!"!V(BGenerate$B!W%\%?%s$r2!$9$H%Q%9%U%l!<%:$NF~NO$r:E$5$l$^$9$N$G!"%-!<$N%Q%9%U%l!<%:!J%Q%9%o!<%I$N$h$&$J$b$N!#$?$@$76uGr$r4^$s$G$b$$$$$7!"0lHL$K%Q%9%o!<%I$h$j$bD9$$J*$,;XDj2DG=!K$rF~NO$7$^$9!#F~NO$7$?8e$O!"!V(BSave public key$B!W%\%?%s!"!V(BSave private key$B!W%\%?%s$r2!$7$F%-!<$rJ]B8$7$^$9!#%U%!%$%kL>$OI,MW$,$J$1$l$P%G%U%)%k%H$N$^$^$G9=$$$^$;$s!#J]B8$,=*$o$C$?$i!V(BCancel$B!W$G=*N;$7$^$9!#(B
+      UTF-8 TeraTerm Pro with TTSSH2 を起動すると、下図のようなダイアログによりログイン方法を選ぶことができます。<br>
+    <img src="./image/NewConnection.png" alt="接続ダイアログ"><br>
+    SSH で接続する場合、デフォルトから変更する箇所は「SSH version」です。接続先のサーバにあわせて選択してください。
     </p>
 
     <p>
-      $B$3$N%-!<!&%U%!%$%k$N;HMQJ}K!$G$9$,!"%G%U%)%k%H$GJ]B8$7$?>l9g!"3HD%;R$,!V(Bpub$B!W$H$J$C$F$$$k%U%!%$%k!J!V8x3+80!W!K$NFbMF$r!"%5!<%P$N;XDj$N>l=j$KJ]4I$7$^$9!#!J0lHLE*$K$O(B (home dir)/.ssh/authorized_keys $B$KFbMF$rDI2C$7$^$9!#!K$^$?!"3HD%;R$,IU$$$F$$$J$$%U%!%$%k$O!VHkL)80!W$H$J$j!"%m%0%$%s;~$K;XDj$9$k;v$H$J$j$^$9!#(B
+      接続すると、今度は認証方法を選択するダイアログが現れます。<br>
+      <img src="./image/Authentication.png" alt="認証方法"><br>
+      ここで、パスワード認証を使用する場合は「Use plain password to log in」にチェックがついていることを確認し、ユーザ名とパスワードを入力します。これらが正しければ無事ログインできます。<br>
+      キー・ペア認証を用いる場合は、上から2番目の「Use RSA/DSA key to log in」にチェックをつけ、「Private key file:」ボタンを押して秘密キーのファイルを指定します。その後ユーザ名と秘密キーのパスフレーズを入力してログインします。
+    </p>
+
+    <h2>キーの生成</h2>
+
+    <p>
+      ここで、キー・ペア認証に用いる公開鍵・秘密鍵の生成方法を説明します。鍵ファイルを生成するには [Setup] メニューから「SSH KeyGenerator...」を選択します。<br>
+      <img src="./image/SelectKeyGenerator.png" alt="キー生成を選択"><br>
+      選択すると、鍵の生成ダイアログが現れます。<br>
+      <img src="./image/KeyGenerator.png" alt="キー生成ダイアログ"><br>
+      「Key type」でキーの種類を選べますが、SSH1 プロトコルで使用する場合には「RSA1」を、SSH2 プロトコルで使用する場合には「RSA」または「DSA」を選択します。選択後、「Generate」ボタンを押すとパスフレーズの入力を催されますので、キーのパスフレーズ（パスワードのようなもの。ただし空白を含んでもいいし、一般にパスワードよりも長い物が指定可能）を入力します。入力した後は、「Save public key」ボタン、「Save private key」ボタンを押してキーを保存します。ファイル名は必要がなければデフォルトのままで構いません。保存が終わったら「Cancel」で終了します。
     </p>
 
     <p>
-      <em>$BCm0U(B</em>$B!'HkL)80!J(Bprivate key$B!K$OBh;0<T$K@dBP$KCN$i$l$F$O$$$1$J$$$?$a!"4IM}$r87=E$K9T$&$h$&$K$7$F$/$@$5$$!#$^$?!"8m$C$F%5!<%P$XE>Aw$7$F$7$^$o$J$$$h$&$K$7$F$/$@$5$$!#(B
+      このキー・ファイルの使用方法ですが、デフォルトで保存した場合、拡張子が「pub」となっているファイル（「公開鍵」）の内容を、サーバの指定の場所に保管します。（一般的には (home dir)/.ssh/authorized_keys に内容を追加します。）また、拡張子が付いていないファイルは「秘密鍵」となり、ログイン時に指定する事となります。
+    </p>
+
+    <p>
+      <em>注意</em>：秘密鍵（private key）は第三者に絶対に知られてはいけないため、管理を厳重に行うようにしてください。また、誤ってサーバへ転送してしまわないようにしてください。
     </p>
   </body>
 </html>
