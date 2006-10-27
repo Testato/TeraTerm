@@ -5085,6 +5085,8 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 	begin_send_packet(pvar, SSH2_MSG_NEWKEYS, 0);
 	finish_send_packet(pvar);
 
+	notify_verbose_message(pvar, "SSH2_MSG_NEWKEYS was sent to server.", LOG_LEVEL_VERBOSE);
+
 	// SSH2_MSG_NEWKEYSを送り終わったあとにキーの設定および再設定を行う
 	// 送信用の暗号鍵は SSH2_MSG_NEWKEYS の送信後に、受信用のは SSH2_MSG_NEWKEYS の
 	// 受信後に再設定を行う。
@@ -6866,6 +6868,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.53  2006/10/21 14:26:48  yutakapon
+ * KEX_DH_GRP1_SHA1 or KEX_DH_GRP14_SHA1において、不正なメモリ解放を修正した。
+ *
  * Revision 1.52  2006/10/21 14:02:50  maya
  * 取っておくべき値が解放されているようなので修正した。
  *
