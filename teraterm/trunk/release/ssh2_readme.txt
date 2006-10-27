@@ -157,7 +157,7 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.10.23 (Ver 2.35)
+2006.10.28 (Ver 2.35)
   - Bug fix: TTSSH settings wasn't read from ini file which is specified by /F parameter of ttermpro.exe. Enbuged at 2.34.
   - Bug fix: Couldn't start a telnet session from 'New connection' dialog when main windows is connected with SSH protocol. Enbuged at 2.34.
   - Bug fix: invalid freeing DH memory in KEX_DH_GRP1_SHA1 or KEX_DH_GRP14_SHA1 sequence.

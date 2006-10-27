@@ -4,8 +4,8 @@
 - Compiler
   Visual Studio 2005 Standard Edition (or higher edition)
 - Installer
-  Inno Setup 5.1.7 (http://innosetup.org/isinfo.php)
-  ISTool 5.1.7 (http://innosetup.org/isdl.php#qsp)
+  Inno Setup 5.1.8 (http://innosetup.org/isinfo.php)
+  ISTool 5.1.8 (http://innosetup.org/isdl.php#qsp)
     It is included in QuickStart Pack.
   Japanese-5-5.1.0.isl (http://innosetup.org/files/istrans/)
 - others
@@ -14,7 +14,7 @@
 
 
 * Libraries
-- oniguruma 4.4.4 (http://www.geocities.jp/kosako3/oniguruma/)
+- oniguruma 4.4.5 (http://www.geocities.jp/kosako3/oniguruma/)
 - openssl 0.9.8d (http://www.openssl.org/)
 - zlib 1.2.3 (http://www.zlib.net/)
 
