@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<TITLE>fileopen</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">fileopen</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>
+fileopen &lt;file handle&gt; &lt;file name&gt; &lt;append flag&gt;
+</B>
+</UL>
+<P></P>
+
+Opens a file specified by &lt;file name&gt;.
+<P></P>
+
+If the file does not exist, it is created and then opened. If the file is successfully opened, the file handle is returned in the integer variable &lt;file handle&gt;. Otherwise, &lt;file handle&gt; is set to -1.
+<P></P>
+
+If &lt;append flag&gt; is zero, the file pointer is set to the beginning of the file. If &lt;append flag&gt; is non-zero, the file pointer is set to the end of the file.
+<P></P>
+
+<pre>
+Example:
+	fileopen fhandle 'data.dat' 0
+
+	fileopen fhandle 'data.dat' 1
+</pre>
+
+</BODY>
+</HTML>
+
