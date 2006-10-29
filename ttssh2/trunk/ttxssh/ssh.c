@@ -5105,6 +5105,10 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 		// なので（CRYPT_start_encryption関数）、ここで鍵の設定をしてしまってもよい。
 		ssh2_set_newkeys(pvar, MODE_IN);
 		ssh2_set_newkeys(pvar, MODE_OUT);
+
+		// SSH2_MSG_NEWKEYSを送信した時点で、MACを有効にする。(2006.10.30 yutaka)
+		pvar->ssh2_keys[MODE_OUT].mac.enabled = 1;
+		pvar->ssh2_keys[MODE_OUT].comp.enabled = 1;
 	}
 
 	// TTSSHバージョン情報に表示するキービット数を求めておく (2004.10.30 yutaka)
@@ -5529,6 +5533,12 @@ static BOOL handle_SSH2_newkeys(PTInstVar pvar)
 		}
 		do_SSH2_dispatch_setup_for_transfer(pvar);
 		return TRUE;
+
+	} else {
+		// SSH2_MSG_NEWKEYSを受け取った時点で、MACを有効にする。(2006.10.30 yutaka)
+		pvar->ssh2_keys[MODE_IN].mac.enabled = 1;
+		pvar->ssh2_keys[MODE_IN].comp.enabled = 1;
+
 	}
 
 	// 暗号アルゴリズムの設定
@@ -5550,7 +5560,6 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 	char *s;
 	unsigned char *outmsg;
 	int len;
-	int mode;
 
 	// SSH2 keyboard-interactive methodの初期化 (2005.1.22 yutaka)
 	pvar->keyboard_interactive_done = 0;
@@ -5565,10 +5574,14 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 		/* NOT REACHED */
 	}
 
+	// この時点でMACや圧縮を有効にするのは間違いだったので削除。(2006.10.30 yutaka)
+#if 0
 	for (mode = 0 ; mode < MODE_MAX ; mode++) {
 		pvar->ssh2_keys[mode].mac.enabled = 1;
 		pvar->ssh2_keys[mode].comp.enabled = 1;
 	}
+#endif
+
 	// パケット圧縮が有効なら初期化する。(2005.7.9 yutaka)
 	prep_compression(pvar);
 	enable_compression(pvar);
@@ -6868,6 +6881,10 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.54  2006/10/27 16:56:45  yutakapon
+ * ttssh.logへのログ追加。
+ * teraterm.iniの[TTSSH]で、LogLevel=1000 とするとログ採取される。
+ *
  * Revision 1.53  2006/10/21 14:26:48  yutakapon
  * KEX_DH_GRP1_SHA1 or KEX_DH_GRP14_SHA1において、不正なメモリ解放を修正した。
  *
