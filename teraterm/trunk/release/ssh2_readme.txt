@@ -157,6 +157,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.10.30 (Ver 2.36)
+  - Bug fix: Could not connect Tectia server with SSH2 protocol. Changed the timing of both MAC and packet compression method are enabled from user authentication to SSH2_MSG_NEWKEYS procedure.
+
 2006.10.28 (Ver 2.35)
   - Bug fix: TTSSH settings wasn't read from ini file which is specified by /F parameter of ttermpro.exe. Enbuged at 2.34.
   - Bug fix: Couldn't start a telnet session from 'New connection' dialog when main windows is connected with SSH protocol. Enbuged at 2.34.
