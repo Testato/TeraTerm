@@ -3738,7 +3738,7 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 	buf[i] = 0;
 	offset += size;
 	pvar->stoc_hmac = choose_SSH2_hmac_algorithm(buf, myproposal[PROPOSAL_MAC_ALGS_STOC]);
-	if (pvar->ctos_hmac == HMAC_UNKNOWN) { // not match
+	if (pvar->stoc_hmac == HMAC_UNKNOWN) { // not match
 		strcpy(tmp, "unknown HMAC algorithm: ");
 		strcat(tmp, buf);
 		msg = tmp;
@@ -5109,6 +5109,11 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 		// SSH2_MSG_NEWKEYSを送信した時点で、MACを有効にする。(2006.10.30 yutaka)
 		pvar->ssh2_keys[MODE_OUT].mac.enabled = 1;
 		pvar->ssh2_keys[MODE_OUT].comp.enabled = 1;
+
+		// パケット圧縮が有効なら初期化する。(2005.7.9 yutaka)
+		// SSH2_MSG_NEWKEYSの受信より前なのでここだけでよい。(2006.10.30 maya)
+		prep_compression(pvar);
+		enable_compression(pvar);
 	}
 
 	// TTSSHバージョン情報に表示するキービット数を求めておく (2004.10.30 yutaka)
@@ -5443,6 +5448,15 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 		// なので（CRYPT_start_encryption関数）、ここで鍵の設定をしてしまってもよい。
 		ssh2_set_newkeys(pvar, MODE_IN);
 		ssh2_set_newkeys(pvar, MODE_OUT);
+
+		// SSH2_MSG_NEWKEYSを送信した時点で、MACを有効にする。(2006.10.30 yutaka)
+		pvar->ssh2_keys[MODE_OUT].mac.enabled = 1;
+		pvar->ssh2_keys[MODE_OUT].comp.enabled = 1;
+
+		// パケット圧縮が有効なら初期化する。(2005.7.9 yutaka)
+		// SSH2_MSG_NEWKEYSの受信より前なのでここだけでよい。(2006.10.30 maya)
+		prep_compression(pvar);
+		enable_compression(pvar);
 	}
 
 	// TTSSHバージョン情報に表示するキービット数を求めておく (2004.10.30 yutaka)
@@ -5580,11 +5594,11 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 		pvar->ssh2_keys[mode].mac.enabled = 1;
 		pvar->ssh2_keys[mode].comp.enabled = 1;
 	}
-#endif
 
 	// パケット圧縮が有効なら初期化する。(2005.7.9 yutaka)
 	prep_compression(pvar);
 	enable_compression(pvar);
+#endif
 
 	// start user authentication
 	msg = buffer_init();
@@ -6881,6 +6895,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.55  2006/10/29 17:26:47  yutakapon
+ *   ・MACとパケット圧縮を有効にするタイミングを SSH2_MSG_NEWKEYS の送受信時に変更することにより、Tectiva serverへつながらない問題を修正した。
+ *
  * Revision 1.54  2006/10/27 16:56:45  yutakapon
  * ttssh.logへのログ追加。
  * teraterm.iniの[TTSSH]で、LogLevel=1000 とするとログ採取される。
