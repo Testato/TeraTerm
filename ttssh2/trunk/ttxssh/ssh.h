@@ -38,6 +38,13 @@ See LICENSE.TXT for the license.
 #include <openssl/evp.h>
 
 
+#define DEBUG_PRINT_TO_FILE(base, msg, len) { \
+	static int count = 0; \
+	debug_print(count + base, msg, len); \
+	count++; \
+}
+
+
 // yutaka
 #define SSH2_USE
 
