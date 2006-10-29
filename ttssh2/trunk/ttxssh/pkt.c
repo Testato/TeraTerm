@@ -202,6 +202,7 @@ int PKT_recv(PTInstVar pvar, char FAR * buf, int buflen)
 
 			// SSH2なら暗号化パケットの一部を復号化する。
 			if (!pvar->pkt_state.predecrypted_packet) {
+				//DEBUG_PRINT_TO_FILE(0, data, pvar->pkt_state.datalen);
 				SSH_predecrpyt_packet(pvar, data);
 
 				if (SSHv1(pvar)) {
@@ -302,4 +303,7 @@ void PKT_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/12/19 15:39:58  yutakakn
+ * CVS LogIDの追加
+ *
  */
