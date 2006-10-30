@@ -1379,7 +1379,7 @@ static void init_protocol(PTInstVar pvar)
 		enque_handler(pvar, SSH2_MSG_CHANNEL_CLOSE, handle_SSH2_channel_close);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_DATA, handle_SSH2_channel_data);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_EOF, handle_SSH2_channel_eof);
-//		enque_handler(pvar, SSH2_MSG_CHANNEL_EXTENDED_DATA, handle_SSH2_channel_extended_data);
+		enque_handler(pvar, SSH2_MSG_CHANNEL_EXTENDED_DATA, handle_SSH2_channel_extended_data);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_OPEN, handle_SSH2_channel_open);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_OPEN_CONFIRMATION, handle_SSH2_open_confirm);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_OPEN_FAILURE, handle_SSH2_open_failure);
@@ -6595,7 +6595,7 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 	// ペイロードとしてクライアント(TeraTerm)へ渡す
 	if (c->type == TYPE_SHELL) {
 		pvar->ssh_state.payload_datalen = strlen;
-		pvar->ssh_state.payload_datastart = 8;
+		pvar->ssh_state.payload_datastart = 8; // id + strlen
 
 	} else {
 		//debug_print(0, data, strlen);
@@ -6614,9 +6614,70 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 }
 
 
+// Tectia Server の Windows 版は、DOSコマンドが失敗したときにstderrに出力される
+// エラーメッセージを SSH2_MSG_CHANNEL_EXTENDED_DATA で送信してくる。
+// SSH2_MSG_CHANNEL_EXTENDED_DATA を処理するようにした。(2006.10.30 maya)
 static BOOL handle_SSH2_channel_extended_data(PTInstVar pvar)
 {	
+	int len;
+	char *data;
+	int id;
+	unsigned int strlen;
+	Channel_t *c;
+	int data_type;
 
+	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
+	data = pvar->ssh_state.payload;
+	// パケットサイズ - (パディングサイズ+1)；真のパケットサイズ
+	len = pvar->ssh_state.payloadlen;
+
+	//debug_print(80, data, len);
+
+	// channel number
+	id = get_uint32_MSBfirst(data);
+	data += 4;
+
+	c = ssh2_channel_lookup(id);
+	if (c == NULL) {
+		// TODO:
+		return FALSE;
+	}
+
+	// data_type_code
+	data_type = get_uint32_MSBfirst(data);
+	data += 4;
+
+	// string length
+	strlen = get_uint32_MSBfirst(data);
+	data += 4;
+
+	// バッファサイズのチェック
+	if (strlen > c->local_window_max) {
+		// TODO: logging
+	}
+	if (strlen > c->local_window) {
+		// TODO: logging
+		// local window sizeより大きなパケットは捨てる
+		return FALSE;
+	}
+
+	// ペイロードとしてクライアント(TeraTerm)へ渡す
+	if (c->type == TYPE_SHELL) {
+		pvar->ssh_state.payload_datalen = strlen;
+		pvar->ssh_state.payload_datastart = 12; // id + data_type + strlen
+
+	} else {
+		//debug_print(0, data, strlen);
+		FWD_received_data(pvar, c->local_num, data, strlen);
+
+	}
+
+	//debug_print(200, data, strlen);
+
+	// ウィンドウサイズの調整
+	c->local_window -= strlen;
+
+	do_SSH2_adjust_window_size(pvar, c);
 
 	return TRUE;
 }
@@ -6895,6 +6956,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.56  2006/10/29 22:42:12  maya
+ * 圧縮の初期化を SSH2_MSG_NEWKEYS の送信時に変更した。
+ *
  * Revision 1.55  2006/10/29 17:26:47  yutakapon
  *   ・MACとパケット圧縮を有効にするタイミングを SSH2_MSG_NEWKEYS の送受信時に変更することにより、Tectiva serverへつながらない問題を修正した。
  *
