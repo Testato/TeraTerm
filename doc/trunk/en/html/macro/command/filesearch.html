@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<TITLE>filesearch</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">filesearch</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>
+filesearch &lt;filename&gt;
+</B>
+</UL>
+<P></P>
+
+Searches for the file specified by &lt;filename&gt;.
+If it is found, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
+<P></P>
+
+<pre>
+Example:
+	filesearch 'readme.txt'
+	if result=0 messagebox 'File not found.' 'error'
+</pre>
+
+</BODY>
+</HTML>
+

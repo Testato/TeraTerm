@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<TITLE>filereadln</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">filereadln</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>
+filereadln &lt;file handle&gt; &lt;strvar&gt;
+</B>
+</UL>
+<P></P>
+
+Reads a line from the file specified by &lt;file handle&gt;.
+The line is written into the string variable &lt;strvar&gt;. The file pointer is moved to the beginning of the next line. If the file pointer reaches the end of the file while reading the line, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
+<P></P>
+
+<pre>
+Example:
+	fileopen fhandle 'test.txt' 0		Open a file.
+	:loop	
+	filereadln fhandle line			Read a line from the file.
+	if result goto fclose	
+	messagebox line 'test.txt'		Display the line.
+	goto loop				Repeat until the end of the file.
+	:fclose	
+	fileclose fhandle			Close the file.
+</pre>
+
+</BODY>
+</HTML>
+
