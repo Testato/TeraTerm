@@ -4043,6 +4043,8 @@ static BOOL handle_SSH2_dh_gex_group(PTInstVar pvar)
 	buffer_t *msg = NULL;
 	unsigned char *outmsg;
 
+	notify_verbose_message(pvar, "SSH2_MSG_KEX_DH_GEX_GROUP is receiving", LOG_LEVEL_VERBOSE);
+
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
 	// パケットサイズ - (パディングサイズ+1)；真のパケットサイズ
@@ -4075,6 +4077,8 @@ static BOOL handle_SSH2_dh_gex_group(PTInstVar pvar)
 	outmsg = begin_send_packet(pvar, SSH2_MSG_KEX_DH_GEX_INIT, len);
 	memcpy(outmsg, buffer_ptr(msg), len);
 	finish_send_packet(pvar);
+
+	notify_verbose_message(pvar, "SSH2_MSG_KEX_DH_GEX_INIT was sent", LOG_LEVEL_VERBOSE);
 
 	// ここで作成したDH鍵は、あとでハッシュ計算に使うため取っておく。(2004.10.31 yutaka)
 	pvar->kexdh = dh;
@@ -4913,7 +4917,9 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 	BIGNUM *share_key = NULL;
 	char *hash;
 	char *emsg, emsg_tmp[1024];  // error message
-	Key hostkey;  // hostkey 
+	Key hostkey;  // hostkey
+
+	notify_verbose_message(pvar, "SSH2_MSG_KEXDH_REPLY is receiving", LOG_LEVEL_VERBOSE);
 
 	memset(&hostkey, 0, sizeof(hostkey));
 
@@ -5232,7 +5238,9 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 	char *hash;
 	char *emsg, emsg_tmp[1024];  // error message
 	int ret;
-	Key hostkey;  // hostkey 
+	Key hostkey;  // hostkey
+
+	notify_verbose_message(pvar, "SSH2_MSG_KEX_DH_GEX_REPLY is receiving", LOG_LEVEL_VERBOSE);
 
 	memset(&hostkey, 0, sizeof(hostkey));
 
@@ -5429,6 +5437,8 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 	// KEX finish
 	begin_send_packet(pvar, SSH2_MSG_NEWKEYS, 0);
 	finish_send_packet(pvar);
+
+	notify_verbose_message(pvar, "SSH2_MSG_NEWKEYS was sent to server.", LOG_LEVEL_VERBOSE);
 
 	// SSH2_MSG_NEWKEYSを送り終わったあとにキーの設定および再設定を行う
 	// 送信用の暗号鍵は SSH2_MSG_NEWKEYS の送信後に、受信用のは SSH2_MSG_NEWKEYS の
@@ -6956,6 +6966,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.57  2006/10/30 08:48:02  maya
+ * SSH2_MSG_CHANNEL_EXTENDED_DATA を処理するようにした。
+ *
  * Revision 1.56  2006/10/29 22:42:12  maya
  * 圧縮の初期化を SSH2_MSG_NEWKEYS の送信時に変更した。
  *
