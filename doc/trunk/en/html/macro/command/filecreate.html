@@ -1,0 +1,31 @@
+<HTML>
+<HEAD>
+<TITLE>filecreate</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">filecreate</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>
+filecreate &lt;file handle&gt; &lt;filename&gt;
+</B>
+</UL>
+<P></P>
+
+Creates and opens a new file specified by &lt;filename&gt;.
+The file pointer is set to the beginning of the file. If file &lt;filename&gt; already exists, its size is truncated to zero. If the file is successfully created and opened, the file handle is returned in the integer variable &lt;file handle&gt;. Otherwise, &lt;file handle&gt; is set to -1.
+<P></P>
+
+<pre>
+Example:
+	filecreate fhandle 'data.dat'
+</pre>
+
+</BODY>
+</HTML>
+
