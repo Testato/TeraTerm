@@ -825,6 +825,55 @@ WORD TTLFileReadln()
   return Err;
 }
 
+
+// Format: fileread <file handle> <read byte> <strvar>
+// 指定したバイト数だけファイルから読み込む。
+// ただし、<read byte>は 1～255 まで。
+// (2006.11.1 yutaka)
+WORD TTLFileRead()
+{
+	WORD Err, VarId;
+	int FH, i, c;
+	int ReadByte;   // 読み込むバイト数
+	TStrVal Str;
+	BOOL EndFile, EndLine;
+	BYTE b;
+
+	Err = 0;
+	GetIntVal(&FH,&Err);
+	GetIntVal(&ReadByte,&Err);
+	GetStrVar(&VarId,&Err);
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if ((Err==0) && (ReadByte < 1 || ReadByte > MaxStrLen-1))  // 範囲チェック
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	EndLine = FALSE;
+	EndFile = FALSE;
+	for (i = 0 ; i < ReadByte ; i++) {
+		c = _lread(FH,&b,1);
+		if (c <= 0) {  // EOF
+			EndFile = TRUE;
+			break;
+		}
+		if (i<MaxStrLen-1)
+		{
+			Str[i] = b;
+		}
+	} 
+
+	if (EndFile)
+		SetResult(1);
+	else
+		SetResult(0);
+
+	Str[i] = 0;
+	SetStrVal(VarId,Str);
+	return Err;
+}
+
+
 WORD TTLFileRename()
 {
   WORD Err;
@@ -2468,6 +2517,7 @@ int ExecCmnd()
 		case RsvFileMarkPtr: Err = TTLFileMarkPtr(); break;
 		case RsvFileOpen:   Err = TTLFileOpen(); break;
 		case RsvFileReadln: Err = TTLFileReadln(); break;
+		case RsvFileRead:   Err = TTLFileRead(); break;    // add 'fileread'
 		case RsvFileRename: Err = TTLFileRename(); break;
 		case RsvFileSearch: Err = TTLFileSearch(); break;
 		case RsvFileSeek:   Err = TTLFileSeek(); break;

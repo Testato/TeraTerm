@@ -147,6 +147,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
   else if (_stricmp(Str,"filemarkptr")==0) *WordId = RsvFileMarkPtr;
   else if (_stricmp(Str,"fileopen")==0) *WordId = RsvFileOpen;
   else if (_stricmp(Str,"filereadln")==0) *WordId = RsvFileReadln;
+  else if (_stricmp(Str,"fileread")==0) *WordId = RsvFileRead;   // add
   else if (_stricmp(Str,"filerename")==0) *WordId = RsvFileRename;
   else if (_stricmp(Str,"filesearch")==0) *WordId = RsvFileSearch;
   else if (_stricmp(Str,"fileseek")==0) *WordId = RsvFileSeek;
