@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<TITLE>filestrseek</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">filestrseek</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>
+filestrseek &lt;file handle&gt; &lt;string&gt;
+</B>
+</UL>
+<P></P>
+
+Searches for &lt;string&gt; in the file specified by &lt;file handle&gt;.
+The search is done forward and started from the current position of the file pointer.
+For the backward search, use the "<A HREF="filestrseek2.html">filestrseek2</A>" command.
+<P></P>
+
+If &lt;string&gt; is found, the file pointer is moved to the next character of the string and the system variable "result" is set to 1. If &lt;string&gt; is not found, the file pointer is not moved and "result" is set to zero.
+<P></P>
+
+<pre>
+Example:
+	fileopen fhandle 'teraterm.log' 0	
+	filestrseek fhandle 'abc'		Search for the string "abc" in the file "teraterm.log".
+	if result=0 goto not_found	
+	filereadln fhandle str			Read characters from the next of "abc" to the end of the line.
+	
+	:not_found	
+	fileclose fhandle
+</pre>
+
+</BODY>
+</HTML>
+

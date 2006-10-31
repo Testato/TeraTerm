@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<TITLE>fileseek</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">fileseek</FONT><BR><BR>
+</div>
+
+Format:
+<UL>
+<B>
+fileseek &lt;file handle&gt; &lt;offset&gt; &lt;origin&gt;
+</B>
+</UL>
+<P></P>
+
+Moves the pointer for the file specified by &lt;file handle&gt;.<BR>
+With this command, the file pointer is moved &lt;offset&gt; bytes from:
+<P></P>
+	the beginning of the file, if &lt;origin&gt; is 0.
+<P></P>
+	the current position, if &lt;origin&gt; is 1.
+<P></P>
+	the end of the file, if &lt;origin&gt; is 2.
+<P></P>
+
+
+<pre>
+Example:
+	fileseek fhandle 0 0		Move to the beginning of file.
+	fileseek fhandle 10 1		Move 10 bytes from the current position.
+	fileseek fhandle 0 2		Move to the end of file.
+	fileseek fhandle 0-10 2		Move to the position 10 bytes backward from the end of file.
+</pre>
+
+</BODY>
+</HTML>
+
