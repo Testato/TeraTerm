@@ -765,6 +765,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.11.1 (Ver 4.48)
+  - added 'fileread' macro command. This command enables the macro script to read the specified bytes from file.
+
 2006.10.28 (Ver 4.47)
   - upgraded LogMeTT to 2.8.6
   - deleted duplication of accelerator key bind under File menu.
