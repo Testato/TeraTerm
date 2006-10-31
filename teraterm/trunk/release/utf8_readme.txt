@@ -766,7 +766,9 @@ OF SUCH DAMAGE.
 * History
 
 2006.11.1 (Ver 4.48)
+  - upgraded TTSSH version supporting SSH2 to 2.36
   - added 'fileread' macro command. This command enables the macro script to read the specified bytes from file.
+  - upgraded Oniguruma to 4.4.6
 
 2006.10.28 (Ver 4.47)
   - upgraded LogMeTT to 2.8.6
