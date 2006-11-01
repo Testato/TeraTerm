@@ -151,8 +151,8 @@ OF SUCH DAMAGE.
 ■改版履歴
 
 2006.11.1 (Ver 2.36)
-  ・MACとパケット圧縮を有効にするタイミングを SSH2_MSG_NEWKEYS の送受信時に変更することにより、Tectiva serverへつながらない問題を修正した。
-  ・SSH2_MSG_CHANNEL_EXTENDED_DATA のパケットを処理することにより、Windows上のTectiva serverから標準エラー出力が送られたときに異常終了する問題を修正した。
+  ・MACとパケット圧縮を有効にするタイミングを SSH2_MSG_NEWKEYS の送受信時に変更することにより、Tectia serverへつながらない問題を修正した。
+  ・SSH2_MSG_CHANNEL_EXTENDED_DATA のパケットを処理することにより、Windows上のTectia serverから標準エラー出力が送られたときに異常終了する問題を修正した。
 
 2006.10.28 (Ver 2.35)
   ・ttermpro.exeの/Fパラメータで指定されたファイルからTTSSHの設定が読まれなくなっていたのを修正した。2.34でエンバグしました。
