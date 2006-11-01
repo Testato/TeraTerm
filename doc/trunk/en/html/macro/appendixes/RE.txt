@@ -1,18 +1,5 @@
-<HTML>
-<HEAD>
-<TITLE>Oniguruma Regular Expressions</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+Oniguruma Regular Expressions Version 4.3.0    2006/08/17
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">Oniguruma Regular Expressions Version 3.6.0</FONT><BR><BR>
-</div>
-
-This description was taken from <A HREF="http://www.geocities.jp/kosako3/oniguruma/doc/RE.txt">http://www.geocities.jp/kosako3/oniguruma/doc/RE.txt</A>
-<P></P>
-
-<pre>
 syntax: ONIG_SYNTAX_RUBY (default)
 
 
@@ -112,7 +99,7 @@ syntax: ONIG_SYNTAX_RUBY (default)
 
     ({n,m}+, {n,}+, {n}+ are possessive op. in ONIG_SYNTAX_JAVA only)
 
-    ex. /a*+/ === /(?&gt;a*)/
+    ex. /a*+/ === /(?>a*)/
 
 
 5. Anchors
@@ -138,7 +125,7 @@ syntax: ONIG_SYNTAX_RUBY (default)
   [...]   set (character class in character class)
   ..&&..  intersection (low precedence at the next of ^)
           
-    ex. [a-w&&[^c-g]z] ==&gt; ([a-w] AND ([^c-g] OR z)) ==&gt; [abh-w]
+    ex. [a-w&&[^c-g]z] ==> ([a-w] AND ([^c-g] OR z)) ==> [abh-w]
 
   * If you want to use '[', '-', ']' as a normal character
     in a character class, you should escape these characters by '\'.
@@ -199,21 +186,21 @@ syntax: ONIG_SYNTAX_RUBY (default)
 
   (?=subexp)         look-ahead
   (?!subexp)         negative look-ahead
-  (?&lt;=subexp)        look-behind
-  (?&lt;!subexp)        negative look-behind
+  (?<=subexp)        look-behind
+  (?<!subexp)        negative look-behind
 
                      Subexp of look-behind must be fixed character length.
                      But different character length is allowed in top level
                      alternatives only.
-                     ex. (?&lt;=a|bc) is OK. (?&lt;=aaa(?:b|cd)) is not allowed.
+                     ex. (?<=a|bc) is OK. (?<=aaa(?:b|cd)) is not allowed.
 
                      In negative-look-behind, captured group isn't allowed, 
                      but shy group(?:) is allowed.
 
-  (?&gt;subexp)         atomic group
+  (?>subexp)         atomic group
                      don't backtrack in subexp.
 
-  (?&lt;name&gt;subexp)    define named group
+  (?<name>subexp)    define named group
                      (All characters of the name must be a word character.
                      And first character must not be a digit or uppper case)
 
@@ -227,8 +214,8 @@ syntax: ONIG_SYNTAX_RUBY (default)
 
 8. Back reference
 
-  \n          back reference by group number (n &gt;= 1)
-  \k&lt;name&gt;    back reference by group name
+  \n          back reference by group number (n >= 1)
+  \k<name>    back reference by group name
 
   In the back reference by the multiplex definition name,
   a subexp with a large number is referred to preferentially.
@@ -238,14 +225,42 @@ syntax: ONIG_SYNTAX_RUBY (default)
     in the pattern and ONIG_OPTION_CAPTURE_GROUP is not setted.
 
 
+  back reference with nest level
+
+    (This function is disabled in Ruby 1.9.)
+
+    \k<name+n>     n: 0, 1, 2, ...
+    \k<name-n>     n: 0, 1, 2, ...
+
+    Destinate relative nest level from back reference position.    
+
+    ex 1.
+
+      /\A(?<a>|.|(?:(?<b>.)\g<a>\k<b+0>))\z/.match("reer")
+
+    ex 2.
+
+      r = Regexp.compile(<<'__REGEXP__'.strip, Regexp::EXTENDED)
+      (?<element> \g<stag> \g<content>* \g<etag> ){0}
+      (?<stag> < \g<name> \s* > ){0}
+      (?<name> [a-zA-Z_:]+ ){0}
+      (?<content> [^<&]+ (\g<element> | [^<&]+)* ){0}
+      (?<etag> </ \k<name+1> >){0}
+      \g<element>
+      __REGEXP__
+
+      p r.match('<foo>f<bar>bbb</bar>f</foo>').captures
+
+
+
 9. Subexp call ("Tanaka Akira special")
 
-  \g&lt;name&gt;    call by group name
-  \g&lt;n&gt;       call by group number (n &gt;= 1)
+  \g<name>    call by group name
+  \g<n>       call by group number (n >= 1)
 
   * left-most recursive call is not allowed.
-     ex. (?&lt;name&gt;a|\g&lt;name&gt;b)   =&gt; error
-         (?&lt;name&gt;a|b\g&lt;name&gt;c)  =&gt; OK
+     ex. (?<name>a|\g<name>b)   => error
+         (?<name>a|b\g<name>c)  => OK
 
   * Call by group number is forbidden if named group is defined in the pattern
     and ONIG_OPTION_CAPTURE_GROUP is not setted.
@@ -253,7 +268,7 @@ syntax: ONIG_SYNTAX_RUBY (default)
   * If the option status of called group is different from calling position
     then the group's option is effective.
 
-    ex. (?-i:\g&lt;name&gt;)(?i:(?&lt;name&gt;a)){0}  match to "A"
+    ex. (?-i:\g<name>)(?i:(?<name>a)){0}  match to "A"
 
 
 10. Captured group
@@ -269,12 +284,12 @@ syntax: ONIG_SYNTAX_RUBY (default)
 
      (...) is treated as a no-captured group (?:...).
 
-  case 3. /..(?&lt;name&gt;..)../   (named group is used, no option)
+  case 3. /..(?<name>..)../   (named group is used, no option)
 
      (...) is treated as a no-captured group (?:...).
      numbered-backref/call is not allowed.
 
-  case 4. /..(?&lt;name&gt;..)../G  (named group is used, 'G' option)
+  case 4. /..(?<name>..)../G  (named group is used, 'G' option)
 
      (...) is treated as a captured group.
      numbered-backref/call is allowed.
@@ -302,9 +317,9 @@ A-1. Syntax depend options
 A-2. Original extensions
 
    + hexadecimal digit char type  \h, \H
-   + named group                  (?&lt;name&gt;...)
-   + named backref                \k&lt;name&gt;
-   + subexp call                  \g&lt;name&gt;, \g&lt;group-num&gt;
+   + named group                  (?<name>...)
+   + named backref                \k<name>
+   + subexp call                  \g<name>, \g<group-num>
 
 
 A-3. Lacked features compare with perl 5.8.0
@@ -335,7 +350,7 @@ A-4. Differences with Japanized GNU regex(version 0.12) of Ruby
 
    + add hexadecimal digit char type (\h, \H)
    + add look-behind
-     (?&lt;=fixed-char-length-pattern), (?&lt;!fixed-char-length-pattern)
+     (?<=fixed-char-length-pattern), (?<!fixed-char-length-pattern)
    + add possessive quantifier. ?+, *+, ++
    + add operations in character class. [], &&
      ('[' must be escaped as an usual char in character class.)
@@ -346,7 +361,7 @@ A-4. Differences with Japanized GNU regex(version 0.12) of Ruby
      (ex. [\xa1\xa2], [\xa1\xa7-\xa4\xa1])
    + allow the range of single byte char and multibyte char in character
      class.
-     ex. /[a-&lt;&lt;any EUC-JP character&gt;&gt;]/ in EUC-JP encoding.
+     ex. /[a-<<any EUC-JP character>>]/ in EUC-JP encoding.
    + effect range of isolated option is to next ')'.
      ex. (?:(?i)a|b) is interpreted as (?:(?i:a|b)), not (?:(?i:a)|b).
    + isolated option is not transparent to previous pattern.
@@ -377,9 +392,9 @@ A-5. Disabled functions by default syntax
 
    + capture history
 
-     (?@...) and (?@&lt;name&gt;...)
+     (?@...) and (?@<name>...)
 
-     ex. /(?@a)*/.match("aaa") ==&gt; [&lt;0-1&gt;, &lt;1-2&gt;, &lt;2-3&gt;]
+     ex. /(?@a)*/.match("aaa") ==> [<0-1>, <1-2>, <2-3>]
 
      see sample/listcap.c file.
 
@@ -393,8 +408,5 @@ A-6. Problems
 
      * Incomplete byte sequence is not checked.
        /\w+/ =~ "a\xf3\x8ec"
-</pre>
 
-</BODY>
-</HTML>
-
+// END
