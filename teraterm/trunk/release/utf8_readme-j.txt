@@ -741,9 +741,9 @@ OF SUCH DAMAGE.
 ■改版履歴
 
 2006.11.1 (Ver 4.48)
-  ・SSH2対応TTSSH(2.36)へ差し替えた
   ・マクロコマンド 'fileread' を追加した。指定したバイト数だけファイルからの読み込みが可能となる。
   ・Oniguruma 4.4.6へ差し替えた
+  ・SSH2対応TTSSH(2.36)へ差し替えた
 
 2006.10.28 (Ver 4.47)
   ・LogMeTT 2.8.6へ差し替えた
@@ -752,6 +752,7 @@ OF SUCH DAMAGE.
   ・sendln後の無条件100ミリ秒のスリープを解除した。
   ・マクロ(ttpmacro.exe)のバッファサイズを4KBから16KBへ拡張子した。また、TeraTermへの同期要求タイミングを変更した。
   ・Oniguruma 4.4.5へ差し替えた
+  ・SSH2対応TTSSH(2.35)へ差し替えた
 
 2006.10.9 (Ver 4.46)
   ・Windows Vista で teraterm.ini の保存先のデフォルトがデスクトップになるのを修正した。
@@ -762,6 +763,7 @@ OF SUCH DAMAGE.
   ・HTMLヘルプを更新した
   ・Oniguruma 4.4.4へ差し替えた
   ・CygTerm+ 1.06_11へ差し替えた
+  ・SSH2対応TTSSH(2.34)へ差し替えた
 
 2006.9.16 (Ver 4.45)
   ・HTMLヘルプを更新した

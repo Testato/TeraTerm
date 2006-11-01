@@ -766,9 +766,9 @@ OF SUCH DAMAGE.
 * History
 
 2006.11.1 (Ver 4.48)
-  - upgraded TTSSH version supporting SSH2 to 2.36
   - added 'fileread' macro command. This command enables the macro script to read the specified bytes from file.
   - upgraded Oniguruma to 4.4.6
+  - upgraded TTSSH version supporting SSH2 to 2.36
 
 2006.10.28 (Ver 4.47)
   - upgraded LogMeTT to 2.8.6
@@ -777,6 +777,7 @@ OF SUCH DAMAGE.
   - deleted 100msec sleep after send and sendln macro command.
   - expaned the ring buffer size of macro program(ttpmacro.exe) from 4KB to 16KB. And also changed the macro synchronization timing to TeraTerm(ttermpro.exe).
   - upgraded Oniguruma to 4.4.5
+  - upgraded TTSSH version supporting SSH2 to 2.35
 
 2006.10.9 (Ver 4.46)
   - Bug fix: default save dir of teraterm.ini is setted to desktop on Windows Vista.
@@ -787,6 +788,7 @@ OF SUCH DAMAGE.
   - updated HTML help document.
   - upgraded Oniguruma to 4.4.4
   - upgraded CygTerm+ to 1.06_11
+  - upgraded TTSSH version supporting SSH2 to 2.34
 
 2006.9.16 (Ver 4.45)
   - updated HTML help document.
