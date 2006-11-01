@@ -1,41 +1,77 @@
-
 body{ 
+
 	margin: 5ex;
+
 	background: rgb(255, 255, 240);
+
 	color: black;
+
 	font-family: "MS US Gothic";
+
 	font-size: 12pt;
+
 	/*
+
 	scrollbar-face-color: #DEE3E7;scrollbar-highlight-color: #FFFFFF;scrollbar-shadow-color: #DEE3E7;scrollbar-3dlight-color: #D1D7DC;scrollbar-arrow-color: #006699;scrollbar-track-color: #EFEFEF;scrollbar-darkshadow-color: #98AAB1; 
+
 	*/
+
 }
+
+
+
 
 
 div.topic{ font-weight: bold;font-size: medium;color: #000000;margin-top: 2pt;margin-bottom: 2pt; }
 
+
+
 ul {
+
 	margin-top: 0pt;margin-bottom: 0pt; 
+
 }
+
+
 
 dt{ font-weight: bold;font-style: normal;font-size: larger;color: black;border-color: #FFCC33;padding: 0.5em 0.5em 0.5em 0.5em; border-width: 0px 0px 1px 0px; }
 
+
+
 pre { 
+
 	/*font-family: "Lucida Console"; */
+
 	font-weight: medium;
+
 	font-style: normal;
+
 	font-size:  small;
+
 	white-space:pre;
+
 	/*border:double black; */
+
 	background: #ffffff;
+
 	padding: .5ex;
+
 }
+
+
 
 pre.console{ 
-	font-size: smaller;
-	color: #ffffff;
-	background: #000000;
-	margin-top: 1;margin-bottom: 1;
-	border: #ccccff 1px solid;
-	padding: .5ex .5ex .5ex .5ex;
-}
 
+	font-size: smaller;
+
+	color: #ffffff;
+
+	background: #000000;
+
+	margin-top: 1;margin-bottom: 1;
+
+	border: #ccccff 1px solid;
+
+	padding: .5ex .5ex .5ex .5ex;
+
+}
