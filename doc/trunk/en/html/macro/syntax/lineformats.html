@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+<TITLE>Line formats</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">Line formats</FONT><BR><BR>
+</div>
+
+<pre>
+There are four kinds of line formats for macro files. Any line can contain a comment 
+which begins with a ";" character. Comments give no effect on the execution of MACRO.
+
+<B>1) Empty lines</B>
+
+Lines which have no character or contain only space or tab characters or a comment. 
+They give no effect on the execution of the macro.
+
+Example:
+	; Tera Term Language
+
+<B>2) Command lines</B>
+
+Lines containing a single command with parameters.
+
+Format:
+	&lt;command&gt; &lt;parameter&gt; ...
+
+Example:
+	connect'myhost'
+	wait 'OK' 'ERROR'
+	if result=2 goto error
+	sendln 'cat'
+	pause A*10
+	end
+
+<B>3) Assignment lines</B>
+
+Lines which contain an assignment statement.
+
+Format:
+	&lt;Variable&gt; = &lt;Value (constant, variable, expression)&gt;
+
+Example:
+	A = 33	
+	B = C			C must already have a value.
+	VAL = I*(I+1)	
+	A=B=C			The value of B=C (0 for false, 1 for true) is assigned to A.
+	Error=0&lt;J	
+	Username='MYNAME'	
+
+<B>4) Label lines</B>
+
+Lines which begin with a ':' character followed by a label identifier.
+
+Format:
+	:&lt;Label&gt;
+
+Example:
+	:dial
+	:100
+</pre>
+
+</BODY>
+</HTML>
+

@@ -1,0 +1,60 @@
+<HTML>
+<HEAD>
+<TITLE>Formats of constants</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">Formats of constants</FONT><BR><BR>
+</div>
+
+<B>1) Integer-type constants</B><P></P>
+
+A integer-type constant is expressed as a decimal number or a hexadecimal number which begins with a "$" character..
+
+<pre>
+Example:
+	123
+	-11
+	$3a
+	$10F
+</pre>
+
+<A HREF="../appendixes/negative.html">Note on negative integer constants</A>
+<P></P>
+
+<B>2) String-type constants</B><P></P>
+
+There are two ways of expressing a string-type constant.<P></P>
+
+<pre>
+a) A character string quoted by ' or " (both sides must be same).
+
+Example:
+	'Hello, world'
+	"I can't do that"
+
+b) A single character expressed as a "#" followed by an ASCII code (decimal or hexadecimal number). Note: Strings can not contain NUL (ASCII code 0) characters.
+
+Example:
+	#65	The character "A".
+	#$41	The character "A".
+	#13	The CR character.
+</pre>
+
+<A HREF="../appendixes/ascii.html">ASCII code table</A> 
+<P></P>
+
+Format a) and b) can be combined in one expression.
+
+<pre>
+Example:
+	'cat readme.txt'#13#10
+	abc'#$0d#$0a'def'#$0d#$0a'ghi'
+</pre>
+
+
+</BODY>
+</HTML>
+

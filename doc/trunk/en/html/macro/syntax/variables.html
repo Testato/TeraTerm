@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+<TITLE>Variables</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">Variables</FONT><BR><BR>
+</div>
+
+<pre>
+<B>1) User variables</B>
+
+Defined by user. The type of a variable is determined when a value (integer or string) is assigned to it for the first time. Once the type of the variable is determined, values of a different type cannot be assigned to it.
+
+
+<B>2) System variables</B>
+
+Each system variable has a predefined type and value. Used with particular commands.
+
+Variables		Type	Initial value	Related commands
+<hr>
+groupmatchstr1		string	""	waitregex
+groupmatchstr2
+groupmatchstr9
+
+inputstr		string	""	recvln, waitln, waitrecv, waitregex, passwordbox, inputbox
+
+matchstr		string	""	waitregex
+
+param2			string	*1	*1
+param3			string	*1	*1
+result			integer		0	bplussend, bplusrecv, clipb2var, kmtfinish, kmtget, 
+						kmtrecv, kmtsend, ifdefined, quickvanrecv, quickvansend,
+						recvln, var2clipb, wait, waitevent, waitln, waitrecv,
+						waitregex, xmodemrecv, xmodemsend, zmodemrecv, zmodemsend,
+						str2int, strcompare, strlen, strscan, filereadln,
+						filesearch, filestrseek, yesnobox
+
+timeout			integer		0	recvln, wait, waitevent, waitln, waitrecv, waitregex
+
+	*1 The second and third command line parameter of MACRO. 
+	   The first parameter is the macro file name. See "<A HREF="../commandline.html">Command line</A>".
+</pre>
+
+</BODY>
+</HTML>
+
