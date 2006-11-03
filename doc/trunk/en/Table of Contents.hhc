@@ -89,6 +89,16 @@
 			<param name="Local" value="html\tips.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Unicode">
+			<param name="Local" value="html\unicode.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Background transparency">
+			<param name="Local" value="html\transparent.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Commands">
@@ -104,6 +114,11 @@
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="For developer">
 		<param name="Local" value="html\develop.txt">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Keycode">
+		<param name="Local" value="html\keycode.txt">
 		<param name="ImageNumber" value="11">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
