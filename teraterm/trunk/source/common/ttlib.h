@@ -25,7 +25,7 @@ void QuoteFName(PCHAR FName);
 int isInvalidFileNameChar(PCHAR FName);
 void deleteInvalidFileNameChar(PCHAR FName);
 int isInvalidStrftimeChar(PCHAR FName);
-int deleteInvalidStrftimeChar(PCHAR FName);
+void deleteInvalidStrftimeChar(PCHAR FName);
 void ParseStrftimeFileName(PCHAR FName);
 
 #ifdef __cplusplus
