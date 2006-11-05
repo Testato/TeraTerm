@@ -667,8 +667,16 @@ HDDEDATA CALLBACK DdeCallbackProc(UINT CallType, UINT Fmt, HCONV Conv,
     case XTYP_REQUEST:
       Result = AcceptRequest(HSz2);
       break;
-    case XTYP_POKE:
+
+	// クライアント(ttpmacro.exe)からサーバ(ttermpro.exe)へデータが送られてくると、
+	// このメッセージハンドラへ飛んでくる。
+	// 処理したら DDE_FACK、ビジーの場合は DDE_FBUSY 、無視する場合は DDE_FNOTPROCESSED を
+	// クライアントへ返す必要があり、break文が抜けていたので追加した。
+	// (2006.11.6 yutaka)
+	case XTYP_POKE:
       Result = AcceptPoke(HSz2, Fmt, Data);
+	  break;
+
     case XTYP_ADVSTART:
       if ((ConvH!=0) &&
 	  (DdeCmpStringHandles(Topic, HSz1) == 0) &&
@@ -900,6 +908,10 @@ void RunMacro(PCHAR FName, BOOL Startup)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2006/09/14 17:01:09  maya
+ * ComAutoConnect セクションを削除した。
+ * /M コマンドラインパラメータが指定されている場合、TeraTerm 起動時に自動的にシリアルポートへ接続しないようにした。
+ *
  * Revision 1.6  2006/08/28 12:27:16  maya
  * デフォルトのログファイル名を指定できるようにした。
  *   エディットコントロールを "Additional settings" ダイアログに追加した。
