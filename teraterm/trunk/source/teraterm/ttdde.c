@@ -243,6 +243,10 @@ HDDEDATA AcceptPoke(HSZ ItemHSz, UINT ClipFmt,
   LPSTR DataPtr;
   DWORD DataSize;
 
+  // 連続してXTYP_POKEがクライアント（マクロ）から送られてくると、サーバ（本体）側がまだ
+  // コマンドの貼り付けを行っていない場合、TalkStatusは IdTalkCB になので、DDE_FNOTPROCESSEDを
+  // 返すことがある。
+  // (2006.11.6 yutaka)
   if ((TalkStatus != IdTalkKeyb) ||
       (ConvH==0)) return DDE_FNOTPROCESSED;
 
@@ -908,6 +912,9 @@ void RunMacro(PCHAR FName, BOOL Startup)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2006/11/05 16:06:10  yutakapon
+ * XTYP_POKE処理でbreak文が抜けていたので追加した。
+ *
  * Revision 1.7  2006/09/14 17:01:09  maya
  * ComAutoConnect セクションを削除した。
  * /M コマンドラインパラメータが指定されている場合、TeraTerm 起動時に自動的にシリアルポートへ接続しないようにした。
