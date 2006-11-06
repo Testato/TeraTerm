@@ -766,8 +766,8 @@ OF SUCH DAMAGE.
 * History
 
 2006.11.6 (Ver 4.49)
-  - Workaround: added 100msec sleep after send and sendln macro command. This worst problem is CPU stall on TeraTerm process(ttermpro.exe). I think that DDE XTYP_ADVREQ message may send for infinite loop.
   - Bug fix: TeraTerm(DDE server) sent the invalid return value to TeraTerm macro(DDE client) when DDE server was received XTYP_POKE message.
+  - updated HTML help document.
 
 2006.11.1 (Ver 4.48)
   - added 'fileread' macro command. This command enables the macro script to read the specified bytes from file.
