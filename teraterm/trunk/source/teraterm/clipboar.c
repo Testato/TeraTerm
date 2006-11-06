@@ -123,6 +123,13 @@ void CBStartPaste(HWND HWin, BOOL AddCR,
   if (TalkStatus != IdTalkCB) CBEndPaste();
 }
 
+// この関数はクリップボードおよびDDEデータを端末へ送り込む。
+//
+// CBMemHandleハンドルはグローバル変数なので、この関数が終了するまでは、
+// 次のクリップボードおよびDDEデータを処理することはできない（破棄される可能性あり）。
+// また、データ列で null-terminate されていることを前提としているため、後続のデータ列は
+// 無視される。
+// (2006.11.6 yutaka)
 void CBSend()
 {
   int c;
