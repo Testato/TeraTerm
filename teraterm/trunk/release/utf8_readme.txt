@@ -767,6 +767,7 @@ OF SUCH DAMAGE.
 
 2006.11.6 (Ver 4.49)
   - Bug fix: TeraTerm(DDE server) sent the invalid return value to TeraTerm macro(DDE client) when DDE server was received XTYP_POKE message.
+  - added busy procedure(DDE_FBUSY) between DDE server and DDE client.
   - updated HTML help document.
 
 2006.11.1 (Ver 4.48)

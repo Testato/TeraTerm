@@ -245,10 +245,12 @@ HDDEDATA AcceptPoke(HSZ ItemHSz, UINT ClipFmt,
 
   // 連続してXTYP_POKEがクライアント（マクロ）から送られてくると、サーバ（本体）側がまだ
   // コマンドの貼り付けを行っていない場合、TalkStatusは IdTalkCB になので、DDE_FNOTPROCESSEDを
-  // 返すことがある。
+  // 返すことがある。DDE_FBUSYに変更。
   // (2006.11.6 yutaka)
-  if ((TalkStatus != IdTalkKeyb) ||
-      (ConvH==0)) return DDE_FNOTPROCESSED;
+  if (TalkStatus != IdTalkKeyb)
+	  return (HDDEDATA)DDE_FBUSY;
+
+  if (ConvH==0) return DDE_FNOTPROCESSED;
 
   if ((ClipFmt!=CF_TEXT) && (ClipFmt!=CF_OEMTEXT)) return DDE_FNOTPROCESSED;
 
@@ -912,6 +914,9 @@ void RunMacro(PCHAR FName, BOOL Startup)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2006/11/05 17:07:49  yutakapon
+ * コメントおよびデバッグ用コードの追加。
+ *
  * Revision 1.8  2006/11/05 16:06:10  yutakapon
  * XTYP_POKE処理でbreak文が抜けていたので追加した。
  *

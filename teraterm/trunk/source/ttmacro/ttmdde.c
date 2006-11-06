@@ -331,51 +331,36 @@ void DDEOut(PCHAR B)
 void DDESend()
 {
 	HDDEDATA hd;
+	int i;
+	const int retry_count = 10;
 
 	if ((! Linked) || (OutLen==0)) return;
-	OutBuf[OutLen] = 0;
+	OutBuf[OutLen] = 0;  // DDEデータの終端は null で終わることをサーバが期待している。
 
-	// サーバ(TeraTerm)へコマンド列を送る。成功すると非0が返る。
-	if ((hd = DdeClientTransaction(OutBuf,OutLen+1,ConvH,Item,CF_OEMTEXT,XTYP_POKE,1000,NULL))
-		!= 0) {
-		OutLen = 0;  // バッファを空にする
+	for (i = 0 ; i < retry_count ; i++) {
+		// サーバ(TeraTerm)へコマンド列を送る。成功すると非0が返る。
+		if ((hd = DdeClientTransaction(OutBuf,OutLen+1,ConvH,Item,CF_OEMTEXT,XTYP_POKE,1000,NULL))
+			!= 0) {
+			OutLen = 0;  // バッファを空にする
 
-#if 0
-		// MSDNライブラリにはハンドルを解放しろとあるが… (2006.11.6 yutaka)
-		DdeFreeDataHandle(hd);
-#endif
+			//if (i > 0) MessageBox(NULL, "retry success", "DDESend()", MB_OK);
+			break;
 
-	} else {
-#if 0
-		UINT ret = DdeGetLastError(Inst);
-		char buf[64];
-		_snprintf(buf, sizeof(buf), "DdeGetLastError() 0x%x", ret);
-		MessageBox(NULL, buf, "Tera Term Macro: DDE send error", MB_OK|MB_ICONERROR);
-
-/*
-[ddeml.h]
-#define     DMLERR_ADVACKTIMEOUT               0x4000
-#define     DMLERR_BUSY                        0x4001
-#define     DMLERR_DATAACKTIMEOUT              0x4002
-#define     DMLERR_DLL_NOT_INITIALIZED         0x4003
-#define     DMLERR_DLL_USAGE                   0x4004
-#define     DMLERR_EXECACKTIMEOUT              0x4005
-#define     DMLERR_INVALIDPARAMETER            0x4006
-#define     DMLERR_LOW_MEMORY                  0x4007
-#define     DMLERR_MEMORY_ERROR                0x4008
-#define     DMLERR_NOTPROCESSED                0x4009
-#define     DMLERR_NO_CONV_ESTABLISHED         0x400a
-#define     DMLERR_POKEACKTIMEOUT              0x400b
-#define     DMLERR_POSTMSG_FAILED              0x400c
-#define     DMLERR_REENTRANCY                  0x400d
-#define     DMLERR_SERVER_DIED                 0x400e
-#define     DMLERR_SYS_ERROR                   0x400f
-#define     DMLERR_UNADVACKTIMEOUT             0x4010
-#define     DMLERR_UNFOUND_QUEUE_ID            0x4011
- */
-#endif
-
+		} else {
+			UINT ret = DdeGetLastError(Inst);
+			if (ret == DMLERR_BUSY) { // ビジーの場合リトライを行う
+				Sleep(100);        // スリープしてサーバへCPUを回す。100の値に根拠はない。
+			} else {
+				// よく分からないエラーはそのまま捨てる。
+				break;
+			}
+		}
 	}
+
+	if (i >= retry_count) {
+		OutLen = 0;  // リトライしてもダメなら捨てる
+	}
+
 }
 
 void ClearRecvLnBuff()
