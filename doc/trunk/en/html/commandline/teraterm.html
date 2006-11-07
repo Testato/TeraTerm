@@ -1,0 +1,134 @@
+<HTML>
+<HEAD>
+<TITLE>TeraTerm command line</TITLE>
+<link rel="stylesheet" href="./style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<FONT SIZE="+2">TeraTerm command line</FONT><BR><BR>
+
+<pre>
+TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
+	[/B] [/C=&lt;serial port#&gt;]
+	[/F=&lt;setup file&gt;] [/FD=&lt;file transfer directory&gt;]
+	[/H] [/I] [/K=&lt;keyboard setup file&gt;]
+	[/KR=&lt;kanji code (receive)&gt;] [/KT=&lt;kanji code (transmit)&gt;]
+	[/L=&lt;log file&gt;] [/LA=&lt;language&gt;] [/M=&lt;macro file&gt;]
+	[/P=&lt;TCP port#&gt;] [/R=&lt;replay file&gt;] [/T=&lt;telnet flag&gt;]
+	[/V] [/W="&lt;window title&gt;"]
+	[/X=&lt;window pos (x)] [/Y=&lt;window pos (y)]
+	[;&lt;comment&gt;]
+
+where:
+	&lt;host&gt;		Host name or IP address.
+	
+	&lt;host&gt;:&lt;TCP port#&gt;	&lt;host&gt; with a TCP port number.
+	
+	":" is placed between &lt;host&gt; and &lt;TCP port#&gt;.
+	
+	&lt;host&gt; &lt;TCP port#&gt;	&lt;host&gt; with a TCP port number.
+	
+	Space character(s) between &lt;host&gt; and &lt;TCP port#&gt;.
+	Number just after &lt;host&gt; is interpreted as a port number.
+	
+	/B	Telnet binary option.
+	
+	/C=&lt;serial port#&gt;
+	  /C=1  COM1
+	  /C=2  COM2
+	  /C=3  COM3
+	  /C=4  COM4
+	
+	/F=&lt;setup file&gt;
+	  /F=TERATERM.INI (default)
+	
+	/FD=&lt;file transfer directory&gt;
+	
+	/H	Hide title bar.
+	
+	/I	Start Tera Term in iconized state.
+	
+	/K=&lt;keyboard setup file&gt;
+	  /K=KEYBOARD.CNF (default)
+	
+	/KR=&lt;kanji code (receive)&gt;	Note: Japanese mode only
+	  /KR=SJIS
+	  /KR=EUC
+	  /KR=JIS
+	
+	/KT=&lt;kanji code (transmit)&gt;	Note: Japanese mode only
+	  /KT=SJIS
+	
+	  /KT=EUC
+	  /KT=JIS
+	
+	/L=&lt;log file&gt;	Start Tera Term with logging.
+	
+	/LA=&lt;language&gt;	Language mode.
+	  /LA=E	English
+	  /LA=J	Japanese
+	  /LA=R	Russian
+	
+	/M=&lt;macro file&gt;	Start Tera Term with macro.
+	
+	/P=&lt;TCP port#&gt;
+	
+	/R=&lt;replay file&gt;
+	
+	/T=&lt;telnet flag&gt;
+	  /T=1	Enable telnet
+	  /T=0	Disable telnet
+	
+	/V	Start Tera Term in hidden (invisible) state.
+	
+	/W="&lt;window title&gt;"
+	
+	/X=&lt;window position (x)&gt;
+	
+	/Y=&lt;window position (y)&gt;
+	
+	;&lt;comment&gt;	Comment. Should be last in the command line.
+
+Example:
+	TTERMPRO
+	TTERMPRO myhost.mydomain
+	TTERMPRO myhost.mydomain:23
+	TTERMPRO myhost.mydomain 23
+	TTERMPRO 111.111.11.11
+	TTERMPRO myhost.mydomain /T=0 /P=7
+	TTERMPRO /C=1
+	TTERMPRO /F=TELNET.INI
+	TTERMPRO foohost.foodomain /F=FOOHOST.INI
+	TTERMPRO /C=2 /F=MYSETUP.INI
+	TTERMPRO /K=MYKEY.CNF /W="My host"
+	TTERMPRO /R=README.TXT ; replay a file
+	TTERMPRO myhost /B /X=100 /Y=50
+
+Default values
+	Following default values are stored in the Tera Term setup file:
+		&lt;TCP port#&gt;
+		/B
+		&lt;serial port#&gt;
+		&lt;file transfer directory&gt;
+		/H
+		&lt;kanji code (receive)&gt;
+		&lt;kanji code (transmit)&gt;
+		&lt;language&gt;
+		&lt;macro file&gt;
+		&lt;telnet flag&gt;
+		&lt;window title&gt;
+		&lt;window pos (x)&gt;
+		&lt;window pos (y)&gt;
+
+Note:
+	Only if &lt;telnet flag&gt; is 1 (on) and &lt;TCP port#&gt; is 23, Tera Term starts 
+	spontaneously sending telnet commands to the host for the option negotiation when 
+	the TCP/IP connection is established. In any cases, Tera Term can respond to telnet 
+	commands sent by the host.
+
+See also:
+	Telnet port number / Terminal setup for non-telnet connection
+</pre>
+
+</BODY>
+</HTML>
