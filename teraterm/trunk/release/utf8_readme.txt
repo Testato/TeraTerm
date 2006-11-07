@@ -769,6 +769,7 @@ OF SUCH DAMAGE.
   - Bug fix: TeraTerm(DDE server) sent the invalid return value to TeraTerm macro(DDE client) when DDE server was received XTYP_POKE message.
   - added busy procedure(DDE_FBUSY) between DDE server and DDE client.
   - updated HTML help document.
+  - changed installer. teraterm.ini entries (Language, Locale, CodePage. VTFont and TEKFont) are setted by installer when new install.
 
 2006.11.1 (Ver 4.48)
   - added 'fileread' macro command. This command enables the macro script to read the specified bytes from file.

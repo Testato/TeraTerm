@@ -25,4 +25,6 @@ rmdir /s /q %dst%\theme\CVS
 rmdir /s /q %dst%\theme\scale\CVS
 rmdir /s /q %dst%\theme\tile\CVS
 
+perl setini.pl ..\..\teraterm\release\TERATERM.INI > %dst%\TERATERM.INI
+
 pause

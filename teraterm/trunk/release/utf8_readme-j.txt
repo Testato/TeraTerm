@@ -744,6 +744,7 @@ OF SUCH DAMAGE.
   ・TeraTerm本体（DDEサーバ）側でのDDEメッセージ XTYP_POKE の処理において、不正な返値をTeraTermマクロ（DDEクライアント）へ返していたバグを修正した。
   ・マクロ通信において、XTYP_POKEメッセージにおけるビジー処理を行うようにした。
   ・HTMLヘルプを更新した
+  ・初回インストール時に、teraterm.ini の Language/Locale/CodePage/VTFont/TEKFont セクションをインストーラから設定するように変更した。
 
 2006.11.1 (Ver 4.48)
   ・マクロコマンド 'fileread' を追加した。指定したバイト数だけファイルからの読み込みが可能となる。
