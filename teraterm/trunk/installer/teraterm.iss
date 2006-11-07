@@ -184,6 +184,24 @@ begin
         TEKFont  := GetIniString('Tera Term', 'TEKFont', '', iniFile);
         
         case GetUILanguage and $3FF of
+        $04: // Chinese
+          begin
+            if Length(Language) = 0 then begin
+              SetIniString('Tera Term', 'Language', 'English', iniFile);
+            end;
+            if Length(Locale) = 0 then begin
+              SetIniString('Tera Term', 'Locale', 'chs', iniFile);
+            end;
+            if CodePage = 0 then begin
+              SetIniInt('Tera Term', 'CodePage', 936, iniFile);
+            end;
+            if Length(VTFont) = 0 then begin
+              SetIniString('Tera Term', 'VTFont', 'Terminal,0,-12,255', iniFile);
+            end;
+            if Length(TEKFont) = 0 then begin
+              SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,255', iniFile);
+            end;
+          end;
         $11: // Japanese
           begin
             if Length(Language) = 0 then begin
@@ -199,7 +217,7 @@ begin
               SetIniString('Tera Term', 'VTFont', '‚l‚r –¾’©,0,-16,128', iniFile);
             end;
             if Length(TEKFont) = 0 then begin
-              SetIniString('Tera Term', 'TEKFont', 'Terminal,0,8,128', iniFile);
+              SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,128', iniFile);
             end;
           end;
         $19: // Russian
@@ -214,10 +232,10 @@ begin
               SetIniInt('Tera Term', 'CodePage', 1251, iniFile);
             end;
             if Length(VTFont) = 0 then begin
-              SetIniString('Tera Term', 'VTFont', 'Courier,0,-16,0', iniFile);
+              SetIniString('Tera Term', 'VTFont', 'Terminal,0,-12,255', iniFile);
             end;
             if Length(TEKFont) = 0 then begin
-              SetIniString('Tera Term', 'TEKFont', 'Terminal,0,8,0', iniFile);
+              SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,255', iniFile);
             end;
           end;
         else // Other
@@ -232,10 +250,10 @@ begin
               SetIniInt('Tera Term', 'CodePage', 1252, iniFile);
             end;
             if Length(VTFont) = 0 then begin
-              SetIniString('Tera Term', 'VTFont', 'Courier,0,-16,0', iniFile);
+              SetIniString('Tera Term', 'VTFont', 'Terminal,0,-12,255', iniFile);
             end;
             if Length(TEKFont) = 0 then begin
-              SetIniString('Tera Term', 'TEKFont', 'Terminal,0,8,0', iniFile);
+              SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,255', iniFile);
             end;
           end;
         end;
