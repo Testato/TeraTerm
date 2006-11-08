@@ -1399,7 +1399,7 @@ BOOL SSH_handle_server_ID(PTInstVar pvar, char FAR * ID, int ID_len)
 
 	// initialize SSH2 memory dump (2005.3.7 yutaka)
 	init_memdump();
-	push_memdump("pure server ID", "プロトコル識別文字列交換開始", ID, ID_len);
+	push_memdump("pure server ID", "start protocol version exchange", ID, ID_len);
 
 	if (ID_len <= 0) {
 		return FALSE;
@@ -3583,7 +3583,7 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 	len = pvar->ssh_state.payloadlen;
 
 	//write_buffer_file(data, len);
-	push_memdump("KEXINIT", "アルゴリズムリストの交換", data, len);
+	push_memdump("KEXINIT", "exchange algorithm list: receiving", data, len);
 
 	if (offset + 20 >= len) {
 		msg = "payload size too small @ handle_SSH2_kexinit()";
@@ -4932,6 +4932,7 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 
 	// for debug
 	//write_buffer_file(data, len);
+	push_memdump("KEXDH_REPLY", "key exchange: receiving", data, len);
 
 	bloblen = get_uint32_MSBfirst(data);
 	data += 4;
@@ -6966,6 +6967,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.58  2006/10/30 13:33:31  maya
+ * ttssh.logへの出力を追加した。
+ *
  * Revision 1.57  2006/10/30 08:48:02  maya
  * SSH2_MSG_CHANNEL_EXTENDED_DATA を処理するようにした。
  *
