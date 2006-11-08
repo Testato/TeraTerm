@@ -187,7 +187,7 @@ begin
         $04: // Chinese
           begin
             if Length(Language) = 0 then begin
-              SetIniString('Tera Term', 'Language', 'English', iniFile);
+              SetIniString('Tera Term', 'Language', 'Japanese', iniFile);
             end;
             if Length(Locale) = 0 then begin
               SetIniString('Tera Term', 'Locale', 'chs', iniFile);
