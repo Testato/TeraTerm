@@ -765,9 +765,10 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.11.6 (Ver 4.49)
+2006.11.14 (Ver 4.49)
   - Bug fix: TeraTerm(DDE server) sent the invalid return value to TeraTerm macro(DDE client) when DDE server was received XTYP_POKE message.
   - added busy procedure(DDE_FBUSY) between DDE server and DDE client.
+  - added support for ScrollLock key.
   - updated HTML help document.
   - changed installer. teraterm.ini entries (Language, Locale, CodePage. VTFont and TEKFont) are setted by installer when new install.
 

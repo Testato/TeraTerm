@@ -17,6 +17,9 @@ private:
   // "Hold" key status
   BOOL Hold;
 
+  // ScrollLock key
+  BOOL ScrollLock;
+
   HMENU MainMenu, FileMenu, TransMenu, EditMenu,
     SetupMenu, ControlMenu, WinMenu, HelpMenu;
 

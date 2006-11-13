@@ -740,9 +740,10 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
-2006.11.6 (Ver 4.49)
+2006.11.14 (Ver 4.49)
   ・TeraTerm本体（DDEサーバ）側でのDDEメッセージ XTYP_POKE の処理において、不正な返値をTeraTermマクロ（DDEクライアント）へ返していたバグを修正した。
   ・マクロ通信において、XTYP_POKEメッセージにおけるビジー処理を行うようにした。
+  ・ScrollLockキーをサポートした
   ・HTMLヘルプを更新した
   ・初回インストール時に、teraterm.ini の Language/Locale/CodePage/VTFont/TEKFont セクションをインストーラから設定するように変更した。
 

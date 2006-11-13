@@ -384,6 +384,7 @@ CVTWindow::CVTWindow()
   TplClk = FALSE;
   Hold = FALSE;
   FirstPaint = TRUE;
+  ScrollLock = FALSE;  // 初期値は無効 (2006.11.14 yutaka)
 
   /* Initialize scroll buffer */
   InitBuffer();
@@ -530,7 +531,8 @@ void CVTWindow::Dump(CDumpContext& dc) const
 
 int CVTWindow::Parse()
 {
-  if (LButton || MButton || RButton)
+	// added ScrollLock (2006.11.14 yutaka)
+  if (LButton || MButton || RButton || ScrollLock)
     return 0;
   return (VTParse()); // Parse received characters
 }
@@ -1268,7 +1270,25 @@ void CVTWindow::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     M.wParam = nChar;
     M.lParam = MAKELONG(nRepCnt,nFlags & 0xdfff);
     TranslateMessage(&M);
+
+  } else {
+	// ScrollLockキーが点灯している場合は、マウスをクリックしっぱなし状態であると
+	// 見なす。すなわち、パージング処理が一時停止する。
+    // 当該キーを消灯させると、処理が再開される。(2006.11.14 yutaka)
+    GetKeyboardState((PBYTE)KeyState);
+	if (KeyState[VK_SCROLL] == 0x81) { // on : scroll locked
+		ScrollLock = TRUE;
+
+	} else if (KeyState[VK_SCROLL] == 0x80) { // off : scroll unlocked
+		ScrollLock = FALSE;
+
+	} else {
+		// do nothing
+
+	}
+
   }
+
 }
 
 void CVTWindow::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -3897,6 +3917,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.37  2006/09/18 02:23:19  maya
+ * 最初のウインドウで、接続ダイアログの /L= パラメータが使用されないバグを修正した。
+ *
  * Revision 1.36  2006/09/14 17:01:09  maya
  * ComAutoConnect セクションを削除した。
  * /M コマンドラインパラメータが指定されている場合、TeraTerm 起動時に自動的にシリアルポートへ接続しないようにした。
