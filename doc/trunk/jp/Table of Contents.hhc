@@ -79,6 +79,10 @@
 			<param name="Name" value="ヒント">
 			<param name="Local" value="tipsj.html">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="LogMeTT">
+			<param name="Local" value="LogMeTT\index.html">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="コマンド">

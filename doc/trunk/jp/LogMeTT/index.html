@@ -1,0 +1,1866 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<HTML>
+<HEAD>
+	
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=shift_jis">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.0  (Win32)">
+	<META NAME="CREATED" CONTENT="19970109;7485900">
+	<META NAME="CHANGEDBY" CONTENT="jdss">
+	<META NAME="CHANGED" CONTENT="20061114;11322100">
+	
+	<STYLE>
+		<!-- 
+		BODY,DIV,TABLE,THEAD,TBODY,TFOOT,TR,TH,TD,P { font-family:"ＭＳ Ｐゴシック"; font-size:x-small }
+		 -->
+	</STYLE>
+	
+</HEAD>
+
+<BODY TEXT="#000000">
+<TABLE FRAME=VOID CELLSPACING=0 COLS=4 RULES=GROUPS BORDER=1>
+	<COLGROUP><COL WIDTH=17><COL WIDTH=678><COL WIDTH=21><COL WIDTH=665></COLGROUP>
+	<TBODY>
+		<TR>
+			<TD WIDTH=17 HEIGHT=30 ALIGN=LEFT><B><FONT SIZE=5>LogMeTT Tutorial</FONT></B></TD>
+			<TD WIDTH=678 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD WIDTH=21 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD WIDTH=665 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=20 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><B><FONT SIZE=4>LogMeTTとは</FONT></B></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>LogMeTTはターミナルエミュレータTeraTermのランチャーツールです。同様のツールにTeraTerm Menuがありますが、それを超える位置付けにあるのがLogMeTTです。カナダ在住のBoris氏により開発されています。LogMeTTはTeraTermに付属しています。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=20 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><B><FONT SIZE=4>LogMeTTでできること</FONT></B></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>LogMeTTを利用することにより、リモートホストへの自動接続を管理することができます。リモートホストは階層構造で登録することができるので、リモートホストが多数ある場合でも効率的に管理することが可能となります。また、設定次第ではリモートホストへの自動ログインも可能です。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>リモートホストへの自動処理などをマクロで組むと、スケジュール化して作業を自動化できます。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=23 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><B><FONT SIZE=4>最新バージョンの入手先</FONT></B></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>TeraTermに付属しているLogMeTTのバージョンが古い場合は、最新バージョンにアップデートすることができます。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><U><FONT COLOR="#0000FF"><A HREF="http://www.neocom.ca/forum/viewforum.php?f=5">LogMeTT: 最新バージョンのダウンロード</A></FONT></U></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=23 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><B><FONT SIZE=4>起動方法</FONT></B></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>LogMeTTはTeraTermのFileメニューから呼び出すことで、起動することができます。起動すると、タスクトレイに常駐します。LogMeTTのアイコンに対する操作として以下の動作が規定されています。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ROWSPAN=2 ALIGN=LEFT><BR><IMG SRC="LogMeTT_html_m29527bda.png" WIDTH=197 HEIGHT=30 HSPACE=239 VSPACE=4>
+			</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>ダブルクリック　&rarr;　TeraTermの単体起動</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>右クリック　　　&rarr;　メニューの呼び出し</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>LogMeTTの設定を変更することで、Windowsへのログオン時に自動的にLogMeTTを起動させることもできます（後述）。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=23 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><B><FONT SIZE=4>設定</FONT></B></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>実際にLogMeTTを使って、リモートホストへSSH2による自動接続を行う設定を追加してみることにします。以下の手順を踏まえることで、LogMeTTの使い方を理解できることでしょう。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>1. LogMeTTのタスクトレイアイコンを右クリックして、&quot;Configure...&quot;を選ぶ。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>2. 設定ダイアログが表示される。&quot;General&quot;タブの&quot;Run at log on to Windows&quot;にチェックを入れておくと、Windowsへのログオン時にLogMeTTが自動起動されるようになる。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ROWSPAN=30 ALIGN=LEFT><BR><IMG SRC="LogMeTT_html_485ea2f1.png" WIDTH=612 HEIGHT=549 HSPACE=31 VSPACE=20>
+			</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>3. &quot;Connection&quot;メニューから&quot;Add child&quot;を選ぶと、エントリが1つ追加される。F2キーを押下して、適切な名前に変更する。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ROWSPAN=30 ALIGN=LEFT><BR><IMG SRC="LogMeTT_html_6f355cb0.png" WIDTH=614 HEIGHT=550 HSPACE=30 VSPACE=19>
+			</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=47 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>4. &quot;Macro&quot;タブを選び、リモートホストへログインするためのマクロを記述する。たとえば、ユーザ名を固定とし、パスワードはダイアログボックスで入力させたい場合は、次のようなマクロを書く。もちろん、パスワードをマクロ内に記述してもよいが、マクロの取り扱いには注意すること。</TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><BR></TD>
+			<TD ALIGN=LEFT>4a. &quot;Macro&quot;タブを選び、リモートホストへログインするためのマクロを記述する。ユーザ名を固定とし、パスワードを暗号化して記憶（ローカル保存）させたい場合は、次のようなマクロを書く。</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><BR></TD>
+			<TD ALIGN=LEFT><BR></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">username = 'nike'</FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">username = 'user'</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">hostname = '192.168.1.3'</FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">hostname = 'remote.host'</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><BR></TD>
+			<TD ALIGN=LEFT><BR></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;</FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><BR></TD>
+			<TD ALIGN=LEFT><BR></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">msg = 'Enter password for user '</FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">getpassword 'C:\Program Files\teraterm\filename.dat' 'userpass' inputstr</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">strconcat msg username</FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">passwordbox msg 'Get password'</FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">msg = hostname</FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">msg = hostname</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">strconcat msg ':22 /ssh /auth=password /user='</FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">strconcat msg ':22 /ssh /2 /auth=password /user='</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">strconcat msg username</FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">strconcat msg username</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">strconcat msg ' /passwd='</FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">strconcat msg ' /passwd='</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">strconcat msg inputstr</FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">strconcat msg inputstr</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">connect msg</FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">connect msg</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT SIZE=1 COLOR="#0000FF">※getpassword 'filepath\filename' '識別子' $格納変数</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT SIZE=1 COLOR="#0000FF">同一格納ファイルに複数の識別子でパスワードを暗号化保存できる。</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ROWSPAN=34 ALIGN=LEFT><BR><IMG SRC="LogMeTT_html_m226ba23d.png" WIDTH=614 HEIGHT=628 HSPACE=30 VSPACE=25>
+			</TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=32 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>4b. &quot;Macro&quot;タブを選び、リモートホストへログインするためのマクロを記述する。telnet を利用する場合は別の方法が必要。</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">username = 'user'</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">hostname = 'remote.host'</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">msg = 'Enter password for user '</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">strconcat msg username</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">passwordbox msg 'Get password'</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT SIZE=1 COLOR="#0000FF">; パスワードをローカル保存したい場合は上3行の代わりに下を使う。</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">; getpassword 'C:\Program Files\teraterm\filename.dat' 'userpass' inputstr</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">msg = hostname</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">strconcat msg ':23'</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">strconcat msg ' /nossh'</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">connect msg</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT SIZE=1 COLOR="#0000FF">; login session ※telnetではホストの応答内容にあわせて記述を変更(ログインプロンプト)</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">UsernamePrompt = 'Please login:'</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">PasswordPrompt = 'Please Enter password:'</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">; login</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">wait   UsernamePrompt</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">sendln username</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT SIZE=1 COLOR="#0000FF"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">wait   PasswordPrompt</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="Courier" SIZE=1 COLOR="#0000FF">sendln inputstr</FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><BR></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>5. &quot;Colors&quot;タブでTeraTermの配色を決定する。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>6. F9キーを押下して、マクロが正しく動くかを検証する。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>7. 問題なければ、設定内容を保存する。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>8. 登録したリモートホストは次回から右クリックメニューから選択することができる。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>9. このとき、Popupにメッセージを組み込んでおくと、下記のポップアップメッセージが表示される。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ROWSPAN=30 ALIGN=LEFT><BR><IMG SRC="LogMeTT_html_3b790680.png" WIDTH=614 HEIGHT=504 HSPACE=30 VSPACE=19>
+			</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック">重要なホストに接続する際や、root等の特権アクセスのマクロにメッセージを組み込むとよいだろう。</FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック">OKを押すとMacroが実行され、Cancelを押すとMacroは実行されない。</FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ROWSPAN=8 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR><IMG SRC="LogMeTT_html_6590b57e.png" WIDTH=181 HEIGHT=125 HSPACE=247 VSPACE=9>
+			</FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>10. Colorsタブでは、接続メニュー毎にTeraTermの配色を変更できる。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>Popupとあわせ、重要なホストに接続する際等のメニュー配色はわかりやすくするとよいだろう。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ROWSPAN=32 ALIGN=LEFT><BR><IMG SRC="LogMeTT_html_3dce30e4.png" WIDTH=614 HEIGHT=539 HSPACE=31 VSPACE=20>
+			</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>11. Scheduleタブでは、自動実行させることができる。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>     上手にマクロを組めば、こんなことができます。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>・定期的に電源をon/off</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>・Settings -&gt; User Dataと組み合わせ、障害発生時にe-mailや電話させるなどの自動処理</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>・定時バックアップ、ステータスチェック</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT COLOR="#FF0000">※注意:メニューの階層は親から順番に実行されてしまうため、子をスケジュールに入れておくと</FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT COLOR="#FF0000">　　      その親もすべて実行される。単一タスクを行いたい場合は独立させましょう（This computer直下)</FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT COLOR="#FF0000">　　      また、基本ですがホストとLogMeTTを実行するPCの時刻差異に注意すること。</FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT COLOR="#FF0000"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>Scheduleを実行する場合は、後述の自動ログをONにすることをお勧めします。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>後で何が起きたかわからなくなってしまわないように。</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ROWSPAN=30 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR><IMG SRC="LogMeTT_html_m4943d517.png" WIDTH=612 HEIGHT=507 HSPACE=31 VSPACE=17>
+			</FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック">設定後、Verify valuesを押すと値の整合性を確認して、修正してくれます。必ず押して確認しましょう。</FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ROWSPAN=8 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR><IMG SRC="LogMeTT_html_m7530ebfc.png" WIDTH=228 HEIGHT=125 HSPACE=224 VSPACE=9>
+			</FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT>12. Settings -&gt; New Connectionsで、Log file creationが &quot;Start logging&quot;になっていると、</TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック">　　　メニューから起動した場合自動的にログが取得されるので非常に便利</FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック">      ($TeraTerminstallPath\Logs\$LogMeTTメニュー名_$日付時間.log)</FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ROWSPAN=32 ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR><IMG SRC="LogMeTT_html_357dc169.png" WIDTH=612 HEIGHT=539 HSPACE=31 VSPACE=19>
+			</FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=17 ALIGN=LEFT BGCOLOR="#99CCFF"><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+			<TD ALIGN=LEFT><FONT FACE="ＭＳ ゴシック"><BR></FONT></TD>
+		</TR>
+	</TBODY>
+</TABLE>
+<!-- ************************************************************************** -->
+</BODY>
+
+</HTML>
