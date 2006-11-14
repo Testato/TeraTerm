@@ -4917,6 +4917,7 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 	BIGNUM *share_key = NULL;
 	char *hash;
 	char *emsg, emsg_tmp[1024];  // error message
+	int ret;
 	Key hostkey;  // hostkey
 
 	notify_verbose_message(pvar, "SSH2_MSG_KEXDH_REPLY is receiving", LOG_LEVEL_VERBOSE);
@@ -5079,8 +5080,9 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 		}
 	}
 
-	if (key_verify(rsa, dsa, signature, siglen, hash, 20) != 1) {
-		emsg = "key verify error @ handle_SSH2_dh_kex_reply()";
+	if ((ret = key_verify(rsa, dsa, signature, siglen, hash, 20)) != 1) {
+		_snprintf(emsg_tmp, sizeof(emsg_tmp), "key verify error(%d) @ handle_SSH2_dh_kex_reply()", ret);
+		emsg = emsg_tmp;
 		save_memdump(LOGDUMP);
 		goto error;
 	}
@@ -6967,6 +6969,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.59  2006/11/08 16:20:14  maya
+ * デバッグ用コードを追加した。
+ *
  * Revision 1.58  2006/10/30 13:33:31  maya
  * ttssh.logへの出力を追加した。
  *

@@ -1028,9 +1028,8 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 					if (Ok) {
 						GetHNRec->TCPPort = i;
 					} else {
-						MessageBox(dlg, "Teraterm",
-								   "The TCP port must be a number.",
-								   MB_OK | MB_ICONEXCLAMATION);
+						MessageBox(dlg, "The TCP port must be a number.",
+								   "Teraterm", MB_OK | MB_ICONEXCLAMATION);
 						return TRUE;
 					}
 #ifdef INET6
@@ -3207,6 +3206,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.45  2006/10/19 06:24:05  maya
+ * SSHで接続中にNew connectionダイアログからtelnet接続できないのを修正した。
+ *
  * Revision 1.44  2006/10/10 16:54:54  maya
  * ttermpro.exeの/Fパラメータで指定されたファイルからTTSSHの設定が読まれなくなっていたのを修正した。
  *
