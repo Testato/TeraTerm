@@ -104,7 +104,7 @@ void XSendNAK(PFileVar fv, PXVar xv, PComVar cv)
   {
     if (xv->NAKMode==XnakC)
     {
-      XSetOpt(fv,xv,1);
+      XSetOpt(fv,xv,XoptCheck);
       xv->NAKMode = XnakNAK;
       xv->NAKCount = 9;
     }
@@ -416,6 +416,13 @@ BOOL XSendPacket(PFileVar fv, PXVar xv, PComVar cv)
 	  }
 	  break;
 	case NAK:
+	  if (xv->PktNum == 0 && xv->XOpt == Xopt1K)
+	  {
+	    /* we wanted 1k with CRC, but the other end specified checksum */
+	    /* keep the 1k block, but move back to checksum mode.          */
+	    xv->XOpt = XoptCheck;
+	    xv->CheckLen = 1;
+	  }
 	  SendFlag = TRUE;
 	  break;
 	case CAN:
@@ -484,14 +491,16 @@ BOOL XSendPacket(PFileVar fv, PXVar xv, PComVar cv)
 	xv->PktOut[0] = EOT;
 	xv->PktBufCount = 1;
       }
-
-      xv->PktBufPtr = 0;
     }
     else { /* resend packet */
       xv->PktBufCount = 3 + xv->DataLen + xv->CheckLen;
-      xv->PktBufPtr = 0;
     }
+    xv->PktBufPtr = 0;
   }
+  /* a NAK or C could have arrived while we were buffering.  Consume it. */
+  do {
+    i = XRead1Byte(fv,xv,cv,&b);
+  } while (i!=0);
 
   i = 1;
   while ((xv->PktBufCount>0) && (i>0))
