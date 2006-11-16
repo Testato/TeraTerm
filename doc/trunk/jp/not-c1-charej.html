@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
@@ -5,7 +7,7 @@
 <link rel="stylesheet" href="./style.css" type="text/css">
 </HEAD>
 <BODY>
-<div class="topic"><FONT COLOR="#cc0066">C1 制御文字 ($80-$9F) を使用しない</FONT></div>
+<FONT SIZE="+2">C1 制御文字 ($80-$9F) を使用しない</FONT>
 
 
 <pre>
@@ -14,7 +16,8 @@ Shift-JIS の漢字を受信すると、ハングアップすることがあります。
 
 これは、Shift-JIS コードの中に C1 制御文字 ($80-9F) が含まれているために、それらを制御文字として解釈してしまい、端末の状態がおかしくなるからです。
 
-例えば、ホストによってはログイン時などに SJIS(Shift-JIS), EUC, JIS などの数種類の漢字コードを端末に送り、どのコードが正しく表示されてるかユーザーに入力させる、ということがあり、このような場合に問題が発生します。
+例えば、ホストによってはログイン時などに SJIS(Shift-JIS), EUC, JIS などの数種類の漢字コードを端末に送り、どのコードが正しく表示されてるか
+ユーザーに入力させる、ということがあり、このような場合に問題が発生します。
 
 もし、このような状態になった場合、[Control] Reset terminal で端末の状態をリセットしてください。
 

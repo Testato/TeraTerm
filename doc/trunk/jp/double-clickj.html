@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
@@ -5,11 +7,12 @@
 <link rel="stylesheet" href="./style.css" type="text/css">
 </HEAD>
 <BODY>
-<div class="topic"><FONT COLOR="#cc0066">ダブルクリックによる単語選択の区切り文字</FONT></div>
+<FONT SIZE="+2">ダブルクリックによる単語選択の区切り文字</FONT>
 
 
 <pre>
-左マウスボタンで単語をダブルクリックすると、その単語を選択することができます。設定ファイルの [Tera Term] セクションの DelimList 行を以下のように変更することによって単語の区切り文字を指定することができます。
+左マウスボタンで単語をダブルクリックすると、その単語を選択することができます。設定ファイルの [Tera Term] セクションの DelimList 行を以下のように
+変更することによって単語の区切り文字を指定することができます。
 
 DelimList=&lt;区切り文字のリスト&gt;
 
@@ -26,8 +29,8 @@ DelimList=$20	; スペース文字
 省略時:
 DelimList=$20!"#$24%&amp;'()*+,-./:;&lt;=&gt;?@[\]^`{|}~
 
-この "DelimList" 行には、1バイトコード文字(いわゆる半角文字)しか指定できません。2バイトコード文字(いわゆる全角文字)は区切り文字として取り扱われます。2バイトコード文字を区切り文字としないようにするには、DelimDBCS 
-行を以下のように変更してください。
+この "DelimList" 行には、1バイトコード文字(いわゆる半角文字)しか指定できません。2バイトコード文字(いわゆる全角文字)は区切り文字として取り扱われます。
+2バイトコード文字を区切り文字としないようにするには、DelimDBCS 行を以下のように変更してください。
 
 DelimDBCS=off
 

@@ -8,13 +8,13 @@
   </head>
 
   <body>
-    <div class="topic"><FONT COLOR="#cc0066">Proxy 接続</FONT></div>
+    <FONT SIZE="+2">Proxy 接続</FONT>
 
     <p>
       UTF-8 TeraTerm Pro with TTSSH2 で実装された Proxy 接続について解説します。
     </p>
 
-   <div class="topic"><FONT COLOR="#cc0066">前提知識</FONT></div> 
+<h3>前提知識</h3>
 
     <p>
       Proxy とは、下図のようにインターネット環境とLAN環境が切り離されたネットワーク構成のとき、外部との接続に用いる手段です。<br>
@@ -27,17 +27,17 @@
       <li>TELNET（telnet 用）</li>
       <li>SOCKS4</li>
       <li>SOCKS5</li>
-    </ul>
+    </ul><P></P>
 
-    <div class="topic"><FONT COLOR="#cc0066">設定方法</FONT></div>
+<h3>設定方法</h3>
 
-    <h3>ご注意</h3>
+    <b>ご注意</b>
 
     <p>
       HTTP Proxy を使用するためには、「相手方の SSH サーバのコネクション受付ポートが443番ポートであること」が必要です。通常の設定では SSH は22番ポートでコネクションを待ちます。これは HTTPS に見せかけて SSH の通信を行うためにこのようになっています（HTTPS のポートが443番です）。
     </p>
 
-    <div class="topic"><FONT COLOR="#cc0066">設定の手順</FONT></div>
+<h3>設定の手順</h3>
 
     <p>
       具体的な設定方法ですが、まず、[Setup] メニューから「Proxy...」を選択します。<br>

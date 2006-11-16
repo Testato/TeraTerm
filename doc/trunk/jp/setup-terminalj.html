@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
@@ -5,7 +7,7 @@
 <link rel="stylesheet" href="./style.css" type="text/css">
 </HEAD>
 <BODY>
-<div class="topic"><FONT COLOR="#cc0066">Terminal ([Setup] メニュー)</FONT></div>
+<FONT SIZE="+2">Terminal ([Setup] メニュー)</FONT>
 
 
 <pre>
@@ -33,7 +35,8 @@ CR+LF を選択した場合、送信時に改行文字 CR ($0D) を CR+LF ($0D $0A) に変換します�
 
 Terminal ID
 
-ホストに報告する Terminal ID。Terminal ID は telnet の terminal type とは違います。Telnet の terminal type を変更するには [Setup] TCP/IP コマンドを使用してください。
+ホストに報告する Terminal ID。Terminal ID は telnet の terminal type とは違います。Telnet の terminal type を変更するには
+ [Setup] TCP/IP コマンドを使用してください。
 
 Local echo
 
@@ -41,7 +44,8 @@ Local echo
 
 Answerback
 
-ホストから ENQ ($05) 文字が送られてきた時に、送り返す文字列。文字列中に含まれる表示不可能な文字(制御文字)は、"$" と それにつづく ASCII コード(2桁の16進数) で表現してください。例えば、文字列 "ABC <CR> <LF>" をアンサーバックする場合、次のように入力してください。
+ホストから ENQ ($05) 文字が送られてきた時に、送り返す文字列。文字列中に含まれる表示不可能な文字(制御文字)は、"$" と それにつづく
+ ASCII コード(2桁の16進数) で表現してください。例えば、文字列 "ABC <CR> <LF>" をアンサーバックする場合、次のように入力してください。
 
 
 ABC$0D$0A
@@ -56,7 +60,8 @@ Kanji (receive)
 
 7bit katakana (receive)
 
-ホストから送られてくる"半角"片仮名コードが 7 bit で表現されている (SO/SI を用いたシフト制御を用いている)場合に選択してください。Kanji (receive) が JIS の場合のみ有効です。
+ホストから送られてくる"半角"片仮名コードが 7 bit で表現されている (SO/SI を用いたシフト制御を用いている)場合に選択してください。
+Kanji (receive) が JIS の場合のみ有効です。
 
 Kanji (transmit)
 
@@ -68,14 +73,16 @@ Kanji (transmit)
 
 Kanji-in (transmit)
 
-Kanji (transmit) が JIS のときに使用するエスケープシーケンス(漢字コードを G0 に指示するシーケンス。 ^[$@ または ^[$B )。ホストから送られてくるエスケープシーケンスはどちらでも構いません。
+Kanji (transmit) が JIS のときに使用するエスケープシーケンス(漢字コードを G0 に指示するシーケンス。 ^[$@ または ^[$B )。
+ホストから送られてくるエスケープシーケンスはどちらでも構いません。
 
 Kanji-out (transmit)
 
-Kanji (transmit) が JIS のときに使用するエスケープシーケンス (ASCII または JIS ローマ字コードを G0 に指示するシーケンス。^[(B または ^[(J )。ホストから送られてくるエスケープシーケンスはどちらでも構いません。
+Kanji (transmit) が JIS のときに使用するエスケープシーケンス (ASCII または JIS ローマ字コードを G0 に指示するシーケンス。
+^[(B または ^[(J )。ホストから送られてくるエスケープシーケンスはどちらでも構いません。
 
 注意:	 ^[(H は初期設定では選択できません。
-	→ ^[(H を選択可能にする。
+         → ^[(H を選択可能にする。
 </pre>
 
 
