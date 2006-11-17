@@ -4316,10 +4316,19 @@ static int ssh_dss_verify(
 	// step1
 	len = get_uint32_MSBfirst(ptr);
 	ptr += 4;
+	/*
 	if (strncmp("ssh-dss", ptr, len) != 0) {
 		return -3;
 	}
 	ptr += len;
+	*/
+	// workaround for SSH-2.0-2.0* and SSH-2.0-2.1* (2006.11.17 maya)
+	if (strncmp("ssh-dss", ptr, len) != 0) {
+		ptr -= 8;
+	}
+	else {
+		ptr += len;
+	}
 
 	// step2
 	len = get_uint32_MSBfirst(ptr);
@@ -4477,10 +4486,19 @@ static int ssh_rsa_verify(RSA *key, u_char *signature, u_int signaturelen,
 	// step1
 	len = get_uint32_MSBfirst(ptr);
 	ptr += 4;
+	/*
 	if (strncmp("ssh-rsa", ptr, len) != 0) {
 		return -4;
 	}
 	ptr += len;
+	*/
+	// workaround for SSH-2.0-2.0* and SSH-2.0-2.1* (2006.11.17 maya)
+	if (strncmp("ssh-rsa", ptr, len) != 0) {
+		ptr -= 8;
+	}
+	else {
+		ptr += len;
+	}
 
 	// step2
 	len = get_uint32_MSBfirst(ptr);
@@ -5088,7 +5106,6 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 	}
 
 	kex_derive_keys(pvar, pvar->we_need, hash, share_key, pvar->session_id, pvar->session_id_len);
-
 
 	// KEX finish
 	begin_send_packet(pvar, SSH2_MSG_NEWKEYS, 0);
@@ -6969,6 +6986,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.60  2006/11/14 09:00:40  maya
+ * エラーメッセージを修正した。
+ *
  * Revision 1.59  2006/11/08 16:20:14  maya
  * デバッグ用コードを追加した。
  *
