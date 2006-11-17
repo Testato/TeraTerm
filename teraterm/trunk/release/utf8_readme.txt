@@ -765,13 +765,14 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.11.15 (Ver 4.49)
+2006.11.18 (Ver 4.49)
   - Bug fix: TeraTerm(DDE server) sent the invalid return value to TeraTerm macro(DDE client) when DDE server was received XTYP_POKE message.
   - added busy procedure(DDE_FBUSY) between DDE server and DDE client.
   - added support for ScrollLock key.
   - added support for XMODEM-1K send with checksum when the peer specifies it instead of CRC. Special thanks to Mark Deneen.
   - updated HTML help document.
   - changed installer. teraterm.ini entries (Language, Locale, CodePage. VTFont and TEKFont) are setted by installer when new install.
+  - upgraded TTSSH version supporting SSH2 to 2.37
 
 2006.11.1 (Ver 4.48)
   - added 'fileread' macro command. This command enables the macro script to read the specified bytes from file.
