@@ -158,7 +158,7 @@ OF SUCH DAMAGE.
 * History
 
 2006.11.18 (Ver 2.37)
-
+  - added workaround(SSH_BUG_SIGBLOB) that generating the symmetric key is failure on Extreme Networks switch.
 
 2006.11.1 (Ver 2.36)
   - Bug fix: Could not connect Tectia server with SSH2 protocol. Changed the timing of both MAC and packet compression method are enabled from user authentication to SSH2_MSG_NEWKEYS procedure.

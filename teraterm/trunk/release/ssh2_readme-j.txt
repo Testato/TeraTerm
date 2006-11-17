@@ -151,7 +151,7 @@ OF SUCH DAMAGE.
 ■改版履歴
 
 2006.11.18 (Ver 2.37)
-
+  ・Extreme Networksスイッチにおいて共通鍵生成で失敗する現象に対するworkaround(SSH_BUG_SIGBLOB)を追加した。
 
 2006.11.1 (Ver 2.36)
   ・MACとパケット圧縮を有効にするタイミングを SSH2_MSG_NEWKEYS の送受信時に変更することにより、Tectia serverへつながらない問題を修正した。
