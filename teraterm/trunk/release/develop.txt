@@ -14,7 +14,7 @@
 
 
 * Libraries
-- oniguruma 4.4.6 (http://www.geocities.jp/kosako3/oniguruma/)
+- oniguruma 4.5.1 (http://www.geocities.jp/kosako3/oniguruma/)
 - openssl 0.9.8d (http://www.openssl.org/)
 - zlib 1.2.3 (http://www.zlib.net/)
 
