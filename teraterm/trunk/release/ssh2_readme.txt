@@ -129,7 +129,11 @@ OF SUCH DAMAGE.
   Copyright of original TTSSH belongs to Robert O'Callahan.
   Copyright of TTSSH supporing SSH2 belongs to Yutaka Hirata.
   Copyright of OpenSSL belongs to OpenSSL project.
+    OpenSSL is linked to this program statically.
   Copyright of zlib belongs to Greg Roelofs and Jean-loup Gaill.
+    zlib is linked to this program statically.
+  Copyright of OpenSSH belongs to each developers. Please see OpenSSH-LICENCE.txt for more information.
+    This program uses the source code of OpenSSH.
   Copyright of TTSSH icon file to Tatsuhiko Sakamoto.
 
   This program is provided "as is" without warranties of any kind, either expressed or 

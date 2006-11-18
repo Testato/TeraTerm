@@ -130,7 +130,11 @@ OF SUCH DAMAGE.
   TTSSHはRobert O'Callahan氏の著作物です。
   TTSSHのSSH2化のコードについては、著作権は平田豊にあります。
   OpenSSLはOpenSSL Projectの著作物です。
+    本プログラムは、OpenSSLと静的リンクしています。
   zlibはGreg RoelofsとJean-loup Gailly氏の著作物です。
+    本プログラムは、zlibと静的リンクしています。
+  OpenSSHの著作権は、各開発者にあります。詳しくは同梱のOpenSSH-LICENCE.txtをご覧ください。
+    本プログラムは、OpenSSHのソースコードを使用しています。
   TTSSHのアイコンは坂本龍彦氏に著作権があります
   本プログラムは無償で利用できますが、作者は本プログラムの使用にあたり
   生じる障害や問題に対して一切の責任を負いません。

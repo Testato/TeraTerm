@@ -718,6 +718,7 @@ OF SUCH DAMAGE.
   Copyright of Japanized TeraTerm belongs to Yasuhide Takahashi and Taketo Hashii.
   Copyright of Clickable URL to monkey magic.
   Copyright of Oniguruma to K.Kosako.
+    Oniguruma is linked to this program statically.
   Copyright of preventing scroll at end of line to IWAMOTO Kouichi.
   Copyright of supporting multi display to Tsuruhiko Ando.
   Copyright of general patch about both TeraTerm and TTSSH to NAGATA Shinya.
