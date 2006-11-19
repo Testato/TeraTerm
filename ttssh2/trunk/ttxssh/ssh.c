@@ -4481,18 +4481,12 @@ static int ssh_rsa_verify(RSA *key, u_char *signature, u_int signaturelen,
 	ptr = signature;
 
 	// step1
-	if (signaturelen == 0x28) {
-		// workaround for SSH-2.0-2.0* and SSH-2.0-2.1* (2006.11.18 maya)
-		ptr -= 4;
+	len = get_uint32_MSBfirst(ptr);
+	ptr += 4;
+	if (strncmp("ssh-rsa", ptr, len) != 0) {
+		return -4;
 	}
-	else {
-		len = get_uint32_MSBfirst(ptr);
-		ptr += 4;
-		if (strncmp("ssh-rsa", ptr, len) != 0) {
-			return -4;
-		}
-		ptr += len;
-	}
+	ptr += len;
 
 	// step2
 	len = get_uint32_MSBfirst(ptr);
@@ -6980,6 +6974,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.62  2006/11/18 01:29:29  maya
+ * SSH-2.0-2.0*, SSH-2.0-2.1* サーバのバグに対する workaround を改良した。
+ *
  * Revision 1.61  2006/11/17 09:12:02  maya
  * SSH-2.0-2.0*, SSH-2.0-2.1* サーバのバグに対する workaround を追加した。
  * バージョンチェックをせずにデータだけで判断しているので、改良の余地あり。
