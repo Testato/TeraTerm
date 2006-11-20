@@ -161,7 +161,7 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.11.18 (Ver 2.37)
+2006.11.20 (Ver 2.37)
   - added workaround(SSH_BUG_SIGBLOB) that generating the symmetric key is failure on Extreme Networks switch.
 
 2006.11.1 (Ver 2.36)

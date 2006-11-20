@@ -741,7 +741,7 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
-2006.11.18 (Ver 4.49)
+2006.11.20 (Ver 4.49)
   ・TeraTerm本体（DDEサーバ）側でのDDEメッセージ XTYP_POKE の処理において、不正な返値をTeraTermマクロ（DDEクライアント）へ返していたバグを修正した。
   ・マクロ通信において、XTYP_POKEメッセージにおけるビジー処理を行うようにした。
   ・ScrollLockキーをサポートした
@@ -749,6 +749,7 @@ OF SUCH DAMAGE.
   ・HTMLヘルプを更新した
   ・初回インストール時に、teraterm.ini の Language/Locale/CodePage/VTFont/TEKFont セクションをインストーラから設定するように変更した。
   ・SSH2対応TTSSH(2.37)へ差し替えた
+  ・Oniguruma 4.5.1へ差し替えた
 
 2006.11.1 (Ver 4.48)
   ・マクロコマンド 'fileread' を追加した。指定したバイト数だけファイルからの読み込みが可能となる。
