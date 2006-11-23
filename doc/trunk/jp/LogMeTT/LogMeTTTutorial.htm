@@ -1,1631 +1,218 @@
-<html xmlns:v="urn:schemas-microsoft-com:vml"
-xmlns:o="urn:schemas-microsoft-com:office:office"
-xmlns:w="urn:schemas-microsoft-com:office:word"
-xmlns="http://www.w3.org/TR/REC-html40">
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
 <head>
-<meta http-equiv=Content-Type content="text/html; charset=shift_jis">
-<meta name=ProgId content=Word.Document>
-<meta name=Generator content="Microsoft Word 11">
-<meta name=Originator content="Microsoft Word 11">
-<link rel=File-List href="LogMeTTTutorial.files/filelist.xml">
-<link rel=Edit-Time-Data href="LogMeTTTutorial.files/editdata.mso">
-<!--[if !mso]>
-<style>
-v\:* {behavior:url(#default#VML);}
-o\:* {behavior:url(#default#VML);}
-w\:* {behavior:url(#default#VML);}
-.shape {behavior:url(#default#VML);}
-</style>
-<![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
 <title>LogMeTT Tutorial</title>
-<!--[if gte mso 9]><xml>
- <o:DocumentProperties>
-  <o:Author>jdss</o:Author>
-  <o:LastAuthor>jdss</o:LastAuthor>
-  <o:Revision>2</o:Revision>
-  <o:TotalTime>1</o:TotalTime>
-  <o:Created>2006-11-17T05:37:00Z</o:Created>
-  <o:LastSaved>2006-11-17T05:38:00Z</o:LastSaved>
-  <o:Pages>9</o:Pages>
-  <o:Words>849</o:Words>
-  <o:Characters>4844</o:Characters>
-  <o:Company>NEC</o:Company>
-  <o:Lines>40</o:Lines>
-  <o:Paragraphs>11</o:Paragraphs>
-  <o:CharactersWithSpaces>5682</o:CharactersWithSpaces>
-  <o:Version>11.8036</o:Version>
- </o:DocumentProperties>
-</xml><![endif]--><!--[if gte mso 9]><xml>
- <w:WordDocument>
-  <w:SpellingState>Clean</w:SpellingState>
-  <w:ValidateAgainstSchemas/>
-  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
-  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
-  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
-  <w:Compatibility>
-   <w:UseFELayout/>
-  </w:Compatibility>
-  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
- </w:WordDocument>
-</xml><![endif]--><!--[if gte mso 9]><xml>
- <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
- </w:LatentStyles>
-</xml><![endif]-->
-<style>
-<!--
- /* Font Definitions */
- @font-face
-	{font-family:Courier;
-	panose-1:2 7 4 9 2 2 5 2 4 4;
-	mso-font-alt:"Courier New";
-	mso-font-charset:0;
-	mso-generic-font-family:modern;
-	mso-font-format:other;
-	mso-font-pitch:fixed;
-	mso-font-signature:3 0 0 0 1 0;}
-@font-face
-	{font-family:"ＭＳ 明朝";
-	panose-1:2 2 6 9 4 2 5 8 3 4;
-	mso-font-alt:"MS Mincho";
-	mso-font-charset:128;
-	mso-generic-font-family:roman;
-	mso-font-pitch:fixed;
-	mso-font-signature:-1610612033 1757936891 16 0 131231 0;}
-@font-face
-	{font-family:"ＭＳ ゴシック";
-	panose-1:2 11 6 9 7 2 5 8 2 4;
-	mso-font-alt:"MS Gothic";
-	mso-font-charset:128;
-	mso-generic-font-family:modern;
-	mso-font-pitch:fixed;
-	mso-font-signature:-1610612033 1757936891 16 0 131231 0;}
-@font-face
-	{font-family:Century;
-	panose-1:2 4 6 4 5 5 5 2 3 4;
-	mso-font-charset:0;
-	mso-generic-font-family:roman;
-	mso-font-pitch:variable;
-	mso-font-signature:647 0 0 0 159 0;}
-@font-face
-	{font-family:"ＭＳ Ｐゴシック";
-	panose-1:2 11 6 0 7 2 5 8 2 4;
-	mso-font-charset:128;
-	mso-generic-font-family:modern;
-	mso-font-pitch:variable;
-	mso-font-signature:-1610612033 1757936891 16 0 131231 0;}
-@font-face
-	{font-family:"\@ＭＳ Ｐゴシック";
-	panose-1:2 11 6 0 7 2 5 8 2 4;
-	mso-font-charset:128;
-	mso-generic-font-family:modern;
-	mso-font-pitch:variable;
-	mso-font-signature:-1610612033 1757936891 16 0 131231 0;}
-@font-face
-	{font-family:"\@ＭＳ 明朝";
-	panose-1:2 2 6 9 4 2 5 8 3 4;
-	mso-font-charset:128;
-	mso-generic-font-family:roman;
-	mso-font-pitch:fixed;
-	mso-font-signature:-1610612033 1757936891 16 0 131231 0;}
-@font-face
-	{font-family:"\@ＭＳ ゴシック";
-	panose-1:2 11 6 9 7 2 5 8 2 4;
-	mso-font-charset:128;
-	mso-generic-font-family:modern;
-	mso-font-pitch:fixed;
-	mso-font-signature:-1610612033 1757936891 16 0 131231 0;}
- /* Style Definitions */
- p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{mso-style-parent:"";
-	margin:0mm;
-	margin-bottom:.0001pt;
-	text-align:justify;
-	text-justify:inter-ideograph;
-	mso-pagination:none;
-	font-size:10.5pt;
-	mso-bidi-font-size:12.0pt;
-	font-family:Century;
-	mso-fareast-font-family:"ＭＳ 明朝";
-	mso-bidi-font-family:"Times New Roman";
-	mso-font-kerning:1.0pt;}
-a:link, span.MsoHyperlink
-	{color:blue;
-	text-decoration:underline;
-	text-underline:single;}
-a:visited, span.MsoHyperlinkFollowed
-	{color:purple;
-	text-decoration:underline;
-	text-underline:single;}
-pre
-	{margin:0mm;
-	margin-bottom:.0001pt;
-	mso-pagination:widow-orphan;
-	font-size:12.0pt;
-	font-family:"ＭＳ ゴシック";
-	mso-bidi-font-family:"ＭＳ ゴシック";}
-span.SpellE
-	{mso-style-name:"";
-	mso-spl-e:yes;}
- /* Page Definitions */
- @page
-	{mso-page-border-surround-header:no;
-	mso-page-border-surround-footer:no;}
-@page Section1
-	{size:595.3pt 841.9pt;
-	margin:99.25pt 0mm 30.0mm 30.0mm;
-	mso-header-margin:42.55pt;
-	mso-footer-margin:49.6pt;
-	mso-paper-source:0;
-	layout-grid:18.0pt;}
-div.Section1
-	{page:Section1;}
- /* List Definitions */
- @list l0
-	{mso-list-id:759060266;
-	mso-list-type:hybrid;
-	mso-list-template-ids:1313535642 67698703 67698711 67698705 -168000684 67698711 67698705 67698703 67698711 67698705;}
-@list l0:level1
-	{mso-level-tab-stop:48.0pt;
-	mso-level-number-position:left;
-	margin-left:48.0pt;
-	text-indent:-21.0pt;}
-@list l0:level2
-	{mso-level-number-format:aiueo-full-width;
-	mso-level-text:"\(%2\)";
-	mso-level-tab-stop:69.0pt;
-	mso-level-number-position:left;
-	margin-left:69.0pt;
-	text-indent:-21.0pt;}
-@list l0:level3
-	{mso-level-number-format:decimal-enclosed-circle;
-	mso-level-text:%3;
-	mso-level-tab-stop:90.0pt;
-	mso-level-number-position:left;
-	margin-left:90.0pt;
-	text-indent:-21.0pt;}
-@list l0:level4
-	{mso-level-start-at:9;
-	mso-level-number-format:bullet;
-	mso-level-text:・;
-	mso-level-tab-stop:108.0pt;
-	mso-level-number-position:left;
-	margin-left:108.0pt;
-	text-indent:-18.0pt;
-	font-family:"ＭＳ Ｐゴシック";
-	mso-bidi-font-family:"Times New Roman";}
-@list l0:level5
-	{mso-level-tab-stop:180.0pt;
-	mso-level-number-position:left;
-	text-indent:-18.0pt;}
-@list l0:level6
-	{mso-level-tab-stop:216.0pt;
-	mso-level-number-position:left;
-	text-indent:-18.0pt;}
-@list l0:level7
-	{mso-level-tab-stop:252.0pt;
-	mso-level-number-position:left;
-	text-indent:-18.0pt;}
-@list l0:level8
-	{mso-level-tab-stop:288.0pt;
-	mso-level-number-position:left;
-	text-indent:-18.0pt;}
-@list l0:level9
-	{mso-level-tab-stop:324.0pt;
-	mso-level-number-position:left;
-	text-indent:-18.0pt;}
-@list l1
-	{mso-list-id:1559247697;
-	mso-list-type:hybrid;
-	mso-list-template-ids:-1602091890 850459124 67698711 67698705 67698703 67698711 67698705 67698703 67698711 67698705;}
-@list l1:level1
-	{mso-level-tab-stop:24.75pt;
-	mso-level-number-position:left;
-	margin-left:24.75pt;
-	text-indent:-18.0pt;}
-@list l1:level2
-	{mso-level-number-format:aiueo-full-width;
-	mso-level-text:"\(%2\)";
-	mso-level-tab-stop:48.75pt;
-	mso-level-number-position:left;
-	margin-left:48.75pt;
-	text-indent:-21.0pt;}
-@list l1:level3
-	{mso-level-number-format:decimal-enclosed-circle;
-	mso-level-text:%3;
-	mso-level-tab-stop:69.75pt;
-	mso-level-number-position:left;
-	margin-left:69.75pt;
-	text-indent:-21.0pt;}
-@list l1:level4
-	{mso-level-tab-stop:90.75pt;
-	mso-level-number-position:left;
-	margin-left:90.75pt;
-	text-indent:-21.0pt;}
-@list l1:level5
-	{mso-level-number-format:aiueo-full-width;
-	mso-level-text:"\(%5\)";
-	mso-level-tab-stop:111.75pt;
-	mso-level-number-position:left;
-	margin-left:111.75pt;
-	text-indent:-21.0pt;}
-@list l1:level6
-	{mso-level-number-format:decimal-enclosed-circle;
-	mso-level-text:%6;
-	mso-level-tab-stop:132.75pt;
-	mso-level-number-position:left;
-	margin-left:132.75pt;
-	text-indent:-21.0pt;}
-@list l1:level7
-	{mso-level-tab-stop:153.75pt;
-	mso-level-number-position:left;
-	margin-left:153.75pt;
-	text-indent:-21.0pt;}
-@list l1:level8
-	{mso-level-number-format:aiueo-full-width;
-	mso-level-text:"\(%8\)";
-	mso-level-tab-stop:174.75pt;
-	mso-level-number-position:left;
-	margin-left:174.75pt;
-	text-indent:-21.0pt;}
-@list l1:level9
-	{mso-level-number-format:decimal-enclosed-circle;
-	mso-level-text:%9;
-	mso-level-tab-stop:195.75pt;
-	mso-level-number-position:left;
-	margin-left:195.75pt;
-	text-indent:-21.0pt;}
-ol
-	{margin-bottom:0mm;}
-ul
-	{margin-bottom:0mm;}
--->
-</style>
-<!--[if gte mso 10]>
-<style>
- /* Style Definitions */
- table.MsoNormalTable
-	{mso-style-name:標準の表;
-	mso-tstyle-rowband-size:0;
-	mso-tstyle-colband-size:0;
-	mso-style-noshow:yes;
-	mso-style-parent:"";
-	mso-padding-alt:0mm 5.4pt 0mm 5.4pt;
-	mso-para-margin:0mm;
-	mso-para-margin-bottom:.0001pt;
-	mso-pagination:widow-orphan;
-	font-size:10.0pt;
-	font-family:"Times New Roman";
-	mso-fareast-font-family:"Times New Roman";
-	mso-ansi-language:#0400;
-	mso-fareast-language:#0400;
-	mso-bidi-language:#0400;}
-</style>
-<![endif]--><!--[if gte mso 9]><xml>
- <u1:DocumentProperties>
-  <u1:Author>jdss</u1:Author>
-  <u1:LastAuthor>jdss</u1:LastAuthor>
-  <u1:Revision>34</u1:Revision>
-  <u1:TotalTime>234</u1:TotalTime>
-  <u1:Created>2006-11-17T00:34:00Z</u1:Created>
-  <u1:LastSaved>2006-11-17T04:41:00Z</u1:LastSaved>
-  <u1:Pages>1</u1:Pages>
-  <u1:Words>854</u1:Words>
-  <u1:Characters>4872</u1:Characters>
-  <u1:Company>NEC</u1:Company>
-  <u1:Lines>40</u1:Lines>
-  <u1:Paragraphs>11</u1:Paragraphs>
-  <u1:CharactersWithSpaces>5715</u1:CharactersWithSpaces>
-  <u1:Version>11.8036</u1:Version>
- </u1:DocumentProperties>
-</xml><![endif]--><!--[if gte mso 9]><xml>
- <u2:WordDocument>
-  <u2:SpellingState>Clean</u2:SpellingState>
-  <u2:PunctuationKerning/>
-  <u2:DisplayHorizontalDrawingGridEvery>0</u2:DisplayHorizontalDrawingGridEvery>
-  <u2:DisplayVerticalDrawingGridEvery>2</u2:DisplayVerticalDrawingGridEvery>
-  <u2:ValidateAgainstSchemas/>
-  <u2:SaveIfXMLInvalid>false</u2:SaveIfXMLInvalid>
-  <u2:IgnoreMixedContent>false</u2:IgnoreMixedContent>
-  <u2:AlwaysShowPlaceholderText>false</u2:AlwaysShowPlaceholderText>
-  <u2:Compatibility>
-   <u2:SpaceForUL/>
-   <u2:BalanceSingleByteDoubleByteWidth/>
-   <u2:DoNotLeaveBackslashAlone/>
-   <u2:ULTrailSpace/>
-   <u2:DoNotExpandShiftReturn/>
-   <u2:AdjustLineHeightInTable/>
-   <u2:BreakWrappedTables/>
-   <u2:SnapToGridInCell/>
-   <u2:WrapTextWithPunct/>
-   <u2:UseAsianBreakRules/>
-   <u2:UseWord2002TableStyleRules/>
-   <u2:UseFELayout/>
-  </u2:Compatibility>
-  <u2:BrowserLevel>MicrosoftInternetExplorer4</u2:BrowserLevel>
- </u2:WordDocument>
-</xml><![endif]--><!--[if gte mso 9]><xml>
- <u3:LatentStyles DefLockedState="false" LatentStyleCount="156">  </u3:LatentStyles>
-</xml><![endif]--><!--[if gte mso 9]><xml>
- <u4:shapedefaults v:ext="edit" spidmax="3074">
-  <v:textbox inset="5.85pt,.7pt,5.85pt,.7pt"/>
- </u4:shapedefaults>
-</xml><![endif]--><!--[if gte mso 9]><xml>
- <u5:shapelayout v:ext="edit">
-  <u5:idmap v:ext="edit" data="1"/>
- </u5:shapelayout>
-</xml><![endif]--><!--[if gte mso 9]><xml>
- <o:shapedefaults v:ext="edit" spidmax="1036">
-  <v:textbox inset="5.85pt,.7pt,5.85pt,.7pt"/>
- </o:shapedefaults></xml><![endif]--><!--[if gte mso 9]><xml>
- <o:shapelayout v:ext="edit">
-  <o:idmap v:ext="edit" data="1"/>
- </o:shapelayout></xml><![endif]-->
 </head>
 
-<body lang=JA link=blue vlink=purple style='tab-interval:42.0pt;text-justify-trim:
-punctuation'>
-
-<div class=Section1 style='layout-grid:18.0pt'>
-
-<p class=MsoNormal align=center style='text-align:center'><b><span lang=EN-US
-style='font-size:18.0pt;font-family:"ＭＳ Ｐゴシック"'>LogMeTT Tutorial<u6:p></u6:p></span></b></p>
-
-<p class=MsoNormal style='margin-left:24.75pt;text-indent:-18.0pt;mso-list:
-l1 level1 lfo2;tab-stops:list 24.75pt'><![if !supportLists]><span lang=EN-US
-style='mso-fareast-font-family:Century;mso-bidi-font-family:Century'><span
-style='mso-list:Ignore'>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><b><span lang=EN-US style='font-size:13.5pt;
-font-family:"ＭＳ Ｐゴシック"'>LogMeTT</span></b><b><span style='font-size:13.5pt;
-font-family:"ＭＳ Ｐゴシック"'>とは</span></b><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>LogMeTT</span><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>はターミナルエミュレータ<span lang=EN-US>TeraTerm</span>　<span
-lang=EN-US>Macro</span>のランチャーツールです。<span lang=EN-US>TeraTerm</span>からリモートホストへ自動ログインしたり、さまざまな処理を行わせたりすることができます。ログインの自動化ツールとしては<span
-lang=EN-US>TeraTerm Menu</span>がありますが、<span lang=EN-US>ssh2</span>接続やスケジュール機能、自動ログ取得機能、接続ホストごとに配色設定などを設定できる等の利点があります。また、ツリー構造でホストごと、マクロごとに階層化できるためサーバ管理に向いています。カナダ在住の<span
-lang=EN-US><a href="http://www.neocom.ca/">Boris<span lang=EN-US><span
-lang=EN-US>氏</span></span></a></span>により開発されています。<span lang=EN-US>LogMeTT</span>は<span
-lang=EN-US>TeraTerm</span>に付属しています。</span><span lang=EN-US><u6:p></u6:p><o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='font-size:10.0pt'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:24.75pt;text-indent:-18.0pt;mso-list:
-l1 level1 lfo2;tab-stops:list 24.75pt'><![if !supportLists]><span lang=EN-US
-style='mso-fareast-font-family:Century;mso-bidi-font-family:Century'><span
-style='mso-list:Ignore'>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><b><span lang=EN-US style='font-size:13.5pt;
-font-family:"ＭＳ Ｐゴシック"'>LogMeTT</span></b><b><span style='font-size:13.5pt;
-font-family:"ＭＳ Ｐゴシック"'>でできること</span></b><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>TeraTerm Macro</span><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>を使いリモートホストへの自動接続を管理することができます。ホストをツリー構造で登録することができるので、ホストが多数ある場合でも効率的に管理することが可能です。また、工夫次第であらゆる作業を自動化できます。※ただし、<span
-lang=EN-US>2006/11Verssion2.8(Release6)</span>現在、<span lang=EN-US>TeraTerm Menu</span>にあるような<span
-class=SpellE><span lang=EN-US>HotKey</span></span><span lang=EN-US>(</span>キーボードショートカットによる即時起動<span
-lang=EN-US>)</span>のような機能は利用できません。</span><span lang=EN-US><u6:p></u6:p><o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='font-size:10.0pt'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:24.75pt;text-indent:-18.0pt;mso-list:
-l1 level1 lfo2;tab-stops:list 24.75pt'><![if !supportLists]><span lang=EN-US
-style='mso-fareast-font-family:Century;mso-bidi-font-family:Century'><span
-style='mso-list:Ignore'>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><b><span style='font-size:13.5pt;font-family:
-"ＭＳ Ｐゴシック"'>起動方法</span></b><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>LogMeTT</span><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>は<span lang=EN-US>TeraTerm</span>の<span
-lang=EN-US>File</span>メニューから呼び出すことで起動することができます。起動すると、常駐プロセスとしてタスクトレイにアイコンが表示されます。</span><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt'><!--[if gte vml 1]><v:shapetype id="_x0000_m1035"
- coordsize="21600,21600" o:spt="75" u6:spt="75" u6:preferrelative="t"
- o:preferrelative="f" path="m@4@5l@4@11@9@11@9@5xe" filled="f" stroked="f">
- <v:stroke joinstyle="miter"/>
- <v:formulas>
-  <v:f eqn="if lineDrawn pixelLineWidth 0"/>
-  <v:f eqn="sum @0 1 0"/>
-  <v:f eqn="sum 0 0 @1"/>
-  <v:f eqn="prod @2 1 2"/>
-  <v:f eqn="prod @3 21600 pixelWidth"/>
-  <v:f eqn="prod @3 21600 pixelHeight"/>
-  <v:f eqn="sum @0 0 1"/>
-  <v:f eqn="prod @6 1 2"/>
-  <v:f eqn="prod @7 21600 pixelWidth"/>
-  <v:f eqn="sum @8 21600 0"/>
-  <v:f eqn="prod @7 21600 pixelHeight"/>
-  <v:f eqn="sum @10 21600 0"/>
- </v:formulas>
- <v:path o:extrusionok="t" gradientshapeok="t" u6:extrusionok="f"
-  u6:connecttype="rect" o:connecttype="segments"/>
- <o:lock v:ext="edit" aspectratio="f"/>
-  <u6:lock v:ext="edit" aspectratio="t"/>
-</v:shapetype><![endif]--><!--[if gte vml 1]><v:shapetype id="_x0000_t75"
- coordsize="21600,21600" o:spt="75" o:preferrelative="t" path="m@4@5l@4@11@9@11@9@5xe"
- filled="f" stroked="f">
- <v:stroke joinstyle="miter"/>
- <v:formulas>
-  <v:f eqn="if lineDrawn pixelLineWidth 0"/>
-  <v:f eqn="sum @0 1 0"/>
-  <v:f eqn="sum 0 0 @1"/>
-  <v:f eqn="prod @2 1 2"/>
-  <v:f eqn="prod @3 21600 pixelWidth"/>
-  <v:f eqn="prod @3 21600 pixelHeight"/>
-  <v:f eqn="sum @0 0 1"/>
-  <v:f eqn="prod @6 1 2"/>
-  <v:f eqn="prod @7 21600 pixelWidth"/>
-  <v:f eqn="sum @8 21600 0"/>
-  <v:f eqn="prod @7 21600 pixelHeight"/>
-  <v:f eqn="sum @10 21600 0"/>
- </v:formulas>
- <v:path o:extrusionok="f" gradientshapeok="t" o:connecttype="rect"/>
- <o:lock v:ext="edit" aspectratio="t"/>
-</v:shapetype><v:shape id="_x0000_i1025" type="#_x0000_t75" alt="" style='width:147.75pt;
- height:22.5pt;visibility:visible;mso-wrap-distance-left:179.25pt;
- mso-wrap-distance-top:3pt;mso-wrap-distance-right:179.25pt;
- mso-wrap-distance-bottom:3pt'>
- <v:imagedata u6:href="file:///G:\LogMeTT\LogMeTT_html_m29527bda.png" src="image001.png"/>
- <v:path o:extrusionok="t" o:connecttype="segments"/>
- <o:lock v:ext="edit" aspectratio="f"/>
-</v:shape><![endif]--><![if !vml]><img border=0 width=197 height=30
-src=image001.png hspace=239 vspace=4 v:shapes="_x0000_i1025"><![endif]></span><span
-lang=EN-US><u6:p></u6:p><o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='font-size:10.0pt'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:24.75pt;text-indent:-18.0pt;mso-list:
-l1 level1 lfo2;tab-stops:list 24.75pt'><![if !supportLists]><span lang=EN-US
-style='mso-fareast-font-family:Century;mso-bidi-font-family:Century'><span
-style='mso-list:Ignore'>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><b><span style='font-size:13.5pt;font-family:
-"ＭＳ Ｐゴシック"'>設定</span></b><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>ここからは、実際に<span lang=EN-US>LogMeTT</span>を使ってリモートホストへ<span
-lang=EN-US>SSH2</span>による接続を自動化する設定を紹介します。簡単な操作で<span lang=EN-US>TeraTerm</span>の自動化を体験してみてください。</span><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:48.0pt;text-indent:-21.0pt;mso-list:l0 level1 lfo4;
-tab-stops:list 48.0pt'><![if !supportLists]><span lang=EN-US style='mso-fareast-font-family:
-Century;mso-bidi-font-family:Century'><span style='mso-list:Ignore'>1.<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span lang=EN-US style='font-size:10.0pt;
-font-family:"ＭＳ Ｐゴシック"'>LogMeTT</span><span style='font-size:10.0pt;font-family:
-"ＭＳ Ｐゴシック"'>のタスクトレイアイコン<span lang=EN-US>(</span>上記<span lang=EN-US>3.</span>の図にある丸囲い）を右クリックして
-“<span lang=EN-US>Configure</span>…”を選択する。</span><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:48.0pt;text-indent:-21.0pt;mso-list:l0 level1 lfo4;
-tab-stops:list 48.0pt'><![if !supportLists]><span lang=EN-US style='mso-fareast-font-family:
-Century;mso-bidi-font-family:Century'><span style='mso-list:Ignore'>2.<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>設定ダイアログが表示される。”<span
-lang=EN-US>Settings</span>”タブの下にある、”<span lang=EN-US>General</span>”タブに “<span
-lang=EN-US>Run at log on to Windows</span>”にチェックを入れると<span lang=EN-US>(</span>下図参照<span
-lang=EN-US>)Windows</span>ログオン時に<span lang=EN-US>LogMeTT</span>が自動起動される。</span><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><!--[if gte vml 1]><v:shape
- id="_x0000_i1026" type="#_x0000_t75" alt="" style='width:459pt;height:411.75pt;
- visibility:visible;mso-wrap-distance-left:23.25pt;mso-wrap-distance-top:15pt;
- mso-wrap-distance-right:23.25pt;mso-wrap-distance-bottom:15pt'>
- <v:imagedata u6:href="file:///G:\LogMeTT\LogMeTT_html_485ea2f1.png" src="image004.png"/>
- <v:path o:extrusionok="t" o:connecttype="segments"/>
- <o:lock v:ext="edit" aspectratio="f"/>
-</v:shape><![endif]--><![if !vml]><img border=0 width=612 height=549
-src=image004.png hspace=31 vspace=20 v:shapes="_x0000_i1026"><![endif]></span><span
-lang=EN-US><u6:p></u6:p><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:48.0pt;text-indent:-21.0pt;mso-list:l0 level1 lfo4;
-tab-stops:list 48.0pt'><![if !supportLists]><span lang=EN-US style='mso-fareast-font-family:
-Century;mso-bidi-font-family:Century'><span style='mso-list:Ignore'>3.<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>“<span
-lang=EN-US>Settings</span>” タブの下にある “<span lang=EN-US>New Connections</span>”タブで、<span
-lang=EN-US>Log file creation</span>が<span lang=EN-US> &quot;Start logging&quot;</span>になっていると、メニューから起動した場合自動的にログが取得されるようになる。</span><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd;
-text-indent:20.0pt;mso-char-indent-count:2.0'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>(<i style='mso-bidi-font-style:
-normal'>TeraTerm</i></span><i style='mso-bidi-font-style:normal'><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>をインストールしたディレクトリ</span></i><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>\Logs\<i
-style='mso-bidi-font-style:normal'>LogMeTT</i></span><i style='mso-bidi-font-style:
-normal'><span style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>メニュー名<span
-lang=EN-US>_</span>日付時間<span lang=EN-US>.</span></span></i><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>log</span><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>として保存される<span lang=EN-US>)<u6:p></u6:p></span></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><!--[if gte vml 1]><v:shape
- id="_x0000_s1030" type="#_x0000_m1035" style='position:absolute;left:0;
- text-align:left;margin-left:36.75pt;margin-top:1.5pt;width:489pt;height:378.75pt;
- z-index:5' o:preferrelative="f" fillcolor="black" strokecolor="white"
- strokeweight="3e-5mm">
- <v:imagedata u6:title="" src="image015.png"/>
-</v:shape><![endif]--><![if !vml]><span style='mso-ignore:vglayout;position:
-absolute;z-index:5;left:0px;margin-left:49px;margin-top:2px;width:652px;
-height:505px'><img width=652 height=505 src=image015.png v:shapes="_x0000_s1030"></span><![endif]><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:48.0pt;text-indent:-21.0pt;mso-list:l0 level1 lfo4;
-tab-stops:list 48.0pt'><![if !supportLists]><span lang=EN-US style='mso-fareast-font-family:
-Century;mso-bidi-font-family:Century'><span style='mso-list:Ignore'>4.<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>メニューバーの“<span
-lang=EN-US>Connection</span>”から”<span lang=EN-US>Add Child</span>”を選ぶと、エントリが一つ追加される。画面左の<span
-lang=EN-US>This computer</span>を右クリックしても”<span lang=EN-US>Add Child</span>”が選択できる。</span><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:48.0pt;text-indent:-21.0pt;mso-list:l0 level1 lfo4;
-tab-stops:list 48.0pt'><![if !supportLists]><span lang=EN-US style='mso-fareast-font-family:
-Century;mso-bidi-font-family:Century'><span style='mso-list:Ignore'>5.<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>“<span
-lang=EN-US>This computer</span>”の下に”</span> <span lang=EN-US style='font-size:
-10.0pt;font-family:"ＭＳ Ｐゴシック"'>Unnamed connection #1</span><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>”というアイコンが追加されるので、そのアイコンを選択し”<span
-lang=EN-US>F2</span>”キーを押して名前をつける。</span><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><!--[if gte vml 1]><v:shape
- id="_x0000_i1027" type="#_x0000_t75" alt="" style='width:460.5pt;height:412.5pt;
- visibility:visible;mso-wrap-distance-left:22.5pt;mso-wrap-distance-top:14.25pt;
- mso-wrap-distance-right:22.5pt;mso-wrap-distance-bottom:14.25pt'>
- <v:imagedata u6:href="file:///G:\LogMeTT\LogMeTT_html_6f355cb0.png" src="image002.png"/>
- <v:path o:extrusionok="t" o:connecttype="segments"/>
- <o:lock v:ext="edit" aspectratio="f"/>
-</v:shape><![endif]--><![if !vml]><img border=0 width=614 height=550
-src=image002.png hspace=30 vspace=19 v:shapes="_x0000_i1027"><![endif]></span><span
-lang=EN-US><u6:p></u6:p><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:48.0pt;text-indent:-21.0pt;mso-list:l0 level1 lfo4;
-tab-stops:list 48.0pt'><![if !supportLists]><span lang=EN-US style='mso-fareast-font-family:
-Century;mso-bidi-font-family:Century'><span style='mso-list:Ignore'>6.<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span lang=EN-US style='font-size:10.0pt;
-font-family:"ＭＳ Ｐゴシック"'>&quot;Macro&quot;</span><span style='font-size:10.0pt;
-font-family:"ＭＳ Ｐゴシック"'>タブを選び、リモートホストへログインするためのマクロを記述する。たとえば、ユーザ名を固定とし、パスワードはダイアログボックスで入力させたい場合は、次のようなマクロを書く。もちろん、パスワードをマクロ内に記述してもよいが、マクロの取り扱いには注意すること。※セキュリティに配慮したマクロ<span
-lang=EN-US>(</span>パスワードの暗号化等<span lang=EN-US>)</span>については<span lang=EN-US>5.</span>セキュリティに配慮したマクロを参照</span><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='text-indent:25.0pt;mso-char-indent-count:2.5'><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>＝注意＝</span><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd;
-text-indent:3.0pt;mso-char-indent-count:.3'><span style='font-size:10.0pt;
-font-family:"ＭＳ Ｐゴシック"'>この記述は<span lang=EN-US>TeraTerm Macro</span>なのでシングルクォート’
-ダブルクォート” に気をつけること。下記をコピーして貼り付けると安全</span><span lang=EN-US><u6:p></u6:p><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>username
-= '<span class=SpellE>nike</span>'<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>hostname
-= '192.168.1.3'<u6:p></u6:p></span><span lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;<u6:p></u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>msg</span></span><span lang=EN-US style='font-size:10.0pt;
-font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> = 'Enter password for user '<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>strconcat</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>msg</span> username<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>passwordbox</span></span><span lang=EN-US
-style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";
-mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span
-class=SpellE>msg</span> 'Get password'<u6:p></u6:p></span><span lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>msg</span></span><span lang=EN-US style='font-size:10.0pt;
-font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> = hostname<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>strconcat</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>msg</span> ':22
-/<span class=SpellE>ssh</span> /auth=password /user='<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>strconcat</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>msg</span>
-username<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>strconcat</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>msg</span> ' /<span
-class=SpellE>passwd</span>='<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>strconcat</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>msg</span> <span
-class=SpellE>inputstr<u6:p></u6:p></span></span><span lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ Ｐゴシック";
-mso-bidi-font-family:"ＭＳ Ｐゴシック";color:blue;mso-font-kerning:0pt'>connect <span
-class=SpellE>msg<u6:p></u6:p></span></span><span lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US><!--[if gte vml 1]><v:shape
- id="_x0000_i1028" type="#_x0000_t75" alt="config3.png" style='width:490.5pt;
- height:418.5pt;visibility:visible'>
- <v:imagedata u6:href="mhtml:file://G:\LogMeTT_Tutorial.mht!http://sleep.mat-yan.jp/~yutaka/windows/TeraTerm/document/LogMeTT/config3.png"
-  src="image007.png"/>
- <v:path o:extrusionok="t" o:connecttype="segments"/>
- <o:lock v:ext="edit" aspectratio="f"/>
-</v:shape><![endif]--><![if !vml]><img border=0 width=654 height=558
-src=image007.png alt=config3.png v:shapes="_x0000_i1028"><![endif]><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:48.0pt;text-indent:-21.0pt;mso-list:l0 level1 lfo4;
-tab-stops:list 48.0pt'><![if !supportLists]><span lang=EN-US style='mso-fareast-font-family:
-Century;mso-bidi-font-family:Century'><span style='mso-list:Ignore'>7.<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span lang=EN-US style='font-size:10.0pt;
-font-family:"ＭＳ Ｐゴシック"'>F9</span><span style='font-size:10.0pt;font-family:
-"ＭＳ Ｐゴシック"'>キーを押して、マクロが正常に動作するか検証する。 問題なければ、右上にある<span lang=EN-US>Apply</span>ボタンを押して設定内容を保存する。
-</span><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:48.0pt;text-indent:-21.0pt;mso-list:l0 level1 lfo4;
-tab-stops:list 48.0pt'><![if !supportLists]><span lang=EN-US style='mso-fareast-font-family:
-Century;mso-bidi-font-family:Century'><span style='mso-list:Ignore'>8.<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>登録したリモートホストはタスクトレイの右クリックメニューから選択することができる。
-</span><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:48.0pt;text-indent:-21.0pt;mso-list:l0 level1 lfo4;
-tab-stops:list 48.0pt'><![if !supportLists]><span lang=EN-US style='mso-fareast-font-family:
-Century;mso-bidi-font-family:Century'><span style='mso-list:Ignore'>9.<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>“<span
-lang=EN-US>Popup</span>”タブにメッセージを記述しておくと実行時に、</span><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><!--[if gte vml 1]><v:shape
- id="_x0000_s1027" type="#_x0000_m1035" style='position:absolute;left:0;
- text-align:left;margin-left:36pt;margin-top:7.5pt;width:490.5pt;height:354.75pt;
- z-index:2' o:preferrelative="f" fillcolor="black" strokecolor="white"
- strokeweight="3e-5mm">
- <v:imagedata u6:title="" src="image010.png"/>
-</v:shape><![endif]--><![if !vml]><span style='mso-ignore:vglayout;position:
-absolute;z-index:2;left:0px;margin-left:48px;margin-top:10px;width:654px;
-height:473px'><img width=654 height=473 src=image010.png v:shapes="_x0000_s1027"></span><![endif]><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd;
-text-indent:20.0pt;mso-char-indent-count:2.0'><span style='font-size:10.0pt;
-font-family:"ＭＳ Ｐゴシック"'>下記のポップアップメッセージが表示される。</span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><!--[if gte vml 1]><v:shape id="_x0000_s1028"
- type="#_x0000_m1035" style='position:absolute;left:0;text-align:left;
- margin-left:50.25pt;margin-top:0;width:144.75pt;height:87.75pt;z-index:3'
- o:preferrelative="f" fillcolor="black" strokecolor="white" strokeweight="3e-5mm">
- <v:imagedata u6:title="" src="image012.png"/>
-</v:shape><![endif]--><![if !vml]><span style='mso-ignore:vglayout;position:
-absolute;z-index:3;left:0px;margin-left:67px;margin-top:0px;width:193px;
-height:117px'><img width=193 height=117 src=image012.png v:shapes="_x0000_s1028"></span><![endif]><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd;
-text-indent:20.0pt;mso-char-indent-count:2.0'><span style='font-size:10.0pt;
-font-family:"ＭＳ Ｐゴシック"'>重要なホストに接続する際や、<span lang=EN-US>root</span>等の特権アクセスのマクロに<span
-lang=EN-US>Popup</span>で注意を促す際等に利用する。ポップアップメッセージでは<span lang=EN-US>OK</span>を押すとマクロが実行され、<span
-lang=EN-US>Cancel</span>を押すと<span lang=EN-US>Macro</span>は実行されない。</span><span
-lang=EN-US><u6:p></u6:p><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:48.0pt;text-indent:-21.0pt;mso-list:l0 level1 lfo4;
-tab-stops:list 48.0pt'><![if !supportLists]><span lang=EN-US style='mso-fareast-font-family:
-Century;mso-bidi-font-family:Century'><span style='mso-list:Ignore'>10.<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>“<span lang=EN-US>Colors</span>”タブでは、接続メニュー毎に<span
-lang=EN-US>TeraTerm</span>の配色を変更できる。<span lang=EN-US> Popup</span>同様、重要なホストに接続する際等のメニュー配色を変えるなどに利用する。ユーザ毎、ホスト毎に配色を変更する事で誤操作の予防にもなる。</span><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><!--[if gte vml 1]><v:shape id="_x0000_s1029"
- type="#_x0000_m1035" style='position:absolute;left:0;text-align:left;
- margin-left:36.75pt;margin-top:6pt;width:489.75pt;height:379.5pt;z-index:4'
- o:preferrelative="f" fillcolor="black" strokecolor="white" strokeweight="3e-5mm">
- <v:imagedata u6:title="" src="image008.png"/>
-</v:shape><![endif]--><![if !vml]><span style='mso-ignore:vglayout;position:
-absolute;z-index:4;left:0px;margin-left:49px;margin-top:8px;width:653px;
-height:506px'><img width=653 height=506 src=image008.png v:shapes="_x0000_s1029"></span><![endif]><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:48.0pt;text-indent:-21.0pt;mso-list:l0 level1 lfo4;
-tab-stops:list 48.0pt'><![if !supportLists]><span lang=EN-US style='mso-fareast-font-family:
-Century;mso-bidi-font-family:Century'><span style='mso-list:Ignore'>11.<span
-style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>Schedule</span><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>タブでは、設定したマクロを自動実行させることができる。 上手くマクロを組めば、下記のような事が可能になる。</span><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:63.0pt;text-indent:-9.0pt;mso-list:l0 level4 lfo4;
-tab-stops:list 54.0pt 108.0pt'><![if !supportLists]><span lang=EN-US
-style='font-family:"ＭＳ Ｐゴシック";mso-bidi-font-family:"ＭＳ Ｐゴシック"'><span
-style='mso-list:Ignore'>・<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>定期的に電源を<span
-lang=EN-US>on/off <u6:p></u6:p></span></span></p>
-
-<p class=MsoNormal style='margin-left:63.0pt;text-indent:-9.0pt;mso-list:l0 level4 lfo4;
-tab-stops:list 54.0pt 108.0pt'><![if !supportLists]><span lang=EN-US
-style='font-family:"ＭＳ Ｐゴシック";mso-bidi-font-family:"ＭＳ Ｐゴシック"'><span
-style='mso-list:Ignore'>・<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>“<span
-lang=EN-US>Settings</span>”タブの”<span lang=EN-US>User Data</span>”タブ項目と組み合わせ、障害発生時に<span
-lang=EN-US>e-mail</span>や電話させるなどの自動処理</span><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:63.0pt;text-indent:-9.0pt;mso-list:l0 level4 lfo4;
-tab-stops:list 54.0pt 108.0pt'><![if !supportLists]><span lang=EN-US
-style='font-family:"ＭＳ Ｐゴシック";mso-bidi-font-family:"ＭＳ Ｐゴシック"'><span
-style='mso-list:Ignore'>・<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>定時バックアップ、ステータスチェック</span><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:53.95pt;mso-para-margin-left:4.47gd;
-text-indent:-7.0pt;mso-char-indent-count:-.7'><span style='font-size:10.0pt;
-font-family:"ＭＳ Ｐゴシック";color:red'>※注意<span lang=EN-US>:</span>メニューの階層は親から順番に実行されてしまうため、子をスケジュールに入れておくとその直系親ツリーがすべて実行される。単一タスクとして行いたい場合は独立させること（<span
-lang=EN-US>This computer</span>直下<span lang=EN-US>)</span>。また、ホストと<span
-lang=EN-US>LogMeTT</span>を実行する<span lang=EN-US>PC</span>の時刻差異に注意すること。</span><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:44.95pt;mso-para-margin-left:4.28gd;
-text-indent:2.0pt;mso-char-indent-count:.2'><span lang=EN-US style='font-size:
-10.0pt;font-family:"ＭＳ Ｐゴシック";color:blue'>Schedule</span><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック";color:blue'>を実行する場合は、後述の自動ログを<span
-lang=EN-US>ON</span>にすることを推奨する。<span lang=EN-US>(</span>後で何が起きたかわからなくなってしまわないように<span
-lang=EN-US>)<u6:p></u6:p></span></span><span lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal><span lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:24.75pt;text-indent:-18.0pt;mso-list:
-l1 level1 lfo2;tab-stops:list 24.75pt'><![if !supportLists]><span lang=EN-US
-style='mso-fareast-font-family:Century;mso-bidi-font-family:Century'><span
-style='mso-list:Ignore'>5.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><b><span style='font-size:13.5pt;font-family:
-"ＭＳ Ｐゴシック"'>セキュリティに配慮したマクロについて</span></b><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>この項目は、<span lang=EN-US>TeraTerm
-Macro</span>に関する<span lang=EN-US>Topic</span>です。</span><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>4.</span><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>設定で紹介したマクロではマクロ内にユーザ名が記述されており、セキュリティ上あまり良くないと思われます。パスワードは毎回入力するタイプです。これを、ユーザ名、パスワードを暗号化したファイルに保存する方式を紹介します。</span><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><b style='mso-bidi-font-weight:
-normal'><span lang=EN-US style='font-size:11.0pt;font-family:"ＭＳ Ｐゴシック"'>1.</span></b><b
-style='mso-bidi-font-weight:normal'><span style='font-size:11.0pt;font-family:
-"ＭＳ Ｐゴシック"'>パスワードを暗号化して記憶（ローカル保存）するマクロ＝自動ログイン</span></b><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span style='font-size:10.0pt;
-font-family:"ＭＳ Ｐゴシック"'>※ユーザ名を <span class=SpellE><b style='mso-bidi-font-weight:
-normal'><span lang=EN-US style='color:blue'>scott</span></b></span><span
-lang=EN-US> </span>ホスト名を <span class=SpellE><b style='mso-bidi-font-weight:
-normal'><span lang=EN-US style='color:blue'>remote.host</span></b></span><b
-style='mso-bidi-font-weight:normal'><span lang=EN-US style='color:blue'> </span></b>パスワードファイルの保存先を
-<b style='mso-bidi-font-weight:normal'><span lang=EN-US style='color:blue'>C:\mydata\filename.dat</span></b><span
-lang=EN-US> </span>とした場合のマクロ例です。</span><span lang=EN-US><u6:p></u6:p><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>;
-setting<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>hostname
-= '<span class=SpellE>remote.host</span>'<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>username
-= '<span class=SpellE>scott</span>'<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>getpassword</span></span><span lang=EN-US
-style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";
-mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> 'C:\<span
-class=SpellE>mydata\filename.dat</span>' '<span class=SpellE>usrpass</span>' <span
-class=SpellE>inputstr<u6:p></u6:p></span></span><span lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>;
-connection &amp; login<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>msg</span></span><span lang=EN-US style='font-size:10.0pt;
-font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> = hostname<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>strconcat</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>msg</span> ':22
-/<span class=SpellE>ssh</span> /2 /auth=password /user='<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>strconcat</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>msg</span>
-username<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>strconcat</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>msg</span> ' /<span
-class=SpellE>passwd</span>='<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>strconcat</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>msg</span> <span
-class=SpellE>inputstr<u6:p></u6:p></span></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>connect
-<span class=SpellE>msg<u6:p></u6:p></span></span><span lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>※<span class=SpellE><span
-lang=EN-US>getpassword</span></span><span lang=EN-US> '<span class=SpellE>filepath</span>\filename'
-'</span>識別子<span lang=EN-US>' $</span>格納変数</span><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>同一格納ファイルに複数の識別子でパスワードを暗号化保存できます。</span><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>このマクロは、最初の一度だけパスワードを聞かれますが、その後は<span
-lang=EN-US>C:\mydata\filename.dat</span>に保存された暗号化パスワードが利用されるため<span lang=EN-US>LogMeTT</span>メニューからの選択だけで自動ログインが可能になります。</span><span
-lang=EN-US><u6:p></u6:p><o:p></o:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'><u6:p>&nbsp;</u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><b style='mso-bidi-font-weight:
-normal'><span lang=EN-US style='font-size:11.0pt;font-family:"ＭＳ Ｐゴシック"'>2.</span></b><b
-style='mso-bidi-font-weight:normal'><span style='font-size:11.0pt;font-family:
-"ＭＳ Ｐゴシック"'>ユーザ<span lang=EN-US>ID</span>とパスワードを両方暗号化して記憶（ローカル保存）するマクロ＝自動ログイン</span></b><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span style='font-size:10.0pt;
-font-family:"ＭＳ Ｐゴシック"'>※ホスト名を <span class=SpellE><b style='mso-bidi-font-weight:
-normal'><span lang=EN-US style='color:blue'>remote.host</span></b></span><b
-style='mso-bidi-font-weight:normal'><span lang=EN-US style='color:blue'> </span></b>ユーザ<span
-lang=EN-US>ID</span>とパスワードファイルの保存先を <b style='mso-bidi-font-weight:normal'><span
-lang=EN-US style='color:blue'>C:\mydata\filename.dat</span></b><span
-lang=EN-US> </span>とした場合のマクロ例です。</span><span lang=EN-US><u6:p></u6:p><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><span lang=EN-US
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>;
-setting<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>hostname
-= '<span class=SpellE>remote.host</span>'<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>getpassword</span></span><span lang=EN-US
-style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";
-mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> 'C:\<span
-class=SpellE>mydata\filename.dat</span>' '<span class=SpellE>usrid</span>'
-username<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>getpassword</span></span><span lang=EN-US
-style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";
-mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> 'C:\<span
-class=SpellE>mydata\filename.dat</span>' '<span class=SpellE>usrpass</span>' <span
-class=SpellE>inputstr<u6:p></u6:p></span></span><span lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>;
-connection &amp; login<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>msg</span></span><span lang=EN-US style='font-size:10.0pt;
-font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> = hostname<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>strconcat</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>msg</span> ':22
-/<span class=SpellE>ssh</span> /2 /auth=password /user='<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>strconcat</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>msg</span>
-username<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>strconcat</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>msg</span> ' /<span
-class=SpellE>passwd</span>='<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>strconcat</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>msg</span> <span
-class=SpellE>inputstr<u6:p></u6:p></span></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>connect
-<span class=SpellE>msg<u6:p></u6:p></span></span><span lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>※<span class=SpellE><span
-lang=EN-US>getpassword</span></span><span lang=EN-US> '<span class=SpellE>filepath</span>\filename'
-'</span>識別子<span lang=EN-US>' $</span>格納変数</span><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>このマクロではユーザ<span lang=EN-US>ID</span>も識別子<span
-class=SpellE><span lang=EN-US>usrid</span></span>として格納しています。最初のログイン時にはユーザ<span
-lang=EN-US>ID</span>とパスワードの両方を入力しなければなりませんが、<span lang=EN-US>2</span>回目以降は同様に<span
-lang=EN-US>LogMeTT</span>メニューからの選択だけで自動ログインが可能になります。同じように、<span class=SpellE><span
-lang=EN-US>getpassword</span></span>を利用することでホスト名を暗号化してしまうことも可能ですが、<span
-lang=EN-US>TeraTerm</span>のヒストリに過去接続したホストが残る場合もありますのでセキュリティを考慮する場合は様々な注意が必要です。ホスト名、そのホストに登録されている<span
-lang=EN-US>ID</span>、パスワード等のすべてを暗号化して隠すことができるマクロです。</span><span lang=EN-US><u6:p></u6:p><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><b style='mso-bidi-font-weight:
-normal'><span lang=EN-US style='font-size:11.0pt;font-family:"ＭＳ Ｐゴシック"'>3.telnet</span></b><b
-style='mso-bidi-font-weight:normal'><span style='font-size:11.0pt;font-family:
-"ＭＳ Ｐゴシック"'>を利用する場合 </span></b><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>telnet(</span><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>ポート<span lang=EN-US>23)</span>を利用して接続する場合は接続マクロが一部違いますので注意してください。</span><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>これは、<span lang=EN-US>telnet</span>が接続セッション確立後に認証を行うためです。</span><span
-lang=EN-US><u6:p></u6:p><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>;
-setting<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>hostname
-= '<span class=SpellE>remote.host</span>'<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>getpassword</span></span><span lang=EN-US
-style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";
-mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> 'C:\<span
-class=SpellE>mydata\filename.dat</span>' '<span class=SpellE>usrid</span>'
-username<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>getpassword</span></span><span lang=EN-US
-style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";
-mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> 'C:\<span
-class=SpellE>mydata\filename.dat</span>' '<span class=SpellE>usrpass</span>' <span
-class=SpellE>inputstr<u6:p></u6:p></span></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>;;
-login session </span><span style='font-size:10.0pt;font-family:"ＭＳ ゴシック";
-mso-ascii-font-family:Courier;mso-hansi-font-family:Courier;mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>※</span><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>UsernamePrompt</span></span><span lang=EN-US
-style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";
-mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> = 'Please
-login:'<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>PasswordPrompt</span></span><span lang=EN-US
-style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";
-mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> = 'Please Enter
-password:'<u6:p></u6:p></span><span lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>;
-connection<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>msg</span></span><span lang=EN-US style='font-size:10.0pt;
-font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> = hostname<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>strconcat</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>msg</span> ':23'<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>strconcat</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>msg</span> ' /<span
-class=SpellE>nossh</span>'<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>connect
-<span class=SpellE>msg<u6:p></u6:p></span></span><span lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>;
-login<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>wait<span
-style='mso-spacerun:yes'>&nbsp;&nbsp; </span><span class=SpellE>UsernamePrompt<u6:p></u6:p></span></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>sendln</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> username<u6:p></u6:p></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-lang=EN-US style='font-size:10.0pt;font-family:Courier;mso-fareast-font-family:
-"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'>wait<span
-style='mso-spacerun:yes'>&nbsp;&nbsp; </span><span class=SpellE>PasswordPrompt<u6:p></u6:p></span></span></p>
-
-<p class=MsoNormal align=left style='margin-left:27.0pt;text-align:left;
-mso-pagination:widow-orphan;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-class=SpellE><span lang=EN-US style='font-size:10.0pt;font-family:Courier;
-mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:"ＭＳ ゴシック";color:blue;
-mso-font-kerning:0pt'>sendln</span></span><span lang=EN-US style='font-size:
-10.0pt;font-family:Courier;mso-fareast-font-family:"ＭＳ ゴシック";mso-bidi-font-family:
-"ＭＳ ゴシック";color:blue;mso-font-kerning:0pt'> <span class=SpellE>inputstr<u6:p></u6:p></span></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>※<span lang=EN-US>telnet</span>ではログインするホストの応答内容にあわせて記述を変更する必要があります。<span
-lang=EN-US>(</span>ログインプロンプト<span lang=EN-US>)<u6:p></u6:p></span></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt'><b style='mso-bidi-font-weight:
-normal'><span lang=EN-US style='font-size:11.0pt;font-family:"ＭＳ Ｐゴシック"'>4.</span></b><b
-style='mso-bidi-font-weight:normal'><span style='font-size:11.0pt;font-family:
-"ＭＳ Ｐゴシック"'>暗号化して記憶（ローカル保存）したファイルの取り扱いについて</span></b><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>保存されたパスワードファイルを安全に保管することで、たとえば<span
-lang=EN-US>root</span>ユーザで接続する場合はそのファイルが必要になるような運用を行うことができます。管理者は最初に一度だけ複雑で長いパスワードを設定し、ファイル保存後は破棄してしまってかまわないのです。</span><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>上記のマクロ例のようにローカル保存する場合は、セキュリティの観点からスタートアップにパスワード格納ファイルの削除バッチファイルを入れておくと、ログイン後最初の一度だけパスワード認証が必要になり、セキュリティと利便性の両立などを図ることができます。</span><span
-lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>完全なセキュリティはありませんが、機密性を強化するのに役立ててください。</span><span
-lang=EN-US><u6:p></u6:p><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:24.75pt;text-indent:-18.0pt;mso-list:
-l1 level1 lfo2;tab-stops:list 24.75pt'><![if !supportLists]><span lang=EN-US
-style='mso-fareast-font-family:Century;mso-bidi-font-family:Century'><span
-style='mso-list:Ignore'>6.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><b><span style='font-size:13.5pt;font-family:
-"ＭＳ Ｐゴシック"'>最新版の入手先</span></b><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>TeraTerm</span><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>に付属している<span lang=EN-US>LogMeTT</span>は基本的にリリース時点での最新版を同梱するようにしていますが、別プロダクトですのでリリースによっては<span
-lang=EN-US>LogMeTT</span>の最新版が先に提供されることもあります。最新版の<span lang=EN-US><a
-href="http://www.neocom.ca/forum/viewforum.php?f=5"><span lang=EN-US><span
-lang=EN-US>ダウンロードはこちら</span></span></a></span>。</span><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-style='font-size:10.0pt;font-family:"ＭＳ Ｐゴシック"'>また、<span lang=EN-US>LogMeTT</span>のメニュー”<span
-lang=EN-US>Help</span>“から”<span lang=EN-US>Check for updates</span>”を選択しても最新版を入手可能です。</span><span
-lang=EN-US><u6:p></u6:p><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:24.75pt;text-indent:-18.0pt;mso-list:
-l1 level1 lfo2;tab-stops:list 24.75pt'><![if !supportLists]><span lang=EN-US
-style='mso-fareast-font-family:Century;mso-bidi-font-family:Century'><span
-style='mso-list:Ignore'>7.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><b><span style='font-size:13.5pt;font-family:
-"ＭＳ Ｐゴシック"'>連絡先</span></b><span lang=EN-US><u6:p></u6:p></span></p>
-
-<p class=MsoNormal style='margin-left:27.0pt;mso-para-margin-left:2.57gd'><span
-lang=EN-US style='font-family:"ＭＳ Ｐゴシック"'>TBD<u6:p></u6:p></span><span
-lang=EN-US><o:p></o:p></span></p>
-
-<p class=MsoNormal style='margin-left:6.75pt'><b><span lang=EN-US
-style='font-size:13.5pt;font-family:"ＭＳ Ｐゴシック"'><u6:p>&nbsp;</u6:p></span></b></p>
-
-</div>
+<body class="logmett">
+
+<h1>LogMeTT Tutorial</h1>
+
+<h2>1. LogMeTTとは</h2>
+
+<p>LogMeTTはターミナルエミュレータTeraTerm　Macroのランチャーツールです。TeraTermからリモートホストへ自動ログインしたり、さまざまな処理を行わせたりすることができます。ログインの自動化ツールとしてはTeraTerm Menuがありますが、ssh2接続やスケジュール機能、自動ログ取得機能、接続ホストごとに配色設定などを設定できる等の利点があります。また、ツリー構造でホストごと、マクロごとに階層化できるためサーバ管理に向いています。カナダ在住の<a href="http://www.neocom.ca/">Boris氏</a>により開発されています。LogMeTTはTeraTermに付属しています。</p>
+
+
+
+<h2>2. LogMeTTでできること</h2>
+
+<p>TeraTerm Macroを使いリモートホストへの自動接続を管理することができます。ホストをツリー構造で登録することができるので、ホストが多数ある場合でも効率的に管理することが可能です。また、工夫次第であらゆる作業を自動化できます。※ただし、2006/11Verssion2.8(Release6)現在、TeraTerm MenuにあるようなHotKey(キーボードショートカットによる即時起動のような機能は利用できません。</p>
+
+
+
+<h2>3. 起動方法</h2>
+
+<p>LogMeTTはTeraTermのFileメニューから呼び出すことで起動することができます。起動すると、常駐プロセスとしてタスクトレイにアイコンが表示されます。</p>
+
+<div class="img"><img class="block" width="209" height="29" src="tasktray.jpg" alt="tasktray"></div>
+
+<h2>4. 設定</h2>
+
+<p>ここからは、実際にLogMeTTを使ってリモートホストへSSH2による接続を自動化する設定を紹介します。簡単な操作でTeraTermの自動化を体験してみてください。</p>
+
+<p>1. LogMeTTのタスクトレイアイコン(上記3.の図にある丸囲い）を右クリックして“Configure…”を選択する。</p>
+
+<p>2. 設定ダイアログが表示される。”Settings”タブの下にある、”General”タブに “Run at log on to Windows”にチェックを入れると(下図参照)Windowsログオン時にLogMeTTが自動起動される。</p>
+	
+<p>3. “Settings” タブの下にある “New Connections”タブで、Log file creationが &quot;Start logging&quot;になっていると、メニューから起動した場合自動的にログが取得されるようになる。<br>
+(<span class="italic">TeraTermをインストールしたディレクトリ\Logs\LogMeTTメニュー名_日付時間</span>.logとして保存される)</p>
+
+<div class="img"><img width="652" height="529" src="setting_logon.jpg" alt="logon"></div>
+
+<p>4. メニューバーの“Connection”から”Add Child”を選ぶと、エントリが一つ追加される。画面左のThis computerを右クリックしても”Add Child”が選択できる。</p>
+
+<p>5. “This computer”の下に”Unnamed connection #1”というアイコンが追加されるので、そのアイコンを選択し”F2”キーを押して名前をつける。</p>
+
+<div class="img"><img width="654" height="530" src="setting_add.jpg" alt="add"></div>
+
+<p>6. "Macro"タブを選び、リモートホストへログインするためのマクロを記述する。たとえば、ユーザ名を固定とし、パスワードはダイアログボックスで入力させたい場合は、次のようなマクロを書く。もちろん、パスワードをマクロ内に記述してもよいが、マクロの取り扱いには注意すること。※セキュリティに配慮したマクロ(パスワードの暗号化等)については5.セキュリティに配慮したマクロを参照</p>
+
+<p>＝注意＝<br>この記述はTeraTerm Macroなのでシングルクォート’ダブルクォート” に気をつけること。下記をコピーして貼り付けると安全</p>
+
+<pre class="code">
+username = 'nike'
+hostname = '192.168.1.3'
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+msg = 'Enter password for user '
+strconcat msg username
+passwordbox msg 'Get password'
+
+msg = hostname
+strconcat msg ':22 /ssh /auth=password /user='
+strconcat msg username
+strconcat msg ' /passwd='
+strconcat msg inputstr
+
+connect msg
+</pre>
+
+<div class="img"><img width="654" height="558" src="macro.jpg" alt="macro"></div>
+
+<p>7. F9キーを押して、マクロが正常に動作するか検証する。 問題なければ、右上にあるApplyボタンを押して設定内容を保存する。</p>
+
+<p>8. 登録したリモートホストはタスクトレイの右クリックメニューから選択することができる。</p>
+
+<p>9. “Popup”タブにメッセージを記述しておくと実行時に、</p>
+
+<div class="img"><img width="654" height="473" src="popup.jpg" alt="popup"></div>
+
+<p>下記のポップアップメッセージが表示される。</p>
+
+<div class="img"><img width="193" height="117" src="popup2.jpg" alt="popup"></div>
+
+<p>重要なホストに接続する際や、root等の特権アクセスのマクロにPopupで注意を促す際等に利用する。ポップアップメッセージではOKを押すとマクロが実行され、Cancelを押すとMacroは実行されない。</p>
+
+<p>10.” Colors”タブでは、接続メニュー毎にTeraTermの配色を変更できる。 Popup同様、重要なホストに接続する際等のメニュー配色を変えるなどに利用する。ユーザ毎、ホスト毎に配色を変更する事で誤操作の予防にもなる。</p>
+
+<div class="img"><img width="653" height="506" src="color.jpg" alt="color"></div>
+
+<p>11. Scheduleタブでは、設定したマクロを自動実行させることができる。 上手くマクロを組めば、下記のような事が可能になる。</p>
+
+<ul>
+  <li>定期的に電源をon/off</li>
+  <li>“Settings”タブの”User Data”タブ項目と組み合わせ、障害発生時にe-mailや電話させるなどの自動処理</li>
+  <li>定時バックアップ、ステータスチェック</li>
+</ul>
+
+<p class="warning">※注意:メニューの階層は親から順番に実行されてしまうため、子をスケジュールに入れておくとその直系親ツリーがすべて実行される。単一タスクとして行いたい場合は独立させること（This computer直下)。また、ホストとLogMeTTを実行するPCの時刻差異に注意すること。</p>
+
+<p class="notice">Scheduleを実行する場合は、後述の自動ログをONにすることを推奨する。(後で何が起きたかわからなくなってしまわないように)</p>
+
+
+
+<h2>セキュリティに配慮したマクロについて</h2>
+
+<p>この項目は、TeraTerm Macroに関するTopicです。</p>
+
+<p>”4. 設定”で紹介したマクロではマクロ内にユーザ名が記述されており、セキュリティ上あまり良くないと思われます。パスワードは毎回入力するタイプです。これを、ユーザ名、パスワードを暗号化したファイルに保存する方式を紹介します。</p>
+
+<h3>1. パスワードを暗号化して記憶（ローカル保存）するマクロ＝自動ログイン</h3>
+
+<p>※ユーザ名を <span class="variable">scott</span> ホスト名を <span class="variable">remote.host</span> パスワードファイルの保存先を <span class="variable">C:\mydata\filename.dat</span> とした場合のマクロ例です。</p>
+
+<pre class="code">
+; setting
+hostname = 'remote.host'
+username = 'scott'
+getpassword 'C:\mydata\filename.dat' 'usrpass' inputstr
+
+; connection &amp; login
+msg = hostname
+strconcat msg ':22 /ssh /2 /auth=password /user='
+strconcat msg usernam
+strconcat msg ' /passwd='
+strconcat msg inputstr
+connect msg
+</pre>
+
+<p>※getpassword 'filepath\filename' '識別子' $格納変数</p>
+
+<p>同一格納ファイルに複数の識別子でパスワードを暗号化保存できます。</p>
+
+<p>このマクロは、最初の一度だけパスワードを聞かれますが、その後はC:\mydata\filename.datに保存された暗号化パスワードが利用されるためLogMeTTメニューからの選択だけで自動ログインが可能になります。</p>
+
+
+<h3>2. ユーザIDとパスワードを両方暗号化して記憶（ローカル保存）するマクロ＝自動ログイン</h3>
+
+<p>ホスト名を <span class="variable">remote.host</span> ユーザIDとパスワードファイルの保存先を <span class="variable">C:\mydata\filename.dat</span> とした場合のマクロ例です。</p>
+
+<pre class="code">
+; setting
+hostname = 'remote.host'
+getpassword 'C:\mydata\filename.dat' 'usrid' username
+getpassword 'C:\mydata\filename.dat' 'usrpass' inputstr
+
+; connection &amp; login
+msg = hostname
+strconcat msg ':22 /ssh /2 /auth=password /user='
+strconcat msg username
+strconcat msg ' /passwd='
+strconcat msg inputstr
+connect msg
+</pre>
+
+<p>※getpassword 'filepath\filename' '識別子' $格納変数</p>
+
+<p>このマクロではユーザIDも識別子usridとして格納しています。最初のログイン時にはユーザIDとパスワードの両方を入力しなければなりませんが、2回目以降は同様にLogMeTTメニューからの選択だけで自動ログインが可能になります。同じように、getpasswordを利用することでホスト名を暗号化してしまうことも可能ですが、TeraTermのヒストリに過去接続したホストが残る場合もありますのでセキュリティを考慮する場合は様々な注意が必要です。ホスト名、そのホストに登録されているID、パスワード等のすべてを暗号化して隠すことができるマクロです。</p>
+
+
+<h3>3. telnetを利用する場合</h3>
+
+<p>telnet(ポート23)を利用して接続する場合は接続マクロが一部違いますので注意してください。<br>
+これは、telnetが接続セッション確立後に認証を行うためです。</p>
+
+<pre class="code">
+; setting
+hostname = 'remote.host'
+getpassword 'C:\mydata\filename.dat' 'usrid' username
+getpassword 'C:\mydata\filename.dat' 'usrpass' inputstr
+;; login session ※
+UsernamePrompt = 'Please login:'
+PasswordPrompt = 'Please Enter password:'
+
+; connection
+msg = hostname
+strconcat msg ':23'
+strconcat msg ' /nossh'
+connect msg
+
+; login
+wait   UsernamePrompt
+sendln username
+wait   PasswordPrompt
+sendln inputstr
+</pre>
+
+<p>※telnetではログインするホストの応答内容にあわせて記述を変更する必要があります。(ログインプロンプト)</p>
+
+
+<h3>暗号化して記憶（ローカル保存）したファイルの取り扱いについて</h3>
+
+<p>保存されたパスワードファイルを安全に保管することで、たとえばrootユーザで接続する場合はそのファイルが必要になるような運用を行うことができます。管理者は最初に一度だけ複雑で長いパスワードを設定し、ファイル保存後は破棄してしまってかまわないのです。</p>
+
+<p>
+上記のマクロ例のようにローカル保存する場合は、セキュリティの観点からスタートアップにパスワード格納ファイルの削除バッチファイルを入れておくと、ログイン後最初の一度だけパスワード認証が必要になり、セキュリティと利便性の両立などを図ることができます。</p>
+
+<p>完全なセキュリティはありませんが、機密性を強化するのに役立ててください。</p>
+
+<h2>6. 最新版の入手先</h2>
+
+<p>TeraTermに付属しているLogMeTTは基本的にリリース時点での最新版を同梱するようにしていますが、別プロダクトですのでリリースによってはLogMeTTの最新版が先に提供されることもあります。最新版の<a
+href="http://www.neocom.ca/forum/viewforum.php?f=5">ダウンロードはこちら</a></p>
+
+<p>また、LogMeTTのメニュー”Help“から”Check for updates”を選択しても最新版を入手可能です。</p>
+
+
+
+<h2>7. 連絡先</h2>
+
+<p>TBD</p>
 
 </body>
-
 </html>

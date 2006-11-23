@@ -38,3 +38,51 @@ pre.console{
 	border: #ccccff 1px solid;
 	padding: .5ex .5ex .5ex .5ex;
 }
+
+
+
+.warning{
+	color: #ff0000;
+}
+
+.notice{
+	color: #0000ff;
+}
+
+img{
+	boarder: 0px;
+}
+
+.img{
+	margin: 1ex;
+}
+
+.code{
+	font-family: Courier;
+	color: #0000ff;
+}
+
+.italic{
+	font-style: italic;
+}
+
+.variable{
+	font-weight: 900;
+	color: #0000ff;
+}
+
+.logmett{
+	font-size: 10.0pt;
+}
+
+h1{
+	font-size: 18.0pt;
+}
+
+h2{
+	font-size: 13.5pt;
+}
+
+h3{
+	font-size: 11.0pt;
+}
