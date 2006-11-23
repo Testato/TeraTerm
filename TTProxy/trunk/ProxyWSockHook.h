@@ -1344,7 +1344,7 @@ private:                                                   \
             }
         }
         int result = ORIG_connect(s, name, namelen);
-        if (info == NULL) {
+        if (info == NULL || info->proxy.port == 0) {
             return result;
         }
         if (result == 0) {
