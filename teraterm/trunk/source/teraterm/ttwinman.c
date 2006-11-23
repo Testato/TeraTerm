@@ -12,6 +12,7 @@
 #include "ttlib.h"
 #include "helpid.h"
 #include "htmlhelp.h"
+#include "i18n.h"
 
 HWND HVTWin = NULL;
 HWND HTEKWin = NULL;
@@ -122,10 +123,24 @@ void ChangeTitle()
 	{ // host name
 		strncat(TempTitle," - ",sizeof(TempTitle)-1-strlen(TempTitle));
 		i = sizeof(TempTitle)-1-strlen(TempTitle);
-		if (Connecting)
+		if (Connecting) {
+#ifdef I18N
+			strcpy(ts.UIMsg, "[connecting...]");
+			get_lang_msg("DLG_MAIN_TITLE_CONNECTING", ts.UIMsg, ts.UILanguageFile);
+			strncat(TempTitle,ts.UIMsg,i);
+#else
 			strncat(TempTitle,"[connecting...]",i);
-		else if (! cv.Ready)
+#endif
+		}
+		else if (! cv.Ready) {
+#ifdef I18N
+			strcpy(ts.UIMsg, "[disconnected]");
+			get_lang_msg("DLG_MAIN_TITLE_DISCONNECTED", ts.UIMsg, ts.UILanguageFile);
+			strncat(TempTitle,ts.UIMsg,i);
+#else
 			strncat(TempTitle,"[disconnected]",i);
+#endif
+		}
 		else if (cv.PortType==IdSerial)
 		{
 #if 1
@@ -256,6 +271,9 @@ void OpenHtmlHelp(HWND HWin, char *filename)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2006/06/15 16:27:59  yutakakn
+ * タイトルに日本語を入力すると、文字化けするバグを修正した。パッチ作成に感謝します＞永田氏
+ *
  * Revision 1.6  2006/04/07 13:16:39  yutakakn
  * HTMLヘルプファイルのオーナーをデスクトップへ変更した
  *

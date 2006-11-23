@@ -545,7 +545,11 @@ void FAR PASCAL UnregWin(HWND HWin)
   if (pm->NWin>0) pm->NWin--;
 }
 
+#ifdef I18N
+void FAR PASCAL SetWinMenu(HMENU menu, PCHAR buf, PCHAR langFile)
+#else
 void FAR PASCAL SetWinMenu(HMENU menu)
+#endif
 {
   int i;
   char Temp[MAXPATHLEN];
@@ -578,7 +582,13 @@ void FAR PASCAL SetWinMenu(HMENU menu)
     else
       UnregWin(Hw);
   }
+#ifdef I18N
+  strcpy(buf, "&Window");
+  get_lang_msg("MENU_WINDOW_WINDOW", buf, langFile);
+  AppendMenu(menu,MF_ENABLED | MF_STRING,ID_WINDOW_1+9, buf);
+#else
   AppendMenu(menu,MF_ENABLED | MF_STRING,ID_WINDOW_1+9,"&Window...");
+#endif
 }
 
 void FAR PASCAL SetWinList(HWND HWin, HWND HDlg, int IList)
@@ -1417,6 +1427,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2006/10/12 16:04:59  yutakapon
+ *   ・同期モードでのマクロ実行において、DDEバッファがフルになった場合にCPU使用率が100%となる現象を回避するようにした。
+ *   ・sendln後の無条件100ミリ秒のスリープを解除した。
+ *
  * Revision 1.3  2006/02/18 08:40:07  yutakakn
  *   ・コンパイラを Visual Studio 2005 Standard Edition に切り替えた。
  *   ・stricmp()を_stricmp()へ置換した

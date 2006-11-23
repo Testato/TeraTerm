@@ -8,6 +8,7 @@
 #include <string.h>
 #include <time.h>
 #include <stdio.h>
+#include "tttypes.h"
 
 #ifndef TERATERM32
   #define CharNext AnsiNext
@@ -467,3 +468,112 @@ void ParseStrftimeFileName(PCHAR FName)
   c = strrchr(FName, '\\') + 1;
   strncpy(c, buf, MAXPATHLEN-(c-FName)-1);
 }
+
+void ConvFName(PCHAR HomeDir, PCHAR Temp, PCHAR DefExt, PCHAR FName)
+{
+  int DirLen, FNPos;
+
+  FName[0] = 0;
+  if ( ! GetFileNamePos(Temp,&DirLen,&FNPos) ) return;
+  FitFileName(&Temp[FNPos],DefExt);
+  if ( DirLen==0 )
+  {
+    strcpy(FName,HomeDir);
+    AppendSlash(FName);
+  }
+  strcat(FName,Temp);
+}
+
+// "\n" Çâ¸çsÇ…ïœä∑Ç∑ÇÈ (2006.7.29 maya)
+// "\t" ÇÉ^ÉuÇ…ïœä∑Ç∑ÇÈ (2006.11.6 maya)
+void RestoreNewLine(PCHAR Text)
+{
+	int i, j=0, size=strlen(Text);
+	char *buf = (char *)_alloca(size+1);
+
+	memset(buf, 0, size+1);
+	for (i=0; i<size; i++) {
+		if (Text[i] == '\\' && i<size ) {
+			switch (Text[i+1]) {
+				case '\\':
+					buf[j] = '\\';
+					i++;
+					break;
+				case 'n':
+					buf[j] = '\n';
+					i++;
+					break;
+				case 't':
+					buf[j] = '\t';
+					i++;
+					break;
+				case '0':
+					buf[j] = '\0';
+					i++;
+					break;
+				default:
+					buf[j] = '\\';
+			}
+			j++;
+		}
+		else {
+			buf[j] = Text[i];
+			j++;
+		}
+	}
+	/* use memcpy to copy with '\0' */
+	memcpy(Text, buf, size);
+}
+
+void GetNthString(PCHAR Source, int Nth, int Size, PCHAR Dest)
+{
+  int i, j, k;
+  char c;
+
+  i = 1;
+  j = 0;
+  k = 0;
+  do {
+    c = Source[j];
+    if ( c==',' ) i++;
+    j++;
+    if ( (i==Nth) && (c!=',') && (k<Size-1) )
+    {
+      Dest[k] = c;
+      k++;
+    }
+  }  
+  while ((i<=Nth) && (c!=0));
+  Dest[k] = 0;
+}
+
+void GetNthNum(PCHAR Source, int Nth, int far *Num)
+{
+  char T[15];
+
+  GetNthString(Source,Nth,sizeof(T),T);
+  if (sscanf(T, "%d", Num) != 1)
+    *Num = 0;
+}
+
+#ifdef I18N
+void get_lang_msg(PCHAR key, PCHAR buf, PCHAR iniFile)
+{
+	GetI18nStr("Tera Term", key, buf, iniFile);
+}
+
+int get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PCHAR iniFile)
+{
+	if (GetI18nLogfont("Tera Term", key, logfont,
+					   GetDeviceCaps(GetDC(dlg),LOGPIXELSY),
+					   iniFile) == FALSE) {
+		return FALSE;
+	}
+
+	if ((*font = CreateFontIndirect(logfont)) == NULL) {
+		return FALSE;
+	}
+
+	return TRUE;
+}
+#endif

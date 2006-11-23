@@ -31,3 +31,5 @@ EXPORTS
   CopyTTSetToShmem @36
   CopyShmemToTTSet @37
   
+  GetI18nStr @40
+  GetI18nLogfont @41

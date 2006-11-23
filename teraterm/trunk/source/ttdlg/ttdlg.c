@@ -32,6 +32,10 @@ static char FAR * ProtocolFamilyList[] = { "UNSPEC", "IPv6", "IPv4", NULL };
 
 static HANDLE hInst;
 
+#ifdef I18N
+static HFONT DlgTermFont;
+#endif
+
 static PCHAR far NLList[] = {"CR","CR+LF",NULL};
 static PCHAR far TermList[] =
   {"VT100","VT101","VT102","VT282","VT320","VT382",NULL};
@@ -55,6 +59,10 @@ BOOL CALLBACK TermDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	WORD w;
 	//  char Temp[HostNameMaxLength + 1]; // 81(yutaka)
 	char Temp[81]; // 81(yutaka)
+#ifdef I18N
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
 	switch (Message) {
 	case WM_INITDIALOG:
@@ -100,6 +108,22 @@ BOOL CALLBACK TermDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		}
 
 		SetRB(Dialog,ts->AutoWinSwitch,IDC_TERMAUTOSWITCH,IDC_TERMAUTOSWITCH);
+
+#ifdef I18N
+		font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
+		GetObject(font, sizeof(LOGFONT), &logfont);
+		if (get_lang_font("DLG_TERMINAL_FONT", Dialog, &logfont, &DlgTermFont, ts->UILanguageFile)) {
+			SendDlgItemMessage(Dialog, IDC_TERMLOCALECHO, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+		}
+
+		GetWindowText(Dialog, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("DLG_TERMINAL_TITLE", ts->UIMsg, ts->UILanguageFile);
+		SetWindowText(Dialog, ts->UIMsg);
+
+		GetDlgItemText(Dialog, IDC_TERMLOCALECHO, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("DLG_TERMINAL_TERMSIZE", ts->UIMsg, ts->UILanguageFile);
+		SetDlgItemText(Dialog, IDC_TERMLOCALECHO, ts->UIMsg);
+#endif
 
 		if (ts->Language==IdJapanese)
 		{
@@ -2025,6 +2049,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2006/07/24 14:19:18  yutakakn
+ * Oniguruma 4.2.0へ差し替えたことに合わせて、バージョン表示のさせかたを変更した。
+ *
  * Revision 1.13  2006/03/12 14:27:41  yutakakn
  *   ・Additional settingsダイアログにおけるウィンドウの半透明変更を即座に反映させるようにした（teraterm.ini の AlphaBlend=256 の場合のみ）。
  *   ・文字の背景色をスクリーンの背景色と一致させるパッチのバグを修正した。パッチ作成に感謝します＞337氏

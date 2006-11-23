@@ -1,0 +1,281 @@
+[Tera Term]
+MENU_FILE=&File
+MENU_FILE_NEW=&New connection...\tAlt+N
+MENU_FILE_DUPLICATE=D&uplicate session\tAlt+D
+MENU_FILE_GYGWIN=Cy&gwin connection\tAlt+G
+MENU_FILE_LOG=&Log...
+MENU_FILE_COMMENTLOG=Comment to Log...
+MENU_FILE_VIEWLOG=View Log
+MENU_FILE_SENDFILE=&Send file...
+MENU_FILE_CHANGEDIR=&Change directory...
+MENU_FILE_LOGMETT=&LogMeTT
+MENU_FILE_PRINT=&Print...\tAlt+P
+MENU_FILE_DISCONNECT=&Disconnect
+MENU_FILE_EXIT=E&xit\tAlt+Q
+
+MENU_TRANS=&Transfer
+MENU_TRANS_KERMIT_RCV=&Receive
+MENU_TRANS_KERMIT_GET=&Get...
+MENU_TRANS_KERMIT_SEND=&Send...
+MENU_TRANS_KERMIT_FINISH=&Finish
+MENU_TRANS_X_RCV=&Receive...
+MENU_TRANS_X_SEND=&Send...
+MENU_TRANS_Z_RCV=&Receive
+MENU_TRANS_Z_SEND=&Send...
+MENU_TRANS_BP_RCV=&Receive
+MENU_TRANS_BP_SEND=&Send...
+MENU_TRANS_QV_RCV=&Receive
+MENU_TRANS_QV_SEND=&Send...
+
+MENU_EDIT=&Edit
+MENU_EDIT_COPY=&Copy\tAlt+C
+MENU_EDIT_COPYTABLE=Copy &table
+MENU_EDIT_PASTE=&Paste\tAlt+V
+MENU_EDIT_PASTECR=Paste<C&R>\tAlt+R
+MENU_EDIT_CLSCREEN=Clear &screen
+MENU_EDIT_CLBUFFER=Clear &buffer
+MENU_EDIT_SELECTALL=Select &all
+
+MENU_SETUP=&Setup
+MENU_SETUP_TERMINAL=&Terminal...
+MENU_SETUP_WINDOW=&Window...
+MENU_SETUP_FONT=&Font...
+MENU_SETUP_KEYBOARD=&Keyboard...
+MENU_SETUP_SERIALPORT=S&erial port...
+MENU_SETUP_TCPIP=T&CP/IP...
+MENU_SETUP_GENERAL=&General...
+MENU_SETUP_ADDITION=A&dditional settings
+MENU_SETUP_SAVE=&Save setup...
+MENU_SETUP_RESTORE=&Restore setup...
+MENU_SETUP_LOADKEYMAP=&Load key map...
+
+MENU_CONTROL=C&ontrol
+MENU_CONTROL_RESET=&Reset terminal
+MENU_CONTROL_AREYOUTHERE=Are you &there\tAlt+T
+MENU_CONTROL_SENDBREAK=&Send break\tAlt+B
+MENU_CONTROL_RESETPORT=Reset &port
+MENU_CONTROL_BROADCAST=Broadcast command
+MENU_CONTROL_OPENTEK=&Open TEK
+MENU_CONTROL_CLOSETEK=&Close TEK
+MENU_CONTROL_MACRO=&Macro
+
+MENU_WINDOW=&Window
+MENU_WINDOW_WINDOW=&Window
+
+MENU_HELP=&Help
+MENU_HELP_INDEX=&Index(English)
+MENU_HELP_USING=I&ndex(Japanese)
+MENU_HELP_ABOUT=&About Tera Term...
+
+MENU_SHOW_MENUBAR=Show menu &bar
+
+; dlg main
+DLG_MAIN_TITLE_CONNECTING=[connecting...]
+DLG_MAIN_TITLE_DISCONNECTED=[disconnected]
+
+; dlg term
+DLG_TERMINAL_TITLE=Tera Term: Terminal setup
+DLG_TERMINAL_FONT=System,14,0
+DLG_TERMINAL_TERMSIZE=&Terminal size
+
+
+[TTSSH]
+; menu
+MENU_ABOUT=About &TTSSH...
+MENU_SSH=SS&H...
+MENU_SSH_AUTH=SSH &Authentication...
+MENU_SSH_FORWARD=SSH F&orwarding...
+MENU_SSH_KEYGEN=SSH KeyGenerator...
+
+; dlg about
+DLG_ABOUT_TITLE=About TTSSH
+DLG_ABOUT_FONT=Tahoma,8,0
+
+; dlg auth
+DLG_AUTH_TITLE=SSH Authentication
+DLG_AUTH_TITLE_FAILED=Retrying SSH Authentication
+DLG_AUTH_BANNER=Logging in to %s
+DLG_AUTH_BANNER2=Authentication required.
+DLG_AUTH_BANNER2_FAILED=Authentication failed. Please retry.
+DLG_AUTH_USERNAME=User &name:
+DLG_AUTH_PASSWORD=&Passphrase:
+DLG_AUTH_REMEMBER_PASSWORD=Remember password on &memory
+DLG_AUTH_METHOD_PASSWORD=Use p&lain password to log in
+DLG_AUTH_METHOD_PASSWORD_KBDINT=Use p&lain password to log in (with keyboard-interactive)
+DLG_AUTH_METHOD_RSA=Use &RSA/DSA key to log in
+DLG_AUTH_METHOD_RHOST=Use r&hosts to log in (SSH1)
+DLG_AUTH_METHOD_CHALLENGE1=Use challenge/response to log in(&TIS)
+DLG_AUTH_METHOD_CHALLENGE2=Use challenge/response to log in(&keyboard-interactive)
+DLG_AUTH_PRIVATEKEY=Private &key file:
+DLG_AUTH_LOCALUSER=Local &user name:
+DLG_AUTH_HOST_PRIVATEKEY=Host private key &file:
+
+; dlg auth setup
+DLG_AUTHSETUP_TITLE=TTSSH: Authentication Setup
+DLG_AUTHSETUP_BANNER=Select defaults for authentication:
+DLG_AUTHSETUP_USERNAME=User &name:
+DLG_AUTHSETUP_METHOD_PASSWORD=Use p&lain password to log in
+DLG_AUTHSETUP_METHOD_PASSWORD_KBDINT=keyboard-interactive(SSH2)
+DLG_AUTHSETUP_METHOD_RSA=Use &RSA/DSA key to log in
+DLG_AUTHSETUP_METHOD_RHOST=Use r&hosts to log in (SSH1)
+DLG_AUTHSETUP_METHOD_CHALLENGE=Use challenge/response to log in (SSH1:&TIS, SSH2:keyboard-interactive)
+DLG_AUTHSETUP_PRIVATEKEY=Private &key file:
+DLG_AUTHSETUP_LOCALUSER=Local &user name:
+DLG_AUTHSETUP_HOST_PRIVATEKEY=Host private key &file:
+
+FILEDLG_OPEN_PRIVATEKEY_TITLE=Choose a file with the RSA/DSA private key
+FILEDLG_OPEN_PRIVATEKEY_FILTER=identity files\0identity;id_rsa;id_dsa\0identity(RSA1)\0identity\0id_rsa(SSH2)\0id_rsa\0id_dsa(SSH2)\0id_dsa\0all(*.*)\0*.*\0\0
+MSG_KEYSPECIFY_ERROR=You must specify a file containing the RSA/DSA private key.
+MSG_READKEY_ERROR=read error SSH2 private key file\n%s
+MSG_RHOSTS_NOTDEFAULT_ERROR=Rhosts authentication will probably fail because it was not the default authentication method.\nTo use Rhosts authentication in TTSSH, you need to set it to be the default by restarting\nTTSSH and selecting "SSH Authentication..." from the Setup menubefore connecting.
+MSG_NOAUTHMETHOD_ERROR=Server does not support any of the authentication options\nprovided by TTSSH. This connection will now close.
+
+; dlg diff host
+DLG_DIFFERENTHOST_TITLE=SECURITY WARNING
+DLG_DIFFERENTHOST_WARNING=Your known hosts list has an entry for the server "####################################", but the machine you have contacted has presented a DIFFERENT KEY to the one in your known hosts list. A hostile machine may be pretending to be the server.
+DLG_DIFFERENTHOST_WARNING2=If you choose to add this new key to the known hosts list and continue, then you will not receive this warning again.
+DLG_DIFFERENTHOST_FINGERPRINT=The server's host key fingerprint is:
+DLG_DIFFERENTHOST_REPLACE=&Replace the exist key with this new key
+
+; dlg fwd edit
+DLG_FWD_TITLE=SSH Port Forwarding
+DLG_FWD_BANNER=Select direction for forwarded port:
+DLG_FWD_LOCAL_PORT=Forward &local port
+DLG_FWD_LOCAL_REMOTE=to remote &machine
+DLG_FWD_LOCAL_REMOTE_PORT=&port
+DLG_FWD_REMOTE_PORT=Forward &remote server port
+DLG_FWD_REMOTE_LOCAL=to local m&achine
+DLG_FWD_REMOTE_LOCAL_PORT=p&ort
+
+MSG_SAME_SERVERPORT_ERROR=You cannot have two forwardings from the same server port (%d).
+MSG_SAME_LOCALPORT_ERROR=You cannot have two forwardings from the same local port (%d).
+MSG_UNSPECIFYIED_FWD_ERROR1=The following forwardings were not specified when this SSH session began:\n\n
+MSG_UNSPECIFYIED_FWDS_ERROR1=The following forwarding was not specified when this SSH session began:\n\n
+MSG_UNSPECIFYIED_FWD_ERROR2=\nDue to a limitation of the SSH protocol, these forwardings will not work in the current SSH session.\nIf you save these settings and start a new SSH session, the forwardings should work.
+MSG_UNSPECIFYIED_FWDS_ERROR2=\nDue to a limitation of the SSH protocol, this forwarding will not work in the current SSH session.\nIf you save these settings and start a new SSH session, the forwarding should work.
+MSG_INVALID_PORT_ERROR=Port "%s" is not a valid port number.\nEither choose a port name from the list, or enter a number between 1 and 65535.
+
+; dlg fwd setup
+DLG_FWDSETUP_TITLE=TTSSH: Forwarding Setup
+DLG_FWDSETUP_LIST=&Port Forwarding
+DLG_FWDSETUP_ADD=&Add...
+DLG_FWDSETUP_EDIT=&Edit...
+DLG_FWDSETUP_REMOVE=&Remove
+DLD_FWDSETUP_X=X Forwarding
+DLG_FWDSETUP_XAPP=Display remote &X applications on local X server
+
+MSG_FWD_REMOTE_XSERVER=remote X server
+MSG_FWD_REMOTE_XSCREEN=X server (screen %d)
+MSG_FWD_REMOTE=Remote %s to local "%s" port %s
+MSG_FWD_LOCAL=Local %s to remote "%s" port %s
+MSG_FWD_X=Remote X applications to local X server
+
+; dlg host
+DLG_HOST_TITLE=Tera Term: New connection
+DLG_HOST_TCPIP_HOST=Hos&t:
+DLG_HOST_TCPIP_HISTORY=Hist&ory
+DLG_HOST_TCPIP_SERVICE=Service
+DLG_HOST_TCPIP_OTHER=Other
+DLG_HOST_TCPIP_PORT=TCP &port#:
+DLG_HOST_TCPIP_SSHVERSION=SSH &version:
+DLG_HOST_TCPIP_PROTOCOL=Proto&col:
+DLG_HOST_SERIAL=S&erial
+DLG_HOST_SERIAL_PORT=Po&rt:
+DLG_HOST_HELP=&Help
+
+MSG_TCPPORT_NAN_ERROR=The TCP port must be a number.
+
+; dlg keygen
+DLG_KEYGEN_TITLE=TTSSH: Key Generator
+DLG_KEYGEN_KEYTYPE=Key type
+DLG_KEYGEN_PASSPHRASE=Key passphrase:
+DLG_KEYGEN_PASSPHRASE2=Confirm passphrase:
+DLG_KEYGEN_SAVEPUBLIC=Save public key
+DLG_KEYGEN_SAVEPRIVATE=Save private key
+DLG_KEYGEN_GENERATE=Generate
+
+FILEDLG_SAVE_PUBLICKEY_TITLE=Save public key as:
+FILEDLG_SAVE_PUBLICKEY_RSA1_FILTER=SSH1 RSA key(identity.pub)\0identity.pub\0All Files(*.*)\0*.*\0\0
+FILEDLG_SAVE_PUBLICKEY_RSA_FILTER=SSH2 RSA key(id_rsa.pub)\0id_rsa.pub\0All Files(*.*)\0*.*\0\0
+FILEDLG_SAVE_PUBLICKEY_DSA_FILTER=SSH2 DSA key(id_dsa.pub)\0id_dsa.pub\0All Files(*.*)\0*.*\0\0
+MSG_SAVE_KEY_OPENFILE_ERROR=Can't open key file
+MSG_SAVE_KEY_WRITEFILE_ERROR=Can't write key file
+MSG_SAVE_PRIVATE_KEY_MISMATCH_ERROR=Two passphrases don't match.
+MSG_SAVE_PRIVATEKEY_EMPTY_WARN=Are you sure that you want to use a empty passphrase?
+FILEDLG_SAVE_PRIVATEKEY_TITLE=Save private key as:
+FILEDLG_SAVE_PRIVATEKEY_RSA1_FILTER=SSH1 RSA key(identity)\0identity\0All Files(*.*)\0*.*\0\0
+FILEDLG_SAVE_PRIVATEKEY_RSA_FILTER=SSH2 RSA key(id_rsa)\0id_rsa\0All Files(*.*)\0*.*\0\0
+FILEDLG_SAVE_PRIVATEKEY_DSA_FILTER=SSH2 DSA key(id_dsa)\0id_dsa\0All Files(*.*)\0*.*\0\0
+
+; dlg setup
+DLG_SSHSETUP_TITLE=TTSSH: Setup
+DLG_SSHSETUP_COMPRESS=&Compression level:
+DLG_SSHSETUP_COMPRESS_NONE=None
+DLG_SSHSETUP_COMPRESS_HIGHEST=Highest
+DLG_SSHSETUP_CHIPER=&Preferred cipher order
+DLG_SSHSETUP_CHIPER_UP=Move &Up
+DLG_SSHSETUP_CHIPER_DOWN=Move &Down
+DLG_SSHSETUP_CIPHER_BORDER=<ciphers below this line are disabled>
+DLG_SSHSETUP_KNOWNHOST=SSH Known Hosts
+DLG_SSHSETUP_KNOWNHOST_RW=Read/&write file:
+DLG_SSHSETUP_KNOWNHOST_RO=&Read-only files:
+DLG_SSHSETUP_HEARTBEAT=HeartBeat(keep-alive)
+DLG_SSHSETUP_HEARTBEAT_UNIT=sec.(0 to turn off)
+DLG_SSHSETUP_NOTICE=All options take effect the next time a session is started.
+
+FILEDLG_OPEN_KNOWNHOSTS_RW_TITLE=Choose a read/write known-hosts file
+FILEDLG_OPEN_KNOWNHOSTS_RO_TITLE=Choose a read-only known-hosts file to add
+
+; dlg tis
+DLG_TIS_TITLE=SSH Authentication Challenge
+DLG_TIS_BANNER=Logging in to %s
+
+; dlg unknown host
+DLG_UNKNONWHOST_TITLE=SECURITY WARNING
+DLG_UNKNOWNHOST_WARNINIG=There is no entry for the server "#####################################" in your list of known hosts. The machine you have contacted may be a hostile machine pretending to be the server.
+DLG_UNKNOWNHOST_WARNINIG2=If you choose to add this machine to the known hosts list and continue, then you will not receive this warning again.
+DLG_UNKNOWNHOST_FINGERPRINT=The server's host key fingerprint is:
+DLG_UNKNOWNHOST_ADD=&Add this machine and its key to the known hosts list
+
+; crypt.c
+MSG_AES128_ENCRYPT_ERROR1=AES128 encrypt error(1): bytes %d (%d)
+MSG_AES128_ENCRYPT_ERROR2=AES128 encrypt error(2)
+MSG_AES128_DECRYPT_ERROR1=AES128 decrypt error(1): bytes %d (%d)
+MSG_AES128_DECRYPT_ERROR2=AES128 decrypt error(2)
+MSG_RSAKEY_SETUP_ERROR=Error setting up RSA keys
+MSG_UNAVAILABLE_CIPHERS_ERROR=The server does not support any of the TTSSH encryption algorithms.\nA secure connection cannot be made in the TTSSH-to-server direction.\nThe connection will be closed.
+MSG_CHIPHER_NONE_ERROR=All the encryption algorithms that this program and the server both understand have been disabled.\nTo communicate with this server, you will have to enable some more ciphers\nin the TTSSH Setup dialog box when you run Teraterm again.\nThis connection will now close.
+MSG_RASKEY_TOOWEAK_ERROR=Server RSA keys are too weak. A secure connection cannot be established.
+MSG_CHPHER_NOTSELECTED_ERROR=No cipher selected!
+
+; pkt.c
+MSG_OVERSIZED_PACKET_ERROR=Oversized packet received from server; connection will close.
+
+; ttxssh.c
+MSG_UNKNOWN_OPTION_ERROR=Unrecognized command-line option: %s
+
+; x11util.c
+MSG_X_AUTH_ERROR=Remote X application sent incorrect authentication data.\nIts X session is being cancelled.
+
+MSG_CREATEWINDOW_KEYGEN_ERROR=Cannot create Key Generator window.
+MSG_CREATEWINDOW_ABOUT_ERROR=Cannot create About box window.
+MSG_CREATEWINDOW_SETUP_ERROR=Cannot create TTSSH Setup window.
+MSG_CREATEWINDOW_FWDSETUP_ERROR=Unable to display forwarding setup dialog box.
+MSG_CREATEWINDOW_FWDEDIT_ERROR=Unable to display forwarding edit dialog box.
+MSG_CREATEWINDOW_AUTH_ERROR=Unable to display authentication dialog box.\nConnection terminated.
+MSG_CREATEWINDOW_AUTHSETUP_ERROR=Unable to display authentication setup dialog box.
+MSG_OPEN_FILEDLG_KNOWNHOSTS_ERROR=Cannot show file dialog box: error %d
+
+MSG_WARNING=WARNING
+MSG_ERROR=ERROR
+MSG_TTSSH_ERROR=TTSSH Error
+MSG_NONFAITAL_ERROR=Tera Term: not fatal error
+
+BTN_OK=OK
+BTN_CANCEL=Cancel
+BTN_DISCONNECT=Disconnect
+BTN_CONTINUE=&Continue
+
+
+[MISC]
+HELPFILE=teraterm.chm

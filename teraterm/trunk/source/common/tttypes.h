@@ -346,6 +346,10 @@ struct tttset {
 #ifdef USE_NORMAL_BGCOLOR
   WORD UseNormalBGColor;
 #endif
+#ifdef I18N
+  char UILanguageFile[MAX_PATH];
+  char UIMsg[MAX_UIMSG];
+#endif
 };
 
 typedef struct tttset TTTSet, *PTTSet;

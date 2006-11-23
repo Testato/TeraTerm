@@ -12,7 +12,6 @@ void CalcTextExtent(HDC DC, PCHAR Text, LPSIZE s);
 void TTMGetDir(PCHAR Dir);
 void TTMSetDir(PCHAR Dir);
 void GetAbsPath(PCHAR FName);
-void RestoreNewLine(PCHAR Text);
 
 #ifdef __cplusplus
 }

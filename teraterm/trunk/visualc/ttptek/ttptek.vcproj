@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="ttptek"
 	ProjectGUID="{6D08053B-1C68-4A7E-8766-3553F5AF010B}"
+	RootNamespace="ttptek"
 	>
 	<Platforms>
 		<Platform
@@ -48,7 +49,7 @@
 				AdditionalOptions="/D&quot;_CRT_SECURE_NO_DEPRECATE&quot;"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\source\common"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;INET6"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;INET6;I18N"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Debug/ttptek.pch"
@@ -221,50 +222,10 @@
 			<File
 				RelativePath="..\..\source\tttek\tekesc.c"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;INET6;$(NoInherit)"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\source\tttek\tttek.c"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;INET6;$(NoInherit)"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
-					/>
-				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter

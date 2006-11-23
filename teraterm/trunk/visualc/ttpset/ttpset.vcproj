@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="ttpset"
 	ProjectGUID="{5CF58947-E861-4A5C-B0B1-E85486F149CD}"
+	RootNamespace="ttpset"
 	>
 	<Platforms>
 		<Platform
@@ -48,7 +49,8 @@
 				AdditionalOptions="/D&quot;_CRT_SECURE_NO_DEPRECATE&quot;"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\source\common"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;INET6"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;INET6;I18N"
+				GeneratePreprocessedFile="0"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Debug/ttpset.pch"
@@ -74,9 +76,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="ttpcmn.lib"
 				OutputFile=".\..\bin\Debug/ttpset.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="..\bin\debug"
 				ModuleDefinitionFile=".\ttpset.def"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\bin\Debug/ttpset.pdb"
@@ -217,50 +221,10 @@
 			<File
 				RelativePath="..\..\source\common\ttlib.c"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;INET6;$(NoInherit)"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\source\ttset\ttset.c"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;INET6;$(NoInherit)"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;$(NoInherit)"
-					/>
-				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter

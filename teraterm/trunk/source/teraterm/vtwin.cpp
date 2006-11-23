@@ -678,13 +678,211 @@ void CVTWindow::InitMenu(HMENU *Menu)
   SetupMenu = GetSubMenu(*Menu,ID_SETUP);
   ControlMenu = GetSubMenu(*Menu,ID_CONTROL);
   HelpMenu = GetSubMenu(*Menu,ID_HELPMENU);
+#ifdef I18N
+  GetMenuString(*Menu, ID_FILE, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
+  get_lang_msg("MENU_FILE", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(*Menu, ID_FILE, MF_BYPOSITION, ID_FILE, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_NEWCONNECTION, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_NEW", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_NEWCONNECTION, MF_BYCOMMAND, ID_FILE_NEWCONNECTION, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_DUPLICATESESSION, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_DUPLICATE", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_DUPLICATESESSION, MF_BYCOMMAND, ID_FILE_DUPLICATESESSION, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_CYGWINCONNECTION, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_GYGWIN", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_CYGWINCONNECTION, MF_BYCOMMAND, ID_FILE_CYGWINCONNECTION, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_LOG, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_LOG", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_LOG, MF_BYCOMMAND, ID_FILE_LOG, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_COMMENTTOLOG, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_COMMENTLOG", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_COMMENTTOLOG, MF_BYCOMMAND, ID_FILE_COMMENTTOLOG, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_VIEWLOG, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_VIEWLOG", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_VIEWLOG, MF_BYCOMMAND, ID_FILE_VIEWLOG, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_SENDFILE, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_SENDFILE", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_SENDFILE, MF_BYCOMMAND, ID_FILE_SENDFILE, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_CHANGEDIR, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_CHANGEDIR", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_CHANGEDIR, MF_BYCOMMAND, ID_FILE_CHANGEDIR, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_LOGMEIN, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_LOGMETT", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_LOGMEIN, MF_BYCOMMAND, ID_FILE_LOGMEIN, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_PRINT2, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_PRINT", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_PRINT2, MF_BYCOMMAND, ID_FILE_PRINT2, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_DISCONNECT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_DISCONNECT", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_DISCONNECT, MF_BYCOMMAND, ID_FILE_DISCONNECT, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_EXIT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_EXIT", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_EXIT, MF_BYCOMMAND, ID_FILE_EXIT, ts.UIMsg);
+
+  GetMenuString(FileMenu, 8, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
+  get_lang_msg("MENU_TRANS", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, 8, MF_BYPOSITION, 8, ts.UIMsg);
+
+  GetMenuString(FileMenu, ID_FILE_KERMITRCV, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_KERMIT_RCV", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_KERMITRCV, MF_BYCOMMAND, ID_FILE_KERMITRCV, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_KERMITGET, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_KERMIT_GET", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_KERMITGET, MF_BYCOMMAND, ID_FILE_KERMITGET, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_KERMITSEND, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_KERMIT_SEND", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_KERMITSEND, MF_BYCOMMAND, ID_FILE_KERMITSEND, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_KERMITFINISH, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_KERMIT_FINISH", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_KERMITFINISH, MF_BYCOMMAND, ID_FILE_KERMITFINISH, ts.UIMsg);
+
+  GetMenuString(FileMenu, ID_FILE_XRCV, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_X_RCV", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_XRCV, MF_BYCOMMAND, ID_FILE_XRCV, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_XSEND, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_X_SEND", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_XSEND, MF_BYCOMMAND, ID_FILE_XSEND, ts.UIMsg);
+
+  GetMenuString(FileMenu, ID_FILE_ZRCV, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_Z_RCV", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_ZRCV, MF_BYCOMMAND, ID_FILE_ZRCV, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_ZSEND, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_Z_SEND", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_ZSEND, MF_BYCOMMAND, ID_FILE_ZSEND, ts.UIMsg);
+
+  GetMenuString(FileMenu, ID_FILE_BPRCV, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_BP_RCV", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_BPRCV, MF_BYCOMMAND, ID_FILE_BPRCV, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_BPSEND, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_BP_SEND", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_BPSEND, MF_BYCOMMAND, ID_FILE_BPSEND, ts.UIMsg);
+
+  GetMenuString(FileMenu, ID_FILE_QVRCV, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_QV_RCV", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_QVRCV, MF_BYCOMMAND, ID_FILE_QVRCV, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_QVSEND, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_QV_SEND", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_QVSEND, MF_BYCOMMAND, ID_FILE_QVSEND, ts.UIMsg);
+
+  GetMenuString(*Menu, ID_EDIT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
+  get_lang_msg("MENU_EDIT", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(*Menu, ID_EDIT, MF_BYPOSITION, ID_EDIT, ts.UIMsg);
+  GetMenuString(EditMenu, ID_EDIT_COPY2, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_COPY", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(EditMenu, ID_EDIT_COPY2, MF_BYCOMMAND, ID_EDIT_COPY2, ts.UIMsg);
+  GetMenuString(EditMenu, ID_EDIT_COPYTABLE, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_COPYTABLE", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(EditMenu, ID_EDIT_COPYTABLE, MF_BYCOMMAND, ID_EDIT_COPYTABLE, ts.UIMsg);
+  GetMenuString(EditMenu, ID_EDIT_PASTE2, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_PASTE", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(EditMenu, ID_EDIT_PASTE2, MF_BYCOMMAND, ID_EDIT_PASTE2, ts.UIMsg);
+  GetMenuString(EditMenu, ID_EDIT_PASTECR, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_PASTECR", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(EditMenu, ID_EDIT_PASTECR, MF_BYCOMMAND, ID_EDIT_PASTECR, ts.UIMsg);
+  GetMenuString(EditMenu, ID_EDIT_CLEARSCREEN, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_CLSCREEN", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(EditMenu, ID_EDIT_CLEARSCREEN, MF_BYCOMMAND, ID_EDIT_CLEARSCREEN, ts.UIMsg);
+  GetMenuString(EditMenu, ID_EDIT_CLEARBUFFER, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_CLBUFFER", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(EditMenu, ID_EDIT_CLEARBUFFER, MF_BYCOMMAND, ID_EDIT_CLEARBUFFER, ts.UIMsg);
+  GetMenuString(EditMenu, ID_EDIT_SELECTALL, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_SELECTALL", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(EditMenu, ID_EDIT_SELECTALL, MF_BYCOMMAND, ID_EDIT_SELECTALL, ts.UIMsg);
+
+  GetMenuString(*Menu, ID_SETUP, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
+  get_lang_msg("MENU_SETUP", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(*Menu, ID_SETUP, MF_BYPOSITION, ID_SETUP, ts.UIMsg);
+  GetMenuString(SetupMenu, ID_SETUP_TERMINAL, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_TERMINAL", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(SetupMenu, ID_SETUP_TERMINAL, MF_BYCOMMAND, ID_SETUP_TERMINAL, ts.UIMsg);
+  GetMenuString(SetupMenu, ID_SETUP_WINDOW, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_WINDOW", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(SetupMenu, ID_SETUP_WINDOW, MF_BYCOMMAND, ID_SETUP_WINDOW, ts.UIMsg);
+  GetMenuString(SetupMenu, ID_SETUP_FONT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_FONT", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(SetupMenu, ID_SETUP_FONT, MF_BYCOMMAND, ID_SETUP_FONT, ts.UIMsg);
+  GetMenuString(SetupMenu, ID_SETUP_KEYBOARD, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_KEYBOARD", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(SetupMenu, ID_SETUP_KEYBOARD, MF_BYCOMMAND, ID_SETUP_KEYBOARD, ts.UIMsg);
+  GetMenuString(SetupMenu, ID_SETUP_SERIALPORT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_SERIALPORT", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(SetupMenu, ID_SETUP_SERIALPORT, MF_BYCOMMAND, ID_SETUP_SERIALPORT, ts.UIMsg);
+  GetMenuString(SetupMenu, ID_SETUP_TCPIP, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_TCPIP", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(SetupMenu, ID_SETUP_TCPIP, MF_BYCOMMAND, ID_SETUP_TCPIP, ts.UIMsg);
+  GetMenuString(SetupMenu, ID_SETUP_GENERAL, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_GENERAL", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(SetupMenu, ID_SETUP_GENERAL, MF_BYCOMMAND, ID_SETUP_GENERAL, ts.UIMsg);
+  GetMenuString(SetupMenu, ID_SETUP_ADDITIONALSETTINGS, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_ADDITION", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(SetupMenu, ID_SETUP_ADDITIONALSETTINGS, MF_BYCOMMAND, ID_SETUP_ADDITIONALSETTINGS, ts.UIMsg);
+  GetMenuString(SetupMenu, ID_SETUP_SAVE, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_SAVE", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(SetupMenu, ID_SETUP_SAVE, MF_BYCOMMAND, ID_SETUP_SAVE, ts.UIMsg);
+  GetMenuString(SetupMenu, ID_SETUP_RESTORE, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_RESTORE", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(SetupMenu, ID_SETUP_RESTORE, MF_BYCOMMAND, ID_SETUP_RESTORE, ts.UIMsg);
+  GetMenuString(SetupMenu, ID_SETUP_LOADKEYMAP, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_LOADKEYMAP", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(SetupMenu, ID_SETUP_LOADKEYMAP, MF_BYCOMMAND, ID_SETUP_LOADKEYMAP, ts.UIMsg);
+
+  GetMenuString(*Menu, ID_CONTROL, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
+  get_lang_msg("MENU_CONTROL", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(*Menu, ID_CONTROL, MF_BYPOSITION, ID_CONTROL, ts.UIMsg);
+  GetMenuString(ControlMenu, ID_CONTROL_RESETTERMINAL, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_RESET", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(ControlMenu, ID_CONTROL_RESETTERMINAL, MF_BYCOMMAND, ID_CONTROL_RESETTERMINAL, ts.UIMsg);
+  GetMenuString(ControlMenu, ID_CONTROL_AREYOUTHERE, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_AREYOUTHERE", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(ControlMenu, ID_CONTROL_AREYOUTHERE, MF_BYCOMMAND, ID_CONTROL_AREYOUTHERE, ts.UIMsg);
+  GetMenuString(ControlMenu, ID_CONTROL_SENDBREAK, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_SENDBREAK", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(ControlMenu, ID_CONTROL_SENDBREAK, MF_BYCOMMAND, ID_CONTROL_SENDBREAK, ts.UIMsg);
+  GetMenuString(ControlMenu, ID_CONTROL_RESETPORT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_RESETPORT", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(ControlMenu, ID_CONTROL_RESETPORT, MF_BYCOMMAND, ID_CONTROL_RESETPORT, ts.UIMsg);
+  GetMenuString(ControlMenu, ID_CONTROL_BROADCASTCOMMAND, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_BROADCAST", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(ControlMenu, ID_CONTROL_BROADCASTCOMMAND, MF_BYCOMMAND, ID_CONTROL_BROADCASTCOMMAND, ts.UIMsg);
+  GetMenuString(ControlMenu, ID_CONTROL_OPENTEK, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_OPENTEK", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(ControlMenu, ID_CONTROL_OPENTEK, MF_BYCOMMAND, ID_CONTROL_OPENTEK, ts.UIMsg);
+  GetMenuString(ControlMenu, ID_CONTROL_CLOSETEK, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_CLOSETEK", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(ControlMenu, ID_CONTROL_CLOSETEK, MF_BYCOMMAND, ID_CONTROL_CLOSETEK, ts.UIMsg);
+  GetMenuString(ControlMenu, ID_CONTROL_MACRO, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_MACRO", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(ControlMenu, ID_CONTROL_MACRO, MF_BYCOMMAND, ID_CONTROL_MACRO, ts.UIMsg);
+
+  GetMenuString(*Menu, ID_HELPMENU, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
+  get_lang_msg("MENU_HELP", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(*Menu, ID_HELPMENU, MF_BYPOSITION, ID_HELPMENU, ts.UIMsg);
+  GetMenuString(HelpMenu, ID_HELP_INDEX2, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_HELP_INDEX", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(HelpMenu, ID_HELP_INDEX2, MF_BYCOMMAND, ID_HELP_INDEX2, ts.UIMsg);
+  GetMenuString(HelpMenu, ID_HELP_USING2, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_HELP_USING", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(HelpMenu, ID_HELP_USING2, MF_BYCOMMAND, ID_HELP_USING2, ts.UIMsg);
+  GetMenuString(HelpMenu, ID_HELP_ABOUT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_HELP_ABOUT", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(HelpMenu, ID_HELP_ABOUT, MF_BYCOMMAND, ID_HELP_ABOUT, ts.UIMsg);
+#endif
   if ((ts.MenuFlag & MF_SHOWWINMENU) !=0)
   {
     WinMenu = CreatePopupMenu();
+#ifdef I18N
+    strcpy(ts.UIMsg, "&Window");
+    get_lang_msg("MENU_WINDOW", ts.UIMsg, ts.UILanguageFile);
+    ::InsertMenu(*Menu,ID_HELPMENU,
+		 MF_STRING | MF_ENABLED |
+		 MF_POPUP | MF_BYPOSITION,
+		 (int)WinMenu, ts.UIMsg);
+#else
     ::InsertMenu(*Menu,ID_HELPMENU,
 		 MF_STRING | MF_ENABLED |
 		 MF_POPUP | MF_BYPOSITION,
 		 (int)WinMenu, "&Window");
+#endif
   }
 
   TTXModifyMenu(*Menu); /* TTPLUG */
@@ -821,7 +1019,11 @@ void CVTWindow::InitMenuPopup(HMENU SubMenu)
 	}
 	else if (SubMenu == WinMenu)
 	{
+#ifdef I18N
+		SetWinMenu(WinMenu, ts.UIMsg, ts.UILanguageFile);
+#else
 		SetWinMenu(WinMenu);
+#endif
 	}
 
 	TTXModifyPopupMenu(SubMenu); /* TTPLUG */
@@ -1907,10 +2109,19 @@ LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
     if (WinMenu==NULL)
     {
       WinMenu = CreatePopupMenu();
+#ifdef I18N
+      strcpy(ts.UIMsg, "&Window");
+      get_lang_msg("MENU_WINDOW", ts.UIMsg, ts.UILanguageFile);
+      ::InsertMenu(MainMenu,ID_HELPMENU,
+	MF_STRING | MF_ENABLED |
+	MF_POPUP | MF_BYPOSITION,
+	(int)WinMenu, ts.UIMsg);
+#else
       ::InsertMenu(MainMenu,ID_HELPMENU,
 	MF_STRING | MF_ENABLED |
 	MF_POPUP | MF_BYPOSITION,
 	(int)WinMenu, "&Window");
+#endif
     }
     else {
       RemoveMenu(MainMenu,ID_HELPMENU,MF_BYPOSITION);
@@ -1925,7 +2136,13 @@ LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
   {
     SysMenu = ::GetSystemMenu(HVTWin,FALSE);
     AppendMenu(SysMenu, MF_SEPARATOR, 0, NULL);
+#ifdef I18N
+    strcpy(ts.UIMsg, "Show menu &bar");
+    get_lang_msg("MENU_SHOW_MENUBAR", ts.UIMsg, ts.UILanguageFile);
+    AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, ts.UIMsg);
+#else
     AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, "Show menu &bar");
+#endif
   }
   return 0;
 }
@@ -1986,7 +2203,13 @@ LONG CVTWindow::OnChangeTBar(UINT wParam, LONG lParam)
   {
     SysMenu = ::GetSystemMenu(HVTWin,FALSE);
     AppendMenu(SysMenu, MF_SEPARATOR, 0, NULL);
+#ifdef I18N
+    strcpy(ts.UIMsg, "Show menu &bar");
+    get_lang_msg("MENU_SHOW_MENUBAR", ts.UIMsg, ts.UILanguageFile);
+    AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, ts.UIMsg);
+#else
     AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, "Show menu &bar");
+#endif
   }
   return 0;
 }
@@ -3917,6 +4140,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.38  2006/11/13 15:59:49  yutakapon
+ * ScrollLockキーをサポートした
+ *
  * Revision 1.37  2006/09/18 02:23:19  maya
  * 最初のウインドウで、接続ダイアログの /L= パラメータが使用されないバグを修正した。
  *

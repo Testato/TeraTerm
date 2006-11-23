@@ -1,0 +1,281 @@
+[Tera Term]
+MENU_FILE=ファイル(&F)
+MENU_FILE_NEW=新しい接続(&N)...\tAlt+N
+MENU_FILE_DUPLICATE=セッションの複製(&U)\tAlt+D
+MENU_FILE_GYGWIN=Cygwin接続(&G)\tAlt+G
+MENU_FILE_LOG=ログ(&L)...
+MENU_FILE_COMMENTLOG=ログにコメントを付加(&O)...
+MENU_FILE_VIEWLOG=ログを表示(V)
+MENU_FILE_SENDFILE=ファイル送信(&S)...
+MENU_FILE_CHANGEDIR=ディレクトリを変更(&C)...
+MENU_FILE_LOGMETT=LogMeTT
+MENU_FILE_PRINT=印刷(&P)...\tAlt+P
+MENU_FILE_DISCONNECT=接続断(&D)
+MENU_FILE_EXIT=終了(&X)\tAlt+Q
+
+MENU_TRANS=転送(&T)
+MENU_TRANS_KERMIT_RCV=受信(&R)
+MENU_TRANS_KERMIT_GET=取得(&G)...
+MENU_TRANS_KERMIT_SEND=送信(&S)...
+MENU_TRANS_KERMIT_FINISH=終了(&F)
+MENU_TRANS_X_RCV=受信(&R)...
+MENU_TRANS_X_SEND=送信(&S)...
+MENU_TRANS_Z_RCV=受信(&R)
+MENU_TRANS_Z_SEND=送信(&S)...
+MENU_TRANS_BP_RCV=受信(&R)
+MENU_TRANS_BP_SEND=送信(&S)...
+MENU_TRANS_QV_RCV=受信(&R)
+MENU_TRANS_QV_SEND=送信(&S)...
+
+MENU_EDIT=編集(&E)
+MENU_EDIT_COPY=コピー(&C)\tAlt+C
+MENU_EDIT_COPYTABLE=テーブルをコピー(&T)
+MENU_EDIT_PASTE=貼り付け(&P)\tAlt+V
+MENU_EDIT_PASTECR=貼り付け<C&R>\tAlt+R
+MENU_EDIT_CLSCREEN=画面クリア(&S)
+MENU_EDIT_CLBUFFER=バッファのクリア(&B)
+MENU_EDIT_SELECTALL=全て選択(&A)
+
+MENU_SETUP=設定(&S)
+MENU_SETUP_TERMINAL=端末(&T)...
+MENU_SETUP_WINDOW=ウインドウ(&W)...
+MENU_SETUP_FONT=フォント(&F)...
+MENU_SETUP_KEYBOARD=キーボード(&K)...
+MENU_SETUP_SERIALPORT=シリアルポート(&E)...
+MENU_SETUP_TCPIP=T&CP/IP...
+MENU_SETUP_GENERAL=全般(&G)...
+MENU_SETUP_ADDITION=その他の設定(&D)
+MENU_SETUP_SAVE=設定の保存(&S)...
+MENU_SETUP_RESTORE=設定の読み込み(&R)...
+MENU_SETUP_LOADKEYMAP=キーマップ読み込み(&L)...
+
+MENU_CONTROL=コントロール(&C)
+MENU_CONTROL_RESET=端末リセット(&R)
+MENU_CONTROL_AREYOUTHERE=AYT送信(&T)\tAlt+T
+MENU_CONTROL_SENDBREAK=ブレーク送信(&S)\tAlt+B
+MENU_CONTROL_RESETPORT=ポートのリセット(&P)
+MENU_CONTROL_BROADCAST=ブロードキャストコマンド(&M)
+MENU_CONTROL_OPENTEK=TEKウィンドウを開く(&O)
+MENU_CONTROL_CLOSETEK=TEKウィンドウを閉じる(&C)
+MENU_CONTROL_MACRO=マクロ(&M)
+
+MENU_WINDOW=ウインドウ(&W)
+MENU_WINDOW_WINDOW=ウインドウ(&W)
+
+MENU_HELP=ヘルプ(&H)
+MENU_HELP_INDEX=目次(English) (&I)
+MENU_HELP_USING=目次(Japanese) (&N)
+MENU_HELP_ABOUT=Tera Termについて(&A)...
+
+MENU_SHOW_MENUBAR=メニューバー表示(&B)
+
+; dlg main
+DLG_MAIN_TITLE_CONNECTING=[接続中...]
+DLG_MAIN_TITLE_DISCONNECTED=[未接続]
+
+; dlg term
+DLG_TERMINAL_TITLE=Tera Term: 端末設定
+DLG_TERMINAL_FONT=ＭＳ Ｐゴシック,11,128
+DLG_TERMINAL_TERMSIZE=端末サイズ(&T)
+
+
+[TTSSH]
+; menu
+MENU_ABOUT=&TTSSHについて...
+MENU_SSH=SS&H...
+MENU_SSH_AUTH=SSH認証(&A)...
+MENU_SSH_FORWARD=SSH転送(&O)...
+MENU_SSH_KEYGEN=SSHキー生成(&K)...
+
+; dlg about
+DLG_ABOUT_TITLE=TTSSHについて
+DLG_ABOUT_FONT=ＭＳ Ｐゴシック,9,128
+
+; dlg auth
+DLG_AUTH_TITLE=SSH認証
+DLG_AUTH_TITLE_FAILED=SSH認証を再試行中
+DLG_AUTH_BANNER=ログイン中: %s
+DLG_AUTH_BANNER2=認証が必要です。
+DLG_AUTH_BANNER2_FAILED=認証に失敗しました. 再試行してください.
+DLG_AUTH_USERNAME=ユーザ名(&N):
+DLG_AUTH_PASSWORD=パスフレーズ(&P):
+DLG_AUTH_REMEMBER_PASSWORD=パスワードを記憶する(&S)
+DLG_AUTH_METHOD_PASSWORD=プレインテキストを使う(&L)
+DLG_AUTH_METHOD_PASSWORD_KBDINT=プレーンテキストを使う(キーボードインタラクティブ)(&L)
+DLG_AUTH_METHOD_RSA=&RSA/DSA鍵を使う
+DLG_AUTH_METHOD_RHOST=r&hosts(SSH1)を使う
+DLG_AUTH_METHOD_CHALLENGE1=チャレンジレスポンス認証を使う(&TIS)
+DLG_AUTH_METHOD_CHALLENGE2=チャレンジレスポンス認証を使う(キーボードインタラクティブ)(&C)
+DLG_AUTH_PRIVATEKEY=秘密鍵(&K):
+DLG_AUTH_LOCALUSER=ローカルのユーザ名(&U):
+DLG_AUTH_HOST_PRIVATEKEY=ホスト鍵(&F):
+
+; dlg auth setup
+DLG_AUTHSETUP_TITLE=TTSSH: 認証設定
+DLG_AUTHSETUP_BANNER=通常使用する認証方式:
+DLG_AUTHSETUP_USERNAME=ユーザ名(&N):
+DLG_AUTHSETUP_METHOD_PASSWORD=プレインテキストを使う(&L)
+DLG_AUTHSETUP_METHOD_PASSWORD_KBDINT=キーボードインタラクティブ(SSH2)(&S)
+DLG_AUTHSETUP_METHOD_RSA=Use &RSA/DSA鍵を使う
+DLG_AUTHSETUP_METHOD_RHOST=r&hostsを使う(SSH1)
+DLG_AUTHSETUP_METHOD_CHALLENGE=チャレンジレスポンス認証を使う(SSH1:TIS, SSH2:キーボードインタラクティブ)(C)
+DLG_AUTHSETUP_PRIVATEKEY=秘密鍵(&K):
+DLG_AUTHSETUP_LOCALUSER=ローカルのユーザ名(&U):
+DLG_AUTHSETUP_HOST_PRIVATEKEY=ホスト鍵(&F):
+
+FILEDLG_OPEN_PRIVATEKEY_TITLE=RSA/DSA秘密鍵ファイルの選択
+FILEDLG_OPEN_PRIVATEKEY_FILTER=identity files\0identity;id_rsa;id_dsa\0identity(RSA1)\0identity\0id_rsa(SSH2)\0id_rsa\0id_dsa(SSH2)\0id_dsa\0すべてのファイル(*.*)\0*.*\0\0
+MSG_KEYSPECIFY_ERROR=RSA/DSA秘密鍵の含まれるファイルを指定してください
+MSG_READKEY_ERROR=SSH2秘密鍵の読み込みに失敗しました\n%s
+MSG_RHOSTS_NOTDEFAULT_ERROR=Rhosts authentication will probably fail because it was not the default authentication method.\nTo use Rhosts authentication in TTSSH, you need to set it to be the default by restarting\nTTSSH and selecting "SSH Authentication..." from the Setup menubefore connecting.
+MSG_NOAUTHMETHOD_ERROR=Server does not support any of the authentication options\nprovided by TTSSH. This connection will now close.
+
+; dlg diff host
+DLG_DIFFERENTHOST_TITLE=セキュリティ警告
+DLG_DIFFERENTHOST_WARNING=knows hostsリスト中のサーバ"####################################"のエントリと、接続先のホスト鍵が *一致していません* 悪意を持ったホストが、接続しようとしているサーバのふりをしている可能性もありますので、十分注意してください。
+DLG_DIFFERENTHOST_WARNING2=known hostsリストにこのホストを追加して続行すると、次回からこの警告は出なくなります。
+DLG_DIFFERENTHOST_FINGERPRINT=サーバ側のホスト鍵fingerprint:
+DLG_DIFFERENTHOST_REPLACE=既存の鍵を、新しい鍵で上書きする(&R)
+
+; dlg fwd edit
+DLG_FWD_TITLE=SSHポート転送
+DLG_FWD_BANNER=ポート転送を行う向きの選択:
+DLG_FWD_LOCAL_PORT=ローカルのポート(&L)
+DLG_FWD_LOCAL_REMOTE=リモート側ホスト(&M)
+DLG_FWD_LOCAL_REMOTE_PORT=ポート(&P)
+DLG_FWD_REMOTE_PORT=リモートサーバのポート(&R)
+DLG_FWD_REMOTE_LOCAL=ローカル側ホスト(&A)
+DLG_FWD_REMOTE_LOCAL_PORT=ポート(&O)
+
+MSG_SAME_SERVERPORT_ERROR=You cannot have two forwardings from the same server port (%d).
+MSG_SAME_LOCALPORT_ERROR=You cannot have two forwardings from the same local port (%d).
+MSG_UNSPECIFYIED_FWD_ERROR1=The following forwardings were not specified when this SSH session began:\n\n
+MSG_UNSPECIFYIED_FWDS_ERROR1=The following forwarding was not specified when this SSH session began:\n\n
+MSG_UNSPECIFYIED_FWD_ERROR2=\nDue to a limitation of the SSH protocol, these forwardings will not work in the current SSH session.\nIf you save these settings and start a new SSH session, the forwardings should work.
+MSG_UNSPECIFYIED_FWDS_ERROR2=\nDue to a limitation of the SSH protocol, this forwarding will not work in the current SSH session.\nIf you save these settings and start a new SSH session, the forwarding should work.
+MSG_INVALID_PORT_ERROR=Port "%s" is not a valid port number.\nEither choose a port name from the list, or enter a number between 1 and 65535.
+
+; dlg fwd setup
+DLG_FWDSETUP_TITLE=TTSSH: ポート転送設定
+DLG_FWDSETUP_LIST=ポート転送(&P)
+DLG_FWDSETUP_ADD=追加(&A)...
+DLG_FWDSETUP_EDIT=編集(&E)...
+DLG_FWDSETUP_REMOVE=削除(&R)
+DLD_FWDSETUP_X=Xクライアントアプリケーションの転送
+DLG_FWDSETUP_XAPP=リモートの(&X)アプリケーションをローカルのXサーバに表示する
+
+MSG_FWD_REMOTE_XSERVER=remote Xあ server
+MSG_FWD_REMOTE_XSCREEN=X serverあ (screen %d)
+MSG_FWD_REMOTE=リモートの %s からローカル側ホスト "%s" のポート %s
+MSG_FWD_LOCAL=ローカルの %s から リモート側ホスト "%s" のポート %s
+MSG_FWD_X=リモートのXアプリケーションからローカルのXサーバ
+
+; dlg host
+DLG_HOST_TITLE=Tera Term: 新しい接続
+DLG_HOST_TCPIP_HOST=ホスト(&T):
+DLG_HOST_TCPIP_HISTORY=ヒストリ(&O)
+DLG_HOST_TCPIP_SERVICE=サービス:
+DLG_HOST_TCPIP_OTHER=その他
+DLG_HOST_TCPIP_PORT=TCPポート#(&P):
+DLG_HOST_TCPIP_SSHVERSION=SSHバージョン(&V):
+DLG_HOST_TCPIP_PROTOCOL=プロトコル(&C):
+DLG_HOST_SERIAL=シリアル(&E)
+DLG_HOST_SERIAL_PORT=ポート(&R):
+DLG_HOST_HELP=ヘルプ(&H)
+
+MSG_TCPPORT_NAN_ERROR=TCPポート番号には数値を入力してください。
+
+; dlg keygen
+DLG_KEYGEN_TITLE=TTSSH: キー生成
+DLG_KEYGEN_KEYTYPE=キーの種類
+DLG_KEYGEN_PASSPHRASE=キーのパスフレーズ:
+DLG_KEYGEN_PASSPHRASE2=パスフレーズの確認:
+DLG_KEYGEN_SAVEPUBLIC=公開鍵の保存(&C)
+DLG_KEYGEN_SAVEPRIVATE=秘密鍵の保存(&P)
+DLG_KEYGEN_GENERATE=生成(&G)
+
+FILEDLG_SAVE_PUBLICKEY_TITLE=公開鍵の保存先:
+FILEDLG_SAVE_PUBLICKEY_RSA1_FILTER=SSH1 RSA key(identity.pub)\0identity.pub\0すべてのファイル(*.*)\0*.*\0\0
+FILEDLG_SAVE_PUBLICKEY_RSA_FILTER=SSH2 RSA key(id_rsa.pub)\0id_rsa.pub\0すべてのファイル(*.*)\0*.*\0\0
+FILEDLG_SAVE_PUBLICKEY_DSA_FILTER=SSH2 DSA key(id_dsa.pub)\0id_dsa.pub\0すべてのファイル(*.*)\0*.*\0\0
+MSG_SAVE_KEY_OPENFILE_ERROR=Can't oあpen key file
+MSG_SAVE_KEY_WRITEFILE_ERROR=Can't wrあite key file
+MSG_SAVE_PRIVATE_KEY_MISMATCH_ERROR=パスフレーズが一致しません
+MSG_SAVE_PRIVATEKEY_EMPTY_WARN=空のパスフレーズを使用しますか？
+FILEDLG_SAVE_PRIVATEKEY_TITLE=秘密鍵の保存先:
+FILEDLG_SAVE_PRIVATEKEY_RSA1_FILTER=SSH1 RSA key(identity)\0identity\0すべてのファイル(*.*)\0*.*\0\0
+FILEDLG_SAVE_PRIVATEKEY_RSA_FILTER=SSH2 RSA key(id_rsa)\0id_rsa\0すべてのファイル(*.*)\0*.*\0\0
+FILEDLG_SAVE_PRIVATEKEY_DSA_FILTER=SSH2 DSA key(id_dsa)\0id_dsa\0すべてのファイル(*.*)\0*.*\0\0
+
+; dlg setup
+DLG_SSHSETUP_TITLE=TTSSH: 設定
+DLG_SSHSETUP_COMPRESS=圧縮レベル(&C):
+DLG_SSHSETUP_COMPRESS_NONE=なし
+DLG_SSHSETUP_COMPRESS_HIGHEST=最高
+DLG_SSHSETUP_CHIPER=優先するアルゴリズムの順(&P)
+DLG_SSHSETUP_CHIPER_UP=上へ(&U)
+DLG_SSHSETUP_CHIPER_DOWN=下へ(&D)
+DLG_SSHSETUP_CIPHER_BORDER=<以下の暗号アルゴリズムは使用されません>
+DLG_SSHSETUP_KNOWNHOST=SSH Known Hosts
+DLG_SSHSETUP_KNOWNHOST_RW=読み書き(&W):
+DLG_SSHSETUP_KNOWNHOST_RO=読み取り専用(&R):
+DLG_SSHSETUP_HEARTBEAT=ハートビート(keep-alive)
+DLG_SSHSETUP_HEARTBEAT_UNIT=秒(0を指定すると無効)
+DLG_SSHSETUP_NOTICE=いずれの変更も次回のセッション以降有効になります。
+
+FILEDLG_OPEN_KNOWNHOSTS_RW_TITLE=読み書き用knownhostsファイルを選択してください
+FILEDLG_OPEN_KNOWNHOSTS_RO_TITLE=追加する読み取り専用knownhostsファイルを選択してください
+
+; dlg tis
+DLG_TIS_TITLE=SSH 認証チャレンジ
+DLG_TIS_BANNER=ログイン中: %s
+
+; dlg unknown host
+DLG_UNKNONWHOST_TITLE=セキュリティ警告
+DLG_UNKNOWNHOST_WARNINIG=known hostsリストにサーバ"#####################################"のエントリはありません。悪意を持ったホストが、接続しようとしているサーバのふりをしている可能性もありますので、十分注意してください！
+DLG_UNKNOWNHOST_WARNINIG2=known hostsリストのこのホストを追加して続行すると、次回からこの警告は出なくなります。
+DLG_UNKNOWNHOST_FINGERPRINT=サーバ側のホスト鍵fingerprint:
+DLG_UNKNOWNHOST_ADD=このホストをknown hostsリストに追加する(&A)
+
+; crypt.c
+MSG_AES128_ENCRYPT_ERROR1=AES128暗号化エラー(1): bytes %d (%d)
+MSG_AES128_ENCRYPT_ERROR2=AES128暗号化エラー(2)
+MSG_AES128_DECRYPT_ERROR1=AES128復号エラー(1): bytes %d (%d)
+MSG_AES128_DECRYPT_ERROR2=AES128復号エラー(2)
+MSG_RSAKEY_SETUP_ERROR=Error settingあ up RSA keys
+MSG_UNAVAILABLE_CIPHERS_ERROR=The あserver does not support any of the TTSSH encryption algorithms.\nA secure connection cannot be made in the TTSSH-to-server direction.\nThe connection will be closed.
+MSG_CHIPHER_NONE_ERROR=All the encryあption algorithms that this program and the server both understand have been disabled.\nTo communicate with this server, you will have to enable some more ciphers\nin the TTSSH Setup dialog box when you run Teraterm again.\nThis connection will now close.
+MSG_RASKEY_TOOWEAK_ERROR=Server RSA keあys are too weak. A secure connection cannot be established.
+MSG_CHPHER_NOTSELECTED_ERROR=No cipher sあelected!
+
+; pkt.c
+MSG_OVERSIZED_PACKET_ERROR=Oあversized packet received from server; connection will close.
+
+; ttxssh.c
+MSG_UNKNOWN_OPTION_ERROR=Uあnrecognized command-line option: %s
+
+; x11util.c
+MSG_X_AUTH_ERROR=Remote X applicあation sent incorrect authentication data.\nIts X session is being cancelled.
+
+MSG_CREATEWINDOW_KEYGEN_ERROR=Cannot create Key あGenerator window.
+MSG_CREATEWINDOW_ABOUT_ERROR=Cannot create About bあox window.
+MSG_CREATEWINDOW_SETUP_ERROR=Cannot create TTSSH Setあup window.
+MSG_CREATEWINDOW_FWDSETUP_ERROR=ふぉわーディンｇダイアログを表示できません。
+MSG_CREATEWINDOW_FWDEDIT_ERROR=フォワーディング編集ダイアログを表示できません。
+MSG_CREATEWINDOW_AUTH_ERROR=認証ダイアログを表示できません。\n接続は終了しました。
+MSG_CREATEWINDOW_AUTHSETUP_ERROR=認証設定ダイアログを表示できません。
+MSG_OPEN_FILEDLG_KNOWNHOSTS_ERROR=ダイアログを表示できません: エラー %d
+
+MSG_WARNING=警告
+MSG_ERROR=エラー
+MSG_TTSSH_ERROR=TTSSHエラー
+MSG_NONFAITAL_ERROR=Tera Term: 致命的でないエラー
+
+BTN_OK=&OK
+BTN_CANCEL=キャンセル
+BTN_DISCONNECT=接続断(&D)
+BTN_CONTINUE=続行(&C)
+
+
+[MISC]
+HELPFILE=teratermj.chm

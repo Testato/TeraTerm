@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="keycode"
 	ProjectGUID="{B31BF2E8-79E6-4735-BEA2-C1B4041C2D2E}"
+	RootNamespace="keycode"
 	>
 	<Platforms>
 		<Platform

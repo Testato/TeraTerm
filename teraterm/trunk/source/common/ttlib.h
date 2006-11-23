@@ -27,6 +27,15 @@ void deleteInvalidFileNameChar(PCHAR FName);
 int isInvalidStrftimeChar(PCHAR FName);
 void deleteInvalidStrftimeChar(PCHAR FName);
 void ParseStrftimeFileName(PCHAR FName);
+void ConvFName(PCHAR HomeDir, PCHAR Temp, PCHAR DefExt, PCHAR FName);
+void RestoreNewLine(PCHAR Text);
+void GetNthString(PCHAR Source, int Nth, int Size, PCHAR Dest);
+void GetNthNum(PCHAR Source, int Nth, int far *Num);
+
+#ifdef I18N
+void get_lang_msg(PCHAR key, PCHAR buf, PCHAR iniFile);
+int get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PCHAR iniFile);
+#endif
 
 #ifdef __cplusplus
 }

@@ -79,34 +79,3 @@ void GetAbsPath(PCHAR FName)
   AppendSlash(FName);
   strcat(FName,Temp);
 }
-
-// "\n" ‚ğ‰üs‚É•ÏŠ·‚·‚é (2006.7.29 maya)
-void RestoreNewLine(PCHAR Text)
-{
-	int i, j=0, size=strlen(Text);
-	char *buf = (char *)_alloca(size+1);
-
-	memset(buf, 0, size+1);
-	for (i=0; i<size; i++) {
-		if (Text[i] == '\\' && i<size ) {
-			switch (Text[i+1]) {
-				case '\\':
-					buf[j] = '\\';
-					i++;
-					break;
-				case 'n':
-					buf[j] = '\n';
-					i++;
-					break;
-				default:
-					buf[j] = '\\';
-			}
-			j++;
-		}
-		else {
-			buf[j] = Text[i];
-			j++;
-		}
-	}
-	strcpy(Text, buf);
-}

@@ -66,37 +66,6 @@ void id2str(PCHAR far * List, WORD Id, WORD DefId, PCHAR str)
   strcpy(str,List[i]);
 }
 
-void GetNthString(PCHAR Source, int Nth, int Size, PCHAR Dest)
-{
-  int i, j, k;
-  char c;
-
-  i = 1;
-  j = 0;
-  k = 0;
-  do {
-    c = Source[j];
-    if ( c==',' ) i++;
-    j++;
-    if ( (i==Nth) && (c!=',') && (k<Size-1) )
-    {
-      Dest[k] = c;
-      k++;
-    }
-  }  
-  while ((i<=Nth) && (c!=0));
-  Dest[k] = 0;
-}
-
-void GetNthNum(PCHAR Source, int Nth, int far *Num)
-{
-  char T[15];
-
-  GetNthString(Source,Nth,sizeof(T),T);
-  if (sscanf(T, "%d", Num) != 1)
-    *Num = 0;
-}
-
 WORD GetOnOff(PCHAR Sect, PCHAR Key, PCHAR FName, BOOL Default)
 {
   char Temp[4];
@@ -999,6 +968,13 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 
   // CodePage
   ts->CodePage = GetPrivateProfileInt(Section,"CodePage ", DEFAULT_CODEPAGE, FName);
+
+#ifdef I18N
+  // UI language message file
+  GetPrivateProfileString(Section,"UILanguageFile","lang\\Default.lng",
+                          Temp,sizeof(Temp),FName);
+  ConvFName(ts->HomeDir,Temp,"lng",ts->UILanguageFile);
+#endif
 
 #ifdef USE_NORMAL_BGCOLOR
   // UseNormalBGColor
@@ -2031,21 +2007,6 @@ void FAR PASCAL AddHostToList(PCHAR FName, PCHAR Host)
     Dest[j] = 0;
   }
 
-  void ConvFName(PCHAR HomeDir, PCHAR Temp, PCHAR DefExt, PCHAR FName)
-  {
-    int DirLen, FNPos;
-
-    FName[0] = 0;
-    if ( ! GetFileNamePos(Temp,&DirLen,&FNPos) ) return;
-    FitFileName(&Temp[FNPos],DefExt);
-    if ( DirLen==0 )
-    {
-      strcpy(FName,HomeDir);
-      AppendSlash(FName);
-    }
-    strcat(FName,Temp);
-  }
-
 
 #ifdef INET6
 static void ParseHostName(char *HostStr, WORD *port)
@@ -2448,6 +2409,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  2006/09/14 17:00:58  maya
+ * ComAutoConnect セクションを削除した。
+ * /M コマンドラインパラメータが指定されている場合、TeraTerm 起動時に自動的にシリアルポートへ接続しないようにした。
+ *
  * Revision 1.17  2006/09/02 08:14:04  maya
  * シリアルポート接続が保存されている場合、自動的に接続するかどうかを設定するオプションを追加した。
  *

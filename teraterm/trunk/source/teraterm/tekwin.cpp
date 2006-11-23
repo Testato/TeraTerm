@@ -21,6 +21,7 @@
 #include "tt_res16.h"
 #endif
 #include "tekwin.h"
+#include "ttlib.h"
 
 #ifdef TERATERM32
 #define TEKClassName "TEKWin32"
@@ -157,7 +158,11 @@ void CTEKWindow::InitMenuPopup(HMENU SubMenu)
   }
   else if ( SubMenu == WinMenu )
   {
+#ifdef I18N
+    SetWinMenu(WinMenu, ts.UIMsg, ts.UILanguageFile);
+#else
     SetWinMenu(WinMenu);
+#endif
   }
 }
 
@@ -556,10 +561,19 @@ LONG CTEKWindow::OnChangeMenu(UINT wParam, LONG lParam)
     if (WinMenu==NULL)
     {
       WinMenu = CreatePopupMenu();
-      ::InsertMenu(MainMenu,4,
+#ifdef I18N
+      strcpy(ts.UIMsg, "&Window");
+      get_lang_msg("MENU_WINDOW", ts.UIMsg, ts.UILanguageFile);
+	  ::InsertMenu(MainMenu,4,
+	MF_STRING | MF_ENABLED |
+	MF_POPUP | MF_BYPOSITION,
+	(int)WinMenu, ts.UIMsg);
+#else
+	  ::InsertMenu(MainMenu,4,
 	MF_STRING | MF_ENABLED |
 	MF_POPUP | MF_BYPOSITION,
 	(int)WinMenu, "&Window");
+#endif
     }
     else {
       RemoveMenu(MainMenu,4,MF_BYPOSITION);
@@ -574,7 +588,13 @@ LONG CTEKWindow::OnChangeMenu(UINT wParam, LONG lParam)
   {
     SysMenu = ::GetSystemMenu(tk.HWin,FALSE);
     AppendMenu(SysMenu, MF_SEPARATOR, 0, NULL);
+#ifdef I18N
+    strcpy(ts.UIMsg, "Show menu &bar");
+    get_lang_msg("MENU_SHOW_MENUBAR", ts.UIMsg, ts.UILanguageFile);
+    AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, ts.UIMsg);
+#else
     AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, "Show menu &bar");
+#endif
   }
   return 0;
 }
@@ -605,7 +625,13 @@ LONG CTEKWindow::OnChangeTBar(UINT wParam, LONG lParam)
   {
     SysMenu = ::GetSystemMenu(HTEKWin,FALSE);
     AppendMenu(SysMenu, MF_SEPARATOR, 0, NULL);
+#ifdef I18N
+    strcpy(ts.UIMsg, "Show menu &bar");
+    get_lang_msg("MENU_SHOW_MENUBAR", ts.UIMsg, ts.UILanguageFile);
+    AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, ts.UIMsg);
+#else
     AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, "Show menu &bar");
+#endif
   }
   return 0;
 }

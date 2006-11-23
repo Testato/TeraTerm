@@ -6,6 +6,7 @@
 
 #include "stdafx.h"
 #include "teraterm.h"
+#include "ttlib.h"
 #ifdef TERATERM32
 #include "ttm_res.h"
 #else
