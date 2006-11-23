@@ -88,6 +88,34 @@
 #define IDC_HISTORY_LABEL               1068
 #define IDC_EDIT1                       1069
 #define IDC_FINGER_PRINT                1069
+#define IDC_STATIC1                     1070
+#define IDC_COMPRESSLABEL               1070
+#define IDC_SSHVERSIONS                 1070
+#define IDC_STATIC2                     1071
+#define IDC_COMPRESSNONE                1071
+#define IDC_STATIC3                     1072
+#define IDC_COMPLESSHIGH                1072
+#define IDC_COMPRESSHIGH                1072
+#define IDC_STATIC4                     1073
+#define IDC_CIPHERORDER                 1073
+#define IDC_STATIC5                     1074
+#define IDC_KNOWNHOSTS                  1074
+#define IDC_STATIC6                     1075
+#define IDC_NOTICEBANNER                1075
+#define IDC_HOSTWARNING2                1076
+#define IDC_HOSTFINGERPRINT             1077
+#define IDC_PORTFORWARD                 1078
+#define IDC_XFORWARD                    1079
+#define IDC_SSHFWDLOCALTOREMOTE_HOST    1080
+#define IDC_SSHFWDLOCALTOREMOTE_PORT    1081
+#define IDC_SSHFWDREMOTETOLOCAL_HOST    1082
+#define IDC_SSHFWDREMOTETOLOCAL_PORT    1083
+#define IDD_SSHFWD_BANNER               1084
+#define IDD_SSHFWDBANNER                1084
+#define IDC_WEBSITES                    1085
+#define IDC_INCLUDES                    1086
+#define IDC_CRYPTOGRAPHY                1087
+#define IDC_CREDIT                      1088
 #define IDC_LOCALUSERNAMELABEL          1100
 #define IDC_LOCALUSERNAME               1101
 #define IDC_CHOOSEHOSTRSAFILE           1102
@@ -104,7 +132,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        105
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1070
+#define _APS_NEXT_CONTROL_VALUE         1089
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

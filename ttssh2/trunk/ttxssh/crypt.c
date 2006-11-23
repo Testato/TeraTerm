@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.5 2006-03-26 17:07:17 yutakakn Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.6 2006-11-23 02:19:30 maya Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -230,14 +230,26 @@ static void cAES128_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 
 	if (bytes % block_size) {
 		char tmp[80];
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "AES128 encrypt error(1): bytes %d (%d)");
+		UTIL_get_lang_msg("MSG_AES128_ENCRYPT_ERROR1", pvar);
+		_snprintf(tmp, sizeof(tmp), pvar->ts->UIMsg, bytes, block_size);
+#else
 		_snprintf(tmp, sizeof(tmp), "AES128 encrypt error(1): bytes %d (%d)", bytes, block_size);
+#endif
 		notify_fatal_error(pvar, tmp);
 		goto error;
 	}
 
 	if (EVP_Cipher(&pvar->evpcip[MODE_OUT], newbuf, buf, bytes) == 0) {
 		// TODO: failure
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "AES128 encrypt error(1): bytes %d (%d)");
+		UTIL_get_lang_msg("MSG_AES128_ENCRYPT_ERROR2", pvar);
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+#else
 		notify_fatal_error(pvar, "AES128 encrypt error(2)");
+#endif
 
 	} else {
 		//memcpy(key, pvar->ssh2_keys[MODE_OUT].enc.key, AES128_KEYLEN);
@@ -272,14 +284,26 @@ static void cAES128_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 
 	if (bytes % block_size) {
 		char tmp[80];
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "AES128 decrypt error(1): bytes %d (%d)");
+		UTIL_get_lang_msg("MSG_AES128_DECRYPT_ERROR1", pvar);
+		_snprintf(tmp, sizeof(tmp), pvar->ts->UIMsg, bytes, block_size);
+#else
 		_snprintf(tmp, sizeof(tmp), "AES128 decrypt error(1): bytes %d (%d)", bytes, block_size);
+#endif
 		notify_fatal_error(pvar, tmp);
 		goto error;
 	}
 
 	if (EVP_Cipher(&pvar->evpcip[MODE_IN], newbuf, buf, bytes) == 0) {
 		// TODO:
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "AES128 decrypt error(2)");
+		UTIL_get_lang_msg("MSG_AES128_DECRYPT_ERROR2", pvar);
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+#else
 		notify_fatal_error(pvar, "AES128 decrypt error(2)");
+#endif
 
 	} else {
 #if 0
@@ -576,7 +600,13 @@ RSA FAR *make_key(PTInstVar pvar,
 	}
 
 	if (key == NULL || key->e == NULL || key->n == NULL) {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "Error setting up RSA keys");
+		UTIL_get_lang_msg("MSG_RSAKEY_SETUP_ERROR", pvar);
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+#else
 		notify_fatal_error(pvar, "Error setting up RSA keys");
+#endif
 
 		if (key != NULL) {
 			if (key->e != NULL) {
@@ -652,16 +682,36 @@ BOOL CRYPT_set_supported_ciphers(PTInstVar pvar, int sender_ciphers,
 	pvar->crypt_state.supported_receiver_ciphers = receiver_ciphers;
 
 	if (sender_ciphers == 0) {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, 
+			   "The server does not support any of the TTSSH encryption algorithms.\n"
+			   "A secure connection cannot be made in the TTSSH-to-server direction.\n"
+			   "The connection will be closed.");
+		UTIL_get_lang_msg("MSG_UNAVAILABLE_CIPHERS_ERROR", pvar);
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+
+#else
 		notify_fatal_error(pvar,
 						   "The server does not support any of the TTSSH encryption algorithms.\n"
 						   "A secure connection cannot be made in the TTSSH-to-server direction.\n"
 						   "The connection will be closed.");
+#endif
 		return FALSE;
 	} else if (receiver_ciphers == 0) {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, 
+			   "The server does not support any of the TTSSH encryption algorithms.\n"
+			   "A secure connection cannot be made in the TTSSH-to-server direction.\n"
+			   "The connection will be closed.");
+		UTIL_get_lang_msg("MSG_UNAVAILABLE_CIPHERS_ERROR", pvar);
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+
+#else
 		notify_fatal_error(pvar,
 						   "The server does not support any of the TTSSH encryption algorithms.\n"
 						   "A secure connection cannot be made in the server-to-TTSSH direction.\n"
 						   "The connection will be closed.");
+#endif
 		return FALSE;
 	} else {
 		return TRUE;
@@ -828,11 +878,21 @@ BOOL CRYPT_choose_ciphers(PTInstVar pvar)
 
 	if (pvar->crypt_state.sender_cipher == SSH_CIPHER_NONE
 		|| pvar->crypt_state.receiver_cipher == SSH_CIPHER_NONE) {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg,
+			   "All the encryption algorithms that this program and the server both understand have been disabled.\n"
+			   "To communicate with this server, you will have to enable some more ciphers\n"
+			   "in the TTSSH Setup dialog box when you run Teraterm again.\n"
+			   "This connection will now close.");
+		UTIL_get_lang_msg("MSG_CHIPHER_NONE_ERROR", pvar);
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+#else
 		notify_fatal_error(pvar,
 						   "All the encryption algorithms that this program and the server both understand have been disabled.\n"
 						   "To communicate with this server, you will have to enable some more ciphers\n"
 						   "in the TTSSH Setup dialog box when you run Teraterm again.\n"
 						   "This connection will now close.");
+#endif
 		return FALSE;
 	} else {
 		return TRUE;
@@ -874,8 +934,15 @@ int CRYPT_choose_session_key(PTInstVar pvar,
 	}
 
 	if (bit_delta < 128 || server_key_bits < 512 || host_key_bits < 512) {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg,
+			   "Server RSA keys are too weak. A secure connection cannot be established.");
+		UTIL_get_lang_msg("MSG_RASKEY_TOOWEAK_ERROR", pvar);
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+#else
 		notify_fatal_error(pvar,
 						   "Server RSA keys are too weak. A secure connection cannot be established.");
+#endif
 		return 0;
 	} else {
 		/* following Goldberg's code, I'm using MD5(servkey->n || hostkey->n || cookie)
@@ -1213,7 +1280,13 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 
 	if (!isOK) {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "No cipher selected!");
+		UTIL_get_lang_msg("MSG_CHPHER_NOTSELECTED_ERROR", pvar);
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+#else
 		notify_fatal_error(pvar, "No cipher selected!");	/* should never get here! */
+#endif
 		return FALSE;
 	} else {
 		memset(encryption_key, 0, CRYPT_KEY_LENGTH);
@@ -1424,6 +1497,9 @@ void CRYPT_free_key_pair(CRYPTKeyPair FAR * key_pair)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2006/03/26 17:07:17  yutakakn
+ * fingerprint表示を追加
+ *
  * Revision 1.4  2005/07/09 05:16:06  yutakakn
  * OpenSSL 0.9.8でビルドできるようにした。
  *

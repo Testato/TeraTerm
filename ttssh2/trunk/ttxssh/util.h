@@ -83,4 +83,9 @@ BOOL UTIL_sock_write_more(PTInstVar pvar, UTILSockWriteBuf FAR * buf, SOCKET soc
 void UTIL_destroy_sock_write_buf(UTILSockWriteBuf FAR * buf);
 BOOL UTIL_is_sock_deeply_buffered(UTILSockWriteBuf FAR * buf);
 
+#ifdef I18N 
+void UTIL_get_lang_msg(PCHAR key, PTInstVar pvar);
+int UTIL_get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PTInstVar pvar);
+#endif
+
 #endif

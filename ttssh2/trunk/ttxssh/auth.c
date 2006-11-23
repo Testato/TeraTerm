@@ -109,10 +109,15 @@ static void set_auth_options_status(HWND dlg, int controlID)
 static void init_auth_machine_banner(PTInstVar pvar, HWND dlg)
 {
 	char buf[1024] = "Logging in to ";
-
+#ifdef I18N
+	char buf2[1024];
+	GetDlgItemText(dlg, IDC_SSHAUTHBANNER, buf2, sizeof(buf2));
+	_snprintf(buf, sizeof(buf), buf2, SSH_get_host_name(pvar));
+#else
 	if (strlen(buf) + strlen(SSH_get_host_name(pvar)) < sizeof(buf) - 2) {
 		strcat(buf, SSH_get_host_name(pvar));
 	}
+#endif
 	SetDlgItemText(dlg, IDC_SSHAUTHBANNER, buf);
 }
 
@@ -171,14 +176,82 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 {
 	int default_method = pvar->session_settings.DefaultAuthMethod;
 
+#ifdef I18N
+	GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTH_TITLE", pvar);
+	SetWindowText(dlg, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_SSHAUTHBANNER, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTH_BANNER", pvar);
+	SetDlgItemText(dlg, IDC_SSHAUTHBANNER, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_SSHAUTHBANNER2, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTH_BANNER2", pvar);
+	SetDlgItemText(dlg, IDC_SSHAUTHBANNER2, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_SSHUSERNAMELABEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTH_USERNAME", pvar);
+	SetDlgItemText(dlg, IDC_SSHUSERNAMELABEL, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_SSHPASSWORDCAPTION, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTH_PASSWORD", pvar);
+	SetDlgItemText(dlg, IDC_SSHPASSWORDCAPTION, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_REMEMBER_PASSWORD, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTH_REMEMBER_PASSWORD", pvar);
+	SetDlgItemText(dlg, IDC_REMEMBER_PASSWORD, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_SSHUSEPASSWORD, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTH_METHOD_PASSWORD", pvar);
+	SetDlgItemText(dlg, IDC_SSHUSEPASSWORD, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_SSHUSERSA, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTH_METHOD_RSA", pvar);
+	SetDlgItemText(dlg, IDC_SSHUSERSA, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_SSHUSERHOSTS, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTH_METHOD_RHOST", pvar);
+	SetDlgItemText(dlg, IDC_SSHUSERHOSTS, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_CHOOSERSAFILE, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTH_PRIVATEKEY", pvar);
+	SetDlgItemText(dlg, IDC_CHOOSERSAFILE, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_LOCALUSERNAMELABEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTH_LOCALUSER", pvar);
+	SetDlgItemText(dlg, IDC_LOCALUSERNAMELABEL, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_CHOOSEHOSTRSAFILE, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTH_HOST_PRIVATEKEY", pvar);
+	SetDlgItemText(dlg, IDC_CHOOSEHOSTRSAFILE, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDOK, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("BTN_OK", pvar);
+	SetDlgItemText(dlg, IDOK, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("BTN_DISCONNECT", pvar);
+	SetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg);
+#endif
+
 	init_auth_machine_banner(pvar, dlg);
 	init_password_control(dlg);
 
 	if (pvar->auth_state.failed_method != SSH_AUTH_NONE) {
 		/* must be retrying a failed attempt */
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "Authentication failed. Please retry.");
+		UTIL_get_lang_msg("DLG_AUTH_BANNER2_FAILED", pvar);
+		SetDlgItemText(dlg, IDC_SSHAUTHBANNER2, "Retrying SSH Authentication");
+
+		strcpy(pvar->ts->UIMsg, "Retrying SSH Authentication");
+		UTIL_get_lang_msg("DLG_AUTH_TITLE_FAILED", pvar);
+		SetWindowText(dlg, pvar->ts->UIMsg);
+#else
 		SetDlgItemText(dlg, IDC_SSHAUTHBANNER2,
 					   "Authentication failed. Please retry.");
 		SetWindowText(dlg, "Retrying SSH Authentication");
+#endif
 		default_method = pvar->auth_state.failed_method;
 	}
 
@@ -264,13 +337,31 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 	// パスワード認証を試す前に、keyboard-interactiveメソッドを試す場合は、ラベル名を
 	// 変更する。(2005.3.12 yutaka)
 	if (pvar->settings.ssh2_keyboard_interactive == 1) {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "Use r&hosts to log in (SSH1)");
+		UTIL_get_lang_msg("DLG_AUTH_METHOD_RHOST", pvar);
+		SetDlgItemText(dlg, IDC_SSHUSEPASSWORD, pvar->ts->UIMsg);
+#else
 		SetDlgItemText(dlg, IDC_SSHUSEPASSWORD, "Use p&lain password to log in (with keyboard-interactive)");
+#endif
 	}
 
 	if (pvar->settings.ssh_protocol_version == 1) {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "Use challenge/response to log in(&TIS)");
+		UTIL_get_lang_msg("DLG_AUTH_METHOD_CHALLENGE1", pvar);
+		SetDlgItemText(dlg, IDC_SSHUSETIS, pvar->ts->UIMsg);
+#else
 		SetDlgItemText(dlg, IDC_SSHUSETIS, "Use challenge/response to log in(&TIS)");
+#endif
 	} else {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "Use challenge/response to log in(&keyboard-interactive)");
+		UTIL_get_lang_msg("DLG_AUTH_METHOD_CHALLENGE2", pvar);
+		SetDlgItemText(dlg, IDC_SSHUSETIS, pvar->ts->UIMsg);
+#else
 		SetDlgItemText(dlg, IDC_SSHUSETIS, "Use challenge/response to log in(&keyboard-interactive)");
+#endif
 	}
 #endif
 
@@ -296,18 +387,29 @@ static char FAR *alloc_control_text(HWND ctl)
 	return result;
 }
 
-static int get_key_file_name(HWND parent, char FAR * buf, int bufsize)
+static int get_key_file_name(HWND parent, char FAR * buf, int bufsize, PTInstVar pvar)
 {
 #ifdef TERATERM32
 	OPENFILENAME params;
 	char fullname_buf[2048] = "identity";
+#ifdef I18N
+	char filter[MAX_UIMSG];
+#endif
 
 	ZeroMemory(&params, sizeof(params));
 	params.lStructSize = sizeof(OPENFILENAME);
 	params.hwndOwner = parent;
 	// フィルタの追加 (2004.12.19 yutaka)
 	// 3ファイルフィルタの追加 (2005.4.26 yutaka)
+#ifdef I18N
+	/* use memcpy to copy with '\0' */
+	memcpy(pvar->ts->UIMsg, "identity files\0identity;id_rsa;id_dsa\0identity(RSA1)\0identity\0id_rsa(SSH2)\0id_rsa\0id_dsa(SSH2)\0id_dsa\0all(*.*)\0*.*\0\0", sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("FILEDLG_OPEN_PRIVATEKEY_FILTER", pvar);
+	memcpy(filter, pvar->ts->UIMsg, sizeof(filter));
+	params.lpstrFilter = filter;
+#else
 	params.lpstrFilter = "identity files\0identity;id_rsa;id_dsa\0identity(RSA1)\0identity\0id_rsa(SSH2)\0id_rsa\0id_dsa(SSH2)\0id_dsa\0all(*.*)\0*.*\0\0";
+#endif
 	params.lpstrCustomFilter = NULL;
 	params.nFilterIndex = 0;
 	buf[0] = 0;
@@ -315,7 +417,13 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize)
 	params.nMaxFile = sizeof(fullname_buf);
 	params.lpstrFileTitle = NULL;
 	params.lpstrInitialDir = NULL;
+#ifdef I18N
+	strcpy(pvar->ts->UIMsg, "Choose a file with the RSA/DSA private key");
+	UTIL_get_lang_msg("FILEDLG_OPEN_PRIVATEKEY_TITLE", pvar);
+	params.lpstrTitle = pvar->ts->UIMsg;
+#else
 	params.lpstrTitle = "Choose a file with the RSA/DSA private key";
+#endif
 	params.Flags =
 		OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
 	params.lpstrDefExt = NULL;
@@ -331,20 +439,20 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize)
 #endif
 }
 
-static void choose_RSA_key_file(HWND dlg)
+static void choose_RSA_key_file(HWND dlg, PTInstVar pvar)
 {
 	char buf[1024];
 
-	if (get_key_file_name(dlg, buf, sizeof(buf))) {
+	if (get_key_file_name(dlg, buf, sizeof(buf), pvar)) {
 		SetDlgItemText(dlg, IDC_RSAFILENAME, buf);
 	}
 }
 
-static void choose_host_RSA_key_file(HWND dlg)
+static void choose_host_RSA_key_file(HWND dlg, PTInstVar pvar)
 {
 	char buf[1024];
 
-	if (get_key_file_name(dlg, buf, sizeof(buf))) {
+	if (get_key_file_name(dlg, buf, sizeof(buf), pvar)) {
 		SetDlgItemText(dlg, IDC_HOSTRSAFILENAME, buf);
 	}
 }
@@ -376,8 +484,14 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 		buf[0] = 0;
 		GetDlgItemText(dlg, file_ctl_ID, buf, sizeof(buf));
 		if (buf[0] == 0) {
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "You must specify a file containing the RSA/DSA private key.");
+			UTIL_get_lang_msg("MSG_KEYSPECIFY_ERROR", pvar);
+			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+#else
 			notify_nonfatal_error(pvar,
 								  "You must specify a file containing the RSA/DSA private key.");
+#endif
 			SetFocus(GetDlgItem(dlg, file_ctl_ID));
 			destroy_malloced_string(&password);
 			return FALSE;
@@ -419,7 +533,13 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 
 			if (key_pair == NULL) { // read error
 				char buf[1024];
+#ifdef I18N
+				strcpy(pvar->ts->UIMsg, "read error SSH2 private key file\r\n%s");
+				UTIL_get_lang_msg("MSG_READKEY_ERROR", pvar);
+				_snprintf(buf, sizeof(buf), pvar->ts->UIMsg, errmsg);
+#else
 				_snprintf(buf, sizeof(buf), "read error SSH2 private key file\r\n%s", errmsg);
+#endif
 				notify_nonfatal_error(pvar, buf);
 				destroy_malloced_string(&password);
 				return FALSE;
@@ -457,6 +577,16 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 	}
 	if (method == SSH_AUTH_RHOSTS || method == SSH_AUTH_RHOSTS_RSA) {
 		if (pvar->session_settings.DefaultAuthMethod != SSH_AUTH_RHOSTS) {
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Rhosts authentication will probably fail because it was not "
+									"the default authentication method.\n"
+									"To use Rhosts authentication "
+									"in TTSSH, you need to set it to be the default by restarting\n"
+									"TTSSH and selecting \"SSH Authentication...\" from the Setup menu"
+									"before connecting.");
+			UTIL_get_lang_msg("MSG_RHOSTS_NOTDEFAULT_ERROR", pvar);
+			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+#else
 			notify_nonfatal_error(pvar,
 								  "Rhosts authentication will probably fail because it was not "
 								  "the default authentication method.\n"
@@ -464,6 +594,7 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 								  "in TTSSH, you need to set it to be the default by restarting\n"
 								  "TTSSH and selecting \"SSH Authentication...\" from the Setup menu"
 								  "before connecting.");
+#endif
 		}
 
 		pvar->auth_state.cur_cred.rhosts_client_user =
@@ -551,11 +682,11 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			return TRUE;
 
 		case IDC_CHOOSERSAFILE:
-			choose_RSA_key_file(dlg);
+			choose_RSA_key_file(dlg, pvar);
 			return TRUE;
 
 		case IDC_CHOOSEHOSTRSAFILE:
-			choose_host_RSA_key_file(dlg);
+			choose_host_RSA_key_file(dlg, pvar);
 			return TRUE;
 
 		default:
@@ -598,9 +729,17 @@ int AUTH_set_supported_auth_types(PTInstVar pvar, int types)
 	pvar->auth_state.supported_types = types;
 
 	if (types == 0) {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg,
+			   "Server does not support any of the authentication options\n"
+			   "provided by TTSSH. This connection will now close.");
+		UTIL_get_lang_msg("MSG_NOAUTHMETHOD_ERROR", pvar);
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+#else
 		notify_fatal_error(pvar,
 						   "Server does not support any of the authentication options\n"
 						   "provided by TTSSH. This connection will now close.");
+#endif
 		return 0;
 	} else {
 		if (pvar->auth_state.auth_dialog != NULL) {
@@ -718,6 +857,16 @@ void AUTH_advance_to_next_cred(PTInstVar pvar)
 
 static void init_TIS_dlg(PTInstVar pvar, HWND dlg)
 {
+#ifdef I18N
+	GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_TIS_TITLE", pvar);
+	SetWindowText(dlg, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_SSHAUTHBANNER, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_TIS_BANNER", pvar);
+	SetDlgItemText(dlg, IDC_SSHAUTHBANNER, pvar->ts->UIMsg);
+#endif
+
 	init_auth_machine_banner(pvar, dlg);
 	init_password_control(dlg);
 
@@ -810,15 +959,77 @@ void AUTH_do_cred_dialog(PTInstVar pvar)
 							cur_active !=
 							NULL ? cur_active : pvar->NotificationWindow,
 							dlg_proc, (LPARAM) pvar) == -1) {
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg,
+				   "Unable to display authentication dialog box.\n"
+				   "Connection terminated.");
+			UTIL_get_lang_msg("MSG_CREATEWINDOW_AUTH_ERROR", pvar);
+			notify_fatal_error(pvar, pvar->ts->UIMsg);
+#else
 			notify_fatal_error(pvar,
 							   "Unable to display authentication dialog box.\n"
 							   "Connection terminated.");
+#endif
 		}
 	}
 }
 
 static void init_default_auth_dlg(PTInstVar pvar, HWND dlg)
 {
+#ifdef I18N
+	GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTHSETUP_TITLE", pvar);
+	SetWindowText(dlg, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_SSHAUTHBANNER, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTHSETUP_BANNER", pvar);
+	SetDlgItemText(dlg, IDC_SSHAUTHBANNER, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_SSHUSERNAMELABEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTHSETUP_USERNAME", pvar);
+	SetDlgItemText(dlg, IDC_SSHUSERNAMELABEL, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_SSHUSEPASSWORD, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTHSETUP_METHOD_PASSWORD", pvar);
+	SetDlgItemText(dlg, IDC_SSHUSEPASSWORD, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_KEYBOARD_INTERACTIVE_CHECK, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTHSETUP_METHOD_PASSWORD_KBDINT", pvar);
+	SetDlgItemText(dlg, IDC_KEYBOARD_INTERACTIVE_CHECK, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_SSHUSERSA, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTHSETUP_METHOD_RSA", pvar);
+	SetDlgItemText(dlg, IDC_SSHUSERSA, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_SSHUSERHOSTS, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTHSETUP_METHOD_RHOST", pvar);
+	SetDlgItemText(dlg, IDC_SSHUSERHOSTS, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_SSHUSETIS, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTHSETUP_METHOD_CHALLENGE", pvar);
+	SetDlgItemText(dlg, IDC_SSHUSETIS, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_CHOOSERSAFILE, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTH_PRIVATEKEY", pvar);
+	SetDlgItemText(dlg, IDC_CHOOSERSAFILE, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_LOCALUSERNAMELABEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTH_LOCALUSER", pvar);
+	SetDlgItemText(dlg, IDC_LOCALUSERNAMELABEL, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDC_CHOOSEHOSTRSAFILE, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("DLG_AUTH_HOST_PRIVATEKEY", pvar);
+	SetDlgItemText(dlg, IDC_CHOOSEHOSTRSAFILE, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDOK, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("BTN_OK", pvar);
+	SetDlgItemText(dlg, IDOK, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("BTN_CANCEL", pvar);
+	SetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg);
+#endif
+
 	switch (pvar->settings.DefaultAuthMethod) {
 	case SSH_AUTH_RSA:
 		CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL,
@@ -922,11 +1133,11 @@ static BOOL CALLBACK default_auth_dlg_proc(HWND dlg, UINT msg,
 			return TRUE;
 
 		case IDC_CHOOSERSAFILE:
-			choose_RSA_key_file(dlg);
+			choose_RSA_key_file(dlg, pvar);
 			return TRUE;
 
 		case IDC_CHOOSEHOSTRSAFILE:
-			choose_host_RSA_key_file(dlg);
+			choose_host_RSA_key_file(dlg, pvar);
 			return TRUE;
 
 		default:
@@ -981,8 +1192,14 @@ void AUTH_do_default_cred_dialog(PTInstVar pvar)
 					   cur_active !=
 					   NULL ? cur_active : pvar->NotificationWindow,
 					   default_auth_dlg_proc, (LPARAM) pvar) == -1) {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "Unable to display authentication setup dialog box.");
+		UTIL_get_lang_msg("MSG_CREATEWINDOW_AUTHSETUP_ERROR", pvar);
+		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+#else
 		notify_nonfatal_error(pvar,
 							  "Unable to display authentication setup dialog box.");
+#endif
 	}
 }
 
@@ -1077,6 +1294,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.20  2006/09/18 05:08:04  maya
+ * コマンドラインパラメータ '/ask4passwd' を追加した。
+ *
  * Revision 1.19  2006/08/05 03:47:49  yutakakn
  * パスワードをメモリ上に覚えておくかどうかの設定は teraterm.ini に反映させるようにした。
  *

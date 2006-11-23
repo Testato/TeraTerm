@@ -1154,6 +1154,37 @@ static BOOL CALLBACK hosts_add_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		pvar->hosts_state.hosts_dialog = dlg;
 		SetWindowLong(dlg, DWL_USER, lParam);
 
+#ifdef I18N
+		// 追加・置き換えとも init_hosts_dlg を呼んでいるので、その前にセットする必要がある
+		GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+		UTIL_get_lang_msg("DLG_UNKNONWHOST_TITLE", pvar);
+		SetWindowText(dlg, pvar->ts->UIMsg);
+
+		GetDlgItemText(dlg, IDC_HOSTWARNING, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+		UTIL_get_lang_msg("DLG_UNKNOWNHOST_WARNINIG", pvar);
+		SetDlgItemText(dlg, IDC_HOSTWARNING, pvar->ts->UIMsg);
+
+		GetDlgItemText(dlg, IDC_HOSTWARNING2, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+		UTIL_get_lang_msg("DLG_UNKNOWNHOST_WARNINIG2", pvar);
+		SetDlgItemText(dlg, IDC_HOSTWARNING2, pvar->ts->UIMsg);
+
+		GetDlgItemText(dlg, IDC_HOSTFINGERPRINT, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+		UTIL_get_lang_msg("DLG_UNKNOWNHOST_FINGERPRINT", pvar);
+		SetDlgItemText(dlg, IDC_HOSTFINGERPRINT, pvar->ts->UIMsg);
+
+		GetDlgItemText(dlg, IDC_ADDTOKNOWNHOSTS, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+		UTIL_get_lang_msg("DLG_UNKNOWNHOST_ADD", pvar);
+		SetDlgItemText(dlg, IDC_ADDTOKNOWNHOSTS, pvar->ts->UIMsg);
+
+		GetDlgItemText(dlg, IDC_CONTINUE, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+		UTIL_get_lang_msg("BTN_CONTINUE", pvar);
+		SetDlgItemText(dlg, IDC_CONTINUE, pvar->ts->UIMsg);
+
+		GetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+		UTIL_get_lang_msg("BTN_DISCONNECT", pvar);
+		SetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg);
+#endif
+
 		init_hosts_dlg(pvar, dlg);
 
 		// add host check boxにチェックをデフォルトで入れておく 
@@ -1209,6 +1240,37 @@ static BOOL CALLBACK hosts_replace_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		pvar = (PTInstVar) lParam;
 		pvar->hosts_state.hosts_dialog = dlg;
 		SetWindowLong(dlg, DWL_USER, lParam);
+
+#ifdef I18N
+		// 追加・置き換えとも init_hosts_dlg を呼んでいるので、その前にセットする必要がある
+		GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+		UTIL_get_lang_msg("DLG_DIFFERENTHOST_TITLE", pvar);
+		SetWindowText(dlg, pvar->ts->UIMsg);
+
+		GetDlgItemText(dlg, IDC_HOSTWARNING, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+		UTIL_get_lang_msg("DLG_DIFFERENTHOST_WARNING", pvar);
+		SetDlgItemText(dlg, IDC_HOSTWARNING, pvar->ts->UIMsg);
+
+		GetDlgItemText(dlg, IDC_HOSTWARNING2, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+		UTIL_get_lang_msg("DLG_DIFFERENTHOST_WARNING2", pvar);
+		SetDlgItemText(dlg, IDC_HOSTWARNING2, pvar->ts->UIMsg);
+
+		GetDlgItemText(dlg, IDC_HOSTFINGERPRINT, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+		UTIL_get_lang_msg("DLG_DIFFERENTHOST_FINGERPRINT", pvar);
+		SetDlgItemText(dlg, IDC_HOSTFINGERPRINT, pvar->ts->UIMsg);
+
+		GetDlgItemText(dlg, IDC_ADDTOKNOWNHOSTS, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+		UTIL_get_lang_msg("DLG_DIFFERENTHOST_REPLACE", pvar);
+		SetDlgItemText(dlg, IDC_ADDTOKNOWNHOSTS, pvar->ts->UIMsg);
+
+		GetDlgItemText(dlg, IDC_CONTINUE, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+		UTIL_get_lang_msg("BTN_CONTINUE", pvar);
+		SetDlgItemText(dlg, IDC_CONTINUE, pvar->ts->UIMsg);
+
+		GetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+		UTIL_get_lang_msg("BTN_DISCONNECT", pvar);
+		SetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg);
+#endif
 
 		init_hosts_dlg(pvar, dlg);
 
@@ -1384,6 +1446,9 @@ void HOSTS_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2006/07/01 00:41:02  maya
+ * 書き込み用 ssh_known_hosts が指定されていないときに落ちる不具合を修正した。
+ *
  * Revision 1.8  2006/06/29 15:27:00  yutakakn
  * ssh_known_filesファイルを常にTeraTermインストールディレクトリへ保存するようにした。
  *

@@ -220,6 +220,31 @@ BOOL UTIL_is_sock_deeply_buffered(UTILSockWriteBuf FAR * buf)
 	return buf->buflen / 2 < buf->datalen;
 }
 
+#ifdef I18N
+void UTIL_get_lang_msg(PCHAR key, PTInstVar pvar)
+{
+	GetI18nStr("TTSSH", key, pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+}
+
+int UTIL_get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PTInstVar pvar)
+{
+	if (GetI18nLogfont("TTSSH", key, logfont,
+					   GetDeviceCaps(GetDC(dlg),LOGPIXELSY),
+					   pvar->ts->UILanguageFile) == FALSE) {
+		return FALSE;
+	}
+
+	if ((*font = CreateFontIndirect(logfont)) == NULL) {
+		return FALSE;
+	}
+
+	return TRUE;
+}
+#endif
+
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/12/19 15:39:58  yutakakn
+ * CVS LogID‚Ì’Ç‰Á
+ *
  */

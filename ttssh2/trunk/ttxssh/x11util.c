@@ -251,9 +251,16 @@ int X11_unspoofing_filter(void FAR * void_closure, int direction,
 			return FWD_FILTER_REMOVE;
 		default:
 		case MERGE_GOT_BAD_DATA:
+#ifdef I18N
+			strcpy(closure->pvar->ts->UIMsg,"Remote X application sent incorrect authentication data.\n"
+											"Its X session is being cancelled.");
+			UTIL_get_lang_msg("MSG_X_AUTH_ERROR", closure->pvar);
+			notify_nonfatal_error(closure->pvar, closure->pvar->ts->UIMsg);
+#else
 			notify_nonfatal_error(closure->pvar,
 								  "Remote X application sent incorrect authentication data.\n"
 								  "Its X session is being cancelled.");
+#endif
 			*length = 0;
 			return FWD_FILTER_CLOSECHANNEL;
 		}
@@ -264,4 +271,7 @@ int X11_unspoofing_filter(void FAR * void_closure, int direction,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2004/12/19 15:39:58  yutakakn
+ * CVS LogID‚Ì’Ç‰Á
+ *
  */

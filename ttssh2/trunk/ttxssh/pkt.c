@@ -239,8 +239,14 @@ int PKT_recv(PTInstVar pvar, char FAR * buf, int buflen)
 			} else if (total_packet_size > 4 * 1024 * 1024) {
 				// 4MBを超える巨大なパケットが届いたら、異常終了する。
 				// 実際にはデータ化けで復号失敗時に、誤認識することが多い。
+#ifdef I18N
+				strcpy(pvar->ts->UIMsg, "Oversized packet received from server; connection will close.");
+				UTIL_get_lang_msg("MSG_OVERSIZED_PACKET_ERROR", pvar);
+				notify_fatal_error(pvar, pvar->ts->UIMsg);
+#else
 				notify_fatal_error(pvar,
 								   "Oversized packet received from server; connection will close.");
+#endif
 			} else {
 				int amount_read =
 					recv_data(pvar, max(total_packet_size, READAMOUNT));
@@ -303,6 +309,9 @@ void PKT_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2006/10/29 17:15:47  yutakapon
+ * DEBUG_PRINT_TO_FILEマクロを追加。
+ *
  * Revision 1.2  2004/12/19 15:39:58  yutakakn
  * CVS LogIDの追加
  *
