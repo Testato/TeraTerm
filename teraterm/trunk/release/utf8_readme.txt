@@ -766,6 +766,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.11.28 (Ver 4.50)
+  - upgraded TTSSH version supporting SSH2 to 2.38
+
 2006.11.20 (Ver 4.49)
   - Bug fix: TeraTerm(DDE server) sent the invalid return value to TeraTerm macro(DDE client) when DDE server was received XTYP_POKE message.
   - added busy procedure(DDE_FBUSY) between DDE server and DDE client.
