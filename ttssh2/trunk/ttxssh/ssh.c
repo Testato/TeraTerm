@@ -1062,10 +1062,18 @@ static BOOL handle_auth_required(PTInstVar pvar)
 
 static BOOL handle_ignore(PTInstVar pvar)
 {
-	if (grab_payload(pvar, 4)
-		&& grab_payload(pvar, get_payload_uint32(pvar, 0))) {
-		/* ignore it! but it must be decompressed */
+	if (SSHv1(pvar)) {
+		if (grab_payload(pvar, 4)
+			&& grab_payload(pvar, get_payload_uint32(pvar, 0))) {
+			/* ignore it! but it must be decompressed */
+		}
 	}
+	/*
+	else {
+		// メッセージが SSH2_MSG_IGNORE の時は何もしない
+		// Cisco ルータ対策 (2006.11.28 maya)
+	}
+	 */
 	return TRUE;
 }
 
@@ -6974,6 +6982,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.63  2006/11/19 14:23:30  maya
+ * RSAの場合はworkaroundが不要なようなので削除した。
+ *
  * Revision 1.62  2006/11/18 01:29:29  maya
  * SSH-2.0-2.0*, SSH-2.0-2.1* サーバのバグに対する workaround を改良した。
  *
