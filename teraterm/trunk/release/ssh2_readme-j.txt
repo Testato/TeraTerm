@@ -154,6 +154,9 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
+2006.11.28 (Ver 2.38)
+  ・Cisco ルータの送信する SSH2_MSG_IGNORE のデータが不正なようなので、何も処理しないようにした。
+
 2006.11.20 (Ver 2.37)
   ・Extreme Networksスイッチにおいて共通鍵生成で失敗する現象に対するworkaround(SSH_BUG_SIGBLOB)を追加した。
 

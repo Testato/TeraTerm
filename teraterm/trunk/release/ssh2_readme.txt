@@ -161,6 +161,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2006.11.28 (Ver 2.38)
+  - changed the handling of SSH2_MSG_IGNORE to do nothing. The data from Cisco router seems invalid.
+
 2006.11.20 (Ver 2.37)
   - added workaround(SSH_BUG_SIGBLOB) that generating the symmetric key is failure on Extreme Networks switch.
 
