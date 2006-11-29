@@ -766,7 +766,8 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.11.28 (Ver 4.50)
+2006.11.30 (Ver 4.50)
+  - Bug fix: TeraTerm crashs when the log file name is not a full path.
   - upgraded TTSSH version supporting SSH2 to 2.38
 
 2006.11.20 (Ver 4.49)

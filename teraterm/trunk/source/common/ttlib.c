@@ -465,8 +465,14 @@ void ParseStrftimeFileName(PCHAR FName)
   // ファイル名に使用できない文字を削除
   deleteInvalidFileNameChar(filename);
 
-  c = strrchr(FName, '\\') + 1;
-  strncpy(c, buf, MAXPATHLEN-(c-FName)-1);
+  c = strrchr(FName, '\\');
+  if (c != NULL) {
+    strncpy(c + 1, buf, MAXPATHLEN-(c-FName)-2);
+  }
+  else { // "\"を含まない(フルパスでない)場合に対応 (2006.11.30 maya)
+    strncpy(FName, buf, MAXPATHLEN-1);
+  }
+  FName[MAXPATHLEN-1]=0;
 }
 
 void ConvFName(PCHAR HomeDir, PCHAR Temp, PCHAR DefExt, PCHAR FName)
