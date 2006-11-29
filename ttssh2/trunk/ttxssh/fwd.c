@@ -209,9 +209,16 @@ static int check_local_channel_num(PTInstVar pvar, int local_num)
 {
 	if (local_num < 0 || local_num >= pvar->fwd_state.num_channels
 		|| pvar->fwd_state.channels[local_num].status == 0) {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "The server attempted to manipulate a forwarding channel that does not exist.\n"
+							    "Either the server has a bug or is hostile. You should close this connection.");
+		UTIL_get_lang_msg("MSG_FWD_LOCAL_CHANNEL_ERROR", pvar);
+		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+#else
 		notify_nonfatal_error(pvar,
 							  "The server attempted to manipulate a forwarding channel that does not exist.\n"
 							  "Either the server has a bug or is hostile. You should close this connection.");
+#endif
 		return 0;
 	} else {
 		return 1;
@@ -246,9 +253,16 @@ static void request_error(PTInstVar pvar, int request_num, int err)
 	}
 #endif							/* INET6 */
 
+#ifdef I18N
+	strcpy(pvar->ts->UIMsg, "Communications error while listening for a connection to forward.\n"
+							"The listening port will be terminated.");
+	UTIL_get_lang_msg("MSG_FWD_REQUEST_ERROR", pvar);
+	notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+#else
 	notify_nonfatal_error(pvar,
 						  "Communications error while listening for a connection to forward.\n"
 						  "The listening port will be terminated.");
+#endif
 }
 
 static void send_local_connection_closure(PTInstVar pvar, int channel_num)
@@ -361,28 +375,62 @@ void FWD_channel_output_eof(PTInstVar pvar, uint32 local_channel_num)
 	}
 }
 
+#ifdef I18N
+static char FAR *describe_socket_error(PTInstVar pvar, int code)
+#else
 static char FAR *describe_socket_error(int code)
+#endif
 {
 	switch (code) {
 	case WSAECONNREFUSED:
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "Connection refused (perhaps the service is not currently running)");
+		UTIL_get_lang_msg("MSG_FWD_REFUSED_ERROR", pvar);
+		return pvar->ts->UIMsg;
+#else
 		return
 			"Connection refused (perhaps the service is not currently running)";
+#endif
 	case WSAENETDOWN:
 	case WSAENETUNREACH:
 	case WSAEHOSTUNREACH:
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "The machine could not be contacted (possibly a network problem)");
+		UTIL_get_lang_msg("MSG_FWD_NETDOWN_ERROR", pvar);
+		return pvar->ts->UIMsg;
+#else
 		return
 			"The machine could not be contacted (possibly a network problem)";
+#endif
 	case WSAETIMEDOUT:
 	case WSAEHOSTDOWN:
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "The machine could not be contacted (possibly the machine is down)");
+		UTIL_get_lang_msg("MSG_FWD_MACHINEDOWN_ERROR", pvar);
+		return pvar->ts->UIMsg;
+#else
 		return
 			"The machine could not be contacted (possibly the machine is down)";
+#endif
 	case WSATRY_AGAIN:
 	case WSANO_RECOVERY:
 	case WSANO_ADDRESS:
 	case WSAHOST_NOT_FOUND:
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "-No address was found for the machine.");
+		UTIL_get_lang_msg("MSG_FWD_ADDRNOTFOUTD_ERROR", pvar);
+		return pvar->ts->UIMsg;
+#else
 		return "No address was found for the machine.";
+#endif
 	default:
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "The forwarding connection could not be established");
+		UTIL_get_lang_msg("MSG_FWD_CONNECT_ERROR", pvar);
+		return pvar->ts->UIMsg;
+#else
 		return "The forwarding connection could not be established";
+#endif
 	}
 }
 
@@ -399,12 +447,28 @@ static void channel_error(PTInstVar pvar, char FAR * action,
 		err_msg = NULL;
 		break;
 	default:
+#ifdef I18N
+		err_msg = describe_socket_error(pvar, err);
+#else
 		err_msg = describe_socket_error(err);
+#endif
 	}
 
 	if (err_msg != NULL) {
 		char buf[1024];
 
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "Communications error %s forwarded local %s.\n"
+								"%s (code %d).\n"
+								"The forwarded connection will be closed.");
+		UTIL_get_lang_msg("MSG_FWD_CHANNEL_ERROR", pvar);
+		_snprintf(buf, sizeof(buf),
+				  pvar->ts->UIMsg, action,
+				  pvar->fwd_state.requests[pvar->fwd_state.
+										   channels[channel_num].
+										   request_num].spec.
+				  from_port_name, err_msg, err);
+#else
 		_snprintf(buf, sizeof(buf),
 				  "Communications error %s forwarded local %s.\n"
 				  "%s (code %d).\n"
@@ -413,6 +477,7 @@ static void channel_error(PTInstVar pvar, char FAR * action,
 										   channels[channel_num].
 										   request_num].spec.
 				  from_port_name, err_msg, err);
+#endif
 		buf[sizeof(buf) - 1] = 0;
 		notify_nonfatal_error(pvar, buf);
 	}
@@ -427,19 +492,41 @@ static void channel_opening_error(PTInstVar pvar, int channel_num, int err)
 
 	SSH_fail_channel_open(pvar, channel->remote_num);
 	if (request->spec.type == FWD_REMOTE_X11_TO_LOCAL) {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "The server attempted to forward a connection through this machine.\n"
+								"It requested a connection to the X server on %s (screen %d).\n"
+								"%s.\n" "The forwarded connection will be closed.");
+		UTIL_get_lang_msg("MSG_FWD_CHANNEL_OPEN_X_ERROR", pvar);
+		_snprintf(buf, sizeof(buf),
+				  pvar->ts->UIMsg,
+				  request->spec.to_host, request->spec.to_port - 6000,
+				  describe_socket_error(pvar, err));
+#else
 		_snprintf(buf, sizeof(buf),
 				  "The server attempted to forward a connection through this machine.\n"
 				  "It requested a connection to the X server on %s (screen %d).\n"
 				  "%s.\n" "The forwarded connection will be closed.",
 				  request->spec.to_host, request->spec.to_port - 6000,
 				  describe_socket_error(err));
+#endif
 	} else {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "The server attempted to forward a connection through this machine.\n"
+								"It requested a connection to %s (port %s).\n" "%s.\n"
+								"The forwarded connection will be closed.");
+		UTIL_get_lang_msg("MSG_FWD_CHANNEL_OPEN_ERROR", pvar);
+		_snprintf(buf, sizeof(buf),
+				  pvar->ts->UIMsg,
+				  request->spec.to_host, request->spec.to_port_name,
+				  describe_socket_error(pvar, err));
+#else
 		_snprintf(buf, sizeof(buf),
 				  "The server attempted to forward a connection through this machine.\n"
 				  "It requested a connection to %s (port %s).\n" "%s.\n"
 				  "The forwarded connection will be closed.",
 				  request->spec.to_host, request->spec.to_port_name,
 				  describe_socket_error(err));
+#endif
 	}
 	buf[sizeof(buf) - 1] = 0;
 	notify_nonfatal_error(pvar, buf);
@@ -652,10 +739,19 @@ static int alloc_channel(PTInstVar pvar, int new_status,
 static HWND make_accept_wnd(PTInstVar pvar)
 {
 	if (pvar->fwd_state.accept_wnd == NULL) {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "TTSSH Port Forwarding Monitor");
+		UTIL_get_lang_msg("DLG_FWDMON_TITLE", pvar);
+		pvar->fwd_state.accept_wnd =
+			CreateWindow("STATIC", pvar->ts->UIMsg,
+						 WS_DISABLED | WS_POPUP, 0, 0, 1, 1, NULL, NULL,
+						 hInst, NULL);
+#else
 		pvar->fwd_state.accept_wnd =
 			CreateWindow("STATIC", "TTSSH Port Forwarding Monitor",
 						 WS_DISABLED | WS_POPUP, 0, 0, 1, 1, NULL, NULL,
 						 hInst, NULL);
+#endif
 		if (pvar->fwd_state.accept_wnd != NULL) {
 			pvar->fwd_state.old_accept_wnd_proc =
 				(WNDPROC) SetWindowLong(pvar->fwd_state.accept_wnd,
@@ -789,11 +885,21 @@ static void accept_local_connection(PTInstVar pvar, int request_num)
 						hname, sizeof(hname), NULL, 0, NI_NUMERICHOST)) {
 			/* NOT REACHED */
 		}
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "Host with IP number %s tried to connect to "
+								"forwarded local port %d.\n"
+								"This could be some kind of hostile attack.");
+		UTIL_get_lang_msg("MSG_FWD_HOSTILE_ATTACK_ERROR", pvar);
+		_snprintf(buf, sizeof(buf),
+				  pvar->ts->UIMsg, hname,
+				  request->spec.from_port);
+#else
 		_snprintf(buf, sizeof(buf),
 				  "Host with IP number %s tried to connect to "
 				  "forwarded local port %d.\n"
 				  "This could be some kind of hostile attack.", hname,
 				  request->spec.from_port);
+#endif
 		buf[NUM_ELEM(buf) - 1] = 0;
 		notify_nonfatal_error(pvar, buf);
 		safe_closesocket(pvar, s);
@@ -1312,9 +1418,17 @@ static BOOL interactive_init_request(PTInstVar pvar, int request_num,
 		if (s == INVALID_SOCKET) {
 			if (report_error) {
 				char buf[256];
+#ifdef I18N
+				strcpy(pvar->ts->UIMsg, "Some socket(s) required for port forwarding could not be initialized.\n"
+										"Some port forwarding services may not be available.\n"
+										"(errno %d)");
+				UTIL_get_lang_msg("MSG_FWD_SOCKET_ERROR", pvar);
+				_snprintf(buf, sizeof(buf), pvar->ts->UIMsg, WSAGetLastError());
+#else
 				_snprintf(buf, sizeof(buf), "Some socket(s) required for port forwarding could not be initialized.\n"
 											"Some port forwarding services may not be available.\n"
 											"(errno %d)", WSAGetLastError());
+#endif
 				notify_nonfatal_error(pvar,buf);
 			}
 			freeaddrinfo(res0);
@@ -1436,8 +1550,14 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 
 	for (i = 0; i < num_specs - 1; i++) {
 		if (FWD_compare_specs(new_specs + i, new_specs + i + 1) == 0) {
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "TTSSH INTERNAL ERROR: Could not set port forwards because duplicate type/port requests were found");
+			UTIL_get_lang_msg("MSG_FWD_DUPLICATE_ERROR", pvar);
+			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+#else
 			notify_nonfatal_error(pvar,
 								  "TTSSH INTERNAL ERROR: Could not set port forwards because duplicate type/port requests were found");
+#endif
 			free(new_specs);
 			return;
 		}
@@ -1703,11 +1823,21 @@ static void create_local_channel(PTInstVar pvar, uint32 remote_channel_num,
 
 		if (task_handle == 0) {
 			SSH_fail_channel_open(pvar, remote_channel_num);
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "The server attempted to forward a connection through this machine.\n"
+									"It requested a connection to machine %s on port %s.\n"
+									"An error occurred while processing the request, and it has been denied.");
+			UTIL_get_lang_msg("MSG_FWD_DENIED_HANDLE_ERROR", pvar);
+			_snprintf(buf, sizeof(buf),
+					  pvar->ts->UIMsg,
+					  request->spec.to_host, request->spec.to_port_name);
+#else
 			_snprintf(buf, sizeof(buf),
 					  "The server attempted to forward a connection through this machine.\n"
 					  "It requested a connection to machine %s on port %s.\n"
 					  "An error occurred while processing the request, and it has been denied.",
 					  request->spec.to_host, request->spec.to_port_name);
+#endif
 			buf[sizeof(buf) - 1] = 0;
 			notify_nonfatal_error(pvar, buf);
 #ifdef INET6
@@ -1795,11 +1925,21 @@ void FWD_open(PTInstVar pvar, uint32 remote_channel_num,
 	}
 
 	/* this forwarding was not prespecified */
+#ifdef I18N
+	strcpy(pvar->ts->UIMsg, "The server attempted to forward a connection through this machine.\n"
+							"It requested a connection to machine %s on port %d.\n"
+							"You did not specify this forwarding to TTSSH in advance, and therefore the request was denied.");
+	UTIL_get_lang_msg("MSG_FWD_DENIED_ERROR", pvar);
+	_snprintf(buf, sizeof(buf),
+			  pvar->ts->UIMsg,
+			  local_hostname, local_port);
+#else
 	_snprintf(buf, sizeof(buf),
 			  "The server attempted to forward a connection through this machine.\n"
 			  "It requested a connection to machine %s on port %d.\n"
 			  "You did not specify this forwarding to TTSSH in advance, and therefore the request was denied.",
 			  local_hostname, local_port);
+#endif
 	buf[sizeof(buf) - 1] = 0;
 	notify_nonfatal_error(pvar, buf);
 }
@@ -1840,10 +1980,18 @@ void FWD_X11_open(PTInstVar pvar, uint32 remote_channel_num,
 	}
 
 	/* this forwarding was not prespecified */
+#ifdef I18N
+	strcpy(pvar->ts->UIMsg, "The server attempted to forward a connection through this machine.\n"
+							"It requested a connection to the local X server.\n"
+							"You did not specify this forwarding to TTSSH in advance, and therefore the request was denied.");
+	UTIL_get_lang_msg("MSG_FWD_DENIED_X_ERROR", pvar);
+	notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+#else
 	notify_nonfatal_error(pvar,
 						  "The server attempted to forward a connection through this machine.\n"
 						  "It requested a connection to the local X server.\n"
 						  "You did not specify this forwarding to TTSSH in advance, and therefore the request was denied.");
+#endif
 }
 
 void FWD_confirmed_open(PTInstVar pvar, uint32 local_channel_num,
@@ -1874,9 +2022,16 @@ void FWD_failed_open(PTInstVar pvar, uint32 local_channel_num)
 	if (!check_local_channel_num(pvar, local_channel_num))
 		return;
 
+#ifdef I18N
+	strcpy(pvar->ts->UIMsg, "A program on the local machine attempted to connect to a forwarded port.\n"
+							"The forwarding request was denied by the server. The connection has been closed.");
+	UTIL_get_lang_msg("MSG_FWD_DENIED_BY_SERVER_ERROR", pvar);
+	notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+#else
 	notify_nonfatal_error(pvar,
 						  "A program on the local machine attempted to connect to a forwarded port.\n"
 						  "The forwarding request was denied by the server. The connection has been closed.");
+#endif
 	free_channel(pvar, local_channel_num);
 }
 
@@ -1918,9 +2073,16 @@ void FWD_received_data(PTInstVar pvar, uint32 local_channel_num,
 		if (!UTIL_sock_buffered_write
 			(pvar, &channel->writebuf, blocking_write, s, data, length)) {
 			closed_local_connection(pvar, local_channel_num);
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "A communications error occurred while sending forwarded data to a local port.\n"
+									"The forwarded connection will be closed.");
+			UTIL_get_lang_msg("MSG_FWD_COMM_ERROR", pvar);
+			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+#else
 			notify_nonfatal_error(pvar,
 								  "A communications error occurred while sending forwarded data to a local port.\n"
 								  "The forwarded connection will be closed.");
+#endif
 		}
 	}
 
@@ -2004,6 +2166,9 @@ void FWD_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2005/07/03 13:32:00  yutakakn
+ * SSH2 port-forwardingの初期化タイミングを変更。
+ *
  * Revision 1.7  2005/07/03 12:07:53  yutakakn
  * SSH2 X Window Systemのport forwardingをサポートした。
  *

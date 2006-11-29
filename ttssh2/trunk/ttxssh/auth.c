@@ -387,7 +387,11 @@ static char FAR *alloc_control_text(HWND ctl)
 	return result;
 }
 
+#ifdef I18N
 static int get_key_file_name(HWND parent, char FAR * buf, int bufsize, PTInstVar pvar)
+#else
+static int get_key_file_name(HWND parent, char FAR * buf, int bufsize)
+#endif
 {
 #ifdef TERATERM32
 	OPENFILENAME params;
@@ -439,20 +443,36 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize, PTInstVar
 #endif
 }
 
+#ifdef I18N
 static void choose_RSA_key_file(HWND dlg, PTInstVar pvar)
+#else
+static void choose_RSA_key_file(HWND dlg)
+#endif
 {
 	char buf[1024];
 
+#ifdef I18N
 	if (get_key_file_name(dlg, buf, sizeof(buf), pvar)) {
+#else
+	if (get_key_file_name(dlg, buf, sizeof(buf))) {
+#endif
 		SetDlgItemText(dlg, IDC_RSAFILENAME, buf);
 	}
 }
 
+#ifdef I18N
 static void choose_host_RSA_key_file(HWND dlg, PTInstVar pvar)
+#else
+static void choose_host_RSA_key_file(HWND dlg)
+#endif
 {
 	char buf[1024];
 
+#ifdef I18N
 	if (get_key_file_name(dlg, buf, sizeof(buf), pvar)) {
+#else
+	if (get_key_file_name(dlg, buf, sizeof(buf))) {
+#endif
 		SetDlgItemText(dlg, IDC_HOSTRSAFILENAME, buf);
 	}
 }
@@ -682,11 +702,19 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			return TRUE;
 
 		case IDC_CHOOSERSAFILE:
+#ifdef I18N
 			choose_RSA_key_file(dlg, pvar);
+#else
+			choose_RSA_key_file(dlg);
+#endif
 			return TRUE;
 
 		case IDC_CHOOSEHOSTRSAFILE:
+#ifdef I18N
 			choose_host_RSA_key_file(dlg, pvar);
+#else
+			choose_host_RSA_key_file(dlg);
+#endif
 			return TRUE;
 
 		default:
@@ -1133,11 +1161,19 @@ static BOOL CALLBACK default_auth_dlg_proc(HWND dlg, UINT msg,
 			return TRUE;
 
 		case IDC_CHOOSERSAFILE:
+#ifdef I18N
 			choose_RSA_key_file(dlg, pvar);
+#else
+			choose_RSA_key_file(dlg);
+#endif
 			return TRUE;
 
 		case IDC_CHOOSEHOSTRSAFILE:
+#ifdef I18N
 			choose_host_RSA_key_file(dlg, pvar);
+#else
+			choose_host_RSA_key_file(dlg);
+#endif
 			return TRUE;
 
 		default:
@@ -1294,6 +1330,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.21  2006/11/23 02:19:30  maya
+ * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
+ *
  * Revision 1.20  2006/09/18 05:08:04  maya
  * コマンドラインパラメータ '/ask4passwd' を追加した。
  *

@@ -363,7 +363,11 @@ static int compare_services(void const FAR * elem1, void const FAR * elem2)
 	return strcmp(s1->name, s2->name);
 }
 
+#ifdef I18N
 static void make_X_forwarding_spec(FWDRequestSpec FAR * spec, PTInstVar pvar)
+#else
+static void make_X_forwarding_spec(FWDRequestSpec FAR * spec)
+#endif
 {
 	spec->type = FWD_REMOTE_X11_TO_LOCAL;
 	spec->from_port = -1;
@@ -446,7 +450,11 @@ static int parse_port(char FAR * FAR * str, char FAR * buf, int bufsize)
 	return parse_port_from_buf(buf);
 }
 
+#ifdef I18N
 static BOOL parse_request(FWDRequestSpec FAR * request, char FAR * str, PTInstVar pvar)
+#else
+static BOOL parse_request(FWDRequestSpec FAR * request, char FAR * str)
+#endif
 {
 	char FAR *host_start;
 
@@ -455,7 +463,11 @@ static BOOL parse_request(FWDRequestSpec FAR * request, char FAR * str, PTInstVa
 	} else if (str[0] == 'R' || str[0] == 'r') {
 		request->type = FWD_REMOTE_TO_LOCAL;
 	} else if (str[0] == 'X' || str[0] == 'x') {
+#ifdef I18N
 		make_X_forwarding_spec(request, pvar);
+#else
+		make_X_forwarding_spec(request);
+#endif
 		return TRUE;
 	} else {
 		return FALSE;
@@ -571,12 +583,20 @@ void FWDUI_load_settings(PTInstVar pvar)
 			(FWDRequestSpec FAR *) malloc(sizeof(FWDRequestSpec) * j);
 
 		j = 0;
+#ifdef I18N
 		if (parse_request(requests, str, pvar)) {
+#else
+		if (parse_request(requests, str)) {
+#endif
 			j++;
 		}
 		for (i = 0; (ch = str[i]) != 0; i++) {
 			if (ch == ';') {
+#ifdef I18N
 				if (parse_request(requests + j, str + i + 1, pvar)) {
+#else
+				if (parse_request(requests + j, str + i + 1)) {
+#endif
 					j++;
 				}
 			}
@@ -624,8 +644,13 @@ static void set_verbose_port(char FAR * buf, int bufsize, int port,
 	buf[bufsize - 1] = 0;
 }
 
+#ifdef I18N
 static void get_spec_string(FWDRequestSpec FAR * spec, char FAR * buf,
 							int bufsize, PTInstVar pvar)
+#else
+static void get_spec_string(FWDRequestSpec FAR * spec, char FAR * buf,
+							int bufsize)
+#endif
 {
 	char verbose_from_port[64];
 	char verbose_to_port[64];
@@ -688,13 +713,21 @@ static void init_listbox_selection(HWND dlg)
 	update_listbox_selection(dlg);
 }
 
+#ifdef I18N
 static int add_spec_to_listbox(HWND dlg, FWDRequestSpec FAR * spec, PTInstVar pvar)
+#else
+static int add_spec_to_listbox(HWND dlg, FWDRequestSpec FAR * spec)
+#endif
 {
 	char buf[1024];
 	HWND listbox = GetDlgItem(dlg, IDC_SSHFWDLIST);
 	int index;
 
+#ifdef I18N
 	get_spec_string(spec, buf, sizeof(buf), pvar);
+#else
+	get_spec_string(spec, buf, sizeof(buf));
+#endif
 
 	index = SendMessage(listbox, LB_ADDSTRING, 0, (LPARAM) buf);
 
@@ -763,7 +796,11 @@ static void init_fwd_dlg(PTInstVar pvar, HWND dlg)
 		if (requests[i].type == FWD_REMOTE_X11_TO_LOCAL) {
 			CheckDlgButton(dlg, IDC_SSHFWDX11, TRUE);
 		} else {
+#ifdef I18N
 			add_spec_to_listbox(dlg, requests + i, pvar);
+#else
+			add_spec_to_listbox(dlg, requests + i);
+#endif
 		}
 	}
 
@@ -816,7 +853,11 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 	}
 
 	if (X_enabled) {
+#ifdef I18N
 		make_X_forwarding_spec(specs, pvar);
+#else
+		make_X_forwarding_spec(specs);
+#endif
 	}
 
 	qsort(specs, num_specs, sizeof(FWDRequestSpec), FWD_compare_specs);
@@ -892,7 +933,11 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 				&& !FWD_can_server_listen_for(pvar, specs + i)) {
 				char buf2[1024];
 
+#ifdef I18N
 				get_spec_string(specs + i, buf2, sizeof(buf2), pvar);
+#else
+				get_spec_string(specs + i, buf2, sizeof(buf2));
+#endif
 
 				if (buf_count < sizeof(buf)) {
 					strncpy(buf + buf_count, buf2,
@@ -1012,7 +1057,11 @@ static void setup_edit_controls(HWND dlg, FWDRequestSpec FAR * spec,
 	set_dir_options_status(dlg);
 }
 
+#ifdef I18N
 static void init_fwd_edit_dlg(PTInstVar pvar, FWDRequestSpec FAR * spec, HWND dlg)
+#else
+static void init_fwd_edit_dlg(FWDRequestSpec FAR * spec, HWND dlg)
+#endif
 {
 #ifdef I18N
 	GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
@@ -1160,7 +1209,11 @@ static BOOL CALLBACK fwd_edit_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		closure = (FWDEditClosure FAR *) lParam;
 		SetWindowLong(dlg, DWL_USER, lParam);
 
+#ifdef I18N
 		init_fwd_edit_dlg(closure->pvar, closure->spec, dlg);
+#else
+		init_fwd_edit_dlg(closure->spec, dlg);
+#endif
 		return FALSE;			/* because we set the focus */
 
 	case WM_COMMAND:
@@ -1212,7 +1265,11 @@ static void add_forwarding_entry(PTInstVar pvar, HWND dlg)
 							  "Unable to display forwarding edit dialog box.");
 #endif
 	} else if (result) {
+#ifdef I18N
 		int index = add_spec_to_listbox(dlg, &new_spec, pvar);
+#else
+		int index = add_spec_to_listbox(dlg, &new_spec);
+#endif
 
 		if (index >= 0) {
 			SendMessage(GetDlgItem(dlg, IDC_SSHFWDLIST), LB_SETCURSEL,
@@ -1250,7 +1307,11 @@ static void edit_forwarding_entry(PTInstVar pvar, HWND dlg)
 			} else if (result) {
 				SendMessage(listbox, LB_DELETESTRING, cursel, 0);
 
+#ifdef I18N
 				cursel = add_spec_to_listbox(dlg, spec, pvar);
+#else
+				cursel = add_spec_to_listbox(dlg, spec);
+#endif
 				free(spec);
 				if (cursel >= 0) {
 					SendMessage(GetDlgItem(dlg, IDC_SSHFWDLIST),
@@ -1345,6 +1406,9 @@ void FWDUI_do_forwarding_dialog(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2006/11/23 02:19:30  maya
+ * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
+ *
  * Revision 1.2  2004/12/19 15:39:26  yutakakn
  * CVS LogIDの追加
  *
