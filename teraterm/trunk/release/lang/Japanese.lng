@@ -242,29 +242,62 @@ MSG_AES128_ENCRYPT_ERROR1=AES128暗号化エラー(1): bytes %d (%d)
 MSG_AES128_ENCRYPT_ERROR2=AES128暗号化エラー(2)
 MSG_AES128_DECRYPT_ERROR1=AES128復号エラー(1): bytes %d (%d)
 MSG_AES128_DECRYPT_ERROR2=AES128復号エラー(2)
-MSG_RSAKEY_SETUP_ERROR=Error settingあ up RSA keys
-MSG_UNAVAILABLE_CIPHERS_ERROR=The あserver does not support any of the TTSSH encryption algorithms.\nA secure connection cannot be made in the TTSSH-to-server direction.\nThe connection will be closed.
-MSG_CHIPHER_NONE_ERROR=All the encryあption algorithms that this program and the server both understand have been disabled.\nTo communicate with this server, you will have to enable some more ciphers\nin the TTSSH Setup dialog box when you run Teraterm again.\nThis connection will now close.
-MSG_RASKEY_TOOWEAK_ERROR=Server RSA keあys are too weak. A secure connection cannot be established.
-MSG_CHPHER_NOTSELECTED_ERROR=No cipher sあelected!
+MSG_RSAKEY_SETUP_ERROR=Error setting up RSA keys
+MSG_UNAVAILABLE_CIPHERS_ERROR=The server does not support any of the TTSSH encryption algorithms.\nA secure connection cannot be made in the TTSSH-to-server direction.\nThe connection will be closed.
+MSG_CHIPHER_NONE_ERROR=All the encryption algorithms that this program and the server both understand have been disabled.\nTo communicate with this server, you will have to enable some more ciphers\nin the TTSSH Setup dialog box when you run Teraterm again.\nThis connection will now close.
+MSG_RASKEY_TOOWEAK_ERROR=Server RSA keys are too weak. A secure connection cannot be established.
+MSG_CHPHER_NOTSELECTED_ERROR=No cipher selected!
+
+; fwd.c
+MSG_FWD_LOCAL_CHANNEL_ERROR=The server attempted to manipulate a forwarding channel that does not exist.\nEither the server has a bug or is hostile. You should close this connection.
+MSG_FWD_REQUEST_ERROR=Communications error while listening for a connection to forward.\nThe listening port will be terminated.
+MSG_FWD_REFUSED_ERROR=Connection refused (perhaps the service is not currently running)
+MSG_FWD_NETDOWN_ERROR=The machine could not be contacted (possibly a network problem)
+MSG_FWD_MACHINEDOWN_ERROR=The machine could not be contacted (possibly the machine is down)
+MSG_FWD_ADDRNOTFOUTD_ERROR=No address was found for the machine.
+MSG_FWD_CONNECT_ERROR=The forwarding connection could not be established
+MSG_FWD_CHANNEL_ERROR=Communications error %s forwarded local %s.\n%s (code %d).\nThe forwarded connection will be closed.
+MSG_FWD_CHANNEL_OPEN_X_ERROR=The server attempted to forward a connection through this machine.\nIt requested a connection to the X server on %s (screen %d).\n%s.\nThe forwarded connection will be closed.
+MSG_FWD_CHANNEL_OPEN_ERROR=The server attempted to forward a connection through this machine.\nIt requested a connection to %s (port %s).\n%s.\nThe forwarded connection will be closed.
+DLG_FWDMON_TITLE=TTSSH Port Forwarding Monitor
+MSG_FWD_HOSTILE_ATTACK_ERROR=Host with IP number %s tried to connect to forwarded local port %d.\nThis could be some kind of hostile attack.
+MSG_FWD_SOCKET_ERROR=Some socket(s) required for port forwarding could not be initialized.\nSome port forwarding services may not be available.\n(errno %d)
+MSG_FWD_DUPLICATE_ERROR=TTSSH INTERNAL ERROR: Could not set port forwards because duplicate type/port requests were found
+MSG_FWD_DENIED_HANDLE_ERROR=The server attempted to forward a connection through this machine.\nIt requested a connection to machine %s on port %s.\nAn error occurred while processing the request, and it has been denied.
+MSG_FWD_DENIED_ERROR=The server attempted to forward a connection through this machine.\nIt requested a connection to machine %s on port %d.\nYou did not specify this forwarding to TTSSH in advance, and therefore the request was denied.
+MSG_FWD_DENIED_X_ERROR=The server attempted to forward a connection through this machine.\nIt requested a connection to the local X server.\nYou did not specify this forwarding to TTSSH in advance, and therefore the request was denied.
+MSG_FWD_DENIED_BY_SERVER_ERROR=A program on the local machine attempted to connect to a forwarded port.\nThe forwarding request was denied by the server. The connection has been closed.
+MSG_FWD_COMM_ERROR=A communications error occurred while sending forwarded data to a local port.\nThe forwarded connection will be closed.
+
+; keyfiles.c
+MSG_KEYFILES_READ_ENOENT_ERROR=An error occurred while trying to read the key file.\nThe specified filename does not exist.
+MSG_KEYFILES_READ_ERROR=An error occurred while trying to read the key file.
+MSG_KEYFILES_READ_ALLOC_ERROR=Memory ran out while trying to allocate space to read the key file.
+MSG_KEYFILES_PRIVATEKEY_NOTCONTAIN_ERROR=The specified key file does not contain an SSH private key.
+MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR=The specified key file has been truncated and does not contain a valid private key.
+MSG_KEYFILES_PRIVATEKEY_LENGTH_ERROR=The specified key file cannot be decrypted using the passphrase.\nThe file does not have the correct length.
+MSG_KEYFILES_PRIVATEKEY_NOCIPHER_ERROR=The specified key file cannot be decrypted using the passphrase.\nThe cipher type used to encrypt the file is not supported by TTSSH for this purpose.
+MSG_KEYFILES_PASSPHRASE_EMPTY_ERROR=The specified key file cannot be decrypted using the empty passphrase.\nFor auto-login, you must create a key file with no passphrase.\nBEWARE: This means the key can easily be stolen.
+MSG_KEYFILES_PASSPHRASE_ERROR=The specified key file cannot be decrypted using the passphrase.\nThe passphrase is incorrect.
+MSG_KEYFILES_CRYPTOLIB_ERROR=Error in crytography library.\nPerhaps the stored key is invalid.
 
 ; pkt.c
-MSG_OVERSIZED_PACKET_ERROR=Oあversized packet received from server; connection will close.
+MSG_OVERSIZED_PACKET_ERROR=Oversized packet received from server; connection will close.
 
 ; ttxssh.c
-MSG_UNKNOWN_OPTION_ERROR=Uあnrecognized command-line option: %s
+MSG_UNKNOWN_OPTION_ERROR=Unrecognized command-line option: %s
 
 ; x11util.c
-MSG_X_AUTH_ERROR=Remote X applicあation sent incorrect authentication data.\nIts X session is being cancelled.
+MSG_X_AUTH_ERROR=Remote X application sent incorrect authentication data.\nIts X session is being cancelled.
 
-MSG_CREATEWINDOW_KEYGEN_ERROR=Cannot create Key あGenerator window.
-MSG_CREATEWINDOW_ABOUT_ERROR=Cannot create About bあox window.
-MSG_CREATEWINDOW_SETUP_ERROR=Cannot create TTSSH Setあup window.
-MSG_CREATEWINDOW_FWDSETUP_ERROR=ふぉわーディンｇダイアログを表示できません。
-MSG_CREATEWINDOW_FWDEDIT_ERROR=フォワーディング編集ダイアログを表示できません。
-MSG_CREATEWINDOW_AUTH_ERROR=認証ダイアログを表示できません。\n接続は終了しました。
-MSG_CREATEWINDOW_AUTHSETUP_ERROR=認証設定ダイアログを表示できません。
-MSG_OPEN_FILEDLG_KNOWNHOSTS_ERROR=ダイアログを表示できません: エラー %d
+MSG_CREATEWINDOW_KEYGEN_ERROR=Cannot create Key Generator window.
+MSG_CREATEWINDOW_ABOUT_ERROR=Cannot create About box window.
+MSG_CREATEWINDOW_SETUP_ERROR=Cannot create TTSSH Setup window.
+MSG_CREATEWINDOW_FWDSETUP_ERROR=Unable to display forwarding setup dialog box.
+MSG_CREATEWINDOW_FWDEDIT_ERROR=Unable to display forwarding edit dialog box.
+MSG_CREATEWINDOW_AUTH_ERROR=Unable to display authentication dialog box.\nConnection terminated.
+MSG_CREATEWINDOW_AUTHSETUP_ERROR=Unable to display authentication setup dialog box.
+MSG_OPEN_FILEDLG_KNOWNHOSTS_ERROR=Cannot show file dialog box: error %d
 
 MSG_WARNING=警告
 MSG_ERROR=エラー
