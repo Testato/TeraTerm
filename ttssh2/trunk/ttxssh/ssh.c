@@ -491,8 +491,11 @@ static int buffer_packet_data(PTInstVar pvar, int limit)
 				pvar->ssh_state.payloadlen = cur_decompressed_bytes;
 				return cur_decompressed_bytes;
 			default:
+#ifdef I18N
+#else
 				notify_fatal_error(pvar,
 								   "Invalid compressed data in received packet");
+#endif
 				return -1;
 			}
 		}
@@ -520,8 +523,11 @@ static BOOL grab_payload(PTInstVar pvar, int num_bytes)
 		pvar->ssh_state.payload_grabbed += num_bytes;
 		if (pvar->ssh_state.payload_grabbed > in_buffer) {
 			char buf[128];
+#ifdef I18N
+#else
 			_snprintf(buf, sizeof(buf), "Received truncated packet (%ld > %d) @ grab_payload()", 
 				pvar->ssh_state.payload_grabbed, in_buffer);
+#endif
 			notify_fatal_error(pvar, buf);
 			return FALSE;
 		} else {
@@ -542,8 +548,11 @@ static BOOL grab_payload_limited(PTInstVar pvar, int num_bytes)
 	} else {
 		if (pvar->ssh_state.payload_grabbed > in_buffer) {
 			char buf[128];
+#ifdef I18N
+#else
 			_snprintf(buf, sizeof(buf), "Received truncated packet (%ld > %d) @ grab_payload_limited()", 
 				pvar->ssh_state.payload_grabbed, in_buffer);
+#endif
 			notify_fatal_error(pvar, buf);
 			return FALSE;
 		} else {
@@ -574,17 +583,23 @@ static int prep_packet(PTInstVar pvar, char FAR * data, int len,
 
 	if (SSHv1(pvar)) {
 		if (CRYPT_detect_attack(pvar, pvar->ssh_state.payload, len)) {
+#ifdef I18N
+#else
 			notify_fatal_error(pvar,
 							   "'CORE insertion attack' detected.  Aborting connection.");
 			return SSH_MSG_NONE;
+#endif
 		}
 
 		CRYPT_decrypt(pvar, pvar->ssh_state.payload, len);
 		/* PKT guarantees that the data is always 4-byte aligned */
 		if (do_crc(pvar->ssh_state.payload, len - 4) !=
 			get_uint32_MSBfirst(pvar->ssh_state.payload + len - 4)) {
+#ifdef I18N
+#else
 			notify_fatal_error(pvar,
 							   "Detected corrupted data; connection terminating.");
+#endif
 			return SSH_MSG_NONE;
 		}
 
@@ -604,8 +619,11 @@ static int prep_packet(PTInstVar pvar, char FAR * data, int len,
 		if (!CRYPT_verify_receiver_MAC
 			(pvar, pvar->ssh_state.receiver_sequence_number, data, len + 4,
 			 data + len + 4)) {
+#ifdef I18N
+#else
 			notify_fatal_error(pvar,
 							   "Detected corrupted data; connection terminating.");
+#endif
 			return SSH_MSG_NONE;
 		}
 
@@ -618,9 +636,12 @@ static int prep_packet(PTInstVar pvar, char FAR * data, int len,
 	if (SSHv1(pvar)) {
 		if (pvar->ssh_state.decompressing) {
 			if (pvar->ssh_state.decompress_stream.avail_in != 0) {
+#ifdef I18N
+#else
 				notify_nonfatal_error(pvar,
 									"Internal error: a packet was not fully decompressed.\n"
 									"This is a bug, please report it.");
+#endif
 			}
 
 			pvar->ssh_state.decompress_stream.next_in =
@@ -725,9 +746,12 @@ static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 									pvar->notification_msg,
 									pvar->notification_events) ==
 		SOCKET_ERROR) {
+#ifdef I18N
+#else
 		notify_fatal_error(pvar,
 						   "A communications error occurred while sending an SSH packet.\n"
 						   "The connection will close.");
+#endif
 		return FALSE;
 	} else {
 		return TRUE;
@@ -759,9 +783,12 @@ static void finish_send_packet_special(PTInstVar pvar, int skip_compress)
 
 			if (deflate(&pvar->ssh_state.compress_stream, Z_SYNC_FLUSH) !=
 				Z_OK) {
+#ifdef I18N
+#else
 				notify_fatal_error(pvar,
 								   "An error occurred while compressing packet data.\n"
 								   "The connection will close.");
+#endif
 				return;
 			}
 		}
@@ -823,9 +850,12 @@ static void finish_send_packet_special(PTInstVar pvar, int skip_compress)
 			// 圧縮対象はヘッダを除くペイロードのみ。
 			buffer_append(msg, "\0\0\0\0\0", 5);  // 5 = packet-length(4) + padding(1)
 			if (buffer_compress(&pvar->ssh_state.compress_stream, pvar->ssh_state.outbuf + 12, len, msg) == -1) {
+#ifdef I18N
+#else
 				notify_fatal_error(pvar,
 								   "An error occurred while compressing packet data.\n"
 								   "The connection will close.");
+#endif
 				return;
 			}
 			data = buffer_ptr(msg);
@@ -1162,18 +1192,27 @@ static BOOL handle_disconnect(PTInstVar pvar)
 	}
 
 	if (get_handler(pvar, SSH_SMSG_FAILURE) == handle_forwarding_failure) {
+#ifdef I18N
+#else
 		explanation =
 			"\nIt may have disconnected because it was unable to forward a port you requested to be forwarded from the server.\n"
 			"This often happens when someone is already forwarding that port from the server.";
+#endif
 	}
 
 	if (description != NULL) {
+#ifdef I18N
+#else
 		_snprintf(buf, sizeof(buf),
 				  "Server disconnected with message '%s'.%s", description,
 				  explanation);
+#endif
 	} else {
+#ifdef I18N
+#else
 		_snprintf(buf, sizeof(buf),
 				  "Server disconnected (no reason given).%s", explanation);
+#endif
 	}
 	buf[sizeof(buf) - 1] = 0;
 	notify_fatal_error(pvar, buf);
@@ -1454,8 +1493,11 @@ BOOL SSH_handle_server_ID(PTInstVar pvar, char FAR * ID, int ID_len)
 			pvar->ssh_state.server_ID = _strdup(ID);
 
 			if (!parse_protocol_ID(pvar, ID) || !negotiate_protocol(pvar)) {
+#ifdef I18N
+#else
 				notify_fatal_error(pvar,
 								   "This program does not understand the server's version of the protocol.");
+#else
 			} else {
 				char TTSSH_ID[1024];
 				int TTSSH_ID_len;
@@ -1478,9 +1520,12 @@ BOOL SSH_handle_server_ID(PTInstVar pvar, char FAR * ID, int ID_len)
 
 				if ((pvar->Psend) (pvar->socket, TTSSH_ID, TTSSH_ID_len,
 								   0) != TTSSH_ID_len) {
+#ifdef I18N
+#else
 					notify_fatal_error(pvar,
 									   "An error occurred while sending the SSH ID string.\n"
 									   "The connection will close.");
+#endif
 				} else {
 					// 改行コードの除去 (2004.8.4 yutaka)
 					pvar->client_version_string[--TTSSH_ID_len] = 0;
@@ -1706,8 +1751,11 @@ void SSH_handle_packet(PTInstVar pvar, char FAR * data, int len,
 			if (!SSH2_dispatch_enabled_check(message) || handler == NULL) {
 				char buf[1024];
 
+#ifdef I18N
+#else
 				_snprintf(buf, sizeof(buf),
 					"Unexpected SSH2 message(%d) on current stage(%d)", message, handle_message_stage);
+#endif
 				notify_fatal_error(pvar, buf);
 				// abort
 			}
@@ -1717,8 +1765,11 @@ void SSH_handle_packet(PTInstVar pvar, char FAR * data, int len,
 			if (SSHv1(pvar)) {
 				char buf[1024];
 
+#ifdef I18N
+#else
 				_snprintf(buf, sizeof(buf),
 						  "Unexpected packet type received: %d", message);
+#endif
 				buf[sizeof(buf) - 1] = 0;
 				notify_fatal_error(pvar, buf);
 			} else {
@@ -1756,9 +1807,12 @@ static BOOL handle_pty_success(PTInstVar pvar)
 
 static BOOL handle_pty_failure(PTInstVar pvar)
 {
+#ifdef I18N
+#else
 	notify_nonfatal_error(pvar,
 						  "The server cannot allocate a pseudo-terminal. "
 						  "You may encounter some problems with the terminal.");
+#endif
 	return handle_pty_success(pvar);
 }
 
@@ -1812,9 +1866,12 @@ static void enable_send_compression(PTInstVar pvar)
 	if (deflateInit
 		(&pvar->ssh_state.compress_stream,
 		 pvar->ssh_state.compression_level) != Z_OK) {
+#ifdef I18N
+#else
 		notify_fatal_error(pvar,
 						   "An error occurred while setting up compression.\n"
 						   "The connection will close.");
+#endif
 		return;
 	} else {
 		// SSH2では圧縮・展開処理をSSH1とは別に行うので、下記フラグは落としておく。(2005.7.9 yutaka)
@@ -1840,9 +1897,12 @@ static void enable_recv_compression(PTInstVar pvar)
 	pvar->ssh_state.decompress_stream.opaque = NULL;
 	if (inflateInit(&pvar->ssh_state.decompress_stream) != Z_OK) {
 		deflateEnd(&pvar->ssh_state.compress_stream);
+#ifdef I18N
+#else
 		notify_fatal_error(pvar,
 						   "An error occurred while setting up compression.\n"
 						   "The connection will close.");
+#endif
 		return;
 	} else {
 		// SSH2では圧縮・展開処理をSSH1とは別に行うので、下記フラグは落としておく。(2005.7.9 yutaka)
@@ -1948,9 +2008,12 @@ static BOOL handle_rsa_challenge(PTInstVar pvar)
 
 			enque_simple_auth_handlers(pvar);
 		} else {
+#ifdef I18N
+#else
 			notify_fatal_error(pvar,
 							   "An error occurred while decrypting the RSA challenge.\n"
 							   "Perhaps the key file is corrupted.");
+#endif
 		}
 	}
 
@@ -2096,8 +2159,11 @@ static void try_send_credentials(PTInstVar pvar)
 				break;
 			}
 		default:
+#ifdef I18N
+#else
 			notify_fatal_error(pvar,
 							   "Internal error: unsupported authentication method");
+#endif
 			return;
 		}
 
@@ -2410,7 +2476,10 @@ void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, int buflen)
 
 				if (deflate(&pvar->ssh_state.compress_stream, Z_NO_FLUSH) !=
 					Z_OK) {
+#ifdef I18N
+#else
 					notify_fatal_error(pvar, "Error compressing packet data");
+#endif
 					return;
 				}
 
@@ -2420,7 +2489,10 @@ void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, int buflen)
 
 				if (deflate(&pvar->ssh_state.compress_stream, Z_SYNC_FLUSH) !=
 					Z_OK) {
+#ifdef I18N
+#else
 					notify_fatal_error(pvar, "Error compressing packet data");
+#endif
 					return;
 				}
 			} else {
@@ -2492,8 +2564,11 @@ int SSH_extract_payload(PTInstVar pvar, unsigned char FAR * dest, int len)
 
 		if (inflate(&pvar->ssh_state.decompress_stream, Z_SYNC_FLUSH) !=
 			Z_OK) {
+#ifdef I18N
+#else
 			notify_fatal_error(pvar,
 							   "Invalid compressed data in received packet");
+#endif
 			return 0;
 		}
 	}
@@ -2694,7 +2769,10 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 				pvar->ssh_state.outbuflen - 12;
 
 			if (deflate(&pvar->ssh_state.compress_stream, Z_NO_FLUSH) != Z_OK) {
+#ifdef I18N
+#else
 				notify_fatal_error(pvar, "Error compressing packet data");
+#endif
 				return;
 			}
 
@@ -2704,7 +2782,10 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 
 			if (deflate(&pvar->ssh_state.compress_stream, Z_SYNC_FLUSH) !=
 				Z_OK) {
+#ifdef I18N
+#else
 				notify_fatal_error(pvar, "Error compressing packet data");
+#endif
 				return;
 			}
 		} else {
@@ -6164,8 +6245,11 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 
 	if (pvar->ssh2_autologin == 1) {
 		// SSH2自動ログインが有効の場合は、リトライは行わない。(2004.12.4 yutaka)
+#ifdef I18N
+#else
 		notify_fatal_error(pvar,
 			"SSH2 autologin error: user authentication was failure");
+#endif
 		return TRUE;
 	}
 
@@ -6451,9 +6535,12 @@ static BOOL handle_SSH2_open_failure(PTInstVar pvar)
 
 	cstring = buffer_get_string(&data, NULL);
 
+#ifdef I18N
+#else
 	_snprintf(tmpbuf, sizeof(tmpbuf), 
 		"SSH2_MSG_CHANNEL_OPEN_FAILURE was received.\r\nchannel [%d]: reason: %s(%d) message: %s", 
 		id, rmsg, reason, cstring);
+#endif
 	notify_nonfatal_error(pvar, tmpbuf);
 
 	free(cstring);
@@ -6982,6 +7069,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.64  2006/11/28 13:20:52  maya
+ * Cisco ルータの送信する SSH2_MSG_IGNORE のデータが不正なようなので、何も処理しないようにした。
+ *
  * Revision 1.63  2006/11/19 14:23:30  maya
  * RSAの場合はworkaroundが不要なようなので削除した。
  *

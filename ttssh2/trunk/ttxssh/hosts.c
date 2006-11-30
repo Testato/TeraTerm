@@ -152,12 +152,18 @@ static int begin_read_file(PTInstVar pvar, char FAR * name,
 	if (fd == -1) {
 		if (!suppress_errors) {
 			if (errno == ENOENT) {
+#ifdef I18N
+#else
 				notify_nonfatal_error(pvar,
 									  "An error occurred while trying to read a known_hosts file.\n"
 									  "The specified filename does not exist.");
+#endif
 			} else {
+#ifdef I18N
+#else
 				notify_nonfatal_error(pvar,
 									  "An error occurred while trying to read a known_hosts file.");
+#endif
 			}
 		}
 		return 0;
@@ -170,16 +176,22 @@ static int begin_read_file(PTInstVar pvar, char FAR * name,
 		pvar->hosts_state.file_data = malloc(length + 1);
 		if (pvar->hosts_state.file_data == NULL) {
 			if (!suppress_errors) {
+#ifdef I18N
+#else
 				notify_nonfatal_error(pvar,
 									  "Memory ran out while trying to allocate space to read a known_hosts file.");
+#endif
 			}
 			_close(fd);
 			return 0;
 		}
 	} else {
 		if (!suppress_errors) {
+#ifdef I18N
+#else
 			notify_nonfatal_error(pvar,
 								  "An error occurred while trying to read a known_hosts file.");
+#endif
 		}
 		_close(fd);
 		return 0;
@@ -192,8 +204,11 @@ static int begin_read_file(PTInstVar pvar, char FAR * name,
 
 	if (amount_read != length) {
 		if (!suppress_errors) {
+#ifdef I18N
+#else
 			notify_nonfatal_error(pvar,
 								  "An error occurred while trying to read a known_hosts file.");
+#endif
 		}
 		free(pvar->hosts_state.file_data);
 		pvar->hosts_state.file_data = NULL;
@@ -624,9 +639,12 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 
 		if (!is_pattern_char(ch) || ch == '*' || ch == '?') {
 			if (!suppress_errors) {
+#ifdef I18N
+#else
 				notify_fatal_error(pvar,
 								   "The host name contains an invalid character.\n"
 								   "This session will be terminated.");
+#endif
 			}
 			return 0;
 		}
@@ -634,8 +652,11 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 
 	if (i == 0) {
 		if (!suppress_errors) {
+#ifdef I18N
+#else
 			notify_fatal_error(pvar, "The host name should not be empty.\n"
 							   "This session will be terminated.");
+#endif
 		}
 		return 0;
 	}
@@ -909,9 +930,12 @@ static void add_host_key(PTInstVar pvar)
 	char FAR *name = pvar->hosts_state.file_names[0];
 
 	if (name == NULL || name[0] == 0) {
+#ifdef I18N
+#else
 		notify_nonfatal_error(pvar,
 							  "The host and its key cannot be added, because no known-hosts file has been specified.\n"
 							  "Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
+#endif
 	} else {
 		char FAR *keydata = format_host_key(pvar);
 		int length = strlen(keydata);
@@ -927,13 +951,19 @@ static void add_host_key(PTInstVar pvar)
 			  _S_IREAD | _S_IWRITE);
 		if (fd == -1) {
 			if (errno == EACCES) {
+#ifdef I18N
+#else
 				notify_nonfatal_error(pvar,
 									  "An error occurred while trying to write the host key.\n"
 									  "You do not have permission to write to the known-hosts file.");
+#endif
 			} else {
+#ifdef I18N
+#else
 				notify_nonfatal_error(pvar,
 									  "An error occurred while trying to write the host key.\n"
 									  "The host key could not be written.");
+#endif
 			}
 			return;
 		}
@@ -943,9 +973,12 @@ static void add_host_key(PTInstVar pvar)
 		close_result = _close(fd);
 
 		if (amount_written != length || close_result == -1) {
+#ifdef I18N
+#else
 			notify_nonfatal_error(pvar,
 								  "An error occurred while trying to write the host key.\n"
 								  "The host key could not be written.");
+#endif
 		}
 	}
 }
@@ -971,9 +1004,12 @@ static void delete_different_key(PTInstVar pvar)
 	char FAR *name = pvar->hosts_state.file_names[0];
 
 	if (name == NULL || name[0] == 0) {
+#ifdef I18N
+#else
 		notify_nonfatal_error(pvar,
 							  "The host and its key cannot be added, because no known-hosts file has been specified.\n"
 							  "Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
+#endif
 	}
 	else {
 		Key key; // 接続中のホストのキー
@@ -995,13 +1031,19 @@ static void delete_different_key(PTInstVar pvar)
 
 		if (fd == -1) {
 			if (errno == EACCES) {
+#ifdef I18N
+#else
 				notify_nonfatal_error(pvar,
 									  "An error occurred while trying to write the host key.\n"
 									  "You do not have permission to write to the known-hosts file.");
+#endif
 			} else {
+#ifdef I18N
+#else
 				notify_nonfatal_error(pvar,
 									  "An error occurred while trying to write the host key.\n"
 									  "The host key could not be written.");
+#endif
 			}
 			free(filename);
 			return;
@@ -1119,9 +1161,12 @@ static void delete_different_key(PTInstVar pvar)
 error1:
 		close_result = _close(fd);
 		if (amount_written != length || close_result == -1) {
+#ifdef I18N
+#else
 			notify_nonfatal_error(pvar,
 								  "An error occurred while trying to write the host key.\n"
 								  "The host key could not be written.");
+#endif
 			goto error2;
 		}
 
@@ -1446,6 +1491,9 @@ void HOSTS_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2006/11/23 02:19:30  maya
+ * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
+ *
  * Revision 1.9  2006/07/01 00:41:02  maya
  * 書き込み用 ssh_known_hosts が指定されていないときに落ちる不具合を修正した。
  *
