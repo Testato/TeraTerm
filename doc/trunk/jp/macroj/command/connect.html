@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>connect</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">connect</FONT><BR><BR>
+
+
+形式：
+<UL>
+<B>
+connect &lt;command line parameters&gt;
+</B>
+</UL><P></P>
+
+<pre><P></P>
+MACRO が Tera Term とリンクされていない場合、Tera Term を起動してMACRO とリンクする。<command line parameters> は、Tera Term 
+を起動する時のコマンドラインパラメータ。
+
+MACRO が Tera Term とすでにリンクされていて、Tera Term がホストに接続されていない場合、Tera Term をコマンドライン <command line parameters> 
+で指定されるホストに接続させる。
+
+Tera Term のコマンドラインパラメータについては、Tera Term ヘルプを参照。
+
+MACRO が Tera Term とすでにリンクされていて、Tera Term がホストにすでに接続されている場合、このコマンドは無視される。
+
+このコマンドの結果、リンクと接続の状態に応じて以下のうちの一つの値がシステム変数 result に格納される。
+<P></P>
+</pre><P></P>
+<pre>
+値						状態
+<hr>
+0						Tera Term とリンクされていない。
+1						ホストへの接続はされていないが、Tera Term へのリンクはされている。
+2						リンクおよび接続両方ともされている。
+
+"connect" コマンドを実行する前にリンクと接続の状態を調べるには、"testlink" コマンドを使うことができる。
+
+Tera Term と MACRO のリンクしていない状態では、"connect" と "testlink" 以外の通信コマンドは実行できない。
+
+
+参照：
+<UL>
+<A HREF="closett.html">"closett"</A>
+"disconnect"
+"testlink"
+"unlink"
+</UL>
+<pre>
+例：
+   <B>connect"</B>					パラメータなしで Tera Term を起動
+   
+   <B>connect '/c=2'</B>				パラメータ "/C=2"をつけて Tera Term を起動
+
+   <B>connect 'foohost.foo.foo.jp'</B>
+
+
+   <B>CommandLine = '111.111.111'</B>
+   <B>connect CommandLine</B>
+
+</BODY>
+</HTML>
