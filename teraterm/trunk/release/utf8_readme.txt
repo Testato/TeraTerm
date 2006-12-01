@@ -768,6 +768,7 @@ OF SUCH DAMAGE.
 
 2006.11.30 (Ver 4.50)
   - Bug fix: TeraTerm crashs when the log file name is not a full path.
+  - added FUNCTION.CNF. F1-F10 keys are enabled in this keyboard setup file.
   - upgraded TTSSH version supporting SSH2 to 2.38
 
 2006.11.20 (Ver 4.49)
