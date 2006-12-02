@@ -1497,7 +1497,7 @@ BOOL SSH_handle_server_ID(PTInstVar pvar, char FAR * ID, int ID_len)
 #else
 				notify_fatal_error(pvar,
 								   "This program does not understand the server's version of the protocol.");
-#else
+#endif
 			} else {
 				char TTSSH_ID[1024];
 				int TTSSH_ID_len;
@@ -3280,6 +3280,13 @@ ssh2_mac_t ssh2_macs[] = {
 	{NULL, NULL, 0},
 };
 
+
+char *ssh_comp[] = {
+	"none",
+	"zlib",
+	"zlib@openssh.com",
+};
+
 static Newkeys current_keys[MODE_MAX];
 
 
@@ -3320,6 +3327,20 @@ static int get_cipher_key_len(SSHCipher cipher)
 	return (val);
 }
 
+static char * get_cipher_string(SSHCipher cipher)
+{
+	ssh2_cipher_t *ptr = ssh2_ciphers;
+	static char buf[32];
+
+	while (ptr->name != NULL) {
+		if (cipher == ptr->cipher) {
+			strncpy(buf, ptr->name, sizeof(buf));
+			break;
+		}
+		ptr++;
+	}
+	return buf;
+}
 
 #if 0
 static int get_mac_index(char *name) 
@@ -3724,6 +3745,8 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 		pvar->kex_type = KEX_DH_GEX_SHA1;
 	}
 
+	_snprintf(buf, sizeof(buf), "KEX algorithm: %s", ptr);
+	notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
 
 	// ホストキーアルゴリズムチェック
 	size = get_payload_uint32(pvar, offset);
@@ -3770,6 +3793,9 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 	}
 #endif
 
+	_snprintf(buf, sizeof(buf), "server host key algorithm: %s", ptr);
+	notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
+
 	// クライアント -> サーバ暗号アルゴリズムチェック
 	size = get_payload_uint32(pvar, offset);
 	offset += 4;
@@ -3785,6 +3811,9 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 		msg = tmp;
 		goto error;
 	}
+
+	_snprintf(buf, sizeof(buf), "encryption algorithm client to server: %s", get_cipher_string(pvar->ctos_cipher));
+	notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
 
 	// サーバ -> クライアント暗号アルゴリズムチェック
 	size = get_payload_uint32(pvar, offset);
@@ -3802,6 +3831,8 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 		goto error;
 	}
 
+	_snprintf(buf, sizeof(buf), "encryption algorithm server to client: %s", get_cipher_string(pvar->stoc_cipher));
+	notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
 
 	// HMAC(Hash Message Authentication Code)アルゴリズムの決定 (2004.12.17 yutaka)
 	size = get_payload_uint32(pvar, offset);
@@ -3819,6 +3850,9 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 		goto error;
 	}
 
+	_snprintf(buf, sizeof(buf), "MAC algorithm client to server: %s", ssh2_macs[pvar->ctos_hmac]);
+	notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
+
 	size = get_payload_uint32(pvar, offset);
 	offset += 4;
 	for (i = 0; i < size; i++) {
@@ -3834,6 +3868,8 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 		goto error;
 	}
 
+	_snprintf(buf, sizeof(buf), "MAC algorithm server to client: %s", ssh2_macs[pvar->stoc_hmac]);
+	notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
 
 	// 圧縮アルゴリズムの決定 
 	// pvar->ssh_state.compressing = FALSE; として下記メンバを使用する。
@@ -3853,6 +3889,9 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 		goto error;
 	}
 
+	_snprintf(buf, sizeof(buf), "compression algorithm client to server: %s", ssh_comp[pvar->ctos_compression]);
+	notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
+
 	size = get_payload_uint32(pvar, offset);
 	offset += 4;
 	for (i = 0; i < size; i++) {
@@ -3868,6 +3907,8 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 		goto error;
 	}
 
+	_snprintf(buf, sizeof(buf), "compression algorithm server to client: %s", ssh_comp[pvar->stoc_compression]);
+	notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
 
 	// we_needの決定 (2004.11.6 yutaka)
 	// キー再作成の場合はスキップする。
@@ -7069,6 +7110,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.65  2006/11/30 09:56:43  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.64  2006/11/28 13:20:52  maya
  * Cisco ルータの送信する SSH2_MSG_IGNORE のデータが不正なようなので、何も処理しないようにした。
  *
