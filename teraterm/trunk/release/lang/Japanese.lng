@@ -269,6 +269,16 @@ MSG_FWD_DENIED_X_ERROR=The server attempted to forward a connection through this
 MSG_FWD_DENIED_BY_SERVER_ERROR=A program on the local machine attempted to connect to a forwarded port.\nThe forwarding request was denied by the server. The connection has been closed.
 MSG_FWD_COMM_ERROR=A communications error occurred while sending forwarded data to a local port.\nThe forwarded connection will be closed.
 
+; hosts.c
+MSG_HOSTS_READ_ENOENT_ERROR=An error occurred while trying to read a known_hosts file.\nThe specified filename does not exist.
+MSG_HOSTS_READ_ERROR=An error occurred while trying to read a known_hosts file.
+MSG_HOSTS_ALLOC_ERROR=Memory ran out while trying to allocate space to read a known_hosts file.
+MSG_HOSTS_HOSTNAME_INVALID_ERROR=The host name contains an invalid character.\nThis session will be terminated.
+MSG_HOSTS_HOSTNAME_EMPTY_ERROR=The host name should not be empty.\nThis session will be terminated.
+MSG_HOSTS_FILE_UNSPECIFY_ERROR=The host and its key cannot be added, because no known-hosts file has been specified.\nRestart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.
+MSG_HOSTS_WRITE_EACCES_ERROR=An error occurred while trying to write the host key.\nYou do not have permission to write to the known-hosts file.
+MSG_HOSTS_WRITE_ERROR=An error occurred while trying to write the host key.\nThe host key could not be written.
+
 ; keyfiles.c
 MSG_KEYFILES_READ_ENOENT_ERROR=An error occurred while trying to read the key file.\nThe specified filename does not exist.
 MSG_KEYFILES_READ_ERROR=An error occurred while trying to read the key file.
@@ -282,7 +292,32 @@ MSG_KEYFILES_PASSPHRASE_ERROR=The specified key file cannot be decrypted using t
 MSG_KEYFILES_CRYPTOLIB_ERROR=Error in crytography library.\nPerhaps the stored key is invalid.
 
 ; pkt.c
-MSG_OVERSIZED_PACKET_ERROR=Oversized packet received from server; connection will close.
+MSG_PKT_OVERSIZED_ERROR=Oversized packet received from server; connection will close.
+
+; ssh.c
+MSG_SSH_INVALID_COMPDATA_ERROR=Invalid compressed data in received packet
+MSG_SSH_TRUNCATED_PKT_ERROR=Received truncated packet (%ld > %d) @ grab_payload()
+MSG_SSH_TRUNCATED_PKT_LIM_ERROR=Received truncated packet (%ld > %d) @ grab_payload_limited()
+MSG_SSH_COREINS_ERROR='CORE insertion attack' detected.  Aborting connection.
+MSG_SSH_CORRUPTDATA_ERROR=Detected corrupted data; connection terminating.
+MSG_SSH_DECOMPRESS_ERROR=Internal error: a packet was not fully decompressed.\nThis is a bug, please report it.
+MSG_SSH_SEND_PKT_ERROR=A communications error occurred while sending an SSH packet.\nThe connection will close.
+MSG_SSH_COMP_ERROR=An error occurred while compressing packet data.\nThe connection will close.
+MSG_SSH_UNABLE_FWD_ERROR=\nIt may have disconnected because it was unable to forward a port you requested to be forwarded from the server.\nThis often happens when someone is already forwarding that port from the server.
+MSG_SSH_SERVER_DISCON_ERROR=Server disconnected with message '%s'.%s
+MSG_SSH_SERVER_DISCON_NORES_ERROR=Server disconnected (no reason given).%s
+MSG_SSH_VERSION_ERROR=This program does not understand the server's version of the protocol.
+MSG_SSH_SEND_ID_ERROR=An error occurred while sending the SSH ID string.\nThe connection will close.
+MSG_SSH_UNEXP_MSG2_ERROR=Unexpected SSH2 message(%d) on current stage(%d)
+MSG_SSH_UNEXP_MSG_ERROR=Unexpected packet type received: %d
+MSG_SSH_ALLOC_TERMINAL_ERROR=The server cannot allocate a pseudo-terminal. You may encounter some problems with the terminal.
+MSG_SSH_SETUP_COMP_ERROR=An error occurred while setting up compression.\nThe connection will close.
+MSG_SSH_DECRYPT_RSA_ERROR=An error occurred while decrypting the RSA challenge.\nPerhaps the key file is corrupted.
+MSG_SSH_UNSUPPORT_AUTH_METHOD_ERROR=Internal error: unsupported authentication method
+; MSG_SSH_COMP_ERROR2 is duplication of MSG_SSH_COMP_ERROR
+MSG_SSH_COMP_ERROR2=Error compressing packet data
+MSG_SSH_AUTH_FAILURE_ERROR=SSH2 autologin error: user authentication was failure
+MSG_SSH_CHANNEL_OPEN_ERROR=SSH2_MSG_CHANNEL_OPEN_FAILURE was received.\r\nchannel [%d]: reason: %s(%d) message: %s
 
 ; ttxssh.c
 MSG_UNKNOWN_OPTION_ERROR=Unrecognized command-line option: %s
