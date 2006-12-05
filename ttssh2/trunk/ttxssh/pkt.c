@@ -241,7 +241,7 @@ int PKT_recv(PTInstVar pvar, char FAR * buf, int buflen)
 				// 実際にはデータ化けで復号失敗時に、誤認識することが多い。
 #ifdef I18N
 				strcpy(pvar->ts->UIMsg, "Oversized packet received from server; connection will close.");
-				UTIL_get_lang_msg("MSG_OVERSIZED_PACKET_ERROR", pvar);
+				UTIL_get_lang_msg("MSG_PKT_OVERSIZED_ERROR", pvar);
 				notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 				notify_fatal_error(pvar,
@@ -309,6 +309,9 @@ void PKT_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2006/11/23 02:19:30  maya
+ * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
+ *
  * Revision 1.3  2006/10/29 17:15:47  yutakapon
  * DEBUG_PRINT_TO_FILEマクロを追加。
  *

@@ -492,6 +492,9 @@ static int buffer_packet_data(PTInstVar pvar, int limit)
 				return cur_decompressed_bytes;
 			default:
 #ifdef I18N
+				strcpy(pvar->ts->UIMsg, "Invalid compressed data in received packet");
+				UTIL_get_lang_msg("MSG_SSH_INVALID_COMPDATA_ERROR", pvar);
+				notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 				notify_fatal_error(pvar,
 								   "Invalid compressed data in received packet");
@@ -524,6 +527,10 @@ static BOOL grab_payload(PTInstVar pvar, int num_bytes)
 		if (pvar->ssh_state.payload_grabbed > in_buffer) {
 			char buf[128];
 #ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Received truncated packet (%ld > %d) @ grab_payload()");
+			UTIL_get_lang_msg("MSG_SSH_TRUNCATED_PKT_ERROR", pvar);
+			_snprintf(buf, sizeof(buf), pvar->ts->UIMsg,
+				pvar->ssh_state.payload_grabbed, in_buffer);
 #else
 			_snprintf(buf, sizeof(buf), "Received truncated packet (%ld > %d) @ grab_payload()", 
 				pvar->ssh_state.payload_grabbed, in_buffer);
@@ -549,6 +556,10 @@ static BOOL grab_payload_limited(PTInstVar pvar, int num_bytes)
 		if (pvar->ssh_state.payload_grabbed > in_buffer) {
 			char buf[128];
 #ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Received truncated packet (%ld > %d) @ grab_payload_limited()");
+			UTIL_get_lang_msg("MSG_SSH_TRUNCATED_PKT_LIM_ERROR", pvar);
+			_snprintf(buf, sizeof(buf), pvar->ts->UIMsg,
+				pvar->ssh_state.payload_grabbed, in_buffer);
 #else
 			_snprintf(buf, sizeof(buf), "Received truncated packet (%ld > %d) @ grab_payload_limited()", 
 				pvar->ssh_state.payload_grabbed, in_buffer);
@@ -584,6 +595,9 @@ static int prep_packet(PTInstVar pvar, char FAR * data, int len,
 	if (SSHv1(pvar)) {
 		if (CRYPT_detect_attack(pvar, pvar->ssh_state.payload, len)) {
 #ifdef I18N
+			strcpy(pvar->ts->UIMsg, "'CORE insertion attack' detected.  Aborting connection.");
+			UTIL_get_lang_msg("MSG_SSH_COREINS_ERROR", pvar);
+			notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 			notify_fatal_error(pvar,
 							   "'CORE insertion attack' detected.  Aborting connection.");
@@ -596,6 +610,9 @@ static int prep_packet(PTInstVar pvar, char FAR * data, int len,
 		if (do_crc(pvar->ssh_state.payload, len - 4) !=
 			get_uint32_MSBfirst(pvar->ssh_state.payload + len - 4)) {
 #ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Detected corrupted data; connection terminating.");
+			UTIL_get_lang_msg("MSG_SSH_CORRUPTDATA_ERROR", pvar);
+			notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 			notify_fatal_error(pvar,
 							   "Detected corrupted data; connection terminating.");
@@ -620,6 +637,9 @@ static int prep_packet(PTInstVar pvar, char FAR * data, int len,
 			(pvar, pvar->ssh_state.receiver_sequence_number, data, len + 4,
 			 data + len + 4)) {
 #ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Detected corrupted data; connection terminating.");
+			UTIL_get_lang_msg("MSG_SSH_CORRUPTDATA_ERROR", pvar);
+			notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 			notify_fatal_error(pvar,
 							   "Detected corrupted data; connection terminating.");
@@ -637,6 +657,10 @@ static int prep_packet(PTInstVar pvar, char FAR * data, int len,
 		if (pvar->ssh_state.decompressing) {
 			if (pvar->ssh_state.decompress_stream.avail_in != 0) {
 #ifdef I18N
+				strcpy(pvar->ts->UIMsg, "Internal error: a packet was not fully decompressed.\n"
+										"This is a bug, please report it.");
+				UTIL_get_lang_msg("MSG_SSH_DECOMPRESS_ERROR", pvar);
+				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
 				notify_nonfatal_error(pvar,
 									"Internal error: a packet was not fully decompressed.\n"
@@ -747,6 +771,10 @@ static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 									pvar->notification_events) ==
 		SOCKET_ERROR) {
 #ifdef I18N
+		strcpy(pvar->ts->UIMsg, "A communications error occurred while sending an SSH packet.\n"
+								"The connection will close.");
+		UTIL_get_lang_msg("MSG_SSH_SEND_PKT_ERROR", pvar);
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 		notify_fatal_error(pvar,
 						   "A communications error occurred while sending an SSH packet.\n"
@@ -784,6 +812,10 @@ static void finish_send_packet_special(PTInstVar pvar, int skip_compress)
 			if (deflate(&pvar->ssh_state.compress_stream, Z_SYNC_FLUSH) !=
 				Z_OK) {
 #ifdef I18N
+				strcpy(pvar->ts->UIMsg, "An error occurred while compressing packet data.\n"
+										"The connection will close.");
+				UTIL_get_lang_msg("MSG_SSH_COMP_ERROR", pvar);
+				notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 				notify_fatal_error(pvar,
 								   "An error occurred while compressing packet data.\n"
@@ -851,6 +883,10 @@ static void finish_send_packet_special(PTInstVar pvar, int skip_compress)
 			buffer_append(msg, "\0\0\0\0\0", 5);  // 5 = packet-length(4) + padding(1)
 			if (buffer_compress(&pvar->ssh_state.compress_stream, pvar->ssh_state.outbuf + 12, len, msg) == -1) {
 #ifdef I18N
+				strcpy(pvar->ts->UIMsg, "An error occurred while compressing packet data.\n"
+										"The connection will close.");
+				UTIL_get_lang_msg("MSG_SSH_COMP_ERROR", pvar);
+				notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 				notify_fatal_error(pvar,
 								   "An error occurred while compressing packet data.\n"
@@ -1159,6 +1195,9 @@ static BOOL handle_disconnect(PTInstVar pvar)
 	int description_len;
 	char buf[2048];
 	char FAR *explanation = "";
+#ifdef I18N
+	char uimsg[MAX_UIMSG];
+#endif
 
 	if (SSHv1(pvar)) {
 		if (grab_payload(pvar, 4)
@@ -1193,6 +1232,11 @@ static BOOL handle_disconnect(PTInstVar pvar)
 
 	if (get_handler(pvar, SSH_SMSG_FAILURE) == handle_forwarding_failure) {
 #ifdef I18N
+		strcpy(pvar->ts->UIMsg, "\nIt may have disconnected because it was unable to forward a port you requested to be forwarded from the server.\n"
+								"This often happens when someone is already forwarding that port from the server.");
+		UTIL_get_lang_msg("MSG_SSH_UNABLE_FWD_ERROR", pvar);
+		strcpy(uimsg, pvar->ts->UIMsg);
+		explanation = uimsg;
 #else
 		explanation =
 			"\nIt may have disconnected because it was unable to forward a port you requested to be forwarded from the server.\n"
@@ -1202,6 +1246,11 @@ static BOOL handle_disconnect(PTInstVar pvar)
 
 	if (description != NULL) {
 #ifdef I18N
+		strcpy(pvar->ts->UIMsg, "Server disconnected with message '%s'.%s");
+		UTIL_get_lang_msg("MSG_SSH_SERVER_DISCON_ERROR", pvar);
+		_snprintf(buf, sizeof(buf),
+				  pvar->ts->UIMsg, description,
+				  explanation);
 #else
 		_snprintf(buf, sizeof(buf),
 				  "Server disconnected with message '%s'.%s", description,
@@ -1209,6 +1258,10 @@ static BOOL handle_disconnect(PTInstVar pvar)
 #endif
 	} else {
 #ifdef I18N
+		strcpy(pvar->ts->UIMsg, "Server disconnected (no reason given).%s");
+		UTIL_get_lang_msg("MSG_SSH_SERVER_DISCON_NORES_ERROR", pvar);
+		_snprintf(buf, sizeof(buf),
+				  pvar->ts->UIMsg, explanation);
 #else
 		_snprintf(buf, sizeof(buf),
 				  "Server disconnected (no reason given).%s", explanation);
@@ -1494,6 +1547,9 @@ BOOL SSH_handle_server_ID(PTInstVar pvar, char FAR * ID, int ID_len)
 
 			if (!parse_protocol_ID(pvar, ID) || !negotiate_protocol(pvar)) {
 #ifdef I18N
+				strcpy(pvar->ts->UIMsg, "This program does not understand the server's version of the protocol.");
+				UTIL_get_lang_msg("MSG_SSH_VERSION_ERROR", pvar);
+				notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 				notify_fatal_error(pvar,
 								   "This program does not understand the server's version of the protocol.");
@@ -1521,6 +1577,10 @@ BOOL SSH_handle_server_ID(PTInstVar pvar, char FAR * ID, int ID_len)
 				if ((pvar->Psend) (pvar->socket, TTSSH_ID, TTSSH_ID_len,
 								   0) != TTSSH_ID_len) {
 #ifdef I18N
+					strcpy(pvar->ts->UIMsg, "An error occurred while sending the SSH ID string.\n"
+											"The connection will close.");
+					UTIL_get_lang_msg("MSG_SSH_SEND_ID_ERROR", pvar);
+					notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 					notify_fatal_error(pvar,
 									   "An error occurred while sending the SSH ID string.\n"
@@ -1752,6 +1812,10 @@ void SSH_handle_packet(PTInstVar pvar, char FAR * data, int len,
 				char buf[1024];
 
 #ifdef I18N
+				strcpy(pvar->ts->UIMsg, "Unexpected SSH2 message(%d) on current stage(%d)");
+				UTIL_get_lang_msg("MSG_SSH_UNEXP_MSG2_ERROR", pvar);
+				_snprintf(buf, sizeof(buf),
+					pvar->ts->UIMsg, message, handle_message_stage);
 #else
 				_snprintf(buf, sizeof(buf),
 					"Unexpected SSH2 message(%d) on current stage(%d)", message, handle_message_stage);
@@ -1766,6 +1830,10 @@ void SSH_handle_packet(PTInstVar pvar, char FAR * data, int len,
 				char buf[1024];
 
 #ifdef I18N
+				strcpy(pvar->ts->UIMsg, "Unexpected packet type received: %d");
+				UTIL_get_lang_msg("MSG_SSH_UNEXP_MSG_ERROR", pvar);
+				_snprintf(buf, sizeof(buf),
+					pvar->ts->UIMsg, message, handle_message_stage);
 #else
 				_snprintf(buf, sizeof(buf),
 						  "Unexpected packet type received: %d", message);
@@ -1808,6 +1876,10 @@ static BOOL handle_pty_success(PTInstVar pvar)
 static BOOL handle_pty_failure(PTInstVar pvar)
 {
 #ifdef I18N
+	strcpy(pvar->ts->UIMsg, "The server cannot allocate a pseudo-terminal. "
+							"You may encounter some problems with the terminal.");
+	UTIL_get_lang_msg("MSG_SSH_ALLOC_TERMINAL_ERROR", pvar);
+	notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
 	notify_nonfatal_error(pvar,
 						  "The server cannot allocate a pseudo-terminal. "
@@ -1867,6 +1939,10 @@ static void enable_send_compression(PTInstVar pvar)
 		(&pvar->ssh_state.compress_stream,
 		 pvar->ssh_state.compression_level) != Z_OK) {
 #ifdef I18N
+		strcpy(pvar->ts->UIMsg, "An error occurred while setting up compression.\n"
+								"The connection will close.");
+		UTIL_get_lang_msg("MSG_SSH_SETUP_COMP_ERROR", pvar);
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 		notify_fatal_error(pvar,
 						   "An error occurred while setting up compression.\n"
@@ -1898,6 +1974,10 @@ static void enable_recv_compression(PTInstVar pvar)
 	if (inflateInit(&pvar->ssh_state.decompress_stream) != Z_OK) {
 		deflateEnd(&pvar->ssh_state.compress_stream);
 #ifdef I18N
+		strcpy(pvar->ts->UIMsg, "An error occurred while setting up compression.\n"
+								"The connection will close.");
+		UTIL_get_lang_msg("MSG_SSH_SETUP_COMP_ERROR", pvar);
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 		notify_fatal_error(pvar,
 						   "An error occurred while setting up compression.\n"
@@ -2009,6 +2089,10 @@ static BOOL handle_rsa_challenge(PTInstVar pvar)
 			enque_simple_auth_handlers(pvar);
 		} else {
 #ifdef I18N
+			strcpy(pvar->ts->UIMsg, "An error occurred while decrypting the RSA challenge.\n"
+									"Perhaps the key file is corrupted.");
+			UTIL_get_lang_msg("MSG_SSH_DECRYPT_RSA_ERROR", pvar);
+			notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 			notify_fatal_error(pvar,
 							   "An error occurred while decrypting the RSA challenge.\n"
@@ -2160,6 +2244,9 @@ static void try_send_credentials(PTInstVar pvar)
 			}
 		default:
 #ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Internal error: unsupported authentication method");
+			UTIL_get_lang_msg("MSG_SSH_UNSUPPORT_AUTH_METHOD_ERROR", pvar);
+			notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 			notify_fatal_error(pvar,
 							   "Internal error: unsupported authentication method");
@@ -2477,6 +2564,9 @@ void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, int buflen)
 				if (deflate(&pvar->ssh_state.compress_stream, Z_NO_FLUSH) !=
 					Z_OK) {
 #ifdef I18N
+					strcpy(pvar->ts->UIMsg, "Error compressing packet data");
+					UTIL_get_lang_msg("MSG_SSH_COMP_ERROR2", pvar);
+					notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 					notify_fatal_error(pvar, "Error compressing packet data");
 #endif
@@ -2490,6 +2580,9 @@ void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, int buflen)
 				if (deflate(&pvar->ssh_state.compress_stream, Z_SYNC_FLUSH) !=
 					Z_OK) {
 #ifdef I18N
+					strcpy(pvar->ts->UIMsg, "Error compressing packet data");
+					UTIL_get_lang_msg("MSG_SSH_COMP_ERROR2", pvar);
+					notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 					notify_fatal_error(pvar, "Error compressing packet data");
 #endif
@@ -2565,6 +2658,9 @@ int SSH_extract_payload(PTInstVar pvar, unsigned char FAR * dest, int len)
 		if (inflate(&pvar->ssh_state.decompress_stream, Z_SYNC_FLUSH) !=
 			Z_OK) {
 #ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Invalid compressed data in received packet");
+			UTIL_get_lang_msg("MSG_SSH_INVALID_COMPDATA_ERROR", pvar);
+			notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 			notify_fatal_error(pvar,
 							   "Invalid compressed data in received packet");
@@ -2770,6 +2866,9 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 
 			if (deflate(&pvar->ssh_state.compress_stream, Z_NO_FLUSH) != Z_OK) {
 #ifdef I18N
+				strcpy(pvar->ts->UIMsg, "Error compressing packet data");
+				UTIL_get_lang_msg("MSG_SSH_COMP_ERROR2", pvar);
+				notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 				notify_fatal_error(pvar, "Error compressing packet data");
 #endif
@@ -2783,6 +2882,9 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 			if (deflate(&pvar->ssh_state.compress_stream, Z_SYNC_FLUSH) !=
 				Z_OK) {
 #ifdef I18N
+				strcpy(pvar->ts->UIMsg, "Error compressing packet data");
+				UTIL_get_lang_msg("MSG_SSH_COMP_ERROR2", pvar);
+				notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 				notify_fatal_error(pvar, "Error compressing packet data");
 #endif
@@ -6287,6 +6389,9 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 	if (pvar->ssh2_autologin == 1) {
 		// SSH2自動ログインが有効の場合は、リトライは行わない。(2004.12.4 yutaka)
 #ifdef I18N
+		strcpy(pvar->ts->UIMsg, "SSH2 autologin error: user authentication was failure");
+		UTIL_get_lang_msg("MSG_SSH_AUTH_FAILURE_ERROR", pvar);
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 		notify_fatal_error(pvar,
 			"SSH2 autologin error: user authentication was failure");
@@ -6577,6 +6682,11 @@ static BOOL handle_SSH2_open_failure(PTInstVar pvar)
 	cstring = buffer_get_string(&data, NULL);
 
 #ifdef I18N
+	strcpy(pvar->ts->UIMsg, "SSH2_MSG_CHANNEL_OPEN_FAILURE was received.\r\nchannel [%d]: reason: %s(%d) message: %s");
+	UTIL_get_lang_msg("MSG_SSH_CHANNEL_OPEN_ERROR", pvar);
+	notify_fatal_error(pvar, pvar->ts->UIMsg);
+	_snprintf(tmpbuf, sizeof(tmpbuf), pvar->ts->UIMsg,
+		id, rmsg, reason, cstring);
 #else
 	_snprintf(tmpbuf, sizeof(tmpbuf), 
 		"SSH2_MSG_CHANNEL_OPEN_FAILURE was received.\r\nchannel [%d]: reason: %s(%d) message: %s", 
@@ -7110,6 +7220,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.66  2006/12/02 05:07:08  maya
+ * SSH2_MSG_KEXINITによる決定をttssh.logに出力するようにした。
+ *
  * Revision 1.65  2006/11/30 09:56:43  maya
  * 表示メッセージの読み込み対応
  *
