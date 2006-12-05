@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>send</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">send</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+send &lt;data1&gt; &lt;data2&gt;....
+</B>
+</UL><P></P>
+
+<pre>
+
+&lt;data&gt; が文字列型の場合、文字列をホストへ送信させる。
+&lt;data&gt; が整数型の場合は、その値の下位バイト(0-255)を ASCII コードとみなし、その文字を送信させる。
+
+</pre><P></P>
+
+<pre>
+例：
+     <B>send 'ABC'</B>
+
+     <B>send  65 66 67</B>					"ABC" を送信させる。("A" の ASCII コードは65)
+     <B>myname='Tera Term'</B>	
+     <B>send 'My name is ' myname '.'</B>
+</BODY>
+</HTML>

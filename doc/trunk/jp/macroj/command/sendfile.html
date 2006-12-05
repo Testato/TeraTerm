@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>sendfile</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">sendfile</FONT><BR><BR>
+
+形式：
+
+<UL>
+<B>
+sendfile &lt;filename&gt; &lt;binary flag&gt;
+</B>
+</UL><BR>
+ファイルを送信する。送信が終わるまで次のコマンドは実行されない。
+<BR>
+
+<pre>
+
+<binary flag> の値が0以外のとき、ファイルの内容をそのまま送信する。
+<binary flag> の値が0のとき、ファイルの中に含まれる漢字、改行文字を変換して送信する。TAB ($09), LF ($0A), CR ($0D) 
+以外の制御文字は送信されない。
+
+</pre><P></P>
+
+<pre>
+
+例：
+     <B>sendfile 'data.dat' 1</B>
+
+</pre>
+</BODY>
+</HTML>
