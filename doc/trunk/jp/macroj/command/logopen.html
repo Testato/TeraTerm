@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>logopen</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">logopen</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+logopen &lt;filename&gt; &lt;binary flag&gt; &lt;append flag&gt;
+</B>
+</UL><P></P>
+
+Tera Term のログを開始する。ファイル &lt;filename&gt; に受信した文字が書き込まれる。ログを開始したあとも次のコマンドは実行される。
+<P></P>
+<pre>
+
+&lt;binary flag&gt; の値が0のとき、受信した漢字、改行文字は変換されてファイルに書き込まれ、エスケープシーケンスは書き込まれない。&lt;binary flag&gt; の
+値が0以外のとき、受信した文字をすべてそのままファイルに書き込む。
+
+&lt;append flag&gt; の値が0以外で、ファイル &lt;filename&gt; がすでに存在する場合、そのファイルに追加して書き込む。
+&lt;append flag&gt; の値が0で、ファイル &lt;filename&gt; がすでに存在する場合、そのファイルは上書きされる。
+
+</pre><P></P>
+
+<pre>
+
+例：
+      <B>logopen 'myhost.log' 0 0</B>
+
+</pre>
+</BODY>
+</HTML>
