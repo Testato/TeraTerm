@@ -37,6 +37,11 @@ See LICENSE.TXT for the license.
 #include "x11util.h"
 #include "util.h"
 
+#ifdef I18N
+static HFONT DlgFwdEditFont;
+static HFONT DlgFwdFont;
+#endif
+
 typedef struct {
 	int port;
 	char FAR *name;
@@ -1203,6 +1208,11 @@ static BOOL CALLBACK fwd_edit_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 									   LPARAM lParam)
 {
 	FWDEditClosure FAR *closure;
+#ifdef I18N
+	PTInstVar pvar;
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
 	switch (msg) {
 	case WM_INITDIALOG:
@@ -1210,7 +1220,25 @@ static BOOL CALLBACK fwd_edit_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		SetWindowLong(dlg, DWL_USER, lParam);
 
 #ifdef I18N
-		init_fwd_edit_dlg(closure->pvar, closure->spec, dlg);
+		pvar = closure->pvar;
+		init_fwd_edit_dlg(pvar, closure->spec, dlg);
+
+		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
+		GetObject(font, sizeof(LOGFONT), &logfont);
+		if (UTIL_get_lang_font("DLG_ABOUT_FONT", dlg, &logfont, &DlgFwdEditFont, pvar)) {
+			SendDlgItemMessage(dlg, IDD_SSHFWDBANNER, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHFWDLOCALTOREMOTE, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHFWDLOCALTOREMOTE_HOST, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHFWDLOCALTOREMOTE_PORT, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHFWDREMOTETOLOCAL, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHFWDREMOTETOLOCAL_HOST, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHFWDREMOTETOLOCAL_PORT, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDOK, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDCANCEL, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+		}
+		else {
+			DlgFwdEditFont = NULL;
+		}
 #else
 		init_fwd_edit_dlg(closure->spec, dlg);
 #endif
@@ -1221,10 +1249,24 @@ static BOOL CALLBACK fwd_edit_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 
 		switch (LOWORD(wParam)) {
 		case IDOK:
+
+#ifdef I18N
+			if (DlgFwdEditFont != NULL) {
+				DeleteObject(DlgFwdEditFont);
+			}
+#endif
+
 			return end_fwd_edit_dlg(closure->pvar, closure->spec, dlg);
 
 		case IDCANCEL:
 			EndDialog(dlg, 0);
+
+#ifdef I18N
+			if (DlgFwdEditFont != NULL) {
+				DeleteObject(DlgFwdEditFont);
+			}
+#endif
+
 			return TRUE;
 
 		case IDC_SSHFWDLOCALTOREMOTE:
@@ -1339,6 +1381,10 @@ static BOOL CALLBACK fwd_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 								  LPARAM lParam)
 {
 	PTInstVar pvar;
+#ifdef I18N
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
 	switch (msg) {
 	case WM_INITDIALOG:
@@ -1346,6 +1392,25 @@ static BOOL CALLBACK fwd_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		SetWindowLong(dlg, DWL_USER, lParam);
 
 		init_fwd_dlg(pvar, dlg);
+
+#ifdef I18N
+		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
+		GetObject(font, sizeof(LOGFONT), &logfont);
+		if (UTIL_get_lang_font("DLG_ABOUT_FONT", dlg, &logfont, &DlgFwdFont, pvar)) {
+			SendDlgItemMessage(dlg, IDC_PORTFORWARD, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_ADD, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_EDIT, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_REMOVE, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_XFORWARD, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHFWDX11, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDOK, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDCANCEL, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
+		}
+		else {
+			DlgFwdFont = NULL;
+		}
+#endif
+
 		return TRUE;			/* because we do not set the focus */
 
 	case WM_COMMAND:
@@ -1353,11 +1418,25 @@ static BOOL CALLBACK fwd_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 
 		switch (LOWORD(wParam)) {
 		case IDOK:
+
+#ifdef I18N
+			if (DlgFwdFont != NULL) {
+				DeleteObject(DlgFwdFont);
+			}
+#endif
+
 			return end_fwd_dlg(pvar, dlg);
 
 		case IDCANCEL:
 			free_all_listbox_specs(dlg);
 			EndDialog(dlg, 0);
+
+#ifdef I18N
+			if (DlgFwdFont != NULL) {
+				DeleteObject(DlgFwdFont);
+			}
+#endif
+
 			return TRUE;
 
 		case IDC_ADD:
@@ -1406,6 +1485,9 @@ void FWDUI_do_forwarding_dialog(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2006/11/29 16:58:52  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.3  2006/11/23 02:19:30  maya
  * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
  *

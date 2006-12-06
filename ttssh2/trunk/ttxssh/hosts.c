@@ -48,6 +48,10 @@ See LICENSE.TXT for the license.
 #include <errno.h>
 #include <sys/stat.h>
 
+#ifdef I18N
+static HFONT DlgHostsAddFont;
+static HFONT DlgHostsReplaceFont;
+#endif
 
 // BASE64構成文字列（ここでは'='は含まれていない）
 static char base64[] ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -1248,6 +1252,10 @@ static BOOL CALLBACK hosts_add_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 										LPARAM lParam)
 {
 	PTInstVar pvar;
+#ifdef I18N
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
 	switch (msg) {
 	case WM_INITDIALOG:
@@ -1288,6 +1296,23 @@ static BOOL CALLBACK hosts_add_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 
 		init_hosts_dlg(pvar, dlg);
 
+#ifdef I18N
+		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
+		GetObject(font, sizeof(LOGFONT), &logfont);
+		if (UTIL_get_lang_font("DLG_ABOUT_FONT", dlg, &logfont, &DlgHostsAddFont, pvar)) {
+			SendDlgItemMessage(dlg, IDC_HOSTWARNING, WM_SETFONT, (WPARAM)DlgHostsAddFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_HOSTWARNING2, WM_SETFONT, (WPARAM)DlgHostsAddFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_HOSTFINGERPRINT, WM_SETFONT, (WPARAM)DlgHostsAddFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_FINGER_PRINT, WM_SETFONT, (WPARAM)DlgHostsAddFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_ADDTOKNOWNHOSTS, WM_SETFONT, (WPARAM)DlgHostsAddFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_CONTINUE, WM_SETFONT, (WPARAM)DlgHostsAddFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDCANCEL, WM_SETFONT, (WPARAM)DlgHostsAddFont, MAKELPARAM(TRUE,0));
+		}
+		else {
+			DlgHostsAddFont = NULL;
+		}
+#endif
+
 		// add host check boxにチェックをデフォルトで入れておく 
 		SendMessage(GetDlgItem(dlg, IDC_ADDTOKNOWNHOSTS), BM_SETCHECK, BST_CHECKED, 0);
 
@@ -1311,12 +1336,26 @@ static BOOL CALLBACK hosts_add_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			pvar->hosts_state.hosts_dialog = NULL;
 
 			EndDialog(dlg, 1);
+
+#ifdef I18N
+			if (DlgHostsAddFont != NULL) {
+				DeleteObject(DlgHostsAddFont);
+			}
+#endif
+
 			return TRUE;
 
 		case IDCANCEL:			/* kill the connection */
 			pvar->hosts_state.hosts_dialog = NULL;
 			notify_closed_connection(pvar);
 			EndDialog(dlg, 0);
+
+#ifdef I18N
+			if (DlgHostsAddFont != NULL) {
+				DeleteObject(DlgHostsAddFont);
+			}
+#endif
+
 			return TRUE;
 
 		default:
@@ -1335,6 +1374,10 @@ static BOOL CALLBACK hosts_replace_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 											LPARAM lParam)
 {
 	PTInstVar pvar;
+#ifdef I18N
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
 	switch (msg) {
 	case WM_INITDIALOG:
@@ -1375,6 +1418,22 @@ static BOOL CALLBACK hosts_replace_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 
 		init_hosts_dlg(pvar, dlg);
 
+#ifdef I18N
+		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
+		GetObject(font, sizeof(LOGFONT), &logfont);
+		if (UTIL_get_lang_font("DLG_ABOUT_FONT", dlg, &logfont, &DlgHostsReplaceFont, pvar)) {
+			SendDlgItemMessage(dlg, IDC_HOSTWARNING, WM_SETFONT, (WPARAM)DlgHostsReplaceFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_HOSTWARNING2, WM_SETFONT, (WPARAM)DlgHostsReplaceFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_HOSTFINGERPRINT, WM_SETFONT, (WPARAM)DlgHostsReplaceFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_ADDTOKNOWNHOSTS, WM_SETFONT, (WPARAM)DlgHostsReplaceFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_CONTINUE, WM_SETFONT, (WPARAM)DlgHostsReplaceFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDCANCEL, WM_SETFONT, (WPARAM)DlgHostsReplaceFont, MAKELPARAM(TRUE,0));
+		}
+		else {
+			DlgHostsReplaceFont = NULL;
+		}
+#endif
+
 		// デフォルトでチェックは入れない
 		return TRUE;			/* because we do not set the focus */
 
@@ -1397,12 +1456,26 @@ static BOOL CALLBACK hosts_replace_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			pvar->hosts_state.hosts_dialog = NULL;
 
 			EndDialog(dlg, 1);
+
+#ifdef I18N
+			if (DlgHostsReplaceFont != NULL) {
+				DeleteObject(DlgHostsReplaceFont);
+			}
+#endif
+
 			return TRUE;
 
 		case IDCANCEL:			/* kill the connection */
 			pvar->hosts_state.hosts_dialog = NULL;
 			notify_closed_connection(pvar);
 			EndDialog(dlg, 0);
+
+#ifdef I18N
+			if (DlgHostsReplaceFont != NULL) {
+				DeleteObject(DlgHostsReplaceFont);
+			}
+#endif
+
 			return TRUE;
 
 		default:
@@ -1547,6 +1620,9 @@ void HOSTS_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2006/12/05 09:20:36  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.11  2006/11/30 09:56:43  maya
  * 表示メッセージの読み込み対応
  *

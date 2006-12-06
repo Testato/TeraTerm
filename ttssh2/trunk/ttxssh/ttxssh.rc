@@ -183,8 +183,8 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,34,101,153,13
     PUSHBUTTON      "&Continue",IDC_CONTINUE,49,117,50,14,WS_GROUP
     LTEXT           "Your known hosts list has an entry for the server ""####################################"", but the machine you have contacted has presented a DIFFERENT KEY to the one in your known hosts list. A hostile machine may be pretending to be the server.",IDC_HOSTWARNING,15,7,184,43
-    LTEXT           "If you choose to add this new key to the known hosts list and continue, then you will not receive this warning again.",IDC_STATIC,15,50,184,24
-    LTEXT           "The server's host key fingerprint is:",IDC_STATIC,15,75,176,8
+    LTEXT           "If you choose to add this new key to the known hosts list and continue, then you will not receive this warning again.",IDC_HOSTWARNING2,15,50,184,24
+    LTEXT           "The server's host key fingerprint is:",IDC_HOSTFINGERPRINT,15,75,176,8
     EDITTEXT        IDC_FINGER_PRINT,15,86,179,12,ES_AUTOHSCROLL | ES_READONLY
 END
 

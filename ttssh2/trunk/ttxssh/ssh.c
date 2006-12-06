@@ -6356,7 +6356,7 @@ static BOOL handle_SSH2_userauth_success(PTInstVar pvar)
 	buffer_put_int(msg, c->local_maxpacket);  // local_maxpacket
 	len = buffer_len(msg);
 	outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN, len);
-	memcpy(outmsg, buffer_ptr(msg), len);
+	memcpy(outmsg, buffer_ptr (msg), len);
 	finish_send_packet(pvar);
 	buffer_free(msg);
 
@@ -7220,6 +7220,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.67  2006/12/05 09:20:36  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.66  2006/12/02 05:07:08  maya
  * SSH2_MSG_KEXINITによる決定をttssh.logに出力するようにした。
  *

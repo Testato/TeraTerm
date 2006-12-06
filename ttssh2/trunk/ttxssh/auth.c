@@ -42,6 +42,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define MAX_AUTH_CONTROL IDC_SSHUSETIS
 
+#ifdef I18N
+static HFONT DlgAuthFont;
+static HFONT DlgTisFont;
+static HFONT DlgAuthSetupFont;
+#endif
+
 void destroy_malloced_string(char FAR * FAR * str)
 {
 	if (*str != NULL) {
@@ -653,6 +659,10 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 	const int IDC_TIMER1 = 300;
 	const int autologin_timeout = 10; // ミリ秒
 	PTInstVar pvar;
+#ifdef I18N
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
 	switch (msg) {
 	case WM_INITDIALOG:
@@ -661,6 +671,30 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		SetWindowLong(dlg, DWL_USER, lParam);
 
 		init_auth_dlg(pvar, dlg);
+
+#ifdef I18N
+		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
+		GetObject(font, sizeof(LOGFONT), &logfont);
+		if (UTIL_get_lang_font("DLG_ABOUT_FONT", dlg, &logfont, &DlgAuthFont, pvar)) {
+			SendDlgItemMessage(dlg, IDC_SSHAUTHBANNER, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHAUTHBANNER2, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHUSERNAMELABEL, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHPASSWORDCAPTION, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_REMEMBER_PASSWORD, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHUSEPASSWORD, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHUSERSA, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_CHOOSERSAFILE, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHUSERHOSTS, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_LOCALUSERNAMELABEL, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_CHOOSEHOSTRSAFILE, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHUSETIS, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDOK, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDCANCEL, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
+		}
+		else {
+			DlgAuthFont = NULL;
+		}
+#endif
 
 		// SSH2 autologinが有効の場合は、タイマを仕掛ける。 (2004.12.1 yutaka)
 		if (pvar->ssh2_autologin == 1) {
@@ -686,12 +720,26 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			if (pvar->userauth_retry_count == 0 && (pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME)) {
 				return FALSE;
 			}
+
+#ifdef I18N
+			if (DlgAuthFont != NULL) {
+				DeleteObject(DlgAuthFont);
+			}
+#endif
+
 			return end_auth_dlg(pvar, dlg);
 
 		case IDCANCEL:			/* kill the connection */
 			pvar->auth_state.auth_dialog = NULL;
 			notify_closed_connection(pvar);
 			EndDialog(dlg, 0);
+
+#ifdef I18N
+			if (DlgAuthFont != NULL) {
+				DeleteObject(DlgAuthFont);
+			}
+#endif
+
 			return TRUE;
 
 		case IDC_SSHUSEPASSWORD:
@@ -933,6 +981,10 @@ static BOOL CALLBACK TIS_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 								  LPARAM lParam)
 {
 	PTInstVar pvar;
+#ifdef I18N
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
 	switch (msg) {
 	case WM_INITDIALOG:
@@ -941,6 +993,21 @@ static BOOL CALLBACK TIS_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		SetWindowLong(dlg, DWL_USER, lParam);
 
 		init_TIS_dlg(pvar, dlg);
+
+#ifdef I18N
+		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
+		GetObject(font, sizeof(LOGFONT), &logfont);
+		if (UTIL_get_lang_font("DLG_ABOUT_FONT", dlg, &logfont, &DlgTisFont, pvar)) {
+			SendDlgItemMessage(dlg, IDC_SSHAUTHBANNER, WM_SETFONT, (WPARAM)DlgTisFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHAUTHBANNER2, WM_SETFONT, (WPARAM)DlgTisFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDOK, WM_SETFONT, (WPARAM)DlgTisFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDCANCEL, WM_SETFONT, (WPARAM)DlgTisFont, MAKELPARAM(TRUE,0));
+		}
+		else {
+			DlgTisFont = NULL;
+		}
+#endif
+
 		return FALSE;			/* because we set the focus */
 
 	case WM_COMMAND:
@@ -948,12 +1015,25 @@ static BOOL CALLBACK TIS_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 
 		switch (LOWORD(wParam)) {
 		case IDOK:
+#ifdef I18N
+			if (DlgTisFont != NULL) {
+				DeleteObject(DlgTisFont);
+			}
+#endif
+
 			return end_TIS_dlg(pvar, dlg);
 
 		case IDCANCEL:			/* kill the connection */
 			pvar->auth_state.auth_dialog = NULL;
 			notify_closed_connection(pvar);
 			EndDialog(dlg, 0);
+
+#ifdef I18N
+			if (DlgTisFont != NULL) {
+				DeleteObject(DlgTisFont);
+			}
+#endif
+
 			return TRUE;
 
 		default:
@@ -1140,6 +1220,10 @@ static BOOL CALLBACK default_auth_dlg_proc(HWND dlg, UINT msg,
 										   WPARAM wParam, LPARAM lParam)
 {
 	PTInstVar pvar;
+#ifdef I18N
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
 	switch (msg) {
 	case WM_INITDIALOG:
@@ -1147,6 +1231,29 @@ static BOOL CALLBACK default_auth_dlg_proc(HWND dlg, UINT msg,
 		SetWindowLong(dlg, DWL_USER, lParam);
 
 		init_default_auth_dlg(pvar, dlg);
+
+#ifdef I18N
+		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
+		GetObject(font, sizeof(LOGFONT), &logfont);
+		if (UTIL_get_lang_font("DLG_ABOUT_FONT", dlg, &logfont, &DlgAuthSetupFont, pvar)) {
+			SendDlgItemMessage(dlg, IDC_SSHAUTHBANNER, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHUSERNAMELABEL, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHUSEPASSWORD, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_KEYBOARD_INTERACTIVE_CHECK, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHUSERSA, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_CHOOSERSAFILE, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHUSERHOSTS, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_LOCALUSERNAMELABEL, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_CHOOSEHOSTRSAFILE, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHUSETIS, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDOK, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDCANCEL, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
+		}
+		else {
+			DlgAuthSetupFont = NULL;
+		}
+#endif
+
 		return TRUE;			/* because we do not set the focus */
 
 	case WM_COMMAND:
@@ -1154,10 +1261,24 @@ static BOOL CALLBACK default_auth_dlg_proc(HWND dlg, UINT msg,
 
 		switch (LOWORD(wParam)) {
 		case IDOK:
+
+#ifdef I18N
+			if (DlgAuthSetupFont != NULL) {
+				DeleteObject(DlgAuthSetupFont);
+			}
+#endif
+
 			return end_default_auth_dlg(pvar, dlg);
 
 		case IDCANCEL:
 			EndDialog(dlg, 0);
+
+#ifdef I18N
+			if (DlgAuthSetupFont != NULL) {
+				DeleteObject(DlgAuthSetupFont);
+			}
+#endif
+
 			return TRUE;
 
 		case IDC_CHOOSERSAFILE:
@@ -1330,6 +1451,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.22  2006/11/29 16:58:52  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.21  2006/11/23 02:19:30  maya
  * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
  *
