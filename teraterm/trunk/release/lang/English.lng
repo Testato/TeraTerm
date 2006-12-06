@@ -80,6 +80,10 @@ DLG_TERMINAL_TERMSIZE=&Terminal size
 
 
 [TTSSH]
+; font
+DLG_FONT=Tahoma,8,0
+DLG_HOST_FONT=System,14,0
+
 ; menu
 MENU_ABOUT=About &TTSSH...
 MENU_SSH=SS&H...
@@ -89,7 +93,6 @@ MENU_SSH_KEYGEN=SSH KeyGenerator...
 
 ; dlg about
 DLG_ABOUT_TITLE=About TTSSH
-DLG_ABOUT_FONT=Tahoma,8,0
 
 ; dlg auth
 DLG_AUTH_TITLE=SSH Authentication

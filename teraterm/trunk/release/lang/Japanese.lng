@@ -80,6 +80,10 @@ DLG_TERMINAL_TERMSIZE=端末サイズ(&T)
 
 
 [TTSSH]
+; font
+DLG_FONT=ＭＳ Ｐゴシック,9,128
+DLG_HOST_FONT=ＭＳ Ｐゴシック,12,128
+
 ; menu
 MENU_ABOUT=&TTSSHについて...
 MENU_SSH=SS&H...
@@ -89,7 +93,6 @@ MENU_SSH_KEYGEN=SSHキー生成(&K)...
 
 ; dlg about
 DLG_ABOUT_TITLE=TTSSHについて
-DLG_ABOUT_FONT=ＭＳ Ｐゴシック,9,128
 
 ; dlg auth
 DLG_AUTH_TITLE=SSH認証
