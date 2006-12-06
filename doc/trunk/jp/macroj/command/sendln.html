@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>sendln</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">sendln</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+sendln &lt;data1&gt; &lt;data2&gt;....
+</B>
+</UL>
+<pre>
+
+文字列とそれに続く改行文字をホストへ送信させる。
+&lt;data&gt; の形式は、<A HREF="send.html">"semd"</A>コマンドと同じ。
+
+</pre><P></P>
+
+<pre>
+
+例：
+     <B>sendln</B>						改行文字だけ送信
+
+     <B>sendln 'abc'</B>
+
+     <B>Password='mypassword'</B>
+     <B>sendln Password</B>
+
+</pre>
+</BODY>
+</HTML>
