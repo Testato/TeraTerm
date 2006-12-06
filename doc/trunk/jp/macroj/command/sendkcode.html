@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>sendkcode</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">sendkcode</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+sendkcode &lt;key code&gt; &lt;repeat count&gt;
+</B>
+</UL><P></P>
+
+<pre>
+
+あるキーまたはキーの組み合わせを押すことに対して割り当てられた機能を Tera Term に実行させる。そのキーまたはキーの組み合わせは
+KEYCODE.EXE によって定義されるキーコード &lt;key code&gt;で指定される。その機能は &lt;repeat count&gt; 回繰り返して実行される。
+
+通常、その機能とは文字または文字列をホストへ送出するということ。その機能は Tera Term のキーボード設定ファイルによって定義することができる。
+KEYCODEJ.TXT 参照。
+
+</pre><P></P>
+
+<pre>
+
+例：
+     <B>sendkcode 336 3</B>					 Tera Term に↓キーが3回押された場合と同じ動作をさせ
+							 る。↓キーのキーコードは IBM PC キーボードの場合336。
+
+</pre>
+
+
+</BODY>
+</HTML>
