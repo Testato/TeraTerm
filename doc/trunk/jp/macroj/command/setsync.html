@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>setsync</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">setsync</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+setsync &lt;sync flag&gt;
+</B>
+</UL><P></P>
+
+<pre>
+
+&lt;sync flag&gt; が0以外ならば同期通信モードに入る。
+&lt;sync flag&gt; が0ならば非同期通信モードに入る。
+
+Tera Term はホストから受信した文字を MACRO へ転送する。
+MACRO はそれらの文字をバッファーに保存し、受信文字を処理するコマンド(<A HREF="wait.html">"wait"</A> コマンド等)がバッファーから文字を取り出す。
+
+MACRO は初期状態として非同期モードにいる。このモードでは、受信文字を処理するコマンドが長い間実行されない場合、または受信速度が早す
+ぎる場合はバッファーがあふれる可能性がある。
+
+同期モードでは、バッファーは決してあふれない。バッファーがいっぱいになった場合、Tera Term はホストからの文字受信と MACRO への文字転送を
+停止する。バッファーに再び空きができると Tera Term は文字受信と転送を再開する。
+
+必要な時に限り同期モードに入り、必要でなくなったら非同期モードに戻るようにした方が良い。
+
+複数行にわたる受信した文字を、一文字も失うことなく処理する、というような信頼性が要求されるマクロ処理の場合、同期モードに入る必要がある。
+しかし、同期モードでは Tera Term の文字受信速度が遅くなり、また受信文字を処理するコマンドが長い間実行されない場合は、Tera Term の文
+字受信が停止したままになってしまう。一方、単純なマクロ処理(例えば自動ログイン)ならば非同期モードでもほとんど問題なく動作する。この場合、
+バッファーサイズは十分大きく(4096バイト)、受信したすべての文字はバッファーがあふれる前にコマンドによって処理される。
+
+バッファのクリアについては <A HREF="flushrecv.html">"flushrecv"</A> 参照。
+
+</pre><P></P>
+
+<pre>
+
+例：
+     <B>setsync 1</B>                                    同期モードに入る
+     <B>setsync 0</B>                                    非同期モードに入る
+
+</pre>
+</BODY>
+</HTML>
