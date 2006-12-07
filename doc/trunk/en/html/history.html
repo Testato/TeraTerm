@@ -18,6 +18,11 @@
 <a name="teraterm"></a>
 <b>TeraTerm</b>
 <pre>
+2006.11.30 (Ver 4.50)
+  - Bug fix: TeraTerm crashs when the log file name is not a full path.
+  - added FUNCTION.CNF. F1-F10 keys are enabled in this keyboard setup file.
+  - upgraded TTSSH version supporting SSH2 to 2.38
+
 2006.11.18 (Ver 4.49)
   - Bug fix: TeraTerm(DDE server) sent the invalid return value to TeraTerm macro(DDE client) when DDE server was received XTYP_POKE message.
   - added busy procedure(DDE_FBUSY) between DDE server and DDE client.
@@ -454,6 +459,12 @@
 <a name="ttssh"></a>
 <b>TTSSH</b>
 <pre>
+2006.11.28 (Ver 2.38)
+  - changed the handling of SSH2_MSG_IGNORE to do nothing. The data from Cisco router seems invalid.
+
+2006.11.20 (Ver 2.37)
+  - added workaround(SSH_BUG_SIGBLOB) that generating the symmetric key is failure on Extreme Networks switch.
+
 2006.11.1 (Ver 2.36)
   - Bug fix: Could not connect Tectia server with SSH2 protocol. Changed the timing of both MAC and packet compression method are enabled from user authentication to SSH2_MSG_NEWKEYS procedure.
   - Bug fix: Aborted when receiving the stderr data from Tectia server on Windows. Added a procedure for handling SSH2_MSG_CHANNEL_EXTENDED_DATA packet.
