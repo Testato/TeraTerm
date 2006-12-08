@@ -758,6 +758,26 @@ static unsigned char FAR *begin_send_packet(PTInstVar pvar, int type,
 
 #define finish_send_packet(pvar) finish_send_packet_special((pvar), 0)
 
+// 送信リトライ関数の追加 
+//
+// WinSockの send() はバッファサイズ(len)よりも少ない値を正常時に返してくる
+// ことがあるので、その場合はエラーとしない。
+// これにより、TCPコネクション切断の誤検出を防ぐ。
+// (2006.12.9 yutaka)
+static int retry_send_packet(PTInstVar pvar, char FAR * data, int len)
+{
+	int n;
+
+	while (len > 0) {
+		n = (pvar->Psend)(pvar->socket, data, len, 0);
+		if (n == SOCKET_ERROR || n <= 0)
+			return 1; // error
+		len -= n;
+		data += n;
+	}
+	return 0; // success
+}
+
 static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 {
 	u_long do_block = 0;
@@ -765,7 +785,7 @@ static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 	if ((pvar->PWSAAsyncSelect) (pvar->socket, pvar->NotificationWindow,
 								 0, 0) == SOCKET_ERROR
 		|| ioctlsocket(pvar->socket, FIONBIO, &do_block) == SOCKET_ERROR
-		|| (pvar->Psend) (pvar->socket, data, len, 0) != len
+		|| retry_send_packet(pvar, data, len)
 		|| (pvar->PWSAAsyncSelect) (pvar->socket, pvar->NotificationWindow,
 									pvar->notification_msg,
 									pvar->notification_events) ==
@@ -7220,6 +7240,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.68  2006/12/06 14:25:40  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.67  2006/12/05 09:20:36  maya
  * 表示メッセージの読み込み対応
  *
