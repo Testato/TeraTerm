@@ -8,7 +8,7 @@ MENU_FILE_COMMENTLOG=ログにコメントを付加(&O)...
 MENU_FILE_VIEWLOG=ログを表示(V)
 MENU_FILE_SENDFILE=ファイル送信(&S)...
 MENU_FILE_CHANGEDIR=ディレクトリを変更(&C)...
-MENU_FILE_LOGMETT=LogMeTT
+MENU_FILE_LOGMETT=&LogMeTT
 MENU_FILE_PRINT=印刷(&P)...\tAlt+P
 MENU_FILE_DISCONNECT=接続断(&D)
 MENU_FILE_EXIT=終了(&X)\tAlt+Q
@@ -59,8 +59,8 @@ MENU_CONTROL_OPENTEK=TEKウィンドウを開く(&O)
 MENU_CONTROL_CLOSETEK=TEKウィンドウを閉じる(&C)
 MENU_CONTROL_MACRO=マクロ(&M)
 
-MENU_WINDOW=ウインドウ(&W)
-MENU_WINDOW_WINDOW=ウインドウ(&W)
+MENU_WINDOW=ウィンドウ(&W)
+MENU_WINDOW_WINDOW=ウィンドウ(&W)
 
 MENU_HELP=ヘルプ(&H)
 MENU_HELP_INDEX=目次(English) (&I)
@@ -69,13 +69,41 @@ MENU_HELP_ABOUT=Tera Termについて(&A)...
 
 MENU_SHOW_MENUBAR=メニューバー表示(&B)
 
+
+TEKMENU_FILE=ファイル(&F)
+TEKMENU_FILE_PRINT=印刷(&P)...\tAlt+P
+TEKMENU_FILE_EXIT=終了(&X)\tAlt+Q
+
+TEKMENU_EDIT=編集(&E)
+TEKMENU_EDIT_COPY=コピー(&C)\tAlt+C
+TEKMENU_EDIT_COPYSCREEN=画面のコピー(&S)
+TEKMENU_EDIT_PASTE=貼り付け(&P)\tAlt+V
+TEKMENU_EDIT_PASTECR=貼り付け<C&R>\tAlt+R
+TEKMENU_EDIT_CLSCREEN=画面のクリア(&L)
+
+TEKMENU_SETUP=設定(&S)
+TEKMENU_SETUP_WINDOW=ウィンドウ(&W)...
+TEKMENU_SETUP_FONT=フォント(&F)...
+
+TEKMENU_VTWIN=VT-ウィンドウ(&O)
+
+TEKMENU_WINDOW=ウィンドウ(&W)
+
+TEKMENU_HELP=ヘルプ(&H)
+TEKMENU_HELP_INDEX=目次(&I)
+TEKMENU_HELP_USING=ヘルプの使い方(&H)
+TEKMENU_HELP_ABOUT=Tera Term について(&A)...
+
+TEKMENU_SHOW_MENUBAR=メニューバー表示(&B)
+
+
 ; dlg main
 DLG_MAIN_TITLE_CONNECTING=[接続中...]
 DLG_MAIN_TITLE_DISCONNECTED=[未接続]
 
 ; dlg term
 DLG_TERMINAL_TITLE=Tera Term: 端末設定
-DLG_TERMINAL_FONT=ＭＳ Ｐゴシック,11,128
+DLG_TERMINAL_FONT=ＭＳ Ｐゴシック,12,128
 DLG_TERMINAL_TERMSIZE=端末サイズ(&T)
 
 
@@ -167,8 +195,8 @@ DLG_FWDSETUP_REMOVE=削除(&R)
 DLD_FWDSETUP_X=Xクライアントアプリケーションの転送
 DLG_FWDSETUP_XAPP=リモートの(&X)アプリケーションをローカルのXサーバに表示する
 
-MSG_FWD_REMOTE_XSERVER=remote Xあ server
-MSG_FWD_REMOTE_XSCREEN=X serverあ (screen %d)
+MSG_FWD_REMOTE_XSERVER=remote X server
+MSG_FWD_REMOTE_XSCREEN=X server (screen %d)
 MSG_FWD_REMOTE=リモートの %s からローカル側ホスト "%s" のポート %s
 MSG_FWD_LOCAL=ローカルの %s から リモート側ホスト "%s" のポート %s
 MSG_FWD_X=リモートのXアプリケーションからローカルのXサーバ
