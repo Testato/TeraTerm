@@ -162,12 +162,15 @@ private:
 		getInstance().cv = cv;
 
 		ProxyWSockHook::setMessageShower(&getInstance().shower);
+	}
 
+	static void setTTProxyLocale() {
 		LCID lcid = ::GetThreadLocale();
 		WORD langid = LANGIDFROMLCID(lcid);
 		WORD primarylid = PRIMARYLANGID(langid);
 		WORD sortid = SORTIDFROMLCID(lcid);
-		::EnumResourceLanguages(::GetModuleHandle(NULL), RT_DIALOG, MAKEINTRESOURCE(2100), EnumProc, (LONG) &langid);
+		// not use the resource language of TeraTerm print dialog (2006.12.12 maya)
+		//::EnumResourceLanguages(::GetModuleHandle(NULL), RT_DIALOG, MAKEINTRESOURCE(2100), EnumProc, (LONG) &langid);
 		if (primarylid != PRIMARYLANGID(langid)) {
 			sortid = SORT_DEFAULT;
 		}
@@ -203,6 +206,8 @@ private:
 	}
 
 	static void PASCAL TTXModifyMenu(HMENU menu) {
+		/* move from TTXInit (2006.12.12 maya) */
+		setTTProxyLocale();
 		/* inserts before ID_HELP_ABOUT */
 		InsertMenu(menu, 50990, MF_BYCOMMAND | MF_ENABLED, ID_ABOUTMENU, Resource::loadString(IDS_ABOUT));
 		/* inserts before ID_SETUP_TCPIP */
