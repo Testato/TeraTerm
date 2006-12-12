@@ -446,7 +446,17 @@ CVTWindow::CVTWindow()
   logfile_lock_initialize();
   SetWindowStyle(&ts);
   // ロケールの設定
+  // wctomb のため
   setlocale(LC_ALL, ts.Locale);
+#ifdef I18N
+  // TTProxy が GetThreadLocale するので、ここで設定する (2006.12.12 maya)
+  // これにより、TTProxy が読み込むリソースの言語が切り替えられる
+  int lcid;
+  strcpy(ts.UIMsg, "1033"); // 0x0409
+  get_lang_msg("LCID", ts.UIMsg, ts.UILanguageFile);
+  lcid = atoi(ts.UIMsg);
+  SetThreadLocale(lcid);
+#endif
 
 #ifdef ALPHABLEND_TYPE2
 //<!--by AKASI
@@ -4140,6 +4150,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.39  2006/11/23 02:19:12  maya
+ * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
+ *
  * Revision 1.38  2006/11/13 15:59:49  yutakapon
  * ScrollLockキーをサポートした
  *
