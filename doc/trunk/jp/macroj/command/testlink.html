@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>testlink</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">testlink</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+testlink
+</B
+</UL><P></P>
+
+<pre>
+
+現在のリンクおよび接続の状態を報告する。
+リンクと接続の状態に応じて以下のうちの一つの値がシステム変数 result に格納される。
+
+</pre><P></P>
+
+<pre>
+
+値							状態
+<hr>
+0							Tera Term とリンクされていない。
+1							ホストへの接続はされていないが、Tera Term へのリンクはされている。
+2							リンクおよび接続両方ともされている。
+
+参照：
+      <A HREF="closett.html">"closett"</A>
+      <A HREF="connect.html">"connect"</A>
+      <A HREF="disconnect.html">"disconnect"</A>
+      <A HREF="unlink.html">"unlink"</A>
+
+</pre><P></P>
+
+<pre>
+
+例：
+    <B>testlink</B>                                          もし MACRO が Tera Term にリンクされていなければ
+    <B>if result=0 connect 'host'</B>                      connect コマンドを実行
+
+</pre>
+</BODY>
+</HTML>

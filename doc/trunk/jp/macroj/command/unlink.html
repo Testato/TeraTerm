@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>unlink</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">unlink</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+unlink
+</B>
+</UL><P></P>
+
+<pre>
+
+現在の Tera Term ウインドウと MACRO の間のリンクを断つ。
+このコマンド以降、MACRO は非リンク状態になり、その Tera Term ウインドウを制御できなくなる。
+
+非リンク状態では、connect コマンドによって新しい Tera Term ウィンドウを開き、MACRO をそれに
+リンクさせることができる。
+
+参照：
+      <A HREF="closett.html">"closett"</A>
+      <A HREF="connect.html">"connect"</A>
+      <A HREF="disconnect.html">"disconnect"</A>
+
+</pre><P></P>
+
+<pre>
+
+例：
+     <B>connect 'host'</B>                                         Tera Term ウインドウを開き、それにリンクする
+     <B>unlink</B>	                                              リンクを断つ
+     <B>connect 'host2'</B>                                        別の Tera Term ウィンドウを開き、それにリンクする
+
+
+
+</pre>
+
+</BODY>
+</HTML>
