@@ -114,6 +114,7 @@ protected:
 	afx_msg void OnFileLog();
 	afx_msg void OnCommentToLog();
 	afx_msg void OnViewLog();
+	afx_msg void OnReplayLog();
 	afx_msg void OnExternalSetup();
 	afx_msg void OnFileSend();
 	afx_msg void OnFileKermitRcv();

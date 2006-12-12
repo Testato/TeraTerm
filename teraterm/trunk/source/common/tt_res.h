@@ -143,6 +143,7 @@
 #define ID_SETUP_ADDITIONALSETTINGS     52016
 #define ID_CONTROL_BROADCASTCOMMAND     52017
 #define ID_FILE_VIEWLOG                 52018
+#define ID_FILE_REPLAYLOG               52019
 
 // Next default values for new objects
 // 
@@ -150,7 +151,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        119
-#define _APS_NEXT_COMMAND_VALUE         52019
+#define _APS_NEXT_COMMAND_VALUE         52020
 #define _APS_NEXT_CONTROL_VALUE         1042
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

@@ -398,6 +398,7 @@ BEGIN
             END
         END
         MENUITEM "&Change directory...",        ID_FILE_CHANGEDIR
+        MENUITEM "Replay Log...",               ID_FILE_REPLAYLOG
         MENUITEM SEPARATOR
         MENUITEM "&LogMeTT",                    ID_FILE_LOGMEIN
         MENUITEM SEPARATOR

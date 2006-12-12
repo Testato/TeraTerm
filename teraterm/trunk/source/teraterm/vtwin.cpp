@@ -160,6 +160,7 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_COMMAND(ID_FILE_LOG, OnFileLog)
 	ON_COMMAND(ID_FILE_COMMENTTOLOG, OnCommentToLog)
 	ON_COMMAND(ID_FILE_VIEWLOG, OnViewLog)
+	ON_COMMAND(ID_FILE_REPLAYLOG, OnReplayLog)
 	ON_COMMAND(ID_FILE_SENDFILE, OnFileSend)
 	ON_COMMAND(ID_FILE_KERMITRCV, OnFileKermitRcv)
 	ON_COMMAND(ID_FILE_KERMITGET, OnFileKermitGet)
@@ -2739,6 +2740,53 @@ void CVTWindow::OnViewLog()
 }
 
 
+// ログの再生 (2006.12.13 yutaka)
+void CVTWindow::OnReplayLog()
+{
+    OPENFILENAME ofn;
+//    char szFileName[64];
+    char szFile[MAX_PATH];
+	char Command[MAX_PATH] = "notepad.exe";
+	char *exec = "ttermpro";
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+
+	// バイナリモードで採取したログファイルを選択する
+	memset(&ofn, 0, sizeof(OPENFILENAME));
+    ofn.lStructSize = sizeof(OPENFILENAME);
+    ofn.hwndOwner = HVTWin;
+    ofn.lpstrFilter = "Replay log(*.log)\0*.log\0All files(*.*)\0*.*\0\0";
+    ofn.lpstrFile = szFile;
+//    ofn.lpstrFileTitle = szFile;
+    ofn.nMaxFile = sizeof(szFile);
+    ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+    ofn.lpstrDefExt = "log";
+    ofn.lpstrTitle = "Select replay log file with binary mode";
+    if(GetOpenFileName(&ofn) == 0) 
+        return;
+
+
+	// "/R"オプション付きでTeraTermを起動する（ログが再生される）
+	_snprintf(Command, sizeof(Command), "%s /R=\"%s\"", 
+		exec, szFile);
+
+	memset(&si, 0, sizeof(si));
+	GetStartupInfo(&si);
+	memset(&pi, 0, sizeof(pi));
+
+	if (CreateProcess(
+			NULL, 
+			Command, 
+			NULL, NULL, FALSE, 0,
+			NULL, NULL,
+			&si, &pi) == 0) {
+		char buf[80];
+		_snprintf(buf, sizeof(buf), "Can't execute TeraTerm. (%d)", GetLastError());
+		::MessageBox(NULL, buf, "ERROR", MB_OK | MB_ICONWARNING);
+	}
+}
+
+
 void CVTWindow::OnFileSend()
 {
   HelpId = HlpFileSend;
@@ -4150,6 +4198,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.40  2006/12/12 14:42:45  maya
+ * TTProxy のダイアログの言語のため、SetThreadLocale するようにした。
+ *
  * Revision 1.39  2006/11/23 02:19:12  maya
  * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
  *
