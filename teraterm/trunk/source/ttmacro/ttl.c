@@ -315,7 +315,8 @@ WORD TTLVar2Clipb()
     CloseClipboard();
     SetResult(1);
   }
-
+  GlobalFree(hText);
+  
   return Err;
 }
 
