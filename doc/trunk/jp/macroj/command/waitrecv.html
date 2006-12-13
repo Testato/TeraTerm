@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>waitrecv</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">waitrecv</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+waitrecv &lt;sub-string&gt; &lt;len&gt; &lt;pos&gt;
+</B>
+</UL><P></P>
+
+<pre>
+
+ある条件を満たす1つの文字列がホストから送られてくるか、タイムアウトが発生するまで、 MACRO を停止させる。
+
+その条件とは、文字列の長さが &lt;len&gt; 文字で、 文字列がその &lt;pos&gt; 文字目から始まる副文字列 &lt;sub-string&gt; を
+含んでいるということ。
+
+例えば、&lt;sub-string&gt; が "def"、&lt;len&gt; が9、&lt;pos&gt; が4のとき、文字列 "abcdefghi" は条件を満たす。
+
+もし条件を満たす文字列が送られてきたら、システム変数 inputstr に保存される。
+
+システム変数 timeout が0より大きい場合、その値の秒数の時間がすぎるとタイムアウトが起きる。
+timeout の値が0以下の場合は、タイムアウトはない。
+
+このコマンドの実行結果はシステム変数 result に格納される。
+
+</pre><P></P>
+
+<pre>
+
+変数 result の値の意味は、
+
+値　　　　　　　　　　　　　　　　　意味<hr>
+-1                                  &lt;pos&gt; 文字目から始まる &lt;sub-string&gt; を含む文字列が来て、inputstr に保存された。
+                                    しかし文字列の長さは、タイムアウトのために &lt;len&gt; 文字より短い。
+0                                   タイムアウト。条件を満たす文字列は送られてこなかった。
+1                                   条件をみたす文字列が来て、 inputstr に保存された。
+
+</pre>
+
+</BODY>
+</HTML>

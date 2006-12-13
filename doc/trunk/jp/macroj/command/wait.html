@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>wait</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">wait</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+wait &lt;string1&gt; &lt;string2&gt;
+</B>
+</UL><P></P>
+
+<pre>
+
+文字列 &lt;string1&gt;, &lt;string2&gt;, ...  のうち一つがホストから送られてくるか、タイムアウトが発生するまで MACRO を停止させる。
+文字列は最大10個まで指定できる。
+
+システム変数 timeout が0より大きい場合、&lt;timeout&gt; 秒の時間がすぎるとタイムアウトが発生する。 
+timeout の値が0以下の場合は、タイムアウトは発生しない。
+
+このコマンドの実行結果はシステム変数 result に格納される。
+変数 result の値の意味は、
+
+
+値　　　　　　　　　　　　　　　　　　　　　　意味<hr>
+0                                             タイムアウト。どの文字列も来なかった。
+1                                             &lt;string1&gt; を受信した。
+2                                             &lt;string2&gt; を受信した。
+
+</pre><P></P>
+
+<pre>
+
+例：
+    <B>timeout = 30</B>                                       タイムアウトを30秒に設定。
+    <B>Wait 'OK' 'ERROR'</B>                                  文字列 "OK" か "ERROR" を待つ。
+    <B>if result=0 goto timeout</B>                          タイムアウトなら、:timeout へジャンプ。
+    <B>If result=1 goto ok</B>                               "OK" が来たなら、:ok へジャンプ
+    <B>If result=2 goto error</B>                            "ERROR" が来たなら、:error へジャンプ
+    
+    <B>wait #10'&gt;' 'complete.'#13</B>                        行先頭の "&gt;" か、行末の "complete." を待つ。
+                                                         (ASCIIコード10, 13は LF, CR)
+
+</pre>
+
+</BODY>
+</HTML>

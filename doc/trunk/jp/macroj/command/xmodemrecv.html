@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>xmodemrecv</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">xmodemrecv</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+xmodemrecv &lt;filename&gt; &lt;binary flag&gt; &lt;option&gt;
+</B>
+</UL><P></P>
+
+
+<pre>
+
+XMODEM プロトコルでファイル &lt;filename&gt; を受信する。
+受信が終わるまで次のコマンドは実行されない。
+ファイルが正しく転送された場合、システム変数 result に1が格納される。
+それ以外の場合、 result に0が格納される。
+
+ファイルがバイナリファイルの場合は、&lt;binary flag&gt; は0以外でなければならない。
+テキストファイルの場合は、&lt;binary flag&gt; は0でなければならない。
+
+</pre><P></P>
+
+<pre>
+
+&lt;option&gt; によって、XMODEM のオプションを指定する。
+
+&lt;option&gt;                                  XMODEM option<hr>
+1                                         Checksum
+2                                         CRC
+3                                         1K
+それ以外                                  Checksum
+
+
+例：
+    <B>xmodemrecv 'readme.txt' 0 2</B>                                       XMODEM receive, text file, CRC
+
+</pre>
+</BODY>
+</HTML>

@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>waitevent</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">waitevent</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+waitevent &lt;events&gt;
+</B>
+</UL>
+
+<pre>
+
+&lt;events&gt; で指定されるイベントが発生するまで MACRO を停止させる。
+
+&lt;events&gt; は以下のイベント識別子の組み合わせ。
+
+</pre><P></P>
+
+<pre>
+
+イベント　　　　　　　　　　　　　　　　　　　　　　　　　イベント識別子<hr>
+timeout                                                   1
+unlink                                                    2
+disconnection                                             4
+connection                                                8
+
+システム変数 timeout が0より大きい場合、&lt;timeout&gt; 秒の時間がすぎるとtimeout (タイムアウト)イベントが発生する。
+timeout の値が0以下の場合は、タイムアウトは発生しない。
+
+unlink イベントは Tera Term が閉じられたときに発生する。
+
+disconnection (または connection) イベントは、Tera Term とホストの間の通信が閉じられた(開かれた)時に発生する。
+
+waitevent コマンドは実際に発生したイベントの識別子をシステム変数 result に格納する。
+
+</pre><P></P>
+
+<pre>
+
+例：
+    <B>waitevent 4</B>                                    disconnection イベントを待つ
+    
+    <B>waitevent 2 or 8</B>                               unlink または connection イベントを待つ
+    <B>if result=2 goto label1</B>                       unlink イベント発生
+    <B>if result=8 goto label2</B>                       connection イベント発生
+
+</pre>
+</BODY>
+</HTML>
