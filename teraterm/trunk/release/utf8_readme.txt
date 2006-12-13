@@ -769,7 +769,7 @@ OF SUCH DAMAGE.
 2006.11.30 (Ver 4.50)
   - Bug fix: TeraTerm crashs when the log file name is not a full path.
   - added FUNCTION.CNF. F1-F10 keys are enabled in this keyboard setup file.
-  - added 'Replay Log..' menu under File menu.
+  - added 'Replay Log..' menu under File menu. This function replays log with binary mode and emulates the escape sequence.
   - upgraded TTSSH version supporting SSH2 to 2.38
   - upgraded TTProxy to 1.0.0.10
 
