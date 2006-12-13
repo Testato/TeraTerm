@@ -746,6 +746,7 @@ OF SUCH DAMAGE.
   ・F1-F10キーを有効にしたキーボード設定ファイル FUNCTION.CNF を追加した。
   ・Fileメニュー配下に、ログ再生を行う"Replay Log.."を追加した。
   ・SSH2対応TTSSH(2.38)へ差し替えた
+  ・TTProxy(1.0.0.10)へ差し替えた
 
 2006.11.20 (Ver 4.49)
   ・TeraTerm本体（DDEサーバ）側でのDDEメッセージ XTYP_POKE の処理において、不正な返値をTeraTermマクロ（DDEクライアント）へ返していたバグを修正した。

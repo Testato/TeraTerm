@@ -771,6 +771,7 @@ OF SUCH DAMAGE.
   - added FUNCTION.CNF. F1-F10 keys are enabled in this keyboard setup file.
   - added 'Replay Log..' menu under File menu.
   - upgraded TTSSH version supporting SSH2 to 2.38
+  - upgraded TTProxy to 1.0.0.10
 
 2006.11.20 (Ver 4.49)
   - Bug fix: TeraTerm(DDE server) sent the invalid return value to TeraTerm macro(DDE client) when DDE server was received XTYP_POKE message.
