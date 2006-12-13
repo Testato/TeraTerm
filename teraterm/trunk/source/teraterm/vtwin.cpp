@@ -2744,7 +2744,6 @@ void CVTWindow::OnViewLog()
 void CVTWindow::OnReplayLog()
 {
     OPENFILENAME ofn;
-//    char szFileName[64];
     char szFile[MAX_PATH];
 	char Command[MAX_PATH] = "notepad.exe";
 	char *exec = "ttermpro";
@@ -2753,11 +2752,11 @@ void CVTWindow::OnReplayLog()
 
 	// バイナリモードで採取したログファイルを選択する
 	memset(&ofn, 0, sizeof(OPENFILENAME));
+	memset(szFile, 0, sizeof(szFile));
     ofn.lStructSize = sizeof(OPENFILENAME);
     ofn.hwndOwner = HVTWin;
-    ofn.lpstrFilter = "Replay log(*.log)\0*.log\0All files(*.*)\0*.*\0\0";
+    ofn.lpstrFilter = "all(*.*)\0*.*\0\0";
     ofn.lpstrFile = szFile;
-//    ofn.lpstrFileTitle = szFile;
     ofn.nMaxFile = sizeof(szFile);
     ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
     ofn.lpstrDefExt = "log";
@@ -4198,6 +4197,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.41  2006/12/12 15:43:48  yutakapon
+ * Fileメニュー配下に、ログ再生を行う"Replay Log.."を追加した。
+ *
  * Revision 1.40  2006/12/12 14:42:45  maya
  * TTProxy のダイアログの言語のため、SetThreadLocale するようにした。
  *
