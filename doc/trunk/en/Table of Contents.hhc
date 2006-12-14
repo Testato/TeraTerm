@@ -149,15 +149,21 @@
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="For developer">
-		<param name="Local" value="html\develop.txt">
-		<param name="ImageNumber" value="11">
+		<param name="Name" value="Reference data">
+		<param name="ImageNumber" value="1">
 		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Keycode">
-		<param name="Local" value="html\keycode.txt">
-		<param name="ImageNumber" value="11">
-		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="For developer">
+			<param name="Local" value="html\develop.txt">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Keycode">
+			<param name="Local" value="html\keycode.txt">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="MACRO help index">
 		<param name="Local" value="html\macro\index.html">

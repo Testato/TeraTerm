@@ -11,6 +11,7 @@
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="index">
 		<param name="Local" value="indexj.html">
+		<param name="ImageNumber" value="9">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Tera Tarm について">
@@ -80,6 +81,18 @@
 			<param name="Local" value="tipsj.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Unicode設定">
+			<param name="Local" value="unicode.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="透過ウィンドウ">
+			<param name="Local" value="transparent.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Cygwin接続">
+			<param name="Local" value="cygwin.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="LogMeTT">
 			<param name="Local" value="LogMeTT\LogMeTTTutorial.htm">
 			</OBJECT>
@@ -88,21 +101,97 @@
 		<param name="Name" value="コマンド">
 		<param name="ImageNumber" value="1">
 		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[File]メニュー">
+			<param name="Local" value="file-menuj.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Edit]メニュー">
+			<param name="Local" value="edit-menuj.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Setup]メニュー">
+			<param name="Local" value="setup-menuj.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Control]メニュー">
+			<param name="Local" value="control-menuj.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Window]メニュー">
+			<param name="Local" value="window-menuj.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Help]メニュー">
+			<param name="Local" value="help-menuj.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="TEK window">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="TEK window のコマンド">
+			<param name="Local" value="tekwindow-commandj.html">
+			</OBJECT>
+	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="コマンドライン">
 		<param name="ImageNumber" value="1">
 		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="TeraTerm">
+			<param name="Local" value="commandline\teraterm.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="TTSSH">
+			<param name="Local" value="commandline\ttssh.html">
+			</OBJECT>
+	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="設定ファイル">
 		<param name="ImageNumber" value="1">
 		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Tera Term 設定ファイル">
+			<param name="Local" value="teraterm-setfilej.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="キーボード設定ファイル">
+			<param name="Local" value="keyboard-setfilej.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="TTSSH known_hosts ファイル">
+			<param name="Local" value="setup\knownfiles.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+	</UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="関連事項">
+		<param name="Name" value="参考資料">
 		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Keycode">
+			<param name="Local" value="keycodej.txt">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="MACRO ヘルプ">
+		<param name="Local" value="macroj\macro_indexj.html">
+		<param name="ImageNumber" value="9">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="アンインストール">
 		<param name="Local" value="uninstallj.html">
+		<param name="ImageNumber" value="9">
 		</OBJECT>
 </UL>
 </BODY></HTML>
