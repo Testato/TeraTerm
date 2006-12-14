@@ -38,7 +38,11 @@ where:
 	  /C=2  COM2
 	  /C=3  COM3
 	  /C=4  COM4
-	
+	      :
+	  /C=99  COM99
+
+	/DUPLICATE              Internal use(must not specify this option)
+
 	/F=&lt;setup file&gt;
 	  /F=TERATERM.INI (default)
 	
@@ -55,12 +59,14 @@ where:
 	  /KR=SJIS
 	  /KR=EUC
 	  /KR=JIS
+	  /KR=UTF8         UTF-8(Normalization Form C: Windows, Linux)
+	  /KR=UTF8m        UTF-8(Normalization Form D: Mac OS X)
 	
 	/KT=&lt;kanji code (transmit)&gt;	Note: Japanese mode only
 	  /KT=SJIS
-	
 	  /KT=EUC
 	  /KT=JIS
+	  /KT=UTF8        UTF-8(Normalization Form C: Windows, Linux)
 	
 	/L=&lt;log file&gt;	Start Tera Term with logging.
 	
