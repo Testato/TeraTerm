@@ -1,6 +1,9 @@
 ; Sample of KEYBOARD.CNF for the IBM-PC/AT 101-key keyboard.
 ; See KEYCODE.TXT for the description of the format.
 ;
+; This file enables using the function key from F1 to F10.
+; See [User keys] section.
+;
 [VT editor keypad]
 ;Up arrow key
 Up=328
@@ -183,15 +186,25 @@ LocalEcho=off
 ;	Ctrl + F5 key: Executing a menu command
 ;User5=1087,3,50110
 [User keys]
+; F1
 User1=59,0,$1BOP
+; F2
 User2=60,0,$1BOQ
+; F3
 User3=61,0,$1BOR
+; F4
 User4=62,0,$1BOS
+; F5
 User5=63,0,$1BOt
+; F6
 User6=64,0,$1BOu
+; F7
 User7=65,0,$1BOv
+; F8
 User8=66,0,$1BOl
+; F9
 User9=67,0,$1BOw
+; F10
 User10=68,0,$1BOx
 
 
