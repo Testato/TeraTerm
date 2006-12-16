@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>UTF-8 TeraTerm Pro with TTSSH2 Help Index</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<FONT SIZE="+2">キーボード設定ファイル</FONT>
+
+<p>
+キーボード設定ファイルは、キーボードの各キーとそれに割りあてるられる機能(VT 端末の機能、ユーザー定義文字列の
+送出、Tera Term コマンドの実行、マクロの実行)を定義します。
+</p>
+
+<p>
+Tera Term インストール時のキー設定は各キーの機能が VT 端末にできるだけ近くなるようにされています。キーボード
+設定ファイルを編集することによって、自由にキー設定を変更することができます。ファイル形式については、配布ファイル
+に含まれている<A HREF="../reference/keycodej.txt">KEYCODEJ.TXT</A>を読んでください。
+</p>
+
+<p>
+<A HREF="../commandline/teraterm.html">コマンドライン</A>で Tera Term が読み込むキーボード設定ファイルの名前を指定することができます。ファイル名の拡張子を
+省略した場合は、".CNF"であるとみなされます。ファイル名を指定しない場合、ファイル<b>KEYBOARD.CNF</b>が読み込まれます。
+</p>
+
+<p>
+配布パッケージには以下のキーボード設定ファイルが含まれています。
+</p>
+
+<pre>
+<b>IBMKEYB.CNF</b>		BM-PC/AT (いわゆる DOS/V マシン) 101 (106) キーボード用
+			設定ファイルの例 (Windows 95/NT 用)
+
+<b>PC98KEYB.CNF</b>		NEC PC 98 キーボード用設定ファイルの例 (Windows 95 用)
+
+<b>NT98KEYB.CNF</b>		NEC PC 98 キーボード 用設定ファイルの例 (Windows NT 用)
+
+<b>FUNCTION.CNF</b>		<b>IBMKEYB.CNF</b> の F1-F10 を有効にしたもの
+
+<b>KEYBOARD.CNF</b>		インストール時には <b>IBMKEYB.CNF</b> と同一
+</pre>
+
+<p>
+インストーラーは <b>IBMKEYB.CNF</b> を <b>KEYBOARD.CNF</b> としてコピーします。もし違う設定を使いたい場合には、自分で適切なファイルをコピーして<b>KEYBOARD.CNF</b>を作成し直してください。
+</p>
+
+<p>
+PC98 NX シリーズの PC の場合、<b>IBMKEYB.CNF</b> を使用してください。
+</p>
+
+</BODY>
+</HTML>

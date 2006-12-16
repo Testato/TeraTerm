@@ -20,42 +20,42 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="License and Copyright ">
-			<param name="Local" value="html\copyright.html">
+			<param name="Local" value="html\about\copyright.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Requirements ">
-			<param name="Local" value="html\requirements.html">
+			<param name="Local" value="html\about\requirements.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Emulations ">
-			<param name="Local" value="html\emulations.html">
+			<param name="Local" value="html\about\emulations.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="History ">
-			<param name="Local" value="html\history.html">
+			<param name="Local" value="html\about\history.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Q &amp; A ">
-			<param name="Local" value="html\qanda.html">
+			<param name="Local" value="html\about\qanda.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Requests ">
-			<param name="Local" value="html\requests.html">
+			<param name="Local" value="html\about\requests.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Contacting the author ">
-			<param name="Local" value="html\contacts.html">
+			<param name="Local" value="html\about\contacts.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Document writer ">
-			<param name="Local" value="html\writer.html">
+			<param name="Local" value="html\about\writer.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 	</UL>
@@ -66,47 +66,47 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Keyboard">
-			<param name="Local" value="html\keyboard.html">
+			<param name="Local" value="html\usage\keyboard.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Mouse">
-			<param name="Local" value="html\mouse.html">
+			<param name="Local" value="html\usage\mouse.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Shortcut">
-			<param name="Local" value="html\shortcut.html">
+			<param name="Local" value="html\usage\shortcut.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="SSH connection">
-			<param name="Local" value="html\ssh.html">
+			<param name="Local" value="html\usage\ssh.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Proxy connection">
-			<param name="Local" value="html\proxy.html">
+			<param name="Local" value="html\usage\proxy.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Tips">
-			<param name="Local" value="html\tips.html">
+			<param name="Local" value="html\usage\tips\index.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Unicode">
-			<param name="Local" value="html\unicode.html">
+			<param name="Local" value="html\usage\unicode.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Background transparency">
-			<param name="Local" value="html\transparent.html">
+			<param name="Local" value="html\usage\transparent.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Cygwin connection">
-			<param name="Local" value="html\cygwin.html">
+			<param name="Local" value="html\usage\cygwin.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 	</UL>
@@ -117,7 +117,7 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="[Setup] menu">
-			<param name="Local" value="html\setup\setup-menu.html">
+			<param name="Local" value="html\menu\setup.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 	</UL>
@@ -154,13 +154,18 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="For developer">
-			<param name="Local" value="html\develop.txt">
+			<param name="Name" value="Keycode">
+			<param name="Local" value="html\reference\keycode.txt">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Keycode">
-			<param name="Local" value="html\keycode.txt">
+			<param name="Name" value="RE">
+			<param name="Local" value="html\reference\RE.txt">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="For developer">
+			<param name="Local" value="html\reference\develop.txt">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 	</UL>

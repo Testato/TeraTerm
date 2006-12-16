@@ -8,17 +8,13 @@ Display compile progress=No
 Full-text search=Yes
 Index file=Index.hhk
 Language=0x409 âpåÍ (ïƒçë)
-Title=UTF-8 TeraTerm Pro with TTSSH2 help index
+Title=UTF-8 TeraTerm Pro with TTSSH2 help
 
 [WINDOWS]
 teraterm=,"Table of Contents.hhc","Index.hhk","html\index.html","html\index.html",,,,,0x22420,,0x3046,,,,,,1,,0
 
 
 [FILES]
-html\tips.html
 html\index.html
-html\mouse.html
-html\keyboard.html
 
 [INFOTYPES]
-

@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>Cygwin接続</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<FONT SIZE="+2">Cygwin接続</FONT><BR><BR>
+
+<pre>
+  ローカルの Cygwin 環境に TeraTerm から接続できます。
+  <A HREF="http://www.cygwin.com/">Cygwin</A> は、Windows 上で Linux のような環境を提供するソフトウェアです。
+  Cygwin は、オープンソースソフトウェアです。
+
+  ローカルのCygwinへ接続することができます。内部でCygtermを利用しています。
+  Fileメニューから「Cygwin connection」を選択する、もしくはAlt+Gを押下すると、
+  Cygwinへ接続します。
+  あらかじめ、teraterm.iniファイルの[Tera Term]セクションに、Cygwinの
+  インストールパスを設定しておく必要があります。
+  フォーマットは「ドライブ名：￥ディレクトリ」です。
+
+------------------------------------------------------------------------------------
+; Cygwin install path
+CygwinDirectory = c:\cygwin
+------------------------------------------------------------------------------------
+
+  ※注意：
+    cygtermがうまく起動しない場合は、cygtermをビルドし直してください。
+</pre>
+
+</BODY>
+</HTML>

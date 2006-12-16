@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>Q & A</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<FONT SIZE="+2">Q & A</FONT>
+
+<pre>
+<A HREF="contacts.html">作者に連絡</A>をする前にこのページをよく読んでください。
+
+<b>Q & A集</b>
+
+<b>[Tera Term について]</b>
+<b>Q.</b>	Windows 3.1 用の Tera Term の現状は?
+<b>A.</b>	Windows 3.1 用には、Tera Term ver. 1.X を使用してください。しばらくの間は Tera Term ver. 1.X の開発を継続する予定です。
+
+<b>Q.</b>	Tera Term の最新版はどこで入手可能か?
+<b>A.</b>	以下のサイトから入手できます。
+
+http://ttssh2.sourceforge.jp/
+
+(上記のサイト、ディレクトリは将来変更される可能性があります。)
+
+<b>Q.</b>	Tera Term の次のバージョンはいつ出るのか?
+<b>A.</b>	Tera Term home page 参照。
+
+<b>Q.</b>	Tera Term は西暦 2000 年問題に対応しているか?
+<b>A.</b>	対応しています。システムクロックは Tera Term の通信機能に影響を与えません。ただ一つだけ問題が起こる(とても小さな)可能性が考えられます。もし PC の BIOS (システムクロック) が 2000 年問題に対応していなければ、マクロコマンド "getdate" と "setdate" が正しく働かない可能性があります。いずれにしてもこれは PC の問題であり Tera Term の問題ではありません。
+
+<b>[基本的な使い方]</b>
+<b>Q,</b>	NIFTY-Serve や PC-VAN などの BBS に関する質問。
+<b>A.</b>	<A HREF="../usage/tips/pc-communication.html">パソコン通信的接続法</A>
+	<A HREF="../usage/tips/nifty-serve.html">NIFTY-Serve のヒント</A>
+	<A HREF="../usage/tips/pc_van.html">PC-VAN のヒント</A>を読んでください。
+
+<b>Q.</b>	ホストに接続できない。
+<b>A.</b>	以下のことを確認してみてください。
+
+コントロールパネルのネットワークの設定。
+他の TCP/IP アプリケーションは使えますか? (telnet, FTP, WWW ブラウザなど)
+ホスト名または IP アドレスはあってますか?
+他のマシンでそのホストに接続できますが?
+
+ネットワークに関する設定法について作者に質問しないでください。インターネット関係の入門書や雑誌を読むか、ネットワーク(プロバイダー)の管理者に聞いて
+ください。
+
+<b>Q.</b>	ダイアルアップ TCP/IP (PPP) 接続で、Tera Term を使うにはどうしたらよいか? (電話回線で、いわゆる「インターネット」する人の場合)
+<b>A.</b>	Tera Term を起動する前に、ダイアルアップ(PPP)接続を確立させてください。Windows 95 の場合は、「ダイアルアップ ネットワーク」を使用します。
+
+ダイアルアップ(PPP)接続が確立したら Tera Term を起動し、[File] New connection ダイアログボックスで、ホスト名またはホストの IP アドレスを入力して
+ホストに telnet 接続をします。ホスト名または IP アドレスがわからない場合は、ホストの管理者に聞いてください。
+
+PPP 接続の場合、シリアルポートは Tera Term ではなく PPP 接続ソフトによって制御されます。 Tera Term のシリアルポート接続機能は、
+従来のパソコン通信的接続のためのもので、PPP 接続とは関係ありません。
+
+<b>Q.</b>	Telnet でホストに接続し、その後ログアウトしたときに Tera Term が勝手に終了してしまい困る。
+<b>A.</b>	[Setup] TCP/IP の <b>Auto window close</b> を off にしてください。
+
+<b>Q.</b>	Telnet 接続をしたいのに、起動すると勝手にシリアルポートが開かれてしまう。
+<b>A.</b>	[Setup] General で <b>Default port</b> を "<b>TCP/IP</b>" にしてください。
+
+<b>Q.</b>	TERATERM.INI を変更したが、その変更が有効にならない。
+<b>A.</b>	TERATERM.INI を変更したときに Tera Term セッションが走っている場合、その変更はすぐには有効にはなりません(変更がなされた後に開かれた
+セッションに対してさえも有効にはなりません)。これは、TERATERM.INI の情報は最初の Tera Term セッションが開かれた時にメモリにロードされ、それ以降、
+少なくとも一つのセッションが開いている間はメモリに保持され続けるからです。メモリに保持されている情報を更新するためには、[Setup] Restore setup 
+コマンドを実行するか、すべての Tera Term セッションを閉じてください。ただし、TERATERM.INI 以外の設定ファイルに対しては、このようにする必要はありません。
+
+<b>[日本語]</b>
+<b>Q.</b>	日本語が入力/表示できない。
+<b>A.</b>	まずは [Setup] General で <b>Language</b> が "<b>Japanese</b>" になっていることを確認してください。次に [Setup] Terminal で 
+<b>Kanji (teceive)</b> と <b>Kanji (transmit)</b> を "<b>SJIS</b>", "<b>EUC</b>", "<b>JIS</b>" の中から１つ選び両方とも同じものにしてください。
+３つともためしてうまくいくものを探してください。より確実にはホストの管理者にどの日本語コードを指定すべきか聞いてください。
+<b>A.</b>	ホストで使われている日本語コードが JIS 以外の場合で、日本語の入力ができない場合、ホストで 8 bit 文字の入力ができるように設定されていない
+可能性があります。8 bit 文字を入力可能にするには、例えば以下のようなコマンドで設定してください。
+
+stty pass8		(SunOS等の unix の場合)
+	set term /eight	(VMS の場合)
+詳しくは、ホストの管理者等に聞いてください。
+
+<b>Q.</b>	漢字モードを <b>JIS</b> や <b>EUC</b> にしたとき Shift-JIS の漢字を受信すると Tera Term がハングアップする。
+
+<b>A.</b> 	<A HREF="../usage/tips/not-c1-char.html">「C1 制御文字を使用しない」</A>を読んでください
+
+<b>Q.</b>	<A HREF="../setup/setup-terminal.html">[Setup] Terminal</A>で <b>Kanji-Out</b> で <b>^[(H</b> を設定できるようにしてほしい。
+<b>A.</b>	<A HREF="../usage/tips/incorrect-kanjiout.html">「正しくない "Kanji-out" を使用可能にする。」</A>を読んでください。
+
+<b>[キーボード]</b>
+<b>Q.</b>	Backspace または Delete (DEL) キーを押してもカーソルの一つ左の文字が消せない。
+<b>A.</b>	Backspace キーについては [Setup] Keyboard の <b>Backspace key</b> を on または off に変えてみてください。Delete キーについては、
+[Setup] Keyboard の Delete key を on にしてください。ただしホストによっては Delete キーが使えない場合があります。
+
+<b>Q.</b>	テンキー(数値キーパッド)でキーに書いてある文字が正しく入力できない。
+<b>Q.</b>	テンキー(数値キーパッド)で "/", "*", "-", "+" が入力できない。
+<b>A.</b>	<A HREF="../usage/tips/about_tenkey.html">「テンキー(数値キーパッド)について」</A>を読んでください。
+
+<b>Q.</b>	F1-F4 キーが使えない。
+<b>A.</b>「F1-F4 キー」を押すことによって VT100 の PF1-PF4 キーの機能を実現させたいという意味ならば、<A HREF="../usage/tips/pf1-pf4key_vt100.html">「VT100 の PF1-PF4 キー」</A>
+を読んでください。
+<b>Q.</b>	何々キーが使えない。
+<b>A.</b>	この種の質問はたいていの場合答えられません。そのキーを押した時に送出されるべき文字(列)あるいは実行されるべき機能がわからないことが多いから
+です。もしそれがわかる場合は、キーボード設定ファイルを設定することによってそのキーを使えるようにすることができます。<A HREF="../reference/keycodej.txt"> KEYCODEJ.TXT</A>を読んでください。
+
+<b>Q.</b>	某社の unix に接続し、DEL キーを押して実行中のプログラムを中断しようとしたができない。
+<b>A.</b>	[Setup] Keyboard の <b>Delete key</b> を on にしてください。
+
+<b>Q.</b>	[Edit] Paste (Copy) の ショートカットキーは Alt+V (Alt+C) になっているが、他のアプリケーションと同じ Ctrl+V (Ctrl+C) にしたい。
+<b>A.</b>	Ctrl+V は、ホストに ^V 文字を送出するために使うことがあるので、初期設定では、ショートカットキーになっていません。Ctrl+V を 
+<b>[Edit] Paste</b> のショートカットキーにする方法は、<A HREF="../usage/tips/user-shortcutkey.html">「ユーザー・ショートカット・キー」</A>と <A HREF="../reference/keycodej.txt">KEYCODEJ.TXT</A> 
+を読んでください。
+
+<b>[ファイル転送]</b>
+<b>Q.</b>	XMODEM/ZMODEM/B-Plus/Quick-VAN によるファイル転送がうまくいかない。
+<b>Q.</b>	メニューの <b>XMODEM</b>/<b>ZMODEM</b>/<b>B-Plus</b><b>/Quick-VAN</b> が灰色になっていて使えない。
+<b>A.</b>	<A HREF="../usage/tips/xmodem.html">「XMODEM のヒント」</A>
+	<A HREF="../usage/tips/zmodem.html">「ZMODEM のヒント」</A>
+	<A HREF="../usage/tips/b-plus.html">「B-Plus のヒント」</A>
+	<A HREF="../usage/tips/quick_van.html">「Quick-VAN のヒント」</A>を読んでください。
+
+<b>Q.</b>	あるホストへログインし、そこから他のホストへログインした場合、終端ホストと Tera Term の間でのファイル転送がうまくいかない。
+<b>A.</b>	以下を参考にしてください。
+
+中間ホストを経由してホストに接続した場合のファイル転送
+
+<b>[その他]</b>
+<b>Q.</b>	Tera Term extension interface とは何?
+<b>A.</b>	Tera Term と add-on モジュールの間のインターフェイスです。Add-on モジュールは DLL の形で作成され、Tera Term のユーザーインターフェイス関数、
+設定関数、Winsock 関数をフックすることができます。1998 年 3月現在、利用可能な add-on モジュールは一つもありませんが、ssh と SSL をサポートする
+ add-on モジュールを開発する計画があります。現在利用可能な add-on モジュールについては、Tera Term home page を見てください。
+
+<b>Q.</b>	罫線文字 ("Tera Special" フォント) が正常に表示されない。
+
+<b>A.</b>	コントロールパネルの「フォント」で、"Tera Special" フォントを削除し、システムを再起動し、"Tera Special" フォントをコントロールパネルの
+           「フォント」で手動で再インストールしてください。
+
+<b>Q.</b>	罫線 (DEC 特殊フォント) を表示させると、線に隙間ができたり、辺と角がなめらかにつながらなかったりする。
+<b>A.</b>	Tera Term では DEC 特殊フォントを表示させるため、独自の True Type フォント "Tera Special" (<b>TSPECIAL.TTF</b>) を用います。画面に表示させるときは、普通の文字のフォントと同じ大きさにスケールしますが、その倍率によっては、罫線に隙間ができるなどの問題が発生します。さまざまな大きさ、縦横比のフォントに "Tera Special" を完全に適合させるのは不可能なので、普通の文字のフォントの種類や大きさをいろいろ変えて、問題が起きないものを使用してください。
+
+<b>Q.</b>	[Setup] Font ダイアログボックスのリストに含まれるフォントの種類が少ないのはなぜ?
+<b>Q.</b>	[Setup] Font ダイアログボックスでなぜ "Times" フォントが選択できない?
+<b>A.</b>	Tera Term は"ＭＳ 明朝"や "Terminal" のような固定幅フォントしか使用しません。なぜなら VT 端末を正しくエミュレートするためには文字を等間隔で
+            表示しなければならないからです。"Times" のような可変幅(プロポーショナル)フォントを等間隔に表示させるようにするにはプログラムが複雑になるため 
+            Tera Term はそれらのフォントを使用していません。
+
+<b>Q.</b>	文字が横倒しになって表示されてしまう。
+
+<b>A.</b>	[Setup] Font ダイアログボックスでフォント名の先頭に "@" がついたフォントを選択すると文字が横倒しになって表示されます。
+            "@" がつかないフォントを選択してください。
+
+<b>Q.</b>	ダブルクリックで単語を選択するときの単語の区切り方を以前のバージョンの Tera Term と同じにしてほしい。
+<b>A.</b>	<A HREF="../usage/tips/double-clickj.html">「ダブルクリックによる単語選択の区切り文字」</A>を読んでください。
+
+<b>Q.</b>	何かの拍子に TEK window が勝手に開いてしまって困る。
+<b>A.</b>	<A HREF="../menu/setup-terminal.html">[Setup] Terminal</A> で <b>Auto change (VT&lt;-&gt;TEK)</b> という項目を off にしてください。
+            On になっていると、TEK4010 というグラフィック端末のコントロールシーケンスを受信したとき TEK window が自動的に開きます。
+
+<b>Q.</b>	Tera Term 1.X ではスクロールバッファの量を800行以上にできませんが、もっと増やせませんか?
+<b>A.</b>	Win 3.1 用の Tera Term ではできません。Win 95, Win NT 用の Tera Term Pro ではスクロールバッファの量を800行以上に設定できます。
+
+<b>Q.</b>	マクロをつかって、モデムに設定コマンド (AT...)を複数行送ろうとしたが、送るのが速すぎてモデムがコマンドを正常にうけつけない。
+<b>A.</b>	モデムによっては、あるコマンド行を処理してる間に、次のコマンドが送られてくると、処理中のコマンドをキャンセルする、というようなものが
+            あります。モデムから「OK」が来たのを確認した後に次のコマンドを送るようにするか、
+            <A HREF="menu/setup-serialport.html">[Setup]Serial port</A> で <b>Transmit delay</b> の <b>msec/line</b> の値を増やしてみてください。
+            (例えば 200 msec/line にする)
+
+<b>Q.</b>	MS Net meeting をインストールしたところ、キーボード設定ファイル (*.CNF) のアイコンが Net meeting のものに変わってしまったが、問題はないか?
+<b>A.</b>	アイコンが変わっただけで内容は変化しませんし、Tera Term はキーボード設定ファイルを読むことができるので問題ありません。ただしアイコンを
+            ダブルクリックすると Net meeting が起動してしまいますので、しないでください。
+
+<b>Q.</b>	Windows NT の at コマンド(スケージュル機能)で Tera Term を起動することができない。
+<b>A.</b>	/interactive オプションを指定すれば起動することができます。
+</pre>
+</BODY>
+</HTML>

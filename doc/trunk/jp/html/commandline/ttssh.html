@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>TTSSH コマンドライン</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<FONT SIZE="+2">TTSSH command line</FONT><BR><BR>
+
+TTSSHでは以下のコマンドラインパラメータが使用できます。
+
+<pre>
+  パラメータ                説明
+  ------------------------+-------------------------------------------------------
+  /ssh-Lport1:host:port2    ローカルポート(port1)からリモートポート(port2)へポートフォワーディングする
+  /ssh-Rport1:host:port2    リモートポート(port1)からローカルポート(port2)へポートフォワーディングする
+  /ssh-X                    X11をポートフォワーディングする
+  /ssh-f=file               teraterm.iniファイル(file)を読み込む
+  /ssh-v                    ログレベルを VERBOSE モードにする
+  /ssh-autologin            空のパスワードでの自動ログインを試みる
+  /ssh-autologon            同上
+  /ssh-consume=file         teraterm.iniファイル(file)の読み込み後、当該ファイルを削除する。
+  /t=value                  TTSSHを有効にする(value=2)、無効にする(value=2以外)
+  /f=file                   teraterm.iniファイル(file)を読み込む
+  /1                        SSH1で接続する
+  /ssh1                     SSH1で接続する
+  /2                        SSH2で接続する
+  /ssh2                     SSH2で接続する
+  /nossh                    TTSSHを無効にする
+  /telnet                   TTSSHを無効にする
+  /auth=mode                自動ログインを試みる(mode=password, publickey)
+  /user=username            ユーザ名を指定する
+  /passwd=password          パスワードを指定する
+  /keyfile=file             秘密鍵を指定する
+  /ask4passwd               自動ログインをせず、パスワードを聞く
+                            /auth=mode は認証方式のみを意味するようになる
+
+
+  例）
+  ttermpro.exe server1:22 /ssh /ssh-L30025:smtpsrv1:25 /ssh-L30110:pop3srv1:110
+  ttermpro.exe server2:22 /ssh /ssh-X
+  ttermpro.exe server3:22 /ssh /2 /auth=password /user=guest /passwd=guest
+  ttermpro.exe server4:22 /ssh /2 /auth=publickey /user=admin keyfile=pathofkeyfile /ask4passwd
+</pre>
+
+</BODY>
+</HTML>

@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>変数</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">変数</FONT><BR><BR>
+</div>
+
+<b>1) ユーザー変数</b>
+
+<p>
+ユーザーにより定義される。型および値は初めて値が代入されたときに決まる。いったん型が決まると違う型の値を代入することはできない。
+</p>
+
+<b>2) システム変数</b>
+
+<p>
+あらかじめ型と値が定義され、特定のコマンドと共に使用される。
+</p>
+
+<pre>
+名前		型	初期値	システム変数を使用するコマンド
+<HR>
+<b>groupmatchstr1</b>	文字列	""	waitregex
+<b>groupmatchstr2</b>
+<b>groupmatchstr9</b>
+
+<b>inputstr</b>	文字列	""	recvln, waitln, waitrecv, passwordbox, inputbox
+
+<b>matchstr</b>	文字列	""	waitregex
+
+<b>param2</b>		文字列	<b>*1</b>	<b>*1</b>
+<b>param3</b>		文字列	<b>*1</b>	<b>*1</b>
+<b>result</b>		整数	0	bplussend, bplusrecv, clipb2var, kmtfinish, kmtget,
+				kmtrecv, kmtsend, ifdefined, quickvanrecv, quickvansend,
+				recvln, var2clipb, wait, waitevent, waitln, waitrecv,
+				waitregex, xmodemrecv, xmodemsend, zmodemrecv, zmodemsend,
+				str2int, strcompare, strlen, strscan, filereadln,
+				filesearch, filestrseek, yesnobox
+<b>timeout</b>		整数	0	recvln, wait, waitevent, waitln, waitrecv
+		
+	<b>*1</b> MACRO 起動時のコマンドラインパラメータの2, 3番目がシステム変数 param2, param3 の初期値となる。1番目の文字列はマクロファイル名。
+	<A HREF="../commandline.html">"コマンドライン"</A> 参照。
+</pre>
+
+
+</BODY>
+</HTML>

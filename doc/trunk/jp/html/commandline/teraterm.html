@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>Tera Term Pro コマンドライン</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<FONT SIZE="+2">Tera Term Pro コマンドライン</FONT><BR><BR>
+
+Tera Term Pro を起動するときのコマンドライン(ショートカットのリンク先)の形式
+
+<pre>
+TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
+	[/B] [/C=&lt;serial port#&gt;]
+	[/F=&lt;setup file&gt;] [/FD=&lt;file transfer directory&gt;]
+	[/H] [/I] [/K=&lt;keyboard setup file&gt;]
+	[/KR=&lt;kanji code (receive)&gt;] [/KT=&lt;kanji code (transmit)&gt;]
+	[/L=&lt;log file&gt;] [/LA=&lt;language&gt;] [/M=&lt;macro file&gt;]
+	[/P=&lt;TCP port#&gt;] [/R=&lt;replay file&gt;] [/T=&lt;telnet flag&gt;]
+	[/V] [/W="&lt;window title&gt;"]
+	[/X=&lt;window pos (x)] [/Y=&lt;window pos (y)]
+	[;&lt;comment&gt;]
+
+ここで:
+	&lt;host&gt;	ホスト名または IP アドレス
+
+	&lt;host&gt;:&lt;TCP port#&gt;	TCP ポート番号つき &lt;host&gt;
+
+	&lt;host&gt; と &lt;TCP port#&gt; の間に":"が置かれる。
+
+	&lt;host&gt; &lt;TCP port#&gt;	TCP ポート番号つき &lt;host&gt;
+
+	&lt;host&gt; と &lt;TCP port#&gt; の間に1個以上の空白文字が置かれる。
+	&lt;host&gt; のすぐ後にくる数字は TCP ポート番号とみなされる。
+
+	/B	Telnet バイナリオプション
+
+	/C=&lt;serial port#&gt;	シリアルポート
+	  /C=1  COM1
+	  /C=2  COM2
+	  /C=3  COM3
+	  /C=4  COM4
+	      :
+	  /C=99  COM99
+
+	/DUPLICATE              Internal use(must not specify this option)
+
+	/F=&lt;setup file&gt;	設定ファイル
+	  /F=TERATERM.INI (省略時)
+
+	/FD=&lt;file transfer directory&gt;	ファイル転送用ディレクトリ
+
+	/H	タイトルバーを隠す
+
+	/I	起動時にアイコン状態にする
+
+	/K=&lt;keyboard setup file&gt;
+	  /K=KEYBOARD.CNF (省略時)
+
+	/KR=&lt;kanji code (receive)&gt;	漢字コード (受信)
+	  /KR=SJIS
+	  /KR=EUC
+	  /KR=JIS
+	  /KR=UTF8	UTF-8(正規化形式 C: Windows, Linux)
+	  /KR=UTF8m	UTF-8(正規化形式 D: Mac OS X)
+
+	/KT=&lt;kanji code (transmit)&gt;	漢字コード (送信)
+	  /KT=SJIS
+	  /KT=EUC
+	  /KT=JIS
+	  /KR=UTF8	UTF-8(正規化形式 C: Windows, Linux)
+
+	/L=&lt;log file&gt;	起動時にログを開始
+
+	/LA=&lt;language&gt;	言語モード
+	  /LA=E	英語
+	  /LA=J	日本語
+	  /LA=R	ロシア語
+
+	/M=&lt;macro file&gt;	起動時にマクロを実行
+
+	/P=&lt;TCP port#&gt;	TCP ポート番号
+
+	/R=&lt;replay file&gt;	ファイルを再生
+
+	/T=&lt;telnet flag&gt;
+	  /T=1	Telnet プロトコルを使用
+	  /T=0	Telnet プロトコルを不使用
+
+	/V	ウィンドウが見えない状態で起動
+
+	/W="&lt;window title&gt;"	ウィンドウのタイトル
+
+	/X=&lt;window position (x)&gt;	ウィンドウの位置(水平)
+
+	/Y=&lt;window position (y)&gt;	ウィンドウの位置(垂直)
+
+	;&lt;comment&gt;	コメント。コマンドラインの最後に置く必要がある。
+
+例:
+	TTERMPRO
+	TTERMPRO myhost.mydomain
+	TTERMPRO myhost.mydomain:23
+	TTERMPRO myhost.mydomain 23
+	TTERMPRO 111.111.11.11
+	TTERMPRO myhost.mydomain /T=0 /P=7
+	TTERMPRO /C=1
+	TTERMPRO /F=TELNET.INI
+	TTERMPRO foohost.foodomain /F=FOOHOST.INI
+	TTERMPRO /C=2 /F=MYSETUP.INI
+	TTERMPRO /K=MYKEY.CNF /W="My host"
+	TTERMPRO /R=README.TXT ; replay a file
+	TTERMPRO myhost /B /X=100 /Y=50
+
+省略時の値
+	以下の省略時の値は Tera Term 設定ファイルに保存されています。
+		&lt;TCP port#&gt;
+		/B
+		&lt;serial port#&gt;
+		&lt;file transfer directory&gt;
+		/H
+		&lt;kanji code (receive)&gt;
+		&lt;kanji code (transmit)&gt;
+		&lt;language&gt;
+		&lt;macro file&gt;
+		&lt;telnet flag&gt;
+		&lt;window title&gt;
+		&lt;window pos (x)&gt;
+		&lt;window pos (y)&gt;
+
+注:
+	&lt;telnet flag&gt; が 1 で、かつ &lt;TCP port#&gt; が 23 のときだけ、Tera Term
+	から自発的に telnet の option negotiation を開始します。
+	それ以外の場合でも Tera Term はホストから送られてきた telnet コマンドに応答する
+	ことができます。
+
+参照:
+	Telnet 用ポート番号 / 非 telnet 接続用の端末設定
+</pre>
+
+</BODY>
+</HTML>

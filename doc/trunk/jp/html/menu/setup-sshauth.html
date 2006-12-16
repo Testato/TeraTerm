@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+    <TITLE>SSH Authentication（[Setup] メニュー）</title>
+    <META http-equiv="Content-Style-Type" content="text/css">
+    <link rel="stylesheet" href="../style.css" type="text/css">
+  </head>
+
+  <body>
+    <h1>SSH Authentication（[Setup] メニュー）</h1>
+
+    <h2>"TTSSH: Authentication Setup" ダイアログボックス</h2>
+
+    <dl>
+      <dt>User name</dt>
+      <dd>SSH 接続で用いるユーザ名を指定します。</dd>
+
+      <dt>Use plain passwd to log in</dt>
+      <dd>
+	パスワード認証を用いる場合に指定します。SSH2 接続の場合では "keyboard-interactive (SSH2)" を指定できます。この場合、通信路にはパスワードそのものは流れません。（通常のパスワード認証の場合は、暗号化された上でパスワードそのものが流れます。）
+      </dd>
+
+      <dt>Use RSA/DSA key to login</dt>
+      <dd>あらかじめ作成した RSA/DSA 鍵を用いた認証方法を選択します。</dd>
+
+      <dt>Use rhost to login (SSH1)</dt>
+      <dd>ホストの設定で rhost が利用できる場合に選択します。</dd>
+
+      <dt>
+	Use challenge/response to log in (SSH1:TIS, SSH2:keyboard-interactive)
+      </dt>
+      <dd>チャレンジ／レスポンス認証を用いる場合に指定します。</dd>
+    </dl>
+  </body>
+</html>
