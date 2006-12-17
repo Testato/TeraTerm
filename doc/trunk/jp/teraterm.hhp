@@ -1,7 +1,7 @@
 [OPTIONS]
 Compatibility=1.1 or later
 Compiled file=teratermj.chm
-Contents file=Table of Contents.hhc
+Contents file=teraterm.hhc
 Default Window=help
 Default topic=html\index.html
 Display compile progress=No
@@ -11,7 +11,7 @@ Language=0x411 “ú–{Œê
 Title=UTF-8 TeraTerm Pro with TTSSH2 ƒwƒ‹ƒv
 
 [WINDOWS]
-help=,"Table of Contents.hhc","Index.hhk","html\index.html","html\index.html",,,,,0x42520,,0x3046,,,,,,,,0
+help=,"teraterm.hhc","Index.hhk","html\index.html","html\index.html",,,,,0x42520,,0x3046,,,,,,,,0
 
 
 [FILES]

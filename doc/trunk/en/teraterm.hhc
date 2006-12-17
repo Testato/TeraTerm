@@ -9,7 +9,7 @@
 </OBJECT>
 <UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="index">
+		<param name="Name" value="Index">
 		<param name="Local" value="html\index.html">
 		<param name="ImageNumber" value="9">
 		</OBJECT>
@@ -170,9 +170,47 @@
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="MACRO help index">
+		<param name="Name" value="MACRO help">
 		<param name="Local" value="html\macro\index.html">
-		<param name="ImageNumber" value="9">
+		<param name="ImageNumber" value="1">
 		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Usage">
+			<param name="ImageNumber" value="1">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="How to run a macro file">
+				<param name="Local" value="html\macro\howtorun.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Command line">
+				<param name="Local" value="html\macro\commandline.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="How to associate &quot;TTL&quot; files with MACRO">
+				<param name="Local" value="html\macro\howtoassoc.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Tera Term Language (TTL)">
+			<param name="Local" value="html\macro\syntax\index.html">
+			<param name="ImageNumber" value="9">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="TTL command reference">
+			<param name="Local" value="html\macro\command\index.html">
+			<param name="ImageNumber" value="9">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Appendixes">
+			<param name="Local" value="html\macro\appendixes\index.html">
+			<param name="ImageNumber" value="9">
+			</OBJECT>
+	</UL>
 </UL>
 </BODY></HTML>
