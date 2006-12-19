@@ -19,7 +19,12 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="著作権、使用条件 ">
+			<param name="Name" value="構成要素">
+			<param name="Local" value="html\about\module.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="ライセンス・著作権">
 			<param name="Local" value="html\about\copyright.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>

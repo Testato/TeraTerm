@@ -14,6 +14,7 @@
 <ul>
  <li><a href="#teraterm">TeraTerm</a></li>
  <li><a href="#ttssh">TTSSH</a></li>
+ <li><a href="#cygterm">CygTerm+</a></li>
  <li><a href="#ttproxy">TTProxy</a></li>
 </ul>
 
@@ -22,7 +23,7 @@
 <a name="teraterm"></a>
 <b>TeraTerm</b>
 <pre>
-2006.11.18 (Ver 4.49)
+2006.11.20 (Ver 4.49)
   ・TeraTerm本体（DDEサーバ）側でのDDEメッセージ XTYP_POKE の処理において、不正な返値をTeraTermマクロ（DDEクライアント）へ返していたバグを修正した。
   ・マクロ通信において、XTYP_POKEメッセージにおけるビジー処理を行うようにした。
   ・ScrollLockキーをサポートした
@@ -30,6 +31,7 @@
   ・HTMLヘルプを更新した
   ・初回インストール時に、teraterm.ini の Language/Locale/CodePage/VTFont/TEKFont セクションをインストーラから設定するように変更した。
   ・SSH2対応TTSSH(2.37)へ差し替えた
+  ・Oniguruma 4.5.1へ差し替えた
 
 2006.11.1 (Ver 4.48)
   ・マクロコマンド 'fileread' を追加した。指定したバイト数だけファイルからの読み込みが可能となる。
@@ -460,6 +462,9 @@
 <a name="ttssh"></a>
 <b>TTSSH</b>
 <pre>
+2006.11.20 (Ver 2.37)
+  ・Extreme Networksスイッチにおいて共通鍵生成で失敗する現象に対するworkaround(SSH_BUG_SIGBLOB)を追加した。
+
 2006.11.1 (Ver 2.36)
   ・MACとパケット圧縮を有効にするタイミングを SSH2_MSG_NEWKEYS の送受信時に変更することにより、Tectia serverへつながらない問題を修正した。
   ・SSH2_MSG_CHANNEL_EXTENDED_DATA のパケットを処理することにより、Windows上のTectia serverから標準エラー出力が送られたときに異常終了する問題を修正した。
@@ -659,6 +664,115 @@
 
 2004.8.5 (Ver 1.00 alpha1)
   ・初公開
+</pre>
+
+<a name="cygterm"></a>
+<b>CygTerm+</b>
+<pre>
+v1.06_11 2006/09/29 (by maya.negeta@gmail.com)
+        * 環境変数と /etc/passwd の HOME を使わないようにした。
+          Cygwin によってセットされた HOME が利用される。関連項目 /etc/profile
+
+        * 設定ファイルの優先順位を変更した。
+          コマンドライン引数 > ~/.cygtermrc > /etc/cygterm.conf > cygterm.cfg > /etc/passwd
+
+v1.06_10 2006/09/28 (by sue@iwmt.org)
+        * ユーザ名を得るのに、環境変数USERNAMEの代わりにgetlogin()を使うようにした。
+
+v1.06_09 2006/09/25 (by sue@iwmt.org)
+        * SHELLが設定されていない場合は、/etc/passwdからシェルの情報を得るようにした。
+
+v1.06_08 2006/08/30 (by maya.negeta@gmail.com)
+        * cygterm.cfg を設定ファイルの中で最優先されるようにした。
+
+v1.06_07 2006/08/19 (by maya.negeta@gmail.com)
+        * Windows の 環境変数 HOME が設定されていれば使うようにした。
+
+v1.06_06 2006/08/18 (by sue@iwmt.org)
+        * -sと-tオプションのパラメータの長さを制限した。
+
+v1.06_05 2006/08/18 (by maya.negeta@gmail.com)
+        * インストーラから起動チェックをするため、mutex を作成した。
+
+v1.06_04 2006/08/15 (by sue@iwmt.org)
+        * シェルをログインシェルとして呼び出すオプション LOGIN_SHELL を追加した。
+          LOGIN_SHELL: yes | no
+
+v1.06_03 2006/08/15 (by sue@iwmt.org)
+        * ホームディレクトリで起動するのを選択するオプション HOME_CHDIR を追加した。
+          HOME_CHDIR: yes | no
+
+v1.06_02 2006/02/09 (by babydamons@yahoo.co.jp)
+        * CygTermのアイコンが作成されました。（"DotWork 2.50"にて作成）
+          "DotWork 2.50" は右記のURLより入手可能です。 http://www5a.biglobe.ne.jp/~suuta/.
+          すばらしいソフトウェアを公開していただき、
+          "suuta at hamal dot freemal dot ne dot jp"に感謝致します。
+
+        * Makefileが修正されました。"clean"ターゲットでcygterm.icoを削除しないように。
+
+v1.06_01 2006/02/08 (by babydamons@yahoo.co.jp)
+        * TeraTerm Project へインポートした。
+
+        * 以下の設定ファイルの読み込みをサポート:
+            + /etc/cygterm.conf
+            + ~/.cygtermrc
+
+        * シェルがユーザのホームディレクトリで起動されるように。
+
+        * アカウントの設定情報を/etc/passwdからgetpwnam(3)で読み込むように。
+          アカウント名は環境変数USERNAMEからgetenv(3)で取得してます。
+
+        * Makefile修正：ディフォルトでアイコンつきの.exeをビルドします。
+
+v1.06 2004/01/24
+        * コマンドライン・オプションを追加。
+            -t 'terminal-emulator' (ターミナル・エミュレータ指定)
+            -p port-number (接続先ポート番号指定)
+            -dumb (ダムターミナル指定)
+            -s 'shell' (シェル指定)
+            -v 'env-var' (環境変数指定)
+
+        * Makefile修正
+          make install で BINDIR が存在しなければエラーになるように。
+
+        * ソースファイル英文化 (cygterm.cc, README.txt)
+
+v1.05 2003/01/14
+        * Ctrl+SPACE(NUL)が送信できるように修正。
+          改行コード CR+NUL を処理する方法として単純に NUL文字を無視していた              ため、Ctrl+SPACE 押下時でも NUL が送信されなかった。
+
+v1.04 2002/12/08
+        * ターミナル・エミュレータおよびシェルの起動に失敗したときに
+          エラーメッセージを表示するようにした。
+
+        * Makefile修正
+          make install で cygterm.cfg を上書きしないように。
+          gccオプションに -fno-exceptions を追加、GCC-3のリンクエラー回避。
+
+v1.03 2002/07/24
+        * ターミナル・エミュレータが通知してくるターミナルタイプに、大文字が
+          含まれていれば、それを小文字に変換するように修正。
+          ターミナル・エミュレータによっては環境変数 TERM の値が 'ANSI' 'VT100'
+          のように大文字にり terminfo にマッチしないため。
+          (Windows 2000 telnet.exe 等)
+
+v1.02 2002/07/22
+        * ターミナル・エミュレータがコンソール・アプリケーションのときに起動
+          できなかったのを修正。(Windows 2000 telnet.exe 等)
+          CreateProcess()呼出しミス。
+
+        * ターミナル・エミュレータから CR+LF が送られてきたら LF は転送しない
+          ようにし、改行が２回発生するのを修正。(Windows 98 telnet.exe 等)
+
+        * バージョン番号を cygterm.exe に埋め込むようにした。
+          確認方法は $ strings cygterm.exe | grep version
+
+v1.01 2002/07/19
+        * zsh, tcsh で動作しなかったのを修正。擬似端末のオープン方法が悪く、
+          zsh, tcsh では起動とともに入力がブロックされた。
+
+v1.00 2000/12/17
+        * 初期バージョン完成
 </pre>
 
 <a name="ttproxy"></a>
