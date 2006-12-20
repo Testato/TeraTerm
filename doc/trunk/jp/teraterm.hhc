@@ -161,12 +161,12 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="TeraTerm">
+			<param name="Name" value="Tera Term">
 			<param name="Local" value="html\commandline\teraterm.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="TeraTerm Macro">
+			<param name="Name" value="Tera Term Macro">
 			<param name="Local" value="html\macro\commandline.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>

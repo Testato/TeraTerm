@@ -9,19 +9,18 @@
 </HEAD>
 <BODY>
 
-<div class="topic"><FONT COLOR="#cc0066">改版履歴</FONT></div>
+<h1>改版履歴</h1>
 
 <ul>
- <li><a href="#teraterm">TeraTerm</a></li>
+ <li><a href="#teraterm">Tera Term</a></li>
  <li><a href="#ttssh">TTSSH</a></li>
  <li><a href="#cygterm">CygTerm+</a></li>
  <li><a href="#ttproxy">TTProxy</a></li>
 </ul>
 
-<HR SIZE="3" WIDTH="100%" ALIGN="center">
+<HR>
 
-<a name="teraterm"></a>
-<b>TeraTerm</b>
+<h2><a name="teraterm">Tera Term</a></h2>
 <pre>
 2006.11.20 (Ver 4.49)
   ・TeraTerm本体（DDEサーバ）側でのDDEメッセージ XTYP_POKE の処理において、不正な返値をTeraTermマクロ（DDEクライアント）へ返していたバグを修正した。
@@ -271,14 +270,14 @@
   ・LogMeTT 2.5.6へ差し替えた
 
 2005.5.29 (Ver 4.17)
-  ・<ESC>[J(Clear screen from cursor-position up to end)処理時において、カーソルが左上隅を指している場合にのみ、カレントバッファをスクロールアウトさせるようにした。
+  ・&lt;ESC&gt;[J(Clear screen from cursor-position up to end)処理時において、カーソルが左上隅を指している場合にのみ、カレントバッファをスクロールアウトさせるようにした。
 
 2005.5.28 (Ver 4.16)
   ・ログ種別のplain textの情報をteraterm.iniに LogTypePlainText として残すようにした。
   ・CygTermの設定を Additional settings ダイアログに追加した。
   ・ブロック選択のキーバインドを Shift+MouseDrag から Alt+MouseDrag へ変更した。
   ・ページをまたぐテキスト選択（選択済みテキスト領域の伸縮）をサポートした。選択範囲の開始位置は左クリック、終了位置はShift + 左クリックで指定する。
-  ・<ESC>[Jによる画面クリア時にカレントバッファをスクロールアウトさせるようにした。
+  ・&lt;ESC&gt;[Jによる画面クリア時にカレントバッファをスクロールアウトさせるようにした。
   ・マクロ使用時にCPU使用率が100%となる現象への暫定処置を施した（sendln後に無条件に100ミリ秒のスリープを追加）。
 
 2005.4.24 (Ver 4.15)
@@ -312,7 +311,7 @@
   ・LogMeTT 2.1.2へ差し替え。
 
 2005.2.22 (Ver 4.11)
-  ・ログ採取中に File -> log がグレイ表示にならない問題へ対処した。
+  ・ログ採取中に File -&gt; log がグレイ表示にならない問題へ対処した。
   ・Eterm風透過ウィンドウ機能を追加した。AKASI氏に感謝します。
   ・VisualStyle(WindowsXP)に対応させた
   ・TitleFormatにformat ID=13を新規追加した
@@ -458,9 +457,7 @@
 </pre>
 
 
-
-<a name="ttssh"></a>
-<b>TTSSH</b>
+<h2><a name="ttssh">TTSSH</a></h2>
 <pre>
 2006.11.20 (Ver 2.37)
   ・Extreme Networksスイッチにおいて共通鍵生成で失敗する現象に対するworkaround(SSH_BUG_SIGBLOB)を追加した。
@@ -666,15 +663,15 @@
   ・初公開
 </pre>
 
-<a name="cygterm"></a>
-<b>CygTerm+</b>
+
+<h2><a name="cygterm">CygTerm+</a></h2>
 <pre>
 v1.06_11 2006/09/29 (by maya.negeta@gmail.com)
         * 環境変数と /etc/passwd の HOME を使わないようにした。
           Cygwin によってセットされた HOME が利用される。関連項目 /etc/profile
 
         * 設定ファイルの優先順位を変更した。
-          コマンドライン引数 > ~/.cygtermrc > /etc/cygterm.conf > cygterm.cfg > /etc/passwd
+          コマンドライン引数 &gt; ~/.cygtermrc &gt; /etc/cygterm.conf &gt; cygterm.cfg &gt; /etc/passwd
 
 v1.06_10 2006/09/28 (by sue@iwmt.org)
         * ユーザ名を得るのに、環境変数USERNAMEの代わりにgetlogin()を使うようにした。
@@ -775,8 +772,8 @@ v1.00 2000/12/17
         * 初期バージョン完成
 </pre>
 
-<a name="ttproxy"></a>
-<b>TTProxy</b>
+
+<h2><a name="ttproxy">TTProxy</a></h2>
 <pre>
 2006.12.12 (Ver 1.0.0.10)
   ・TeraTerm のダイアログの言語を使用して SetThreadLocale するのをやめた。

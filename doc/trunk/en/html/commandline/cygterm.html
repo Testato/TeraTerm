@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>CygTerm+ Command Line Options</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<FONT SIZE="+2">CygTerm+ Command Line Options</FONT><BR><BR>
+
+<pre>
+    cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
+                [-s 'shell'] [-v 'env-var' ...]
+
+-t 'terminal-emulator'
+        Specify the command line of a terminal emulator to execute.
+        This format is the same as TERM in the configuration file.
+        The command line should be enclosed in quotes to include spaces.
+
+-p port-number
+        Instead of executing a terminal emulator, try connection to this
+        port number of localhost.  It is considered another program uses
+        `-p' option to use Cygwin via cygterm.exe
+
+-dumb
+        Suppress the TELNET options negotiation.  And ignore any TELNET
+        commands sent from terminal side.  The environment variable
+        TERM is set to `dumb' on the shell side.
+
+-s 'shell'
+        Specify the command line of a shell on Cygwin to execute.
+        This format is the same as SHELL in the configuration file.
+        The command line should be enclosed in quotes to include spaces.
+        Any command can be spedicied even if a non-shell command.
+
+-ls
+        Execute a shell as a login shell.
+
+-nols
+        Execute a shell as a normal (not login) shell.
+
+-cd
+        The current directory is moved to the user home directory and
+        the shell is invoked.
+
+-nocd
+        The shell is invoked without changing the current directory.
+
+-v 'env-var'
+        Specify the environment variable to be set when starting the shell.
+        This format is the same as ENV_X in the configuration file.
+        The expression should be enclosed in quotes to include spaces.
+        One or more `-v' options are available.
+</pre>
+
+<p>
+The terminal emulator or connection port number, and the shell on Cygwin, these need to be specified at least.  If these are given on the command line, cygterm.exe can be run without configuration file cygterm.cfg.<br><br>
+
+cygterm.exe is an Win32 application which uses cygwin1.dll.  It can be run from Cygwin command line or a shortcut on Windows.<br><br>
+
+* It is necessary the Windows environment variable PATH includes a directory path of cygwin1.dll (normally Cygwin-root\bin) to be run from Windows.
+</p>
+
+</BODY>
+</HTML>

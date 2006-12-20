@@ -9,25 +9,20 @@
 </HEAD>
 <BODY>
 
-<div class="topic"><FONT COLOR="#cc0066">History</FONT></div>
+<h1>History</h1>
 
 <ul>
- <li><a href="#teraterm">TeraTerm</a></li>
+ <li><a href="#teraterm">Tera Term</a></li>
  <li><a href="#ttssh">TTSSH</a></li>
+ <li><a href="#cygterm">CygTerm+</a></li>
  <li><a href="#ttproxy">TTProxy</a></li>
 </ul>
 
-<HR SIZE="3" WIDTH="100%" ALIGN="center">
+<HR>
 
-<a name="teraterm"></a>
-<b>TeraTerm</b>
+<h2><a name="teraterm">Tera Term</a></h2>
 <pre>
-2006.11.30 (Ver 4.50)
-  - Bug fix: TeraTerm crashs when the log file name is not a full path.
-  - added FUNCTION.CNF. F1-F10 keys are enabled in this keyboard setup file.
-  - upgraded TTSSH version supporting SSH2 to 2.38
-
-2006.11.18 (Ver 4.49)
+2006.11.20 (Ver 4.49)
   - Bug fix: TeraTerm(DDE server) sent the invalid return value to TeraTerm macro(DDE client) when DDE server was received XTYP_POKE message.
   - added busy procedure(DDE_FBUSY) between DDE server and DDE client.
   - added support for ScrollLock key.
@@ -35,6 +30,7 @@
   - updated HTML help document.
   - changed installer. teraterm.ini entries (Language, Locale, CodePage. VTFont and TEKFont) are setted by installer when new install.
   - upgraded TTSSH version supporting SSH2 to 2.37
+  - upgraded Oniguruma to 4.5.1
 
 2006.11.1 (Ver 4.48)
   - added 'fileread' macro command. This command enables the macro script to read the specified bytes from file.
@@ -104,8 +100,7 @@
   - upgraded CygTerm+ to 1.06_6.
         * Limit a parameter length of both '-s' and '-t' option.
         * Create mutex object for running check by installer.
-        * Add 'LOGIN_SHELL' entry which the shell is invoked as the login shell in cygterm
-          LOGIN_SHELL: yes | no
+        * Add 'LOGIN_SHELL' entry which the shell is invoked as the login shell in cygterm          LOGIN_SHELL: yes | no
         * Add 'HOME_CHDIR' entry which home directory is changed in cygterm.cfg file.
           HOME_CHDIR: yes | no
 
@@ -393,7 +388,7 @@
 2004.11.6 (Ver 2.06)
   - fixed drawing ruled line with DEC special font remains garbage graphics, moreover UTF-8 feature to display only Japanese characters. And also fixed BOLD style of font problem.
   - TeraTerm second later instances can read configuration from TERATERM.INI.
-  - added drag&drop directory path in teraterm from explorer.
+  - added drag&amp;drop directory path in teraterm from explorer.
   - rewrote README(English). Special thanks to Boris Maisuradze for his cooperation.
 
 2004.10.25 (Ver 2.05a)
@@ -460,13 +455,8 @@
 </pre>
 
 
-
-<a name="ttssh"></a>
-<b>TTSSH</b>
+<h2><a name="ttssh">TTSSH</a></h2>
 <pre>
-2006.11.28 (Ver 2.38)
-  - changed the handling of SSH2_MSG_IGNORE to do nothing. The data from Cisco router seems invalid.
-
 2006.11.20 (Ver 2.37)
   - added workaround(SSH_BUG_SIGBLOB) that generating the symmetric key is failure on Extreme Networks switch.
 
@@ -507,7 +497,7 @@
   - changed Copyright string.
 
 2006.6.23 (Ver 2.28)
-  - added support for SSH delayed compression(OpenSSH 4.2 later).  Special thanks to NAGATA Shinya.
+  - added support for SSH2 delayed compression(OpenSSH 4.2 later).  Special thanks to NAGATA Shinya.
   
 2006.6.14 (Ver 2.27)
   - Bug fix: TeraTerm enabled SSH compression could not connect to the server when OpenSSH 4.3 later was configured as delay SSH compression.
@@ -669,8 +659,115 @@
   - first release
 </pre>
 
-<a name="ttproxy"></a>
-<b>TTProxy</b>
+
+<h2><a name="cygterm">CygTerm+</a></h2>
+<pre>
+v1.06_11 2006/09/29 (by maya.negeta@gmail.com)
+        * Stopped using HOME from environment variable and /etc/passwd.
+          CygTerm passes HOME which is set by Cygwin. See also /etc/profile
+        * Changed the priority of config files.
+          command line arguments &gt; ~/.cygtermrc &gt; /etc/cygterm.conf &gt; cygterm.cfg &gt; /etc/passwd
+
+v1.06_10 2006/09/28 (by sue@iwmt.org)
+        * Use getlogin() instead of environment variable USERNAME to get user name.
+
+v1.06_09 2006/09/25 (by sue@iwmt.org)
+        * Get shell information from /etc/passwd if SHELL parameter is not specified.
+
+v1.06_08 2006/08/30 (by maya.negeta@gmail.com)
+        * Changed the priority of config files. cygterm.cfg is top priority config file.
+
+v1.06_07 2006/08/19 (by maya.negeta@gmail.com)
+        * Use `HOME' environment variable for changing home directory if the variable will be set.
+
+v1.06_06 2006/08/18 (by sue@iwmt.org)
+        * Limit a parameter length of both '-s' and '-t' option.
+
+v1.06_05 2006/08/18 (by maya.negeta@gmail.com)
+        * Create mutex object for running check by installer.
+
+v1.06_04 2006/08/15 (by sue@iwmt.org)
+        * Add 'LOGIN_SHELL' entry which the shell is invoked as the login shell in cygterm.cfg file.
+          LOGIN_SHELL: yes | no
+
+v1.06_03 2006/08/15 (by sue@iwmt.org)
+        * Add 'HOME_CHDIR' entry which home directory is changed in cygterm.cfg file.
+          HOME_CHDIR: yes | no
+
+v1.06_02 2006/02/09 (by babydamons@yahoo.co.jp)
+        * Generated CygTerm's ICON by "DotWork 2.50".
+          "DotWork 2.50" is available at http://www5a.biglobe.ne.jp/~suuta/.
+          Special Thanks to "suuta at hamal dot freemal dot ne dot jp"
+
+        * Makefile was changed, "clean" target was changed to don't remove cygterm.ico.
+
+v1.06_01 2006/02/08 (by babydamons@yahoo.co.jp)
+        * The following configuration file reading was supported:
+            + /etc/cygterm.conf
+            + ~/.cygtermrc
+
+        * Shell is invoked with user's home-directory.
+
+        * Get account configuration from /etc/passwd by getpwnam(3),
+          getting account name from USERNAME environment by getenv(3).
+
+        * Makefile was changed, default build is with icon executable.
+
+v1.06 2004/01/24
+        * The following command line options were added:
+            -t 'terminal-emulator' (specifies the terminal emulator)
+            -p port-number (specifies the port# to connect)
+            -dumb (specifies dumb terminal mode)
+            -s 'shell' (specifies the shell)
+            -v 'env-var' (specifies environment variables)
+
+        * Fixed to fail in `make install' if BINDIR was not found.
+
+        * cygterm.cc and README.txt were changed to English version.
+
+v1.05 2003/01/14
+        * Fixed to transmit Ctrl+SPACE (NUL).
+          The NUL character was not able to be transmitted even if Ctrl+SPACE
+          was typed, because it was ignored simply as an way to handle the
+          newline CR+NUL.
+
+v1.04 2002/12/08
+        * Changed to display error messages for failure to execute a terminal
+          emulator or a shell.
+
+        * Makefile was changed.
+          + do not overwrite cygterm.cfg when `make install'.
+          + add the gcc option -fno-exceptions against the GCC-3 link error.
+
+v1.03 2002/07/24
+        * Fixed to convert terminal type into lower-case when cygterm received
+          it from a terminal emulator.  Because some upper-case values such as
+          `ANSI' `VT100' of the environment variable TERM might not be found
+          in terminfo depending on the kind of terminal emulator.
+          (Windows 2000 telnet.exe, etc)
+
+v1.02 2002/07/22
+        * Fix to be able to start a terminal emulator even if it was a console
+          application.  (Windows 2000 telnet.exe, etc)
+          There was a mistake in calling CreateProcess().
+
+        * Fixed to suppress duplicate newline on a shell by canceling LF when
+          a terminal emulator sent CR+LF.  (Windows 98 telnet.exe, etc)
+
+        * Embedded the version number in cygterm.exe executable code.
+          How to check: $ strings cygterm.exe | grep version
+
+v1.01 2002/07/19
+        * Fixed that cygterm did not work with zsh or tcsh. 
+          Input was blocked when zsh or tcsh started, because the approach to
+          open the pseudo terminal was not good.
+
+v1.00 2000/12/17
+        * The initial version was released.
+</pre>
+
+
+<h2><a name="ttproxy">TTProxy</a></h2>
 <pre>
 2006.12.12 (Ver 1.0.0.10)
   - deleted SetThreadLocale with the language which is detected from TeraTerm dialog resource.
