@@ -94,6 +94,11 @@
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Cygwin接続">
+			<param name="Local" value="html\usage\cygwin.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Proxy 接続">
 			<param name="Local" value="html\usage\proxy.html">
 			<param name="ImageNumber" value="11">
@@ -111,11 +116,6 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="透過ウィンドウ">
 			<param name="Local" value="html\usage\transparent.html">
-			<param name="ImageNumber" value="11">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Cygwin接続">
-			<param name="Local" value="html\usage\cygwin.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 	</UL>
@@ -166,8 +166,18 @@
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="TeraTerm Macro">
+			<param name="Local" value="html\macro\commandline.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="TTSSH">
 			<param name="Local" value="html\commandline\ttssh.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="CygTerm+">
+			<param name="Local" value="html\commandline\cygterm.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 	</UL>
@@ -191,6 +201,11 @@
 			<param name="Local" value="html\setup\knownfiles.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="CygTerm+ 設定ファイル">
+			<param name="Local" value="html\setup\cygterm.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="参考資料">
@@ -207,6 +222,18 @@
 			<param name="Local" value="html\reference\RE-ja.txt">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
+
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="OpenSSL ライセンス">
+			<param name="Local" value="html\reference\OpenSSL-LICENSE.txt">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="OpenSSH ライセンス">
+			<param name="Local" value="html\reference\OpenSSH-LICENSE.txt">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="開発者向け">
 			<param name="Local" value="html\reference\develop-j.txt">
