@@ -1,4 +1,6 @@
 [Tera Term]
+LCID=1033 ; 0x0409
+
 MENU_FILE=&File
 MENU_FILE_NEW=&New connection...\tAlt+N
 MENU_FILE_DUPLICATE=D&uplicate session\tAlt+D

@@ -132,7 +132,7 @@ OF SUCH DAMAGE.
     OpenSSL is linked to this program statically.
   Copyright of zlib belongs to Greg Roelofs and Jean-loup Gaill.
     zlib is linked to this program statically.
-  Copyright of OpenSSH belongs to each developers. Please see OpenSSH-LICENCE.txt for more information.
+  Copyright of OpenSSH belongs to each developers. Please see OpenSSH-LICENSE.txt for more information.
     This program uses the source code of OpenSSH.
   Copyright of TTSSH icon file to Tatsuhiko Sakamoto.
 

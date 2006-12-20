@@ -1,4 +1,6 @@
 [Tera Term]
+LCID=1041 ; 0x0411
+
 MENU_FILE=ファイル(&F)
 MENU_FILE_NEW=新しい接続(&N)...\tAlt+N
 MENU_FILE_DUPLICATE=セッションの複製(&U)\tAlt+D

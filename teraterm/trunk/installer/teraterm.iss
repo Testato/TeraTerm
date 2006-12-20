@@ -66,7 +66,7 @@ Source: ..\release\ssh2_readme.txt; DestDir: {app}; Components: TTSSH
 Source: ..\release\ssh2_readme-j.txt; DestDir: {app}; Components: TTSSH
 Source: ..\release\ssh_known_hosts; DestDir: {app}; Components: TTSSH; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\release\OpenSSL-LICENSE.txt; DestDir: {app}; Components: TTSSH
-Source: ..\release\OpenSSH-LICENCE.txt; DestDir: {app}; Components: TTSSH
+Source: ..\release\OpenSSH-LICENSE.txt; DestDir: {app}; Components: TTSSH
 Source: ..\cygterm\cygterm.exe; DestDir: {app}; Components: cygterm
 Source: ..\cygterm\cygterm.cfg; DestDir: {app}; Components: cygterm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\release\cygterm-README.txt; DestDir: {app}; Components: cygterm
