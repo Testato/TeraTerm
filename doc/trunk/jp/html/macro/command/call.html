@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>call</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">call</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+call &lt;label&gt;
+</B>
+</UL><P></P>
+
+<pre>
+
+&lt;label&gt; 行から始まるサブルーチンをコールする。
+
+例：
+    <B>messagebox "I'm in main." "test"</B>                    ":sub" へ飛ぶ。
+    <B>call sub</B>
+    <B>messagebox "Now I'm in main" "test"</B>
+    <B>end</B>
+
+    <B>:sub</B>	                                            サブルーチンの始まり。
+      <B>messagebox "Now I'm in sub" "test"</B>
+      <B>return</B>                                               メインルーチンへもどる。
+
+</pre>
+
+
+</BODY>
+</HTML>
