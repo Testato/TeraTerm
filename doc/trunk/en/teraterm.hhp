@@ -11,10 +11,45 @@ Language=0x409 âpåÍ (ïƒçë)
 Title=UTF-8 TeraTerm Pro with TTSSH2 help
 
 [WINDOWS]
-teraterm=,"teraterm.hhc","Index.hhk","html\index.html","html\index.html",,,,,0x22420,,0x3046,,,,,,1,,0
+teraterm=,"teraterm.hhc","Index.hhk","html\index.html","html\index.html",,,,,0x62520,,0x3046,,,,,,,,0
 
 
 [FILES]
 html\index.html
 
+[ALIAS]
+HlpFileNewConnection=html\menu\file-new.html
+HlpFileLog=html\menu\file-log.html
+HlpFileSend=html\menu\file-send.html
+HlpFileKmtGet=html\menu\file-kermit-get.html
+HlpFileKmtSend=html\menu\file-kermit-send.html
+HlpFileXmodemRecv=html\menu\file-xmodem-recv.html
+HlpFileXmodemSend=html\menu\file-xmodem-send.html
+HlpFileZmodemSend=html\menu\file-zmodem-send.html
+HlpFileBPlusSend=html\menu\file-bplus-send.html
+HlpFileQVSend=html\menu\file-qv-send.html
+HlpFileChangeDir=html\menu\file-changedir.html
+HlpFilePrint=html\menu\file-print.html
+HlpSetupTerminal=html\menu\setup-terminal.html
+HlpSetupTerminalRuss=html\menu\setup-terminalr.html
+HlpSetupWindow=html\menu\setup-window.html
+HlpSetupFont=html\menu\setup-font.html
+HlpSetupFontRuss=html\menu\setup-fontr.html
+HlpSetupKeyboard=html\menu\setup-keyboard.html
+HlpSetupKeyboardRuss=html\menu\setup-keyboardr.html
+HlpSetupSerialPort=html\menu\setup-serialport.html
+HlpSetupTCPIP=html\menu\indexsetup-tcpip.html
+HlpSetupGeneral=html\menu\setup-general.html
+HlpSetupSave=html\menu\setup-save.html
+HlpSetupRestore=html\menu\setup-restore.html
+HlpSetupLoadKeyMap=html\menu\setup-loadkeymap.html
+HlpWindowWindow=html\menu\window.html
+HlpTEKFilePrint=html\menutek\file-print.html
+HlpTEKSetupWindow=html\menutek\setup-window.html
+HlpTEKSetupFont=html\menutek\setup-font.html
+
+[MAP]
+#include ..\..\teraterm\source\common\helpid.h
+
 [INFOTYPES]
+
