@@ -4,14 +4,6 @@
 
 /* Help constants */
 
-/* help file names */
-#define HelpEng "ttermp.hlp"
-#define HelpJpn "ttermpj.hlp"
-
-/* HTML help file */
-#define HTML_HELP_EN "teraterm.chm"
-#define HTML_HELP_JP "teratermj.chm"
-
 /* help context IDs */
 #define HlpFileNewConnection 1
 #define HlpFileLog 2

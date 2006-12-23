@@ -77,6 +77,9 @@ static char THIS_FILE[] = __FILE__;
 // WM_COPYDATAによるプロセス間通信の種別 (2005.1.22 yutaka)
 #define IPC_BROADCAST_COMMAND 1
 
+/* HTML help file */
+#define HTML_HELP_EN "teraterm.chm"
+#define HTML_HELP_JP "teratermj.chm"
 
 typedef struct {
 	char *name;
@@ -4197,6 +4200,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.42  2006/12/13 12:31:25  yutakapon
+ * ファイル名にゴミが入るのを修正。
+ *
  * Revision 1.41  2006/12/12 15:43:48  yutakapon
  * Fileメニュー配下に、ログ再生を行う"Replay Log.."を追加した。
  *

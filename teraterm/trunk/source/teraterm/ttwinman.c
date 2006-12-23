@@ -14,6 +14,10 @@
 #include "htmlhelp.h"
 #include "i18n.h"
 
+/* help file names */
+#define HelpEng "ttermp.hlp"
+#define HelpJpn "ttermpj.hlp"
+
 HWND HVTWin = NULL;
 HWND HTEKWin = NULL;
   
@@ -271,6 +275,9 @@ void OpenHtmlHelp(HWND HWin, char *filename)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2006/11/23 02:19:12  maya
+ * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
+ *
  * Revision 1.7  2006/06/15 16:27:59  yutakakn
  * タイトルに日本語を入力すると、文字化けするバグを修正した。パッチ作成に感謝します＞永田氏
  *
