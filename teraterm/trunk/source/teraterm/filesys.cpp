@@ -356,8 +356,15 @@ void LogPut1(BYTE b)
     }
     else cv.DCount++;
   }
-  else
+  else {
     cv.DCount = 0;
+	// ログ採取中にマクロがストールする問題への修正。
+	// ログ採取中に一度マクロを止めると、バッファのインデックスが同期取れなくなり、
+	// 再度マクロを流しても正しいデータが送れないのが原因。
+	// マクロを停止させた状態でもインデックスの同期を取るようにした。
+	// (2006.12.26 yutaka)
+    cv.DStart = cv.LogPtr;
+  }
 }
 
 void Log1Byte(BYTE b)
@@ -1127,6 +1134,12 @@ void QVStart(int mode)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2006/08/28 12:27:16  maya
+ * デフォルトのログファイル名を指定できるようにした。
+ *   エディットコントロールを "Additional settings" ダイアログに追加した。
+ *   teraterm.ini ファイルに LogDefaultName エントリを追加した。
+ *   ファイル名に strftime のフォーマットを使えるようにした。
+ *
  * Revision 1.5  2006/07/23 14:12:26  yutakakn
  * ログに含める日付フォーマットを世界標準書式に変更した。
  *
