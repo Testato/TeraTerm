@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>if, then, elseif, else, endif</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">if, then, elseif, else, endif</FONT><BR><BR>
+
+1) 形式：
+<UL>
+<B>
+if &lt;int&gt; &lt;statement&gt;
+</B>
+</UL>
+
+<pre>
+
+もし  &lt;int&gt; が0以外ならば、コマンド &lt;statement&gt; を実行する。
+
+例：
+    <B>if A&gt;1 goto label</B>                                   もし A&gt;1 ならば、':label' へ飛ぶ。
+    
+    <B>if result A=0</B>                                          もし result&lt;&gt;0 ならば、A に0を代入。
+
+</pre>
+
+2) 形式：
+<B><pre>
+              
+              if &lt;int 1&gt; then
+                  ...
+                  (&lt;int 1&gt; が真(0以外)の場合に実行されるコマンド)
+                  ...
+              [elseif &lt;int 2&gt; then]
+                  ...
+                  (&lt;int 1&gt; が偽(0)で、&lt;int 2&gt;が真の場合に実行されるコマンド)
+                  ...
+              [elseif &lt;int N&gt; then]
+                  ...
+                    (&lt;int 1&gt;, &lt;int 2&gt;,.., &lt;int N-1&gt; がすべて偽で、&lt;int N&gt; が真の場合に実行されるコマンド)
+                  ...
+              [else]
+                  ...
+               (上の条件すべてが偽の場合に実行されるコマンド)
+                  ...
+              endif
+
+</pre></B>
+<P></P>
+
+'then' は 'if' と 'elseif' 行の最後になければならない。<BR>
+'elseif' と 'else' はなくてもよい。<BR>
+'endif' は必ず必要。<BR>
+<P></P>
+
+<pre>
+
+例：
+<B>
+     if a=1 then
+     b = 1
+     c = 2
+	 d = 3
+    endif
+
+	if i&lt;0 then
+      i=0
+	else
+      i=i+1
+	endif
+
+    if i=1 then
+       c = '1'
+    elseif i=2 then
+       c = '2'
+    elseif i=3 then
+      c = '3'
+    clse
+      c = '3'
+    endif
+</B>
+</pre>
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>
