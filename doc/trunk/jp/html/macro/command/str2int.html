@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>str2int</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">str2int</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+str2int &lt;intvar&gt; &lt;string&gt;
+</B>
+</UL>
+
+<pre>
+
+10進数表現の文字列 &lt;string&gt; を整数値に変換し、整数変数  &lt;intvar&gt; に代入する。正常に変換できた場合は1、
+できなかった場合は0がシステム変数 result に代入される。
+
+例：
+    <B>str2int val '123'</B>                                                val=123, result=1
+    <B>str2int val '123abc'</B>                                             result=0
+
+</pre>
+
+
+</BODY>
+</HTML>

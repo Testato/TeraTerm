@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>strscan</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">strscan</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+strscan &lt;string&gt; &lt;substring&gt;
+</B>
+</UL>
+
+<pre>
+
+文字列 &lt;string&gt; の中に 副文字列  &lt;substring&gt; が含まれているかどうか調べる。
+もし、  &lt;substring&gt; が見つかった場合、その位置がシステム変数 result に格納される。
+ &lt;substring&gt; が複数含まれている場合、最初のものの位置が格納される。
+もし、 &lt;substring&gt; が見つからなかった場合、 result に0が格納される。
+
+
+例：
+    <B>strscan 'tera term' 'term'</B>                                          result の値は6
+
+</pre>
+
+
+</BODY>
+</HTML>

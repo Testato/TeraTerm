@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>include</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">include</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+include &lt;include file name&gt;
+</B>
+</UL>
+
+<pre>
+
+インクロードファイルに移る。
+
+例：
+
+-----メインファイル"main.ttl"------
+
+   <B>i=10</B>
+   <B>:loop</B>
+   <B>include 'sub.ttl'</B>                               インクルードファイルへ移る。
+   <B>if i&gt;=0 goto loop</B>
+   <B>end</B>
+
+-----メインファイル終わり----------
+
+
+-----インクルードファイル"sub.ttl"----
+
+   <B>if i&lt;0 then</B>
+    <B> messagebox 'error!' 'sub'</B>
+     <B>exit</B>　　　　　　　　　　　　　　　　　　　　　メインファイルへ戻る。
+   <B>endif</B>
+   <B>i=i-1</B>　　　　　　　　　　　　　　　　　　　　　 メインファイルへ戻る。
+
+-----インクルードファイル終わり-------
+
+</pre>
+
+
+</BODY>
+</HTML>

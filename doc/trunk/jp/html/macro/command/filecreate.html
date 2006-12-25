@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>filecreate</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">filecreate</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+filecreate &lt;file handle&gt; &lt;filename&gt;
+</B>
+</UL>
+
+<pre>
+
+ファイル &lt;filename&gt; を新しく作成しオープンする。
+ファイルポインタはファイルの先頭にセットされる。すでに同じ名前のファイルが存在する場合、ファイルサイズは0にされる。
+もしファイルが正しく作成され、オープンされた場合、ファイルハンドルが整数変数 &lt;file handle&gt; に格納される。
+それ以外の場合、&lt;file handle&gt; に-1が格納される。
+
+例：
+    <B>filecreate fhandle 'data.dat'</B>
+
+</pre>
+
+
+</BODY>
+</HTML>

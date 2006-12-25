@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>str2code</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">str2code</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+str2code &lt;intvar&gt; &lt;string&gt;
+</B>
+</UL>
+
+<pre>
+
+文字列 &lt;string&gt; が1文字の場合、その文字の ASCII コードを整数変数 &lt;intvar&gt; に格納する。
+
+&lt;string&gt; の長さが2以上の場合、&lt;string&gt; をその ASCII コード列に変換し、それを &lt;intvar&gt; に格納する。 &lt;intvar&gt; は最大 n 個の ASCII コードを
+格納できる(TTMACRO.EXE の場合 n=2、TTPMACRO.EXE の場合 n=4)。もし &lt;string&gt; の長さが n 文字より長い場合、ASCII コード列の最後の 
+nバイトが &lt;intvar&gt; に格納される。
+
+例：
+    <B>str2code val 'A'</B>                                                          val=65 ("A" のASCII コード)
+
+    <B>str2code val 'AB'</B>                                                         val=65*256+66
+
+</pre>
+
+
+</BODY>
+</HTML>
