@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>findoperations</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">findfirst</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+findfirst &lt;dir handle&gt; &lt;file name&gt; &lt;strvar&gt;
+</B>
+</UL>
+
+<pre>
+
+findfirst コマンドはファイル名  &lt;file name&gt; にあう最初のファイルを探す。ファイルが見つかった場合、
+ディレクトリハンドルが &lt;dir handle&gt; に、最初のファイル名が &lt;strvar&gt; に格納され、
+システム変数 &lt;result&gt; に 1 が格納される。
+
+findfirst コマンドが最初のファイルを見つけた場合、ディレクトリハンドルを指定して findnext コマンドを使用し、
+&lt;file name&gt; にあう次のファイルを探すことができる。
+<B>ディレクトリハンドルは findclose コマンドによって解放されなければならない。</B>
+
+</pre><P></P>
+
+<FONT SIZE="+2">findnext</FONT><BR><BR>
+形式：
+<UL>
+<B>
+findnext &lt;dir handle&gt; &lt;strvar&gt;
+</B>
+</UL>
+
+<pre>
+
+findnext コマンドは findfirst コマンドで指定されたファイル名にあう次のファイルを探す。
+整数値 &lt;dir handle&gt; は findfirst コマンドで得られたディレクトリハンドルでなければならない。
+もし次のファイルが見つかった場合、&lt;strvar&gt; にファイル名が、"result" に 1 が格納される。
+それ以外の場合は、&lt;strvar&gt;と "result" にそれぞれ "" と 0 が格納される。
+
+</pre><P></P>
+
+<FONT SIZE="+2">findclose</FONT><BR><BR>
+形式：
+<UL>
+<B>
+findclose &lt;dir handle&gt;
+</B>
+</UL>
+
+<pre>
+
+findclose コマンドは findfirst コマンドによって得られたディレクトリハンドル &lt;dir handle&gt; を解放する。
+このコマンドは findfirst コマンドがファイルを見つけた場合、実行されなければならない。
+
+例：
+     <B>findfirst dh '*.txt' filename</B>
+     <B>while result</B>
+      <B>messagebox filename '*.txt'</B>
+      <B>findnext dh filename</B>
+     <B>endwhile</B>
+     <B>findclose dh</B>
+
+</pre>
+</BODY>
+</HTML>

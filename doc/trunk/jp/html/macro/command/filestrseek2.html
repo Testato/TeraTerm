@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>filestrseek2</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">filestrseek2</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+filestrseek2 &lt;file handle&gt; &lt;string&gt;
+</B>
+</UL>
+
+<pre>
+
+ファイルハンドル &lt;file handle&gt; で指定されるファイルから、文字列 &lt;string&gt; を検索する。
+検索は現在のファイルポインタの位置から開始する。検索は後方(ファイルの始めの方)に向かって行われる、
+前方に向かっての検索には <A HREF="filestrseek.html">"filestrseek"</A> コマンドを使用する。
+
+&lt;string&gt; が見つかった場合、ファイルポインタは &lt;string&gt; の直前の文字の位置になり、
+システム変数 result に1が格納される。&lt;string&gt; が見つからなかった場合、ファイルポインタは移動せず、
+システム変数 result に0が格納される。このコマンドを実行する前にすでにファイルポインタが0の場合、
+result に0が格納される。
+
+例：
+    <B>fileopen fhandle 'teraterm.log' 1</B>                          ファイル "teraterm.log" をオープン、ファイルポインタは
+                                                                   ファイルの最後
+
+    <B>:next</B>
+    <B>filestrseek2 fhandle 'abc'</B>                                文字列 "abc" を後方検索
+    <B>if result=0 goto not_found</B>
+    <B>filemarkptr fhandle</B>                                        ポインタを保存
+    <B>filereadln fhandle str</B>                                     "abc" の直前の文字からその行の終わりまでを読み込む
+    <B>fileseekback fhanlde</B>                                       ポインタを戻す
+    <B>goto next</B>                                                   次を検索
+    <B>:not_found</B>
+    <B>fileclose fhandle</B>
+
+</pre>
+
+
+</BODY>
+</HTML>

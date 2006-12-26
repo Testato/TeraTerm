@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>filesearch</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">filesearch</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+filesearch &lt;filename&gt;
+</B>
+</UL>
+
+<pre>
+
+ファイル &lt;filename&gt; が存在するかどうか調べる。
+存在する場合は、システム変数 result に1が返る。
+存在しない場合は、result に0が返る。
+
+例：
+     <B>filesearch 'readme.txt'</B>
+     <B>if result=0 messagebox 'File not found.' 'error'</B>
+
+</pre>
+
+
+</BODY>
+</HTML>

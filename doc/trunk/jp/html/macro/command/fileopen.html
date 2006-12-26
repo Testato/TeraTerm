@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>fileopen</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">fileopen</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+fileopen &lt;file handle&gt; &lt;filename&gt; &lt;append flag&gt;
+</B>
+</UL>
+
+<pre>
+
+ファイル &lt;filename&gt; をファイルをオープンする。
+ファイルが存在しない場合は、新たに作成されてからオープンされる。
+もしファイルが正しくオープンされた場合、ファイルハンドルが整数変数 &lt;file handle&gt; に格納される。
+それ以外の場合、&lt;file handle&gt; に-1が格納される。
+
+&lt;append flag&gt; が0の場合、ファイルポインタの位置はファイルの始めにセットされる。
+&lt;append flag&gt; が0以外の場合、ファイルポインタはファイルの最後にセットされる。
+
+例：
+      <B>fileopen fhandle 'data.dat' 0</B>
+
+      <B>fileopen fhandle 'data.dat' 1</B>
+
+</pre>
+
+
+</BODY>
+</HTML>
