@@ -766,13 +766,14 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.12.26 (Ver 4.50)
+2006.12.28 (Ver 4.50)
   - Bug fix: The macro script might stall with logging mode. This is TeraTerm 2.3 original bug. The reason of the bug is that DDE server does not send the data to DDE client because log buffer index does not match DDE buffer index.
   - Bug fix: TeraTerm crashs when the log file name is not a full path.
   - added FUNCTION.CNF. F1-F10 keys are enabled in this keyboard setup file.
   - added 'Replay Log..' menu under File menu. This function replays log with binary mode and emulates the escape sequence.
   - upgraded TTSSH version supporting SSH2 to 2.38
   - upgraded TTProxy to 1.0.0.10
+  - upgraded Oniguruma to 5.5.1
 
 2006.11.20 (Ver 4.49)
   - Bug fix: TeraTerm(DDE server) sent the invalid return value to TeraTerm macro(DDE client) when DDE server was received XTYP_POKE message.
