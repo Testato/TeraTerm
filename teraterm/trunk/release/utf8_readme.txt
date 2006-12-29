@@ -767,6 +767,7 @@ OF SUCH DAMAGE.
 * History
 
 2006.12.28 (Ver 4.50)
+  - TeraTerm source code have been rebuilt with Visual Studio 2005 Standard Edition(+SP1).
   - Bug fix: The macro script might stall with logging mode. This is TeraTerm 2.3 original bug. The reason of the bug is that DDE server does not send the data to DDE client because log buffer index does not match DDE buffer index.
   - Bug fix: TeraTerm crashs when the log file name is not a full path.
   - added FUNCTION.CNF. F1-F10 keys are enabled in this keyboard setup file.
