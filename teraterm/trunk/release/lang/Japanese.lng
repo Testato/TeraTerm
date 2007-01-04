@@ -111,8 +111,8 @@ DLG_TERMINAL_TERMSIZE=端末サイズ(&T)
 
 [TTSSH]
 ; font
-DLG_FONT=ＭＳ Ｐゴシック,9,128
-DLG_HOST_FONT=ＭＳ Ｐゴシック,12,128
+DLG_TAHOMA_FONT=ＭＳ Ｐゴシック,9,128
+DLG_SYSTEM_FONT=ＭＳ Ｐゴシック,12,128
 
 ; menu
 MENU_ABOUT=&TTSSHについて...

@@ -111,8 +111,8 @@ DLG_TERMINAL_TERMSIZE=&Terminal size
 
 [TTSSH]
 ; font
-DLG_FONT=Tahoma,8,0
-DLG_HOST_FONT=System,14,0
+DLG_TAHOMA_FONT=Tahoma,8,0
+DLG_SYSTEM_FONT=System,14,0
 
 ; menu
 MENU_ABOUT=About &TTSSH...
