@@ -224,6 +224,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\source\common\ttlib.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\source\tttek\tttek.c"
 				>
 			</File>

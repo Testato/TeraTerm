@@ -494,14 +494,30 @@ void ZInit
     zv->ZMode = IdZReceive;
   }
 
+#ifdef I18N
+  strcpy(fv->DlgCaption,"Tera Term: ");
+#else
   strcpy(fv->DlgCaption,"Tera Term: ZMODEM ");
+#endif
   switch (zv->ZMode) {
     case IdZSend:
+#ifdef I18N
+      strcpy(ts->UIMsg, TitZSend);
+      get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", ts->UIMsg, ts->UILanguageFile);
+      strncat(fv->DlgCaption, ts->UIMsg, strlen(fv->DlgCaption)-1);
+#else
       strcat(fv->DlgCaption,"Send");
+#endif
       break;
     case IdZReceive:
+#ifdef I18N
+      strcpy(ts->UIMsg, TitZRcv);
+      get_lang_msg("FILEDLG_TRANS_TITLE_ZRCV", ts->UIMsg, ts->UILanguageFile);
+      strncat(fv->DlgCaption, ts->UIMsg, strlen(fv->DlgCaption)-1);
+#else
       strcat(fv->DlgCaption,"Receive");
-      break;
+#endif
+	  break;
   }
 
   SetWindowText(fv->HWin,fv->DlgCaption);

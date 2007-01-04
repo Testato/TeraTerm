@@ -9,7 +9,11 @@ extern "C" {
 
 void CommInit(PComVar cv);
 void CommOpen(HWND HW, PTTSet ts, PComVar cv);
+#ifdef I18N
+void CommStart(PComVar cv, LONG lParam, PTTSet ts);
+#else
 void CommStart(PComVar cv, LONG lParam);
+#endif
 BOOL CommCanClose(PComVar cv);
 void CommClose(PComVar cv);
 void CommProcRRQ(PComVar cv);

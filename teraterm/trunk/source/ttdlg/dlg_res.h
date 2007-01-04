@@ -5,11 +5,17 @@
 #define IDD_TERMDLGJ                    100
 #define IDI_TTERM                       100
 #define IDC_TERMWIDTH                   101
+#define IDC_SERIALPORT_LABEL            101
 #define IDC_TERMHEIGHT                  102
+#define IDC_SERIALBAUD_LEBAL            102
 #define IDC_TERMISWIN                   103
+#define IDC_SERIALDATA_LABEL            103
 #define IDC_TERMRESIZE                  104
+#define IDC_SERIALPARITY_LABEL          104
 #define IDC_TERMCRRCV                   105
+#define IDC_SERIALSTOP_LABEL            105
 #define IDC_TERMCRSEND                  106
+#define IDC_SERIALFLOW_LABEL            106
 #define IDC_TERMID                      107
 #define IDC_TERMLOCALECHO               108
 #define IDC_TERMANSBACKTEXT             109
@@ -105,6 +111,7 @@
 #define IDC_GENPORT                     1001
 #define IDC_GENLANGLABEL                1002
 #define IDC_GENLANG                     1003
+#define IDC_GENPORT_LABEL               1004
 #define IDC_HOSTTCPPROTOCOLLABEL        1019
 #define IDC_HOSTTCPPROTOCOL             1020
 #define IDC_LOCALE_BOX                  1022
@@ -118,6 +125,43 @@
 #define IDC_FORUM_LABEL                 1029
 #define IDC_FORUM_URL                   1030
 #define IDC_ONIGURUMA_LABEL             1031
+#define IDC_RIGHTS_LABEL                1032
+#define IDC_PROJECT_LABEL               1033
+#define IDC_TERANISHI_LABEL             1034
+#define IDC_TT_PRO                      1035
+#define IDC_INLUCDE_LABEL               1036
+#define IDC_TT23_LABEL                  1037
+#define IDC_TT23DATE_LABEL              1038
+#define IDC_AUTHOR_LABEL                1039
+#define IDC_TT_ICON                     1040
+#define IDC_DIRCURRENT_LABEL            1041
+#define IDC_DIRNEW_LABEL                1042
+#define IDC_KEYBTRANS                   1043
+#define IDC_SERIALDELAYLINE_LABEL       1044
+#define IDC_SERIALDELAYCHAR_LABEL       1045
+#define IDC_SERIALDELAY                 1046
+#define IDC_TCPIPPROT                   1047
+#define IDC_TCPIPPORTLABEL              1048
+#define IDC_TCPIPHOSTLIST               1049
+#define IDC_WINTITLELABEL               1050
+#define IDC_WINCURSOR                   1051
+#define IDC_WINREDLABEL                 1052
+#define IDC_WINGREENLABEL               1053
+#define IDC_WINBLUELABEL                1054
+#define IDC_WINCOLOR                    1055
+#define IDC_TERMWIDTHLABEL              1056
+#define IDC_TERMX                       1057
+#define IDC_TERMNEWLINE                 1058
+#define IDC_TERMCRRCVLABEL              1059
+#define IDC_TERMCRSENDLABEL             1060
+#define IDC_TERMIDLABEL                 1061
+#define IDC_TERMKANJILABEL              1062
+#define IDC_TERMKANJISENDLABEL          1063
+#define IDC_LOCALE_LABEL                1064
+#define IDC_TERMRUSSCHARSET             1065
+#define IDC_TERMRUSSHOSTLABEL           1066
+#define IDC_TERMRUSSCLIENTLABEL         1067
+#define IDC_WINLISTLABEL                1068
 #define IDC_GENHELP                     1099
 #define IDD_TERMDLG                     1100
 #define IDD_WINLISTDLG                  1200
@@ -126,8 +170,6 @@
 #define IDC_WINLISTHELP                 1299
 #define IDD_TERMDLGR                    1300
 #define IDC_STATIC                      -1
-#define IDC_LOCALE_LABEL                -1
-#define IDC_AUTHOR_LABEL                -1
 
 // Next default values for new objects
 // 
@@ -136,7 +178,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        102
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1032
+#define _APS_NEXT_CONTROL_VALUE         1069
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

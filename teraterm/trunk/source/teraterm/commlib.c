@@ -71,8 +71,10 @@ static int CloseSocket(SOCKET s)
   return Pclosesocket(s);
 }
 
+#ifndef I18N
 #define ErrorCaption "Tera Term: Error"
 #define ErrorCantConn "Cannot connect the host"
+#endif
 #define CommInQueSize 8192
 #define CommOutQueSize 2048
 #define CommXonLim 2048
@@ -286,6 +288,10 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
   BOOL BBuf;
 #endif /* INET6 */
 
+#ifdef I18N
+  char uimsg[MAX_UIMSG];
+#endif
+
   /* initialize ComVar */
   cv->InBuffCount = 0;
   cv->InPtr = 0;
@@ -349,8 +355,18 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
       if (! LoadWinsock())
       {
 	if (cv->NoMsg==0)
+#ifdef I18N
+	{
+	  strcpy(uimsg, "Tera Term: Error");
+	  get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
+	  strcpy(ts->UIMsg, "Cannot use winsock");
+	  get_lang_msg("MSG_WINSOCK_ERROR", ts->UIMsg, ts->UILanguageFile);
+	  MessageBox(cv->HWin,ts->UIMsg,uimsg,MB_TASKMODAL | MB_ICONEXCLAMATION);
+	}
+#else
 	  MessageBox(cv->HWin,"Cannot use winsock",ErrorCaption,
 	    MB_TASKMODAL | MB_ICONEXCLAMATION);
+#endif
 	InvalidHost = TRUE;
       }
       else {
@@ -408,8 +424,18 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
       if (InvalidHost)
       {
 	if (cv->NoMsg==0)
+#ifdef I18N
+	{
+	  strcpy(uimsg, "Tera Term: Error");
+	  get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
+	  strcpy(ts->UIMsg, "Invalid host");
+	  get_lang_msg("MSG_INVALID_HOST_ERROR", ts->UIMsg, ts->UILanguageFile);
+	  MessageBox(cv->HWin,ts->UIMsg,uimsg,MB_TASKMODAL | MB_ICONEXCLAMATION);
+	}
+#else
 	  MessageBox(cv->HWin,"Invalid host",ErrorCaption,
 	      MB_TASKMODAL | MB_ICONEXCLAMATION);
+#endif
 	goto BreakSC;
       }
       for (cv->res = cv->res0; cv->res; cv->res = cv->res->ai_next) {
@@ -536,15 +562,35 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
       if (cv->ComID <0)
       {
 #endif
+
+#ifdef I18N
+	strcpy(ts->UIMsg, "Cannot open %s");
+	get_lang_msg("MSG_CANTOEPN_ERROR", ts->UIMsg, ts->UILanguageFile);
+#ifdef TERATERM32
+	_snprintf(ErrMsg, sizeof(ErrMsg), ts->UIMsg, &P[4]);
+#else
+	_snprintf(ErrMsg, sizeof(ErrMsg), ts->UIMsg, P);
+#endif
+#else
 	strcpy(ErrMsg,"Cannot open ");
 #ifdef TERATERM32
 	strcat(ErrMsg,&P[4]);
 #else
 	strcat(ErrMsg,P);
 #endif
+#endif
+
 	if (cv->NoMsg==0)
+#ifdef I18N
+	{
+	  strcpy(uimsg, "Tera Term: Error");
+	  get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
+	  MessageBox(cv->HWin,ErrMsg,uimsg,MB_TASKMODAL | MB_ICONEXCLAMATION);
+}
+#else
 	  MessageBox(cv->HWin,ErrMsg,ErrorCaption,
 	    MB_TASKMODAL | MB_ICONEXCLAMATION);
+#endif
 	InvalidHost = TRUE;
       }
       else {
@@ -578,8 +624,18 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
       if (InvalidHost)
       {
 	if (cv->NoMsg==0)
+#ifdef I18N
+	{
+	  strcpy(uimsg, "Tera Term: Error");
+	  get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
+	  strcpy(ts->UIMsg, "Cannot open file");
+	  get_lang_msg("MSG_CANTOEPN_FILE_ERROR", ts->UIMsg, ts->UILanguageFile);
+	  MessageBox(cv->HWin,ts->UIMsg,uimsg,MB_TASKMODAL | MB_ICONEXCLAMATION);
+	}
+#else
 	  MessageBox(cv->HWin,"Cannot open file",ErrorCaption,
 	    MB_TASKMODAL | MB_ICONEXCLAMATION);
+#endif
       }
       else {
 	cv->Open = TRUE;
@@ -631,7 +687,11 @@ void CommThread(void *arg)
 }
 #endif
 
+#ifdef I18N
+void CommStart(PComVar cv, LONG lParam, PTTSet ts)
+#else
 void CommStart(PComVar cv, LONG lParam)
+#endif
 {
   char ErrMsg[31];
 #ifdef TERATERM32
@@ -639,6 +699,9 @@ void CommStart(PComVar cv, LONG lParam)
   char Temp2[3];
 #else
   COMSTAT Stat;
+#endif
+#ifdef I18N
+  char uimsg[MAX_UIMSG];
 #endif
 
   if (! cv->Open ) return;
@@ -648,13 +711,40 @@ void CommStart(PComVar cv, LONG lParam)
       ErrMsg[0] = 0;
       switch (HIWORD(lParam)) {
 	case WSAECONNREFUSED:
-	  strcpy(ErrMsg,"Connection refused"); break;
+#ifdef I18N
+	  strcpy(ts->UIMsg, "Connection refused");
+	  get_lang_msg("MSG_COMM_REFUSE_ERROR", ts->UIMsg, ts->UILanguageFile);
+	  _snprintf(ErrMsg, sizeof(ErrMsg), "%s", ts->UIMsg);
+#else
+	  strcpy(ErrMsg,"Connection refused");
+#endif
+	  break;
 	case WSAENETUNREACH:
-	  strcpy(ErrMsg,"Network cannot be reached"); break;
+#ifdef I18N
+	  strcpy(ts->UIMsg, "Network cannot be reached");
+	  get_lang_msg("MSG_COMM_REACH_ERROR", ts->UIMsg, ts->UILanguageFile);
+	  _snprintf(ErrMsg, sizeof(ErrMsg), "%s", ts->UIMsg);
+#else
+	  strcpy(ErrMsg,"Network cannot be reached");
+#endif
+	  break;
 	case WSAETIMEDOUT:
-	  strcpy(ErrMsg,"Connection timed out"); break;
+#ifdef I18N
+	  strcpy(ts->UIMsg, "Connection timed out");
+	  get_lang_msg("MSG_COMM_CONNECT_ERROR", ts->UIMsg, ts->UILanguageFile);
+	  _snprintf(ErrMsg, sizeof(ErrMsg), "%s", ts->UIMsg);
+#else
+	  strcpy(ErrMsg,"Connection timed out");
+#endif
+	  break;
 	default:
+#ifdef I18N
+	  strcpy(ts->UIMsg, "Cannot connect the host");
+	  get_lang_msg("MSG_COMM_TIMEOUT_ERROR", ts->UIMsg, ts->UILanguageFile);
+	  _snprintf(ErrMsg, sizeof(ErrMsg), "%s", ts->UIMsg);
+#else
 	  strcpy(ErrMsg,ErrorCantConn);
+#endif
       }
       if (HIWORD(lParam)>0)
       {
@@ -677,8 +767,16 @@ void CommStart(PComVar cv, LONG lParam)
 	} else {
 	  /* trying with all protocol family are failed */
 	  if (cv->NoMsg==0)
+#ifdef I18N
+	  {
+	    strcpy(uimsg, "Tera Term: Error");
+	    get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
+	    MessageBox(cv->HWin,ErrMsg,uimsg,MB_TASKMODAL | MB_ICONEXCLAMATION);
+	  }
+#else
 	    MessageBox(cv->HWin,ErrMsg,ErrorCaption,
 		       MB_TASKMODAL | MB_ICONEXCLAMATION);
+#endif
 	  PostMessage(cv->HWin, WM_USER_COMMNOTIFY, 0, FD_CLOSE);
 	  cv->RetryWithOtherProtocol = FALSE;
 	  return;
@@ -721,8 +819,18 @@ void CommStart(PComVar cv, LONG lParam)
 #else
       if (_beginthread(CommThread,0,cv) == -1)
 #endif
+#ifdef I18N
+      {
+	strcpy(uimsg, "Tera Term: Error");
+	get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
+	strcpy(ts->UIMsg, "Can't create thread");
+	get_lang_msg("MSG_TT_ERROR", ts->UIMsg, ts->UILanguageFile);
+	MessageBox(cv->HWin,ts->UIMsg,uimsg,MB_TASKMODAL | MB_ICONEXCLAMATION);
+      }
+#else
 	MessageBox(cv->HWin,"Can't create thread",ErrorCaption,
 		   MB_TASKMODAL | MB_ICONEXCLAMATION);
+#endif
 #else
       // flush input que
       while (GetCommError(cv->ComID, &Stat)!=0) {};

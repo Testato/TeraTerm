@@ -165,12 +165,19 @@ static PProtoDlg PtDlg = NULL;
 BOOL OpenFTDlg(PFileVar fv)
 {
   PFileTransDlg FTDlg;
+#ifdef I18N
+  HWND HFTDlg;
+#endif
 
   FTDlg = new CFileTransDlg();
   
   if (FTDlg!=NULL)
   {
+#ifdef I18N
+    FTDlg->Create(fv, &cv, &ts);
+#else
     FTDlg->Create(fv, &cv);
+#endif
     FTDlg->RefreshNum();
     if (fv->OpId == OpLog)
       FTDlg->ShowWindow(SW_MINIMIZE);
@@ -180,6 +187,29 @@ BOOL OpenFTDlg(PFileVar fv)
     FLogDlg = FTDlg; /* Log */
   else
     SendDlg = FTDlg; /* File send */
+
+#ifdef I18N
+  HFTDlg=FTDlg->GetSafeHwnd();
+
+  GetDlgItemText(HFTDlg, IDC_TRANS_FILENAME, ts.UIMsg, sizeof(ts.UIMsg));
+  get_lang_msg("DLG_FILETRANS_FILENAME", ts.UIMsg, ts.UILanguageFile);
+  SetDlgItemText(HFTDlg, IDC_TRANS_FILENAME, ts.UIMsg);
+  GetDlgItemText(HFTDlg, IDC_FULLPATH_LABEL, ts.UIMsg, sizeof(ts.UIMsg));
+  get_lang_msg("DLG_FILETRANS_FULLPATH", ts.UIMsg, ts.UILanguageFile);
+  SetDlgItemText(HFTDlg, IDC_FULLPATH_LABEL, ts.UIMsg);
+  GetDlgItemText(HFTDlg, IDC_TRANS_TRANS, ts.UIMsg, sizeof(ts.UIMsg));
+  get_lang_msg("DLG_FILETRANS_TRNAS", ts.UIMsg, ts.UILanguageFile);
+  SetDlgItemText(HFTDlg, IDC_TRANS_TRANS, ts.UIMsg);
+  GetDlgItemText(HFTDlg, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
+  get_lang_msg("BTN_CANCEL", ts.UIMsg, ts.UILanguageFile);
+  SetDlgItemText(HFTDlg, IDCANCEL, ts.UIMsg);
+  GetDlgItemText(HFTDlg, IDC_TRANSPAUSESTART, ts.UIMsg, sizeof(ts.UIMsg));
+  get_lang_msg("DLG_FILETRANS_PAUSE", ts.UIMsg, ts.UILanguageFile);
+  SetDlgItemText(HFTDlg, IDC_TRANSPAUSESTART, ts.UIMsg);
+  GetDlgItemText(HFTDlg, IDC_TRANSHELP, ts.UIMsg, sizeof(ts.UIMsg));
+  get_lang_msg("BTN_HELP", ts.UIMsg, ts.UILanguageFile);
+  SetDlgItemText(HFTDlg, IDC_TRANSHELP, ts.UIMsg);
+#endif
 
   return (FTDlg!=NULL);
 }
@@ -253,7 +283,11 @@ void LogStart()
 		strncat(LogVar->FullName, ts.LogDefaultName, sizeof(LogVar->FullName));
 		ParseStrftimeFileName(LogVar->FullName);
 
+#ifdef I18N
+		if (! (*GetTransFname)(LogVar, ts.FileDir, GTF_LOG, &Option, &ts))
+#else
 		if (! (*GetTransFname)(LogVar, ts.FileDir, GTF_LOG, &Option))
+#endif
 		{
 			FreeFileVar(&LogVar);
 			FreeTTFILE();
@@ -279,7 +313,11 @@ void LogStart()
 
 	}
 	else
+#ifdef I18N
+		(*SetFileVar)(FileVar, &ts);
+#else
 		(*SetFileVar)(LogVar);
+#endif
 
 	if (ts.TransBin > 0)
 	{
@@ -415,7 +453,16 @@ void CommentLogToFile(char *buf, int size)
 	DWORD wrote;
 
 	if (LogVar == NULL || !LogVar->FileOpen) {
+#ifdef I18N
+		char uimsg[MAX_UIMSG];
+		strcpy(uimsg, "ERROR");
+		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
+		strcpy(ts.UIMsg, "It is not opened by the log file yet.");
+		get_lang_msg("MSG_COMMENT_LOG_OPEN_ERROR", ts.UIMsg, ts.UILanguageFile);
+		::MessageBox(NULL, ts.UIMsg, uimsg, MB_OK|MB_ICONEXCLAMATION);
+#else
 		::MessageBox(NULL, "It is not opened by the log file yet.", "ERROR", MB_OK|MB_ICONEXCLAMATION);
+#endif
 		return;
 	}
 
@@ -587,15 +634,23 @@ void FileSendStart()
   {
     Option = MAKELONG(ts.TransBin,0);
 	SendVar->FullName[0] = 0;
+#ifdef I18N
+	if (! (*GetTransFname)(SendVar, ts.FileDir, GTF_SEND, &Option, &ts))
+#else
     if (! (*GetTransFname)(SendVar, ts.FileDir, GTF_SEND, &Option))
-    {
+#endif
+	{
       FileTransEnd(OpSendFile);
       return;
     }
     ts.TransBin = LOWORD(Option);
   }
   else
+#ifdef I18N
+    (*SetFileVar)(FileVar, &ts);
+#else
     (*SetFileVar)(SendVar);
+#endif
 
   SendVar->FileHandle = _lopen(SendVar->FullName,OF_READ);
   SendVar->FileOpen = (SendVar->FileHandle>0);
@@ -761,6 +816,9 @@ BOOL OpenProtoDlg(PFileVar fv, int IdProto, int Mode, WORD Opt1, WORD Opt2)
 {
   int vsize;
   PProtoDlg pd;
+#ifdef I18N
+  HWND Hpd;
+#endif
 
   ProtoId = IdProto;
 
@@ -812,7 +870,31 @@ BOOL OpenProtoDlg(PFileVar fv, int IdProto, int Mode, WORD Opt1, WORD Opt2)
     ProtoVar = NULL;
     return FALSE;
   }
+#ifdef I18N
+  pd->Create(fv,&ts);
+#else
   pd->Create(fv);
+#endif
+
+#ifdef I18N
+  Hpd=pd->GetSafeHwnd();
+
+  GetDlgItemText(Hpd, IDC_PROT_FILENAME, ts.UIMsg, sizeof(ts.UIMsg));
+  get_lang_msg("DLG_PROT_FIELNAME", ts.UIMsg, ts.UILanguageFile);
+  SetDlgItemText(Hpd, IDC_PROT_FILENAME, ts.UIMsg);
+  GetDlgItemText(Hpd, IDC_PROT_PROT, ts.UIMsg, sizeof(ts.UIMsg));
+  get_lang_msg("DLG_PROT_PROTO", ts.UIMsg, ts.UILanguageFile);
+  SetDlgItemText(Hpd, IDC_PROT_PROT, ts.UIMsg);
+  GetDlgItemText(Hpd, IDC_PROT_PACKET, ts.UIMsg, sizeof(ts.UIMsg));
+  get_lang_msg("DLG_PROT_PACKET", ts.UIMsg, ts.UILanguageFile);
+  SetDlgItemText(Hpd, IDC_PROT_PACKET, ts.UIMsg);
+  GetDlgItemText(Hpd, IDC_PROT_TRANS, ts.UIMsg, sizeof(ts.UIMsg));
+  get_lang_msg("DLG_PROT_TRANS", ts.UIMsg, ts.UILanguageFile);
+  SetDlgItemText(Hpd, IDC_PROT_TRANS, ts.UIMsg);
+  GetDlgItemText(Hpd, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
+  get_lang_msg("BTN_CANCEL", ts.UIMsg, ts.UILanguageFile);
+  SetDlgItemText(Hpd, IDCANCEL, ts.UIMsg);
+#endif
   
   (*ProtoInit)(ProtoId,FileVar,ProtoVar,&cv,&ts);
 
@@ -893,7 +975,11 @@ int ProtoDlgParse()
   P = ActiveWin;
   if (PtDlg==NULL) return P;
 
+#ifdef I18N
+  if ((*ProtoParse)(ProtoId,FileVar,ProtoVar,&cv,&ts))
+#else
   if ((*ProtoParse)(ProtoId,FileVar,ProtoVar,&cv))
+#endif
     P = 0; /* continue */
   else {
     CommSend(&cv);
@@ -932,7 +1018,11 @@ void KermitStart(int mode)
       FileVar->OpId = OpKmtSend;
       if (strlen(&(FileVar->FullName[FileVar->DirLen]))==0)
       {
+#ifdef I18N
+	if (! (*GetMultiFname)(FileVar,ts.FileDir,GMF_KERMIT,&w,&ts) ||
+#else
 	if (! (*GetMultiFname)(FileVar,ts.FileDir,GMF_KERMIT,&w) ||
+#endif
 	    (FileVar->NumFname==0))
 	{
 	  ProtoEnd();
@@ -940,8 +1030,12 @@ void KermitStart(int mode)
 	}
       }
       else
+#ifdef I18N
+    (*SetFileVar)(FileVar, &ts);
+#else
 	(*SetFileVar)(FileVar);
-      break;
+#endif
+	  break;
     case IdKmtReceive:
       FileVar->OpId = OpKmtRcv;
       break;
@@ -957,8 +1051,12 @@ void KermitStart(int mode)
 	}
       }
       else
+#ifdef I18N
+    (*SetFileVar)(FileVar, &ts);
+#else
 	(*SetFileVar)(FileVar);
-      break;
+#endif
+	  break;
     case IdKmtFinish:
       FileVar->OpId = OpKmtFin;
       break;
@@ -991,8 +1089,13 @@ void XMODEMStart(int mode)
   if (strlen(&(FileVar->FullName[FileVar->DirLen]))==0)
   {
     Option = MAKELONG(ts.XmodemBin,ts.XmodemOpt);
+#ifdef I18N
+    if (! (*GetXFname)(FileVar->HMainWin,
+      mode==IdXReceive,&Option,FileVar,ts.FileDir,&ts))
+#else
     if (! (*GetXFname)(FileVar->HMainWin,
       mode==IdXReceive,&Option,FileVar,ts.FileDir))
+#endif
     {
       ProtoEnd();
       return;
@@ -1001,7 +1104,11 @@ void XMODEMStart(int mode)
     ts.XmodemBin = LOWORD(Option);
   }
   else
+#ifdef I18N
+    (*SetFileVar)(FileVar, &ts);
+#else
     (*SetFileVar)(FileVar);
+#endif
 
   if (mode==IdXReceive)
     FileVar->FileHandle = _lcreat(FileVar->FullName,0);
@@ -1038,7 +1145,11 @@ void ZMODEMStart(int mode)
     FileVar->OpId = OpZSend;
     if (strlen(&(FileVar->FullName[FileVar->DirLen]))==0)
     {
+#ifdef I18N
+      if (! (*GetMultiFname)(FileVar,ts.FileDir,GMF_Z,&Opt,&ts) ||
+#else
       if (! (*GetMultiFname)(FileVar,ts.FileDir,GMF_Z,&Opt) ||
+#endif
 	  (FileVar->NumFname==0))
       {
 	ProtoEnd();
@@ -1047,7 +1158,11 @@ void ZMODEMStart(int mode)
       ts.XmodemBin = Opt;
     }
     else
+#ifdef I18N
+      (*SetFileVar)(FileVar, &ts);
+#else
       (*SetFileVar)(FileVar);
+#endif
   }
   else /* IdZReceive or IdZAuto */
     FileVar->OpId = OpZRcv;
@@ -1074,15 +1189,22 @@ void BPStart(int mode)
     if (strlen(&(FileVar->FullName[FileVar->DirLen]))==0)
     {
 	  FileVar->FullName[0] = 0;
+#ifdef I18N
+      if (! (*GetTransFname)(FileVar, ts.FileDir, GTF_BP, &Option, &ts))
+#else
       if (! (*GetTransFname)(FileVar, ts.FileDir, GTF_BP, &Option))
-      {
+#endif
+	  {
 	ProtoEnd();
 	return;
       }
     }
     else
+#ifdef I18N
+      (*SetFileVar)(FileVar, &ts);
+#else
       (*SetFileVar)(FileVar);
-
+#endif
   }
   else /* IdBPReceive or IdBPAuto */
     FileVar->OpId = OpBPRcv;
@@ -1109,7 +1231,11 @@ void QVStart(int mode)
     FileVar->OpId = OpQVSend;
     if (strlen(&(FileVar->FullName[FileVar->DirLen]))==0)
     {
+#ifdef I18N
+      if (! (*GetMultiFname)(FileVar,ts.FileDir,GMF_QV, &W, &ts) ||
+#else
       if (! (*GetMultiFname)(FileVar,ts.FileDir,GMF_QV, &W) ||
+#endif
 	  (FileVar->NumFname==0))
       {
 	ProtoEnd();
@@ -1117,7 +1243,11 @@ void QVStart(int mode)
       }
     }
     else
+#ifdef I18N
+      (*SetFileVar)(FileVar, &ts);
+#else
       (*SetFileVar)(FileVar);
+#endif
   }
   else
     FileVar->OpId = OpQVRcv;
@@ -1134,6 +1264,12 @@ void QVStart(int mode)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2006/12/25 16:13:54  yutakapon
+ * ログ採取中にマクロがストールする問題への修正。
+ * ログ採取中に一度マクロを止めると、バッファのインデックスが同期取れなくなり、
+ * 再度マクロを流しても正しいデータが送れないのが原因。
+ * マクロを停止させた状態でもインデックスの同期を取るようにした。
+ *
  * Revision 1.6  2006/08/28 12:27:16  maya
  * デフォルトのログファイル名を指定できるようにした。
  *   エディットコントロールを "Additional settings" ダイアログに追加した。

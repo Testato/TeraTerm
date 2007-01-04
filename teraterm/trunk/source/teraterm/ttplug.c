@@ -1,5 +1,6 @@
 #include "teraterm.h"
 #include "tttypes.h"
+#include "ttlib.h"
 
 // #include <windows.h>
 #include <stdlib.h>
@@ -35,6 +36,9 @@ static int compareOrder(const void * e1, const void * e2) {
 static void loadExtension(ExtensionList * * extensions, char const * fileName) {
   char buf[1024];
   DWORD err;
+#ifdef I18N
+  char uimsg[MAX_UIMSG];
+#endif
 
   if (NumExtensions>=MAXNUMEXTENSIONS) return;
   LibHandle[NumExtensions] = LoadLibrary(fileName);
@@ -68,9 +72,19 @@ static void loadExtension(ExtensionList * * extensions, char const * fileName) {
   }
 
   err = GetLastError();
+#ifdef I18N
+  strcpy(uimsg, "Tera Term: Error");
+  get_lang_msg("MSG_TT_ERROR", uimsg, ts.UILanguageFile);
+  strcpy(ts.UIMsg, "Cannot load extension %s (%d)");
+  get_lang_msg("MSG_LOAD_EXT_ERROR", ts.UIMsg, ts.UILanguageFile);
+  _snprintf(buf, sizeof(buf), ts.UIMsg, fileName, err);
+  buf[sizeof(buf) - 1] = 0;
+  MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONEXCLAMATION);
+#else
   _snprintf(buf, sizeof(buf), "Cannot load extension %s (%d)", fileName, err);
   buf[sizeof(buf) - 1] = 0;
   MessageBox(NULL, buf, "Teraterm Error", MB_OK | MB_ICONEXCLAMATION);
+#endif
 }
 
 void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {

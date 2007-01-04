@@ -1,5 +1,7 @@
 [Tera Term]
 LCID=1033 ; 0x0409
+DLG_SYSTEM_FONT=System,14,0
+DLG_TAHOMA_FONT=Tahoma,8,0
 
 MENU_FILE=&File
 MENU_FILE_NEW=&New connection...\tAlt+N
@@ -10,6 +12,7 @@ MENU_FILE_COMMENTLOG=Comment to Log...
 MENU_FILE_VIEWLOG=View Log
 MENU_FILE_SENDFILE=&Send file...
 MENU_FILE_CHANGEDIR=&Change directory...
+MENU_FILE_REPLAYLOG=Replay Log...
 MENU_FILE_LOGMETT=&LogMeTT
 MENU_FILE_PRINT=&Print...\tAlt+P
 MENU_FILE_DISCONNECT=&Disconnect
@@ -99,14 +102,239 @@ TEKMENU_HELP_ABOUT=&About Tera Term...
 TEKMENU_SHOW_MENUBAR=Show menu &bar
 
 
-; dlg main
+; ttermpro
+; filesys.cpp
+MSG_COMMENT_LOG_OPEN_ERROR=It is not opened by the log file yet.
+
+; ttime.c
+MSG_USE_IME_ERROR=Can't use IME
+
+; ttplug.c
+MSG_LOAD_EXT_ERROR=Cannot load extension %s (%d)
+
+; ttwinman.c
 DLG_MAIN_TITLE_CONNECTING=[connecting...]
 DLG_MAIN_TITLE_DISCONNECTED=[disconnected]
 
-; dlg term
-DLG_TERMINAL_TITLE=Tera Term: Terminal setup
-DLG_TERMINAL_FONT=System,14,0
-DLG_TERMINAL_TERMSIZE=&Terminal size
+; vtwin.cpp
+MSG_DISCONNECT_CONF=Disconnect?
+MSG_DANDD_CONF=Are you sure that you want to send the file content?
+MSG_DANDD_CONF_TITLE=Tera Term: File Drag and Drop
+MSG_EXEC_TT_ERROR=Can't execute TeraTerm. (%d)
+MSG_FIND_CYGTERM_DIR_ERROR=Can't find Cygwin directory.
+MSG_EXEC_CYGTERM_ERROR=Can't execute Cygterm.
+MSG_EXEC_TTMENU_ERROR=Can't execute TeraTerm Menu. (%d)
+MSG_EXEC_LOGMETT_ERROR=Can't execute LogMeTT. (%d)
+MSG_VIEW_LOGFILE_ERROR=Can't view logging file. (%d)
+FILEDLG_OPEN_LOGFILE_TITLE=Select replay log file with binary mode
+FILEDLG_OPEN_LOGFILE_FILTER=all(*.*)\0*.*\0\0
+DIRDLG_CYGTERM_DIR_TITLE=select folder
+MSG_CYGTERM_CONF_WRITEFILE_ERROR=Can't write CygTerm configuration file (%d).
+FILEDLG_SELECT_LOGVIEW_APP_TITLE=Choose a executing file with launching logging file
+FILEDLG_SELECT_LOGVIEW_APP_FILTER=exe(*.exe)\0*.exe\0all(*.*)\0*.*\0\0
+MSG_LOGFILE_INVALID_CHAR_ERROR=Invalid character is included in log file name.
+MSG_LOGFILE_TOOLONG_ERROR=The log file name is too long.
+
+DLG_TABSHEET_TITLE=Tera Term: Additional settings
+DLG_TABSHEET_TITLE_GENERAL=General
+DLG_TABSHEET_TITLE_VISUAL=Visual
+DLG_TABSHEET_TITLE_LOG=Log
+DLG_TABSHEET_TITLE_CYGWIN=Cygwin
+
+DLG_TAB_GENERAL_CONTINUE=EnableContinuedLineCopy
+DLG_TAB_GENERAL_MOUSE=MouseCursor
+DLG_TAB_GENERAL_DEMILITER=Delimiter Characters
+DLG_TAB_GENERAL_RED=Red
+DLG_TAB_GENERAL_GREEN=Green
+DLG_TAB_GENERAL_BLUE=Blue
+DLG_TAB_GENERAL_MOUSEPASTE=DisableMouseRButtonPaste
+DLG_TAB_GENERAL_CLICKURL=EnableClickableURL
+
+DLG_TAB_VISUAL_ALHPA=AlphaBlend
+DLG_TAB_VISUAL_ETERM=Eterm lookfeel
+
+DLG_TAB_LOG_EDITOR=View Log Editor
+DLG_TAB_LOG_FILENAME=Default Log File Name(strftime format)
+
+DLG_TAB_CYGWIN_PATH=Cygwin Install Path
+
+DLG_COMMENT_TITLE=Comment to Log
+
+DLG_BROADCAST_TITLE=Tera Term: Broadcast command
+DLG_BROADCAST_ENTER=Enter key
+DLG_BROADCAST_SUBMIT=Submit
+
+DLG_PRNABORT_PRINTING=Printing
+
+DLG_PROT_FIELNAME=Filename:
+DLG_PROT_PROTO=Protocol:
+DLG_PROT_PACKET=Packet#:
+DLG_PROT_TRANS=Bytes transfered:
+
+DLG_FILETRANS_FILENAME=Filename:
+DLG_FILETRANS_FULLPATH=Fullpath:
+DLG_FILETRANS_TRNAS=Bytes transfered:
+DLG_FILETRANS_START=&Start
+DLG_FILETRANS_PAUSE=Pau&se
+
+; commonlib.c
+MSG_WINSOCK_ERROR=Cannot use winsock
+MSG_INVALID_HOST_ERROR=Invalid host
+MSG_CANTOEPN_ERROR=Cannot open %s
+MSG_CANTOEPN_FILE_ERROR=Cannot open file
+MSG_COMM_REFUSE_ERROR=Connection refused
+MSG_COMM_REACH_ERROR=Network cannot be reached
+MSG_COMM_TIMEOUT_ERROR=Connection timed out
+MSG_COMM_CONNECT_ERROR=Cannot connect the host
+MSG_CREATE_THREAD_ERROR=Can't create thread
+
+; ttpdlg
+; ttdlg.c
+DLG_ABOUT_TITLE=About Tera Term
+
+DLG_DIR_TITLE=Tera Term: Change directory
+DLG_DIR_CURRENT=Current dir:
+DLG_DIR_NEW=&New dir:
+
+DLG_FONT_TITLE=Tera Term: Font setup
+
+DLG_GEN_TITLE=Tera Term: General setup
+DLG_GEN_PORT=Default &port:
+DLG_GEN_LANG=&Language:
+
+DLG_HOST_TITLE=Tera Term: New connection
+DLG_HOST_TCPIP_HOST=H&ost:
+DLG_HOST_TCPIP_PORT=TCP &port#:
+DLG_HOST_TCPIP_PROTOCOL=Protoco&l:
+DLG_HOST_SERIAL=&Serial
+DLG_HOST_SERIAL_PORT=Po&rt:
+
+DLG_KEYB_TITLE=Tera Term: Keyboard setup
+DLG_KEYB_TRANSMIT=Transmit DEL by:
+DLG_KEYB_BS=&Backspace key
+DLG_KEYB_DEL=&Delete key
+DLG_KEYB_KEYB=&Keyboard:
+DLG_KEYB_META=&Meta key
+
+DLG_SERIAL_TITLE=Tera Term: Serial port setup
+DLG_SERIAL_PORT=&Port:
+DLG_SERIAL_BAUD=&Baud rate:
+DLG_SERIAL_DATA=&Data:
+DLG_SERIAL_PARITY=P&arity:
+DLG_SERIAL_STOP=&Stop:
+DLG_SERIAL_FLOW=&Flow control:
+DLG_SERIAL_DELAY=Transmit delay
+DLG_SERIAL_DELAYCHAR=msec/&char
+DLG_SERIAL_DELAYLINE=msec/&line
+
+DLG_TCPIP_TITLE=Tera Term: TCP/IP setup
+DLG_TCPIP_HOSTLIST=Host &list
+DLG_TCPIP_ADD=&Add
+DLG_TCPIP_UP=&Up
+DLG_TCPIP_REMOVE=&Remove
+DLG_TCPIP_DOWN=&Down
+DLG_TCPIP_HISTORY=&History
+DLG_TCPIP_AUTOCLOSE=Auto &window close
+DLG_TCPIP_PORT=&Port#:
+DLG_TCPIP_TELNET=T&elnet
+DLG_TCPIP_TERMTYPE=&Term type:
+
+DLG_TERM_TITLE=Tera Term: Terminal setup
+DLG_TERM_WIDTHLABEL=&Terminal size
+DLG_TERM_ISWIN=Term &size = win size
+DLG_TERM_RESIZE=Auto &window resize
+DLG_TERM_NEWLINE=New-line
+DLG_TERM_CRRCV=&Receive:
+DLG_TERM_CRSEND=Trans&mit:
+DLG_TERM_ID=Terminal &ID:
+DLG_TERM_LOCALECHO=&Local echo
+DLG_TERM_ANSBACK=&Answerback:
+DLG_TERM_AUTOSWITCH=A&uto switch (VT<->TEK)
+DLG_TERM_KANJI=&Kanji (receive)
+DLG_TERM_KANA=&7bit katakana
+DLG_TERM_KANJISEND=Kan&ji (transmit)
+DLG_TERM_KANASEND=7&bit katakana
+DLG_TERM_KIN=Kanji-i&n:
+DLG_TERM_KOUT=Kanji-&out:
+DLG_TERM_LOCALE=locale:
+DLG_TERM_CODEPAGE=CodePage:
+DLG_TERM_RUSSCHARSET=Character set
+DLG_TERM_RUSSHOST=H&ost:
+DLG_TERM_RUSSCLIENT=&Client:
+
+DLG_WIN_TITLE=Tera Term: Window setup
+DLG_WIN_TITLELABEL=&Title:
+DLG_WIN_CURSOR=Cursor shape
+DLG_WIN_BLOCK=B&lock
+DLG_WIN_VERT=&Vertical line
+DLG_WIN_HORZ=H&orizontal line
+DLG_WIN_HIDETITLE=H&ide title bar
+DLG_WIN_HIDEMENU=Hide &menu bar
+DLG_WIN_COLOREMU=&Color emulation
+DLG_WIN_FULLCOLOR=Full &color
+DLG_WIN_SCROLL1=&Scroll buffer:
+DLG_WIN_SCROLL3=li&nes
+DLG_WIN_COLOR=Color
+DLG_WIN_TEXT=Te&xt
+DLG_WIN_BG=Bac&kground
+DLG_WIN_ATTRIB=&Attribute
+DLG_WIN_REVERSE=R&everse
+DLG_WIN_R=&R:
+DLG_WIN_G=&G:
+DLG_WIN_B=&B:
+DLG_WIN_ALWAYSBG=Always &use Normal text's BG
+DLG_WIN_NORMAL=Normal
+DLG_WIN_BOLD=Bold
+DLG_WIN_BLINK=Blink
+
+DLG_WINLIST_TITLE=Tera Term: Window list
+
+; ttpfile
+; ttfile.c
+DLG_FOPT_OPTION=Option
+DLG_FOPT_BINARY=&Binary
+DLG_FOPT_APPEND=&Append
+DLG_FOPT_PLAIN=plain text
+DLG_FOPT_TIMESTAMP=timestamp
+
+FILEDLG_KEYBOARD_FILTER=keyboard setup files (*.cnf)\0*.cnf\0\0
+FILEDLG_SETUP_FILTER=setup files (*.ini)\0*.ini\0\0
+FILEDLG_SAVE_SETUP_TITLE=Tera Term: Save setup
+FILEDLG_RESTORE_SETUP_TITLE=Tera Term: Restore setup
+FILEDLG_LOAD_KEYMAP_TITLE=Tera Term: Load key map
+FILEDLG_ALL_FILTER=All(*.*)\0*.*\0\0
+
+DLG_GETFN_TITLE=Tera Term: Kermit Get
+DLG_GETFN_FILENAME=&Filename:
+
+; ttftypes.h
+FILEDLG_TRANS_TITLE_LOG=Log
+FILEDLG_TRANS_TITLE_SENDFILE=Send file
+FILEDLG_TRANS_TITLE_KMTRCV=Kermit Receive
+FILEDLG_TRANS_TITLE_KMTGET=Kermit Get
+FILEDLG_TRANS_TITLE_KMTSEND=Kermit Send
+FILEDLG_TRANS_TITLE_KMTFIN=Kermit Finish
+FILEDLG_TRANS_TITLE_XRCV=XMODEM Receive
+FILEDLG_TRANS_TITLE_XSEND=XMODEM Send
+FILEDLG_TRANS_TITLE_ZRCV=ZMODEM Receive
+FILEDLG_TRANS_TITLE_ZSEND=ZMODEM Send
+FILEDLG_TRANS_TITLE_BPRCV=B-Plus Receive
+FILEDLG_TRANS_TITLE_BPSEND=B-Plus Send
+FILEDLG_TRANS_TITLE_QVRCV=Quick-VAN Receive
+FILEDLG_TRANS_TITLE_QVSEND=Quick-VAN Send
+
+; ttptek
+; tttek.c
+MSG_TEK_PRINT_ERROR=Printer dose not support graphics
+
+; common
+MSG_ERROR=ERROR
+MSG_TT_ERROR=Tera Term: Error
+
+BTN_OK=OK
+BTN_CANCEL=Cancel
+BTN_CLOSE=Close
+BTN_HELP=&Help
 
 
 [TTSSH]

@@ -55,11 +55,28 @@
 #define IDC_ENV1                        1040
 #define IDC_EDIT7                       1041
 #define IDC_ENV2                        1041
+#define IDC_MOUSE                       1042
+#define IDC_DELIMITER                   1043
+#define IDC_ANSICOLOR                   1044
+#define IDC_RED                         1045
+#define IDC_GREEN                       1046
+#define IDC_BLUE                        1047
+#define IDC_ALPHABLEND                  1048
+#define IDC_CYGWIN_PATH_LABEL           1049
+#define IDC_CYGWIN                      1050
+#define IDC_TERM_LABEL                  1051
+#define IDC_TERMTYPE_LABEL              1052
+#define IDC_PORTSTART_LABEL             1053
+#define IDC_PORTRANGE_LABEL             1054
+#define IDC_SHELL_LABEL                 1055
+#define IDC_ENV2_LABEL                  1056
+#define IDC_ENV1_LABEL                  1057
 #define IDD_PRNABORTDLG                 2100
 #define IDD_FILETRANSDLG                2200
 #define IDC_TRANSFNAME                  2201
 #define IDC_TRANSBYTES                  2202
 #define IDC_TRANSPAUSESTART             2203
+#define IDC_TRANSCLOSE                  2204
 #define IDC_TRANSHELP                   2299
 #define IDD_PROTDLG                     2300
 #define IDC_PROTOFNAME                  2301
@@ -67,6 +84,13 @@
 #define IDC_PROTOPKTNUM                 2303
 #define IDC_PROTOBYTECOUNT              2304
 #define IDC_PROTOPERCENT                2305
+#define IDC_PRNABORT_PRINTING           2400
+#define IDC_PROT_FILENAME               2501
+#define IDC_PROT_PROT                   2502
+#define IDC_PROT_PACKET                 2503
+#define IDC_PROT_TRANS                  2504
+#define IDC_TRANS_FILENAME              2505
+#define IDC_TRANS_TRANS                 2506
 #define ID_ACC_SENDBREAK                50001
 #define ID_ACC_COPY                     50002
 #define ID_ACC_NEWCONNECTION            50003
@@ -152,7 +176,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        119
 #define _APS_NEXT_COMMAND_VALUE         52020
-#define _APS_NEXT_CONTROL_VALUE         1042
+#define _APS_NEXT_CONTROL_VALUE         1058
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

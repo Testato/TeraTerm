@@ -6,6 +6,7 @@
 #include "teraterm.h"
 #include "tttypes.h"
 #include "tektypes.h"
+#include "ttlib.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -691,8 +692,17 @@ void FAR PASCAL TEKPrint(PTEKVar tk, PTTSet ts, HDC PrintDC, BOOL SelFlag)
   Caps = GetDeviceCaps(PrintDC,RASTERCAPS);
   if ((Caps & RC_BITBLT) != RC_BITBLT)
   {
+#ifdef I18N
+    char uimsg[MAX_UIMSG];
+    strcpy(uimsg, "Tera Term: Error");
+    get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
+	strcpy(ts->UIMsg, "Printer dose not support graphics");
+    get_lang_msg("MSG_TEK_PRINT_ERROR", ts->UIMsg, ts->UILanguageFile);
+	MessageBox(tk->HWin,ts->UIMsg,uimsg,MB_ICONEXCLAMATION);
+#else
     MessageBox(tk->HWin,"Printer dose not support graphics",
       "Tera Term: Error",MB_ICONEXCLAMATION);
+#endif
     return;
   }
   if (tk->Active) TEKCaretOff(tk);

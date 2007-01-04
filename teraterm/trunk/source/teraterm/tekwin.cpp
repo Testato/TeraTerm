@@ -863,6 +863,10 @@ void CTEKWindow::OnHelpUsing()
 void CTEKWindow::OnHelpAbout()
 {
   if (! LoadTTDLG()) return;
+#ifdef I18N
+  (*AboutDialog)(tk.HWin, &ts);
+#else
   (*AboutDialog)(tk.HWin);
+#endif
   FreeTTDLG();
 }

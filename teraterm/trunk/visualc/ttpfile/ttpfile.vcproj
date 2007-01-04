@@ -148,7 +148,7 @@
 				AdditionalOptions="/D&quot;_CRT_SECURE_NO_DEPRECATE&quot;"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\source\common"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;I18N"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;INET6;I18N"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Debug/ttpfile.pch"

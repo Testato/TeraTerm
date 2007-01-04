@@ -11,6 +11,7 @@
 #include "ttcommon.h"
 
 #include "ttime.h"
+#include "ttlib.h"
 
 #ifdef TERATERM32
 #ifndef _IMM_
@@ -78,6 +79,9 @@ BOOL LoadIME()
 {
   BOOL Err;
   PTTSet tempts;
+#ifdef I18N
+  char uimsg[MAX_UIMSG];
+#endif
 
 #ifdef TERATERM32
   if (HIMEDLL != NULL) return TRUE;
@@ -90,8 +94,16 @@ BOOL LoadIME()
   if (HIMEDLL < HINSTANCE_ERROR)
   {
 #endif
+#ifdef I18N
+    strcpy(uimsg, "Tera Term: Error");
+    get_lang_msg("MSG_TT_ERROR", uimsg, ts.UILanguageFile);
+    strcpy(ts.UIMsg, "Can't use IME");
+    get_lang_msg("MSG_USE_IME_ERROR", ts.UIMsg, ts.UILanguageFile);
+    MessageBox(0,ts.UIMsg,uimsg,MB_ICONEXCLAMATION);
+#else
     MessageBox(0,"Can't use IME",
       "Tera Term: Error",MB_ICONEXCLAMATION);
+#endif
     WritePrivateProfileString("Tera Term","IME","off",ts.SetupFName);
     ts.UseIME = 0;
     tempts = (PTTSet)malloc(sizeof(TTTSet));

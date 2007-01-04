@@ -18,6 +18,8 @@
 #define IDD_GETFNDLG                    2000
 #define IDC_GETFN                       2001
 #define IDC_GETFNHELP                   2099
+#define IDC_FOPT                        65535
+#define IDC_FILENAME                    65535
 
 // Next default values for new objects
 // 

@@ -13,7 +13,11 @@ void KmtInit
   (PFileVar fv, PKmtVar kv, PComVar cv, PTTSet ts);
 void KmtTimeOutProc(PFileVar fv, PKmtVar kv, PComVar cv);
 BOOL KmtReadPacket
+#ifdef I18N
+  (PFileVar fv,  PKmtVar kv, PComVar cv, PTTSet);
+#else
   (PFileVar fv,  PKmtVar kv, PComVar cv);
+#endif
 void KmtCancel
   (PFileVar fv, PKmtVar kv, PComVar cv);
 

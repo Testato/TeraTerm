@@ -53,7 +53,7 @@
 #define TitZRcv     "ZMODEM Receive"
 #define TitZSend    "ZMODEM Send"
 #define TitBPRcv    "B-Plus Receive"
-#define TitBPSend   "B Plus Send"
+#define TitBPSend   "B-Plus Send"
 #define TitQVRcv    "Quick-VAN Receive"
 #define TitQVSend   "Quick-VAN Send"
 

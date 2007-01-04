@@ -5,6 +5,8 @@
 /* TERATERM.EXE, print-abort dialog box */
 #include "stdafx.h"
 #include "teraterm.h"
+#include "tttypes.h"
+#include "ttlib.h"
 #ifdef TERATERM32
 #include "tt_res.h"
 #else
@@ -25,10 +27,18 @@ BEGIN_MESSAGE_MAP(CPrnAbortDlg, CDialog)
 END_MESSAGE_MAP()
 
 // CPrnAbortDlg message handler
+#ifdef I18N
+BOOL CPrnAbortDlg::Create(CWnd* p_Parent, PBOOL AbortFlag, PTTSet pts)
+#else
 BOOL CPrnAbortDlg::Create(CWnd* p_Parent, PBOOL AbortFlag)
+#endif
 {
   BOOL Ok;
   HWND HParent;
+#ifdef I18N
+  LOGFONT logfont;
+  HFONT font;
+#endif
 
   m_pParent = p_Parent;
   if (p_Parent!=NULL)
@@ -42,6 +52,16 @@ BOOL CPrnAbortDlg::Create(CWnd* p_Parent, PBOOL AbortFlag)
     ::EnableWindow(HParent,FALSE);
     ::EnableWindow(GetSafeHwnd(),TRUE);
   }
+
+#ifdef I18N
+  font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
+  GetObject(font, sizeof(LOGFONT), &logfont);
+  if (get_lang_font("DLG_SYSTEM_FONT", GetSafeHwnd(), &logfont, &DlgFont, pts->UILanguageFile)) {
+	SendDlgItemMessage(IDC_PRNABORT_PRINTING, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+	SendDlgItemMessage(IDCANCEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+  }
+#endif
+
   return Ok;
 }
 

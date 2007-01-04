@@ -9,9 +9,16 @@ class CProtoDlg : public CDialog
 {
 private:
   PFileVar fv;
+#ifdef I18N
+	HFONT DlgFont;
+#endif
 
 public:
+#ifdef I18N
+	BOOL Create(PFileVar pfv, PTTSet pts);
+#else
 	BOOL Create(PFileVar pfv);
+#endif
 
 	//{{AFX_DATA(CProtoDlg)
 	enum { IDD = IDD_PROTDLG };

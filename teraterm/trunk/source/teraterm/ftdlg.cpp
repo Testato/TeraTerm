@@ -7,6 +7,7 @@
 #include "teraterm.h"
 #include "tttypes.h"
 #include "ttftypes.h"
+#include "ttlib.h"
 #ifdef TERATERM32
 #include "tt_res.h"
 #else
@@ -29,7 +30,11 @@ BEGIN_MESSAGE_MAP(CFileTransDlg, CDialog)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
+#ifdef I18N
+BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv, PTTSet pts)
+#else
 BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv)
+#endif
 {
   BOOL Ok;
   WNDCLASS wc;
@@ -37,6 +42,11 @@ BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv)
   fv = pfv;
   cv = pcv;
   cv->FilePause &= ~fv->OpId;
+#ifdef I18N
+  ts = pts;
+  LOGFONT logfont;
+  HFONT font;
+#endif
 
   wc.style = CS_PARENTDC;
   wc.lpfnWndProc = AfxWndProc;
@@ -61,6 +71,23 @@ BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv)
     Ok = CDialog::Create(CFileTransDlg::IDD, NULL);
 
   fv->HWin = GetSafeHwnd();
+
+#ifdef I18N
+  font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
+  GetObject(font, sizeof(LOGFONT), &logfont);
+  if (get_lang_font("DLG_SYSTEM_FONT", fv->HWin, &logfont, &DlgFont, ts->UILanguageFile)) {
+	SendDlgItemMessage(IDC_TRANS_FILENAME, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+	SendDlgItemMessage(IDC_TRANSFNAME, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+	SendDlgItemMessage(IDC_FULLPATH_LABEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+	SendDlgItemMessage(IDC_EDIT_FULLPATH, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+	SendDlgItemMessage(IDC_TRANS_TRANS, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+	SendDlgItemMessage(IDC_TRANSBYTES, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+	SendDlgItemMessage(IDC_TRANSPAUSESTART, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+	SendDlgItemMessage(IDCANCEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+	SendDlgItemMessage(IDC_TRANSHELP, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+  }
+#endif
+
   return Ok;
 }
 
@@ -69,12 +96,24 @@ void CFileTransDlg::ChangeButton(BOOL PauseFlag)
   Pause = PauseFlag;
   if (Pause)
   {
+#ifdef I18N
+    strcpy(ts->UIMsg, "&Start");
+	get_lang_msg("DLG_FILETRANS_START", ts->UIMsg, ts->UILanguageFile);
+    SetDlgItemText(IDC_TRANSPAUSESTART, ts->UIMsg);
+#else
     SetDlgItemText(IDC_TRANSPAUSESTART, "&Start");
+#endif
     cv->FilePause |= fv->OpId;
   }
   else {
+#ifdef I18N
+    strcpy(ts->UIMsg, "Pau&se");
+	get_lang_msg("DLG_FILETRANS_PAUSE", ts->UIMsg, ts->UILanguageFile);
+    SetDlgItemText(IDC_TRANSPAUSESTART, ts->UIMsg);
+#else
     SetDlgItemText(IDC_TRANSPAUSESTART, "Pau&se");
-    cv->FilePause &= ~fv->OpId;
+#endif
+	cv->FilePause &= ~fv->OpId;
   }
 }
 

@@ -20,7 +20,11 @@
 
 /* proto type */
 BOOL FAR PASCAL GetTransFname
+#ifdef I18N
+  (PFileVar fv, PCHAR CurDir, WORD FuncId, LPLONG Option, PTTSet ts);
+#else
   (PFileVar fv, PCHAR CurDir, WORD FuncId, LPLONG Option);
+#endif
 
 #define BPTimeOut 10
 #define BPTimeOutTCPIP 0
@@ -480,7 +484,11 @@ void BPCheckPacket(PFileVar fv, PBPVar bv, PComVar cv)
   }
 
 
+#ifdef I18N
+void BPParseTPacket(PFileVar fv, PBPVar bv, PTTSet ts)
+#else
 void BPParseTPacket(PFileVar fv, PBPVar bv)
+#endif
 {
   int i, j, c;
   BYTE b;
@@ -576,7 +584,11 @@ void BPParseTPacket(PFileVar fv, PBPVar bv)
 	{
 	  /* if file not found, ask user new file name */
 	  fv->FullName[fv->DirLen] = 0;
+#ifdef I18N
+	  if (! GetTransFname(fv, NULL, GTF_BP, (PLONG)&i, ts)) 
+#else
 	  if (! GetTransFname(fv, NULL, GTF_BP, (PLONG)&i)) 
+#endif
 	  {
 	    BPSendFailure(bv,'E');
 	    return;
@@ -598,7 +610,11 @@ void BPParseTPacket(PFileVar fv, PBPVar bv)
   }
 }
 
+#ifdef I18N
+void BPParsePacket(PFileVar fv, PBPVar bv, PTTSet ts)
+#else
 void BPParsePacket(PFileVar fv, PBPVar bv)
+#endif
 {
   bv->GetPacket = FALSE;
   /* Packet type */
@@ -634,7 +650,11 @@ void BPParsePacket(PFileVar fv, PBPVar bv)
 	  fv->ByteCount, fv->FileSize);
       break;
     case 'T':
+#ifdef I18N
+      BPParseTPacket(fv,bv,ts); /* File transfer */
+#else
       BPParseTPacket(fv,bv); /* File transfer */
+#endif
       break;
   }
 }
@@ -706,7 +726,11 @@ void BPParseAck(PFileVar fv, PBPVar bv, BYTE b)
       *b = *b + 0x20;
   }
 
+#ifdef I18N
+BOOL BPParse(PFileVar fv, PBPVar bv, PComVar cv, PTTSet ts)
+#else
 BOOL BPParse(PFileVar fv, PBPVar bv, PComVar cv)
+#endif
 {
   int c;
   BYTE b;
@@ -847,7 +871,11 @@ BOOL BPParse(PFileVar fv, PBPVar bv, PComVar cv)
 
     /* Parse packet */
     if (bv->GetPacket)
+#ifdef I18N
+      BPParsePacket(fv,bv,ts);
+#else
       BPParsePacket(fv,bv);
+#endif
 
   } while ((c!=0) || (bv->BPPktState==BP_PktSending));
 

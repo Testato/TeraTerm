@@ -81,6 +81,16 @@ static char THIS_FILE[] = __FILE__;
 #define HTML_HELP_EN "teraterm.chm"
 #define HTML_HELP_JP "teratermj.chm"
 
+#ifdef I18N
+static HFONT DlgBroadcastFont;
+static HFONT DlgCommentFont;
+static HFONT DlgAdditionalFont;
+static HFONT DlgGeneralFont;
+static HFONT DlgVisualFont;
+static HFONT DlgLogFont;
+static HFONT DlgCygwinFont;
+#endif
+
 typedef struct {
 	char *name;
 	LPCTSTR id;
@@ -717,6 +727,9 @@ void CVTWindow::InitMenu(HMENU *Menu)
   GetMenuString(FileMenu, ID_FILE_SENDFILE, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
   get_lang_msg("MENU_FILE_SENDFILE", ts.UIMsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_SENDFILE, MF_BYCOMMAND, ID_FILE_SENDFILE, ts.UIMsg);
+  GetMenuString(FileMenu, ID_FILE_REPLAYLOG, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_REPLAYLOG", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(FileMenu, ID_FILE_REPLAYLOG, MF_BYCOMMAND, ID_FILE_REPLAYLOG, ts.UIMsg);
   GetMenuString(FileMenu, ID_FILE_CHANGEDIR, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
   get_lang_msg("MENU_FILE_CHANGEDIR", ts.UIMsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_CHANGEDIR, MF_BYCOMMAND, ID_FILE_CHANGEDIR, ts.UIMsg);
@@ -1310,10 +1323,18 @@ void CVTWindow::OnClose()
     MessageBeep(0);
     return;
   }
+#ifdef I18N
+  strcpy(ts.UIMsg, "Disconnect?");
+  get_lang_msg("MSG_DISCONNECT_CONF", ts.UIMsg, ts.UILanguageFile);
+#endif
   if (cv.Ready && (cv.PortType==IdTCPIP) &&
       ((ts.PortFlag & PF_CONFIRMDISCONN) != 0) &&
       ! CloseTT &&
+#ifdef I18N
+      (::MessageBox(HVTWin,ts.UIMsg,"Tera Term",
+#else
       (::MessageBox(HVTWin,"Disconnect?","Tera Term",
+#endif
 	MB_OKCANCEL | MB_ICONEXCLAMATION | MB_DEFBUTTON2)==IDCANCEL))
     return;
 
@@ -1415,9 +1436,20 @@ void CVTWindow::OnDropFiles(HDROP hDropInfo)
 
 			} else {
 				// いきなりファイルの内容を送り込む前に、ユーザに問い合わせを行う。(2006.1.21 yutaka)
+#ifdef I18N
+				char uimsg[MAX_UIMSG];
+				strcpy(uimsg, "Tera Term: File Drag and Drop");
+				get_lang_msg("MSG_DANDD_CONF_TITLE", uimsg, ts.UILanguageFile);
+				strcpy(ts.UIMsg, "Are you sure that you want to send the file content?");
+				get_lang_msg("MSG_DANDD_CONF", ts.UIMsg, ts.UILanguageFile);
+#endif
 				if (MessageBox(
+#ifdef I18N
+					ts.UIMsg, uimsg, MB_YESNO | MB_DEFBUTTON2) == IDYES) {
+#else
 					"Are you sure that you want to send the file content?", 
 					"Tera Term: File Drag and Drop", MB_YESNO | MB_DEFBUTTON2) == IDYES) {
+#endif
 						SendVar->DirLen = 0;
 						ts.TransBin = 0;
 						FileSendStart();
@@ -2250,7 +2282,11 @@ LONG CVTWindow::OnCommNotify(UINT wParam, LONG lParam)
 
 LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 {
+#ifdef I18N
+  CommStart(&cv,lParam,&ts);
+#else
   CommStart(&cv,lParam);
+#endif
 #ifdef INET6
   if (ts.PortType == IdTCPIP && cv.RetryWithOtherProtocol == TRUE)
     Connecting = TRUE;
@@ -2540,8 +2576,18 @@ void CVTWindow::OnDuplicateSession()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
+#ifdef I18N
+		char uimsg[MAX_UIMSG];
+		strcpy(uimsg, "ERROR");
+		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
+		strcpy(ts.UIMsg, "Can't execute TeraTerm. (%d)");
+		get_lang_msg("MSG_USE_IME_ERROR", ts.UIMsg, ts.UILanguageFile);
+		_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
+#else
 		_snprintf(buf, sizeof(buf), "Can't execute TeraTerm. (%d)", GetLastError());
 		::MessageBox(NULL, buf, "ERROR", MB_OK | MB_ICONWARNING);
+#endif
 	}
 
 }
@@ -2557,6 +2603,9 @@ void CVTWindow::OnCygwinConnection()
 	char *exename = "cygterm.exe";
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
+#ifdef I18N
+	char uimsg[MAX_UIMSG];
+#endif
 
 	envptr = getenv("PATH");
 	if (strstr(envptr, "cygwin\\bin") != NULL) {
@@ -2571,7 +2620,15 @@ void CVTWindow::OnCygwinConnection()
 				goto found_dll;
 			}
 		}
+#ifdef I18N
+		strcpy(uimsg, "ERROR");
+		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
+		strcpy(ts.UIMsg, "Can't find Cygwin directory.");
+		get_lang_msg("MSG_FIND_CYGTERM_DIR_ERROR", ts.UIMsg, ts.UILanguageFile);
+		::MessageBox(NULL, ts.UIMsg, uimsg, MB_OK | MB_ICONWARNING);
+#else
 		::MessageBox(NULL, "Can't find Cygwin directory.", "ERROR", MB_OK | MB_ICONWARNING);
+#endif
 		return;
 	}
 found_dll:;
@@ -2593,7 +2650,15 @@ found_path:;
 			NULL, NULL, FALSE, 0,
 			NULL, NULL,
 			&si, &pi) == 0) {
+#ifdef I18N
+		strcpy(uimsg, "ERROR");
+		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
+		strcpy(ts.UIMsg, "Can't execute Cygterm.");
+		get_lang_msg("MSG_EXEC_CYGTERM_ERROR", ts.UIMsg, ts.UILanguageFile);
+		::MessageBox(NULL, ts.UIMsg, uimsg, MB_OK | MB_ICONWARNING);
+#else
 		::MessageBox(NULL, "Can't execute Cygterm.", "ERROR", MB_OK | MB_ICONWARNING);
+#endif
 	}
 }
 
@@ -2618,8 +2683,18 @@ void CVTWindow::OnTTMenuLaunch()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
+#ifdef I18N
+		char uimsg[MAX_UIMSG];
+		strcpy(uimsg, "ERROR");
+		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
+		strcpy(ts.UIMsg, "Can't execute TeraTerm Menu. (%d)");
+		get_lang_msg("MSG_EXEC_TTMENU_ERROR", ts.UIMsg, ts.UILanguageFile);
+		_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
+#else
 		_snprintf(buf, sizeof(buf), "Can't execute TeraTerm Menu. (%d)", GetLastError());
 		::MessageBox(NULL, buf, "ERROR", MB_OK | MB_ICONWARNING);
+#endif
 	}
 }
 
@@ -2647,8 +2722,18 @@ void CVTWindow::OnLogMeInLaunch()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
+#ifdef I18N
+		char uimsg[MAX_UIMSG];
+		strcpy(uimsg, "ERROR");
+		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
+		strcpy(ts.UIMsg, "Can't execute LogMeTT. (%d)");
+		get_lang_msg("MSG_EXEC_LOGMETT_ERROR", ts.UIMsg, ts.UILanguageFile);
+		_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
+#else
 		_snprintf(buf, sizeof(buf), "Can't execute LogMeTT. (%d)", GetLastError());
 		::MessageBox(NULL, buf, "ERROR", MB_OK | MB_ICONWARNING);
+#endif
 	}
 }
 
@@ -2664,12 +2749,36 @@ static LRESULT CALLBACK OnCommentDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPAR
 {
 	char buf[256];
 	UINT ret;
+#ifdef I18N
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
     switch (msg) {
         case WM_INITDIALOG:
 			//SetDlgItemText(hDlgWnd, IDC_EDIT_COMMENT, "サンプル");
 			// エディットコントロールにフォーカスをあてる
 			SetFocus(GetDlgItem(hDlgWnd, IDC_EDIT_COMMENT));
+
+#ifdef I18N
+			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
+			GetObject(font, sizeof(LOGFONT), &logfont);
+			if (get_lang_font("DLG_SYSTEM_FONT", hDlgWnd, &logfont, &DlgCommentFont, ts.UILanguageFile)) {
+				SendDlgItemMessage(hDlgWnd, IDC_EDIT_COMMENT, WM_SETFONT, (WPARAM)DlgCommentFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgCommentFont, MAKELPARAM(TRUE,0));
+			}
+			else {
+				DlgCommentFont = NULL;
+			}
+
+			GetWindowText(hDlgWnd, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_COMMENT_TITLE", ts.UIMsg, ts.UILanguageFile);
+			SetWindowText(hDlgWnd, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
+#endif
+
 			return FALSE;
 
         case WM_COMMAND:
@@ -2681,7 +2790,11 @@ static LRESULT CALLBACK OnCommentDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPAR
 						//buf[sizeof(buf) - 1] = '\0';  // null-terminate
 						CommentLogToFile(buf, ret);
 					}
-
+#ifdef I18N
+      if (DlgCommentFont != NULL) {
+        DeleteObject(DlgCommentFont);
+      }
+#endif
                     EndDialog(hDlgWnd, IDOK);
                     break;
                 default:
@@ -2737,8 +2850,18 @@ void CVTWindow::OnViewLog()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
+#ifdef I18N
+		char uimsg[MAX_UIMSG];
+		strcpy(uimsg, "ERROR");
+		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
+		strcpy(ts.UIMsg, "Can't view logging file. (%d)");
+		get_lang_msg("MSG_VIEW_LOGFILE_ERROR", ts.UIMsg, ts.UILanguageFile);
+		_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
+#else
 		_snprintf(buf, sizeof(buf), "Can't view logging file. (%d)", GetLastError());
 		::MessageBox(NULL, buf, "ERROR", MB_OK | MB_ICONWARNING);
+#endif
 	}
 }
 
@@ -2752,18 +2875,34 @@ void CVTWindow::OnReplayLog()
 	char *exec = "ttermpro";
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
+#ifdef I18N
+    char uimsg[MAX_UIMSG];
+#endif
 
 	// バイナリモードで採取したログファイルを選択する
 	memset(&ofn, 0, sizeof(OPENFILENAME));
 	memset(szFile, 0, sizeof(szFile));
     ofn.lStructSize = sizeof(OPENFILENAME);
     ofn.hwndOwner = HVTWin;
+#ifdef I18N
+    /* use memcpy to copy with '\0' */
+	memcpy(ts.UIMsg, "all(*.*)\0*.*\0\0", sizeof(ts.UIMsg));
+	get_lang_msg("FILEDLG_OPEN_LOGFILE_FILTER", ts.UIMsg, ts.UILanguageFile);
+    ofn.lpstrFilter = ts.UIMsg;
+#else
     ofn.lpstrFilter = "all(*.*)\0*.*\0\0";
+#endif
     ofn.lpstrFile = szFile;
     ofn.nMaxFile = sizeof(szFile);
     ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
     ofn.lpstrDefExt = "log";
+#ifdef I18N
+    strcpy(uimsg, "Select replay log file with binary mode");
+    get_lang_msg("FILEDLG_OPEN_LOGFILE_TITLE", uimsg, ts.UILanguageFile);
+	ofn.lpstrTitle = uimsg;
+#else
     ofn.lpstrTitle = "Select replay log file with binary mode";
+#endif
     if(GetOpenFileName(&ofn) == 0) 
         return;
 
@@ -2783,8 +2922,17 @@ void CVTWindow::OnReplayLog()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
+#ifdef I18N
+		strcpy(uimsg, "ERROR");
+		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
+		strcpy(ts.UIMsg, "Can't execute TeraTerm. (%d)");
+		get_lang_msg("MSG_EXEC_TT_ERROR", ts.UIMsg, ts.UILanguageFile);
+		_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
+#else
 		_snprintf(buf, sizeof(buf), "Can't execute TeraTerm. (%d)", GetLastError());
 		::MessageBox(NULL, buf, "ERROR", MB_OK | MB_ICONWARNING);
+#endif
 	}
 }
 
@@ -2866,7 +3014,11 @@ void CVTWindow::OnFileChangeDir()
 {
   HelpId = HlpFileChangeDir;
   if (! LoadTTDLG()) return;
+#ifdef I18N
+  (*ChangeDirectory)(HVTWin,&ts);
+#else
   (*ChangeDirectory)(HVTWin,ts.FileDir);
+#endif
   FreeTTDLG();
 }
 
@@ -2879,9 +3031,17 @@ void CVTWindow::OnFilePrint()
 void CVTWindow::OnFileDisconnect()
 {
   if (! cv.Ready) return;
+#ifdef I18N
+  strcpy(ts.UIMsg, "Disconnect?");
+  get_lang_msg("MSG_DISCONNECT_CONF", ts.UIMsg, ts.UILanguageFile);
+#endif
   if ((cv.PortType==IdTCPIP) &&
       ((ts.PortFlag & PF_CONFIRMDISCONN) != 0) &&
+#ifdef I18N
+      (::MessageBox(HVTWin,ts.UIMsg,"Tera Term",
+#else
       (::MessageBox(HVTWin,"Disconnect?","Tera Term",
+#endif
 	   MB_OKCANCEL | MB_ICONEXCLAMATION | MB_DEFBUTTON2)==IDCANCEL))
     return;
   ::PostMessage(HVTWin, WM_USER_COMMNOTIFY, 0, FD_CLOSE);
@@ -2986,7 +3146,13 @@ static void doSelectFolder(HWND hWnd, char *path, int pathlen)
 	bi.hwndOwner = hWnd;
 	bi.pidlRoot = pidlRoot;
 	bi.pszDisplayName = lpBuffer;
+#ifdef I18N
+	strcpy(ts.UIMsg, "select folder");
+	get_lang_msg("DIRDLG_CYGTERM_DIR_TITLE", ts.UIMsg, ts.UILanguageFile);
+	bi.lpszTitle = ts.UIMsg;
+#else
 	bi.lpszTitle = "select folder";
+#endif
 	bi.ulFlags = 0;
 	bi.lpfn = 0;
 	bi.lParam = 0;
@@ -3051,9 +3217,54 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 	} cygterm_t;
 	cygterm_t settings;
 	char buf[256], *head, *body;
+#ifdef I18N
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
     switch (msg) {
         case WM_INITDIALOG:
+
+#ifdef I18N
+			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
+			GetObject(font, sizeof(LOGFONT), &logfont);
+			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgCygwinFont, ts.UILanguageFile)) {
+				SendDlgItemMessage(hDlgWnd, IDC_CYGWIN_PATH_LABEL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_CYGWIN_PATH, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_SELECT_FILE, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_CYGWIN, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_TERM_LABEL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_TERM_EDIT, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_TERMTYPE_LABEL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_TERM_TYPE, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_PORTSTART_LABEL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_PORT_START, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_PORTRANGE_LABEL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_PORT_RANGE, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_SHELL_LABEL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_SHELL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_ENV1_LABEL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_ENV1, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_ENV2_LABEL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_ENV2, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+			}
+			else {
+				DlgCygwinFont = NULL;
+			}
+
+			GetDlgItemText(hDlgWnd, IDC_CYGWIN_PATH_LABEL, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_CYGWIN_PATH", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_CYGWIN_PATH_LABEL, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("BTN_CANCEL", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
+#endif
+
 			// try to read CygTerm config file
 			memset(&settings, 0, sizeof(settings));
 			_snprintf(settings.term, sizeof(settings.term), ".\\ttermpro.exe %%s %%d /KR=SJIS /KT=SJIS /nossh");
@@ -3146,9 +3357,18 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 
 					fp = fopen(cfgfile, "w");
 					if (fp == NULL) { 
+#ifdef I18N
+						char uimsg[MAX_UIMSG];
+						strcpy(uimsg, "ERROR");
+						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
+						strcpy(ts.UIMsg, "Can't write CygTerm configuration file (%d).");
+						get_lang_msg("MSG_CYGTERM_CONF_WRITEFILE_ERROR", ts.UIMsg, ts.UILanguageFile);
+						_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+						MessageBox(hDlgWnd, buf, uimsg, MB_ICONEXCLAMATION);
+#else
 						_snprintf(buf, sizeof(buf), "Can't write CygTerm configuration file (%d).", GetLastError());
 						MessageBox(hDlgWnd, buf, "ERROR", MB_ICONEXCLAMATION);
-
+#endif
 					} else {
 						fputs("# CygTerm setting\n", fp);
 						fputs("\n", fp);
@@ -3181,6 +3401,11 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 
         case WM_CLOSE:
 		    EndDialog(hDlgWnd, 0);
+#ifdef I18N
+			if (DlgCygwinFont != NULL) {
+				DeleteObject(DlgCygwinFont);
+			}
+#endif
 			return TRUE;
 
         default:
@@ -3193,9 +3418,45 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
 	HWND hWnd;
+#ifdef I18N
+	char uimsg[MAX_UIMSG];
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
     switch (msg) {
         case WM_INITDIALOG:
+
+#ifdef I18N
+			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
+			GetObject(font, sizeof(LOGFONT), &logfont);
+			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgLogFont, ts.UILanguageFile)) {
+				SendDlgItemMessage(hDlgWnd, IDC_VIEWLOG_LABEL, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_VIEWLOG_EDITOR, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_VIEWLOG_PATH, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_DEFAULTNAME_LABEL, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_DEFAULTNAME_EDITOR, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
+			}
+			else {
+				DlgVisualFont = NULL;
+			}
+
+			GetDlgItemText(hDlgWnd, IDC_VIEWLOG_LABEL, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_LOG_EDITOR", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_VIEWLOG_LABEL, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_DEFAULTNAME_LABEL, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_LOG_FILENAME", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_DEFAULTNAME_LABEL, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("BTN_CANCEL", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
+#endif
+
 			// (7)Viewlog Editor path (2005.1.29 yutaka)
 			hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
 			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.ViewlogEditor);
@@ -3218,10 +3479,23 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					ZeroMemory(&ofn, sizeof(ofn));
 					ofn.lStructSize = sizeof(ofn);
 					ofn.hwndOwner = hDlgWnd;
+#ifdef I18N
+					/* use memcpy to copy with '\0' */
+					memcpy(ts.UIMsg, "exe(*.exe)\0*.exe\0all(*.*)\0*.*\0\0", sizeof(ts.UIMsg));
+					get_lang_msg("FILEDLG_SELECT_LOGVIEW_APP_FILTER", ts.UIMsg, ts.UILanguageFile);
+					ofn.lpstrFilter = ts.UIMsg;
+#else
 					ofn.lpstrFilter = "exe(*.exe)\0*.exe\0all(*.*)\0*.*\0\0";
+#endif
 					ofn.lpstrFile = ts.ViewlogEditor;
 					ofn.nMaxFile = sizeof(ts.ViewlogEditor);
+#ifdef I18N
+					strcpy(uimsg, "Choose a executing file with launching logging file");
+					get_lang_msg("FILEDLG_SELECT_LOGVIEW_APP_TITLE", uimsg, ts.UILanguageFile);
+					ofn.lpstrTitle = uimsg;
+#else
 					ofn.lpstrTitle = "Choose a executing file with launching logging file";
+#endif
 					ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_FORCESHOWHIDDEN | OFN_HIDEREADONLY;
 					if (GetOpenFileName(&ofn) != 0) {
 						hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
@@ -3234,7 +3508,11 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 
 			switch (LOWORD(wp)) {
                 case IDOK:
+#ifdef I18N
+					char buf[80], buf2[80];
+#else
 					char buf[80], buf2[80], msg[80];
+#endif
 					time_t time_local;
 					struct tm *tm_local;
 
@@ -3246,8 +3524,16 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					hWnd = GetDlgItem(hDlgWnd, IDC_DEFAULTNAME_EDITOR);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
 					if (isInvalidStrftimeChar(buf)) {
+#ifdef I18N
+						strcpy(uimsg, "ERROR");
+						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
+						strcpy(ts.UIMsg, "Invalid character is included in log file name.");
+						get_lang_msg("MSG_LOGFILE_INVALID_CHAR_ERROR", ts.UIMsg, ts.UILanguageFile);
+						MessageBox(hDlgWnd, ts.UIMsg, uimsg, MB_ICONEXCLAMATION);
+#else
 						strncpy(msg, "Invalid character is included in log file name.", sizeof(msg));
 						MessageBox(hDlgWnd, msg, "ERROR", MB_ICONEXCLAMATION);
+#endif
 						return FALSE;
 					}
 					// 現在時刻を取得
@@ -3255,13 +3541,29 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					tm_local = localtime(&time_local);
 					// 時刻文字列に変換
 					if (strftime(buf2, sizeof(buf2), buf, tm_local) == 0) {
+#ifdef I18N
+						strcpy(uimsg, "ERROR");
+						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
+						strcpy(ts.UIMsg, "The log file name is too long.");
+						get_lang_msg("MSG_LOGFILE_TOOLONG_ERROR", ts.UIMsg, ts.UILanguageFile);
+						MessageBox(hDlgWnd, ts.UIMsg, uimsg, MB_ICONEXCLAMATION);
+#else
 						strncpy(msg, "The log file name is too long.", sizeof(msg));
 						MessageBox(hDlgWnd, msg, "ERROR", MB_ICONEXCLAMATION);
+#endif
 						return FALSE;
 					}
 					if (isInvalidFileNameChar(buf2)) {
+#ifdef I18N
+						strcpy(uimsg, "ERROR");
+						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
+						strcpy(ts.UIMsg, "Invalid character is included in log file name.");
+						get_lang_msg("MSG_LOGFILE_INVALID_CHAR_ERROR", ts.UIMsg, ts.UILanguageFile);
+						MessageBox(hDlgWnd, ts.UIMsg, uimsg, MB_ICONEXCLAMATION);
+#else
 						strncpy(msg, "Invalid character is included in log file name.", sizeof(msg));
 						MessageBox(hDlgWnd, msg, "ERROR", MB_ICONEXCLAMATION);
+#endif
 						return FALSE;
 					}
 					strncpy(ts.LogDefaultName, buf, sizeof(ts.LogDefaultName));
@@ -3281,6 +3583,11 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 
         case WM_CLOSE:
 		    EndDialog(hDlgWnd, 0);
+#ifdef I18N
+			if (DlgLogFont != NULL) {
+				DeleteObject(DlgLogFont);
+			}
+#endif
 			return TRUE;
 
         default:
@@ -3295,9 +3602,42 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 	HWND hWnd;
 	char buf[MAXPATHLEN];
 	LRESULT ret;
+#ifdef I18N
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
     switch (msg) {
         case WM_INITDIALOG:
+
+#ifdef I18N
+			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
+			GetObject(font, sizeof(LOGFONT), &logfont);
+			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgVisualFont, ts.UILanguageFile)) {
+				SendDlgItemMessage(hDlgWnd, IDC_ALPHABLEND, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_ALPHA_BLEND, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_ETERM_LOOKFEEL, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+			}
+			else {
+				DlgVisualFont = NULL;
+			}
+
+			GetDlgItemText(hDlgWnd, IDC_ALPHABLEND, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_VISUAL_ALHPA", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_ALPHABLEND, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_ETERM_LOOKFEEL, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_VISUAL_ETERM", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_ETERM_LOOKFEEL, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("BTN_CANCEL", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
+#endif
+
 			// (1)AlphaBlend 
 			hWnd = GetDlgItem(hDlgWnd, IDC_ALPHA_BLEND);
 			_snprintf(buf, sizeof(buf), "%d", ts.AlphaBlend);
@@ -3357,6 +3697,11 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 
         case WM_CLOSE:
 		    EndDialog(hDlgWnd, 0);
+#ifdef I18N
+			if (DlgVisualFont != NULL) {
+				DeleteObject(DlgVisualFont);
+			}
+#endif
 			return TRUE;
 
         default:
@@ -3395,9 +3740,72 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 	int i;
 	LRESULT lr;
 	char buf[MAXPATHLEN];
+#ifdef I18N
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
     switch (msg) {
         case WM_INITDIALOG:
+
+#ifdef I18N
+			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
+			GetObject(font, sizeof(LOGFONT), &logfont);
+			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgGeneralFont, ts.UILanguageFile)) {
+				SendDlgItemMessage(hDlgWnd, IDC_LINECOPY, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_MOUSE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_MOUSE_CURSOR, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_DELIMITER, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_DELIM_LIST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_ANSICOLOR, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_ANSI_COLOR, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_RED, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_COLOR_RED, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_GREEN, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_COLOR_GREEN, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_BLUE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_SAMPLE_COLOR, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_CLICKABLE_URL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+			}
+			else {
+				DlgGeneralFont = NULL;
+			}
+
+			GetDlgItemText(hDlgWnd, IDC_LINECOPY, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_GENERAL_CONTINUE", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_LINECOPY, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_MOUSE, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_GENERAL_MOUSE", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_MOUSE, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_DELIMITER, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_GENERAL_DEMILITER", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_DELIMITER, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_RED, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_GENERAL_RED", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_RED, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_GREEN, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_GENERAL_GREEN", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_GREEN, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_BLUE, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_GENERAL_BLUE", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_BLUE, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_GENERAL_MOUSEPASTE", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_CLICKABLE_URL, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_GENERAL_CLICKURL", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_CLICKABLE_URL, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("BTN_CANCEL", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
+#endif
+
 			// (1)Enable continued-line copy
 			hWnd = GetDlgItem(hDlgWnd, IDC_LINECOPY);
 			if (ts.EnableContinuedLineCopy == TRUE) {
@@ -3586,6 +3994,11 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 
         case WM_CLOSE:
 		    EndDialog(hDlgWnd, 0);
+#ifdef I18N
+			if (DlgGeneralFont != NULL) {
+				DeleteObject(DlgGeneralFont);
+			}
+#endif
 			return TRUE;
 
 #if 0
@@ -3640,34 +4053,74 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 	static HWND hTabCtrl; // parent
 	static HWND hTabSheet[MAX_TABSHEET]; //0:general 1:visual 2:log 3:Cygwin
 	int i;
+#ifdef I18N
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
 	switch (msg) {
         case WM_INITDIALOG:
+#ifdef I18N
+		font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
+		GetObject(font, sizeof(LOGFONT), &logfont);
+		if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgAdditionalFont, ts.UILanguageFile)) {
+			SendDlgItemMessage(hDlgWnd, IDC_SETUP_TAB, WM_SETFONT, (WPARAM)DlgAdditionalFont, MAKELPARAM(TRUE,0));
+		}
+#endif
 			gTabControlParent = hDlgWnd;
 
 			// コモンコントロールの初期化
 			InitCommonControls();
+#ifdef I18N
+			GetWindowText(hDlgWnd, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TABSHEET_TITLE", ts.UIMsg, ts.UILanguageFile);
+			SetWindowText(hDlgWnd, ts.UIMsg);
+#endif
 
 			// シート枠の作成
 			hTabCtrl = GetDlgItem(hDlgWnd, IDC_SETUP_TAB);
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
+#ifdef I18N
+			strcpy(ts.UIMsg, "General");
+			get_lang_msg("DLG_TABSHEET_TITLE_GENERAL", ts.UIMsg, ts.UILanguageFile);
+			tc.pszText = ts.UIMsg;
+#else
 			tc.pszText = "General";
+#endif
 			TabCtrl_InsertItem(hTabCtrl, 0, &tc);
 
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
+#ifdef I18N
+			strcpy(ts.UIMsg, "Visual");
+			get_lang_msg("DLG_TABSHEET_TITLE_VISUAL", ts.UIMsg, ts.UILanguageFile);
+			tc.pszText = ts.UIMsg;
+#else
 			tc.pszText = "Visual";
+#endif
 			TabCtrl_InsertItem(hTabCtrl, 1, &tc);
 
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
+#ifdef I18N
+			strcpy(ts.UIMsg, "Log");
+			get_lang_msg("DLG_TABSHEET_TITLE_LOG", ts.UIMsg, ts.UILanguageFile);
+			tc.pszText = ts.UIMsg;
+#else
 			tc.pszText = "Log";
+#endif
 			TabCtrl_InsertItem(hTabCtrl, 2, &tc);
 
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
+#ifdef I18N
+			strcpy(ts.UIMsg, "Cygwin");
+			get_lang_msg("DLG_TABSHEET_TITLE_CYGWIN", ts.UIMsg, ts.UILanguageFile);
+			tc.pszText = ts.UIMsg;
+#else
 			tc.pszText = "Cygwin";
+#endif
 			TabCtrl_InsertItem(hTabCtrl, 3, &tc);
 
 			// シートに載せる子ダイアログの作成
@@ -3738,6 +4191,11 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 				EndDialog(hTabSheet[i], FALSE);
 			}
 			EndDialog(hDlgWnd, FALSE);
+#ifdef I18N
+			if (DlgAdditionalFont != NULL) {
+				DeleteObject(DlgAdditionalFont);
+			}
+#endif
 			return TRUE;
 
         default:
@@ -3889,8 +4347,16 @@ void CVTWindow::OnSetupSave()
 	// 書き込みできるかの判別を追加 (2005.11.3 yutaka)
 	if ((ret = _access(ts.SetupFName, 0x02)) != 0) {
 		if (errno != ENOENT) {  // ファイルがすでに存在する場合のみエラーとする (2005.12.13 yutaka)
+#ifdef I18N
+			char uimsg[MAX_UIMSG];
+			strcpy(uimsg, "Tera Term: ERROR");
+			get_lang_msg("MSG_TT_ERROR", uimsg, ts.UILanguageFile);
+			strcpy(ts.UIMsg, "Teraterm.ini file doesn't have the writable permission.");
+			MessageBox(ts.UIMsg, uimsg, MB_OK|MB_ICONEXCLAMATION);
+#else
 			MessageBox("Teraterm.ini file doesn't have the writable permission.", 
 				"Tera Term: ERROR", MB_OK|MB_ICONEXCLAMATION);
+#endif
 			return;
 		}
 	}
@@ -3985,6 +4451,10 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 	char buf[256 + 3];
 	UINT ret;
 	LRESULT checked;
+#ifdef I18N
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
     switch (msg) {
         case WM_INITDIALOG:
@@ -3995,6 +4465,35 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 
 			// エディットコントロールにフォーカスをあてる
 			SetFocus(GetDlgItem(hWnd, IDC_COMMAND_EDIT));
+
+#ifdef I18N
+			font = (HFONT)SendMessage(hWnd, WM_GETFONT, 0, 0);
+			GetObject(font, sizeof(LOGFONT), &logfont);
+			if (get_lang_font("DLG_SYSTEM_FONT", hWnd, &logfont, &DlgBroadcastFont, ts.UILanguageFile)) {
+				SendDlgItemMessage(hWnd, IDC_COMMAND_EDIT, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hWnd, IDC_RADIO_CRLF, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hWnd, IDC_RADIO_CR, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hWnd, IDC_RADIO_LF, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hWnd, IDC_ENTERKEY_CHECK, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hWnd, IDOK, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
+			}
+			else {
+				DlgBroadcastFont = NULL;
+			}
+			GetWindowText(hWnd, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_BROADCAST_TITLE", ts.UIMsg, ts.UILanguageFile);
+			SetWindowText(hWnd, ts.UIMsg);
+			GetDlgItemText(hWnd, IDC_ENTERKEY_CHECK, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_BROADCAST_ENTER", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hWnd, IDC_ENTERKEY_CHECK, ts.UIMsg);
+			GetDlgItemText(hWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_BROADCAST_SUBMIT", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hWnd, IDOK, ts.UIMsg);
+			GetDlgItemText(hWnd, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("BTN_CLOSE", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hWnd, IDCANCEL, ts.UIMsg);
+#endif
 
 			return FALSE;
 
@@ -4074,6 +4573,12 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
                 case IDCANCEL:
 				    EndDialog(hWnd, 0);
 					//DestroyWindow(hWnd);
+#ifdef I18N
+					if (DlgBroadcastFont != NULL) {
+						DeleteObject(DlgBroadcastFont);
+					}
+#endif
+
 					return TRUE;
 
                 default:
@@ -4194,12 +4699,19 @@ void CVTWindow::OnHelpUsing()
 void CVTWindow::OnHelpAbout()
 {
   if (! LoadTTDLG()) return;
+#ifdef I18N
+  (*AboutDialog)(HVTWin, &ts);
+#else
   (*AboutDialog)(HVTWin);
+#endif
   FreeTTDLG();
 }
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.43  2006/12/23 02:50:17  maya
+ * htmlヘルプをプログラムから呼び出すための準備をした。
+ *
  * Revision 1.42  2006/12/13 12:31:25  yutakapon
  * ファイル名にゴミが入るのを修正。
  *

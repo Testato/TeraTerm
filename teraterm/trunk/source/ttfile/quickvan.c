@@ -105,7 +105,16 @@ void QVInit
   fv->ByteCount = 0;
 
   if (qv->QVMode==IdQVReceive)
+#ifdef I18N
+  {
+    strcat(fv->DlgCaption,"Tera Term: ");
+    strcpy(ts->UIMsg, TitQVRcv);
+    get_lang_msg("FILEDLG_TRANS_TITLE_QVRCV", ts->UIMsg, ts->UILanguageFile);
+    strncat(fv->DlgCaption, ts->UIMsg, strlen(fv->DlgCaption)-1);
+  }
+#else
     strcat(fv->DlgCaption,"Tera Term: Quick-VAN Receive");
+#endif
   SetWindowText(fv->HWin, fv->DlgCaption);
   SetDlgItemText(fv->HWin, IDC_PROTOPROT, "Quick-VAN");
 

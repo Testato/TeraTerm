@@ -33,7 +33,17 @@ static char FAR * ProtocolFamilyList[] = { "UNSPEC", "IPv6", "IPv4", NULL };
 static HANDLE hInst;
 
 #ifdef I18N
+static HFONT DlgAboutFont;
+static HFONT DlgDirFont;
+static HFONT DlgFontFont;
+static HFONT DlgGenFont;
+static HFONT DlgHostFont;
+static HFONT DlgKeybFont;
+static HFONT DlgSerialFont;
+static HFONT DlgTcpipFont;
 static HFONT DlgTermFont;
+static HFONT DlgWinFont;
+static HFONT DlgWinlistFont;
 #endif
 
 static PCHAR far NLList[] = {"CR","CR+LF",NULL};
@@ -68,6 +78,139 @@ BOOL CALLBACK TermDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	case WM_INITDIALOG:
 		ts = (PTTSet)lParam;
 		SetWindowLong(Dialog, DWL_USER, lParam);
+
+#ifdef I18N
+		font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
+		GetObject(font, sizeof(LOGFONT), &logfont);
+		if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgTermFont, ts->UILanguageFile)) {
+			SendDlgItemMessage(Dialog, IDC_TERMWIDTHLABEL, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMWIDTH, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMX, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMHEIGHT, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMISWIN, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMRESIZE, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMNEWLINE, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMCRRCVLABEL, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMCRRCV, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMCRSENDLABEL, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMCRSEND, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMIDLABEL, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMID, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMLOCALECHO, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMANSBACKTEXT, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMANSBACK, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMAUTOSWITCH, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDOK, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDCANCEL, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERMHELP, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			if (ts->Language==IdJapanese) {
+				SendDlgItemMessage(Dialog, IDC_TERMKANJILABEL, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TERMKANJI, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TERMKANA, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TERMKANJISENDLABEL, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TERMKANJISEND, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TERMKANASEND, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TERMKINTEXT, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TERMKIN, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TERMKOUTTEXT, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TERMKOUT, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_LOCALE_LABEL, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_LOCALE_EDIT, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_CODEPAGE_LABEL, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_CODEPAGE_EDIT, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			}
+			if (ts->Language==IdRussian) {
+				SendDlgItemMessage(Dialog, IDC_TERMRUSSCHARSET, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TERMRUSSHOSTLABEL, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TERMRUSSHOST, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TERMRUSSCLIENTLABEL, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TERMRUSSCLIENT, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
+			}
+		}
+		else {
+			DlgTermFont = NULL;
+		}
+
+		GetWindowText(Dialog, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("DLG_TERM_TITLE", ts->UIMsg, ts->UILanguageFile);
+		SetWindowText(Dialog, ts->UIMsg);
+		GetDlgItemText(Dialog, IDC_TERMWIDTHLABEL, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("DLG_TERM_WIDTHLABEL", ts->UIMsg, ts->UILanguageFile);
+		SetDlgItemText(Dialog, IDC_TERMWIDTHLABEL, ts->UIMsg);
+		GetDlgItemText(Dialog, IDC_TERMISWIN, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("DLG_TERM_ISWIN", ts->UIMsg, ts->UILanguageFile);
+		SetDlgItemText(Dialog, IDC_TERMISWIN, ts->UIMsg);
+		GetDlgItemText(Dialog, IDC_TERMRESIZE, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("DLG_TERM_RESIZE", ts->UIMsg, ts->UILanguageFile);
+		SetDlgItemText(Dialog, IDC_TERMRESIZE, ts->UIMsg);
+		GetDlgItemText(Dialog, IDC_TERMNEWLINE, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("DLG_TERM_NEWLINE", ts->UIMsg, ts->UILanguageFile);
+		SetDlgItemText(Dialog, IDC_TERMNEWLINE, ts->UIMsg);
+		GetDlgItemText(Dialog, IDC_TERMCRRCVLABEL, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("DLG_TERM_CRRCV", ts->UIMsg, ts->UILanguageFile);
+		SetDlgItemText(Dialog, IDC_TERMCRRCVLABEL, ts->UIMsg);
+		GetDlgItemText(Dialog, IDC_TERMCRSENDLABEL, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("DLG_TERM_CRSEND", ts->UIMsg, ts->UILanguageFile);
+		SetDlgItemText(Dialog, IDC_TERMCRSENDLABEL, ts->UIMsg);
+		GetDlgItemText(Dialog, IDC_TERMIDLABEL, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("DLG_TERM_ID", ts->UIMsg, ts->UILanguageFile);
+		SetDlgItemText(Dialog, IDC_TERMIDLABEL, ts->UIMsg);
+		GetDlgItemText(Dialog, IDC_TERMLOCALECHO, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("DLG_TERM_LOCALECHO", ts->UIMsg, ts->UILanguageFile);
+		SetDlgItemText(Dialog, IDC_TERMLOCALECHO, ts->UIMsg);
+		GetDlgItemText(Dialog, IDC_TERMANSBACKTEXT, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("DLG_TERM_ANSBACK", ts->UIMsg, ts->UILanguageFile);
+		SetDlgItemText(Dialog, IDC_TERMANSBACKTEXT, ts->UIMsg);
+		GetDlgItemText(Dialog, IDC_TERMAUTOSWITCH, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("DLG_TERM_AUTOSWITCH", ts->UIMsg, ts->UILanguageFile);
+		SetDlgItemText(Dialog, IDC_TERMAUTOSWITCH, ts->UIMsg);
+		GetDlgItemText(Dialog, IDOK, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("BTN_OK", ts->UIMsg, ts->UILanguageFile);
+		SetDlgItemText(Dialog, IDOK, ts->UIMsg);
+		GetDlgItemText(Dialog, IDCANCEL, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("BTN_CANCEL", ts->UIMsg, ts->UILanguageFile);
+		SetDlgItemText(Dialog, IDCANCEL, ts->UIMsg);
+		GetDlgItemText(Dialog, IDC_TERMHELP, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("BTN_HELP", ts->UIMsg, ts->UILanguageFile);
+		SetDlgItemText(Dialog, IDC_TERMHELP, ts->UIMsg);
+		if ( ts->Language==IdJapanese ) {
+			GetDlgItemText(Dialog, IDC_TERMKANJILABEL, ts->UIMsg, sizeof(ts->UIMsg));
+			get_lang_msg("DLG_TERM_KANJI", ts->UIMsg, ts->UILanguageFile);
+			SetDlgItemText(Dialog, IDC_TERMKANJILABEL, ts->UIMsg);
+			GetDlgItemText(Dialog, IDC_TERMKANA, ts->UIMsg, sizeof(ts->UIMsg));
+			get_lang_msg("DLG_TERM_KANA", ts->UIMsg, ts->UILanguageFile);
+			SetDlgItemText(Dialog, IDC_TERMKANA, ts->UIMsg);
+			GetDlgItemText(Dialog, IDC_TERMKANJISENDLABEL, ts->UIMsg, sizeof(ts->UIMsg));
+			get_lang_msg("DLG_TERM_KANJISEND", ts->UIMsg, ts->UILanguageFile);
+			SetDlgItemText(Dialog, IDC_TERMKANJISENDLABEL, ts->UIMsg);
+			GetDlgItemText(Dialog, IDC_TERMKANASEND, ts->UIMsg, sizeof(ts->UIMsg));
+			get_lang_msg("DLG_TERM_KANASEND", ts->UIMsg, ts->UILanguageFile);
+			SetDlgItemText(Dialog, IDC_TERMKANASEND, ts->UIMsg);
+			GetDlgItemText(Dialog, IDC_TERMKINTEXT, ts->UIMsg, sizeof(ts->UIMsg));
+			get_lang_msg("DLG_TERM_KIN", ts->UIMsg, ts->UILanguageFile);
+			SetDlgItemText(Dialog, IDC_TERMKINTEXT, ts->UIMsg);
+			GetDlgItemText(Dialog, IDC_TERMKOUTTEXT, ts->UIMsg, sizeof(ts->UIMsg));
+			get_lang_msg("DLG_TERM_KOUT", ts->UIMsg, ts->UILanguageFile);
+			SetDlgItemText(Dialog, IDC_TERMKOUTTEXT, ts->UIMsg);
+			GetDlgItemText(Dialog, IDC_LOCALE_LABEL, ts->UIMsg, sizeof(ts->UIMsg));
+			get_lang_msg("DLG_TERM_LOCALE", ts->UIMsg, ts->UILanguageFile);
+			SetDlgItemText(Dialog, IDC_LOCALE_LABEL, ts->UIMsg);
+			GetDlgItemText(Dialog, IDC_CODEPAGE_LABEL, ts->UIMsg, sizeof(ts->UIMsg));
+			get_lang_msg("DLG_TERM_CODEPAGE", ts->UIMsg, ts->UILanguageFile);
+			SetDlgItemText(Dialog, IDC_CODEPAGE_LABEL, ts->UIMsg);
+		}
+		else if ( ts->Language==IdRussian ) {
+			GetDlgItemText(Dialog, IDC_TERMRUSSCHARSET, ts->UIMsg, sizeof(ts->UIMsg));
+			get_lang_msg("DLG_TERM_RUSSCHARSET", ts->UIMsg, ts->UILanguageFile);
+			SetDlgItemText(Dialog, IDC_TERMRUSSCHARSET, ts->UIMsg);
+			GetDlgItemText(Dialog, IDC_TERMRUSSHOSTLABEL, ts->UIMsg, sizeof(ts->UIMsg));
+			get_lang_msg("DLG_TERM_RUSSHOST", ts->UIMsg, ts->UILanguageFile);
+			SetDlgItemText(Dialog, IDC_TERMRUSSHOSTLABEL, ts->UIMsg);
+			GetDlgItemText(Dialog, IDC_TERMRUSSCLIENTLABEL, ts->UIMsg, sizeof(ts->UIMsg));
+			get_lang_msg("DLG_TERM_RUSSCLIENT", ts->UIMsg, ts->UILanguageFile);
+			SetDlgItemText(Dialog, IDC_TERMRUSSCLIENTLABEL, ts->UIMsg);
+		}
+#endif
 
 		SetDlgItemInt(Dialog,IDC_TERMWIDTH,ts->TerminalWidth,FALSE);
 		SendDlgItemMessage(Dialog, IDC_TERMWIDTH, EM_LIMITTEXT,3, 0);
@@ -108,22 +251,6 @@ BOOL CALLBACK TermDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		}
 
 		SetRB(Dialog,ts->AutoWinSwitch,IDC_TERMAUTOSWITCH,IDC_TERMAUTOSWITCH);
-
-#ifdef I18N
-		font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
-		GetObject(font, sizeof(LOGFONT), &logfont);
-		if (get_lang_font("DLG_TERMINAL_FONT", Dialog, &logfont, &DlgTermFont, ts->UILanguageFile)) {
-			SendDlgItemMessage(Dialog, IDC_TERMLOCALECHO, WM_SETFONT, (WPARAM)DlgTermFont, MAKELPARAM(TRUE,0));
-		}
-
-		GetWindowText(Dialog, ts->UIMsg, sizeof(ts->UIMsg));
-		get_lang_msg("DLG_TERMINAL_TITLE", ts->UIMsg, ts->UILanguageFile);
-		SetWindowText(Dialog, ts->UIMsg);
-
-		GetDlgItemText(Dialog, IDC_TERMLOCALECHO, ts->UIMsg, sizeof(ts->UIMsg));
-		get_lang_msg("DLG_TERMINAL_TERMSIZE", ts->UIMsg, ts->UILanguageFile);
-		SetDlgItemText(Dialog, IDC_TERMLOCALECHO, ts->UIMsg);
-#endif
 
 		if (ts->Language==IdJapanese)
 		{
@@ -217,10 +344,20 @@ BOOL CALLBACK TermDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			}
 		}
 		EndDialog(Dialog, 1);
+#ifdef I18N
+		if (DlgTermFont != NULL) {
+			DeleteObject(DlgTermFont);
+		}
+#endif
 		return TRUE;
 
 	case IDCANCEL:
 		EndDialog(Dialog, 0);
+#ifdef I18N
+		if (DlgTermFont != NULL) {
+			DeleteObject(DlgTermFont);
+		}
+#endif
 		return TRUE;
 
 	case IDC_TERMISWIN:
@@ -344,11 +481,123 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   int IAttr, IOffset;
   WORD i, pos, ScrollCode, NewPos;
   HDC DC;
+#ifdef I18N
+  LOGFONT logfont;
+  HFONT font;
+#endif
 
   switch (Message) {
     case WM_INITDIALOG:
       ts = (PTTSet)lParam;
       SetWindowLong(Dialog, DWL_USER, lParam);
+
+#ifdef I18N
+      font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
+      GetObject(font, sizeof(LOGFONT), &logfont);
+      if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgWinFont, ts->UILanguageFile)) {
+        SendDlgItemMessage(Dialog, IDC_WINTITLELABEL, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINTITLE, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINCURSOR, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINBLOCK, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINVERT, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINHORZ, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINHIDETITLE, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINHIDEMENU, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINCOLOREMU, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINSCROLL1, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINSCROLL3, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINSCROLL2, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINCOLOR, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINTEXT, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINBACK, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINREV, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINATTRTEXT, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINATTR, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINREDLABEL, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINRED, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINGREENLABEL, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINGREEN, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINBLUELABEL, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINBLUE, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINUSENORMALBG, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDOK, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDCANCEL, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_WINHELP, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+      }
+      else {
+        DlgWinFont = NULL;
+      }
+
+      GetWindowText(Dialog, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_TITLE", ts->UIMsg, ts->UILanguageFile);
+      SetWindowText(Dialog, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINTITLELABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_TITLELABEL", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINTITLELABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINCURSOR, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_CURSOR", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINCURSOR, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINBLOCK, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_BLOCK", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINBLOCK, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINVERT, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_VERT", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINVERT, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINHORZ, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_HORZ", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINHORZ, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINHIDETITLE, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_HIDETITLE", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINHIDETITLE, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINHIDEMENU, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_HIDEMENU", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINHIDEMENU, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINCOLOREMU, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_COLOREMU", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINCOLOREMU, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINSCROLL1, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_SCROLL1", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINSCROLL1, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINSCROLL3, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_SCROLL3", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINSCROLL3, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINCOLOR, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_COLOR", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINCOLOR, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINTEXT, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_TEXT", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINTEXT, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINBACK, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_BG", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINBACK, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINATTRTEXT, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_ATTRIB", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINATTRTEXT, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINREV, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_REVERSE", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINREV, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINREDLABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_R", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINREDLABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINGREENLABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_G", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINGREENLABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINBLUELABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_B", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINBLUELABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINUSENORMALBG, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_WIN_ALWAYSBG", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINUSENORMALBG, ts->UIMsg);
+      GetDlgItemText(Dialog, IDOK, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_OK", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDOK, ts->UIMsg);
+      GetDlgItemText(Dialog, IDCANCEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_CANCEL", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDCANCEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_WINHELP, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_HELP", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_WINHELP, ts->UIMsg);
+#endif
 
       SetDlgItemText(Dialog, IDC_WINTITLE, ts->Title);
       SendDlgItemMessage(Dialog, IDC_WINTITLE, EM_LIMITTEXT,
@@ -361,7 +610,13 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
       if (ts->VTFlag>0)
       {
+#ifdef I18N
+	strcpy(ts->UIMsg, "Full &color");
+	get_lang_msg("DLG_WIN_FULLCOLOR", ts->UIMsg, ts->UILanguageFile);
+	SetDlgItemText(Dialog, IDC_WINCOLOREMU,ts->UIMsg);
+#else
 	SetDlgItemText(Dialog, IDC_WINCOLOREMU,"Full &color");
+#endif
 	if ((ts->ColorFlag & CF_FULLCOLOR)!=0)
 	  i = 1;
 	else
@@ -394,12 +649,27 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       /* end - ishizaki */
 	}
 	ShowDlgItem(Dialog,IDC_WINATTRTEXT,IDC_WINATTR);
+#ifdef I18N
+	strcpy(ts->UIMsg, "Normal");
+	get_lang_msg("DLG_TERM_NORMAL", ts->UIMsg, ts->UILanguageFile);
+	SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
+			   0, (LPARAM)ts->UIMsg);
+	strcpy(ts->UIMsg, "Bold");
+	get_lang_msg("DLG_TERM_BOLD", ts->UIMsg, ts->UILanguageFile);
+	SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
+			   0, (LPARAM)ts->UIMsg);
+	strcpy(ts->UIMsg, "Blink");
+	get_lang_msg("DLG_TERM_BLINK", ts->UIMsg, ts->UILanguageFile);
+	SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
+			   0, (LPARAM)ts->UIMsg);
+#else
 	SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
 			   0, (LPARAM)"Normal");
 	SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
 			   0, (LPARAM)"Bold");
 	SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
 			   0, (LPARAM)"Blink");
+#endif
     /* begin - ishizaki */
 	SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
 			   0, (LPARAM)"URL");
@@ -518,10 +788,20 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 #endif
 	  }
 	  EndDialog(Dialog, 1);
+#ifdef I18N
+      if (DlgWinFont != NULL) {
+        DeleteObject(DlgWinFont);
+      }
+#endif
 	  return TRUE;
 
 	case IDCANCEL:
 	  EndDialog(Dialog, 0);
+#ifdef I18N
+      if (DlgWinFont != NULL) {
+        DeleteObject(DlgWinFont);
+      }
+#endif
 	  return TRUE;
 
 	case IDC_WINHIDETITLE:
@@ -646,11 +926,62 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 BOOL CALLBACK KeybDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
   PTTSet ts;
+#ifdef I18N
+  LOGFONT logfont;
+  HFONT font;
+#endif
 
   switch (Message) {
     case WM_INITDIALOG:
       ts = (PTTSet)lParam;
       SetWindowLong(Dialog, DWL_USER, lParam);
+
+#ifdef I18N
+      font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
+      GetObject(font, sizeof(LOGFONT), &logfont);
+      if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgKeybFont, ts->UILanguageFile)) {
+        SendDlgItemMessage(Dialog, IDC_KEYBTRANS, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_KEYBBS, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_KEYBDEL, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_KEYBKEYBTEXT, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_KEYBKEYB, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_KEYBMETA, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDOK, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDCANCEL, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_KEYBHELP, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
+      }
+      else {
+        DlgKeybFont = NULL;
+      }
+
+      GetWindowText(Dialog, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_KEYB_TITLE", ts->UIMsg, ts->UILanguageFile);
+      SetWindowText(Dialog, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_KEYBTRANS, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_KEYB_TRANSMIT", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_KEYBTRANS, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_KEYBBS, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_KEYB_BS", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_KEYBBS, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_KEYBDEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_KEYB_DEL", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_KEYBDEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_KEYBKEYBTEXT, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_KEYB_KEYB", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_KEYBKEYBTEXT, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_KEYBMETA, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_KEYB_META", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_KEYBMETA, ts->UIMsg);
+      GetDlgItemText(Dialog, IDOK, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_OK", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDOK, ts->UIMsg);
+      GetDlgItemText(Dialog, IDCANCEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_CANCEL", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDCANCEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_KEYBHELP, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_HELP", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_KEYBHELP, ts->UIMsg);
+#endif
 
       SetRB(Dialog,ts->BSKey-1,IDC_KEYBBS,IDC_KEYBBS);
       SetRB(Dialog,ts->DelKey,IDC_KEYBDEL,IDC_KEYBDEL);
@@ -676,10 +1007,20 @@ BOOL CALLBACK KeybDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	      ts->RussKeyb = (WORD)GetCurSel(Dialog, IDC_KEYBKEYB);
 	  }
 	  EndDialog(Dialog, 1);
+#ifdef I18N
+      if (DlgKeybFont != NULL) {
+        DeleteObject(DlgKeybFont);
+      }
+#endif
 	  return TRUE;
 
 	case IDCANCEL:
 	  EndDialog(Dialog, 0);
+#ifdef I18N
+      if (DlgKeybFont != NULL) {
+        DeleteObject(DlgKeybFont);
+      }
+#endif
 	  return TRUE;
 
 	case IDC_KEYBHELP:
@@ -704,11 +1045,85 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   PTTSet ts;
   int i;
   char Temp[6];
+#ifdef I18N
+  LOGFONT logfont;
+  HFONT font;
+#endif
 
   switch (Message) {
     case WM_INITDIALOG:
       ts = (PTTSet)lParam;
       SetWindowLong(Dialog, DWL_USER, lParam);
+
+#ifdef I18N
+      font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
+      GetObject(font, sizeof(LOGFONT), &logfont);
+      if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgSerialFont, ts->UILanguageFile)) {
+        SendDlgItemMessage(Dialog, IDC_SERIALPORT_LABEL, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALPORT, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALBAUD_LEBAL, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALBAUD, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALDATA_LABEL, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALDATA, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALPARITY_LABEL, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALPARITY, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALSTOP_LABEL, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALSTOP, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALFLOW_LABEL, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALFLOW, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALDELAY, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALDELAYCHAR_LABEL, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALDELAYCHAR, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALDELAYLINE_LABEL, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALDELAYLINE, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDOK, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDCANCEL, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_SERIALHELP, WM_SETFONT, (WPARAM)DlgSerialFont, MAKELPARAM(TRUE,0));
+      }
+      else {
+        DlgSerialFont = NULL;
+      }
+
+      GetWindowText(Dialog, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_SERIAL_TITLE", ts->UIMsg, ts->UILanguageFile);
+      SetWindowText(Dialog, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_SERIALPORT_LABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_SERIAL_PORT", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_SERIALPORT_LABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_SERIALBAUD_LEBAL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_SERIAL_BAUD", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_SERIALBAUD_LEBAL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_SERIALDATA_LABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_SERIAL_DATA", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_SERIALDATA_LABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_SERIALPARITY_LABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_SERIAL_PARITY", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_SERIALPARITY_LABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_SERIALSTOP_LABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_SERIAL_STOP", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_SERIALSTOP_LABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_SERIALFLOW_LABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_SERIAL_FLOW", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_SERIALFLOW_LABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_SERIALDELAY, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_SERIAL_DELAY", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_SERIALDELAY, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_SERIALDELAYCHAR_LABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_SERIAL_DELAYCHAR", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_SERIALDELAYCHAR_LABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_SERIALDELAYLINE_LABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_SERIAL_DELAYLINE", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_SERIALDELAYLINE_LABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDOK, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_OK", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDOK, ts->UIMsg);
+      GetDlgItemText(Dialog, IDCANCEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_CANCEL", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDCANCEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_SERIALHELP, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_HELP", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_SERIALHELP, ts->UIMsg);
+#endif
 
       strcpy(Temp,"COM");
 
@@ -758,10 +1173,20 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	    ts->PortType = IdSerial;
 	  }
 	  EndDialog(Dialog, 1);
+#ifdef I18N
+      if (DlgSerialFont != NULL) {
+        DeleteObject(DlgSerialFont);
+      }
+#endif
 	  return TRUE;
 
 	case IDCANCEL:
 	  EndDialog(Dialog, 0);
+#ifdef I18N
+      if (DlgSerialFont != NULL) {
+        DeleteObject(DlgSerialFont);
+      }
+#endif
 	  return TRUE;
 
 	case IDC_SERIALHELP:
@@ -779,11 +1204,85 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   UINT i, Index;
   WORD w;
   BOOL Ok;
+#ifdef I18N
+  LOGFONT logfont;
+  HFONT font;
+#endif
 
   switch (Message) {
     case WM_INITDIALOG:
       ts = (PTTSet)lParam;
       SetWindowLong(Dialog, DWL_USER, lParam);
+
+#ifdef I18N
+      font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
+      GetObject(font, sizeof(LOGFONT), &logfont);
+      if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgTcpipFont, ts->UILanguageFile)) {
+        SendDlgItemMessage(Dialog, IDC_TCPIPHOSTLIST, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_TCPIPHOST, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_TCPIPADD, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_TCPIPLIST, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_TCPIPUP, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_TCPIPREMOVE, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_TCPIPDOWN, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_TCPIPHISTORY, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_TCPIPAUTOCLOSE, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_TCPIPPORTLABEL, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_TCPIPPORT, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_TCPIPTELNET, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_TCPIPTERMTYPELABEL, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_TCPIPTERMTYPE, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDOK, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDCANCEL, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_TCPIPHELP, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+      }
+      else {
+        DlgTcpipFont = NULL;
+      }
+
+      GetWindowText(Dialog, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_TCPIP_TITLE", ts->UIMsg, ts->UILanguageFile);
+      SetWindowText(Dialog, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_TCPIPHOSTLIST, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_TCPIP_HOSTLIST", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_TCPIPHOSTLIST, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_TCPIPADD, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_TCPIP_ADD", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_TCPIPADD, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_TCPIPUP, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_TCPIP_UP", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_TCPIPUP, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_TCPIPREMOVE, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_TCPIP_REMOVE", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_TCPIPREMOVE, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_TCPIPDOWN, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_TCPIP_DOWN", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_TCPIPDOWN, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_TCPIPHISTORY, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_TCPIP_HISTORY", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_TCPIPHISTORY, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_TCPIPAUTOCLOSE, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_TCPIP_AUTOCLOSE", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_TCPIPAUTOCLOSE, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_TCPIPPORTLABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_TCPIP_PORT", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_TCPIPPORTLABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_TCPIPTELNET, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_TCPIP_TELNET", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_TCPIPTELNET, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_TCPIPTERMTYPELABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_TCPIP_TERMTYPE", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_TCPIPTERMTYPELABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDOK, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_OK", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDOK, ts->UIMsg);
+      GetDlgItemText(Dialog, IDCANCEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_CANCEL", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDCANCEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_TCPIPHELP, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_HELP", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_TCPIPHELP, ts->UIMsg);
+#endif
 
       SendDlgItemMessage(Dialog, IDC_TCPIPHOST, EM_LIMITTEXT,
 			 HostNameMaxLength-1, 0);
@@ -861,10 +1360,20 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			   sizeof(ts->TermType));
 	  }
 	  EndDialog(Dialog, 1);
+#ifdef I18N
+      if (DlgTcpipFont != NULL) {
+        DeleteObject(DlgTcpipFont);
+      }
+#endif
 	  return TRUE;
 
 	case IDCANCEL:
 	  EndDialog(Dialog, 0);
+#ifdef I18N
+      if (DlgTcpipFont != NULL) {
+        DeleteObject(DlgTcpipFont);
+      }
+#endif
 	  return TRUE;
 
 	case IDC_TCPIPHOST:
@@ -1151,11 +1660,57 @@ BOOL CALLBACK DirDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   HWND HDir, HOk, HCancel, HHelp;
   POINT D, B;
   int WX, WY, WW, WH, CW, DW, DH, BW, BH;
+#ifdef I18N
+  PTTSet ts;
+  LOGFONT logfont;
+  HFONT font;
+
+  ts = (PTTSet)lParam;
+#endif
 
   switch (Message) {
     case WM_INITDIALOG:
+#ifdef I18N
+      font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
+      GetObject(font, sizeof(LOGFONT), &logfont);
+      if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgDirFont, ts->UILanguageFile)) {
+        SendDlgItemMessage(Dialog, IDC_DIRCURRENT_LABEL, WM_SETFONT, (WPARAM)DlgDirFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_DIRCURRENT, WM_SETFONT, (WPARAM)DlgDirFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_DIRNEW_LABEL, WM_SETFONT, (WPARAM)DlgDirFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_DIRNEW, WM_SETFONT, (WPARAM)DlgDirFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDOK, WM_SETFONT, (WPARAM)DlgDirFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDCANCEL, WM_SETFONT, (WPARAM)DlgDirFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_DIRHELP, WM_SETFONT, (WPARAM)DlgDirFont, MAKELPARAM(TRUE,0));
+      }
+      else {
+        DlgDirFont = NULL;
+      }
+
+      GetWindowText(Dialog, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_DIR_TITLE", ts->UIMsg, ts->UILanguageFile);
+      SetWindowText(Dialog, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_DIRCURRENT_LABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_DIR_CURRENT", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_DIRCURRENT_LABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_DIRNEW_LABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_DIR_NEW", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_DIRNEW_LABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDOK, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_OK", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDOK, ts->UIMsg);
+      GetDlgItemText(Dialog, IDCANCEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_CANCEL", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDCANCEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_DIRHELP, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_HELP", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_DIRHELP, ts->UIMsg);
+
+      CurDir = ts->FileDir;
+      SetWindowLong(Dialog, DWL_USER, (LPARAM)CurDir);
+#else
       CurDir = (PCHAR)(lParam);
       SetWindowLong(Dialog, DWL_USER, lParam);
+#endif
 
       SetDlgItemText(Dialog, IDC_DIRCURRENT, CurDir);
       SendDlgItemMessage(Dialog, IDC_DIRNEW, EM_LIMITTEXT,
@@ -1244,10 +1799,20 @@ BOOL CALLBACK DirDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	    _chdir(HomeDir);
 	  }
 	  EndDialog(Dialog, 1);
+#ifdef I18N
+      if (DlgDirFont != NULL) {
+        DeleteObject(DlgDirFont);
+      }
+#endif
 	  return TRUE;
 
 	case IDCANCEL:
 	  EndDialog(Dialog, 0);
+#ifdef I18N
+      if (DlgDirFont != NULL) {
+        DeleteObject(DlgDirFont);
+      }
+#endif
 	  return TRUE;
 
 	case IDC_DIRHELP:
@@ -1527,9 +2092,44 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
 	int a, b, c, d;
 	char buf[30];
+#ifdef I18N
+	PTTSet ts;
+	LOGFONT logfont;
+	HFONT font;
+#endif
 
 	switch (Message) {
 	case WM_INITDIALOG:
+
+#ifdef I18N
+		ts = (PTTSet)lParam;
+		font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
+		GetObject(font, sizeof(LOGFONT), &logfont);
+		if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgAboutFont, ts->UILanguageFile)) {
+			SendDlgItemMessage(Dialog, IDC_TT_PRO, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TT_VERSION, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_INLUCDE_LABEL, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_ONIGURUMA_LABEL, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TT23_LABEL, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TT23DATE_LABEL, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_TERANISHI_LABEL, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_PROJECT_LABEL, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_RIGHTS_LABEL, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_AUTHOR_LABEL, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_AUTHOR_URL, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_FORUM_LABEL, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDC_FORUM_URL, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(Dialog, IDOK, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
+		}
+		else {
+			DlgAboutFont = NULL;
+		}
+
+		GetWindowText(Dialog, ts->UIMsg, sizeof(ts->UIMsg));
+		get_lang_msg("DLG_ABOUT_TITLE", ts->UIMsg, ts->UILanguageFile);
+		SetWindowText(Dialog, ts->UIMsg);
+#endif
+
 		// TeraTermのバージョンを設定する (2005.2.28 yutaka)
 		// __argv[0]では WinExec() したプロセスから参照できないようなので削除。(2005.3.14 yutaka)
 		get_file_version("ttermpro.exe", &a, &b, &c, &d);
@@ -1562,6 +2162,11 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			EndDialog(Dialog, 0);
 			return TRUE;
 		}
+#ifdef I18N
+		if (DlgAboutFont != NULL) {
+			DeleteObject(DlgAboutFont);
+		}
+#endif
 		break;
 	}
 	return FALSE;
@@ -1574,11 +2179,51 @@ BOOL CALLBACK GenDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   PTTSet ts;
   WORD w;
   char Temp[6];
+#ifdef I18N
+  LOGFONT logfont;
+  HFONT font;
+#endif
 
   switch (Message) {
     case WM_INITDIALOG:
       ts = (PTTSet)lParam;
       SetWindowLong(Dialog, DWL_USER, lParam);
+
+#ifdef I18N
+      font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
+      GetObject(font, sizeof(LOGFONT), &logfont);
+      if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgGenFont, ts->UILanguageFile)) {
+        SendDlgItemMessage(Dialog, IDC_GENPORT_LABEL, WM_SETFONT, (WPARAM)DlgGenFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_GENPORT, WM_SETFONT, (WPARAM)DlgGenFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_GENLANGLABEL, WM_SETFONT, (WPARAM)DlgGenFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_GENLANG, WM_SETFONT, (WPARAM)DlgGenFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDOK, WM_SETFONT, (WPARAM)DlgGenFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDCANCEL, WM_SETFONT, (WPARAM)DlgGenFont, MAKELPARAM(TRUE,0));
+        SendDlgItemMessage(Dialog, IDC_GENHELP, WM_SETFONT, (WPARAM)DlgGenFont, MAKELPARAM(TRUE,0));
+      }
+      else {
+        DlgGenFont = NULL;
+      }
+
+      GetWindowText(Dialog, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_GEN_TITLE", ts->UIMsg, ts->UILanguageFile);
+      SetWindowText(Dialog, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_GENPORT_LABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_GEN_PORT", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_GENPORT_LABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_GENLANGLABEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("DLG_GEN_LANG", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_GENLANGLABEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDOK, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_OK", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDOK, ts->UIMsg);
+      GetDlgItemText(Dialog, IDCANCEL, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_CANCEL", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDCANCEL, ts->UIMsg);
+      GetDlgItemText(Dialog, IDC_GENHELP, ts->UIMsg, sizeof(ts->UIMsg));
+      get_lang_msg("BTN_HELP", ts->UIMsg, ts->UILanguageFile);
+      SetDlgItemText(Dialog, IDC_GENHELP, ts->UIMsg);
+#endif
 
       SendDlgItemMessage(Dialog, IDC_GENPORT, CB_ADDSTRING,
 			 0, (LPARAM)"TCP/IP");
@@ -1625,10 +2270,20 @@ BOOL CALLBACK GenDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	      ts->Language = (WORD)GetCurSel(Dialog, IDC_GENLANG);
 	  }
 	  EndDialog(Dialog, 1);
+#ifdef I18N
+      if (DlgGenFont != NULL) {
+        DeleteObject(DlgGenFont);
+      }
+#endif
 	  return TRUE;
 
 	case IDCANCEL:
 	  EndDialog(Dialog, 0);
+#ifdef I18N
+      if (DlgGenFont != NULL) {
+        DeleteObject(DlgGenFont);
+      }
+#endif
 	  return TRUE;
 
 	case IDC_GENHELP:
@@ -1843,7 +2498,11 @@ BOOL FAR PASCAL GetHostName(HWND WndParent, PGetHNRec GetHNRec)
 #endif
 }
 
+#ifdef I18N
+BOOL FAR PASCAL ChangeDirectory(HWND WndParent, PTTSet ts)
+#else
 BOOL FAR PASCAL ChangeDirectory(HWND WndParent, PCHAR CurDir)
+#endif
 {
 #ifndef TERATERM32
   DLGPROC DirProc;
@@ -1854,7 +2513,11 @@ BOOL FAR PASCAL ChangeDirectory(HWND WndParent, PCHAR CurDir)
   return
     (BOOL)DialogBoxParam(hInst,
       MAKEINTRESOURCE(IDD_DIRDLG),
+#ifdef I18N
+      WndParent, DirDlg, (LPARAM)ts);
+#else
       WndParent, DirDlg, (LPARAM)CurDir);
+#endif
 #else
   DirProc = MakeProcInstance(DirDlg, hInst);
   Ok = (BOOL)DialogBoxParam(hInst,
@@ -1865,7 +2528,11 @@ BOOL FAR PASCAL ChangeDirectory(HWND WndParent, PCHAR CurDir)
 #endif
 }
 
+#ifdef I18N
+BOOL FAR PASCAL AboutDialog(HWND WndParent, PTTSet ts)
+#else
 BOOL FAR PASCAL AboutDialog(HWND WndParent)
+#endif
 {
 #ifndef TERATERM32
   DLGPROC AboutProc;
@@ -1873,9 +2540,15 @@ BOOL FAR PASCAL AboutDialog(HWND WndParent)
 #endif
 #ifdef TERATERM32
   return
+#ifdef I18N
+    (BOOL)DialogBoxParam(hInst,
+      MAKEINTRESOURCE(IDD_ABOUTDLG),
+      WndParent, AboutDlg, (LPARAM)ts);
+#else
     (BOOL)DialogBox(hInst,
       MAKEINTRESOURCE(IDD_ABOUTDLG),
       WndParent, AboutDlg);
+#endif
 #else
   AboutProc = MakeProcInstance(AboutDlg, hInst);
   Ok = (BOOL)DialogBox(hInst,
@@ -2049,6 +2722,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  2006/11/23 02:19:14  maya
+ * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
+ *
  * Revision 1.14  2006/07/24 14:19:18  yutakakn
  * Oniguruma 4.2.0へ差し替えたことに合わせて、バージョン表示のさせかたを変更した。
  *

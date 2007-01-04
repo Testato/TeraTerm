@@ -9,18 +9,38 @@ extern "C" {
 typedef BOOL (FAR PASCAL *PGetSetupFname)
   (HWND HWin, WORD FuncId, PTTSet ts);
 typedef BOOL (FAR PASCAL *PGetTransFname)
+#ifdef I18N
+  (PFileVar fv, PCHAR CurDir, WORD FuncId, LPLONG Option, PTTSet ts);
+#else
   (PFileVar fv, PCHAR CurDir, WORD FuncId, LPLONG Option);
+#endif
 typedef BOOL (FAR PASCAL *PGetMultiFname)
+#ifdef I18N
+  (PFileVar fv, PCHAR CurDir, WORD FuncId, LPWORD Option, PTTSet ts);
+#else
   (PFileVar fv, PCHAR CurDir, WORD FuncId, LPWORD Option);
+#endif
 typedef BOOL (FAR PASCAL *PGetGetFname)
   (HWND HWin, PFileVar fv);
+#ifdef I18N
+typedef void (FAR PASCAL *PSetFileVar) (PFileVar fv, PTTSet ts);
+#else
 typedef void (FAR PASCAL *PSetFileVar) (PFileVar fv);
+#endif
 typedef BOOL (FAR PASCAL *PGetXFname)
+#ifdef I18N
+  (HWND HWin, BOOL Receive, LPLONG Option, PFileVar fv, PCHAR CurDir, PTTSet ts);
+#else
   (HWND HWin, BOOL Receive, LPLONG Option, PFileVar fv, PCHAR CurDir);
+#endif
 typedef void (FAR PASCAL *PProtoInit)
   (int Proto, PFileVar fv, PCHAR pv, PComVar cv, PTTSet ts);
 typedef BOOL (FAR PASCAL *PProtoParse)
+#ifdef I18N
+  (int Proto, PFileVar fv, PCHAR pv, PComVar cv, PTTSet ts);
+#else
   (int Proto, PFileVar fv, PCHAR pv, PComVar cv);
+#endif
 typedef void (FAR PASCAL *PProtoTimeOutProc)
   (int Proto, PFileVar fv, PCHAR pv, PComVar cv);
 typedef BOOL (FAR PASCAL *PProtoCancel)
