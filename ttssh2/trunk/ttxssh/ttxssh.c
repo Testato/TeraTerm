@@ -1084,19 +1084,24 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 #ifdef I18N
 		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
-		if (UTIL_get_lang_font("DLG_HOST_FONT", dlg, &logfont, &DlgHostFont, pvar)) {
+		if (UTIL_get_lang_font("DLG_SYSTEM_FONT", dlg, &logfont, &DlgHostFont, pvar)) {
 			SendDlgItemMessage(dlg, IDC_HOSTTCPIP, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_HOSTNAMELABEL, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_HOSTNAME, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_HISTORY, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SERVICELABEL, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_HOSTTELNET, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_HOSTSSH, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_HOSTOTHER, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_HOSTTCPPORTLABEL, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_HOSTTCPPORT, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSH_VERSION_LABEL, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSH_VERSION, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_HOSTTCPPROTOCOLLABEL, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_HOSTTCPPROTOCOL, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_HOSTSERIAL, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_HOSTCOMLABEL, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_HOSTCOM, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDOK, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDCANCEL, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_HOSTHELP, WM_SETFONT, (WPARAM)DlgHostFont, MAKELPARAM(TRUE,0));
@@ -1867,7 +1872,7 @@ static BOOL CALLBACK TTXAboutDlg(HWND dlg, UINT msg, WPARAM wParam,
 #ifdef I18N
 		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
-		if (UTIL_get_lang_font("DLG_FONT", dlg, &logfont, &DlgAboutFont, pvar)) {
+		if (UTIL_get_lang_font("DLG_TAHOMA_FONT", dlg, &logfont, &DlgAboutFont, pvar)) {
 			SendDlgItemMessage(dlg, IDC_TTSSH_VERSION, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHVERSIONS, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_INCLUDES, WM_SETFONT, (WPARAM)DlgAboutFont, MAKELPARAM(TRUE,0));
@@ -3663,6 +3668,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.49  2006/12/06 14:31:13  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.48  2006/12/06 14:25:40  maya
  * 表示メッセージの読み込み対応
  *

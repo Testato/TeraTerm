@@ -1225,7 +1225,7 @@ static BOOL CALLBACK fwd_edit_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 
 		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
-		if (UTIL_get_lang_font("DLG_FONT", dlg, &logfont, &DlgFwdEditFont, pvar)) {
+		if (UTIL_get_lang_font("DLG_TAHOMA_FONT", dlg, &logfont, &DlgFwdEditFont, pvar)) {
 			SendDlgItemMessage(dlg, IDD_SSHFWDBANNER, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHFWDLOCALTOREMOTE, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHFWDLOCALTOREMOTE_HOST, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
@@ -1233,6 +1233,12 @@ static BOOL CALLBACK fwd_edit_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			SendDlgItemMessage(dlg, IDC_SSHFWDREMOTETOLOCAL, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHFWDREMOTETOLOCAL_HOST, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHFWDREMOTETOLOCAL_PORT, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHLTRFROMPORT, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHLTRTOHOST, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHLTRTOPORT, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHRTLFROMPORT, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHRTLTOHOST, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHRTLTOPORT, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDOK, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDCANCEL, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
 		}
@@ -1396,8 +1402,9 @@ static BOOL CALLBACK fwd_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 #ifdef I18N
 		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
-		if (UTIL_get_lang_font("DLG_FONT", dlg, &logfont, &DlgFwdFont, pvar)) {
+		if (UTIL_get_lang_font("DLG_TAHOMA_FONT", dlg, &logfont, &DlgFwdFont, pvar)) {
 			SendDlgItemMessage(dlg, IDC_PORTFORWARD, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHFWDLIST, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_ADD, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_EDIT, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_REMOVE, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
@@ -1485,6 +1492,9 @@ void FWDUI_do_forwarding_dialog(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2006/12/06 14:31:13  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.5  2006/12/06 14:25:40  maya
  * 表示メッセージの読み込み対応
  *
