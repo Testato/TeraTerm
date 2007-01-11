@@ -766,12 +766,13 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.12.28 (Ver 4.50)
+2007.1.11 (Ver 4.50)
   - TeraTerm source code have been rebuilt with Visual Studio 2005 Standard Edition(+SP1).
   - Bug fix: The macro script might stall with logging mode. This is TeraTerm 2.3 original bug. The reason of the bug is that DDE server does not send the data to DDE client because log buffer index does not match DDE buffer index.
   - Bug fix: TeraTerm crashs when the log file name is not a full path.
   - added FUNCTION.CNF. F1-F10 keys are enabled in this keyboard setup file.
   - added 'Replay Log..' menu under File menu. This function replays log with binary mode and emulates the escape sequence.
+  - added `ConnectingTimeout' entry in teraterm.ini file.  This value is connecting timeout per seconds. Connecting socket could be canceled after the specified value timeout. Conversely, no action if the value is zero(depends on Windows TCP/IP stack implementation). Also added `/timeout=' command line option.
   - upgraded TTSSH version supporting SSH2 to 2.38
   - upgraded TTProxy to 1.0.0.10
   - upgraded Oniguruma to 5.5.1
