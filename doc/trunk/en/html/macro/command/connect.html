@@ -53,9 +53,10 @@ There are 3 types of connection you can establish from TeraTerm macro:
 
   - Telnet connection (port 23) 
   - SSH1 or SSH2 connection (port 22) 
-  - Connection via COM port 
+  - General connection
+  - Connection via COM port
   
-  Telnet connections 
+Telnet connections:
   
   connect 'myserver:23 /nossh'
   or
@@ -66,7 +67,7 @@ There are 3 types of connection you can establish from TeraTerm macro:
   Using /nossh is strongly recommended. Without this parameter TeraTerm will start connecting with the same method (telnet or SSH) that was used during last time when teraterm.ini file was saved. In case it was SSH than your macro will try to connect via SSH and will eventually fail.
   
   
-  SSH connections
+SSH connections:
   
   connect 'myserver /ssh'
   
@@ -108,8 +109,17 @@ There are 3 types of connection you can establish from TeraTerm macro:
   
   Above 6 ways pass username and authentication method directly from macro, and the popup asks for password.
   
+
+General connection:
+
+  connect 'myserver /timeout=&lt;value&gt;'
+    
+  Note: This option value is connecting timeout value(per seconds). Connecting to myserver 
+  could be canceled after timeout has occurred with the specified value. Conversely, no action 
+  if the value is zero. The default value is zero. Also this value would be saved as 
+  `ConnectingTimeout' entry in teraterm.ini file.
   
-  Connections via COM port 
+Connections via COM port:
   
   connect '/C=x' 
   
@@ -128,6 +138,8 @@ See also:
 <pre>
 Examples:*
 	connect ''	No command line parameter
+	
+	connect 'myserver /timeout=5'   Timeout will occur if connection does not succeed within five seconds.
 
 	connect 'myserver:23 /nossh'	Run Tera Term and open telnet session
 

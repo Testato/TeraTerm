@@ -23,6 +23,7 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
 	[/P=&lt;TCP port#&gt;] [/R=&lt;replay file&gt;] [/T=&lt;telnet flag&gt;]
 	[/V] [/W="&lt;window title&gt;"]
 	[/X=&lt;window pos (x)] [/Y=&lt;window pos (y)]
+	[/TIMEOUT=&lt;connecting timeout value&gt;]
 	[;&lt;comment&gt;]
 
 ここで:
@@ -47,7 +48,7 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
 	      :
 	  /C=99  COM99
 
-	/DUPLICATE              Internal use(must not specify this option)
+	/DUPLICATE              使用禁止（セッションの複製で内部で使われる）
 
 	/F=&lt;setup file&gt;	設定ファイル
 	  /F=TERATERM.INI (省略時)
@@ -98,6 +99,8 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
 	/X=&lt;window position (x)&gt;	ウィンドウの位置(水平)
 
 	/Y=&lt;window position (y)&gt;	ウィンドウの位置(垂直)
+
+	/TIMEOUT=&lt;connecting timeout value&gt;	接続中の処理をキャンセルするまでの時間（秒単位）
 
 	;&lt;comment&gt;	コメント。コマンドラインの最後に置く必要がある。
 
