@@ -51,6 +51,14 @@ static void AsyncConnect(PComVar cv)
   Psetsockopt(cv->s,(int)SOL_SOCKET,SO_OOBINLINE,(char FAR *)&BBuf,sizeof(BBuf));
   /* set asynchronous mode */
   PWSAAsyncSelect(cv->s,cv->HWin,WM_USER_COMMOPEN, FD_CONNECT);
+
+  // ホストへの接続中に一定時間立つと、強制的にソケットをクローズして、
+  // 接続処理をキャンセルさせる。値が0の場合は何もしない。
+  // (2007.1.11 yutaka)
+  if (*cv->ConnetingTimeout > 0) {
+	SetTimer(cv->HWin, IdCancelConnectTimer, *cv->ConnetingTimeout * 1000, NULL);
+  }
+
   /* WM_USER_COMMOPEN occurs, CommOpen is called, then CommStart is called */
   Err = Pconnect(cv->s, cv->res->ai_addr, cv->res->ai_addrlen);
   if (Err != 0) {
@@ -342,6 +350,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
   cv->TelAutoDetect = TRUE; /* TTPLUG */
   cv->Locale = ts->Locale;
   cv->CodePage = &ts->CodePage;
+  cv->ConnetingTimeout = &ts->ConnectingTimeout;
 
   if ((ts->PortType!=IdSerial) && (strlen(ts->HostName)==0))
   {
@@ -706,6 +715,12 @@ void CommStart(PComVar cv, LONG lParam)
 
   if (! cv->Open ) return;
   if ( cv->Ready ) return;
+
+  // キャンセルタイマがあれば取り消す。ただし、この時点で WM_TIMER が送られている可能性はある。
+  if (*cv->ConnetingTimeout > 0) {
+	KillTimer(cv->HWin, IdCancelConnectTimer);
+  }
+
   switch (cv->PortType) {
     case IdTCPIP:
       ErrMsg[0] = 0;

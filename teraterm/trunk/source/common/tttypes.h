@@ -13,6 +13,7 @@
 #define IdCaretTimer 7
 #define IdPrnStartTimer 8
 #define IdPrnProcTimer 9
+#define IdCancelConnectTimer 10  // add (2007.1.10 yutaka)
 
   /* Window Id */
 #define IdVT 1
@@ -350,6 +351,7 @@ struct tttset {
   char UILanguageFile[MAX_PATH];
   char UIMsg[MAX_UIMSG];
 #endif
+  int ConnectingTimeout;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -710,6 +712,7 @@ typedef TKeyMap far *PKeyMap;
 #endif /* INET6 */
 	char *Locale;
 	int *CodePage;
+	int *ConnetingTimeout;
   }TComVar;
 typedef TComVar far *PComVar;
 

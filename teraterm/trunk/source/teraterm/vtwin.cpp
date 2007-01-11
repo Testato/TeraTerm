@@ -1884,6 +1884,15 @@ void CVTWindow::OnTimer(UINT nIDEvent)
 	(Point.y < 0) || (Point.y >= ScreenHeight))
       ::PostMessage(HVTWin,WM_MOUSEMOVE,MK_LBUTTON,MAKELONG(Point.x,Point.y));
     return;
+  } 
+  else if (nIDEvent == IdCancelConnectTimer)
+  {
+	  // まだ接続が完了していなければ、ソケットを強制クローズ。
+	  // CloseSocket()を呼びたいが、ここからは呼べないので、直接Win32APIをコールする。
+	  if (!cv.Ready) {
+	    closesocket(cv.s);
+	    //::PostMessage(HVTWin, WM_USER_COMMNOTIFY, 0, FD_CLOSE);
+	  }
   }
 
   ::KillTimer(HVTWin, nIDEvent);
@@ -4709,6 +4718,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.44  2007/01/04 15:11:44  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.43  2006/12/23 02:50:17  maya
  * htmlヘルプをプログラムから呼び出すための準備をした。
  *

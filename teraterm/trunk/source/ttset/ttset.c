@@ -941,6 +941,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   ts->DisablePasteMouseRButton =
     GetOnOff(Section,"DisablePasteMouseRButton",FName,FALSE);
 
+  // WinSock connecting timeout value (2007.1.11 yutaka)
+  ts->ConnectingTimeout = GetPrivateProfileInt(Section,"ConnectingTimeout",0,FName);
+
   // mouse cursor 
   GetPrivateProfileString(Section,"MouseCursor","IBEAM",
 			  Temp,sizeof(Temp),FName);
@@ -1115,6 +1118,7 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
   WritePrivateProfileString(Section,"KanjiOut",Temp,FName);
 
   // new configuration
+  WriteInt(Section, "ConnectingTimeout", FName, ts->ConnectingTimeout);
   WriteOnOff(Section, "DisablePasteMouseRButton", FName, ts->DisablePasteMouseRButton);
   WriteOnOff(Section, "EnableContinuedLineCopy", FName, ts->EnableContinuedLineCopy);
   WritePrivateProfileString(Section,"MouseCursor", ts->MouseCursorName, FName);
@@ -2301,6 +2305,13 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 		ts->DuplicateSession = 1;
 
 	} 
+	else if (_strnicmp(Temp, "/TIMEOUT=", 9) == 0 ) { // Connecting Timeout value (2007.1.11. yutaka)
+		if (sscanf(&Temp[9],"%d",&pos)==1) {
+			if (pos >= 0)
+				ts->ConnectingTimeout = pos;
+		}
+
+	} 
 	else if ( (Temp[0]!='/') && (strlen(Temp)>0) )
     {
       if (JustAfterHost &&
@@ -2409,6 +2420,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.19  2006/11/23 02:19:16  maya
+ * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
+ *
  * Revision 1.18  2006/09/14 17:00:58  maya
  * ComAutoConnect セクションを削除した。
  * /M コマンドラインパラメータが指定されている場合、TeraTerm 起動時に自動的にシリアルポートへ接続しないようにした。
