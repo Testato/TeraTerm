@@ -298,36 +298,28 @@ void BackSpace()
   }
 }
 
-static int crlf_logwrite_disabled = 0;
-
-void CarriageReturn()
+void CarriageReturn(BOOL logFlag)
 {
-	// 行が連結している場合は、ログファイルに改行コードを含めない。(2004.12.7 yutaka)
-	if (Wrap && ts.EnableContinuedLineCopy) {
-		crlf_logwrite_disabled = 1;
-
-	} else {
-		if (cv.HLogBuf!=0) Log1Byte(CR);
-	}
+#ifndef NO_COPYLINE_FIX
+	if (!ts.EnableContinuedLineCopy || logFlag)
+#endif /* NO_COPYLINE_FIX */
+        if (cv.HLogBuf!=0) Log1Byte(CR);
 
 	if (CursorX>0)
 		MoveCursor(0,CursorY);
 }
 
-void LineFeed(BYTE b)
+void LineFeed(BYTE b, BOOL logFlag)
 {
 	/* for auto print mode */
 	if ((AutoPrintMode) &&
 		(b>=LF) && (b<=FF))
 		BuffDumpCurrentLine(b);
 
-	// 行が連結している場合は、ログファイルに改行コードを含めない。(2004.12.7 yutaka)
-	if (crlf_logwrite_disabled == 1) {
-		crlf_logwrite_disabled = 0;
-
-	} else {
-		if (cv.HLogBuf!=0) Log1Byte(LF);
-	}
+#ifndef NO_COPYLINE_FIX
+	if (!ts.EnableContinuedLineCopy || logFlag)
+#endif /* NO_COPYLINE_FIX */
+	if (cv.HLogBuf!=0) Log1Byte(LF);
 
 	if (CursorY < CursorBottom)
 		MoveCursor(CursorX,CursorY+1);
@@ -335,7 +327,7 @@ void LineFeed(BYTE b)
 	else if (CursorY < NumOfLines-StatusLine-1)
 		MoveCursor(CursorX,CursorY+1);
 
-	if (LFMode) CarriageReturn();
+	if (LFMode) CarriageReturn(logFlag);
 }
 
 void Tab()
@@ -356,8 +348,8 @@ void PutChar(BYTE b)
 
   if (Wrap)
   {
-    CarriageReturn();
-    LineFeed(LF);
+    CarriageReturn(FALSE);
+    LineFeed(LF,FALSE);
 #ifndef NO_COPYLINE_FIX
     CharAttrTmp = ts.EnableContinuedLineCopy ? AttrLineContinued : 0;
   }
@@ -455,8 +447,8 @@ void PutKanji(BYTE b)
 
   if (Wrap)
   {
-    CarriageReturn();
-    LineFeed(LF);
+    CarriageReturn(FALSE);
+    LineFeed(LF,FALSE);
 #ifndef NO_COPYLINE_FIX
     if (ts.EnableContinuedLineCopy)
       CharAttrTmp = AttrLineContinued;
@@ -473,8 +465,8 @@ void PutKanji(BYTE b)
       CharAttrTmp = AttrLineContinued;
       }
 #endif /* NO_COPYLINE_FIX */
-      CarriageReturn();
-      LineFeed(LF);
+      CarriageReturn(FALSE);
+      LineFeed(LF,FALSE);
     }
     else return;
 
@@ -635,7 +627,7 @@ void ParseControl(BYTE b)
     case BS: BackSpace(); break;
     case HT: Tab(); break;
     case LF:
-    case VT: LineFeed(b); break;
+    case VT: LineFeed(b,TRUE); break;
     case FF:
       if ((ts.AutoWinSwitch>0) && JustAfterESC)
       {
@@ -644,10 +636,10 @@ void ParseControl(BYTE b)
 	ChangeEmu = IdTEK;  /* Enter TEK Mode */
       }
       else
-	LineFeed(b);
+	LineFeed(b,TRUE);
       break;
     case CR:
-      CarriageReturn();
+      CarriageReturn(TRUE);
       if (ts.CRReceive==IdCRLF)
 	CommInsert1Byte(&cv,LF);
       break;
@@ -691,10 +683,10 @@ void ParseControl(BYTE b)
       break;
 
     /* C1 char */
-    case IND: LineFeed(0); break;
+    case IND: LineFeed(0,TRUE); break;
     case NEL:
-      LineFeed(0);
-      CarriageReturn();
+      LineFeed(0,TRUE);
+      CarriageReturn(TRUE);
       break;
     case HTS: SetTabStop(); break;
     case RI: CursorUpWithScroll(); break;
@@ -988,11 +980,11 @@ void ParseEscape(BYTE b) /* b is the final char */
 	case '=': AppliKeyMode = TRUE; break;
 	case '>': AppliKeyMode = FALSE; break;
 	case 'D': /* IND */
-	  LineFeed(0);
+	  LineFeed(0,TRUE);
 	  break;
 	case 'E': /* NEL */
 	  MoveCursor(0,CursorY);
-	  LineFeed(0);
+	  LineFeed(0,TRUE);
 	  break;
 	case 'H': /* HTS */
 	  SetTabStop();
@@ -2161,8 +2153,8 @@ BOOL ParseFirstJP(BYTE b)
     else if ((ts.TermFlag & TF_CTRLINKANJI)==0)
       KanjiIn = FALSE;
     else if ((b==CR) && Wrap) { // iwamoto patch (http://www.freeml.com/message/teraterm@freeml.com/0000142)
-      CarriageReturn();
-      LineFeed(LF);
+      CarriageReturn(FALSE);
+      LineFeed(LF,FALSE);
       Wrap = FALSE;
     }
   }
@@ -2643,6 +2635,9 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2006/06/29 16:25:36  yutakakn
+ * UTF-8の2バイト文字の直後に1バイト文字(ASCII)が来る場合、文字化けとなっていたバグを修正した。
+ *
  * Revision 1.11  2006/06/29 16:13:49  yutakakn
  * ファイルの改行コードを　LF にした。
  *
