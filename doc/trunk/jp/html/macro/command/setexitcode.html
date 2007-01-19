@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>setexitcode</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">setexitcode</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+setexitcode &lt;exit code&gt;
+</B>
+</UL>
+MACRO の終了コードを &lt;exit code&gt; にする。<P></P>
+
+<pre>
+
+<B>Windows 3.1 の場合:</B> MACRO はバッチファイルから起動できないので、終了コードを利用する方法はない。
+このコマンドは単に32-bit 版 MACRO との互換性のために用意されている。
+
+<B>Windows 95/98 の場合:</B> MACRO がバッチファイルからコマンドライン "start /w ttpmacro &lt;ttl filename&gt;" 
+(オプション /w が必要)によって実行された場合、終了コードを DOS コマンド "if errorlevel n" で調べることができる。
+
+<B>Windows NT/2000/XP の場合:</B> MACRO がバッチファイルからコマンドライン "ttpmacro &lt;ttl filename&gt;" によって実行された場合、
+終了コードを DOS コマンド"if errorlevel n" で調べることができる。
+
+</pre><P></P>
+
+<pre>
+
+例：
+
+----- バッチファイル "test.bat" (Win 95/98 の場合) ------
+   <B>start /w ttpmacro test.ttl</B>                                      "start /w" コマンドで MACRO を実行
+   <B>if errorlevel 1 echo Error!</B>                                     もし終了コードが1以上ならメッセージを表示
+----- "test.bat" の終わり ---------
+
+----- バッチファイル "test.bat" (Win NT/2000/XP の場合) ------
+   <B>ttpmacro test.ttl</B>                                                 MACRO を実行、"start" コマンドは不必要
+   <B>if errorlevel 1 echo Error!</B>                                     もし終了コードが1以上ならメッセージを表示
+----- "test.bat" の終わり ---------
+
+----- マクロファイル "test.ttl" ----
+   <B>setexitcode 1</B>                                                     終了コードを1にする。
+----- "test.ttl" の終わり ----------
+
+</pre>
+
+
+</BODY>
+</HTML>

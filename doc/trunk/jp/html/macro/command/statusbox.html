@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>statusbox</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">statusbox</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+statusbox &lt;message&gt; &lt;title&gt;
+</B>
+</UL>
+
+<pre>
+
+ステータスダイアログボックスが表示されていない場合、それを表示する。
+ダイアログボックスのメッセージを &lt;message&gt; に、タイトルを &lt;title&gt; に変える。
+
+<A HREF="setdlgpos.html">"setdlgpos"</A> コマンドはステータスダイアログボックスの位置を変える。
+<A HREF="closesbox.html">"closesbox"</A> コマンドはステータスダイアログボックスを閉じる。
+
+</pre><P></P>
+
+<pre>
+
+例:
+    <B>setdlgpos 200 200</B>                                   表示位置を指定
+    <B>statusbox 'Message' 'Title'</B>                       ダイアログボックスを表示
+    <B>pause 3</B>
+    <B>setdlgpos 0 0</B>                                       ダイアログボックスを移動
+    <B>pause 3</B>
+    <B>closesbox</B>                                           ダイアログボックスを閉じる
+
+</pre>
+
+
+</BODY>
+</HTML>

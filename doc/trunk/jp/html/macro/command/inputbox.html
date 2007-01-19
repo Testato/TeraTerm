@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>inputbox</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">inputbox</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+inputbox &lt;message&gt; &lt;title&gt;
+</B>
+</UL>
+
+<pre>
+
+文字列を入力するためのダイアログボックスを開く。文字列 &lt;message&gt; はダイアログボックスに表示されるメッセージ、
+文字列 &lt;title&gt; はダイアログボックスのタイトル。入力された文字列はシステム変数 inputstr に代入される。
+
+</pre>
+
+<pre>
+例：<B>
+    inputbox 'Password:' 'Login'
+    sendln inputstr
+
+</B></pre>
+
+
+</BODY>
+</HTML>

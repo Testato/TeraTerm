@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>setdlgpos</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">setdlgpos</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+setdlgpos &lt;x&gt; &lt;y&gt;
+</B>
+</UL>
+
+<pre>
+
+<A HREF="inputbox.html">"inputbox"</A>, <A HREF="messagebox.html">"messagebox"</A>, <A HREF="passwordbox.html">"passwordbox"</A>, <A HREF="statusbox.html">"statusbox"</A> コマンドで表示されるダイアログボックスの初期位置を変更する。
+また、ステータスダイアログボックスが表示されている場合、setdlgpos コマンドはそのダイアログボックスを移動させる。
+
+<x> と <y> は画面の座標 (x,y) を表わす。原点 (0,0) は画面の左上の隅の位置。
+
+</pre><P></P>
+
+<pre>
+例：
+     <B>setdlgpos 0 0</B>
+     <B>messagebox 'Message' 'Title'</B>                    左上の隅にダイアログボックス
+
+     <B>setdlgpos 0 200</B>                                  ステータスダイアログボックスを開く
+     <B>statusbox 'Message' 'Title'</B>
+     <B>for i 0 200</B>
+       <B>setdlgpos i 200</B>
+     <B>next</B>                                              ステータスダイアログボックスを移動
+</pre>
+</BODY>
+</HTML>
