@@ -745,6 +745,7 @@ OF SUCH DAMAGE.
   ・Visual Studio 2005 Standard Edition(+SP1)でリビルドした
   ・ログ採取中のマクロが停止する問題（TeraTerm 2.3オリジナルバグ）を修正した。ログバッファとDDEバッファのインデックスの整合が取れずに、本体からマクロへデータが送れていなかったのが原因。
   ・ログファイル名がフルパスでないときに落ちるバグを修正した。
+  ・EnableContinuedLineCopyが有効の場合に画面右端での改行がログに記録されないバグを修正した。
   ・F1-F10キーを有効にしたキーボード設定ファイル FUNCTION.CNF を追加した。
   ・Fileメニュー配下に、ログ再生を行う"Replay Log.."を追加した。
   ・接続中の処理を一定時間後にキャンセルできるようにした。teraterm.ini へ ConnectingTimeout エントリを追加。ttermpro.exeに "/timeout=" オプションを追加した。デフォルト値は0で何もしない（Windows TCP/IPスタックの実装に依存）。
