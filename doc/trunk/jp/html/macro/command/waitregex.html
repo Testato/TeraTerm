@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>waitregex</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<DIV ALIGN="left">
+<FONT SIZE="+2">waitregex</FONT><BR><BR>
+</div>
+
+形式:
+<UL>
+ <B>waitregex &lt;string1 with regular expression&gt; &lt;string2 with regular expression&gt; ...</B></UL>
+<P></P>
+
+<A HREF="../../reference/RE-ja.txt">Oniguruma の正規表現</A> が使用できます。
+<P></P>
+
+正規表現文字列のうち1つ以上を含む行（最大256文字）をホストから受信するか、タイムアウトが発生するまで MACRO を停止させる。正規表現文字列は最大10個まで指定できる。
+<P></P>
+
+システム変数 timeout が0より大きい場合、&lt;timeout&gt; 秒の時間がすぎるとタイムアウトが発生する。 timeout の値が0以下の場合は、タイムアウトは発生しない。
+<P></P>
+
+
+このコマンドの実行結果はシステム変数 result , inputstr, matchstr に格納される。変数 result の値の意味は以下のとおり。
+<P></P>
+
+<pre>
+値	意味
+<hr>
+0	タイムアウト。どの文字列も来なかった。
+1	&lt;string1 with regular expression&gt; を受信した。
+2	&lt;string2 with regular expression&gt; を受信した。
+n	&lt;stringn with regular expression&gt; を受信した。n=1..10
+</pre>
+<P></P>
+
+変数 inputstr は受信した行が格納される。
+変数 matchstr は最初にマッチしたパターンが格納される。
+変数 groupmatchstr1～groupmatchstr9 にはグループマッチしたパターンが格納される。
+<P></P>
+
+<pre>
+例:
+	timeout = 30
+	waitregex 'Longhorn' '.*@sai' 'Pentium\d+' 'TeraTermX{3}'
+	int2str s result
+	messagebox s 'result'
+	messagebox inputstr 'inputstr'
+	messagebox matchstr 'matchstr'
+</pre>
+
+</BODY>
+</HTML>
+

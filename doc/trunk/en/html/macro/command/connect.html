@@ -10,19 +10,20 @@
 <BODY>
 
 <DIV ALIGN="left">
-<FONT SIZE="+2">connect</FONT><BR><BR>
+<FONT SIZE="+2">connect</FONT>
 </div>
 
+<p>
 Format:
 <UL>
  <B>connect &lt;command line parameters&gt;</B>
 </UL>
-<P></P>
+</p>
 
 If MACRO is not linked to Tera Term, this command runs Tera Term with &lt;command line parameters&gt;, and links it to MACRO.
 <P></P>
 
-f MACRO has already been linked to Tera Term and Tera Term is not connected to the host, this command causes Tera Term to connect to the host specified by &lt;command line parameters&gt;.
+MACRO has already been linked to Tera Term and Tera Term is not connected to the host, this command causes Tera Term to connect to the host specified by &lt;command line parameters&gt;.
 <P></P>
 
 See Tera Term help for the format of &lt;command line parameters&gt;.
@@ -55,18 +56,23 @@ There are 3 types of connection you can establish from TeraTerm macro:
   - SSH1 or SSH2 connection (port 22) 
   - General connection
   - Connection via COM port
-  
+
+
 Telnet connections:
   
-  connect 'myserver:23 /nossh'
+  connect '<em>myserver</em>:23 /nossh'
   or
-  connect 'myserver:23 /telnet'
+  connect '<em>myserver</em>:23 /telnet'
   or
-  connect 'myserver:23'
+  connect '<em>myserver</em>:23'
   
-  Using /nossh is strongly recommended. Without this parameter TeraTerm will start connecting with the same method (telnet or SSH) that was used during last time when teraterm.ini file was saved. In case it was SSH than your macro will try to connect via SSH and will eventually fail.
+  Using /nossh is strongly recommended. Without this parameter TeraTerm will start
+  connecting with the same method (telnet or SSH) that was used during last time when
+  teraterm.ini file was saved. In case it was SSH than your macro will try to connect
+  via SSH and will eventually fail.
   
-  
+
+
 SSH connections:
   
   connect 'myserver /ssh'
@@ -91,9 +97,10 @@ SSH connections:
   or
   connect 'myserver /ssh /2 /auth=publickey /user=username /passwd=password /keyfile=private-key-file'
   
-  Above 6 ways allow to skip popup dialog and pass username and password directly from macro. Please note that /auth=password or /auth=publickey is the parameter saying that authentication will be done by entering password or private-key-file thus you should not replace the word 'password' or the word 'publickey' in it with actual password.
-  Important note: The password can contain space character. To represent space inside the password replace it with @ character. If @ character itself is part of the password than it has to be replaced with 2 consecutive @ characters @@.
-  Please remember that entering actual username and password in TeraTerm macro will cause them to be stored as an open text and it is your responsibility to keep such macro is secure location. 
+  Above 6 ways allow to skip popup dialog and pass username and password** directly
+  from macro. Please note that /auth=password or /auth=publickey is the parameter saying
+  that authentication will be done by entering password or private-key-file thus you
+  should not replace the word 'password' or the word 'publickey' in it with actual password.
   
   connect 'myserver /ssh /auth=password /user=username /ask4passwd'
   or
@@ -107,8 +114,9 @@ SSH connections:
   or
   connect 'myserver /ssh /2 /auth=publickey /user=username /ask4passwd /keyfile=private-key-file'
   
-  Above 6 ways pass username and authentication method directly from macro, and the popup asks for password.
-  
+  Above 6 ways pass username and authentication method directly from macro, and the popup asks for
+  password.
+
 
 General connection:
 
@@ -118,60 +126,82 @@ General connection:
   could be canceled after timeout has occurred with the specified value. Conversely, no action 
   if the value is zero. The default value is zero. Also this value would be saved as 
   `ConnectingTimeout' entry in teraterm.ini file.
-  
+
+
 Connections via COM port:
   
-  connect '/C=x' 
+  connect '/C=x'
   
-  Here x represents COM port number. For example to connect via COM port 1 the command will look like: connect '/C=1'
+  Here x represents COM port number. For example to connect via COM port 1 the command will
+  look like: connect '/C=1'
+  
+  source URL: http://www.neocom.ca/forum/viewtopic.php?t=28
 </pre>
 
 
-<pre>
 See also:
-	"closett"
-	"disconnect"
-	"testlink"
-	"unlink"
-</pre>
+<UL>
+<li><A HREF="closett.html">"closett"</A></li>
+<li><A HREF="disconnect.html">"disconnect"</A></li>
+<li><A HREF="testlink.html">"testlink"</A></li>
+<li><A HREF="unlink.html">"unlink"</A></li>
+</UL>
 
 <pre>
-Examples:*
-	connect ''	No command line parameter
+Examples:
+	; No command line parameter
+	connect ''
 	
-	connect 'myserver /timeout=5'   Timeout will occur if connection does not succeed within five seconds.
-
-	connect 'myserver:23 /nossh'	Run Tera Term and open telnet session
-
-	connect 'myserver /ssh'	Run Tera Term and open SSH session
-
-	connect 'myserver /ssh /1'	Run Tera Term and open SSH1 session
-
-	connect 'myserver /ssh /2'	Run Tera Term and open SSH2 session
-
-	connect 'myserver /ssh /auth=password /user=username /passwd=password'	Run Tera Term,open SSH session and do not prompt for user name and password**
-
-	connect 'myserver /ssh /1 /auth=password /user=username /passwd=password'	Run Tera Term, open SSH1 session and do not prompt for user name and password**
-
-	connect 'myserver /ssh /2 /auth=password /user=username /passwd=password'	Run Tera Term, open SSH2 session and do not prompt for user name and password**
-
-	connect 'myserver /ssh /auth=publickey/user=username /passwd=password /keyfile=private-key-file'	Run Tera Term, open SSH session and, not prompt for user name and password** and use private key file
-
-	connect 'myserver /ssh /1 /auth=publickey/user=username /passwd=password /keyfile=private-key-file'	Run Tera Term, open SSH1 session and, not prompt for user name and password**and use private key file
-
-	connect 'myserver /ssh /2 /auth=publickey /user=username /passwd=password /keyfile=private-key-file'	Run Tera Term, open SSH2 session and, not prompt for user name and password** and use private key file
-
-	connect '/C=x'	RunTera Term and open serial port connection. Port number is x=1..99
+	; Timeout will occur if connection does not succeed within five seconds.
+	connect 'myserver /timeout=5'
+	
+	; Run Tera Term and open telnet session
+	connect 'myserver:23 /nossh'
+	
+	; Run Tera Term and open SSH session
+	connect 'myserver /ssh'
+	
+	; Run Tera Term and open SSH1 session
+	connect 'myserver /ssh /1'
+	
+	; Run Tera Term and open SSH2 session
+	connect 'myserver /ssh /2'
+	
+	; Run Tera Term,open SSH session and do not prompt for user name and password**
+	connect 'myserver /ssh /auth=password /user=username /passwd=password'
+	
+	; Run Tera Term, open SSH1 session and do not prompt for user name and password**
+	connect 'myserver /ssh /1 /auth=password /user=username /passwd=password'
+	
+	; Run Tera Term, open SSH2 session and do not prompt for user name and password**
+	connect 'myserver /ssh /2 /auth=password /user=username /passwd=password'
+	
+	; Run Tera Term, open SSH session and, not prompt for user name and password** and use private key file
+	connect 'myserver /ssh /auth=publickey/user=username /passwd=password /keyfile=private-key-file'
+	
+	; Run Tera Term, open SSH1 session and, not prompt for user name and password**and use private key file
+	connect 'myserver /ssh /1 /auth=publickey/user=username /passwd=password /keyfile=private-key-file'
+	
+	; Run Tera Term, open SSH2 session and, not prompt for user name and password** and use private key file
+	connect 'myserver /ssh /2 /auth=publickey /user=username /passwd=password /keyfile=private-key-file'
+	
+	; RunTera Term and open serial port connection. Port number is x=1..99
+	connect '/C=x'
 
 	CommandLine = '111.111.11.11'	
 	connect CommandLine
+</pre>
 
-<hr>
+<pre>
+Note:
 * In these examples parameters shown with Italic font have to be replaced with their actual values.
 
 ** The password can contain space character. To represent space inside the password replace it 
    with @ character. If @ character itself is part of the password than it has to be replaced 
    with 2 consecutive @ characters @@.
+   
+*** Please remember that entering actual username and password in TeraTerm macro will cause them
+    to be stored as an open text and it is your responsibility to keep such macro is secure location. 
 </pre>
 
 

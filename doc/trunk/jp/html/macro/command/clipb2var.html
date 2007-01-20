@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
 <HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 <TITLE>clipb2var</TITLE>
 <META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../../style.css" type="text/css">
@@ -13,27 +13,27 @@
 <FONT SIZE="+2">clipb2var</FONT><BR><BR>
 </div>
 
-Format:
+Œ`Ž®:
 <UL>
 <B>clipb2var &lt;strvar&gt;</B>
 </UL>
 <P></P>
 
-Copys the text data in clipboard to &lt;strvar&gt;.
+ƒNƒŠƒbƒvƒ{[ƒh‚ÌƒeƒLƒXƒgƒf[ƒ^‚ð&lt;strvar&gt;‚Ö‘ã“ü‚·‚éB
 <P></P>
 
-The "clipb2var" command returns one of the following values in the system variable "result":
+‚±‚ÌƒRƒ}ƒ“ƒh‚ÌŽÀsŒ‹‰Ê‚ÍƒVƒXƒeƒ€•Ï” result ‚ÉŠi”[‚³‚ê‚éB•Ï” result ‚Ì’l‚ÌˆÓ–¡‚ÍˆÈ‰º‚Ì‚Æ‚¨‚èB
 <P></P>
 
 <pre>
-Value	Meaning 
+’l	ˆÓ–¡
 <hr>
-0	Can not open the clipboard. Or the clipboard content is not a text data.
-1	Copying to &lt;strvar&gt; is successful.
+0	ƒNƒŠƒbƒvƒ{[ƒh‚ðŠJ‚¯‚È‚©‚Á‚½B‚Ü‚½‚ÍƒeƒLƒXƒgƒf[ƒ^‚Å‚Í‚È‚©‚Á‚½B
+1	&lt;strvar&gt;‚Ö‚Ì‘ã“ü‚É¬Œ÷‚µ‚½B
 </pre>
 
 <pre>
-Example:
+—á:
 	clipb2var data
 	messagebox data 'clipboard data'
 </pre>
