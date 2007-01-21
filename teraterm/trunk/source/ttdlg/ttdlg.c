@@ -46,7 +46,8 @@ static HFONT DlgWinFont;
 static HFONT DlgWinlistFont;
 #endif
 
-static PCHAR far NLList[] = {"CR","CR+LF",NULL};
+static PCHAR far NLListRcv[] = {"CR","CR+LF", "LF", NULL};
+static PCHAR far NLList[] = {"CR","CR+LF", NULL};
 static PCHAR far TermList[] =
   {"VT100","VT101","VT102","VT282","VT320","VT382",NULL};
 static WORD TermJ_Term[] = {1,1,2,3,3,4,4,5,6};
@@ -223,7 +224,7 @@ BOOL CALLBACK TermDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		if ( ts->TermIsWin>0 )
 			DisableDlgItem(Dialog,IDC_TERMRESIZE,IDC_TERMRESIZE);
 
-		SetDropDownList(Dialog, IDC_TERMCRRCV, NLList, ts->CRReceive);
+		SetDropDownList(Dialog, IDC_TERMCRRCV, NLListRcv, ts->CRReceive); // add 'LF' (2007.1.21 yutaka)
 		SetDropDownList(Dialog, IDC_TERMCRSEND, NLList, ts->CRSend);
 
 		if ( ts->Language!=IdJapanese ) /* non-Japanese mode */
@@ -2722,6 +2723,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  2007/01/04 15:11:46  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.15  2006/11/23 02:19:14  maya
  * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
  *

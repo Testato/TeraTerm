@@ -741,7 +741,7 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
-2007.1.11 (Ver 4.50)
+2007.1.21 (Ver 4.50)
   ・Visual Studio 2005 Standard Edition(+SP1)でリビルドした
   ・ログ採取中のマクロが停止する問題（TeraTerm 2.3オリジナルバグ）を修正した。ログバッファとDDEバッファのインデックスの整合が取れずに、本体からマクロへデータが送れていなかったのが原因。
   ・ログファイル名がフルパスでないときに落ちるバグを修正した。
@@ -749,6 +749,10 @@ OF SUCH DAMAGE.
   ・F1-F10キーを有効にしたキーボード設定ファイル FUNCTION.CNF を追加した。
   ・Fileメニュー配下に、ログ再生を行う"Replay Log.."を追加した。
   ・接続中の処理を一定時間後にキャンセルできるようにした。teraterm.ini へ ConnectingTimeout エントリを追加。ttermpro.exeに "/timeout=" オプションを追加した。デフォルト値は0で何もしない（Windows TCP/IPスタックの実装に依存）。
+  ・Terminal setupダイアログの New-line の Receive に "LF" を追加した。
+    受信時の改行コードが LF の場合は、サーバから LF のみが送られてくると
+    仮定し、CR+LFとして扱うようにする。
+    cf. http://www.neocom.ca/forum/viewtopic.php?t=216
   ・SSH2対応TTSSH(2.38)へ差し替えた
   ・TTProxy(1.0.0.10)へ差し替えた
   ・Oniguruma 5.5.1へ差し替えた

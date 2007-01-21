@@ -626,8 +626,20 @@ void ParseControl(BYTE b)
       break;
     case BS: BackSpace(); break;
     case HT: Tab(); break;
+
     case LF:
+		// ŽóMŽž‚Ì‰üsƒR[ƒh‚ª LF ‚Ìê‡‚ÍAƒT[ƒo‚©‚ç LF ‚Ì‚Ý‚ª‘—‚ç‚ê‚Ä‚­‚é‚Æ‰¼’è‚µA
+		// CR+LF‚Æ‚µ‚Äˆµ‚¤‚æ‚¤‚É‚·‚éB
+		// cf. http://www.neocom.ca/forum/viewtopic.php?t=216
+		// (2007.1.21 yutaka)
+		if (ts.CRReceive == IdLF) {
+			CarriageReturn(TRUE);
+			LineFeed(b, TRUE);
+			break;
+		}
+
     case VT: LineFeed(b,TRUE); break;
+
     case FF:
       if ((ts.AutoWinSwitch>0) && JustAfterESC)
       {
@@ -2635,6 +2647,9 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2007/01/19 16:53:14  doda
+ * EnableContinuedLineCopy$B$,M-8z$N;~!"2hLL1&C<$G$N2~9T$,%m%0$K5-O?$5$l$J$$%P%0$r=$@5$7$?!#(B
+ *
  * Revision 1.12  2006/06/29 16:25:36  yutakakn
  * UTF-8‚Ì2ƒoƒCƒg•¶Žš‚Ì’¼Œã‚É1ƒoƒCƒg•¶Žš(ASCII)‚ª—ˆ‚éê‡A•¶Žš‰»‚¯‚Æ‚È‚Á‚Ä‚¢‚½ƒoƒO‚ðC³‚µ‚½B
  *

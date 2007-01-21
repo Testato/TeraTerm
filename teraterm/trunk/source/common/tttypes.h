@@ -360,6 +360,7 @@ typedef struct tttset TTTSet, *PTTSet;
   /* New Line modes */
 #define IdCR   1
 #define IdCRLF 2
+#define IdLF   3
 
   /* Terminal ID */
 #define IdVT100 1
