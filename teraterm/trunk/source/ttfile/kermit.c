@@ -500,12 +500,13 @@ void KmtSendEOTPacket(PFileVar fv, PKmtVar kv, PComVar cv)
   kv->KmtState = SendEOT;
 }
 
-#ifdef I18N
-BOOL KmtSendNextFile(PFileVar fv, PKmtVar kv, PComVar cv, PTTSet ts)
-#else
 BOOL KmtSendNextFile(PFileVar fv, PKmtVar kv, PComVar cv)
-#endif
 {
+#ifdef I18N
+  char uimsg[MAX_UIMSG];
+  char uimsg2[MAX_UIMSG];
+#endif
+
   if (! GetNextFname(fv))
   {
     KmtSendEOTPacket(fv,kv,cv);
@@ -520,12 +521,11 @@ BOOL KmtSendNextFile(PFileVar fv, PKmtVar kv, PComVar cv)
     if (! fv->NoMsg)
 #ifdef I18N
     {
-      char uimsg[MAX_UIMSG];
-      strcpy(uimsg, "Tera Term: Error");
-      get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
-	  strcpy(ts->UIMsg, "Cannot open file");
-      get_lang_msg("MSG_CANTOEPN_FILE_ERROR", ts->UIMsg, ts->UILanguageFile);
-      MessageBox(fv->HWin,ts->UIMsg,uimsg,MB_ICONEXCLAMATION);
+      strcpy(uimsg2, "Tera Term: Error");
+      get_lang_msg("MSG_TT_ERROR", uimsg2, UILanguageFile);
+	  strcpy(uimsg, "Cannot open file");
+      get_lang_msg("MSG_CANTOEPN_FILE_ERROR", uimsg, UILanguageFile);
+      MessageBox(fv->HWin,uimsg,uimsg,MB_ICONEXCLAMATION);
     }
 #else
       MessageBox(fv->HWin,"Cannot open file","Tera Term: Error",
@@ -589,6 +589,8 @@ void KmtInit
   (PFileVar fv, PKmtVar kv, PComVar cv, PTTSet ts)
 {
 #ifdef I18N
+  char uimsg[MAX_UIMSG];
+
   strcpy(fv->DlgCaption,"Tera Term: Kermit ");
 #else
   strcpy(fv->DlgCaption,"Tera Term: ");
@@ -596,36 +598,36 @@ void KmtInit
   switch (kv->KmtMode) {
     case IdKmtSend:
 #ifdef I18N
-      strcpy(ts->UIMsg, TitKmtSend);
-      get_lang_msg("FILEDLG_TRANS_TITLE_KMTSEND", ts->UIMsg, ts->UILanguageFile);
-      strncat(fv->DlgCaption, ts->UIMsg, strlen(fv->DlgCaption)-1);
+      strcpy(uimsg, TitKmtSend);
+      get_lang_msg("FILEDLG_TRANS_TITLE_KMTSEND", uimsg, UILanguageFile);
+      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"Send");
 #endif
       break;
     case IdKmtReceive:
 #ifdef I18N
-      strcpy(ts->UIMsg, TitKmtRcv);
-      get_lang_msg("FILEDLG_TRANS_TITLE_KMTRCV", ts->UIMsg, ts->UILanguageFile);
-      strncat(fv->DlgCaption, ts->UIMsg, strlen(fv->DlgCaption)-1);
+      strcpy(uimsg, TitKmtRcv);
+      get_lang_msg("FILEDLG_TRANS_TITLE_KMTRCV", uimsg, UILanguageFile);
+      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"Receive");
 #endif
       break;
     case IdKmtGet:
 #ifdef I18N
-      strcpy(ts->UIMsg, TitKmtGet);
-      get_lang_msg("FILEDLG_TRANS_TITLE_KMTGET", ts->UIMsg, ts->UILanguageFile);
-      strncat(fv->DlgCaption, ts->UIMsg, strlen(fv->DlgCaption)-1);
+      strcpy(uimsg, TitKmtGet);
+      get_lang_msg("FILEDLG_TRANS_TITLE_KMTGET", uimsg, UILanguageFile);
+      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"Get");
 #endif
       break;
     case IdKmtFinish:
 #ifdef I18N
-      strcpy(ts->UIMsg, TitKmtFin);
-      get_lang_msg("FILEDLG_TRANS_TITLE_KMTFIN", ts->UIMsg, ts->UILanguageFile);
-      strncat(fv->DlgCaption, ts->UIMsg, strlen(fv->DlgCaption)-1);
+      strcpy(uimsg, TitKmtFin);
+      get_lang_msg("FILEDLG_TRANS_TITLE_KMTFIN", uimsg, UILanguageFile);
+      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"Finish");
 #endif
@@ -723,11 +725,7 @@ void KmtTimeOutProc(PFileVar fv, PKmtVar kv, PComVar cv)
   }
 }
 
-#ifdef I18N
-BOOL KmtReadPacket(PFileVar fv,  PKmtVar kv, PComVar cv, PTTSet ts)
-#else
 BOOL KmtReadPacket(PFileVar fv,  PKmtVar kv, PComVar cv)
-#endif
 {
   BYTE b;
   int c, PktNumNew;
@@ -852,11 +850,7 @@ BOOL KmtReadPacket(PFileVar fv,  PKmtVar kv, PComVar cv)
 	    KmtSendPacket(fv,kv,cv);
 	  else if (PktNumNew==kv->PktNum+1)
 	  {
-#ifdef I18N
-	    if (! KmtSendNextFile(fv,kv,cv,ts))
-#else
 	    if (! KmtSendNextFile(fv,kv,cv))
-#endif
 	      return FALSE;
 	  }
 	  break;
@@ -885,11 +879,7 @@ BOOL KmtReadPacket(PFileVar fv,  PKmtVar kv, PComVar cv)
 	  if (PktNumNew==kv->PktNum)
 	  {
 	    KmtParseInit(kv,TRUE);
-#ifdef I18N
-	    if (! KmtSendNextFile(fv,kv,cv,ts))
-#else
 	    if (! KmtSendNextFile(fv,kv,cv))
-#endif
 	      return FALSE;
 	  }
 	  break;
@@ -906,11 +896,7 @@ BOOL KmtReadPacket(PFileVar fv,  PKmtVar kv, PComVar cv)
 	case SendEOF:
 	  if (PktNumNew==kv->PktNum)
 	  {
-#ifdef I18N
-	    if (! KmtSendNextFile(fv,kv,cv,ts))
-#else
 	    if (! KmtSendNextFile(fv,kv,cv))
-#endif
 	      return FALSE;
 	  }
 	  break;

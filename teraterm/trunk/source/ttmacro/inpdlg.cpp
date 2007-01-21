@@ -54,8 +54,27 @@ BOOL CInpDlg::OnInitDialog()
   RECT R;
   HDC TmpDC;
   HWND HEdit, HOk;
+#ifdef I18N
+  char uimsg[MAX_UIMSG];
+  LOGFONT logfont;
+  HFONT font;
+#endif
 
   CDialog::OnInitDialog();
+#ifdef I18N
+  font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
+  GetObject(font, sizeof(LOGFONT), &logfont);
+  if (get_lang_font("DLG_SYSTEM_FONT", m_hWnd, &logfont, &DlgFont, UILanguageFile)) {
+    SendDlgItemMessage(IDC_INPTEXT, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+    SendDlgItemMessage(IDC_INPEDIT, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+    SendDlgItemMessage(IDOK, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+  }
+
+  GetDlgItemText(IDOK, uimsg, sizeof(uimsg));
+  get_lang_msg("BTN_OK", uimsg, UILanguageFile);
+  SetDlgItemText(IDOK, uimsg);
+#endif
+
   SetWindowText(TitleStr);
   SetDlgItemText(IDC_INPTEXT,TextStr);
 

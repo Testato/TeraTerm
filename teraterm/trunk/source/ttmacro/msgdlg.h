@@ -21,6 +21,9 @@ protected:
 	BOOL YesNoFlag;
 	int  PosX, PosY, init_WW, WW, WH, TW, TH, BH, BW;
 	SIZE s;
+#ifdef I18N
+	HFONT DlgFont;
+#endif
 
 	//{{AFX_MSG(CMsgDlg)
 	virtual BOOL OnInitDialog();

@@ -727,3 +727,18 @@ typedef TComVar far *PComVar;
 
 #define ID_TRANSFER 4
 #define ID_SHOWMENUBAR 995
+
+#define MAXNWIN 50
+/* shared memory */
+typedef struct {
+  /* Setup information from "teraterm.ini" */
+  TTTSet ts;
+  /* Key code map from "keyboard.def" */
+  TKeyMap km;
+  // Window list
+  int NWin;
+  HWND WinList[MAXNWIN];
+  /* COM port use flag - bit0-15 : COM1-16 */
+  WORD ComFlag;
+} TMap;  
+typedef TMap far *PMap;

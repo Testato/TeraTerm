@@ -175,11 +175,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="onig_s.lib"
+				AdditionalDependencies="onig_s.lib ttpcmn.lib"
 				OutputFile=".\..\bin\Debug/ttpmacro.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\source\oniguruma\debug"
+				AdditionalLibraryDirectories="..\..\source\oniguruma\debug;..\bin\debug"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\bin\Debug/ttpmacro.pdb"
 				SubSystem="2"

@@ -4,6 +4,10 @@
 
 /* TTFILE.DLL, routines for file transfer protocol */
 
+#ifdef I18N
+extern char UILanguageFile[MAX_PATH];
+#endif
+
 #ifdef TERATERM32
 void GetLongFName(PCHAR FullName, PCHAR LongName);
 #endif

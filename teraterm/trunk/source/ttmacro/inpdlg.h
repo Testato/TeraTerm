@@ -22,6 +22,9 @@ protected:
 	BOOL PaswdFlag;
 	int PosX, PosY, init_WW, WW, WH, TW, TH, BH, BW, EW, EH;
 	SIZE s;
+#ifdef I18N
+	HFONT DlgFont;
+#endif
 
 	//{{AFX_MSG(CInpDlg)
 	virtual BOOL OnInitDialog();

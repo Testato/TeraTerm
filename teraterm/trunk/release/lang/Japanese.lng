@@ -196,6 +196,11 @@ DLG_DIR_CURRENT=現在:
 DLG_DIR_NEW=新規(&N):
 
 DLG_FONT_TITLE=Tera Term: フォントの設定
+DLG_FONT_FONT=フォント(&F):
+DLG_FONT_SIZE=サイズ(&S):
+DLG_FONT_BOLD=太字を有効(&B)
+DLG_FONT_CHARSET=文字セット(&C):
+DLG_FONT_SAMPLE=サンプル
 
 DLG_GEN_TITLE=Tera Term: 全般設定
 DLG_GEN_PORT=標準のポート(&P):
@@ -287,14 +292,25 @@ DLG_WIN_BOLD=太字
 DLG_WIN_BLINK=点滅
 
 DLG_WINLIST_TITLE=Tera Term: ウィンドウのリスト
+DLG_WINLIST_LABEL=ウィンドウ(&W):
+DLG_WINLIST_OPEN=開く(&O)
+DLG_WINLSIT_CLOSEWIN=ウィンドウを閉じる(&C)
+
+MSG_FIND_DIR_ERROR=ディレクトリが見つかりません
 
 ; ttpfile
 ; ttfile.c
-DLG_FOPT_OPTION=Option
-DLG_FOPT_BINARY=&Binary
-DLG_FOPT_APPEND=&Append
-DLG_FOPT_PLAIN=plain text
-DLG_FOPT_TIMESTAMP=timestamp
+DLG_FOPT=オプション
+DLG_FOPT_BINARY=バイナリ(&B)
+DLG_FOPT_APPEND=追記(&A)
+DLG_FOPT_PLAIN=プレーンテキスト(&P)
+DLG_FOPT_TIMESTAMP=タイムスタンプ(&M)
+
+DLG_XOPT=オプション
+DLG_XOPT_CHECKSUM=チェックサム(&S)
+DLG_XOPT_CRC=&CRC
+DLG_XOPT_1K=1&K
+DLG_XOPT_BINARY=バイナリ(&B)
 
 FILEDLG_KEYBOARD_FILTER=キーボード設定ファイル (*.cnf)\0*.cnf\0\0
 FILEDLG_SETUP_FILTER=設定ファイル (*.ini)\0*.ini\0\0
@@ -325,6 +341,18 @@ FILEDLG_TRANS_TITLE_QVSEND=Quick-VAN送信
 ; ttptek
 ; tttek.c
 MSG_TEK_PRINT_ERROR=Printer dose not support graphics
+
+; ttpmacro
+FILEDLG_OPEN_MACRO_TITLE=MACRO: マクロを開く
+FILEDLG_OPEN_MACRO_FILTER=マクロファイル (*.ttl)\0*.ttl\0\0
+
+BTN_PAUSE=中断(&P)
+BTN_START=開始(&S)
+BTN_END=終了(&E)
+BTN_YES=はい(&Y)
+BTN_NO=いいえ(&N)
+BTN_STOP=マクロ停止(&S)
+BTN_CONTINUE=続行(&C)
 
 ; common
 MSG_ERROR=エラー

@@ -976,7 +976,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   // UI language message file
   GetPrivateProfileString(Section,"UILanguageFile","lang\\Default.lng",
                           Temp,sizeof(Temp),FName);
-  ConvFName(ts->HomeDir,Temp,"lng",ts->UILanguageFile);
+  strncpy(ts->UILanguageFile, ts->HomeDir, sizeof(ts->UILanguageFile)-1);
+  AppendSlash(ts->UILanguageFile);
+  strncat(ts->UILanguageFile, Temp, sizeof(ts->UILanguageFile) - strlen(ts->UILanguageFile) - 1);
 #endif
 
 #ifdef USE_NORMAL_BGCOLOR
@@ -2420,6 +2422,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.20  2007/01/11 12:27:18  yutakapon
+ * ConnectingTimeout機構を追加した
+ *
  * Revision 1.19  2006/11/23 02:19:16  maya
  * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
  *

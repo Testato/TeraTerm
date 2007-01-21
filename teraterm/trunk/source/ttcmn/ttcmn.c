@@ -16,22 +16,8 @@ static BOOL FirstInstance = TRUE;
 
 static HINSTANCE hInst;
 
-#define MAXNWIN 50
-/* shared memory */
-typedef struct {
-  /* Setup information from "teraterm.ini" */
-  TTTSet ts;
-  /* Key code map from "keyboard.def" */
-  TKeyMap km;
-  // Window list
-  int NWin;
-  HWND WinList[MAXNWIN];
-  /* COM port use flag - bit0-15 : COM1-16 */
-  WORD ComFlag;
-} TMap;  
-typedef TMap far *PMap;
+static PMap pm;
 
-static PMap  pm;
 #ifdef TERATERM32
   static HANDLE HMap = NULL;
   #define VTCLASSNAME "VTWin32"
@@ -1427,6 +1413,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2006/11/23 02:19:13  maya
+ * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
+ *
  * Revision 1.4  2006/10/12 16:04:59  yutakapon
  *   ・同期モードでのマクロ実行において、DDEバッファがフルになった場合にCPU使用率が100%となる現象を回避するようにした。
  *   ・sendln後の無条件100ミリ秒のスリープを解除した。

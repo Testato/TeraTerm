@@ -132,6 +132,7 @@
 #define IDC_INLUCDE_LABEL               1036
 #define IDC_TT23_LABEL                  1037
 #define IDC_TT23DATE_LABEL              1038
+#define IDC_FONTHELP                    1038
 #define IDC_AUTHOR_LABEL                1039
 #define IDC_TT_ICON                     1040
 #define IDC_DIRCURRENT_LABEL            1041
@@ -162,8 +163,13 @@
 #define IDC_TERMRUSSHOSTLABEL           1066
 #define IDC_TERMRUSSCLIENTLABEL         1067
 #define IDC_WINLISTLABEL                1068
+#define IDC_SAMPLE                      1073
+#define IDC_FONTLABEL                   1088
+#define IDC_SIZELABEL                   1090
 #define IDC_GENHELP                     1099
 #define IDD_TERMDLG                     1100
+#define IDC_FONT                        1136
+#define IDC_FONTSIZE                    1138
 #define IDD_WINLISTDLG                  1200
 #define IDC_WINLISTLIST                 1201
 #define IDC_WINLISTCLOSE                1202

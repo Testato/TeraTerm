@@ -20,17 +20,9 @@ typedef BOOL (FAR PASCAL *PSetupTCPIP)
 typedef BOOL (FAR PASCAL *PGetHostName)
   (HWND WndParent, PGetHNRec GetHNRec);
 typedef BOOL (FAR PASCAL *PChangeDirectory)
-#ifdef I18N
-  (HWND WndParent, PTTSet ts);
-#else
   (HWND WndParent, PCHAR CurDir);
-#endif
 typedef BOOL (FAR PASCAL *PAboutDialog)
-#ifdef I18N
-  (HWND WndParent, PTTSet ts);
-#else
   (HWND WndParent);
-#endif
 typedef BOOL (FAR PASCAL *PChooseFontDlg)
   (HWND WndParent, LPLOGFONT LogFont, PTTSet ts);
 typedef BOOL (FAR PASCAL *PSetupGeneral)

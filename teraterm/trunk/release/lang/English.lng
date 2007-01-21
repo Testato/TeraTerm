@@ -197,6 +197,11 @@ DLG_DIR_CURRENT=Current dir:
 DLG_DIR_NEW=&New dir:
 
 DLG_FONT_TITLE=Tera Term: Font setup
+DLG_FONT_FONT=&Font:
+DLG_FONT_SIZE=&Size:
+DLG_FONT_BOLD=Enable &bold style
+DLG_FONT_CHARSET=Font &char set:
+DLG_FONT_SAMPLE=Sample
 
 DLG_GEN_TITLE=Tera Term: General setup
 DLG_GEN_PORT=Default &port:
@@ -288,14 +293,25 @@ DLG_WIN_BOLD=Bold
 DLG_WIN_BLINK=Blink
 
 DLG_WINLIST_TITLE=Tera Term: Window list
+DLG_WINLIST_LABEL=&Window:
+DLG_WINLIST_OPEN=&Open
+DLG_WINLSIT_CLOSEWIN=&Close window
+
+MSG_FIND_DIR_ERROR=Cannot find directory
 
 ; ttpfile
 ; ttfile.c
-DLG_FOPT_OPTION=Option
+DLG_FOPT=Option
 DLG_FOPT_BINARY=&Binary
 DLG_FOPT_APPEND=&Append
 DLG_FOPT_PLAIN=plain text
 DLG_FOPT_TIMESTAMP=timestamp
+
+DLG_XOPT=Option
+DLG_XOPT_CHECKSUM=Check&sum
+DLG_XOPT_CRC=&CRC
+DLG_XOPT_1K=1&K
+DLG_XOPT_BINARY=&Binary
 
 FILEDLG_KEYBOARD_FILTER=keyboard setup files (*.cnf)\0*.cnf\0\0
 FILEDLG_SETUP_FILTER=setup files (*.ini)\0*.ini\0\0
@@ -326,6 +342,18 @@ FILEDLG_TRANS_TITLE_QVSEND=Quick-VAN Send
 ; ttptek
 ; tttek.c
 MSG_TEK_PRINT_ERROR=Printer dose not support graphics
+
+; ttpmacro
+FILEDLG_OPEN_MACRO_TITLE=MACRO: Open macro
+FILEDLG_OPEN_MACRO_FILTER=Macro files (*.ttl)\0*.ttl\0\0
+
+BTN_PAUSE=Pau&se
+BTN_START=&Start
+BTN_END=&End
+BTN_YES=&Yes
+BTN_NO=&No
+BTN_STOP=&Stop macro
+BTN_CONTINUE=&Continue
 
 ; common
 MSG_ERROR=ERROR

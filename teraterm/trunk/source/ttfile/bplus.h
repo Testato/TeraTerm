@@ -12,11 +12,7 @@ extern "C" {
 void BPInit
   (PFileVar fv, PBPVar bv, PComVar cv, PTTSet ts);
 void BPTimeOutProc(PFileVar fv, PBPVar bv, PComVar cv);
-#ifdef I18N
-BOOL BPParse(PFileVar fv, PBPVar bv, PComVar cv, PTTSet ts);
-#else
 BOOL BPParse(PFileVar fv, PBPVar bv, PComVar cv);
-#endif
 void BPCancel(PBPVar bv);
 
 #ifdef __cplusplus

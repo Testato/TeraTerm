@@ -480,6 +480,9 @@ void ZInit
   (PFileVar fv, PZVar zv, PComVar cv, PTTSet ts)
 {
   int Max;
+#ifdef I18N
+  char uimsg[MAX_UIMSG];
+#endif
 
   zv->CtlEsc = ((ts->FTFlag & FT_ZESCCTL)!=0);
   zv->MaxDataLen = ts->ZmodemDataLen;
@@ -502,18 +505,18 @@ void ZInit
   switch (zv->ZMode) {
     case IdZSend:
 #ifdef I18N
-      strcpy(ts->UIMsg, TitZSend);
-      get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", ts->UIMsg, ts->UILanguageFile);
-      strncat(fv->DlgCaption, ts->UIMsg, strlen(fv->DlgCaption)-1);
+      strcpy(uimsg, TitZSend);
+      get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", uimsg, UILanguageFile);
+      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"Send");
 #endif
       break;
     case IdZReceive:
 #ifdef I18N
-      strcpy(ts->UIMsg, TitZRcv);
-      get_lang_msg("FILEDLG_TRANS_TITLE_ZRCV", ts->UIMsg, ts->UILanguageFile);
-      strncat(fv->DlgCaption, ts->UIMsg, strlen(fv->DlgCaption)-1);
+      strcpy(uimsg, TitZRcv);
+      get_lang_msg("FILEDLG_TRANS_TITLE_ZRCV", uimsg, UILanguageFile);
+      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"Receive");
 #endif

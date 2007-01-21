@@ -16,11 +16,16 @@
 #include "ttl.h"
 
 #include "ttmacro.h"
+#include "ttmlib.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
+#endif
+
+#ifdef I18N
+char UILanguageFile[MAX_PATH];
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
@@ -44,10 +49,29 @@ CCtrlApp theApp;
 
 BOOL CCtrlApp::InitInstance()
 {
+#ifdef I18N
+  PMap pm;
+  HANDLE HMap = NULL;
+#endif
+
   // インストーラで実行を検出するために mutex を作成する (2006.8.12 maya)
   // 2重起動防止のためではないので、特に返り値は見ない
   HANDLE hMutex;
   hMutex = CreateMutex(NULL, TRUE, "TeraTermProMacroAppMutex");
+
+#ifdef I18N
+  HMap = CreateFileMapping(
+    (HANDLE) 0xFFFFFFFF, NULL, PAGE_READONLY,
+    0, sizeof(TMap), "ttset_memfilemap");
+  if (HMap != NULL) {
+    pm = (PMap)MapViewOfFile(
+    HMap,FILE_MAP_READ,0,0,0);
+    if (pm != NULL) {
+      strncpy(UILanguageFile, pm->ts.UILanguageFile, sizeof(UILanguageFile)-1);
+      UILanguageFile[sizeof(UILanguageFile)-1] = 0;
+	}
+  }
+#endif
 
   Busy = TRUE;
 #ifndef TERATERM32

@@ -5,6 +5,7 @@
 /* TTMACRO.EXE, main window */
 
 #include "ttmmsg.h"
+#include "tttypes.h"
 /////////////////////////////////////////////////////////////////////////////
 // CCtrlWindow dialog
 
@@ -31,6 +32,9 @@ public:
 
 protected:
 	HICON m_hIcon;
+#ifdef I18N
+	HFONT DlgFont;
+#endif
 
 	//{{AFX_MSG(CCtrlWindow)
 	virtual BOOL OnInitDialog();

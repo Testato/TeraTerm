@@ -3023,11 +3023,7 @@ void CVTWindow::OnFileChangeDir()
 {
   HelpId = HlpFileChangeDir;
   if (! LoadTTDLG()) return;
-#ifdef I18N
-  (*ChangeDirectory)(HVTWin,&ts);
-#else
   (*ChangeDirectory)(HVTWin,ts.FileDir);
-#endif
   FreeTTDLG();
 }
 
@@ -4708,16 +4704,15 @@ void CVTWindow::OnHelpUsing()
 void CVTWindow::OnHelpAbout()
 {
   if (! LoadTTDLG()) return;
-#ifdef I18N
-  (*AboutDialog)(HVTWin, &ts);
-#else
   (*AboutDialog)(HVTWin);
-#endif
   FreeTTDLG();
 }
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.45  2007/01/11 12:27:16  yutakapon
+ * ConnectingTimeout機構を追加した
+ *
  * Revision 1.44  2007/01/04 15:11:44  maya
  * 表示メッセージの読み込み対応
  *

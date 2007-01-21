@@ -12,12 +12,14 @@
 #else
 #include "ttm_re16.h"
 #endif
+#include "tttypes.h"
 #include "ttlib.h"
 #include <commdlg.h>
 #include "errdlg.h"
 #include "inpdlg.h"
 #include "msgdlg.h"
 #include "statdlg.h"
+#include "ttmlib.h"
 
 #define MaxStrLen 256
 
@@ -155,13 +157,23 @@ BOOL GetFileName(HWND HWin)
 {
   char FNFilter[31];
   OPENFILENAME FNameRec;
+#ifdef I18N
+  char uimsg[MAX_UIMSG];
+  char uimsg2[MAX_UIMSG];
+#endif
 
   if (FileName[0]!=0) return FALSE;
 
   memset(FNFilter, 0, sizeof(FNFilter));
   memset(&FNameRec, 0, sizeof(OPENFILENAME));
+#ifdef I18N
+  memcpy(uimsg, "Macro files (*.ttl)\0*.ttl\0\0", sizeof(uimsg));
+  get_lang_msg("FILEDLG_OPEN_MACRO_FILTER", uimsg, UILanguageFile);
+  memcpy(FNFilter, uimsg, sizeof(FNFilter));
+#else
   strcpy(FNFilter, "Macro files (*.ttl)");
   strcpy(&(FNFilter[strlen(FNFilter)+1]), "*.ttl");
+#endif
 
   // sizeof(OPENFILENAME) Ç≈ÇÕ Windows98/NT Ç≈èIóπÇµÇƒÇµÇ‹Ç§ÇΩÇﬂ (2006.8.14 maya)
   FNameRec.lStructSize	 = OPENFILENAME_SIZE_VERSION_400;
@@ -173,7 +185,13 @@ BOOL GetFileName(HWND HWin)
   FNameRec.lpstrInitialDir = HomeDir;
   FNameRec.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
   FNameRec.lpstrDefExt = "TTL";
+#ifdef I18N
+  strncpy(uimsg2, "MACRO: Open macro", sizeof(uimsg2));
+  get_lang_msg("FILEDLG_OPEN_MACRO_TITLE", uimsg2, UILanguageFile);
+  FNameRec.lpstrTitle = uimsg2;
+#else
   FNameRec.lpstrTitle = "MACRO: Open macro";
+#endif
   if (GetOpenFileName(&FNameRec))
     strcpy(ShortName,&(FileName[FNameRec.nFileOffset]));
   else
