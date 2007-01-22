@@ -650,6 +650,12 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 	}
 
 	EndDialog(dlg, 1);
+#ifdef I18N
+			if (DlgAuthFont != NULL) {
+				DeleteObject(DlgAuthFont);
+			}
+#endif
+
 	return TRUE;
 }
 
@@ -725,12 +731,6 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			if (pvar->userauth_retry_count == 0 && (pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME)) {
 				return FALSE;
 			}
-
-#ifdef I18N
-			if (DlgAuthFont != NULL) {
-				DeleteObject(DlgAuthFont);
-			}
-#endif
 
 			return end_auth_dlg(pvar, dlg);
 
@@ -1406,8 +1406,15 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 		strncpy(dest, "None", len);
 	} else if (pvar->auth_state.cur_cred.method != SSH_AUTH_NONE) {
 		if (SSHv1(pvar)) {
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "User '%s', using %s");
+			UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar);
+			_snprintf(dest, len, pvar->ts->UIMsg, pvar->auth_state.user,
+					get_auth_method_name(pvar->auth_state.cur_cred.method));
+#else
 			_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user,
 					get_auth_method_name(pvar->auth_state.cur_cred.method));
+#endif
 
 		} else { 
 			// SSH2:認証メソッドの判別 (2004.12.23 yutaka)
@@ -1421,7 +1428,13 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 				} else {
 					method = get_auth_method_name(pvar->auth_state.cur_cred.method);
 				}
+#ifdef I18N
+				strcpy(pvar->ts->UIMsg, "User '%s', using %s");
+				UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar);
+				_snprintf(dest, len, pvar->ts->UIMsg, pvar->auth_state.user, method);
+#else
 				_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user, method);
+#endif
 
 			} else {
 				if (pvar->auth_state.cur_cred.key_pair->RSA_key != NULL) {
@@ -1429,14 +1442,27 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 				} else if (pvar->auth_state.cur_cred.key_pair->DSA_key != NULL) {
 					method = "DSA";
 				}
+#ifdef I18N
+				strcpy(pvar->ts->UIMsg, "User '%s', using %s");
+				UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar);
+				_snprintf(dest, len, pvar->ts->UIMsg, pvar->auth_state.user, method);
+#else
 				_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user, method);
+#endif
 			}
 
 		}
 
 	} else {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "User '%s', using %s");
+		UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar);
+		_snprintf(dest, len, pvar->ts->UIMsg, pvar->auth_state.user,
+				  get_auth_method_name(pvar->auth_state.failed_method));
+#else
 		_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user,
 				  get_auth_method_name(pvar->auth_state.failed_method));
+#endif
 	}
 
 	dest[len - 1] = 0;
@@ -1461,6 +1487,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.25  2007/01/04 08:36:42  maya
+ * フォントを変更する部分を追加した。
+ *
  * Revision 1.24  2006/12/06 14:31:13  maya
  * 表示メッセージの読み込み対応
  *

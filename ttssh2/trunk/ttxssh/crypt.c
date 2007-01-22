@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.6 2006-11-23 02:19:30 maya Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.7 2007-01-22 13:45:19 maya Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -1338,9 +1338,17 @@ static char FAR *get_cipher_name(int cipher)
 
 void CRYPT_get_cipher_info(PTInstVar pvar, char FAR * dest, int len)
 {
+#ifdef I18N
+	strcpy(pvar->ts->UIMsg, "%s to server, %s from server");
+	UTIL_get_lang_msg("DLG_ABOUT_CIPHER_INFO", pvar);
+	_snprintf(dest, len, pvar->ts->UIMsg,
+			  get_cipher_name(pvar->crypt_state.sender_cipher),
+			  get_cipher_name(pvar->crypt_state.receiver_cipher));
+#else
 	_snprintf(dest, len, "%s to server, %s from server",
 			  get_cipher_name(pvar->crypt_state.sender_cipher),
 			  get_cipher_name(pvar->crypt_state.receiver_cipher));
+#endif
 	dest[len - 1] = 0;
 }
 
@@ -1349,17 +1357,39 @@ void CRYPT_get_server_key_info(PTInstVar pvar, char FAR * dest, int len)
 	if (SSHv1(pvar)) {
 		if (pvar->crypt_state.server_key.RSA_key == NULL
 			|| pvar->crypt_state.host_key.RSA_key == NULL) {
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "None");
+			UTIL_get_lang_msg("DLG_ABOUT_KEY_NONE", pvar);
+			strncpy(dest, pvar->ts->UIMsg, len);
+#else
 			strncpy(dest, "None", len);
+#endif
 		} else {
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "%d-bit server key, %d-bit host key");
+			UTIL_get_lang_msg("DLG_ABOUT_KEY_INFO", pvar);
+			_snprintf(dest, len, pvar->ts->UIMsg,
+					BN_num_bits(pvar->crypt_state.server_key.RSA_key->n),
+					BN_num_bits(pvar->crypt_state.host_key.RSA_key->n));
+#else
 			_snprintf(dest, len, "%d-bit server key, %d-bit host key",
 					BN_num_bits(pvar->crypt_state.server_key.RSA_key->n),
 					BN_num_bits(pvar->crypt_state.host_key.RSA_key->n));
+#endif
 		}
 
 	} else { // SSH2
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "%d-bit server key, %d-bit host key");
+			UTIL_get_lang_msg("DLG_ABOUT_KEY_INFO", pvar);
+			_snprintf(dest, len, pvar->ts->UIMsg,
+				pvar->server_key_bits,
+				pvar->client_key_bits);
+#else
 			_snprintf(dest, len, "%d-bit server key, %d-bit host key",
 				pvar->server_key_bits,
 				pvar->client_key_bits);
+#endif
 
 	}
 
@@ -1497,6 +1527,9 @@ void CRYPT_free_key_pair(CRYPTKeyPair FAR * key_pair)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2006/11/23 02:19:30  maya
+ * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
+ *
  * Revision 1.5  2006/03/26 17:07:17  yutakakn
  * fingerprint表示を追加
  *

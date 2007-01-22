@@ -1789,26 +1789,80 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 	if (pvar->socket != INVALID_SOCKET) {
 		if (SSHv1(pvar)) {
 			SSH_get_server_ID_info(pvar, buf, sizeof(buf));
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Server ID: ");
+			UTIL_get_lang_msg("DLG_ABOUT_SERVERID", pvar);
+			append_about_text(dlg, pvar->ts->UIMsg, buf);
+#else
 			append_about_text(dlg, "Server ID: ", buf);
+#endif
 			SSH_get_protocol_version_info(pvar, buf, sizeof(buf));
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Using protocol: ");
+			UTIL_get_lang_msg("DLG_ABOUT_PROTOCOL", pvar);
+			append_about_text(dlg, pvar->ts->UIMsg, buf);
+#else
 			append_about_text(dlg, "Using protocol: ", buf);
+#endif
 			CRYPT_get_cipher_info(pvar, buf, sizeof(buf));
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Encryption: ");
+			UTIL_get_lang_msg("DLG_ABOUT_ENCRYPTION", pvar);
+			append_about_text(dlg, pvar->ts->UIMsg, buf);
+#else
 			append_about_text(dlg, "Encryption: ", buf);
+#endif
 			CRYPT_get_server_key_info(pvar, buf, sizeof(buf));
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Server keys: ");
+			UTIL_get_lang_msg("DLG_ABOUT_SERVERKEY", pvar);
+			append_about_text(dlg, pvar->ts->UIMsg, buf);
+#else
 			append_about_text(dlg, "Server keys: ", buf);
+#endif
 			AUTH_get_auth_info(pvar, buf, sizeof(buf));
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Authentication: ");
+			UTIL_get_lang_msg("DLG_ABOUT_AUTH", pvar);
+			append_about_text(dlg, pvar->ts->UIMsg, buf);
+#else
 			append_about_text(dlg, "Authentication: ", buf);
+#endif
 			SSH_get_compression_info(pvar, buf, sizeof(buf));
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Compression: ");
+			UTIL_get_lang_msg("DLG_ABOUT_COMP", pvar);
+			append_about_text(dlg, pvar->ts->UIMsg, buf);
+#else
 			append_about_text(dlg, "Compression: ", buf);
+#endif
 
 		} else { // SSH2
 			SSH_get_server_ID_info(pvar, buf, sizeof(buf));
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Server ID: ");
+			UTIL_get_lang_msg("DLG_ABOUT_SERVERID", pvar);
+			append_about_text(dlg, pvar->ts->UIMsg, buf);
+#else
 			append_about_text(dlg, "Server ID: ", buf);
+#endif
 
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Client ID: ");
+			UTIL_get_lang_msg("DLG_ABOUT_CLIENTID", pvar);
+			append_about_text(dlg, pvar->ts->UIMsg, pvar->client_version_string);
+#else
 			append_about_text(dlg, "Client ID: ", pvar->client_version_string);
+#endif
 
 			SSH_get_protocol_version_info(pvar, buf, sizeof(buf));
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Using protocol: ");
+			UTIL_get_lang_msg("DLG_ABOUT_PROTOCOL", pvar);
+			append_about_text(dlg, pvar->ts->UIMsg, buf);
+#else
 			append_about_text(dlg, "Using protocol: ", buf);
+#endif
 
 			if (pvar->kex_type == KEX_DH_GRP1_SHA1) {
 				strcpy(buf, KEX_DH1);
@@ -1824,7 +1878,13 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 			} else {
 				strcpy(buf, "ssh-rsa");
 			}
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Host Key: ");
+			UTIL_get_lang_msg("DLG_ABOUT_HOSTKEY", pvar);
+			append_about_text(dlg, pvar->ts->UIMsg, buf);
+#else
 			append_about_text(dlg, "Host Key: ", buf);
+#endif
 
 			// add HMAC algorithm (2004.12.17 yutaka)
 			buf[0] = '\0';
@@ -1833,27 +1893,69 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 			} else if (pvar->ctos_hmac == HMAC_MD5) {
 				strcat(buf, "hmac-md5");
 			}
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, " to server, ");
+			UTIL_get_lang_msg("DLG_ABOUT_TOSERVER", pvar);
+			strcat(buf, pvar->ts->UIMsg);
+#else
 			strcat(buf, " to server, ");
+#endif
 			if (pvar->stoc_hmac == HMAC_SHA1) {
 				strcat(buf, "hmac-sha1");
 			} else if (pvar->stoc_hmac == HMAC_MD5) {
 				strcat(buf, "hmac-md5");
 			}
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, " from server");
+			UTIL_get_lang_msg("DLG_ABOUT_FROMSERVER", pvar);
+			strcat(buf, pvar->ts->UIMsg);
+#else
 			strcat(buf, " from server");
+#endif
 			append_about_text(dlg, "HMAC: ", buf);
 
 			CRYPT_get_cipher_info(pvar, buf, sizeof(buf));
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Encryption: ");
+			UTIL_get_lang_msg("DLG_ABOUT_ENCRYPTION", pvar);
+			append_about_text(dlg, pvar->ts->UIMsg, buf);
+#else
 			append_about_text(dlg, "Encryption: ", buf);
+#endif
 			CRYPT_get_server_key_info(pvar, buf, sizeof(buf));
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Server keys: ");
+			UTIL_get_lang_msg("DLG_ABOUT_SERVERKEY", pvar);
+			append_about_text(dlg, pvar->ts->UIMsg, buf);
+#else
 			append_about_text(dlg, "Server keys: ", buf);
+#endif
 			AUTH_get_auth_info(pvar, buf, sizeof(buf));
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Authentication: ");
+			UTIL_get_lang_msg("DLG_ABOUT_AUTH", pvar);
+			append_about_text(dlg, pvar->ts->UIMsg, buf);
+#else
 			append_about_text(dlg, "Authentication: ", buf);
+#endif
 
 			SSH_get_compression_info(pvar, buf, sizeof(buf));
 			if (pvar->ctos_compression == COMP_DELAYED) { // 遅延パケット圧縮の場合 (2006.6.23 yutaka)
+#ifdef I18N
+				strcpy(pvar->ts->UIMsg, "Delayed Compression: ");
+				UTIL_get_lang_msg("DLG_ABOUT_COMPDELAY", pvar);
+				append_about_text(dlg, pvar->ts->UIMsg, buf);
+#else
 				append_about_text(dlg, "Delayed Compression: ", buf);
+#endif
 			} else {
+#ifdef I18N
+				strcpy(pvar->ts->UIMsg, "Compression: ");
+				UTIL_get_lang_msg("DLG_ABOUT_COMP", pvar);
+				append_about_text(dlg, pvar->ts->UIMsg, buf);
+#else
 				append_about_text(dlg, "Compression: ", buf);
+#endif
 			}
 
 		}
@@ -3736,6 +3838,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.51  2007/01/04 11:59:03  maya
+ * フォントを変更する部分を追加した。
+ *
  * Revision 1.50  2007/01/04 08:36:42  maya
  * フォントを変更する部分を追加した。
  *

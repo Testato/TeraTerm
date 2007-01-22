@@ -2585,7 +2585,7 @@ void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, int buflen)
 					Z_OK) {
 #ifdef I18N
 					strcpy(pvar->ts->UIMsg, "Error compressing packet data");
-					UTIL_get_lang_msg("MSG_SSH_COMP_ERROR2", pvar);
+					UTIL_get_lang_msg("MSG_SSH_COMP_ERROR", pvar);
 					notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 					notify_fatal_error(pvar, "Error compressing packet data");
@@ -2601,7 +2601,7 @@ void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, int buflen)
 					Z_OK) {
 #ifdef I18N
 					strcpy(pvar->ts->UIMsg, "Error compressing packet data");
-					UTIL_get_lang_msg("MSG_SSH_COMP_ERROR2", pvar);
+					UTIL_get_lang_msg("MSG_SSH_COMP_ERROR", pvar);
 					notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 					notify_fatal_error(pvar, "Error compressing packet data");
@@ -2709,16 +2709,38 @@ void SSH_get_compression_info(PTInstVar pvar, char FAR * dest, int len)
 			pvar->ssh_state.compress_stream.total_out;
 
 		if (total_out > 0) {
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "level %d; ratio %.1f (%ld:%ld)");
+			UTIL_get_lang_msg("DLG_ABOUT_COMP_INFO", pvar);
+			_snprintf(buf, sizeof(buf), pvar->ts->UIMsg,
+					  pvar->ssh_state.compression_level,
+					  ((double) total_in) / total_out, total_in,
+					  total_out);
+#else
 			_snprintf(buf, sizeof(buf), "level %d; ratio %.1f (%ld:%ld)",
 					  pvar->ssh_state.compression_level,
 					  ((double) total_in) / total_out, total_in,
 					  total_out);
+#endif
 		} else {
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "level %d");
+			UTIL_get_lang_msg("DLG_ABOUT_COMP_INFO2", pvar);
+			_snprintf(buf, sizeof(buf), pvar->ts->UIMsg,
+					  pvar->ssh_state.compression_level);
+#else
 			_snprintf(buf, sizeof(buf), "level %d",
 					  pvar->ssh_state.compression_level);
+#endif
 		}
 	} else {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "none");
+		UTIL_get_lang_msg("DLG_ABOUT_COMP_NONE", pvar);
+		strcpy(buf, pvar->ts->UIMsg);
+#else
 		strcpy(buf, "none");
+#endif
 	}
 	buf[sizeof(buf) - 1] = 0;
 
@@ -2732,20 +2754,48 @@ void SSH_get_compression_info(PTInstVar pvar, char FAR * dest, int len)
 			pvar->ssh_state.decompress_stream.total_out;
 
 		if (total_in > 0) {
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "level %d; ratio %.1f (%ld:%ld)");
+			UTIL_get_lang_msg("DLG_ABOUT_COMP_INFO", pvar);
+			_snprintf(buf2, sizeof(buf2), pvar->ts->UIMsg,
+					  pvar->ssh_state.compression_level,
+					  ((double) total_out) / total_in, total_out,
+					  total_in);
+#else
 			_snprintf(buf2, sizeof(buf2), "level %d; ratio %.1f (%ld:%ld)",
 					  pvar->ssh_state.compression_level,
 					  ((double) total_out) / total_in, total_out,
 					  total_in);
+#endif
 		} else {
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "level %d");
+			UTIL_get_lang_msg("DLG_ABOUT_COMP_INFO2", pvar);
+			_snprintf(buf2, sizeof(buf2), pvar->ts->UIMsg,
+					  pvar->ssh_state.compression_level);
+#else
 			_snprintf(buf2, sizeof(buf2), "level %d",
 					  pvar->ssh_state.compression_level);
+#endif
 		}
 	} else {
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "none");
+		UTIL_get_lang_msg("DLG_ABOUT_COMP_NONE", pvar);
+		strcpy(buf2, pvar->ts->UIMsg);
+#else
 		strcpy(buf2, "none");
+#endif
 	}
 	buf2[sizeof(buf2) - 1] = 0;
 
+#ifdef I18N
+	strcpy(pvar->ts->UIMsg, "Upstream %s; Downstream %s");
+	UTIL_get_lang_msg("DLG_ABOUT_COMP_UPDOWN", pvar);
+	_snprintf(dest, len, pvar->ts->UIMsg, buf, buf2);
+#else
 	_snprintf(dest, len, "Upstream %s; Downstream %s", buf, buf2);
+#endif
 	dest[len - 1] = 0;
 }
 
@@ -2887,7 +2937,7 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 			if (deflate(&pvar->ssh_state.compress_stream, Z_NO_FLUSH) != Z_OK) {
 #ifdef I18N
 				strcpy(pvar->ts->UIMsg, "Error compressing packet data");
-				UTIL_get_lang_msg("MSG_SSH_COMP_ERROR2", pvar);
+				UTIL_get_lang_msg("MSG_SSH_COMP_ERROR", pvar);
 				notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 				notify_fatal_error(pvar, "Error compressing packet data");
@@ -2903,7 +2953,7 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 				Z_OK) {
 #ifdef I18N
 				strcpy(pvar->ts->UIMsg, "Error compressing packet data");
-				UTIL_get_lang_msg("MSG_SSH_COMP_ERROR2", pvar);
+				UTIL_get_lang_msg("MSG_SSH_COMP_ERROR", pvar);
 				notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 				notify_fatal_error(pvar, "Error compressing packet data");
@@ -7240,6 +7290,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.69  2006/12/08 16:11:54  yutakapon
+ * パケット送信処理にTCPコネクション切断の誤検出をしないようにした。
+ *
  * Revision 1.68  2006/12/06 14:25:40  maya
  * 表示メッセージの読み込み対応
  *
