@@ -524,7 +524,7 @@ BOOL CALLBACK TFn2Hook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  pw = (LPWORD)GetWindowLong(Dialog,DWL_USER);
 	  if (pw!=NULL)
 	    GetRB(Dialog,pw,IDC_FOPTBIN,IDC_FOPTBIN);
-#ifndef I18N
+#ifdef I18N
 		if (DlgFoptFont != NULL) {
 			DeleteObject(DlgFoptFont);
 		}
@@ -1362,6 +1362,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2007/01/21 16:18:38  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.13  2007/01/04 15:11:48  maya
  * 表示メッセージの読み込み対応
  *
