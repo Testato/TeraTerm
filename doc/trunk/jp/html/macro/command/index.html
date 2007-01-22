@@ -8,128 +8,159 @@
 <link rel="stylesheet" href="../../style.css" type="text/css">
 </HEAD>
 <BODY>
-<FONT SIZE="+2">TTL コマンドリファレンス</FONT>
 
-
-<pre>
+<DIV ALIGN="left">
+<FONT SIZE="+2">TTL コマンドリファレンス</FONT><BR><BR>
+</div>
 
 コマンドの分類
+<BR><BR>
 
-<b>通信コマンド</b>
+<B>通信コマンド</B>
+<UL>
+ <LI><A HREF="bplusrecv.html">bplusrecv</A>	
+ <LI><A HREF="bplussend.html">bplussend</A>	
+ <LI><A HREF="changedir.html">changedir</A>
+ <LI><A HREF="clearscreen.html">clearscreen</A>
+ <LI><A HREF="closett.html">closett</A>
+ <LI><A HREF="connect.html">connect</A> <font class="new">New!</font>
+ <LI><A HREF="disconnect.html">disconnect</A>
+ <LI><A HREF="enablekeyb.html">enablekeyb</A>
+ <LI><A HREF="flushrecv.html">flushrecv</A>
+ <LI><A HREF="gettitle.html">gettitle</A>
+ <LI><A HREF="kmtfinish.html">kmtfinish</A>	
+ <LI><A HREF="kmtget.html">kmtget</A>
+ <LI><A HREF="kmtrecv.html">kmtrecv</A>
+ <LI><A HREF="kmtsend.html">kmtsend</A>
+ <LI><A HREF="loadkeymap.html">loadkeymap</A>
+ <LI><A HREF="logclose.html">logclose</A>
+ <LI><A HREF="logopen.html">logopen</A>
+ <LI><A HREF="logpause.html">logpause</A>
+ <LI><A HREF="logstart.html">logstart</A>
+ <LI><A HREF="logwrite.html">logwrite</A>
+ <LI><A HREF="quickvanrecv.html">quickvanrecv</A>
+ <LI><A HREF="quickvansend.html">quickvansend</A>
+ <LI><A HREF="recvln.html">recvln</A>
+ <LI><A HREF="restoresetup.html">restoresetup</A>
+ <LI><A HREF="send.html">send</A>
+ <LI><A HREF="sendbreak.html">sendbreak</A>
+ <LI><A HREF="sendfile.html">sendfile</A>
+ <LI><A HREF="sendkcode.html">sendkcode</A>
+ <LI><A HREF="sendln.html">sendln</A>
+ <LI><A HREF="setecho.html">setecho</A>
+ <LI><A HREF="setsync.html">setsync</A>
+ <LI><A HREF="settitle.html">settitle</A>
+ <LI><A HREF="showtt.html">showtt</A>
+ <LI><A HREF="testlink.html">testlink</A>
+ <LI><A HREF="unlink.html">unlink</A>
+ <LI><A HREF="wait.html">wait</A>
+ <LI><A HREF="waitevent.html">waitevent</A>
+ <LI><A HREF="waitln.html">waitln</A>
+ <LI><A HREF="waitrecv.html">waitrecv</A></A>
+ <LI><A HREF="waitregex.html">waitregex</A> <font class="new">New!</font>
+ <LI><A HREF="xmodemrecv.html">xmodemrecv</A>	
+ <LI><A HREF="xmodemsend.html">xmodemsend</A>	
+ <LI><A HREF="zmodemrecv.html">zmodemrecv</A>	
+ <LI><A HREF="zmodemsend.html">zmodemsend</A>
+</UL>
+<BR><BR>
 
-	<A HREF="bplusrecv.html">bplusrecv</A>
-	<A HREF="bplussend.html">bplussend</A>
-	<A HREF="changedir.html">changedir</A>
-	<A HREF="clearscreen.html">clearscreen</A>
-	<A HREF="closett.html">closett</A>
-	<A HREF="connect.html">connect</A>
-	<A HREF="disconnect.html">disconnect</A>
-	<A HREF="enablekeyb.html">enablekeyb</A>
-	<A HREF="flushrecv.html">flushrecv</A>
-	<A HREF="gettitle.html">gettitle</A>
-	<A HREF="kmtfinish.html">kmtfinish</A>
-	<A HREF="kmtget.html">kmtget</A>
-	<A HREF="kmtrecv.html">kmtrecv</A>
-	<A HREF="kmtsend.html">kmtsend</A>
-	<A HREF="loadkeymap.html">loadkeymap</A>
-	<A HREF="logclose.html">logclose</A>
-	<A HREF="logopen.html">logopen</A>
-	<A HREF="logpause.html">logpause</A>
-	<A HREF="logstart.html">logstart</A>
-	<A HREF="logwrite.html">logwrite</A>
-	<A HREF="quickvanrecv.html">quickvanrecv</A>
-	<A HREF="quickvansend.html">quickvansend</A>
-	<A HREF="recvln.html">recvln</A>
-	<A HREF="restoresetup.html">restoresetup</A>
-	<A HREF="send.html">send</A>
-	<A HREF="sendbreak.html">sendbreak</A>
-	<A HREF="sendfile.html">sendfile</A>
-	<A HREF="sendkcode.html">sendkcode</A>
-	<A HREF="sendln.html">sendln</A>
-	<A HREF="setecho.html">setecho</A>
-	<A HREF="setsync.html">setsync</A>
-	<A HREF="settitle.html">settitle</A>
-	<A HREF="showtt.html">showtt</A>
-	<A HREF="testlink.html">testlink</A>
-	<A HREF="unlink.html">unlink</A>
-	<A HREF="wait.html">wait</A>
-	<A HREF="waitevent.html">waitevent</A>
-	<A HREF="waitln.html">waitln</A>
-	<A HREF="waitrecv.html">waitrecv</A>
-	<A HREF="xmodemrecv.html">xmodemrecv</A>
-	<A HREF="xmodemsend.html">xmodemsend</A>
-	<A HREF="zmodemrecv.html">zmodemrecv</A>
-	<A HREF="zmodemsend.html">zmodemsend</A>
 
-<b>制御コマンド</b>
-	call
-	end
-	execcmnd
-	exit
-	for, next
-	goto
-	if, then, elseif, else, endif
-	include
-	pause
-	return
-	while, endwhile
+<B>制御コマンド</B>
+<UL>
+ <LI><A HREF="call.html">call</A>
+ <LI><A HREF="end.html">end</A>
+ <LI><A HREF="execcmnd.html">execcmnd</A>
+ <LI><A HREF="exit.html">exit</A>
+ <LI><A HREF="fornext.html">for, next</A>
+ <LI><A HREF="goto.html">goto</A>
+ <LI><A HREF="ifthenelseif.html">if, then, elseif, else, endif</A>
+ <LI><A HREF="ifdefined.html">ifdefined</A> <font class="new">New!</font>
+ <LI><A HREF="include.html">include</A>
+ <LI><A HREF="mpause.html">mpause</A> <font class="new">New!</font>
+ <LI><A HREF="pause.html">pause</A>
+ <LI><A HREF="return.html">return</A>
+ <LI><A HREF="while.html">while, endwhile</A>
+</UL>
+<BR><BR>
 
-<b>文字列操作コマンド</b>
-	code2str
-	int2str
-	str2code
-	str2int
-	strcompare
-	strconcat
-	strcopy
-	strlen
-	strscan
 
-<b>ファイル操作コマンド</b>
-	fileclose
-	fileconcat
-	filecopy
-	filecreate
-	filedelete
-	filemarkptr
-	fileopen
-	filereadln
-	filerename
-	filesearch
-	fileseek
-	fileseekback
-	filestrseek
-	filestrseek2
-	filewrite
-	filewriteln
-	findfirst, findnext, findclose
-	getdir
-	makepath
-	setdir
+<B>文字列操作コマンド</B>
+<UL>
+ <LI><A HREF="code2str.html">code2str</A>
+ <LI><A HREF="int2str.html">int2str</A>
+ <LI><A HREF="str2code.html">str2code</A>
+ <LI><A HREF="str2int.html">str2int</A>
+ <LI><A HREF="strcompare.html">strcompare</A>
+ <LI><A HREF="strconcat.html">strconcat</A>
+ <LI><A HREF="strcopy.html">strcopy</A>
+ <LI><A HREF="strlen.html">strlen</A>
+ <LI><A HREF="strscan.html">strscan</A>
+</UL>
+<BR><BR>
 
-<b>パスワードコマンド</b>
-	delpassword
-	getpassword
-	passwordbox
 
-<b>その他のコマンド</b>
-	beep
-	closesbox
-	exec
-	getdate
-	getenv
-	gettime
-	inputbox
-	messagebox
-	setdate
-	setdlgpos
-	setexitcode
-	settime
-	show
-	statusbox
-	yesnobox
-</pre>
+<B>ファイル操作コマンド</B>
+<UL>
+ <LI><A HREF="fileclose.html">fileclose</A>
+ <LI><A HREF="fileconcat.html">fileconcat</A>
+ <LI><A HREF="filecopy.html">filecopy</A>
+ <LI><A HREF="filecreate.html">filecreate</A>
+ <LI><A HREF="filedelete.html">filedelete</A>
+ <LI><A HREF="filemarkptr.html">filemarkptr</A>
+ <LI><A HREF="fileopen.html">fileopen</A>
+ <LI><A HREF="filereadln.html">filereadln</A>
+ <LI><A HREF="fileread.html">fileread</A> <font class="new">New!</font>
+ <LI><A HREF="filerename.html">filerename</A>
+ <LI><A HREF="filesearch.html">filesearch</A>
+ <LI><A HREF="fileseek.html">fileseek</A>
+ <LI><A HREF="fileseekback.html">fileseekback</A>
+ <LI><A HREF="filestrseek.html">filestrseek</A>
+ <LI><A HREF="filestrseek2.html">filestrseek2</A>
+ <LI><A HREF="filewrite.html">filewrite</A>
+ <LI><A HREF="filewriteln.html">filewriteln</A>
+ <LI><A HREF="findoperations.html">findfirst, findnext, findclose</A>
+ <LI><A HREF="getdir.html">getdir</A>
+ <LI><A HREF="makepath.html">makepath</A>
+ <LI><A HREF="setdir.html">setdir</A>
+</UL>
+<BR><BR>
+
+
+<B>パスワードコマンド</B>
+<UL>
+ <LI><A HREF="delpassword.html">delpassword</A>
+ <LI><A HREF="getpassword.html">getpassword</A>
+ <LI><A HREF="passwordbox.html">passwordbox</A>
+</UL>
+<BR><BR>
+
+
+<B>その他のコマンド</B>
+<UL>
+ <LI><A HREF="beep.html">beep</A>
+ <LI><A HREF="closesbox.html">closesbox</A>
+ <LI><A HREF="clipb2var.html">clipb2var</A> <font class="new">New!</font>
+ <LI><A HREF="exec.html">exec</A>
+ <LI><A HREF="getdate.html">getdate</A>
+ <LI><A HREF="getenv.html">getenv</A>
+ <LI><A HREF="gettime.html">gettime</A>
+ <LI><A HREF="inputbox.html">inputbox</A>
+ <LI><A HREF="messagebox.html">messagebox</A>
+ <LI><A HREF="random.html">random</A> <font class="new">New!</font>
+ <LI><A HREF="setdate.html">setdate</A>
+ <LI><A HREF="setdlgpos.html">setdlgpos</A>
+ <LI><A HREF="setexitcode.html">setexitcode</A>
+ <LI><A HREF="settime.html">settime</A>
+ <LI><A HREF="show.html">show</A>
+ <LI><A HREF="statusbox.html">statusbox</A>
+ <LI><A HREF="var2clipb.html">var2clipb</A> <font class="new">New!</font>
+ <LI><A HREF="yesnobox.html">yesnobox</A>
+</UL>
+<BR><BR>
+
 
 
 </BODY>
 </HTML>
+
