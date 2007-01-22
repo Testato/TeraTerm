@@ -2,10 +2,10 @@
 - OS
   Windows XP Professional
 - Compiler
-  Visual Studio 2005 Standard Edition (or higher edition)
+  Visual Studio 2005 SP1 Standard Edition (or higher edition)
 - Installer
-  Inno Setup 5.1.8 (http://innosetup.org/isinfo.php)
-  ISTool 5.1.8 (http://innosetup.org/isdl.php#qsp)
+  Inno Setup 5.1.9 (http://innosetup.org/isinfo.php)
+  ISTool 5.1.9 (http://innosetup.org/isdl.php#qsp)
     It is included in QuickStart Pack.
   Japanese-5-5.1.0.isl (http://innosetup.org/files/istrans/)
 - others
@@ -14,7 +14,7 @@
 
 
 * Libraries
-- oniguruma 4.5.1 (http://www.geocities.jp/kosako3/oniguruma/)
+- oniguruma 5.5.2 (http://www.geocities.jp/kosako3/oniguruma/)
 - openssl 0.9.8d (http://www.openssl.org/)
 - zlib 1.2.3 (http://www.zlib.net/)
 

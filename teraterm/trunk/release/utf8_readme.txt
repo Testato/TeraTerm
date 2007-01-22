@@ -766,7 +766,7 @@ OF SUCH DAMAGE.
 
 * History
 
-2007.1.21 (Ver 4.50)
+2007.1.22 (Ver 4.50)
   - TeraTerm source code have been rebuilt with Visual Studio 2005 Standard Edition(+SP1).
   - Bug fix: The macro script might stall with logging mode. This is TeraTerm 2.3 original bug. The reason of the bug is that DDE server does not send the data to DDE client because log buffer index does not match DDE buffer index.
   - Bug fix: TeraTerm crashs when the log file name is not a full path.
@@ -778,7 +778,7 @@ OF SUCH DAMAGE.
       cf. http://www.neocom.ca/forum/viewtopic.php?t=216
   - upgraded TTSSH version supporting SSH2 to 2.38
   - upgraded TTProxy to 1.0.0.10
-  - upgraded Oniguruma to 5.5.1
+  - upgraded Oniguruma to 5.5.2
 
 2006.11.20 (Ver 4.49)
   - Bug fix: TeraTerm(DDE server) sent the invalid return value to TeraTerm macro(DDE client) when DDE server was received XTYP_POKE message.

@@ -161,7 +161,7 @@ OF SUCH DAMAGE.
 
 * History
 
-2006.12.9 (Ver 2.38)
+2007.1.22 (Ver 2.38)
   - changed the handling of SSH2_MSG_IGNORE to do nothing. The data from Cisco router seems invalid.
   - Bug fix: TCP disconnection was mis-detected in the packet sending.
 

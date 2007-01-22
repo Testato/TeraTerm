@@ -741,7 +741,7 @@ OF SUCH DAMAGE.
 
 ■改版履歴
 
-2007.1.21 (Ver 4.50)
+2007.1.22 (Ver 4.50)
   ・Visual Studio 2005 Standard Edition(+SP1)でリビルドした
   ・ログ採取中のマクロが停止する問題（TeraTerm 2.3オリジナルバグ）を修正した。ログバッファとDDEバッファのインデックスの整合が取れずに、本体からマクロへデータが送れていなかったのが原因。
   ・ログファイル名がフルパスでないときに落ちるバグを修正した。
@@ -755,7 +755,7 @@ OF SUCH DAMAGE.
     cf. http://www.neocom.ca/forum/viewtopic.php?t=216
   ・SSH2対応TTSSH(2.38)へ差し替えた
   ・TTProxy(1.0.0.10)へ差し替えた
-  ・Oniguruma 5.5.1へ差し替えた
+  ・Oniguruma 5.5.2へ差し替えた
 
 2006.11.20 (Ver 4.49)
   ・TeraTerm本体（DDEサーバ）側でのDDEメッセージ XTYP_POKE の処理において、不正な返値をTeraTermマクロ（DDEクライアント）へ返していたバグを修正した。
