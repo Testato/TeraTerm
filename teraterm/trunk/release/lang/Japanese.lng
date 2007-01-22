@@ -378,6 +378,26 @@ MENU_SSH_KEYGEN=SSHキー生成(&K)...
 
 ; dlg about
 DLG_ABOUT_TITLE=TTSSHについて
+DLG_ABOUT_SERVERID="サーバID: "
+DLG_ABOUT_PROTOCOL="プロトコルのバージョン: "
+DLG_ABOUT_ENCRYPTION="暗号化方式: "
+DLG_ABOUT_SERVERKEY="サーバ鍵: "
+DLG_ABOUT_AUTH="認証方式: "
+DLG_ABOUT_COMP="圧縮状況: "
+DLG_ABOUT_CLIENTID="クライアントID: "
+DLG_ABOUT_HOSTKEY="ホスト鍵: "
+DLG_ABOUT_TOSERVER=" TTSSH→サーバ, "
+DLG_ABOUT_FROMSERVER=" サーバ→TTSSH"
+DLG_ABOUT_ENCRYPTION="暗号化方式: "
+DLG_ABOUT_COMPDELAY="遅延圧縮状況: "
+DLG_ABOUT_CIPHER_INFO=%s to server, %s from server
+DLG_ABOUT_KEY_INFO=%d-bit server key, %d-bit host key
+DLG_ABOUT_KEY_NONE=None
+DLG_ABOUT_COMP_INFO=レベル %d; 圧縮比 %.1f (%ld:%ld)
+DLG_ABOUT_COMP_INFO2=レベル %d
+DLG_ABOUT_COMP_NONE=なし
+DLG_ABOUT_COMP_UPDOWN=アップロード %s; ダウンロード %s
+DLG_ABOUT_AUTH_INFO=ユーザー '%s', %s認証
 
 ; dlg auth
 DLG_AUTH_TITLE=SSH認証
@@ -590,7 +610,7 @@ MSG_SSH_COREINS_ERROR='CORE insertion attack' detected.  Aborting connection.
 MSG_SSH_CORRUPTDATA_ERROR=Detected corrupted data; connection terminating.
 MSG_SSH_DECOMPRESS_ERROR=Internal error: a packet was not fully decompressed.\nThis is a bug, please report it.
 MSG_SSH_SEND_PKT_ERROR=A communications error occurred while sending an SSH packet.\nThe connection will close.
-MSG_SSH_COMP_ERROR=An error occurred while compressing packet data.\nThe connection will close.
+MSG_SSH_COMP_ERROR=パケットデータ圧縮中にエラーを検出しました.\n接続は閉じられます.
 MSG_SSH_UNABLE_FWD_ERROR=\nIt may have disconnected because it was unable to forward a port you requested to be forwarded from the server.\nThis often happens when someone is already forwarding that port from the server.
 MSG_SSH_SERVER_DISCON_ERROR=Server disconnected with message '%s'.%s
 MSG_SSH_SERVER_DISCON_NORES_ERROR=Server disconnected (no reason given).%s
@@ -601,10 +621,8 @@ MSG_SSH_UNEXP_MSG_ERROR=Unexpected packet type received: %d
 MSG_SSH_ALLOC_TERMINAL_ERROR=The server cannot allocate a pseudo-terminal. You may encounter some problems with the terminal.
 MSG_SSH_SETUP_COMP_ERROR=An error occurred while setting up compression.\nThe connection will close.
 MSG_SSH_DECRYPT_RSA_ERROR=An error occurred while decrypting the RSA challenge.\nPerhaps the key file is corrupted.
-MSG_SSH_UNSUPPORT_AUTH_METHOD_ERROR=Internal error: unsupported authentication method
-; MSG_SSH_COMP_ERROR2 is duplication of MSG_SSH_COMP_ERROR
-MSG_SSH_COMP_ERROR2=Error compressing packet data
-MSG_SSH_AUTH_FAILURE_ERROR=SSH2 autologin error: user authentication was failure
+MSG_SSH_UNSUPPORT_AUTH_METHOD_ERROR=内部エラー: サポート外の認証方法
+MSG_SSH_AUTH_FAILURE_ERROR=SSH2自動ログインエラー: ユーザー認証が失敗しました
 MSG_SSH_CHANNEL_OPEN_ERROR=SSH2_MSG_CHANNEL_OPEN_FAILURE was received.\r\nchannel [%d]: reason: %s(%d) message: %s
 
 ; ttxssh.c
@@ -613,14 +631,14 @@ MSG_UNKNOWN_OPTION_ERROR=Unrecognized command-line option: %s
 ; x11util.c
 MSG_X_AUTH_ERROR=Remote X application sent incorrect authentication data.\nIts X session is being cancelled.
 
-MSG_CREATEWINDOW_KEYGEN_ERROR=Cannot create Key Generator window.
-MSG_CREATEWINDOW_ABOUT_ERROR=Cannot create About box window.
-MSG_CREATEWINDOW_SETUP_ERROR=Cannot create TTSSH Setup window.
+MSG_CREATEWINDOW_KEYGEN_ERROR=キー生成ウィンドウを開けません
+MSG_CREATEWINDOW_ABOUT_ERROR=情報ウィンドウを開けません
+MSG_CREATEWINDOW_SETUP_ERROR=TTSSH 設定ウィンドウを開けません
 MSG_CREATEWINDOW_FWDSETUP_ERROR=Unable to display forwarding setup dialog box.
 MSG_CREATEWINDOW_FWDEDIT_ERROR=Unable to display forwarding edit dialog box.
-MSG_CREATEWINDOW_AUTH_ERROR=Unable to display authentication dialog box.\nConnection terminated.
-MSG_CREATEWINDOW_AUTHSETUP_ERROR=Unable to display authentication setup dialog box.
-MSG_OPEN_FILEDLG_KNOWNHOSTS_ERROR=Cannot show file dialog box: error %d
+MSG_CREATEWINDOW_AUTH_ERROR=認証ダイアログボックスを表示できません.\n接続を閉じました.
+MSG_CREATEWINDOW_AUTHSETUP_ERROR=認証設定ダイアログボックスを表示できません
+MSG_OPEN_FILEDLG_KNOWNHOSTS_ERROR=ダイアログボックスを開けません: エラー %d
 
 MSG_WARNING=警告
 MSG_ERROR=エラー

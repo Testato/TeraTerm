@@ -379,6 +379,26 @@ MENU_SSH_KEYGEN=SSH KeyGenerator...
 
 ; dlg about
 DLG_ABOUT_TITLE=About TTSSH
+DLG_ABOUT_SERVERID="Server ID: "
+DLG_ABOUT_PROTOCOL="Using protocol: "
+DLG_ABOUT_ENCRYPTION="Encryption: "
+DLG_ABOUT_SERVERKEY="Server keys: "
+DLG_ABOUT_AUTH="Authentication: "
+DLG_ABOUT_COMP="Compression: "
+DLG_ABOUT_CLIENTID="Client ID: "
+DLG_ABOUT_HOSTKEY="Host Key: "
+DLG_ABOUT_TOSERVER=" to server, "
+DLG_ABOUT_FROMSERVER=" from server"
+DLG_ABOUT_ENCRYPTION="Encryption: "
+DLG_ABOUT_COMPDELAY="Delayed Compression: "
+DLG_ABOUT_CIPHER_INFO=%s to server, %s from server
+DLG_ABOUT_KEY_INFO=%d-bit server key, %d-bit host key
+DLG_ABOUT_KEY_NONE=None
+DLG_ABOUT_COMP_INFO=level %d; ratio %.1f (%ld:%ld)
+DLG_ABOUT_COMP_INFO2=level %d
+DLG_ABOUT_COMP_NONE=none
+DLG_ABOUT_COMP_UPDOWN=Upstream %s; Downstream %s
+DLG_ABOUT_AUTH_INFO=User '%s', using %s
 
 ; dlg auth
 DLG_AUTH_TITLE=SSH Authentication
@@ -603,8 +623,6 @@ MSG_SSH_ALLOC_TERMINAL_ERROR=The server cannot allocate a pseudo-terminal. You m
 MSG_SSH_SETUP_COMP_ERROR=An error occurred while setting up compression.\nThe connection will close.
 MSG_SSH_DECRYPT_RSA_ERROR=An error occurred while decrypting the RSA challenge.\nPerhaps the key file is corrupted.
 MSG_SSH_UNSUPPORT_AUTH_METHOD_ERROR=Internal error: unsupported authentication method
-; MSG_SSH_COMP_ERROR2 is duplication of MSG_SSH_COMP_ERROR
-MSG_SSH_COMP_ERROR2=Error compressing packet data
 MSG_SSH_AUTH_FAILURE_ERROR=SSH2 autologin error: user authentication was failure
 MSG_SSH_CHANNEL_OPEN_ERROR=SSH2_MSG_CHANNEL_OPEN_FAILURE was received.\r\nchannel [%d]: reason: %s(%d) message: %s
 
