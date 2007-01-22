@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>fileread</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">fileread</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+fileread &lt;file handle&gt; &lt;read byte&gt; &lt;strvar&gt;
+</B>
+</UL>
+
+<pre>
+
+ &lt;file handle&gt; により指定されたファイルから特定したバイト数のデータを読み出す。
+データは文字列変数 &lt;strvar&gt; へ記憶され、ファイルポインタは読み込んだバイト数分進められる。
+データを読み込み終わる前にファイルポインタがファイルの終わりまで行った 場合は、
+システム変数"result"に1が格納される。 それ以外は、"result"に０が格納される。
+変数 &lt;read byte&gt; のとる値の範囲は１から225でなければならない。
+
+</pre><P></P>
+
+<pre>
+     例：
+<B>         filename = 'foo.txt'
+
+         fileopen fp filename 0
+
+         :loop
+         fileread fp 10 data
+         messagebox data filename
+         if result goto fclose
+         goto loop
+
+         :fclose
+         fileclose fp
+
+</B></pre>
+</BODY>
+</HTML>

@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>code2str</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">code2str</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+code2str &lt;strvar&gt; &lt;ASCII code&gt;
+</B>
+</UL>
+
+<pre>
+
+整数値 &lt;ASCII code&gt; が 1～255 の場合、ASCII コード &lt;ASCII code&gt; に対応する文字を文字列変数  &lt;strvar&gt; に格納する。
+このコマンドは &lt;ASCII code&gt; で表される ASCII コード列を文字列に変換し、それを  &lt;strvar&gt; に格納する。
+&lt;ASCII code&gt; の0でない最上位バイトがASCII コード列の1バイト目とみなされる。
+&lt;ASCII code&gt; が0の場合、 &lt;strvar&gt; には長さ0の文字列 ("") が格納される。文字列の最大長はTTMACRO.EXE の場合2、TTPMACRO.EXE の場合4。
+
+</pre><P></P>
+
+<pre>
+
+例：
+     <B>code2str str $41</B>                            文字 "A" が変数"str" に格納される。
+                                                   "A" の　ASCII コードは$41。
+
+     <B>code2str str $4142</B>                          文字列 "AB" が変数 "str" に格納される。
+                                                    $41 は "A" の、$42は "B" のASCII コード。
+
+</pre>
+
+</BODY>
+</HTML>
