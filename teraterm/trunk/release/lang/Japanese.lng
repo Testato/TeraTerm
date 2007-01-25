@@ -363,6 +363,10 @@ BTN_CANCEL=キャンセル
 BTN_CLOSE=閉じる(&C)
 BTN_HELP=ヘルプ(&H)
 
+; help
+HELPFILE=teratermj.chm
+MSG_OPENHELP_ERROR=HTMLヘルプ(%s)を開けません。
+
 
 [TTSSH]
 ; font
@@ -649,7 +653,3 @@ BTN_OK=&OK
 BTN_CANCEL=キャンセル
 BTN_DISCONNECT=接続断(&D)
 BTN_CONTINUE=続行(&C)
-
-
-[MISC]
-HELPFILE=teratermj.chm

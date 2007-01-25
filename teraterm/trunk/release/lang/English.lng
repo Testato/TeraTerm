@@ -364,6 +364,10 @@ BTN_CANCEL=Cancel
 BTN_CLOSE=Close
 BTN_HELP=&Help
 
+; help
+HELPFILE=teraterm.chm
+MSG_OPENHELP_ERROR=Can't open HTML help file(%s).
+
 
 [TTSSH]
 ; font
@@ -650,7 +654,3 @@ BTN_OK=OK
 BTN_CANCEL=Cancel
 BTN_DISCONNECT=Disconnect
 BTN_CONTINUE=&Continue
-
-
-[MISC]
-HELPFILE=teraterm.chm
