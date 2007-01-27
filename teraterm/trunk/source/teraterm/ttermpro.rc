@@ -65,25 +65,25 @@ IDD_TABSHEET_GENERAL DIALOGEX 0, 0, 274, 139
 STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_SYSMENU
 FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
-    CONTROL         "EnableContinuedLineCopy",IDC_LINECOPY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,4,99,10
-    LTEXT           "MouseCursor",IDC_MOUSE,116,5,48,8
+    CONTROL         "EnableContinued&LineCopy",IDC_LINECOPY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,4,99,10
+    LTEXT           "&MouseCursor",IDC_MOUSE,116,5,48,8
     LISTBOX         IDC_MOUSE_CURSOR,166,4,48,32,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Delimiter Characters",IDC_DELIMITER,6,52,73,8
+    LTEXT           "Del&imiter Characters",IDC_DELIMITER,6,52,73,8
     EDITTEXT        IDC_DELIM_LIST,87,50,130,12,ES_AUTOHSCROLL
     LTEXT           "ANSI color",IDC_ANSICOLOR,8,68,43,8
     LISTBOX         IDC_ANSI_COLOR,8,82,28,48,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Red",IDC_RED,43,86,14,8
+    LTEXT           "&Red",IDC_RED,43,86,14,8
     EDITTEXT        IDC_COLOR_RED,67,83,20,14,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Green",IDC_GREEN,43,100,22,8
+    LTEXT           "&Green",IDC_GREEN,43,100,22,8
     EDITTEXT        IDC_COLOR_GREEN,67,98,20,14,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Blue",IDC_BLUE,43,115,14,8
+    LTEXT           "&Blue",IDC_BLUE,43,115,14,8
     EDITTEXT        IDC_COLOR_BLUE,67,115,20,14,ES_AUTOHSCROLL | ES_NUMBER
     LTEXT           "SAMPLE TEXT",IDC_SAMPLE_COLOR,93,100,44,8
     DEFPUSHBUTTON   "OK",IDOK,227,2,33,14
     PUSHBUTTON      "Cancel",IDCANCEL,227,22,33,14
-    CONTROL         "DisableMouseRButtonPaste",IDC_DISABLE_PASTE_RBUTTON,
+    CONTROL         "&DisableMouseRButtonPaste",IDC_DISABLE_PASTE_RBUTTON,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,147,71,102,10
-    CONTROL         "EnableClickableURL",IDC_CLICKABLE_URL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,147,88,100,10
+    CONTROL         "&EnableClickableURL",IDC_CLICKABLE_URL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,147,88,100,10
 END
 
 IDD_BROADCAST_DIALOG DIALOGEX 0, 0, 252, 40
@@ -113,9 +113,9 @@ IDD_TABSHEET_VISUAL DIALOGEX 0, 0, 186, 95
 STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_SYSMENU
 FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
-    LTEXT           "AlphaBlend",IDC_ALPHABLEND,17,17,38,8
+    LTEXT           "&AlphaBlend",IDC_ALPHABLEND,17,17,38,8
     EDITTEXT        IDC_ALPHA_BLEND,61,15,28,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "Eterm lookfeel",IDC_ETERM_LOOKFEEL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,39,63,10
+    CONTROL         "&Eterm lookfeel",IDC_ETERM_LOOKFEEL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,39,63,10
     DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,129,24,50,14
 END
@@ -124,10 +124,10 @@ IDD_TABSHEET_LOG DIALOGEX 0, 0, 186, 95
 STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
 FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
-    LTEXT           "View Log Editor",IDC_VIEWLOG_LABEL,19,16,53,8
+    LTEXT           "View Log &Editor",IDC_VIEWLOG_LABEL,19,16,53,8
     EDITTEXT        IDC_VIEWLOG_EDITOR,20,27,77,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_VIEWLOG_PATH,102,28,15,10
-    LTEXT           "Default Log File Name(strftime format)",IDC_DEFAULTNAME_LABEL,19,47,140,8
+    LTEXT           "Default Log &File Name(strftime format)",IDC_DEFAULTNAME_LABEL,19,47,140,8
     EDITTEXT        IDC_DEFAULTNAME_EDITOR,19,58,77,12,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,129,24,50,14
@@ -253,7 +253,7 @@ FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,200,7,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,200,24,50,14
-    LTEXT           "Cygwin Install Path",IDC_CYGWIN_PATH_LABEL,12,17,64,8
+    LTEXT           "Cygwin Install &Path",IDC_CYGWIN_PATH_LABEL,12,17,64,8
     EDITTEXT        IDC_CYGWIN_PATH,76,15,64,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_SELECT_FILE,146,15,13,10
     LTEXT           "TERM",IDC_TERM_LABEL,23,57,19,8
@@ -364,7 +364,7 @@ BEGIN
         MENUITEM "Cy&gwin connection\tAlt+G",   ID_FILE_CYGWINCONNECTION
         MENUITEM SEPARATOR
         MENUITEM "&Log...",                     ID_FILE_LOG
-        MENUITEM "Comment to Log...",           ID_FILE_COMMENTTOLOG
+        MENUITEM "C&omment to Log...",          ID_FILE_COMMENTTOLOG
         MENUITEM "View Log",                    ID_FILE_VIEWLOG
         MENUITEM "&Send file...",               ID_FILE_SENDFILE
         POPUP "&Transfer"
@@ -398,9 +398,9 @@ BEGIN
             END
         END
         MENUITEM "&Change directory...",        ID_FILE_CHANGEDIR
-        MENUITEM "Replay Log...",               ID_FILE_REPLAYLOG
+        MENUITEM "&Replay Log...",              ID_FILE_REPLAYLOG
         MENUITEM SEPARATOR
-        MENUITEM "&LogMeTT",                    ID_FILE_LOGMEIN
+        MENUITEM "Log&MeTT",                    ID_FILE_LOGMEIN
         MENUITEM SEPARATOR
         MENUITEM "&Print...\tAlt+P",            ID_FILE_PRINT2
         MENUITEM SEPARATOR
@@ -443,7 +443,7 @@ BEGIN
         MENUITEM "Are you &there\tAlt+T",       ID_CONTROL_AREYOUTHERE
         MENUITEM "&Send break\tAlt+B",          ID_CONTROL_SENDBREAK
         MENUITEM "Reset &port",                 ID_CONTROL_RESETPORT
-        MENUITEM "Broadcast command",           ID_CONTROL_BROADCASTCOMMAND
+        MENUITEM "&Broadcast command",          ID_CONTROL_BROADCASTCOMMAND
         MENUITEM SEPARATOR
         MENUITEM "&Open TEK",                   ID_CONTROL_OPENTEK
         MENUITEM "&Close TEK",                  ID_CONTROL_CLOSETEK
