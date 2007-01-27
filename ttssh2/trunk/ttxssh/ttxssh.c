@@ -3010,6 +3010,9 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 				// file saving dialog disabled(default)
 				EnableWindow(GetDlgItem(dlg, IDC_SAVE_PUBLIC_KEY), TRUE);
 				EnableWindow(GetDlgItem(dlg, IDC_SAVE_PRIBATE_KEY), TRUE);
+
+				// set focus to passphrase edit control (2007.1.27 maya)
+				SetFocus(GetDlgItem(dlg, IDC_KEY_EDIT));
 			}
 			return TRUE;
 
@@ -3838,6 +3841,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.52  2007/01/22 13:45:19  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.51  2007/01/04 11:59:03  maya
  * フォントを変更する部分を追加した。
  *
