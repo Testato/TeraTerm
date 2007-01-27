@@ -1671,7 +1671,7 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu)
 #endif
 
 #ifdef I18N
-	strcpy(pvar->ts->UIMsg, "SSH KeyGenerator...");
+	strcpy(pvar->ts->UIMsg, "SSH KeyGe&nerator...");
 	UTIL_get_lang_msg("MENU_SSH_KEYGEN", pvar);
 	insertMenuBeforeItem(menu, 50360, MF_ENABLED, ID_SSHKEYGENMENU, pvar->ts->UIMsg);
 #else
@@ -3841,6 +3841,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.53  2007/01/27 14:27:47  maya
+ * 鍵生成後に、パスフレーズ入力コントロールにフォーカスするようにした。
+ *
  * Revision 1.52  2007/01/22 13:45:19  maya
  * 表示メッセージの読み込み対応
  *

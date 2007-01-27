@@ -362,7 +362,7 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 #endif
 	} else {
 #ifdef I18N
-		strcpy(pvar->ts->UIMsg, "Use challenge/response to log in(&keyboard-interactive)");
+		strcpy(pvar->ts->UIMsg, "Use &challenge/response to log in(keyboard-interactive)");
 		UTIL_get_lang_msg("DLG_AUTH_METHOD_CHALLENGE2", pvar);
 		SetDlgItemText(dlg, IDC_SSHUSETIS, pvar->ts->UIMsg);
 #else
@@ -1487,6 +1487,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.26  2007/01/22 13:45:19  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.25  2007/01/04 08:36:42  maya
  * フォントを変更する部分を追加した。
  *
