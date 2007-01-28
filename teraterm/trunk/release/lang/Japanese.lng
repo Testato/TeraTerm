@@ -365,7 +365,7 @@ BTN_HELP=ヘルプ(&H)
 
 ; help
 HELPFILE=teratermj.chm
-MSG_OPENHELP_ERROR=HTMLヘルプ(%s)を開けません。
+MSG_OPENHELP_ERROR=HTMLヘルプ(%s)を開けません. 
 
 
 [TTSSH]
@@ -394,7 +394,7 @@ DLG_ABOUT_TOSERVER=" TTSSH→サーバ, "
 DLG_ABOUT_FROMSERVER=" サーバ→TTSSH"
 DLG_ABOUT_ENCRYPTION="暗号化方式: "
 DLG_ABOUT_COMPDELAY="遅延圧縮状況: "
-DLG_ABOUT_CIPHER_INFO=%s to server, %s from server
+DLG_ABOUT_CIPHER_INFO=%s でサーバへ, %s でサーバから
 DLG_ABOUT_KEY_INFO=%d-bit server key, %d-bit host key
 DLG_ABOUT_KEY_NONE=None
 DLG_ABOUT_COMP_INFO=レベル %d; 圧縮比 %.1f (%ld:%ld)
@@ -407,7 +407,7 @@ DLG_ABOUT_AUTH_INFO=ユーザー '%s', %s認証
 DLG_AUTH_TITLE=SSH認証
 DLG_AUTH_TITLE_FAILED=SSH認証を再試行中
 DLG_AUTH_BANNER=ログイン中: %s
-DLG_AUTH_BANNER2=認証が必要です。
+DLG_AUTH_BANNER2=認証が必要です. 
 DLG_AUTH_BANNER2_FAILED=認証に失敗しました. 再試行してください.
 DLG_AUTH_USERNAME=ユーザ名(&N):
 DLG_AUTH_PASSWORD=パスフレーズ(&P):
@@ -444,10 +444,10 @@ MSG_NOAUTHMETHOD_ERROR=Server does not support any of the authentication options
 
 ; dlg diff host
 DLG_DIFFERENTHOST_TITLE=セキュリティ警告
-DLG_DIFFERENTHOST_WARNING=knows hostsリスト中のサーバ"####################################"のエントリと、接続先のホスト鍵が *一致していません* 悪意を持ったホストが、接続しようとしているサーバのふりをしている可能性もありますので、十分注意してください。
-DLG_DIFFERENTHOST_WARNING2=known hostsリストにこのホストを追加して続行すると、次回からこの警告は出なくなります。
+DLG_DIFFERENTHOST_WARNING=knows hostsリスト中のサーバ"####################################"のエントリと, 接続先のホスト鍵が *一致していません* 悪意を持ったホストが, 接続しようとしているサーバのふりをしている可能性もありますので, 十分注意してください. 
+DLG_DIFFERENTHOST_WARNING2=known hostsリストにこのホストを追加して続行すると, 次回からこの警告は出なくなります. 
 DLG_DIFFERENTHOST_FINGERPRINT=サーバ側のホスト鍵fingerprint:
-DLG_DIFFERENTHOST_REPLACE=既存の鍵を、新しい鍵で上書きする(&R)
+DLG_DIFFERENTHOST_REPLACE=既存の鍵を, 新しい鍵で上書きする(&R)
 
 ; dlg fwd edit
 DLG_FWD_TITLE=SSHポート転送
@@ -459,13 +459,13 @@ DLG_FWD_REMOTE_PORT=リモートサーバのポート(&R)
 DLG_FWD_REMOTE_LOCAL=ローカル側ホスト(&A)
 DLG_FWD_REMOTE_LOCAL_PORT=ポート(&O)
 
-MSG_SAME_SERVERPORT_ERROR=You cannot have two forwardings from the same server port (%d).
-MSG_SAME_LOCALPORT_ERROR=You cannot have two forwardings from the same local port (%d).
-MSG_UNSPECIFYIED_FWD_ERROR1=The following forwardings were not specified when this SSH session began:\n\n
-MSG_UNSPECIFYIED_FWDS_ERROR1=The following forwarding was not specified when this SSH session began:\n\n
-MSG_UNSPECIFYIED_FWD_ERROR2=\nDue to a limitation of the SSH protocol, these forwardings will not work in the current SSH session.\nIf you save these settings and start a new SSH session, the forwardings should work.
-MSG_UNSPECIFYIED_FWDS_ERROR2=\nDue to a limitation of the SSH protocol, this forwarding will not work in the current SSH session.\nIf you save these settings and start a new SSH session, the forwarding should work.
-MSG_INVALID_PORT_ERROR=Port "%s" is not a valid port number.\nEither choose a port name from the list, or enter a number between 1 and 65535.
+MSG_SAME_SERVERPORT_ERROR=同一リモートポートに 2つ以上の転送は設定できません (%d).
+MSG_SAME_LOCALPORT_ERROR=同一ローカルポートに 2つ以上の転送は設定できません (%d).
+MSG_UNSPECIFYIED_FWD_ERROR1=このSSHセッションが始まったとき, 次の転送は指定されませんでした:\n\n
+MSG_UNSPECIFYIED_FWDS_ERROR1=このSSHセッションが始まったとき, 次の転送は指定されませんでした:\n\n
+MSG_UNSPECIFYIED_FWD_ERROR2=\nSSHプロトコルの規制のために, この転送は, 現在のSSHセッションで動作しません. \n設定を保存して, 新しいSSH セッションを開始すれば, 転送が有効になります.
+MSG_UNSPECIFYIED_FWDS_ERROR2=\nSSHプロトコルの規制のために, これらの転送は, 現在のSSHセッションで動作しません. \n設定を保存して, 新しいSSH セッションを開始すれば, 転送が有効になります. 
+MSG_INVALID_PORT_ERROR="%s" は無効なポート番号です. \nポート名を一覧から選択するか, 1 から 65535の間で指定してください. 
 
 ; dlg fwd setup
 DLG_FWDSETUP_TITLE=TTSSH: ポート転送設定
@@ -476,8 +476,8 @@ DLG_FWDSETUP_REMOVE=削除(&R)
 DLD_FWDSETUP_X=Xクライアントアプリケーションの転送
 DLG_FWDSETUP_XAPP=リモートの(&X)アプリケーションをローカルのXサーバに表示する
 
-MSG_FWD_REMOTE_XSERVER=remote X server
-MSG_FWD_REMOTE_XSCREEN=X server (screen %d)
+MSG_FWD_REMOTE_XSERVER=リモートX サーバ
+MSG_FWD_REMOTE_XSCREEN=X サーバ (画面 %d)
 MSG_FWD_REMOTE=リモートの %s からローカル側ホスト "%s" のポート %s
 MSG_FWD_LOCAL=ローカルの %s から リモート側ホスト "%s" のポート %s
 MSG_FWD_X=リモートのXアプリケーションからローカルのXサーバ
@@ -495,7 +495,7 @@ DLG_HOST_SERIAL=シリアル(&E)
 DLG_HOST_SERIAL_PORT=ポート(&R):
 DLG_HOST_HELP=ヘルプ(&H)
 
-MSG_TCPPORT_NAN_ERROR=TCPポート番号には数値を入力してください。
+MSG_TCPPORT_NAN_ERROR=TCPポート番号には数値を入力してください. 
 
 ; dlg keygen
 DLG_KEYGEN_TITLE=TTSSH: キー生成
@@ -510,8 +510,8 @@ FILEDLG_SAVE_PUBLICKEY_TITLE=公開鍵の保存先:
 FILEDLG_SAVE_PUBLICKEY_RSA1_FILTER=SSH1 RSA key(identity.pub)\0identity.pub\0すべてのファイル(*.*)\0*.*\0\0
 FILEDLG_SAVE_PUBLICKEY_RSA_FILTER=SSH2 RSA key(id_rsa.pub)\0id_rsa.pub\0すべてのファイル(*.*)\0*.*\0\0
 FILEDLG_SAVE_PUBLICKEY_DSA_FILTER=SSH2 DSA key(id_dsa.pub)\0id_dsa.pub\0すべてのファイル(*.*)\0*.*\0\0
-MSG_SAVE_KEY_OPENFILE_ERROR=Can't open key file
-MSG_SAVE_KEY_WRITEFILE_ERROR=Can't write key file
+MSG_SAVE_KEY_OPENFILE_ERROR=鍵ファイルを開けません
+MSG_SAVE_KEY_WRITEFILE_ERROR=鍵ファイルに書き込めません
 MSG_SAVE_PRIVATE_KEY_MISMATCH_ERROR=パスフレーズが一致しません
 MSG_SAVE_PRIVATEKEY_EMPTY_WARN=空のパスフレーズを使用しますか？
 FILEDLG_SAVE_PRIVATEKEY_TITLE=秘密鍵の保存先:
@@ -533,7 +533,7 @@ DLG_SSHSETUP_KNOWNHOST_RW=読み書き(&W):
 DLG_SSHSETUP_KNOWNHOST_RO=読み取り専用(&R):
 DLG_SSHSETUP_HEARTBEAT=ハートビート(keep-alive)
 DLG_SSHSETUP_HEARTBEAT_UNIT=秒(0を指定すると無効)
-DLG_SSHSETUP_NOTICE=いずれの変更も次回のセッション以降有効になります。
+DLG_SSHSETUP_NOTICE=いずれの変更も次回のセッション以降有効になります. 
 
 FILEDLG_OPEN_KNOWNHOSTS_RW_TITLE=読み書き用knownhostsファイルを選択してください
 FILEDLG_OPEN_KNOWNHOSTS_RO_TITLE=追加する読み取り専用knownhostsファイルを選択してください
@@ -544,8 +544,8 @@ DLG_TIS_BANNER=ログイン中: %s
 
 ; dlg unknown host
 DLG_UNKNONWHOST_TITLE=セキュリティ警告
-DLG_UNKNOWNHOST_WARNINIG=known hostsリストにサーバ"#####################################"のエントリはありません。悪意を持ったホストが、接続しようとしているサーバのふりをしている可能性もありますので、十分注意してください！
-DLG_UNKNOWNHOST_WARNINIG2=known hostsリストのこのホストを追加して続行すると、次回からこの警告は出なくなります。
+DLG_UNKNOWNHOST_WARNINIG=known hostsリストにサーバ"#####################################"のエントリはありません. 悪意を持ったホストが, 接続しようとしているサーバのふりをしている可能性もありますので, 十分注意してください！
+DLG_UNKNOWNHOST_WARNINIG2=known hostsリストのこのホストを追加して続行すると, 次回からこの警告は出なくなります. 
 DLG_UNKNOWNHOST_FINGERPRINT=サーバ側のホスト鍵fingerprint:
 DLG_UNKNOWNHOST_ADD=このホストをknown hostsリストに追加する(&A)
 
@@ -554,94 +554,94 @@ MSG_AES128_ENCRYPT_ERROR1=AES128暗号化エラー(1): bytes %d (%d)
 MSG_AES128_ENCRYPT_ERROR2=AES128暗号化エラー(2)
 MSG_AES128_DECRYPT_ERROR1=AES128復号エラー(1): bytes %d (%d)
 MSG_AES128_DECRYPT_ERROR2=AES128復号エラー(2)
-MSG_RSAKEY_SETUP_ERROR=Error setting up RSA keys
-MSG_UNAVAILABLE_CIPHERS_ERROR=The server does not support any of the TTSSH encryption algorithms.\nA secure connection cannot be made in the TTSSH-to-server direction.\nThe connection will be closed.
-MSG_CHIPHER_NONE_ERROR=All the encryption algorithms that this program and the server both understand have been disabled.\nTo communicate with this server, you will have to enable some more ciphers\nin the TTSSH Setup dialog box when you run Teraterm again.\nThis connection will now close.
-MSG_RASKEY_TOOWEAK_ERROR=Server RSA keys are too weak. A secure connection cannot be established.
-MSG_CHPHER_NOTSELECTED_ERROR=No cipher selected!
+MSG_RSAKEY_SETUP_ERROR=RSA 鍵設定エラー
+MSG_UNAVAILABLE_CIPHERS_ERROR=このサーバはTTSSH 暗号アルゴリズムをサポートしていません.\nTTSSHとサーバ間のセキュアな接続を確立できません.\n接続を閉じます.
+MSG_CHIPHER_NONE_ERROR=このプログラムで使用可能な暗号化アルゴリズムと, サーバーが理解可能な暗号化アルゴリズムが異なっています. \nこのサーバーと通信するためには, 利用可能な暗号化アルゴリズムを増やさなければなりません. \nTTSSH セットアップダイアログボックス内を変更し, Teraterm を再起動してください.\n接続を閉じます.
+MSG_RASKEY_TOOWEAK_ERROR=サーバ RSA 鍵が極めて脆弱です. 安全な接続を確立できません.
+MSG_CIPHER_NOTSELECTED_ERROR=暗号アルゴリズムが未選択です
 
 ; fwd.c
-MSG_FWD_LOCAL_CHANNEL_ERROR=The server attempted to manipulate a forwarding channel that does not exist.\nEither the server has a bug or is hostile. You should close this connection.
-MSG_FWD_REQUEST_ERROR=Communications error while listening for a connection to forward.\nThe listening port will be terminated.
-MSG_FWD_REFUSED_ERROR=Connection refused (perhaps the service is not currently running)
-MSG_FWD_NETDOWN_ERROR=The machine could not be contacted (possibly a network problem)
-MSG_FWD_MACHINEDOWN_ERROR=The machine could not be contacted (possibly the machine is down)
-MSG_FWD_ADDRNOTFOUTD_ERROR=No address was found for the machine.
-MSG_FWD_CONNECT_ERROR=The forwarding connection could not be established
-MSG_FWD_CHANNEL_ERROR=Communications error %s forwarded local %s.\n%s (code %d).\nThe forwarded connection will be closed.
-MSG_FWD_CHANNEL_OPEN_X_ERROR=The server attempted to forward a connection through this machine.\nIt requested a connection to the X server on %s (screen %d).\n%s.\nThe forwarded connection will be closed.
-MSG_FWD_CHANNEL_OPEN_ERROR=The server attempted to forward a connection through this machine.\nIt requested a connection to %s (port %s).\n%s.\nThe forwarded connection will be closed.
-DLG_FWDMON_TITLE=TTSSH Port Forwarding Monitor
-MSG_FWD_HOSTILE_ATTACK_ERROR=Host with IP number %s tried to connect to forwarded local port %d.\nThis could be some kind of hostile attack.
-MSG_FWD_SOCKET_ERROR=Some socket(s) required for port forwarding could not be initialized.\nSome port forwarding services may not be available.\n(errno %d)
-MSG_FWD_DUPLICATE_ERROR=TTSSH INTERNAL ERROR: Could not set port forwards because duplicate type/port requests were found
-MSG_FWD_DENIED_HANDLE_ERROR=The server attempted to forward a connection through this machine.\nIt requested a connection to machine %s on port %s.\nAn error occurred while processing the request, and it has been denied.
-MSG_FWD_DENIED_ERROR=The server attempted to forward a connection through this machine.\nIt requested a connection to machine %s on port %d.\nYou did not specify this forwarding to TTSSH in advance, and therefore the request was denied.
-MSG_FWD_DENIED_X_ERROR=The server attempted to forward a connection through this machine.\nIt requested a connection to the local X server.\nYou did not specify this forwarding to TTSSH in advance, and therefore the request was denied.
-MSG_FWD_DENIED_BY_SERVER_ERROR=A program on the local machine attempted to connect to a forwarded port.\nThe forwarding request was denied by the server. The connection has been closed.
-MSG_FWD_COMM_ERROR=A communications error occurred while sending forwarded data to a local port.\nThe forwarded connection will be closed.
+MSG_FWD_LOCAL_CHANNEL_ERROR=サーバーは, 存在しない転送チャンネルを操ろうとしました.\nEither the server has a bug or is hostile. You should close this connection.
+MSG_FWD_REQUEST_ERROR=転送接続待ち受け中に通信エラーが発生しました.\n待ち受けポートを閉じます.
+MSG_FWD_REFUSED_ERROR=接続は拒否されました (おそらくサービス停止中です)
+MSG_FWD_NETDOWN_ERROR=転送先マシンに接続できません (おそらくネットワークの問題です)
+MSG_FWD_MACHINEDOWN_ERROR=転送先マシンに接続できません (おそらくマシンがダウンしています)
+MSG_FWD_ADDRNOTFOUTD_ERROR=マシンにアドレスがありません.
+MSG_FWD_CONNECT_ERROR=転送接続を確立できませんでした
+MSG_FWD_CHANNEL_ERROR=通信エラー %s forwarded local %s.\n%s (コード %d).\n転送接続を終了します.
+MSG_FWD_CHANNEL_OPEN_X_ERROR=サーバはこのマシンに転送を試みました.\n%s 上のXサーバへの接続を要求しました (画面 %d). \n転送接続を終了します.
+MSG_FWD_CHANNEL_OPEN_ERROR=サーバはこのマシンに転送を試みました.\n%s への接続を要求しました (ポート %s).\n %s.\n転送接続を終了します.
+DLG_FWDMON_TITLE=TTSSH ポート転送モニタ
+MSG_FWD_HOSTILE_ATTACK_ERROR=IP 番号 %s のホストが, ローカルポート %d に転送接続を試みました.\n悪意のある攻撃の場合があります.
+MSG_FWD_SOCKET_ERROR=ポート転送に必要ないくつかのソケットの初期化に失敗しました.\nいくつかのポート転送サービスは利用できません.\n(エラー番号 %d)
+MSG_FWD_DUPLICATE_ERROR=TTSSH 内部エラー: 重複した種類/ポートの指定が存在したため, ポート転送設定ができませんでした
+MSG_FWD_DENIED_HANDLE_ERROR=サーバはこのマシンに転送を試みました.\nマシン %s 上のポート%s への接続を要求しました.\n要求処理中にエラーが発生したため, 拒否されました.
+MSG_FWD_DENIED_ERROR=サーバはこのマシンに転送を試みました.\nマシン %s 上のポート%s への接続を要求しました.\nTTSSH に該当する転送設定が存在しないため, 要求を拒否しました. 
+MSG_FWD_DENIED_X_ERROR=サーバはこのマシンに転送を試みました.\nローカルのX サーバへの接続を要求しました.\nTTSSH に該当する転送設定が存在しないため, 要求を拒否しました. 
+MSG_FWD_DENIED_BY_SERVER_ERROR=ローカルマシン上のプログラムは転送先ポートに接続しました.\n転送要求はサーバ側で拒否されました. 接続を閉じます.
+MSG_FWD_COMM_ERROR=ローカルポートに転送データを送信中, 通信エラーが発生しました.\n転送接続を閉じます.
 
 ; hosts.c
-MSG_HOSTS_READ_ENOENT_ERROR=An error occurred while trying to read a known_hosts file.\nThe specified filename does not exist.
-MSG_HOSTS_READ_ERROR=An error occurred while trying to read a known_hosts file.
-MSG_HOSTS_ALLOC_ERROR=Memory ran out while trying to allocate space to read a known_hosts file.
-MSG_HOSTS_HOSTNAME_INVALID_ERROR=The host name contains an invalid character.\nThis session will be terminated.
-MSG_HOSTS_HOSTNAME_EMPTY_ERROR=The host name should not be empty.\nThis session will be terminated.
-MSG_HOSTS_FILE_UNSPECIFY_ERROR=The host and its key cannot be added, because no known-hosts file has been specified.\nRestart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.
-MSG_HOSTS_WRITE_EACCES_ERROR=An error occurred while trying to write the host key.\nYou do not have permission to write to the known-hosts file.
-MSG_HOSTS_WRITE_ERROR=An error occurred while trying to write the host key.\nThe host key could not be written.
+MSG_HOSTS_READ_ENOENT_ERROR=known_hosts 読み込み中にエラーが発生しました. \n指定されたファイル名は存在しません.
+MSG_HOSTS_READ_ERROR=known_hosts 読み込み中にエラーが発生しました.
+MSG_HOSTS_ALLOC_ERROR=known_hosts 読み込み中にメモリ不足になりました.
+MSG_HOSTS_HOSTNAME_INVALID_ERROR=ホスト名に無効な文字が含まれています.\nセッションを閉じます.
+MSG_HOSTS_HOSTNAME_EMPTY_ERROR=ホスト名が空です.\nセッションを閉じます.
+MSG_HOSTS_FILE_UNSPECIFY_ERROR=known-hosts が指定されなかったので, ホストとそのキーを加えることができません.\nTeratermを再起動して, TTSSH セットアップダイアログボックスで読込み・書込みknown-hosts を指定してください. 
+MSG_HOSTS_WRITE_EACCES_ERROR=ホスト鍵の書き込み中にエラーが発生しました.\nknown-hosts の書き込み権限がありません.
+MSG_HOSTS_WRITE_ERROR=ホスト鍵の書き込み中にエラーが発生しました.\nホスト鍵を書き込めません.
 
 ; keyfiles.c
-MSG_KEYFILES_READ_ENOENT_ERROR=An error occurred while trying to read the key file.\nThe specified filename does not exist.
-MSG_KEYFILES_READ_ERROR=An error occurred while trying to read the key file.
-MSG_KEYFILES_READ_ALLOC_ERROR=Memory ran out while trying to allocate space to read the key file.
-MSG_KEYFILES_PRIVATEKEY_NOTCONTAIN_ERROR=The specified key file does not contain an SSH private key.
-MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR=The specified key file has been truncated and does not contain a valid private key.
-MSG_KEYFILES_PRIVATEKEY_LENGTH_ERROR=The specified key file cannot be decrypted using the passphrase.\nThe file does not have the correct length.
-MSG_KEYFILES_PRIVATEKEY_NOCIPHER_ERROR=The specified key file cannot be decrypted using the passphrase.\nThe cipher type used to encrypt the file is not supported by TTSSH for this purpose.
-MSG_KEYFILES_PASSPHRASE_EMPTY_ERROR=The specified key file cannot be decrypted using the empty passphrase.\nFor auto-login, you must create a key file with no passphrase.\nBEWARE: This means the key can easily be stolen.
-MSG_KEYFILES_PASSPHRASE_ERROR=The specified key file cannot be decrypted using the passphrase.\nThe passphrase is incorrect.
-MSG_KEYFILES_CRYPTOLIB_ERROR=Error in crytography library.\nPerhaps the stored key is invalid.
+MSG_KEYFILES_READ_ENOENT_ERROR=鍵の読み込み中にエラーが発生しました.\n指定されたファイル名は存在しません.
+MSG_KEYFILES_READ_ERROR=鍵の読み込み中にエラーが発生しました.
+MSG_KEYFILES_READ_ALLOC_ERROR=鍵の読み込み中にメモリ不足になりました.
+MSG_KEYFILES_PRIVATEKEY_NOTCONTAIN_ERROR=指定された鍵はSSH 秘密鍵ではありません.
+MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR=指定された鍵ファイルは無効な秘密鍵です.
+MSG_KEYFILES_PRIVATEKEY_LENGTH_ERROR=入力されたパスフレーズでは鍵ファイルを復号できません.\nこのファイルは適切な鍵長ではありません.
+MSG_KEYFILES_PRIVATEKEY_NOCIPHER_ERROR=入力されたパスフレーズでは鍵ファイルを復号できません.\nTTSSH はこの暗号方式に対応していません.
+MSG_KEYFILES_PASSPHRASE_EMPTY_ERROR=入力されたパスフレーズでは鍵ファイルを復号できません.\n自動ログインをするにはパスフレーズ無しの鍵ファイルを生成してください.\n注意: 鍵の盗難には十分ご注意ください.
+MSG_KEYFILES_PASSPHRASE_ERROR=入力されたパスフレーズでは鍵ファイルを復号できません.\nパスフレーズに誤りがあります.
+MSG_KEYFILES_CRYPTOLIB_ERROR=暗号ライブラリにエラーがあります.\n指定された鍵は無効です.
 
 ; pkt.c
-MSG_PKT_OVERSIZED_ERROR=Oversized packet received from server; connection will close.
+MSG_PKT_OVERSIZED_ERROR=サーバから巨大なパケットを受信しました; 切断します. 
 
 ; ssh.c
-MSG_SSH_INVALID_COMPDATA_ERROR=Invalid compressed data in received packet
-MSG_SSH_TRUNCATED_PKT_ERROR=Received truncated packet (%ld > %d) @ grab_payload()
-MSG_SSH_TRUNCATED_PKT_LIM_ERROR=Received truncated packet (%ld > %d) @ grab_payload_limited()
-MSG_SSH_COREINS_ERROR='CORE insertion attack' detected.  Aborting connection.
-MSG_SSH_CORRUPTDATA_ERROR=Detected corrupted data; connection terminating.
-MSG_SSH_DECOMPRESS_ERROR=Internal error: a packet was not fully decompressed.\nThis is a bug, please report it.
-MSG_SSH_SEND_PKT_ERROR=A communications error occurred while sending an SSH packet.\nThe connection will close.
-MSG_SSH_COMP_ERROR=パケットデータ圧縮中にエラーを検出しました.\n接続は閉じられます.
-MSG_SSH_UNABLE_FWD_ERROR=\nIt may have disconnected because it was unable to forward a port you requested to be forwarded from the server.\nThis often happens when someone is already forwarding that port from the server.
-MSG_SSH_SERVER_DISCON_ERROR=Server disconnected with message '%s'.%s
-MSG_SSH_SERVER_DISCON_NORES_ERROR=Server disconnected (no reason given).%s
-MSG_SSH_VERSION_ERROR=This program does not understand the server's version of the protocol.
-MSG_SSH_SEND_ID_ERROR=An error occurred while sending the SSH ID string.\nThe connection will close.
-MSG_SSH_UNEXP_MSG2_ERROR=Unexpected SSH2 message(%d) on current stage(%d)
-MSG_SSH_UNEXP_MSG_ERROR=Unexpected packet type received: %d
-MSG_SSH_ALLOC_TERMINAL_ERROR=The server cannot allocate a pseudo-terminal. You may encounter some problems with the terminal.
-MSG_SSH_SETUP_COMP_ERROR=An error occurred while setting up compression.\nThe connection will close.
-MSG_SSH_DECRYPT_RSA_ERROR=An error occurred while decrypting the RSA challenge.\nPerhaps the key file is corrupted.
+MSG_SSH_INVALID_COMPDATA_ERROR=受信パケット中の圧縮データが無効です. 
+MSG_SSH_TRUNCATED_PKT_ERROR=欠損パケットを受信しました (%ld > %d) @ grab_payload()
+MSG_SSH_TRUNCATED_PKT_LIM_ERROR=欠損パケットを受信しました (%ld > %d) @ grab_payload_limited()
+MSG_SSH_COREINS_ERROR='CORE 挿入攻撃' を検出しました. 接続を中断します. 
+MSG_SSH_CORRUPTDATA_ERROR=欠損データを検出しました. 切断します. 
+MSG_SSH_DECOMPRESS_ERROR=内部エラー: パケットの復号に失敗しました. \nバグ報告をお願いします. 
+MSG_SSH_SEND_PKT_ERROR=SSH パケットを送信中に通信エラーが発生しました. \n切断します. 
+MSG_SSH_COMP_ERROR=パケットデータを圧縮中にエラーが発生しました. \n切断します. 
+MSG_SSH_UNABLE_FWD_ERROR=\n転送できないポートへの転送を行おうとしたため, サーバから切断されました. \n既に同じサーバ上の同一ポートで転送を行っている場合に発生します. 
+MSG_SSH_SERVER_DISCON_ERROR=サーバに次の理由で切断されました.  '%s'.%s
+MSG_SSH_SERVER_DISCON_NORES_ERROR=サーバから切断されました (切断理由はありません). %s
+MSG_SSH_VERSION_ERROR=サーバのプロトコルバージョンが不明です. 
+MSG_SSH_SEND_ID_ERROR=SSH ID 文字列送信中にエラーが発生しました. \n切断します. 
+MSG_SSH_UNEXP_MSG2_ERROR=現在のステージでは想定外のSSH2 メッセージ(%d) です. (%d)
+MSG_SSH_UNEXP_MSG_ERROR=想定外の種別のパケットを受信しました: %d
+MSG_SSH_ALLOC_TERMINAL_ERROR=サーバは仮想端末を割り当てることができません. 端末に問題が生じる場合があります. 
+MSG_SSH_SETUP_COMP_ERROR=圧縮設定中にエラーが発生しました. \n切断します. 
+MSG_SSH_DECRYPT_RSA_ERROR=RSA 復号中にエラーが発生しました. \n鍵ファイルが誤り, または破損している場合があります. 
 MSG_SSH_UNSUPPORT_AUTH_METHOD_ERROR=内部エラー: サポート外の認証方法
 MSG_SSH_AUTH_FAILURE_ERROR=SSH2自動ログインエラー: ユーザー認証が失敗しました
-MSG_SSH_CHANNEL_OPEN_ERROR=SSH2_MSG_CHANNEL_OPEN_FAILURE was received.\r\nchannel [%d]: reason: %s(%d) message: %s
+MSG_SSH_CHANNEL_OPEN_ERROR=SSH2_MSG_CHANNEL_OPEN_FAILURE を受信しました. \r\nチャネル [%d]: 理由: %s(%d) メッセージ: %s
 
 ; ttxssh.c
-MSG_UNKNOWN_OPTION_ERROR=Unrecognized command-line option: %s
+MSG_UNKNOWN_OPTION_ERROR=無効なコマンドラインオプション: %s
 
 ; x11util.c
-MSG_X_AUTH_ERROR=Remote X application sent incorrect authentication data.\nIts X session is being cancelled.
+MSG_X_AUTH_ERROR=リモートのX アプリケーションから無効な認証データを受信しました. \nX セッションは無効になっています. 
 
 MSG_CREATEWINDOW_KEYGEN_ERROR=キー生成ウィンドウを開けません
 MSG_CREATEWINDOW_ABOUT_ERROR=情報ウィンドウを開けません
 MSG_CREATEWINDOW_SETUP_ERROR=TTSSH 設定ウィンドウを開けません
-MSG_CREATEWINDOW_FWDSETUP_ERROR=Unable to display forwarding setup dialog box.
-MSG_CREATEWINDOW_FWDEDIT_ERROR=Unable to display forwarding edit dialog box.
-MSG_CREATEWINDOW_AUTH_ERROR=認証ダイアログボックスを表示できません.\n接続を閉じました.
-MSG_CREATEWINDOW_AUTHSETUP_ERROR=認証設定ダイアログボックスを表示できません
+MSG_CREATEWINDOW_FWDSETUP_ERROR=SSH ポート転送設定ダイアログボックスを開けません. 
+MSG_CREATEWINDOW_FWDEDIT_ERROR=SSH ポート転送編集ダイアログボックスを開けません. 
+MSG_CREATEWINDOW_AUTH_ERROR=認証ダイアログボックスを表示できません.\n接続を閉じました. 
+MSG_CREATEWINDOW_AUTHSETUP_ERROR=認証設定ダイアログボックスを表示できません. 
 MSG_OPEN_FILEDLG_KNOWNHOSTS_ERROR=ダイアログボックスを開けません: エラー %d
 
 MSG_WARNING=警告
