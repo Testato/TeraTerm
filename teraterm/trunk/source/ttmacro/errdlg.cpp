@@ -72,9 +72,7 @@ BOOL CErrDlg::OnInitDialog()
 
   SetDlgItemText(IDC_ERRMSG,MsgStr);
   SetDlgItemText(IDC_ERRLINE,LineStr);
-#ifdef I18N
-  MessageBox(UILanguageFile);
-#endif
+
   if (PosX<=-100)
   {
     GetWindowRect(&R);

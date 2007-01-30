@@ -245,8 +245,8 @@ DLG_TCPIP_TERMTYPE=端末タイプ(&T):
 
 DLG_TERM_TITLE=Tera Term: 端末の設定
 DLG_TERM_WIDTHLABEL=端末サイズ(&T):
-DLG_TERM_ISWIN=端末サイズ = ウィンドウサイズ(&S):
-DLG_TERM_RESIZE=自動的にウィンドウサイズを調整(&W):
+DLG_TERM_ISWIN== ウィンドウサイズ(&S):
+DLG_TERM_RESIZE=自動的に調整(&W):
 DLG_TERM_NEWLINE=改行コード
 DLG_TERM_CRRCV=受信(&R):
 DLG_TERM_CRSEND=送信(&M):
@@ -279,14 +279,14 @@ DLG_WIN_FULLCOLOR=フルカラー(&C):
 DLG_WIN_SCROLL1=スクロールバッファ(&S):
 DLG_WIN_SCROLL3=行(&N)
 DLG_WIN_COLOR=カラー
-DLG_WIN_TEXT=文字(&X):
-DLG_WIN_BG=背景(&K):
-DLG_WIN_ATTRIB=属性(&A):
-DLG_WIN_REVERSE=反転(&E):
+DLG_WIN_TEXT=文字(&X)
+DLG_WIN_BG=背景(&K)
+DLG_WIN_ATTRIB=属性(&A)
+DLG_WIN_REVERSE=反転(&E)
 DLG_WIN_R=赤(&R):
 DLG_WIN_G=緑(&G):
 DLG_WIN_B=青(&B):
-DLG_WIN_ALWAYSBG=常に標準の背景色を使う(&U):
+DLG_WIN_ALWAYSBG=常に標準の背景色を使う(&U)
 DLG_WIN_NORMAL=標準
 DLG_WIN_BOLD=太字
 DLG_WIN_BLINK=点滅
@@ -294,7 +294,7 @@ DLG_WIN_BLINK=点滅
 DLG_WINLIST_TITLE=Tera Term: ウィンドウのリスト
 DLG_WINLIST_LABEL=ウィンドウ(&W):
 DLG_WINLIST_OPEN=開く(&O)
-DLG_WINLSIT_CLOSEWIN=ウィンドウを閉じる(&C)
+DLG_WINLSIT_CLOSEWIN=閉じる(&C)
 
 MSG_FIND_DIR_ERROR=ディレクトリが見つかりません
 
@@ -446,7 +446,7 @@ MSG_NOAUTHMETHOD_ERROR=Server does not support any of the authentication options
 DLG_DIFFERENTHOST_TITLE=セキュリティ警告
 DLG_DIFFERENTHOST_WARNING=knows hostsリスト中のサーバ"####################################"のエントリと, 接続先のホスト鍵が *一致していません* 悪意を持ったホストが, 接続しようとしているサーバのふりをしている可能性もありますので, 十分注意してください. 
 DLG_DIFFERENTHOST_WARNING2=known hostsリストにこのホストを追加して続行すると, 次回からこの警告は出なくなります. 
-DLG_DIFFERENTHOST_FINGERPRINT=サーバ側のホスト鍵fingerprint:
+DLG_DIFFERENTHOST_FINGERPRINT=サーバ側のホスト鍵指紋:
 DLG_DIFFERENTHOST_REPLACE=既存の鍵を, 新しい鍵で上書きする(&R)
 
 ; dlg fwd edit
@@ -546,7 +546,7 @@ DLG_TIS_BANNER=ログイン中: %s
 DLG_UNKNONWHOST_TITLE=セキュリティ警告
 DLG_UNKNOWNHOST_WARNINIG=known hostsリストにサーバ"#####################################"のエントリはありません. 悪意を持ったホストが, 接続しようとしているサーバのふりをしている可能性もありますので, 十分注意してください！
 DLG_UNKNOWNHOST_WARNINIG2=known hostsリストのこのホストを追加して続行すると, 次回からこの警告は出なくなります. 
-DLG_UNKNOWNHOST_FINGERPRINT=サーバ側のホスト鍵fingerprint:
+DLG_UNKNOWNHOST_FINGERPRINT=サーバ側のホスト鍵指紋:
 DLG_UNKNOWNHOST_ADD=このホストをknown hostsリストに追加する(&A)
 
 ; crypt.c

@@ -73,15 +73,15 @@ BEGIN
     LTEXT           "LineNo:",IDC_LINENO,4,32,108,8
 END
 
-IDD_ERRDLG DIALOG  20, 20, 171, 49
+IDD_ERRDLG DIALOGEX 20, 20, 171, 49
 STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 CAPTION "MACRO: Error"
-FONT 10, "System"
+FONT 10, "System", 0, 0, 0x0
 BEGIN
     CONTROL         "",IDC_ERRMSG,"Static",SS_LEFTNOWORDWRAP | SS_NOPREFIX | WS_GROUP,20,4,130,8
     CONTROL         "",IDC_ERRLINE,"Static",SS_LEFTNOWORDWRAP | SS_NOPREFIX | WS_GROUP,20,16,130,8
-    DEFPUSHBUTTON   "&Stop macro",IDOK,31,28,48,14
-    PUSHBUTTON      "&Continue",IDCANCEL,91,28,48,14
+    DEFPUSHBUTTON   "&Stop macro",IDOK,27,28,54,14
+    PUSHBUTTON      "&Continue",IDCANCEL,92,28,54,14
 END
 
 IDD_INPDLG DIALOGEX 20, 20, 143, 59
@@ -93,13 +93,13 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,54,36,34,14
 END
 
-IDD_MSGDLG DIALOGEX 0, 0, 65, 43
+IDD_MSGDLG DIALOGEX 0, 0, 80, 43
 STYLE DS_SETFONT | DS_3DLOOK | WS_POPUP | WS_CAPTION | WS_THICKFRAME
 FONT 14, "System", 0, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,0,31,25,12
+    DEFPUSHBUTTON   "OK",IDOK,0,31,35,12
     LTEXT           "",IDC_MSGTEXT,0,8,65,9,SS_NOPREFIX
-    PUSHBUTTON      "No",IDCANCEL,40,31,25,12,NOT WS_VISIBLE
+    PUSHBUTTON      "No",IDCANCEL,45,31,35,12,NOT WS_VISIBLE
 END
 
 IDD_STATDLG DIALOGEX 0, 0, 52, 25
@@ -160,14 +160,4 @@ IDI_TTMACRO             ICON                    "ttmacro.ico"
 #endif    // âpåÍ (ïƒçë) resources
 /////////////////////////////////////////////////////////////////////////////
 
-
-
-#ifndef APSTUDIO_INVOKED
-/////////////////////////////////////////////////////////////////////////////
-//
-// Generated from the TEXTINCLUDE 3 resource.
-//
-
-/////////////////////////////////////////////////////////////////////////////
-#endif    // not APSTUDIO_INVOKED
 

@@ -162,10 +162,10 @@ void CMsgDlg::Relocation(BOOL is_init, int new_WW)
 #ifdef I18N
       GetDlgItemText(IDOK, uimsg, sizeof(uimsg));
       get_lang_msg("BTN_YES", uimsg, UILanguageFile);
-	  ::SetWindowText(HOk,"&Yes");
+	  ::SetWindowText(HOk,uimsg);
       GetDlgItemText(IDOK, uimsg, sizeof(uimsg));
       get_lang_msg("BTN_NO", uimsg, UILanguageFile);
-      ::SetWindowText(HNo,"&No");
+      ::SetWindowText(HNo,uimsg);
 #else
       ::SetWindowText(HOk,"&Yes");
       ::SetWindowText(HNo,"&No");
