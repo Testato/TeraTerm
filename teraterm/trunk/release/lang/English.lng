@@ -636,14 +636,14 @@ MSG_UNKNOWN_OPTION_ERROR=Unrecognized command-line option: %s
 ; x11util.c
 MSG_X_AUTH_ERROR=Remote X application sent incorrect authentication data.\nIts X session is being cancelled.
 
-MSG_CREATEWINDOW_KEYGEN_ERROR=Cannot create Key Generator window.
-MSG_CREATEWINDOW_ABOUT_ERROR=Cannot create About box window.
-MSG_CREATEWINDOW_SETUP_ERROR=Cannot create TTSSH Setup window.
+MSG_CREATEWINDOW_KEYGEN_ERROR=Unable to display Key Generator dialog box.
+MSG_CREATEWINDOW_ABOUT_ERROR=Unable to display About dialog box.
+MSG_CREATEWINDOW_SETUP_ERROR=Unable to display TTSSH Setup dialog box.
 MSG_CREATEWINDOW_FWDSETUP_ERROR=Unable to display forwarding setup dialog box.
 MSG_CREATEWINDOW_FWDEDIT_ERROR=Unable to display forwarding edit dialog box.
 MSG_CREATEWINDOW_AUTH_ERROR=Unable to display authentication dialog box.\nConnection terminated.
 MSG_CREATEWINDOW_AUTHSETUP_ERROR=Unable to display authentication setup dialog box.
-MSG_OPEN_FILEDLG_KNOWNHOSTS_ERROR=Cannot show file dialog box: error %d
+MSG_OPEN_FILEDLG_KNOWNHOSTS_ERROR=Unable to display file dialog box: error %d
 
 MSG_WARNING=WARNING
 MSG_ERROR=ERROR

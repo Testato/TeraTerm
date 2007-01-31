@@ -365,7 +365,7 @@ BTN_HELP=ƒwƒ‹ƒv(&H)
 
 ; help
 HELPFILE=teratermj.chm
-MSG_OPENHELP_ERROR=HTMLƒwƒ‹ƒv(%s)‚ðŠJ‚¯‚Ü‚¹‚ñ. 
+MSG_OPENHELP_ERROR=HTMLƒwƒ‹ƒv(%s)‚ðŠJ‚¯‚Ü‚¹‚ñ.
 
 
 [TTSSH]
@@ -407,7 +407,7 @@ DLG_ABOUT_AUTH_INFO=ƒ†[ƒU[ '%s', %s”FØ
 DLG_AUTH_TITLE=SSH”FØ
 DLG_AUTH_TITLE_FAILED=SSH”FØ‚ðÄŽŽs’†
 DLG_AUTH_BANNER=ƒƒOƒCƒ“’†: %s
-DLG_AUTH_BANNER2=”FØ‚ª•K—v‚Å‚·. 
+DLG_AUTH_BANNER2=”FØ‚ª•K—v‚Å‚·.
 DLG_AUTH_BANNER2_FAILED=”FØ‚ÉŽ¸”s‚µ‚Ü‚µ‚½. ÄŽŽs‚µ‚Ä‚­‚¾‚³‚¢.
 DLG_AUTH_USERNAME=ƒ†[ƒU–¼(&N):
 DLG_AUTH_PASSWORD=ƒpƒXƒtƒŒ[ƒY(&P):
@@ -444,8 +444,8 @@ MSG_NOAUTHMETHOD_ERROR=Server does not support any of the authentication options
 
 ; dlg diff host
 DLG_DIFFERENTHOST_TITLE=ƒZƒLƒ…ƒŠƒeƒBŒx
-DLG_DIFFERENTHOST_WARNING=knows hostsƒŠƒXƒg’†‚ÌƒT[ƒo"####################################"‚ÌƒGƒ“ƒgƒŠ‚Æ, Ú‘±æ‚ÌƒzƒXƒgŒ®‚ª *ˆê’v‚µ‚Ä‚¢‚Ü‚¹‚ñ* ˆ«ˆÓ‚ðŽ‚Á‚½ƒzƒXƒg‚ª, Ú‘±‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚éƒT[ƒo‚Ì‚Ó‚è‚ð‚µ‚Ä‚¢‚é‰Â”\«‚à‚ ‚è‚Ü‚·‚Ì‚Å, \•ª’ˆÓ‚µ‚Ä‚­‚¾‚³‚¢. 
-DLG_DIFFERENTHOST_WARNING2=known hostsƒŠƒXƒg‚É‚±‚ÌƒzƒXƒg‚ð’Ç‰Á‚µ‚Ä‘±s‚·‚é‚Æ, ŽŸ‰ñ‚©‚ç‚±‚ÌŒx‚Ío‚È‚­‚È‚è‚Ü‚·. 
+DLG_DIFFERENTHOST_WARNING=knows hostsƒŠƒXƒg’†‚ÌƒT[ƒo"####################################"‚ÌƒGƒ“ƒgƒŠ‚Æ, Ú‘±æ‚ÌƒzƒXƒgŒ®‚ª *ˆê’v‚µ‚Ä‚¢‚Ü‚¹‚ñ* ˆ«ˆÓ‚ðŽ‚Á‚½ƒzƒXƒg‚ª, Ú‘±‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚éƒT[ƒo‚Ì‚Ó‚è‚ð‚µ‚Ä‚¢‚é‰Â”\«‚à‚ ‚è‚Ü‚·‚Ì‚Å, \•ª’ˆÓ‚µ‚Ä‚­‚¾‚³‚¢.
+DLG_DIFFERENTHOST_WARNING2=known hostsƒŠƒXƒg‚É‚±‚ÌƒzƒXƒg‚ð’Ç‰Á‚µ‚Ä‘±s‚·‚é‚Æ, ŽŸ‰ñ‚©‚ç‚±‚ÌŒx‚Ío‚È‚­‚È‚è‚Ü‚·.
 DLG_DIFFERENTHOST_FINGERPRINT=ƒT[ƒo‘¤‚ÌƒzƒXƒgŒ®Žw–ä:
 DLG_DIFFERENTHOST_REPLACE=Šù‘¶‚ÌŒ®‚ð, V‚µ‚¢Œ®‚Åã‘‚«‚·‚é(&R)
 
@@ -464,8 +464,8 @@ MSG_SAME_LOCALPORT_ERROR=“¯ˆêƒ[ƒJƒ‹ƒ|[ƒg‚É 2‚ÂˆÈã‚Ì“]‘—‚ÍÝ’è‚Å‚«‚Ü‚¹‚ñ (%d)
 MSG_UNSPECIFYIED_FWD_ERROR1=‚±‚ÌSSHƒZƒbƒVƒ‡ƒ“‚ªŽn‚Ü‚Á‚½‚Æ‚«, ŽŸ‚Ì“]‘—‚ÍŽw’è‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½:\n\n
 MSG_UNSPECIFYIED_FWDS_ERROR1=‚±‚ÌSSHƒZƒbƒVƒ‡ƒ“‚ªŽn‚Ü‚Á‚½‚Æ‚«, ŽŸ‚Ì“]‘—‚ÍŽw’è‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½:\n\n
 MSG_UNSPECIFYIED_FWD_ERROR2=\nSSHƒvƒƒgƒRƒ‹‚Ì‹K§‚Ì‚½‚ß‚É, ‚±‚Ì“]‘—‚Í, Œ»Ý‚ÌSSHƒZƒbƒVƒ‡ƒ“‚Å“®ì‚µ‚Ü‚¹‚ñ. \nÝ’è‚ð•Û‘¶‚µ‚Ä, V‚µ‚¢SSH ƒZƒbƒVƒ‡ƒ“‚ðŠJŽn‚·‚ê‚Î, “]‘—‚ª—LŒø‚É‚È‚è‚Ü‚·.
-MSG_UNSPECIFYIED_FWDS_ERROR2=\nSSHƒvƒƒgƒRƒ‹‚Ì‹K§‚Ì‚½‚ß‚É, ‚±‚ê‚ç‚Ì“]‘—‚Í, Œ»Ý‚ÌSSHƒZƒbƒVƒ‡ƒ“‚Å“®ì‚µ‚Ü‚¹‚ñ. \nÝ’è‚ð•Û‘¶‚µ‚Ä, V‚µ‚¢SSH ƒZƒbƒVƒ‡ƒ“‚ðŠJŽn‚·‚ê‚Î, “]‘—‚ª—LŒø‚É‚È‚è‚Ü‚·. 
-MSG_INVALID_PORT_ERROR="%s" ‚Í–³Œø‚Èƒ|[ƒg”Ô†‚Å‚·. \nƒ|[ƒg–¼‚ðˆê——‚©‚ç‘I‘ð‚·‚é‚©, 1 ‚©‚ç 65535‚ÌŠÔ‚ÅŽw’è‚µ‚Ä‚­‚¾‚³‚¢. 
+MSG_UNSPECIFYIED_FWDS_ERROR2=\nSSHƒvƒƒgƒRƒ‹‚Ì‹K§‚Ì‚½‚ß‚É, ‚±‚ê‚ç‚Ì“]‘—‚Í, Œ»Ý‚ÌSSHƒZƒbƒVƒ‡ƒ“‚Å“®ì‚µ‚Ü‚¹‚ñ. \nÝ’è‚ð•Û‘¶‚µ‚Ä, V‚µ‚¢SSH ƒZƒbƒVƒ‡ƒ“‚ðŠJŽn‚·‚ê‚Î, “]‘—‚ª—LŒø‚É‚È‚è‚Ü‚·.
+MSG_INVALID_PORT_ERROR="%s" ‚Í–³Œø‚Èƒ|[ƒg”Ô†‚Å‚·. \nƒ|[ƒg–¼‚ðˆê——‚©‚ç‘I‘ð‚·‚é‚©, 1 ‚©‚ç 65535‚ÌŠÔ‚ÅŽw’è‚µ‚Ä‚­‚¾‚³‚¢.
 
 ; dlg fwd setup
 DLG_FWDSETUP_TITLE=TTSSH: ƒ|[ƒg“]‘—Ý’è
@@ -495,7 +495,7 @@ DLG_HOST_SERIAL=ƒVƒŠƒAƒ‹(&E)
 DLG_HOST_SERIAL_PORT=ƒ|[ƒg(&R):
 DLG_HOST_HELP=ƒwƒ‹ƒv(&H)
 
-MSG_TCPPORT_NAN_ERROR=TCPƒ|[ƒg”Ô†‚É‚Í”’l‚ð“ü—Í‚µ‚Ä‚­‚¾‚³‚¢. 
+MSG_TCPPORT_NAN_ERROR=TCPƒ|[ƒg”Ô†‚É‚Í”’l‚ð“ü—Í‚µ‚Ä‚­‚¾‚³‚¢.
 
 ; dlg keygen
 DLG_KEYGEN_TITLE=TTSSH: ƒL[¶¬
@@ -533,7 +533,7 @@ DLG_SSHSETUP_KNOWNHOST_RW=“Ç‚Ý‘‚«(&W):
 DLG_SSHSETUP_KNOWNHOST_RO=“Ç‚ÝŽæ‚èê—p(&R):
 DLG_SSHSETUP_HEARTBEAT=ƒn[ƒgƒr[ƒg(keep-alive)
 DLG_SSHSETUP_HEARTBEAT_UNIT=•b(0‚ðŽw’è‚·‚é‚Æ–³Œø)
-DLG_SSHSETUP_NOTICE=‚¢‚¸‚ê‚Ì•ÏX‚àŽŸ‰ñ‚ÌƒZƒbƒVƒ‡ƒ“ˆÈ~—LŒø‚É‚È‚è‚Ü‚·. 
+DLG_SSHSETUP_NOTICE=‚¢‚¸‚ê‚Ì•ÏX‚àŽŸ‰ñ‚ÌƒZƒbƒVƒ‡ƒ“ˆÈ~—LŒø‚É‚È‚è‚Ü‚·.
 
 FILEDLG_OPEN_KNOWNHOSTS_RW_TITLE=“Ç‚Ý‘‚«—pknownhostsƒtƒ@ƒCƒ‹‚ð‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢
 FILEDLG_OPEN_KNOWNHOSTS_RO_TITLE=’Ç‰Á‚·‚é“Ç‚ÝŽæ‚èê—pknownhostsƒtƒ@ƒCƒ‹‚ð‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢
@@ -545,7 +545,7 @@ DLG_TIS_BANNER=ƒƒOƒCƒ“’†: %s
 ; dlg unknown host
 DLG_UNKNONWHOST_TITLE=ƒZƒLƒ…ƒŠƒeƒBŒx
 DLG_UNKNOWNHOST_WARNINIG=known hostsƒŠƒXƒg‚ÉƒT[ƒo"#####################################"‚ÌƒGƒ“ƒgƒŠ‚Í‚ ‚è‚Ü‚¹‚ñ. ˆ«ˆÓ‚ðŽ‚Á‚½ƒzƒXƒg‚ª, Ú‘±‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚éƒT[ƒo‚Ì‚Ó‚è‚ð‚µ‚Ä‚¢‚é‰Â”\«‚à‚ ‚è‚Ü‚·‚Ì‚Å, \•ª’ˆÓ‚µ‚Ä‚­‚¾‚³‚¢I
-DLG_UNKNOWNHOST_WARNINIG2=known hostsƒŠƒXƒg‚Ì‚±‚ÌƒzƒXƒg‚ð’Ç‰Á‚µ‚Ä‘±s‚·‚é‚Æ, ŽŸ‰ñ‚©‚ç‚±‚ÌŒx‚Ío‚È‚­‚È‚è‚Ü‚·. 
+DLG_UNKNOWNHOST_WARNINIG2=known hostsƒŠƒXƒg‚Ì‚±‚ÌƒzƒXƒg‚ð’Ç‰Á‚µ‚Ä‘±s‚·‚é‚Æ, ŽŸ‰ñ‚©‚ç‚±‚ÌŒx‚Ío‚È‚­‚È‚è‚Ü‚·.
 DLG_UNKNOWNHOST_FINGERPRINT=ƒT[ƒo‘¤‚ÌƒzƒXƒgŒ®Žw–ä:
 DLG_UNKNOWNHOST_ADD=‚±‚ÌƒzƒXƒg‚ðknown hostsƒŠƒXƒg‚É’Ç‰Á‚·‚é(&A)
 
@@ -576,8 +576,8 @@ MSG_FWD_HOSTILE_ATTACK_ERROR=IP ”Ô† %s ‚ÌƒzƒXƒg‚ª, ƒ[ƒJƒ‹ƒ|[ƒg %d ‚É“]‘—Ú‘±
 MSG_FWD_SOCKET_ERROR=ƒ|[ƒg“]‘—‚É•K—v‚È‚¢‚­‚Â‚©‚Ìƒ\ƒPƒbƒg‚Ì‰Šú‰»‚ÉŽ¸”s‚µ‚Ü‚µ‚½.\n‚¢‚­‚Â‚©‚Ìƒ|[ƒg“]‘—ƒT[ƒrƒX‚Í—˜—p‚Å‚«‚Ü‚¹‚ñ.\n(ƒGƒ‰[”Ô† %d)
 MSG_FWD_DUPLICATE_ERROR=TTSSH “à•”ƒGƒ‰[: d•¡‚µ‚½Ží—Þ/ƒ|[ƒg‚ÌŽw’è‚ª‘¶Ý‚µ‚½‚½‚ß, ƒ|[ƒg“]‘—Ý’è‚ª‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½
 MSG_FWD_DENIED_HANDLE_ERROR=ƒT[ƒo‚Í‚±‚Ìƒ}ƒVƒ“‚É“]‘—‚ðŽŽ‚Ý‚Ü‚µ‚½.\nƒ}ƒVƒ“ %s ã‚Ìƒ|[ƒg%s ‚Ö‚ÌÚ‘±‚ð—v‹‚µ‚Ü‚µ‚½.\n—v‹ˆ—’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚½‚½‚ß, ‹‘”Û‚³‚ê‚Ü‚µ‚½.
-MSG_FWD_DENIED_ERROR=ƒT[ƒo‚Í‚±‚Ìƒ}ƒVƒ“‚É“]‘—‚ðŽŽ‚Ý‚Ü‚µ‚½.\nƒ}ƒVƒ“ %s ã‚Ìƒ|[ƒg%s ‚Ö‚ÌÚ‘±‚ð—v‹‚µ‚Ü‚µ‚½.\nTTSSH ‚ÉŠY“–‚·‚é“]‘—Ý’è‚ª‘¶Ý‚µ‚È‚¢‚½‚ß, —v‹‚ð‹‘”Û‚µ‚Ü‚µ‚½. 
-MSG_FWD_DENIED_X_ERROR=ƒT[ƒo‚Í‚±‚Ìƒ}ƒVƒ“‚É“]‘—‚ðŽŽ‚Ý‚Ü‚µ‚½.\nƒ[ƒJƒ‹‚ÌX ƒT[ƒo‚Ö‚ÌÚ‘±‚ð—v‹‚µ‚Ü‚µ‚½.\nTTSSH ‚ÉŠY“–‚·‚é“]‘—Ý’è‚ª‘¶Ý‚µ‚È‚¢‚½‚ß, —v‹‚ð‹‘”Û‚µ‚Ü‚µ‚½. 
+MSG_FWD_DENIED_ERROR=ƒT[ƒo‚Í‚±‚Ìƒ}ƒVƒ“‚É“]‘—‚ðŽŽ‚Ý‚Ü‚µ‚½.\nƒ}ƒVƒ“ %s ã‚Ìƒ|[ƒg%s ‚Ö‚ÌÚ‘±‚ð—v‹‚µ‚Ü‚µ‚½.\nTTSSH ‚ÉŠY“–‚·‚é“]‘—Ý’è‚ª‘¶Ý‚µ‚È‚¢‚½‚ß, —v‹‚ð‹‘”Û‚µ‚Ü‚µ‚½.
+MSG_FWD_DENIED_X_ERROR=ƒT[ƒo‚Í‚±‚Ìƒ}ƒVƒ“‚É“]‘—‚ðŽŽ‚Ý‚Ü‚µ‚½.\nƒ[ƒJƒ‹‚ÌX ƒT[ƒo‚Ö‚ÌÚ‘±‚ð—v‹‚µ‚Ü‚µ‚½.\nTTSSH ‚ÉŠY“–‚·‚é“]‘—Ý’è‚ª‘¶Ý‚µ‚È‚¢‚½‚ß, —v‹‚ð‹‘”Û‚µ‚Ü‚µ‚½.
 MSG_FWD_DENIED_BY_SERVER_ERROR=ƒ[ƒJƒ‹ƒ}ƒVƒ“ã‚ÌƒvƒƒOƒ‰ƒ€‚Í“]‘—æƒ|[ƒg‚ÉÚ‘±‚µ‚Ü‚µ‚½.\n“]‘——v‹‚ÍƒT[ƒo‘¤‚Å‹‘”Û‚³‚ê‚Ü‚µ‚½. Ú‘±‚ð•Â‚¶‚Ü‚·.
 MSG_FWD_COMM_ERROR=ƒ[ƒJƒ‹ƒ|[ƒg‚É“]‘—ƒf[ƒ^‚ð‘—M’†, ’ÊMƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½.\n“]‘—Ú‘±‚ð•Â‚¶‚Ü‚·.
 
@@ -587,7 +587,7 @@ MSG_HOSTS_READ_ERROR=known_hosts “Ç‚Ýž‚Ý’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½.
 MSG_HOSTS_ALLOC_ERROR=known_hosts “Ç‚Ýž‚Ý’†‚Éƒƒ‚ƒŠ•s‘«‚É‚È‚è‚Ü‚µ‚½.
 MSG_HOSTS_HOSTNAME_INVALID_ERROR=ƒzƒXƒg–¼‚É–³Œø‚È•¶Žš‚ªŠÜ‚Ü‚ê‚Ä‚¢‚Ü‚·.\nƒZƒbƒVƒ‡ƒ“‚ð•Â‚¶‚Ü‚·.
 MSG_HOSTS_HOSTNAME_EMPTY_ERROR=ƒzƒXƒg–¼‚ª‹ó‚Å‚·.\nƒZƒbƒVƒ‡ƒ“‚ð•Â‚¶‚Ü‚·.
-MSG_HOSTS_FILE_UNSPECIFY_ERROR=known-hosts ‚ªŽw’è‚³‚ê‚È‚©‚Á‚½‚Ì‚Å, ƒzƒXƒg‚Æ‚»‚ÌƒL[‚ð‰Á‚¦‚é‚±‚Æ‚ª‚Å‚«‚Ü‚¹‚ñ.\nTeraterm‚ðÄ‹N“®‚µ‚Ä, TTSSH ƒZƒbƒgƒAƒbƒvƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚Å“Çž‚ÝE‘ž‚Ýknown-hosts ‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢. 
+MSG_HOSTS_FILE_UNSPECIFY_ERROR=known-hosts ‚ªŽw’è‚³‚ê‚È‚©‚Á‚½‚Ì‚Å, ƒzƒXƒg‚Æ‚»‚ÌƒL[‚ð‰Á‚¦‚é‚±‚Æ‚ª‚Å‚«‚Ü‚¹‚ñ.\nTeraterm‚ðÄ‹N“®‚µ‚Ä, TTSSH ƒZƒbƒgƒAƒbƒvƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚Å“Çž‚ÝE‘ž‚Ýknown-hosts ‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢.
 MSG_HOSTS_WRITE_EACCES_ERROR=ƒzƒXƒgŒ®‚Ì‘‚«ž‚Ý’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½.\nknown-hosts ‚Ì‘‚«ž‚ÝŒ ŒÀ‚ª‚ ‚è‚Ü‚¹‚ñ.
 MSG_HOSTS_WRITE_ERROR=ƒzƒXƒgŒ®‚Ì‘‚«ž‚Ý’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½.\nƒzƒXƒgŒ®‚ð‘‚«ž‚ß‚Ü‚¹‚ñ.
 
@@ -604,27 +604,27 @@ MSG_KEYFILES_PASSPHRASE_ERROR=“ü—Í‚³‚ê‚½ƒpƒXƒtƒŒ[ƒY‚Å‚ÍŒ®ƒtƒ@ƒCƒ‹‚ð•œ†‚Å‚«‚Ü‚¹
 MSG_KEYFILES_CRYPTOLIB_ERROR=ˆÃ†ƒ‰ƒCƒuƒ‰ƒŠ‚ÉƒGƒ‰[‚ª‚ ‚è‚Ü‚·.\nŽw’è‚³‚ê‚½Œ®‚Í–³Œø‚Å‚·.
 
 ; pkt.c
-MSG_PKT_OVERSIZED_ERROR=ƒT[ƒo‚©‚ç‹‘å‚ÈƒpƒPƒbƒg‚ðŽóM‚µ‚Ü‚µ‚½; Ø’f‚µ‚Ü‚·. 
+MSG_PKT_OVERSIZED_ERROR=ƒT[ƒo‚©‚ç‹‘å‚ÈƒpƒPƒbƒg‚ðŽóM‚µ‚Ü‚µ‚½; Ø’f‚µ‚Ü‚·.
 
 ; ssh.c
-MSG_SSH_INVALID_COMPDATA_ERROR=ŽóMƒpƒPƒbƒg’†‚Ìˆ³kƒf[ƒ^‚ª–³Œø‚Å‚·. 
+MSG_SSH_INVALID_COMPDATA_ERROR=ŽóMƒpƒPƒbƒg’†‚Ìˆ³kƒf[ƒ^‚ª–³Œø‚Å‚·.
 MSG_SSH_TRUNCATED_PKT_ERROR=Œ‡‘¹ƒpƒPƒbƒg‚ðŽóM‚µ‚Ü‚µ‚½ (%ld > %d) @ grab_payload()
 MSG_SSH_TRUNCATED_PKT_LIM_ERROR=Œ‡‘¹ƒpƒPƒbƒg‚ðŽóM‚µ‚Ü‚µ‚½ (%ld > %d) @ grab_payload_limited()
-MSG_SSH_COREINS_ERROR='CORE ‘}“üUŒ‚' ‚ðŒŸo‚µ‚Ü‚µ‚½. Ú‘±‚ð’†’f‚µ‚Ü‚·. 
-MSG_SSH_CORRUPTDATA_ERROR=Œ‡‘¹ƒf[ƒ^‚ðŒŸo‚µ‚Ü‚µ‚½. Ø’f‚µ‚Ü‚·. 
-MSG_SSH_DECOMPRESS_ERROR=“à•”ƒGƒ‰[: ƒpƒPƒbƒg‚Ì•œ†‚ÉŽ¸”s‚µ‚Ü‚µ‚½. \nƒoƒO•ñ‚ð‚¨Šè‚¢‚µ‚Ü‚·. 
-MSG_SSH_SEND_PKT_ERROR=SSH ƒpƒPƒbƒg‚ð‘—M’†‚É’ÊMƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½. \nØ’f‚µ‚Ü‚·. 
-MSG_SSH_COMP_ERROR=ƒpƒPƒbƒgƒf[ƒ^‚ðˆ³k’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½. \nØ’f‚µ‚Ü‚·. 
-MSG_SSH_UNABLE_FWD_ERROR=\n“]‘—‚Å‚«‚È‚¢ƒ|[ƒg‚Ö‚Ì“]‘—‚ðs‚¨‚¤‚Æ‚µ‚½‚½‚ß, ƒT[ƒo‚©‚çØ’f‚³‚ê‚Ü‚µ‚½. \nŠù‚É“¯‚¶ƒT[ƒoã‚Ì“¯ˆêƒ|[ƒg‚Å“]‘—‚ðs‚Á‚Ä‚¢‚éê‡‚É”­¶‚µ‚Ü‚·. 
+MSG_SSH_COREINS_ERROR='CORE ‘}“üUŒ‚' ‚ðŒŸo‚µ‚Ü‚µ‚½. Ú‘±‚ð’†’f‚µ‚Ü‚·.
+MSG_SSH_CORRUPTDATA_ERROR=Œ‡‘¹ƒf[ƒ^‚ðŒŸo‚µ‚Ü‚µ‚½. Ø’f‚µ‚Ü‚·.
+MSG_SSH_DECOMPRESS_ERROR=“à•”ƒGƒ‰[: ƒpƒPƒbƒg‚Ì•œ†‚ÉŽ¸”s‚µ‚Ü‚µ‚½. \nƒoƒO•ñ‚ð‚¨Šè‚¢‚µ‚Ü‚·.
+MSG_SSH_SEND_PKT_ERROR=SSH ƒpƒPƒbƒg‚ð‘—M’†‚É’ÊMƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½. \nØ’f‚µ‚Ü‚·.
+MSG_SSH_COMP_ERROR=ƒpƒPƒbƒgƒf[ƒ^‚ðˆ³k’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½. \nØ’f‚µ‚Ü‚·.
+MSG_SSH_UNABLE_FWD_ERROR=\n“]‘—‚Å‚«‚È‚¢ƒ|[ƒg‚Ö‚Ì“]‘—‚ðs‚¨‚¤‚Æ‚µ‚½‚½‚ß, ƒT[ƒo‚©‚çØ’f‚³‚ê‚Ü‚µ‚½. \nŠù‚É“¯‚¶ƒT[ƒoã‚Ì“¯ˆêƒ|[ƒg‚Å“]‘—‚ðs‚Á‚Ä‚¢‚éê‡‚É”­¶‚µ‚Ü‚·.
 MSG_SSH_SERVER_DISCON_ERROR=ƒT[ƒo‚ÉŽŸ‚Ì——R‚ÅØ’f‚³‚ê‚Ü‚µ‚½.  '%s'.%s
 MSG_SSH_SERVER_DISCON_NORES_ERROR=ƒT[ƒo‚©‚çØ’f‚³‚ê‚Ü‚µ‚½ (Ø’f——R‚Í‚ ‚è‚Ü‚¹‚ñ). %s
-MSG_SSH_VERSION_ERROR=ƒT[ƒo‚ÌƒvƒƒgƒRƒ‹ƒo[ƒWƒ‡ƒ“‚ª•s–¾‚Å‚·. 
-MSG_SSH_SEND_ID_ERROR=SSH ID •¶Žš—ñ‘—M’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½. \nØ’f‚µ‚Ü‚·. 
+MSG_SSH_VERSION_ERROR=ƒT[ƒo‚ÌƒvƒƒgƒRƒ‹ƒo[ƒWƒ‡ƒ“‚ª•s–¾‚Å‚·.
+MSG_SSH_SEND_ID_ERROR=SSH ID •¶Žš—ñ‘—M’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½. \nØ’f‚µ‚Ü‚·.
 MSG_SSH_UNEXP_MSG2_ERROR=Œ»Ý‚ÌƒXƒe[ƒW‚Å‚Í‘z’èŠO‚ÌSSH2 ƒƒbƒZ[ƒW(%d) ‚Å‚·. (%d)
 MSG_SSH_UNEXP_MSG_ERROR=‘z’èŠO‚ÌŽí•Ê‚ÌƒpƒPƒbƒg‚ðŽóM‚µ‚Ü‚µ‚½: %d
-MSG_SSH_ALLOC_TERMINAL_ERROR=ƒT[ƒo‚Í‰¼‘z’[––‚ðŠ„‚è“–‚Ä‚é‚±‚Æ‚ª‚Å‚«‚Ü‚¹‚ñ. ’[––‚É–â‘è‚ª¶‚¶‚éê‡‚ª‚ ‚è‚Ü‚·. 
-MSG_SSH_SETUP_COMP_ERROR=ˆ³kÝ’è’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½. \nØ’f‚µ‚Ü‚·. 
-MSG_SSH_DECRYPT_RSA_ERROR=RSA •œ†’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½. \nŒ®ƒtƒ@ƒCƒ‹‚ªŒë‚è, ‚Ü‚½‚Í”j‘¹‚µ‚Ä‚¢‚éê‡‚ª‚ ‚è‚Ü‚·. 
+MSG_SSH_ALLOC_TERMINAL_ERROR=ƒT[ƒo‚Í‰¼‘z’[––‚ðŠ„‚è“–‚Ä‚é‚±‚Æ‚ª‚Å‚«‚Ü‚¹‚ñ. ’[––‚É–â‘è‚ª¶‚¶‚éê‡‚ª‚ ‚è‚Ü‚·.
+MSG_SSH_SETUP_COMP_ERROR=ˆ³kÝ’è’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½. \nØ’f‚µ‚Ü‚·.
+MSG_SSH_DECRYPT_RSA_ERROR=RSA •œ†’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½. \nŒ®ƒtƒ@ƒCƒ‹‚ªŒë‚è, ‚Ü‚½‚Í”j‘¹‚µ‚Ä‚¢‚éê‡‚ª‚ ‚è‚Ü‚·.
 MSG_SSH_UNSUPPORT_AUTH_METHOD_ERROR=“à•”ƒGƒ‰[: ƒTƒ|[ƒgŠO‚Ì”FØ•û–@
 MSG_SSH_AUTH_FAILURE_ERROR=SSH2Ž©“®ƒƒOƒCƒ“ƒGƒ‰[: ƒ†[ƒU[”FØ‚ªŽ¸”s‚µ‚Ü‚µ‚½
 MSG_SSH_CHANNEL_OPEN_ERROR=SSH2_MSG_CHANNEL_OPEN_FAILURE ‚ðŽóM‚µ‚Ü‚µ‚½. \r\nƒ`ƒƒƒlƒ‹ [%d]: ——R: %s(%d) ƒƒbƒZ[ƒW: %s
@@ -633,15 +633,15 @@ MSG_SSH_CHANNEL_OPEN_ERROR=SSH2_MSG_CHANNEL_OPEN_FAILURE ‚ðŽóM‚µ‚Ü‚µ‚½. \r\nƒ`ƒ
 MSG_UNKNOWN_OPTION_ERROR=–³Œø‚ÈƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ƒIƒvƒVƒ‡ƒ“: %s
 
 ; x11util.c
-MSG_X_AUTH_ERROR=ƒŠƒ‚[ƒg‚ÌX ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚©‚ç–³Œø‚È”FØƒf[ƒ^‚ðŽóM‚µ‚Ü‚µ‚½. \nX ƒZƒbƒVƒ‡ƒ“‚Í–³Œø‚É‚È‚Á‚Ä‚¢‚Ü‚·. 
+MSG_X_AUTH_ERROR=ƒŠƒ‚[ƒg‚ÌX ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚©‚ç–³Œø‚È”FØƒf[ƒ^‚ðŽóM‚µ‚Ü‚µ‚½. \nX ƒZƒbƒVƒ‡ƒ“‚Í–³Œø‚É‚È‚Á‚Ä‚¢‚Ü‚·.
 
-MSG_CREATEWINDOW_KEYGEN_ERROR=ƒL[¶¬ƒEƒBƒ“ƒhƒE‚ðŠJ‚¯‚Ü‚¹‚ñ
-MSG_CREATEWINDOW_ABOUT_ERROR=î•ñƒEƒBƒ“ƒhƒE‚ðŠJ‚¯‚Ü‚¹‚ñ
-MSG_CREATEWINDOW_SETUP_ERROR=TTSSH Ý’èƒEƒBƒ“ƒhƒE‚ðŠJ‚¯‚Ü‚¹‚ñ
-MSG_CREATEWINDOW_FWDSETUP_ERROR=SSH ƒ|[ƒg“]‘—Ý’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ðŠJ‚¯‚Ü‚¹‚ñ. 
-MSG_CREATEWINDOW_FWDEDIT_ERROR=SSH ƒ|[ƒg“]‘—•ÒWƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ðŠJ‚¯‚Ü‚¹‚ñ. 
-MSG_CREATEWINDOW_AUTH_ERROR=”FØƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ð•\Ž¦‚Å‚«‚Ü‚¹‚ñ.\nÚ‘±‚ð•Â‚¶‚Ü‚µ‚½. 
-MSG_CREATEWINDOW_AUTHSETUP_ERROR=”FØÝ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ð•\Ž¦‚Å‚«‚Ü‚¹‚ñ. 
+MSG_CREATEWINDOW_KEYGEN_ERROR=ƒL[¶¬ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ðŠJ‚¯‚Ü‚¹‚ñ.
+MSG_CREATEWINDOW_ABOUT_ERROR=î•ñƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ðŠJ‚¯‚Ü‚¹‚ñ.
+MSG_CREATEWINDOW_SETUP_ERROR=TTSSH Ý’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ðŠJ‚¯‚Ü‚¹‚ñ.
+MSG_CREATEWINDOW_FWDSETUP_ERROR=SSH ƒ|[ƒg“]‘—Ý’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ðŠJ‚¯‚Ü‚¹‚ñ.
+MSG_CREATEWINDOW_FWDEDIT_ERROR=SSH ƒ|[ƒg“]‘—•ÒWƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ðŠJ‚¯‚Ü‚¹‚ñ.
+MSG_CREATEWINDOW_AUTH_ERROR=”FØƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ðŠJ‚¯‚Ü‚¹‚ñ.\nÚ‘±‚ð•Â‚¶‚Ü‚µ‚½.
+MSG_CREATEWINDOW_AUTHSETUP_ERROR=”FØÝ’èƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ðŠJ‚¯‚Ü‚¹‚ñ.
 MSG_OPEN_FILEDLG_KNOWNHOSTS_ERROR=ƒ_ƒCƒAƒƒOƒ{ƒbƒNƒX‚ðŠJ‚¯‚Ü‚¹‚ñ: ƒGƒ‰[ %d
 
 MSG_WARNING=Œx
