@@ -3,11 +3,11 @@
 
                 Using Cygwin with a terminal emulator.
                 
-                Copyright (c) 2006 TeraTerm Project
+                Copyright (c) 2007 TeraTerm Project
                 http://sourceforge.jp/projects/ttssh2/
 
                 Based on CygTerm by Original developer:
-                Copyright (C) 2000-2004 NSym
+                Copyright (C) 2000-2006 NSym
 
                 nsym@dd.iij4u.or.jp
 
@@ -236,6 +236,10 @@
                 zsh 4.1.1
 
 // C H A N G E S //
+v1.07_11 2007/01/31 (import from cygterm v1.07)
+        * Avoid WinMainCRTStartup() redefinition error with gcc 3.4.
+        * Give an output gap for keyboard interrupt.
+
 v1.06_11 2006/09/29 (by maya.negeta@gmail.com)
         * Stopped using HOME from environment variable and /etc/passwd.
           CygTerm passes HOME which is set by Cygwin. See also /etc/profile

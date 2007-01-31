@@ -3,11 +3,11 @@
 
                 ターミナル・エミュレータで Cygwin を使う。
 
-                Copyright (c) 2006 TeraTerm Project
+                Copyright (c) 2007 TeraTerm Project
                 http://sourceforge.jp/projects/ttssh2/
 
                 Based on CygTerm by Original developer:
-                Copyright (C) 2000-2004 NSym
+                Copyright (C) 2000-2006 NSym
                 nsym@dd.iij4u.or.jp
       (English) http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index-e.html
      (Japanese) http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
@@ -242,6 +242,10 @@
                 zsh 4.1.1
 
 // 変 更 履 歴 //
+v1.07_11 2007/01/31 (import from cygterm v1.07)
+        * gcc 3.4 での WinMainCRTStartup() 再定義エラー回避
+        * 連続出力時でもキーボード割り込みが入るように。
+
 v1.06_11 2006/09/29 (by maya.negeta@gmail.com)
         * 環境変数と /etc/passwd の HOME を使わないようにした。
           Cygwin によってセットされた HOME が利用される。関連項目 /etc/profile

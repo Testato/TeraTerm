@@ -15,7 +15,11 @@ ICO = $(EXE:.exe=.ico)
 RC  = $(EXE:.exe=.rc)
 
 $(EXE) : $(SRC) $(RES)
+  ifeq (0, $(shell nm /usr/lib/crt0.o | grep -c WinMainCRTStartup))
+	$(CC) $(CFLAGS) -DNO_WIN_MAIN -o $(EXE) $(SRC) $(RES) $(LIBS)
+  else
 	$(CC) $(CFLAGS) -o $(EXE) $(SRC) $(RES) $(LIBS)
+  endif
 	strip $(EXE)
 
 $(RC):

@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CygTerm+ - yet another Cygwin console
-// Copyright (c) 2006 TeraTerm Project
-// Copyright (C) 2000-2004 NSym.
+// Copyright (c) 2007 TeraTerm Project
+// Copyright (C) 2000-2006 NSym.
 //---------------------------------------------------------------------------
 // This program is free software; you can redistribute it and/or modify it
 // under the terms of the GNU General Public License (GPL) as published by
@@ -66,9 +66,14 @@
 // patch level 10 - to get user name, use getlogin() instead of $USERNAME
 //   Written by IWAMOTO Kouichi. (sue@iwmt.org)
 //
+/////////////////////////////////////////////////////////////////////////////
+// patch level 11 - stopped using %HOME% and /etc/passwd for home directory
+//                  changed the priority of config files
+//   Written by NAGATA Shinya. (maya.negeta@gmail.com)
+//
 
 static char Program[] = "CygTerm+";
-static char Version[] = "version 1.06_11 (2006/09/28)";
+static char Version[] = "version 1.07_11 (2007/01/31)";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -834,6 +839,7 @@ void telnet_session(int te_sock, int sh_pty)
     FD_SET(sh, &rtmp);
     u_char c;
     int cr = 0;
+    int cnt = 0;
     for (;;) {
         rbits = rtmp;
         if (select(FD_SETSIZE, &rbits, 0, 0, 0) <= 0) {
@@ -854,7 +860,10 @@ void telnet_session(int te_sock, int sh_pty)
             if (te.flush_out() == false) {
                 break;
             }
-            continue;  // give priority to data from a shell
+            if (cnt++ < 20) {
+                continue;  // give priority to data from a shell
+            }
+            cnt = 0;
         }
         if (FD_ISSET(te, &rbits)) {
             // send data from a terminal to a shell
@@ -988,24 +997,13 @@ int main(int argc, char** argv)
     return 0;
 }
 
-/**
- * To avoid bellow error, disable follow codes.
- * NOTE: To avoid display console window as cygwin application,
- *       you must build without "gcc -g"
- * -----------------------------------------------------------------------------
- * gcc -g -fno-exceptions -o cygterm.exe cygterm.cc  -mwindows -lc -ltk
- * /tmp/ccfWqjPN.o: In function `WinMainCRTStartup':
- * /build/cygterm106/cygterm.cc:877: multiple definition of `_WinMainCRTStartup'
- * /usr/lib/gcc/i686-pc-cygwin/3.4.4/../../../crt0.o:: first defined here
- * collect2: ld returned 1 exit status
- * make: *** [cygterm.exe] Error 1
- */
-#if 0
-// This program is a Win32 application but, start as Cygwin main().
-//-----------------------------------------------------------------
+#ifdef NO_WIN_MAIN
+// This program is an Win32 application but, start as Cygwin main().
+//------------------------------------------------------------------
 extern "C" {
     void mainCRTStartup(void);
     void WinMainCRTStartup(void) { mainCRTStartup(); }
 };
 #endif
+
 //EOF
