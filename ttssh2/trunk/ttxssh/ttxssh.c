@@ -2386,7 +2386,7 @@ static int get_keys_file_name(HWND parent, char FAR * buf, int bufsize,
 		if (err != 0) {
 			char buf[1024];
 #ifdef I18N
-			strcpy(pvar->ts->UIMsg, "Cannot show file dialog box: error %d");
+			strcpy(pvar->ts->UIMsg, "Unable to display file dialog box: error %d");
 			UTIL_get_lang_msg("MSG_OPEN_FILEDLG_KNOWNHOSTS_ERROR", pvar);
 			_snprintf(buf, sizeof(buf), pvar->ts->UIMsg, err);
 #else
@@ -3482,7 +3482,7 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 		if (DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SSHKEYGEN), hWin, TTXKeyGenerator,
 			(LPARAM) pvar) == -1) {
 #ifdef I18N
-			strcpy(pvar->ts->UIMsg, "Cannot create Key Generator window.");
+			strcpy(pvar->ts->UIMsg, "Unable to display Key Generator dialog box.");
 			UTIL_get_lang_msg("MSG_CREATEWINDOW_KEYGEN_ERROR", pvar);
 			strncpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 			strcpy(pvar->ts->UIMsg, "TTSSH Error");
@@ -3501,7 +3501,7 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 			 (LPARAM) pvar)
 			== -1) {
 #ifdef I18N
-			strcpy(pvar->ts->UIMsg, "Cannot create About box window.");
+			strcpy(pvar->ts->UIMsg, "Unable to display About dialog box.");
 			UTIL_get_lang_msg("MSG_CREATEWINDOW_ABOUT_ERROR", pvar);
 			strncpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 			strcpy(pvar->ts->UIMsg, "TTSSH Error");
@@ -3522,7 +3522,7 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 			 (LPARAM) pvar)
 			== -1) {
 #ifdef I18N
-			strcpy(pvar->ts->UIMsg, "Cannot create TTSSH Setup window.");
+			strcpy(pvar->ts->UIMsg, "Unable to display TTSSH Setup dialog box.");
 			UTIL_get_lang_msg("MSG_CREATEWINDOW_SETUP_ERROR", pvar);
 			strncpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 			strcpy(pvar->ts->UIMsg, "TTSSH Error");
@@ -3841,6 +3841,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.54  2007/01/27 14:29:59  maya
+ * 英語版と日本語版のアクセラレータキーをあわせた。
+ *
  * Revision 1.53  2007/01/27 14:27:47  maya
  * 鍵生成後に、パスフレーズ入力コントロールにフォーカスするようにした。
  *
