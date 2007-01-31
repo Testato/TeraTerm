@@ -412,8 +412,7 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize)
 	// フィルタの追加 (2004.12.19 yutaka)
 	// 3ファイルフィルタの追加 (2005.4.26 yutaka)
 #ifdef I18N
-	/* use memcpy to copy with '\0' */
-	memcpy(pvar->ts->UIMsg, "identity files\0identity;id_rsa;id_dsa\0identity(RSA1)\0identity\0id_rsa(SSH2)\0id_rsa\0id_dsa(SSH2)\0id_dsa\0all(*.*)\0*.*\0\0", sizeof(pvar->ts->UIMsg));
+	strncpy(pvar->ts->UIMsg, "identity files\\0identity;id_rsa;id_dsa\\0identity(RSA1)\\0identity\\0id_rsa(SSH2)\\0id_rsa\\0id_dsa(SSH2)\\0id_dsa\\0all(*.*)\\0*.*\\0\\0", sizeof(pvar->ts->UIMsg));
 	UTIL_get_lang_msg("FILEDLG_OPEN_PRIVATEKEY_FILTER", pvar);
 	memcpy(filter, pvar->ts->UIMsg, sizeof(filter));
 	params.lpstrFilter = filter;
@@ -1487,6 +1486,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.27  2007/01/27 14:29:59  maya
+ * 英語版と日本語版のアクセラレータキーをあわせた。
+ *
  * Revision 1.26  2007/01/22 13:45:19  maya
  * 表示メッセージの読み込み対応
  *

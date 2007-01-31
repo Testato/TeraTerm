@@ -930,7 +930,7 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		SetDlgItemText(dlg, IDC_SERVICELABEL, pvar->ts->UIMsg);
 
 		GetDlgItemText(dlg, IDC_HOSTOTHER, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("IDC_HOSTOTHER", pvar);
+		UTIL_get_lang_msg("DLG_HOST_TCPIP_OTHER", pvar);
 		SetDlgItemText(dlg, IDC_HOSTOTHER, pvar->ts->UIMsg);
 
 		GetDlgItemText(dlg, IDC_HOSTTCPPORTLABEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
@@ -3057,9 +3057,9 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 			ofn.hwndOwner = dlg;
 			if (key_type == KEY_RSA1) {
 #ifdef I18N
-				memcpy(pvar->ts->UIMsg, "SSH1 RSA key(identity.pub)\0identity.pub\0All Files(*.*)\0*.*\0\0", sizeof(pvar->ts->UIMsg));
+				strncpy(pvar->ts->UIMsg, "SSH1 RSA key(identity.pub)\\0identity.pub\\0All Files(*.*)\\0*.*\\0\\0", sizeof(pvar->ts->UIMsg));
 				UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_RSA1_FILTER", pvar);
-				strncpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
+				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
 #else
 				ofn.lpstrFilter = "SSH1 RSA key(identity.pub)\0identity.pub\0All Files(*.*)\0*.*\0\0";
@@ -3067,9 +3067,9 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 				_snprintf(filename, sizeof(filename), "identity.pub");
 			} else if (key_type == KEY_RSA) {
 #ifdef I18N
-				memcpy(pvar->ts->UIMsg, "SSH2 RSA key(id_rsa.pub)\0id_rsa.pub\0All Files(*.*)\0*.*\0\0", sizeof(pvar->ts->UIMsg));
+				strncpy(pvar->ts->UIMsg, "SSH2 RSA key(id_rsa.pub)\\0id_rsa.pub\\0All Files(*.*)\\0*.*\\0\\0", sizeof(pvar->ts->UIMsg));
 				UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_RSA_FILTER", pvar);
-				strncpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
+				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
 #else
 				ofn.lpstrFilter = "SSH2 RSA key(id_rsa.pub)\0id_rsa.pub\0All Files(*.*)\0*.*\0\0";
@@ -3077,9 +3077,9 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 				_snprintf(filename, sizeof(filename), "id_rsa.pub");
 			} else {
 #ifdef I18N
-				memcpy(pvar->ts->UIMsg, "SSH2 DSA key(id_dsa.pub)\0id_dsa.pub\0All Files(*.*)\0*.*\0\0", sizeof(pvar->ts->UIMsg));
+				strncpy(pvar->ts->UIMsg, "SSH2 DSA key(id_dsa.pub)\\0id_dsa.pub\\0All Files(*.*)\\0*.*\\0\\0", sizeof(pvar->ts->UIMsg));
 				UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_DSA_FILTER", pvar);
-				strncpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
+				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
 #else
 				ofn.lpstrFilter = "SSH2 DSA key(id_dsa.pub)\0id_dsa.pub\0All Files(*.*)\0*.*\0\0";
@@ -3240,9 +3240,9 @@ public_error:
 			ofn.hwndOwner = dlg;
 			if (key_type == KEY_RSA1) {
 #ifdef I18N
-				memcpy(pvar->ts->UIMsg, "SSH1 RSA key(identity)\0identity\0All Files(*.*)\0*.*\0\0", sizeof(pvar->ts->UIMsg));
+				strncpy(pvar->ts->UIMsg, "SSH1 RSA key(identity)\\0identity\\0All Files(*.*)\\0*.*\\0\\0", sizeof(pvar->ts->UIMsg));
 				UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_RSA1_FILTER", pvar);
-				strncpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
+				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
 #else
 				ofn.lpstrFilter = "SSH1 RSA key(identity)\0identity\0All Files(*.*)\0*.*\0\0";
@@ -3250,9 +3250,9 @@ public_error:
 				_snprintf(filename, sizeof(filename), "identity");
 			} else if (key_type == KEY_RSA) {
 #ifdef I18N
-				memcpy(pvar->ts->UIMsg, "SSH2 RSA key(id_rsa)\0id_rsa\0All Files(*.*)\0*.*\0\0", sizeof(pvar->ts->UIMsg));
+				strncpy(pvar->ts->UIMsg, "SSH2 RSA key(id_rsa)\\0id_rsa\\0All Files(*.*)\\0*.*\\0\\0", sizeof(pvar->ts->UIMsg));
 				UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_RSA_FILTER", pvar);
-				strncpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
+				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
 #else
 				ofn.lpstrFilter = "SSH2 RSA key(id_rsa)\0id_rsa\0All Files(*.*)\0*.*\0\0";
@@ -3260,9 +3260,9 @@ public_error:
 				_snprintf(filename, sizeof(filename), "id_rsa");
 			} else {
 #ifdef I18N
-				memcpy(pvar->ts->UIMsg, "SSH2 DSA key(id_dsa)\0id_dsa\0All Files(*.*)\0*.*\0\0", sizeof(pvar->ts->UIMsg));
+				strncpy(pvar->ts->UIMsg, "SSH2 DSA key(id_dsa)\\0id_dsa\\0All Files(*.*)\\0*.*\\0\\0", sizeof(pvar->ts->UIMsg));
 				UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_DSA_FILTER", pvar);
-				strncpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
+				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
 #else
 				ofn.lpstrFilter = "SSH2 DSA key(id_dsa)\0id_dsa\0All Files(*.*)\0*.*\0\0";
@@ -3841,6 +3841,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.55  2007/01/31 04:08:39  maya
+ * メッセージを修正した。
+ *
  * Revision 1.54  2007/01/27 14:29:59  maya
  * 英語版と日本語版のアクセラレータキーをあわせた。
  *
