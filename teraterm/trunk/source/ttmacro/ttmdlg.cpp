@@ -167,7 +167,7 @@ BOOL GetFileName(HWND HWin)
   memset(FNFilter, 0, sizeof(FNFilter));
   memset(&FNameRec, 0, sizeof(OPENFILENAME));
 #ifdef I18N
-  memcpy(uimsg, "Macro files (*.ttl)\0*.ttl\0\0", sizeof(uimsg));
+  strncpy(uimsg, "Macro files (*.ttl)\\0*.ttl\\0\\0", sizeof(uimsg));
   get_lang_msg("FILEDLG_OPEN_MACRO_FILTER", uimsg, UILanguageFile);
   memcpy(FNFilter, uimsg, sizeof(FNFilter));
 #else

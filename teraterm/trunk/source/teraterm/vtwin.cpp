@@ -2894,8 +2894,7 @@ void CVTWindow::OnReplayLog()
     ofn.lStructSize = sizeof(OPENFILENAME);
     ofn.hwndOwner = HVTWin;
 #ifdef I18N
-    /* use memcpy to copy with '\0' */
-	memcpy(ts.UIMsg, "all(*.*)\0*.*\0\0", sizeof(ts.UIMsg));
+	strncpy(ts.UIMsg, "all(*.*)\\0*.*\\0\\0", sizeof(ts.UIMsg));
 	get_lang_msg("FILEDLG_OPEN_LOGFILE_FILTER", ts.UIMsg, ts.UILanguageFile);
     ofn.lpstrFilter = ts.UIMsg;
 #else
@@ -3485,8 +3484,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					ofn.lStructSize = sizeof(ofn);
 					ofn.hwndOwner = hDlgWnd;
 #ifdef I18N
-					/* use memcpy to copy with '\0' */
-					memcpy(ts.UIMsg, "exe(*.exe)\0*.exe\0all(*.*)\0*.*\0\0", sizeof(ts.UIMsg));
+					strncpy(ts.UIMsg, "exe(*.exe)\\0*.exe\\0all(*.*)\\0*.*\\0\\0", sizeof(ts.UIMsg));
 					get_lang_msg("FILEDLG_SELECT_LOGVIEW_APP_FILTER", ts.UIMsg, ts.UILanguageFile);
 					ofn.lpstrFilter = ts.UIMsg;
 #else
@@ -4710,6 +4708,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.46  2007/01/21 16:18:35  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.45  2007/01/11 12:27:16  yutakapon
  * ConnectingTimeout機構を追加した
  *

@@ -74,7 +74,7 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 	if (FuncId==GSF_LOADKEY)
 	{
 #ifdef I18N
-		memcpy(uimsg, "keyboard setup files (*.cnf)\0*.cnf\0\0", sizeof(uimsg));
+		strncpy(uimsg, "keyboard setup files (*.cnf)\\0*.cnf\\0\\0", sizeof(uimsg));
 		get_lang_msg("FILEDLG_KEYBOARD_FILTER", uimsg, UILanguageFile);
 		memcpy(FNameFilter, uimsg, sizeof(FNameFilter));
 #else
@@ -85,7 +85,7 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 	}
 	else {
 #ifdef I18N
-		memcpy(uimsg, "setup files (*.ini)\0*.ini\0\0", sizeof(uimsg));
+		strncpy(uimsg, "setup files (*.ini)\\0*.ini\\0\\0", sizeof(uimsg));
 		get_lang_msg("FILEDLG_SETUP_FILTER", uimsg, UILanguageFile);
 		memcpy(FNameFilter, uimsg, sizeof(FNameFilter));
 #else
@@ -379,7 +379,7 @@ BOOL FAR PASCAL GetTransFname
 	}
 
 #ifdef I18N
-	memcpy(uimsg, "All(*.*)\0*.*\0\0", sizeof(FNFilter));
+	strncpy(uimsg, "All(*.*)\\0*.*\\0\\0", sizeof(FNFilter));
 	get_lang_msg("FILEDLG_ALL_FILTER", uimsg, UILanguageFile);
 	memcpy(FNFilter, uimsg, sizeof(FNFilter));
 #else
@@ -607,7 +607,7 @@ BOOL FAR PASCAL GetMultiFname
   }
 
 #ifdef I18N
-  memcpy(uimsg, "All(*.*)\0*.*\0\0", sizeof(uimsg));
+  strncpy(uimsg, "All(*.*)\\0*.*\\0\\0", sizeof(uimsg));
   get_lang_msg("FILEDLG_ALL_FILTER", uimsg, UILanguageFile);
   memcpy(FNFilter, uimsg, sizeof(FNFilter));
 #else
@@ -1123,7 +1123,7 @@ BOOL FAR PASCAL GetXFname
 #endif
 
 #ifdef I18N
-  memcpy(uimsg, "All(*.*)\0*.*\0\0", sizeof(FNFilter));
+  strncpy(uimsg, "All(*.*)\\0*.*\\0\\0", sizeof(FNFilter));
   get_lang_msg("FILEDLG_ALL_FILTER", uimsg, UILanguageFile);
   memcpy(FNFilter, uimsg, sizeof(FNFilter));
 #else
@@ -1362,6 +1362,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  2007/01/22 13:50:11  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.14  2007/01/21 16:18:38  maya
  * 表示メッセージの読み込み対応
  *
