@@ -680,9 +680,15 @@
 
 <h2><a name="cygterm">CygTerm+</a></h2>
 <pre>
+v1.07_11 2007/01/31 (import from cygterm v1.07)
+        * Avoid WinMainCRTStartup() redefinition error with gcc 3.4.
+
+        * Give an output gap for keyboard interrupt.
+
 v1.06_11 2006/09/29 (by maya.negeta@gmail.com)
         * Stopped using HOME from environment variable and /etc/passwd.
           CygTerm passes HOME which is set by Cygwin. See also /etc/profile
+
         * Changed the priority of config files.
           command line arguments &gt; ~/.cygtermrc &gt; /etc/cygterm.conf &gt; cygterm.cfg &gt; /etc/passwd
 
