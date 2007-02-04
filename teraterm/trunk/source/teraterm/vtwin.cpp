@@ -2891,7 +2891,7 @@ void CVTWindow::OnReplayLog()
 	// バイナリモードで採取したログファイルを選択する
 	memset(&ofn, 0, sizeof(OPENFILENAME));
 	memset(szFile, 0, sizeof(szFile));
-    ofn.lStructSize = sizeof(OPENFILENAME);
+    ofn.lStructSize = sizeof(OPENFILENAME_SIZE_VERSION_400);
     ofn.hwndOwner = HVTWin;
 #ifdef I18N
 	strncpy(ts.UIMsg, "all(*.*)\\0*.*\\0\\0", sizeof(ts.UIMsg));
@@ -3481,7 +3481,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					OPENFILENAME ofn;
 
 					ZeroMemory(&ofn, sizeof(ofn));
-					ofn.lStructSize = sizeof(ofn);
+					ofn.lStructSize = sizeof(OPENFILENAME_SIZE_VERSION_400);
 					ofn.hwndOwner = hDlgWnd;
 #ifdef I18N
 					strncpy(ts.UIMsg, "exe(*.exe)\\0*.exe\\0all(*.*)\\0*.*\\0\\0", sizeof(ts.UIMsg));
@@ -3881,7 +3881,7 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 					OPENFILENAME ofn;
 
 					ZeroMemory(&ofn, sizeof(ofn));
-					ofn.lStructSize = sizeof(ofn);
+					ofn.lStructSize = sizeof(OPENFILENAME_SIZE_VERSION_400);
 					ofn.hwndOwner = hDlgWnd;
 					ofn.lpstrFilter = "exe(*.exe)\0*.exe\0all(*.*)\0*.*\0\0";
 					ofn.lpstrFile = ts.ViewlogEditor;
@@ -4708,6 +4708,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.47  2007/01/31 13:15:26  maya
+ * 言語ファイルがないときに \0 が正しく認識されないバグを修正した。
+ *
  * Revision 1.46  2007/01/21 16:18:35  maya
  * 表示メッセージの読み込み対応
  *
