@@ -252,7 +252,9 @@ private:
                     }
                     buffer.append('@');
                 }
-                urlencode(host, buffer);
+				// ホスト名は、エンコードせず append するだけでよい (2007.2.4 maya)
+                //urlencode(host, buffer);
+				buffer.append(host);
                 if (port != 0) {
                     buffer.append(':');
                     int digit = 10000;
