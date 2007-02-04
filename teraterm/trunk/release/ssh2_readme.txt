@@ -161,6 +161,10 @@ OF SUCH DAMAGE.
 
 * History
 
+2007.2.4 (Ver 2.39)
+  - added workaround(WinSock) that send() could have been regarded as success when the return value of send() is minus and the return value of WSAGetLastError() is less than WSABASEERR(10000).
+
+
 2007.1.22 (Ver 2.38)
   - changed the handling of SSH2_MSG_IGNORE to do nothing. The data from Cisco router seems invalid.
   - Bug fix: TCP disconnection was mis-detected in the packet sending.
