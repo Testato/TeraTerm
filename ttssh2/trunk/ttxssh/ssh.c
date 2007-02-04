@@ -767,14 +767,27 @@ static unsigned char FAR *begin_send_packet(PTInstVar pvar, int type,
 static int retry_send_packet(PTInstVar pvar, char FAR * data, int len)
 {
 	int n;
+	int err;
 
 	while (len > 0) {
 		n = (pvar->Psend)(pvar->socket, data, len, 0);
-		if (n == SOCKET_ERROR || n <= 0)
+
+		if (n < 0) {
+			err = WSAGetLastError();
+			if (err < WSABASEERR || err == WSAEWOULDBLOCK) {
+				// send()の返値が0未満で、かつエラー番号が 10000 未満の場合は、
+				// 成功したものと見なす。
+				// PuTTY 0.58の実装を参考。
+				// (2007.2.4 yutak)
+				return 0; // success
+			}
 			return 1; // error
+		}
+
 		len -= n;
 		data += n;
 	}
+
 	return 0; // success
 }
 
@@ -7290,6 +7303,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.70  2007/01/22 13:45:19  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.69  2006/12/08 16:11:54  yutakapon
  * パケット送信処理にTCPコネクション切断の誤検出をしないようにした。
  *
