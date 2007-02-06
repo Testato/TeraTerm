@@ -303,7 +303,7 @@ private:
             static const char table[] = "0123456789ABCDEF";
             const char* start = string;
             while (*string != '\0') {
-                if ('0' <= *string && *string <= '0'
+                if ('0' <= *string && *string <= '9'
                     || 'A' <= *string && *string <= 'Z'
                     || 'a' <= *string && *string <= 'z'
                     || *string == '-' || *string == '.' || *string == '_') {
