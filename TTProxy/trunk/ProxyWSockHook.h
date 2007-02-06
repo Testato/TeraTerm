@@ -252,9 +252,7 @@ private:
                     }
                     buffer.append('@');
                 }
-				// ホスト名は、エンコードせず append するだけでよい (2007.2.4 maya)
-                //urlencode(host, buffer);
-				buffer.append(host);
+                urlencode(host, buffer);
                 if (port != 0) {
                     buffer.append(':');
                     int digit = 10000;
@@ -289,7 +287,7 @@ private:
             int c1, c2;
             while (start < end) {
                 if (*start == '%' && start + 2 < end && (c1 = hexdigit(start[1])) != -1 && (c2 = hexdigit(start[2])) != -1) {
-                    *buffer++ = (char) (c1 << 4 | c2);
+                    *dst++ = (char) (c1 << 4 | c2);
                     start += 3;
                 }else{
                     if (IsDBCSLeadByte(*start)) {
