@@ -24,6 +24,8 @@
 <pre>
 2007.x.x (Ver 4.51)
   - Bug fix: some file select dialogs are not displayed on Windows98/NT4.0.
+  - Bug fix: the 'pause' macro command had a time-lag about 1 sec.
+  - upgraded TTSSH version supporting SSH2 to 2.39
   - upgraded TTProxy to 1.0.0.11
   - upgraded CygTerm+ to 1.07_11
 
@@ -476,6 +478,9 @@
 
 <h2><a name="ttssh">TTSSH</a></h2>
 <pre>
+2007.2.4 (Ver 2.39)
+  - added workaround(WinSock) that send() could have been regarded as success when the return value of send() is minus and the return value of WSAGetLastError() is less than WSABASEERR(10000).
+
 2007.1.22 (Ver 2.38)
   - changed the handling of SSH2_MSG_IGNORE to do nothing. The data from Cisco router seems invalid.
   - Bug fix: TCP disconnection was mis-detected in the packet sending.
