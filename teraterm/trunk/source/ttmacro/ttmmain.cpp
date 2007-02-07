@@ -419,11 +419,6 @@ void CCtrlWindow::OnTimer(UINT nIDEvent)
       TTLStatus = IdTTLRun;
     }
   }
-  else if (TTLStatus==IdTTLPause)
-  {
-    if (TimeOut)
-      TTLStatus = IdTTLRun;
-  }
   else if (TTLStatus==IdTTLSleep)
   {
     if ((TimeOut) &&

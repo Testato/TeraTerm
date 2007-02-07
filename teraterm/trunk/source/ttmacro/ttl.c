@@ -1588,10 +1588,9 @@ WORD TTLPause()
 
   if (TimeOut>0)
   {
-    TTLStatus = IdTTLPause;
-    TimeLimit = CalcTime() + (long int)TimeOut;
-    if (TimeLimit>=86400) TimeLimit = TimeLimit-86400;
-    SetTimer(HMainWin, IdTimeOutTimer,1000, NULL);
+    // stop using TTLStatus and TimeLimit
+	// for remove time-lag (2007.2.7 maya)
+    Sleep(1000 * TimeOut);
   }
   return Err;
 }
