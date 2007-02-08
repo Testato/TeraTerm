@@ -6472,12 +6472,12 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 	if (pvar->ssh2_autologin == 1) {
 		// SSH2自動ログインが有効の場合は、リトライは行わない。(2004.12.4 yutaka)
 #ifdef I18N
-		strcpy(pvar->ts->UIMsg, "SSH2 autologin error: user authentication was failure");
+		strcpy(pvar->ts->UIMsg, "SSH2 autologin error: user authentication failed");
 		UTIL_get_lang_msg("MSG_SSH_AUTH_FAILURE_ERROR", pvar);
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
 		notify_fatal_error(pvar,
-			"SSH2 autologin error: user authentication was failure");
+			"SSH2 autologin error: user authentication failed");
 #endif
 		return TRUE;
 	}
@@ -7303,6 +7303,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.71  2007/02/04 13:45:47  yutakapon
+ * パケット送信関数が失敗した場合、WSAGetLastError()がWSABASEERR(10000)未満であれば、成功したものと見なすようにした。
+ *
  * Revision 1.70  2007/01/22 13:45:19  maya
  * 表示メッセージの読み込み対応
  *
