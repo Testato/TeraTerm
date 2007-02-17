@@ -20,10 +20,13 @@ copy /y ..\..\teraterm\release\*.* %dst%
 xcopy /s /e /y /i ..\..\teraterm\release\theme %dst%\theme
 xcopy /s /e /y /i ..\..\teraterm\release\plugin %dst%\plugin
 xcopy /s /e /y /i ..\..\teraterm\release\Collector %dst%\Collector
+xcopy /s /e /y /i ..\..\teraterm\release\lang %dst%\lang
 rmdir /s /q %dst%\plugin\CVS
 rmdir /s /q %dst%\theme\CVS
 rmdir /s /q %dst%\theme\scale\CVS
 rmdir /s /q %dst%\theme\tile\CVS
+rmdir /s /q %dst%\lang\CVS
+del /f %dst%\lang\English.lng
 
 perl setini.pl ..\..\teraterm\release\TERATERM.INI > %dst%\TERATERM.INI
 

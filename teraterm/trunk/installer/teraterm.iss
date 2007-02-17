@@ -1,5 +1,5 @@
 #define AppName "UTF-8 TeraTerm Pro with TTSSH2"
-#define AppVer "4.50"
+#define AppVer "4.51"
 
 [Setup]
 AppCopyright=TeraTerm Project
@@ -24,6 +24,7 @@ Name: {app}\theme; Components: TeraTerm
 Name: {app}\theme\scale; Components: TeraTerm
 Name: {app}\theme\tile; Components: TeraTerm
 Name: {app}\plugin; Components: TeraTerm
+Name: {app}\lang; Components: TeraTerm
 
 [Files]
 Source: ..\visualc\bin\release\ttermpro.exe; DestDir: {app}; Components: TeraTerm
@@ -61,6 +62,7 @@ Source: ..\release\mpause.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\random.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\ssh2login.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\wait_regex.ttl; DestDir: {app}; Components: TeraTerm
+Source: ..\release\lang\Japanese.lng; DestDir: {app}\lang; Components: TeraTerm; Attribs: readonly; Flags: uninsremovereadonly overwritereadonly
 Source: ..\..\ttssh2\ttxssh\Release\ttxssh.dll; DestDir: {app}; Components: TTSSH
 Source: ..\release\ssh2_readme.txt; DestDir: {app}; Components: TTSSH
 Source: ..\release\ssh2_readme-j.txt; DestDir: {app}; Components: TTSSH
@@ -166,6 +168,49 @@ ja.launch_ttmenu=今すぐ TeraTerm &Menu を実行する
 ja.launch_collector=今すぐ &Collector を実行する
 
 [Code]
+var
+  UILangFilePage: TInputOptionWizardPage;
+
+procedure InitializeWizard;
+var
+  UILangFilePageCaption     : String;
+  UILangFilePageDescription : String;
+  UILangFilePageSubCaption  : String;
+  UILangFilePageNone        : String;
+  UILangFilePageJapanese    : String;
+begin
+
+  case ActiveLanguage of
+    'en':
+    begin
+      UILangFilePageCaption     := 'Select Language';
+      UILangFilePageDescription := 'Which language shoud be used?';
+      UILangFilePageSubCaption  := 'Select the user interface language of Tera Term and TTSSH, then click Next.';
+      UILangFilePageNone        := 'none (English)'
+      UILangFilePageJapanese    := 'Japanese'
+    end;
+    'ja':
+    begin
+      UILangFilePageCaption     := '言語の選択';
+      UILangFilePageDescription := 'ユーザーインターフェースの言語を選択してください。';
+      UILangFilePageSubCaption  := 'Tera Term と TTSSH のユーザーインターフェースで使用する言語を選択して、「次へ」をクリックしてください。';
+      UILangFilePageNone        := 'なし (英語)'
+      UILangFilePageJapanese    := '日本語'
+    end;
+  end;
+
+  UILangFilePage := CreateInputOptionPage(wpSelectComponents,
+    UILangFilePageCaption, UILangFilePageDescription,
+    UILangFilePageSubCaption, True, False);
+  UILangFilePage.Add(UILangFilePageNone);
+  UILangFilePage.Add(UILangFilePageJapanese);
+
+  case ActiveLanguage of
+    'ja': UILangFilePage.SelectedValueIndex := 1;
+    else UILangFilePage.SelectedValueIndex := 0;
+  end;
+end;
+
 procedure CurStepChanged(CurStep: TSetupStep);
 var
   iniFile  : String;
@@ -259,9 +304,19 @@ begin
             end;
           end;
         end;
-      end;
-   end;
-end;
+
+        if UILangFilePage.SelectedValueIndex = 1 then
+          begin
+            SetIniString('Tera Term', 'UILanguageFile', 'lang\Japanese.lng', iniFile);
+          end
+        else
+          begin
+            SetIniString('Tera Term', 'UILanguageFile', '', iniFile);
+          end;
+
+      end; // ssDone
+   end; // case CurStep of
+end; // CurStepChanged
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 var

@@ -149,7 +149,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="..\source\common"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;I18N"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"

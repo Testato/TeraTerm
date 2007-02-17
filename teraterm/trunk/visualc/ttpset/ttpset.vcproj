@@ -149,7 +149,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="..\..\source\common"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;I18N"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -176,9 +176,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="ttpcmn.lib"
 				OutputFile=".\..\bin\Release/ttpset.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="..\bin\release"
 				ModuleDefinitionFile=".\ttpset.def"
 				ProgramDatabaseFile=".\..\bin\Release/ttpset.pdb"
 				SubSystem="2"
