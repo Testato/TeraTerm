@@ -245,7 +245,7 @@ DLG_TCPIP_TERMTYPE=端末タイプ(&T):
 
 DLG_TERM_TITLE=Tera Term: 端末の設定
 DLG_TERM_WIDTHLABEL=端末サイズ(&T):
-DLG_TERM_ISWIN=ウィンドウサイズ(&S):
+DLG_TERM_ISWIN== ウィンドウサイズ(&S):
 DLG_TERM_RESIZE=自動的に調整(&W):
 DLG_TERM_NEWLINE=改行コード
 DLG_TERM_CRRCV=受信(&R):
@@ -439,8 +439,8 @@ FILEDLG_OPEN_PRIVATEKEY_TITLE=RSA/DSA秘密鍵ファイルの選択
 FILEDLG_OPEN_PRIVATEKEY_FILTER=identity files\0identity;id_rsa;id_dsa\0identity(RSA1)\0identity\0id_rsa(SSH2)\0id_rsa\0id_dsa(SSH2)\0id_dsa\0すべてのファイル(*.*)\0*.*\0\0
 MSG_KEYSPECIFY_ERROR=RSA/DSA秘密鍵の含まれるファイルを指定してください
 MSG_READKEY_ERROR=SSH2秘密鍵の読み込みに失敗しました\n%s
-MSG_RHOSTS_NOTDEFAULT_ERROR=Rhosts authentication will probably fail because it was not the default authentication method.\nTo use Rhosts authentication in TTSSH, you need to set it to be the default by restarting\nTTSSH and selecting "SSH Authentication..." from the Setup menubefore connecting.
-MSG_NOAUTHMETHOD_ERROR=Server does not support any of the authentication options\nprovided by TTSSH. This connection will now close.
+MSG_RHOSTS_NOTDEFAULT_ERROR=Rhosts 認証は標準の認証方式ではないため, 認証に失敗するかもしれません.\nRhosts 認証をTTSSH で使用するには, Rhosts 認証を標準に設定後TTSSH を再起動し, 接続前に設定メニューから"SSH 認証..." を選択して下さい.
+MSG_NOAUTHMETHOD_ERROR=サーバはTTSSH が提供する認証オプションをサポートしていません.\n接続は閉じられます.
 
 ; dlg diff host
 DLG_DIFFERENTHOST_TITLE=セキュリティ警告
