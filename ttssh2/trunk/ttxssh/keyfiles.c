@@ -474,6 +474,7 @@ CRYPTKeyPair *read_SSH2_private_key(PTInstVar pvar,
 	if (pk == NULL) {
 		err = ERR_get_error();
 		ERR_error_string_n(err, errmsg, errmsg_len);
+		*invalid_passphrase = TRUE;
 		goto error;
 	}
 
@@ -519,6 +520,9 @@ error:
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2006/11/29 16:58:52  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.4  2005/02/07 14:33:47  yutakakn
  * ドットで始まるディレクトリにあるSSH2秘密鍵ファイルが読み込めない問題へ対処した。
  *

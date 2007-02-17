@@ -566,6 +566,15 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 				_snprintf(buf, sizeof(buf), "read error SSH2 private key file\r\n%s", errmsg);
 #endif
 				notify_nonfatal_error(pvar, buf);
+				// パスフレーズが鍵と一致しなかった場合はIDC_SSHPASSWORDにフォーカスを移す (2006.10.29 yasuhide)
+				if (invalid_passphrase) {
+					HWND passwordCtl = GetDlgItem(dlg, IDC_SSHPASSWORD);
+
+					SetFocus(passwordCtl);
+					SendMessage(passwordCtl, EM_SETSEL, 0, -1);
+				} else {
+					SetFocus(GetDlgItem(dlg, file_ctl_ID));
+				}
 				destroy_malloced_string(&password);
 				return FALSE;
 			}
@@ -1494,6 +1503,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.29  2007/02/17 14:01:03  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.28  2007/01/31 13:15:08  maya
  * 言語ファイルがないときに \0 が正しく認識されないバグを修正した。
  *
