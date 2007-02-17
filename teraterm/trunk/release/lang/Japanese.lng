@@ -245,7 +245,7 @@ DLG_TCPIP_TERMTYPE=端末タイプ(&T):
 
 DLG_TERM_TITLE=Tera Term: 端末の設定
 DLG_TERM_WIDTHLABEL=端末サイズ(&T):
-DLG_TERM_ISWIN== ウィンドウサイズ(&S):
+DLG_TERM_ISWIN=ウィンドウサイズ(&S):
 DLG_TERM_RESIZE=自動的に調整(&W):
 DLG_TERM_NEWLINE=改行コード
 DLG_TERM_CRRCV=受信(&R):
