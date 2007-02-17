@@ -945,6 +945,14 @@ static void init_TIS_dlg(PTInstVar pvar, HWND dlg)
 	GetDlgItemText(dlg, IDC_SSHAUTHBANNER, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
 	UTIL_get_lang_msg("DLG_TIS_BANNER", pvar);
 	SetDlgItemText(dlg, IDC_SSHAUTHBANNER, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDOK, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("BTN_OK", pvar);
+	SetDlgItemText(dlg, IDOK, pvar->ts->UIMsg);
+
+	GetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
+	UTIL_get_lang_msg("BTN_DISCONNECT", pvar);
+	SetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg);
 #endif
 
 	init_auth_machine_banner(pvar, dlg);
@@ -1486,6 +1494,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.28  2007/01/31 13:15:08  maya
+ * 言語ファイルがないときに \0 が正しく認識されないバグを修正した。
+ *
  * Revision 1.27  2007/01/27 14:29:59  maya
  * 英語版と日本語版のアクセラレータキーをあわせた。
  *
