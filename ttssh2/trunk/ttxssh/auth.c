@@ -335,6 +335,10 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 			// TODO
 
 		}
+		
+		if (pvar->ask4passwd == 1) {
+			SetFocus(GetDlgItem(dlg, IDC_SSHPASSWORD));
+		}
 #if 0
 	}
 #endif
@@ -1503,6 +1507,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.30  2007/02/17 16:20:21  yasuhide
+ * SSH2 鍵を用いた認証でパスフレーズを間違えた際、パスフレーズダイアログにフォーカスを移す
+ *
  * Revision 1.29  2007/02/17 14:01:03  maya
  * 表示メッセージの読み込み対応
  *
