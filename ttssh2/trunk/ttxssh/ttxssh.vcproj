@@ -151,7 +151,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="2"
 				AdditionalIncludeDirectories="..\..\Teraterm\source\common;..\openssl\inc32;..\..\Teraterm\source\teraterm;..\zlib;..\matcher"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;INET6;_CRT_SECURE_NO_DEPRECATE;I18N"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -180,7 +180,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="Version.lib &#x0D;&#x0A;"
-				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib ..\openssl\out32\libeay32.lib ..\zlib\projects\visualc6\Win32_LIB_Release\zlib.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib ..\openssl\out32\libeay32.lib ..\zlib\projects\visualc6\Win32_LIB_Release\zlib.lib ..\..\teraterm\visualc\bin\Release\ttpcmn.lib"
 				OutputFile=".\Release/ttxssh.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
