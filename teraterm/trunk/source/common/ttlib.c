@@ -9,6 +9,7 @@
 #include <time.h>
 #include <stdio.h>
 #include "tttypes.h"
+#include <shlobj.h>
 
 #ifndef TERATERM32
   #define CharNext AnsiNext
@@ -566,6 +567,32 @@ void GetNthNum(PCHAR Source, int Nth, int far *Num)
 // Žæ“¾‚·‚é‚½‚ß‚É’Ç‰Á‚µ‚½B(2007.2.18 maya)
 void GetDefaultSetupFName(char *dest, char *home)
 {
+	// My Documents ‚É teraterm.ini ‚ª‚ ‚éê‡A
+	// ‚»‚ê‚ð“Ç‚Ýž‚Þ‚æ‚¤‚É‚µ‚½B(2007.2.18 maya)
+	char MyDoc[MAX_PATH];
+	char MyDocSetupFName[MAX_PATH];
+	LPITEMIDLIST pidl;
+
+	IMalloc *pmalloc;
+	SHGetMalloc(&pmalloc);
+	if (SHGetSpecialFolderLocation(NULL, CSIDL_PERSONAL, &pidl) == S_OK) {
+		SHGetPathFromIDList(pidl, MyDoc);
+		pmalloc->lpVtbl->Free(pmalloc, pidl);
+		pmalloc->lpVtbl->Release(pmalloc);
+	}
+	else {
+		pmalloc->lpVtbl->Release(pmalloc);
+		goto homedir;
+	}
+	strcpy(MyDocSetupFName, MyDoc);
+	AppendSlash(MyDocSetupFName);
+	strcat(MyDocSetupFName, "TERATERM.INI");
+	if (GetFileAttributes(MyDocSetupFName) != -1) {
+		strcpy(dest, MyDocSetupFName);
+		return;
+	}
+
+homedir:
 	strcpy(dest, home);
 	AppendSlash(dest);
 	strcat(dest, "TERATERM.INI");
