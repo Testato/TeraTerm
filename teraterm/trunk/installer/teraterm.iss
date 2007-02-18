@@ -186,16 +186,16 @@ begin
       UILangFilePageCaption     := 'Select Language';
       UILangFilePageDescription := 'Which language shoud be used?';
       UILangFilePageSubCaption  := 'Select the user interface language of Tera Term and TTSSH, then click Next.';
-      UILangFilePageNone        := 'English'
-      UILangFilePageJapanese    := 'Japanese'
+      UILangFilePageNone        := '&English'
+      UILangFilePageJapanese    := '&Japanese'
     end;
     'ja':
     begin
       UILangFilePageCaption     := '言語の選択';
       UILangFilePageDescription := 'ユーザーインターフェースの言語を選択してください。';
       UILangFilePageSubCaption  := 'Tera Term と TTSSH のユーザーインターフェースで使用する言語を選択して、「次へ」をクリックしてください。';
-      UILangFilePageNone        := '英語'
-      UILangFilePageJapanese    := '日本語'
+      UILangFilePageNone        := '英語(&E)'
+      UILangFilePageJapanese    := '日本語(&J)'
     end;
   end;
 
