@@ -56,9 +56,7 @@ BOOL PASCAL FAR StartTeraTerm(PTTSet ts)
     GetModuleFileName(hInst,Temp,sizeof(Temp));
     ExtractDirName(Temp, pm->ts.HomeDir);
     _chdir(pm->ts.HomeDir);
-    strcpy(pm->ts.SetupFName, pm->ts.HomeDir);
-    AppendSlash(pm->ts.SetupFName);
-    strcat(pm->ts.SetupFName, "TERATERM.INI");
+    GetDefaultSetupFName(pm->ts.SetupFName, pm->ts.HomeDir);
 //    strcpy(Temp, pm->ts.HomeDir);
 //    AppendSlash(Temp);
 //    strcat(Temp,"KEYBOARD.CNF");
@@ -1413,6 +1411,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2007/01/21 16:18:36  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.5  2006/11/23 02:19:13  maya
  * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
  *

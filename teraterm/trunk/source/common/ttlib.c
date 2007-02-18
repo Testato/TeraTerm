@@ -562,6 +562,15 @@ void GetNthNum(PCHAR Source, int Nth, int far *Num)
     *Num = 0;
 }
 
+// デフォルトの TERATERM.INI のフルパスを ttpmacro からも
+// 取得するために追加した。(2007.2.18 maya)
+void GetDefaultSetupFName(char *dest, char *home)
+{
+	strcpy(dest, home);
+	AppendSlash(dest);
+	strcat(dest, "TERATERM.INI");
+}
+
 #ifdef I18N
 void get_lang_msg(PCHAR key, PCHAR buf, PCHAR iniFile)
 {

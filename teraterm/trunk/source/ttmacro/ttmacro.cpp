@@ -17,6 +17,7 @@
 
 #include "ttmacro.h"
 #include "ttmlib.h"
+#include "ttlib.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -50,8 +51,11 @@ CCtrlApp theApp;
 BOOL CCtrlApp::InitInstance()
 {
 #ifdef I18N
-  PMap pm;
-  HANDLE HMap = NULL;
+  char Temp[MAXPATHLEN];
+  char HomeDir[MAXPATHLEN];
+  char SetupFName[MAXPATHLEN];
+  TTTSet ts;
+  static HMODULE HTTSET = NULL;
 #endif
 
   // インストーラで実行を検出するために mutex を作成する (2006.8.12 maya)
@@ -60,17 +64,17 @@ BOOL CCtrlApp::InitInstance()
   hMutex = CreateMutex(NULL, TRUE, "TeraTermProMacroAppMutex");
 
 #ifdef I18N
-  HMap = CreateFileMapping(
-    (HANDLE) 0xFFFFFFFF, NULL, PAGE_READONLY,
-    0, sizeof(TMap), "ttset_memfilemap");
-  if (HMap != NULL) {
-    pm = (PMap)MapViewOfFile(
-    HMap,FILE_MAP_READ,0,0,0);
-    if (pm != NULL) {
-      strncpy(UILanguageFile, pm->ts.UILanguageFile, sizeof(UILanguageFile)-1);
-      UILanguageFile[sizeof(UILanguageFile)-1] = 0;
-	}
-  }
+  /* Get home directory */
+  GetModuleFileName(NULL,Temp,sizeof(Temp));
+  ExtractDirName(Temp, HomeDir);
+  strcpy(ts.HomeDir, HomeDir);
+
+  /* Get SetupFName */
+  GetDefaultSetupFName(SetupFName, HomeDir);
+
+  /* Get LanguageFile name */
+  GetPrivateProfileString("Tera Term", "UILanguageFile", "",
+                          UILanguageFile, sizeof(UILanguageFile), SetupFName);
 #endif
 
   Busy = TRUE;

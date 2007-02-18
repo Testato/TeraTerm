@@ -79,7 +79,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="onig_s.lib ttpcmn.lib"
+				AdditionalDependencies="onig_s.lib"
 				OutputFile=".\..\bin\Release/ttpmacro.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -175,7 +175,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="onig_s.lib ttpcmn.lib"
+				AdditionalDependencies="onig_s.lib"
 				OutputFile=".\..\bin\Debug/ttpmacro.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -244,10 +244,6 @@
 			</File>
 			<File
 				RelativePath="..\..\source\ttmacro\ttmdlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\source\ttmacro\ttmmain.cpp"
 				>
 			</File>
 		</Filter>
@@ -356,6 +352,10 @@
 			Filter="c"
 			>
 			<File
+				RelativePath="..\..\source\common\i18n.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Source\Ttmacro\ttl.c"
 				>
 			</File>
@@ -377,6 +377,10 @@
 			</File>
 			<File
 				RelativePath="..\..\Source\Ttmacro\ttmlib.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\source\ttmacro\ttmmain.cpp"
 				>
 			</File>
 			<File
