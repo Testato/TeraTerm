@@ -2879,6 +2879,7 @@ void CVTWindow::OnViewLog()
 void CVTWindow::OnReplayLog()
 {
     OPENFILENAME ofn;
+	OSVERSIONINFO osvi;
     char szFile[MAX_PATH];
 	char Command[MAX_PATH] = "notepad.exe";
 	char *exec = "ttermpro";
@@ -2891,7 +2892,14 @@ void CVTWindow::OnReplayLog()
 	// バイナリモードで採取したログファイルを選択する
 	memset(&ofn, 0, sizeof(OPENFILENAME));
 	memset(szFile, 0, sizeof(szFile));
-    ofn.lStructSize = sizeof(OPENFILENAME_SIZE_VERSION_400);
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	GetVersionEx(&osvi);
+	if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT) {
+		ofn.lStructSize = sizeof(OPENFILENAME);
+	}
+	else {
+		ofn.lStructSize = OPENFILENAME_SIZE_VERSION_400;
+	}
     ofn.hwndOwner = HVTWin;
 #ifdef I18N
 	strncpy(ts.UIMsg, "all(*.*)\\0*.*\\0\\0", sizeof(ts.UIMsg));
@@ -3479,9 +3487,17 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 				case IDC_VIEWLOG_PATH | (BN_CLICKED << 16):
 					{
 					OPENFILENAME ofn;
+					OSVERSIONINFO osvi;
 
 					ZeroMemory(&ofn, sizeof(ofn));
-					ofn.lStructSize = sizeof(OPENFILENAME_SIZE_VERSION_400);
+					osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+					GetVersionEx(&osvi);
+					if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT) {
+						ofn.lStructSize = sizeof(OPENFILENAME);
+					}
+					else {
+						ofn.lStructSize = OPENFILENAME_SIZE_VERSION_400;
+					}
 					ofn.hwndOwner = hDlgWnd;
 #ifdef I18N
 					strncpy(ts.UIMsg, "exe(*.exe)\\0*.exe\\0all(*.*)\\0*.*\\0\\0", sizeof(ts.UIMsg));
@@ -4708,6 +4724,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.48  2007/02/04 13:45:34  maya
+ * Windows98/NT4.0 では OPENFILENAME 構造体のサイズが違うために GetOpenFileName が開かないバグを修正した。
+ *
  * Revision 1.47  2007/01/31 13:15:26  maya
  * 言語ファイルがないときに \0 が正しく認識されないバグを修正した。
  *

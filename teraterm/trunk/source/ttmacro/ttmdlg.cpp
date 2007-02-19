@@ -157,6 +157,7 @@ BOOL GetFileName(HWND HWin)
 {
   char FNFilter[31];
   OPENFILENAME FNameRec;
+  OSVERSIONINFO osvi;
 #ifdef I18N
   char uimsg[MAX_UIMSG];
   char uimsg2[MAX_UIMSG];
@@ -176,7 +177,14 @@ BOOL GetFileName(HWND HWin)
 #endif
 
   // sizeof(OPENFILENAME) Ç≈ÇÕ Windows98/NT Ç≈èIóπÇµÇƒÇµÇ‹Ç§ÇΩÇﬂ (2006.8.14 maya)
-  FNameRec.lStructSize	 = OPENFILENAME_SIZE_VERSION_400;
+  osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+  GetVersionEx(&osvi);
+  if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT) {
+    FNameRec.lStructSize = sizeof(OPENFILENAME);
+  }
+  else {
+    FNameRec.lStructSize = OPENFILENAME_SIZE_VERSION_400;
+  }
   FNameRec.hwndOwner	 = HWin;
   FNameRec.lpstrFilter	 = FNFilter;
   FNameRec.nFilterIndex  = 1;
