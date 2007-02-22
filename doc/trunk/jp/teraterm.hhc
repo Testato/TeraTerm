@@ -275,17 +275,595 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="マクロ言語 &quot;Tera Term Language (TTL)&quot;">
 			<param name="Local" value="html\macro\syntax\index.html">
-			<param name="ImageNumber" value="9">
+			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="TTL コマンドリファレンス">
 			<param name="Local" value="html\macro\command\index.html">
-			<param name="ImageNumber" value="9">
+			<param name="ImageNumber" value="1">
 			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="通信コマンド">
+				<param name="ImageNumber" value="1">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="bplusrecv">
+					<param name="Local" value="html\macro\command\bplusrecv.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="bplussend">
+					<param name="Local" value="html\macro\command\bplussend.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="changedir">
+					<param name="Local" value="html\macro\command\changedir.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="clearscreen">
+					<param name="Local" value="html\macro\command\clearscreen.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="closett">
+					<param name="Local" value="html\macro\command\closett.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="connect">
+					<param name="Local" value="html\macro\command\connect.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="disconnect">
+					<param name="Local" value="html\macro\command\disconnect.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="enablekeyb">
+					<param name="Local" value="html\macro\command\enablekeyb.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="flushrecv">
+					<param name="Local" value="html\macro\command\flushrecv.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="gettitle">
+					<param name="Local" value="html\macro\command\gettitle.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="kmtfinish">
+					<param name="Local" value="html\macro\command\kmtfinish.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="kmtget">
+					<param name="Local" value="html\macro\command\kmtget.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="kmtrecv">
+					<param name="Local" value="html\macro\command\kmtrecv.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="kmtsend">
+					<param name="Local" value="html\macro\command\kmtsend.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="loadkeymap">
+					<param name="Local" value="html\macro\command\loadkeymap.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="logclose">
+					<param name="Local" value="html\macro\command\logclose.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="logopen">
+					<param name="Local" value="html\macro\command\logopen.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="logpause">
+					<param name="Local" value="html\macro\command\logpause.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="logstart">
+					<param name="Local" value="html\macro\command\logstart.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="logwrite">
+					<param name="Local" value="html\macro\command\logwrite.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="quickvanrecv">
+					<param name="Local" value="html\macro\command\quickvanrecv.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="quickvansend">
+					<param name="Local" value="html\macro\command\quickvansend.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="recvln">
+					<param name="Local" value="html\macro\command\recvln.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="restoresetup">
+					<param name="Local" value="html\macro\command\restoresetup.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="send">
+					<param name="Local" value="html\macro\command\send.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="sendbreak">
+					<param name="Local" value="html\macro\command\sendbreak.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="sendfile">
+					<param name="Local" value="html\macro\command\sendfile.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="sendkcode">
+					<param name="Local" value="html\macro\command\sendkcode.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="sendln">
+					<param name="Local" value="html\macro\command\sendln.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="setecho">
+					<param name="Local" value="html\macro\command\setecho.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="setsync">
+					<param name="Local" value="html\macro\command\setsync.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="settitle">
+					<param name="Local" value="html\macro\command\settitle.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="showtt">
+					<param name="Local" value="html\macro\command\showtt.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="testlink">
+					<param name="Local" value="html\macro\command\testlink.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="unlink">
+					<param name="Local" value="html\macro\command\unlink.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="wait">
+					<param name="Local" value="html\macro\command\wait.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="waitevent">
+					<param name="Local" value="html\macro\command\waitevent.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="waitln">
+					<param name="Local" value="html\macro\command\waitln.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="waitrecv">
+					<param name="Local" value="html\macro\command\waitrecv.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="waitregex">
+					<param name="Local" value="html\macro\command\waitregex.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="xmodemrecv">
+					<param name="Local" value="html\macro\command\xmodemrecv.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="xmodemsend">
+					<param name="Local" value="html\macro\command\xmodemsend.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="zmodemrecv">
+					<param name="Local" value="html\macro\command\zmodemrecv.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="zmodemsend">
+					<param name="Local" value="html\macro\command\zmodemsend.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="制御コマンド">
+				<param name="ImageNumber" value="1">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="call">
+					<param name="Local" value="html\macro\command\call.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="end">
+					<param name="Local" value="html\macro\command\end.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="execcmnd">
+					<param name="Local" value="html\macro\command\execcmnd.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="exit">
+					<param name="Local" value="html\macro\command\exit.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="for, next">
+					<param name="Local" value="html\macro\command\fornext.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="goto">
+					<param name="Local" value="html\macro\command\goto.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="if, then, elseif, else, endif">
+					<param name="Local" value="html\macro\command\ifthenelseif.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ifdefined">
+					<param name="Local" value="html\macro\command\ifdefined.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="include">
+					<param name="Local" value="html\macro\command\include.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="mpause">
+					<param name="Local" value="html\macro\command\mpause.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="pause">
+					<param name="Local" value="html\macro\command\pause.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="return">
+					<param name="Local" value="html\macro\command\return.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="while, endwhile">
+					<param name="Local" value="html\macro\command\while.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="文字列操作コマンド">
+				<param name="ImageNumber" value="1">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="code2str">
+					<param name="Local" value="html\macro\command\code2str.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="int2str">
+					<param name="Local" value="html\macro\command\int2str.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="str2code">
+					<param name="Local" value="html\macro\command\str2code.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="str2int">
+					<param name="Local" value="html\macro\command\str2int.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="strcompare">
+					<param name="Local" value="html\macro\command\strcompare.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="strconcat">
+					<param name="Local" value="html\macro\command\strconcat.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="strcopy">
+					<param name="Local" value="html\macro\command\strcopy.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="strlen">
+					<param name="Local" value="html\macro\command\strlen.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="strscan">
+					<param name="Local" value="html\macro\command\strscan.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ファイル操作コマンド">
+				<param name="ImageNumber" value="1">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="fileclose">
+					<param name="Local" value="html\macro\command\fileclose.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="fileconcat">
+					<param name="Local" value="html\macro\command\fileconcat.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="filecopy">
+					<param name="Local" value="html\macro\command\filecopy.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="filecreate">
+					<param name="Local" value="html\macro\command\filecreate.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="filedelete">
+					<param name="Local" value="html\macro\command\filedelete.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="filemarkptr">
+					<param name="Local" value="html\macro\command\filemarkptr.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="fileopen">
+					<param name="Local" value="html\macro\command\fileopen.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="filereadln">
+					<param name="Local" value="html\macro\command\filereadln.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="fileread">
+					<param name="Local" value="html\macro\command\fileread.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="filerename">
+					<param name="Local" value="html\macro\command\filerename.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="filesearch">
+					<param name="Local" value="html\macro\command\filesearch.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="fileseek">
+					<param name="Local" value="html\macro\command\fileseek.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="fileseekback">
+					<param name="Local" value="html\macro\command\fileseekback.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="filestrseek">
+					<param name="Local" value="html\macro\command\filestrseek.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="filestrseek2">
+					<param name="Local" value="html\macro\command\filestrseek2.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="filewrite">
+					<param name="Local" value="html\macro\command\filewrite.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="filewriteln">
+					<param name="Local" value="html\macro\command\filewriteln.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="findfirst, findnext, findclose">
+					<param name="Local" value="html\macro\command\findoperations.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="getdir">
+					<param name="Local" value="html\macro\command\getdir.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="makepath">
+					<param name="Local" value="html\macro\command\makepath.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="setdir">
+					<param name="Local" value="html\macro\command\setdir.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="パスワードコマンド">
+				<param name="ImageNumber" value="1">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="delpassword">
+					<param name="Local" value="html\macro\command\delpassword.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="getpassword">
+					<param name="Local" value="html\macro\command\getpassword.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="passwordbox">
+					<param name="Local" value="html\macro\command\passwordbox.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="その他のコマンド">
+				<param name="ImageNumber" value="1">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="beep">
+					<param name="Local" value="html\macro\command\beep.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="closesbox">
+					<param name="Local" value="html\macro\command\closesbox.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="clipb2var">
+					<param name="Local" value="html\macro\command\clipb2var.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="exec">
+					<param name="Local" value="html\macro\command\exec.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="getdate">
+					<param name="Local" value="html\macro\command\getdate.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="getenv">
+					<param name="Local" value="html\macro\command\getenv.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="gettime">
+					<param name="Local" value="html\macro\command\gettime.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="inputbox">
+					<param name="Local" value="html\macro\command\inputbox.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="messagebox">
+					<param name="Local" value="html\macro\command\messagebox.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="random">
+					<param name="Local" value="html\macro\command\random.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="setdate">
+					<param name="Local" value="html\macro\command\setdate.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="setdlgpos">
+					<param name="Local" value="html\macro\command\setdlgpos.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="setexitcode">
+					<param name="Local" value="html\macro\command\setexitcode.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="settime">
+					<param name="Local" value="html\macro\command\settime.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="show">
+					<param name="Local" value="html\macro\command\show.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="statusbox">
+					<param name="Local" value="html\macro\command\statusbox.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="var2clipb">
+					<param name="Local" value="html\macro\command\var2clipb.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="yesnobox">
+					<param name="Local" value="html\macro\command\yesnobox.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+			</UL>
+		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="補足説明">
 			<param name="Local" value="html\macro\appendixes\index.html">
-			<param name="ImageNumber" value="9">
+			<param name="ImageNumber" value="11">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
