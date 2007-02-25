@@ -1821,7 +1821,8 @@ int BuffDblClk(int Xw, int Yw)
         if (ts.EnableContinuedLineCopy) {
           if (i==0) {
             // 右端の場合
-            if (YEnd<BuffEnd && AttrBuff[TmpPtr+IEnd+1] & AttrLineContinued) {
+            if (YEnd<BuffEnd &&
+                AttrBuff[TmpPtr+IEnd+1+DBCS] & AttrLineContinued) {
               // 次の行に移動する
               YEnd++;
               TmpPtr = GetLinePtr(YEnd);
@@ -2564,6 +2565,9 @@ void ShowStatusLine(int Show)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2007/02/25 13:17:39  maya
+ * ダブルクリックされた単語が行を越えていた場合、EnableContinuedLineCopy が有効なら続けて選択されるようにした。
+ *
  * Revision 1.5  2005/05/21 16:24:45  yutakakn
  * 選択済みバッファの伸縮の不具合を修正。
  *
