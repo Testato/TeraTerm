@@ -1721,7 +1721,7 @@ int BuffDblClk(int Xw, int Yw)
 //    Xw: horizontal position in window coordinate (pixels)
 //    Yw: vertical
 {
-  int X, Y;
+  int X, Y, YStart, YEnd;
   int IStart, IEnd, i;
   LONG TmpPtr;
   BYTE b;
@@ -1765,55 +1765,169 @@ int BuffDblClk(int Xw, int Yw)
     IStart = X;
     IStart = LeftHalfOfDBCS(TmpPtr,IStart);
     IEnd = IStart;
+    YStart = YEnd = Y;
 
     if (IsDelimiter(TmpPtr,IStart))
     {
       b = CodeBuff[TmpPtr+IStart];
       DBCS = (AttrBuff[TmpPtr+IStart] & AttrKanji) != 0;
-      while ((IStart>0) &&
-	     ((b==CodeBuff[TmpPtr+IStart]) ||
-	      DBCS &&
-	      ((AttrBuff[TmpPtr+IStart] & AttrKanji)!=0)))
-	MoveCharPtr(TmpPtr,&IStart,-1); // move left
+      while ((b==CodeBuff[TmpPtr+IStart]) ||
+             DBCS &&
+			 ((AttrBuff[TmpPtr+IStart] & AttrKanji)!=0)) {
+        MoveCharPtr(TmpPtr,&IStart,-1); // move left
+        if (ts.EnableContinuedLineCopy) {
+          if (IStart<=0) {
+            // 左端の場合
+            if (YStart>0 && AttrBuff[TmpPtr] & AttrLineContinued) {
+              // 前の行に移動する
+              YStart--;
+              TmpPtr = GetLinePtr(YStart);
+              IStart = NumOfColumns;
+			}
+			else {
+              break;
+			}
+		  }
+		}
+		else {
+          if (IStart<=0) {
+            // 左端の場合は終わり
+            break;
+		  }
+		}
+	  }
       if ((b!=CodeBuff[TmpPtr+IStart]) &&
-	  ! (DBCS &&
-	     ((AttrBuff[TmpPtr+IStart] & AttrKanji)!=0)))
-	MoveCharPtr(TmpPtr,&IStart,1);
+          ! (DBCS &&
+          ((AttrBuff[TmpPtr+IStart] & AttrKanji)!=0))) {
+        // 最終位置が Delimiter でない場合にはひとつ右にずらす
+        if (ts.EnableContinuedLineCopy && IStart == NumOfColumns-1) {
+          // 右端の場合には次の行へ移動する
+          YStart++;
+          TmpPtr = GetLinePtr(YStart);
+          IStart = 0;
+        }
+        else {
+          MoveCharPtr(TmpPtr,&IStart,1);
+        }
+	  }
 
+      // 行が移動しているかもしれないので、クリックした行を取り直す
+      TmpPtr = GetLinePtr(YEnd);
       i = 1;
-      while ((i!=0) &&
-	     ((b==CodeBuff[TmpPtr+IEnd]) ||
-	      DBCS &&
-	      ((AttrBuff[TmpPtr+IEnd] & AttrKanji)!=0)))
-	i = MoveCharPtr(TmpPtr,&IEnd,1); // move right
+      while (((b==CodeBuff[TmpPtr+IEnd]) ||
+              DBCS &&
+              ((AttrBuff[TmpPtr+IEnd] & AttrKanji)!=0))) {
+        i = MoveCharPtr(TmpPtr,&IEnd,1); // move right
+        if (ts.EnableContinuedLineCopy) {
+          if (i==0) {
+            // 右端の場合
+            if (YEnd<BuffEnd && AttrBuff[TmpPtr+IEnd+1] & AttrLineContinued) {
+              // 次の行に移動する
+              YEnd++;
+              TmpPtr = GetLinePtr(YEnd);
+              IEnd = 0;
+            }
+            else {
+              break;
+            }
+          }
+        }
+        else {
+          if (i==0) {
+            // 右端の場合は終わり
+            break;
+          }
+        }
+	  }
     }
     else {
-      while ((IStart>0) &&
-	     ! IsDelimiter(TmpPtr,IStart))
-	MoveCharPtr(TmpPtr,&IStart,-1); // move left
-      if (IsDelimiter(TmpPtr,IStart))
-        MoveCharPtr(TmpPtr,&IStart,1);
-
+      while (! IsDelimiter(TmpPtr,IStart)) {
+        MoveCharPtr(TmpPtr,&IStart,-1); // move left
+        if (ts.EnableContinuedLineCopy) {
+          if (IStart<=0) {
+            // 左端の場合
+            if (YStart>0 && AttrBuff[TmpPtr] & AttrLineContinued) {
+              // 前の行に移動する
+              YStart--;
+              TmpPtr = GetLinePtr(YStart);
+              IStart = NumOfColumns;
+            }
+            else {
+              break;
+            }
+          }
+        }
+        else {
+          if (IStart<=0) {
+            // 左端の場合は終わり
+            break;
+          }
+        }
+      }
+      if (IsDelimiter(TmpPtr,IStart)) {
+        // 最終位置が Delimiter の場合にはひとつ右にずらす
+        if (ts.EnableContinuedLineCopy && IStart == NumOfColumns-1) {
+          // 右端の場合には次の行へ移動する
+          YStart++;
+          TmpPtr = GetLinePtr(YStart);
+          IStart = 0;
+        }
+        else {
+          MoveCharPtr(TmpPtr,&IStart,1);
+        }
+      }
+      
+      // 行が移動しているかもしれないので、クリックした行を取り直す
+      TmpPtr = GetLinePtr(YEnd);
       i = 1;
-      while ((i!=0) &&
-	     ! IsDelimiter(TmpPtr,IEnd))
-	i = MoveCharPtr(TmpPtr,&IEnd,1); // move right
+      while (! IsDelimiter(TmpPtr,IEnd)) {
+        i = MoveCharPtr(TmpPtr,&IEnd,1); // move right
+        if (ts.EnableContinuedLineCopy) {
+          if (i==0) {
+            // 右端の場合
+            if (YEnd<BuffEnd && AttrBuff[TmpPtr+IEnd+1] & AttrLineContinued) {
+              // 次の行に移動する
+              YEnd++;
+              TmpPtr = GetLinePtr(YEnd);
+              IEnd = 0;
+            }
+            else {
+              break;
+            }
+          }
+        }
+        else {
+          if (i==0) {
+            // 右端の場合は終わり
+            break;
+          }
+        }
+      }
     }
-    if (i==0)
-      IEnd = NumOfColumns;
+    if (ts.EnableContinuedLineCopy) {
+      if (IEnd == 0) {
+        // 左端の場合には前の行へ移動する
+        YEnd--;
+        IEnd = NumOfColumns;
+      }
+      else if (i==0) {
+        IEnd = NumOfColumns;
+      }
+    }
+    else {
+      if (i==0)
+        IEnd = NumOfColumns;
+    }
 
-    if (IStart<=X)
-    {
-      SelectStart.x = IStart;
-      SelectStart.y = Y;
-      SelectEnd.x = IEnd;
-      SelectEnd.y = Y;
-      SelectEndOld = SelectStart;
-      DblClkStart = SelectStart;
-      DblClkEnd = SelectEnd;
-      Selected = TRUE;
-      ChangeSelectRegion();
-    }
+    SelectStart.x = IStart;
+    SelectStart.y = YStart;
+    SelectEnd.x = IEnd;
+    SelectEnd.y = YEnd;
+    SelectEndOld = SelectStart;
+    DblClkStart = SelectStart;
+    DblClkEnd = SelectEnd;
+    Selected = TRUE;
+    ChangeSelectRegion();
   }
 /* start - ishizaki */
 end:
@@ -2450,6 +2564,9 @@ void ShowStatusLine(int Show)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2005/05/21 16:24:45  yutakakn
+ * 選択済みバッファの伸縮の不具合を修正。
+ *
  * Revision 1.4  2005/05/15 11:49:32  yutakakn
  * ブロック選択のキーバインドを Shift+MouseDrag から Alt+MouseDrag へ変更した。
  * 左クリックで開始位置の記録、Shift+左クリックで終了位置を取得し、ページをまたぐ選択
