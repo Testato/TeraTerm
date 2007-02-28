@@ -158,6 +158,13 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Keyboard setup file
+
+">
+			<param name="Local" value="html\setup\keyboard.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="TTSSH known_hosts file">
 			<param name="Local" value="html\setup\knownfiles.html">
 			<param name="ImageNumber" value="11">

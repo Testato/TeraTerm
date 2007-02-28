@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>Keyboard setup file</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<FONT SIZE="+2">Keyboard setup file</FONT>
+
+<p>
+The keyboard setup file assigns keys on PC keyboard for various functions such as VT terminal functions, sending user defined character strings, Tera Term commands and executing macro files.
+</p>
+
+<p>
+The default keyboard setup stored in the file KEYBOARD.CNF is almost compatible with VT terminal keyboard. You can modify key assignments by editing the file. See <A HREF="../reference/keycode.txt">KEYCODE.TXT</A> for the format of keyboard setup file.
+
+
+</p>
+
+<p>
+The file name of keyboard setup file to be loaded by Tera Term can be specified as a <A HREF="../commandline/teraterm.html">command line</A> parameter of Tera Term. If you omit the file name extension, the default extension ".CNF" is assumed. If you omit the file name, the default file  <b>KEYBOARD.CNF</b> is loaded.
+</p>
+
+<p>
+The distribution package contains the following keyboard setup files:
+</p>
+
+<pre>
+<b>IBMKEYB.CNF</b>	Sample file for the IBM-PC/AT 101-key keyboard
+
+<b>PC98KEYB.CNF</b>	Sample file for the NEC PC 98 keyboard (Japanese Windows 95)
+
+<b>NT98KEYB.CNF</b>	Sample file for the NEC PC 98 keyboard (Japanese Windows NT)
+
+<b>FUNCTION.CNF</b>	<b>IBMKEYB.CNF</b> that F1-F10 keys are enabled.
+
+<b>KEYBOARD.CNF</b>	Default keyboard setup file (copy of IBMKEYB.CNF at the moment just after the installation)
+</pre>
+
+<p>
+Installer copies <b>IBMKEYB.CNF</b> as <b>KEYBOARD.CNF</b>. If you want to use other settings, you have to copy other file to <b>KEYBOARD.CNF</b>.
+</p>
+
+</BODY>
+</HTML>
