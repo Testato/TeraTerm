@@ -829,5 +829,10 @@
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Uninstallation">
+		<param name="Local" value="html\uninstall.html">
+		<param name="ImageNumber" value="9">
+		</OBJECT>
 </UL>
 </BODY></HTML>

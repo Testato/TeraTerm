@@ -9,40 +9,31 @@
 </HEAD>
 <BODY>
 
-<div class="topic"><FONT COLOR="#cc0066">How to associate "TTL" files with MACRO</FONT></div>
+<h1>How to associate "TTL" files with MACRO</h1>
 
-<BR><BR>
-
-<pre>
+<p>
 To associate the file extention ".TTL" with MACRO, do the following steps.
+</p>
 
-<B>a) In Windows 95/98 and Windows NT 4.0/2000/XP</B>
-  a-1) Execute the [View] Options command of Explorer.
+<ol>
+  <li>Execute the [View] Options command of Explorer.</li>
 
-  a-2) Select the "File Types" tab.
+  <li>Select the "File Types" tab.</li>
 
-  a-3) Click the "New Type" button and specify items like the following.
-     Description of type:	Tera Term macro files
-     Associated extention:	TTL
-
-  a-4) Click the "New" button and specify items like the following.
-    Action:	Execute
-    Application used to perform action:
-     "C:\Program Files\teraterm\ttpmacro.exe" "%1"
-     (If Tera Term Pro is installed in C:\Program Files\teraterm.)
-
-  a-5) Close all the dialog boxes by clicking "OK" buttons.
-
-<B>b) In Windows NT 3.51</B>
-  b-1) Execute the [File] Associate command of File Manager.
-
-  b-2) Specify items like the following and click the "OK" button.
-    Files with extention:	TTL
-    Associate with:
-      "C:\TTERMPRO\TTPMACRO.EXE" "%1"
-      (If Tera Term Pro is installed in C:\TTERMPRO.)
-</pre>
+  <li>Click the "New Type" button and specify items like the following.
+<pre>
+Description of type:	Tera Term macro files
+Associated extention:	TTL
+</pre></li>
+  <li>Click the "New" button and specify items like the following.
+<pre>
+Action:	Execute
+Application used to perform action:
+	"C:\Program Files\teraterm\ttpmacro.exe" "%1"
+	(If Tera Term Pro is installed in C:\Program Files\teraterm.)
+</pre></li>
+  <li>Close all the dialog boxes by clicking "OK" buttons.</li>
+</ol>
 
 </BODY>
 </HTML>
-

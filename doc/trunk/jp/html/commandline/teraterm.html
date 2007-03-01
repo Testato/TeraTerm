@@ -9,9 +9,11 @@
 </HEAD>
 <BODY>
 
-<FONT SIZE="+2">Tera Term Pro コマンドライン</FONT><BR><BR>
+<h1>Tera Term Pro コマンドライン</h1>
 
+<p>
 Tera Term Pro を起動するときのコマンドライン(ショートカットのリンク先)の形式
+</p>
 
 <pre>
 TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
@@ -103,7 +105,9 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
 	/TIMEOUT=&lt;connecting timeout value&gt;	接続中の処理をキャンセルするまでの時間（秒単位）
 
 	;&lt;comment&gt;	コメント。コマンドラインの最後に置く必要がある。
+</pre>
 
+<pre>
 例:
 	TTERMPRO
 	TTERMPRO myhost.mydomain
@@ -118,7 +122,9 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
 	TTERMPRO /K=MYKEY.CNF /W="My host"
 	TTERMPRO /R=README.TXT ; replay a file
 	TTERMPRO myhost /B /X=100 /Y=50
+</pre>
 
+<pre>
 省略時の値
 	以下の省略時の値は Tera Term 設定ファイルに保存されています。
 		&lt;TCP port#&gt;
@@ -134,16 +140,16 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
 		&lt;window title&gt;
 		&lt;window pos (x)&gt;
 		&lt;window pos (y)&gt;
-
-注:
-	&lt;telnet flag&gt; が 1 で、かつ &lt;TCP port#&gt; が 23 のときだけ、Tera Term
-	から自発的に telnet の option negotiation を開始します。
-	それ以外の場合でも Tera Term はホストから送られてきた telnet コマンドに応答する
-	ことができます。
-
-参照:
-	Telnet 用ポート番号 / 非 telnet 接続用の端末設定
 </pre>
+
+<p>
+注:<br>
+&lt;telnet flag&gt; が 1 で、かつ &lt;TCP port#&gt; が 23 のときだけ、Tera Term から自発的に telnet の option negotiation を開始します。それ以外の場合でも Tera Term はホストから送られてきた telnet コマンドに応答することができます。
+</p>
+
+<p>
+参照: <a href="../usage/tips/not_port23.html">Telnet 用ポート番号 / 非 telnet 接続用の端末設定</a>
+</p>
 
 </BODY>
 </HTML>

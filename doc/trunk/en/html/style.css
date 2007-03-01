@@ -1,4 +1,3 @@
-
 body{ 
 	margin: 5ex;
 	background: rgb(255, 255, 240);
@@ -7,11 +6,26 @@ body{
 	font-size: 12pt;
 }
 
+h1{
+	font-size: x-large;
+}
+
+h2{
+	font-size: large;
+}
+
+h3{
+	font-size: midium;
+}
+
+.center{
+	text-align: center;
+}
+
 div.topic{
 	font-weight: bold;
-	font-size: larger;
-	color: #000000;
-	margin-top: 2pt;
+	font-size: large;
+	margin-top: 2ex;
 	margin-bottom: 2pt;
 }
 
@@ -29,8 +43,6 @@ ul {
 dt {
 	font-weight: bold;
 	font-style: normal;
-	font-size: larger;
-	color: black;
 	border-color: #FFCC33;
 	padding: 0.5em 0.5em 0.5em 0.5em;
 	border-width: 0px 0px 1px 0px;
@@ -38,6 +50,10 @@ dt {
 
 li.history {
 	margin-bottom: 1em;
+}
+
+.no-marker{
+	list-style-type: none;
 }
 
 pre { 
@@ -59,3 +75,29 @@ pre.console{
 }
 
 
+
+.warning{
+	color: #ff0000;
+}
+
+.notice{
+	color: #0000ff;
+}
+
+img{
+	boarder: 0px;
+}
+
+.img{
+	margin: 1ex;
+}
+
+.code{
+	font-family: Courier;
+	color: #0000ff;
+}
+
+.variable{
+	font-weight: 900;
+	color: #0000ff;
+}

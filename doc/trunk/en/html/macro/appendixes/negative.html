@@ -9,16 +9,14 @@
 </HEAD>
 <BODY>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">Note on negative integer constants</FONT><BR><BR>
-</div>
+<h1>Note on negative integer constants</h1>
 
 <p>
 Using a negative integer constant may cause a problem like the following: For example,
 </p>
 
 <pre>
-<B>for i -10 0</B>
+for i -10 0
 </pre>
 
 <p>
@@ -28,14 +26,14 @@ causes the syntax error, because the second parameter is regarded as "i-10" inst
 1) Put "0" before "-".
 
 <pre>
-<B>for i 0-10 0</B>
+for i 0-10 0
 </pre>
 
 2) Assign the negative constant to a variable.
 
 <pre>
-<B>A = -10
-for i A 0</B>
+A = -10
+for i A 0
 </pre>
 
 </BODY>

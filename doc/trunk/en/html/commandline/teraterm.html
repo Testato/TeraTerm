@@ -9,7 +9,7 @@
 </HEAD>
 <BODY>
 
-<FONT SIZE="+2">TeraTerm command line</FONT><BR><BR>
+<h1>TeraTerm command line</h1>
 
 <pre>
 TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
@@ -101,7 +101,9 @@ where:
 	/TIMEOUT=&lt;connecting timeout value&gt;       Could be specified per seconds.
 	
 	;&lt;comment&gt;	Comment. Should be last in the command line.
+</pre>
 
+<pre>
 Example:
 	TTERMPRO
 	TTERMPRO myhost.mydomain
@@ -116,7 +118,9 @@ Example:
 	TTERMPRO /K=MYKEY.CNF /W="My host"
 	TTERMPRO /R=README.TXT ; replay a file
 	TTERMPRO myhost /B /X=100 /Y=50
+</pre>
 
+<pre>
 Default values
 	Following default values are stored in the Tera Term setup file:
 		&lt;TCP port#&gt;
@@ -132,16 +136,16 @@ Default values
 		&lt;window title&gt;
 		&lt;window pos (x)&gt;
 		&lt;window pos (y)&gt;
-
-Note:
-	Only if &lt;telnet flag&gt; is 1 (on) and &lt;TCP port#&gt; is 23, Tera Term starts 
-	spontaneously sending telnet commands to the host for the option negotiation when 
-	the TCP/IP connection is established. In any cases, Tera Term can respond to telnet 
-	commands sent by the host.
-
-See also:
-	Telnet port number / Terminal setup for non-telnet connection
 </pre>
+
+<p>
+Note:<br>
+Only if &lt;telnet flag&gt; is 1 (on) and &lt;TCP port#&gt; is 23, Tera Term starts spontaneously sending telnet commands to the host for the option negotiation when the TCP/IP connection is established. In any cases, Tera Term can respond to telnet commands sent by the host.
+</p>
+
+<p>
+See also: Telnet port number / Terminal setup for non-telnet connection
+</p>
 
 </BODY>
 </HTML>
