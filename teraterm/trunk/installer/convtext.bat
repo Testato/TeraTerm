@@ -12,5 +12,3 @@ perl 2sjis.pl --i ..\..\ttssh2\openssl\LICENSE  --o ..\..\doc\jp\html\reference\
 rem chm‚ÉŠ®‘S‚ÉˆÚs‚·‚é‚Ü‚Å‚Ìb’è
 copy ..\release\keycode.txt ..\..\doc\en\html\reference\
 copy ..\release\keycodej.txt ..\..\doc\jp\html\reference\
-copy ..\release\develop.txt ..\..\doc\en\html\reference\
-copy ..\release\develop-j.txt ..\..\doc\jp\html\reference\
