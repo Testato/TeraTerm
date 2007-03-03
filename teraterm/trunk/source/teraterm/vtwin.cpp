@@ -4386,6 +4386,8 @@ void CVTWindow::OnSetupSave()
 		(*WriteIniFile)(ts.SetupFName,&ts);
 		/* copy host list */
 		(*CopyHostList)(TmpSetupFN,ts.SetupFName);
+		/* copy broadcast command history list */
+		(*CopySerialList)(TmpSetupFN,ts.SetupFName,"BroadcastCommands","Command");
 		FreeTTSET();
 	}
 
@@ -4459,7 +4461,29 @@ void CVTWindow::OnControlResetPort()
   CommResetSerial(&ts,&cv);
 }
 
+void ApplyBoradCastCommandHisotry(HWND Dialog)
+{
+	char EntName[10];
+	char TempHost[HostNameMaxLength+1];
+	int i = 1;
 
+	SendDlgItemMessage(Dialog, IDC_COMMAND_EDIT, CB_RESETCONTENT, 0, 0);
+	strcpy(EntName,"Command");
+	do {
+		uint2str(i,&EntName[7],2);
+		GetPrivateProfileString("BroadcastCommands",EntName,"",
+								TempHost,sizeof(TempHost),ts.SetupFName);
+		if ( strlen(TempHost) > 0 )
+			SendDlgItemMessage(Dialog, IDC_COMMAND_EDIT, CB_ADDSTRING,
+							   0, (LPARAM)TempHost);
+			i++;
+		} while ((i <= 99) && (strlen(TempHost)>0));
+
+	SendDlgItemMessage(Dialog, IDC_COMMAND_EDIT, EM_LIMITTEXT,
+					   HostNameMaxLength-1, 0);
+
+	SendDlgItemMessage(Dialog, IDC_COMMAND_EDIT, CB_SETCURSEL,0,0);
+}
 
 //
 // すべてのターミナルへ同一コマンドを送信するモードレスダイアログの表示
@@ -4470,6 +4494,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 	char buf[256 + 3];
 	UINT ret;
 	LRESULT checked;
+	LRESULT history;
 #ifdef I18N
 	LOGFONT logfont;
 	HFONT font;
@@ -4481,6 +4506,11 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			SendMessage(GetDlgItem(hWnd, IDC_RADIO_CR), BM_SETCHECK, BST_CHECKED, 0);
 			// デフォルトでチェックボックスを checked 状態にする。
 			SendMessage(GetDlgItem(hWnd, IDC_ENTERKEY_CHECK), BM_SETCHECK, BST_CHECKED, 0);
+			// history を反映する (2007.3.3 maya)
+			if (ts.BroadcastCommandHistory) {
+				SendMessage(GetDlgItem(hWnd, IDC_HISTORY_CHECK), BM_SETCHECK, BST_CHECKED, 0);
+			}
+			ApplyBoradCastCommandHisotry(hWnd);
 
 			// エディットコントロールにフォーカスをあてる
 			SetFocus(GetDlgItem(hWnd, IDC_COMMAND_EDIT));
@@ -4490,6 +4520,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			GetObject(font, sizeof(LOGFONT), &logfont);
 			if (get_lang_font("DLG_SYSTEM_FONT", hWnd, &logfont, &DlgBroadcastFont, ts.UILanguageFile)) {
 				SendDlgItemMessage(hWnd, IDC_COMMAND_EDIT, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hWnd, IDC_HISTORY_CHECK, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hWnd, IDC_RADIO_CRLF, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hWnd, IDC_RADIO_CR, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hWnd, IDC_RADIO_LF, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
@@ -4503,6 +4534,9 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			GetWindowText(hWnd, ts.UIMsg, sizeof(ts.UIMsg));
 			get_lang_msg("DLG_BROADCAST_TITLE", ts.UIMsg, ts.UILanguageFile);
 			SetWindowText(hWnd, ts.UIMsg);
+			GetDlgItemText(hWnd, IDC_HISTORY_CHECK, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_BROADCAST_HISTORY", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hWnd, IDC_HISTORY_CHECK, ts.UIMsg);
 			GetDlgItemText(hWnd, IDC_ENTERKEY_CHECK, ts.UIMsg, sizeof(ts.UIMsg));
 			get_lang_msg("DLG_BROADCAST_ENTER", ts.UIMsg, ts.UILanguageFile);
 			SetDlgItemText(hWnd, IDC_ENTERKEY_CHECK, ts.UIMsg);
@@ -4547,6 +4581,19 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 						memset(buf, 0, sizeof(buf));
 					}
 
+					// ブロードキャストコマンドの履歴を保存 (2007.3.3 maya)
+					history = SendMessage(GetDlgItem(hWnd, IDC_HISTORY_CHECK), BM_GETCHECK, 0, 0);
+					if (history) {
+						if (LoadTTSET()) {
+							(*AddValueToList)(ts.SetupFName, buf, "BroadcastCommands", "Command");
+							FreeTTSET();
+						}
+						ApplyBoradCastCommandHisotry(hWnd);
+						ts.BroadcastCommandHistory = TRUE;
+					}
+					else {
+						ts.BroadcastCommandHistory = FALSE;
+					}
 					checked = SendMessage(GetDlgItem(hWnd, IDC_ENTERKEY_CHECK), BM_GETCHECK, 0, 0);
 					if (checked & BST_CHECKED) { // 改行コードあり
 						if (SendMessage(GetDlgItem(hWnd, IDC_RADIO_CRLF), BM_GETCHECK, 0, 0) & BST_CHECKED) {
@@ -4592,11 +4639,6 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
                 case IDCANCEL:
 				    EndDialog(hWnd, 0);
 					//DestroyWindow(hWnd);
-#ifdef I18N
-					if (DlgBroadcastFont != NULL) {
-						DeleteObject(DlgBroadcastFont);
-					}
-#endif
 
 					return TRUE;
 
@@ -4608,6 +4650,11 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
         case WM_CLOSE:
 			//DestroyWindow(hWnd);
 		    EndDialog(hWnd, 0);
+#ifdef I18N
+					if (DlgBroadcastFont != NULL) {
+						DeleteObject(DlgBroadcastFont);
+					}
+#endif
 			return TRUE;
 
         default:
@@ -4724,6 +4771,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.49  2007/02/19 17:04:30  maya
+ * NT 系で GetOpenFileName が開かないバグを修正した。
+ *
  * Revision 1.48  2007/02/04 13:45:34  maya
  * Windows98/NT4.0 では OPENFILENAME 構造体のサイズが違うために GetOpenFileName が開かないバグを修正した。
  *

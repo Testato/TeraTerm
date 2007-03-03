@@ -19,6 +19,10 @@ typedef void (PASCAL FAR *PAddHostToList)
   (PCHAR FName, PCHAR Host);
 typedef void (PASCAL FAR *PParseParam)
   (PCHAR Param, PTTSet ts, PCHAR DDETopic);
+typedef void (PASCAL FAR *PCopySerialList)
+  (PCHAR IniSrc, PCHAR IniDest, PCHAR section, PCHAR key);
+typedef void (PASCAL FAR *PAddValueToList)
+  (PCHAR FName, PCHAR Host, PCHAR section, PCHAR key);
 
 extern PReadIniFile ReadIniFile;
 extern PWriteIniFile WriteIniFile;
@@ -26,6 +30,8 @@ extern PReadKeyboardCnf ReadKeyboardCnf;
 extern PCopyHostList CopyHostList;
 extern PAddHostToList AddHostToList;
 extern PParseParam ParseParam;
+extern PCopySerialList CopySerialList;
+extern PAddValueToList AddValueToList;
 
 /* proto types */
 BOOL LoadTTSET();

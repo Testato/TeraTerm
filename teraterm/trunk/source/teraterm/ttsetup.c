@@ -15,6 +15,8 @@ PReadKeyboardCnf ReadKeyboardCnf;
 PCopyHostList CopyHostList;
 PAddHostToList AddHostToList;
 PParseParam ParseParam;
+PCopySerialList CopySerialList;
+PAddValueToList AddValueToList;
 
 static HANDLE HTTSET = NULL;
 
@@ -24,6 +26,8 @@ static HANDLE HTTSET = NULL;
 #define IdCopyHostList    4
 #define IdAddHostToList   5
 #define IdParseParam      6
+#define IdCopySerialList  7
+#define IdAddValueToList  8
 
 BOOL LoadTTSET()
 {
@@ -63,6 +67,14 @@ BOOL LoadTTSET()
   ParseParam =
 	(PParseParam)GetProcAddress(HTTSET, MAKEINTRESOURCE(IdParseParam));
   if (ParseParam==NULL) Err = TRUE;
+
+  CopySerialList =
+	(PCopySerialList)GetProcAddress(HTTSET, MAKEINTRESOURCE(IdCopySerialList));
+  if (CopySerialList==NULL) Err = TRUE;
+
+  AddValueToList =
+	(PAddValueToList)GetProcAddress(HTTSET, MAKEINTRESOURCE(IdAddValueToList));
+  if (AddValueToList==NULL) Err = TRUE;
 
   if (Err)
   {

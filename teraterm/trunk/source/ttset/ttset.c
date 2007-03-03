@@ -988,6 +988,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   }
 #endif
 
+  // Broadcast Command History (2007.3.3 maya)
+  ts->BroadcastCommandHistory =
+    GetOnOff(Section,"BroadcastCommandHistory",FName,FALSE);
+
 #ifdef USE_NORMAL_BGCOLOR
   // UseNormalBGColor
   ts->UseNormalBGColor = GetOnOff(Section,"UseNormalBGColor",FName,FALSE);
@@ -1606,6 +1610,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
   // UseNormalBGColor
   WriteOnOff(Section,"UseNormalBGColor",FName,ts->UseNormalBGColor);
 #endif
+
+  // Broadcast Command History (2007.3.3 maya)
+  WriteOnOff(Section,"BroadcastCommandHistory",FName,ts->BroadcastCommandHistory);
 }
 
 #define VTEditor "VT editor keypad"
@@ -1871,28 +1878,27 @@ void FAR PASCAL ReadKeyboardCnf
 	}
 }
 
-/* copy hostlist from source IniFile to dest IniFile */
-void FAR PASCAL CopyHostList(PCHAR IniSrc, PCHAR IniDest)
+void CopySerialList(PCHAR IniSrc, PCHAR IniDest, PCHAR section, PCHAR key)
 {
   int i;
-  char EntName[7];
+  char EntName[10];
   char TempHost[HostNameMaxLength+1];
 
   if ( _stricmp(IniSrc,IniDest)==0 ) return;
 
-  WritePrivateProfileString("Hosts",NULL,NULL,IniDest);
-  strcpy(EntName,"Host");
+  WritePrivateProfileString(section,NULL,NULL,IniDest);
+  strcpy(EntName,key);
 
   i = 1;
   do {
-    uint2str(i,&EntName[4],2);
+    uint2str(i,&EntName[strlen(key)],2);
 
     /* Get one hostname from file IniSrc */
-    GetPrivateProfileString("Hosts",EntName,"",
+    GetPrivateProfileString(section,EntName,"",
 			    TempHost,sizeof(TempHost),IniSrc);
     /* Copy it to the file IniDest */
     if ( strlen(TempHost) > 0 )
-      WritePrivateProfileString("Hosts",EntName,TempHost,IniDest);
+      WritePrivateProfileString(section,EntName,TempHost,IniDest);
     i++;
   }
   while ((i <= 99) && (strlen(TempHost)>0));
@@ -1901,11 +1907,11 @@ void FAR PASCAL CopyHostList(PCHAR IniSrc, PCHAR IniDest)
   WritePrivateProfileString(NULL,NULL,NULL,IniDest);
 }
 
-void FAR PASCAL AddHostToList(PCHAR FName, PCHAR Host)
+void FAR PASCAL AddValueToList(PCHAR FName, PCHAR Host, PCHAR section, PCHAR key)
 {
   HANDLE MemH;
   PCHAR MemP;
-  char EntName[7];
+  char EntName[10];
   int i, j, Len;
   BOOL Update;
 
@@ -1917,14 +1923,14 @@ void FAR PASCAL AddHostToList(PCHAR FName, PCHAR Host)
   {
     strcpy(MemP,Host);
     j = strlen(Host)+1;
-    strcpy(EntName,"Host");
+    strcpy(EntName,key);
     i = 1;
     Update = TRUE;
     do {
-      uint2str(i,&EntName[4],2);
+      uint2str(i,&EntName[strlen(key)],2);
 
       /* Get a hostname */
-      GetPrivateProfileString("Hosts",EntName,"",
+      GetPrivateProfileString(section,EntName,"",
                               &MemP[j],HostNameMaxLength+1,FName);
       Len = strlen(&MemP[j]);
       if (_stricmp(&MemP[j],Host)==0)
@@ -1938,15 +1944,15 @@ void FAR PASCAL AddHostToList(PCHAR FName, PCHAR Host)
 
     if (Update)
     {
-      WritePrivateProfileString("Hosts",NULL,NULL,FName);
+      WritePrivateProfileString(section,NULL,NULL,FName);
 
       j = 0;
       i = 1;
       do {
-        uint2str(i,&EntName[4],2);
+        uint2str(i,&EntName[strlen(key)],2);
 
         if (MemP[j]!=0)
-          WritePrivateProfileString("Hosts",EntName,&MemP[j],FName);
+          WritePrivateProfileString(section,EntName,&MemP[j],FName);
         j = j + strlen(&MemP[j]) + 1;
         i++;
       } while ((i <= 99) && (MemP[j]!=0));
@@ -1957,7 +1963,18 @@ void FAR PASCAL AddHostToList(PCHAR FName, PCHAR Host)
   }
   GlobalFree(MemH);
 }
-    
+
+ /* copy hostlist from source IniFile to dest IniFile */
+void FAR PASCAL CopyHostList(PCHAR IniSrc, PCHAR IniDest)
+{
+  CopySerialList(IniSrc, IniDest, "Hosts", "Host");
+}
+
+void FAR PASCAL AddHostToList(PCHAR FName, PCHAR Host)
+{
+  AddValueToList(FName, Host, "Hosts", "Host");
+}
+
   BOOL NextParam(PCHAR Param, int *i, PCHAR Temp, int Size)
   {
     int j;
@@ -2429,6 +2446,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.22  2007/01/31 13:29:27  maya
+ * 言語ファイルのフルパス指定に対応した。
+ *
  * Revision 1.21  2007/01/21 16:18:41  maya
  * 表示メッセージの読み込み対応
  *

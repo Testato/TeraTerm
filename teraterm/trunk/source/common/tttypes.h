@@ -351,6 +351,7 @@ struct tttset {
   char UILanguageFile[MAX_PATH];
   char UIMsg[MAX_UIMSG];
 #endif
+  WORD BroadcastCommandHistory;
   int ConnectingTimeout;
 };
 

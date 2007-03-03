@@ -71,6 +71,7 @@
 #define IDC_SHELL_LABEL                 1055
 #define IDC_ENV2_LABEL                  1056
 #define IDC_ENV1_LABEL                  1057
+#define IDC_HISTORY_CHECK               1058
 #define IDD_PRNABORTDLG                 2100
 #define IDD_FILETRANSDLG                2200
 #define IDC_TRANSFNAME                  2201
@@ -176,7 +177,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        119
 #define _APS_NEXT_COMMAND_VALUE         52020
-#define _APS_NEXT_CONTROL_VALUE         1058
+#define _APS_NEXT_CONTROL_VALUE         1059
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
