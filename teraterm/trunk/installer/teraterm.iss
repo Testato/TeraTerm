@@ -397,3 +397,5 @@ begin
   else
     Result := False;
 end;
+[InstallDelete]
+Name: {app}\OpenSSH-LICENCE.txt; Type: files; Tasks: ; Languages: ; Components: TTSSH
