@@ -891,6 +891,58 @@ static void enable_dlg_items(HWND dlg, int from, int to, BOOL enabled)
 	}
 }
 
+int DetectComPorts(char *ComPortTable, int ComPortMax)
+{
+	HMODULE h;
+	TCHAR   devicesBuff[65535];
+	TCHAR   *p;
+	int 	comports = 0;
+	int 	i, j, min;
+	char	s;
+
+	if (((h = GetModuleHandle("kernel32.dll")) != NULL) &&
+	    (GetProcAddress(h, "QueryDosDeviceA") != NULL) &&
+	    (QueryDosDevice(NULL, devicesBuff, 65535) != 0)) {
+	        p = devicesBuff;
+		while (*p != '\0') {
+			if (strncmp(p, "COM", 3) == 0 && p[3] != '\0')
+				ComPortTable[comports++] = atoi(p+3);
+			if (comports >= ComPortMax)
+				break;
+			p += (strlen(p)+1);
+		}
+
+		for (i=0; i<comports-1; i++) {
+			min = i;
+			for (j=i+1; j<comports; j++)
+				if (ComPortTable[min] > ComPortTable[j])
+					min = j;
+			if (min != i) {
+				s = ComPortTable[i];
+				ComPortTable[i] = ComPortTable[min];
+				ComPortTable[min] = s;
+			}
+		}
+	}
+	else {
+#if 1
+		for (i=1; i<=ComPortMax; i++) {
+			FILE *fp;
+			char buf[10];
+			sprintf_s(buf, sizeof(buf), "\\\\.\\COM%d", i);
+			if ((fp = fopen(buf, "r")) != NULL) {
+				fclose(fp);
+				ComPortTable[comports++] = i;
+			}
+		}
+#else
+		comports = -1;
+#endif
+	}
+
+	return comports;
+}
+
 static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 								LPARAM lParam)
 {
@@ -899,6 +951,8 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 	char EntName[7];
 	char TempHost[HostNameMaxLength + 1];
 	WORD i, j, w;
+	char ComPortTable[99];
+	int comports;
 	BOOL Ok;
 #ifdef I18N
 	LOGFONT logfont;
@@ -1037,14 +1091,27 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		j = 0;
 		w = 1;
 		strcpy(EntName, "COM");
-		for (i = 1; i <= GetHNRec->MaxComPort; i++) {
-			sprintf(&EntName[3], "%d", i);
-			SendDlgItemMessage(dlg, IDC_HOSTCOM, CB_ADDSTRING,
-							   0, (LPARAM) EntName);
-			j++;
-			if (GetHNRec->ComPort == i)
-				w = j;
+		if ((comports=DetectComPorts(ComPortTable, GetHNRec->MaxComPort)) >= 0) {
+			for (i=0; i<comports; i++) {
+				sprintf(&EntName[3], "%d", ComPortTable[i]);
+				SendDlgItemMessage(dlg, IDC_HOSTCOM, CB_ADDSTRING,
+								   0, (LPARAM)EntName);
+				j++;
+				if (GetHNRec->ComPort == ComPortTable[i])
+					w = j;
+			}
+
+		} else {
+			for (i = 1; i <= GetHNRec->MaxComPort; i++) {
+				sprintf(&EntName[3], "%d", i);
+				SendDlgItemMessage(dlg, IDC_HOSTCOM, CB_ADDSTRING,
+								   0, (LPARAM) EntName);
+				j++;
+				if (GetHNRec->ComPort == i)
+					w = j;
+			}
 		}
+
 		if (j > 0)
 			SendDlgItemMessage(dlg, IDC_HOSTCOM, CB_SETCURSEL, w - 1, 0);
 		else					/* All com ports are already used */
@@ -3841,6 +3908,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.56  2007/01/31 13:15:08  maya
+ * 言語ファイルがないときに \0 が正しく認識されないバグを修正した。
+ *
  * Revision 1.55  2007/01/31 04:08:39  maya
  * メッセージを修正した。
  *
