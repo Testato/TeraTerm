@@ -1878,7 +1878,7 @@ void FAR PASCAL ReadKeyboardCnf
 	}
 }
 
-void CopySerialList(PCHAR IniSrc, PCHAR IniDest, PCHAR section, PCHAR key)
+void FAR PASCAL CopySerialList(PCHAR IniSrc, PCHAR IniDest, PCHAR section, PCHAR key)
 {
   int i;
   char EntName[10];
@@ -2447,6 +2447,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.24  2007/03/04 05:21:43  maya
+ * バッファがあふれる問題を修正した。
+ *
  * Revision 1.23  2007/03/03 03:51:21  maya
  * Broadcast Command の履歴を保存できるようにした。
  *
