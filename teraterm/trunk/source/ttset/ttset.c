@@ -1887,7 +1887,8 @@ void CopySerialList(PCHAR IniSrc, PCHAR IniDest, PCHAR section, PCHAR key)
   if ( _stricmp(IniSrc,IniDest)==0 ) return;
 
   WritePrivateProfileString(section,NULL,NULL,IniDest);
-  strcpy(EntName,key);
+  strncpy(EntName,key,sizeof(EntName)-3);
+  EntName[sizeof(EntName)-3] = 0;
 
   i = 1;
   do {
@@ -2446,6 +2447,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.23  2007/03/03 03:51:21  maya
+ * Broadcast Command の履歴を保存できるようにした。
+ *
  * Revision 1.22  2007/01/31 13:29:27  maya
  * 言語ファイルのフルパス指定に対応した。
  *
