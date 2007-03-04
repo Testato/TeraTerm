@@ -9,9 +9,7 @@
 </HEAD>
 <BODY>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">Variables</FONT><BR><BR>
-</div>
+<h1>Variables</h1>
 
 <B>1) User variables</B>
 
@@ -26,25 +24,25 @@ Each system variable has a predefined type and value. Used with particular comma
 </p>
 
 <pre>
-Variables	Type	Initial value	Related commands
+Variables         Type      Initial value   Related commands
 <hr>
-groupmatchstr1	string	""		waitregex
+groupmatchstr1    string    ""              waitregex
 groupmatchstr2
 groupmatchstr9
 
-inputstr	string	""		recvln, waitln, waitrecv, waitregex, passwordbox, inputbox
+inputstr          string    ""              recvln, waitln, waitrecv, waitregex, passwordbox, inputbox
 
-matchstr	string	""		waitregex
+matchstr          string    ""              waitregex
 
-param2		string	*1		*1
-param3		string	*1		*1
-result		integer	0		bplussend, bplusrecv, clipb2var, kmtfinish, kmtget,
-					kmtrecv, kmtsend, ifdefined, quickvanrecv, quickvansend,
-					recvln, var2clipb, wait, waitevent, waitln, waitrecv,
-					waitregex, xmodemrecv, xmodemsend, zmodemrecv, zmodemsend,
-					str2int, strcompare, strlen, strscan, filereadln,
-					filesearch, filestrseek, yesnobox
-timeout		integer	0		recvln, wait, waitevent, waitln, waitrecv, waitregex
+param2            string    *1              *1
+param3            string    *1              *1
+result            integer   0               bplussend, bplusrecv, clipb2var, kmtfinish, kmtget,
+                                            kmtrecv, kmtsend, ifdefined, quickvanrecv, quickvansend,
+                                            recvln, var2clipb, wait, waitevent, waitln, waitrecv,
+                                            waitregex, xmodemrecv, xmodemsend, zmodemrecv, zmodemsend,
+                                            str2int, strcompare, strlen, strscan, filereadln,
+                                            filesearch, filestrseek, yesnobox
+timeout           integer   0               recvln, wait, waitevent, waitln, waitrecv, waitregex
 </pre>
 
 <p>

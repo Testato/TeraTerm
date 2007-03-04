@@ -24,8 +24,8 @@ MACROの実行に影響をあたえない。
 </p>
 
 <pre>
-Example:
-	; Tera Term Language
+例:
+    ; Tera Term Language
 </pre>
 
 <h2>2) コマンド行</h2>
@@ -35,16 +35,16 @@ Example:
 </p>
 
 <pre>
-Format:
-	&lt;コマンド&gt; &lt;パラメータ&gt; ...
+書式:
+    &lt;コマンド&gt; &lt;パラメータ&gt; ...
 
-Example:
-	connect'myhost'
-	wait 'OK' 'ERROR'
-	if result=2 goto error
-	sendln 'cat'
-	pause A*10
-	end
+例:
+    connect'myhost'
+    wait 'OK' 'ERROR'
+    if result=2 goto error
+    sendln 'cat'
+    pause A*10
+    end
 </pre>
 
 <h2>3) 代入行</h2>
@@ -54,16 +54,16 @@ Example:
 </p>
 
 <pre>
-Format:
-	&lt;変数&gt; = &lt;定数、変数、式&gt;
+書式:
+    &lt;変数&gt; = &lt;定数、変数、式&gt;
 
-Example:
-	A = 33			数値の代入
-	B = C			C はすでに値が代入されてなければならない。
-	VAL = I*(I+1)	
-	A=B=C			B=C の結果 (真:1、偽:0) が A に代入される。
-	Error=0&lt;J	
-	Username='MYNAME'		文字列の代入
+例:
+    A = 33               数値の代入
+    B = C                C はすでに値が代入されてなければならない。
+    VAL = I*(I+1)	
+    A=B=C                B=C の結果 (真:1、偽:0) が A に代入される。
+    Error=0&lt;J	
+    Username='MYNAME'    文字列の代入
 </pre>
 
 <h2>4) ラベル行</h2>
@@ -73,12 +73,12 @@ Example:
 </p>
 
 <pre>
-Format:
-	:&lt;Label&gt;
+書式:
+    :&lt;Label&gt;
 
-Example:
-	:dial
-	:100
+例:
+    :dial
+    :100
 </pre>
 
 </BODY>

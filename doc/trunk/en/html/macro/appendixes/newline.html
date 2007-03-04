@@ -21,12 +21,11 @@ ASCII code 13 (decimal) is for CR, and 10 is for LF.
 
 <pre>
 Example:
-	send 'abc'#13#10		Same as the statement "sendln 'abc'".
-					The actual new-line character to be sent to the host is determined by Tera Term.
-	Wait #10'abc' 'def'#13		Waits for a line beginning with "abc" or a line ending with "def".
-	Logwrite 'abc'#13#10		Writes line "abc" to the log file.
+    <span class="syntax">send 'abc'#13#10</span>          Same as the statement "sendln 'abc'".
+                              The actual new-line character to be sent to the host is determined by Tera Term.
+    <span class="syntax">wait #10'abc' 'def'#13</span>    Waits for a line beginning with "abc" or a line ending with "def".
+    <span class="syntax">logwrite 'abc'#13#10</span>      Writes line "abc" to the log file.
 </pre>
 
 </BODY>
 </HTML>
-

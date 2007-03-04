@@ -12,44 +12,44 @@
 <h1>CygTerm+ Command Line Options</h1>
 
 <pre>
-    cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
-                [-s 'shell'] [-v 'env-var' ...]
+<span class="syntax">cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
+            [-s 'shell'] [-v 'env-var' ...]</span>
 
--t 'terminal-emulator'
+<span class="syntax">-t 'terminal-emulator'</span>
         Specify the command line of a terminal emulator to execute.
         This format is the same as TERM in the configuration file.
         The command line should be enclosed in quotes to include spaces.
 
--p port-number
+<span class="syntax">-p port-number</span>
         Instead of executing a terminal emulator, try connection to this
         port number of localhost.  It is considered another program uses
         `-p' option to use Cygwin via cygterm.exe
 
--dumb
+<span class="syntax">-dumb</span>
         Suppress the TELNET options negotiation.  And ignore any TELNET
         commands sent from terminal side.  The environment variable
         TERM is set to `dumb' on the shell side.
 
--s 'shell'
+<span class="syntax">-s 'shell'</span>
         Specify the command line of a shell on Cygwin to execute.
         This format is the same as SHELL in the configuration file.
         The command line should be enclosed in quotes to include spaces.
         Any command can be spedicied even if a non-shell command.
 
--ls
+<span class="syntax">-ls</span>
         Execute a shell as a login shell.
 
--nols
+<span class="syntax">-nols</span>
         Execute a shell as a normal (not login) shell.
 
--cd
+<span class="syntax">-cd</span>
         The current directory is moved to the user home directory and
         the shell is invoked.
 
--nocd
+<span class="syntax">-nocd</span>
         The shell is invoked without changing the current directory.
 
--v 'env-var'
+<span class="syntax">-v 'env-var'</span>
         Specify the environment variable to be set when starting the shell.
         This format is the same as ENV_X in the configuration file.
         The expression should be enclosed in quotes to include spaces.

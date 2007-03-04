@@ -1,9 +1,7 @@
 body{ 
 	margin: 5ex;
 	background: rgb(255, 255, 240);
-	color: black;
 	font-family: "MS US Gothic";
-	font-size: 12pt;
 }
 
 h1{
@@ -30,6 +28,10 @@ div.topic{
 }
 
 .qanda{
+	font-weight: bold;
+}
+
+.syntax{
 	font-weight: bold;
 }
 
@@ -60,27 +62,12 @@ li.history {
 	list-style-type: none;
 }
 
-pre { 
-	/*font-family: "Lucida Console"; */
-	font-weight: medium;
-	font-style: normal;
-	font-size:  small;
-	white-space:pre;
-	/*border:double black; */
+pre {
+	font-size: smaller;
+	white-space: pre;
 	background: #ffffff;
 	padding: .5ex;
 }
-
-pre.console{ 
-	font-size: smaller;
-	color: #ffffff;
-	background: #000000;
-	margin-top: 1;margin-bottom: 1;
-	border: #ccccff 1px solid;
-	padding: .5ex .5ex .5ex .5ex;
-}
-
-
 
 .warning{
 	color: #ff0000;
