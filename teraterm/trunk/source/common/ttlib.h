@@ -32,6 +32,7 @@ void RestoreNewLine(PCHAR Text);
 void GetNthString(PCHAR Source, int Nth, int Size, PCHAR Dest);
 void GetNthNum(PCHAR Source, int Nth, int far *Num);
 void GetDefaultSetupFName(char *dest, char *home);
+int DetectComPorts(char *ComPortTable, int ComPortMax);
 
 #ifdef I18N
 void get_lang_msg(PCHAR key, PCHAR buf, PCHAR iniFile);

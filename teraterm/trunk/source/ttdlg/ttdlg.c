@@ -1049,8 +1049,10 @@ static PCHAR far FlowList[] = {"Xon/Xoff","hardware","none",NULL};
 BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
   PTTSet ts;
-  int i;
-  char Temp[6];
+  int i, w;
+  char Temp[7];
+  char ComPortTable[99];
+  int comports;
 #ifdef I18N
   char uimsg[MAX_UIMSG];
   LOGFONT logfont;
@@ -1133,18 +1135,28 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 #endif
 
       strcpy(Temp,"COM");
+      w = 0;
 
-      for (i=1;i<=ts->MaxComPort;i++)
-      {
-	uint2str(i,&Temp[3],2);
-	SendDlgItemMessage(Dialog, IDC_SERIALPORT, CB_ADDSTRING,
-			   0, (LPARAM)Temp);
+      if ((comports = DetectComPorts(ComPortTable, ts->MaxComPort)) >= 0) {
+	  for (i=0; i<comports; i++) {
+	      uint2str(ComPortTable[i], &Temp[3], 2);
+	      SendDlgItemMessage(Dialog, IDC_SERIALPORT, CB_ADDSTRING,
+				0, (LPARAM)Temp);
+	      if (ComPortTable[i] == ts->ComPort) {
+		  w = i;
+	      }
+	  }
+      } else {
+	for (i=1; i<=ts->MaxComPort; i++) {
+	    uint2str(i,&Temp[3],2);
+	    SendDlgItemMessage(Dialog, IDC_SERIALPORT, CB_ADDSTRING,
+				0, (LPARAM)Temp);
+	}
+	if (ts->ComPort<=ts->MaxComPort)
+	    w = ts->ComPort-1;
+
       }
-      if (ts->ComPort<=ts->MaxComPort)
-	i = ts->ComPort-1;
-      else
-	i = 0;
-      SendDlgItemMessage(Dialog, IDC_SERIALPORT, CB_SETCURSEL,i,0);
+      SendDlgItemMessage(Dialog, IDC_SERIALPORT, CB_SETCURSEL, w, 0);
 
       SetDropDownList(Dialog, IDC_SERIALBAUD, BaudList, ts->Baud);
       SetDropDownList(Dialog, IDC_SERIALDATA, DataList, ts->DataBit);
@@ -1166,7 +1178,10 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  ts = (PTTSet)GetWindowLong(Dialog,DWL_USER);
 	  if ( ts!=NULL )
 	  {
-	    ts->ComPort = (WORD)GetCurSel(Dialog, IDC_SERIALPORT);
+	    memset(Temp, 0, sizeof(Temp));
+	    GetDlgItemText(Dialog, IDC_SERIALPORT, Temp, sizeof(Temp)-1);
+	    ts->ComPort = (WORD)atoi(&Temp[3]);
+
 	    ts->Baud = (WORD)GetCurSel(Dialog, IDC_SERIALBAUD);
 	    ts->DataBit = (WORD)GetCurSel(Dialog, IDC_SERIALDATA);
 	    ts->Parity = (WORD)GetCurSel(Dialog, IDC_SERIALPARITY);
@@ -1511,6 +1526,8 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   char TempHost[HostNameMaxLength+1];
   WORD i, j, w;
   BOOL Ok;
+  char ComPortTable[99];
+  int comports;
 #ifdef I18N
   char uimsg[MAX_UIMSG];
   LOGFONT logfont;
@@ -1613,15 +1630,27 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       j = 0;
       w = 1;
       strcpy(EntName,"COM");
-      for (i=1; i<=GetHNRec->MaxComPort ;i++)
-      {
-	if (((GetCOMFlag() >> (i-1)) & 1)==0)
+      if ((comports=DetectComPorts(ComPortTable, GetHNRec->MaxComPort)) >= 0) {
+	for (i=0; i<comports; i++) {
+	  if (((GetCOMFlag() >> (ComPortTable[i]-1)) & 1)==0) {
+	    uint2str(ComPortTable[i], &EntName[3], 2);
+	    SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_ADDSTRING,
+			       0, (LPARAM)EntName);
+	    j++;
+	    if (GetHNRec->ComPort==ComPortTable[i]) w = j;
+	  }
+	}
+      } else {
+	for (i=1; i<=GetHNRec->MaxComPort ;i++)
 	{
-	  uint2str(i,&EntName[3],2);
-	  SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_ADDSTRING,
-			     0, (LPARAM)EntName);
-	  j++;
-	  if (GetHNRec->ComPort==i) w = j;
+	  if (((GetCOMFlag() >> (i-1)) & 1)==0)
+	  {
+	    uint2str(i,&EntName[3],2);
+	    SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_ADDSTRING,
+			       0, (LPARAM)EntName);
+	    j++;
+	    if (GetHNRec->ComPort==i) w = j;
+	  }
 	}
       }
       if (j>0)
@@ -2925,6 +2954,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  2007/01/21 16:18:37  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.17  2007/01/21 15:18:38  yutakapon
  * Terminal setupダイアログの New-line の Receive に "LF" を追加した。
  * 受信時の改行コードが LF の場合は、サーバから LF のみが送られてくると
