@@ -27,10 +27,9 @@
       <li>Bug fix: some file select dialogs are not displayed on Windows98/NT4.0.</li>
       <li>Bug fix: the 'pause' macro command had a time-lag about 1 sec.</li>
       <li>TeraTerm reads the teraterm.ini from My Documents when it exists.</li>
-      <li>TTSSH move a focus to passphrase dialog when mistook a passphrase of a ssh2 key.</li>
       <li>Selected the next line including word characters if double-clicked word character is over the most right line when EnableContinuedLineCopy is enabled.</li>
-      <li>added support for saving Broadcast Command history.</li>
-      <li>In 'New connection' and 'Serial port setup' dialog, show available serial port only.</li>
+      <li>added support for saving Broadcast Command history in teraterm.ini file.</li>
+      <li>added support for serial port dynamic detection. TeraTerm could detect available COM ports and display only possible in 'New connection' and 'Serial port setup' dialog.</li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.39">2.39</a></li>
       <li>upgraded CygTerm+ to <a href="#cygterm_1.07_11">1.07_11</a></li>
       <li>upgraded TTProxy to <a href="#ttproxy_1.0.0.11">1.0.0.11</a></li>
@@ -696,6 +695,8 @@ SYNOPSIS:
   <li class="history"><a name="ttssh_2.39">2007.2.4 (Ver 2.39)</a>
     <ul>
       <li>added workaround(WinSock) that send() could have been regarded as success when the return value of send() is minus and the return value of WSAGetLastError() is less than WSABASEERR(10000).</li>
+      <li>Moved the focus to passphrase dialog when the user mistook the passphrase of SSH2 private key.</li>
+      <li>upgraded OpenSSL to 0.9.8e</li>
     </ul>
   </li>
 
