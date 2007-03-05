@@ -10,6 +10,7 @@
 #include "ttftypes.h"
 #include "ttlib.h"
 #include "language.h"
+#include <stdio.h>
 
 /* first instance flag */
 static BOOL FirstInstance = TRUE;
@@ -1359,6 +1360,58 @@ int FAR PASCAL CommTextEcho(PComVar cv, PCHAR B, int C)
   return i;
 }
 
+int PASCAL DetectComPorts(char *ComPortTable, int ComPortMax)
+{
+	HMODULE h;
+	TCHAR   devicesBuff[65535];
+	TCHAR   *p;
+	int 	comports = 0;
+	int 	i, j, min;
+	char	s;
+
+	if (((h = GetModuleHandle("kernel32.dll")) != NULL) &&
+	    (GetProcAddress(h, "QueryDosDeviceA") != NULL) &&
+	    (QueryDosDevice(NULL, devicesBuff, 65535) != 0)) {
+	        p = devicesBuff;
+		while (*p != '\0') {
+			if (strncmp(p, "COM", 3) == 0 && p[3] != '\0')
+				ComPortTable[comports++] = atoi(p+3);
+			if (comports >= ComPortMax)
+				break;
+			p += (strlen(p)+1);
+		}
+
+		for (i=0; i<comports-1; i++) {
+			min = i;
+			for (j=i+1; j<comports; j++)
+				if (ComPortTable[min] > ComPortTable[j])
+					min = j;
+			if (min != i) {
+				s = ComPortTable[i];
+				ComPortTable[i] = ComPortTable[min];
+				ComPortTable[min] = s;
+			}
+		}
+	}
+	else {
+#if 1
+		for (i=1; i<=ComPortMax; i++) {
+			FILE *fp;
+			char buf[10];
+			sprintf_s(buf, sizeof(buf), "\\\\.\\COM%d", i);
+			if ((fp = fopen(buf, "r")) != NULL) {
+				fclose(fp);
+				ComPortTable[comports++] = i;
+			}
+		}
+#else
+		comports = -1;
+#endif
+	}
+
+	return comports;
+}
+
 #ifdef TERATERM32
 BOOL WINAPI DllMain(HANDLE hInstance, 
 		    ULONG ul_reason_for_call,
@@ -1411,6 +1464,11 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2007/02/18 11:37:39  maya
+ * ttpmacro.exe から起動すると ttermpro.exe で teraterm.ini が読み込まれない不具合を修正した。
+ *   ttermpro.exe 以外の実行ファイル(exe) から ttpcmn.dll を使用するとこの問題が発生する。
+ * ttpmacro.exe からも teraterm.ini の UILanguageFile を読むように修正した。
+ *
  * Revision 1.6  2007/01/21 16:18:36  maya
  * 表示メッセージの読み込み対応
  *
