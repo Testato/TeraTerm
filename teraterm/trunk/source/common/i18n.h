@@ -13,8 +13,8 @@
 extern "C" {
 #endif
 
-void GetI18nStr(PCHAR section, PCHAR key, PCHAR buf, PCHAR iniFile);
-int GetI18nLogfont(PCHAR section, PCHAR key, PLOGFONT logfont, int ppi, PCHAR iniFile);
+void FAR PASCAL GetI18nStr(PCHAR section, PCHAR key, PCHAR buf, PCHAR iniFile);
+int FAR PASCAL GetI18nLogfont(PCHAR section, PCHAR key, PLOGFONT logfont, int ppi, PCHAR iniFile);
 
 #ifdef __cplusplus
 }

@@ -5,7 +5,7 @@
 #include "i18n.h"
 #include "ttlib.h"
 
-void GetI18nStr(PCHAR section, PCHAR key, PCHAR buf, PCHAR iniFile)
+void FAR PASCAL GetI18nStr(PCHAR section, PCHAR key, PCHAR buf, PCHAR iniFile)
 {
 	static char tmp[MAX_UIMSG];
 
@@ -14,7 +14,7 @@ void GetI18nStr(PCHAR section, PCHAR key, PCHAR buf, PCHAR iniFile)
 	RestoreNewLine(buf);
 }
 
-int GetI18nLogfont(PCHAR section, PCHAR key, PLOGFONT logfont, int ppi, PCHAR iniFile)
+int FAR PASCAL GetI18nLogfont(PCHAR section, PCHAR key, PLOGFONT logfont, int ppi, PCHAR iniFile)
 {
 	static char tmp[MAX_UIMSG];
 	static char font[LF_FACESIZE];
