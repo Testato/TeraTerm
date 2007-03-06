@@ -125,37 +125,37 @@
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="コマンド">
+		<param name="Name" value="VT window のコマンド">
 		<param name="ImageNumber" value="1">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="[File] menu">
+			<param name="Name" value="[File] メニュー">
 			<param name="Local" value="html\menu\file.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="[Edit] menu">
+			<param name="Name" value="[Edit] メニュー">
 			<param name="Local" value="html\menu\edit.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="[Setup] menu">
+			<param name="Name" value="[Setup] メニュー">
 			<param name="Local" value="html\menu\setup.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="[Control] menu">
+			<param name="Name" value="[Control] メニュー">
 			<param name="Local" value="html\menu\control.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="[Window] menu">
+			<param name="Name" value="[Window] メニュー">
 			<param name="Local" value="html\menu\window.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="[Help] menu">
+			<param name="Name" value="[Help] メニュー">
 			<param name="Local" value="html\menu\help.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>

@@ -4,34 +4,38 @@
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 <TITLE>Keyboard ([Setup] メニュー)</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../style.css" type="text/css">
 </HEAD>
 <BODY>
-<FONT SIZE="+2">Keyboard ([Setup] メニュー)</FONT>
 
+<h1>Keyboard ([Setup] メニュー)</h1>
 
-<pre>
-<b>"Keyboard setup" ダイアログボックス</b>
+<h2>"Keyboard setup" ダイアログボックス</h2>
 
-<b>Transmit DEL by</b>:
+<dl>
 
-<b>Backspace Key</b>
+<dt>Transmit DEL by:</dt>
+<dd>
+  <dl>
+  
+  <dt>Backspace Key</dt>
+  <dd>このオプションが選択されると backspace キーを押した時に DEL 文字 (ASCII $7F) が送出されます。選択されないと BS 文字 (ASCII $08) が送出されます。<br>
+また、このオプションが選択された(選択されない)時でも Ctrl+Backspace で BS (DEL) 文字を送出できます。</dd>
+  
+  <dt>Delete key</dt>
+  <dd>このオプションが選択されると Delete (Del) キーを押した時に DEL 文字が送出されます。このオプションが選択されない場合、Delete キーの機能は<A HREF="../setup/keyboard.html"> キーボード設定ファイル</A>により決定されます。</dd>
+  
+  </dl></dd>
 
-このオプションが選択されると backspace キーを押した時に DEL 文字 (ASCII $7F) が送出されます。選択されないと BS 文字 (ASCII $08) が送出されます。
-また、このオプションが選択された(選択されない)時でも Ctrl+Backspace で BS (DEL) 文字を送出できます。
+<dt>Meta key</dt>
+<dd>Alt キーをメタ・キー (meta key) として使います。例えば、Alt+A を押すと、ESC A を送出します。メタ・キーモードでは、ショートカット・キーは一部を除いて使用できなくなります。</dd>
 
-<b>Delete key</b>
+</dl>
 
-このオプションが選択されると Delete (Del) キーを押した時に DEL 文字が送出されます。このオプションが選択されない場合、
-Delete キーの機能は<A HREF="keyboard-setfilej.html"> キーボード設定ファイル</A>により決定されます。
-
-<b>Meta key</b>
-
-Alt キーをメタ・キー (meta key) として使います。例えば、Alt+A を押すと、ESC A を送出します。メタ・キーモードでは、ショートカット・キーは一部を
-除いて使用できなくなります。
-
-<A HREF="keyboard-setfilej.html">キーボード設定ファイル</A> 書きかえることで自由にキー設定を変更することができます。
-</pre>
+<p>
+<A HREF="../setup/keyboard.html">キーボード設定ファイル</A> 書きかえることで自由にキー設定を変更することができます。
+</p>
 
 </BODY>
 </HTML>

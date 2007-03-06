@@ -4,44 +4,44 @@
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 <TITLE>UTF=8 TeraTerm Pro with TTSSH2 Help Index</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../style.css" type="text/css">
 </HEAD>
 <BODY>
-<FONT SIZE="+2">TCP/IP ([Setup] メニュー)</FONT>
 
+<h1>TCP/IP ([Setup] メニュー)</h1>
 
+<h2>"TCP/IP setup" ダイアログボックス</h2>
+
+<dl>
+
+<dt>Host list</dt>
+<dd>[File] New connection を実行した時に現れるダイアログボックスのホストリストが編集できます。ホスト名または IP address をリストに加えることができます。よく接続するホストをこのリストに登録しておくと便利です。<br>
+また、ホスト名だけでなく以下のような<A HREF="../commandline/teraterm.html">コマンドライン</A>文字列をリストに登録することもできます。
 <pre>
-<b>"TCP/IP setup" ダイアログボックス</b>
+myhost.mydomain                     通常はホスト名または IP address だけ
+myhost.mydomain:23                  ホスト名とポート番号
+foohost.foodomain /F=FOOHOST.INI    ホスト名+設定ファイル名を指定
+/C=1                                シリアルポートを指定することも可能
+/R=LOG.DAT                          ホストやポートに接続せずに、ログファイルの内容を再生
+</pre></dd>
 
-<b>Host list</b>
-       [File] New connection を実行した時に現れるダイアログボックスのホストリストが編集できます。ホスト名または IP address をリストに加えることが
-できます。よく接続するホストをこのリストに登録しておくと便利です。
-また、ホスト名だけでなく以下のような<A HREF="commandline/teraterm.html">コマンドライン</A>文字列をリストに登録することもできます。
+<dt>History</dt>
+<dd>このオプションを選択すると、[File] New connection ダイアログボックスで入力されたホスト名がホストリストの先頭に追加されます。</dd>
 
+<dt>Auto window close</dt>
+<dd>このオプションを選択すると、ホストとの接続が切れたとき自動的に Tera Term を終了します。</dd>
 
-       <b>myhost.mydomain</b>	通常はホスト名または IP address だけ
-       <b>myhost.mydomain:23</b>	ホスト名とポート番号
-       <b>foohost.foodomain /F=FOOHOST.INI</b>	ホスト名+設定ファイル名を指定
-       <b>/C=1</b>	        シリアルポートを指定することも可能
-       <b>/R=LOG.DAT</b>	ホストやポートに接続せずに、ログファイルの内容を再生
+<dt>TCP port#</dt>
+<dd>ポート番号。Telnet を使用するときは、通常23にします。</dd>
 
-    <b>History</b>
+<dt>Telnet</dt>
+<dd>Telnet プロトコルを使用します。通常は選択してください。</dd>
 
-            このオプションを選択すると、[File] New connection ダイアログボックスで入力されたホスト名がホストリストの先頭に追加されます。
+<dt>Terminal type</dt>
+<dd>Telnet プロトコルで接続したときホストに報告する terminal type。</dd>
 
-<b>Auto window close</b>
-               このオプションを選択すると、ホストとの接続が切れたとき自動的に Tera Term を終了します。
-
-<b>TCP port#</b>
-               ポート番号。Telnet を使用するときは、通常23にします。
-
-<b>Telnet</b>
-               Telnet プロトコルを使用します。通常は選択してください。
-
-<b>Terminal type</b>
-               Telnet プロトコルで接続したときホストに報告する terminal type。
-</pre>
-
+</dl>
 
 </BODY>
 </HTML>

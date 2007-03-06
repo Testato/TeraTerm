@@ -116,13 +116,38 @@
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Commands">
+		<param name="Name" value="VT window commands">
 		<param name="ImageNumber" value="1">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[File] menu">
+			<param name="Local" value="html\menu\file.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Edit] menu">
+			<param name="Local" value="html\menu\edit.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="[Setup] menu">
 			<param name="Local" value="html\menu\setup.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Control] menu">
+			<param name="Local" value="html\menu\control.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Window] menu">
+			<param name="Local" value="html\menu\window.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Help] menu">
+			<param name="Local" value="html\menu\help.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 	</UL>

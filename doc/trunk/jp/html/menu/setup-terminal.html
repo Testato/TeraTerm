@@ -4,66 +4,68 @@
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 <TITLE>UTF=8 TeraTerm Pro with TTSSH2 Help Index</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../style.css" type="text/css">
 </HEAD>
 <BODY>
-<FONT SIZE="+2">Terminal ([Setup] メニュー)</FONT>
 
+<h1>Terminal ([Setup] メニュー)</h1>
 
-<pre>
-<h3>"Terminal setup" ダイアログボックス</h3>
+<h2>"Terminal setup" ダイアログボックス</h2>
 
-<b>Terminal size</b>
-              ターミナルサイズ(端末画面の論理サイズ)。横 X 縦 の文字数で指定します。ウインドウサイズ(実際の画面の大きさ)と必ずしも同じではありません。
+<dl>
 
-<b>Term size = win size</b>
-             このオプションを選択した場合、ターミナルサイズとウィンドウサイズを常に等しくします。
+<dt>Terminal size</dt>
+<dd>ターミナルサイズ(端末画面の論理サイズ)。横 X 縦 の文字数で指定します。ウインドウサイズ(実際の画面の大きさ)と必ずしも同じではありません。</dd>
 
-<b>Auto window resize</b>
-             このオプションを選択した場合、ターミナルサイズが変更されたときに、ウインドウサイズも同じ大きさに自動的に変更されます。
+<dt>Term size = win size</dt>
+<dd>このオプションを選択した場合、ターミナルサイズとウィンドウサイズを常に等しくします。</dd>
 
-<b>New-line (receive)</b>
-          <b>CR+LF</b>を選択した場合、受信された 改行文字 CR ($0D) を CR+LF ($0D $0A)に変換します。
+<dt>Auto window resize</dt>
+<dd>このオプションを選択した場合、ターミナルサイズが変更されたときに、ウインドウサイズも同じ大きさに自動的に変更されます。</dd>
 
-<b>New-line (transmit)</b>
-          <b>CR+LF</b>を選択した場合、送信時に改行文字 CR ($0D) を CR+LF ($0D $0A) に変換します。
+<dt>New-line (receive)</dt>
+<dd>CR+LF を選択した場合、受信された 改行文字 CR ($0D) を CR+LF ($0D $0A)に変換します。</dd>
 
-<b>Terminal ID</b>
-            ホストに報告する Terminal ID。Terminal ID は telnet の terminal type とは違います。Telnet の terminal type を変更するには [Setup] TCP/IP コマンドを使用してください。
+<dt>New-line (transmit)</dt>
+<dd>CR+LF を選択した場合、送信時に改行文字 CR ($0D) を CR+LF ($0D $0A) に変換します。</dd>
 
-<b>Local echo</b>
-            キー入力等により送出する文字をそのまま画面に表示します。
+<dt>Terminal ID</dt>
+<dd>ホストに報告する Terminal ID。Terminal ID は telnet の terminal type とは違います。Telnet の terminal type を変更するには [Setup] TCP/IP コマンドを使用してください。</dd>
 
-<b>Answerback</b>
-ホストから ENQ ($05) 文字が送られてきた時に、送り返す文字列。文字列中に含まれる表示不可能な文字(制御文字)は、"$" と それにつづく ASCII コード(2桁の16進数) で表現してください。例えば、文字列 "ABC <CR> <LF>" をアンサーバックする場合、次のように入力してください。
+<dt>Local echo</dt>
+<dd>キー入力等により送出する文字をそのまま画面に表示します。</dd>
 
-                                <b>ABC$0D$0A</b>
+<dt>Answerback</dt>
+<dd>ホストから ENQ ($05) 文字が送られてきた時に、送り返す文字列。文字列中に含まれる表示不可能な文字(制御文字)は、"$" と それにつづく ASCII コード(2桁の16進数) で表現してください。例えば、文字列 "ABC &lt;CR&gt; &lt;LF&gt;" をアンサーバックする場合、次のように入力してください。
+<pre>ABC$0D$0A</pre></dd>
 
-<b>Auto switch (VT<->TEK)</b>
-エスケープシーケンスを判別して、自動的に VT window から TEK window へ制御を移します(逆も同様)。
+<dt>Auto switch (VT&lt;-&gt;TEK)</dt>
+<dd>エスケープシーケンスを判別して、自動的に VT window から TEK window へ制御を移します(逆も同様)。
 
-<b>Kanji (receive)</b>
-ホストから送られてくる漢字コード (<b>SJIS</b>, <b>EUC</b>, <b>JIS</b> の3種類)。
+<dt>Kanji (receive)</dt>
+<dd>ホストから送られてくる漢字コード (SJIS, EUC, JIS の3種類)。</dd>
 
-<b>7bit katakana (receive)</b>
-ホストから送られてくる"半角"片仮名コードが 7 bit で表現されている (SO/SI を用いたシフト制御を用いている)場合に選択してください。<b>Kanji (receive)</b> が <b>JIS</b> の場合のみ有効です。
+<dt>7bit katakana (receive)</dt>
+<dd>ホストから送られてくる"半角"片仮名コードが 7 bit で表現されている (SO/SI を用いたシフト制御を用いている)場合に選択してください。Kanji (receive) が JIS の場合のみ有効です。</dd>
 
-<b>Kanji (transmit)</b>
-送出する漢字コード (<b>SJIS</b>, <b>EUC</b>, <b>JIS</b> の3種類)。
+<dt>Kanji (transmit)</dt>
+<dd>送出する漢字コード (SJIS, EUC, JIS の3種類)。</dd>
 
-<b>7bit katakana (transmit)</b>
-送出する"半角"片仮名コードを7bitで表現する (SO/SI を用いたシフト制御を用いる)場合に選択してください。<b>Kanji (transmit)</b> が <b>JIS</b> の場合のみ有効です。
+<dt>7bit katakana (transmit)</dt>
+<dd>送出する"半角"片仮名コードを7bitで表現する (SO/SI を用いたシフト制御を用いる)場合に選択してください。Kanji (transmit) が JIS の場合のみ有効です。</dd>
 
-<b>Kanji-in (transmit)</b>
-<b>Kanji (transmit)</b> が <b>JIS</b> のときに使用するエスケープシーケンス(漢字コードを G0 に指示するシーケンス。 <b>^[$@</b> または <b>^[$B</b> )。ホストから送られてくるエスケープシーケンスはどちらでも構いません。
+<dt>Kanji-in (transmit)</dt>
+<dd>Kanji (transmit) が JIS のときに使用するエスケープシーケンス(漢字コードを G0 に指示するシーケンス。 ^[$@ または ^[$B )。ホストから送られてくるエスケープシーケンスはどちらでも構いません。</dd>
 
-<b>Kanji-out (transmit)</b>
-<b>Kanji (transmit)</b> が <b>JIS</b> のときに使用するエスケープシーケンス (ASCII または JIS ローマ字コードを G0 に指示するシーケンス。<b>^[(B</b> または <b>^[(J</b> )。ホストから送られてくるエスケープシーケンスはどちらでも構いません。
+<dt>Kanji-out (transmit)</dt>
+<dd>Kanji (transmit) が JIS のときに使用するエスケープシーケンス (ASCII または JIS ローマ字コードを G0 に指示するシーケンス。^[(B または ^[(J )。ホストから送られてくるエスケープシーケンスはどちらでも構いません。
+<p>
+注意: ^[(H は初期設定では選択できません。<br>
+<A HREF="../usage/tips/incorrect-kanjiout.html">→ ^[(H を選択可能にする。</A>
+</p></dd>
 
-注意:	 <b>^[(H</b> は初期設定では選択できません。
-	<A HREF="../usage/tips/incorrect-kanjiout.html">→ ^[(H を選択可能にする。</A>
-</pre>
-
+</dl>
 
 </BODY>
 </HTML>
