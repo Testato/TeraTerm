@@ -54,12 +54,20 @@ dt {
 	border-width: 0px 0px 1px 0px;
 }
 
+li.description{
+    margin-bottom: 1ex;
+}
+
 li.history {
 	margin-bottom: 1em;
 }
 
 .no-marker{
 	list-style-type: none;
+}
+
+.indent1{
+    margin-left: 2em;
 }
 
 pre {

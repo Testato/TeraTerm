@@ -4,57 +4,66 @@
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 <TITLE>ユーザー・ショートカット・キー</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../../style.css" type="text/css">
 </HEAD>
 <BODY>
 
-<FONT SIZE="+2">ユーザー・ショートカット・キー</FONT>
+<h1>ユーザー・ショートカット・キー</h1>
+
+<p>
+<A HREF="../../setup/keyboard.html">キーボード設定ファイルの</A>[Shortcut keys] と [VT function keys] セクションの項目を書き換えると、以下のショートカット・キーを自分の好きなキーに割り当てることができます。詳しくは、<A HREF="../../reference/keycodej.txt">KEYCODEJ.TXT</A>を読んでください。
+</p>
 
 <pre>
-<A HREF="../../setup/keyboard.html">キーボード設定ファイルの</A><b>[Shortcut keys]</b> と <b>[VT function keys]</b> セクションの項目を書き換えると、以下のショートカット・キーを自分の好きなキーに
-割り当てることができます。詳しくは、<A HREF="../../reference/keycodej.txt">KEYCODEJ.TXT</A>を読んでください。
-
-
-<b>[Shortcut keys]</b>
-セクションの項目        機能                                 初期設定
+[Shortcut keys]
+セクションの項目    機能                                初期設定
 <HR>
-<b>EditCopy</b>           [Edit] Copy コマンド<b>*1)</b>               Ctrl+Insert
-<b>EditPaste</b>          [Edit] Paste コマンド <b>*1)</b>             Shift+ nsert
-<b>EditPasteCR</b>        [Edit] Paste&lt;CR&gt; コマンド <b>*1)</b>           なし
-<b>EditCLS</b>            [Edit] Clear screen コマンド             なし
-<b>EditCLB</b>            [Edit] Clear buffer コマンド             なし
-<b>ControlOpenTEK</b>    [Control] Open TEK コマンド              なし
-<b>ControlCloseTEK</b>   [Control] Close TEK コマンド             なし
-<b>LineUp</b>             一行スクロールアップ                    Ctrl+↑
-<b>LineDown</b>           一行スクロールダウン                    Ctrl+↓
-<b>PageUp</b>             一ページスクロールアップ                Ctrl+PageUp
-<b>PageDown</b>           一ページスクロールダウン                Ctrl+PageDown
-<b>BuffTop</b>            バッファの先頭へスクロール              Ctrl+Home
-<b>BuffBottom</b>         バッファの最後へスクロール              Ctrl+End
-<b>NextWin</b>            次の Tera Term ウィンドウへ移動         Ctrl+Tab
-<b>PrevWin</b>            前の Tera Term ウィンドウへ移動         Ctrl+Shift+Tab
-<b>LocalEcho</b>          ローカルエコーを on/off にする。　　　　 なし
+EditCopy            [Edit] Copy コマンド*1)             Ctrl+Insert
+EditPaste           [Edit] Paste コマンド *1)           Shift+ nsert
+EditPasteCR         [Edit] Paste&lt;CR&gt; コマンド *1)       なし
+EditCLS             [Edit] Clear screen コマンド        なし
+EditCLB             [Edit] Clear buffer コマンド        なし
+ControlOpenTEK      [Control] Open TEK コマンド         なし
+ControlCloseTEK     [Control] Close TEK コマンド        なし
+LineUp              一行スクロールアップ                Ctrl+↑
+LineDown            一行スクロールダウン                Ctrl+↓
+PageUp              一ページスクロールアップ            Ctrl+PageUp
+PageDown            一ページスクロールダウン            Ctrl+PageDown
+BuffTop             バッファの先頭へスクロール          Ctrl+Home
+BuffBottom          バッファの最後へスクロール          Ctrl+End
+NextWin             次の Tera Term ウィンドウへ移動     Ctrl+Tab
+PrevWin             前の Tera Term ウィンドウへ移動     Ctrl+Shift+Tab
+LocalEcho           ローカルエコーを on/off にする。    なし
 
 
-<b>[VT function keys]</b>
-セクションの項目        機能　　　　　　　　　　　　　　　　　　初期設定
+[VT function keys]
+セクションの項目    機能                                初期設定
 <HR>
-Hold                   受信ポートをロック/ロック解除           なし
-Print                  [File] Print コマンド *1)               なし
-Break                  ブレーク信号送出 *1)                    なし
-
-<b>*1)</b> これらの機能には<A HREF="../keyboard.html">システム・ショートカット・キー</A>が割り当てられています。
-
-例えば、Ctrl+V を <b>[Edit] Paste</b> に割り当てたい場合は、
-キーボード設定ファイルの <b>[Shortcut keys]</b> セクションで、
-
-<b>EditPaste=1071</b>
-
-としてください (IBM PC/AT キーボードの場合)。
-
-また <b>[User keys]</b> セクションでは、ユーザーキーを使ってすべてのメニューコマンドに対してショートカット・キーを設定することができます
+Hold                受信ポートをロック/ロック解除       なし
+Print               [File] Print コマンド *1)           なし
+Break               ブレーク信号送出 *1)                なし
 </pre>
 
+<p>
+*1) これらの機能には<A HREF="../keyboard.html">システム・ショートカット・キー</A>が割り当てられています。
+</p>
+
+<p>
+例えば、Ctrl+V を [Edit] Paste に割り当てたい場合は、キーボード設定ファイルの [Shortcut keys] セクションで、
+</p>
+
+<pre>
+EditPaste=1071
+</pre>
+
+<p>
+としてください (IBM PC/AT キーボードの場合)。
+</p>
+
+<p>
+また [User keys] セクションでは、ユーザーキーを使ってすべてのメニューコマンドに対してショートカット・キーを設定することができます
+</p>
 
 </BODY>
 </HTML>

@@ -4,39 +4,45 @@
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 <TITLE>C1 制御文字 ($80-$9F) を使用しない</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../../style.css" type="text/css">
 </HEAD>
 <BODY>
 
-<FONT SIZE="+2">C1 制御文字 ($80-$9F) を使用しない</FONT>
+<h1>C1 制御文字 ($80-$9F) を使用しない</h1>
 
-<pre>
-Tera Term の漢字モード(受信)を EUC か JIS にして、 Teraminal ID を VT2XX または、 VT3XX にしている場合、
-Shift-JIS の漢字を受信すると、ハングアップすることがあります。
+<p>
+Tera Term の漢字モード(受信)を EUC か JIS にして、 Teraminal ID を VT2XX または、 VT3XX にしている場合、Shift-JIS の漢字を受信すると、ハングアップすることがあります。
+</p>
 
+<p>
 これは、Shift-JIS コードの中に C1 制御文字 ($80-9F) が含まれているために、それらを制御文字として解釈してしまい、端末の状態がおかしくなるからです。
+</p>
 
+<p>
 例えば、ホストによってはログイン時などに SJIS(Shift-JIS), EUC, JIS などの数種類の漢字コードを端末に送り、どのコードが正しく表示されてるか
 ユーザーに入力させる、ということがあり、このような場合に問題が発生します。
+</p>
 
+<p>
 もし、このような状態になった場合、[Control] Reset terminal で端末の状態をリセットしてください。
+</p>
 
+<p>
 このような問題をさけるには、3つの方法があります。
 
-1) 漢字モード(受信)を SJIS に設定する。
-
-2) [Setup] Terminal で Terminal ID を VT1XX (例えば VT100) にする。
-
-3) 設定ファイルの [Tera Term] セクションの Accept8BitCtrl 行を
-
+<ol>
+  <li>漢字モード(受信)を SJIS に設定する。</li>
+  <li>[Setup] Terminal で Terminal ID を VT1XX (例えば VT100) にする。</li>
+  <li>設定ファイルの [Tera Term] セクションの Accept8BitCtrl 行を
+<pre>
 Accept8BitCtrl=off
-
+</pre>
 のように編集し、 C1 制御文字として送られてきた文字を無視するように設定する。
-
+<pre>
 省略時:
 Accept8bitCtrl=on
-</pre>
-
+</pre></li>
 
 </BODY>
 </HTML>
