@@ -565,7 +565,7 @@ void GetNthNum(PCHAR Source, int Nth, int far *Num)
 
 // デフォルトの TERATERM.INI のフルパスを ttpmacro からも
 // 取得するために追加した。(2007.2.18 maya)
-void GetDefaultSetupFName(char *dest, char *home)
+void WINAPI GetDefaultSetupFName(char *dest, char *home)
 {
 	// My Documents に teraterm.ini がある場合、
 	// それを読み込むようにした。(2007.2.18 maya)
