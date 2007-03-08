@@ -397,5 +397,10 @@ begin
   else
     Result := False;
 end;
+
 [InstallDelete]
 Name: {app}\OpenSSH-LICENCE.txt; Type: files; Tasks: ; Languages: ; Components: TTSSH
+
+[_ISToolPreCompile]
+Name: convtext.bat
+Name: makechm.bat
