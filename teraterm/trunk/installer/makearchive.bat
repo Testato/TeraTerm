@@ -1,3 +1,5 @@
+CALL convtext.bat
+CALL makechm.bat
 
 set dst=archive
 
@@ -29,5 +31,3 @@ rmdir /s /q %dst%\lang\CVS
 del /f %dst%\lang\English.lng
 
 perl setini.pl ..\..\teraterm\release\TERATERM.INI > %dst%\TERATERM.INI
-
-pause
