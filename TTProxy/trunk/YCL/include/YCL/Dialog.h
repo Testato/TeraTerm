@@ -1,5 +1,5 @@
 /*
- * $Id: Dialog.h,v 1.3 2006-08-03 13:33:18 yutakakn Exp $
+ * $Id: Dialog.h,v 1.4 2007-03-08 13:33:47 maya Exp $
  */
 
 #ifndef _YCL_DIALOG_H_
@@ -111,6 +111,26 @@ public:
 		YCLVERIFY(prepareOpen(this) == NULL, "Another dialog has been opening yet.");
 		return ::DialogBoxParam(instance, MAKEINTRESOURCE(resourceId), owner, DialogProc, NULL);
 	}
+
+	int open(int resourceId, LCID lcid, HWND owner = NULL) {
+		return open(GetInstanceHandle(), resourceId, lcid, owner);
+	}
+	int open(HINSTANCE instance, int resourceId, LCID lcid, HWND owner = NULL) {
+		HRSRC hResource = NULL;
+
+		YCLVERIFY(prepareOpen(this) == NULL, "Another dialog has been opening yet.");
+		
+		hResource = FindResourceEx(instance, RT_DIALOG,
+								   MAKEINTRESOURCE(resourceId), (WORD)lcid);
+		if (hResource == NULL) {
+		hResource = FindResourceEx(instance, RT_DIALOG,
+								   MAKEINTRESOURCE(resourceId),
+								   (WORD)1033);// 0x409 English(US)
+		}
+		return ::DialogBoxIndirectParam(instance,
+										(LPCDLGTEMPLATE)LockResource(LoadResource(instance, hResource)),
+										owner, DialogProc, NULL);
+	}
 protected:
 	virtual bool dispatch(int message, int wparam, long lparam) {
 		switch (message) {
@@ -147,6 +167,9 @@ protected:
 /*
  * $Changes
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2006/08/03 13:33:18  yutakakn
+ * (none)
+ *
  * Revision 1.1  2003/05/26 15:32:00  sugoroku
  * Initial revision
  *

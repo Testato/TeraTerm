@@ -15,6 +15,42 @@ using namespace yebisuya;
 #include "Logger.h"
 #include "SSLSocket.h"
 
+#include "ttlib.h"
+#include "i18n.h"
+
+static void getSetupFName(char *SetupFName) {
+	char homedir[MAX_PATH];
+	char *i;
+
+	GetModuleFileName(GetInstanceHandle(), homedir, sizeof(homedir));
+	i = strrchr(homedir, '\\');
+	if (i != NULL) {
+		homedir[i-homedir] = 0;
+	}
+
+	GetDefaultSetupFName(SetupFName, homedir);
+}
+
+static LCID getLCID() {
+	char SetupFName[MAX_PATH];
+	char UILanguageFile[MAX_UIMSG];
+	char strLCID[5];
+	LCID lcid;
+
+	getSetupFName(SetupFName);
+
+	/* Get LanguageFile name */
+	GetPrivateProfileString("Tera Term", "UILanguageFile", "",
+							UILanguageFile, sizeof(UILanguageFile),
+							SetupFName);
+
+	GetPrivateProfileString("TTProxy", "LCID", "1033", // 0x409 English(US)
+							strLCID, sizeof(strLCID), UILanguageFile);
+	lcid = atoi(strLCID);
+
+	return lcid;
+}
+
 class ProxyWSockHook {
 public:
     class MessageShower {
@@ -499,6 +535,7 @@ private:
         Window conn;
         Window erro;
         Window log;
+		LCID c_lcid;
     protected:
         virtual bool dispatch(int message, int wParam, long lParam) {
             if (message == WM_COMMAND && wParam == MAKEWPARAM(IDC_REFER, BN_CLICKED)) {
@@ -510,7 +547,7 @@ private:
                 ofn.lpstrFile = buffer;
                 ofn.nMaxFile = countof(buffer);
                 ofn.Flags = OFN_LONGNAMES | OFN_NONETWORKBUTTON | OFN_PATHMUSTEXIST | OFN_NOREADONLYRETURN | OFN_HIDEREADONLY;
-                static String title = Resource::loadString(IDS_LOGFILE_SELECT);
+                static String title = Resource::loadString(IDS_LOGFILE_SELECT, c_lcid);
                 ofn.lpstrTitle = title;
                 if (logfile != NULL) {
                     strcpy_s(buffer, sizeof buffer, logfile);
@@ -542,9 +579,9 @@ private:
             SetDlgItemInt(IDC_TIMEOUT, timeout, false);
 
             resolveCombo <<= GetDlgItem(IDC_RESOLVE);
-            resolveCombo.addString(instance().loadString(IDS_RESOLVE_AUTO));
-            resolveCombo.addString(instance().loadString(IDS_RESOLVE_REMOTE));
-            resolveCombo.addString(instance().loadString(IDS_RESOLVE_LOCAL));
+            resolveCombo.addString(instance().loadString(IDS_RESOLVE_AUTO, c_lcid));
+            resolveCombo.addString(instance().loadString(IDS_RESOLVE_REMOTE, c_lcid));
+            resolveCombo.addString(instance().loadString(IDS_RESOLVE_LOCAL, c_lcid));
             resolveCombo.setCurSel(resolve);
 
             host.SetWindowText(HostnamePrompt);
@@ -564,7 +601,7 @@ private:
                 || pass.GetWindowTextLength() == 0
                 || conn.GetWindowTextLength() == 0
                 || erro.GetWindowTextLength() == 0) {
-                MessageBox(instance().loadString(IDS_EMPTY_PARAMETER), FileVersion::getOwnVersion().getProductName(), MB_OK | MB_ICONERROR);
+                MessageBox(instance().loadString(IDS_EMPTY_PARAMETER, c_lcid), FileVersion::getOwnVersion().getProductName(), MB_OK | MB_ICONERROR);
                 return;
             }
 
@@ -596,6 +633,10 @@ private:
         int open(HWND owner) {
             return Dialog::open(instance().resource_module, IDD_OPTION_SETTING, owner);
         }
+        int open(HWND owner, LCID lcid) {
+			c_lcid = lcid;
+            return Dialog::open(instance().resource_module, IDD_OPTION_SETTING, lcid, owner);
+        }
     };
     friend class OptionsSettingDialog;
 
@@ -608,6 +649,7 @@ private:
         EditBoxCtrl  user;
         EditBoxCtrl  pass;
         bool lock;
+		LCID c_lcid;
     protected:
         virtual bool dispatch(int message, int wParam, long lParam) {
             if (message == WM_COMMAND) {
@@ -638,7 +680,7 @@ private:
             pass <<= GetDlgItem(IDC_PASSWORD);
 
             lock = true;
-            type.addString(instance().loadString(IDS_TYPE_NONE));
+            type.addString(instance().loadString(IDS_TYPE_NONE, c_lcid));
             type.addString("HTTP");
             type.addString("TELNET");
             type.addString("SOCKS4");
@@ -673,11 +715,11 @@ private:
         virtual void onOK() {
             if (proxy.type != ProxyInfo::TYPE_NONE || proxy.type != ProxyInfo::TYPE_SSL) {
                 if (proxy.host == NULL) {
-                    MessageBox(instance().loadString(IDS_EMPTY_HOSTNAME), FileVersion::getOwnVersion().getProductName(), MB_OK | MB_ICONERROR);
+                    MessageBox(instance().loadString(IDS_EMPTY_HOSTNAME, c_lcid), FileVersion::getOwnVersion().getProductName(), MB_OK | MB_ICONERROR);
                     return;
                 }
                 if (port.GetWindowTextLength() != 0 && proxy.port <= 0) {
-                    MessageBox(instance().loadString(IDS_ILLEGAL_PORT), FileVersion::getOwnVersion().getProductName(), MB_OK | MB_ICONERROR);
+                    MessageBox(instance().loadString(IDS_ILLEGAL_PORT, c_lcid), FileVersion::getOwnVersion().getProductName(), MB_OK | MB_ICONERROR);
                     return;
                 }
             }
@@ -703,7 +745,7 @@ private:
             dlg.ConnectedMessage = instance().prompt_table[3];
             dlg.ErrorMessage = instance().prompt_table[4];
             dlg.logfile = instance().logfile;
-            if (dlg.open(*this) == IDOK) {
+            if (dlg.open(*this, c_lcid) == IDOK) {
                 instance().timeout = dlg.timeout;
                 switch (dlg.resolve) {
                 case 1:
@@ -779,6 +821,10 @@ private:
 
         int open(HWND owner) {
             return Dialog::open(instance().resource_module, IDD_SETTING, owner);
+        }
+        int open(HWND owner, LCID lcid) {
+			c_lcid = lcid;
+            return Dialog::open(instance().resource_module, IDD_SETTING, lcid, owner);
         }
     };
     friend class SettingDialog;
@@ -975,7 +1021,7 @@ private:
                 msgid = IDS_PROXY_BAD_REQUEST;
                 break;
             }
-            return setError(s, msgid);
+            return setError(s, msgid, 0x409);
         }
         return 0;
     }
@@ -1030,7 +1076,7 @@ private:
             return SOCKET_ERROR;
 
         if (buf[0] != SOCKS5_VERSION || buf[1] == SOCKS5_REJECT) {
-            return setError(s, IDS_PROXY_BAD_REQUEST);
+            return setError(s, IDS_PROXY_BAD_REQUEST, 0x409);
         }
         auth_method = buf[1];
 
@@ -1063,12 +1109,12 @@ private:
             auth_result = buf[1] != 0;
             break;
         default:
-            return setError(s, IDS_PROXY_BAD_REQUEST);
+            return setError(s, IDS_PROXY_BAD_REQUEST, getLCID());
         }
         if (auth_result == SOCKET_ERROR) {
             return SOCKET_ERROR;
         }else if (auth_result != 0) {
-            return setError(s, IDS_PROXY_UNAUTHORIZED);
+            return setError(s, IDS_PROXY_UNAUTHORIZED, getLCID());
         }
         /* request to connect */
         ptr = buf;
@@ -1118,7 +1164,7 @@ private:
         if (recieveFromSocket(s, buf, 4) == SOCKET_ERROR)
             return SOCKET_ERROR;
         if (buf[0] != SOCKS5_VERSION || buf[1] != SOCKS5_REP_SUCCEEDED) {   /* check reply code */
-            return setError(s, IDS_PROXY_BAD_REQUEST);
+            return setError(s, IDS_PROXY_BAD_REQUEST, getLCID());
         }
         // buf[2] is reserved
         switch (buf[3]) { /* case by ATYP */
@@ -1223,7 +1269,7 @@ private:
             messageid = IDS_PROXY_BAD_REQUEST;
         }
         if (messageid != 0) {
-            return setError(s, messageid);
+            return setError(s, messageid, getLCID());
         }
     
         /* Conguraturation, connected via SOCKS4 server! */
@@ -1255,15 +1301,15 @@ private:
                 break;
             }
         }
-        return setError(s, IDS_PROXY_BAD_REQUEST);
+        return setError(s, IDS_PROXY_BAD_REQUEST, getLCID());
     }
 
-    String loadString(int id) {
-        return Resource::loadString(resource_module, id);
+    String loadString(int id, LCID lcid) {
+        return Resource::loadString(resource_module, id, lcid);
     }
-    int setError(SOCKET s, int id) {
+    int setError(SOCKET s, int id, LCID lcid) {
         if (id != 0)
-            showMessage(id);
+            showMessage(id, lcid);
         HWND window;
         UINT message;
         long event;
@@ -1276,9 +1322,9 @@ private:
         WSASetLastError(WSAECONNREFUSED);
         return SOCKET_ERROR;
     }
-    void showMessage(int id) {
+    void showMessage(int id, LCID lcid) {
         if (shower != NULL) {
-            shower->showMessage(loadString(id));
+            shower->showMessage(loadString(id, lcid));
         }
     }
 
@@ -1405,7 +1451,7 @@ private:                                                   \
                     shutdown(s, SD_BOTH);
                     int error_code = ssl->get_verify_result();
                     delete ssl;
-                    return setError(s, error_code);
+                    return setError(s, error_code, getLCID());
                 }
                 sslmap.put(s,ssl);
             }
@@ -1646,6 +1692,15 @@ public:
         SettingDialog dlg;
         dlg.proxy = instance().defaultProxy;
         if (dlg.open(owner) == IDOK) {
+            instance().defaultProxy = dlg.proxy;
+            return true;
+        }
+        return false;
+    }
+    static bool setupDialog(HWND owner, LCID lcid) {
+        SettingDialog dlg;
+        dlg.proxy = instance().defaultProxy;
+        if (dlg.open(owner, lcid) == IDOK) {
             instance().defaultProxy = dlg.proxy;
             return true;
         }

@@ -1,5 +1,5 @@
 /*
- * $Id: Resource.h,v 1.3 2006-08-03 13:33:18 yutakakn Exp $
+ * $Id: Resource.h,v 1.4 2007-03-08 13:33:47 maya Exp $
  */
 
 #ifndef _YCL_RESOURCE_H_
@@ -34,6 +34,7 @@ public:
 	static int loadString(HINSTANCE instance, UINT id, char* buffer, int bufsize) {
 		return LoadString(instance, id, buffer, bufsize);
 	}
+#if 0
 	static String loadString(int id) {
 		return loadString(GetInstanceHandle(), id);
 	}
@@ -44,6 +45,38 @@ public:
 			string = loadString(instance, id, bufsize);
 			bufsize += 256;
 		}
+		return string;
+	}
+#endif
+	static String loadString(int id, LCID lcid) {
+		return loadString(GetInstanceHandle(), id, lcid);
+	}
+	static String loadString(HINSTANCE instance, int id, LCID lcid) {
+		String string;
+		UINT idRsrcBlk = id / 16 + 1;
+		int strIndex  = id % 16;
+		HRSRC hResource = NULL;
+		char *p, buf[256];
+		int i, len, destlen;
+
+		hResource = FindResourceEx(instance, RT_STRING,
+								   MAKEINTRESOURCE(idRsrcBlk), (WORD)lcid);
+		if (hResource == NULL) {
+			hResource = FindResourceEx(instance, RT_STRING,
+									   MAKEINTRESOURCE(idRsrcBlk),
+									   (WORD)1033); // 0x409 English(US)
+		}
+		p = (char *)LockResource(LoadResource(instance, hResource));
+		for (i=0; i<(strIndex & 15); i++) {
+			p += 2 + *(LPWORD)p*2;
+		}
+		len = *(LPWORD)p;
+
+		destlen = WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)(p+2), len,
+									  buf, sizeof(buf), 0, 0);
+		buf[destlen] = 0;
+
+		string = buf;
 		return string;
 	}
 
@@ -144,6 +177,9 @@ public:
 /*
  * $Changes
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2006/08/03 13:33:18  yutakakn
+ * (none)
+ *
  * Revision 1.2  2003/06/06 15:49:21  sugoroku
  * 文字列リソースをバッファに直接読み込むメソッドを追加
  *

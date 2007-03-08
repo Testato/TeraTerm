@@ -164,6 +164,7 @@ private:
 		ProxyWSockHook::setMessageShower(&getInstance().shower);
 	}
 
+#if 0
 	static void setTTProxyLocale() {
 		LCID lcid = ::GetThreadLocale();
 		WORD langid = LANGIDFROMLCID(lcid);
@@ -177,6 +178,7 @@ private:
 		if (lcid != MAKELCID(langid, sortid))
 			::SetThreadLocale(MAKELCID(langid, sortid));
 	}
+#endif
 
 	static void PASCAL TTXGetSetupHooks(TTXSetupHooks* hooks) {
 		getInstance().ORIG_ReadIniFile = *hooks->ReadIniFile;
@@ -206,21 +208,26 @@ private:
 	}
 
 	static void PASCAL TTXModifyMenu(HMENU menu) {
+#if 0
 		/* move from TTXInit (2006.12.12 maya) */
 		setTTProxyLocale();
+#endif
+		LCID lcid = getLCID();
 		/* inserts before ID_HELP_ABOUT */
-		InsertMenu(menu, 50990, MF_BYCOMMAND | MF_ENABLED, ID_ABOUTMENU, Resource::loadString(IDS_ABOUT));
+		InsertMenu(menu, 50990, MF_BYCOMMAND | MF_ENABLED, ID_ABOUTMENU, Resource::loadString(IDS_ABOUT, lcid));
 		/* inserts before ID_SETUP_TCPIP */
-		InsertMenu(menu, 50360, MF_BYCOMMAND | MF_ENABLED, ID_PROXYSETUPMENU, Resource::loadString(IDS_MENUCAPTION));
+		InsertMenu(menu, 50360, MF_BYCOMMAND | MF_ENABLED, ID_PROXYSETUPMENU, Resource::loadString(IDS_MENUCAPTION, lcid));
 	}
 
 	static int PASCAL TTXProcessCommand(HWND hWin, WORD cmd) {
+		LCID lcid = getLCID();
+
 		switch (cmd) {
 		case ID_ABOUTMENU:
-			Dialog().open(IDD_ABOUTDIALOG, hWin);
+			Dialog().open(IDD_ABOUTDIALOG, lcid, hWin);
 			return 1;
 		case ID_PROXYSETUPMENU:
-			ProxyWSockHook::setupDialog(hWin);
+			ProxyWSockHook::setupDialog(hWin, lcid);
 			return 1;
 		case ID_ASYNCMESSAGEBOX:
 			if (getInstance().error_message != NULL) {
