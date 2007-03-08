@@ -1,5 +1,4 @@
 [Tera Term]
-LCID=1033 ; 0x0409
 DLG_SYSTEM_FONT=System,14,0
 DLG_TAHOMA_FONT=Tahoma,8,0
 
@@ -655,3 +654,6 @@ BTN_OK=OK
 BTN_CANCEL=Cancel
 BTN_DISCONNECT=&Disconnect
 BTN_CONTINUE=&Continue
+
+[TTProxy]
+LCID=1033 ; 0x0409

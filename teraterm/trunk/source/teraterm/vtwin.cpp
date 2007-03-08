@@ -462,15 +462,6 @@ CVTWindow::CVTWindow()
   // ロケールの設定
   // wctomb のため
   setlocale(LC_ALL, ts.Locale);
-#ifdef I18N
-  // TTProxy が GetThreadLocale するので、ここで設定する (2006.12.12 maya)
-  // これにより、TTProxy が読み込むリソースの言語が切り替えられる
-  int lcid;
-  strcpy(ts.UIMsg, "1033"); // 0x0409
-  get_lang_msg("LCID", ts.UIMsg, ts.UILanguageFile);
-  lcid = atoi(ts.UIMsg);
-  SetThreadLocale(lcid);
-#endif
 
 #ifdef ALPHABLEND_TYPE2
 //<!--by AKASI
@@ -4771,6 +4762,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.50  2007/03/03 03:51:20  maya
+ * Broadcast Command の履歴を保存できるようにした。
+ *
  * Revision 1.49  2007/02/19 17:04:30  maya
  * NT 系で GetOpenFileName が開かないバグを修正した。
  *
