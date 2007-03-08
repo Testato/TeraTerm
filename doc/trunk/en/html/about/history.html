@@ -30,9 +30,15 @@
       <li>Selected the next line including word characters if double-clicked word character is over the most right line when EnableContinuedLineCopy is enabled.</li>
       <li>added support for saving Broadcast Command history in teraterm.ini file.</li>
       <li>added support for serial port dynamic detection. TeraTerm could detect available COM ports and display only possible in 'New connection' and 'Serial port setup' dialog.</li>
+      <li>added support for dynamic loading of user interface messages.
+        <ul>
+          <li>added Japanese language message file.</li>
+        </ul></li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.39">2.39</a></li>
       <li>upgraded CygTerm+ to <a href="#cygterm_1.07_11">1.07_11</a></li>
-      <li>upgraded TTProxy to <a href="#ttproxy_1.0.0.11">1.0.0.11</a></li>
+      <li>upgraded TTProxy to <a href="#ttproxy_1.0.0.12">1.0.0.12</a></li>
+      <li>upgraded Oniguruma to 5.5.3</li>
+
     </ul>
   </li>
 
@@ -1206,6 +1212,12 @@ SYNOPSIS:
 
 <h2><a name="ttproxy">TTProxy</a></h2>
 <ul>
+  <li class="history"><a name="ttproxy_1.0.0.12">2007.3.8 (Ver 1.0.0.12)</a>
+    <ul>
+      <li>fix bug: Japanese resource was used with Windows that is not English.</li>
+    </ul>
+  </li>
+
   <li class="history"><a name="ttproxy_1.0.0.11">2007.2.6 (Ver 1.0.0.11)</a>
     <ul>
       <li>fix bug: url decode/encode was broken.<br>
