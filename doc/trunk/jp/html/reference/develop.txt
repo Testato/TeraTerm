@@ -14,7 +14,7 @@
 
 
 * ライブラリ
-- oniguruma 5.5.2 (http://www.geocities.jp/kosako3/oniguruma/)
+- oniguruma 5.5.3 (http://www.geocities.jp/kosako3/oniguruma/)
 - openssl 0.9.8e (http://www.openssl.org/)
 - zlib 1.2.3 (http://www.zlib.net/)
 
@@ -165,27 +165,24 @@
        teraterm.iss
        ※変更があれば、バージョン情報と変更履歴は更新されているはず
 
-  2. readme をコピーする
-       teraterm\installer\convtext.bat を実行
-
-  3. 動作確認をする
+  2. 動作確認をする
        プログラムをコンパイルし直す
        インストーラを作成する
-         teraterm\installer\teraterm.iss を開き、[Build]-[Compile]で作成される
+         ISTool で teraterm\installer\teraterm.iss を開き、[Project]-[Compile Setup]で作成される
        インストールおよび実行をテストする
 
-  4. cvs のタグをつける
+  3. cvs のタグをつける
 
-  5. SourceForge.jp を更新する
+  4. SourceForge.jp を更新する
        [リリースファイル]-[リリースファイル/変更]-[新規作成]
          英語の変更履歴を入力してリリースを作成する
          ログインしていなくても変更履歴が表示されることを確認する
        [リリースファイル]-[変更履歴]-[翻訳]
          言語がJapaneseになっていることを確認し、日本語の変更履歴を入力する
 
-  6. メーリングリストにアナウンスする
+  5. メーリングリストにアナウンスする
 
-  7. フォーラムに告知する
+  6. フォーラムに告知する
        (1) Announcements http://www.neocom.ca/forum/viewforum.php?f=5
            Announcements に新規投稿する。種類は Announcement
            一つ前の Announcement の種類を Normal に変更する

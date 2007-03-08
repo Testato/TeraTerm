@@ -14,7 +14,7 @@
 
 
 * Libraries
-- oniguruma 5.5.2 (http://www.geocities.jp/kosako3/oniguruma/)
+- oniguruma 5.5.3 (http://www.geocities.jp/kosako3/oniguruma/)
 - openssl 0.9.8e (http://www.openssl.org/)
 - zlib 1.2.3 (http://www.zlib.net/)
 
@@ -159,24 +159,21 @@
        ssh2-readme.txt
        teraterm.iss
 
-  2. Copy readmes to each place.
-       Launch "teraterm\installer\convtext.bat".
-
-  3. Evaluate executable program file.
+  2. Evaluate executable program file.
        - Rebuild TeraTerm program
        - Make installer package
-         Open "teraterm\installer\teraterm.iss" and call [Build]-[Compile] 
+         Open "teraterm\installer\teraterm.iss" with ISTool and call [Project]-[Compile Setup] 
          with InnoSetup.
        - Test TeraTerm installation and evaluate it.
 
-  4. Added CVS tag.
+  3. Added CVS tag.
        The naming rule is `Rxxx_RTM'(ex. R450_RTM).
 
-  5. Update SourceForge.jp project site.
+  4. Update SourceForge.jp project site.
 
-  6. Announce release to mailing list(in Japan).
+  5. Announce release to mailing list(in Japan).
 
-  7. Announce release to forum(in Canada).
+  6. Announce release to forum(in Canada).
        (1) Announcements http://www.neocom.ca/forum/viewforum.php?f=5
            Create new topic in `Announcements' entry.
            Change the type of previous Announcement from Announcement to Normal.
