@@ -500,15 +500,16 @@ BOOL ManageWMNotify_Config(LPARAM lParam)
    ======1=========2=========3=========4=========5=========6=========7======= */
 void PopupMenu(HWND hWnd)
 {
-	DWORD	dwPos	= ::GetMessagePos();
+	POINT Point;
 
+	GetCursorPos(&Point);
 	::SetForceForegroundWindow(hWnd);
 
 	// マルチモニタ環境では LOWORD(), HIWORD() を使ってはいけない。(2005.10.13 yutaka)
 	::TrackPopupMenu(g_hSubMenu,
 						TPM_LEFTALIGN | TPM_RIGHTBUTTON,
-						GET_X_LPARAM(dwPos),
-						GET_Y_LPARAM(dwPos),
+						Point.x,
+						Point.y,
 						0,
 						hWnd,
 						NULL);
@@ -527,15 +528,16 @@ void PopupMenu(HWND hWnd)
    ======1=========2=========3=========4=========5=========6=========7======= */
 void PopupListMenu(HWND hWnd)
 {
-	DWORD	dwPos	= ::GetMessagePos();
+	POINT Point;
 
+	GetCursorPos(&Point);
 	::SetForceForegroundWindow(hWnd);
 
 	// マルチモニタ環境では LOWORD(), HIWORD() を使ってはいけない。(2005.10.13 yutaka)
 	::TrackPopupMenu(g_hListMenu,
 						TPM_LEFTALIGN | TPM_RIGHTBUTTON,
-						GET_X_LPARAM(dwPos),
-						GET_Y_LPARAM(dwPos),
+						Point.x,
+						Point.y,
 						0,
 						hWnd,
 						NULL);
@@ -2114,6 +2116,9 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR nCmdLine, int nCmdShow)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2006/08/12 06:31:07  maya
+ * アプリケーションが起動中の場合にインストーラで警告を出すため、mutex を作るようにした。
+ *
  * Revision 1.7  2005/10/12 15:35:47  yutakakn
  * マルチモニタ環境において、ポップアップメニューの座標計算が間違っていたバグを修正した。
  *
