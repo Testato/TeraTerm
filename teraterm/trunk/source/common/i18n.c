@@ -29,8 +29,9 @@ int FAR PASCAL GetI18nLogfont(PCHAR section, PCHAR key, PLOGFONT logfont, int pp
 	GetNthNum(tmp, 3, &charset);
 
 	strncpy(logfont->lfFaceName, font, LF_FACESIZE-1);
-	logfont->lfHeight = MulDiv(hight, -ppi, 72);
 	logfont->lfCharSet = charset;
+	logfont->lfHeight = MulDiv(hight, -ppi, 72);
+	logfont->lfWidth = 0;
 
 	return TRUE;
 }
