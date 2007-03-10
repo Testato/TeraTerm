@@ -161,6 +161,42 @@
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="TEK window のコマンド">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[File] メニュー">
+			<param name="Local" value="html\menutek\file.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Edit] メニュー">
+			<param name="Local" value="html\menutek\edit.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Setup] メニュー">
+			<param name="Local" value="html\menutek\setup.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[VT-window] コマンド">
+			<param name="Local" value="html\menutek\vtwindow.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Window] メニュー">
+			<param name="Local" value="html\menutek\window.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Help] メニュー">
+			<param name="Local" value="html\menutek\help.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="コマンドライン">
 		<param name="ImageNumber" value="1">
 		</OBJECT>
