@@ -766,6 +766,21 @@ OF SUCH DAMAGE.
 
 * History
 
+2007.3.10 (Ver 4.51)
+  - Bug fix: some file select dialogs are not displayed on Windows98/NT4.0.
+  - Bug fix: the 'pause' macro command had a time-lag about 1 sec.
+  - TeraTerm reads the teraterm.ini from My Documents when it exists.
+  - Selected the next line including word characters if double-clicked word character is over the most right line when EnableContinuedLineCopy is enabled.
+  - added support for saving Broadcast Command history in teraterm.ini file.
+  - added support for serial port dynamic detection. TeraTerm could detect available COM ports and display only possible in 'New connection' and 'Serial port setup' dialog.
+  - added support for dynamic loading of user interface messages.
+    added Japanese language message file.
+  - upgraded TTSSH version supporting SSH2 to 2.39
+  - upgraded CygTerm+ to 1.07_11
+  - upgraded TTProxy to 1.0.0.12
+  - upgraded TeraTerm Menu to 1.05
+  - upgraded Oniguruma to 5.5.3
+
 2007.1.22 (Ver 4.50)
   - TeraTerm source code have been rebuilt with Visual Studio 2005 Standard Edition(+SP1).
   - Bug fix: The macro script might stall with logging mode. This is TeraTerm 2.3 original bug. The reason of the bug is that DDE server does not send the data to DDE client because log buffer index does not match DDE buffer index.
