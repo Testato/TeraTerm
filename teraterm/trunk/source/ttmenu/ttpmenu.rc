@@ -154,8 +154,8 @@ CAPTION "Version Information"
 FONT 9, "‚l‚r ‚oƒSƒVƒbƒN", 400, 0, 0x80
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,54,69,44,14
-    CTEXT           "Tera Term launch tool\r\nTeraTerm Menu Version 1.04",IDC_STATIC,20,9,124,19
-    LTEXT           "Includes:\nversion 0.94r2\nCopyright(C) 1997-2003 S.Hayakawa\r\nCopyright(C) 2004-2006 Y.Hirata",IDC_STATIC,26,31,122,35
+    CTEXT           "Tera Term launch tool\r\nTeraTerm Menu Version 1.05",IDC_STATIC,20,9,124,19
+    LTEXT           "Includes:\nversion 0.94r2\nCopyright(C) 1997-2003 S.Hayakawa\r\n(C) 2004-2007 TeraTerm Project",IDC_STATIC,26,31,122,35
     ICON            TTERM_ICON,STATIC_ICON,4,8,20,20
 END
 
