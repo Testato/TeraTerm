@@ -115,19 +115,19 @@ Name: TTProxy; Description: TTProxy; Types: full standard
 Name: Collector; Description: Collector; Types: full
 
 [Icons]
-Name: {group}\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; IconIndex: 0; Components: TeraTerm
-Name: {group}\TeraTerm Document; Filename: {app}\utf8_readme.txt; Components: TeraTerm
-Name: {group}\TeraTerm Document(Japanese); Filename: {app}\utf8_readme-j.txt; Components: TeraTerm
-Name: {group}\{cm:UninstallProgram,{#AppName}}; Filename: {uninstallexe}; Components: TeraTerm
-Name: {group}\TTSSH Document; Filename: {app}\ssh2_readme.txt; Components: TTSSH
-Name: {group}\TTSSH Document(Japanese); Filename: {app}\ssh2_readme-j.txt; Components: TTSSH
-Name: {group}\LogMeTT; Filename: {app}\LogMeTT.exe; WorkingDir: {app}; IconFilename: {app}\logMeTT.exe; IconIndex: 0; Components: LogMeTT
-Name: {group}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; IconIndex: 0; Components: TeraTerm_Menu
-Name: {group}\Collector; Filename: {app}\Collector\Collector.exe; WorkingDir: {app}; IconFilename: {app}\Collector\Collector.exe; IconIndex: 0; Components: Collector
-Name: {userdesktop}\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: desktopicon
-Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: quicklaunchicon
-Name: {userstartup}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; Components: TeraTerm_Menu; IconIndex: 0; Tasks: startupttmenuicon
-Name: {userstartup}\Collector; Filename: {app}\collector\collector.exe; WorkingDir: {app}; IconFilename: {app}\collector\collector.exe; Components: Collector; Tasks: startupcollectoricon; IconIndex: 0
+Name: {group}\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; IconIndex: 0; Components: TeraTerm; Flags: createonlyiffileexists
+Name: {group}\TeraTerm Document; Filename: {app}\utf8_readme.txt; Components: TeraTerm; Flags: createonlyiffileexists
+Name: {group}\TeraTerm Document(Japanese); Filename: {app}\utf8_readme-j.txt; Components: TeraTerm; Flags: createonlyiffileexists
+Name: {group}\{cm:UninstallProgram,{#AppName}}; Filename: {uninstallexe}; Components: TeraTerm; Flags: createonlyiffileexists
+Name: {group}\TTSSH Document; Filename: {app}\ssh2_readme.txt; Components: TTSSH; Flags: createonlyiffileexists
+Name: {group}\TTSSH Document(Japanese); Filename: {app}\ssh2_readme-j.txt; Components: TTSSH; Flags: createonlyiffileexists
+Name: {group}\LogMeTT; Filename: {app}\LogMeTT.exe; WorkingDir: {app}; IconFilename: {app}\logMeTT.exe; IconIndex: 0; Components: LogMeTT; Flags: createonlyiffileexists
+Name: {group}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; IconIndex: 0; Components: TeraTerm_Menu; Flags: createonlyiffileexists
+Name: {group}\Collector; Filename: {app}\Collector\Collector.exe; WorkingDir: {app}\Collector; IconFilename: {app}\Collector\Collector.exe; IconIndex: 0; Components: Collector; Flags: createonlyiffileexists
+Name: {userdesktop}\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: desktopicon; IconIndex: 0; Flags: createonlyiffileexists
+Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: quicklaunchicon; IconIndex: 0; Flags: createonlyiffileexists
+Name: {userstartup}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; Components: TeraTerm_Menu; IconIndex: 0; Tasks: startupttmenuicon; Flags: createonlyiffileexists
+Name: {userstartup}\Collector; Filename: {app}\collector\collector.exe; WorkingDir: {app}\Collector; IconFilename: {app}\collector\collector.exe; Components: Collector; Tasks: startupcollectoricon; IconIndex: 0; Flags: createonlyiffileexists
 
 [Tasks]
 Name: desktopicon; Description: {cm:task_desktopicon}; Components: TeraTerm
