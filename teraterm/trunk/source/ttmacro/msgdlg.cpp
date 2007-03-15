@@ -159,16 +159,15 @@ void CMsgDlg::Relocation(BOOL is_init, int new_WW)
   if (YesNoFlag)
   {
     if (is_init) {
+      ::SetWindowText(HOk,"&Yes");
+      ::SetWindowText(HNo,"&No");
 #ifdef I18N
       GetDlgItemText(IDOK, uimsg, sizeof(uimsg));
       get_lang_msg("BTN_YES", uimsg, UILanguageFile);
 	  ::SetWindowText(HOk,uimsg);
-      GetDlgItemText(IDOK, uimsg, sizeof(uimsg));
+      GetDlgItemText(IDCANCEL, uimsg, sizeof(uimsg));
       get_lang_msg("BTN_NO", uimsg, UILanguageFile);
       ::SetWindowText(HNo,uimsg);
-#else
-      ::SetWindowText(HOk,"&Yes");
-      ::SetWindowText(HNo,"&No");
 #endif
     }
     ::MoveWindow(HOk,(2*TW-5*BW)/4,2*TH,BW,BH,TRUE);
