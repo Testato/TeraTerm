@@ -1572,7 +1572,8 @@ static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
 			if ((option[0] == '-' || option[0] == '/') &&
 				(MATCH_STR(option + 1, "ssh-f=") == 0 ||
 				 MATCH_STR(option + 1, "ssh-consume=") == 0 ||
-				 MATCH_STR_I(option + 1, "f=") == 0)) {
+				 MATCH_STR_I(option + 1, "f=") == 0 ||
+				 MATCH_STR(option + 1, "keyfile=") == 0)) {
 				if (param[i] == '"') {
 					inQuotes = TRUE;
 				}
@@ -3857,6 +3858,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.58  2007/03/05 08:39:57  maya
+ * DetectComPorts Ç ttpcmn.dll ÇÃÉGÉNÉXÉ|Å[Égä÷êîÇ…ïœçXÇµÇΩÅB
+ *
  * Revision 1.57  2007/03/04 18:02:36  doda
  * New connection$B$*$h$S(BSerial port setup$B%@%$%"%m%0$G!"MxMQ2DG=$J%7%j%"%k%]!<%H$N$_(B>
  * $B$rI=<($9$k$h$&$K$7$?!#(B
