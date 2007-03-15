@@ -113,7 +113,7 @@
       + nmake -f ms\nt.mak
       + nmake -f ms\ntd.mak
       + cd ..
-          (Now you are back in PortForwarder folder.)
+          (Now you are back in ttssh2 folder.)
         See the instruction in the OpenSSL documentation for details.
 
   4. Open ttssh2\ttssh.sln with Visual Studio.

@@ -109,7 +109,7 @@
         スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
       + cd openssl
       + perl Configure VC-WIN32
-          (Yes, you need perl to build OpenSSL!)
+          (そうです、OpenSSLをビルドするにはperlが必要です!)
       + ms\do_ms.bat をエディタで開いて、ms\nt.mak の次の行に下記の内容を追記する
         perl util\mk1mf.pl no-asm debug VC-WIN32 >ms\ntd.mak
       + ms\do_ms
@@ -118,8 +118,8 @@
       + nmake -f ms\nt.mak
       + nmake -f ms\ntd.mak
       + cd ..
-          (Now you are back in PortForwarder folder.)
-        See the instruction in the OpenSSL documentation for details.
+          (ttssh2フォルダに戻ります。)
+        詳細については、OpenSSLのドキュメントを参照してください。
 
   4. ttssh2\ttssh.sln をVisual Studioで開く
   5. ソリューションをビルドする
