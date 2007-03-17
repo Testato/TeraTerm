@@ -161,6 +161,9 @@ OF SUCH DAMAGE.
 
 * History
 
+2007.3.17 (Ver 2.40)
+  - Bug fix: When keyboard-interactive authentication enabled with plain password authentication, plain password authentication is displayed with the rhosts authentication in SSH authentication dialog.
+
 2007.3.10 (Ver 2.39)
   - added workaround(WinSock) that send() could have been regarded as success when the return value of send() is minus and the return value of WSAGetLastError() is less than WSABASEERR(10000).
   - Moved the focus to passphrase dialog when the user mistook the passphrase of SSH2 private key.
