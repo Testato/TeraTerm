@@ -343,6 +343,7 @@ struct tttset {
   char LogDefaultName[80];
   int DisablePasteMouseRButton;
   WORD ConfirmPasteMouseRButton;
+  WORD DisableAcceleratorSendBreak;
   int EnableClickableUrl;
   eterm_lookfeel_t EtermLookfeel;
 #ifdef USE_NORMAL_BGCOLOR

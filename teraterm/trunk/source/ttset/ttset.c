@@ -945,6 +945,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   ts->ConfirmPasteMouseRButton =
     GetOnOff(Section,"ConfirmPasteMouseRButton",FName,FALSE);
 
+  // added DisableAcceleratorSendBreak (2007.3.17 maya)
+  ts->DisableAcceleratorSendBreak =
+    GetOnOff(Section,"DisableAcceleratorSendBreak",FName,FALSE);
+
   // WinSock connecting timeout value (2007.1.11 yutaka)
   ts->ConnectingTimeout = GetPrivateProfileInt(Section,"ConnectingTimeout",0,FName);
 
@@ -1139,6 +1143,8 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
   WriteOnOff(Section, "DisablePasteMouseRButton", FName, ts->DisablePasteMouseRButton);
   // added ConfirmPasteMouseRButton (2007.3.17 maya)
   WriteOnOff(Section, "ConfirmPasteMouseRButton", FName, ts->ConfirmPasteMouseRButton);
+  // added DisableAcceleratorSendBreak (2007.3.17 maya)
+  WriteOnOff(Section, "DisableAcceleratorSendBreak", FName, ts->DisableAcceleratorSendBreak);
   WriteOnOff(Section, "EnableContinuedLineCopy", FName, ts->EnableContinuedLineCopy);
   WritePrivateProfileString(Section,"MouseCursor", ts->MouseCursorName, FName);
   _snprintf(Temp, sizeof(Temp), "%d", ts->AlphaBlend);
@@ -2453,6 +2459,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.26  2007/03/17 07:39:22  maya
+ * 右クリックによる貼り付けをする前に、ユーザに問い合わせできるようにした。
+ *
  * Revision 1.25  2007/03/04 06:08:29  yutakapon
  * Save setupでアプリケーションエラーとなるバグを修正した。
  *

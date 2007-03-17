@@ -1280,7 +1280,9 @@ BOOL CVTWindow::OnCommand(WPARAM wParam, LPARAM lParam)
   {
     switch (wID) {
       case ID_ACC_SENDBREAK:
-	OnControlSendBreak();
+	// added DisableAcceleratorSendBreak (2007.3.17 maya)
+	if (!ts.DisableAcceleratorSendBreak)
+	  OnControlSendBreak();
 	return TRUE;
       case ID_ACC_PASTECR:
 	OnEditPasteCR();
@@ -4821,6 +4823,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.52  2007/03/17 07:39:00  maya
+ * 右クリックによる貼り付けをする前に、ユーザに問い合わせできるようにした。
+ *
  * Revision 1.51  2007/03/08 13:30:33  maya
  * SetThreadLocale で TTProxy の言語を変えるのをやめた。
  * lng ファイルから LCID を読み込む。
