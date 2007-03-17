@@ -13,6 +13,7 @@ AllowNoIcons=true
 UninstallDisplayIcon={app}\ttermpro.exe
 AppMutex=TeraTermProAppMutex, TeraTermProMacroAppMutex, TeraTermProKeycodeAppMutex, TeraTermMenuAppMutex, CygTermAppMutex
 OutputBaseFilename=teraterm_utf8-{#AppVer}
+PrivilegesRequired=none
 
 [Languages]
 Name: en; MessagesFile: compiler:Default.isl
