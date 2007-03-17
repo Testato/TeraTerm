@@ -3667,12 +3667,36 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
     return TRUE;
 }
 
+static void SetupRGBbox(HWND hDlgWnd, int index)
+{
+	HWND hWnd;
+	BYTE c;
+	char buf[10];
+
+	hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_RED);
+	c = GetRValue(ts.ANSIColor[index]);
+	_snprintf(buf, sizeof(buf), "%d", c);
+	SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
+
+	hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_GREEN);
+	c = GetGValue(ts.ANSIColor[index]);
+	_snprintf(buf, sizeof(buf), "%d", c);
+	SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
+
+	hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_BLUE);
+	c = GetBValue(ts.ANSIColor[index]);
+	_snprintf(buf, sizeof(buf), "%d", c);
+	SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
+}
+
 // visual tab
 static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
 	HWND hWnd;
+	int i;
 	char buf[MAXPATHLEN];
 	LRESULT ret;
+	static HDC label_hdc = NULL;
 #ifdef I18N
 	LOGFONT logfont;
 	HFONT font;
@@ -3688,6 +3712,17 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 				SendDlgItemMessage(hDlgWnd, IDC_ALPHABLEND, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_ALPHA_BLEND, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_ETERM_LOOKFEEL, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_MOUSE, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_MOUSE_CURSOR, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_ANSICOLOR, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_ANSI_COLOR, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_RED, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_COLOR_RED, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_GREEN, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_COLOR_GREEN, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_BLUE, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_COLOR_BLUE, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_SAMPLE_COLOR, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
 			}
@@ -3701,6 +3736,18 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 			GetDlgItemText(hDlgWnd, IDC_ETERM_LOOKFEEL, ts.UIMsg, sizeof(ts.UIMsg));
 			get_lang_msg("DLG_TAB_VISUAL_ETERM", ts.UIMsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_ETERM_LOOKFEEL, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_MOUSE, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_VISUAL_MOUSE", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_MOUSE, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_RED, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_VISUAL_RED", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_RED, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_GREEN, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_VISUAL_GREEN", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_GREEN, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_BLUE, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_VISUAL_BLUE", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_BLUE, ts.UIMsg);
 			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
 			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
@@ -3722,12 +3769,67 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
 			}
 
+			// (3)Mouse cursor type
+			hWnd = GetDlgItem(hDlgWnd, IDC_MOUSE_CURSOR);
+			for (i = 0 ; MouseCursor[i].name ; i++) {
+				SendMessage(hWnd, LB_INSERTSTRING, i, (LPARAM)MouseCursor[i].name);
+			}
+			SendMessage(hWnd, LB_SELECTSTRING , 0, (LPARAM)ts.MouseCursorName);
+
+			// (4)ANSI color
+			hWnd = GetDlgItem(hDlgWnd, IDC_ANSI_COLOR);
+			for (i = 0 ; i < 16 ; i++) {
+				_snprintf(buf, sizeof(buf), "%d", i);
+				SendMessage(hWnd, LB_INSERTSTRING, i, (LPARAM)buf);
+			}
+			SetupRGBbox(hDlgWnd, 0);
+
 			// ダイアログにフォーカスを当てる 
 			SetFocus(GetDlgItem(hDlgWnd, IDC_ALPHA_BLEND));
 
 			return FALSE;
 
         case WM_COMMAND:
+			switch (wp) {
+				case IDC_ANSI_COLOR | (LBN_SELCHANGE << 16):
+					hWnd = GetDlgItem(hDlgWnd, IDC_ANSI_COLOR);
+					ret = SendMessage(hWnd, LB_GETCURSEL, 0, 0);
+					if (ret != -1) {
+						SetupRGBbox(hDlgWnd, ret);
+						SendMessage(hDlgWnd, WM_CTLCOLORSTATIC, (WPARAM)label_hdc, (LPARAM)hWnd);
+					}
+					return TRUE;
+
+				case IDC_COLOR_RED | (EN_KILLFOCUS << 16):
+				case IDC_COLOR_GREEN | (EN_KILLFOCUS << 16):
+				case IDC_COLOR_BLUE | (EN_KILLFOCUS << 16):
+					{
+					BYTE r, g, b;
+
+					hWnd = GetDlgItem(hDlgWnd, IDC_ANSI_COLOR);
+					ret = SendMessage(hWnd, LB_GETCURSEL, 0, 0);
+					if (ret < 0 && ret > sizeof(ts.ANSIColor)-1) {
+						return TRUE;
+					}
+
+					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_RED);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+					r = atoi(buf);
+
+					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_GREEN);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+					g = atoi(buf);
+
+					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_BLUE);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+					b = atoi(buf);
+
+					ts.ANSIColor[ret] = RGB(r, g, b);
+					}
+
+					return TRUE;
+			}
+
 			switch (LOWORD(wp)) {
                 case IDOK:
 					// (1)
@@ -3744,6 +3846,13 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 						ts.EtermLookfeel.BGEnable = 1;
 					} else {
 						ts.EtermLookfeel.BGEnable = 0;
+					}
+
+					// (3)
+					hWnd = GetDlgItem(hDlgWnd, IDC_MOUSE_CURSOR);
+					ret = SendMessage(hWnd, LB_GETCURSEL, 0, 0);
+					if (ret >= 0 && ret < MOUSE_CURSOR_MAX) {
+						strcpy(ts.MouseCursorName, MouseCursor[ret].name);
 					}
 
                     EndDialog(hDlgWnd, IDOK);
@@ -3771,303 +3880,6 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 #ifdef I18N
 			if (DlgVisualFont != NULL) {
 				DeleteObject(DlgVisualFont);
-			}
-#endif
-			return TRUE;
-
-        default:
-            return FALSE;
-    }
-    return TRUE;
-}
-
-static void SetupRGBbox(HWND hDlgWnd, int index)
-{
-	HWND hWnd;
-	BYTE c;
-	char buf[10];
-
-	hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_RED);
-	c = GetRValue(ts.ANSIColor[index]);
-	_snprintf(buf, sizeof(buf), "%d", c);
-	SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
-
-	hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_GREEN);
-	c = GetGValue(ts.ANSIColor[index]);
-	_snprintf(buf, sizeof(buf), "%d", c);
-	SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
-
-	hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_BLUE);
-	c = GetBValue(ts.ANSIColor[index]);
-	_snprintf(buf, sizeof(buf), "%d", c);
-	SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
-}
-
-// general tab
-static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
-{
-	static HDC label_hdc = NULL;
-	HWND hWnd;
-	int i;
-	LRESULT lr;
-	char buf[MAXPATHLEN];
-#ifdef I18N
-	LOGFONT logfont;
-	HFONT font;
-#endif
-
-    switch (msg) {
-        case WM_INITDIALOG:
-
-#ifdef I18N
-			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
-			GetObject(font, sizeof(LOGFONT), &logfont);
-			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgGeneralFont, ts.UILanguageFile)) {
-				SendDlgItemMessage(hDlgWnd, IDC_LINECOPY, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDC_MOUSE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDC_MOUSE_CURSOR, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDC_DELIMITER, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDC_DELIM_LIST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDC_ANSICOLOR, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDC_ANSI_COLOR, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDC_RED, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDC_COLOR_RED, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDC_GREEN, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDC_COLOR_GREEN, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDC_BLUE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDC_SAMPLE_COLOR, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDC_CLICKABLE_URL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-			}
-			else {
-				DlgGeneralFont = NULL;
-			}
-
-			GetDlgItemText(hDlgWnd, IDC_LINECOPY, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_GENERAL_CONTINUE", ts.UIMsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDC_LINECOPY, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_MOUSE, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_GENERAL_MOUSE", ts.UIMsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDC_MOUSE, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_DELIMITER, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_GENERAL_DEMILITER", ts.UIMsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDC_DELIMITER, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_RED, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_GENERAL_RED", ts.UIMsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDC_RED, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_GREEN, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_GENERAL_GREEN", ts.UIMsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDC_GREEN, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_BLUE, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_GENERAL_BLUE", ts.UIMsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDC_BLUE, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_GENERAL_MOUSEPASTE", ts.UIMsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_CLICKABLE_URL, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_GENERAL_CLICKURL", ts.UIMsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDC_CLICKABLE_URL, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("BTN_CANCEL", ts.UIMsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
-#endif
-
-			// (1)Enable continued-line copy
-			hWnd = GetDlgItem(hDlgWnd, IDC_LINECOPY);
-			if (ts.EnableContinuedLineCopy == TRUE) {
-				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
-			} else {
-				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
-			}
-
-			// (2)Mouse cursor type
-			hWnd = GetDlgItem(hDlgWnd, IDC_MOUSE_CURSOR);
-			for (i = 0 ; MouseCursor[i].name ; i++) {
-				SendMessage(hWnd, LB_INSERTSTRING, i, (LPARAM)MouseCursor[i].name);
-			}
-			SendMessage(hWnd, LB_SELECTSTRING , 0, (LPARAM)ts.MouseCursorName);
-
-#if 0
-			// (3)AlphaBlend 
-			hWnd = GetDlgItem(hDlgWnd, IDC_ALPHA_BLEND);
-			_snprintf(buf, sizeof(buf), "%d", ts.AlphaBlend);
-			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
-#endif
-
-			// (5)delimiter characters
-			hWnd = GetDlgItem(hDlgWnd, IDC_DELIM_LIST);
-			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.DelimList);
-
-			// (6)ANSI color
-			hWnd = GetDlgItem(hDlgWnd, IDC_ANSI_COLOR);
-			for (i = 0 ; i < 16 ; i++) {
-				_snprintf(buf, sizeof(buf), "%d", i);
-				SendMessage(hWnd, LB_INSERTSTRING, i, (LPARAM)buf);
-			}
-			SetupRGBbox(hDlgWnd, 0);
-
-#if 0
-			// (7)Viewlog Editor path (2005.1.29 yutaka)
-			hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
-			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.ViewlogEditor);
-#endif
-
-			// (8)DisablePasteMouseRButton
-			hWnd = GetDlgItem(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON);
-			if (ts.DisablePasteMouseRButton == TRUE) {
-				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
-			} else {
-				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
-			}
-
-			// (9)EnableClickableUrl
-			hWnd = GetDlgItem(hDlgWnd, IDC_CLICKABLE_URL);
-			if (ts.EnableClickableUrl == TRUE) {
-				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
-			} else {
-				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
-			}
-
-			// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
-			SetFocus(GetDlgItem(hDlgWnd, IDC_LINECOPY));
-
-			return FALSE;
-
-        case WM_COMMAND:
-            switch (wp) {
-				case IDC_LINECOPY | (BN_CLICKED << 16):
-					return TRUE;
-
-#if 0
-				case IDC_VIEWLOG_PATH | (BN_CLICKED << 16):
-					{
-					OPENFILENAME ofn;
-
-					ZeroMemory(&ofn, sizeof(ofn));
-					ofn.lStructSize = sizeof(OPENFILENAME_SIZE_VERSION_400);
-					ofn.hwndOwner = hDlgWnd;
-					ofn.lpstrFilter = "exe(*.exe)\0*.exe\0all(*.*)\0*.*\0\0";
-					ofn.lpstrFile = ts.ViewlogEditor;
-					ofn.nMaxFile = sizeof(ts.ViewlogEditor);
-					ofn.lpstrTitle = "Choose a executing file with launching logging file";
-					ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_FORCESHOWHIDDEN | OFN_HIDEREADONLY;
-					if (GetOpenFileName(&ofn) != 0) {
-						hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
-						SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.ViewlogEditor);
-					}
-					}
-					return TRUE;
-#endif
-
-				case IDC_ANSI_COLOR | (LBN_SELCHANGE << 16):
-					hWnd = GetDlgItem(hDlgWnd, IDC_ANSI_COLOR);
-					lr = SendMessage(hWnd, LB_GETCURSEL, 0, 0);
-					if (lr != -1) {
-						SetupRGBbox(hDlgWnd, lr);
-						SendMessage(hDlgWnd, WM_CTLCOLORSTATIC, (WPARAM)label_hdc, (LPARAM)hWnd);
-					}
-					return TRUE;
-
-				case IDC_COLOR_RED | (EN_KILLFOCUS << 16):
-				case IDC_COLOR_GREEN | (EN_KILLFOCUS << 16):
-				case IDC_COLOR_BLUE | (EN_KILLFOCUS << 16):
-					{
-					BYTE r, g, b;
-
-					hWnd = GetDlgItem(hDlgWnd, IDC_ANSI_COLOR);
-					lr = SendMessage(hWnd, LB_GETCURSEL, 0, 0);
-
-					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_RED);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
-					r = atoi(buf);
-
-					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_GREEN);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
-					g = atoi(buf);
-
-					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_BLUE);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
-					b = atoi(buf);
-
-					ts.ANSIColor[lr] = RGB(r, g, b);
-					}
-
-					return TRUE;
-			}
-
-			switch (LOWORD(wp)) {
-                case IDOK:
-					// (1)
-					hWnd = GetDlgItem(hDlgWnd, IDC_LINECOPY);
-					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
-						ts.EnableContinuedLineCopy = TRUE;
-					} else {
-						ts.EnableContinuedLineCopy = FALSE;
-					}
-
-					// (2)
-					hWnd = GetDlgItem(hDlgWnd, IDC_MOUSE_CURSOR);
-					lr = SendMessage(hWnd, LB_GETCURSEL, 0, 0);
-					if (lr >= 0 && lr < MOUSE_CURSOR_MAX) {
-						strcpy(ts.MouseCursorName, MouseCursor[lr].name);
-					}
-
-#if 0
-					// (3)
-					hWnd = GetDlgItem(hDlgWnd, IDC_ALPHA_BLEND);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
-					ts.AlphaBlend = atoi(buf);
-#endif
-
-					// (5)
-					hWnd = GetDlgItem(hDlgWnd, IDC_DELIM_LIST);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.DelimList), (LPARAM)ts.DelimList);
-
-#if 0
-					// (6)
-					hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.ViewlogEditor), (LPARAM)ts.ViewlogEditor);
-#endif
-
-					// (8)
-					hWnd = GetDlgItem(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON);
-					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
-						ts.DisablePasteMouseRButton = TRUE;
-					} else {
-						ts.DisablePasteMouseRButton = FALSE;
-					}
-
-					// (9)
-					hWnd = GetDlgItem(hDlgWnd, IDC_CLICKABLE_URL);
-					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
-						ts.EnableClickableUrl = TRUE;
-					} else {
-						ts.EnableClickableUrl = FALSE;
-					}
-
-                    EndDialog(hDlgWnd, IDOK);
-					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
-                    break;
-
-                case IDCANCEL:
-                    EndDialog(hDlgWnd, IDCANCEL);
-					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
-                    break;
-
-                default:
-                    return FALSE;
-            }
-
-        case WM_CLOSE:
-		    EndDialog(hDlgWnd, 0);
-#ifdef I18N
-			if (DlgGeneralFont != NULL) {
-				DeleteObject(DlgGeneralFont);
 			}
 #endif
 			return TRUE;
@@ -4102,6 +3914,150 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			break ;
 #endif
 
+        default:
+            return FALSE;
+    }
+    return TRUE;
+}
+
+// general tab
+static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
+{
+	HWND hWnd;
+#ifdef I18N
+	LOGFONT logfont;
+	HFONT font;
+#endif
+
+    switch (msg) {
+        case WM_INITDIALOG:
+
+#ifdef I18N
+			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
+			GetObject(font, sizeof(LOGFONT), &logfont);
+			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgGeneralFont, ts.UILanguageFile)) {
+				SendDlgItemMessage(hDlgWnd, IDC_LINECOPY, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_CLICKABLE_URL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_DELIMITER, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_DELIM_LIST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+			}
+			else {
+				DlgGeneralFont = NULL;
+			}
+
+			GetDlgItemText(hDlgWnd, IDC_LINECOPY, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_GENERAL_CONTINUE", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_LINECOPY, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_GENERAL_MOUSEPASTE", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_CLICKABLE_URL, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_GENERAL_CLICKURL", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_CLICKABLE_URL, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_DELIMITER, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_GENERAL_DEMILITER", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_DELIMITER, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("BTN_CANCEL", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
+#endif
+
+			// (1)Enable continued-line copy
+			hWnd = GetDlgItem(hDlgWnd, IDC_LINECOPY);
+			if (ts.EnableContinuedLineCopy == TRUE) {
+				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
+			} else {
+				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
+			}
+
+			// (2)DisablePasteMouseRButton
+			hWnd = GetDlgItem(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON);
+			if (ts.DisablePasteMouseRButton == TRUE) {
+				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
+			} else {
+				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
+			}
+
+			// (3)EnableClickableUrl
+			hWnd = GetDlgItem(hDlgWnd, IDC_CLICKABLE_URL);
+			if (ts.EnableClickableUrl == TRUE) {
+				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
+			} else {
+				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
+			}
+
+			// (4)delimiter characters
+			hWnd = GetDlgItem(hDlgWnd, IDC_DELIM_LIST);
+			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.DelimList);
+
+			// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
+			SetFocus(GetDlgItem(hDlgWnd, IDC_LINECOPY));
+
+			return FALSE;
+
+        case WM_COMMAND:
+            switch (wp) {
+				case IDC_LINECOPY | (BN_CLICKED << 16):
+					return TRUE;
+			}
+
+			switch (LOWORD(wp)) {
+                case IDOK:
+					// (1)
+					hWnd = GetDlgItem(hDlgWnd, IDC_LINECOPY);
+					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
+						ts.EnableContinuedLineCopy = TRUE;
+					} else {
+						ts.EnableContinuedLineCopy = FALSE;
+					}
+
+					// (2)
+					hWnd = GetDlgItem(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON);
+					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
+						ts.DisablePasteMouseRButton = TRUE;
+					} else {
+						ts.DisablePasteMouseRButton = FALSE;
+					}
+
+					// (3)
+					hWnd = GetDlgItem(hDlgWnd, IDC_CLICKABLE_URL);
+					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
+						ts.EnableClickableUrl = TRUE;
+					} else {
+						ts.EnableClickableUrl = FALSE;
+					}
+
+					// (4)
+					hWnd = GetDlgItem(hDlgWnd, IDC_DELIM_LIST);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.DelimList), (LPARAM)ts.DelimList);
+
+					EndDialog(hDlgWnd, IDOK);
+					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
+                    break;
+
+                case IDCANCEL:
+					EndDialog(hDlgWnd, IDCANCEL);
+					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
+                    break;
+
+                default:
+                    return FALSE;
+            }
+
+        case WM_CLOSE:
+		    EndDialog(hDlgWnd, 0);
+#ifdef I18N
+			if (DlgGeneralFont != NULL) {
+				DeleteObject(DlgGeneralFont);
+			}
+#endif
+			return TRUE;
 
         default:
             return FALSE;
@@ -4823,6 +4779,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.53  2007/03/17 13:14:54  maya
+ * Send break のアクセラレータキーを無効にできるようにした。
+ *
  * Revision 1.52  2007/03/17 07:39:00  maya
  * 右クリックによる貼り付けをする前に、ユーザに問い合わせできるようにした。
  *
