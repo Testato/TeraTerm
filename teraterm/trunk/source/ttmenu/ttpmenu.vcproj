@@ -74,7 +74,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib comctl32.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib comctl32.lib version.lib"
 				OutputFile=".\Release/ttpmenu.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
