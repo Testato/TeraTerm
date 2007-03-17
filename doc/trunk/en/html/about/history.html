@@ -23,6 +23,21 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
+  <li class="history"><a name="teraterm_4.52">2007.3.17 (Ver 4.52 -- not released yet)</a>
+    <ul>
+      <li>Bug fix: yesnobox macro showed tow 'OK' buttons.</li>
+      <li>added new optional setting that can confirm pasting by right click.
+        <ul>
+          <li>added ConfirmPasteMouseRButton entry to teraterm.ini.</li>
+        </ul></li>
+      <li>added new optional setting that can disable accelerator key of Send break.
+        <ul>
+          <li>added DisableAcceleratorSendBreak entry to teraterm.ini.</li>
+        </ul></li>
+      <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.40">2.40</a></li>
+    </ul>
+  </li>
+
   <li class="history"><a name="teraterm_4.51">2007.3.10 (Ver 4.51)</a>
     <ul>
       <li>Bug fix: some file select dialogs are not displayed on Windows98/NT4.0.</li>
@@ -700,8 +715,9 @@ SYNOPSIS:
 
 <h2><a name="ttssh">TTSSH</a></h2>
 <ul>
-  <li class="history"><a name="ttssh_2.39">2007.3.17 (Ver 2.40 -- not released yet)</a>
+  <li class="history"><a name="ttssh_2.40">2007.3.17 (Ver 2.40 -- not released yet)</a>
     <ul>
+      <li>added parsing double-quoted key filename in the command line parameter.</li>
       <li>Bug fix: When keyboard-interactive authentication enabled with plain password authentication, plain password authentication is displayed with the rhosts authentication in SSH authentication dialog.</li>
     </ul>
   </li>

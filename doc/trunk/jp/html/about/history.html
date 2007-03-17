@@ -23,6 +23,21 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
+  <li class="history"><a name="teraterm_4.52">2007.3.17 (Ver 4.52 -- 未リリース)</a>
+    <ul>
+      <li>マクロの yesnobox のボタンが両方とも OK になっていた問題を修正した。</li>
+      <li>右クリックによる貼り付けをする前に、ユーザに問い合わせできるようにした。
+        <ul>
+          <li>teraterm.ini に ConfirmPasteMouseRButton エントリを追加した。</li>
+        </ul></li>
+      <li>Send break のアクセラレータキーを無効にできるようにした。
+        <ul>
+          <li>teraterm.ini に DisableAcceleratorSendBreak エントリを追加した。</li>
+        </ul></li>
+      <li><a href="#ttssh_2.40">SSH2対応TTSSH(2.40)</a>へ差し替えた</li>
+    </ul>
+  </li>
+
   <li class="history"><a name="teraterm_4.51">2007.3.10 (Ver 4.51)</a>
     <ul>
       <li>Windows98/NT4.0 においていくつかのファイル選択ダイアログが出ない問題を修正した。</li>
@@ -703,6 +718,7 @@
 <ul>
   <li class="history"><a name="ttssh_2.40">2007.3.17 (Ver 2.40 -- 未リリース)</a>
     <ul>
+      <li>keyfile パラメータも、ダブルクォートされたファイル名を認識するようにした。</li>
       <li>プレインパスワード認証と一緒にキーボードインタラクティブ認証を使用するように設定している時、SSH認証ダイアログでプレインパスワード認証がrhosts認証と表示されるのを修正した。</li>
     </ul>
   </li>
