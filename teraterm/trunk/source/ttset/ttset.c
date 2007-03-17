@@ -941,6 +941,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   ts->DisablePasteMouseRButton =
     GetOnOff(Section,"DisablePasteMouseRButton",FName,FALSE);
 
+  // added ConfirmPasteMouseRButton (2007.3.17 maya)
+  ts->ConfirmPasteMouseRButton =
+    GetOnOff(Section,"ConfirmPasteMouseRButton",FName,FALSE);
+
   // WinSock connecting timeout value (2007.1.11 yutaka)
   ts->ConnectingTimeout = GetPrivateProfileInt(Section,"ConnectingTimeout",0,FName);
 
@@ -1133,6 +1137,8 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
   // new configuration
   WriteInt(Section, "ConnectingTimeout", FName, ts->ConnectingTimeout);
   WriteOnOff(Section, "DisablePasteMouseRButton", FName, ts->DisablePasteMouseRButton);
+  // added ConfirmPasteMouseRButton (2007.3.17 maya)
+  WriteOnOff(Section, "ConfirmPasteMouseRButton", FName, ts->ConfirmPasteMouseRButton);
   WriteOnOff(Section, "EnableContinuedLineCopy", FName, ts->EnableContinuedLineCopy);
   WritePrivateProfileString(Section,"MouseCursor", ts->MouseCursorName, FName);
   _snprintf(Temp, sizeof(Temp), "%d", ts->AlphaBlend);
@@ -2447,6 +2453,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.25  2007/03/04 06:08:29  yutakapon
+ * Save setupでアプリケーションエラーとなるバグを修正した。
+ *
  * Revision 1.24  2007/03/04 05:21:43  maya
  * バッファがあふれる問題を修正した。
  *

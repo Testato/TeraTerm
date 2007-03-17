@@ -17,6 +17,8 @@
 #define IDD_TABSHEET_VISUAL             116
 #define IDD_TABSHEET_LOG                117
 #define IDD_TABSHEET_CYGWIN             118
+#define IDR_MENU1                       119
+#define IDR_PASTEMENU                   119
 #define IDR_TEKMENU                     1000
 #define IDC_EDIT_COMMENT                1000
 #define IDC_EDIT_FULLPATH               1001
@@ -175,7 +177,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        119
+#define _APS_NEXT_RESOURCE_VALUE        120
 #define _APS_NEXT_COMMAND_VALUE         52020
 #define _APS_NEXT_CONTROL_VALUE         1059
 #define _APS_NEXT_SYMED_VALUE           101

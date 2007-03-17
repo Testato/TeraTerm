@@ -566,7 +566,8 @@ void CVTWindow::ButtonUp(BOOL Paste)
 	CaretOn();
 
 	BuffEndSelect();
-	if (Paste)
+	// added ConfirmPasteMouseRButton (2007.3.17 maya)
+	if (Paste && !ts.ConfirmPasteMouseRButton)
 		CBStartPaste(HVTWin,FALSE,0,NULL,0);
 }
 
@@ -625,6 +626,48 @@ void CVTWindow::ButtonDown(POINT p, int LMR)
 		//		 (UINT)WinMenu, "&Window");
 		//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
 		//	       (UINT)HelpMenu, "&Help");
+		::ClientToScreen(HVTWin, &p);
+		TrackPopupMenu(PopupBase,TPM_LEFTALIGN | TPM_LEFTBUTTON,
+			p.x,p.y,0,HVTWin,NULL);
+		if (WinMenu!=NULL)
+		{
+			DestroyMenu(WinMenu);
+			WinMenu = NULL;
+		}
+		DestroyMenu(PopupBase);
+		DestroyMenu(PopupMenu);
+		PopupMenu = 0;
+		return;
+	}
+
+	// added ConfirmPasteMouseRButton (2007.3.17 maya)
+	if ((LMR == IdRightButton) &&
+		ts.ConfirmPasteMouseRButton &&
+		cv.Ready &&
+		(SendVar==NULL) && (FileVar==NULL) &&
+		(cv.PortType!=IdFile) &&
+		(IsClipboardFormatAvailable(CF_TEXT) ||
+		 IsClipboardFormatAvailable(CF_OEMTEXT)))
+	{
+		int i, numItems;
+		char itemText[256];
+
+		InitPasteMenu(&PopupMenu);
+		PopupBase = CreatePopupMenu();
+		numItems = GetMenuItemCount(PopupMenu);
+
+		for (i = 0; i < numItems; i++) {
+			if (GetMenuString(PopupMenu, i, itemText, sizeof(itemText), MF_BYPOSITION) != 0) {
+				int state = GetMenuState(PopupMenu, i, MF_BYPOSITION) &
+					(MF_CHECKED | MF_DISABLED | MF_GRAYED | MF_HILITE | MF_MENUBARBREAK | MF_MENUBREAK | MF_SEPARATOR);
+
+				AppendMenu(PopupBase,
+					state,
+					GetMenuItemID(PopupMenu, i),
+					itemText);
+			}
+		}
+
 		::ClientToScreen(HVTWin, &p);
 		TrackPopupMenu(PopupBase,TPM_LEFTALIGN | TPM_LEFTBUTTON,
 			p.x,p.y,0,HVTWin,NULL);
@@ -1045,6 +1088,22 @@ void CVTWindow::InitMenuPopup(HMENU SubMenu)
 	}
 
 	TTXModifyPopupMenu(SubMenu); /* TTPLUG */
+}
+
+// added ConfirmPasteMouseRButton (2007.3.17 maya)
+void CVTWindow::InitPasteMenu(HMENU *Menu)
+{
+  *Menu = LoadMenu(AfxGetInstanceHandle(),
+    MAKEINTRESOURCE(IDR_PASTEMENU));
+
+#ifdef I18N
+  GetMenuString(*Menu, ID_EDIT_PASTE2, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_PASTE", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(*Menu, ID_EDIT_PASTE2, MF_BYCOMMAND, ID_EDIT_PASTE2, ts.UIMsg);
+  GetMenuString(*Menu, ID_EDIT_PASTECR, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_PASTECR", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(*Menu, ID_EDIT_PASTECR, MF_BYCOMMAND, ID_EDIT_PASTECR, ts.UIMsg);
+#endif
 }
 
 void CVTWindow::ResetSetup()
@@ -4762,6 +4821,10 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.51  2007/03/08 13:30:33  maya
+ * SetThreadLocale で TTProxy の言語を変えるのをやめた。
+ * lng ファイルから LCID を読み込む。
+ *
  * Revision 1.50  2007/03/03 03:51:20  maya
  * Broadcast Command の履歴を保存できるようにした。
  *

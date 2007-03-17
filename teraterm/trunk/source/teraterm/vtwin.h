@@ -32,6 +32,7 @@ public:
 	void ButtonDown(POINT p, int LMR);
 	void InitMenu(HMENU *Menu);
 	void InitMenuPopup(HMENU SubMenu);
+	void InitPasteMenu(HMENU *Menu);
 	void ResetSetup();
 	void RestoreSetup();
 	void SetupTerm();

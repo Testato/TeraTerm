@@ -477,6 +477,12 @@ BEGIN
     END
 END
 
+IDR_PASTEMENU MENU 
+BEGIN
+    MENUITEM "&Paste",                      ID_EDIT_PASTE2
+    MENUITEM "Paste<C&R>",                  ID_EDIT_PASTECR
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
