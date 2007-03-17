@@ -348,8 +348,8 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 	// 変更する。(2005.3.12 yutaka)
 	if (pvar->settings.ssh2_keyboard_interactive == 1) {
 #ifdef I18N
-		strcpy(pvar->ts->UIMsg, "Use r&hosts to log in (SSH1)");
-		UTIL_get_lang_msg("DLG_AUTH_METHOD_RHOST", pvar);
+		strcpy(pvar->ts->UIMsg, "Use p&lain password to log in (with keyboard-interactive)");
+		UTIL_get_lang_msg("DLG_AUTH_METHOD_PASSWORD_KBDINT", pvar);
 		SetDlgItemText(dlg, IDC_SSHUSEPASSWORD, pvar->ts->UIMsg);
 #else
 		SetDlgItemText(dlg, IDC_SSHUSEPASSWORD, "Use p&lain password to log in (with keyboard-interactive)");
@@ -1507,6 +1507,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.31  2007/02/17 17:31:55  yasuhide
+ * コマンドラインでask4passwd が指定された時、ログインダイアログのパスフレーズ入力にフォーカスする
+ *
  * Revision 1.30  2007/02/17 16:20:21  yasuhide
  * SSH2 鍵を用いた認証でパスフレーズを間違えた際、パスフレーズダイアログにフォーカスを移す
  *
