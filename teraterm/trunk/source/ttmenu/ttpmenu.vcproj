@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="ttpmenu"
 	ProjectGUID="{594F6499-8EDA-44DC-AC41-830A754FF1C8}"
+	RootNamespace="ttpmenu"
 	>
 	<Platforms>
 		<Platform
@@ -167,7 +168,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib comctl32.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib comctl32.lib version.lib"
 				OutputFile=".\Debug/ttpmenu.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

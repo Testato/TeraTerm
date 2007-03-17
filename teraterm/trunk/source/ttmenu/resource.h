@@ -54,6 +54,7 @@
 #define IDC_KEYFILE_LABEL               1041
 #define IDC_BUTTON1                     1042
 #define IDC_KEYFILE_BUTTON              1042
+#define IDC_VERSION                     1043
 #define ID_MENUITEM40013                40013
 #define ID_MENUITEM40014                40014
 #define ID_MENUITEM40015                40015
@@ -79,7 +80,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        116
 #define _APS_NEXT_COMMAND_VALUE         40043
-#define _APS_NEXT_CONTROL_VALUE         1043
+#define _APS_NEXT_CONTROL_VALUE         1044
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

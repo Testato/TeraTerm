@@ -37,6 +37,67 @@ JobInfo		g_JobInfo;			// カレントの設定情報構造体（設定ダイアログ）
 MenuData	g_MenuData;			// TeraTerm Menuの表示設定等の構造体
 
 
+// ttdlg.c と同じ内容
+// 実行ファイルからバージョン情報を得る (2005.2.28 yutaka)
+void get_file_version(char *exefile, int *major, int *minor, int *release, int *build)
+{
+	typedef struct {
+		WORD wLanguage;
+		WORD wCodePage;
+	} LANGANDCODEPAGE, *LPLANGANDCODEPAGE;
+	LPLANGANDCODEPAGE lplgcode;
+	UINT unLen;
+	DWORD size;
+	char *buf = NULL;
+	BOOL ret;
+	int i;
+	char fmt[80];
+	char *pbuf;
+
+	size = GetFileVersionInfoSize(exefile, NULL);
+	if (size == 0) {
+		goto error;
+	}
+	buf = (char *)malloc(size);
+	ZeroMemory(buf, size);
+
+	if (GetFileVersionInfo(exefile, 0, size, buf) == FALSE) {
+		goto error;
+	}
+
+	ret = VerQueryValue(buf,
+			"\\VarFileInfo\\Translation", 
+			(LPVOID *)&lplgcode, &unLen);
+	if (ret == FALSE)
+		goto error;
+
+	for (i = 0 ; i < (int)(unLen / sizeof(LANGANDCODEPAGE)) ; i++) {
+		_snprintf(fmt, sizeof(fmt), "\\StringFileInfo\\%04x%04x\\FileVersion", 
+			lplgcode[i].wLanguage, lplgcode[i].wCodePage);
+		VerQueryValue(buf, fmt, (LPVOID *)&pbuf, &unLen);
+		if (unLen > 0) { // get success
+			int n, a, b, c, d;
+
+			n = sscanf(pbuf, "%d, %d, %d, %d", &a, &b, &c, &d);
+			if (n == 4) { // convert success
+				*major = a;
+				*minor = b;
+				*release = c;
+				*build = d;
+				break;
+			}
+		}
+	}
+
+	free(buf);
+	return;
+
+error:
+	free(buf);
+	*major = *minor = *release = *build = 0;
+}
+
+
 /* ==========================================================================
 	Function Name	: (BOOL) ExecStartup()
 	Outline			: スタートアップ設定のジョブを実行する。
@@ -665,10 +726,20 @@ BOOL InitEtcDlg(HWND hWnd)
    ======1=========2=========3=========4=========5=========6=========7======= */
 BOOL InitVersionDlg(HWND hWnd)
 {
+	int a, b, c, d;
+	char app[_MAX_PATH], buf[1024], buf2[1024];
+
 	::DeleteMenu(::GetSystemMenu(hWnd, FALSE), SC_MAXIMIZE, MF_BYCOMMAND);
 	::DeleteMenu(::GetSystemMenu(hWnd, FALSE), SC_SIZE, MF_BYCOMMAND);
 	::DeleteMenu(::GetSystemMenu(hWnd, FALSE), SC_MINIMIZE, MF_BYCOMMAND);
 	::DeleteMenu(::GetSystemMenu(hWnd, FALSE), SC_RESTORE, MF_BYCOMMAND);
+
+	GetModuleFileName(NULL, app, sizeof(app));
+	get_file_version(app, &a, &b, &c, &d);
+
+	GetDlgItemText(hWnd, IDC_VERSION, buf, sizeof(buf));
+	_snprintf(buf2, sizeof(buf2), buf, a, b);
+	SetDlgItemText(hWnd, IDC_VERSION, buf2);
 
 	return TRUE;
 }
@@ -2116,6 +2187,9 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR nCmdLine, int nCmdShow)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2007/03/10 00:59:32  maya
+ * Windows Vista でカーソル位置を正しく取得できないのを修正。
+ *
  * Revision 1.8  2006/08/12 06:31:07  maya
  * アプリケーションが起動中の場合にインストーラで警告を出すため、mutex を作るようにした。
  *
