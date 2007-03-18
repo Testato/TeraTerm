@@ -49,7 +49,9 @@
 #define IDC_ETERM_LOOKFEEL              1030
 #define IDC_DISABLE_PASTE_RBUTTON       1032
 #define IDC_CLICKABLE_URL               1033
+#define IDC_CONFIRM_PASTE_RBUTTON       1034
 #define IDC_TERM_TYPE                   1035
+#define IDC_DISABLE_SENDBREAK           1035
 #define IDC_PORT_START                  1036
 #define IDC_PORT_RANGE                  1037
 #define IDC_SHELL                       1038

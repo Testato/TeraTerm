@@ -78,11 +78,15 @@ STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_SYSMENU
 FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
     CONTROL         "EnableContinued&LineCopy",IDC_LINECOPY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,12,99,10
-    RTEXT           "Del&imiter Characters",IDC_DELIMITER,10,67,69,8
-    EDITTEXT        IDC_DELIM_LIST,84,66,130,12,ES_AUTOHSCROLL
     CONTROL         "&DisableMouseRButtonPaste",IDC_DISABLE_PASTE_RBUTTON,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,29,124,10
-    CONTROL         "&EnableClickableURL",IDC_CLICKABLE_URL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,46,124,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,28,124,10
+    CONTROL         "&ConfirmMouseRButtonPaste",IDC_CONFIRM_PASTE_RBUTTON,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,43,149,10
+    CONTROL         "DisableAccelerator&SendBreak",IDC_DISABLE_SENDBREAK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,58,183,10
+    CONTROL         "&EnableClickableURL",IDC_CLICKABLE_URL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,74,124,10
+    RTEXT           "Del&imiter Characters",IDC_DELIMITER,10,95,69,8
+    EDITTEXT        IDC_DELIM_LIST,84,94,130,12,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "OK",IDOK,217,7,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,217,24,50,14
 END

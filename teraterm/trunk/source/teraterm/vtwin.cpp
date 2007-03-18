@@ -642,6 +642,7 @@ void CVTWindow::ButtonDown(POINT p, int LMR)
 
 	// added ConfirmPasteMouseRButton (2007.3.17 maya)
 	if ((LMR == IdRightButton) &&
+		!ts.DisablePasteMouseRButton &&
 		ts.ConfirmPasteMouseRButton &&
 		cv.Ready &&
 		(SendVar==NULL) && (FileVar==NULL) &&
@@ -3923,7 +3924,7 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 // general tab
 static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-	HWND hWnd;
+	HWND hWnd, hWnd2;
 #ifdef I18N
 	LOGFONT logfont;
 	HFONT font;
@@ -3938,6 +3939,8 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgGeneralFont, ts.UILanguageFile)) {
 				SendDlgItemMessage(hDlgWnd, IDC_LINECOPY, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_CONFIRM_PASTE_RBUTTON, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_DISABLE_SENDBREAK, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_CLICKABLE_URL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_DELIMITER, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_DELIM_LIST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
@@ -3954,6 +3957,12 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			GetDlgItemText(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, ts.UIMsg, sizeof(ts.UIMsg));
 			get_lang_msg("DLG_TAB_GENERAL_MOUSEPASTE", ts.UIMsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_CONFIRM_PASTE_RBUTTON, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_GENERAL_CONFIRMPASTE", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_CONFIRM_PASTE_RBUTTON, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_DISABLE_SENDBREAK, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_GENERAL_DISABLESENDBREAK", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_DISABLE_SENDBREAK, ts.UIMsg);
 			GetDlgItemText(hDlgWnd, IDC_CLICKABLE_URL, ts.UIMsg, sizeof(ts.UIMsg));
 			get_lang_msg("DLG_TAB_GENERAL_CLICKURL", ts.UIMsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_CLICKABLE_URL, ts.UIMsg);
@@ -3977,14 +3986,32 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			}
 
 			// (2)DisablePasteMouseRButton
-			hWnd = GetDlgItem(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON);
+			hWnd  = GetDlgItem(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON);
+			hWnd2 = GetDlgItem(hDlgWnd, IDC_CONFIRM_PASTE_RBUTTON);
 			if (ts.DisablePasteMouseRButton == TRUE) {
+				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
+				EnableWindow(hWnd2, FALSE);
+			} else {
+				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
+				EnableWindow(hWnd2, TRUE);
+			}
+
+			// (3)ConfirmPasteMouseRButton
+			if (ts.ConfirmPasteMouseRButton == TRUE) {
+				SendMessage(hWnd2, BM_SETCHECK, BST_CHECKED, 0);
+			} else {
+				SendMessage(hWnd2, BM_SETCHECK, BST_UNCHECKED, 0);
+			}
+
+			// (4)DisableAcceleratorSendBreak
+			hWnd = GetDlgItem(hDlgWnd, IDC_DISABLE_SENDBREAK);
+			if (ts.DisableAcceleratorSendBreak == TRUE) {
 				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
 			} else {
 				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
 			}
 
-			// (3)EnableClickableUrl
+			// (5)EnableClickableUrl
 			hWnd = GetDlgItem(hDlgWnd, IDC_CLICKABLE_URL);
 			if (ts.EnableClickableUrl == TRUE) {
 				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
@@ -3992,7 +4019,7 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
 			}
 
-			// (4)delimiter characters
+			// (6)delimiter characters
 			hWnd = GetDlgItem(hDlgWnd, IDC_DELIM_LIST);
 			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.DelimList);
 
@@ -4004,6 +4031,16 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
         case WM_COMMAND:
             switch (wp) {
 				case IDC_LINECOPY | (BN_CLICKED << 16):
+					return TRUE;
+
+				case IDC_DISABLE_PASTE_RBUTTON | (BN_CLICKED << 16):
+					hWnd  = GetDlgItem(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON);
+					hWnd2 = GetDlgItem(hDlgWnd, IDC_CONFIRM_PASTE_RBUTTON);
+					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
+						EnableWindow(hWnd2, FALSE);
+					} else {
+						EnableWindow(hWnd2, TRUE);
+					}
 					return TRUE;
 			}
 
@@ -4026,6 +4063,22 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 					}
 
 					// (3)
+					hWnd = GetDlgItem(hDlgWnd, IDC_CONFIRM_PASTE_RBUTTON);
+					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
+						ts.ConfirmPasteMouseRButton = TRUE;
+					} else {
+						ts.ConfirmPasteMouseRButton = FALSE;
+					}
+
+					// (4)
+					hWnd = GetDlgItem(hDlgWnd, IDC_DISABLE_SENDBREAK);
+					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
+						ts.DisableAcceleratorSendBreak = TRUE;
+					} else {
+						ts.DisableAcceleratorSendBreak = FALSE;
+					}
+
+					// (5)
 					hWnd = GetDlgItem(hDlgWnd, IDC_CLICKABLE_URL);
 					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
 						ts.EnableClickableUrl = TRUE;
@@ -4033,7 +4086,7 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 						ts.EnableClickableUrl = FALSE;
 					}
 
-					// (4)
+					// (6)
 					hWnd = GetDlgItem(hDlgWnd, IDC_DELIM_LIST);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.DelimList), (LPARAM)ts.DelimList);
 
@@ -4779,6 +4832,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.54  2007/03/17 14:43:10  maya
+ * Additional settings のマウスカーソルとANSIカラーの設定を Visual タブに移動した。
+ *
  * Revision 1.53  2007/03/17 13:14:54  maya
  * Send break のアクセラレータキーを無効にできるようにした。
  *
