@@ -87,17 +87,24 @@ private:
 			}else if (strlen(option + 1) >= 6 && option[6] == '=') {
 				option[6] = '\0';
 				if (_stricmp(option + 1, "proxy") == 0) {
-					ProxyWSockHook::parseURL(option + 7);
+					ProxyWSockHook::parseURL(option + 7, TRUE);
 					return 1;
 				}else{
 					option[6] = '=';
 				}
 			}
 		}else{
-			String realhost = ProxyWSockHook::parseURL(option);
+			String realhost = ProxyWSockHook::parseURL(option, FALSE);
 			if (realhost != NULL) {
 				getInstance().realhost = realhost;
-				return 1;
+				if (realhost.indexOf("://") == -1) {
+					return 1;
+				}
+				else {
+					// -proxy= なしで、proto://proxy:port/ 以降の実ホストが含まれていない
+					// ttermpro で処理してもらうため、TTXParseParam で消さない
+					return 2;
+				}
 			}
 		}
 		return 0;
@@ -120,7 +127,7 @@ private:
 				if (option != NULL) {
 					char ch = *p;
 					*p = '\0';
-					if (parse_option(*option == '"' ? option + 1 : option)) {
+					if (parse_option(*option == '"' ? option + 1 : option) == 1) {
 						memset(option, ' ', p - option + 1);
 					} else {
 						*p = ch;

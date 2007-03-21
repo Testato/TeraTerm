@@ -269,9 +269,11 @@ private:
                     }
                 }
             }
-            if (*p == '/')
+            if (*p == '/') {
                 p++;
-            return p;
+                return p;
+            }
+            return url;
         }
         String generateURL()const {
             if (type == TYPE_NONE || host == NULL)
@@ -1748,10 +1750,13 @@ public:
     static String generateURL() {
         return instance().defaultProxy.generateURL();
     }
-    static String parseURL(const char* url) {
+	static String parseURL(const char* url, BOOL prefix) {
         ProxyInfo proxy;
         String realhost = ProxyInfo::parse(url, proxy);
         if (realhost != NULL) {
+			if (realhost.indexOf("://") != -1 && !prefix) {
+				proxy.type = proxy.TYPE_NONE;
+			}
             instance().defaultProxy = proxy;
             if (realhost.length() == 0)
                 realhost = NULL;
