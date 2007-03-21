@@ -221,6 +221,11 @@
 			<param name="Local" value="html\commandline\cygterm.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="TTProxy">
+			<param name="Local" value="html\commandline\ttproxy.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Ý’èƒtƒ@ƒCƒ‹">
