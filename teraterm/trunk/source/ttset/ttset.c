@@ -1000,6 +1000,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   ts->BroadcastCommandHistory =
     GetOnOff(Section,"BroadcastCommandHistory",FName,FALSE);
 
+  // 337: 2007/03/20 Accept Broadcast
+  ts->AcceptBroadcast =
+    GetOnOff(Section,"AcceptBroadcast",FName,TRUE);
+
 #ifdef USE_NORMAL_BGCOLOR
   // UseNormalBGColor
   ts->UseNormalBGColor = GetOnOff(Section,"UseNormalBGColor",FName,FALSE);
@@ -1625,6 +1629,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   // Broadcast Command History (2007.3.3 maya)
   WriteOnOff(Section,"BroadcastCommandHistory",FName,ts->BroadcastCommandHistory);
+
+  // 337: 2007/03/20 Accept Broadcast
+  WriteOnOff(Section,"AcceptBroadcast",FName,ts->AcceptBroadcast);
 }
 
 #define VTEditor "VT editor keypad"
@@ -2459,6 +2466,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.27  2007/03/17 13:15:29  maya
+ * Send break のアクセラレータキーを無効にできるようにした。
+ *
  * Revision 1.26  2007/03/17 07:39:22  maya
  * 右クリックによる貼り付けをする前に、ユーザに問い合わせできるようにした。
  *

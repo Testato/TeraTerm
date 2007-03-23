@@ -3944,6 +3944,7 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 				SendDlgItemMessage(hDlgWnd, IDC_CLICKABLE_URL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_DELIMITER, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_DELIM_LIST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_ACCEPT_BROADCAST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0)); // 337: 2007/03/20
 				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 			}
@@ -4023,6 +4024,14 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			hWnd = GetDlgItem(hDlgWnd, IDC_DELIM_LIST);
 			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.DelimList);
 
+			// (7)AcceptBroadcast 337: 2007/03/20
+			hWnd = GetDlgItem(hDlgWnd, IDC_ACCEPT_BROADCAST);
+			if (ts.AcceptBroadcast == TRUE) {
+				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
+			} else {
+				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
+			}
+
 			// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
 			SetFocus(GetDlgItem(hDlgWnd, IDC_LINECOPY));
 
@@ -4089,6 +4098,14 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 					// (6)
 					hWnd = GetDlgItem(hDlgWnd, IDC_DELIM_LIST);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.DelimList), (LPARAM)ts.DelimList);
+
+					// (7) 337: 2007/03/20  
+					hWnd = GetDlgItem(hDlgWnd, IDC_ACCEPT_BROADCAST);
+					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
+						ts.AcceptBroadcast = TRUE;
+					} else {
+						ts.AcceptBroadcast = FALSE;
+					}
 
 					EndDialog(hDlgWnd, IDOK);
 					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
@@ -4586,6 +4603,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 				SendDlgItemMessage(hWnd, IDC_RADIO_CR, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hWnd, IDC_RADIO_LF, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hWnd, IDC_ENTERKEY_CHECK, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hWnd, IDC_PARENT_ONLY, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));	// 337: 2007/03/20
 				SendDlgItemMessage(hWnd, IDOK, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgBroadcastFont, MAKELPARAM(TRUE,0));
 			}
@@ -4672,9 +4690,17 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 						}
 					}
 
+					// 337: 2007/03/20 チェックされていたら親ウィンドウにのみ送信
+					checked = SendMessage(GetDlgItem(hWnd, IDC_PARENT_ONLY), BM_GETCHECK, 0, 0);
+
 					// すべてのTeraTermにメッセージとデータを送る
 					for (i = 0 ; i < 50 ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
-						hd = GetNthWin(i);
+						if (checked) {
+							hd = GetParent(hWnd);
+							i = 50;		// 337: 強引かつ直値 :P
+						} else {
+							hd = GetNthWin(i);
+						}
 						if (hd == NULL)
 							break;
 
@@ -4759,6 +4785,9 @@ LONG CVTWindow::OnReceiveIpcMessage(UINT wParam, LONG lParam)
 	if (!cv.Ready)
 		return 0;
 
+	if (!ts.AcceptBroadcast)	// 337: 2007/03/20
+		return 0;
+
 	cds = (COPYDATASTRUCT *)lParam;
 	len = cds->cbData;
 	buf = (char *)cds->lpData;
@@ -4832,6 +4861,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.55  2007/03/18 13:29:05  maya
+ * Additional setting に ConfirmPasteMouseRButton と DisableAcceleratorSendBreak 用のコントロールを追加した。
+ *
  * Revision 1.54  2007/03/17 14:43:10  maya
  * Additional settings のマウスカーソルとANSIカラーの設定を Visual タブに移動した。
  *

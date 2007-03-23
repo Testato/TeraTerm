@@ -76,6 +76,8 @@
 #define IDC_ENV2_LABEL                  1056
 #define IDC_ENV1_LABEL                  1057
 #define IDC_HISTORY_CHECK               1058
+#define IDC_ACCEPT_BROADCAST            1059
+#define IDC_PARENT_ONLY                 1060
 #define IDD_PRNABORTDLG                 2100
 #define IDD_FILETRANSDLG                2200
 #define IDC_TRANSFNAME                  2201

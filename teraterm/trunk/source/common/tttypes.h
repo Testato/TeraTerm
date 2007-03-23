@@ -354,6 +354,7 @@ struct tttset {
   char UIMsg[MAX_UIMSG];
 #endif
   WORD BroadcastCommandHistory;
+  WORD AcceptBroadcast;		// 337: 2007/03/20
   int ConnectingTimeout;
 };
 
