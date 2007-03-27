@@ -179,7 +179,8 @@ BOOL GetFileName(HWND HWin)
   // sizeof(OPENFILENAME) ‚Å‚Í Windows98/NT ‚ÅI—¹‚µ‚Ä‚µ‚Ü‚¤‚½‚ß (2006.8.14 maya)
   osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
   GetVersionEx(&osvi);
-  if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT) {
+  if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT &&
+      osvi.dwMajorVersion >= 5) {
     FNameRec.lStructSize = sizeof(OPENFILENAME);
   }
   else {

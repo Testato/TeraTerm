@@ -2947,7 +2947,8 @@ void CVTWindow::OnReplayLog()
 	memset(szFile, 0, sizeof(szFile));
 	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 	GetVersionEx(&osvi);
-	if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT) {
+	if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT &&
+		osvi.dwMajorVersion >= 5) {
 		ofn.lStructSize = sizeof(OPENFILENAME);
 	}
 	else {
@@ -3545,7 +3546,8 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					ZeroMemory(&ofn, sizeof(ofn));
 					osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 					GetVersionEx(&osvi);
-					if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT) {
+					if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT &&
+						osvi.dwMajorVersion >= 5) {
 						ofn.lStructSize = sizeof(OPENFILENAME);
 					}
 					else {
@@ -4861,6 +4863,12 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.56  2007/03/23 05:01:32  yutakapon
+ * 337氏パッチを取り込んだ。
+ * 1.Broadcastダイアログからの送信対象を親Windowのみにする、
+ * および
+ * 2.Broadcastダイアログからの送信を無視可能にする
+ *
  * Revision 1.55  2007/03/18 13:29:05  maya
  * Additional setting に ConfirmPasteMouseRButton と DisableAcceleratorSendBreak 用のコントロールを追加した。
  *
