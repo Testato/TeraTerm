@@ -834,11 +834,24 @@ private:
     class AboutDialog : public Dialog {
     private:
         virtual bool onInitDialog() {
-            char buf[1024], buf2[1024], *ver;
-            GetDlgItemText(IDC_VERSION, buf, sizeof(buf));
-            ver = (char *)FileVersion::getOwnVersion().getFileVersion();
-            sprintf_s(buf2, sizeof(buf2), buf, ver);
-            SetDlgItemText(IDC_VERSION, buf2);
+            String buf;
+            char *buf2;
+            const char *ver;
+            int n, a, b, c, d, len;
+
+            buf = GetDlgItemText(IDC_VERSION);
+            len = buf.length() + 4;
+            buf2 = (char *)_alloca(len);
+            if (buf2 == NULL) {
+                return true;
+            }
+            ver = FileVersion::getOwnVersion().getFileVersion();
+            n = sscanf_s(ver, "%d, %d, %d, %d", &a, &b, &c, &d);
+            if (n == 4) {
+                sprintf_s(buf2, len, buf, a, b, c, d);
+            }
+            SetDlgItemText(IDC_VERSION, (n == 4) ? buf2 : buf);
+
             return true;
         }
     public :
