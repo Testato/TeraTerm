@@ -831,6 +831,23 @@ private:
     };
     friend class SettingDialog;
 
+    class AboutDialog : public Dialog {
+    private:
+        virtual bool onInitDialog() {
+            char buf[1024], buf2[1024], *ver;
+            GetDlgItemText(IDC_VERSION, buf, sizeof(buf));
+            ver = (char *)FileVersion::getOwnVersion().getFileVersion();
+            sprintf_s(buf2, sizeof(buf2), buf, ver);
+            SetDlgItemText(IDC_VERSION, buf2);
+            return true;
+        }
+    public :
+        int open(HWND owner, LCID lcid) {
+            return Dialog::open(instance().resource_module, IDD_ABOUTDIALOG, lcid, owner);
+        }
+    };
+    friend class AboutDialog;
+
     int _sendToSocket(SOCKET s, const unsigned char* buffer, int size) {
         int count = 0;
         while (count < size) {
@@ -1704,6 +1721,13 @@ public:
         dlg.proxy = instance().defaultProxy;
         if (dlg.open(owner, lcid) == IDOK) {
             instance().defaultProxy = dlg.proxy;
+            return true;
+        }
+        return false;
+    }
+    static bool aboutDialog(HWND owner, LCID lcid) {
+        AboutDialog dlg;
+        if (dlg.open(owner, lcid) == IDOK) {
             return true;
         }
         return false;

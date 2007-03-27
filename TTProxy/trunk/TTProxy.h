@@ -231,7 +231,7 @@ private:
 
 		switch (cmd) {
 		case ID_ABOUTMENU:
-			Dialog().open(IDD_ABOUTDIALOG, lcid, hWin);
+			ProxyWSockHook::aboutDialog(hWin, lcid);
 			return 1;
 		case ID_PROXYSETUPMENU:
 			ProxyWSockHook::setupDialog(hWin, lcid);
