@@ -2397,7 +2397,7 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 	TelEnableHisOpt(BINARY);
       }
     }
-    else {
+    else if (ts.TCPPort != 22) {
       if (ts.TCPCRSend>0)
       {
 	ts.CRSend = ts.TCPCRSend;
@@ -4863,6 +4863,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.57  2007/03/27 14:42:52  maya
+ * Windows NT 4.0 においていくつかのファイル選択ダイアログが出ない問題を修正した。
+ *
  * Revision 1.56  2007/03/23 05:01:32  yutakapon
  * 337氏パッチを取り込んだ。
  * 1.Broadcastダイアログからの送信対象を親Windowのみにする、
