@@ -30,12 +30,12 @@
       <li>右クリックによる貼り付けをする前に、ユーザに問い合わせできるようにした。
         <ul>
           <li>teraterm.ini に ConfirmPasteMouseRButton エントリを追加した。</li>
-          <li>Additional Settings タブに設定項目を追加した。</li>
+          <li>Additional Settings タブにチェックボックスを追加した。</li>
         </ul></li>
       <li>Send break のアクセラレータキーを無効にできるようにした。
         <ul>
           <li>teraterm.ini に DisableAcceleratorSendBreak エントリを追加した。</li>
-          <li>Additional Settings タブに設定項目を追加した。</li>
+          <li>Additional Settings タブにチェックボックス目を追加した。</li>
         </ul></li>
 
       <li>Broadcastダイアログに"ParentOnly"チェックボックスを追加した。
@@ -44,13 +44,15 @@
       <li>Broadcastダイアログからの送信を無視可能にするオプションを追加した。
         <ul>
           <li>teraterm.ini に AcceptBroadcast エントリを追加した。</li>
-          <li>Additional Settings タブに設定項目を追加した。</li>
+          <li>Additional Settings タブにチェックボックスを追加した。</li>
         </ul></li>
 
       <li>接続先TCPポートが22(通常はssh接続)の時、TCPLocalEchoおよびTCPCRSendオプションの設定を使わないようにした。</li>
+      <li>Additional settings ダイアログから cygterm.cfg を保存したとき、LOGIN_SHELL と HOME_CHDIR が消去される問題を修正した。</li>
       <li>Windows NT 4.0 においていくつかのファイル選択ダイアログが出ない問題を修正した。</li>
       <li><a href="#ttssh_2.40">SSH2対応TTSSH(2.40)</a>へ差し替えた</li>
       <li><a href="#ttproxy_1.0.0.13">TTProxy(1.0.0.13)</a>へ差し替えた</li>
+      <li>Oniguruma 5.6.0へ差し替えた</li>
     </ul>
   </li>
 
