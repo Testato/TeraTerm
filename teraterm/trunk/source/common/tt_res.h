@@ -77,7 +77,9 @@
 #define IDC_ENV1_LABEL                  1057
 #define IDC_HISTORY_CHECK               1058
 #define IDC_ACCEPT_BROADCAST            1059
+#define IDC_LOGIN_SHELL                 1059
 #define IDC_PARENT_ONLY                 1060
+#define IDC_HOME_CHDIR                  1060
 #define IDD_PRNABORTDLG                 2100
 #define IDD_FILETRANSDLG                2200
 #define IDC_TRANSFNAME                  2201
@@ -183,7 +185,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        120
 #define _APS_NEXT_COMMAND_VALUE         52020
-#define _APS_NEXT_CONTROL_VALUE         1059
+#define _APS_NEXT_CONTROL_VALUE         1060
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

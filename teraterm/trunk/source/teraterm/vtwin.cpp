@@ -3280,6 +3280,8 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 		char shell[80];
 		char env1[128];
 		char env2[128];
+		BOOL login_shell;
+		BOOL home_chdir;
 	} cygterm_t;
 	cygterm_t settings;
 	char buf[256], *head, *body;
@@ -3313,6 +3315,8 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 				SendDlgItemMessage(hDlgWnd, IDC_ENV1, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_ENV2_LABEL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_ENV2, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_LOGIN_SHELL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_HOME_CHDIR, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
 			}
@@ -3339,7 +3343,9 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 			_snprintf(settings.port_range, sizeof(settings.port_range), "40");
 			_snprintf(settings.shell, sizeof(settings.shell), "/bin/tcsh");
 			_snprintf(settings.env1, sizeof(settings.env1), "MAKE_MODE=unix");
-			_snprintf(settings.env2, sizeof(settings.env2), "HOME=/home/yutaka");
+			_snprintf(settings.env2, sizeof(settings.env2), "");
+			settings.login_shell = FALSE;
+			settings.home_chdir = FALSE;
 
 			fp = fopen(cfgfile, "r");
 			if (fp != NULL) { 
@@ -3374,6 +3380,16 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					} else if (strcmp(head, "ENV_2") == 0) {
 						_snprintf(settings.env2, sizeof(settings.env2), "%s", body);
 
+					} else if (strcmp(head, "LOGIN_SHELL") == 0) {
+						if (strchr("YyTt", *body)) {
+							settings.login_shell = TRUE;
+						}
+
+					} else if (strcmp(head, "HOME_CHDIR") == 0) {
+						if (strchr("YyTt", *body)) {
+							settings.home_chdir = TRUE;
+						}
+
 					} else {
 						// TODO: error check
 
@@ -3388,7 +3404,18 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 			SendMessage(GetDlgItem(hDlgWnd, IDC_SHELL), WM_SETTEXT , 0, (LPARAM)settings.shell);
 			SendMessage(GetDlgItem(hDlgWnd, IDC_ENV1), WM_SETTEXT , 0, (LPARAM)settings.env1);
 			SendMessage(GetDlgItem(hDlgWnd, IDC_ENV2), WM_SETTEXT , 0, (LPARAM)settings.env2);
-
+			hWnd = GetDlgItem(hDlgWnd, IDC_LOGIN_SHELL);
+			if (settings.login_shell == TRUE) {
+				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
+			} else {
+				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
+			}
+			hWnd = GetDlgItem(hDlgWnd, IDC_HOME_CHDIR);
+			if (settings.home_chdir == TRUE) {
+				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
+			} else {
+				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
+			}
 
 			// (4)Cygwin install path
 			hWnd = GetDlgItem(hDlgWnd, IDC_CYGWIN_PATH);
@@ -3420,7 +3447,20 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					SendMessage(GetDlgItem(hDlgWnd, IDC_SHELL), WM_GETTEXT , sizeof(settings.shell), (LPARAM)settings.shell);
 					SendMessage(GetDlgItem(hDlgWnd, IDC_ENV1), WM_GETTEXT , sizeof(settings.env1), (LPARAM)settings.env1);
 					SendMessage(GetDlgItem(hDlgWnd, IDC_ENV2), WM_GETTEXT , sizeof(settings.env2), (LPARAM)settings.env2);
+					hWnd = GetDlgItem(hDlgWnd, IDC_LOGIN_SHELL);
+					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
+						settings.login_shell = TRUE;
+					} else {
+						settings.login_shell = FALSE;
+					}
+					hWnd = GetDlgItem(hDlgWnd, IDC_HOME_CHDIR);
+					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
+						settings.home_chdir = TRUE;
+					} else {
+						settings.home_chdir = FALSE;
+					}
 
+					// ファイルを新規作成しているので、コメントなどは消去される。
 					fp = fopen(cfgfile, "w");
 					if (fp == NULL) { 
 #ifdef I18N
@@ -3445,6 +3485,8 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 						fprintf(fp, "SHELL = %s\n", settings.shell);
 						fprintf(fp, "ENV_1 = %s\n", settings.env1);
 						fprintf(fp, "ENV_2 = %s\n", settings.env2);
+						fprintf(fp, "LOGIN_SHELL = %s\n", (settings.login_shell == TRUE) ? "yes" : "no");
+						fprintf(fp, "HOME_CHDIR = %s\n", (settings.home_chdir == TRUE) ? "yes" : "no");
 						fclose(fp);
 					}
 
@@ -4863,6 +4905,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.58  2007/04/05 18:45:35  doda
+ * 接続先TCPポートが22(通常はssh接続)の時、TCPLocalEchoおよびTCPCRSendオプションの設定を使わないようにした。
+ *
  * Revision 1.57  2007/03/27 14:42:52  maya
  * Windows NT 4.0 においていくつかのファイル選択ダイアログが出ない問題を修正した。
  *
