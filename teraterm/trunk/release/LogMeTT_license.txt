@@ -65,4 +65,4 @@ associated website or in  software products may be copyright, trademarked or
 registered trademarked by their respective  owners.
 
 
-Copyright (C) 2004-2006, NeoCom Ltd.
+Copyright (C) 2004-2007, NeoCom Ltd.

@@ -80,6 +80,8 @@ Source: ..\release\LogMeTTc.exe; DestDir: {app}; Components: LogMeTT
 Source: ..\release\LogMeTT.exe; DestDir: {app}; Components: LogMeTT
 Source: ..\release\LogMeTT.hlp; DestDir: {app}; Components: LogMeTT
 Source: ..\release\LogMeTT.cnt; DestDir: {app}; Components: LogMeTT
+Source: ..\release\TTLEdit.exe; DestDir: {app}; Components: LogMeTT
+Source: ..\release\SynComp.pro; DestDir: {app}; Components: LogMeTT
 Source: ..\source\ttmenu\Release\ttpmenu.exe; DestDir: {app}; Components: TeraTerm_Menu
 Source: ..\release\ttmenu_readme-j.txt; DestDir: {app}; Components: TeraTerm_Menu
 Source: ..\..\TTProxy\Release\TTXProxy.dll; DestDir: {app}; Components: TTProxy
@@ -110,7 +112,7 @@ Name: custom; Description: {cm:type_custom}; Flags: iscustom
 Name: TeraTerm; Description: TeraTerm & Macro; Flags: fixed; Types: custom compact full standard
 Name: TTSSH; Description: TTSSH; Types: compact full standard
 Name: cygterm; Description: CygTerm+; Types: full standard; Check: not isIA64
-Name: LogMeTT; Description: LogMeTT; Types: full standard
+Name: LogMeTT; Description: LogMeTT & TTLEdit; Types: full standard
 Name: TeraTerm_Menu; Description: TeraTerm Menu; Types: full
 Name: TTProxy; Description: TTProxy; Types: full standard
 Name: Collector; Description: Collector; Types: full
@@ -123,6 +125,7 @@ Name: {group}\{cm:UninstallProgram,{#AppName}}; Filename: {uninstallexe}; Compon
 Name: {group}\TTSSH Document; Filename: {app}\ssh2_readme.txt; Components: TTSSH; Flags: createonlyiffileexists
 Name: {group}\TTSSH Document(Japanese); Filename: {app}\ssh2_readme-j.txt; Components: TTSSH; Flags: createonlyiffileexists
 Name: {group}\LogMeTT; Filename: {app}\LogMeTT.exe; WorkingDir: {app}; IconFilename: {app}\logMeTT.exe; IconIndex: 0; Components: LogMeTT; Flags: createonlyiffileexists
+Name: {group}\TTLEdit; Filename: {app}\TTLEdit.exe; WorkingDir: {app}; IconFilename: {app}\TTLEdit.exe; IconIndex: 0; Components: LogMeTT; Flags: createonlyiffileexists
 Name: {group}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; IconIndex: 0; Components: TeraTerm_Menu; Flags: createonlyiffileexists
 Name: {group}\Collector; Filename: {app}\Collector\Collector.exe; WorkingDir: {app}\Collector; IconFilename: {app}\Collector\Collector.exe; IconIndex: 0; Components: Collector; Flags: createonlyiffileexists
 Name: {userdesktop}\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: desktopicon; IconIndex: 0; Flags: createonlyiffileexists

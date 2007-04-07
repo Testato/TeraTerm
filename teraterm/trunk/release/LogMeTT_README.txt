@@ -52,6 +52,24 @@ http://www.neocom.ca/forum/index.php
                  =============================
                  (in reverse chronological order)
 
+2007-03-28 (Ver 2.9 Release 1)
+New features added:
+- Standalone TeraTerm Macro Editor - TTLEditor was created. It inherited all features 
+of LogMeTT Macro Editor of version from version 2.8 release 6 and also got few new ones.
+TTLEditor supports drag and drop of plain text files and can be associated with file
+extension TTL.
+- Both LogMeTT Macro Editor and TTL Editor now support syntax completion proposal feature.
+Press [Ctrl-Space] while typing macro command and resizeble hint window will appear.
+- LogMeTT popup menu now has "IP Address" item that opens into sub menu allowing to 
+release/renew IP address for any or all network adapters or check adapter details.
+- File extension association functions were rewritten.
+- "Do not Prompt on disconnect" option was added to Settings window. It applies to 
+TeraTerm windows opened in "Run All Selected" mode.
+
+Bugs fixed:
+- Few minor fixes and code optimization.
+
+
 2006-10-10 (Ver 2.8 Release 6)
 New features added:
 - Included 3 new macro commands: clipb2var, var2clipb and ifdefined into syntax highlighter.
