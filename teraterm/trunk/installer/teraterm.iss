@@ -405,3 +405,4 @@ Name: {app}\OpenSSH-LICENCE.txt; Type: files; Tasks: ; Languages: ; Components: 
 [_ISToolPreCompile]
 Name: convtext.bat
 Name: makechm.bat
+Name: build.bat; Parameters: rebuild
