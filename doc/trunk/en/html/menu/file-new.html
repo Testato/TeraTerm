@@ -17,24 +17,24 @@
 
     <h2>"New connection" dialog box</h2>
 
-    <h3>TCP/IP</h2>
+    <h3>TCP/IP</h3>
     <dl>
       <dt>Host</dt>
       <dd>
 	Enter the host name or IP address, or select one from the host list.
-        To edit the host list, use the
-        <a href="./setup-tcpip.html">[Setup] TCP/IP</a> command.
-        You can enter not only the host name or address, but also the
-        <a href="../commandline/teraterm.html">command line parameters</a>
-        like the following:
+	To edit the host list, use the
+	<a href="setup-tcpip.html">[Setup] TCP/IP</a> command.
+	You can enter not only the host name or address, but also the
+	<a href="../commandline/teraterm.html">command line parameters</a>
+	like the following:
 
-<pre>
-myhost.mydomain                   Host name only.
-myhost.mydomain:23                Host name with a port number.
-foohost.foodomain /F=FOOHOST.INI  Host name &amp; setup file name.
-/C=1                              Specifies the serial port connection.
-/R=LOG.DAT                        Replays the log file.
-</pre>
+    <pre>
+    myhost.mydomain                     Host name only.
+    myhost.mydomain:23                  Host name with a port number.
+    foohost.foodomain /F=FOOHOST.INI    Host name &amp; setup file name.
+    /C=1                                Specifies the serial port connection.
+    /R=LOG.DAT                          Replays the log file.
+    </pre>
 <!--
 	<dl>
 	  <dt>myhost.mydomain</dt>
@@ -52,19 +52,46 @@ foohost.foodomain /F=FOOHOST.INI  Host name &amp; setup file name.
 	  <dt>/R=LOG.DAT</dt>
 	  <dd>Replays the log file.</dd>
 	</dl>
+
+	<table>
+	  <tr>
+	    <td>myhost.mydomain</td>
+	    <td>Host name only.</td>
+	  </tr>
+
+	  <tr>
+	    <td>myhost.mydomain:23</td>
+	    <td>Host name with a port number.</td>
+	  </tr>
+
+	  <tr>
+	    <td>foohost.foodomain /F=FOOHOST.INI</td>
+	    <td>Host name & setup file name.</td>
+	  </tr>
+
+	  <tr>
+	    <td>/C=1</td>
+	    <td>Specifies the serial port connection.</td>
+	  </tr>
+
+	  <tr>
+	    <td>/R=LOG.DAT</td>
+	    <td>Replays the log file.</td>
+	  </tr>
+	</table>
 -->
       </dd>
 
       <dt>Telnet</dt>
       <dd>
-        Enables the telnet protocol. Usually, you should select this
-        option.
+	Enables the telnet protocol. Usually, you should select this
+	option.
       </dd>
 
       <dt>TCP port#</dt>
       <dd>
-        Normally, you should use the TCP port number 23 for the telnet
-        protocol.
+	Normally, you should use the TCP port number 23 for the telnet
+	protocol.
       </dd>
     </dl>
 
@@ -84,7 +111,9 @@ foohost.foodomain /F=FOOHOST.INI  Host name &amp; setup file name.
     <h3>Serial</h3>
     <dl>
       <dt>Port</dt>
-      <dd>Select a port from the list.</dd>
+      <dd>
+	Select a port from the list.
+      </dd>
     </dl>
   </body>
 </html>

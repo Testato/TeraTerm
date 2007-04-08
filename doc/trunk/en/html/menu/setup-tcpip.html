@@ -10,55 +10,56 @@
 
   <body>
     <h1>TCP/IP ([Setup] menu)</h1>
+
     <h2>"TCP/IP setup" dialog box</h2>
     <dl>
       <dt>Host list</dt>
       <dd>
-        You can edit here the host list to be displayed in the
-        <a href="file-new.html">[File] New connection</a> dialog box.
-        It is convenient to add your favorite hosts to the list.
-        You can add not only host names and IP addresses, but also the
-        <a href="../commandline/teraterm.html">command line parameters</a>
-        like the following:
+	You can edit here the host list to be displayed in the
+	<a href="file-new.html">[File] New connection</a> dialog box.
+	It is convenient to add your favorite hosts to the list.
+	You can add not only host names and IP addresses, but also the
+	<a href="../commandline/teraterm.html">command line parameters</a>
+	like the following:
 
-<pre>
-myhost.mydomain                   Host name only.
-myhost.mydomain:23                Host name with a port number.
-foohost.foodomain /F=FOOHOST.INI  Host name &amp; setup file name.
-/C=1                              Specifies the serial port connection.
-/R=LOG.DAT                        Replays the log file.
-</pre>
+      <pre>
+      myhost.mydomain                   Host name only.
+      myhost.mydomain:23                Host name with a port number.
+      foohost.foodomain /F=FOOHOST.INI  Host name &amp; setup file name.
+      /C=1                              Specifies the serial port connection.
+      /R=LOG.DAT                        Replays the log file.
+      </pre>
 
-        <dl>
-          <dt>History</dt>
-          <dd>
-            If this option is selected, a host name entered in the
-            <a href="./file-new.html">[File] New connection</a> dialog box
-            is appended to the top of host list.
-          </dd>
-        </dl>
+	<dl>
+	  <dt>History</dt>
+	  <dd>
+	    If this option is selected, a host name entered in the
+	    <a href="file-new.html">[File] New connection</a> dialog box
+	    is appended to the top of host list.
+	  </dd>
+	</dl>
       </dd>
 
       <dt>Auto window close</dt>
       <dd>
-        Closes Tera Term when the connection is closed.
+	Closes Tera Term when the connection is closed.
       </dd>
 
       <dt>TCP port#</dt>
       <dd>
-        TCP port number. Normally, port number 23 is used for the telnet
-        protocol.
+	TCP port number. Normally, port number 23 is used for the telnet
+	protocol.
       </dd>
 
       <dt>Telnet</dt>
       <dd>
-        Enables the telnet protocol. Usually, you should select this option.
+	Enables the telnet protocol. Usually, you should select this option.
       </dd>
 
       <dt>Terminal type</dt>
       <dd>
-        Terminal type to be reported to the host when the telnet connection
-        is established.
+	Terminal type to be reported to the host when the telnet connection
+	is established.
       </dd>
     </dl>
   </body>

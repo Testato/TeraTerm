@@ -24,7 +24,7 @@
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="License and Copyright ">
+			<param name="Name" value="License and Copyright ">
 			<param name="Local" value="html\about\copyright.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
@@ -121,8 +121,33 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[File] menu">
+			<param name="Local" value="html\menu\file.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Edit] menu">
+			<param name="Local" value="html\menu\edit.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="[Setup] menu">
 			<param name="Local" value="html\menu\setup.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Control] menu">
+			<param name="Local" value="html\menu\control.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Window] menu">
+			<param name="Local" value="html\menu\window.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="[Help] menu">
+			<param name="Local" value="html\menu\help.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 	</UL>
@@ -163,9 +188,7 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Keyboard setup file
-
-">
+			<param name="Name" value="Keyboard setup file">
 			<param name="Local" value="html\setup\keyboard.html">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
@@ -195,7 +218,6 @@
 			<param name="Local" value="html\reference\RE.txt">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
-
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="License of OpenSSL">
 			<param name="Local" value="html\reference\OpenSSL-LICENSE.txt">
@@ -206,7 +228,6 @@
 			<param name="Local" value="html\reference\OpenSSH-LICENSE.txt">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
-
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="For developer">
 			<param name="Local" value="html\reference\develop.txt">
