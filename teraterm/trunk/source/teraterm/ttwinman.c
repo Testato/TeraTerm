@@ -15,8 +15,7 @@
 #include "i18n.h"
 
 /* help file names */
-#define HelpEng "ttermp.hlp"
-#define HelpJpn "ttermpj.hlp"
+#define HTML_HELP "teraterm.chm"
 
 HWND HVTWin = NULL;
 HWND HTEKWin = NULL;
@@ -247,18 +246,26 @@ void OpenHelp(HWND HWin, UINT Command, DWORD Data)
 {
   char HelpFN[MAXPATHLEN];
 
-  strcpy(HelpFN,ts.HomeDir);
-  AppendSlash(HelpFN);
-  if (ts.Language==IdJapanese)
-    strcat(HelpFN,HelpJpn);
-  else
-    strcat(HelpFN,HelpEng);
-  WinHelp(HWin, HelpFN, Command, Data);
+  strcpy(ts.UIMsg, HTML_HELP);
+  get_lang_msg("HELPFILE", ts.UIMsg, ts.UILanguageFile);
+
+  if (HWin == NULL) {
+    HWin = GetDesktopWindow();
+  }
+  _snprintf(HelpFN, sizeof(HelpFN), "%s\\%s", ts.HomeDir, ts.UIMsg);
+  if (HtmlHelp(HWin, HelpFN, Command, Data) == NULL && Command != HH_CLOSE_ALL) {
+    char buf[MAXPATHLEN];
+    strcpy(ts.UIMsg, "Can't open HTML help file(%s).");
+    get_lang_msg("MSG_OPENHELP_ERROR", ts.UIMsg, ts.UILanguageFile);
+    _snprintf(buf, sizeof(buf), ts.UIMsg, HelpFN);
+    MessageBox(HWin, buf, "Tera Term: HTML help", MB_OK | MB_ICONERROR);
+  }
 }
 
 // HTML help を開く 
 // HTML Help workshopに含まれる htmlhelp.h と htmlhelp.lib の2つのファイルが、ビルド時に必要。
 // (2006.3.11 yutaka)
+#if 0
 void OpenHtmlHelp(HWND HWin, char *filename)
 {
 	char HelpFN[MAXPATHLEN];
@@ -271,10 +278,14 @@ void OpenHtmlHelp(HWND HWin, char *filename)
 		MessageBox(HWin, buf, "Tera Term: HTML help", MB_OK | MB_ICONERROR);
 	}
 }
+#endif
 
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2006/12/23 02:50:17  maya
+ * htmlヘルプをプログラムから呼び出すための準備をした。
+ *
  * Revision 1.8  2006/11/23 02:19:12  maya
  * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
  *

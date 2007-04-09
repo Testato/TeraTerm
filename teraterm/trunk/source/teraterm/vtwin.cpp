@@ -77,10 +77,6 @@ static char THIS_FILE[] = __FILE__;
 // WM_COPYDATAによるプロセス間通信の種別 (2005.1.22 yutaka)
 #define IPC_BROADCAST_COMMAND 1
 
-/* HTML help file */
-#define HTML_HELP_EN "teraterm.chm"
-#define HTML_HELP_JP "teratermj.chm"
-
 #ifdef I18N
 static HFONT DlgBroadcastFont;
 static HFONT DlgCommentFont;
@@ -219,7 +215,6 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_COMMAND(ID_CONTROL_MACRO, OnControlMacro)
 	ON_COMMAND(ID_WINDOW_WINDOW, OnWindowWindow)
 	ON_COMMAND(ID_HELP_INDEX2, OnHelpIndex)
-	ON_COMMAND(ID_HELP_USING2, OnHelpUsing)
 	ON_COMMAND(ID_HELP_ABOUT, OnHelpAbout)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -922,9 +917,6 @@ void CVTWindow::InitMenu(HMENU *Menu)
   GetMenuString(HelpMenu, ID_HELP_INDEX2, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
   get_lang_msg("MENU_HELP_INDEX", ts.UIMsg, ts.UILanguageFile);
   ModifyMenu(HelpMenu, ID_HELP_INDEX2, MF_BYCOMMAND, ID_HELP_INDEX2, ts.UIMsg);
-  GetMenuString(HelpMenu, ID_HELP_USING2, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_HELP_USING", ts.UIMsg, ts.UILanguageFile);
-  ModifyMenu(HelpMenu, ID_HELP_USING2, MF_BYCOMMAND, ID_HELP_USING2, ts.UIMsg);
   GetMenuString(HelpMenu, ID_HELP_ABOUT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
   get_lang_msg("MENU_HELP_ABOUT", ts.UIMsg, ts.UILanguageFile);
   ModifyMenu(HelpMenu, ID_HELP_ABOUT, MF_BYCOMMAND, ID_HELP_ABOUT, ts.UIMsg);
@@ -1412,7 +1404,7 @@ void CVTWindow::OnDestroy()
   if (cv.TelFlag) EndTelnet();
   CommClose(&cv);
 
-  OpenHelp(HVTWin,HELP_QUIT,0);
+  OpenHelp(HVTWin,HH_CLOSE_ALL,0);
 
   FreeIME();
   FreeTTSET();
@@ -2452,7 +2444,7 @@ LONG CVTWindow::OnDdeEnd(UINT wParam, LONG lParam)
 
 LONG CVTWindow::OnDlgHelp(UINT wParam, LONG lParam)
 {
-  OpenHelp(HVTWin,HELP_CONTEXT,HelpId);
+  OpenHelp(HVTWin,HH_HELP_CONTEXT,HelpId);
   return 0;
 }
 
@@ -4878,22 +4870,7 @@ void CVTWindow::OnWindowWindow()
 
 void CVTWindow::OnHelpIndex()
 {
-	// 英語版HTML helpの表示 (2006.3.11 yutaka)
-#if 0
-	OpenHelp(HVTWin,HELP_INDEX,0);	
-#else
-	OpenHtmlHelp(HVTWin, HTML_HELP_EN);
-#endif
-}
-
-void CVTWindow::OnHelpUsing()
-{
-	// 日本語版HTML helpの表示 (2006.3.11 yutaka)
-#if 0
-	::WinHelp(HVTWin, "", HELP_HELPONHELP, 0);	
-#else
-	OpenHtmlHelp(HVTWin, HTML_HELP_JP);
-#endif
+	OpenHelp(HVTWin,HH_DISPLAY_TOPIC,0);
 }
 
 void CVTWindow::OnHelpAbout()
@@ -4905,6 +4882,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.59  2007/04/07 15:10:54  maya
+ * Additional settings ダイアログから cygterm.cfg を保存したとき、LOGIN_SHELL と HOME_CHDIR が消去される問題を修正した。
+ *
  * Revision 1.58  2007/04/05 18:45:35  doda
  * 接続先TCPポートが22(通常はssh接続)の時、TCPLocalEchoおよびTCPCRSendオプションの設定を使わないようにした。
  *

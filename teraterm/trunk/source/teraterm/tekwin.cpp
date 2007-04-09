@@ -179,9 +179,6 @@ void CTEKWindow::InitMenu(HMENU *Menu)
   GetMenuString(HelpMenu, ID_TEKHELP_INDEX, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
   get_lang_msg("TEKMENU_HELP_INDEX", ts.UIMsg, ts.UILanguageFile);
   ModifyMenu(HelpMenu, ID_TEKHELP_INDEX, MF_BYCOMMAND, ID_TEKHELP_INDEX, ts.UIMsg);
-  GetMenuString(HelpMenu, ID_TEKHELP_USING, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("TEKMENU_HELP_USING", ts.UIMsg, ts.UILanguageFile);
-  ModifyMenu(HelpMenu, ID_TEKHELP_USING, MF_BYCOMMAND, ID_TEKHELP_USING, ts.UIMsg);
   GetMenuString(HelpMenu, ID_TEKHELP_ABOUT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
   get_lang_msg("TEKMENU_HELP_ABOUT", ts.UIMsg, ts.UILanguageFile);
   ModifyMenu(HelpMenu, ID_TEKHELP_ABOUT, MF_BYCOMMAND, ID_TEKHELP_ABOUT, ts.UIMsg);
@@ -278,7 +275,6 @@ BEGIN_MESSAGE_MAP(CTEKWindow, CFrameWnd)
 	ON_COMMAND(ID_TEKVTWIN, OnVTWin)
 	ON_COMMAND(ID_WINDOW_WINDOW, OnWindowWindow)
 	ON_COMMAND(ID_TEKHELP_INDEX, OnHelpIndex)
-	ON_COMMAND(ID_TEKHELP_USING, OnHelpUsing)
 	ON_COMMAND(ID_TEKHELP_ABOUT, OnHelpAbout)
 	ON_WM_TIMER()
 	//}}AFX_MSG_MAP
@@ -743,7 +739,7 @@ LONG CTEKWindow::OnChangeTBar(UINT wParam, LONG lParam)
 
 LONG CTEKWindow::OnDlgHelp(UINT wParam, LONG lParam)
 {
-  OpenHelp(tk.HWin,HELP_CONTEXT,HelpId);
+  OpenHelp(tk.HWin,HH_HELP_CONTEXT,HelpId);
   return 0;
 }
 
@@ -852,12 +848,7 @@ void CTEKWindow::OnWindowWindow()
 
 void CTEKWindow::OnHelpIndex()
 {
-  OpenHelp(tk.HWin,HELP_INDEX,0);
-}
-
-void CTEKWindow::OnHelpUsing()
-{
-  ::WinHelp(tk.HWin,"", HELP_HELPONHELP, 0);
+  OpenHelp(tk.HWin,HH_DISPLAY_TOPIC,0);
 }
 
 void CTEKWindow::OnHelpAbout()

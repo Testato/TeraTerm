@@ -446,8 +446,7 @@ BEGIN
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "&Index(English)",             ID_HELP_INDEX2
-        MENUITEM "I&ndex(Japanese)",            ID_HELP_USING2
+        MENUITEM "&Index",             ID_HELP_INDEX2
         MENUITEM SEPARATOR
         MENUITEM "&About Tera Term...",         ID_HELP_ABOUT
     END
@@ -479,7 +478,6 @@ BEGIN
     POPUP "&Help"
     BEGIN
         MENUITEM "&Index",                      ID_TEKHELP_INDEX
-        MENUITEM "Using &help",                 ID_TEKHELP_USING
         MENUITEM SEPARATOR
         MENUITEM "&About Tera Term...",         ID_TEKHELP_ABOUT
     END
