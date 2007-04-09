@@ -268,7 +268,6 @@
 			<param name="Local" value="html\reference\RE-ja.txt">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
-
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="OpenSSL ライセンス">
 			<param name="Local" value="html\reference\OpenSSL-LICENSE.txt">
@@ -279,7 +278,6 @@
 			<param name="Local" value="html\reference\OpenSSH-LICENSE.txt">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
-
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="開発者向け">
 			<param name="Local" value="html\reference\develop.txt">
