@@ -63,7 +63,7 @@ BEGIN
     LTEXT           "THIS EXTENSION INCORPORATES STRONG CRYPTOGRAPHY. POSESSION, USE, AND/OR EXPORT OF THIS EXTENSION MAY BE ILLEGAL IN YOUR COUNTRY.",IDC_CRYPTOGRAPHY,6,113,248,26
     ICON            IDI_SECURETT,IDC_STATIC,234,7,20,20
     EDITTEXT        IDC_ABOUTTEXT,6,170,248,87,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY
-    LTEXT           "TTSSH home page:      http://www.zip.com.au/~roca/ttssh.html\nOpenSource Project:   http://sourceforge.jp/projects/ttssh2/",IDC_WEBSITES,6,88,248,20,SS_SUNKEN
+    LTEXT           "TTSSH home page:    http://www.zip.com.au/~roca/ttssh.html\nTeraTerm Project:   http://ttssh2.sourceforge.jp/",IDC_WEBSITES,6,88,248,20,SS_SUNKEN
     LTEXT           "OpenSSL:",IDC_OPENSSL_VERSION,6,69,175,8
     LTEXT           "Compatible with SSH protocol version 1.5 and 2.0",IDC_SSHVERSIONS,6,23,206,11
     LTEXT           "Teraterm Secure Shell extension, ",IDC_TTSSH_VERSION,6,7,145,15
