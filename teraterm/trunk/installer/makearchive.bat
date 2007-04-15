@@ -1,5 +1,6 @@
 CALL convtext.bat
 CALL makechm.bat
+CALL build.bat
 
 set dst=archive
 
