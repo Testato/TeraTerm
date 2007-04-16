@@ -2200,6 +2200,12 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
 	int a, b, c, d;
 	char buf[30];
+	HDC hdc;
+	HWND hwnd;
+	RECT r;
+	DWORD dwExt;
+	WORD w, h;
+	POINT point;
 #ifdef I18N
 	char uimsg[MAX_UIMSG];
 	LOGFONT logfont;
@@ -2252,6 +2258,32 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		// (2006.7.24 yutaka)
 		_snprintf(buf, sizeof(buf), "Oniguruma %s", onig_version());
 		SendMessage(GetDlgItem(Dialog, IDC_ONIGURUMA_LABEL), WM_SETTEXT, 0, (LPARAM)buf);
+
+		// static text ‚ÌƒTƒCƒY‚ğ•ÏX (2007.4.16 maya)
+		// GetTabbedTextExtent ‚ÍASystem ƒtƒHƒ“ƒg‚ğ—˜—p‚µ‚ÄƒTƒCƒY‚ğæ“¾‚·‚é–Í—l
+		hdc = GetDC(Dialog);
+
+		GetDlgItemText(Dialog, IDC_AUTHOR_URL, uimsg, sizeof(uimsg));
+		dwExt = GetTabbedTextExtent(hdc,uimsg,strlen(uimsg),0,NULL);
+		w = LOWORD(dwExt) + 5; // •‚ªáŠ±‘«‚è‚È‚¢‚Ì‚Å•â³
+		h = HIWORD(dwExt);
+		hwnd = GetDlgItem(Dialog, IDC_AUTHOR_URL);
+		GetWindowRect(hwnd, &r);
+		point.x = r.left;
+		point.y = r.top;
+		ScreenToClient(Dialog, &point);
+		MoveWindow(hwnd, point.x, point.y, w, h, TRUE);
+
+		GetDlgItemText(Dialog, IDC_FORUM_URL, uimsg, sizeof(uimsg));
+		dwExt = GetTabbedTextExtent(hdc,uimsg,strlen(uimsg),0,NULL);
+		w = LOWORD(dwExt) + 5; // •‚ªáŠ±‘«‚è‚È‚¢‚Ì‚Å•â³
+		h = HIWORD(dwExt);
+		hwnd = GetDlgItem(Dialog, IDC_FORUM_URL);
+		GetWindowRect(hwnd, &r);
+		point.x = r.left;
+		point.y = r.top;
+		ScreenToClient(Dialog, &point);
+		MoveWindow(hwnd, point.x, point.y, w, h, TRUE);
 
 		// static text‚ğƒTƒuƒNƒ‰ƒX‰»‚·‚éB‚½‚¾‚µAtabstop, notifyƒvƒƒpƒeƒB‚ğ—LŒø‚É‚µ‚Ä‚¨‚©‚È‚¢‚Æ
 		// ƒƒbƒZ[ƒW‚ªE‚¦‚È‚¢B(2005.4.5 yutaka)
@@ -2954,6 +2986,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.19  2007/03/04 18:00:33  doda
+ * New connection$B$*$h$S(BSerial port setup$B%@%$%"%m%0$G!"MxMQ2DG=$J%7%j%"%k%]!<%H$N$_$rI=<($9$k$h$&$K$7$?!#(B
+ *
  * Revision 1.18  2007/01/21 16:18:37  maya
  * •\¦ƒƒbƒZ[ƒW‚Ì“Ç‚İ‚İ‘Î‰
  *
