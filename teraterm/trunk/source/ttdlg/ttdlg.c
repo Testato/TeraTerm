@@ -2260,25 +2260,26 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		SendMessage(GetDlgItem(Dialog, IDC_ONIGURUMA_LABEL), WM_SETTEXT, 0, (LPARAM)buf);
 
 		// static text ‚ÌƒTƒCƒY‚ğ•ÏX (2007.4.16 maya)
-		// GetTabbedTextExtent ‚ÍASystem ƒtƒHƒ“ƒg‚ğ—˜—p‚µ‚ÄƒTƒCƒY‚ğæ“¾‚·‚é–Í—l
-		hdc = GetDC(Dialog);
-
+		hwnd = GetDlgItem(Dialog, IDC_AUTHOR_URL);
+		hdc = GetDC(hwnd);
+		SelectObject(hdc, DlgAboutFont);
 		GetDlgItemText(Dialog, IDC_AUTHOR_URL, uimsg, sizeof(uimsg));
 		dwExt = GetTabbedTextExtent(hdc,uimsg,strlen(uimsg),0,NULL);
 		w = LOWORD(dwExt) + 5; // •‚ªáŠ±‘«‚è‚È‚¢‚Ì‚Å•â³
 		h = HIWORD(dwExt);
-		hwnd = GetDlgItem(Dialog, IDC_AUTHOR_URL);
 		GetWindowRect(hwnd, &r);
 		point.x = r.left;
 		point.y = r.top;
 		ScreenToClient(Dialog, &point);
 		MoveWindow(hwnd, point.x, point.y, w, h, TRUE);
 
+		hwnd = GetDlgItem(Dialog, IDC_FORUM_URL);
+		hdc = GetDC(hwnd);
+		SelectObject(hdc, DlgAboutFont);
 		GetDlgItemText(Dialog, IDC_FORUM_URL, uimsg, sizeof(uimsg));
 		dwExt = GetTabbedTextExtent(hdc,uimsg,strlen(uimsg),0,NULL);
 		w = LOWORD(dwExt) + 5; // •‚ªáŠ±‘«‚è‚È‚¢‚Ì‚Å•â³
 		h = HIWORD(dwExt);
-		hwnd = GetDlgItem(Dialog, IDC_FORUM_URL);
 		GetWindowRect(hwnd, &r);
 		point.x = r.left;
 		point.y = r.top;
@@ -2986,6 +2987,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.20  2007/04/16 08:45:23  maya
+ * URL ‚ğŠÜ‚ŞƒeƒLƒXƒg‚ÌƒTƒCƒY‚ğ“®“I‚É•ÏX‚·‚é‚æ‚¤‚É‚µ‚½B
+ *
  * Revision 1.19  2007/03/04 18:00:33  doda
  * New connection$B$*$h$S(BSerial port setup$B%@%$%"%m%0$G!"MxMQ2DG=$J%7%j%"%k%]!<%H$N$_$rI=<($9$k$h$&$K$7$?!#(B
  *

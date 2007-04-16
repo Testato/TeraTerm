@@ -214,9 +214,9 @@ BEGIN
                     "Static",SS_LEFTNOWORDWRAP | WS_GROUP,38,67,122,9
     LTEXT           "Includes:",IDC_INLUCDE_LABEL,38,26,31,8
     LTEXT           "Version",IDC_TT_VERSION,38,10,68,8
-    LTEXT           "Author:",IDC_AUTHOR_LABEL,6,86,28,8
+    RTEXT           "Author:",IDC_AUTHOR_LABEL,6,86,28,8
     LTEXT           "http://ttssh2.sourceforge.jp/",IDC_AUTHOR_URL,37,86,128,8,SS_NOTIFY | WS_TABSTOP
-    LTEXT           "Forum:",IDC_FORUM_LABEL,9,96,25,8
+    RTEXT           "Forum:",IDC_FORUM_LABEL,9,96,25,8
     LTEXT           "http://www.neocom.ca/forum/index.php",IDC_FORUM_URL,37,96,132,8,SS_NOTIFY | WS_TABSTOP
     LTEXT           "Oniguruma: ",IDC_ONIGURUMA_LABEL,38,35,114,8
 END
