@@ -123,8 +123,106 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="[File] menu">
 			<param name="Local" value="html\menu\file.html">
-			<param name="ImageNumber" value="11">
+			<param name="ImageNumber" value="1">
 			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="New Connection">
+				<param name="Local" value="html\menu\file-new.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Log">
+				<param name="Local" value="html\menu\file-log.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Send file">
+				<param name="Local" value="html\menu\file-sendfile.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Transfer">
+				<param name="ImageNumber" value="1">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Kermit">
+					<param name="ImageNumber" value="1">
+					</OBJECT>
+				<UL>
+					<LI> <OBJECT type="text/sitemap">
+						<param name="Name" value="Get">
+						<param name="Local" value="html\menu\file-transfer-kermit-get.html">
+						<param name="ImageNumber" value="11">
+						</OBJECT>
+					<LI> <OBJECT type="text/sitemap">
+						<param name="Name" value="Send">
+						<param name="Local" value="html\menu\file-transfer-kermit-send.html">
+						<param name="ImageNumber" value="11">
+						</OBJECT>
+				</UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="XMODEM">
+					<param name="ImageNumber" value="1">
+					</OBJECT>
+				<UL>
+					<LI> <OBJECT type="text/sitemap">
+						<param name="Name" value="Receive">
+						<param name="Local" value="html\menu\file-transfer-xmodem-recv.html">
+						<param name="ImageNumber" value="11">
+						</OBJECT>
+					<LI> <OBJECT type="text/sitemap">
+						<param name="Name" value="Send">
+						<param name="Local" value="html\menu\file-transfer-xmodem-send.html">
+						<param name="ImageNumber" value="11">
+						</OBJECT>
+				</UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ZMODEM">
+					<param name="ImageNumber" value="1">
+					</OBJECT>
+				<UL>
+					<LI> <OBJECT type="text/sitemap">
+						<param name="Name" value="Send">
+						<param name="Local" value="html\menu\file-transfer-zmodem-send.html">
+						<param name="ImageNumber" value="11">
+						</OBJECT>
+				</UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="B-Plus">
+					<param name="ImageNumber" value="1">
+					</OBJECT>
+				<UL>
+					<LI> <OBJECT type="text/sitemap">
+						<param name="Name" value="Send">
+						<param name="Local" value="html\menu\file-transfer-bplus-send.html">
+						<param name="ImageNumber" value="11">
+						</OBJECT>
+				</UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Quick-VAN">
+					<param name="ImageNumber" value="1">
+					</OBJECT>
+				<UL>
+					<LI> <OBJECT type="text/sitemap">
+						<param name="Name" value="Send">
+						<param name="Local" value="html\menu\file-transfer-qv-send.html">
+						<param name="ImageNumber" value="11">
+						</OBJECT>
+				</UL>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Change directory">
+				<param name="Local" value="html\menu\file-chdir.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Print">
+				<param name="Local" value="html\menu\file-print.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="[Edit] menu">
 			<param name="Local" value="html\menu\edit.html">
@@ -133,8 +231,65 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="[Setup] menu">
 			<param name="Local" value="html\menu\setup.html">
-			<param name="ImageNumber" value="11">
+			<param name="ImageNumber" value="1">
 			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Terminal">
+				<param name="Local" value="html\menu\setup-terminal.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Window">
+				<param name="Local" value="html\menu\setup-window.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Font">
+				<param name="Local" value="html\menu\setup-font.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Keyboard">
+				<param name="Local" value="html\menu\setup-keyboard.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Serial port">
+				<param name="Local" value="html\menu\setup-serialport.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="TCP/IP">
+				<param name="Local" value="html\menu\setup-tcpip.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="General">
+				<param name="Local" value="html\menu\setup-general.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Additional settings">
+				<param name="Local" value="html\menu\setup-additional.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Save setup">
+				<param name="Local" value="html\menu\setup-save.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Restore setup">
+				<param name="Local" value="html\menu\setup-restore.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Load key map">
+				<param name="Local" value="html\menu\setup-loadkeymap.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="[Control] menu">
 			<param name="Local" value="html\menu\control.html">
@@ -143,8 +298,15 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="[Window] menu">
 			<param name="Local" value="html\menu\window.html">
-			<param name="ImageNumber" value="11">
+			<param name="ImageNumber" value="1">
 			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Window">
+				<param name="Local" value="html\menu\window-window.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="[Help] menu">
 			<param name="Local" value="html\menu\help.html">
@@ -159,8 +321,15 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="[File] menu">
 			<param name="Local" value="html\menutek\file.html">
-			<param name="ImageNumber" value="11">
+			<param name="ImageNumber" value="1">
 			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Print">
+				<param name="Local" value="html\menutek\file-print.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="[Edit] menu">
 			<param name="Local" value="html\menutek\edit.html">
@@ -169,8 +338,20 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="[Setup] menu">
 			<param name="Local" value="html\menutek\setup.html">
-			<param name="ImageNumber" value="11">
+			<param name="ImageNumber" value="1">
 			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Window">
+				<param name="Local" value="html\menutek\setup-window.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Font">
+				<param name="Local" value="html\menutek\setup-font.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="[VT-window] menu">
 			<param name="Local" value="html\menutek\vtwindow.html">
