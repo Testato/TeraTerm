@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>Miscellaneous (Tera Term setup file)</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<h1><a name="beep">Beep sound on connection</a></h1>
+
+<p>
+To enable a beep sound which is made when a TCP/IP connection is established and when the connection is terminated, edit the BeepOnConnect line in the [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+BeepOnConnect=on
+</pre>
+
+<pre>
+Default:
+BeepOnConnect=off
+</pre>
+
+
+<h1><a name="macro">Executing a macro on startup</a></h1>
+
+<p>
+A macro can be executed automatically when Tera Term is started. You can specify the macro filename by using the command line option "
+/M=&lt;macro file&gt;" or by editing the StartupMacro line in the [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+StartupMacro=&lt;macro file&gt;
+</pre>
+
+<pre>
+Default:
+StartupMacro=
+</pre>
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>ターミナルエミュレーション (Tera Term 設定ファイル)</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<h1><a name="backwrap">バック・ラップ (back wrap)</a></h1>
+
+<p>
+バック・ラップ (back wrap) 機能を有効にすると、BS 文字を受信した時に行の始めにあるカーソルが前の行の最後に移動します。バック・ラップを有効にするには、設定ファイルの [Tera Term] セクションの BackWrap 行を以下のように変更してください。
+</p>
+
+<pre>
+BackWrap=on
+</pre>
+
+<pre>
+省略時:
+BackWrap=off
+</pre>
+
+
+<h1><a name="beep">BEL 文字受信でビープ音を鳴らさない</a></h1>
+
+<p>
+BEL 文字 (ASCII $07) が受信された時にビープ音を鳴らさないようにするには、設定ファイルの [Tera Term] セクションの Beep 行を以下のように変更してください。
+</p>
+
+<pre>
+Beep=off
+</pre>
+
+<pre>
+省略時:
+Beep=on
+</pre>
+
+
+<h1><a name="C1">C1 制御文字 ($80-$9F) を使用しない</a></h1>
+
+<p>
+Tera Term の漢字モード(受信)を EUC か JIS にして、 Teraminal ID を VT2XX または、 VT3XX にしている場合、Shift-JIS の漢字を受信すると、ハングアップすることがあります。
+</p>
+
+<p>
+これは、Shift-JIS コードの中に C1 制御文字 ($80-9F) が含まれているために、それらを制御文字として解釈してしまい、端末の状態がおかしくなるからです。
+</p>
+
+<p>
+例えば、ホストによってはログイン時などに SJIS(Shift-JIS), EUC, JIS などの数種類の漢字コードを端末に送り、どのコードが正しく表示されてるかユーザーに入力させる、ということがあり、このような場合に問題が発生します。
+</p>
+
+<p>
+もし、このような状態になった場合、[Control] Reset terminal で端末の状態をリセットしてください。
+</p>
+
+<p>
+このような問題をさけるには、3つの方法があります。
+</p>
+
+<ol>
+ <li>漢字モード(受信)を SJIS に設定する。</li>
+ <li>[Setup] Terminal で Terminal ID を VT1XX (例えば VT100) にする。</li>
+ <li>設定ファイルの [Tera Term] セクションの Accept8BitCtrl 行を
+<pre>
+Accept8BitCtrl=off
+</pre>
+のように編集し、 C1 制御文字として送られてきた文字を無視するように設定する。</li>
+</ol>
+
+<pre>
+省略時:
+Accept8BitCtrl=on
+</pre>
+
+
+<h1><a name="kout">正しくない "kanji-out" を使用可能にする</a></h1>
+
+<p>
+一部のシステムで用いられている "kanji-out" シーケンス ^[(H は、JIS/ISO の規格に従っていません。本当に必要のある場合以外は使用しないでください。初期設定では間違いを防ぐため [Setup] terminal ダイアログボックスで ^[(H が選択できないようになっています。
+</p>
+
+<p>
+^[(H を選択できるようにするには、設定ファイルの [Tera Term] セクションの AllowWrongSequence 行を、
+</p>
+
+<pre>
+AllowWrongSequence=on
+</pre>
+
+<p>
+のように変更してください。ダイアログボックスで選択できるようになります。
+</p>
+
+<pre>
+省略時:
+AllowWrongSequence=off
+</pre>
+
+
+<h1><a name="kctrl">2バイト文字(漢字)の1バイト目と2バイト目の間に制御文字等が入った場合、1バイト目を無効にする</a></h1>
+
+<p>
+ホストから送られてくる2バイト文字(漢字等)の1バイト目と2バイト目の間に制御文字(例えば改行文字)等が入っても、Tera Term の初期設定では2バイト文字も制御文字も正しく取り扱われます。
+</p>
+
+<p>
+設定ファイルの [Tera Term] セクションの CtrlInKanji 行を、
+</p>
+
+<pre>
+CtrlInKanji=off
+</pre>
+
+<p>
+のように変更すると、2バイト文字の1バイト目の後に制御文字等が来た場合、1バイト目を無効にします。この後に2バイト目が来ても、ゴミとして表示されます。2バイト文字を正しく扱わないアプリケーションでは、このようにしたほうが、画面の文字化けが少なくなる可能性があります。例えば、漢字の1バイト目の後に改行文字を出して、その後に2バイト目は出さない、というアプリケーションがあったとすると、その漢字は捨てられますが、改行文字以降に来る文字が化けずに済みます。
+</p>
+
+<pre>
+省略時:
+CtrlInKanji=on
+</pre>
+
+
+<h1><a name="displayall">受信した文字をすべて表示</a></h1>
+
+<p>
+受信した文字をすべて表示するようにするには、設定ファイルの [Tera Term] セクションの Debug 行を、
+</p>
+
+<pre>
+Debug=on
+</pre>
+
+<p>
+のように変更してください。Shift+Esc を押すとデバッグモードになります。デバッグモードを解除するにはもう一度 Shift+Esc を押してください。
+</p>
+
+<p>
+デバッグモードでは、受信したデータを以下の規則で文字に変換して表示します。
+</p>
+
+<pre>
+$00 - $1F    ^@ - ^_を表示
+$20 - $7E    そのまま文字として表示
+$7F          &lt;DEL&gt;を表示
+$80-$FF      最上位 bit を0にして、$00-$7Fと同じ規則で
+             文字に変換し、反転文字として表示。
+</pre>
+
+<pre>
+省略時:
+Debug=off
+</pre>
+
+
+<h1><a name="statusline">ステータスラインを使用不可にする</a></h1>
+
+<p>
+VT 端末のステータスラインの機能を使用不可にするには、設定ファイルの [Tera Term] セクションの EnableStatusLine 
+行を以下のように変更してください。
+</p>
+
+<pre>
+EnableStatusLine=off
+</pre>
+
+<p>
+この場合、ステータスラインに関するエスケープシーケンスはすべて無視されます。
+</p>
+
+<pre>
+省略時:
+EnableStatusLine=on
+</pre>
+
+
+<h1><a name="tekgin">TEK GIN report のマウスコード</a></h1>
+
+<p>
+ホスト側のアプリケーションによって、TEK window が GIN モード(クロスヘアーカーソルが現れ、座標入力が可能な状態)になったとき、あるキーを押すと TEK window はクロスヘアーカーソルの座標とキーの ASCII コードをホストへ報告します。
+</p>
+
+<p>
+GIN モードでマウスの左ボタンを押したときに座標とともに送出する キーコード を設定するには、設定ファイルの [Tera Term] セクションの TEKGINMouseCode 行を、
+</p>
+
+<pre>
+TEKGINMouseCode=&lt;key code&gt;
+</pre>
+
+<p>
+のように変更してください。
+</p>
+
+<pre>
+省略時:
+TEKGINMouseCode=32
+(32はSpace のASCII コード)
+</pre>
+
+
+</BODY>
+</HTML>

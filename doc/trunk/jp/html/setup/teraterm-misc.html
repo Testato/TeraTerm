@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>その他 (Tera Term 設定ファイル)</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<h1><a name="beep">接続時のビープ音</a></h1>
+
+<p>
+TCP/IP 接続が確立した時とその接続が切れた時にビープ音を鳴らすには、設定ファイルの [Tera Term] セクションの BeepOnConnect 行を以下のように変更してください。
+</p>
+
+<pre>
+BeepOnConnect=on
+</pre>
+
+<pre>
+省略時:
+BeepOnConnect=off
+</pre>
+
+
+<h1><a name="IME">IME (日本語入力システム)に関する設定</a></h1>
+
+<p>
+IME のインライン入力をしないようにするには、設定ファイルの [Tera Term] セクションの IMEInline 行を以下のように変更してください。
+</p>
+<pre>
+IMEInline=off
+</pre>
+
+<pre>
+省略時:
+IMEInline=on
+</pre>
+
+<p>
+IME に関する何らかの不具合のため Tera Term が IME を制御しないようにするには、設定ファイルの [Tera Term] セクションの IME 行を以下のように変更してください。
+</p>
+
+<pre>
+IME=off
+</pre>
+
+<pre>
+省略時:
+IME=on
+</pre>
+
+
+<h1><a name="macro">起動時にマクロを実行</a></h1>
+
+<p>
+Tera Term 起動時にマクロを自動的に実行することができます。マクロファイル名はコマンドラインオプション "/M=<macro file>" を使うか、設定ファイルの [Tera Term] セクションの StartupMacro 行を以下のように変更することによって指定できます。
+</p>
+
+<pre>
+StartupMacro=&lt;macro file&gt;
+</pre>
+
+<pre>
+省略時:
+StartupMacro=
+</pre>
+
+
+</BODY>
+</HTML>

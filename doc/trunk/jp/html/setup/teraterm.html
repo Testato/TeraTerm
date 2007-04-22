@@ -13,9 +13,9 @@
 
 <p>
 起動時または、<A HREF="../menu/setup-restore.html">[Setup] Restore setup</A>を実行したとき、設定ファイルの内容にしたがい Tera Term が初期化されます。<br>
-<A HREF="../commandline/teraterm.html">コマンドライン</A>で設定ファイル名を指定することができます。コマンドラインでファイル名を指定しない場合、設定ファイル <b>TERATERM.INI</b> が読み込まれます。<br>
-この際、My Documents に TERATERM.INI が存在すればそのファイルが読み込まれます。そうでなければ ttermpro.exe と同じディレクトリに存在する TERATERM.INI が読み込まれます。<br>
-ファイル名の拡張子を省略した場合は、".INI"であるとみなされます。</p>
+<A HREF="../commandline/teraterm.html">コマンドライン</A>で設定ファイル名を指定することができます。ファイル名の拡張子を省略した場合は、".INI"であるとみなされます。<br>
+コマンドラインでファイル名を指定しない場合、"My Documents" に TERATERM.INI が存在すれば "My Documents" の TERATERM.INI が読み込まれ、存在しない場合は ttermpro.exe と同じディレクトリの TERATERM.INI が読み込まれます。
+</p>
 
 <p>
 現在の設定を設定ファイルに保存するには、<A HREF="../menu/setup-save.html">[Setup] Save setup</A>を実行してください。
@@ -29,74 +29,74 @@
 
 <h3>ターミナルエミュレーション</h3>
 <ul>
- <li>バック・ラップ (back wrap)</li>
- <li>BEL 文字受信でビープ音を鳴らさない</li>
- <li>C1 制御文字($80-$9F)を使用しない</li>
- <li>JIS 漢字送出の時、正しくない "kanji-out" シーケンス ^[(H を使用可能にする</li>
- <li>2バイト文字(漢字)の1バイト目と2バイト目の間に制御文字等が入った場合、1バイト目を無効にする</li>
- <li>受信した文字をすべて表示するようにする</li>
- <li>ステータスラインを使用不可にする</li>
- <li>TEK GIN report のマウスコードの値を設定する</li>
+ <li><a href="teraterm-term.html#backwrap">バック・ラップ (back wrap)</a></li>
+ <li><a href="teraterm-term.html#beep">BEL 文字受信でビープ音を鳴らさない</a></li>
+ <li><a href="teraterm-term.html#C1">C1 制御文字($80-$9F)を使用しない</a></li>
+ <li><a href="teraterm-term.html#kout">JIS 漢字送出の時、正しくない "kanji-out" シーケンス ^[(H を使用可能にする</a></li>
+ <li><a href="teraterm-term.html#kctrl">2バイト文字(漢字)の1バイト目と2バイト目の間に制御文字等が入った場合、1バイト目を無効にする</a></li>
+ <li><a href="teraterm-term.html#displayall">受信した文字をすべて表示するようにする</a></li>
+ <li><a href="teraterm-term.html#statusline">ステータスラインを使用不可にする</a></li>
+ <li><a href="teraterm-term.html#tekgin">TEK GIN report のマウスコードの値を設定する</a></li>
 </ul>
 
 <h3>ウィンドウ</h3>
 <ul>
- <li>自動的な文字列コピーをしない</li>
- <li>ダブルクリックによる単語選択の区切り文字</li>
- <li>ポップアップメニューを使用不可にする</li>
- <li>"Show menu bar" コマンドを隠す</li>
- <li>言語モードの選択を不可にする</li>
- <li>スクロールバッファーの最大行数</li>
- <li>点滅しないカーソル</li>
- <li>一度にスクロールする最大の行数を設定する</li>
- <li>マウスでウィンドウを選択したときの文字の選択を禁止する</li>
- <li>タイトルの形式</li>
- <li>白色および黒色属性の文字の実際の色</li>
- <li>文字(行)間にすきまをあける</li>
- <li>[Window] メニューを隠す</li>
+ <li><a href="teraterm-win.html#autocopy">自動的な文字列コピーをしない</a></li>
+ <li><a href="teraterm-win.html#delimiter">ダブルクリックによる単語選択の区切り文字</a></li>
+ <li><a href="teraterm-win.html#popup">ポップアップメニューを使用不可にする</a></li>
+ <li><a href="teraterm-win.html#menubar">"Show menu bar" コマンドを隠す</a></li>
+ <li><a href="teraterm-win.html#lang">言語モードの選択を不可にする</a></li>
+ <li><a href="teraterm-win.html#scrollbuf">スクロールバッファーの最大行数</a></li>
+ <li><a href="teraterm-win.html#blink">点滅しないカーソル</a></li>
+ <li><a href="teraterm-win.html#scrollline">一度にスクロールする最大の行数を設定する</a></li>
+ <li><a href="teraterm-win.html#textselect">マウスでウィンドウを選択したときの文字の選択を禁止する</a></li>
+ <li><a href="teraterm-win.html#title">タイトルの形式</a></li>
+ <li><a href="teraterm-win.html#color">白色および黒色属性の文字の実際の色</a></li>
+ <li><a href="teraterm-win.html#space">文字(行)間にすきまをあける</a></li>
+ <li><a href="teraterm-win.html#window">[Window] メニューを隠す</a></li>
 </ul>
 
 <h3>通信</h3>
 <ul>
- <li>シリアルポート番号の最大値</li>
- <li>TCP/IP 回線切断の確認をしない</li>
- <li>Telnet のバイナリオプション</li>
- <li>Telnet のエコーオプション</li>
- <li>Telnet のログ</li>
- <li>Telnet 用ポート番号 / 非 telnet 接続用端末設定</li>
+ <li><a href="teraterm-com.html#maxport">シリアルポート番号の最大値</a></li>
+ <li><a href="teraterm-com.html#confirm">TCP/IP 回線切断の確認をしない</a></li>
+ <li><a href="teraterm-com.html#telbin">Telnet のバイナリオプション</a></li>
+ <li><a href="teraterm-com.html#telecho">Telnet のエコーオプション</a></li>
+ <li><a href="teraterm-com.html#tellog">Telnet のログ</a></li>
+ <li><a href="teraterm-com.html#port/nontelnet">Telnet 用ポート番号 / 非 telnet 接続用端末設定</a></li>
 </ul>
 
 <h3>ファイル転送</h3>
 <ul>
- <li>受信したファイルの名前を自動的に変更して上書きを避ける</li>
- <li>B-Plus 受信の自動起動</li>
- <li>B-Plus ですべての制御文字をエスケープする</li>
- <li>B-Plus のログ</li>
- <li>Kermit のログ</li>
- <li>Quick-VAN のログ</li>
- <li>Quick-VAN のウィンドウサイズ</li>
- <li>XMODEM のログ</li>
- <li>ZMODEM 受信の自動起動</li>
- <li>ZMODEM 送信の設定</li>
- <li>ZMODEM ですべての制御文字をエスケープする</li>
- <li>ZMODEM のログ</li>
+ <li><a href="teraterm-trans.html#rename">受信したファイルの名前を自動的に変更して上書きを避ける</a></li>
+ <li><a href="teraterm-trans.html#bpauto">B-Plus 受信の自動起動</a></li>
+ <li><a href="teraterm-trans.html#bpesc">B-Plus ですべての制御文字をエスケープする</a></li>
+ <li><a href="teraterm-trans.html#bplog">B-Plus のログ</a></li>
+ <li><a href="teraterm-trans.html#kmlog">Kermit のログ</a></li>
+ <li><a href="teraterm-trans.html#qvlog">Quick-VAN のログ</a></li>
+ <li><a href="teraterm-trans.html#qvwinsize">Quick-VAN のウィンドウサイズ</a></li>
+ <li><a href="teraterm-trans.html#xmlog">XMODEM のログ</a></li>
+ <li><a href="teraterm-trans.html#zmauto">ZMODEM 受信の自動起動</a></li>
+ <li><a href="teraterm-trans.html#zmparam">ZMODEM 送信の設定</a></li>
+ <li><a href="teraterm-trans.html#zmsec">ZMODEM ですべての制御文字をエスケープする</a></li>
+ <li><a href="teraterm-trans.html#zmlog">ZMODEM のログ</a></li>
 </ul>
 
 <h3>印刷</h3>
 <ul>
- <li>エスケープシーケンスによる印刷の遅延</li>
- <li>エスケープシーケンスによる印刷で直接ポートに出力</li>
- <li>エスケープシーケンスによる印刷時の改ページを禁止する</li>
- <li>プリンタフォントの指定</li>
- <li>ページ余白の指定</li>
- <li>印刷の倍率</li>
+ <li><a href="teraterm-prn.html#delay">エスケープシーケンスによる印刷の遅延</a></li>
+ <li><a href="teraterm-prn.html#direct">エスケープシーケンスによる印刷で直接ポートに出力</a></li>
+ <li><a href="teraterm-prn.html#formfeed">エスケープシーケンスによる印刷時の改ページを禁止する</a></li>
+ <li><a href="teraterm-prn.html#font">プリンタフォントの指定</a></li>
+ <li><a href="teraterm-prn.html#margin">ページ余白の指定</a></li>
+ <li><a href="teraterm-prn.html#scale">印刷の倍率</a></li>
 </ul>
 
 <h3>その他</h3>
 <ul>
- <li>接続時のビープ音</li>
- <li>IME (日本語入力システム)に関する設定</li>
- <li>起動時にマクロを実行</li>
+ <li><a href="teraterm-misc.html#beep">接続時のビープ音</a></li>
+ <li><a href="teraterm-misc.html#IME">IME (日本語入力システム)に関する設定</a></li>
+ <li><a href="teraterm-misc.html#macro">起動時にマクロを実行</a></li>
 </ul>
 
 
