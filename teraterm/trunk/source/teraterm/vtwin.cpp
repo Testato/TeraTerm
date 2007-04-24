@@ -2389,7 +2389,8 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 	TelEnableHisOpt(BINARY);
       }
     }
-    else if (ts.TCPPort != 22) {
+    // TCPLocalEcho/TCPCRSend を無効にする (maya 2007.4.25)
+    else if (!ts.DisableTCPEchoCR) {
       if (ts.TCPCRSend>0)
       {
 	ts.CRSend = ts.TCPCRSend;
@@ -4882,6 +4883,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.60  2007/04/09 15:42:57  maya
+ * hlp の替わりに chm を開くように変更した。
+ *
  * Revision 1.59  2007/04/07 15:10:54  maya
  * Additional settings ダイアログから cygterm.cfg を保存したとき、LOGIN_SHELL と HOME_CHDIR が消去される問題を修正した。
  *

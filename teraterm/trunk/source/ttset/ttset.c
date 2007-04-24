@@ -2162,6 +2162,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
   WORD ParamBin = 2;
   BOOL HostNameFlag = FALSE;
   BOOL JustAfterHost = FALSE;
+  WORD DisableTCPEchoCR = FALSE;
 
   ts->HostName[0] = 0;
   ts->KeyCnfFN[0] = 0;
@@ -2203,6 +2204,11 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
     {
       if (DDETopic != NULL)
 	strcpy(DDETopic,&Temp[3]);
+    }
+    // TCPLocalEcho/TCPCRSend を無効にする (maya 2007.4.25)
+    else if ( _strnicmp(Temp,"/E",2)==0 )
+    {
+      DisableTCPEchoCR = TRUE;
     }
     else if ( _strnicmp(Temp,"/F=",3)==0 ) /* setup filename */
     {
@@ -2424,6 +2430,11 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
     case IdFile:
       ts->PortType = IdFile;
   }
+
+  // TCPLocalEcho/TCPCRSend を無効にする (maya 2007.4.25)
+  if (DisableTCPEchoCR == TRUE) {
+    ts->DisableTCPEchoCR = TRUE;
+  }
 }
 
 #ifdef TERATERM32
@@ -2466,6 +2477,12 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.28  2007/03/23 05:02:21  yutakapon
+ * 337氏パッチを取り込んだ。
+ * 1.Broadcastダイアログからの送信対象を親Windowのみにする、
+ * および
+ * 2.Broadcastダイアログからの送信を無視可能にする
+ *
  * Revision 1.27  2007/03/17 13:15:29  maya
  * Send break のアクセラレータキーを無効にできるようにした。
  *

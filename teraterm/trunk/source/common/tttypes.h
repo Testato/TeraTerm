@@ -355,6 +355,7 @@ struct tttset {
 #endif
   WORD BroadcastCommandHistory;
   WORD AcceptBroadcast;		// 337: 2007/03/20
+  WORD DisableTCPEchoCR;  // TCPLocalEcho/TCPCRSend ‚ð–³Œø‚É‚·‚é (maya 2007.4.25)
   int ConnectingTimeout;
 };
 
