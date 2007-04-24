@@ -17,7 +17,7 @@ Tera Term Pro を起動するときのコマンドライン(ショートカットのリンク先)の形式
 
 <pre>
 <span class="syntax">TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
-         [/B] [/C=&lt;serial port#&gt;]
+         [/B] [/C=&lt;serial port#&gt;] [/E]
          [/F=&lt;setup file&gt;] [/FD=&lt;file transfer directory&gt;]
          [/H] [/I] [/K=&lt;keyboard setup file&gt;]
          [/KR=&lt;kanji code (receive)&gt;] [/KT=&lt;kanji code (transmit)&gt;]
@@ -51,6 +51,8 @@ Tera Term Pro を起動するときのコマンドライン(ショートカットのリンク先)の形式
       <span class="syntax">/C=99</span> COM99
 
     <span class="syntax">/DUPLICATE</span>    使用禁止（セッションの複製で内部で使われる）
+
+    <span class="syntax">/E</span>    TCPLocalEcho/TCPCRSend の設定を無効にする
 
     <span class="syntax">/F=&lt;setup file&gt;</span>    設定ファイル
       <span class="syntax">/F=TERATERM.INI</span> (省略時)

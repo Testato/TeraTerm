@@ -13,7 +13,7 @@
 
 <pre>
 <span class="syntax">TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
-         [/B] [/C=&lt;serial port#&gt;]
+         [/B] [/C=&lt;serial port#&gt;] [/E]
          [/F=&lt;setup file&gt;] [/FD=&lt;file transfer directory&gt;]
          [/H] [/I] [/K=&lt;keyboard setup file&gt;]
          [/KR=&lt;kanji code (receive)&gt;] [/KT=&lt;kanji code (transmit)&gt;]
@@ -47,6 +47,8 @@ where:
       <span class="syntax">/C=99</span> COM99
 
     <span class="syntax">/DUPLICATE</span>    Internal use(must not specify this option)
+
+    <span class="syntax">/E</span>    Disable TCPLocalEcho and TCPCRSend option
 
     <span class="syntax">/F=&lt;setup file&gt;</span>
       <span class="syntax">/F=TERATERM.INI</span> (default)
