@@ -828,6 +828,9 @@ static void PASCAL FAR TTXOpenTCP(TTXSockHooks FAR * hooks)
 		struct tm FAR *newtime;
 		time_t long_time;
 
+		// TCPLocalEcho/TCPCRSend を無効にする (maya 2007.4.25)
+		pvar->ts->DisableTCPEchoCR = TRUE;
+
 		pvar->session_settings = pvar->settings;
 
 		time(&long_time);
@@ -3858,6 +3861,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.59  2007/03/15 05:09:52  maya
+ * /keyfile= パラメータもスペースを含むファイル名を認識するよう修正した。
+ *
  * Revision 1.58  2007/03/05 08:39:57  maya
  * DetectComPorts を ttpcmn.dll のエクスポート関数に変更した。
  *
