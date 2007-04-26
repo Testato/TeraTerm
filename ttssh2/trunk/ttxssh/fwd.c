@@ -417,7 +417,7 @@ static char FAR *describe_socket_error(int code)
 	case WSANO_ADDRESS:
 	case WSAHOST_NOT_FOUND:
 #ifdef I18N
-		strcpy(pvar->ts->UIMsg, "-No address was found for the machine.");
+		strcpy(pvar->ts->UIMsg, "No address was found for the machine.");
 		UTIL_get_lang_msg("MSG_FWD_ADDRNOTFOUTD_ERROR", pvar);
 		return pvar->ts->UIMsg;
 #else
@@ -2166,6 +2166,9 @@ void FWD_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2006/11/29 16:58:52  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.8  2005/07/03 13:32:00  yutakakn
  * SSH2 port-forwardingの初期化タイミングを変更。
  *
