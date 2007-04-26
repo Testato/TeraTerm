@@ -6776,7 +6776,6 @@ static BOOL handle_SSH2_open_failure(PTInstVar pvar)
 #ifdef I18N
 	strcpy(pvar->ts->UIMsg, "SSH2_MSG_CHANNEL_OPEN_FAILURE was received.\r\nchannel [%d]: reason: %s(%d) message: %s");
 	UTIL_get_lang_msg("MSG_SSH_CHANNEL_OPEN_ERROR", pvar);
-	notify_fatal_error(pvar, pvar->ts->UIMsg);
 	_snprintf(tmpbuf, sizeof(tmpbuf), pvar->ts->UIMsg,
 		id, rmsg, reason, cstring);
 #else
@@ -7319,6 +7318,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.73  2007/04/26 10:18:27  yutakapon
+ * port fowardingにおいて、channel close時にSSH2チャネル構造体を解放していなかったバグを修正した。
+ *
  * Revision 1.72  2007/02/08 03:51:02  maya
  * Boris 氏の指摘により、メッセージを修正した。
  *
