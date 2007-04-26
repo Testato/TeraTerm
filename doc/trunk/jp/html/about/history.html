@@ -47,7 +47,10 @@
           <li>Additional Settings タブにチェックボックスを追加した。</li>
         </ul></li>
 
-      <li>接続先TCPポートが22(通常はssh接続)の時、TCPLocalEchoおよびTCPCRSendオプションの設定を使わないようにした。</li>
+      <li>接続が SSH または Cygwin のときは、TCPLocalEchoおよびTCPCRSendオプションの設定を使わないようにした。
+        <ul>
+          <li>/E コマンドラインオプションを追加した。</li>
+        </ul></li>
       <li>Additional settings ダイアログから cygterm.cfg を保存したとき、LOGIN_SHELL と HOME_CHDIR が消去される問題を修正した。</li>
       <li>Windows NT 4.0 においていくつかのファイル選択ダイアログが出ない問題を修正した。</li>
       <li><a href="#ttssh_2.40">SSH2対応TTSSH(2.40)</a>へ差し替えた</li>
@@ -56,7 +59,7 @@
         <ul>
           <li>スタンドアロンの TeraTerm マクロエディタ TTLEditor が追加された</li>
         </ul></li>
-      <li>Oniguruma 5.6.0へ差し替えた</li>
+      <li>Oniguruma 5.6.1へ差し替えた</li>
     </ul>
   </li>
 
@@ -743,6 +746,7 @@
       <li>keyfile パラメータも、ダブルクォートされたファイル名を認識するようにした。</li>
       <li>プレインパスワード認証と一緒にキーボードインタラクティブ認証を使用するように設定している時、SSH認証ダイアログでプレインパスワード認証がrhosts認証と表示されるのを修正した。</li>
       <li>ポートフォワーディングにおいてチャネルクローズした際に、SSH2チャネル構造体の解放が漏れていたバグを修正した。</li>
+      <li>チャネルが開けなかったときにクラッシュしていたのを修正した。</li>
     </ul>
   </li>
 
