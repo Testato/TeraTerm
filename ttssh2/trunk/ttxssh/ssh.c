@@ -3346,6 +3346,16 @@ void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
 
 			// changed window size from 128KB to 32KB. (2006.3.6 yutaka)
 			c = ssh2_channel_new(CHAN_TCP_PACKET_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_PORTFWD, local_channel_num);
+			if (c == NULL) {
+#ifdef I18N
+				strcpy(pvar->ts->UIMsg, "Could not open new channel. TTSSH is already opening too many channels.");
+				UTIL_get_lang_msg("MSG_SSH_NO_FREE_CHANNEL", pvar);
+				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+#else
+				notify_nonfatal_error(pvar,"Could not open new channel. TTSSH is already opening too many channels.");
+#endif
+				return;
+			}
 
 			msg = buffer_init();
 			if (msg == NULL) {
@@ -6426,7 +6436,13 @@ static BOOL handle_SSH2_userauth_success(PTInstVar pvar)
 	// changed window size from 64KB to 32KB. (2006.3.6 yutaka)
 	c = ssh2_channel_new(CHAN_SES_PACKET_DEFAULT, CHAN_SES_PACKET_DEFAULT, TYPE_SHELL, -1);
 	if (c == NULL) {
-		// TODO: error check
+#ifdef I18N
+		strcpy(pvar->ts->UIMsg, "Could not open new channel. TTSSH is already opening too many channels.");
+		UTIL_get_lang_msg("MSG_SSH_NO_FREE_CHANNEL", pvar);
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+#else
+		notify_fatal_error(pvar,"Could not open new channel. TTSSH is already opening too many channels.");
+#endif
 		return FALSE;
 	}
 	// シェルのIDを取っておく
@@ -7119,6 +7135,16 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 		// channelをアロケートし、必要な情報（remote window size）をここで取っておく。
 		// changed window size from 128KB to 32KB. (2006.3.6 yutaka)
 		c = ssh2_channel_new(CHAN_TCP_PACKET_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_PORTFWD, chan_num);
+		if (c == NULL) {
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Could not open new channel. TTSSH is already opening too many channels.");
+			UTIL_get_lang_msg("MSG_SSH_NO_FREE_CHANNEL", pvar);
+			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+#else
+			notify_nonfatal_error(pvar,"Could not open new channel. TTSSH is already opening too many channels.");
+#endif
+			return FALSE;
+		}
 		c->remote_id = remote_id;
 		c->remote_window = remote_window;
 		c->remote_maxpacket = remote_maxpacket;
@@ -7140,6 +7166,16 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 		// channelをアロケートし、必要な情報（remote window size）をここで取っておく。
 		// changed window size from 128KB to 32KB. (2006.3.6 yutaka)
 		c = ssh2_channel_new(CHAN_TCP_PACKET_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_PORTFWD, chan_num);
+		if (c == NULL) {
+#ifdef I18N
+			strcpy(pvar->ts->UIMsg, "Could not open new channel. TTSSH is already opening too many channels.");
+			UTIL_get_lang_msg("MSG_SSH_NO_FREE_CHANNEL", pvar);
+			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+#else
+			notify_nonfatal_error(pvar,"Could not open new channel. TTSSH is already opening too many channels.");
+#endif
+			return FALSE;
+		}
 		c->remote_id = remote_id;
 		c->remote_window = remote_window;
 		c->remote_maxpacket = remote_maxpacket;
@@ -7318,6 +7354,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.74  2007/04/26 11:11:10  maya
+ * Fix a bug.
+ *
  * Revision 1.73  2007/04/26 10:18:27  yutakapon
  * port fowardingにおいて、channel close時にSSH2チャネル構造体を解放していなかったバグを修正した。
  *
