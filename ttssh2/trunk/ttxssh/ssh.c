@@ -164,6 +164,15 @@ static Channel_t *ssh2_channel_new(unsigned int window, unsigned int maxpack, en
 }
 
 
+// channel close時にチャネル構造体をリストへ返却する
+// (2007.4.26 yutaka)
+static void ssh2_channel_delete(Channel_t *c)
+{
+	memset(c, 0, sizeof(Channel_t));
+	c->used = 0;
+}
+
+
 // connection close時に呼ばれる
 void ssh2_channel_free(void)
 {
@@ -7190,6 +7199,13 @@ static BOOL handle_SSH2_channel_close(PTInstVar pvar)
 
 		// TCP connection closed
 		notify_closed_connection(pvar);
+
+	} else if (c->type == TYPE_PORTFWD) { 
+		// チャネルの解放漏れを修正 (2007.4.26 yutaka)
+		ssh2_channel_delete(c);
+
+	} else {
+
 	}
 
 	return TRUE;
@@ -7303,6 +7319,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.72  2007/02/08 03:51:02  maya
+ * Boris 氏の指摘により、メッセージを修正した。
+ *
  * Revision 1.71  2007/02/04 13:45:47  yutakapon
  * パケット送信関数が失敗した場合、WSAGetLastError()がWSABASEERR(10000)未満であれば、成功したものと見なすようにした。
  *
