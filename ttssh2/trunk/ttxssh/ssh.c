@@ -6517,6 +6517,21 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 
 	// 認証リストが空の場合はまだログインをしていない。
 	if (pvar->ssh2_authlist == NULL) {
+		int type = 0;
+
+		// 認証ダイアログのラジオボタンを更新
+		if (strstr(cstring, "password")) {
+			type |= (1 << SSH_AUTH_PASSWORD);
+		} 
+		if (strstr(cstring, "publickey")) {
+			type |= (1 << SSH_AUTH_RSA);
+		}
+		if (strstr(cstring, "keyboard-interactive")) {
+			type |= (1 << SSH_AUTH_TIS);
+		}
+		if (!AUTH_set_supported_auth_types(pvar, type))
+			return FALSE;
+
 		pvar->ssh2_authlist = cstring; // 不要になったらフリーすること
 
 		handle_SSH2_authrequest(pvar); // ログイン処理へ
@@ -7397,6 +7412,10 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.76  2007/04/27 12:41:33  yutakapon
+ * "none"メソッドによりユーザ認証メソッドリストを取得し、パスワード認証選択時に
+ * keyboard-interactiveログインを試みるようにした。
+ *
  * Revision 1.75  2007/04/26 12:21:24  maya
  * ssh2_channel_new() の返り値をチェックするように修正した。
  *
