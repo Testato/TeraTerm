@@ -739,12 +739,13 @@ SYNOPSIS:
 
 <h2><a name="ttssh">TTSSH</a></h2>
 <ul>
-  <li class="history"><a name="ttssh_2.40">2007.3.17 (Ver 2.40 -- not released yet)</a>
+  <li class="history"><a name="ttssh_2.40">2007.4.27 (Ver 2.40 -- not released yet)</a>
     <ul>
       <li>added parsing double-quoted key filename in the command line parameter.</li>
       <li>Bug fix: When keyboard-interactive authentication enabled with plain password authentication, plain password authentication is displayed with the rhosts authentication in SSH authentication dialog.</li>
       <li>Bug fix: SSH2 port fowarding memory leak when the channel connection is closed.</li>
       <li>Bug fix: TTSSH crashes when new channel is not able to be opened.</li>
+      <li>added support for getting the user authentication list on SSH2 connection. TTSSH can try to login with keyboard-interactive method at the first time when the user selected the password authentication.</li>
     </ul>
   </li>
 
