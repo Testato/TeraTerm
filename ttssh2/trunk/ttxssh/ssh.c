@@ -2420,6 +2420,7 @@ void SSH_init(PTInstVar pvar)
 	pvar->ask4passwd = 0; // disabled(default) (2006.9.18 maya)
 	pvar->userauth_retry_count = 0;
 	pvar->decomp_buffer = NULL;
+	pvar->ssh2_authlist = NULL; // (2007.4.27 yutaka)
 
 }
 
@@ -2925,6 +2926,11 @@ void SSH_end(PTInstVar pvar)
 		if (pvar->decomp_buffer != NULL) {
 			buffer_free(pvar->decomp_buffer);
 			pvar->decomp_buffer = NULL;
+		}
+
+		if (pvar->ssh2_authlist != NULL) { // (2007.4.27 yutaka)
+			free(pvar->ssh2_authlist);
+			pvar->ssh2_authlist = NULL;
 		}
 	}
 #endif
@@ -6181,9 +6187,24 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	}
 	buffer_put_string(msg, s, strlen(s));
 
-	if (pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) { // パスワード認証
+	if (pvar->ssh2_authlist == NULL) { // "none"メソッドの送信
+		// 認証リストをサーバから取得する。
+		// SSH2_MSG_USERAUTH_FAILUREが返るが、サーバにはログは残らない。
+		// (2007.4.27 yutaka)
+		s = connect_id;
+		buffer_put_string(msg, s, strlen(s));
+		s = "none";  // method name
+		buffer_put_string(msg, s, strlen(s));
+
+	} else if (pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) { // パスワード認証
 		// 初回は keyboard-interactive メソッドでトライする (2005.1.22 yutaka)
 		// cf. http://www.openssh.com/txt/draft-ietf-secsh-auth-kbdinteract-02.txt
+
+		// 認証リストに"password"がなければ、keyboard-interactiveでトライする。(2007.4.27 yutaka)
+		if (strstr(pvar->ssh2_authlist, "password") == NULL) {
+			pvar->settings.ssh2_keyboard_interactive = 1;
+			pvar->keyboard_interactive_done = 0;
+		}
 
 		if (pvar->settings.ssh2_keyboard_interactive == 1 &&
 			pvar->keyboard_interactive_done == 0) { // keyboard-interactive method
@@ -6480,6 +6501,28 @@ static BOOL handle_SSH2_userauth_success(PTInstVar pvar)
 
 static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 {
+	int len;
+	char *data;
+	char *cstring;
+	int partial;
+
+	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
+	data = pvar->ssh_state.payload;
+	// パケットサイズ - (パディングサイズ+1)；真のパケットサイズ
+	len = pvar->ssh_state.payloadlen;
+
+	cstring = buffer_get_string(&data, NULL); // 認証リストの取得
+	partial = data[0];
+	data += 1;
+
+	// 認証リストが空の場合はまだログインをしていない。
+	if (pvar->ssh2_authlist == NULL) {
+		pvar->ssh2_authlist = cstring; // 不要になったらフリーすること
+
+		handle_SSH2_authrequest(pvar); // ログイン処理へ
+		return TRUE;
+	}
+
 	// TCP connection closed
 	//notify_closed_connection(pvar);
 
@@ -7354,6 +7397,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.75  2007/04/26 12:21:24  maya
+ * ssh2_channel_new() の返り値をチェックするように修正した。
+ *
  * Revision 1.74  2007/04/26 11:11:10  maya
  * Fix a bug.
  *

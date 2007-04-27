@@ -228,6 +228,7 @@ typedef struct _TInstVar {
   int keyboard_interactive_password_input;
   int userauth_retry_count;
   buffer_t *decomp_buffer;
+  char *ssh2_authlist;
 } TInstVar;
 
 #define LOG_LEVEL_FATAL      5
