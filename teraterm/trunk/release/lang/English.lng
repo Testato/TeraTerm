@@ -163,6 +163,7 @@ DLG_COMMENT_TITLE=Comment to Log
 
 DLG_BROADCAST_TITLE=Tera Term: Broadcast command
 DLG_BROADCAST_HISTORY=History
+DLG_BROADCAST_PARENTONLY=Send to this process only
 DLG_BROADCAST_ENTER=Enter key
 DLG_BROADCAST_SUBMIT=Submit
 

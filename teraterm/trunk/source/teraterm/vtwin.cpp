@@ -4656,6 +4656,9 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			GetDlgItemText(hWnd, IDC_ENTERKEY_CHECK, ts.UIMsg, sizeof(ts.UIMsg));
 			get_lang_msg("DLG_BROADCAST_ENTER", ts.UIMsg, ts.UILanguageFile);
 			SetDlgItemText(hWnd, IDC_ENTERKEY_CHECK, ts.UIMsg);
+			GetDlgItemText(hWnd, IDC_PARENT_ONLY, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_BROADCAST_PARENTONLY", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hWnd, IDC_PARENT_ONLY, ts.UIMsg);
 			GetDlgItemText(hWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
 			get_lang_msg("DLG_BROADCAST_SUBMIT", ts.UIMsg, ts.UILanguageFile);
 			SetDlgItemText(hWnd, IDOK, ts.UIMsg);
@@ -4883,6 +4886,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.61  2007/04/24 16:32:19  maya
+ * TCPLocalEcho/TCPCRSend を無効にするオプションを追加した。
+ *
  * Revision 1.60  2007/04/09 15:42:57  maya
  * hlp の替わりに chm を開くように変更した。
  *
