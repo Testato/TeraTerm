@@ -41,21 +41,15 @@ Source: ..\release\ttermpj.hlp; DestDir: {app}; Components: TeraTerm
 Source: ..\..\doc\en\teraterm.chm; DestDir: {app}; Components: TeraTerm
 Source: ..\..\doc\jp\teratermj.chm; DestDir: {app}; Components: TeraTerm
 Source: ..\release\license.txt; DestDir: {app}; Components: TeraTerm
-Source: ..\release\utf8_readme.txt; DestDir: {app}; Components: TeraTerm
-Source: ..\release\utf8_readme-j.txt; DestDir: {app}; Components: TeraTerm
 Source: ..\release\FUNCTION.CNF; DestDir: {app}; Components: TeraTerm
 Source: ..\release\IBMKEYB.CNF; DestDir: {app}; Components: TeraTerm
 Source: ..\release\KEYBOARD.CNF; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\release\NT98KEYB.CNF; DestDir: {app}; Components: TeraTerm
 Source: ..\release\PC98KEYB.CNF; DestDir: {app}; Components: TeraTerm
 Source: ..\visualc\bin\release\keycode.exe; DestDir: {app}; Components: TeraTerm
-Source: ..\release\keycodej.txt; DestDir: {app}; Components: TeraTerm
-Source: ..\release\keycode.txt; DestDir: {app}; Components: TeraTerm
 Source: ..\visualc\bin\release\ttpmacro.exe; DestDir: {app}; Components: TeraTerm
 Source: ..\release\macro.hlp; DestDir: {app}; Components: TeraTerm
 Source: ..\release\macroj.hlp; DestDir: {app}; Components: TeraTerm
-Source: ..\release\RE.txt; DestDir: {app}; Components: TeraTerm
-Source: ..\release\RE-ja.txt; DestDir: {app}; Components: TeraTerm
 Source: ..\release\delpassw.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\dialup.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\login.ttl; DestDir: {app}; Components: TeraTerm
@@ -65,15 +59,11 @@ Source: ..\release\ssh2login.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\wait_regex.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\lang\Japanese.lng; DestDir: {app}\lang; Components: TeraTerm; Attribs: readonly; Flags: uninsremovereadonly overwritereadonly
 Source: ..\..\ttssh2\ttxssh\Release\ttxssh.dll; DestDir: {app}; Components: TTSSH
-Source: ..\release\ssh2_readme.txt; DestDir: {app}; Components: TTSSH
-Source: ..\release\ssh2_readme-j.txt; DestDir: {app}; Components: TTSSH
 Source: ..\release\ssh_known_hosts; DestDir: {app}; Components: TTSSH; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\release\OpenSSL-LICENSE.txt; DestDir: {app}; Components: TTSSH
 Source: ..\release\OpenSSH-LICENSE.txt; DestDir: {app}; Components: TTSSH
 Source: ..\cygterm\cygterm.exe; DestDir: {app}; Components: cygterm
 Source: ..\cygterm\cygterm.cfg; DestDir: {app}; Components: cygterm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
-Source: ..\release\cygterm-README.txt; DestDir: {app}; Components: cygterm
-Source: ..\release\cygterm-README-j.txt; DestDir: {app}; Components: cygterm
 Source: ..\release\LogMeTT_license.txt; DestDir: {app}; Components: LogMeTT
 Source: ..\release\LogMeTT_README.txt; DestDir: {app}; Components: LogMeTT
 Source: ..\release\LogMeTTc.exe; DestDir: {app}; Components: LogMeTT
@@ -404,6 +394,16 @@ end;
 
 [InstallDelete]
 Name: {app}\OpenSSH-LICENCE.txt; Type: files; Tasks: ; Languages: ; Components: TTSSH
+Name: {app}\cygterm-README.txt; Type: files
+Name: {app}\cygterm-README.txt; Type: files
+Name: {app}\keycode.txt; Type: files
+Name: {app}\keycodej.txt; Type: files
+Name: {app}\RE.txt; Type: files
+Name: {app}\RE-ja.txt; Type: files
+Name: {app}\ssh2_readme.txt; Type: files
+Name: {app}\ssh2_readme-j.txt; Type: files
+Name: {app}\utf8_readme.txt; Type: files
+Name: {app}\utf8_readme-j.txt; Type: files
 
 [_ISToolPreCompile]
 Name: convtext.bat
