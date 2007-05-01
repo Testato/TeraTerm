@@ -2232,7 +2232,11 @@ WORD TTLStr2Int()
 
   if (Err!=0) return Err;
 
-  if (sscanf(Str,"%d",&Num)!=1)
+  // '%d'から'%i'へ変更により、10進以外の数値を変換できるようにする。 (2007.5.1 yutaka)
+  // 10 : decimal
+  // 0x10: hex
+  // 010: octal
+  if (sscanf(Str,"%i",&Num)!=1)
   {
     Num = 0;
     SetResult(0);
