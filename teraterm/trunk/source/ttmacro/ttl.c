@@ -2220,32 +2220,40 @@ WORD TTLStr2Code()
 
 WORD TTLStr2Int()
 {
-  WORD VarId, Err;
-  TStrVal Str;
-  int Num;
+	WORD VarId, Err;
+	TStrVal Str;
+	int Num;
 
-  Err = 0;
-  GetIntVar(&VarId,&Err);
-  GetStrVal(Str,&Err);
-  if ((Err==0) && (GetFirstChar()!=0))
-    Err = ErrSyntax;
+	Err = 0;
+	GetIntVar(&VarId,&Err);
+	GetStrVal(Str,&Err);
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
 
-  if (Err!=0) return Err;
+	if (Err!=0) return Err;
 
-  // '%d'から'%i'へ変更により、10進以外の数値を変換できるようにする。 (2007.5.1 yutaka)
-  // 10 : decimal
-  // 0x10: hex
-  // 010: octal
-  if (sscanf(Str,"%i",&Num)!=1)
-  {
-    Num = 0;
-    SetResult(0);
-  }
-  else
-    SetResult(1);
-  SetIntVal(VarId,Num);
+	// C言語では16進は0xで始まるが、TTL仕様では $ で始まるため、後者もサポートする。
+	if (Str[0] == '$') {
+		memmove_s(Str + 2, sizeof(Str) - 2, Str + 1, strlen(Str));
+		Str[0] = '0';
+		Str[1] = 'x';
+	}
 
-  return Err;
+	// '%d'から'%i'へ変更により、10進以外の数値を変換できるようにする。 (2007.5.1 yutaka)
+	// 10 : decimal
+	// 0x10, $10: hex
+	// 010: octal
+	if (sscanf(Str,"%i",&Num)!=1)
+	{
+		Num = 0;
+		SetResult(0);
+	}
+	else {
+		SetResult(1);
+	}
+	SetIntVal(VarId,Num);
+
+	return Err;
 }
 
 WORD TTLStrCompare()
