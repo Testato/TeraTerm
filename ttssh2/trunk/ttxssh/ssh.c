@@ -6861,6 +6861,9 @@ static BOOL handle_SSH2_open_failure(PTInstVar pvar)
 
 	free(cstring);
 
+	// チャネルの解放漏れを修正 (2007.5.1 maya)
+	ssh2_channel_delete(c);
+
 	return TRUE;
 }
 
@@ -7412,6 +7415,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.77  2007/04/27 12:56:47  yutakapon
+ * ユーザ認証リストをもらったら、認証ダイアログのラジオボタンを更新するようにした。
+ *
  * Revision 1.76  2007/04/27 12:41:33  yutakapon
  * "none"メソッドによりユーザ認証メソッドリストを取得し、パスワード認証選択時に
  * keyboard-interactiveログインを試みるようにした。
