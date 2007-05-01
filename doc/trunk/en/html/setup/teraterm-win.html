@@ -308,5 +308,43 @@ WindowMenu=on
 </pre>
 
 
+<h1><a name="eterm">Eterm lookfeel window</a></h1>
+
+<p>
+To specify the detailed settings for Eterm lookfeel window, edit the [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+; Use AlphaBlend API (On / Off)
+BGUseAlphaBlendAPI = On
+
+; Susie plugin path
+BGSPIPath = plugin
+
+; Fast window sizing/moving
+BGFastSizeMove = On
+
+; Flickerless window moving
+BGFlickerlessMove = On
+
+; If HideTitle = on and BGNoFrame = on,use window without frame
+; you can resize window with Alt + Shift + LeftDrag
+BGNoFrame = On
+
+; wildcard => random select
+BGThemeFile = theme\*.ini
+</pre>
+
+<pre>
+Default:
+BGUseAlphaBlendAPI = On
+BGSPIPath = plugin
+BGFastSizeMove = On
+BGFlickerlessMove = On
+BGNoFrame = Off
+BGThemeFile = theme\*.ini
+</pre>
+
+
 </BODY>
 </HTML>

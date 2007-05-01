@@ -4,17 +4,17 @@
 - コンパイラ
   Visual Studio 2005 SP1 (Standard Edition 以上)
 - インストーラ
-  Inno Setup 5.1.11 (http://innosetup.org/isinfo.php)
+  Inno Setup 5.1.12 (http://innosetup.org/isinfo.php)
   ISTool 5.1.8 (http://innosetup.org/isdl.php#qsp)
-    QuickStart Pack 5.1.10 の中に入っています。
-  Japanese-5-5.1.0.isl (http://innosetup.org/files/istrans/)
+    QuickStart Pack 5.1.11 の中に入っています。
+  Japanese-5-5.1.11.isl (http://innosetup.org/files/istrans/)
 - その他
   ActivePerl 5.8 以上
     OpenSSL のコンパイル、ドキュメントファイルの文字コード・改行コード変換に必要です。
 
 
 * ライブラリ
-- oniguruma 5.5.3 (http://www.geocities.jp/kosako3/oniguruma/)
+- oniguruma 5.7.0 (http://www.geocities.jp/kosako3/oniguruma/)
 - openssl 0.9.8e (http://www.openssl.org/)
 - zlib 1.2.3 (http://www.zlib.net/)
 
@@ -154,16 +154,12 @@
  * リリースの方法
   リリースの方法について以下に示します。
 
-  1. バージョンを確認し、日付を変更する
+  1. バージョンを上げ、日付を変更する
        ttermpro.rc
        ttxssh.rc
        ttmacro.rc // 変更時のみ
-       utf8-readme-j.txt
-       utf8-readme.txt
-       ssh2-readme-j.txt
-       ssh2-readme.txt
        teraterm.iss
-       ※変更があれば、バージョン情報と変更履歴は更新されているはず
+       html/about/hisotry.html
 
   2. 動作確認をする
        プログラムをコンパイルし直す

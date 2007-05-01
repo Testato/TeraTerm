@@ -4,17 +4,17 @@
 - Compiler
   Visual Studio 2005 SP1 Standard Edition (or higher edition)
 - Installer
-  Inno Setup 5.1.11 (http://innosetup.org/isinfo.php)
+  Inno Setup 5.1.12 (http://innosetup.org/isinfo.php)
   ISTool 5.1.8 (http://innosetup.org/isdl.php#qsp)
-    It is included in QuickStart Pack 5.1.10.
-  Japanese-5-5.1.0.isl (http://innosetup.org/files/istrans/)
+    It is included in QuickStart Pack 5.1.11.
+  Japanese-5-5.1.11.isl (http://innosetup.org/files/istrans/)
 - others
   ActivePerl 5.8 later version
     converts character-code and return-code of documents for building OpenSSL.
 
 
 * Libraries
-- oniguruma 5.5.3 (http://www.geocities.jp/kosako3/oniguruma/)
+- oniguruma 5.7.0 (http://www.geocities.jp/kosako3/oniguruma/)
 - openssl 0.9.8e (http://www.openssl.org/)
 - zlib 1.2.3 (http://www.zlib.net/)
 
@@ -149,15 +149,12 @@
 * How to release TeraTerm installation package
   To release TeraTerm installation package is shown in the following step:
 
-  1. Confirm software version and modify date.
+  1. Increase the software version and modify date.
        ttermpro.rc
        ttxssh.rc
        ttmacro.rc // only modifying
-       utf8-readme-j.txt
-       utf8-readme.txt
-       ssh2-readme-j.txt
-       ssh2-readme.txt
        teraterm.iss
+       html/about/hisotry.html
 
   2. Evaluate executable program file.
        - Rebuild TeraTerm program
