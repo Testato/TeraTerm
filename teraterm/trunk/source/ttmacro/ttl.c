@@ -1971,6 +1971,217 @@ WORD TTLShow()
   return Err;
 }
 
+// 'sprintf': Format a string in the style of sprintf
+//
+// (2007.5.1 yutaka)
+WORD TTLSprintf()
+{
+#define ARGMAX 5
+	enum arg_type {
+		INTEGER, 
+		STRING
+	};
+	typedef struct {
+		enum arg_type type;
+		int Num;
+		TStrVal Str;
+	} arg_t;
+	arg_t args[ARGMAX];
+
+	TStrVal Fmt;
+	int Num;
+	TStrVal Str;
+	WORD Err = 0, TmpErr;
+	int i, argc;
+	char buf[MaxStrLen];
+
+	GetStrVal(Fmt, &Err);
+	if (Err!=0) return 0;
+
+	memset(args, 0, sizeof(args));
+
+	for (i = 0 ; i < ARGMAX ; i++) {
+		// 数値として読めるかトライ
+		TmpErr = 0;
+		GetIntVal(&Num, &TmpErr);
+		if (TmpErr == 0) {
+			args[i].type = INTEGER;
+			args[i].Num = Num;
+
+		} else {
+			// 文字列として読めるかトライ
+			TmpErr = 0;
+			GetStrVal(Str, &TmpErr);
+			if (TmpErr == 0) {
+				args[i].type = STRING;
+				strcpy_s(args[i].Str, MaxStrLen, Str);
+
+			} else {
+				// もう引数がないと見なす
+				break;
+
+			}
+		}
+	}
+	argc = i;
+
+	if (argc == 0) {
+		_snprintf(buf, sizeof(buf), Fmt);
+
+	} else if (argc == 1) {
+		if (args[0].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num);
+		else
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str);
+
+	} else if (argc == 2) {
+		if (args[0].type == INTEGER && args[1].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Num);
+		if (args[0].type == INTEGER && args[1].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Str);
+		if (args[0].type == STRING && args[1].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Num);
+		if (args[0].type == STRING && args[1].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Str);
+
+	} else if (argc == 3) {
+		if (args[0].type == INTEGER && args[1].type == INTEGER && args[2].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Num, args[2].Num);
+		if (args[0].type == INTEGER && args[1].type == INTEGER && args[2].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Num, args[2].Str);
+
+		if (args[0].type == INTEGER && args[1].type == STRING && args[2].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Str, args[2].Num);
+		if (args[0].type == INTEGER && args[1].type == STRING && args[2].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Str, args[2].Str);
+
+		if (args[0].type == STRING && args[1].type == INTEGER && args[2].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Num, args[2].Num);
+		if (args[0].type == STRING && args[1].type == INTEGER && args[2].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Num, args[2].Str);
+
+		if (args[0].type == STRING && args[1].type == STRING && args[2].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Str, args[2].Num);
+		if (args[0].type == STRING && args[1].type == STRING && args[2].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Str, args[2].Str);
+
+	} else if (argc == 4) {
+		if (args[0].type == INTEGER && args[1].type == INTEGER && args[2].type == INTEGER && args[3].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Num, args[2].Num, args[3].Num);
+		if (args[0].type == INTEGER && args[1].type == INTEGER && args[2].type == INTEGER && args[3].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Num, args[2].Num, args[3].Str);
+		if (args[0].type == INTEGER && args[1].type == INTEGER && args[2].type == STRING && args[3].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Num, args[2].Str, args[3].Num);
+		if (args[0].type == INTEGER && args[1].type == INTEGER && args[2].type == STRING && args[3].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Num, args[2].Str, args[3].Str);
+
+		if (args[0].type == INTEGER && args[1].type == STRING && args[2].type == INTEGER && args[3].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Str, args[2].Num, args[3].Num);
+		if (args[0].type == INTEGER && args[1].type == STRING && args[2].type == INTEGER && args[3].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Str, args[2].Num, args[3].Str);
+		if (args[0].type == INTEGER && args[1].type == STRING && args[2].type == STRING && args[3].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Str, args[2].Str, args[3].Num);
+		if (args[0].type == INTEGER && args[1].type == STRING && args[2].type == STRING && args[3].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Str, args[2].Str, args[3].Str);
+
+		if (args[0].type == STRING && args[1].type == INTEGER && args[2].type == INTEGER && args[3].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Num, args[2].Num, args[3].Num);
+		if (args[0].type == STRING && args[1].type == INTEGER && args[2].type == INTEGER && args[3].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Num, args[2].Num, args[3].Str);
+		if (args[0].type == STRING && args[1].type == INTEGER && args[2].type == STRING && args[3].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Num, args[2].Str, args[3].Num);
+		if (args[0].type == STRING && args[1].type == INTEGER && args[2].type == STRING && args[3].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Num, args[2].Str, args[3].Str);
+
+		if (args[0].type == STRING && args[1].type == STRING && args[2].type == INTEGER && args[3].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Str, args[2].Num, args[3].Num);
+		if (args[0].type == STRING && args[1].type == STRING && args[2].type == INTEGER && args[3].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Str, args[2].Num, args[3].Str);
+		if (args[0].type == STRING && args[1].type == STRING && args[2].type == STRING && args[3].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Str, args[2].Str, args[3].Num);
+		if (args[0].type == STRING && args[1].type == STRING && args[2].type == STRING && args[3].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Str, args[2].Str, args[3].Str);
+
+	} else if (argc == 5) {
+		if (args[0].type == INTEGER && args[1].type == INTEGER && args[2].type == INTEGER && args[3].type == INTEGER && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Num, args[2].Num, args[3].Num, args[4].Num);
+		if (args[0].type == INTEGER && args[1].type == INTEGER && args[2].type == INTEGER && args[3].type == INTEGER && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Num, args[2].Num, args[3].Num, args[4].Str);
+		if (args[0].type == INTEGER && args[1].type == INTEGER && args[2].type == INTEGER && args[3].type == STRING && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Num, args[2].Num, args[3].Str, args[4].Num);
+		if (args[0].type == INTEGER && args[1].type == INTEGER && args[2].type == INTEGER && args[3].type == STRING && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Num, args[2].Num, args[3].Str, args[4].Str);
+		if (args[0].type == INTEGER && args[1].type == INTEGER && args[2].type == STRING && args[3].type == INTEGER && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Num, args[2].Str, args[3].Num, args[4].Num);
+		if (args[0].type == INTEGER && args[1].type == INTEGER && args[2].type == STRING && args[3].type == INTEGER && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Num, args[2].Str, args[3].Num, args[4].Str);
+		if (args[0].type == INTEGER && args[1].type == INTEGER && args[2].type == STRING && args[3].type == STRING && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Num, args[2].Str, args[3].Str, args[4].Num);
+		if (args[0].type == INTEGER && args[1].type == INTEGER && args[2].type == STRING && args[3].type == STRING && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Num, args[2].Str, args[3].Str, args[4].Str);
+
+		if (args[0].type == INTEGER && args[1].type == STRING && args[2].type == INTEGER && args[3].type == INTEGER && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Str, args[2].Num, args[3].Num, args[4].Num);
+		if (args[0].type == INTEGER && args[1].type == STRING && args[2].type == INTEGER && args[3].type == INTEGER && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Str, args[2].Num, args[3].Num, args[4].Str);
+		if (args[0].type == INTEGER && args[1].type == STRING && args[2].type == INTEGER && args[3].type == STRING && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Str, args[2].Num, args[3].Str, args[4].Num);
+		if (args[0].type == INTEGER && args[1].type == STRING && args[2].type == INTEGER && args[3].type == STRING && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Str, args[2].Num, args[3].Str, args[4].Str);
+		if (args[0].type == INTEGER && args[1].type == STRING && args[2].type == STRING && args[3].type == INTEGER && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Str, args[2].Str, args[3].Num, args[4].Num);
+		if (args[0].type == INTEGER && args[1].type == STRING && args[2].type == STRING && args[3].type == INTEGER && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Str, args[2].Str, args[3].Num, args[4].Str);
+		if (args[0].type == INTEGER && args[1].type == STRING && args[2].type == STRING && args[3].type == STRING && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Str, args[2].Str, args[3].Str, args[4].Num);
+		if (args[0].type == INTEGER && args[1].type == STRING && args[2].type == STRING && args[3].type == STRING && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Num, args[1].Str, args[2].Str, args[3].Str, args[4].Str);
+
+		if (args[0].type == STRING && args[1].type == INTEGER && args[2].type == INTEGER && args[3].type == INTEGER && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Num, args[2].Num, args[3].Num, args[4].Num);
+		if (args[0].type == STRING && args[1].type == INTEGER && args[2].type == INTEGER && args[3].type == INTEGER && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Num, args[2].Num, args[3].Num, args[4].Str);
+		if (args[0].type == STRING && args[1].type == INTEGER && args[2].type == INTEGER && args[3].type == STRING && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Num, args[2].Num, args[3].Str, args[4].Num);
+		if (args[0].type == STRING && args[1].type == INTEGER && args[2].type == INTEGER && args[3].type == STRING && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Num, args[2].Num, args[3].Str, args[4].Str);
+		if (args[0].type == STRING && args[1].type == INTEGER && args[2].type == STRING && args[3].type == INTEGER && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Num, args[2].Str, args[3].Num, args[4].Num);
+		if (args[0].type == STRING && args[1].type == INTEGER && args[2].type == STRING && args[3].type == INTEGER && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Num, args[2].Str, args[3].Num, args[4].Str);
+		if (args[0].type == STRING && args[1].type == INTEGER && args[2].type == STRING && args[3].type == STRING && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Num, args[2].Str, args[3].Str, args[4].Num);
+		if (args[0].type == STRING && args[1].type == INTEGER && args[2].type == STRING && args[3].type == STRING && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Num, args[2].Str, args[3].Str, args[4].Str);
+
+		if (args[0].type == STRING && args[1].type == STRING && args[2].type == INTEGER && args[3].type == INTEGER && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Str, args[2].Num, args[3].Num, args[4].Num);
+		if (args[0].type == STRING && args[1].type == STRING && args[2].type == INTEGER && args[3].type == INTEGER && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Str, args[2].Num, args[3].Num, args[4].Str);
+		if (args[0].type == STRING && args[1].type == STRING && args[2].type == INTEGER && args[3].type == STRING && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Str, args[2].Num, args[3].Str, args[4].Num);
+		if (args[0].type == STRING && args[1].type == STRING && args[2].type == INTEGER && args[3].type == STRING && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Str, args[2].Num, args[3].Str, args[4].Str);
+		if (args[0].type == STRING && args[1].type == STRING && args[2].type == STRING && args[3].type == INTEGER && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Str, args[2].Str, args[3].Num, args[4].Num);
+		if (args[0].type == STRING && args[1].type == STRING && args[2].type == STRING && args[3].type == INTEGER && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Str, args[2].Str, args[3].Num, args[4].Str);
+		if (args[0].type == STRING && args[1].type == STRING && args[2].type == STRING && args[3].type == STRING && args[4].type == INTEGER)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Str, args[2].Str, args[3].Str, args[4].Num);
+		if (args[0].type == STRING && args[1].type == STRING && args[2].type == STRING && args[3].type == STRING && args[4].type == STRING)
+			_snprintf(buf, sizeof(buf), Fmt, args[0].Str, args[1].Str, args[2].Str, args[3].Str, args[4].Str);
+	}
+
+	// マッチした行を inputstr へ格納する
+	LockVar();
+	SetInputStr(buf);  // ここでバッファがクリアされる
+	UnlockVar();
+
+	return Err;
+
+#undef ARGMAX
+}
+
 WORD TTLStatusBox()
 {
   WORD Err;
@@ -2596,6 +2807,7 @@ int ExecCmnd()
 		case RsvShow:	  Err = TTLShow(); break;
 		case RsvShowTT:
 			Err = TTLCommCmdInt(CmdShowTT,0); break;
+		case RsvSprintf:  Err = TTLSprintf(); break;
 		case RsvStatusBox:  Err = TTLStatusBox(); break;
 		case RsvStr2Code:	  Err = TTLStr2Code(); break;
 		case RsvStr2Int:	  Err = TTLStr2Int(); break;

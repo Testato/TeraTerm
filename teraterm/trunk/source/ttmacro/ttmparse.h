@@ -154,6 +154,7 @@
 #define RsvVar2Clipb  114   // add 'var2clipb' (2006.9.17 maya)
 #define RsvIfDefined  115   // add 'ifdefined' (2006.9.23 maya)
 #define RsvFileRead   116   // add 'fileread' (2006.11.1 yutaka)
+#define RsvSprintf    117   // add 'sprintf' (2007.5.1 yutaka)
 
 #define RsvOperator   150
 #define RsvNot	      151
