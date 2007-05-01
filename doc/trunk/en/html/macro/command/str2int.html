@@ -20,13 +20,24 @@ Format:
 <P></P>
 
 Converts the &lt;string&gt; which represents a decimal number to its numeric value.
+You can specify the &lt;string&gt as a format of decimal, hexadecimal and octal number.
+
+   A decimal number - 123
+   A hexadecimal number - 0x7b, $7b
+   A octal number - 0173
+   
 The value is returned in the integer variable &lt;intvar&gt;. If the string is converted successfully, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
 <P></P>
 
 <pre>
 Example:
-	str2int val '123'		val=123, result=1
-	str2int val '123abc'		result=0
+    <B>str2int val '123'</B>                                                val=123, result=1
+    <B>str2int val '123abc'</B>                                             result=0
+
+    <B>hexnum='0x456FE3'</B>
+    <B>str2int val hexnum</B>                                              val=4550627, result=1
+    <B>sprintf '%d %x' val val</B>
+    <B>messagebox inputstr 'test'</B>
 </pre>
 
 </BODY>
