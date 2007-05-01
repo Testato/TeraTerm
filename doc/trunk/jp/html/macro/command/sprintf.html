@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>sprintf</TITLE>
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">sprintf</FONT><BR><BR>
+
+形式：
+<UL>
+<B>
+sprintf FORMAT [ARGUMENT] ...
+</B>
+</UL>
+
+<pre>
+
+C言語の書式指定にしたがって、引数の数値や文字列をフォーマットして、文字列型変数 &lt;inputstr&gt; に代入する。
+なお、引数の個数は5つまでしか解釈されない。
+
+例：
+    sprintf 'TeraTerm 4.%d' 51
+    messagebox inputstr 'sprintf test(1)'
+
+    sprintf 'Windows %d (+%s)' 2000 'SP4'
+    messagebox inputstr 'sprintf test(2)'
+
+    sprintf '%s=%d %s=0x%x' 'dec' 10 'hex' 33
+    messagebox inputstr 'sprintf test macro(3)'
+
+</pre>
+
+
+</BODY>
+</HTML>

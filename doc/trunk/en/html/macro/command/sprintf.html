@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>sprintf</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<FONT SIZE="+2">sprintf</FONT><BR><BR>
+
+Format:
+<UL>
+<B>
+sprintf FORMAT [ARGUMENT] ...
+</B>
+</UL>
+
+<pre>
+
+FORMAT controls the output as in C language printf with ARGUMENTs converted to proper type first.
+The output string is stored in the string variable &lt;inputstr&gt;.
+And also, the argument counts are interpreted only up to five.
+
+Example:
+    sprintf 'TeraTerm 4.%d' 51
+    messagebox inputstr 'sprintf test(1)'
+
+    sprintf 'Windows %d (+%s)' 2000 'SP4'
+    messagebox inputstr 'sprintf test(2)'
+
+    sprintf '%s=%d %s=0x%x' 'dec' 10 'hex' 33
+    messagebox inputstr 'sprintf test macro(3)'
+
+</pre>
+
+
+</BODY>
+</HTML>
