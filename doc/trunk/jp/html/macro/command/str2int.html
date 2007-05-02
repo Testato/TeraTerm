@@ -21,20 +21,21 @@ str2int &lt;intvar&gt; &lt;string&gt;
 <pre>
 
 文字列 &lt;string&gt; を整数値に変換し、整数変数  &lt;intvar&gt; に代入する。
-文字列 &lt;string&gt; には10進、16進、8進を指定することができる。以下に例を示す。
+文字列 &lt;string&gt; には10進、16進を指定することができる。以下に例を示す。
 
-   10進 … 123
+   10進 … 123, 0009
    16進 … 0x7b, $7b
-    8進 … 0173
 
 正常に変換できた場合は1、できなかった場合は0がシステム変数 result に代入される。
 
 例：
     <B>str2int val '123'</B>                                                val=123, result=1
-    <B>str2int val '123abc'</B>                                             result=0
+    <B>str2int val '123abc'</B>                                             val=123, result=1
+    <B>str2int val '0009'</B>                                               val=9,   result=1
+    <B>str2int val 'abc'</B>                                                val=0,   result=0
 
     <B>hexnum='0x456FE3'</B>
-    <B>str2int val hexnum</B>                                              val=4550627, result=1
+    <B>str2int val hexnum</B>                                               val=4550627, result=1
     <B>sprintf '%d %x' val val</B>
     <B>messagebox inputstr 'test'</B>
 </pre>
