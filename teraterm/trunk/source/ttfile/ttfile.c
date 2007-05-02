@@ -352,7 +352,7 @@ BOOL FAR PASCAL GetTransFname
 #ifdef I18N
 		strcpy(uimsg, TitSendFile);
 		get_lang_msg("FILEDLG_TRANS_TITLE_SENDFILE", uimsg, UILanguageFile);
-		strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+		strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
 		strcat(fv->DlgCaption,"Send file");
 #endif
@@ -361,7 +361,7 @@ BOOL FAR PASCAL GetTransFname
 #ifdef I18N
 		strcpy(uimsg, TitLog);
 		get_lang_msg("FILEDLG_TRANS_TITLE_LOG", uimsg, UILanguageFile);
-		strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+		strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
 		strcat(fv->DlgCaption,"Log");
 #endif
@@ -370,7 +370,7 @@ BOOL FAR PASCAL GetTransFname
 #ifdef I18N
 		strcpy(uimsg, TitBPSend);
 		get_lang_msg("FILEDLG_TRANS_TITLE_BPSEND", uimsg, UILanguageFile);
-		strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+		strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
 		strcat(fv->DlgCaption,"B-Plus Send");
 #endif
@@ -562,7 +562,7 @@ BOOL FAR PASCAL GetMultiFname
 #ifdef I18N
       strcpy(uimsg, TitKmtSend);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"Kermit Send");
 #endif
@@ -571,7 +571,7 @@ BOOL FAR PASCAL GetMultiFname
 #ifdef I18N
       strcpy(uimsg, TitZSend);
       get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"ZMODEM Send");
 #endif
@@ -580,7 +580,7 @@ BOOL FAR PASCAL GetMultiFname
 #ifdef I18N
       strcpy(uimsg, TitQVSend);
 	  get_lang_msg("FILEDLG_TRANS_TITLE_QVSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"Quick-VAN Send");
 #endif
@@ -844,7 +844,7 @@ void FAR PASCAL SetFileVar(PFileVar fv)
 #ifdef I18N
       strcpy(uimsg, TitLog);
       get_lang_msg("FILEDLG_TRANS_TITLE_LOG", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,TitLog);
 #endif
@@ -853,7 +853,7 @@ void FAR PASCAL SetFileVar(PFileVar fv)
 #ifdef I18N
       strcpy(uimsg, TitSendFile);
       get_lang_msg("FILEDLG_TRANS_TITLE_SENDFILE", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,TitSendFile);
 #endif
@@ -862,7 +862,7 @@ void FAR PASCAL SetFileVar(PFileVar fv)
 #ifdef I18N
       strcpy(uimsg, TitKmtRcv);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTRCV", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,TitKmtRcv);
 #endif
@@ -871,7 +871,7 @@ void FAR PASCAL SetFileVar(PFileVar fv)
 #ifdef I18N
       strcpy(uimsg, TitKmtGet);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTGET", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,TitKmtGet);
 #endif
@@ -880,7 +880,7 @@ void FAR PASCAL SetFileVar(PFileVar fv)
 #ifdef I18N
       strcpy(uimsg, TitKmtSend);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,TitKmtSend);
 #endif
@@ -889,7 +889,7 @@ void FAR PASCAL SetFileVar(PFileVar fv)
 #ifdef I18N
       strcpy(uimsg, TitKmtFin);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTFIN", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,TitKmtFin);
 #endif
@@ -898,7 +898,7 @@ void FAR PASCAL SetFileVar(PFileVar fv)
 #ifdef I18N
       strcpy(uimsg, TitXRcv);
       get_lang_msg("FILEDLG_TRANS_TITLE_XRCV", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,TitXRcv);
 #endif
@@ -907,7 +907,7 @@ void FAR PASCAL SetFileVar(PFileVar fv)
 #ifdef I18N
       strcpy(uimsg, TitXSend);
       get_lang_msg("FILEDLG_TRANS_TITLE_XSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,TitXSend);
 #endif
@@ -916,7 +916,7 @@ void FAR PASCAL SetFileVar(PFileVar fv)
 #ifdef I18N
       strcpy(uimsg, TitZRcv);
       get_lang_msg("FILEDLG_TRANS_TITLE_ZRCV", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,TitZRcv);
 #endif
@@ -925,7 +925,7 @@ void FAR PASCAL SetFileVar(PFileVar fv)
 #ifdef I18N
       strcpy(uimsg, TitZSend);
       get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,TitZSend);
 #endif
@@ -934,7 +934,7 @@ void FAR PASCAL SetFileVar(PFileVar fv)
 #ifdef I18N
       strcpy(uimsg, TitBPRcv);
       get_lang_msg("FILEDLG_TRANS_TITLE_BPRCV", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,TitBPRcv);
 #endif
@@ -943,7 +943,7 @@ void FAR PASCAL SetFileVar(PFileVar fv)
 #ifdef I18N
       strcpy(uimsg, TitBPSend);
       get_lang_msg("FILEDLG_TRANS_TITLE_BPSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,TitBPSend);
 #endif
@@ -952,7 +952,7 @@ void FAR PASCAL SetFileVar(PFileVar fv)
 #ifdef I18N
       strcpy(uimsg, TitQVRcv);
       get_lang_msg("FILEDLG_TRANS_TITLE_QVRCV", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,TitQVRcv);
 #endif
@@ -961,7 +961,7 @@ void FAR PASCAL SetFileVar(PFileVar fv)
 #ifdef I18N
       strcpy(uimsg, TitQVSend);
       get_lang_msg("FILEDLG_TRANS_TITLE_QVSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,TitQVSend);
 #endif
@@ -1106,7 +1106,7 @@ BOOL FAR PASCAL GetXFname
   {
     strcpy(uimsg, TitXRcv);
 	get_lang_msg("FILEDLG_TRANS_TITLE_XRCV", uimsg, UILanguageFile);
-    strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+    strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
   }
 #else
     strcat(fv->DlgCaption,"Receive");
@@ -1116,7 +1116,7 @@ BOOL FAR PASCAL GetXFname
   {
     strcpy(uimsg, TitXSend);
     get_lang_msg("FILEDLG_TRANS_TITLE_XSEND", uimsg, UILanguageFile);
-    strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+    strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
   }
 #else
     strcat(fv->DlgCaption,"Send");
@@ -1362,6 +1362,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  2007/01/31 13:15:27  maya
+ * 言語ファイルがないときに \0 が正しく認識されないバグを修正した。
+ *
  * Revision 1.15  2007/01/22 13:50:11  maya
  * 表示メッセージの読み込み対応
  *

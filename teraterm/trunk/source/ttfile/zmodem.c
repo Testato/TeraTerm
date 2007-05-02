@@ -507,7 +507,7 @@ void ZInit
 #ifdef I18N
       strcpy(uimsg, TitZSend);
       get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"Send");
 #endif
@@ -516,7 +516,7 @@ void ZInit
 #ifdef I18N
       strcpy(uimsg, TitZRcv);
       get_lang_msg("FILEDLG_TRANS_TITLE_ZRCV", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"Receive");
 #endif

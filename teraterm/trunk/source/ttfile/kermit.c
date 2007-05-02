@@ -600,7 +600,7 @@ void KmtInit
 #ifdef I18N
       strcpy(uimsg, TitKmtSend);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"Send");
 #endif
@@ -609,7 +609,7 @@ void KmtInit
 #ifdef I18N
       strcpy(uimsg, TitKmtRcv);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTRCV", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"Receive");
 #endif
@@ -618,7 +618,7 @@ void KmtInit
 #ifdef I18N
       strcpy(uimsg, TitKmtGet);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTGET", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"Get");
 #endif
@@ -627,7 +627,7 @@ void KmtInit
 #ifdef I18N
       strcpy(uimsg, TitKmtFin);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTFIN", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"Finish");
 #endif

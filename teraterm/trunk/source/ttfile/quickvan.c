@@ -114,7 +114,7 @@ void QVInit
     strcat(fv->DlgCaption,"Tera Term: ");
     strcpy(uimsg, TitQVRcv);
     get_lang_msg("FILEDLG_TRANS_TITLE_QVRCV", uimsg, UILanguageFile);
-    strncat(fv->DlgCaption, uimsg, strlen(fv->DlgCaption)-1);
+    strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
   }
 #else
     strcat(fv->DlgCaption,"Tera Term: Quick-VAN Receive");
