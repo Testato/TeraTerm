@@ -60,8 +60,6 @@ Source: ..\release\wait_regex.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\lang\Japanese.lng; DestDir: {app}\lang; Components: TeraTerm; Attribs: readonly; Flags: uninsremovereadonly overwritereadonly
 Source: ..\..\ttssh2\ttxssh\Release\ttxssh.dll; DestDir: {app}; Components: TTSSH
 Source: ..\release\ssh_known_hosts; DestDir: {app}; Components: TTSSH; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
-Source: ..\release\OpenSSL-LICENSE.txt; DestDir: {app}; Components: TTSSH
-Source: ..\release\OpenSSH-LICENSE.txt; DestDir: {app}; Components: TTSSH
 Source: ..\cygterm\cygterm.exe; DestDir: {app}; Components: cygterm
 Source: ..\cygterm\cygterm.cfg; DestDir: {app}; Components: cygterm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\release\LogMeTT_license.txt; DestDir: {app}; Components: LogMeTT
