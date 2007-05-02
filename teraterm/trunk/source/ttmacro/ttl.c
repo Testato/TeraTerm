@@ -2240,16 +2240,27 @@ WORD TTLStr2Int()
 	}
 
 	// '%d'から'%i'へ変更により、10進以外の数値を変換できるようにする。 (2007.5.1 yutaka)
+	// 下位互換性のため10進と16進のみのサポートとする。(2007.5.2 yutaka)
 	// 10 : decimal
 	// 0x10, $10: hex
-	// 010: octal
-	if (sscanf(Str,"%i",&Num)!=1)
-	{
-		Num = 0;
-		SetResult(0);
-	}
-	else {
-		SetResult(1);
+	if (Str[0] == '0' && tolower(Str[1]) == 'x') {
+		if (sscanf(Str,"%i",&Num)!=1)
+		{
+			Num = 0;
+			SetResult(0);
+		}
+		else {
+			SetResult(1);
+		}
+	} else {
+		if (sscanf(Str,"%d",&Num)!=1)
+		{
+			Num = 0;
+			SetResult(0);
+		}
+		else {
+			SetResult(1);
+		}
 	}
 	SetIntVal(VarId,Num);
 
