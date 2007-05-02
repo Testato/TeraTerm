@@ -17,6 +17,11 @@
 #include "ttlib.h"
 #include "ttmenc.h"
 
+// Oniguruma: Regular expression library
+#define ONIG_EXTERN extern
+#include "oniguruma.h"
+#undef ONIG_EXTERN
+
 // for _findXXXX() functions
 #include <io.h>
 
@@ -1974,6 +1979,7 @@ WORD TTLShow()
 // 'sprintf': Format a string in the style of sprintf
 //
 // (2007.5.1 yutaka)
+#if 0
 WORD TTLSprintf()
 {
 #define ARGMAX 5
@@ -2181,6 +2187,150 @@ WORD TTLSprintf()
 
 #undef ARGMAX
 }
+#else
+WORD TTLSprintf()
+{
+	TStrVal Fmt;
+	int Num;
+	TStrVal Str;
+	WORD Err = 0, TmpErr;
+	char buf[MaxStrLen];
+	char *p, subFmt[MaxStrLen], buf2[MaxStrLen];
+
+	int r;
+	unsigned char *start, *range, *end;
+	regex_t* reg;
+	OnigErrorInfo einfo;
+	OnigRegion *region;
+	UChar* pattern, * str;
+
+	pattern = (UChar* )"^%[-\\+0 ]*\\d*$";
+
+	r = onig_new(&reg, pattern, pattern + strlen(pattern),
+		ONIG_OPTION_DEFAULT, ONIG_ENCODING_ASCII, ONIG_SYNTAX_DEFAULT, &einfo);
+	if (r != ONIG_NORMAL) {
+		char s[ONIG_MAX_ERROR_MESSAGE_LEN];
+		onig_error_code_to_str(s, r, &einfo);
+		fprintf(stderr, "ERROR: %s\n", s);
+		return -1;
+	}
+
+	region = onig_region_new();
+
+	GetStrVal(Fmt, &Err);
+	if (Err!=0) return 0;
+
+	p = Fmt;
+	memset(buf, 0, sizeof(buf));
+	memset(subFmt, 0, sizeof(subFmt));
+	while(*p != '\0') {
+		if (strlen(subFmt)>0) {
+			switch (*p) {
+				case '%':
+					if (strlen(subFmt) == 1) { // "%%" -> "%"
+						strncat(buf, "%", sizeof(buf)-strlen(buf)-1);
+						memset(subFmt, 0, sizeof(subFmt));
+					}
+					else {
+						// 一つ手前までをそのまま buf に格納
+						strncat(buf, subFmt, sizeof(buf)-strlen(buf)-1);
+						memset(subFmt, 0, sizeof(subFmt));
+						// 仕切り直し
+						strncat(subFmt, p, 1);
+					}
+					break;
+				case 'c':
+				case 'd':
+				case 'i':
+				case 'o':
+				case 'u':
+				case 'x':
+				case 'X':
+					// % と *p の間が正しいかチェック
+					str = (UChar* )subFmt;
+					end   = str + strlen(subFmt);
+					start = str;
+					range = end;
+					r = onig_search(reg, str, end, start, range, region, ONIG_OPTION_NONE);
+					if (r != 0) {
+						return ErrSyntax;
+					}
+
+					strncat(subFmt, p, 1);
+
+					// 数値として読めるかトライ
+					TmpErr = 0;
+					GetIntVal(&Num, &TmpErr);
+					if (TmpErr == 0) {
+						_snprintf(buf2, sizeof(buf2), subFmt, Num);
+					}
+					else {
+						return TmpErr;
+					}
+
+					strncat(buf, buf2, sizeof(buf)-strlen(buf)-1);
+					memset(subFmt, 0, sizeof(subFmt));
+					break;
+
+				case 's':
+					// % と *p の間が正しいかチェック
+					str = (UChar* )subFmt;
+					end   = str + strlen(subFmt);
+					start = str;
+					range = end;
+					r = onig_search(reg, str, end, start, range, region, ONIG_OPTION_NONE);
+					if (r != 0) {
+						return ErrSyntax;
+					}
+
+					strncat(subFmt, p, 1);
+
+					// 文字列として読めるかトライ
+					TmpErr = 0;
+					GetStrVal(Str, &TmpErr);
+					if (TmpErr == 0) {
+						_snprintf(buf2, sizeof(buf2), subFmt, Str);
+					}
+					else {
+						return TmpErr;
+					}
+
+					strncat(buf, buf2, sizeof(buf)-strlen(buf)-1);
+					memset(subFmt, 0, sizeof(subFmt));
+					break;
+
+				default:
+					strncat(subFmt, p, 1);
+			}
+		}
+		else if (*p == '%') {
+			strncat(subFmt, p, 1);
+		}
+		else if (strlen(buf) < MaxStrLen) {
+			strncat(buf, p, 1);
+		}
+		else {
+			break;
+		}
+		p++;
+	}
+	if (strlen(subFmt) > 0) {
+		strncat(buf, subFmt, sizeof(buf)-strlen(buf)-1);
+	}
+	buf[sizeof(buf)-1] = '\0';
+
+	// マッチした行を inputstr へ格納する
+	LockVar();
+	SetInputStr(buf);  // ここでバッファがクリアされる
+	UnlockVar();
+
+	onig_region_free(region, 1);
+	onig_free(reg);
+	onig_end();
+
+	return Err;
+}
+#endif
 
 WORD TTLStatusBox()
 {
