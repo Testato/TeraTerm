@@ -2197,6 +2197,14 @@ WORD TTLSprintf()
 	char buf[MaxStrLen];
 	char *p, subFmt[MaxStrLen], buf2[MaxStrLen];
 
+	enum arg_type {
+		INTEGER,
+		DOUBLE,
+		STRING,
+		NONE
+	};
+	enum arg_type type;
+
 	int r;
 	unsigned char *start, *range, *end;
 	regex_t* reg;
@@ -2204,7 +2212,7 @@ WORD TTLSprintf()
 	OnigRegion *region;
 	UChar* pattern, * str;
 
-	pattern = (UChar* )"^%[-\\+0 ]*\\d*$";
+	pattern = (UChar* )"^%[-+0 #]*([1-9]?[0-9]*)?(\\.[0-9]*)?$";
 
 	r = onig_new(&reg, pattern, pattern + strlen(pattern),
 		ONIG_OPTION_DEFAULT, ONIG_ENCODING_ASCII, ONIG_SYNTAX_DEFAULT, &einfo);
@@ -2212,19 +2220,28 @@ WORD TTLSprintf()
 		char s[ONIG_MAX_ERROR_MESSAGE_LEN];
 		onig_error_code_to_str(s, r, &einfo);
 		fprintf(stderr, "ERROR: %s\n", s);
-		return -1;
+		LockVar();
+		SetResult(-1);
+		UnlockVar();
+		goto exit2;
 	}
 
 	region = onig_region_new();
 
 	GetStrVal(Fmt, &Err);
-	if (Err!=0) return 0;
+	if (Err!=0) {
+		LockVar();
+		SetResult(1);
+		UnlockVar();
+		goto exit2;
+	}
 
 	p = Fmt;
 	memset(buf, 0, sizeof(buf));
 	memset(subFmt, 0, sizeof(subFmt));
 	while(*p != '\0') {
 		if (strlen(subFmt)>0) {
+			type = NONE;
 			switch (*p) {
 				case '%':
 					if (strlen(subFmt) == 1) { // "%%" -> "%"
@@ -2234,11 +2251,12 @@ WORD TTLSprintf()
 					else {
 						// 一つ手前までをそのまま buf に格納
 						strncat(buf, subFmt, sizeof(buf)-strlen(buf)-1);
-						memset(subFmt, 0, sizeof(subFmt));
 						// 仕切り直し
+						memset(subFmt, 0, sizeof(subFmt));
 						strncat(subFmt, p, 1);
 					}
 					break;
+
 				case 'c':
 				case 'd':
 				case 'i':
@@ -2246,53 +2264,74 @@ WORD TTLSprintf()
 				case 'u':
 				case 'x':
 				case 'X':
-					// % と *p の間が正しいかチェック
-					str = (UChar* )subFmt;
-					end   = str + strlen(subFmt);
-					start = str;
-					range = end;
-					r = onig_search(reg, str, end, start, range, region, ONIG_OPTION_NONE);
-					if (r != 0) {
-						return ErrSyntax;
-					}
+					type = INTEGER;
 
-					strncat(subFmt, p, 1);
-
-					// 数値として読めるかトライ
-					TmpErr = 0;
-					GetIntVal(&Num, &TmpErr);
-					if (TmpErr == 0) {
-						_snprintf(buf2, sizeof(buf2), subFmt, Num);
+				case 'e':
+				case 'E':
+				case 'f':
+				case 'g':
+				case 'G':
+				case 'a':
+				case 'A':
+					if (type == NONE) {
+						type = DOUBLE;
 					}
-					else {
-						return TmpErr;
-					}
-
-					strncat(buf, buf2, sizeof(buf)-strlen(buf)-1);
-					memset(subFmt, 0, sizeof(subFmt));
-					break;
 
 				case 's':
-					// % と *p の間が正しいかチェック
+					if (type == NONE) {
+						type = STRING;
+					}
+
+					// "%" と *p の間が正しいかチェック
 					str = (UChar* )subFmt;
 					end   = str + strlen(subFmt);
 					start = str;
 					range = end;
 					r = onig_search(reg, str, end, start, range, region, ONIG_OPTION_NONE);
 					if (r != 0) {
-						return ErrSyntax;
+						LockVar();
+						SetResult(2);
+						UnlockVar();
+						Err = ErrSyntax;
+						goto exit1;
 					}
 
 					strncat(subFmt, p, 1);
 
-					// 文字列として読めるかトライ
-					TmpErr = 0;
-					GetStrVal(Str, &TmpErr);
-					if (TmpErr == 0) {
-						_snprintf(buf2, sizeof(buf2), subFmt, Str);
+					if (type == STRING) {
+						// 文字列として読めるかトライ
+						TmpErr = 0;
+						GetStrVal(Str, &TmpErr);
+						if (TmpErr == 0) {
+							_snprintf(buf2, sizeof(buf2), subFmt, Str);
+						}
+						else {
+							LockVar();
+							SetResult(3);
+							UnlockVar();
+							Err = TmpErr;
+							goto exit1;
+						}
 					}
 					else {
-						return TmpErr;
+						// 数値として読めるかトライ
+						TmpErr = 0;
+						GetIntVal(&Num, &TmpErr);
+						if (TmpErr == 0) {
+							if (type == INTEGER) {
+								_snprintf(buf2, sizeof(buf2), subFmt, Num);
+							}
+							else {
+								_snprintf(buf2, sizeof(buf2), subFmt, (double)Num);
+							}
+						}
+						else {
+							LockVar();
+							SetResult(3);
+							UnlockVar();
+							Err = TmpErr;
+							goto exit1;
+						}
 					}
 
 					strncat(buf, buf2, sizeof(buf)-strlen(buf)-1);
@@ -2322,9 +2361,12 @@ WORD TTLSprintf()
 	// マッチした行を inputstr へ格納する
 	LockVar();
 	SetInputStr(buf);  // ここでバッファがクリアされる
+	SetResult(0);
 	UnlockVar();
 
+exit1:
 	onig_region_free(region, 1);
+exit2:
 	onig_free(reg);
 	onig_end();
 
