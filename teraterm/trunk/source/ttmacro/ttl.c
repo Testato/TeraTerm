@@ -2137,7 +2137,7 @@ WORD TTLSprintf()
 		else if (*p == '%') {
 			strncat(subFmt, p, 1);
 		}
-		else if (strlen(buf) < MaxStrLen) {
+		else if (strlen(buf) < sizeof(buf)-1) {
 			strncat(buf, p, 1);
 		}
 		else {
