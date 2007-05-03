@@ -2004,7 +2004,7 @@ WORD TTLSprintf()
 	OnigRegion *region;
 	UChar* pattern, * str;
 
-	pattern = (UChar* )"^%[-+0 #]*([1-9]?[0-9]*)?(\\.[0-9]*)?$";
+	pattern = (UChar* )"^%[-+0 #]*(?:[1-9][0-9]*)?(?:\\.[0-9]*)?$";
 
 	r = onig_new(&reg, pattern, pattern + strlen(pattern),
 		ONIG_OPTION_DEFAULT, ONIG_ENCODING_ASCII, ONIG_SYNTAX_DEFAULT, &einfo);
