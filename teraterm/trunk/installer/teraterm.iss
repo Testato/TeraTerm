@@ -393,7 +393,7 @@ end;
 [InstallDelete]
 Name: {app}\OpenSSH-LICENCE.txt; Type: files; Tasks: ; Languages: ; Components: TTSSH
 Name: {app}\cygterm-README.txt; Type: files
-Name: {app}\cygterm-README.txt; Type: files
+Name: {app}\cygterm-README-j.txt; Type: files
 Name: {app}\keycode.txt; Type: files
 Name: {app}\keycodej.txt; Type: files
 Name: {app}\RE.txt; Type: files
@@ -402,6 +402,8 @@ Name: {app}\ssh2_readme.txt; Type: files
 Name: {app}\ssh2_readme-j.txt; Type: files
 Name: {app}\utf8_readme.txt; Type: files
 Name: {app}\utf8_readme-j.txt; Type: files
+Name: {app}\OpenSSH-LICENSE.txt; Type: files
+Name: {app}\OpenSSL-LICENSE.txt; Type: files
 
 [_ISToolPreCompile]
 Name: convtext.bat
