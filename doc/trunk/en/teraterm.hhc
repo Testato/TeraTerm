@@ -405,6 +405,11 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Tera Term setup file">
+			<param name="Local" value="html\setup\teraterm.html">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Keyboard setup file">
 			<param name="Local" value="html\setup\keyboard.html">
 			<param name="ImageNumber" value="11">
