@@ -249,9 +249,8 @@ void OpenHelp(HWND HWin, UINT Command, DWORD Data)
   strcpy(ts.UIMsg, HTML_HELP);
   get_lang_msg("HELPFILE", ts.UIMsg, ts.UILanguageFile);
 
-  if (HWin == NULL) {
-    HWin = GetDesktopWindow();
-  }
+  // ヘルプのオーナーは常にデスクトップになる (2007.5.12 maya)
+  HWin = GetDesktopWindow();
   _snprintf(HelpFN, sizeof(HelpFN), "%s\\%s", ts.HomeDir, ts.UIMsg);
   if (HtmlHelp(HWin, HelpFN, Command, Data) == NULL && Command != HH_CLOSE_ALL) {
     char buf[MAXPATHLEN];
@@ -283,6 +282,9 @@ void OpenHtmlHelp(HWND HWin, char *filename)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2007/04/09 15:42:57  maya
+ * hlp の替わりに chm を開くように変更した。
+ *
  * Revision 1.9  2006/12/23 02:50:17  maya
  * htmlヘルプをプログラムから呼び出すための準備をした。
  *
