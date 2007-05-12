@@ -67,8 +67,7 @@ MENU_WINDOW=ウィンドウ(&W)
 MENU_WINDOW_WINDOW=ウィンドウ(&W)
 
 MENU_HELP=ヘルプ(&H)
-MENU_HELP_INDEX=目次(English) (&I)
-MENU_HELP_USING=目次(Japanese) (&N)
+MENU_HELP_INDEX=目次(&I)
 MENU_HELP_ABOUT=Tera Termについて(&A)...
 
 MENU_SHOW_MENUBAR=メニューバー表示(&B)

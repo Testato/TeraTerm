@@ -67,8 +67,7 @@ MENU_WINDOW=&Window
 MENU_WINDOW_WINDOW=&Window
 
 MENU_HELP=&Help
-MENU_HELP_INDEX=&Index(English)
-MENU_HELP_USING=I&ndex(Japanese)
+MENU_HELP_INDEX=&Index
 MENU_HELP_ABOUT=&About Tera Term...
 
 MENU_SHOW_MENUBAR=Show menu &bar
