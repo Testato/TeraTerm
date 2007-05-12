@@ -107,11 +107,7 @@ Name: Collector; Description: Collector; Types: full
 
 [Icons]
 Name: {group}\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; IconIndex: 0; Components: TeraTerm; Flags: createonlyiffileexists
-Name: {group}\TeraTerm Document; Filename: {app}\utf8_readme.txt; Components: TeraTerm; Flags: createonlyiffileexists
-Name: {group}\TeraTerm Document(Japanese); Filename: {app}\utf8_readme-j.txt; Components: TeraTerm; Flags: createonlyiffileexists
 Name: {group}\{cm:UninstallProgram,{#AppName}}; Filename: {uninstallexe}; Components: TeraTerm; Flags: createonlyiffileexists
-Name: {group}\TTSSH Document; Filename: {app}\ssh2_readme.txt; Components: TTSSH; Flags: createonlyiffileexists
-Name: {group}\TTSSH Document(Japanese); Filename: {app}\ssh2_readme-j.txt; Components: TTSSH; Flags: createonlyiffileexists
 Name: {group}\LogMeTT; Filename: {app}\LogMeTT.exe; WorkingDir: {app}; IconFilename: {app}\logMeTT.exe; IconIndex: 0; Components: LogMeTT; Flags: createonlyiffileexists
 Name: {group}\TTLEdit; Filename: {app}\TTLEdit.exe; WorkingDir: {app}; IconFilename: {app}\TTLEdit.exe; IconIndex: 0; Components: LogMeTT; Flags: createonlyiffileexists
 Name: {group}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; IconIndex: 0; Components: TeraTerm_Menu; Flags: createonlyiffileexists
@@ -404,6 +400,10 @@ Name: {app}\utf8_readme.txt; Type: files
 Name: {app}\utf8_readme-j.txt; Type: files
 Name: {app}\OpenSSH-LICENSE.txt; Type: files
 Name: {app}\OpenSSL-LICENSE.txt; Type: files
+Name: {group}\TeraTerm Document.lnk; Type: files
+Name: {group}\TeraTerm Document(Japanese).lnk; Type: files
+Name: {group}\TTSSH Document.lnk; Type: files
+Name: {group}\TTSSH Document(Japanese).lnk; Type: files
 
 [_ISToolPreCompile]
 Name: convtext.bat
