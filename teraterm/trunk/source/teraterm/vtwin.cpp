@@ -1196,12 +1196,14 @@ void CVTWindow::SetupTerm()
 void CVTWindow::Startup()
 {
   /* auto log */
+  /* OnCommOpen で開始されるのでここでは開始しない (2007.5.14 maya)
   if ((ts.LogFN[0]!=0) && NewFileVar(&LogVar))
   {
     LogVar->DirLen = 0;
     strcpy(LogVar->FullName,ts.LogFN);
     LogStart();
   }
+  */
 
   if ((TopicName[0]==0) && (ts.MacroFN[0]!=0))
   { // start the macro specified in the command line or setup file
@@ -4886,6 +4888,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.62  2007/05/01 14:09:53  maya
+ * ParentOnly の表記を変更した。
+ *
  * Revision 1.61  2007/04/24 16:32:19  maya
  * TCPLocalEcho/TCPCRSend を無効にするオプションを追加した。
  *
