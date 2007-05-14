@@ -256,6 +256,8 @@ void ConvertLogname(char *c)
 {
   char buf[MAXPATHLEN], buf2[MAXPATHLEN], *p = c;
 
+  memset(buf, 0, sizeof(buf));
+
   while(*p != '\0') {
     if (*p == '&' && *(p+1) != '\0') {
       switch (*(p+1)) {
@@ -1242,6 +1244,9 @@ void QVStart(int mode)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2007/05/14 13:29:58  maya
+ * ログファイル名中の &h を、接続中のホスト名に変換する機能を追加した。
+ *
  * Revision 1.9  2007/01/21 16:18:35  maya
  * 表示メッセージの読み込み対応
  *
