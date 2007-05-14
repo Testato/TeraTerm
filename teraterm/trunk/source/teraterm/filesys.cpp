@@ -251,6 +251,43 @@ void FreeFileVar(PFileVar *fv)
   }
 }
 
+// &h をホスト名に置換 (2007.5.14)
+void ConvertLogname(char *c)
+{
+  char buf[MAXPATHLEN], buf2[MAXPATHLEN], *p = c;
+
+  while(*p != '\0') {
+    if (*p == '&' && *(p+1) != '\0') {
+      switch (*(p+1)) {
+        case 'h':
+          if (cv.Open) {
+            if (cv.PortType == IdTCPIP) {
+              _snprintf(buf2, sizeof(buf2), "%s%s", buf, ts.HostName);
+              strncpy(buf, buf2, sizeof(buf)-strlen(buf)-1);
+            }
+            else if (cv.PortType == IdSerial) {
+              _snprintf(buf2, sizeof(buf2), "%sCOM%d", buf, ts.ComPort);
+              strncpy(buf, buf2, sizeof(buf)-strlen(buf)-1);
+            }
+          }
+          break;
+        default:
+          if (strlen(buf) < sizeof(buf)-3) {
+            strncat(buf, p, 2);
+          }
+      }
+      p++;
+    }
+    else {
+          if (strlen(buf) < sizeof(buf)-2) {
+            strncat(buf, p, 1);
+          }
+    }
+    p++;
+  }
+  strcpy(c, buf);
+}
+
 extern "C" {
 void LogStart()
 {
@@ -283,6 +320,9 @@ void LogStart()
 		strncat(LogVar->FullName, ts.LogDefaultName, sizeof(LogVar->FullName));
 		ParseStrftimeFileName(LogVar->FullName);
 
+		// &h をホスト名に置換 (2007.5.14)
+		ConvertLogname(LogVar->FullName);
+
 		if (! (*GetTransFname)(LogVar, ts.FileDir, GTF_LOG, &Option))
 		{
 			FreeFileVar(&LogVar);
@@ -308,8 +348,11 @@ void LogStart()
 		ts.Append &= 0x1; // 1bitにマスクする
 
 	}
-	else
+	else {
+		// &h をホスト名に置換 (2007.5.14)
+		ConvertLogname(LogVar->FullName);
 		(*SetFileVar)(LogVar);
+	}
 
 	if (ts.TransBin > 0)
 	{
@@ -1199,6 +1242,9 @@ void QVStart(int mode)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2007/01/21 16:18:35  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.8  2007/01/04 15:11:44  maya
  * 表示メッセージの読み込み対応
  *
