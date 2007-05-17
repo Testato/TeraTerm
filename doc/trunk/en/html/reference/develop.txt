@@ -168,9 +168,11 @@
 
   4. Update SourceForge.jp project site.
 
-  5. Announce release to mailing list(in Japan).
+  5. Update SourceForge.jp project home page.
 
-  6. Announce release to forum(in Canada).
+  6. Announce release to mailing list(in Japan).
+
+  7. Announce release to forum(in Canada).
        (1) Announcements http://www.neocom.ca/forum/viewforum.php?f=5
            Create new topic in `Announcements' entry.
            Change the type of previous Announcement from Announcement to Normal.

@@ -176,9 +176,11 @@
        [リリースファイル]-[変更履歴]-[翻訳]
          言語がJapaneseになっていることを確認し、日本語の変更履歴を入力する
 
-  5. メーリングリストにアナウンスする
+  5. プロジェクトページを更新する
 
-  6. フォーラムに告知する
+  6. メーリングリストにアナウンスする
+
+  7. フォーラムに告知する
        (1) Announcements http://www.neocom.ca/forum/viewforum.php?f=5
            Announcements に新規投稿する。種類は Announcement
            一つ前の Announcement の種類を Normal に変更する
