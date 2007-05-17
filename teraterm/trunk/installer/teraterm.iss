@@ -117,6 +117,9 @@ Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\UTF-8 TeraTerm Pro;
 Name: {userstartup}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; Components: TeraTerm_Menu; IconIndex: 0; Tasks: startupttmenuicon; Flags: createonlyiffileexists
 Name: {userstartup}\Collector; Filename: {app}\collector\collector.exe; WorkingDir: {app}\Collector; IconFilename: {app}\collector\collector.exe; Components: Collector; Tasks: startupcollectoricon; IconIndex: 0; Flags: createonlyiffileexists
 
+[INI]
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: hoge; String: fuga; Flags: createkeyifdoesntexist; Check: isUserIniExists
+
 [Tasks]
 Name: desktopicon; Description: {cm:task_desktopicon}; Components: TeraTerm
 Name: quicklaunchicon; Description: {cm:task_quicklaunchicon}; Components: TeraTerm
@@ -158,6 +161,152 @@ ja.launch_collector=¡‚·‚® &Collector ‚ðŽÀs‚·‚é
 [Code]
 var
   UILangFilePage: TInputOptionWizardPage;
+
+
+function CanInstallFont : Boolean;
+var
+  Version: TWindowsVersion;
+begin;
+  GetWindowsVersionEx(Version);
+  if not Version.NTPlatform then begin
+    Result := True;
+  end else begin
+    if Version.Major >= 5 then begin
+      if IsAdminLoggedOn() or IsPowerUserLoggedOn() then begin
+        Result := True;
+      end else begin
+        Result := False
+      end;
+    end else begin
+      Result := True;
+    end;
+  end;
+end;
+
+function isIA64 : Boolean;
+begin
+  if ProcessorArchitecture = paIA64 then
+    Result := True
+  else
+    Result := False;
+end;
+
+function GetUserIniFilename : String;
+begin
+  Result := ExpandConstant('{userdocs}') + '\\TERATERM.INI';
+end;
+
+function isUserIniExists : Boolean;
+var
+  iniFile: String;
+begin
+  iniFile  := GetUserIniFilename();
+  if FileExists(iniFile) then
+    Result := True
+  else
+    Result := False;
+end;
+
+procedure SetIniFile(iniFile: String);
+var
+  Language : String;
+  Locale   : String;
+  CodePage : integer;
+  VTFont   : String;
+  TEKFont  : String;
+
+begin
+  Language := GetIniString('Tera Term', 'Language', '', iniFile);
+  Locale   := GetIniString('Tera Term', 'Locale', '', iniFile);
+  CodePage := GetIniInt('Tera Term', 'CodePage', 0, 0, 0, iniFile);
+  VTFont   := GetIniString('Tera Term', 'VTFont', '', iniFile);
+  TEKFont  := GetIniString('Tera Term', 'TEKFont', '', iniFile);
+
+  case GetUILanguage and $3FF of
+  $04: // Chinese
+    begin
+      if Length(Language) = 0 then begin
+        SetIniString('Tera Term', 'Language', 'Japanese', iniFile);
+      end;
+      if Length(Locale) = 0 then begin
+        SetIniString('Tera Term', 'Locale', 'chs', iniFile);
+      end;
+      if CodePage = 0 then begin
+        SetIniInt('Tera Term', 'CodePage', 936, iniFile);
+      end;
+      if Length(VTFont) = 0 then begin
+        SetIniString('Tera Term', 'VTFont', 'Terminal,0,-12,255', iniFile);
+      end;
+      if Length(TEKFont) = 0 then begin
+        SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,255', iniFile);
+      end;
+    end;
+  $11: // Japanese
+    begin
+      if Length(Language) = 0 then begin
+        SetIniString('Tera Term', 'Language', 'Japanese', iniFile);
+      end;
+      if Length(Locale) = 0 then begin
+        SetIniString('Tera Term', 'Locale', 'japanese', iniFile);
+      end;
+      if CodePage = 0 then begin
+        SetIniInt('Tera Term', 'CodePage', 932, iniFile);
+      end;
+      if Length(VTFont) = 0 then begin
+        SetIniString('Tera Term', 'VTFont', '‚l‚r –¾’©,0,-16,128', iniFile);
+      end;
+      if Length(TEKFont) = 0 then begin
+        SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,128', iniFile);
+      end;
+    end;
+  $19: // Russian
+    begin
+      if Length(Language) = 0 then begin
+        SetIniString('Tera Term', 'Language', 'Russian', iniFile);
+      end;
+      if Length(Locale) = 0 then begin
+        SetIniString('Tera Term', 'Locale', 'russian', iniFile);
+      end;
+      if CodePage = 0 then begin
+        SetIniInt('Tera Term', 'CodePage', 1251, iniFile);
+      end;
+      if Length(VTFont) = 0 then begin
+        SetIniString('Tera Term', 'VTFont', 'Terminal,0,-12,255', iniFile);
+      end;
+      if Length(TEKFont) = 0 then begin
+        SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,255', iniFile);
+      end;
+    end;
+  else // Other
+    begin
+      if Length(Language) = 0 then begin
+        SetIniString('Tera Term', 'Language', 'English', iniFile);
+      end;
+      if Length(Locale) = 0 then begin
+        SetIniString('Tera Term', 'Locale', 'english', iniFile);
+      end;
+      if CodePage = 0 then begin
+        SetIniInt('Tera Term', 'CodePage', 1252, iniFile);
+      end;
+      if Length(VTFont) = 0 then begin
+        SetIniString('Tera Term', 'VTFont', 'Terminal,0,-12,255', iniFile);
+      end;
+      if Length(TEKFont) = 0 then begin
+        SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,255', iniFile);
+      end;
+    end;
+  end;
+
+ if UILangFilePage.SelectedValueIndex = 1 then
+    begin
+      SetIniString('Tera Term', 'UILanguageFile', 'lang\Japanese.lng', iniFile);
+    end
+  else
+    begin
+      SetIniString('Tera Term', 'UILanguageFile', '', iniFile);
+    end;
+
+end;
 
 procedure InitializeWizard;
 var
@@ -202,105 +351,17 @@ end;
 procedure CurStepChanged(CurStep: TSetupStep);
 var
   iniFile  : String;
-  Language : String;
-  Locale   : String;
-  CodePage : integer;
-  VTFont   : String;
-  TEKFont  : String;
 begin
   case CurStep of
     ssDone:
       begin
-        iniFile  := ExpandConstant('{app}') + '\\TERATERM.INI';
-        Language := GetIniString('Tera Term', 'Language', '', iniFile);
-        Locale   := GetIniString('Tera Term', 'Locale', '', iniFile);
-        CodePage := GetIniInt('Tera Term', 'CodePage', 0, 0, 0, iniFile);
-        VTFont   := GetIniString('Tera Term', 'VTFont', '', iniFile);
-        TEKFont  := GetIniString('Tera Term', 'TEKFont', '', iniFile);
+        iniFile := ExpandConstant('{app}') + '\\TERATERM.INI';
+        SetIniFile(iniFile);
 
-        case GetUILanguage and $3FF of
-        $04: // Chinese
-          begin
-            if Length(Language) = 0 then begin
-              SetIniString('Tera Term', 'Language', 'Japanese', iniFile);
-            end;
-            if Length(Locale) = 0 then begin
-              SetIniString('Tera Term', 'Locale', 'chs', iniFile);
-            end;
-            if CodePage = 0 then begin
-              SetIniInt('Tera Term', 'CodePage', 936, iniFile);
-            end;
-            if Length(VTFont) = 0 then begin
-              SetIniString('Tera Term', 'VTFont', 'Terminal,0,-12,255', iniFile);
-            end;
-            if Length(TEKFont) = 0 then begin
-              SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,255', iniFile);
-            end;
-          end;
-        $11: // Japanese
-          begin
-            if Length(Language) = 0 then begin
-              SetIniString('Tera Term', 'Language', 'Japanese', iniFile);
-            end;
-            if Length(Locale) = 0 then begin
-              SetIniString('Tera Term', 'Locale', 'japanese', iniFile);
-            end;
-            if CodePage = 0 then begin
-              SetIniInt('Tera Term', 'CodePage', 932, iniFile);
-            end;
-            if Length(VTFont) = 0 then begin
-              SetIniString('Tera Term', 'VTFont', '‚l‚r –¾’©,0,-16,128', iniFile);
-            end;
-            if Length(TEKFont) = 0 then begin
-              SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,128', iniFile);
-            end;
-          end;
-        $19: // Russian
-          begin
-            if Length(Language) = 0 then begin
-              SetIniString('Tera Term', 'Language', 'Russian', iniFile);
-            end;
-            if Length(Locale) = 0 then begin
-              SetIniString('Tera Term', 'Locale', 'russian', iniFile);
-            end;
-            if CodePage = 0 then begin
-              SetIniInt('Tera Term', 'CodePage', 1251, iniFile);
-            end;
-            if Length(VTFont) = 0 then begin
-              SetIniString('Tera Term', 'VTFont', 'Terminal,0,-12,255', iniFile);
-            end;
-            if Length(TEKFont) = 0 then begin
-              SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,255', iniFile);
-            end;
-          end;
-        else // Other
-          begin
-            if Length(Language) = 0 then begin
-              SetIniString('Tera Term', 'Language', 'English', iniFile);
-            end;
-            if Length(Locale) = 0 then begin
-              SetIniString('Tera Term', 'Locale', 'english', iniFile);
-            end;
-            if CodePage = 0 then begin
-              SetIniInt('Tera Term', 'CodePage', 1252, iniFile);
-            end;
-            if Length(VTFont) = 0 then begin
-              SetIniString('Tera Term', 'VTFont', 'Terminal,0,-12,255', iniFile);
-            end;
-            if Length(TEKFont) = 0 then begin
-              SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,255', iniFile);
-            end;
-          end;
+        if isUserIniExists() then begin
+          iniFile := GetUserIniFilename();
+          SetIniFile(iniFile);
         end;
-
-        if UILangFilePage.SelectedValueIndex = 1 then
-          begin
-            SetIniString('Tera Term', 'UILanguageFile', 'lang\Japanese.lng', iniFile);
-          end
-        else
-          begin
-            SetIniString('Tera Term', 'UILanguageFile', '', iniFile);
-          end;
 
       end; // ssDone
    end; // case CurStep of
@@ -356,34 +417,6 @@ begin
         RemoveDir(app);
       end;
   end;
-end;
-
-function CanInstallFont : Boolean;
-var
-  Version: TWindowsVersion;
-begin;
-  GetWindowsVersionEx(Version);
-  if not Version.NTPlatform then begin
-    Result := True;
-  end else begin
-    if Version.Major >= 5 then begin
-      if IsAdminLoggedOn() or IsPowerUserLoggedOn() then begin
-        Result := True;
-      end else begin
-        Result := False
-      end;
-    end else begin
-      Result := True;
-    end;
-  end;
-end;
-
-function isIA64 : Boolean;
-begin
-  if ProcessorArchitecture = paIA64 then
-    Result := True
-  else
-    Result := False;
 end;
 
 [InstallDelete]
