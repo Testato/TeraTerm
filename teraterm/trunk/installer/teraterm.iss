@@ -121,49 +121,49 @@ Name: {userstartup}\Collector; Filename: {app}\collector\collector.exe; WorkingD
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: AcceptBroadcast; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: AcceptBroadcast; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: DisableAcceleratorSendBreak; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: Tera Term; Key: DisableAcceleratorSendBreak; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: DisableAcceleratorSendBreak; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: ConfirmPasteMouseRButton; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: Tera Term; Key: ConfirmPasteMouseRButton; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: ConfirmPasteMouseRButton; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: BroadcastCommandHistory; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: Tera Term; Key: BroadcastCommandHistory; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: BroadcastCommandHistory; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: ConnectingTimeout; String: 0; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: Tera Term; Key: ConnectingTimeout; String: 0; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: ConnectingTimeout; String: 0; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: LogDefaultName; String: teraterm.log; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: Tera Term; Key: LogDefaultName; String: teraterm.log; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: LogDefaultName; String: teraterm.log; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: TTSSH; Key: RememberPassword; String: 1; Flags: createkeyifdoesntexist; Components: TTSSH
-Filename: {userdoc}\teraterm.ini; Section: TTSSH; Key: RememberPassword; String: 1; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TTSSH
+Filename: {userdocs}\teraterm.ini; Section: TTSSH; Key: RememberPassword; String: 1; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TTSSH
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: LogTimestamp; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: Tera Term; Key: LogTimestamp; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: LogTimestamp; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: AlphaBlend; String: 255; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: Tera Term; Key: AlphaBlend; String: 255; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: AlphaBlend; String: 255; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: UseNormalBGColor; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: Tera Term; Key: UseNormalBGColor; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: UseNormalBGColor; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: HistoryList; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: Tera Term; Key: HistoryList; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: HistoryList; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: LogTypePlainText; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: Tera Term; Key: LogTypePlainText; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: LogTypePlainText; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: URLColor; String: 0,255,0,255,255,255; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: Tera Term; Key: URLColor; String: 0,255,0,255,255,255; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: URLColor; String: 0,255,0,255,255,255; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: EnableClickableUrl; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: Tera Term; Key: EnableClickableUrl; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: EnableClickableUrl; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: DisablePasteMouseRButton; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: Tera Term; Key: DisablePasteMouseRButton; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: DisablePasteMouseRButton; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: BG; Key: BGEnable; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: BG; Key: BGEnable; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: BG; Key: BGEnable; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: BG; Key: BGUseAlphaBlendAPI; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: BG; Key: BGUseAlphaBlendAPI; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: BG; Key: BGUseAlphaBlendAPI; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: BG; Key: BGSPIPath; String: plugin; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: BG; Key: BGSPIPath; String: plugin; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: BG; Key: BGSPIPath; String: plugin; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: BG; Key: BGFastSizeMove; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: BG; Key: BGFastSizeMove; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: BG; Key: BGFastSizeMove; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: BG; Key: BGNoFrame; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: BG; Key: BGNoFrame; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: BG; Key: BGNoFrame; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: BG; Key: BGThemeFile; String: theme\*.ini; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: BG; Key: BGThemeFile; String: theme\*.ini; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: BG; Key: BGThemeFile; String: theme\*.ini; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: ViewlogEditor; String: notepad.exe; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdoc}\teraterm.ini; Section: Tera Term; Key: ViewlogEditor; String: notepad.exe; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: ViewlogEditor; String: notepad.exe; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: TTSSH; Key: KeyboardInteractive; String: 0; Flags: createkeyifdoesntexist; Components: TTSSH
-Filename: {userdoc}\teraterm.ini; Section: TTSSH; Key: KeyboardInteractive; String: 0; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TTSSH
+Filename: {userdocs}\teraterm.ini; Section: TTSSH; Key: KeyboardInteractive; String: 0; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TTSSH
 
 [Tasks]
 Name: desktopicon; Description: {cm:task_desktopicon}; Components: TeraTerm
@@ -270,86 +270,64 @@ begin
   case GetUILanguage and $3FF of
   $04: // Chinese
     begin
-      if Length(Language) = 0 then begin
+      if Length(Language) = 0 then
         SetIniString('Tera Term', 'Language', 'Japanese', iniFile);
-      end;
-      if Length(Locale) = 0 then begin
+      if Length(Locale) = 0 then
         SetIniString('Tera Term', 'Locale', 'chs', iniFile);
-      end;
-      if CodePage = 0 then begin
+      if CodePage = 0 then
         SetIniInt('Tera Term', 'CodePage', 936, iniFile);
-      end;
-      if Length(VTFont) = 0 then begin
+      if Length(VTFont) = 0 then
         SetIniString('Tera Term', 'VTFont', 'Terminal,0,-12,255', iniFile);
-      end;
-      if Length(TEKFont) = 0 then begin
+      if Length(TEKFont) = 0 then
         SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,255', iniFile);
-      end;
     end;
   $11: // Japanese
     begin
-      if Length(Language) = 0 then begin
+      if Length(Language) = 0 then
         SetIniString('Tera Term', 'Language', 'Japanese', iniFile);
-      end;
-      if Length(Locale) = 0 then begin
+      if Length(Locale) = 0 then
         SetIniString('Tera Term', 'Locale', 'japanese', iniFile);
-      end;
-      if CodePage = 0 then begin
+      if CodePage = 0 then
         SetIniInt('Tera Term', 'CodePage', 932, iniFile);
-      end;
-      if Length(VTFont) = 0 then begin
+      if Length(VTFont) = 0 then
         SetIniString('Tera Term', 'VTFont', 'ＭＳ 明朝,0,-16,128', iniFile);
-      end;
-      if Length(TEKFont) = 0 then begin
+      if Length(TEKFont) = 0 then
         SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,128', iniFile);
-      end;
     end;
   $19: // Russian
     begin
-      if Length(Language) = 0 then begin
+      if Length(Language) = 0 then
         SetIniString('Tera Term', 'Language', 'Russian', iniFile);
-      end;
-      if Length(Locale) = 0 then begin
+      if Length(Locale) = 0 then
         SetIniString('Tera Term', 'Locale', 'russian', iniFile);
-      end;
-      if CodePage = 0 then begin
+      if CodePage = 0 then
         SetIniInt('Tera Term', 'CodePage', 1251, iniFile);
-      end;
-      if Length(VTFont) = 0 then begin
+      if Length(VTFont) = 0 then
         SetIniString('Tera Term', 'VTFont', 'Terminal,0,-12,255', iniFile);
-      end;
-      if Length(TEKFont) = 0 then begin
+      if Length(TEKFont) = 0 then
         SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,255', iniFile);
-      end;
     end;
   else // Other
     begin
-      if Length(Language) = 0 then begin
+      if Length(Language) = 0 then
         SetIniString('Tera Term', 'Language', 'English', iniFile);
-      end;
-      if Length(Locale) = 0 then begin
+      if Length(Locale) = 0 then
         SetIniString('Tera Term', 'Locale', 'english', iniFile);
-      end;
-      if CodePage = 0 then begin
+      if CodePage = 0 then
         SetIniInt('Tera Term', 'CodePage', 1252, iniFile);
-      end;
-      if Length(VTFont) = 0 then begin
+      if Length(VTFont) = 0 then
         SetIniString('Tera Term', 'VTFont', 'Terminal,0,-12,255', iniFile);
-      end;
-      if Length(TEKFont) = 0 then begin
+      if Length(TEKFont) = 0 then
         SetIniString('Tera Term', 'TEKFont', 'Terminal,0,-8,255', iniFile);
-      end;
     end;
   end;
 
- if UILangFilePage.SelectedValueIndex = 1 then
-    begin
+  case UILangFilePage.SelectedValueIndex of
+    1:
       SetIniString('Tera Term', 'UILanguageFile', 'lang\Japanese.lng', iniFile);
-    end
-  else
-    begin
+    else
       SetIniString('Tera Term', 'UILanguageFile', '', iniFile);
-    end;
+  end;
 
 end;
 
@@ -368,16 +346,16 @@ begin
       UILangFilePageCaption     := 'Select Language';
       UILangFilePageDescription := 'Which language shoud be used?';
       UILangFilePageSubCaption  := 'Select the user interface language of Tera Term and TTSSH, then click Next.';
-      UILangFilePageNone        := '&English'
-      UILangFilePageJapanese    := '&Japanese'
+      UILangFilePageNone        := '&English';
+      UILangFilePageJapanese    := '&Japanese';
     end;
     'ja':
     begin
       UILangFilePageCaption     := '言語の選択';
       UILangFilePageDescription := 'ユーザーインターフェースの言語を選択してください。';
       UILangFilePageSubCaption  := 'Tera Term と TTSSH のユーザーインターフェースで使用する言語を選択して、「次へ」をクリックしてください。';
-      UILangFilePageNone        := '英語(&E)'
-      UILangFilePageJapanese    := '日本語(&J)'
+      UILangFilePageNone        := '英語(&E)';
+      UILangFilePageJapanese    := '日本語(&J)';
     end;
   end;
 
@@ -388,8 +366,10 @@ begin
   UILangFilePage.Add(UILangFilePageJapanese);
 
   case ActiveLanguage of
-    'ja': UILangFilePage.SelectedValueIndex := 1;
-    else UILangFilePage.SelectedValueIndex := 0;
+    'ja':
+      UILangFilePage.SelectedValueIndex := 1;
+    else
+      UILangFilePage.SelectedValueIndex := 0;
   end;
 end;
 
