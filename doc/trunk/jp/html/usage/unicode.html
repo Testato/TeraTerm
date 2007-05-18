@@ -12,7 +12,8 @@
 <h1>Unicode設定</h1>
 
 <p>
-UTF-8化を行うには、TeraTerm Proの「Setup」メニューから「Terminal」を選択すると、ダイアログが出てくるので、「Kanji(receive)」および「Kanji(transmit)」にて、【UTF-8】を選んでください。TeraTerm Proの再起動は必要ありません。<br>
+UTF-8化を行うには、TeraTerm Proの「Setup」メニューから「General」を選び、Languageを"Japanese"へ変更します。
+次に、「Setup」メニューから「Terminal」を選択すると、ダイアログが出てくるので、「Kanji(receive)」および「Kanji(transmit)」にて、【UTF-8】を選んでください。TeraTerm Proの再起動は必要ありません。<br>
 コマンドラインの「/KT」および「/KR」オプションにおいて、"UTF8"を指定すると、送信および受信コードにUTF-8を設定することができます。
 </p>
 
@@ -39,13 +40,25 @@ CodePage = 932
 <pre>
   [Example of WindowsXP Simplified Chinese]
   -----------------------------------------
-    ; Locale for Unicode 
-    Locale = chs 
+    ; Locale for Unicode
+    Locale = chs
     
-    ; CodePage for Unicode 
-    CodePage = 936   
+    ; CodePage for Unicode
+    CodePage = 936
   -----------------------------------------
 </pre>
+
+<pre>
+  [Example of WindowsXP USA]
+  -----------------------------------------
+    ; Locale for Unicode
+    Locale = american
+    
+    ; CodePage for Unicode
+    CodePage = 65001
+  -----------------------------------------
+</pre>
+
 
 <p>
 ※注意：Mac OS X<br>

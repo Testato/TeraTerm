@@ -12,11 +12,11 @@
 <h1>Unicode</h1>
 
 <p>
-To use UTF-8, select "Terminal" from the TeraTerm Pro "Setup" menu. Inside the dialog-box, select "UTF-8" from "Kanji(receive)" or "Kanji(transmit)". There is no need to restart TeraTerm Pro to activate these configuration changes.
+To use UTF-8, changed from English to Japanese under Setup->General menu and select "Terminal" from the TeraTerm Pro "Setup" menu. Inside the dialog-box, select "UTF-8" from "Kanji(receive)" or "Kanji(transmit)". There is no need to restart TeraTerm Pro to activate these configuration changes.
 When "UTF8" is specified with '/KT' or '/KR' option in the command line, UTF-8 encoding/decoding can be used during transmitting and receiving of data.
 </p>
 
-<p>  
+<p>
 To enable character sets other than Japanese, you have to set properly the locale and codepage parameters in the 'teraterm.ini' file. See example of these values below.
 </p>
 
@@ -39,13 +39,25 @@ Check the following web-sites to learn more about setting of locale and codepage
 <pre>
   [Example of WindowsXP Simplified Chinese]
   -----------------------------------------
-    ; Locale for Unicode 
-    Locale = chs 
+    ; Locale for Unicode
+    Locale = chs
     
-    ; CodePage for Unicode 
-    CodePage = 936   
+    ; CodePage for Unicode
+    CodePage = 936
   -----------------------------------------
 </pre>
+
+<pre>
+  [Example of WindowsXP USA]
+  -----------------------------------------
+    ; Locale for Unicode
+    Locale = american
+    
+    ; CodePage for Unicode
+    CodePage = 65001
+  -----------------------------------------
+</pre>
+
 
 <p>
 [NOTE] for Mac OS X users<br>
