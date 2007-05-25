@@ -64,6 +64,18 @@ PProtoCancel ProtoCancel;
 #define IdProtoTimeOutProc 9
 #define IdProtoCancel	 10
 
+/*
+   Line Head flag for timestamping
+   2007.05.24 Gentaro
+*/
+enum enumLineEnd {
+	Line_Other = 0,
+	Line_LineHead = 1,
+	Line_FileHead = 2,
+};
+
+enum enumLineEnd eLineEnd = Line_LineHead;
+
 BOOL LoadTTFILE()
 {
   BOOL Err;
@@ -379,11 +391,20 @@ void LogStart()
 	cv.LCount = 0;
 
 	HelpId = HlpFileLog;
+	/* 2007.05.24 Gentaro */
+	eLineEnd = Line_LineHead;
+
 	if (ts.Append > 0)
 	{
 		LogVar->FileHandle = _lopen(LogVar->FullName,OF_WRITE);
-		if (LogVar->FileHandle>0)
+		if (LogVar->FileHandle>0){
 			_llseek(LogVar->FileHandle,0,2);
+			/* 2007.05.24 Gentaro
+				If log file already exists,
+				a newline is inserted before the first timestamp.
+			*/
+			eLineEnd = Line_FileHead;
+		}
 		else
 			LogVar->FileHandle = _lcreat(LogVar->FullName,0);
 	}
@@ -506,6 +527,10 @@ void CommentLogToFile(char *buf, int size)
 	logfile_lock();
 	WriteFile((HANDLE)LogVar->FileHandle, buf, size, &wrote, NULL);
 	WriteFile((HANDLE)LogVar->FileHandle, "\r\n", 2, &wrote, NULL); // 改行
+	/* Set Line End Flag
+		2007.05.24 Gentaro
+	*/
+	eLineEnd = Line_LineHead;
 	logfile_unlock();
 }
 
@@ -543,8 +568,8 @@ void LogToFile()
 		{
 			// 時刻を書き出す(2006.7.23 maya)
 			// 日付フォーマットを日本ではなく世界標準に変更した (2006.7.23 yutaka)
-			if (ts.LogTimestamp &&
-				(Start == 1 || Buf[Start-2] == 0x0a)) {
+			/* 2007.05.24 Gentaro */
+			if ( ts.LogTimestamp && eLineEnd ) {
 #if 0
 				SYSTEMTIME	LocalTime;
 				GetLocalTime(&LocalTime);
@@ -559,15 +584,22 @@ void LogToFile()
 					time_t tick = time(NULL);
 					char *strtime = ctime(&tick); 
 #endif
-
-				// write to file
-				if (Start == 1 && ts.Append) {
-					_lwrite(LogVar->FileHandle,"\r\n",strlen("\r\n"));
+				/* 2007.05.24 Gentaro */
+				if( eLineEnd == Line_FileHead ){
+					_lwrite(LogVar->FileHandle,"\r\n",2);
 				}
 				_lwrite(LogVar->FileHandle,"[",1);
 				// 変換した文字列の終端に \n が含まれているので取り除く。
 				_lwrite(LogVar->FileHandle, strtime, strlen(strtime) - 1);
 				_lwrite(LogVar->FileHandle,"] ",2);
+			}
+			
+			/* 2007.05.24 Gentaro */
+			if( b == 0x0a ){
+				eLineEnd = Line_LineHead; /* set endmark*/
+			}
+			else {
+				eLineEnd = Line_Other; /* clear endmark*/
 			}
 
 			_lwrite(LogVar->FileHandle,(PCHAR)&b,1);
@@ -1244,6 +1276,9 @@ void QVStart(int mode)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2007/05/14 14:07:14  maya
+ * バッファをクリアしていないので落ちる問題を修正した。
+ *
  * Revision 1.10  2007/05/14 13:29:58  maya
  * ログファイル名中の &h を、接続中のホスト名に変換する機能を追加した。
  *
