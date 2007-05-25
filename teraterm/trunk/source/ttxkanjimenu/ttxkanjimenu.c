@@ -366,6 +366,10 @@ static void PASCAL FAR TTXModifyPopupMenu(HMENU menu) {
 #endif
 #ifdef TERATERM32
   printf("TTXModifyPopupMenu %d\n", ORDER);
+
+	// メニューが呼び出されたら、最新の設定に更新する。(2007.5.25 yutaka)
+	CheckMenuRadioItem(pvar->hmEncode, ID_MI_KANJIRECV+IdSJIS, ID_MI_KANJIRECV+IdUTF8m, ID_MI_KANJIRECV+pvar->ts->KanjiCode, MF_BYCOMMAND);
+	CheckMenuRadioItem(pvar->hmEncode, ID_MI_KANJISEND+IdSJIS, ID_MI_KANJISEND+IdUTF8, ID_MI_KANJISEND+pvar->ts->KanjiCodeSend, MF_BYCOMMAND);
 #endif
 }
 
