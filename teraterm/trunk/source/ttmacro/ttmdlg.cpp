@@ -81,7 +81,7 @@ extern "C" {
 void ParseParam(PBOOL IOption, PBOOL VOption)
 {
   int i, j, k;
-  char Param[MAXPATHLEN];
+  char *Param;
   char Temp[MAXPATHLEN];
 
   // Get home directory
@@ -98,7 +98,9 @@ void ParseParam(PBOOL IOption, PBOOL VOption)
   *IOption = FALSE;
   *VOption = FALSE;
 #ifdef TERATERM32
-  strcpy(Param,GetCommandLine());
+  // 256バイト以上のコマンドラインパラメータ指定があると、BOF(Buffer Over Flow)で
+  // 落ちるバグを修正。(2007.5.25 yutaka)
+  Param = GetCommandLine();
   i = 0;
   // the first term shuld be executable filename of TTMACRO
   NextParam(Param, &i, Temp, sizeof(Temp));
@@ -113,7 +115,7 @@ void ParseParam(PBOOL IOption, PBOOL VOption)
   while (NextParam(Param, &i, Temp, sizeof(Temp)))
   {
     if (_strnicmp(Temp,"/D=",3)==0) // DDE option
-      strcpy(TopicName,&Temp[3]);
+      strcpy_s(TopicName, sizeof(TopicName), &Temp[3]);  // BOF対策
     else if (_strnicmp(Temp,"/I",2)==0)
       *IOption = TRUE;
     else if (_strnicmp(Temp,"/S",2)==0)
