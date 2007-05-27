@@ -155,6 +155,7 @@
        ttmacro.rc // only modifying
        teraterm.iss
        html/about/hisotry.html
+       Note: Don't update the version number until the release, because the installer does not overwrite file when versions are same.
 
   2. Evaluate executable program file.
        - Rebuild TeraTerm program
