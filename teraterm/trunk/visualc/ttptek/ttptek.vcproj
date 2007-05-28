@@ -179,7 +179,7 @@
 				OutputFile=".\..\bin\Release/ttptek.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\bin\debug"
+				AdditionalLibraryDirectories="..\bin\release"
 				ModuleDefinitionFile=".\ttptek.def"
 				ProgramDatabaseFile=".\..\bin\Release/ttptek.pdb"
 				SubSystem="2"
