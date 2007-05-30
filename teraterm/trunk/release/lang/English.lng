@@ -155,6 +155,7 @@ DLG_TAB_VISUAL_BLUE=&Blue
 
 DLG_TAB_LOG_EDITOR=View Log &Editor
 DLG_TAB_LOG_FILENAME=Default Log &File Name(strftime format)
+DLG_TAB_LOG_FILEPATH=Default Log &Path
 
 DLG_TAB_CYGWIN_PATH=Cygwin Install &Path
 

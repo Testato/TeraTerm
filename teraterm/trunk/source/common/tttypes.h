@@ -341,6 +341,7 @@ struct tttset {
   WORD LogTypePlainText;
   WORD LogTimestamp;
   char LogDefaultName[80];
+  char LogDefaultPath[MAX_PATH];
   int DisablePasteMouseRButton;
   WORD ConfirmPasteMouseRButton;
   WORD DisableAcceleratorSendBreak;

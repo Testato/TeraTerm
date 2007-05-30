@@ -306,6 +306,7 @@ extern "C" {
 void LogStart()
 {
 	LONG Option;
+	char *logdir;
 
 	if ((FileLog) || (BinLog)) return;
 
@@ -316,6 +317,16 @@ void LogStart()
 		return;
 	}
 	LogVar->OpId = OpLog;
+
+	if (strlen(ts.LogDefaultPath) > 0) {
+		logdir = ts.LogDefaultPath;
+	}
+	else if (strlen(ts.FileDir) > 0) {
+		logdir = ts.FileDir;
+	}
+	else {
+		logdir = ts.HomeDir;
+	}
 
 	if (strlen(&(LogVar->FullName[LogVar->DirLen]))==0)
 	{
@@ -332,12 +343,13 @@ void LogStart()
 
 		// ログのデフォルトファイル名を設定 (2006.8.28 maya)
 		strncat(LogVar->FullName, ts.LogDefaultName, sizeof(LogVar->FullName));
+
 		ParseStrftimeFileName(LogVar->FullName);
 
 		// &h をホスト名に置換 (2007.5.14)
 		ConvertLogname(LogVar->FullName);
 
-		if (! (*GetTransFname)(LogVar, ts.FileDir, GTF_LOG, &Option))
+		if (! (*GetTransFname)(LogVar, logdir, GTF_LOG, &Option))
 		{
 			FreeFileVar(&LogVar);
 			FreeTTFILE();
@@ -363,6 +375,16 @@ void LogStart()
 
 	}
 	else {
+		// LogVar->DirLen = 0 だとここに来る
+		// フルパス・相対パスともに LogVar->FullName に入れておく必要がある
+		char FileName[MAX_PATH];
+
+		// フルパス化
+		strncpy(FileName, LogVar->FullName, sizeof(FileName)-1);
+		ConvFName(logdir,FileName,"",LogVar->FullName);
+
+		ParseStrftimeFileName(LogVar->FullName);
+
 		// &h をホスト名に置換 (2007.5.14)
 		ConvertLogname(LogVar->FullName);
 		(*SetFileVar)(LogVar);
@@ -1276,6 +1298,9 @@ void QVStart(int mode)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2007/05/25 09:56:05  yutakapon
+ * タイムスタンプ付きログで1KBごとに不要な改行が入るバグを修正。
+ *
  * Revision 1.11  2007/05/14 14:07:14  maya
  * バッファをクリアしていないので落ちる問題を修正した。
  *

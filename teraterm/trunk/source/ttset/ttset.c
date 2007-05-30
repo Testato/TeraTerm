@@ -624,6 +624,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   GetPrivateProfileString(Section,"LogDefaultName","teraterm.log",ts->LogDefaultName,
 			  sizeof(ts->LogDefaultName),FName);
 
+  /* Default Log file path (2007.5.30 maya) */
+  GetPrivateProfileString(Section,"LogDefaultPath","",ts->LogDefaultPath,
+			  sizeof(ts->LogDefaultPath),FName);
+
   /* XMODEM option */
   GetPrivateProfileString(Section,"XmodemOpt","",
 			  Temp,sizeof(Temp),FName);
@@ -1393,6 +1397,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* Default Log file name (2006.8.28 maya) */
   WritePrivateProfileString(Section,"LogDefaultName",ts->LogDefaultName,FName);
+
+  /* Default Log file path (2007.5.30 maya) */
+  WritePrivateProfileString(Section,"LogDefaultPath",ts->LogDefaultPath,FName);
 
   /* XMODEM option */
   switch (ts->XmodemOpt) {
@@ -2269,8 +2276,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
     else if ( _strnicmp(Temp,"/L=",3)==0 ) /* log file */
     {
       Dequote(&Temp[3],Temp2);
-      ConvFName(ts->HomeDir,Temp2,"",ts->LogFN);
-	  ParseStrftimeFileName(ts->LogFN);
+      strncpy(ts->LogFN, Temp2, sizeof(ts->LogFN));
     }
     else if ( _strnicmp(Temp,"/LA=",4)==0 ) /* language */
     {
@@ -2477,6 +2483,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.29  2007/04/24 16:32:42  maya
+ * TCPLocalEcho/TCPCRSend を無効にするオプションを追加した。
+ *
  * Revision 1.28  2007/03/23 05:02:21  yutakapon
  * 337氏パッチを取り込んだ。
  * 1.Broadcastダイアログからの送信対象を親Windowのみにする、

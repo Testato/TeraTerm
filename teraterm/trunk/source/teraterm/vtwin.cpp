@@ -2358,7 +2358,7 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
   if ((ts.LogFN[0]!=0) && (LogVar==NULL) && NewFileVar(&LogVar))
   {
     LogVar->DirLen = 0;
-    strcpy(LogVar->FullName,ts.LogFN);
+    strncpy(LogVar->FullName, ts.LogFN, sizeof(LogVar->FullName-1));
     LogStart();
   }
 
@@ -3527,8 +3527,8 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 	HFONT font;
 #endif
 
-    switch (msg) {
-        case WM_INITDIALOG:
+	switch (msg) {
+		case WM_INITDIALOG:
 
 #ifdef I18N
 			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
@@ -3539,6 +3539,9 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 				SendDlgItemMessage(hDlgWnd, IDC_VIEWLOG_PATH, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_DEFAULTNAME_LABEL, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_DEFAULTNAME_EDITOR, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_DEFAULTPATH_LABEL, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_DEFAULTPATH_EDITOR, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_DEFAULTPATH_PUSH, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
 			}
@@ -3552,6 +3555,9 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 			GetDlgItemText(hDlgWnd, IDC_DEFAULTNAME_LABEL, ts.UIMsg, sizeof(ts.UIMsg));
 			get_lang_msg("DLG_TAB_LOG_FILENAME", ts.UIMsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_DEFAULTNAME_LABEL, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_DEFAULTPATH_LABEL, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_LOG_FILEPATH", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_DEFAULTPATH_LABEL, ts.UIMsg);
 			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
 			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
@@ -3568,12 +3574,16 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 			hWnd = GetDlgItem(hDlgWnd, IDC_DEFAULTNAME_EDITOR);
 			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.LogDefaultName);
 
+			// Log Default File Path (2007.5.30 maya)
+			hWnd = GetDlgItem(hDlgWnd, IDC_DEFAULTPATH_EDITOR);
+			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.LogDefaultPath);
+
 			// ダイアログにフォーカスを当てる 
 			SetFocus(GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR));
 
 			return FALSE;
 
-        case WM_COMMAND:
+		case WM_COMMAND:
 			switch (wp) {
 				case IDC_VIEWLOG_PATH | (BN_CLICKED << 16):
 					{
@@ -3615,10 +3625,17 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					}
 					return TRUE;
 
+				case IDC_DEFAULTPATH_PUSH | (BN_CLICKED << 16):
+					// ログディレクトリの選択ダイアログ
+					doSelectFolder(hDlgWnd, ts.LogDefaultPath, sizeof(ts.LogDefaultPath));
+					hWnd = GetDlgItem(hDlgWnd, IDC_DEFAULTPATH_EDITOR);
+					SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.LogDefaultPath);
+
+					return TRUE;
 			}
 
 			switch (LOWORD(wp)) {
-                case IDOK:
+				case IDOK:
 #ifdef I18N
 					char buf[80], buf2[80];
 #else
@@ -3647,6 +3664,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 #endif
 						return FALSE;
 					}
+
 					// 現在時刻を取得
 					time(&time_local);
 					tm_local = localtime(&time_local);
@@ -3679,21 +3697,26 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					}
 					strncpy(ts.LogDefaultName, buf, sizeof(ts.LogDefaultName));
 
-                    EndDialog(hDlgWnd, IDOK);
+					// Log Default File Path (2007.5.30 maya)
+					hWnd = GetDlgItem(hDlgWnd, IDC_DEFAULTPATH_EDITOR);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+					strncpy(ts.LogDefaultPath, buf, sizeof(ts.LogDefaultPath));
+
+					EndDialog(hDlgWnd, IDOK);
 					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
-                    break;
+					break;
 
-                case IDCANCEL:
-                    EndDialog(hDlgWnd, IDCANCEL);
+				case IDCANCEL:
+					EndDialog(hDlgWnd, IDCANCEL);
 					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
-                    break;
+					break;
 
-                default:
-                    return FALSE;
-            }
+				default:
+					return FALSE;
+			}
 
-        case WM_CLOSE:
-		    EndDialog(hDlgWnd, 0);
+		case WM_CLOSE:
+			EndDialog(hDlgWnd, 0);
 #ifdef I18N
 			if (DlgLogFont != NULL) {
 				DeleteObject(DlgLogFont);
@@ -3701,10 +3724,10 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 #endif
 			return TRUE;
 
-        default:
-            return FALSE;
-    }
-    return TRUE;
+		default:
+			return FALSE;
+	}
+	return TRUE;
 }
 
 static void SetupRGBbox(HWND hDlgWnd, int index)
@@ -4888,6 +4911,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.63  2007/05/14 13:27:31  maya
+ * CVTWindow::Startup() でログ採取を開始するのをやめた。
+ *
  * Revision 1.62  2007/05/01 14:09:53  maya
  * ParentOnly の表記を変更した。
  *

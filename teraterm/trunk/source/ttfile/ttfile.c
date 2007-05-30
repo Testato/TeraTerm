@@ -339,6 +339,7 @@ BOOL FAR PASCAL GetTransFname
 	LONG opt;
 	char TempDir[MAXPATHLEN];
 	BOOL Ok;
+	char FileName[MAX_PATH];
 
 	/* save current dir */
 	_getcwd(TempDir,sizeof(TempDir));
@@ -387,11 +388,12 @@ BOOL FAR PASCAL GetTransFname
 	strcpy(&(FNFilter[strlen(FNFilter)+1]), "*.*");
 #endif
 
+	ExtractFileName(fv->FullName, FileName);
 	ofn.lStructSize = sizeof(OPENFILENAME);
 	ofn.hwndOwner   = fv->HMainWin;
 	ofn.lpstrFilter = FNFilter;
 	ofn.nFilterIndex = 1;
-	ofn.lpstrFile = fv->FullName;
+	ofn.lpstrFile = FileName;
 	ofn.nMaxFile = sizeof(fv->FullName);
 	ofn.lpstrInitialDir = CurDir;
 	ofn.Flags = OFN_SHOWHELP | OFN_HIDEREADONLY;
@@ -1362,6 +1364,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  2007/05/02 04:52:10  maya
+ * バッファのサイズを取得する方法を修正した。
+ *
  * Revision 1.16  2007/01/31 13:15:27  maya
  * 言語ファイルがないときに \0 が正しく認識されないバグを修正した。
  *

@@ -118,6 +118,8 @@ Name: {userstartup}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app
 Name: {userstartup}\Collector; Filename: {app}\collector\collector.exe; WorkingDir: {app}\Collector; IconFilename: {app}\collector\collector.exe; Components: Collector; Tasks: startupcollectoricon; IconIndex: 0; Flags: createonlyiffileexists
 
 [INI]
+Filename: {app}\teraterm.ini; Section: Tera Term; Key: LogDefaultPath; String: ; Flags: createkeyifdoesntexist; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: LogDefaultPath; String: ; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: AcceptBroadcast; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: AcceptBroadcast; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: DisableAcceleratorSendBreak; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
@@ -309,27 +311,27 @@ begin
     end;
   else // Other
     begin
-      
+
       if GetUILanguage = $409 then begin // en-US
-        
+
         if Length(Language) = 0 then
           SetIniString('Tera Term', 'Language', 'Japanese', iniFile);
         if Length(Locale) = 0 then
           SetIniString('Tera Term', 'Locale', 'american', iniFile);
         if CodePage = 0 then
           SetIniInt('Tera Term', 'CodePage', 65001, iniFile);
-        
+
       end else begin // Other
-        
+
         if Length(Language) = 0 then
           SetIniString('Tera Term', 'Language', 'English', iniFile);
         if Length(Locale) = 0 then
           SetIniString('Tera Term', 'Locale', 'english', iniFile);
         if CodePage = 0 then
           SetIniInt('Tera Term', 'CodePage', 1252, iniFile);
-        
+
       end;
-      
+
       if Length(VTFont) = 0 then
         SetIniString('Tera Term', 'VTFont', 'Terminal,0,-12,255', iniFile);
       if Length(TEKFont) = 0 then
