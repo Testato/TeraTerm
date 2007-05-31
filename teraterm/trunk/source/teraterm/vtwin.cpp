@@ -4032,6 +4032,9 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			GetDlgItemText(hDlgWnd, IDC_DELIMITER, ts.UIMsg, sizeof(ts.UIMsg));
 			get_lang_msg("DLG_TAB_GENERAL_DEMILITER", ts.UIMsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_DELIMITER, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_ACCEPT_BROADCAST, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_GENERAL_ACCEPTBROADCAST", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_ACCEPT_BROADCAST, ts.UIMsg);
 			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
 			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
@@ -4911,6 +4914,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.64  2007/05/30 16:04:27  maya
+ * 標準のログ保存先を指定できるようにした。
+ *
  * Revision 1.63  2007/05/14 13:27:31  maya
  * CVTWindow::Startup() でログ採取を開始するのをやめた。
  *
