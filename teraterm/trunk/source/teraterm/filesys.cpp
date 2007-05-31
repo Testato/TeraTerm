@@ -342,7 +342,8 @@ void LogStart()
 						  (0x2000 * ts.LogTimestamp));
 
 		// ログのデフォルトファイル名を設定 (2006.8.28 maya)
-		strncat(LogVar->FullName, ts.LogDefaultName, sizeof(LogVar->FullName));
+		strncat(LogVar->FullName, ts.LogDefaultName, sizeof(LogVar->FullName)-1);
+		LogVar->FullName[sizeof(LogVar->FullName)-1] = '\0';
 
 		ParseStrftimeFileName(LogVar->FullName);
 
@@ -381,6 +382,7 @@ void LogStart()
 
 		// フルパス化
 		strncpy(FileName, LogVar->FullName, sizeof(FileName)-1);
+		FileName[sizeof(FileName)-1] = '\0';
 		ConvFName(logdir,FileName,"",LogVar->FullName);
 
 		ParseStrftimeFileName(LogVar->FullName);
@@ -1298,6 +1300,9 @@ void QVStart(int mode)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2007/05/30 16:04:27  maya
+ * 標準のログ保存先を指定できるようにした。
+ *
  * Revision 1.12  2007/05/25 09:56:05  yutakapon
  * タイムスタンプ付きログで1KBごとに不要な改行が入るバグを修正。
  *

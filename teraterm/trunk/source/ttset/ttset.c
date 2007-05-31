@@ -628,6 +628,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   GetPrivateProfileString(Section,"LogDefaultPath","",ts->LogDefaultPath,
 			  sizeof(ts->LogDefaultPath),FName);
 
+  /* Auto start logging (2007.5.31 maya) */
+  ts->LogAutoStart = GetOnOff(Section,"LogAutoStart",FName,FALSE);
+
   /* XMODEM option */
   GetPrivateProfileString(Section,"XmodemOpt","",
 			  Temp,sizeof(Temp),FName);
@@ -1400,6 +1403,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* Default Log file path (2007.5.30 maya) */
   WritePrivateProfileString(Section,"LogDefaultPath",ts->LogDefaultPath,FName);
+
+  /* Auto start logging (2007.5.31 maya) */
+  WriteOnOff(Section,"LogAutoStart",FName,ts->LogAutoStart);
 
   /* XMODEM option */
   switch (ts->XmodemOpt) {
@@ -2483,6 +2489,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.30  2007/05/30 16:06:06  maya
+ * 標準のログ保存先を指定できるようにした。
+ *
  * Revision 1.29  2007/04/24 16:32:42  maya
  * TCPLocalEcho/TCPCRSend を無効にするオプションを追加した。
  *

@@ -2354,11 +2354,17 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
   ChangeTitle();
   if (! cv.Ready) return 0;
 
+  /* Auto start logging (2007.5.31 maya) */
+  if (ts.LogAutoStart && ts.LogFN[0]==0) {
+    strncpy(ts.LogFN, ts.LogDefaultName, sizeof(ts.LogFN));
+    ts.LogFN[sizeof(ts.LogFN)-1] = '\0';
+  }
   /* ログ採取が有効で開始していなければ開始する (2006.9.18 maya) */
   if ((ts.LogFN[0]!=0) && (LogVar==NULL) && NewFileVar(&LogVar))
   {
     LogVar->DirLen = 0;
-    strncpy(LogVar->FullName, ts.LogFN, sizeof(LogVar->FullName-1));
+    strncpy(LogVar->FullName, ts.LogFN, sizeof(LogVar->FullName)-1);
+    LogVar->FullName[sizeof(LogVar->FullName)-1] = '\0';
     LogStart();
   }
 
@@ -3521,6 +3527,7 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
 	HWND hWnd;
+	LRESULT ret;
 #ifdef I18N
 	char uimsg[MAX_UIMSG];
 	LOGFONT logfont;
@@ -3542,6 +3549,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 				SendDlgItemMessage(hDlgWnd, IDC_DEFAULTPATH_LABEL, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_DEFAULTPATH_EDITOR, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_DEFAULTPATH_PUSH, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_AUTOSTART, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
 			}
@@ -3558,6 +3566,9 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 			GetDlgItemText(hDlgWnd, IDC_DEFAULTPATH_LABEL, ts.UIMsg, sizeof(ts.UIMsg));
 			get_lang_msg("DLG_TAB_LOG_FILEPATH", ts.UIMsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_DEFAULTPATH_LABEL, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_AUTOSTART, ts.UIMsg, sizeof(ts.UIMsg));
+			get_lang_msg("DLG_TAB_LOG_AUTOSTART", ts.UIMsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_AUTOSTART, ts.UIMsg);
 			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
 			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
@@ -3577,6 +3588,15 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 			// Log Default File Path (2007.5.30 maya)
 			hWnd = GetDlgItem(hDlgWnd, IDC_DEFAULTPATH_EDITOR);
 			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.LogDefaultPath);
+
+			/* Auto start logging (2007.5.31 maya) */
+			hWnd = GetDlgItem(hDlgWnd, IDC_AUTOSTART);
+			if (ts.LogAutoStart) {
+				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
+			}
+			else {
+				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
+			}
 
 			// ダイアログにフォーカスを当てる 
 			SetFocus(GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR));
@@ -3701,6 +3721,16 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					hWnd = GetDlgItem(hDlgWnd, IDC_DEFAULTPATH_EDITOR);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
 					strncpy(ts.LogDefaultPath, buf, sizeof(ts.LogDefaultPath));
+
+					/* Auto start logging (2007.5.31 maya) */
+					hWnd = GetDlgItem(hDlgWnd, IDC_AUTOSTART);
+					ret = SendMessage(hWnd, BM_GETCHECK , 0, 0);
+					if (ret & BST_CHECKED) {
+						ts.LogAutoStart = 1;
+					}
+					else {
+						ts.LogAutoStart = 0;
+					}
 
 					EndDialog(hDlgWnd, IDOK);
 					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
@@ -4914,6 +4944,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.65  2007/05/31 04:39:43  maya
+ * AcceptBroadcast のコントロールを国際化した。
+ *
  * Revision 1.64  2007/05/30 16:04:27  maya
  * 標準のログ保存先を指定できるようにした。
  *
