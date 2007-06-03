@@ -155,7 +155,7 @@ DLG_TAB_VISUAL_BLUE=青(&B)
 
 DLG_TAB_LOG_EDITOR=エディタを指定(&E)
 DLG_TAB_LOG_FILENAME=標準ログファイル名(strftimeフォーマット可) (&F)
-DLG_TAB_LOG_FILEPATH=標準のログ保存先(&P)
+DLG_TAB_LOG_FILEPATH=標準のログ保存先フォルダ(&F)
 DLG_TAB_LOG_AUTOSTART=自動的にログ採取を開始する(&A)
 
 DLG_TAB_CYGWIN_PATH=Cygwinインストール先のパス(&P)
