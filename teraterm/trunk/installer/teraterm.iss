@@ -89,6 +89,7 @@ Source: ..\release\Collector\hthook.dll; DestDir: {app}\Collector\; Components: 
 Source: ..\release\Collector\mfc70.dll; DestDir: {app}\Collector\; Components: Collector
 Source: ..\release\Collector\msvcr70.dll; DestDir: {app}\Collector\; Components: Collector
 Source: ..\release\Collector\readme.txt; DestDir: {app}\Collector\; Components: Collector
+Source: ..\visualc\bin\release\ttxkanjimenu.dll; DestDir: {app}\; Components: TTXKanjiMenu
 
 [Types]
 Name: standard; Description: {cm:type_standard}
@@ -104,6 +105,7 @@ Name: LogMeTT; Description: LogMeTT & TTLEdit; Types: full standard
 Name: TeraTerm_Menu; Description: TeraTerm Menu; Types: full
 Name: TTProxy; Description: TTProxy; Types: full standard
 Name: Collector; Description: Collector; Types: full
+Name: TTXKanjiMenu; Description: TTXKanjiMenu; Types: full
 
 [Icons]
 Name: {group}\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; IconIndex: 0; Components: TeraTerm; Flags: createonlyiffileexists
