@@ -37,6 +37,7 @@ static HFONT DlgGetfnFont;
 
 char UILanguageFile[MAX_PATH];
 #endif
+char FileSendFilter[128];
 
 #ifdef TERATERM32
 BOOL IS_WIN4()
@@ -331,7 +332,7 @@ BOOL FAR PASCAL GetTransFname
 {
 #ifdef I18N
 	char uimsg[MAX_UIMSG];
-	char FNFilter[40];
+	char FNFilter[sizeof(FileSendFilter)*2+128], *pf;
 #else
 	char FNFilter[11];
 #endif
@@ -348,6 +349,7 @@ BOOL FAR PASCAL GetTransFname
 	memset(&ofn, 0, sizeof(OPENFILENAME));
 
 	strcpy(fv->DlgCaption,"Tera Term: ");
+	pf = FNFilter;
 	switch (FuncId) {
 	case GTF_SEND:
 #ifdef I18N
@@ -357,6 +359,15 @@ BOOL FAR PASCAL GetTransFname
 #else
 		strcat(fv->DlgCaption,"Send file");
 #endif
+		if (strlen(FileSendFilter) > 0) {
+			strcpy(uimsg, "User define");
+			get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, UILanguageFile);
+			pf = pf + _snprintf(pf, sizeof(FNFilter)-2, "%s(%s)", uimsg, FileSendFilter);
+			pf++;
+			strncpy(pf, FileSendFilter, sizeof(FNFilter) - (pf - FNFilter + 2));
+			pf = pf + strlen(pf);
+			pf++;
+		}
 		break;
 	case GTF_LOG:
 #ifdef I18N
@@ -375,6 +386,15 @@ BOOL FAR PASCAL GetTransFname
 #else
 		strcat(fv->DlgCaption,"B-Plus Send");
 #endif
+		if (strlen(FileSendFilter) > 0) {
+			strcpy(uimsg, "User define");
+			get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, UILanguageFile);
+			pf = pf + _snprintf(pf, sizeof(FNFilter)-2, "%s(%s)", uimsg, FileSendFilter);
+			pf++;
+			strncpy(pf, FileSendFilter, sizeof(FNFilter) - (pf - FNFilter + 2));
+			pf = pf + strlen(pf);
+			pf++;
+		}
 		break;
 	default: return FALSE;
 	}
@@ -382,7 +402,7 @@ BOOL FAR PASCAL GetTransFname
 #ifdef I18N
 	strncpy(uimsg, "All(*.*)\\0*.*\\0\\0", sizeof(FNFilter));
 	get_lang_msg("FILEDLG_ALL_FILTER", uimsg, UILanguageFile);
-	memcpy(FNFilter, uimsg, sizeof(FNFilter));
+	memcpy(pf, uimsg, sizeof(FNFilter) - (pf - FNFilter + 2));
 #else
 	strcpy(FNFilter, "all");
 	strcpy(&(FNFilter[strlen(FNFilter)+1]), "*.*");
@@ -545,7 +565,7 @@ BOOL FAR PASCAL GetMultiFname
   int i, len;
 #ifdef I18N
   char uimsg[MAX_UIMSG];
-  char FNFilter[40];
+  char FNFilter[sizeof(FileSendFilter)*2+128], *pf;
 #else
   char FNFilter[11];
 #endif
@@ -553,12 +573,15 @@ BOOL FAR PASCAL GetMultiFname
   char TempDir[MAXPATHLEN];
   BOOL Ok;
 
+  memset(FNFilter, 0, sizeof(FNFilter));  /* Set up for double null at end */
+
   /* save current dir */
   _getcwd(TempDir,sizeof(TempDir));
 
   fv->NumFname = 0;
 
   strcpy(fv->DlgCaption,"Tera Term: ");
+  pf = FNFilter;
   switch (FuncId) {
     case GMF_KERMIT:
 #ifdef I18N
@@ -581,13 +604,22 @@ BOOL FAR PASCAL GetMultiFname
     case GMF_QV:
 #ifdef I18N
       strcpy(uimsg, TitQVSend);
-	  get_lang_msg("FILEDLG_TRANS_TITLE_QVSEND", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_QVSEND", uimsg, UILanguageFile);
       strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
 #else
       strcat(fv->DlgCaption,"Quick-VAN Send");
 #endif
       break;
     default: return FALSE;
+  }
+  if (strlen(FileSendFilter) > 0) {
+    strcpy(uimsg, "User define");
+    get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, UILanguageFile);
+    pf = pf + _snprintf(pf, sizeof(FNFilter)-2, "%s(%s)", uimsg, FileSendFilter);
+    pf++;
+    strncpy(pf, FileSendFilter, sizeof(FNFilter) - (pf - FNFilter + 2));
+    pf = pf + strlen(pf);
+    pf++;
   }
 
   /* moemory should be zero-initialized */
@@ -611,7 +643,7 @@ BOOL FAR PASCAL GetMultiFname
 #ifdef I18N
   strncpy(uimsg, "All(*.*)\\0*.*\\0\\0", sizeof(uimsg));
   get_lang_msg("FILEDLG_ALL_FILTER", uimsg, UILanguageFile);
-  memcpy(FNFilter, uimsg, sizeof(FNFilter));
+  memcpy(pf, uimsg, sizeof(FNFilter) - (pf - FNFilter + 2));
 #else
   memset(FNFilter, 0, sizeof(FNFilter));  /* Set up for double null at end */
   strcpy(FNFilter, "all");
@@ -1082,7 +1114,7 @@ BOOL FAR PASCAL GetXFname
 {
 #ifdef I18N
   char uimsg[MAX_UIMSG];
-  char FNFilter[40];
+  char FNFilter[sizeof(FileSendFilter)*2+128], *pf;
 #else
   char FNFilter[11];
 #endif
@@ -1090,6 +1122,8 @@ BOOL FAR PASCAL GetXFname
   LONG opt;
   char TempDir[MAXPATHLEN];
   BOOL Ok;
+
+  memset(FNFilter, 0, sizeof(FNFilter));  /* Set up for double null at end */
 
   /* save current dir */
   _getcwd(TempDir,sizeof(TempDir));
@@ -1103,11 +1137,12 @@ BOOL FAR PASCAL GetXFname
 #else
   strcpy(fv->DlgCaption,"Tera Term: XMODEM ");
 #endif
+  pf = FNFilter;
   if (Receive)
 #ifdef I18N
   {
     strcpy(uimsg, TitXRcv);
-	get_lang_msg("FILEDLG_TRANS_TITLE_XRCV", uimsg, UILanguageFile);
+    get_lang_msg("FILEDLG_TRANS_TITLE_XRCV", uimsg, UILanguageFile);
     strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
   }
 #else
@@ -1119,6 +1154,15 @@ BOOL FAR PASCAL GetXFname
     strcpy(uimsg, TitXSend);
     get_lang_msg("FILEDLG_TRANS_TITLE_XSEND", uimsg, UILanguageFile);
     strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+    if (strlen(FileSendFilter) > 0) {
+      strcpy(uimsg, "User define");
+      get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, UILanguageFile);
+      pf = pf + _snprintf(pf, sizeof(FNFilter)-2, "%s(%s)", uimsg, FileSendFilter);
+      pf++;
+      strncpy(pf, FileSendFilter, sizeof(FNFilter) - (pf - FNFilter + 2));
+      pf = pf + strlen(pf);
+      pf++;
+    }
   }
 #else
     strcat(fv->DlgCaption,"Send");
@@ -1127,7 +1171,7 @@ BOOL FAR PASCAL GetXFname
 #ifdef I18N
   strncpy(uimsg, "All(*.*)\\0*.*\\0\\0", sizeof(FNFilter));
   get_lang_msg("FILEDLG_ALL_FILTER", uimsg, UILanguageFile);
-  memcpy(FNFilter, uimsg, sizeof(FNFilter));
+  memcpy(pf, uimsg, sizeof(FNFilter) - (pf - FNFilter + 2));
 #else
   strcpy(FNFilter, "all");
   strcpy(&(FNFilter[strlen(FNFilter)+1]), "*.*");
@@ -1337,7 +1381,9 @@ BOOL WINAPI DllMain(HANDLE hInstance,
         if (pm != NULL) {
           strncpy(UILanguageFile, pm->ts.UILanguageFile, sizeof(UILanguageFile)-1);
           UILanguageFile[sizeof(UILanguageFile)-1] = 0;
-	    }
+          strncpy(FileSendFilter, pm->ts.FileSendFilter, sizeof(FileSendFilter)-1);
+          FileSendFilter[sizeof(FileSendFilter)-1] = 0;
+        }
       }
 #endif
     break;
@@ -1364,6 +1410,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  2007/05/30 16:05:18  maya
+ * 標準のログ保存先を指定できるようにした。
+ *
  * Revision 1.17  2007/05/02 04:52:10  maya
  * バッファのサイズを取得する方法を修正した。
  *

@@ -224,6 +224,7 @@ struct tttset {
   int ZmodemDataLen, ZmodemWinSize;
   int QVWinSize;
   char FileDir[MAXPATHLEN];
+  char FileSendFilter[128];
   WORD Language;
   char DelimList[52];
   WORD DelimDBCS;

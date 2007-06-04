@@ -653,6 +653,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
     _chdir(Temp);
   }
 
+  /* filter on file send (2007.6.5 maya) */
+  GetPrivateProfileString(Section,"FileSendFilter","",
+			  ts->FileSendFilter,sizeof(ts->FileSendFilter),FName);
+
 /*--------------------------------------------------*/
   /* 8 bit control code flag  -- special option */
   ts->TermFlag |=
@@ -1421,6 +1425,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* Default directory for file transfer */
   WritePrivateProfileString(Section,"FileDir",ts->FileDir,FName);
+
+  /* filter on file send (2007.6.5 maya) */
+  WritePrivateProfileString(Section,"FileSendFilter",ts->FileSendFilter,FName);
 
 /*------------------------------------------------------------------*/
   /* 8 bit control code flag  -- special option */
@@ -2489,6 +2496,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.31  2007/05/31 14:39:56  maya
+ * 接続時に自動的にログ採取を開始できるようにした。
+ *
  * Revision 1.30  2007/05/30 16:06:06  maya
  * 標準のログ保存先を指定できるようにした。
  *

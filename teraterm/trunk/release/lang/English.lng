@@ -324,6 +324,7 @@ FILEDLG_SAVE_SETUP_TITLE=Tera Term: Save setup
 FILEDLG_RESTORE_SETUP_TITLE=Tera Term: Restore setup
 FILEDLG_LOAD_KEYMAP_TITLE=Tera Term: Load key map
 FILEDLG_ALL_FILTER=All(*.*)\0*.*\0\0
+FILEDLG_USER_FILTER_NAME=User define
 
 DLG_GETFN_TITLE=Tera Term: Kermit Get
 DLG_GETFN_FILENAME=&Filename:
