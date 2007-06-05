@@ -154,6 +154,12 @@ BOOL GetRawLine()
 	while ((BuffPtr[INest]<BuffLen[INest]) &&
 		((b>=0x20) || (b==0x09)))
 	{
+		// LineBuff[]のバッファサイズを超える場合はエラーとする。
+		// ただし、マクロがいきなり終了するのでダイアログを表示するようにしたほうが
+		// いいかもしれない。
+		// (2007.6.6 yutaka)
+		if (i >= MaxStrLen)
+			return 0;
 		LineBuff[i] = b;
 		i++;
 		BuffPtr[INest]++;
