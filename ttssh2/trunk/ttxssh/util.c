@@ -220,7 +220,7 @@ BOOL UTIL_is_sock_deeply_buffered(UTILSockWriteBuf FAR * buf)
 	return buf->buflen / 2 < buf->datalen;
 }
 
-#ifdef I18N
+#ifndef NO_I18N
 void UTIL_get_lang_msg(PCHAR key, PTInstVar pvar)
 {
 	GetI18nStr("TTSSH", key, pvar->ts->UIMsg, pvar->ts->UILanguageFile);
@@ -244,6 +244,9 @@ int UTIL_get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PTIns
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2006/11/23 02:19:30  maya
+ * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
+ *
  * Revision 1.2  2004/12/19 15:39:58  yutakakn
  * CVS LogIDの追加
  *

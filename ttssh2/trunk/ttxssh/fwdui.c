@@ -37,7 +37,7 @@ See LICENSE.TXT for the license.
 #include "x11util.h"
 #include "util.h"
 
-#ifdef I18N
+#ifndef NO_I18N
 static HFONT DlgFwdEditFont;
 static HFONT DlgFwdFont;
 #endif
@@ -368,7 +368,7 @@ static int compare_services(void const FAR * elem1, void const FAR * elem2)
 	return strcmp(s1->name, s2->name);
 }
 
-#ifdef I18N
+#ifndef NO_I18N
 static void make_X_forwarding_spec(FWDRequestSpec FAR * spec, PTInstVar pvar)
 #else
 static void make_X_forwarding_spec(FWDRequestSpec FAR * spec)
@@ -378,7 +378,7 @@ static void make_X_forwarding_spec(FWDRequestSpec FAR * spec)
 	spec->from_port = -1;
 	X11_get_DISPLAY_info(spec->to_host, sizeof(spec->to_host),
 						 &spec->to_port);
-#ifdef I18N
+#ifndef NO_I18N
 	strcpy(pvar->ts->UIMsg, "remote X server");
 	UTIL_get_lang_msg("MSG_FWD_REMOTE_XSERVER", pvar);
 	strncpy(spec->from_port_name, pvar->ts->UIMsg,
@@ -388,7 +388,7 @@ static void make_X_forwarding_spec(FWDRequestSpec FAR * spec)
 			sizeof(spec->from_port_name));
 #endif
 	spec->from_port_name[sizeof(spec->from_port_name) - 1] = 0;
-#ifdef I18N
+#ifndef NO_I18N
 	strcpy(pvar->ts->UIMsg, "X server (screen %d)");
 	UTIL_get_lang_msg("MSG_FWD_REMOTE_XSCREEN", pvar);
 	_snprintf(spec->to_port_name, sizeof(spec->to_port_name),
@@ -455,7 +455,7 @@ static int parse_port(char FAR * FAR * str, char FAR * buf, int bufsize)
 	return parse_port_from_buf(buf);
 }
 
-#ifdef I18N
+#ifndef NO_I18N
 static BOOL parse_request(FWDRequestSpec FAR * request, char FAR * str, PTInstVar pvar)
 #else
 static BOOL parse_request(FWDRequestSpec FAR * request, char FAR * str)
@@ -468,7 +468,7 @@ static BOOL parse_request(FWDRequestSpec FAR * request, char FAR * str)
 	} else if (str[0] == 'R' || str[0] == 'r') {
 		request->type = FWD_REMOTE_TO_LOCAL;
 	} else if (str[0] == 'X' || str[0] == 'x') {
-#ifdef I18N
+#ifndef NO_I18N
 		make_X_forwarding_spec(request, pvar);
 #else
 		make_X_forwarding_spec(request);
@@ -588,7 +588,7 @@ void FWDUI_load_settings(PTInstVar pvar)
 			(FWDRequestSpec FAR *) malloc(sizeof(FWDRequestSpec) * j);
 
 		j = 0;
-#ifdef I18N
+#ifndef NO_I18N
 		if (parse_request(requests, str, pvar)) {
 #else
 		if (parse_request(requests, str)) {
@@ -597,7 +597,7 @@ void FWDUI_load_settings(PTInstVar pvar)
 		}
 		for (i = 0; (ch = str[i]) != 0; i++) {
 			if (ch == ';') {
-#ifdef I18N
+#ifndef NO_I18N
 				if (parse_request(requests + j, str + i + 1, pvar)) {
 #else
 				if (parse_request(requests + j, str + i + 1)) {
@@ -649,7 +649,7 @@ static void set_verbose_port(char FAR * buf, int bufsize, int port,
 	buf[bufsize - 1] = 0;
 }
 
-#ifdef I18N
+#ifndef NO_I18N
 static void get_spec_string(FWDRequestSpec FAR * spec, char FAR * buf,
 							int bufsize, PTInstVar pvar)
 #else
@@ -667,7 +667,7 @@ static void get_spec_string(FWDRequestSpec FAR * spec, char FAR * buf,
 
 	switch (spec->type) {
 	case FWD_REMOTE_TO_LOCAL:
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "Remote %s to local \"%s\" port %s");
 		UTIL_get_lang_msg("MSG_FWD_REMOTE", pvar);
 		_snprintf(buf, bufsize, pvar->ts->UIMsg,
@@ -679,7 +679,7 @@ static void get_spec_string(FWDRequestSpec FAR * spec, char FAR * buf,
 		buf[bufsize - 1] = 0;
 		break;
 	case FWD_LOCAL_TO_REMOTE:
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "Local %s to remote \"%s\" port %s");
 		UTIL_get_lang_msg("MSG_FWD_LOCAL", pvar);
 		_snprintf(buf, bufsize, pvar->ts->UIMsg,
@@ -691,7 +691,7 @@ static void get_spec_string(FWDRequestSpec FAR * spec, char FAR * buf,
 		buf[bufsize - 1] = 0;
 		break;
 	case FWD_REMOTE_X11_TO_LOCAL:
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "Remote X applications to local X server");
 		UTIL_get_lang_msg("MSG_FWD_X", pvar);
 		_snprintf(buf, bufsize, pvar->ts->UIMsg);
@@ -718,7 +718,7 @@ static void init_listbox_selection(HWND dlg)
 	update_listbox_selection(dlg);
 }
 
-#ifdef I18N
+#ifndef NO_I18N
 static int add_spec_to_listbox(HWND dlg, FWDRequestSpec FAR * spec, PTInstVar pvar)
 #else
 static int add_spec_to_listbox(HWND dlg, FWDRequestSpec FAR * spec)
@@ -728,7 +728,7 @@ static int add_spec_to_listbox(HWND dlg, FWDRequestSpec FAR * spec)
 	HWND listbox = GetDlgItem(dlg, IDC_SSHFWDLIST);
 	int index;
 
-#ifdef I18N
+#ifndef NO_I18N
 	get_spec_string(spec, buf, sizeof(buf), pvar);
 #else
 	get_spec_string(spec, buf, sizeof(buf));
@@ -757,7 +757,7 @@ static void init_fwd_dlg(PTInstVar pvar, HWND dlg)
 		(FWDRequestSpec FAR *) malloc(sizeof(FWDRequestSpec) * num_specs);
 	int i;
 
-#ifdef I18N
+#ifndef NO_I18N
 	GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
 	UTIL_get_lang_msg("DLG_FWD_TITLE", pvar);
 	SetWindowText(dlg, pvar->ts->UIMsg);
@@ -801,7 +801,7 @@ static void init_fwd_dlg(PTInstVar pvar, HWND dlg)
 		if (requests[i].type == FWD_REMOTE_X11_TO_LOCAL) {
 			CheckDlgButton(dlg, IDC_SSHFWDX11, TRUE);
 		} else {
-#ifdef I18N
+#ifndef NO_I18N
 			add_spec_to_listbox(dlg, requests + i, pvar);
 #else
 			add_spec_to_listbox(dlg, requests + i);
@@ -858,7 +858,7 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 	}
 
 	if (X_enabled) {
-#ifdef I18N
+#ifndef NO_I18N
 		make_X_forwarding_spec(specs, pvar);
 #else
 		make_X_forwarding_spec(specs);
@@ -872,7 +872,7 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 			&& FWD_compare_specs(specs + i, specs + i + 1) == 0) {
 			switch (specs[i].type) {
 			case FWD_REMOTE_TO_LOCAL:
-#ifdef I18N
+#ifndef NO_I18N
 				strcpy(pvar->ts->UIMsg, "You cannot have two forwardings from the same server port (%d).");
 				UTIL_get_lang_msg("MSG_SAME_SERVERPORT_ERROR", pvar);
 				_snprintf(buf, sizeof(buf), pvar->ts->UIMsg, specs[i].from_port);
@@ -883,7 +883,7 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 #endif
 				break;
 			case FWD_LOCAL_TO_REMOTE:
-#ifdef I18N
+#ifndef NO_I18N
 				strcpy(pvar->ts->UIMsg, "You cannot have two forwardings from the same local port (%d).");
 				UTIL_get_lang_msg("MSG_SAME_LOCALPORT_ERROR", pvar);
 				_snprintf(buf, sizeof(buf), pvar->ts->UIMsg, specs[i].from_port);
@@ -911,7 +911,7 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 		int buf_count;
 
 		if (num_unspecified_forwardings > 1) {
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(pvar->ts->UIMsg, "The following forwardings were not specified when this SSH session began:\n\n");
 			UTIL_get_lang_msg("MSG_UNSPECIFYIED_FWDS_ERROR1", pvar);
 			strncpy(buf, pvar->ts->UIMsg, sizeof(buf));
@@ -921,7 +921,7 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 					sizeof(buf));
 #endif
 		} else {
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(pvar->ts->UIMsg, "The following forwarding was not specified when this SSH session began:\n\n");
 			UTIL_get_lang_msg("MSG_UNSPECIFYIED_FWD_ERROR1", pvar);
 			strncpy(buf, pvar->ts->UIMsg, sizeof(buf));
@@ -938,7 +938,7 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 				&& !FWD_can_server_listen_for(pvar, specs + i)) {
 				char buf2[1024];
 
-#ifdef I18N
+#ifndef NO_I18N
 				get_spec_string(specs + i, buf2, sizeof(buf2), pvar);
 #else
 				get_spec_string(specs + i, buf2, sizeof(buf2));
@@ -958,7 +958,7 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 
 		if (buf_count < sizeof(buf)) {
 			if (num_unspecified_forwardings > 1) {
-#ifdef I18N
+#ifndef NO_I18N
 				strcpy(pvar->ts->UIMsg,
 					   "\nDue to a limitation of the SSH protocol, these forwardings will not work in the current SSH session.\n"
 					   "If you save these settings and start a new SSH session, the forwardings should work.");
@@ -971,7 +971,7 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 						sizeof(buf) - buf_count);
 #endif
 			} else {
-#ifdef I18N
+#ifndef NO_I18N
 				strcpy(pvar->ts->UIMsg,
 					   "\nDue to a limitation of the SSH protocol, this forwarding will not work in the current SSH session.\n"
 					   "If you save these settings and start a new SSH session, the forwarding should work.");
@@ -1062,13 +1062,13 @@ static void setup_edit_controls(HWND dlg, FWDRequestSpec FAR * spec,
 	set_dir_options_status(dlg);
 }
 
-#ifdef I18N
+#ifndef NO_I18N
 static void init_fwd_edit_dlg(PTInstVar pvar, FWDRequestSpec FAR * spec, HWND dlg)
 #else
 static void init_fwd_edit_dlg(FWDRequestSpec FAR * spec, HWND dlg)
 #endif
 {
-#ifdef I18N
+#ifndef NO_I18N
 	GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
 	UTIL_get_lang_msg("DLG_FWD_TITLE", pvar);
 	SetWindowText(dlg, pvar->ts->UIMsg);
@@ -1160,7 +1160,7 @@ static BOOL end_fwd_edit_dlg(PTInstVar pvar, FWDRequestSpec FAR * spec,
 
 	new_spec.from_port = parse_port_from_buf(new_spec.from_port_name);
 	if (new_spec.from_port < 0) {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg,
 			   "Port \"%s\" is not a valid port number.\n"
 			   "Either choose a port name from the list, or enter a number between 1 and 65535.");
@@ -1180,7 +1180,7 @@ static BOOL end_fwd_edit_dlg(PTInstVar pvar, FWDRequestSpec FAR * spec,
 
 	new_spec.to_port = parse_port_from_buf(new_spec.to_port_name);
 	if (new_spec.to_port < 0) {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg,
 			   "Port \"%s\" is not a valid port number.\n"
 			   "Either choose a port name from the list, or enter a number between 1 and 65535.");
@@ -1208,7 +1208,7 @@ static BOOL CALLBACK fwd_edit_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 									   LPARAM lParam)
 {
 	FWDEditClosure FAR *closure;
-#ifdef I18N
+#ifndef NO_I18N
 	PTInstVar pvar;
 	LOGFONT logfont;
 	HFONT font;
@@ -1219,7 +1219,7 @@ static BOOL CALLBACK fwd_edit_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		closure = (FWDEditClosure FAR *) lParam;
 		SetWindowLong(dlg, DWL_USER, lParam);
 
-#ifdef I18N
+#ifndef NO_I18N
 		pvar = closure->pvar;
 		init_fwd_edit_dlg(pvar, closure->spec, dlg);
 
@@ -1256,7 +1256,7 @@ static BOOL CALLBACK fwd_edit_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		switch (LOWORD(wParam)) {
 		case IDOK:
 
-#ifdef I18N
+#ifndef NO_I18N
 			if (DlgFwdEditFont != NULL) {
 				DeleteObject(DlgFwdEditFont);
 			}
@@ -1267,7 +1267,7 @@ static BOOL CALLBACK fwd_edit_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		case IDCANCEL:
 			EndDialog(dlg, 0);
 
-#ifdef I18N
+#ifndef NO_I18N
 			if (DlgFwdEditFont != NULL) {
 				DeleteObject(DlgFwdEditFont);
 			}
@@ -1304,7 +1304,7 @@ static void add_forwarding_entry(PTInstVar pvar, HWND dlg)
 							dlg, fwd_edit_dlg_proc, (LPARAM) & closure);
 
 	if (result == -1) {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "Unable to display forwarding edit dialog box.");
 		UTIL_get_lang_msg("MSG_CREATEWINDOW_FWDEDIT_ERROR", pvar);
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
@@ -1313,7 +1313,7 @@ static void add_forwarding_entry(PTInstVar pvar, HWND dlg)
 							  "Unable to display forwarding edit dialog box.");
 #endif
 	} else if (result) {
-#ifdef I18N
+#ifndef NO_I18N
 		int index = add_spec_to_listbox(dlg, &new_spec, pvar);
 #else
 		int index = add_spec_to_listbox(dlg, &new_spec);
@@ -1344,7 +1344,7 @@ static void edit_forwarding_entry(PTInstVar pvar, HWND dlg)
 							   dlg, fwd_edit_dlg_proc, (LPARAM) & closure);
 
 			if (result == -1) {
-#ifdef I18N
+#ifndef NO_I18N
 				strcpy(pvar->ts->UIMsg, "Unable to display forwarding edit dialog box.");
 				UTIL_get_lang_msg("MSG_CREATEWINDOW_FWDEDIT_ERROR", pvar);
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
@@ -1355,7 +1355,7 @@ static void edit_forwarding_entry(PTInstVar pvar, HWND dlg)
 			} else if (result) {
 				SendMessage(listbox, LB_DELETESTRING, cursel, 0);
 
-#ifdef I18N
+#ifndef NO_I18N
 				cursel = add_spec_to_listbox(dlg, spec, pvar);
 #else
 				cursel = add_spec_to_listbox(dlg, spec);
@@ -1387,7 +1387,7 @@ static BOOL CALLBACK fwd_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 								  LPARAM lParam)
 {
 	PTInstVar pvar;
-#ifdef I18N
+#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
 #endif
@@ -1399,7 +1399,7 @@ static BOOL CALLBACK fwd_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 
 		init_fwd_dlg(pvar, dlg);
 
-#ifdef I18N
+#ifndef NO_I18N
 		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
 		if (UTIL_get_lang_font("DLG_TAHOMA_FONT", dlg, &logfont, &DlgFwdFont, pvar)) {
@@ -1426,7 +1426,7 @@ static BOOL CALLBACK fwd_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		switch (LOWORD(wParam)) {
 		case IDOK:
 
-#ifdef I18N
+#ifndef NO_I18N
 			if (DlgFwdFont != NULL) {
 				DeleteObject(DlgFwdFont);
 			}
@@ -1438,7 +1438,7 @@ static BOOL CALLBACK fwd_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			free_all_listbox_specs(dlg);
 			EndDialog(dlg, 0);
 
-#ifdef I18N
+#ifndef NO_I18N
 			if (DlgFwdFont != NULL) {
 				DeleteObject(DlgFwdFont);
 			}
@@ -1479,7 +1479,7 @@ void FWDUI_do_forwarding_dialog(PTInstVar pvar)
 					   cur_active !=
 					   NULL ? cur_active : pvar->NotificationWindow,
 					   fwd_dlg_proc, (LPARAM) pvar) == -1) {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "Unable to display forwarding setup dialog box.");
 		UTIL_get_lang_msg("MSG_CREATEWINDOW_FWDSETUP_ERROR", pvar);
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
@@ -1492,6 +1492,9 @@ void FWDUI_do_forwarding_dialog(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2007/01/04 08:36:42  maya
+ * フォントを変更する部分を追加した。
+ *
  * Revision 1.6  2006/12/06 14:31:13  maya
  * 表示メッセージの読み込み対応
  *

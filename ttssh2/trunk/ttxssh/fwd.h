@@ -62,9 +62,9 @@ typedef struct {
 
   void FAR * filter_closure;
   FWDFilter filter;
-#ifdef INET6
+#ifndef NO_INET6
   struct addrinfo FAR * to_host_addrs;
-#endif /* INET6 */
+#endif /* NO_INET6 */
 } FWDChannel;
 
 /* Request types */
@@ -90,11 +90,11 @@ typedef struct {
 
 #define FWD_DELETED                      0x01
 
-#ifdef INET6
+#ifndef NO_INET6
 #define MAX_LISTENING_SOCKETS 4096
 #endif
 typedef struct {
-#ifdef INET6
+#ifndef NO_INET6
   int num_listening_sockets;
   SOCKET FAR * listening_sockets;
   struct addrinfo FAR * to_host_addrs;
@@ -103,7 +103,7 @@ typedef struct {
 
   uint32 to_host_addr;
   char FAR * to_host_hostent_buf;
-#endif /* INET6 */
+#endif /* NO_INET6 */
   HANDLE to_host_lookup_handle;
 
   int num_channels;
@@ -122,11 +122,11 @@ typedef struct {
   FWDRequest FAR * requests;
   int num_channels;
   FWDChannel FAR * channels;
-#ifdef INET6
+#ifndef NO_INET6
   struct sockaddr_storage FAR * local_host_IP_numbers;
 #else
   uint32 * local_host_IP_numbers;
-#endif /* INET6 */
+#endif /* NO_INET6 */
   struct _X11AuthData FAR * X11_auth_data;
   BOOL in_interactive_mode;
 } FWDState;

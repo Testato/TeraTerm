@@ -239,7 +239,7 @@ int PKT_recv(PTInstVar pvar, char FAR * buf, int buflen)
 			} else if (total_packet_size > 4 * 1024 * 1024) {
 				// 4MBを超える巨大なパケットが届いたら、異常終了する。
 				// 実際にはデータ化けで復号失敗時に、誤認識することが多い。
-#ifdef I18N
+#ifndef NO_I18N
 				strcpy(pvar->ts->UIMsg, "Oversized packet received from server; connection will close.");
 				UTIL_get_lang_msg("MSG_PKT_OVERSIZED_ERROR", pvar);
 				notify_fatal_error(pvar, pvar->ts->UIMsg);
@@ -309,6 +309,9 @@ void PKT_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2006/12/05 09:20:36  maya
+ * 表示メッセージの読み込み対応
+ *
  * Revision 1.4  2006/11/23 02:19:30  maya
  * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
  *

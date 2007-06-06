@@ -42,7 +42,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define MAX_AUTH_CONTROL IDC_SSHUSETIS
 
-#ifdef I18N
+#ifndef NO_I18N
 static HFONT DlgAuthFont;
 static HFONT DlgTisFont;
 static HFONT DlgAuthSetupFont;
@@ -115,7 +115,7 @@ static void set_auth_options_status(HWND dlg, int controlID)
 static void init_auth_machine_banner(PTInstVar pvar, HWND dlg)
 {
 	char buf[1024] = "Logging in to ";
-#ifdef I18N
+#ifndef NO_I18N
 	char buf2[1024];
 	GetDlgItemText(dlg, IDC_SSHAUTHBANNER, buf2, sizeof(buf2));
 	_snprintf(buf, sizeof(buf), buf2, SSH_get_host_name(pvar));
@@ -182,7 +182,7 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 {
 	int default_method = pvar->session_settings.DefaultAuthMethod;
 
-#ifdef I18N
+#ifndef NO_I18N
 	GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
 	UTIL_get_lang_msg("DLG_AUTH_TITLE", pvar);
 	SetWindowText(dlg, pvar->ts->UIMsg);
@@ -245,7 +245,7 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 
 	if (pvar->auth_state.failed_method != SSH_AUTH_NONE) {
 		/* must be retrying a failed attempt */
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "Authentication failed. Please retry.");
 		UTIL_get_lang_msg("DLG_AUTH_BANNER2_FAILED", pvar);
 		SetDlgItemText(dlg, IDC_SSHAUTHBANNER2, "Retrying SSH Authentication");
@@ -347,7 +347,7 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 	// パスワード認証を試す前に、keyboard-interactiveメソッドを試す場合は、ラベル名を
 	// 変更する。(2005.3.12 yutaka)
 	if (pvar->settings.ssh2_keyboard_interactive == 1) {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "Use p&lain password to log in (with keyboard-interactive)");
 		UTIL_get_lang_msg("DLG_AUTH_METHOD_PASSWORD_KBDINT", pvar);
 		SetDlgItemText(dlg, IDC_SSHUSEPASSWORD, pvar->ts->UIMsg);
@@ -357,7 +357,7 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 	}
 
 	if (pvar->settings.ssh_protocol_version == 1) {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "Use challenge/response to log in(&TIS)");
 		UTIL_get_lang_msg("DLG_AUTH_METHOD_CHALLENGE1", pvar);
 		SetDlgItemText(dlg, IDC_SSHUSETIS, pvar->ts->UIMsg);
@@ -365,7 +365,7 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 		SetDlgItemText(dlg, IDC_SSHUSETIS, "Use challenge/response to log in(&TIS)");
 #endif
 	} else {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "Use &challenge/response to log in(keyboard-interactive)");
 		UTIL_get_lang_msg("DLG_AUTH_METHOD_CHALLENGE2", pvar);
 		SetDlgItemText(dlg, IDC_SSHUSETIS, pvar->ts->UIMsg);
@@ -397,7 +397,7 @@ static char FAR *alloc_control_text(HWND ctl)
 	return result;
 }
 
-#ifdef I18N
+#ifndef NO_I18N
 static int get_key_file_name(HWND parent, char FAR * buf, int bufsize, PTInstVar pvar)
 #else
 static int get_key_file_name(HWND parent, char FAR * buf, int bufsize)
@@ -406,7 +406,7 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize)
 #ifdef TERATERM32
 	OPENFILENAME params;
 	char fullname_buf[2048] = "identity";
-#ifdef I18N
+#ifndef NO_I18N
 	char filter[MAX_UIMSG];
 #endif
 
@@ -415,7 +415,7 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize)
 	params.hwndOwner = parent;
 	// フィルタの追加 (2004.12.19 yutaka)
 	// 3ファイルフィルタの追加 (2005.4.26 yutaka)
-#ifdef I18N
+#ifndef NO_I18N
 	strncpy(pvar->ts->UIMsg, "identity files\\0identity;id_rsa;id_dsa\\0identity(RSA1)\\0identity\\0id_rsa(SSH2)\\0id_rsa\\0id_dsa(SSH2)\\0id_dsa\\0all(*.*)\\0*.*\\0\\0", sizeof(pvar->ts->UIMsg));
 	UTIL_get_lang_msg("FILEDLG_OPEN_PRIVATEKEY_FILTER", pvar);
 	memcpy(filter, pvar->ts->UIMsg, sizeof(filter));
@@ -430,7 +430,7 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize)
 	params.nMaxFile = sizeof(fullname_buf);
 	params.lpstrFileTitle = NULL;
 	params.lpstrInitialDir = NULL;
-#ifdef I18N
+#ifndef NO_I18N
 	strcpy(pvar->ts->UIMsg, "Choose a file with the RSA/DSA private key");
 	UTIL_get_lang_msg("FILEDLG_OPEN_PRIVATEKEY_TITLE", pvar);
 	params.lpstrTitle = pvar->ts->UIMsg;
@@ -452,7 +452,7 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize)
 #endif
 }
 
-#ifdef I18N
+#ifndef NO_I18N
 static void choose_RSA_key_file(HWND dlg, PTInstVar pvar)
 #else
 static void choose_RSA_key_file(HWND dlg)
@@ -460,7 +460,7 @@ static void choose_RSA_key_file(HWND dlg)
 {
 	char buf[1024];
 
-#ifdef I18N
+#ifndef NO_I18N
 	if (get_key_file_name(dlg, buf, sizeof(buf), pvar)) {
 #else
 	if (get_key_file_name(dlg, buf, sizeof(buf))) {
@@ -469,7 +469,7 @@ static void choose_RSA_key_file(HWND dlg)
 	}
 }
 
-#ifdef I18N
+#ifndef NO_I18N
 static void choose_host_RSA_key_file(HWND dlg, PTInstVar pvar)
 #else
 static void choose_host_RSA_key_file(HWND dlg)
@@ -477,7 +477,7 @@ static void choose_host_RSA_key_file(HWND dlg)
 {
 	char buf[1024];
 
-#ifdef I18N
+#ifndef NO_I18N
 	if (get_key_file_name(dlg, buf, sizeof(buf), pvar)) {
 #else
 	if (get_key_file_name(dlg, buf, sizeof(buf))) {
@@ -513,7 +513,7 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 		buf[0] = 0;
 		GetDlgItemText(dlg, file_ctl_ID, buf, sizeof(buf));
 		if (buf[0] == 0) {
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(pvar->ts->UIMsg, "You must specify a file containing the RSA/DSA private key.");
 			UTIL_get_lang_msg("MSG_KEYSPECIFY_ERROR", pvar);
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
@@ -562,7 +562,7 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 
 			if (key_pair == NULL) { // read error
 				char buf[1024];
-#ifdef I18N
+#ifndef NO_I18N
 				strcpy(pvar->ts->UIMsg, "read error SSH2 private key file\r\n%s");
 				UTIL_get_lang_msg("MSG_READKEY_ERROR", pvar);
 				_snprintf(buf, sizeof(buf), pvar->ts->UIMsg, errmsg);
@@ -615,7 +615,7 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 	}
 	if (method == SSH_AUTH_RHOSTS || method == SSH_AUTH_RHOSTS_RSA) {
 		if (pvar->session_settings.DefaultAuthMethod != SSH_AUTH_RHOSTS) {
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(pvar->ts->UIMsg, "Rhosts authentication will probably fail because it was not "
 									"the default authentication method.\n"
 									"To use Rhosts authentication "
@@ -662,7 +662,7 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 	}
 
 	EndDialog(dlg, 1);
-#ifdef I18N
+#ifndef NO_I18N
 			if (DlgAuthFont != NULL) {
 				DeleteObject(DlgAuthFont);
 			}
@@ -677,7 +677,7 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 	const int IDC_TIMER1 = 300;
 	const int autologin_timeout = 10; // ミリ秒
 	PTInstVar pvar;
-#ifdef I18N
+#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
 #endif
@@ -690,7 +690,7 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 
 		init_auth_dlg(pvar, dlg);
 
-#ifdef I18N
+#ifndef NO_I18N
 		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
 		if (UTIL_get_lang_font("DLG_TAHOMA_FONT", dlg, &logfont, &DlgAuthFont, pvar)) {
@@ -751,7 +751,7 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			notify_closed_connection(pvar);
 			EndDialog(dlg, 0);
 
-#ifdef I18N
+#ifndef NO_I18N
 			if (DlgAuthFont != NULL) {
 				DeleteObject(DlgAuthFont);
 			}
@@ -767,7 +767,7 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			return TRUE;
 
 		case IDC_CHOOSERSAFILE:
-#ifdef I18N
+#ifndef NO_I18N
 			choose_RSA_key_file(dlg, pvar);
 #else
 			choose_RSA_key_file(dlg);
@@ -775,7 +775,7 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			return TRUE;
 
 		case IDC_CHOOSEHOSTRSAFILE:
-#ifdef I18N
+#ifndef NO_I18N
 			choose_host_RSA_key_file(dlg, pvar);
 #else
 			choose_host_RSA_key_file(dlg);
@@ -822,7 +822,7 @@ int AUTH_set_supported_auth_types(PTInstVar pvar, int types)
 	pvar->auth_state.supported_types = types;
 
 	if (types == 0) {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg,
 			   "Server does not support any of the authentication options\n"
 			   "provided by TTSSH. This connection will now close.");
@@ -950,7 +950,7 @@ void AUTH_advance_to_next_cred(PTInstVar pvar)
 
 static void init_TIS_dlg(PTInstVar pvar, HWND dlg)
 {
-#ifdef I18N
+#ifndef NO_I18N
 	GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
 	UTIL_get_lang_msg("DLG_TIS_TITLE", pvar);
 	SetWindowText(dlg, pvar->ts->UIMsg);
@@ -1006,7 +1006,7 @@ static BOOL CALLBACK TIS_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 								  LPARAM lParam)
 {
 	PTInstVar pvar;
-#ifdef I18N
+#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
 #endif
@@ -1019,7 +1019,7 @@ static BOOL CALLBACK TIS_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 
 		init_TIS_dlg(pvar, dlg);
 
-#ifdef I18N
+#ifndef NO_I18N
 		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
 		if (UTIL_get_lang_font("DLG_TAHOMA_FONT", dlg, &logfont, &DlgTisFont, pvar)) {
@@ -1041,7 +1041,7 @@ static BOOL CALLBACK TIS_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 
 		switch (LOWORD(wParam)) {
 		case IDOK:
-#ifdef I18N
+#ifndef NO_I18N
 			if (DlgTisFont != NULL) {
 				DeleteObject(DlgTisFont);
 			}
@@ -1054,7 +1054,7 @@ static BOOL CALLBACK TIS_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			notify_closed_connection(pvar);
 			EndDialog(dlg, 0);
 
-#ifdef I18N
+#ifndef NO_I18N
 			if (DlgTisFont != NULL) {
 				DeleteObject(DlgTisFont);
 			}
@@ -1093,7 +1093,7 @@ void AUTH_do_cred_dialog(PTInstVar pvar)
 							cur_active !=
 							NULL ? cur_active : pvar->NotificationWindow,
 							dlg_proc, (LPARAM) pvar) == -1) {
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(pvar->ts->UIMsg,
 				   "Unable to display authentication dialog box.\n"
 				   "Connection terminated.");
@@ -1110,7 +1110,7 @@ void AUTH_do_cred_dialog(PTInstVar pvar)
 
 static void init_default_auth_dlg(PTInstVar pvar, HWND dlg)
 {
-#ifdef I18N
+#ifndef NO_I18N
 	GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
 	UTIL_get_lang_msg("DLG_AUTHSETUP_TITLE", pvar);
 	SetWindowText(dlg, pvar->ts->UIMsg);
@@ -1246,7 +1246,7 @@ static BOOL CALLBACK default_auth_dlg_proc(HWND dlg, UINT msg,
 										   WPARAM wParam, LPARAM lParam)
 {
 	PTInstVar pvar;
-#ifdef I18N
+#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
 #endif
@@ -1258,7 +1258,7 @@ static BOOL CALLBACK default_auth_dlg_proc(HWND dlg, UINT msg,
 
 		init_default_auth_dlg(pvar, dlg);
 
-#ifdef I18N
+#ifndef NO_I18N
 		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
 		if (UTIL_get_lang_font("DLG_TAHOMA_FONT", dlg, &logfont, &DlgAuthSetupFont, pvar)) {
@@ -1292,7 +1292,7 @@ static BOOL CALLBACK default_auth_dlg_proc(HWND dlg, UINT msg,
 		switch (LOWORD(wParam)) {
 		case IDOK:
 
-#ifdef I18N
+#ifndef NO_I18N
 			if (DlgAuthSetupFont != NULL) {
 				DeleteObject(DlgAuthSetupFont);
 			}
@@ -1303,7 +1303,7 @@ static BOOL CALLBACK default_auth_dlg_proc(HWND dlg, UINT msg,
 		case IDCANCEL:
 			EndDialog(dlg, 0);
 
-#ifdef I18N
+#ifndef NO_I18N
 			if (DlgAuthSetupFont != NULL) {
 				DeleteObject(DlgAuthSetupFont);
 			}
@@ -1312,7 +1312,7 @@ static BOOL CALLBACK default_auth_dlg_proc(HWND dlg, UINT msg,
 			return TRUE;
 
 		case IDC_CHOOSERSAFILE:
-#ifdef I18N
+#ifndef NO_I18N
 			choose_RSA_key_file(dlg, pvar);
 #else
 			choose_RSA_key_file(dlg);
@@ -1320,7 +1320,7 @@ static BOOL CALLBACK default_auth_dlg_proc(HWND dlg, UINT msg,
 			return TRUE;
 
 		case IDC_CHOOSEHOSTRSAFILE:
-#ifdef I18N
+#ifndef NO_I18N
 			choose_host_RSA_key_file(dlg, pvar);
 #else
 			choose_host_RSA_key_file(dlg);
@@ -1379,7 +1379,7 @@ void AUTH_do_default_cred_dialog(PTInstVar pvar)
 					   cur_active !=
 					   NULL ? cur_active : pvar->NotificationWindow,
 					   default_auth_dlg_proc, (LPARAM) pvar) == -1) {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "Unable to display authentication setup dialog box.");
 		UTIL_get_lang_msg("MSG_CREATEWINDOW_AUTHSETUP_ERROR", pvar);
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
@@ -1426,7 +1426,7 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 		strncpy(dest, "None", len);
 	} else if (pvar->auth_state.cur_cred.method != SSH_AUTH_NONE) {
 		if (SSHv1(pvar)) {
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(pvar->ts->UIMsg, "User '%s', using %s");
 			UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar);
 			_snprintf(dest, len, pvar->ts->UIMsg, pvar->auth_state.user,
@@ -1448,7 +1448,7 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 				} else {
 					method = get_auth_method_name(pvar->auth_state.cur_cred.method);
 				}
-#ifdef I18N
+#ifndef NO_I18N
 				strcpy(pvar->ts->UIMsg, "User '%s', using %s");
 				UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar);
 				_snprintf(dest, len, pvar->ts->UIMsg, pvar->auth_state.user, method);
@@ -1462,7 +1462,7 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 				} else if (pvar->auth_state.cur_cred.key_pair->DSA_key != NULL) {
 					method = "DSA";
 				}
-#ifdef I18N
+#ifndef NO_I18N
 				strcpy(pvar->ts->UIMsg, "User '%s', using %s");
 				UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar);
 				_snprintf(dest, len, pvar->ts->UIMsg, pvar->auth_state.user, method);
@@ -1474,7 +1474,7 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 		}
 
 	} else {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "User '%s', using %s");
 		UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar);
 		_snprintf(dest, len, pvar->ts->UIMsg, pvar->auth_state.user,
@@ -1507,6 +1507,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.32  2007/03/17 11:53:29  doda
+ * プレインテキスト認証と一緒にキーボードインタラクティブ認証を使用するように設定している時、SSH認証ダイアログでプレインテキスト認証がrhosts認証と表示されるのを修正した。
+ *
  * Revision 1.31  2007/02/17 17:31:55  yasuhide
  * コマンドラインでask4passwd が指定された時、ログインダイアログのパスフレーズ入力にフォーカスする
  *

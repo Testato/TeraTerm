@@ -251,7 +251,7 @@ int X11_unspoofing_filter(void FAR * void_closure, int direction,
 			return FWD_FILTER_REMOVE;
 		default:
 		case MERGE_GOT_BAD_DATA:
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(closure->pvar->ts->UIMsg,"Remote X application sent incorrect authentication data.\n"
 											"Its X session is being cancelled.");
 			UTIL_get_lang_msg("MSG_X_AUTH_ERROR", closure->pvar);
@@ -271,6 +271,9 @@ int X11_unspoofing_filter(void FAR * void_closure, int direction,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2006/11/23 02:19:30  maya
+ * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
+ *
  * Revision 1.2  2004/12/19 15:39:58  yutakakn
  * CVS LogIDの追加
  *

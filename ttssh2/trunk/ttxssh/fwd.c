@@ -38,9 +38,9 @@ See LICENSE.TXT for the license.
 #include "fwd.h"
 
 #include <assert.h>
-#ifdef INET6
+#ifndef NO_INET6
 #include "WSAAsyncGetAddrInfo.h"
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
 #define WM_SOCK_ACCEPT (WM_APP+9999)
 #define WM_SOCK_IO     (WM_APP+9998)
@@ -54,14 +54,14 @@ static LRESULT CALLBACK accept_wnd_proc(HWND wnd, UINT msg, WPARAM wParam,
 static int find_request_num(PTInstVar pvar, SOCKET s)
 {
 	int i;
-#ifdef INET6
+#ifndef NO_INET6
 	int j;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
 	if (s == INVALID_SOCKET)
 		return -1;
 
-#ifdef INET6
+#ifndef NO_INET6
 	for (i = 0; i < pvar->fwd_state.num_requests; i++) {
 		for (j = 0; j < pvar->fwd_state.requests[i].num_listening_sockets;
 			 ++j) {
@@ -78,7 +78,7 @@ static int find_request_num(PTInstVar pvar, SOCKET s)
 			return i;
 		}
 	}
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
 	return -1;
 }
@@ -118,7 +118,7 @@ static int find_request_num_from_async_request(PTInstVar pvar,
 	return -1;
 }
 
-#ifdef INET6
+#ifndef NO_INET6
 static int find_listening_socket_num(PTInstVar pvar, int request_num,
 									 SOCKET s)
 {
@@ -132,7 +132,7 @@ static int find_listening_socket_num(PTInstVar pvar, int request_num,
 	/* not found */
 	return -1;
 }
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
 static void drain_matching_messages(HWND wnd, UINT msg, WPARAM wParam)
 {
@@ -209,7 +209,7 @@ static int check_local_channel_num(PTInstVar pvar, int local_num)
 {
 	if (local_num < 0 || local_num >= pvar->fwd_state.num_channels
 		|| pvar->fwd_state.channels[local_num].status == 0) {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "The server attempted to manipulate a forwarding channel that does not exist.\n"
 							    "Either the server has a bug or is hostile. You should close this connection.");
 		UTIL_get_lang_msg("MSG_FWD_LOCAL_CHANNEL_ERROR", pvar);
@@ -227,15 +227,15 @@ static int check_local_channel_num(PTInstVar pvar, int local_num)
 
 static void request_error(PTInstVar pvar, int request_num, int err)
 {
-#ifdef INET6
+#ifndef NO_INET6
 	SOCKET FAR *s =
 		pvar->fwd_state.requests[request_num].listening_sockets;
 	int i;
 #else
 	SOCKET s = pvar->fwd_state.requests[request_num].listening_socket;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
-#ifdef INET6
+#ifndef NO_INET6
 	for (i = 0;
 		 i < pvar->fwd_state.requests[request_num].num_listening_sockets;
 		 ++i) {
@@ -251,9 +251,9 @@ static void request_error(PTInstVar pvar, int request_num, int err)
 		pvar->fwd_state.requests[request_num].listening_socket =
 			INVALID_SOCKET;
 	}
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
-#ifdef I18N
+#ifndef NO_I18N
 	strcpy(pvar->ts->UIMsg, "Communications error while listening for a connection to forward.\n"
 							"The listening port will be terminated.");
 	UTIL_get_lang_msg("MSG_FWD_REQUEST_ERROR", pvar);
@@ -299,13 +299,13 @@ static void really_delete_request(PTInstVar pvar, int request_num)
 		safe_WSACancelAsyncRequest(pvar, request->to_host_lookup_handle);
 		request->to_host_lookup_handle = 0;
 	}
-#ifdef INET6
+#ifndef NO_INET6
   /*****/
 	/* freeaddrinfo(); */
 #else
 	free(request->to_host_hostent_buf);
 	request->to_host_hostent_buf = NULL;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 }
 
 static void free_channel(PTInstVar pvar, int i)
@@ -375,7 +375,7 @@ void FWD_channel_output_eof(PTInstVar pvar, uint32 local_channel_num)
 	}
 }
 
-#ifdef I18N
+#ifndef NO_I18N
 static char FAR *describe_socket_error(PTInstVar pvar, int code)
 #else
 static char FAR *describe_socket_error(int code)
@@ -383,7 +383,7 @@ static char FAR *describe_socket_error(int code)
 {
 	switch (code) {
 	case WSAECONNREFUSED:
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "Connection refused (perhaps the service is not currently running)");
 		UTIL_get_lang_msg("MSG_FWD_REFUSED_ERROR", pvar);
 		return pvar->ts->UIMsg;
@@ -394,7 +394,7 @@ static char FAR *describe_socket_error(int code)
 	case WSAENETDOWN:
 	case WSAENETUNREACH:
 	case WSAEHOSTUNREACH:
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "The machine could not be contacted (possibly a network problem)");
 		UTIL_get_lang_msg("MSG_FWD_NETDOWN_ERROR", pvar);
 		return pvar->ts->UIMsg;
@@ -404,7 +404,7 @@ static char FAR *describe_socket_error(int code)
 #endif
 	case WSAETIMEDOUT:
 	case WSAEHOSTDOWN:
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "The machine could not be contacted (possibly the machine is down)");
 		UTIL_get_lang_msg("MSG_FWD_MACHINEDOWN_ERROR", pvar);
 		return pvar->ts->UIMsg;
@@ -416,7 +416,7 @@ static char FAR *describe_socket_error(int code)
 	case WSANO_RECOVERY:
 	case WSANO_ADDRESS:
 	case WSAHOST_NOT_FOUND:
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "No address was found for the machine.");
 		UTIL_get_lang_msg("MSG_FWD_ADDRNOTFOUTD_ERROR", pvar);
 		return pvar->ts->UIMsg;
@@ -424,7 +424,7 @@ static char FAR *describe_socket_error(int code)
 		return "No address was found for the machine.";
 #endif
 	default:
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "The forwarding connection could not be established");
 		UTIL_get_lang_msg("MSG_FWD_CONNECT_ERROR", pvar);
 		return pvar->ts->UIMsg;
@@ -447,7 +447,7 @@ static void channel_error(PTInstVar pvar, char FAR * action,
 		err_msg = NULL;
 		break;
 	default:
-#ifdef I18N
+#ifndef NO_I18N
 		err_msg = describe_socket_error(pvar, err);
 #else
 		err_msg = describe_socket_error(err);
@@ -457,7 +457,7 @@ static void channel_error(PTInstVar pvar, char FAR * action,
 	if (err_msg != NULL) {
 		char buf[1024];
 
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "Communications error %s forwarded local %s.\n"
 								"%s (code %d).\n"
 								"The forwarded connection will be closed.");
@@ -492,7 +492,7 @@ static void channel_opening_error(PTInstVar pvar, int channel_num, int err)
 
 	SSH_fail_channel_open(pvar, channel->remote_num);
 	if (request->spec.type == FWD_REMOTE_X11_TO_LOCAL) {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "The server attempted to forward a connection through this machine.\n"
 								"It requested a connection to the X server on %s (screen %d).\n"
 								"%s.\n" "The forwarded connection will be closed.");
@@ -510,7 +510,7 @@ static void channel_opening_error(PTInstVar pvar, int channel_num, int err)
 				  describe_socket_error(err));
 #endif
 	} else {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "The server attempted to forward a connection through this machine.\n"
 								"It requested a connection to %s (port %s).\n" "%s.\n"
 								"The forwarded connection will be closed.");
@@ -535,7 +535,7 @@ static void channel_opening_error(PTInstVar pvar, int channel_num, int err)
 
 static void init_local_IP_numbers(PTInstVar pvar)
 {
-#ifdef INET6
+#ifndef NO_INET6
 	struct addrinfo hints;
 	struct addrinfo FAR *res0;
 	struct addrinfo FAR *res;
@@ -591,17 +591,17 @@ static void init_local_IP_numbers(PTInstVar pvar)
 		}
 	}
 	addrs[num_addrs] = 0;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 }
 
-#ifdef INET6
+#ifndef NO_INET6
 static BOOL validate_IP_number(PTInstVar pvar, struct sockaddr FAR * addr)
 {
 #else
 static BOOL validate_IP_number(PTInstVar pvar, uint32 addr)
 {
-#endif							/* INET6 */
-#ifdef INET6
+#endif							/* NO_INET6 */
+#ifndef NO_INET6
 	int i;
 	struct sockaddr_storage zss;	/* all bytes are filled by zero */
 
@@ -687,7 +687,7 @@ static BOOL validate_IP_number(PTInstVar pvar, uint32 addr)
 	} else {
 		return TRUE;
 	}
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 }
 
 static int alloc_channel(PTInstVar pvar, int new_status,
@@ -739,7 +739,7 @@ static int alloc_channel(PTInstVar pvar, int new_status,
 static HWND make_accept_wnd(PTInstVar pvar)
 {
 	if (pvar->fwd_state.accept_wnd == NULL) {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "TTSSH Port Forwarding Monitor");
 		UTIL_get_lang_msg("DLG_FWDMON_TITLE", pvar);
 		pvar->fwd_state.accept_wnd =
@@ -778,7 +778,7 @@ static void make_local_connection(PTInstVar pvar, int channel_num)
 	FWDChannel FAR *channel = pvar->fwd_state.channels + channel_num;
 	FWDRequest FAR *request =
 		pvar->fwd_state.requests + channel->request_num;
-#ifdef INET6
+#ifndef NO_INET6
 	for (channel->to_host_addrs = request->to_host_addrs;
 		 channel->to_host_addrs;
 		 channel->to_host_addrs = channel->to_host_addrs->ai_next) {
@@ -837,40 +837,40 @@ static void make_local_connection(PTInstVar pvar, int channel_num)
 	}
 
 	channel_opening_error(pvar, channel_num, WSAGetLastError());
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 }
 
-#ifdef INET6
+#ifndef NO_INET6
 static void accept_local_connection(PTInstVar pvar, int request_num,
 									int listening_socket_num)
 {
 #else
 static void accept_local_connection(PTInstVar pvar, int request_num)
 {
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 	int channel_num;
 	SOCKET s;
-#ifdef INET6
+#ifndef NO_INET6
 	struct sockaddr_storage addr;
 	char hname[NI_MAXHOST];
 	char strport[NI_MAXSERV]; // ws2tcpip.h
 #else
 	struct sockaddr addr;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 	int addrlen = sizeof(addr);
 	char buf[1024];
 #ifndef INET6
 	BYTE FAR *IP;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 	FWDChannel FAR *channel;
 	FWDRequest FAR *request = &pvar->fwd_state.requests[request_num];
 
-#ifdef INET6
+#ifndef NO_INET6
 	s = accept(request->listening_sockets[listening_socket_num],
 			   (struct sockaddr FAR *) &addr, &addrlen);
 #else
 	s = accept(request->listening_socket, &addr, &addrlen);
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 	if (s == INVALID_SOCKET)
 		return;
 
@@ -878,14 +878,14 @@ static void accept_local_connection(PTInstVar pvar, int request_num)
 	IP = (BYTE FAR *) & ((struct sockaddr_in *) (&addr))->sin_addr.s_addr;
 #endif
 
-#ifdef INET6
+#ifndef NO_INET6
 	if (!validate_IP_number(pvar, (struct sockaddr FAR *) &addr)) {
 		char hname[NI_MAXHOST];
 		if (getnameinfo((struct sockaddr FAR *) &addr, addrlen,
 						hname, sizeof(hname), NULL, 0, NI_NUMERICHOST)) {
 			/* NOT REACHED */
 		}
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(pvar->ts->UIMsg, "Host with IP number %s tried to connect to "
 								"forwarded local port %d.\n"
 								"This could be some kind of hostile attack.");
@@ -919,9 +919,9 @@ static void accept_local_connection(PTInstVar pvar, int request_num)
 		safe_closesocket(pvar, s);
 		return;
 	}
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
-#ifdef INET6
+#ifndef NO_INET6
 	// SSH2 port-forwardingに接続元のリモートポートが必要。(2005.2.27 yutaka)
 	if (getnameinfo
 		((struct sockaddr FAR *) &addr, addrlen, hname, sizeof(hname),
@@ -938,10 +938,10 @@ static void accept_local_connection(PTInstVar pvar, int request_num)
 			  IP[0], IP[1], IP[2], IP[3], request->spec.from_port,
 			  request->spec.to_host, request->spec.to_port);
 	buf[NUM_ELEM(buf) - 1] = 0;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 	notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
 
-#ifdef INET6
+#ifndef NO_INET6
 	strncpy(buf, hname, sizeof(buf));
 #else
 	_snprintf(buf, sizeof(buf), "%d.%d.%d.%d", IP[0], IP[1], IP[2], IP[3]);
@@ -1040,12 +1040,12 @@ static void found_to_host_addr(PTInstVar pvar, int request_num)
 {
 	int i;
 
-#ifndef INET6
+#ifdef NO_INET6
 	pvar->fwd_state.requests[request_num].to_host_addr =
 		ntohl(*(uint32 FAR *)
 			  ((HOSTENT FAR *) pvar->fwd_state.requests[request_num].
 			   to_host_hostent_buf)->h_addr_list[0]);
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
 	for (i = 0; i < pvar->fwd_state.num_channels; i++) {
 		if (pvar->fwd_state.channels[i].request_num == request_num) {
@@ -1075,12 +1075,12 @@ static LRESULT CALLBACK accept_wnd_proc(HWND wnd, UINT msg, WPARAM wParam,
 			if (HIWORD(lParam) != 0) {
 				request_error(pvar, request_num, HIWORD(lParam));
 			} else {
-#ifdef INET6
+#ifndef NO_INET6
 				int listening_socket_num;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 				switch (LOWORD(lParam)) {
 				case FD_ACCEPT:
-#ifdef INET6
+#ifndef NO_INET6
 					listening_socket_num =
 						find_listening_socket_num(pvar, request_num,
 												  (SOCKET) wParam);
@@ -1090,7 +1090,7 @@ static LRESULT CALLBACK accept_wnd_proc(HWND wnd, UINT msg, WPARAM wParam,
 											listening_socket_num);
 #else
 					accept_local_connection(pvar, request_num);
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 					break;
 				}
 			}
@@ -1111,27 +1111,27 @@ static LRESULT CALLBACK accept_wnd_proc(HWND wnd, UINT msg, WPARAM wParam,
 			}
 			pvar->fwd_state.requests[request_num].to_host_lookup_handle =
 				0;
-#ifndef INET6
+#ifdef NO_INET6
 			free(pvar->fwd_state.requests[request_num].
 				 to_host_hostent_buf);
 			pvar->fwd_state.requests[request_num].to_host_hostent_buf =
 				NULL;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 			return TRUE;
 		}
 
 	case WM_SOCK_IO:{
 			int channel_num = find_channel_num(pvar, (SOCKET) wParam);
-#ifdef INET6
+#ifndef NO_INET6
 			FWDChannel FAR *channel =
 				pvar->fwd_state.channels + channel_num;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
 			if (channel_num < 0)
 				return TRUE;
 
 			if (HIWORD(lParam) != 0) {
-#ifdef INET6
+#ifndef NO_INET6
 				if (LOWORD(lParam) == FD_CONNECT) {
 					if (channel->to_host_addrs->ai_next == NULL) {
 						/* all protocols were failed */
@@ -1192,7 +1192,7 @@ static LRESULT CALLBACK accept_wnd_proc(HWND wnd, UINT msg, WPARAM wParam,
 					channel_error(pvar, "accessing", channel_num,
 								  HIWORD(lParam));
 				}
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 			} else {
 				switch (LOWORD(lParam)) {
 				case FD_CONNECT:
@@ -1301,25 +1301,25 @@ void FWD_get_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
    It returns the listening socket for the request, if there is one.
    The caller must close this socket if it is not INVALID_SOCKET.
 */
-#ifdef INET6
+#ifndef NO_INET6
 static SOCKET FAR *delete_request(PTInstVar pvar, int request_num,
 								  int *p_num_listening_sockets)
 {
 #else
 static SOCKET delete_request(PTInstVar pvar, int request_num)
 {
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 	FWDRequest FAR *request = pvar->fwd_state.requests + request_num;
-#ifdef INET6
+#ifndef NO_INET6
 	SOCKET FAR *lp_listening_sockets;
 #else
 	SOCKET result = INVALID_SOCKET;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
 /* safe to shut down the listening socket here. Any pending connections
    that haven't yet been turned into channels will be broken, but that's
    just tough luck. */
-#ifdef INET6
+#ifndef NO_INET6
 	*p_num_listening_sockets = request->num_listening_sockets;
 	lp_listening_sockets = request->listening_sockets;
 	if (request->listening_sockets != NULL) {
@@ -1347,7 +1347,7 @@ static SOCKET delete_request(PTInstVar pvar, int request_num)
 	}
 
 	return result;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 }
 
 static BOOL are_specs_identical(FWDRequestSpec FAR * spec1,
@@ -1365,7 +1365,7 @@ static BOOL interactive_init_request(PTInstVar pvar, int request_num,
 	FWDRequest FAR *request = pvar->fwd_state.requests + request_num;
 
 	if (request->spec.type == FWD_LOCAL_TO_REMOTE) {
-#ifdef INET6
+#ifndef NO_INET6
 		struct addrinfo hints;
 		struct addrinfo FAR *res;
 		struct addrinfo FAR *res0;
@@ -1418,7 +1418,7 @@ static BOOL interactive_init_request(PTInstVar pvar, int request_num,
 		if (s == INVALID_SOCKET) {
 			if (report_error) {
 				char buf[256];
-#ifdef I18N
+#ifndef NO_I18N
 				strcpy(pvar->ts->UIMsg, "Some socket(s) required for port forwarding could not be initialized.\n"
 										"Some port forwarding services may not be available.\n"
 										"(errno %d)");
@@ -1465,12 +1465,12 @@ static BOOL interactive_init_request(PTInstVar pvar, int request_num,
 	}
 
 	return TRUE;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 }
 
 /* This function will only be called on a request when all its channels are
    closed. */
-#ifdef INET6
+#ifndef NO_INET6
 static BOOL init_request(PTInstVar pvar, int request_num,
 						 BOOL report_error, SOCKET FAR * listening_sockets,
 						 int num_listening_sockets)
@@ -1479,10 +1479,10 @@ static BOOL init_request(PTInstVar pvar, int request_num,
 static BOOL init_request(PTInstVar pvar, int request_num,
 						 BOOL report_error, SOCKET listening_socket)
 {
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 	FWDRequest FAR *request = pvar->fwd_state.requests + request_num;
 
-#ifdef INET6
+#ifndef NO_INET6
 	request->num_listening_sockets = 0;
 	request->listening_sockets = NULL;
 	request->to_host_addrs = NULL;
@@ -1521,7 +1521,7 @@ static BOOL init_request(PTInstVar pvar, int request_num,
 		assert(listening_socket == INVALID_SOCKET);
 		return TRUE;
 	}
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 }
 
 void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
@@ -1530,7 +1530,7 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 	FWDRequestSpec FAR *new_specs =
 		(FWDRequestSpec FAR *) malloc(sizeof(FWDRequestSpec) * num_specs);
 	char FAR *specs_accounted_for;
-#ifdef INET6
+#ifndef NO_INET6
 	typedef struct _saved_sockets {
 		SOCKET FAR *listening_sockets;
 		int num_listening_sockets;
@@ -1538,7 +1538,7 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 	saved_sockets_t FAR *ptr_to_saved_sockets;
 #else
 	SOCKET FAR *saved_sockets;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 	int i;
 	int num_new_requests = num_specs;
 	int num_free_requests = 0;
@@ -1550,7 +1550,7 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 
 	for (i = 0; i < num_specs - 1; i++) {
 		if (FWD_compare_specs(new_specs + i, new_specs + i + 1) == 0) {
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(pvar->ts->UIMsg, "TTSSH INTERNAL ERROR: Could not set port forwards because duplicate type/port requests were found");
 			UTIL_get_lang_msg("MSG_FWD_DUPLICATE_ERROR", pvar);
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
@@ -1564,22 +1564,22 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 	}
 
 	specs_accounted_for = (char FAR *) malloc(sizeof(char) * num_specs);
-#ifdef INET6
+#ifndef NO_INET6
 	ptr_to_saved_sockets =
 		(saved_sockets_t FAR *) malloc(sizeof(saved_sockets_t) *
 									   num_specs);
 #else
 	saved_sockets = (SOCKET FAR *) malloc(sizeof(SOCKET) * num_specs);
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
 	memset(specs_accounted_for, 0, num_specs);
 	for (i = 0; i < num_specs; i++) {
-#ifdef INET6
+#ifndef NO_INET6
 		ptr_to_saved_sockets[i].listening_sockets = NULL;
 		ptr_to_saved_sockets[i].num_listening_sockets = 0;
 #else
 		saved_sockets[i] = INVALID_SOCKET;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 	}
 
 	for (i = pvar->fwd_state.num_requests - 1; i >= 0; i--) {
@@ -1595,16 +1595,16 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 				specs_accounted_for[new_spec - new_specs] = 1;
 				num_new_requests--;
 			} else {
-#ifdef INET6
+#ifndef NO_INET6
 				int num_listening_sockets;
 				SOCKET FAR *listening_sockets;
 				listening_sockets =
 					delete_request(pvar, i, &num_listening_sockets);
 #else
 				SOCKET listening_socket = delete_request(pvar, i);
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
-#ifdef INET6
+#ifndef NO_INET6
 				if (new_spec != NULL) {
 					ptr_to_saved_sockets[new_spec -
 										 new_specs].listening_sockets =
@@ -1624,7 +1624,7 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 				} else if (listening_socket != INVALID_SOCKET) {
 					safe_closesocket(pvar, listening_socket);
 				}
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
 				if (pvar->fwd_state.requests[i].num_channels == 0) {
 					num_free_requests++;
@@ -1665,7 +1665,7 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 			assert(free_request < pvar->fwd_state.num_requests);
 
 			pvar->fwd_state.requests[free_request].spec = new_specs[i];
-#ifdef INET6
+#ifndef NO_INET6
 			if (!init_request(pvar, free_request, report_err,
 							  ptr_to_saved_sockets[i].listening_sockets,
 							  ptr_to_saved_sockets[i].
@@ -1673,7 +1673,7 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 #else
 			if (!init_request
 				(pvar, free_request, report_err, saved_sockets[i])) {
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 				report_err = FALSE;
 			}
 
@@ -1681,11 +1681,11 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 		}
 	}
 
-#ifdef INET6
+#ifndef NO_INET6
 	free(ptr_to_saved_sockets);
 #else
 	free(saved_sockets);
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 	free(specs_accounted_for);
 	free(new_specs);
 }
@@ -1783,28 +1783,28 @@ static void create_local_channel(PTInstVar pvar, uint32 remote_channel_num,
 	int channel_num;
 	FWDChannel FAR *channel;
 	FWDRequest FAR *request = pvar->fwd_state.requests + request_num;
-#ifdef INET6
+#ifndef NO_INET6
 	struct addrinfo hints;
 	char pname[NI_MAXSERV];
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
-#ifdef INET6
+#ifndef NO_INET6
 	if (request->to_host_addrs == NULL
 		&& request->to_host_lookup_handle == 0) {
 		HANDLE task_handle;
 #else
 	if (request->to_host_addr == 0 && request->to_host_lookup_handle == 0) {
 		HANDLE task_handle;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
-#ifndef INET6
+#ifdef NO_INET6
 		if (request->to_host_hostent_buf == NULL) {
 			request->to_host_hostent_buf =
 				(char FAR *) malloc(MAXGETHOSTSTRUCT);
 		}
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
-#ifdef INET6
+#ifndef NO_INET6
 		_snprintf(pname, sizeof(pname), "%d", request->spec.to_port);
 		memset(&hints, 0, sizeof(hints));
 		hints.ai_family = AF_UNSPEC;
@@ -1819,11 +1819,11 @@ static void create_local_channel(PTInstVar pvar, uint32 remote_channel_num,
 								  request->spec.to_host,
 								  request->to_host_hostent_buf,
 								  MAXGETHOSTSTRUCT);
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
 		if (task_handle == 0) {
 			SSH_fail_channel_open(pvar, remote_channel_num);
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(pvar->ts->UIMsg, "The server attempted to forward a connection through this machine.\n"
 									"It requested a connection to machine %s on port %s.\n"
 									"An error occurred while processing the request, and it has been denied.");
@@ -1840,13 +1840,13 @@ static void create_local_channel(PTInstVar pvar, uint32 remote_channel_num,
 #endif
 			buf[sizeof(buf) - 1] = 0;
 			notify_nonfatal_error(pvar, buf);
-#ifdef INET6
+#ifndef NO_INET6
 	  /*****/
 			freeaddrinfo(request->to_host_addrs);
 #else
 			free(request->to_host_hostent_buf);
 			request->to_host_hostent_buf = NULL;
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 			return;
 		} else {
 			request->to_host_lookup_handle = task_handle;
@@ -1865,7 +1865,7 @@ static void create_local_channel(PTInstVar pvar, uint32 remote_channel_num,
 		*chan_num = channel_num;
 	}
 
-#ifdef INET6
+#ifndef NO_INET6
 	if (request->to_host_addrs != NULL) {
 		make_local_connection(pvar, channel_num);
 	}
@@ -1873,7 +1873,7 @@ static void create_local_channel(PTInstVar pvar, uint32 remote_channel_num,
 	if (request->to_host_addr != 0) {
 		make_local_connection(pvar, channel_num);
 	}
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 }
 
 void FWD_open(PTInstVar pvar, uint32 remote_channel_num,
@@ -1925,7 +1925,7 @@ void FWD_open(PTInstVar pvar, uint32 remote_channel_num,
 	}
 
 	/* this forwarding was not prespecified */
-#ifdef I18N
+#ifndef NO_I18N
 	strcpy(pvar->ts->UIMsg, "The server attempted to forward a connection through this machine.\n"
 							"It requested a connection to machine %s on port %d.\n"
 							"You did not specify this forwarding to TTSSH in advance, and therefore the request was denied.");
@@ -1980,7 +1980,7 @@ void FWD_X11_open(PTInstVar pvar, uint32 remote_channel_num,
 	}
 
 	/* this forwarding was not prespecified */
-#ifdef I18N
+#ifndef NO_I18N
 	strcpy(pvar->ts->UIMsg, "The server attempted to forward a connection through this machine.\n"
 							"It requested a connection to the local X server.\n"
 							"You did not specify this forwarding to TTSSH in advance, and therefore the request was denied.");
@@ -2022,7 +2022,7 @@ void FWD_failed_open(PTInstVar pvar, uint32 local_channel_num)
 	if (!check_local_channel_num(pvar, local_channel_num))
 		return;
 
-#ifdef I18N
+#ifndef NO_I18N
 	strcpy(pvar->ts->UIMsg, "A program on the local machine attempted to connect to a forwarded port.\n"
 							"The forwarding request was denied by the server. The connection has been closed.");
 	UTIL_get_lang_msg("MSG_FWD_DENIED_BY_SERVER_ERROR", pvar);
@@ -2073,7 +2073,7 @@ void FWD_received_data(PTInstVar pvar, uint32 local_channel_num,
 		if (!UTIL_sock_buffered_write
 			(pvar, &channel->writebuf, blocking_write, s, data, length)) {
 			closed_local_connection(pvar, local_channel_num);
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(pvar->ts->UIMsg, "A communications error occurred while sending forwarded data to a local port.\n"
 									"The forwarded connection will be closed.");
 			UTIL_get_lang_msg("MSG_FWD_COMM_ERROR", pvar);
@@ -2122,7 +2122,7 @@ void FWD_end(PTInstVar pvar)
 		}
 		free(pvar->fwd_state.channels);
 	}
-#ifdef INET6
+#ifndef NO_INET6
 	if (pvar->fwd_state.requests != NULL) {
 		for (i = 0; i < pvar->fwd_state.num_requests; i++) {
 			int j;
@@ -2150,7 +2150,7 @@ void FWD_end(PTInstVar pvar)
 		}
 		free(pvar->fwd_state.requests);
 	}
-#endif							/* INET6 */
+#endif							/* NO_INET6 */
 
 	free(pvar->fwd_state.local_host_IP_numbers);
 	free(pvar->fwd_state.server_listening_specs);
@@ -2166,6 +2166,9 @@ void FWD_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2007/04/26 06:04:41  maya
+ * Fix typo.
+ *
  * Revision 1.9  2006/11/29 16:58:52  maya
  * 表示メッセージの読み込み対応
  *
