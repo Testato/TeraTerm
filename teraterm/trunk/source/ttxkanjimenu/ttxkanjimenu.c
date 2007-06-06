@@ -38,6 +38,8 @@
 #include "teraterm.h"
 #include "tttypes.h"
 #include "ttplugin.h"
+#include "i18n.h"
+#define IniSection "TTXKanjiMenu"
 
 /* These are the standard libraries used below. The main Teraterm program and
    all its DLLs are each statically linked to the C runtime library --- i.e.
@@ -330,20 +332,40 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 	mi.fMask  = MIIM_TYPE | MIIM_SUBMENU;
 	mi.fType  = MFT_STRING;
 	mi.hSubMenu = pvar->hmEncode;
-	mi.dwTypeData = TEXT("&KanjiCode");
+	strcpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "&KanjiCode");
+	GetI18nStr(IniSection, "MENU_KANJI", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	mi.dwTypeData = pvar->ts->UIMsg;
 	InsertMenuItem(menu, ID_HELPMENU, FALSE, &mi);
 
 	flag = MF_STRING|MF_CHECKED;
-	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdSJIS,  "Recv: Shift_JIS");
-	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdEUC,   "Recv: EUC-JP");
-	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdJIS,   "Recv: JIS");
-	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdUTF8,  "Recv: UTF-8");
-	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdUTF8m, "Recv: UTF-8m");
+	strcpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Recv: &Shift_JIS");
+	GetI18nStr(IniSection, "MENU_RECV_SJIS", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdSJIS,  pvar->ts->UIMsg);
+	strcpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Recv: &EUC-JP");
+	GetI18nStr(IniSection, "MENU_RECV_EUCJP", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdEUC,   pvar->ts->UIMsg);
+	strcpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Recv: &JIS");
+	GetI18nStr(IniSection, "MENU_RECV_JIS", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdJIS,   pvar->ts->UIMsg);
+	strcpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Recv: &UTF-8");
+	GetI18nStr(IniSection, "MENU_RECV_UTF8", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdUTF8,  pvar->ts->UIMsg);
+	strcpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Recv: UTF-8&m");
+	GetI18nStr(IniSection, "MENU_RECV_UTF8m", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdUTF8m, pvar->ts->UIMsg);
 	AppendMenu(pvar->hmEncode, MF_SEPARATOR, 0, NULL);
-	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdSJIS,  "Send: Shift_JIS");
-	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdEUC,   "Send: EUC-JP");
-	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdJIS,   "Send: JIS");
-	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdUTF8,  "Send: UTF-8");
+	strcpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Send: S&hift_JIS");
+	GetI18nStr(IniSection, "MENU_SEND_SJIS", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdSJIS,  pvar->ts->UIMsg);
+	strcpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Send: EU&C-JP");
+	GetI18nStr(IniSection, "MENU_SEND_EUCJP", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdEUC,   pvar->ts->UIMsg);
+	strcpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Send: J&IS");
+	GetI18nStr(IniSection, "MENU_SEND_JIS", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdJIS,   pvar->ts->UIMsg);
+	strcpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Send: U&TF-8");
+	GetI18nStr(IniSection, "MENU_SEND_UTF8", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdUTF8,  pvar->ts->UIMsg);
 
 	CheckMenuRadioItem(pvar->hmEncode, ID_MI_KANJIRECV+IdSJIS, ID_MI_KANJIRECV+IdUTF8m, ID_MI_KANJIRECV+pvar->ts->KanjiCode, MF_BYCOMMAND);
 	CheckMenuRadioItem(pvar->hmEncode, ID_MI_KANJISEND+IdSJIS, ID_MI_KANJISEND+IdUTF8, ID_MI_KANJISEND+pvar->ts->KanjiCodeSend, MF_BYCOMMAND);
