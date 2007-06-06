@@ -9,12 +9,12 @@ class CProtoDlg : public CDialog
 {
 private:
   PFileVar fv;
-#ifdef I18N
+#ifndef NO_I18N
 	HFONT DlgFont;
 #endif
 
 public:
-#ifdef I18N
+#ifndef NO_I18N
 	BOOL Create(PFileVar pfv, PTTSet pts);
 #else
 	BOOL Create(PFileVar pfv);

@@ -25,7 +25,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#ifdef I18N
+#ifndef NO_I18N
 char UILanguageFile[MAX_PATH];
 #endif
 
@@ -50,7 +50,7 @@ CCtrlApp theApp;
 
 BOOL CCtrlApp::InitInstance()
 {
-#ifdef I18N
+#ifndef NO_I18N
   char Temp[MAXPATHLEN];
   char HomeDir[MAXPATHLEN];
   char SetupFName[MAXPATHLEN];
@@ -63,7 +63,7 @@ BOOL CCtrlApp::InitInstance()
   HANDLE hMutex;
   hMutex = CreateMutex(NULL, TRUE, "TeraTermProMacroAppMutex");
 
-#ifdef I18N
+#ifndef NO_I18N
   /* Get home directory */
   GetModuleFileName(NULL,Temp,sizeof(Temp));
   ExtractDirName(Temp, HomeDir);

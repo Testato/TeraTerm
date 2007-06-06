@@ -29,14 +29,14 @@ BEGIN_MESSAGE_MAP(CProtoDlg, CDialog)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-#ifdef I18N
+#ifndef NO_I18N
 BOOL CProtoDlg::Create(PFileVar pfv, PTTSet pts)
 #else
 BOOL CProtoDlg::Create(PFileVar pfv)
 #endif
 {
   BOOL Ok;
-#ifdef I18N
+#ifndef NO_I18N
   LOGFONT logfont;
   HFONT font;
 #endif
@@ -46,7 +46,7 @@ BOOL CProtoDlg::Create(PFileVar pfv)
   Ok = CDialog::Create(CProtoDlg::IDD, NULL);
   fv->HWin = GetSafeHwnd();
 
-#ifdef I18N
+#ifndef NO_I18N
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
   GetObject(font, sizeof(LOGFONT), &logfont);
   if (get_lang_font("DLG_SYSTEM_FONT", GetSafeHwnd(), &logfont, &DlgFont, pts->UILanguageFile)) {

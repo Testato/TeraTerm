@@ -4,10 +4,10 @@
 /* IPv6 modification is Copyright(C) 2000 Jun-ya kato <kato@win6.jp> */
 
 /* TTSET.DLL, setup file routines*/
-#ifdef INET6
+#ifndef NO_INET6
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#endif /* INET6 */
+#endif /* NO_INET6 */
 #include "teraterm.h"
 #include "tttypes.h"
 #include <stdio.h>
@@ -991,7 +991,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   // CodePage
   ts->CodePage = GetPrivateProfileInt(Section,"CodePage ", DEFAULT_CODEPAGE, FName);
 
-#ifdef I18N
+#ifndef NO_I18N
   // UI language message file
   GetPrivateProfileString(Section,"UILanguageFile","lang\\Default.lng",
                           Temp,sizeof(Temp),FName);
@@ -2078,7 +2078,7 @@ void FAR PASCAL AddHostToList(PCHAR FName, PCHAR Host)
   }
 
 
-#ifdef INET6
+#ifndef NO_INET6
 static void ParseHostName(char *HostStr, WORD *port)
 {
   /*
@@ -2163,7 +2163,7 @@ static void ParseHostName(char *HostStr, WORD *port)
     *port = 23;
   }
 }
-#endif /* INET6 */
+#endif /* NO_INET6 */
 
 
 void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
@@ -2171,7 +2171,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
   int i, pos, c;
 #ifndef INET6
   BYTE b;
-#endif /* INET6 */
+#endif /* NO_INET6 */
   char Temp[MAXPATHLEN+3];
   char Temp2[MAXPATHLEN];
   char TempDir[MAXPATHLEN];
@@ -2186,10 +2186,10 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 
   ts->HostName[0] = 0;
   ts->KeyCnfFN[0] = 0;
-#ifdef INET6
+#ifndef NO_INET6
   /* user specifies the protocol connecting to the host */
   /* ts->ProtocolFamily = AF_UNSPEC; */
-#endif /* INET6 */
+#endif /* NO_INET6 */
 
   /* Get command line parameters */
   if (DDETopic != NULL)
@@ -2366,7 +2366,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 	  ts->VTPos.x = 0;
       }
     }
-#ifdef INET6
+#ifndef NO_INET6
     else if ( _strnicmp(Temp,"/4", 2)==0 ) /* Protocol TeraTerm speaking */
       ts->ProtocolFamily = AF_INET;
     else if ( _strnicmp(Temp,"/6", 2)==0 )
@@ -2404,9 +2404,9 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
   if ((ts->HostName[0]!=0) &&
       (ParamPort==IdTCPIP))
   {
-#ifdef INET6
+#ifndef NO_INET6
     ParseHostName(ts->HostName, &ParamTCP);
-#else /* INET6 */
+#else /* NO_INET6 */
     if ((_strnicmp(ts->HostName,"telnet://",9)==0) ||
 	(_strnicmp(ts->HostName,"tn3270://",9)==0))
     {
@@ -2427,7 +2427,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
       if (sscanf(&(ts->HostName[i]),"%d",&ParamTCP)!=1)
 	ParamTCP = 65535;
     }
-#endif /* INET6 */
+#endif /* NO_INET6 */
   }
 
   switch (ParamPort) {
@@ -2496,6 +2496,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.32  2007/06/04 15:44:19  maya
+ * ファイル送信ダイアログでファイル名フィルタをかけられるようにした。
+ *
  * Revision 1.31  2007/05/31 14:39:56  maya
  * 接続時に自動的にログ採取を開始できるようにした。
  *

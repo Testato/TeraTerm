@@ -195,7 +195,7 @@ BOOL CCtrlWindow::OnInitDialog()
   char Temp[MAXPATHLEN];
   BOOL IOption, VOption;
   int CmdShow;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   LOGFONT logfont;
   HFONT font;
@@ -206,7 +206,7 @@ BOOL CCtrlWindow::OnInitDialog()
 #endif
   CDialog::OnInitDialog();
 
-#ifdef I18N
+#ifndef NO_I18N
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
   GetObject(font, sizeof(LOGFONT), &logfont);
   if (get_lang_font("DLG_SYSTEM_FONT", m_hWnd, &logfont, &DlgFont, UILanguageFile)) {
@@ -285,14 +285,14 @@ void CCtrlWindow::OnCancel( )
 
 BOOL CCtrlWindow::OnCommand(WPARAM wParam, LPARAM lParam)
 {
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
 #endif
 
   switch (LOWORD(wParam)) {
     case IDC_CTRLPAUSESTART:
       if (Pause)
-#ifdef I18N
+#ifndef NO_I18N
       {
         strcpy(uimsg, "Pau&se");
         get_lang_msg("BTN_PAUSE", uimsg, UILanguageFile);
@@ -302,7 +302,7 @@ BOOL CCtrlWindow::OnCommand(WPARAM wParam, LPARAM lParam)
 	SetDlgItemText(IDC_CTRLPAUSESTART, "Pau&se");
 #endif
       else
-#ifdef I18N
+#ifndef NO_I18N
 	  {
         strcpy(uimsg, "&Start");
         get_lang_msg("BTN_START", uimsg, UILanguageFile);

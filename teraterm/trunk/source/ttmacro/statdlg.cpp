@@ -80,7 +80,7 @@ void CStatDlg::Update(PCHAR Text, PCHAR Title, int x, int y)
 
 BOOL CStatDlg::OnInitDialog()
 {
-#ifdef I18N
+#ifndef NO_I18N
   LOGFONT logfont;
   HFONT font;
 #endif
@@ -93,7 +93,7 @@ BOOL CStatDlg::OnInitDialog()
   SetActiveWindow();
 #endif
 
-#ifdef I18N
+#ifndef NO_I18N
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
   GetObject(font, sizeof(LOGFONT), &logfont);
   if (get_lang_font("DLG_SYSTEM_FONT", m_hWnd, &logfont, &DlgFont, UILanguageFile)) {

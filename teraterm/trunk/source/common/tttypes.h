@@ -90,9 +90,9 @@
 
 #define HostNameMaxLength 1024
 //#define HostNameMaxLength 80
-#ifdef INET6
+#ifndef NO_INET6
 #define ProtocolFamilyMaxLength 80
-#endif /* INET6 */
+#endif /* NO_INET6 */
 
   /* internal WM_USER messages */
 #define WM_USER_ACCELCOMMAND WM_USER+1
@@ -326,10 +326,10 @@ struct tttset {
 #ifndef NO_ANSI_COLOR_EXTENSION
   COLORREF ANSIColor[16];
 #endif /* NO_ANSI_COLOR_EXTENSION */
-#ifdef INET6
+#ifndef NO_INET6
   /* protocol used in connect() */
   int ProtocolFamily;
-#endif /* INET6 */
+#endif /* NO_INET6 */
   char MouseCursorName[16];
   int AlphaBlend;
   char CygwinDirectory[MAX_PATH];
@@ -352,7 +352,7 @@ struct tttset {
 #ifdef USE_NORMAL_BGCOLOR
   WORD UseNormalBGColor;
 #endif
-#ifdef I18N
+#ifndef NO_I18N
   char UILanguageFile[MAX_PATH];
   char UIMsg[MAX_UIMSG];
 #endif
@@ -459,9 +459,9 @@ typedef struct tttset TTTSet, *PTTSet;
     WORD Telnet; // non-zero: enable telnet
 	WORD TelPort; // default TCP port# for telnet
     WORD TCPPort; // TCP port #
-#ifdef INET6
+#ifndef NO_INET6
     WORD ProtocolFamily; // Protocol Family (AF_INET/AF_INET6/AF_UNSPEC)
-#endif /* INET6 */
+#endif /* NO_INET6 */
     WORD ComPort; // serial port #
     WORD MaxComPort; // max serial port #
   }TGetHNRec;
@@ -713,12 +713,12 @@ typedef TKeyMap far *PKeyMap;
     BOOL ProtoFlag;
     /* message flag */
     WORD NoMsg;
-#ifdef INET6
+#ifndef NO_INET6
     /* if TRUE, teraterm trys to connect other protocol family */
     BOOL RetryWithOtherProtocol;
     struct addrinfo FAR * res0;
     struct addrinfo FAR * res;
-#endif /* INET6 */
+#endif /* NO_INET6 */
 	char *Locale;
 	int *CodePage;
 	int *ConnetingTimeout;

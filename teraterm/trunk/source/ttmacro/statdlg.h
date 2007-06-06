@@ -25,7 +25,7 @@ protected:
 	PCHAR TextStr, TitleStr;
 	int  PosX, PosY, init_WW, WW, WH, TW, TH;
 	SIZE s;
-#ifdef I18N
+#ifndef NO_I18N
 	HFONT DlgFont;
 #endif
 

@@ -160,7 +160,7 @@ BOOL GetFileName(HWND HWin)
   char FNFilter[31];
   OPENFILENAME FNameRec;
   OSVERSIONINFO osvi;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   char uimsg2[MAX_UIMSG];
 #endif
@@ -169,7 +169,7 @@ BOOL GetFileName(HWND HWin)
 
   memset(FNFilter, 0, sizeof(FNFilter));
   memset(&FNameRec, 0, sizeof(OPENFILENAME));
-#ifdef I18N
+#ifndef NO_I18N
   strncpy(uimsg, "Macro files (*.ttl)\\0*.ttl\\0\\0", sizeof(uimsg));
   get_lang_msg("FILEDLG_OPEN_MACRO_FILTER", uimsg, UILanguageFile);
   memcpy(FNFilter, uimsg, sizeof(FNFilter));
@@ -196,7 +196,7 @@ BOOL GetFileName(HWND HWin)
   FNameRec.lpstrInitialDir = HomeDir;
   FNameRec.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
   FNameRec.lpstrDefExt = "TTL";
-#ifdef I18N
+#ifndef NO_I18N
   strncpy(uimsg2, "MACRO: Open macro", sizeof(uimsg2));
   get_lang_msg("FILEDLG_OPEN_MACRO_TITLE", uimsg2, UILanguageFile);
   FNameRec.lpstrTitle = uimsg2;

@@ -21,12 +21,12 @@
 #include "ttplug.h" /* TTPLUG */
 
 #include "commlib.h"
-#ifdef INET6
+#ifndef NO_INET6
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <stdio.h> /* for _snprintf() */
 #include "WSAAsyncGetAddrInfo.h"
-#endif /* INET6 */
+#endif /* NO_INET6 */
 
 static SOCKET OpenSocket(PComVar);
 static void AsyncConnect(PComVar);
@@ -79,7 +79,7 @@ static int CloseSocket(SOCKET s)
   return Pclosesocket(s);
 }
 
-#ifndef I18N
+#ifdef NO_I18N
 #define ErrorCaption "Tera Term: Error"
 #define ErrorCantConn "Cannot connect the host"
 #endif
@@ -275,28 +275,28 @@ void CommResetSerial(PTTSet ts, PComVar cv)
 void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 {
   WORD COMFlag;
-#ifndef INET6
+#ifdef NO_INET6
   int Err;
-#endif /* INET6 */
+#endif /* NO_INET6 */
   char ErrMsg[21];
   char P[50];
 
   MSG Msg;
-#ifdef INET6
+#ifndef NO_INET6
   ADDRINFO hints;
   char pname[NI_MAXSERV];
 #else
   char HEntBuff[MAXGETHOSTSTRUCT];
   u_long addr;
   SOCKADDR_IN saddr;
-#endif /* INET6 */
+#endif /* NO_INET6 */
 
   BOOL InvalidHost;
-#ifndef INET6
+#ifdef NO_INET6
   BOOL BBuf;
-#endif /* INET6 */
+#endif /* NO_INET6 */
 
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
 #endif
 
@@ -311,9 +311,9 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
   cv->PortType = ts->PortType;
   cv->ComPort = 0;
   cv->RetryCount = 0;
-#ifdef INET6
+#ifndef NO_INET6
   cv->RetryWithOtherProtocol = TRUE;
-#endif /* INET6 */
+#endif /* NO_INET6 */
   cv->s = INVALID_SOCKET;
 #ifdef TERATERM32
   cv->ComID = INVALID_HANDLE_VALUE;
@@ -364,7 +364,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
       if (! LoadWinsock())
       {
 	if (cv->NoMsg==0)
-#ifdef I18N
+#ifndef NO_I18N
 	{
 	  strcpy(uimsg, "Tera Term: Error");
 	  get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
@@ -381,7 +381,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
       else {
         TTXOpenTCP(); /* TTPLUG */
 	cv->Open = TRUE;
-#ifdef INET6
+#ifndef NO_INET6
 	/* resolving address */
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = ts->ProtocolFamily;
@@ -433,7 +433,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
       if (InvalidHost)
       {
 	if (cv->NoMsg==0)
-#ifdef I18N
+#ifndef NO_I18N
 	{
 	  strcpy(uimsg, "Tera Term: Error");
 	  get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
@@ -551,7 +551,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 	}
       }
       break;
-#endif /* INET6 */
+#endif /* NO_INET6 */
 
     case IdSerial:
       strcpy(P,"COM");
@@ -572,7 +572,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
       {
 #endif
 
-#ifdef I18N
+#ifndef NO_I18N
 	strcpy(ts->UIMsg, "Cannot open %s");
 	get_lang_msg("MSG_CANTOEPN_ERROR", ts->UIMsg, ts->UILanguageFile);
 #ifdef TERATERM32
@@ -590,7 +590,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 #endif
 
 	if (cv->NoMsg==0)
-#ifdef I18N
+#ifndef NO_I18N
 	{
 	  strcpy(uimsg, "Tera Term: Error");
 	  get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
@@ -633,7 +633,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
       if (InvalidHost)
       {
 	if (cv->NoMsg==0)
-#ifdef I18N
+#ifndef NO_I18N
 	{
 	  strcpy(uimsg, "Tera Term: Error");
 	  get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
@@ -653,9 +653,9 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
       break;
   } /* end of "switch" */
 
-#ifdef INET6
+#ifndef NO_INET6
 BreakSC:
-#endif /* INET6 */
+#endif /* NO_INET6 */
   if (InvalidHost)
   {
     PostMessage(cv->HWin, WM_USER_COMMNOTIFY, 0, FD_CLOSE);
@@ -696,7 +696,7 @@ void CommThread(void *arg)
 }
 #endif
 
-#ifdef I18N
+#ifndef NO_I18N
 void CommStart(PComVar cv, LONG lParam, PTTSet ts)
 #else
 void CommStart(PComVar cv, LONG lParam)
@@ -709,7 +709,7 @@ void CommStart(PComVar cv, LONG lParam)
 #else
   COMSTAT Stat;
 #endif
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
 #endif
 
@@ -726,7 +726,7 @@ void CommStart(PComVar cv, LONG lParam)
       ErrMsg[0] = 0;
       switch (HIWORD(lParam)) {
 	case WSAECONNREFUSED:
-#ifdef I18N
+#ifndef NO_I18N
 	  strcpy(ts->UIMsg, "Connection refused");
 	  get_lang_msg("MSG_COMM_REFUSE_ERROR", ts->UIMsg, ts->UILanguageFile);
 	  _snprintf(ErrMsg, sizeof(ErrMsg), "%s", ts->UIMsg);
@@ -735,7 +735,7 @@ void CommStart(PComVar cv, LONG lParam)
 #endif
 	  break;
 	case WSAENETUNREACH:
-#ifdef I18N
+#ifndef NO_I18N
 	  strcpy(ts->UIMsg, "Network cannot be reached");
 	  get_lang_msg("MSG_COMM_REACH_ERROR", ts->UIMsg, ts->UILanguageFile);
 	  _snprintf(ErrMsg, sizeof(ErrMsg), "%s", ts->UIMsg);
@@ -744,7 +744,7 @@ void CommStart(PComVar cv, LONG lParam)
 #endif
 	  break;
 	case WSAETIMEDOUT:
-#ifdef I18N
+#ifndef NO_I18N
 	  strcpy(ts->UIMsg, "Connection timed out");
 	  get_lang_msg("MSG_COMM_CONNECT_ERROR", ts->UIMsg, ts->UILanguageFile);
 	  _snprintf(ErrMsg, sizeof(ErrMsg), "%s", ts->UIMsg);
@@ -753,7 +753,7 @@ void CommStart(PComVar cv, LONG lParam)
 #endif
 	  break;
 	default:
-#ifdef I18N
+#ifndef NO_I18N
 	  strcpy(ts->UIMsg, "Cannot connect the host");
 	  get_lang_msg("MSG_COMM_TIMEOUT_ERROR", ts->UIMsg, ts->UILanguageFile);
 	  _snprintf(ErrMsg, sizeof(ErrMsg), "%s", ts->UIMsg);
@@ -763,7 +763,7 @@ void CommStart(PComVar cv, LONG lParam)
       }
       if (HIWORD(lParam)>0)
       {
-#ifdef INET6
+#ifndef NO_INET6
 	/* connect() failed */
 	if (cv->res->ai_next != NULL) {
 	  /* try to connect with other protocol */
@@ -782,7 +782,7 @@ void CommStart(PComVar cv, LONG lParam)
 	} else {
 	  /* trying with all protocol family are failed */
 	  if (cv->NoMsg==0)
-#ifdef I18N
+#ifndef NO_I18N
 	  {
 	    strcpy(uimsg, "Tera Term: Error");
 	    get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
@@ -802,13 +802,13 @@ void CommStart(PComVar cv, LONG lParam)
 	    MB_TASKMODAL | MB_ICONEXCLAMATION);
 	PostMessage(cv->HWin, WM_USER_COMMNOTIFY, 0, FD_CLOSE);
 	return;
-#endif /* INET6 */
+#endif /* NO_INET6 */
       }
 
-#ifdef INET6
+#ifndef NO_INET6
       /* here is connection established */
       cv->RetryWithOtherProtocol = FALSE;
-#endif /* INET6 */
+#endif /* NO_INET6 */
       PWSAAsyncSelect(cv->s,cv->HWin,WM_USER_COMMNOTIFY, FD_READ | FD_OOB | FD_CLOSE);
       TCPIPClosed = FALSE;
       break;
@@ -834,7 +834,7 @@ void CommStart(PComVar cv, LONG lParam)
 #else
       if (_beginthread(CommThread,0,cv) == -1)
 #endif
-#ifdef I18N
+#ifndef NO_I18N
       {
 	strcpy(uimsg, "Tera Term: Error");
 	get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
@@ -894,9 +894,9 @@ void CommClose(PComVar cv)
       if (HAsync!=0)
 	PWSACancelAsyncRequest(HAsync);
       HAsync = 0;
-#ifdef INET6
+#ifndef NO_INET6
       freeaddrinfo(cv->res0);
-#endif /* INET6 */
+#endif /* NO_INET6 */
       if ( cv->s!=INVALID_SOCKET )
 	Pclosesocket(cv->s);
       cv->s = INVALID_SOCKET;

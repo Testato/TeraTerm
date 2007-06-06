@@ -33,7 +33,7 @@ void GetNthString(PCHAR Source, int Nth, int Size, PCHAR Dest);
 void GetNthNum(PCHAR Source, int Nth, int far *Num);
 void WINAPI GetDefaultSetupFName(char *dest, char *home);
 
-#ifdef I18N
+#ifndef NO_I18N
 void get_lang_msg(PCHAR key, PCHAR buf, PCHAR iniFile);
 int get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PCHAR iniFile);
 #endif

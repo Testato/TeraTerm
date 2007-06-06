@@ -30,7 +30,7 @@ BEGIN_MESSAGE_MAP(CFileTransDlg, CDialog)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-#ifdef I18N
+#ifndef NO_I18N
 BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv, PTTSet pts)
 #else
 BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv)
@@ -42,7 +42,7 @@ BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv)
   fv = pfv;
   cv = pcv;
   cv->FilePause &= ~fv->OpId;
-#ifdef I18N
+#ifndef NO_I18N
   ts = pts;
   LOGFONT logfont;
   HFONT font;
@@ -72,7 +72,7 @@ BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv)
 
   fv->HWin = GetSafeHwnd();
 
-#ifdef I18N
+#ifndef NO_I18N
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
   GetObject(font, sizeof(LOGFONT), &logfont);
   if (get_lang_font("DLG_SYSTEM_FONT", fv->HWin, &logfont, &DlgFont, ts->UILanguageFile)) {
@@ -96,7 +96,7 @@ void CFileTransDlg::ChangeButton(BOOL PauseFlag)
   Pause = PauseFlag;
   if (Pause)
   {
-#ifdef I18N
+#ifndef NO_I18N
     strcpy(ts->UIMsg, "&Start");
 	get_lang_msg("DLG_FILETRANS_START", ts->UIMsg, ts->UILanguageFile);
     SetDlgItemText(IDC_TRANSPAUSESTART, ts->UIMsg);
@@ -106,7 +106,7 @@ void CFileTransDlg::ChangeButton(BOOL PauseFlag)
     cv->FilePause |= fv->OpId;
   }
   else {
-#ifdef I18N
+#ifndef NO_I18N
     strcpy(ts->UIMsg, "Pau&se");
 	get_lang_msg("DLG_FILETRANS_PAUSE", ts->UIMsg, ts->UILanguageFile);
     SetDlgItemText(IDC_TRANSPAUSESTART, ts->UIMsg);

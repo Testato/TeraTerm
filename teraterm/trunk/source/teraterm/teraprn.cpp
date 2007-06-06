@@ -122,14 +122,14 @@ BOOL PrnStart(LPSTR DocumentName)
     pParent = (CWnd*)pVTWin;
   else
     pParent = (CWnd*)pTEKWin;
-#ifdef I18N
+#ifndef NO_I18N
   PrnAbortDlg->Create(pParent,&PrintAbortFlag,&ts);
 #else
   PrnAbortDlg->Create(pParent,&PrintAbortFlag);
 #endif
   HPrnAbortDlg = PrnAbortDlg->GetSafeHwnd();
 
-#ifdef I18N
+#ifndef NO_I18N
   GetDlgItemText(HPrnAbortDlg, IDC_PRNABORT_PRINTING, ts.UIMsg, sizeof(ts.UIMsg));
   get_lang_msg("DLG_PRNABORT_PRINTING", ts.UIMsg, ts.UILanguageFile);
   SetDlgItemText(HPrnAbortDlg, IDC_PRNABORT_PRINTING, ts.UIMsg);
@@ -564,7 +564,7 @@ void PrintFileDirect()
     pParent = (CWnd*)pVTWin;
   else
     pParent = (CWnd*)pTEKWin;
-#ifdef I18N
+#ifndef NO_I18N
   PrnAbortDlg->Create(pParent,&PrintAbortFlag,&ts);
 #else
   PrnAbortDlg->Create(pParent,&PrintAbortFlag);

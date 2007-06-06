@@ -25,14 +25,14 @@
 #include "oniguruma.h"
 #undef ONIG_EXTERN
 
-#ifdef INET6
+#ifndef NO_INET6
 #include <winsock2.h>
 static char FAR * ProtocolFamilyList[] = { "UNSPEC", "IPv6", "IPv4", NULL };
-#endif /* INET6 */
+#endif /* NO_INET6 */
 
 static HANDLE hInst;
 
-#ifdef I18N
+#ifndef NO_I18N
 static HFONT DlgAboutFont;
 static HFONT DlgDirFont;
 static HFONT DlgFontFont;
@@ -72,7 +72,7 @@ BOOL CALLBACK TermDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	WORD w;
 	//  char Temp[HostNameMaxLength + 1]; // 81(yutaka)
 	char Temp[81]; // 81(yutaka)
-#ifdef I18N
+#ifndef NO_I18N
 	char uimsg[MAX_UIMSG];
 	LOGFONT logfont;
 	HFONT font;
@@ -83,7 +83,7 @@ BOOL CALLBACK TermDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		ts = (PTTSet)lParam;
 		SetWindowLong(Dialog, DWL_USER, lParam);
 
-#ifdef I18N
+#ifndef NO_I18N
 		font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
 		if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgTermFont, UILanguageFile)) {
@@ -348,7 +348,7 @@ BOOL CALLBACK TermDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			}
 		}
 		EndDialog(Dialog, 1);
-#ifdef I18N
+#ifndef NO_I18N
 		if (DlgTermFont != NULL) {
 			DeleteObject(DlgTermFont);
 		}
@@ -357,7 +357,7 @@ BOOL CALLBACK TermDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 	case IDCANCEL:
 		EndDialog(Dialog, 0);
-#ifdef I18N
+#ifndef NO_I18N
 		if (DlgTermFont != NULL) {
 			DeleteObject(DlgTermFont);
 		}
@@ -485,7 +485,7 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   int IAttr, IOffset;
   WORD i, pos, ScrollCode, NewPos;
   HDC DC;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   LOGFONT logfont;
   HFONT font;
@@ -496,7 +496,7 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       ts = (PTTSet)lParam;
       SetWindowLong(Dialog, DWL_USER, lParam);
 
-#ifdef I18N
+#ifndef NO_I18N
       font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
       GetObject(font, sizeof(LOGFONT), &logfont);
       if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgWinFont, UILanguageFile)) {
@@ -615,7 +615,7 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
       if (ts->VTFlag>0)
       {
-#ifdef I18N
+#ifndef NO_I18N
 	strcpy(uimsg, "Full &color");
 	get_lang_msg("DLG_WIN_FULLCOLOR", uimsg, UILanguageFile);
 	SetDlgItemText(Dialog, IDC_WINCOLOREMU,uimsg);
@@ -654,7 +654,7 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       /* end - ishizaki */
 	}
 	ShowDlgItem(Dialog,IDC_WINATTRTEXT,IDC_WINATTR);
-#ifdef I18N
+#ifndef NO_I18N
 	strcpy(uimsg, "Normal");
 	get_lang_msg("DLG_TERM_NORMAL", uimsg, UILanguageFile);
 	SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
@@ -793,7 +793,7 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 #endif
 	  }
 	  EndDialog(Dialog, 1);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgWinFont != NULL) {
         DeleteObject(DlgWinFont);
       }
@@ -802,7 +802,7 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 	case IDCANCEL:
 	  EndDialog(Dialog, 0);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgWinFont != NULL) {
         DeleteObject(DlgWinFont);
       }
@@ -931,7 +931,7 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 BOOL CALLBACK KeybDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
   PTTSet ts;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   LOGFONT logfont;
   HFONT font;
@@ -942,7 +942,7 @@ BOOL CALLBACK KeybDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       ts = (PTTSet)lParam;
       SetWindowLong(Dialog, DWL_USER, lParam);
 
-#ifdef I18N
+#ifndef NO_I18N
       font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
       GetObject(font, sizeof(LOGFONT), &logfont);
       if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgKeybFont, UILanguageFile)) {
@@ -1013,7 +1013,7 @@ BOOL CALLBACK KeybDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	      ts->RussKeyb = (WORD)GetCurSel(Dialog, IDC_KEYBKEYB);
 	  }
 	  EndDialog(Dialog, 1);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgKeybFont != NULL) {
         DeleteObject(DlgKeybFont);
       }
@@ -1022,7 +1022,7 @@ BOOL CALLBACK KeybDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 	case IDCANCEL:
 	  EndDialog(Dialog, 0);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgKeybFont != NULL) {
         DeleteObject(DlgKeybFont);
       }
@@ -1053,7 +1053,7 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   char Temp[7];
   char ComPortTable[99];
   int comports;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   LOGFONT logfont;
   HFONT font;
@@ -1064,7 +1064,7 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       ts = (PTTSet)lParam;
       SetWindowLong(Dialog, DWL_USER, lParam);
 
-#ifdef I18N
+#ifndef NO_I18N
       font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
       GetObject(font, sizeof(LOGFONT), &logfont);
       if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgSerialFont, UILanguageFile)) {
@@ -1195,7 +1195,7 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	    ts->PortType = IdSerial;
 	  }
 	  EndDialog(Dialog, 1);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgSerialFont != NULL) {
         DeleteObject(DlgSerialFont);
       }
@@ -1204,7 +1204,7 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 	case IDCANCEL:
 	  EndDialog(Dialog, 0);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgSerialFont != NULL) {
         DeleteObject(DlgSerialFont);
       }
@@ -1226,7 +1226,7 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   UINT i, Index;
   WORD w;
   BOOL Ok;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   LOGFONT logfont;
   HFONT font;
@@ -1237,7 +1237,7 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       ts = (PTTSet)lParam;
       SetWindowLong(Dialog, DWL_USER, lParam);
 
-#ifdef I18N
+#ifndef NO_I18N
       font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
       GetObject(font, sizeof(LOGFONT), &logfont);
       if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgTcpipFont, UILanguageFile)) {
@@ -1383,7 +1383,7 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			   sizeof(ts->TermType));
 	  }
 	  EndDialog(Dialog, 1);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgTcpipFont != NULL) {
         DeleteObject(DlgTcpipFont);
       }
@@ -1392,7 +1392,7 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 	case IDCANCEL:
 	  EndDialog(Dialog, 0);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgTcpipFont != NULL) {
         DeleteObject(DlgTcpipFont);
       }
@@ -1528,7 +1528,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   BOOL Ok;
   char ComPortTable[99];
   int comports;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   LOGFONT logfont;
   HFONT font;
@@ -1539,7 +1539,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       GetHNRec = (PGetHNRec)lParam;
       SetWindowLong(Dialog, DWL_USER, lParam);
 
-#ifdef I18N
+#ifndef NO_I18N
       font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
       GetObject(font, sizeof(LOGFONT), &logfont);
       if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgHostFont, UILanguageFile)) {
@@ -1616,7 +1616,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       SetRB(Dialog,GetHNRec->Telnet,IDC_HOSTTELNET,IDC_HOSTTELNET);
       SendDlgItemMessage(Dialog, IDC_HOSTTCPPORT, EM_LIMITTEXT,5,0);
       SetDlgItemInt(Dialog,IDC_HOSTTCPPORT,GetHNRec->TCPPort,FALSE);
-#ifdef INET6
+#ifndef NO_INET6
       for (i=0; ProtocolFamilyList[i]; ++i)
       {
         SendDlgItemMessage(Dialog, IDC_HOSTTCPPROTOCOL, CB_ADDSTRING,
@@ -1625,7 +1625,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       SendDlgItemMessage(Dialog, IDC_HOSTTCPPROTOCOL, EM_LIMITTEXT,
                          ProtocolFamilyMaxLength-1, 0);
       SendDlgItemMessage(Dialog, IDC_HOSTTCPPROTOCOL, CB_SETCURSEL,0,0);
-#endif /* INET6 */
+#endif /* NO_INET6 */
 
       j = 0;
       w = 1;
@@ -1668,7 +1668,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
         DisableDlgItem(Dialog,IDC_HOSTNAMELABEL,IDC_HOSTTCPPORT);
         DisableDlgItem(Dialog,IDC_HOSTTCPPROTOCOLLABEL,IDC_HOSTTCPPROTOCOL);
       }
-#endif /* INET6 */
+#endif /* NO_INET6 */
  
       return TRUE;
 
@@ -1678,9 +1678,9 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  GetHNRec = (PGetHNRec)GetWindowLong(Dialog,DWL_USER);
 	  if ( GetHNRec!=NULL )
 	  {
-#ifdef INET6
+#ifndef NO_INET6
             char afstr[BUFSIZ];
-#endif /* INET6 */
+#endif /* NO_INET6 */
 	    GetRB(Dialog,&GetHNRec->PortType,IDC_HOSTTCPIP,IDC_HOSTSERIAL);
 	    if ( GetHNRec->PortType==IdTCPIP )
 	      GetDlgItemText(Dialog, IDC_HOSTNAME, GetHNRec->HostName, HostNameMaxLength);
@@ -1689,14 +1689,14 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	    GetRB(Dialog,&GetHNRec->Telnet,IDC_HOSTTELNET,IDC_HOSTTELNET);
 	    i = GetDlgItemInt(Dialog,IDC_HOSTTCPPORT,&Ok,FALSE);
 	    if (Ok) GetHNRec->TCPPort = i;
-#ifdef INET6
+#ifndef NO_INET6
 #define getaf(str) \
 ((strcmp((str), "IPv6") == 0) ? AF_INET6 : \
  ((strcmp((str), "IPv4") == 0) ? AF_INET : AF_UNSPEC))
             memset(afstr, 0, sizeof(afstr));
             GetDlgItemText(Dialog, IDC_HOSTTCPPROTOCOL, afstr, sizeof(afstr));
             GetHNRec->ProtocolFamily = getaf(afstr);
-#endif /* INET6 */
+#endif /* NO_INET6 */
 	    memset(EntName,0,sizeof(EntName));
 	    GetDlgItemText(Dialog, IDC_HOSTCOM, EntName, sizeof(EntName)-1);
 	    GetHNRec->ComPort = (BYTE)(EntName[3])-0x30;
@@ -1704,7 +1704,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	      GetHNRec->ComPort = GetHNRec->ComPort*10 + (BYTE)(EntName[4])-0x30;
 	  }
 	  EndDialog(Dialog, 1);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgHostFont != NULL) {
         DeleteObject(DlgHostFont);
       }
@@ -1713,7 +1713,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 	case IDCANCEL:
 	  EndDialog(Dialog, 0);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgHostFont != NULL) {
         DeleteObject(DlgHostFont);
       }
@@ -1722,18 +1722,18 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 	case IDC_HOSTTCPIP:
 	  EnableDlgItem(Dialog,IDC_HOSTNAMELABEL,IDC_HOSTTCPPORT);
-#ifdef INET6
+#ifndef NO_INET6
           EnableDlgItem(Dialog,IDC_HOSTTCPPROTOCOLLABEL,IDC_HOSTTCPPROTOCOL);
-#endif /* INET6 */
+#endif /* NO_INET6 */
 	  DisableDlgItem(Dialog,IDC_HOSTCOMLABEL,IDC_HOSTCOM);
 	  return TRUE;
 
 	case IDC_HOSTSERIAL:
 	  EnableDlgItem(Dialog,IDC_HOSTCOMLABEL,IDC_HOSTCOM);
 	  DisableDlgItem(Dialog,IDC_HOSTNAMELABEL,IDC_HOSTTCPPORT);
-#ifdef INET6
+#ifndef NO_INET6
           DisableDlgItem(Dialog,IDC_HOSTTCPPROTOCOLLABEL,IDC_HOSTTCPPROTOCOL);
-#endif /* INET6 */
+#endif /* NO_INET6 */
 	  break;
 
 	case IDC_HOSTTELNET:
@@ -1764,7 +1764,7 @@ BOOL CALLBACK DirDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   HWND HDir, HOk, HCancel, HHelp;
   POINT D, B;
   int WX, WY, WW, WH, CW, DW, DH, BW, BH;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   char uimsg2[MAX_UIMSG];
   LOGFONT logfont;
@@ -1773,7 +1773,7 @@ BOOL CALLBACK DirDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
   switch (Message) {
     case WM_INITDIALOG:
-#ifdef I18N
+#ifndef NO_I18N
       font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
       GetObject(font, sizeof(LOGFONT), &logfont);
       if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgDirFont, UILanguageFile)) {
@@ -1889,7 +1889,7 @@ BOOL CALLBACK DirDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	    {
 	      if (_chdir(TmpDir) != 0)
 	      {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(uimsg2, "Tera Term: Error");
 		get_lang_msg("MSG_TT_ERROR", uimsg2, UILanguageFile);
 		strcpy(uimsg, "Cannot find directory");
@@ -1907,7 +1907,7 @@ BOOL CALLBACK DirDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	    _chdir(HomeDir);
 	  }
 	  EndDialog(Dialog, 1);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgDirFont != NULL) {
         DeleteObject(DlgDirFont);
       }
@@ -1916,7 +1916,7 @@ BOOL CALLBACK DirDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 	case IDCANCEL:
 	  EndDialog(Dialog, 0);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgDirFont != NULL) {
         DeleteObject(DlgDirFont);
       }
@@ -2206,7 +2206,7 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	DWORD dwExt;
 	WORD w, h;
 	POINT point;
-#ifdef I18N
+#ifndef NO_I18N
 	char uimsg[MAX_UIMSG];
 	LOGFONT logfont;
 	HFONT font;
@@ -2215,7 +2215,7 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	switch (Message) {
 	case WM_INITDIALOG:
 
-#ifdef I18N
+#ifndef NO_I18N
 		font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
 		if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgAboutFont, UILanguageFile)) {
@@ -2302,7 +2302,7 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			EndDialog(Dialog, 0);
 			return TRUE;
 		}
-#ifdef I18N
+#ifndef NO_I18N
 		if (DlgAboutFont != NULL) {
 			DeleteObject(DlgAboutFont);
 		}
@@ -2319,7 +2319,7 @@ BOOL CALLBACK GenDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   PTTSet ts;
   WORD w;
   char Temp[6];
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   LOGFONT logfont;
   HFONT font;
@@ -2330,7 +2330,7 @@ BOOL CALLBACK GenDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       ts = (PTTSet)lParam;
       SetWindowLong(Dialog, DWL_USER, lParam);
 
-#ifdef I18N
+#ifndef NO_I18N
       font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
       GetObject(font, sizeof(LOGFONT), &logfont);
       if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgGenFont, UILanguageFile)) {
@@ -2411,7 +2411,7 @@ BOOL CALLBACK GenDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	      ts->Language = (WORD)GetCurSel(Dialog, IDC_GENLANG);
 	  }
 	  EndDialog(Dialog, 1);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgGenFont != NULL) {
         DeleteObject(DlgGenFont);
       }
@@ -2420,7 +2420,7 @@ BOOL CALLBACK GenDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 	case IDCANCEL:
 	  EndDialog(Dialog, 0);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgGenFont != NULL) {
         DeleteObject(DlgGenFont);
       }
@@ -2439,7 +2439,7 @@ BOOL CALLBACK WinListDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam
   PBOOL Close;
   int n;
   HWND Hw;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   LOGFONT logfont;
   HFONT font;
@@ -2450,7 +2450,7 @@ BOOL CALLBACK WinListDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam
       Close = (PBOOL)lParam;
       SetWindowLong(Dialog, DWL_USER, lParam);
 
-#ifdef I18N
+#ifndef NO_I18N
       font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
       GetObject(font, sizeof(LOGFONT), &logfont);
       if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgWinlistFont, UILanguageFile)) {
@@ -2496,7 +2496,7 @@ BOOL CALLBACK WinListDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam
 	  if (n!=CB_ERR)
 	    SelectWin(n);
 	  EndDialog(Dialog, 1);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgWinlistFont != NULL) {
         DeleteObject(DlgWinlistFont);
       }
@@ -2505,7 +2505,7 @@ BOOL CALLBACK WinListDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam
 
 	case IDCANCEL:
 	  EndDialog(Dialog, 0);
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgWinlistFont != NULL) {
         DeleteObject(DlgWinlistFont);
       }
@@ -2534,7 +2534,7 @@ BOOL CALLBACK WinListDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam
 	    SendDlgItemMessage(Dialog,IDC_WINLISTLIST,
 	      LB_DELETESTRING,n,0);
 	    PostMessage(Hw,WM_SYSCOMMAND,SC_CLOSE,0);
-#ifdef I18N
+#ifndef NO_I18N
         if (DlgWinlistFont != NULL) {
           DeleteObject(DlgWinlistFont);
         }
@@ -2544,7 +2544,7 @@ BOOL CALLBACK WinListDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam
 	    Close = (PBOOL)GetWindowLong(Dialog,DWL_USER);
 	    if (Close!=NULL) *Close = TRUE;
 	    EndDialog(Dialog, 1);
-#ifdef I18N
+#ifndef NO_I18N
         if (DlgWinlistFont != NULL) {
           DeleteObject(DlgWinlistFont);
         }
@@ -2747,7 +2747,7 @@ BOOL CALLBACK TFontHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
   LPCHOOSEFONT cf;
   PTTSet ts;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   LOGFONT logfont;
   HFONT font;
@@ -2759,7 +2759,7 @@ BOOL CALLBACK TFontHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       ts = (PTTSet)(cf->lCustData);
       SetWindowLong(Dialog, DWL_USER, (LPARAM)ts);
 
-#ifdef I18N
+#ifndef NO_I18N
       font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
       GetObject(font, sizeof(LOGFONT), &logfont);
       if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgFontFont, UILanguageFile)) {
@@ -2825,14 +2825,14 @@ BOOL CALLBACK TFontHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	    if (ts->Language==IdRussian)
 	      ts->RussFont = (WORD)GetCurSel(Dialog, IDC_FONTCHARSET2);
 	  }
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgFontFont != NULL) {
         DeleteObject(DlgFontFont);
       }
 #endif
 	  break;
 	case IDCANCEL:
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgFontFont != NULL) {
         DeleteObject(DlgFontFont);
       }
@@ -2935,7 +2935,7 @@ BOOL WINAPI DllMain(HANDLE hInstance,
   #pragma on (unreferenced);
 #endif
 {
-#ifdef I18N
+#ifndef NO_I18N
   PMap pm;
   HANDLE HMap = NULL;
 #endif
@@ -2950,7 +2950,7 @@ BOOL WINAPI DllMain(HANDLE hInstance,
       break;
     case DLL_PROCESS_ATTACH:
       /* do process initialization */
-#ifdef I18N
+#ifndef NO_I18N
       HMap = CreateFileMapping(
         (HANDLE) 0xFFFFFFFF, NULL, PAGE_READONLY,
         0, sizeof(TMap), "ttset_memfilemap");
@@ -2987,6 +2987,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.21  2007/04/16 15:29:46  maya
+ * 変更後のフォントサイズを取得するように変更した。
+ *
  * Revision 1.20  2007/04/16 08:45:23  maya
  * URL を含むテキストのサイズを動的に変更するようにした。
  *

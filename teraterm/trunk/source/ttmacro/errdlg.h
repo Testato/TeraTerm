@@ -20,7 +20,7 @@ public:
 protected:
 	PCHAR MsgStr, LineStr;
 	int PosX, PosY;
-#ifdef I18N
+#ifndef NO_I18N
 	HFONT DlgFont;
 #endif
 

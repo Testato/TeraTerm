@@ -125,7 +125,7 @@ void CTEKWindow::InitMenu(HMENU *Menu)
   *Menu = ::LoadMenu(AfxGetInstanceHandle(),
 					 MAKEINTRESOURCE(IDR_TEKMENU));
   EditMenu = GetSubMenu(MainMenu,1);
-#ifdef I18N
+#ifndef NO_I18N
   FileMenu = GetSubMenu(MainMenu,0);
   SetupMenu = GetSubMenu(MainMenu,2);
   HelpMenu = GetSubMenu(MainMenu,4);
@@ -187,7 +187,7 @@ void CTEKWindow::InitMenu(HMENU *Menu)
   if ((ts.MenuFlag & MF_SHOWWINMENU) !=0)
   {
     WinMenu = CreatePopupMenu();
-#ifdef I18N
+#ifndef NO_I18N
     strcpy(ts.UIMsg, "&Window");
     get_lang_msg("TEKMENU_WINDOW", ts.UIMsg, ts.UILanguageFile);
     ::InsertMenu(*Menu,4,
@@ -226,7 +226,7 @@ void CTEKWindow::InitMenuPopup(HMENU SubMenu)
   }
   else if ( SubMenu == WinMenu )
   {
-#ifdef I18N
+#ifndef NO_I18N
     SetWinMenu(WinMenu, ts.UIMsg, ts.UILanguageFile);
 #else
     SetWinMenu(WinMenu);
@@ -404,7 +404,7 @@ void CTEKWindow::OnLButtonDown(UINT nFlags, CPoint point)
     if (WinMenu!=NULL)
       InitMenuPopup(WinMenu);
     PopupBase = CreatePopupMenu();
-#ifdef I18N
+#ifndef NO_I18N
     strcpy(ts.UIMsg, "&File");
     get_lang_msg("MENU_CONTROL", ts.UIMsg, ts.UILanguageFile);
     AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
@@ -432,7 +432,7 @@ void CTEKWindow::OnLButtonDown(UINT nFlags, CPoint point)
 	       ID_TEKVTWIN, "VT&Win");
 #endif
 	if (WinMenu!=NULL) {
-#ifdef I18N
+#ifndef NO_I18N
       strcpy(ts.UIMsg, "&Window");
       get_lang_msg("TEKMENU_WINDOW", ts.UIMsg, ts.UILanguageFile);
       AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
@@ -442,7 +442,7 @@ void CTEKWindow::OnLButtonDown(UINT nFlags, CPoint point)
          (UINT)WinMenu, "&Window");
 #endif
 	}
-#ifdef I18N
+#ifndef NO_I18N
     strcpy(ts.UIMsg, "&Help");
     get_lang_msg("TEKMENU_HELP", ts.UIMsg, ts.UILanguageFile);
     AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
@@ -662,7 +662,7 @@ LONG CTEKWindow::OnChangeMenu(UINT wParam, LONG lParam)
     if (WinMenu==NULL)
     {
       WinMenu = CreatePopupMenu();
-#ifdef I18N
+#ifndef NO_I18N
       strcpy(ts.UIMsg, "&Window");
       get_lang_msg("TEKMENU_WINDOW", ts.UIMsg, ts.UILanguageFile);
 	  ::InsertMenu(MainMenu,4,
@@ -689,7 +689,7 @@ LONG CTEKWindow::OnChangeMenu(UINT wParam, LONG lParam)
   {
     SysMenu = ::GetSystemMenu(tk.HWin,FALSE);
     AppendMenu(SysMenu, MF_SEPARATOR, 0, NULL);
-#ifdef I18N
+#ifndef NO_I18N
     strcpy(ts.UIMsg, "Show menu &bar");
     get_lang_msg("TEKMENU_SHOW_MENUBAR", ts.UIMsg, ts.UILanguageFile);
     AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, ts.UIMsg);
@@ -726,7 +726,7 @@ LONG CTEKWindow::OnChangeTBar(UINT wParam, LONG lParam)
   {
     SysMenu = ::GetSystemMenu(HTEKWin,FALSE);
     AppendMenu(SysMenu, MF_SEPARATOR, 0, NULL);
-#ifdef I18N
+#ifndef NO_I18N
     strcpy(ts.UIMsg, "Show menu &bar");
     get_lang_msg("TEKMENU_SHOW_MENUBAR", ts.UIMsg, ts.UILanguageFile);
     AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, ts.UIMsg);

@@ -177,7 +177,7 @@ static PProtoDlg PtDlg = NULL;
 BOOL OpenFTDlg(PFileVar fv)
 {
   PFileTransDlg FTDlg;
-#ifdef I18N
+#ifndef NO_I18N
   HWND HFTDlg;
 #endif
 
@@ -185,7 +185,7 @@ BOOL OpenFTDlg(PFileVar fv)
   
   if (FTDlg!=NULL)
   {
-#ifdef I18N
+#ifndef NO_I18N
     FTDlg->Create(fv, &cv, &ts);
 #else
     FTDlg->Create(fv, &cv);
@@ -200,7 +200,7 @@ BOOL OpenFTDlg(PFileVar fv)
   else
     SendDlg = FTDlg; /* File send */
 
-#ifdef I18N
+#ifndef NO_I18N
   HFTDlg=FTDlg->GetSafeHwnd();
 
   GetDlgItemText(HFTDlg, IDC_TRANS_FILENAME, ts.UIMsg, sizeof(ts.UIMsg));
@@ -535,7 +535,7 @@ void CommentLogToFile(char *buf, int size)
 	DWORD wrote;
 
 	if (LogVar == NULL || !LogVar->FileOpen) {
-#ifdef I18N
+#ifndef NO_I18N
 		char uimsg[MAX_UIMSG];
 		strcpy(uimsg, "ERROR");
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
@@ -901,7 +901,7 @@ BOOL OpenProtoDlg(PFileVar fv, int IdProto, int Mode, WORD Opt1, WORD Opt2)
 {
   int vsize;
   PProtoDlg pd;
-#ifdef I18N
+#ifndef NO_I18N
   HWND Hpd;
 #endif
 
@@ -955,13 +955,13 @@ BOOL OpenProtoDlg(PFileVar fv, int IdProto, int Mode, WORD Opt1, WORD Opt2)
     ProtoVar = NULL;
     return FALSE;
   }
-#ifdef I18N
+#ifndef NO_I18N
   pd->Create(fv,&ts);
 #else
   pd->Create(fv);
 #endif
 
-#ifdef I18N
+#ifndef NO_I18N
   Hpd=pd->GetSafeHwnd();
 
   GetDlgItemText(Hpd, IDC_PROT_FILENAME, ts.UIMsg, sizeof(ts.UIMsg));
@@ -1300,6 +1300,9 @@ void QVStart(int mode)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2007/05/31 14:39:05  maya
+ * 接続時に自動的にログ採取を開始できるようにした。
+ *
  * Revision 1.13  2007/05/30 16:04:27  maya
  * 標準のログ保存先を指定できるようにした。
  *

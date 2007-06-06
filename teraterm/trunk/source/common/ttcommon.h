@@ -26,7 +26,7 @@ WORD FAR PASCAL GetCOMFlag();
 
 int FAR PASCAL RegWin(HWND HWinVT, HWND HWinTEK);
 void FAR PASCAL UnregWin(HWND HWin);
-#ifdef I18N
+#ifndef NO_I18N
 void FAR PASCAL SetWinMenu(HMENU menu, PCHAR buf, PCHAR langFile);
 #else
 void FAR PASCAL SetWinMenu(HMENU menu);

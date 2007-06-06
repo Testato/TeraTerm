@@ -4,12 +4,12 @@
 /* IPv6 modification is Copyright(C) 2000 Jun-ya Kato <kato@win6.jp> */
 
 /* TERATERM.EXE, Winsock interface */
-#ifdef INET6
+#ifndef NO_INET6
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #else
 #include <winsock.h>
-#endif /* INET6 */
+#endif /* NO_INET6 */
 
 #ifdef __cplusplus
 extern "C" {

@@ -36,7 +36,7 @@ static int compareOrder(const void * e1, const void * e2) {
 static void loadExtension(ExtensionList * * extensions, char const * fileName) {
   char buf[1024];
   DWORD err;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
 #endif
 
@@ -72,7 +72,7 @@ static void loadExtension(ExtensionList * * extensions, char const * fileName) {
   }
 
   err = GetLastError();
-#ifdef I18N
+#ifndef NO_I18N
   strcpy(uimsg, "Tera Term: Error");
   get_lang_msg("MSG_TT_ERROR", uimsg, ts.UILanguageFile);
   strcpy(ts.UIMsg, "Cannot load extension %s (%d)");

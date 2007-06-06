@@ -3,11 +3,11 @@
  All rights reserved. */
 /* IPv6 modification is Copyright(C) 2000, 2001 Jun-ya kato <kato@win6.jp> */
 
-#ifdef INET6
+#ifndef NO_INET6
 #ifndef _WINSOCKAPI_
 #define _WINSOCKAPI_ /* Prevent inclusion of winsock.h in windows.h */
 #endif /* _WINSOCKAPI_ */
-#endif /* INET6 */
+#endif /* NO_INET6 */
 #include <windows.h>
 
 // AKASI氏によるEterm風透過ウィンドウ
@@ -16,7 +16,7 @@
 // Added by 337 2006/03/01
 #define USE_NORMAL_BGCOLOR
 
-#ifdef I18N
+#ifndef NO_I18N
 #include "i18n.h"
 #endif
 

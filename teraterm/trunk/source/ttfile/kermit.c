@@ -502,7 +502,7 @@ void KmtSendEOTPacket(PFileVar fv, PKmtVar kv, PComVar cv)
 
 BOOL KmtSendNextFile(PFileVar fv, PKmtVar kv, PComVar cv)
 {
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   char uimsg2[MAX_UIMSG];
 #endif
@@ -519,7 +519,7 @@ BOOL KmtSendNextFile(PFileVar fv, PKmtVar kv, PComVar cv)
   if (! fv->FileOpen)
   {
     if (! fv->NoMsg)
-#ifdef I18N
+#ifndef NO_I18N
     {
       strcpy(uimsg2, "Tera Term: Error");
       get_lang_msg("MSG_TT_ERROR", uimsg2, UILanguageFile);
@@ -588,7 +588,7 @@ void KmtSendFinish(PFileVar fv, PKmtVar kv, PComVar cv)
 void KmtInit
   (PFileVar fv, PKmtVar kv, PComVar cv, PTTSet ts)
 {
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
 
   strcpy(fv->DlgCaption,"Tera Term: Kermit ");
@@ -597,7 +597,7 @@ void KmtInit
 #endif
   switch (kv->KmtMode) {
     case IdKmtSend:
-#ifdef I18N
+#ifndef NO_I18N
       strcpy(uimsg, TitKmtSend);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTSEND", uimsg, UILanguageFile);
       strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
@@ -606,7 +606,7 @@ void KmtInit
 #endif
       break;
     case IdKmtReceive:
-#ifdef I18N
+#ifndef NO_I18N
       strcpy(uimsg, TitKmtRcv);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTRCV", uimsg, UILanguageFile);
       strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
@@ -615,7 +615,7 @@ void KmtInit
 #endif
       break;
     case IdKmtGet:
-#ifdef I18N
+#ifndef NO_I18N
       strcpy(uimsg, TitKmtGet);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTGET", uimsg, UILanguageFile);
       strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
@@ -624,7 +624,7 @@ void KmtInit
 #endif
       break;
     case IdKmtFinish:
-#ifdef I18N
+#ifndef NO_I18N
       strcpy(uimsg, TitKmtFin);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTFIN", uimsg, UILanguageFile);
       strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);

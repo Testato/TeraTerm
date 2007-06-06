@@ -29,12 +29,12 @@
 #include "ttlib.h"
 #include "helpid.h"
 #include "teraprn.h"
-#ifdef INET6
+#ifndef NO_INET6
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #else
 #include <winsock.h>
-#endif /* INET6 */
+#endif /* NO_INET6 */
 #include "ttplug.h"  /* TTPLUG */
 
 #include <stdio.h>
@@ -77,7 +77,7 @@ static char THIS_FILE[] = __FILE__;
 // WM_COPYDATAによるプロセス間通信の種別 (2005.1.22 yutaka)
 #define IPC_BROADCAST_COMMAND 1
 
-#ifdef I18N
+#ifndef NO_I18N
 static HFONT DlgBroadcastFont;
 static HFONT DlgCommentFont;
 static HFONT DlgAdditionalFont;
@@ -732,7 +732,7 @@ void CVTWindow::InitMenu(HMENU *Menu)
   SetupMenu = GetSubMenu(*Menu,ID_SETUP);
   ControlMenu = GetSubMenu(*Menu,ID_CONTROL);
   HelpMenu = GetSubMenu(*Menu,ID_HELPMENU);
-#ifdef I18N
+#ifndef NO_I18N
   GetMenuString(*Menu, ID_FILE, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
   get_lang_msg("MENU_FILE", ts.UIMsg, ts.UILanguageFile);
   ModifyMenu(*Menu, ID_FILE, MF_BYPOSITION, ID_FILE, ts.UIMsg);
@@ -924,7 +924,7 @@ void CVTWindow::InitMenu(HMENU *Menu)
   if ((ts.MenuFlag & MF_SHOWWINMENU) !=0)
   {
     WinMenu = CreatePopupMenu();
-#ifdef I18N
+#ifndef NO_I18N
     strcpy(ts.UIMsg, "&Window");
     get_lang_msg("MENU_WINDOW", ts.UIMsg, ts.UILanguageFile);
     ::InsertMenu(*Menu,ID_HELPMENU,
@@ -1073,7 +1073,7 @@ void CVTWindow::InitMenuPopup(HMENU SubMenu)
 	}
 	else if (SubMenu == WinMenu)
 	{
-#ifdef I18N
+#ifndef NO_I18N
 		SetWinMenu(WinMenu, ts.UIMsg, ts.UILanguageFile);
 #else
 		SetWinMenu(WinMenu);
@@ -1089,7 +1089,7 @@ void CVTWindow::InitPasteMenu(HMENU *Menu)
   *Menu = LoadMenu(AfxGetInstanceHandle(),
     MAKEINTRESOURCE(IDR_PASTEMENU));
 
-#ifdef I18N
+#ifndef NO_I18N
   GetMenuString(*Menu, ID_EDIT_PASTE2, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
   get_lang_msg("MENU_EDIT_PASTE", ts.UIMsg, ts.UILanguageFile);
   ModifyMenu(*Menu, ID_EDIT_PASTE2, MF_BYCOMMAND, ID_EDIT_PASTE2, ts.UIMsg);
@@ -1370,14 +1370,14 @@ void CVTWindow::OnClose()
     MessageBeep(0);
     return;
   }
-#ifdef I18N
+#ifndef NO_I18N
   strcpy(ts.UIMsg, "Disconnect?");
   get_lang_msg("MSG_DISCONNECT_CONF", ts.UIMsg, ts.UILanguageFile);
 #endif
   if (cv.Ready && (cv.PortType==IdTCPIP) &&
       ((ts.PortFlag & PF_CONFIRMDISCONN) != 0) &&
       ! CloseTT &&
-#ifdef I18N
+#ifndef NO_I18N
       (::MessageBox(HVTWin,ts.UIMsg,"Tera Term",
 #else
       (::MessageBox(HVTWin,"Disconnect?","Tera Term",
@@ -1483,7 +1483,7 @@ void CVTWindow::OnDropFiles(HDROP hDropInfo)
 
 			} else {
 				// いきなりファイルの内容を送り込む前に、ユーザに問い合わせを行う。(2006.1.21 yutaka)
-#ifdef I18N
+#ifndef NO_I18N
 				char uimsg[MAX_UIMSG];
 				strcpy(uimsg, "Tera Term: File Drag and Drop");
 				get_lang_msg("MSG_DANDD_CONF_TITLE", uimsg, ts.UILanguageFile);
@@ -1491,7 +1491,7 @@ void CVTWindow::OnDropFiles(HDROP hDropInfo)
 				get_lang_msg("MSG_DANDD_CONF", ts.UIMsg, ts.UILanguageFile);
 #endif
 				if (MessageBox(
-#ifdef I18N
+#ifndef NO_I18N
 					ts.UIMsg, uimsg, MB_YESNO | MB_DEFBUTTON2) == IDYES) {
 #else
 					"Are you sure that you want to send the file content?", 
@@ -2211,7 +2211,7 @@ LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
     if (WinMenu==NULL)
     {
       WinMenu = CreatePopupMenu();
-#ifdef I18N
+#ifndef NO_I18N
       strcpy(ts.UIMsg, "&Window");
       get_lang_msg("MENU_WINDOW", ts.UIMsg, ts.UILanguageFile);
       ::InsertMenu(MainMenu,ID_HELPMENU,
@@ -2238,7 +2238,7 @@ LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
   {
     SysMenu = ::GetSystemMenu(HVTWin,FALSE);
     AppendMenu(SysMenu, MF_SEPARATOR, 0, NULL);
-#ifdef I18N
+#ifndef NO_I18N
     strcpy(ts.UIMsg, "Show menu &bar");
     get_lang_msg("MENU_SHOW_MENUBAR", ts.UIMsg, ts.UILanguageFile);
     AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, ts.UIMsg);
@@ -2305,7 +2305,7 @@ LONG CVTWindow::OnChangeTBar(UINT wParam, LONG lParam)
   {
     SysMenu = ::GetSystemMenu(HVTWin,FALSE);
     AppendMenu(SysMenu, MF_SEPARATOR, 0, NULL);
-#ifdef I18N
+#ifndef NO_I18N
     strcpy(ts.UIMsg, "Show menu &bar");
     get_lang_msg("MENU_SHOW_MENUBAR", ts.UIMsg, ts.UILanguageFile);
     AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, ts.UIMsg);
@@ -2338,19 +2338,19 @@ LONG CVTWindow::OnCommNotify(UINT wParam, LONG lParam)
 
 LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 {
-#ifdef I18N
+#ifndef NO_I18N
   CommStart(&cv,lParam,&ts);
 #else
   CommStart(&cv,lParam);
 #endif
-#ifdef INET6
+#ifndef NO_INET6
   if (ts.PortType == IdTCPIP && cv.RetryWithOtherProtocol == TRUE)
     Connecting = TRUE;
   else
     Connecting = FALSE;
 #else
   Connecting = FALSE;
-#endif /* INET6 */
+#endif /* NO_INET6 */
   ChangeTitle();
   if (! cv.Ready) return 0;
 
@@ -2494,9 +2494,9 @@ void CVTWindow::OnFileNewConnection()
   GetHNRec.Telnet = ts.Telnet;
   GetHNRec.TelPort = ts.TelPort;
   GetHNRec.TCPPort = ts.TCPPort;
-#ifdef INET6
+#ifndef NO_INET6
   GetHNRec.ProtocolFamily = ts.ProtocolFamily;
-#endif /* INET6 */
+#endif /* NO_INET6 */
   GetHNRec.ComPort = ts.ComPort;
   GetHNRec.MaxComPort = ts.MaxComPort;
 
@@ -2523,9 +2523,9 @@ void CVTWindow::OnFileNewConnection()
       ts.PortType = GetHNRec.PortType;
       ts.Telnet = GetHNRec.Telnet;
       ts.TCPPort = GetHNRec.TCPPort;
-#ifdef INET6
+#ifndef NO_INET6
       ts.ProtocolFamily = GetHNRec.ProtocolFamily;
-#endif /* INET6 */
+#endif /* NO_INET6 */
       ts.ComPort = GetHNRec.ComPort;
 
       if ((GetHNRec.PortType==IdTCPIP) &&
@@ -2566,7 +2566,7 @@ void CVTWindow::OnFileNewConnection()
 	  strcat(Command," /P=");
 	  uint2str(GetHNRec.TCPPort,&Command[strlen(Command)],5);
 	}
-#ifdef INET6
+#ifndef NO_INET6
         /********************************/
         /* ここにプロトコル処理を入れる */
         /********************************/
@@ -2575,7 +2575,7 @@ void CVTWindow::OnFileNewConnection()
         } else if (GetHNRec.ProtocolFamily == AF_INET6) {
           strcat(Command," /6");
         }
-#endif /* INET6 */
+#endif /* NO_INET6 */
 	strcat(Command," ");
 	strncat(Command, Command2, sizeof(Command)-1-strlen(Command));
       }
@@ -2639,7 +2639,7 @@ void CVTWindow::OnDuplicateSession()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
-#ifdef I18N
+#ifndef NO_I18N
 		char uimsg[MAX_UIMSG];
 		strcpy(uimsg, "ERROR");
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
@@ -2666,7 +2666,7 @@ void CVTWindow::OnCygwinConnection()
 	char *exename = "cygterm.exe";
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
-#ifdef I18N
+#ifndef NO_I18N
 	char uimsg[MAX_UIMSG];
 #endif
 
@@ -2683,7 +2683,7 @@ void CVTWindow::OnCygwinConnection()
 				goto found_dll;
 			}
 		}
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(uimsg, "ERROR");
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
 		strcpy(ts.UIMsg, "Can't find Cygwin directory.");
@@ -2713,7 +2713,7 @@ found_path:;
 			NULL, NULL, FALSE, 0,
 			NULL, NULL,
 			&si, &pi) == 0) {
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(uimsg, "ERROR");
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
 		strcpy(ts.UIMsg, "Can't execute Cygterm.");
@@ -2746,7 +2746,7 @@ void CVTWindow::OnTTMenuLaunch()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
-#ifdef I18N
+#ifndef NO_I18N
 		char uimsg[MAX_UIMSG];
 		strcpy(uimsg, "ERROR");
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
@@ -2785,7 +2785,7 @@ void CVTWindow::OnLogMeInLaunch()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
-#ifdef I18N
+#ifndef NO_I18N
 		char uimsg[MAX_UIMSG];
 		strcpy(uimsg, "ERROR");
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
@@ -2812,7 +2812,7 @@ static LRESULT CALLBACK OnCommentDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPAR
 {
 	char buf[256];
 	UINT ret;
-#ifdef I18N
+#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
 #endif
@@ -2823,7 +2823,7 @@ static LRESULT CALLBACK OnCommentDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPAR
 			// エディットコントロールにフォーカスをあてる
 			SetFocus(GetDlgItem(hDlgWnd, IDC_EDIT_COMMENT));
 
-#ifdef I18N
+#ifndef NO_I18N
 			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
 			GetObject(font, sizeof(LOGFONT), &logfont);
 			if (get_lang_font("DLG_SYSTEM_FONT", hDlgWnd, &logfont, &DlgCommentFont, ts.UILanguageFile)) {
@@ -2853,7 +2853,7 @@ static LRESULT CALLBACK OnCommentDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPAR
 						//buf[sizeof(buf) - 1] = '\0';  // null-terminate
 						CommentLogToFile(buf, ret);
 					}
-#ifdef I18N
+#ifndef NO_I18N
       if (DlgCommentFont != NULL) {
         DeleteObject(DlgCommentFont);
       }
@@ -2913,7 +2913,7 @@ void CVTWindow::OnViewLog()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
-#ifdef I18N
+#ifndef NO_I18N
 		char uimsg[MAX_UIMSG];
 		strcpy(uimsg, "ERROR");
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
@@ -2939,7 +2939,7 @@ void CVTWindow::OnReplayLog()
 	char *exec = "ttermpro";
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
-#ifdef I18N
+#ifndef NO_I18N
     char uimsg[MAX_UIMSG];
 #endif
 
@@ -2956,7 +2956,7 @@ void CVTWindow::OnReplayLog()
 		ofn.lStructSize = OPENFILENAME_SIZE_VERSION_400;
 	}
     ofn.hwndOwner = HVTWin;
-#ifdef I18N
+#ifndef NO_I18N
 	strncpy(ts.UIMsg, "all(*.*)\\0*.*\\0\\0", sizeof(ts.UIMsg));
 	get_lang_msg("FILEDLG_OPEN_LOGFILE_FILTER", ts.UIMsg, ts.UILanguageFile);
     ofn.lpstrFilter = ts.UIMsg;
@@ -2967,7 +2967,7 @@ void CVTWindow::OnReplayLog()
     ofn.nMaxFile = sizeof(szFile);
     ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
     ofn.lpstrDefExt = "log";
-#ifdef I18N
+#ifndef NO_I18N
     strcpy(uimsg, "Select replay log file with binary mode");
     get_lang_msg("FILEDLG_OPEN_LOGFILE_TITLE", uimsg, ts.UILanguageFile);
 	ofn.lpstrTitle = uimsg;
@@ -2993,7 +2993,7 @@ void CVTWindow::OnReplayLog()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
-#ifdef I18N
+#ifndef NO_I18N
 		strcpy(uimsg, "ERROR");
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
 		strcpy(ts.UIMsg, "Can't execute TeraTerm. (%d)");
@@ -3098,13 +3098,13 @@ void CVTWindow::OnFilePrint()
 void CVTWindow::OnFileDisconnect()
 {
   if (! cv.Ready) return;
-#ifdef I18N
+#ifndef NO_I18N
   strcpy(ts.UIMsg, "Disconnect?");
   get_lang_msg("MSG_DISCONNECT_CONF", ts.UIMsg, ts.UILanguageFile);
 #endif
   if ((cv.PortType==IdTCPIP) &&
       ((ts.PortFlag & PF_CONFIRMDISCONN) != 0) &&
-#ifdef I18N
+#ifndef NO_I18N
       (::MessageBox(HVTWin,ts.UIMsg,"Tera Term",
 #else
       (::MessageBox(HVTWin,"Disconnect?","Tera Term",
@@ -3213,7 +3213,7 @@ static void doSelectFolder(HWND hWnd, char *path, int pathlen)
 	bi.hwndOwner = hWnd;
 	bi.pidlRoot = pidlRoot;
 	bi.pszDisplayName = lpBuffer;
-#ifdef I18N
+#ifndef NO_I18N
 	strcpy(ts.UIMsg, "select folder");
 	get_lang_msg("DIRDLG_CYGTERM_DIR_TITLE", ts.UIMsg, ts.UILanguageFile);
 	bi.lpszTitle = ts.UIMsg;
@@ -3286,7 +3286,7 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 	} cygterm_t;
 	cygterm_t settings;
 	char buf[256], *head, *body;
-#ifdef I18N
+#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
 #endif
@@ -3294,7 +3294,7 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
     switch (msg) {
         case WM_INITDIALOG:
 
-#ifdef I18N
+#ifndef NO_I18N
 			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
 			GetObject(font, sizeof(LOGFONT), &logfont);
 			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgCygwinFont, ts.UILanguageFile)) {
@@ -3464,7 +3464,7 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					// ファイルを新規作成しているので、コメントなどは消去される。
 					fp = fopen(cfgfile, "w");
 					if (fp == NULL) { 
-#ifdef I18N
+#ifndef NO_I18N
 						char uimsg[MAX_UIMSG];
 						strcpy(uimsg, "ERROR");
 						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
@@ -3510,7 +3510,7 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 
         case WM_CLOSE:
 		    EndDialog(hDlgWnd, 0);
-#ifdef I18N
+#ifndef NO_I18N
 			if (DlgCygwinFont != NULL) {
 				DeleteObject(DlgCygwinFont);
 			}
@@ -3528,7 +3528,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 {
 	HWND hWnd;
 	LRESULT ret;
-#ifdef I18N
+#ifndef NO_I18N
 	char uimsg[MAX_UIMSG];
 	LOGFONT logfont;
 	HFONT font;
@@ -3537,7 +3537,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 	switch (msg) {
 		case WM_INITDIALOG:
 
-#ifdef I18N
+#ifndef NO_I18N
 			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
 			GetObject(font, sizeof(LOGFONT), &logfont);
 			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgLogFont, ts.UILanguageFile)) {
@@ -3621,7 +3621,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 						ofn.lStructSize = OPENFILENAME_SIZE_VERSION_400;
 					}
 					ofn.hwndOwner = hDlgWnd;
-#ifdef I18N
+#ifndef NO_I18N
 					strncpy(ts.UIMsg, "exe(*.exe)\\0*.exe\\0all(*.*)\\0*.*\\0\\0", sizeof(ts.UIMsg));
 					get_lang_msg("FILEDLG_SELECT_LOGVIEW_APP_FILTER", ts.UIMsg, ts.UILanguageFile);
 					ofn.lpstrFilter = ts.UIMsg;
@@ -3630,7 +3630,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 #endif
 					ofn.lpstrFile = ts.ViewlogEditor;
 					ofn.nMaxFile = sizeof(ts.ViewlogEditor);
-#ifdef I18N
+#ifndef NO_I18N
 					strcpy(uimsg, "Choose a executing file with launching logging file");
 					get_lang_msg("FILEDLG_SELECT_LOGVIEW_APP_TITLE", uimsg, ts.UILanguageFile);
 					ofn.lpstrTitle = uimsg;
@@ -3656,7 +3656,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 
 			switch (LOWORD(wp)) {
 				case IDOK:
-#ifdef I18N
+#ifndef NO_I18N
 					char buf[80], buf2[80];
 #else
 					char buf[80], buf2[80], msg[80];
@@ -3672,7 +3672,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					hWnd = GetDlgItem(hDlgWnd, IDC_DEFAULTNAME_EDITOR);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
 					if (isInvalidStrftimeChar(buf)) {
-#ifdef I18N
+#ifndef NO_I18N
 						strcpy(uimsg, "ERROR");
 						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
 						strcpy(ts.UIMsg, "Invalid character is included in log file name.");
@@ -3690,7 +3690,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					tm_local = localtime(&time_local);
 					// 時刻文字列に変換
 					if (strftime(buf2, sizeof(buf2), buf, tm_local) == 0) {
-#ifdef I18N
+#ifndef NO_I18N
 						strcpy(uimsg, "ERROR");
 						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
 						strcpy(ts.UIMsg, "The log file name is too long.");
@@ -3703,7 +3703,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 						return FALSE;
 					}
 					if (isInvalidFileNameChar(buf2)) {
-#ifdef I18N
+#ifndef NO_I18N
 						strcpy(uimsg, "ERROR");
 						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
 						strcpy(ts.UIMsg, "Invalid character is included in log file name.");
@@ -3747,7 +3747,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 
 		case WM_CLOSE:
 			EndDialog(hDlgWnd, 0);
-#ifdef I18N
+#ifndef NO_I18N
 			if (DlgLogFont != NULL) {
 				DeleteObject(DlgLogFont);
 			}
@@ -3790,7 +3790,7 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 	char buf[MAXPATHLEN];
 	LRESULT ret;
 	static HDC label_hdc = NULL;
-#ifdef I18N
+#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
 #endif
@@ -3798,7 +3798,7 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
     switch (msg) {
         case WM_INITDIALOG:
 
-#ifdef I18N
+#ifndef NO_I18N
 			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
 			GetObject(font, sizeof(LOGFONT), &logfont);
 			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgVisualFont, ts.UILanguageFile)) {
@@ -3970,7 +3970,7 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 
         case WM_CLOSE:
 		    EndDialog(hDlgWnd, 0);
-#ifdef I18N
+#ifndef NO_I18N
 			if (DlgVisualFont != NULL) {
 				DeleteObject(DlgVisualFont);
 			}
@@ -4017,7 +4017,7 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
 	HWND hWnd, hWnd2;
-#ifdef I18N
+#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
 #endif
@@ -4025,7 +4025,7 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
     switch (msg) {
         case WM_INITDIALOG:
 
-#ifdef I18N
+#ifndef NO_I18N
 			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
 			GetObject(font, sizeof(LOGFONT), &logfont);
 			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgGeneralFont, ts.UILanguageFile)) {
@@ -4217,7 +4217,7 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 
         case WM_CLOSE:
 		    EndDialog(hDlgWnd, 0);
-#ifdef I18N
+#ifndef NO_I18N
 			if (DlgGeneralFont != NULL) {
 				DeleteObject(DlgGeneralFont);
 			}
@@ -4245,14 +4245,14 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 	static HWND hTabCtrl; // parent
 	static HWND hTabSheet[MAX_TABSHEET]; //0:general 1:visual 2:log 3:Cygwin
 	int i;
-#ifdef I18N
+#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
 #endif
 
 	switch (msg) {
         case WM_INITDIALOG:
-#ifdef I18N
+#ifndef NO_I18N
 		font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
 		if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgAdditionalFont, ts.UILanguageFile)) {
@@ -4263,7 +4263,7 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 
 			// コモンコントロールの初期化
 			InitCommonControls();
-#ifdef I18N
+#ifndef NO_I18N
 			GetWindowText(hDlgWnd, ts.UIMsg, sizeof(ts.UIMsg));
 			get_lang_msg("DLG_TABSHEET_TITLE", ts.UIMsg, ts.UILanguageFile);
 			SetWindowText(hDlgWnd, ts.UIMsg);
@@ -4273,7 +4273,7 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 			hTabCtrl = GetDlgItem(hDlgWnd, IDC_SETUP_TAB);
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(ts.UIMsg, "General");
 			get_lang_msg("DLG_TABSHEET_TITLE_GENERAL", ts.UIMsg, ts.UILanguageFile);
 			tc.pszText = ts.UIMsg;
@@ -4284,7 +4284,7 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(ts.UIMsg, "Visual");
 			get_lang_msg("DLG_TABSHEET_TITLE_VISUAL", ts.UIMsg, ts.UILanguageFile);
 			tc.pszText = ts.UIMsg;
@@ -4295,7 +4295,7 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(ts.UIMsg, "Log");
 			get_lang_msg("DLG_TABSHEET_TITLE_LOG", ts.UIMsg, ts.UILanguageFile);
 			tc.pszText = ts.UIMsg;
@@ -4306,7 +4306,7 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(ts.UIMsg, "Cygwin");
 			get_lang_msg("DLG_TABSHEET_TITLE_CYGWIN", ts.UIMsg, ts.UILanguageFile);
 			tc.pszText = ts.UIMsg;
@@ -4383,7 +4383,7 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 				EndDialog(hTabSheet[i], FALSE);
 			}
 			EndDialog(hDlgWnd, FALSE);
-#ifdef I18N
+#ifndef NO_I18N
 			if (DlgAdditionalFont != NULL) {
 				DeleteObject(DlgAdditionalFont);
 			}
@@ -4539,7 +4539,7 @@ void CVTWindow::OnSetupSave()
 	// 書き込みできるかの判別を追加 (2005.11.3 yutaka)
 	if ((ret = _access(ts.SetupFName, 0x02)) != 0) {
 		if (errno != ENOENT) {  // ファイルがすでに存在する場合のみエラーとする (2005.12.13 yutaka)
-#ifdef I18N
+#ifndef NO_I18N
 			char uimsg[MAX_UIMSG];
 			strcpy(uimsg, "Tera Term: ERROR");
 			get_lang_msg("MSG_TT_ERROR", uimsg, ts.UILanguageFile);
@@ -4668,7 +4668,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 	UINT ret;
 	LRESULT checked;
 	LRESULT history;
-#ifdef I18N
+#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
 #endif
@@ -4688,7 +4688,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			// エディットコントロールにフォーカスをあてる
 			SetFocus(GetDlgItem(hWnd, IDC_COMMAND_EDIT));
 
-#ifdef I18N
+#ifndef NO_I18N
 			font = (HFONT)SendMessage(hWnd, WM_GETFONT, 0, 0);
 			GetObject(font, sizeof(LOGFONT), &logfont);
 			if (get_lang_font("DLG_SYSTEM_FONT", hWnd, &logfont, &DlgBroadcastFont, ts.UILanguageFile)) {
@@ -4835,7 +4835,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
         case WM_CLOSE:
 			//DestroyWindow(hWnd);
 		    EndDialog(hWnd, 0);
-#ifdef I18N
+#ifndef NO_I18N
 					if (DlgBroadcastFont != NULL) {
 						DeleteObject(DlgBroadcastFont);
 					}
@@ -4944,6 +4944,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.66  2007/05/31 14:39:05  maya
+ * 接続時に自動的にログ採取を開始できるようにした。
+ *
  * Revision 1.65  2007/05/31 04:39:43  maya
  * AcceptBroadcast のコントロールを国際化した。
  *

@@ -93,7 +93,7 @@ void QVSendACK(PFileVar fv, PQVVar qv, PComVar cv)
 void QVInit
   (PFileVar fv, PQVVar qv, PComVar cv, PTTSet ts)
 {
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
 #endif
 
@@ -109,7 +109,7 @@ void QVInit
   fv->ByteCount = 0;
 
   if (qv->QVMode==IdQVReceive)
-#ifdef I18N
+#ifndef NO_I18N
   {
     strcat(fv->DlgCaption,"Tera Term: ");
     strcpy(uimsg, TitQVRcv);

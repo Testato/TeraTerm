@@ -127,7 +127,7 @@ void ChangeTitle()
 		strncat(TempTitle," - ",sizeof(TempTitle)-1-strlen(TempTitle));
 		i = sizeof(TempTitle)-1-strlen(TempTitle);
 		if (Connecting) {
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(ts.UIMsg, "[connecting...]");
 			get_lang_msg("DLG_MAIN_TITLE_CONNECTING", ts.UIMsg, ts.UILanguageFile);
 			strncat(TempTitle,ts.UIMsg,i);
@@ -136,7 +136,7 @@ void ChangeTitle()
 #endif
 		}
 		else if (! cv.Ready) {
-#ifdef I18N
+#ifndef NO_I18N
 			strcpy(ts.UIMsg, "[disconnected]");
 			get_lang_msg("DLG_MAIN_TITLE_DISCONNECTED", ts.UIMsg, ts.UILanguageFile);
 			strncat(TempTitle,ts.UIMsg,i);
@@ -282,6 +282,9 @@ void OpenHtmlHelp(HWND HWin, char *filename)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2007/05/11 18:47:01  maya
+ * ヘルプのオーナーが常にデスクトップになるように変更した。
+ *
  * Revision 1.10  2007/04/09 15:42:57  maya
  * hlp の替わりに chm を開くように変更した。
  *

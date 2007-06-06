@@ -13,13 +13,13 @@ private:
 	PFileVar fv;
 	PComVar cv;
 	BOOL Pause;
-#ifdef I18N
+#ifndef NO_I18N
 	PTTSet ts;
 	HFONT DlgFont;
 #endif
 
 public:
-#ifdef I18N
+#ifndef NO_I18N
 	BOOL Create(PFileVar pfv, PComVar pcv, PTTSet pts);
 #else
 	BOOL Create(PFileVar pfv, PComVar pcv);

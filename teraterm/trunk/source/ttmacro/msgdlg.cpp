@@ -50,14 +50,14 @@ BOOL CMsgDlg::OnInitDialog()
   RECT R;
   HDC TmpDC;
   HWND HOk, HNo;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   LOGFONT logfont;
   HFONT font;
 #endif
 
   CDialog::OnInitDialog();
-#ifdef I18N
+#ifndef NO_I18N
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
   GetObject(font, sizeof(LOGFONT), &logfont);
   if (get_lang_font("DLG_SYSTEM_FONT", m_hWnd, &logfont, &DlgFont, UILanguageFile)) {
@@ -126,7 +126,7 @@ void CMsgDlg::Relocation(BOOL is_init, int new_WW)
   HDC TmpDC;
   HWND HText, HOk, HNo;
   int CW, CH;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
 #endif
 
@@ -161,7 +161,7 @@ void CMsgDlg::Relocation(BOOL is_init, int new_WW)
     if (is_init) {
       ::SetWindowText(HOk,"&Yes");
       ::SetWindowText(HNo,"&No");
-#ifdef I18N
+#ifndef NO_I18N
       GetDlgItemText(IDOK, uimsg, sizeof(uimsg));
       get_lang_msg("BTN_YES", uimsg, UILanguageFile);
 	  ::SetWindowText(HOk,uimsg);

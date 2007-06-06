@@ -598,7 +598,7 @@ homedir:
 	strcat(dest, "TERATERM.INI");
 }
 
-#ifdef I18N
+#ifndef NO_I18N
 void get_lang_msg(PCHAR key, PCHAR buf, PCHAR iniFile)
 {
 	GetI18nStr("Tera Term", key, buf, iniFile);

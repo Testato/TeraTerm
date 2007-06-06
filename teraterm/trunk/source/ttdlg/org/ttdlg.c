@@ -19,10 +19,10 @@
 #else
   #include "dlg_re16.h"
 #endif
-#ifdef INET6
+#ifndef NO_INET6
 #include <winsock2.h>
 static char FAR * ProtocolFamilyList[] = { "UNSPEC", "IPv6", "IPv4", NULL };
-#endif /* INET6 */
+#endif /* NO_INET6 */
 
 // マウスカーソルの形状
 static char *MouseCursorList[] = {
@@ -958,7 +958,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       SetRB(Dialog,GetHNRec->Telnet,IDC_HOSTTELNET,IDC_HOSTTELNET);
       SendDlgItemMessage(Dialog, IDC_HOSTTCPPORT, EM_LIMITTEXT,5,0);
       SetDlgItemInt(Dialog,IDC_HOSTTCPPORT,GetHNRec->TCPPort,FALSE);
-#ifdef INET6
+#ifndef NO_INET6
       for (i=0; ProtocolFamilyList[i]; ++i)
       {
         SendDlgItemMessage(Dialog, IDC_HOSTTCPPROTOCOL, CB_ADDSTRING,
@@ -967,7 +967,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       SendDlgItemMessage(Dialog, IDC_HOSTTCPPROTOCOL, EM_LIMITTEXT,
                          ProtocolFamilyMaxLength-1, 0);
       SendDlgItemMessage(Dialog, IDC_HOSTTCPPROTOCOL, CB_SETCURSEL,0,0);
-#endif /* INET6 */
+#endif /* NO_INET6 */
 
       j = 0;
       w = 1;
@@ -1008,9 +1008,9 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  GetHNRec = (PGetHNRec)GetWindowLong(Dialog,DWL_USER);
 	  if ( GetHNRec!=NULL )
 	  {
-#ifdef INET6
+#ifndef NO_INET6
             char afstr[BUFSIZ];
-#endif /* INET6 */
+#endif /* NO_INET6 */
 	    GetRB(Dialog,&GetHNRec->PortType,IDC_HOSTTCPIP,IDC_HOSTSERIAL);
 	    if ( GetHNRec->PortType==IdTCPIP )
 	      GetDlgItemText(Dialog, IDC_HOSTNAME, GetHNRec->HostName, HostNameMaxLength);
@@ -1019,14 +1019,14 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	    GetRB(Dialog,&GetHNRec->Telnet,IDC_HOSTTELNET,IDC_HOSTTELNET);
 	    i = GetDlgItemInt(Dialog,IDC_HOSTTCPPORT,&Ok,FALSE);
 	    if (Ok) GetHNRec->TCPPort = i;
-#ifdef INET6
+#ifndef NO_INET6
 #define getaf(str) \
 ((strcmp((str), "IPv6") == 0) ? AF_INET6 : \
  ((strcmp((str), "IPv4") == 0) ? AF_INET : AF_UNSPEC))
             memset(afstr, 0, sizeof(afstr));
             GetDlgItemText(Dialog, IDC_HOSTTCPPROTOCOL, afstr, sizeof(afstr));
             GetHNRec->ProtocolFamily = getaf(afstr);
-#endif /* INET6 */
+#endif /* NO_INET6 */
 	    memset(EntName,0,sizeof(EntName));
 	    GetDlgItemText(Dialog, IDC_HOSTCOM, EntName, sizeof(EntName)-1);
 	    GetHNRec->ComPort = (BYTE)(EntName[3])-0x30;
@@ -1042,18 +1042,18 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 	case IDC_HOSTTCPIP:
 	  EnableDlgItem(Dialog,IDC_HOSTNAMELABEL,IDC_HOSTTCPPORT);
-#ifdef INET6
+#ifndef NO_INET6
           EnableDlgItem(Dialog,IDC_HOSTTCPPROTOCOLLABEL,IDC_HOSTTCPPROTOCOL);
-#endif /* INET6 */
+#endif /* NO_INET6 */
 	  DisableDlgItem(Dialog,IDC_HOSTCOMLABEL,IDC_HOSTCOM);
 	  return TRUE;
 
 	case IDC_HOSTSERIAL:
 	  EnableDlgItem(Dialog,IDC_HOSTCOMLABEL,IDC_HOSTCOM);
 	  DisableDlgItem(Dialog,IDC_HOSTNAMELABEL,IDC_HOSTTCPPORT);
-#ifdef INET6
+#ifndef NO_INET6
           DisableDlgItem(Dialog,IDC_HOSTTCPPROTOCOLLABEL,IDC_HOSTTCPPROTOCOL);
-#endif /* INET6 */
+#endif /* NO_INET6 */
 	  break;
 
 	case IDC_HOSTTELNET:

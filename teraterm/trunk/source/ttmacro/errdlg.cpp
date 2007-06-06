@@ -45,14 +45,14 @@ BOOL CErrDlg::OnInitDialog()
 {
   RECT R;
   HDC TmpDC;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   LOGFONT logfont;
   HFONT font;
 #endif
 
   CDialog::OnInitDialog();
-#ifdef I18N
+#ifndef NO_I18N
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
   GetObject(font, sizeof(LOGFONT), &logfont);
   if (get_lang_font("DLG_SYSTEM_FONT", m_hWnd, &logfont, &DlgFont, UILanguageFile)) {

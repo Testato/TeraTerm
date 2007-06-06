@@ -79,7 +79,7 @@ BOOL LoadIME()
 {
   BOOL Err;
   PTTSet tempts;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
 #endif
 
@@ -94,7 +94,7 @@ BOOL LoadIME()
   if (HIMEDLL < HINSTANCE_ERROR)
   {
 #endif
-#ifdef I18N
+#ifndef NO_I18N
     strcpy(uimsg, "Tera Term: Error");
     get_lang_msg("MSG_TT_ERROR", uimsg, ts.UILanguageFile);
     strcpy(ts.UIMsg, "Can't use IME");

@@ -7,13 +7,13 @@
 // CPrnAbortDlg dialog
 class CPrnAbortDlg : public CDialog
 {
-#ifdef I18N
+#ifndef NO_I18N
 private:
 	HFONT DlgFont;
 #endif
 
 public:
-#ifdef I18N
+#ifndef NO_I18N
 	BOOL Create(CWnd* p_Parent, PBOOL AbortFlag, PTTSet pts);
 #else
 	BOOL Create(CWnd* p_Parent, PBOOL AbortFlag);

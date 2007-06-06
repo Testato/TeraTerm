@@ -480,7 +480,7 @@ void ZInit
   (PFileVar fv, PZVar zv, PComVar cv, PTTSet ts)
 {
   int Max;
-#ifdef I18N
+#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
 #endif
 
@@ -497,14 +497,14 @@ void ZInit
     zv->ZMode = IdZReceive;
   }
 
-#ifdef I18N
+#ifndef NO_I18N
   strcpy(fv->DlgCaption,"Tera Term: ");
 #else
   strcpy(fv->DlgCaption,"Tera Term: ZMODEM ");
 #endif
   switch (zv->ZMode) {
     case IdZSend:
-#ifdef I18N
+#ifndef NO_I18N
       strcpy(uimsg, TitZSend);
       get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", uimsg, UILanguageFile);
       strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
@@ -513,7 +513,7 @@ void ZInit
 #endif
       break;
     case IdZReceive:
-#ifdef I18N
+#ifndef NO_I18N
       strcpy(uimsg, TitZRcv);
       get_lang_msg("FILEDLG_TRANS_TITLE_ZRCV", uimsg, UILanguageFile);
       strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);

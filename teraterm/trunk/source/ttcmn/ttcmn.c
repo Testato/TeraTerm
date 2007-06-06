@@ -530,7 +530,7 @@ void FAR PASCAL UnregWin(HWND HWin)
   if (pm->NWin>0) pm->NWin--;
 }
 
-#ifdef I18N
+#ifndef NO_I18N
 void FAR PASCAL SetWinMenu(HMENU menu, PCHAR buf, PCHAR langFile)
 #else
 void FAR PASCAL SetWinMenu(HMENU menu)
@@ -567,7 +567,7 @@ void FAR PASCAL SetWinMenu(HMENU menu)
     else
       UnregWin(Hw);
   }
-#ifdef I18N
+#ifndef NO_I18N
   strcpy(buf, "&Window");
   get_lang_msg("MENU_WINDOW_WINDOW", buf, langFile);
   AppendMenu(menu,MF_ENABLED | MF_STRING,ID_WINDOW_1+9, buf);
@@ -1464,6 +1464,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2007/03/05 08:39:48  maya
+ * DetectComPorts を ttpcmn.dll のエクスポート関数に変更した。
+ *
  * Revision 1.7  2007/02/18 11:37:39  maya
  * ttpmacro.exe から起動すると ttermpro.exe で teraterm.ini が読み込まれない不具合を修正した。
  *   ttermpro.exe 以外の実行ファイル(exe) から ttpcmn.dll を使用するとこの問題が発生する。

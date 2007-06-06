@@ -11,7 +11,7 @@ class CTEKWindow : public CFrameWnd
 {
 private:
   TTEKVar tk;
-#ifdef I18N
+#ifndef NO_I18N
   HMENU MainMenu, EditMenu, WinMenu,
     FileMenu, SetupMenu, HelpMenu;
 #else

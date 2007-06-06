@@ -4,7 +4,7 @@
 
 /* TTFILE.DLL, routines for file transfer protocol */
 
-#ifdef I18N
+#ifndef NO_I18N
 extern char UILanguageFile[MAX_PATH];
 #endif
 
