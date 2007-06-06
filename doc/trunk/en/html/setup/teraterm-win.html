@@ -314,26 +314,39 @@ WindowMenu=on
 To specify the detailed settings for Eterm lookfeel window, edit the [Tera Term] section of the setup file like the following:
 </p>
 
-<pre>
-; Use AlphaBlend API (On / Off)
-BGUseAlphaBlendAPI = On
-
-; Susie plugin path
-BGSPIPath = plugin
-
-; Fast window sizing/moving
-BGFastSizeMove = On
-
-; Flickerless window moving
-BGFlickerlessMove = On
-
-; If HideTitle = on and BGNoFrame = on,use window without frame
-; you can resize window with Alt + Shift + LeftDrag
-BGNoFrame = On
-
-; wildcard => random select
-BGThemeFile = theme\*.ini
-</pre>
+<table>
+  <tr>
+    <th>BGSPIPath</th>
+    <td>On / Off</td>
+    <td>Susie plugin path</td>
+  </tr>
+  <tr>
+    <th>BGFastSizeMove</th>
+    <td>folder name</td>
+    <td>Fast window sizing/moving</td>
+  </tr>
+  <tr>
+    <th>BGFlickerlessMove</th>
+    <td>On / Off</td>
+    <td>Flickerless window moving</td>
+  </tr>
+  <tr>
+    <th>BGUseAlphaBlendAPI</th>
+    <td>On / Off</td>
+    <td>Use AlphaBlend API (On / Off)</td>
+  </tr>
+  <tr>
+    <th>BGNoFrame</th>
+    <td>On / Off</td>
+    <td>If HideTitle = on and BGNoFrame = on,use window without frame
+        you can resize window with Alt + Shift + LeftDrag</td>
+  </tr>
+  <tr>
+    <th>BGThemeFile</th>
+    <td>file name</td>
+    <td>wildcard => random select</td>
+  </tr>
+</table>
 
 <pre>
 Default:
@@ -344,6 +357,56 @@ BGFlickerlessMove = On
 BGNoFrame = Off
 BGThemeFile = theme\*.ini
 </pre>
+
+<h2>Config of theme file</h2>
+
+<table>
+  <tr>
+    <th>BGReverseTextTone</th>
+    <td>0 - 255</td>
+    <td></td>
+  </tr>
+  <tr>
+    <th>BGPictureFile</th>
+    <td>file name</td>
+    <td></td>
+  </tr>
+  <tr>
+    <th>BGPicturePattern</th>
+    <td>Stretch<br>
+        Tile<br>
+        Center<br>
+        FitWidth<br>
+        FitHeight<br>
+        AutoFit</td>
+    <td></td>
+  </tr>
+  <tr>
+    <th>BGPictureBaseColor</th>
+    <td>R, G, B</td>
+    <td></td>
+  </tr>
+  <tr>
+    <th>BGPictureTone</th>
+    <td>0 - 255</td>
+    <td></td>
+  </tr>
+  <tr>
+    <th>BGFadeTone</th>
+    <td>0 - 255</td>
+    <td></td>
+  </tr>
+  <tr>
+    <th>BGFadeColor</th>
+    <td>R, G, B</td>
+    <td></td>
+  </tr>
+  <tr>
+    <th>VTFore, Red ...</th>
+    <td>R, G, B</td>
+    <td></td>
+  </tr>
+</table>
 
 
 </BODY>

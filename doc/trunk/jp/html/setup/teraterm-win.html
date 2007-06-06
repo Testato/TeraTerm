@@ -331,26 +331,40 @@ WindowMenu=on
 Eterm風半透明ウィンドウの詳細設定をします。
 </p>
 
-<pre>
-; Use AlphaBlend API (On / Off)
-BGUseAlphaBlendAPI = On
-
-; Susie plugin path
-BGSPIPath = plugin
-
-; Fast window sizing/moving
-BGFastSizeMove = On
-
-; Flickerless window moving
-BGFlickerlessMove = On
-
-; If HideTitle = on and BGNoFrame = on,use window without frame
-; you can resize window with Alt + Shift + LeftDrag
-BGNoFrame = On
-
-; wildcard => random select
-BGThemeFile = theme\*.ini
-</pre>
+<table>
+  <tr>
+    <th>BGSPIPath</th>
+    <td>On / Off</td>
+    <td>画像を読み込むのに用いる、Susie Plugin が格納されているフォルダを指定します。</td>
+  </tr>
+  <tr>
+    <th>BGFastSizeMove</th>
+    <td>フォルダ名</td>
+    <td>ウィンドウの移動、サイズ変更を高速に行います。Windows が「ドラッグ中にウィンドウの内容を表示する」場合に有効です。</td>
+  </tr>
+  <tr>
+    <th>BGFlickerlessMove</th>
+    <td>On / Off</td>
+    <td>ウィンドウが移動した際のちらつきを抑えます。</td>
+  </tr>
+  <tr>
+    <th>BGUseAlphaBlendAPI</th>
+    <td>On / Off</td>
+    <td>Off にすると、API の AlphaBlend を使いません。デバッグ用です。</td>
+  </tr>
+  <tr>
+    <th>BGNoFrame</th>
+    <td>On / Off</td>
+    <td>On にすると、HideTitle = On の時、全く枠の無いウィンドウになります。<br>
+        この時、Alt + Shift + 左ドラッグでウィンドウサイズを変更できます。</td>
+  </tr>
+  <tr>
+    <th>BGThemeFile</th>
+    <td>ファイル名</td>
+    <td>テーマファイルを指定します。<br>
+        ファイル名にワイルドカードが指定された場合、一致するファイルからランダムに一つ選びます。</td>
+  </tr>
+</table>
 
 <pre>
 省略時:
@@ -361,6 +375,62 @@ BGFlickerlessMove = On
 BGNoFrame = Off
 BGThemeFile = theme\*.ini
 </pre>
+
+<h2>テーマファイル内の設定</h2>
+
+<table>
+  <tr>
+    <th>BGReverseTextTone</th>
+    <td>0 - 255</td>
+    <td>反転テキストの透明度</td>
+  </tr>
+  <tr>
+    <th>BGPictureFile</th>
+    <td>ファイル名</td>
+    <td>壁紙と合成する画像ファイル名を指定します。<br>
+        ファイル名にワイルドカードが指定された場合、一致するファイルからランダムに一つ選びます。<br>
+        相対パスを利用する場合は、テーマファイルからの相対パスを指定してください。<br>
+        読み込めるファイルの種類は、BGSPIPath に格納されたプラグインによります。<br>
+        ビットマップはプラグインが無くても読み込めます。</td>
+  </tr>
+  <tr>
+    <th>BGPicturePattern</th>
+    <td>Stretch<br>
+        Tile<br>
+        Center<br>
+        FitWidth<br>
+        FitHeight<br>
+        AutoFit</td>
+    <td>画像ファイルの描画方法を指定します。<br>
+        FitWidth、FitHeight は画像のアスペクト比を維持したまま、画像を拡大縮小します。<br>
+        AutoFit は、ウィンドウと画像の間に隙間ができないように、FitWidth と FitHeight を切り替えます。</td>
+  </tr>
+  <tr>
+    <th>BGPictureBaseColor</th>
+    <td>R, G, B</td>
+    <td>画像とウィンドウの間に隙間ができた場合、この色で塗られます。</td>
+  </tr>
+  <tr>
+    <th>BGPictureTone</th>
+    <td>0 - 255</td>
+    <td>画像ファイルの透明度</td>
+  </tr>
+  <tr>
+    <th>BGFadeTone</th>
+    <td>0 - 255</td>
+    <td>背景全体をフェードします。</td>
+  </tr>
+  <tr>
+    <th>BGFadeColor</th>
+    <td>R, G, B</td>
+    <td>フェードしたときの色を指定します。</td>
+  </tr>
+  <tr>
+    <th>VTFore や Red など</th>
+    <td>R, G, B</td>
+    <td>テキストの色を設定します。</td>
+  </tr>
+</table>
 
 
 </BODY>
