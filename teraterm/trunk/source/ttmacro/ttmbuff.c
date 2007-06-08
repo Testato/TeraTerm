@@ -89,6 +89,7 @@ int IsUpdateMacroCommand(void)
 BOOL LoadMacroFile(PCHAR FileName, int IBuff)
 {
   int F;
+  int dummy_read = 0;
 
   if ((FileName[0]==0) || (IBuff>MAXNESTLEVEL-1)) return FALSE;
   if (BuffHandle[IBuff]!=0) return FALSE;
@@ -96,7 +97,14 @@ BOOL LoadMacroFile(PCHAR FileName, int IBuff)
 
   // get file length
   BuffLen[IBuff] = GetFSize(FileName);
-  if (BuffLen[IBuff]==0) return FALSE;
+#if 1
+  // includeで指定されたマクロファイルが空の場合にエラーにはしない。(2007.6.8 yutaka)
+  if (BuffLen[IBuff]==0) {
+   	  // GlobalLock()の引数がゼロだと NULL が返ってくるので、ダミーで空白を入れる。
+	  BuffLen[IBuff] = 2;
+	  dummy_read = 1;
+  }
+#endif
   if (BuffLen[IBuff]>MAXBUFFLEN) return FALSE;
 
   F = _lopen(FileName,0);
@@ -108,6 +116,10 @@ BOOL LoadMacroFile(PCHAR FileName, int IBuff)
     if (Buff[IBuff]!=NULL)
     {
       _lread(F, Buff[IBuff], BuffLen[IBuff]);
+	  if (dummy_read == 1) {
+		  Buff[IBuff][0] = ' ';
+		  Buff[IBuff][1] = '\0';
+	  }
       _lclose(F);
       GlobalUnlock(BuffHandle[IBuff]);
       return TRUE;
