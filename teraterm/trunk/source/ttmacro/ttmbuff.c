@@ -170,9 +170,12 @@ BOOL GetRawLine()
 		// ただし、マクロがいきなり終了するのでダイアログを表示するようにしたほうが
 		// いいかもしれない。
 		// (2007.6.6 yutaka)
-		if (i >= MaxStrLen)
-			return 0;
-		LineBuff[i] = b;
+		// バッファサイズに収まる範囲でコピーする。
+		// break するとあふれた分が次の行として扱われるので break しない。
+		// (2007.6.9 maya)
+		if (i < MaxLineLen-1) {
+			LineBuff[i] = b;
+		}
 		i++;
 		BuffPtr[INest]++;
 		if (BuffPtr[INest]<BuffLen[INest])

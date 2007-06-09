@@ -183,6 +183,7 @@
 
 #define MaxNameLen (LONG)32
 #define MaxStrLen (LONG)256
+#define MaxLineLen (LONG)501
 
 typedef char TName[MaxNameLen];
 typedef TName far *PName;
@@ -221,7 +222,7 @@ PCHAR StrVarPtr(WORD VarId);
 void GetVarType(LPWORD ValType, int far *Val, LPWORD Err);
 
 extern WORD TTLStatus;
-extern TStrVal LineBuff;
+extern char LineBuff[MaxLineLen];
 extern WORD LinePtr;
 extern WORD LineLen;
 

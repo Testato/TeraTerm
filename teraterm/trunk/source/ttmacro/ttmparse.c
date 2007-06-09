@@ -11,7 +11,7 @@
 
 
 WORD TTLStatus = 0;
-TStrVal LineBuff;
+char LineBuff[MaxLineLen]; // 行バッファのサイズを拡張した。(2007.6.9 maya)
 WORD LinePtr;
 WORD LineLen;
 
