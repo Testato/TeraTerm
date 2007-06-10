@@ -71,9 +71,13 @@
 //                  changed the priority of config files
 //   Written by NAGATA Shinya. (maya.negeta@gmail.com)
 //
+/////////////////////////////////////////////////////////////////////////////
+// patch level 12 - add SOCKET_TIMEOUT setting.
+//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
+//
 
 static char Program[] = "CygTerm+";
-static char Version[] = "version 1.07_11 (2007/01/31)";
+static char Version[] = "version 1.07_12 (2007/06/10)";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -110,6 +114,10 @@ char cmd_shell[128] = "";
 // TCP port for connection to another terminal application
 //--------------------------------------------------------
 int cl_port = 0;
+
+// telnet socket timeout
+//----------------------
+int telsock_timeout = 5;	// timeout 5 sec
 
 // dumb terminal flag
 //-------------------
@@ -244,6 +252,10 @@ void parse_cfg_line(char *buf)
         if (strchr("YyTt", *val) != NULL || atoi(val) > 0) {
             enable_loginshell = true;
         }
+    }
+    else if (!strcasecmp(name, "SOCKET_TIMEOUT")) {
+	// telnet socket timeout
+	telsock_timeout = atoi(val);
     }
 
     return;
@@ -476,7 +488,7 @@ int accept_telnet(int lsock)
     FD_ZERO(&rbits);
     FD_SET(lsock, &rbits);
     struct timeval tm;
-    tm.tv_sec = 5; // timeout 5 sec
+    tm.tv_sec = telsock_timeout;
     tm.tv_usec = 0;
     if (select(FD_SETSIZE, &rbits, 0, 0, &tm) <= 0) {
         return -1;
