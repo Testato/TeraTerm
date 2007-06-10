@@ -3243,27 +3243,29 @@ static void doSelectFolder(HWND hWnd, char *path, int pathlen)
 
 static void split_buffer(char *buffer, int delimiter, char **head, char **body)
 {
-	char *p = buffer;
+	char *p1, *p2;
 
 	*head = *body = NULL;
 
-	while (*p) {
-		if (isspace(*p)) {
-			*p = '\0'; 
-			*head = buffer;
-		}
-		if (*p == delimiter) {
-			p++;
-			break;
-		}
-		p++;
+	if (!isalnum(*buffer) || (p1 = strchr(buffer, delimiter)) == NULL) {
+		return;
 	}
 
-	// skip space
-	while (*p && isspace(*p)) 
-		p++;
+	*head = buffer;
 
-	*body = p;
+	p2 = buffer;
+	while (p2 < p1 && !isspace(*p2)) {
+		p2++;
+	}
+
+	*p2 = '\0';
+
+	p1++;
+	while (*p1 && isspace(*p1)) {
+		p1++;
+	}
+
+	*body = p1;
 }
 
 
@@ -3272,7 +3274,8 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 {
 	HWND hWnd;
 	char *cfgfile = "cygterm.cfg"; // CygTerm configuration file
-	FILE *fp;
+	char *tmpfile = "cygterm.tmp";
+	FILE *fp, *tmp_fp;
 	typedef struct cygterm {
 		char term[128];
 		char term_type[80];
@@ -3360,33 +3363,33 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					if (head == NULL || body == NULL)
 						continue;
 
-					if (strcmp(head, "TERM") == 0) {
+					if (_stricmp(head, "TERM") == 0) {
 						_snprintf(settings.term, sizeof(settings.term), "%s", body);
 
-					} else if (strcmp(head, "TERM_TYPE") == 0) {
+					} else if (_stricmp(head, "TERM_TYPE") == 0) {
 						_snprintf(settings.term_type, sizeof(settings.term_type), "%s", body);
 
-					} else if (strcmp(head, "PORT_START") == 0) {
+					} else if (_stricmp(head, "PORT_START") == 0) {
 						_snprintf(settings.port_start, sizeof(settings.port_start), "%s", body);
 
-					} else if (strcmp(head, "PORT_RANGE") == 0) {
+					} else if (_stricmp(head, "PORT_RANGE") == 0) {
 						_snprintf(settings.port_range, sizeof(settings.port_range), "%s", body);
 
-					} else if (strcmp(head, "SHELL") == 0) {
+					} else if (_stricmp(head, "SHELL") == 0) {
 						_snprintf(settings.shell, sizeof(settings.shell), "%s", body);
 
-					} else if (strcmp(head, "ENV_1") == 0) {
+					} else if (_stricmp(head, "ENV_1") == 0) {
 						_snprintf(settings.env1, sizeof(settings.env1), "%s", body);
 
-					} else if (strcmp(head, "ENV_2") == 0) {
+					} else if (_stricmp(head, "ENV_2") == 0) {
 						_snprintf(settings.env2, sizeof(settings.env2), "%s", body);
 
-					} else if (strcmp(head, "LOGIN_SHELL") == 0) {
+					} else if (_stricmp(head, "LOGIN_SHELL") == 0) {
 						if (strchr("YyTt", *body)) {
 							settings.login_shell = TRUE;
 						}
 
-					} else if (strcmp(head, "HOME_CHDIR") == 0) {
+					} else if (_stricmp(head, "HOME_CHDIR") == 0) {
 						if (strchr("YyTt", *body)) {
 							settings.home_chdir = TRUE;
 						}
@@ -3418,7 +3421,7 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
 			}
 
-			// (4)Cygwin install path
+			// Cygwin install path
 			hWnd = GetDlgItem(hDlgWnd, IDC_CYGWIN_PATH);
 			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.CygwinDirectory);
 
@@ -3432,7 +3435,7 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 				case IDC_SELECT_FILE | (BN_CLICKED << 16):
 					// Cygwin install ディレクトリの選択ダイアログ
 					doSelectFolder(hDlgWnd, ts.CygwinDirectory, sizeof(ts.CygwinDirectory));
-					// (4)Cygwin install path
+					// Cygwin install path
 					hWnd = GetDlgItem(hDlgWnd, IDC_CYGWIN_PATH);
 					SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.CygwinDirectory);
 					return TRUE;
@@ -3461,9 +3464,9 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 						settings.home_chdir = FALSE;
 					}
 
-					// ファイルを新規作成しているので、コメントなどは消去される。
-					fp = fopen(cfgfile, "w");
-					if (fp == NULL) { 
+					fp = fopen(cfgfile, "r");
+					tmp_fp = fopen(tmpfile, "w");
+					if (tmp_fp == NULL) { 
 #ifndef NO_I18N
 						char uimsg[MAX_UIMSG];
 						strcpy(uimsg, "ERROR");
@@ -3477,21 +3480,123 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 						MessageBox(hDlgWnd, buf, "ERROR", MB_ICONEXCLAMATION);
 #endif
 					} else {
-						fputs("# CygTerm setting\n", fp);
-						fputs("\n", fp);
-						fprintf(fp, "TERM = %s\n", settings.term);
-						fprintf(fp, "TERM_TYPE = %s\n", settings.term_type);
-						fprintf(fp, "PORT_START = %s\n", settings.port_start);
-						fprintf(fp, "PORT_RANGE = %s\n", settings.port_range);
-						fprintf(fp, "SHELL = %s\n", settings.shell);
-						fprintf(fp, "ENV_1 = %s\n", settings.env1);
-						fprintf(fp, "ENV_2 = %s\n", settings.env2);
-						fprintf(fp, "LOGIN_SHELL = %s\n", (settings.login_shell == TRUE) ? "yes" : "no");
-						fprintf(fp, "HOME_CHDIR = %s\n", (settings.home_chdir == TRUE) ? "yes" : "no");
-						fclose(fp);
+						if (fp != NULL) {
+							while (fgets(buf, sizeof(buf), fp) != NULL) {
+								int len = strlen(buf);
+
+								if (buf[len - 1] == '\n')
+									buf[len - 1] = '\0';
+
+								split_buffer(buf, '=', &head, &body);
+								if (head == NULL || body == NULL) {
+									fprintf(tmp_fp, "%s\n", buf);
+								}
+								else if (_stricmp(head, "TERM") == 0) {
+									fprintf(tmp_fp, "TERM = %s\n", settings.term);
+									settings.term[0] = '\0';
+								}
+								else if (_stricmp(head, "TERM_TYPE") == 0) {
+									fprintf(tmp_fp, "TERM_TYPE = %s\n", settings.term_type);
+									settings.term_type[0] = '\0';
+								}
+								else if (_stricmp(head, "PORT_START") == 0) {
+									fprintf(tmp_fp, "PORT_START = %s\n", settings.port_start);
+									settings.port_start[0] = '\0';
+								}
+								else if (_stricmp(head, "PORT_RANGE") == 0) {
+									fprintf(tmp_fp, "PORT_RANGE = %s\n", settings.port_range);
+									settings.port_range[0] = '\0';
+								}
+								else if (_stricmp(head, "SHELL") == 0) {
+									fprintf(tmp_fp, "SHELL = %s\n", settings.shell);
+									settings.shell[0] = '\0';
+								}
+								else if (_stricmp(head, "ENV_1") == 0) {
+									fprintf(tmp_fp, "ENV_1 = %s\n", settings.env1);
+									settings.env1[0] = '\0';
+								}
+								else if (_stricmp(head, "ENV_2") == 0) {
+									fprintf(tmp_fp, "ENV_2 = %s\n", settings.env2);
+									settings.env2[0] = '\0';
+								}
+								else if (_stricmp(head, "LOGIN_SHELL") == 0) {
+									fprintf(tmp_fp, "LOGIN_SHELL = %s\n", (settings.login_shell == TRUE) ? "yes" : "no");
+									settings.login_shell = FALSE;
+								}
+								else if (_stricmp(head, "HOME_CHDIR") == 0) {
+									fprintf(tmp_fp, "HOME_CHDIR = %s\n", (settings.home_chdir == TRUE) ? "yes" : "no");
+									settings.home_chdir = FALSE;
+								}
+								else {
+									fprintf(tmp_fp, "%s = %s\n", head, body);
+								}
+							}
+							fclose(fp);
+						}
+						else {
+							fputs("# CygTerm setting\n", tmp_fp);
+							fputs("\n", tmp_fp);
+						}
+						if (settings.term[0] != '\0') {
+							fprintf(tmp_fp, "TERM = %s\n", settings.term);
+						}
+						if (settings.term_type[0] != '\0') {
+							fprintf(tmp_fp, "TERM_TYPE = %s\n", settings.term_type);
+						}
+						if (settings.port_start[0] != '\0') {
+							fprintf(tmp_fp, "PORT_START = %s\n", settings.port_start);
+						}
+						if (settings.port_range[0] != '\0') {
+							fprintf(tmp_fp, "PORT_RANGE = %s\n", settings.port_range);
+						}
+						if (settings.shell[0] != '\0') {
+							fprintf(tmp_fp, "SHELL = %s\n", settings.shell);
+						}
+						if (settings.env1[0] != '\0') {
+							fprintf(tmp_fp, "ENV_1 = %s\n", settings.env1);
+						}
+						if (settings.env2[0] != '\0') {
+							fprintf(tmp_fp, "ENV_2 = %s\n", settings.env2);
+						}
+						if (settings.login_shell) {
+							fprintf(tmp_fp, "LOGIN_SHELL = yes\n");
+						}
+						if (settings.home_chdir) {
+							fprintf(tmp_fp, "HOME_CHDIR = yes\n");
+						}
+						fclose(tmp_fp);
+
+						if (remove(cfgfile) != 0) {
+#ifndef NO_I18N
+							char uimsg[MAX_UIMSG];
+							strcpy(uimsg, "ERROR");
+							get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
+							strcpy(ts.UIMsg, "Can't remove old CygTerm configuration file (%d).");
+							get_lang_msg("MSG_CYGTERM_CONF_REMOVEFILE_ERROR", ts.UIMsg, ts.UILanguageFile);
+							_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+							MessageBox(hDlgWnd, buf, uimsg, MB_ICONEXCLAMATION);
+#else
+							_snprintf(buf, sizeof(buf), "Can't remove old CygTerm configuration file (%d).", GetLastError());
+							MessageBox(hDlgWnd, buf, "ERROR", MB_ICONEXCLAMATION);
+#endif
+						}
+						else if (rename(tmpfile, cfgfile) != 0) {
+#ifndef NO_I18N
+							char uimsg[MAX_UIMSG];
+							strcpy(uimsg, "ERROR");
+							get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
+							strcpy(ts.UIMsg, "Can't rename CygTerm configuration file (%d).");
+							get_lang_msg("MSG_CYGTERM_CONF_RENAMEFILE_ERROR", ts.UIMsg, ts.UILanguageFile);
+							_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+							MessageBox(hDlgWnd, buf, uimsg, MB_ICONEXCLAMATION);
+#else
+							_snprintf(buf, sizeof(buf), "Can't rename CygTerm configuration file (%d).", GetLastError());
+							MessageBox(hDlgWnd, buf, "ERROR", MB_ICONEXCLAMATION);
+#endif
+						}
 					}
 
-					// (4)
+					// Cygwin install path
 					hWnd = GetDlgItem(hDlgWnd, IDC_CYGWIN_PATH);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.CygwinDirectory), (LPARAM)ts.CygwinDirectory);
 
@@ -4944,6 +5049,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.67  2007/06/06 14:02:53  maya
+ * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
+ *
  * Revision 1.66  2007/05/31 14:39:05  maya
  * 接続時に自動的にログ採取を開始できるようにした。
  *
