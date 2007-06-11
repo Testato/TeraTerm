@@ -163,6 +163,7 @@ BOOL GetRawLine()
 		b = (Buff[INest])[BuffPtr[INest]];
 
 	i = 0;
+	memset(LineBuff, 0, sizeof(LineBuff));
 	while ((BuffPtr[INest]<BuffLen[INest]) &&
 		((b>=0x20) || (b==0x09)))
 	{
@@ -181,7 +182,6 @@ BOOL GetRawLine()
 		if (BuffPtr[INest]<BuffLen[INest])
 			b = (Buff[INest])[BuffPtr[INest]];
 	}
-	LineBuff[i] = 0;
 	LinePtr = 0;
 	LineLen = strlen(LineBuff);
 
