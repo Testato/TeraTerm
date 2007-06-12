@@ -302,6 +302,7 @@ CVTWindow::CVTWindow()
   DWORD ExStyle;
 #endif
   char Temp[MAXPATHLEN];
+  char *Param;
   int CmdShow;
   PKeyMap tempkm;
 #ifndef TERATERM32
@@ -363,7 +364,9 @@ CVTWindow::CVTWindow()
 
   /* Parse command line parameters*/
 #ifdef TERATERM32
-  strcpy(Temp,GetCommandLine());
+  // 256バイト以上のコマンドラインパラメータ指定があると、BOF(Buffer Over Flow)で
+  // 落ちるバグを修正。(2007.6.12 maya)
+  Param = GetCommandLine();
 #else
   strcpy(Temp,"teraterm ");
   i = (int)*(LPBYTE)MAKELP(GetCurrentPDB(),0x80);
@@ -371,7 +374,7 @@ CVTWindow::CVTWindow()
   Temp[9+i] = 0;
 #endif
   if (LoadTTSET())
-    (*ParseParam)(Temp, &ts, &(TopicName[0]));
+    (*ParseParam)(Param, &ts, &(TopicName[0]));
   FreeTTSET();
 
   // duplicate sessionの指定があるなら、共有メモリからコピーする (2004.12.7 yutaka)
@@ -5049,6 +5052,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.68  2007/06/10 16:39:31  doda
+ * cygterm.cfgを保存する時に、元からあったコメントを残すようにした。
+ *
  * Revision 1.67  2007/06/06 14:02:53  maya
  * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
  *

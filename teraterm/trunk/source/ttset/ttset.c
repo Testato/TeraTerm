@@ -2223,7 +2223,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
     else if ( _strnicmp(Temp,"/D=",3)==0 )
     {
       if (DDETopic != NULL)
-	strcpy(DDETopic,&Temp[3]);
+	strcpy_s(DDETopic,sizeof(DDETopic),&Temp[3]);
     }
     // TCPLocalEcho/TCPCRSend を無効にする (maya 2007.4.25)
     else if ( _strnicmp(Temp,"/E",2)==0 )
@@ -2238,7 +2238,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 	ConvFName(ts->HomeDir,Temp2,".INI",Temp);
 	if (_stricmp(ts->SetupFName,Temp)!=0)
 	{
-	  strcpy(ts->SetupFName,Temp);
+	  strcpy_s(ts->SetupFName,sizeof(ts->SetupFName),Temp);
 	  ReadIniFile(ts->SetupFName,ts);
 	}
       }
@@ -2250,7 +2250,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
       {
 	_getcwd(TempDir,sizeof(TempDir));
 	if (_chdir(Temp2) == 0)
-	  strcpy(ts->FileDir,Temp2);
+	  strcpy_s(ts->FileDir,sizeof(ts->FileDir),Temp2);
 	_chdir(TempDir);
       }
     }
@@ -2390,7 +2390,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 	ParamTCP = c;
       else {
 	ParamPort = IdTCPIP;
-	strcpy(ts->HostName,Temp); /* host name */
+	strcpy_s(ts->HostName,sizeof(ts->HostName),Temp); /* host name */
 	HostNameFlag = TRUE;
       }
     }
@@ -2496,6 +2496,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.33  2007/06/06 14:06:01  maya
+ * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
+ *
  * Revision 1.32  2007/06/04 15:44:19  maya
  * ファイル送信ダイアログでファイル名フィルタをかけられるようにした。
  *
