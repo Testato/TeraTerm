@@ -2169,7 +2169,7 @@ static void ParseHostName(char *HostStr, WORD *port)
 void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 {
   int i, pos, c;
-#ifndef INET6
+#ifdef NO_INET6
   BYTE b;
 #endif /* NO_INET6 */
   char Temp[MAXPATHLEN+3];
@@ -2496,6 +2496,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.34  2007/06/12 14:45:45  maya
+ * 256バイト以上のコマンドラインパラメータ指定があると、BOF(Buffer Over Flow)で
+ * 落ちるバグを修正。
+ *
  * Revision 1.33  2007/06/06 14:06:01  maya
  * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
  *
