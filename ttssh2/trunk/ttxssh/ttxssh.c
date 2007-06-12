@@ -3642,7 +3642,7 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 {
 	char tmpFile[MAX_PATH];
 	char tmpPath[1024];
-	char buf[1024];
+	char *buf;
 	int i;
 	GET_VAR();
 
@@ -3653,24 +3653,26 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 	}
 
 	if (i < cmdlen) {
-		strncpy(buf, cmd + i, sizeof(buf));
+		buf = malloc(cmdlen+1);
+		strncpy(buf, cmd + i, cmdlen);
+		buf[cmdlen] = 0;
 		cmd[i] = 0;
 
 		write_ssh_options(pvar, tmpFile, &pvar->settings, FALSE);
 
-		strncat(cmd, " /ssh-consume=", cmdlen);
+		strncat(cmd, " /ssh-consume=", cmdlen-1-strlen(cmd));
 		strncat(cmd, tmpFile, cmdlen);
 
-		strncat(cmd, buf, cmdlen);
+		strncat(cmd, buf, cmdlen-1-strlen(cmd));
 
 		if (pvar->hostdlg_Enabled) {
-			strncat(cmd, " /ssh", cmdlen);
+			strncat(cmd, " /ssh", cmdlen-1-strlen(cmd));
 
 			// add option of SSH protcol version (2004.10.11 yutaka)
 			if (pvar->settings.ssh_protocol_version == 2) {
-				strncat(cmd, " /2", cmdlen);
+				strncat(cmd, " /2", cmdlen-1-strlen(cmd));
 			} else {
-				strncat(cmd, " /1", cmdlen);
+				strncat(cmd, " /1", cmdlen-1-strlen(cmd));
 			}
 
 		}
@@ -3683,7 +3685,7 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 			// 自動ログインの場合は下記フラグが0のため、必要なコマンドを付加する。
 			if (!pvar->hostdlg_Enabled) {
 				_snprintf(tmp, sizeof(tmp), " /ssh /%d", pvar->settings.ssh_protocol_version);
-				strncat(cmd, tmp, cmdlen);
+				strncat(cmd, tmp, cmdlen-1-strlen(cmd));
 			}
 
 			// パスワードを覚えている場合のみ、コマンドラインに渡す。(2006.8.3 yutaka)
@@ -3691,17 +3693,17 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 				pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) {
 				replace_blank_to_mark(pvar->auth_state.cur_cred.password, mark, sizeof(mark));
 				_snprintf(tmp, sizeof(tmp), " /auth=password /user=%s /passwd=%s", pvar->auth_state.user, mark);
-				strncat(cmd, tmp, cmdlen);
+				strncat(cmd, tmp, cmdlen-1-strlen(cmd));
 
 			} else if (pvar->settings.remember_password &&
 						pvar->auth_state.cur_cred.method == SSH_AUTH_RSA) {
 				replace_blank_to_mark(pvar->auth_state.cur_cred.password, mark, sizeof(mark));
 				_snprintf(tmp, sizeof(tmp), " /auth=publickey /user=%s /passwd=%s", pvar->auth_state.user, mark);
-				strncat(cmd, tmp, cmdlen);
+				strncat(cmd, tmp, cmdlen-1-strlen(cmd));
 
 				replace_blank_to_mark(pvar->session_settings.DefaultRSAPrivateKeyFile, mark, sizeof(mark));
 				_snprintf(tmp, sizeof(tmp), " /keyfile=%s", mark);
-				strncat(cmd, tmp, cmdlen);
+				strncat(cmd, tmp, cmdlen-1-strlen(cmd));
 
 			} else if (pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
 				// keyboard-interactive認証の場合は何もしない。
@@ -3712,7 +3714,7 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 			}
 
 		}
-
+		free(buf);
 	}
 }
 
@@ -3861,6 +3863,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.61  2007/06/06 14:10:12  maya
+ * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
+ *
  * Revision 1.60  2007/04/24 16:33:36  maya
  * TCPLocalEcho/TCPCRSend を無効にするオプションを追加した。
  *
