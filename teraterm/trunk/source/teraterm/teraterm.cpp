@@ -159,7 +159,15 @@ BOOL CTeraApp::OnIdle(LONG lCount)
 		}
 
 		/* Receiver */
-		CommReceive(&cv);
+		if (DDELog && cv.DCount >0) {
+			// ログバッファがまだDDEクライアントへ送られていない場合は、
+			// TCPパケットの受信を行わない。
+			// 連続して受信を行うと、ログバッファがラウンドロビンにより未送信のデータを
+			// 上書きしてしまう可能性がある。(2007.6.14 yutaka)
+
+		} else {
+			CommReceive(&cv);
+		}
 
 	}
 
