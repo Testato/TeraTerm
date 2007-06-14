@@ -2223,7 +2223,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
     else if ( _strnicmp(Temp,"/D=",3)==0 )
     {
       if (DDETopic != NULL)
-	strcpy_s(DDETopic,sizeof(DDETopic),&Temp[3]);
+		strcpy_s(DDETopic,20,&Temp[3]);  // 20 = sizeof(TopicName) - 1
     }
     // TCPLocalEcho/TCPCRSend を無効にする (maya 2007.4.25)
     else if ( _strnicmp(Temp,"/E",2)==0 )
@@ -2496,6 +2496,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.35  2007/06/12 14:47:48  maya
+ * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
+ *
  * Revision 1.34  2007/06/12 14:45:45  maya
  * 256バイト以上のコマンドラインパラメータ指定があると、BOF(Buffer Over Flow)で
  * 落ちるバグを修正。
