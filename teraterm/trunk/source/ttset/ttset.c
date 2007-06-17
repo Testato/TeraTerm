@@ -2223,7 +2223,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
     else if ( _strnicmp(Temp,"/D=",3)==0 )
     {
       if (DDETopic != NULL)
-		strcpy_s(DDETopic,20,&Temp[3]);  // 20 = sizeof(TopicName) - 1
+		strncpy_s(DDETopic,21,&Temp[3],_TRUNCATE);  // 20 = sizeof(TopicName) - 1
     }
     // TCPLocalEcho/TCPCRSend を無効にする (maya 2007.4.25)
     else if ( _strnicmp(Temp,"/E",2)==0 )
@@ -2238,7 +2238,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 	ConvFName(ts->HomeDir,Temp2,".INI",Temp);
 	if (_stricmp(ts->SetupFName,Temp)!=0)
 	{
-	  strcpy_s(ts->SetupFName,sizeof(ts->SetupFName),Temp);
+	  strncpy_s(ts->SetupFName,sizeof(ts->SetupFName),Temp,_TRUNCATE);
 	  ReadIniFile(ts->SetupFName,ts);
 	}
       }
@@ -2250,7 +2250,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
       {
 	_getcwd(TempDir,sizeof(TempDir));
 	if (_chdir(Temp2) == 0)
-	  strcpy_s(ts->FileDir,sizeof(ts->FileDir),Temp2);
+	  strncpy_s(ts->FileDir,sizeof(ts->FileDir),Temp2,_TRUNCATE);
 	_chdir(TempDir);
       }
     }
@@ -2390,7 +2390,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 	ParamTCP = c;
       else {
 	ParamPort = IdTCPIP;
-	strcpy_s(ts->HostName,sizeof(ts->HostName),Temp); /* host name */
+	strncpy_s(ts->HostName,sizeof(ts->HostName),Temp,_TRUNCATE); /* host name */
 	HostNameFlag = TRUE;
       }
     }
@@ -2496,6 +2496,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.36  2007/06/14 11:55:42  yutakapon
+ * fix buffer miss length
+ *
  * Revision 1.35  2007/06/12 14:47:48  maya
  * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
  *

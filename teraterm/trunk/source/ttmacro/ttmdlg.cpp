@@ -115,7 +115,7 @@ void ParseParam(PBOOL IOption, PBOOL VOption)
   while (NextParam(Param, &i, Temp, sizeof(Temp)))
   {
     if (_strnicmp(Temp,"/D=",3)==0) // DDE option
-      strcpy_s(TopicName, sizeof(TopicName), &Temp[3]);  // BOFëŒçÙ
+      strncpy_s(TopicName, sizeof(TopicName), &Temp[3], _TRUNCATE);  // BOFëŒçÙ
     else if (_strnicmp(Temp,"/I",2)==0)
       *IOption = TRUE;
     else if (_strnicmp(Temp,"/S",2)==0)
