@@ -9,35 +9,43 @@
 </HEAD>
 <BODY>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">statusbox</FONT><BR><BR>
-</div>
+<h1>statusbox</h1>
 
 Format:
 <UL>
 <B>statusbox &lt;message&gt; &lt;title&gt;</B>
 </UL>
-<P></P>
 
-Displays the status dialog box if it has not been displayed yet.
+<p>
+Displays the status dialog box if it has not been displayed yet.<br>
 Changes the message to &lt;message&gt; and title to &lt;title&gt;.
-<P></P>
+</p>
 
+<p>
 The "<A HREF="setdlgpos.html">setdlgpos</A>" command changes the position of status
 dialog box.<BR>
 The "<A HREF="closebox.html">closesbox</A>" command closes the status dialog box.
-<P></P>
+</p>
+
+<p>
+Following strings in &lt;message&gt; is treated as spacial character.
+</p>
+
+<pre>
+\\    "\"
+\n    line feed
+\t    tab
+</pre>
 
 <pre>
 Example:
-  setdlgpos 200 200		Set the initial position.
-  statusbox 'Message' 'Title'	Display the status dialog box.
+  setdlgpos 200 200            Set the initial position.
+  statusbox 'Message' 'Title'  Display the status dialog box.
   pause 3	
-  setdlgpos 0 0			Move the dialog box.
+  setdlgpos 0 0                Move the dialog box.
   pause 3	
-  closesbox			Close the dialog box.
+  closesbox                    Close the dialog box.
 </pre>
 
 </BODY>
 </HTML>
-

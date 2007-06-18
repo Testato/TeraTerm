@@ -9,18 +9,26 @@
 </HEAD>
 <BODY>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">messagebox</FONT><BR><BR>
-</div>
+<h1>messagebox</h1>
 
 Format:
 <UL>
 <B>messagebox &lt;message&gt; &lt;title&gt;</B>
 </UL>
-<P></P>
 
+<p>
 Displays a dialog box with &lt;message&gt; and &lt;title&gt;.
-<P></P>
+</p>
+
+<p>
+Following strings in &lt;message&gt; is treated as spacial character.
+</p>
+
+<pre>
+\\    "\"
+\n    line feed
+\t    tab
+</pre>
 
 <pre>
 Example:
@@ -29,4 +37,3 @@ Example:
 
 </BODY>
 </HTML>
-

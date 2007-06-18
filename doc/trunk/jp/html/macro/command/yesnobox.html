@@ -4,38 +4,40 @@
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 <TITLE>yesnobox</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../../style.css" type="text/css">
 </HEAD>
 <BODY>
 
-
-<FONT SIZE="+2">yesnobox</FONT><BR><BR>
+<h1>yesnobox</h1>
 
 形式：
 <UL>
-<B>
-yesnobox &lt;message&gt; &lt;title&gt;
-</B>
+<B>yesnobox &lt;message&gt; &lt;title&gt;</B>
 </UL>
 
+<p>
+Dalog boxを開き、ユーザーに「はい」/「いいえ」を選択させる。<br>
+文字列 &lt;message&gt; はダイアログボックスに表示されるメッセージ、文字列 &lt;title&gt; はダイアログボックスのタイトル。
+「はい」ボタンが押された場合、システム変数 resultに1が格納される。「いいえ」ボタンが押された場合、result に0が格納される。
+</p>
+
+<p>
+&lt;message&gt; に含まれる以下の文字列は、特殊文字と扱われます。
+</p>
+
 <pre>
-
-Dialog boxを開き。ユーザーに「はい」/「いいえ」を選択させる。
-文字列 &lt;message&gt; はダイアログボックスに表示されるメッセージ、
-文字列 &lt;title&gt; はダイアログボックスのタイトル。
-
-「はい」ボタンが押された場合、システム変数 resultに1が格納される。
-「いいえ」ボタンが押された場合、result に0が格納される。
-
-</pre><P></P>
+\\    "\"
+\n    改行
+\t    タブ
+</pre>
 
 <pre>
-
-例：<B>
+例：
      yesnobox 'もう一回やりますか?' 'Tera Term'
      if result goto retry
      end
+</pre>
 
-</B></pre>
 </BODY>
 </HTML>

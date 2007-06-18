@@ -4,42 +4,47 @@
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 <TITLE>statusbox</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../../style.css" type="text/css">
 </HEAD>
 <BODY>
 
-
-<FONT SIZE="+2">statusbox</FONT><BR><BR>
+<h1>statusbox</h1>
 
 形式：
 <UL>
-<B>
-statusbox &lt;message&gt; &lt;title&gt;
-</B>
+<B>statusbox &lt;message&gt; &lt;title&gt;</B>
 </UL>
 
-<pre>
-
-ステータスダイアログボックスが表示されていない場合、それを表示する。
+<p>
+ステータスダイアログボックスが表示されていない場合、それを表示する。<br>
 ダイアログボックスのメッセージを &lt;message&gt; に、タイトルを &lt;title&gt; に変える。
+</p>
 
-<A HREF="setdlgpos.html">"setdlgpos"</A> コマンドはステータスダイアログボックスの位置を変える。
+<p>
+<A HREF="setdlgpos.html">"setdlgpos"</A> コマンドはステータスダイアログボックスの位置を変える。<br>
 <A HREF="closesbox.html">"closesbox"</A> コマンドはステータスダイアログボックスを閉じる。
+</p>
 
-</pre><P></P>
+<p>
+&lt;message&gt; に含まれる以下の文字列は、特殊文字と扱われます。
+</p>
 
 <pre>
-
-例:
-    <B>setdlgpos 200 200</B>                                   表示位置を指定
-    <B>statusbox 'Message' 'Title'</B>                       ダイアログボックスを表示
-    <B>pause 3</B>
-    <B>setdlgpos 0 0</B>                                       ダイアログボックスを移動
-    <B>pause 3</B>
-    <B>closesbox</B>                                           ダイアログボックスを閉じる
-
+\\    "\"
+\n    改行
+\t    タブ
 </pre>
 
+<pre>
+例:
+    setdlgpos 200 200            表示位置を指定
+    statusbox 'Message' 'Title'  ダイアログボックスを表示
+    pause 3
+    setdlgpos 0 0                ダイアログボックスを移動
+    pause 3
+    closesbox                    ダイアログボックスを閉じる
+</pre>
 
 </BODY>
 </HTML>

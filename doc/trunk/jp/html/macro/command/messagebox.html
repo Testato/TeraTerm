@@ -4,32 +4,36 @@
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 <TITLE>messagebox</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../../style.css" type="text/css">
 </HEAD>
 <BODY>
 
-
-<FONT SIZE="+2">messagebox</FONT><BR><BR>
+<h1>messagebox</h1>
 
 形式：
 <UL>
-<B>
-messagebox &lt;message&gt; &lt;title&gt;
-</B>
+<B>messagebox &lt;message&gt; &lt;title&gt;</B>
 </UL>
 
+<p>
+ダイアログボックスを開き、ユーザーにメッセージを知らせる。文字列 &lt;message&gt; はダイアログボックスに表示されるメッセージ、文字列 &lt;title&gt; はダイアログボックスのタイトル。<br>
+</p>
+
+<p>
+&lt;message&gt; に含まれる以下の文字列は、特殊文字と扱われます。
+</p>
+
 <pre>
-
-ダイアログボックスを開き、ユーザーにメッセージを知らせる。文字列 &lt;message&gt; はダイアログボックスに表示される
-メッセージ、文字列 &lt;title&gt; はダイアログボックスのタイトル。
-
-</pre><P></P>
+\\    "\"
+\n    改行
+\t    タブ
+</pre>
 
 <pre>
-
 例：
      <B>messagebox ErrorMessage 'Error'</B>
-
 </pre>
+
 </BODY>
 </HTML>

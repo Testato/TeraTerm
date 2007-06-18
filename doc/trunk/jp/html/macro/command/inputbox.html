@@ -4,34 +4,38 @@
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 <TITLE>inputbox</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../../style.css" type="text/css">
 </HEAD>
 <BODY>
 
-
-<FONT SIZE="+2">inputbox</FONT><BR><BR>
+<h1>inputbox</h1>
 
 形式：
 <UL>
-<B>
-inputbox &lt;message&gt; &lt;title&gt;
-</B>
+<B>inputbox &lt;message&gt; &lt;title&gt;</B>
 </UL>
 
+<p>
+文字列を入力するためのダイアログボックスを開く。<br>
+文字列 &lt;message&gt; はダイアログボックスに表示されるメッセージ、文字列 &lt;title&gt; はダイアログボックスのタイトル。入力された文字列はシステム変数 inputstr に代入される。
+</p>
+
+<p>
+&lt;message&gt; に含まれる以下の文字列は、特殊文字と扱われます。
+</p>
+
 <pre>
-
-文字列を入力するためのダイアログボックスを開く。文字列 &lt;message&gt; はダイアログボックスに表示されるメッセージ、
-文字列 &lt;title&gt; はダイアログボックスのタイトル。入力された文字列はシステム変数 inputstr に代入される。
-
+\\    "\"
+\n    改行
+\t    タブ
 </pre>
 
 <pre>
-例：<B>
+例：
     inputbox 'Password:' 'Login'
     sendln inputstr
-
-</B></pre>
-
+</pre>
 
 </BODY>
 </HTML>
