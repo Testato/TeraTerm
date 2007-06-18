@@ -1,13 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
+<html>
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>CygTerm+ 設定ファイル</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
+<title>CygTerm+ 設定ファイル</TITLE>
+<meta http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../style.css" type="text/css">
-</HEAD>
-<BODY>
+</head>
+<body>
 
 <h1>CygTerm+ 設定ファイル</h1>
 
@@ -16,76 +16,92 @@ cygterm.cfg は設定ファイルです。 使用する端末エミュレータのコマンドラインや起動�
 cygterm.cfg は cygterm.exe と同じディレクトリにないといけません。
 </p>
 
-<pre>
+<p>
 cygterm.cfg の例
-+-----------------------------------------------------------------------
-| TERM = C:\program files\ttermpro\ttermpro.exe %s %d /KR=SJIS /KT=SJIS
-| TERM_TYPE = vt100
-| PORT_START = 20000
-| PORT_RANGE = 40
-| SHELL = /bin/bash
-| ENV_1 = MAKE_MODE=unix
-| ENV_2 = HOME=/home
-|   :         :
+</p>
+<pre>
+TERM = C:\program files\ttermpro\ttermpro.exe %s %d /KR=SJIS /KT=SJIS
+TERM_TYPE = vt100
+PORT_START = 20000
+PORT_RANGE = 40
+SHELL = /bin/bash
+ENV_1 = MAKE_MODE=unix
+ENV_2 = HOME=/home
+  :         :
 </pre>
 
-<pre>
-TERM
-----
+<dl>
+  <dt>TERM</dt>
+  <dd>
     ターミナル・エミュレータの起動コマンドラインです。
     コマンド名は Windows環境でパスが通ってなければフルパスで書きます。
     ホスト指定のところは %s とし、ポート指定のところは %d とします。
+  </dd>
 
-TERM_TYPE
----------
+  <dt>TERM_TYPE</dt>
+  <dd>
     ターミナル・エミュレータがターミナルタイプを与えてくれなかった
-    場合に採用するターミナルタイプです。 (デフォルト:vt100)
+    場合に採用するターミナルタイプです。 (デフォルト: vt100)<br>
     シェル上、環境変数 TERM にセットされます。
+  </dd>
 
-PORT_START
-----------
-    使い始める (使ってよい最小の) ポート番号です。 (デフォルト:20000)
+  <dt>PORT_START</dt>
+  <dd>
+    使い始める (使ってよい最小の) ポート番号です。 (デフォルト: 20000)
+  </dd>
 
-PORT_RANGE
-----------
-    使ってよいポート番号の個数です。 (デフォルト:40)
+  <dt>PORT_RANGE</dt>
+  <dd>
+    使ってよいポート番号の個数です。 (デフォルト: 40)<br>
 
     PORT_START ～ PORT_START+PORT_RANGE の範囲で空きポートを探します。
     この数だけ同時実行できることになります。
+  </dd>
 
-SHELL
------
+  <dt>SHELL</dt>
+  <dd>
     Cygwin側シェル (通常 /bin/bash) の起動コマンドラインです。
     (デフォルト: /etc/passwdの情報を使用)
     コマンド名のフルパスか、"AUTO"を指定します。
+  </dd>
 
-ENV_X
------
+  <dt>ENV_X</dt>
+  <dd>
     シェル起動時に設定しておきたい環境変数です。「変数名=値」の形式
     (putenv形式) で記述します。 ENV_ で始めればいくつでも記述できます。
+  </dd>
 
-LOGIN_SHELL
------------
+  <dt>LOGIN_SHELL</dt>
+  <dd>
     シェルをログインシェルとして起動するかどうかを指定します。
-    デフォルトは無効です。
+    デフォルトは無効です。<br>
 
     一般的なシェルではログインシェルとして起動されると、.profileや
     .loginなどのログイン時のみ読み込むスタートアップファイルを実行
     します。
     これらのファイルでは、通常、以下のような事が行われます。
-    ・PATHやUSER等の各種環境変数の設定を行う
-    ・端末の設定を適切に行う
-    ・カレントディレクトリをユーザのホームディレクトリに変更する。
+    <ul>
+      <li>PATHやUSER等の各種環境変数の設定を行う</li>
+      <li>端末の設定を適切に行う</li>
+      <li>カレントディレクトリをユーザのホームディレクトリに変更する。</li>
+    </ul>
 
     一部のシェル(tclshなど)やシェル以外のプログラムを起動する場合は
     効果がありません。
+  </dd>
 
-HOME_CHDIR
-----------
+  <dt>HOME_CHDIR</dt>
+  <dd>
     patch level 01 に含まれる"ホームディレクトリへの移動"を機能させるか
     どうかを指定します。デフォルトは無効です。
-</pre>
+  </dd>
 
+  <dt>SOCKET_TIMEOUT</dt>
+  <dd>
+    TeraTermからのtelnet接続を待ち受けるソケットのタイムアウトを指定します。
+    (デフォルト: 5秒)
+  </dd>
+</dl>
 
-</BODY>
-</HTML>
+</body>
+</html>
