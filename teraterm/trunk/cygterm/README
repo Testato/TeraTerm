@@ -143,9 +143,19 @@
 
     LOGIN_SHELL
     -----------
+        If this parameter is set to yes, shell is invoked as a login shell.
+	(default: no)
 
     HOME_CHDIR
     ----------
+	If this paramete is set to yes, current directory is changed to home
+	directory before invoke a shell. (default: no)
+
+    SOCKET_TIMEOUT
+    --------------
+        Specify the timeout of socket for waiting telnet connection from
+        TeraTerm. (default: 5secs)
+
 
     ENV_X
     -----
@@ -236,6 +246,9 @@
                 zsh 4.1.1
 
 // C H A N G E S //
+v1.07_12 2007/06/10 (by sue@iwmt.org)
+	* Add 'SOCKET_TIMEOUT' entry which the timeout value of socket for waiting telnet connection in cygterm.cfg file.
+
 v1.07_11 2007/01/31 (import from cygterm v1.07)
         * Avoid WinMainCRTStartup() redefinition error with gcc 3.4.
         * Give an output gap for keyboard interrupt.
