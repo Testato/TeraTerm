@@ -332,6 +332,11 @@ void LineFeed(BYTE b, BOOL logFlag)
 
 void Tab()
 {
+  if (Wrap) {
+      CarriageReturn(FALSE);
+      LineFeed(LF,FALSE);
+      Wrap = FALSE;
+  }
   MoveToNextTab();
   if (cv.HLogBuf!=0) Log1Byte(HT);
 }
@@ -2647,6 +2652,11 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2007/01/21 15:18:41  yutakapon
+ * Terminal setupƒ_ƒCƒAƒƒO‚Ì New-line ‚Ì Receive ‚É "LF" ‚ğ’Ç‰Á‚µ‚½B
+ * óM‚Ì‰üsƒR[ƒh‚ª LF ‚Ìê‡‚ÍAƒT[ƒo‚©‚ç LF ‚Ì‚İ‚ª‘—‚ç‚ê‚Ä‚­‚é‚Æ
+ * ‰¼’è‚µACR+LF‚Æ‚µ‚Äˆµ‚¤‚æ‚¤‚É‚·‚éB
+ *
  * Revision 1.13  2007/01/19 16:53:14  doda
  * EnableContinuedLineCopy$B$,M-8z$N;~!"2hLL1&C<$G$N2~9T$,%m%0$K5-O?$5$l$J$$%P%0$r=$@5$7$?!#(B
  *
