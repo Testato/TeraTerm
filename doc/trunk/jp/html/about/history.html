@@ -24,13 +24,14 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.53">2007.6.8 (Ver 4.53 未リリース)</a>
+  <li class="history"><a name="teraterm_4.53">2007.6.26 (Ver 4.53 未リリース)</a>
     <ul>
       <li>デフォルトログファイル名中の &h を、接続中のホスト名に変換する機能を追加した。</li>
       <li>ヘルプのオーナーが常にデスクトップになるように変更した。</li>
       <li>タイムスタンプ付きログで1KBごとに不要な改行が入るバグを修正。Gentaro氏に感謝します。</li>
       <li>ttpmacro.exeに256バイト以上のコマンドラインパラメータ指定があると、BOF(Buffer Over Flow)で落ちるバグを修正した。</li>
       <li>マクロファイルに 256 バイトを越える長い行があると、BOF(Buffer Over Flow)で落ちるバグを修正した。</li>
+      <li>マクロ実行中に、サーバからの受信データをマクロへDDE送信しないことがある問題への対処を追加した。</li>
       <li>標準のログ保存先を指定できるようにした。
         <ul>
           <li>teraterm.ini に LogDefaultPath エントリを追加した。</li>
