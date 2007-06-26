@@ -2461,6 +2461,9 @@ void SetTabStop()
 void MoveToNextTab()
 {
   int i;
+  BOOL WrapState;
+
+  WrapState = Wrap;
 
   if (NTabStops>0)
   {
@@ -2475,6 +2478,8 @@ void MoveToNextTab()
   }
   else
     MoveCursor(NumOfColumns-1,CursorY);
+
+  Wrap = WrapState;
 }
 
 void ClearTabStop(int Ps)
@@ -2565,6 +2570,9 @@ void ShowStatusLine(int Show)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2007/02/25 14:16:33  maya
+ * 終端が2バイトの場合に、ダブルクリック選択が次の行に続かないバグを修正した。
+ *
  * Revision 1.6  2007/02/25 13:17:39  maya
  * ダブルクリックされた単語が行を越えていた場合、EnableContinuedLineCopy が有効なら続けて選択されるようにした。
  *

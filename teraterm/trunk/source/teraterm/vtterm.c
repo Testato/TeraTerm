@@ -332,11 +332,6 @@ void LineFeed(BYTE b, BOOL logFlag)
 
 void Tab()
 {
-  if (Wrap) {
-      CarriageReturn(FALSE);
-      LineFeed(LF,FALSE);
-      Wrap = FALSE;
-  }
   MoveToNextTab();
   if (cv.HLogBuf!=0) Log1Byte(HT);
 }
@@ -2652,13 +2647,17 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  2007/06/25 16:18:11  doda
+ * s––‚Éƒ^ƒu‚ª—ˆ‚½ê‡‚É‰üs‚µ‚È‚¢–â‘è‚É‘Î‚·‚éb’è‘ÎˆB
+ * ‚Ü‚¾“®ì‚ª‚¨‚©‚µ‚¢•”•ª‚ª‚ ‚é‚Ì‚ÅA‚à‚¤­‚µ‘Îˆ‚ª•K—vB
+ *
  * Revision 1.14  2007/01/21 15:18:41  yutakapon
  * Terminal setupƒ_ƒCƒAƒƒO‚Ì New-line ‚Ì Receive ‚É "LF" ‚ğ’Ç‰Á‚µ‚½B
  * óM‚Ì‰üsƒR[ƒh‚ª LF ‚Ìê‡‚ÍAƒT[ƒo‚©‚ç LF ‚Ì‚İ‚ª‘—‚ç‚ê‚Ä‚­‚é‚Æ
  * ‰¼’è‚µACR+LF‚Æ‚µ‚Äˆµ‚¤‚æ‚¤‚É‚·‚éB
  *
  * Revision 1.13  2007/01/19 16:53:14  doda
- * EnableContinuedLineCopy$B$,M-8z$N;~!"2hLL1&C<$G$N2~9T$,%m%0$K5-O?$5$l$J$$%P%0$r=$@5$7$?!#(B
+ * EnableContinuedLineCopy‚ª—LŒø‚ÌA‰æ–Ê‰E’[‚Å‚Ì‰üs‚ªƒƒO‚É‹L˜^‚³‚ê‚È‚¢ƒoƒO‚ğC³‚µ‚½B
  *
  * Revision 1.12  2006/06/29 16:25:36  yutakakn
  * UTF-8‚Ì2ƒoƒCƒg•¶š‚Ì’¼Œã‚É1ƒoƒCƒg•¶š(ASCII)‚ª—ˆ‚éê‡A•¶š‰»‚¯‚Æ‚È‚Á‚Ä‚¢‚½ƒoƒO‚ğC³‚µ‚½B
