@@ -235,8 +235,15 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   /* CR Receive */
   GetPrivateProfileString(Section,"CRReceive","",
 			  Temp,sizeof(Temp),FName);
-  if ( _stricmp(Temp,"CRLF")==0 ) ts->CRReceive = IdCRLF;
-			    else ts->CRReceive = IdCR;
+  if ( _stricmp(Temp,"CRLF")==0 ) {
+    ts->CRReceive = IdCRLF;
+  }
+  else if (_stricmp(Temp,"LF")==0) {
+    ts->CRReceive = IdLF;
+  }
+  else {
+    ts->CRReceive = IdCR;
+  }
   /* CR Send */
   GetPrivateProfileString(Section,"CRSend","",
 			  Temp,sizeof(Temp),FName);
@@ -1077,8 +1084,15 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
   WriteOnOff(Section,"AutoWinResize",FName,ts->AutoWinResize);
 
   /* CR Receive */
-  if ( ts->CRReceive == IdCRLF ) strcpy(Temp,"CRLF");
-			    else strcpy(Temp,"CR");
+  if ( ts->CRReceive == IdCRLF ) {
+    strcpy(Temp,"CRLF");
+  }
+  else if ( ts->CRReceive == IdLF ) {
+    strcpy(Temp,"LF");
+  }
+  else {
+    strcpy(Temp,"CR");
+  }
   WritePrivateProfileString(Section,"CRReceive",Temp,FName);
 
   /* CR Send */
@@ -2496,6 +2510,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.37  2007/06/17 14:45:03  maya
+ * 切り捨てられた場合に例外が発生するため、strcpy_s を strncpy_s に置き換えた。
+ *
  * Revision 1.36  2007/06/14 11:55:42  yutakapon
  * fix buffer miss length
  *
