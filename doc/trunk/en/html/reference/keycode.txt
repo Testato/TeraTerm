@@ -248,6 +248,20 @@ Since some combinations (such as Alt+key) are used as shortcut keys of
 Tera Term and Windows, they don't have PC key codes and can't be specified
 in the keyboard setup file.
 
+[NOTE]
+You can specify `Alt+key' combination when Alt key uses meta key. Check `Meta key' under Keyboard of Setup menu. The key code can be obtained by KEYCODE.EXE, unfortunately the key code of `Alt+key' combination can not be obtained. Also, you obtain the key code and add 2048 on the value.
+
+For example, the `V' key code is 47, also `Alt+V' key code is 2095.
+
+; Shift + Insert
+EditPaste=850
+
+If you change above entry to `EditPaste=2095', you can paste by using `Alt+V' on condition that Meta key is pass through.
+
+You add in the following entry to [User keys] section in KEYBOARD.CNF if you wan to paster by using `Alt+V' remaining `Shift+Insert' function.
+
+User1=2095,3,50230
+
 ...............................................................................
 3.4 Q & A
 
