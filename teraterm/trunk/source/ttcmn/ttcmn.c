@@ -1429,7 +1429,7 @@ BOOL WINAPI DllMain(HANDLE hInstance,
       hInst = hInstance;
       HMap = CreateFileMapping(
 	(HANDLE) 0xFFFFFFFF, NULL, PAGE_READWRITE,
-	0, sizeof(TMap), "ttset_memfilemap");
+	0, sizeof(TMap), TT_FILEMAPNAME);
       if (HMap == NULL) return FALSE;
       FirstInstance = (GetLastError() != ERROR_ALREADY_EXISTS);
 
@@ -1464,6 +1464,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2007/06/06 14:03:41  maya
+ * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
+ *
  * Revision 1.8  2007/03/05 08:39:48  maya
  * DetectComPorts を ttpcmn.dll のエクスポート関数に変更した。
  *

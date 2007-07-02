@@ -750,3 +750,5 @@ typedef struct {
   WORD ComFlag;
 } TMap;  
 typedef TMap far *PMap;
+
+#define TT_FILEMAPNAME "ttset_memfilemap_2"

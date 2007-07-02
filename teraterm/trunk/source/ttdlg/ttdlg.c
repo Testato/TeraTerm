@@ -2953,7 +2953,7 @@ BOOL WINAPI DllMain(HANDLE hInstance,
 #ifndef NO_I18N
       HMap = CreateFileMapping(
         (HANDLE) 0xFFFFFFFF, NULL, PAGE_READONLY,
-        0, sizeof(TMap), "ttset_memfilemap");
+        0, sizeof(TMap), TT_FILEMAPNAME);
       if (HMap != NULL) {
         pm = (PMap)MapViewOfFile(
         HMap,FILE_MAP_READ,0,0,0);
@@ -2987,6 +2987,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.22  2007/06/06 14:04:03  maya
+ * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
+ *
  * Revision 1.21  2007/04/16 15:29:46  maya
  * 変更後のフォントサイズを取得するように変更した。
  *
