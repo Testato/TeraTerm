@@ -2458,7 +2458,7 @@ void SetTabStop()
   }
 }
 
-void MoveToNextTab()
+void MoveToNextTab(BOOL AutoWrapMode)
 {
   int i;
   BOOL WrapState;
@@ -2473,8 +2473,11 @@ void MoveToNextTab()
     while ((TabStops[i]<=CursorX) && (i<NTabStops-1));
     if (TabStops[i]>CursorX)
       MoveCursor(TabStops[i],CursorY);
-    else
+    else {
       MoveCursor(NumOfColumns-1,CursorY);
+      Wrap = AutoWrapMode;
+      return;
+    }
   }
   else
     MoveCursor(NumOfColumns-1,CursorY);
@@ -2570,6 +2573,9 @@ void ShowStatusLine(int Show)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2007/06/26 05:16:49  doda
+ * 行末のタブの処理をPuTTY/xtermにあわせた。
+ *
  * Revision 1.7  2007/02/25 14:16:33  maya
  * 終端が2バイトの場合に、ダブルクリック選択が次の行に続かないバグを修正した。
  *

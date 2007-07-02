@@ -332,7 +332,14 @@ void LineFeed(BYTE b, BOOL logFlag)
 
 void Tab()
 {
-  MoveToNextTab();
+#ifndef VT_COMPAT_TAB
+  if (Wrap) {
+      CarriageReturn(FALSE);
+      LineFeed(LF,FALSE);
+      Wrap = FALSE;
+  }
+#endif /* VT_COMPAT_TAB */
+  MoveToNextTab(AutoWrapMode);
   if (cv.HLogBuf!=0) Log1Byte(HT);
 }
 
@@ -2647,6 +2654,9 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  2007/06/26 05:16:49  doda
+ * 行末のタブの処理をPuTTY/xtermにあわせた。
+ *
  * Revision 1.15  2007/06/25 16:18:11  doda
  * 行末にタブが来た場合に改行しない問題に対する暫定対処。
  * まだ動作がおかしい部分があるので、もう少し対処が必要。

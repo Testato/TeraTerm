@@ -53,7 +53,7 @@ void BuffChangeTerminalSize(int Nx, int Ny);
 void ChangeWin();
 void ClearBuffer();
 void SetTabStop();
-void MoveToNextTab();
+void MoveToNextTab(BOOL AutoWrapMode);
 void ClearTabStop(int Ps);
 void ShowStatusLine(int Show);
 
