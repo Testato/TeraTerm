@@ -2475,8 +2475,10 @@ void MoveToNextTab(BOOL AutoWrapMode)
       MoveCursor(TabStops[i],CursorY);
     else {
       MoveCursor(NumOfColumns-1,CursorY);
+#ifndef VT_COMPAT_TAB
       Wrap = AutoWrapMode;
       return;
+#endif
     }
   }
   else
@@ -2573,6 +2575,9 @@ void ShowStatusLine(int Show)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2007/07/02 09:31:34  doda
+ * タブでウインドウ右端を越えた時に、改行するようにした。
+ *
  * Revision 1.8  2007/06/26 05:16:49  doda
  * 行末のタブの処理をPuTTY/xtermにあわせた。
  *
