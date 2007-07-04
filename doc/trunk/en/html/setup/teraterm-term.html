@@ -152,5 +152,22 @@ MaxBuffSize=10000
 </pre>
 
 
+<h1><a name="vttab">Displaying tab at end of line like VT terminal</a></h1>
+
+<p>
+If you set 'on', the behavior of tab at end-of-line is the same as VT/PuTTY/xterm. The tab doesn't cause automatic linefeed.<br>
+If you set 'off', the behavior of tab at end-of-line is the same as FreeBSD console(syscons). The tab causes automatic linefeed. (it is not compatible with VT)
+</p>
+
+<pre>
+VTCompatTab=on
+</pre>
+
+<pre>
+Default:
+VTCompatTab=off
+</pre>
+
+
 </BODY>
 </HTML>

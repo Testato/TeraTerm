@@ -27,11 +27,6 @@
   <li class="history"><a name="teraterm_4.53">2007.6.26 (Ver 4.53 未リリース)</a>
     <ul>
       <li>デフォルトログファイル名中の &h を、接続中のホスト名に変換する機能を追加した。</li>
-      <li>ヘルプのオーナーが常にデスクトップになるように変更した。</li>
-      <li>タイムスタンプ付きログで1KBごとに不要な改行が入るバグを修正。Gentaro氏に感謝します。</li>
-      <li>ttpmacro.exeに256バイト以上のコマンドラインパラメータ指定があると、BOF(Buffer Over Flow)で落ちるバグを修正した。</li>
-      <li>マクロファイルに 256 バイトを越える長い行があると、BOF(Buffer Over Flow)で落ちるバグを修正した。</li>
-      <li>マクロ実行中に、サーバからの受信データをマクロへDDE送信しないことがある問題への対処を追加した。</li>
       <li>標準のログ保存先を指定できるようにした。
         <ul>
           <li>teraterm.ini に LogDefaultPath エントリを追加した。</li>
@@ -40,15 +35,25 @@
       <li>接続時に自動的にログ採取を開始できるようにした。
         <ul>
           <li>teraterm.ini に LogAutoStart エントリを追加した。</li>
-          <li>Additional Settings タブにエディットコントロールを追加した。</li>
+          <li>Additional Settings タブにチェックボックスを追加した。</li>
         </ul></li>
       <li>ファイル送信ダイアログでファイル名フィルタをかけられるようにした。
         <ul>
           <li>teraterm.ini に FileSendFilter エントリを追加した。</li>
         </ul></li>
-      <li>マクロコマンド var2clipb で、不正にメモリを解放していた問題を修正した。</li>
+      <li>行末のタブを次の行に自動改行するようにした。
+        <ul>
+          <li>teraterm.ini に VTCompatTab エントリを追加した。</li>
+        </ul></li>
+      <li>ヘルプのオーナーが常にデスクトップになるように変更した。</li>
       <li>空のマクロファイルを include してもエラーとしないようにした。</li>
       <li>cygterm.cfg を保存する時、コメントや未知の設定も残すようにした。</li>
+      <li>タイムスタンプ付きログで1KBごとに不要な改行が入るバグを修正。Gentaro氏に感謝します。</li>
+      <li>ttpmacro.exeに256バイト以上のコマンドラインパラメータ指定があると、BOF(Buffer Over Flow)で落ちるバグを修正した。</li>
+      <li>マクロファイルに 256 バイトを越える長い行があると、BOF(Buffer Over Flow)で落ちるバグを修正した。</li>
+      <li>マクロ実行中に、サーバからの受信データをマクロへDDE送信しないことがある問題への対処を追加した。</li>
+      <li>マクロコマンド var2clipb で、不正にメモリを解放していた問題を修正した。</li>
+      <li>teraterm.ini の CRReceive に "LF" が保存・読み込みできない問題を修正した。</li>
       <li><a href="#kanjimenu_0.1.2.1">TTX KanjiMenu Plugin 0.1.2.1</a>(ttxkanjimenu.dll)を追加した。原直(Hara Sunao)氏に感謝します。</li>
     </ul>
   </li>

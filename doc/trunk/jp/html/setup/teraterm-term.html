@@ -212,12 +212,29 @@ TEKGINMouseCode=32
 </p>
 
 <pre>
-MaxBuffSize=500000
+VTCompatTab=500000
 </pre>
 
 <pre>
 省略時:
 MaxBuffSize=10000
+</pre>
+
+
+<h1><a name="vttab">行末のタブ表示を VT 端末互換にする</a></h1>
+
+<p>
+on の場合には、行末のタブの動作は VT/PuTTY/xterm 等と同じになります。タブによる自動改行は発生しません。<br>
+off の場合には、行末のタブの動作は FreeBSD のコンソール (syscons) 等と同じになります。タブによる自動改行が発生します(VT非互換)。
+</p>
+
+<pre>
+VTCompatTab=on
+</pre>
+
+<pre>
+省略時:
+VTCompatTab=off
 </pre>
 
 
