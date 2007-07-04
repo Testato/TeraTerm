@@ -2475,10 +2475,10 @@ void MoveToNextTab(BOOL AutoWrapMode)
       MoveCursor(TabStops[i],CursorY);
     else {
       MoveCursor(NumOfColumns-1,CursorY);
-#ifndef VT_COMPAT_TAB
-      Wrap = AutoWrapMode;
-      return;
-#endif
+      if (!ts.VTCompatTab) {
+        Wrap = AutoWrapMode;
+        return;
+      }
     }
   }
   else
@@ -2584,6 +2584,9 @@ void SetLineContinued()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2007/07/04 10:52:48  doda
+ * タブによって自動改行が発生した時に、行が継続していなかったのを修正した。
+ *
  * Revision 1.10  2007/07/02 11:35:27  doda
  * VT_COMPAT_TABをdefineする事によって、TABの動作をvt100に合わせられるようにした。
  *

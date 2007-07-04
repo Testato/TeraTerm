@@ -332,8 +332,7 @@ void LineFeed(BYTE b, BOOL logFlag)
 
 void Tab()
 {
-#ifndef VT_COMPAT_TAB
-  if (Wrap) {
+  if (Wrap && !ts.VTCompatTab) {
       CarriageReturn(FALSE);
       LineFeed(LF,FALSE);
 #ifndef NO_COPYLINE_FIX
@@ -343,7 +342,6 @@ void Tab()
 #endif /* NO_COPYLINE_FIX */
       Wrap = FALSE;
   }
-#endif /* VT_COMPAT_TAB */
   MoveToNextTab(AutoWrapMode);
   if (cv.HLogBuf!=0) Log1Byte(HT);
 }
@@ -2659,6 +2657,9 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  2007/07/04 10:52:48  doda
+ * タブによって自動改行が発生した時に、行が継続していなかったのを修正した。
+ *
  * Revision 1.17  2007/07/02 09:31:34  doda
  * タブでウインドウ右端を越えた時に、改行するようにした。
  *

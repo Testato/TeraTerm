@@ -891,6 +891,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   ts->TitleFormat =
     GetPrivateProfileInt(Section,"TitleFormat",5,FName);
 
+  /* VT Compatible Tab -- special option */
+  ts->VTCompatTab = GetOnOff(Section,"VTCompatTab",FName,FALSE);
+
   /* VT Font space --- special option */
   GetPrivateProfileString(Section,"VTFontSpace","0,0,0,0",
 			  Temp,sizeof(Temp),FName);
@@ -1609,6 +1612,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* Title format -- special option */
   WriteUint(Section,"TitleFormat",FName,ts->TitleFormat);
+
+  /* VT Compatible Tab -- special option */
+  WriteOnOff(Section,"VTCompatTab",FName,ts->VTCompatTab);
 
   /* VT Font space --- special option */
   WriteInt4(Section,"VTFontSpace",FName,
@@ -2510,6 +2516,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.38  2007/06/26 06:32:40  maya
+ * teraterm.ini の CRReceive が LF をサポートしていなかったのを修正した。
+ *
  * Revision 1.37  2007/06/17 14:45:03  maya
  * 切り捨てられた場合に例外が発生するため、strcpy_s を strncpy_s に置き換えた。
  *
