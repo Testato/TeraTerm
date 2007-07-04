@@ -336,6 +336,11 @@ void Tab()
   if (Wrap) {
       CarriageReturn(FALSE);
       LineFeed(LF,FALSE);
+#ifndef NO_COPYLINE_FIX
+      if (ts.EnableContinuedLineCopy) {
+	SetLineContinued();
+      }
+#endif /* NO_COPYLINE_FIX */
       Wrap = FALSE;
   }
 #endif /* VT_COMPAT_TAB */
@@ -2654,6 +2659,9 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  2007/07/02 09:31:34  doda
+ * タブでウインドウ右端を越えた時に、改行するようにした。
+ *
  * Revision 1.16  2007/06/26 05:16:49  doda
  * 行末のタブの処理をPuTTY/xtermにあわせた。
  *

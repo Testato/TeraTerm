@@ -56,6 +56,9 @@ void SetTabStop();
 void MoveToNextTab(BOOL AutoWrapMode);
 void ClearTabStop(int Ps);
 void ShowStatusLine(int Show);
+#ifndef NO_COPYLINE_FIX
+void SetLineContinued();
+#endif /* NO_COPYLINE_FIX */
 
 extern int StatusLine;
 extern int CursorTop, CursorBottom;

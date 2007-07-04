@@ -2573,8 +2573,20 @@ void ShowStatusLine(int Show)
   MoveCursor(CursorX,CursorY);
 }
 
+#ifndef NO_COPYLINE_FIX
+void SetLineContinued()
+{
+    if (ts.EnableContinuedLineCopy) {
+	  AttrLine[0] = AttrLine[0] | AttrLineContinued;
+    }
+}
+#endif /* NO_COPYLINE_FIX */
+
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2007/07/02 11:35:27  doda
+ * VT_COMPAT_TABをdefineする事によって、TABの動作をvt100に合わせられるようにした。
+ *
  * Revision 1.9  2007/07/02 09:31:34  doda
  * タブでウインドウ右端を越えた時に、改行するようにした。
  *
