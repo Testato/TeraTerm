@@ -2481,8 +2481,13 @@ void MoveToNextTab(BOOL AutoWrapMode)
       }
     }
   }
-  else
+  else {
     MoveCursor(NumOfColumns-1,CursorY);
+    if (!ts.VTCompatTab) {
+      Wrap = AutoWrapMode;
+      return;
+    }
+  }
 
   Wrap = WrapState;
 }
@@ -2584,6 +2589,14 @@ void SetLineContinued()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2007/07/04 11:18:17  doda
+ * 行末のタブの動作を変えるパラメータ VTCompatTab を追加した。
+ *   VTCompatTab = on/off (デフォルト: off)
+ *     on:  行末のタブの動作をVT/PuTTY/xterm等と同じにする。
+ *          (タブによる自動改行は発生しない)
+ *     off: 行末のタブの動作をFreeBSDのコンソール(syscons)等と同じにする。
+ *          (タブによる自動改行が発生する -- VT非互換)
+ *
  * Revision 1.11  2007/07/04 10:52:48  doda
  * タブによって自動改行が発生した時に、行が継続していなかったのを修正した。
  *
