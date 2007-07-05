@@ -981,8 +981,6 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 
 		if (GetHNRec->PortType == IdFile)
 			GetHNRec->PortType = IdTCPIP;
-		CheckRadioButton(dlg, IDC_HOSTTCPIP, IDC_HOSTSERIAL,
-						 IDC_HOSTTCPIP + GetHNRec->PortType - 1);
 
 		strcpy(EntName, "Host");
 
@@ -1066,8 +1064,13 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 
 		if (j > 0)
 			SendDlgItemMessage(dlg, IDC_HOSTCOM, CB_SETCURSEL, w - 1, 0);
-		else					/* All com ports are already used */
+		else {					/* All com ports are already used */
 			GetHNRec->PortType = IdTCPIP;
+			enable_dlg_items(dlg, IDC_HOSTSERIAL, IDC_HOSTSERIAL, FALSE); 
+		}
+
+		CheckRadioButton(dlg, IDC_HOSTTCPIP, IDC_HOSTSERIAL,
+						 IDC_HOSTTCPIP + GetHNRec->PortType - 1);
 
 		if (GetHNRec->PortType == IdTCPIP) {
 			enable_dlg_items(dlg, IDC_HOSTCOMLABEL, IDC_HOSTCOM, FALSE);
@@ -1203,11 +1206,17 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 					memset(EntName, 0, sizeof(EntName));
 					GetDlgItemText(dlg, IDC_HOSTCOM, EntName,
 								   sizeof(EntName) - 1);
-					GetHNRec->ComPort = (BYTE) (EntName[3]) - 0x30;
-					if (strlen(EntName) > 4)
-						GetHNRec->ComPort =
-							GetHNRec->ComPort * 10 + (BYTE) (EntName[4]) -
-							0x30;
+					if (strncmp(EntName, "COM", 3) == 0 && EntName[3] != '\0') {
+						GetHNRec->ComPort = (BYTE) (EntName[3]) - 0x30;
+						if (strlen(EntName) > 4)
+							GetHNRec->ComPort =
+								GetHNRec->ComPort * 10 + (BYTE) (EntName[4]) -
+								0x30;
+						if (GetHNRec->ComPort > GetHNRec->MaxComPort)
+							GetHNRec->ComPort = 1;
+					} else {
+						GetHNRec->ComPort = 1;
+					}
 				}
 			}
 			EndDialog(dlg, 1);
@@ -3863,6 +3872,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.62  2007/06/12 14:55:20  maya
+ * BOF(Buffer Over Flow)‚ª”­¶‚·‚éˆ—‚ğC³B
+ *
  * Revision 1.61  2007/06/06 14:10:12  maya
  * ƒvƒŠƒvƒƒZƒbƒT‚É‚æ‚è\‘¢‘Ì‚ª•Ï‚í‚Á‚Ä‚µ‚Ü‚¤‚Ì‚ÅAINET6 ‚Æ I18N ‚Ì #define ‚ğ‹t“]‚³‚¹‚½B
  *
@@ -3876,8 +3888,7 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
  * DetectComPorts ‚ğ ttpcmn.dll ‚ÌƒGƒNƒXƒ|[ƒgŠÖ”‚É•ÏX‚µ‚½B
  *
  * Revision 1.57  2007/03/04 18:02:36  doda
- * New connection$B$*$h$S(BSerial port setup$B%@%$%"%m%0$G!"MxMQ2DG=$J%7%j%"%k%]!<%H$N$_(B>
- * $B$rI=<($9$k$h$&$K$7$?!#(B
+ * New connection‚¨‚æ‚ÑSerial port setupƒ_ƒCƒAƒƒO‚ÅA—˜—p‰Â”\‚ÈƒVƒŠƒAƒ‹ƒ|[ƒg‚Ì‚İ‚ğ•\¦‚·‚é‚æ‚¤‚É‚µ‚½B
  *
  * Revision 1.56  2007/01/31 13:15:08  maya
  * Œ¾Œêƒtƒ@ƒCƒ‹‚ª‚È‚¢‚Æ‚«‚É \0 ‚ª³‚µ‚­”F¯‚³‚ê‚È‚¢ƒoƒO‚ğC³‚µ‚½B
