@@ -4594,7 +4594,7 @@ void CVTWindow::OnSetupSerialPort()
   Ok = (*SetupSerialPort)(HVTWin, &ts);
   FreeTTDLG();
 
-  if (Ok)
+  if (Ok && ts.ComPort > 0)
   {
     if (cv.Open)
     {
@@ -5052,6 +5052,10 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.69  2007/06/12 14:45:23  maya
+ * 256バイト以上のコマンドラインパラメータ指定があると、BOF(Buffer Over Flow)で
+ * 落ちるバグを修正。
+ *
  * Revision 1.68  2007/06/10 16:39:31  doda
  * cygterm.cfgを保存する時に、元からあったコメントを残すようにした。
  *

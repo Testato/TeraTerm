@@ -1137,7 +1137,7 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       strcpy(Temp,"COM");
       w = 0;
 
-      if ((comports = DetectComPorts(ComPortTable, ts->MaxComPort)) >= 0) {
+      if ((comports = DetectComPorts(ComPortTable, ts->MaxComPort)) > 0) {
 	  for (i=0; i<comports; i++) {
 	      uint2str(ComPortTable[i], &Temp[3], 2);
 	      SendDlgItemMessage(Dialog, IDC_SERIALPORT, CB_ADDSTRING,
@@ -1146,6 +1146,9 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		  w = i;
 	      }
 	  }
+      } else if (comports == 0) {
+	  DisableDlgItem(Dialog, IDC_SERIALPORT, IDC_SERIALPORT);
+	  DisableDlgItem(Dialog, IDC_SERIALPORT_LABEL, IDC_SERIALPORT_LABEL);
       } else {
 	for (i=1; i<=ts->MaxComPort; i++) {
 	    uint2str(i,&Temp[3],2);
@@ -1180,7 +1183,11 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  {
 	    memset(Temp, 0, sizeof(Temp));
 	    GetDlgItemText(Dialog, IDC_SERIALPORT, Temp, sizeof(Temp)-1);
-	    ts->ComPort = (WORD)atoi(&Temp[3]);
+	    if (strncmp(Temp, "COM", 3) == 0 && Temp[3] != '\0') {
+	      ts->ComPort = (WORD)atoi(&Temp[3]);
+	    } else {
+	      ts->ComPort = 0;
+	    }
 
 	    ts->Baud = (WORD)GetCurSel(Dialog, IDC_SERIALBAUD);
 	    ts->DataBit = (WORD)GetCurSel(Dialog, IDC_SERIALDATA);
@@ -1593,7 +1600,6 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
       if ( GetHNRec->PortType==IdFile )
 	GetHNRec->PortType = IdTCPIP;
-      SetRB(Dialog,GetHNRec->PortType,IDC_HOSTTCPIP,IDC_HOSTSERIAL);
 
       strcpy(EntName,"Host");
 
@@ -1655,8 +1661,12 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       }
       if (j>0)
 	SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_SETCURSEL,w-1,0);
-      else /* All com ports are already used */
+      else { /* All com ports are already used */
 	GetHNRec->PortType = IdTCPIP;
+	DisableDlgItem(Dialog,IDC_HOSTSERIAL,IDC_HOSTSERIAL);
+      }
+
+      SetRB(Dialog,GetHNRec->PortType,IDC_HOSTTCPIP,IDC_HOSTSERIAL);
 
       if ( GetHNRec->PortType==IdTCPIP )
 	DisableDlgItem(Dialog,IDC_HOSTCOMLABEL,IDC_HOSTCOM);
@@ -1699,9 +1709,16 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 #endif /* NO_INET6 */
 	    memset(EntName,0,sizeof(EntName));
 	    GetDlgItemText(Dialog, IDC_HOSTCOM, EntName, sizeof(EntName)-1);
-	    GetHNRec->ComPort = (BYTE)(EntName[3])-0x30;
-	    if (strlen(EntName)>4)
-	      GetHNRec->ComPort = GetHNRec->ComPort*10 + (BYTE)(EntName[4])-0x30;
+	    if (strncmp(EntName, "COM", 3) == 0 && EntName[3] != '\0') {
+	      GetHNRec->ComPort = (BYTE)(EntName[3])-0x30;
+	      if (strlen(EntName)>4)
+		GetHNRec->ComPort = GetHNRec->ComPort*10 + (BYTE)(EntName[4])-0x30;
+	      if (GetHNRec->ComPort > GetHNRec->MaxComPort)
+		GetHNRec->ComPort = 1;
+	    }
+	    else {
+	      GetHNRec->ComPort = 1;
+	    }
 	  }
 	  EndDialog(Dialog, 1);
 #ifndef NO_I18N
@@ -2987,6 +3004,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.23  2007/07/02 10:50:43  doda
+ * 旧バージョンとの間では共有メモリによる設定の共有が出来ないため、
+ * ファイルマッピングオブジェクト名を変更した。
+ *
  * Revision 1.22  2007/06/06 14:04:03  maya
  * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
  *
