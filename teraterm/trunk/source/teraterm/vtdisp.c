@@ -1819,8 +1819,10 @@ void ResizeWindow(int x, int y, int w, int h, int cw, int ch)
   if (! AdjustSize) return;
   dw = ScreenWidth - cw;
   dh = ScreenHeight - ch;
-  if ((dw!=0) || (dh!=0))
+  if ((dw!=0) || (dh!=0)) {
     SetWindowPos(HVTWin,HWND_TOP,x,y,w+dw,h+dh,SWP_NOMOVE);
+    AdjustSize = FALSE;
+  }
   else {
     AdjustSize = FALSE;
 
@@ -2890,6 +2892,10 @@ void DispSetActive(BOOL ActiveFlag)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2006/03/12 14:27:41  yutakakn
+ *   ・Additional settingsダイアログにおけるウィンドウの半透明変更を即座に反映させるようにした（teraterm.ini の AlphaBlend=256 の場合のみ）。
+ *   ・文字の背景色をスクリーンの背景色と一致させるパッチのバグを修正した。パッチ作成に感謝します＞337氏
+ *
  * Revision 1.8  2006/03/02 16:15:49  yutakakn
  *   ・文字の背景色をスクリーンの背景色と一致させるようにした。それにともないWindow setupダイアログに"Always use Normal text's BG"チェックボックスを追加した。また、teraterm.iniにUseNormalBGColorエントリを追加した。パッチ作成に感謝します＞337氏
  *
