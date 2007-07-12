@@ -54,8 +54,9 @@
       <li>マクロ実行中に、サーバからの受信データをマクロへDDE送信しないことがある問題への対処を追加した。</li>
       <li>マクロコマンド var2clipb で、不正にメモリを解放していた問題を修正した。</li>
       <li>teraterm.ini の CRReceive に "LF" が保存・読み込みできない問題を修正した。</li>
-      <li>利用可能なCOMポートが無い時、新しい接続ダイアログでシリアルポートを無効にした。</li>
+      <li>利用可能なCOMポートがない時、新しい接続ダイアログでシリアルポートを無効にした。</li>
       <li><a href="#kanjimenu_0.1.2.1">TTX KanjiMenu Plugin 0.1.2.1</a>(ttxkanjimenu.dll)を追加した。原直(Hara Sunao)氏に感謝します。</li>
+      <li><a href="#ttssh_2.41">SSH2対応TTSSH(2.41)</a>へ差し替えた</li>
     </ul>
   </li>
 
@@ -780,6 +781,14 @@
 
 <h2><a name="ttssh">TTSSH</a></h2>
 <ul>
+  <li class="history"><a name="ttssh_2.41">2007.7.12 (Ver 2.41)</a>
+    <ul>
+      <li>keyboard-interactive認証が失敗したあとのパスワード認証の無条件トライを止めるようにした。</li>
+      <li>コマンドライン入力におけるBOF(Buffer Over Flow)への対処を追加した。</li>
+      <li>利用可能なCOMポートがない時、新しい接続ダイアログでシリアルポートの選択を無効化した。</li>
+    </ul>
+  </li>
+    
   <li class="history"><a name="ttssh_2.40">2007.5.7 (Ver 2.40)</a>
     <ul>
       <li>keyfile パラメータも、ダブルクォートされたファイル名を認識するようにした。</li>

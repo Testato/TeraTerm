@@ -56,6 +56,7 @@
       <li>Bug fix: did not save/load "LF" to CRReceive entry in teraterm.ini.</li>
       <li>added to disable the serial port in New Connection dialog when there is no available COM ports.</li>
       <li>added <a href="#kanjimenu_0.1.2.1">TTX KanjiMenu Plugin 0.1.2.1</a>(ttxkanjimenu.dll). Special thanks to Sunao HARA.</li>
+      <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.41">2.41</a></li>
     </ul>
   </li>
 
@@ -778,6 +779,14 @@ SYNOPSIS:
 
 <h2><a name="ttssh">TTSSH</a></h2>
 <ul>
+  <li class="history"><a name="ttssh_2.41">2007.7.12 (Ver 2.41)</a>
+    <ul>
+      <li>deleted unconditional login retry with password authentication after keyboard-interactive authentication is failure.</li>
+      <li>Bug fix: BOF(Buffer Over Flow) problem at the command line parameter.</li>
+      <li>added to disable the serial port in New Connection dialog when there is no available COM ports.</li>
+    </ul>
+  </li>
+  
   <li class="history"><a name="ttssh_2.40">2007.5.7 (Ver 2.40)</a>
     <ul>
       <li>added parsing double-quoted key filename in the command line parameter.</li>
