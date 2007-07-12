@@ -6544,6 +6544,9 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 	// retry countの追加 (2005.3.10 yutaka)
 	pvar->userauth_retry_count++;
 
+	// サーバが keyboard-interactive しかサポートしていない場合、サーバに余計な
+	// エラーログが残るため削除。(2007.7.11 yutaka)
+#if 0
 	// keyboard-interactive methodでトライして失敗した場合、次にpassword authentication method
 	// で無条件にトライしてみる。(2005.1.22 yutaka)
 	if (pvar->keyboard_interactive_done == 1) {
@@ -6551,6 +6554,11 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 		pvar->keyboard_interactive_done = 0; // clear flag
 		return TRUE;
 	}
+#else
+	if (pvar->keyboard_interactive_done == 1) {
+		pvar->keyboard_interactive_done = 0; // clear flag
+	}
+#endif
 
 	if (pvar->ssh2_autologin == 1) {
 		// SSH2自動ログインが有効の場合は、リトライは行わない。(2004.12.4 yutaka)
@@ -7415,6 +7423,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.79  2007/06/06 14:10:12  maya
+ * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
+ *
  * Revision 1.78  2007/05/01 13:45:53  maya
  * チャネルの解放漏れを修正した。
  *
