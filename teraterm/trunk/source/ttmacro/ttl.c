@@ -25,6 +25,9 @@
 // for _findXXXX() functions
 #include <io.h>
 
+// for _ismbblead
+#include <mbctype.h>
+
 #include "ttl.h"
 
 #ifdef TERATERM32
@@ -2382,6 +2385,64 @@ WORD TTLTestLink()
   return 0;
 }
 
+// added (2007.7.12 maya)
+WORD TTLToLower()
+{
+  WORD Err, VarId;
+  TStrVal Str;
+  int i=0;
+
+  Err = 0;
+  GetStrVar(&VarId,&Err);
+  GetStrVal(Str,&Err);
+  if ((Err==0) && (GetFirstChar()!=0))
+    Err = ErrSyntax;
+  if (Err!=0) return Err;
+
+  while (Str[i] != 0) {
+    if(_ismbblead(Str[i])) {
+      i = i + 2;
+      continue;
+	}
+    if (Str[i] >= 'A' && Str[i] <= 'Z') {
+      Str[i] = Str[i] + 0x20;
+    }
+    i++;
+  }
+
+  strncpy_s(StrVarPtr(VarId), MaxStrLen, Str, _TRUNCATE);
+  return Err;
+}
+
+// added (2007.7.12 maya)
+WORD TTLToUpper()
+{
+  WORD Err, VarId;
+  TStrVal Str;
+  int i=0;
+
+  Err = 0;
+  GetStrVar(&VarId,&Err);
+  GetStrVal(Str,&Err);
+  if ((Err==0) && (GetFirstChar()!=0))
+    Err = ErrSyntax;
+  if (Err!=0) return Err;
+
+  while (Str[i] != 0) {
+    if(_ismbblead(Str[i])) {
+      i = i + 2;
+      continue;
+	}
+    if (Str[i] >= 'a' && Str[i] <= 'z') {
+      Str[i] = Str[i] - 0x20;
+    }
+    i++;
+  }
+
+  strncpy_s(StrVarPtr(VarId), MaxStrLen, Str, _TRUNCATE);
+  return Err;
+}
+
 WORD TTLUnlink()
 {
   if (GetFirstChar()!=0)
@@ -2822,6 +2883,8 @@ int ExecCmnd()
 		case RsvStrLen:	  Err = TTLStrLen(); break;
 		case RsvStrScan:	  Err = TTLStrScan(); break;
 		case RsvTestLink:	  Err = TTLTestLink(); break;
+		case RsvToLower:	  Err = TTLToLower(); break;	// add 'tolower' (2007.7.12 maya)
+		case RsvToUpper:	  Err = TTLToUpper(); break;	// add 'toupper' (2007.7.12 maya)
 		case RsvUnlink:	  Err = TTLUnlink(); break;
 		case RsvVar2Clipb:	Err = TTLVar2Clipb(); break;	// add 'var2clipb' (2006.9.17 maya)
 		case RsvWaitRegex:	  Err = TTLWaitRegex(FALSE); break;  // add 'waitregex' (2005.10.5 yutaka)

@@ -155,6 +155,8 @@
 #define RsvIfDefined  115   // add 'ifdefined' (2006.9.23 maya)
 #define RsvFileRead   116   // add 'fileread' (2006.11.1 yutaka)
 #define RsvSprintf    117   // add 'sprintf' (2007.5.1 yutaka)
+#define RsvToLower    118   // add 'tolower' (2007.7.12 maya)
+#define RsvToUpper    119   // add 'toupper' (2007.7.12 maya)
 
 #define RsvOperator   150
 #define RsvNot	      151

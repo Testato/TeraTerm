@@ -221,6 +221,8 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
   else if (_stricmp(Str,"strscan")==0) *WordId = RsvStrScan;
   else if (_stricmp(Str,"testlink")==0) *WordId = RsvTestLink;
   else if (_stricmp(Str,"then")==0) *WordId = RsvThen;
+  else if (_stricmp(Str,"tolower")==0) *WordId = RsvToLower;	// add 'tolower' (2007.7.12 maya)
+  else if (_stricmp(Str,"toupper")==0) *WordId = RsvToUpper;	// add 'toupper' (2007.7.12 maya)
   else if (_stricmp(Str,"unlink")==0) *WordId = RsvUnlink;
   else if (_stricmp(Str,"var2clipb")==0) *WordId = RsvVar2Clipb;  // add 'var2clipb' (2006.9.17 maya)
   else if (_stricmp(Str,"waitregex")==0) *WordId = RsvWaitRegex;  // add 'waitregex' (2005.10.5 yutaka)
