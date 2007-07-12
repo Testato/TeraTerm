@@ -407,6 +407,8 @@ static void PASCAL FAR TTXModifyPopupMenu(HMENU menu) {
    process the command first.
 */
 static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
+	WORD val;
+
 #ifndef TERATERM32
   if (! GetVar()) return 0; /* should be called first */
 #endif
@@ -414,18 +416,26 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
   printf("TTXProcessCommand %d\n", ORDER);
 #endif
 	if( (cmd & ID_MI_KANJIRECV) == ID_MI_KANJIRECV ) {
-		pvar->cv->KanjiCodeEcho = pvar->ts->KanjiCode = cmd - ID_MI_KANJIRECV;
-//		if (pvar->ts->Language==IdJapanese)
-//			ResetCharSet();
+		// 範囲チェックを追加 (2007.7.13 yutaka)
+		val = cmd - ID_MI_KANJIRECV;
+		if (val >= IdSJIS && val <= IdUTF8m) {
+			pvar->cv->KanjiCodeEcho = pvar->ts->KanjiCode = val;
+		}
+	//		if (pvar->ts->Language==IdJapanese)
+	//			ResetCharSet();
 		return CheckMenuRadioItem(pvar->hmEncode,
-		                          ID_MI_KANJIRECV + IdSJIS,
+								  ID_MI_KANJIRECV + IdSJIS,
 								  ID_MI_KANJIRECV + IdUTF8m,
 								  ID_MI_KANJIRECV + pvar->ts->KanjiCode,
 								  MF_BYCOMMAND)?1:0;
 	}
 	else
 	if( (cmd & ID_MI_KANJISEND) == ID_MI_KANJISEND ) {
-		pvar->cv->KanjiCodeSend = pvar->ts->KanjiCodeSend = cmd - ID_MI_KANJISEND;
+		// 範囲チェックを追加 (2007.7.13 yutaka)
+		val = cmd - ID_MI_KANJISEND;
+		if (val >= IdSJIS && val <= IdUTF8) {
+			pvar->cv->KanjiCodeSend = pvar->ts->KanjiCodeSend = val;
+		}
 //		if (pvar->ts->Language==IdJapanese)
 //			ResetCharSet();
 		return CheckMenuRadioItem(pvar->hmEncode,
