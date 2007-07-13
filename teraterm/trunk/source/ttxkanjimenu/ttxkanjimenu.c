@@ -306,6 +306,7 @@ static void PASCAL FAR TTXSetWinSize(int rows, int cols) {
    Thus, the extension with highest load order number puts its items in last.
 */
 //#define ID_MENUITEM 6000
+#define ID_MI_KANJIMASK 0xFF00
 #define ID_MI_KANJIRECV 0x2100
 #define ID_MI_KANJISEND 0x2200
 static void PASCAL FAR TTXModifyMenu(HMENU menu) {
@@ -415,34 +416,35 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
 #ifdef TERATERM32
   printf("TTXProcessCommand %d\n", ORDER);
 #endif
-	if( (cmd & ID_MI_KANJIRECV) == ID_MI_KANJIRECV ) {
-		// 範囲チェックを追加 (2007.7.13 yutaka)
+	if( (cmd & ID_MI_KANJIMASK) == ID_MI_KANJIRECV ) {
+		// 範囲チェックを追加 
+		// TTProxyのバージョンダイアログを開くと、当該ハンドラが呼ばれ、誤動作していたのを修正。
+		// (2007.7.13 yutaka)
 		val = cmd - ID_MI_KANJIRECV;
 		if (val >= IdSJIS && val <= IdUTF8m) {
 			pvar->cv->KanjiCodeEcho = pvar->ts->KanjiCode = val;
-		}
 	//		if (pvar->ts->Language==IdJapanese)
 	//			ResetCharSet();
-		return CheckMenuRadioItem(pvar->hmEncode,
-								  ID_MI_KANJIRECV + IdSJIS,
-								  ID_MI_KANJIRECV + IdUTF8m,
-								  ID_MI_KANJIRECV + pvar->ts->KanjiCode,
-								  MF_BYCOMMAND)?1:0;
+			return CheckMenuRadioItem(pvar->hmEncode,
+									  ID_MI_KANJIRECV + IdSJIS,
+									  ID_MI_KANJIRECV + IdUTF8m,
+									  ID_MI_KANJIRECV + pvar->ts->KanjiCode,
+									  MF_BYCOMMAND)?1:0;
+		}
 	}
 	else
-	if( (cmd & ID_MI_KANJISEND) == ID_MI_KANJISEND ) {
-		// 範囲チェックを追加 (2007.7.13 yutaka)
+	if( (cmd & ID_MI_KANJIMASK) == ID_MI_KANJISEND ) {
 		val = cmd - ID_MI_KANJISEND;
 		if (val >= IdSJIS && val <= IdUTF8) {
 			pvar->cv->KanjiCodeSend = pvar->ts->KanjiCodeSend = val;
-		}
 //		if (pvar->ts->Language==IdJapanese)
 //			ResetCharSet();
-		return CheckMenuRadioItem(pvar->hmEncode,
-		                          ID_MI_KANJISEND + IdSJIS,
-								  ID_MI_KANJISEND + IdUTF8,
-								  ID_MI_KANJISEND + pvar->ts->KanjiCodeSend,
-								  MF_BYCOMMAND)?1:0;
+			return CheckMenuRadioItem(pvar->hmEncode,
+									  ID_MI_KANJISEND + IdSJIS,
+									  ID_MI_KANJISEND + IdUTF8,
+									  ID_MI_KANJISEND + pvar->ts->KanjiCodeSend,
+									  MF_BYCOMMAND)?1:0;
+		}
 	}
 
   return 0;
