@@ -2427,6 +2427,11 @@ BOOL CALLBACK GenDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	    if ((ts->MenuFlag & MF_NOLANGUAGE)==0)
 	      ts->Language = (WORD)GetCurSel(Dialog, IDC_GENLANG);
 	  }
+
+	  // TTXKanjiMenu のために、OK 押下時にメニュー再描画の
+	  // メッセージを飛ばすようにした。 (2007.7.14 maya)
+	  PostMessage(GetParent(Dialog),WM_USER_CHANGEMENU,0,0);
+
 	  EndDialog(Dialog, 1);
 #ifndef NO_I18N
       if (DlgGenFont != NULL) {
@@ -3004,6 +3009,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.24  2007/07/05 12:15:48  doda
+ * 利用可能なCOMポートが無い時、新しい接続ダイアログでシリアルポートの選択を無効化した。
+ *
  * Revision 1.23  2007/07/02 10:50:43  doda
  * 旧バージョンとの間では共有メモリによる設定の共有が出来ないため、
  * ファイルマッピングオブジェクト名を変更した。

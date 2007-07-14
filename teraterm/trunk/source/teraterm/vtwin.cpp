@@ -2188,8 +2188,11 @@ LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
   BOOL Show, B1, B2;
 
   Show = (ts.PopupMenu==0) && (ts.HideTitle==0);
-  if (Show != (MainMenu!=NULL))
-  {
+
+// TTXKanjiMenu のために、メニューが表示されていても
+// 再描画するようにした。 (2007.7.14 maya)
+//  if (Show != (MainMenu!=NULL))
+//  {
     if (! Show)
     {
       if (WinMenu!=NULL)
@@ -2204,7 +2207,7 @@ LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
     AdjustSize = TRUE;
     ::SetMenu(HVTWin, MainMenu);
     ::DrawMenuBar(HVTWin);
-  }
+//  }
 
   B1 = ((ts.MenuFlag & MF_SHOWWINMENU)!=0);
   B2 = (WinMenu!=NULL);
@@ -5052,6 +5055,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.70  2007/07/05 12:15:28  doda
+ * 利用可能なCOMポートが無い時、新しい接続ダイアログでシリアルポートの選択を無効化した。
+ *
  * Revision 1.69  2007/06/12 14:45:23  maya
  * 256バイト以上のコマンドラインパラメータ指定があると、BOF(Buffer Over Flow)で
  * 落ちるバグを修正。

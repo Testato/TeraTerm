@@ -323,6 +323,11 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 //  if (pvar->ts->Debug>0) flag |= MF_CHECKED;
 //  AppendMenu(pvar->SetupMenu,flag, ID_MENUITEM,"&Debug mode");
 
+  // 言語が日本語のときのみメニューに追加されるようにした。 (2007.7.14 maya)
+  if (pvar->ts->Language != IdJapanese) {
+    return;
+  }
+
   {
 	MENUITEMINFO mi;
 
