@@ -854,6 +854,16 @@
 					<param name="Local" value="html\macro\command\strscan.html">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="tolower">
+					<param name="Local" value="html\macro\command\tolower.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="toupper">
+					<param name="Local" value="html\macro\command\toupper.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
 			</UL>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="ファイル操作コマンド">
