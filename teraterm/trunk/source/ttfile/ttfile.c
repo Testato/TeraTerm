@@ -409,11 +409,12 @@ BOOL FAR PASCAL GetTransFname
 #endif
 
 	ExtractFileName(fv->FullName, FileName);
+	strncpy_s(fv->FullName, sizeof(fv->FullName), FileName, _TRUNCATE);
 	ofn.lStructSize = sizeof(OPENFILENAME);
 	ofn.hwndOwner   = fv->HMainWin;
 	ofn.lpstrFilter = FNFilter;
 	ofn.nFilterIndex = 1;
-	ofn.lpstrFile = FileName;
+	ofn.lpstrFile = fv->FullName;
 	ofn.nMaxFile = sizeof(fv->FullName);
 	ofn.lpstrInitialDir = CurDir;
 	ofn.Flags = OFN_SHOWHELP | OFN_HIDEREADONLY;
@@ -1410,6 +1411,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.21  2007/07/02 10:51:06  doda
+ * 旧バージョンとの間では共有メモリによる設定の共有が出来ないため、
+ * ファイルマッピングオブジェクト名を変更した。
+ *
  * Revision 1.20  2007/06/06 14:04:52  maya
  * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
  *
