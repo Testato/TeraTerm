@@ -46,8 +46,9 @@ void CStatDlg::Update(PCHAR Text, PCHAR Title, int x, int y)
   HDC TmpDC;
 
   if (Title!=NULL) {
+    RestoreNewLine(Text); // (2007.7.18 maya)
     SetWindowText(Title);
-	TitleStr = Title;
+    TitleStr = Title;
   }
 
   GetWindowRect(&R);
