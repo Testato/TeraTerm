@@ -67,15 +67,20 @@ void TTMSetDir(PCHAR Dir)
   _chdir(Temp);
 }
 
-void GetAbsPath(PCHAR FName)
+BOOL GetAbsPath(PCHAR FName)
 {
   int i, j;
   char Temp[MAXPATHLEN];
 
-  if ((! GetFileNamePos(FName,&i,&j)) ||
-      (i>0)) return;
+  if (! GetFileNamePos(FName,&i,&j)) {
+    return FALSE;
+  }
+  else if (i>0) {
+    return TRUE;
+  }
   strcpy(Temp,FName);
   strcpy(FName,CurrentDir);
   AppendSlash(FName);
   strcat(FName,Temp);
+  return TRUE;
 }

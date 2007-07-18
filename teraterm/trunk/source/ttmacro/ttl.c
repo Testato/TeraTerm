@@ -618,16 +618,31 @@ WORD TTLFileConcat()
        (strlen(FName2)==0) ||
        (GetFirstChar()!=0)))
     Err = ErrSyntax;
-  if (Err!=0) return Err;
+  if (Err!=0) {
+    SetResult(1);
+    return Err;
+  }
 
-  GetAbsPath(FName1);
-  GetAbsPath(FName2);
-  if (_stricmp(FName1,FName2)==0) return Err;
+  if (!GetAbsPath(FName1)) {
+    SetResult(-1);
+    return Err;
+  }
+  if (!GetAbsPath(FName2)) {
+    SetResult(-2);
+    return Err;
+  }
+  if (_stricmp(FName1,FName2)==0) {
+    SetResult(2);
+    return Err;
+  }
 
   FH1 = _lopen(FName1,OF_WRITE);
   if (FH1<0)
     FH1 = _lcreat(FName1,0);
-  if (FH1<0) return Err;
+  if (FH1<0) {
+    SetResult(3);
+    return Err;
+  }
   _llseek(FH1,0,2);
 
   FH2 = _lopen(FName2,OF_READ);
@@ -641,6 +656,8 @@ WORD TTLFileConcat()
     _lclose(FH2);
   }
   _lclose(FH1);
+
+  SetResult(0);
   return Err;
 }
 
@@ -663,10 +680,19 @@ WORD TTLFileCopy()
        (strlen(FName2)==0) ||
        (GetFirstChar()!=0)))
     Err = ErrSyntax;
-  if (Err!=0) return Err;
+  if (Err!=0) {
+    SetResult(1);
+    return Err;
+  }
 
-  GetAbsPath(FName1);
-  GetAbsPath(FName2);
+  if (!GetAbsPath(FName1)) {
+    SetResult(-1);
+    return Err;
+  }
+  if (!GetAbsPath(FName2)) {
+    SetResult(-2);
+    return Err;
+  }
   if (_stricmp(FName1,FName2)==0) return Err;
 
 #ifdef TERATERM32
@@ -690,6 +716,7 @@ WORD TTLFileCopy()
   ut.modtime = st.st_mtime;
   _utime(FName2,&ut);
 #endif
+  SetResult(0);
   return Err;
 }
 
@@ -705,11 +732,24 @@ WORD TTLFileCreate()
   if ((Err==0) &&
       ((strlen(FName)==0) || (GetFirstChar()!=0)))
     Err = ErrSyntax;
-  if (Err!=0) return Err;
+  if (Err!=0) {
+    SetResult(1);
+    return Err;
+  }
 
-  GetAbsPath(FName);
+  if (!GetAbsPath(FName)) {
+    SetIntVal(VarId,-1);
+    SetResult(-1);
+    return Err;
+  }
   FH = _lcreat(FName,0);
-  if (FH<0) FH = -1;
+  if (FH<0) {
+    FH = -1;
+    SetResult(2);
+  }
+  else {
+    SetResult(0);
+  }
   SetIntVal(VarId,FH);
   return Err;
 }
@@ -724,10 +764,18 @@ WORD TTLFileDelete()
   if ((Err==0) &&
       ((strlen(FName)==0) || (GetFirstChar()!=0)))
     Err = ErrSyntax;
-  if (Err!=0) return Err;
+  if (Err!=0) {
+    SetResult(1);
+    return Err;
+  }
 
-  GetAbsPath(FName);
+  if (!GetAbsPath(FName)) {
+    SetResult(-1);
+    return Err;
+  }
   remove(FName);
+
+  SetResult(0);
   return Err;
 }
 
@@ -772,7 +820,10 @@ WORD TTLFileOpen()
     Err = ErrSyntax;
   if (Err!=0) return Err;
 
-  GetAbsPath(FName);
+  if (!GetAbsPath(FName)) {
+    SetIntVal(VarId,-1);
+    return Err;
+  }
   FH = _lopen(FName,OF_READWRITE);
   if (FH<0)
     FH = _lcreat(FName,0);
@@ -895,11 +946,26 @@ WORD TTLFileRename()
        (strlen(FName2)==0) ||
        (GetFirstChar()!=0)))
     Err = ErrSyntax;
-  if (Err!=0) return Err;
-  if (_stricmp(FName1,FName2)==0) return Err;
+  if (Err!=0) {
+    SetResult(1);
+    return Err;
+  }
+  if (_stricmp(FName1,FName2)==0) {
+    SetResult(2);
+    return Err;
+  }
 
-  GetAbsPath(FName1);
+  if (!GetAbsPath(FName1)) {
+    SetResult(-1);
+    return Err;
+  }
+  if (!GetAbsPath(FName2)) {
+    SetResult(-2);
+    return Err;
+  }
   rename(FName1,FName2);
+
+  SetResult(0);
   return Err;
 }
 
@@ -1454,9 +1520,15 @@ WORD TTLInclude()
 
   Err = 0;
   GetStrVal(Str,&Err);
-  GetAbsPath(Str);
-  if (! BuffInclude(Str))
+  if (!GetAbsPath(Str)) {
     Err = ErrCantOpen;
+    return Err;
+  }
+  if (! BuffInclude(Str)) {
+    Err = ErrCantOpen;
+    return Err;
+  }
+
   return Err;
 }
 
