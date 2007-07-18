@@ -19,11 +19,21 @@ Format:
 filecreate &lt;file handle&gt; &lt;filename&gt;
 </B>
 </UL>
-<P></P>
 
+<p>
 Creates and opens a new file specified by &lt;filename&gt;.
-The file pointer is set to the beginning of the file. If file &lt;filename&gt; already exists, its size is truncated to zero. If the file is successfully created and opened, the file handle is returned in the integer variable &lt;file handle&gt;. Otherwise, &lt;file handle&gt; is set to -1.
-<P></P>
+</p>
+
+<p>
+The file pointer is set to the beginning of the file. If file &lt;filename&gt; already exists, its size is truncated to zero.</p>
+
+<p>
+If the file is successfully created and opened, the file handle is returned in the integer variable &lt;file handle&gt;. Otherwise, &lt;file handle&gt; is set to -1.
+</p>
+
+<p>
+If the file is created successfully, the system variable "result" is set to 0. Otherwise, "result" is set to non-zero.
+</p>
 
 <pre>
 Example:
@@ -32,4 +42,3 @@ Example:
 
 </BODY>
 </HTML>
-

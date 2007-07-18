@@ -4,6 +4,7 @@
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 <TITLE>include</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../../style.css" type="text/css">
 </HEAD>
 <BODY>
@@ -18,35 +19,29 @@ include &lt;include file name&gt;
 </B>
 </UL>
 
+<p>
+インクルードファイルに移る。
+</p>
+
 <pre>
-
-インクロードファイルに移る。
-
 例：
-
 -----メインファイル"main.ttl"------
-
-   <B>i=10</B>
-   <B>:loop</B>
-   <B>include 'sub.ttl'</B>                               インクルードファイルへ移る。
-   <B>if i&gt;=0 goto loop</B>
-   <B>end</B>
-
+   i=10
+   :loop
+   include 'sub.ttl' ; インクルードファイルへ移る。
+   if i&gt;=0 goto loop
+   end
 -----メインファイル終わり----------
 
-
 -----インクルードファイル"sub.ttl"----
-
-   <B>if i&lt;0 then</B>
-    <B> messagebox 'error!' 'sub'</B>
-     <B>exit</B>　　　　　　　　　　　　　　　　　　　　　メインファイルへ戻る。
-   <B>endif</B>
-   <B>i=i-1</B>　　　　　　　　　　　　　　　　　　　　　 メインファイルへ戻る。
-
+   if i&lt;0 then
+     messagebox 'error!' 'sub'
+     exit ; メインファイルへ戻る。
+   endif
+   i = i - 1
+   ; メインファイルへ戻る。
 -----インクルードファイル終わり-------
-
 </pre>
-
 
 </BODY>
 </HTML>

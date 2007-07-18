@@ -4,6 +4,7 @@
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 <TITLE>filerename</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../../style.css" type="text/css">
 </HEAD>
 <BODY>
@@ -18,16 +19,22 @@ filerename &lt;file1&gt; &lt;file2&gt;
 </B>
 </UL>
 
-<pre>
-
+<p>
 ファイル &lt;file1&gt; を &lt;file2&gt; という名前に変更する。
-&lt;file1&gt; と &lt;file2&gt; は違う名前でなければならない。
+</p>
 
+<p>
+&lt;file1&gt; と &lt;file2&gt; は違う名前でなければならない。
+</p>
+
+<p>
+ファイル名の変更が成功した場合、システム変数 result に 0 が格納される。それ以外の場合, result に 0 以外が格納される。
+</p>
+
+<pre>
 例：
     <B>filerename 'test.dat' test2.dat'</B>
-
 </pre>
-
 
 </BODY>
 </HTML>

@@ -4,6 +4,7 @@
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 <TITLE>fileopen</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../../style.css" type="text/css">
 </HEAD>
 <BODY>
@@ -18,23 +19,28 @@ fileopen &lt;file handle&gt; &lt;filename&gt; &lt;append flag&gt;
 </B>
 </UL>
 
-<pre>
-
+<p>
 ファイル &lt;filename&gt; をファイルをオープンする。
-ファイルが存在しない場合は、新たに作成されてからオープンされる。
-もしファイルが正しくオープンされた場合、ファイルハンドルが整数変数 &lt;file handle&gt; に格納される。
-それ以外の場合、&lt;file handle&gt; に-1が格納される。
+</p>
 
-&lt;append flag&gt; が0の場合、ファイルポインタの位置はファイルの始めにセットされる。
-&lt;append flag&gt; が0以外の場合、ファイルポインタはファイルの最後にセットされる。
+<p>
+ファイルが存在しない場合は、新たに作成されてからオープンされる。<br>
+もしファイルが正しくオープンされた場合、ファイルハンドルが整数変数 &lt;file handle&gt; に格納される。それ以外の場合、&lt;file handle&gt; に-1が格納される。
+</p>
 
+<p>
+&lt;append flag&gt; が0の場合、ファイルポインタの位置はファイルの始めにセットされる。&lt;append flag&gt; が0以外の場合、ファイルポインタはファイルの最後にセットされる。
+</p>
+
+<p>
+ファイルのオープンが成功した場合、システム変数 result に 0 が格納される。それ以外の場合, result に 0 以外が格納される。
+</p>
+
+<pre>
 例：
       <B>fileopen fhandle 'data.dat' 0</B>
-
       <B>fileopen fhandle 'data.dat' 1</B>
-
 </pre>
-
 
 </BODY>
 </HTML>

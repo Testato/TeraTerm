@@ -4,6 +4,7 @@
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 <TITLE>filecopy</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../../style.css" type="text/css">
 </HEAD>
 <BODY>
@@ -18,17 +19,23 @@ filecopy &lt;file1&gt; &lt;file2&gt;
 </B>
 </UL>
 
-<pre>
-
+<p>
 ファイル &lt;file1&gt; をコピーし、ファイル &lt;file2&gt; を作成する。
-&lt;file2&gt; がすでに存在する場合は上書きされる。
-&lt;file1&gt; と &lt;file2&gt; は違う名前でなければならない。
+</p>
 
+<p>
+&lt;file2&gt; がすでに存在する場合は上書きされる。<br>
+&lt;file1&gt; と &lt;file2&gt; は違う名前でなければならない。
+</p>
+
+<p>
+ファイルの削除が成功した場合、システム変数 result に 0 が格納される。それ以外の場合, result に 0 以外が格納される。
+</p>
+
+<pre>
 例：
      <B>filecopy 'test.dat' 'test2.dat'</B>
-
 </pre>
-
 
 </BODY>
 </HTML>

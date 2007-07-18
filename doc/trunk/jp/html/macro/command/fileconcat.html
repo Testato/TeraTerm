@@ -4,6 +4,7 @@
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 <TITLE>fileconcat</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../../style.css" type="text/css">
 </HEAD>
 <BODY>
@@ -18,15 +19,22 @@ fileconcat &lt;file1&gt; &lt;file2&gt;
 </B>
 </UL>
 
+<p>
+ファイル &lt;file2&gt; の内容をファイル &lt;file1&gt; の最後に追加する。
+</p>
+
+<p>
+&lt;file1&gt; と &lt;file2&gt; は違うファイルでなければならない。
+</p>
+
+<p>
+&lt;file2&gt; の追加が成功した場合、システム変数 result に 0 が格納される。それ以外の場合, result に 0 以外が格納される。
+</p>
+
 <pre>
-
-ファイル &lt;file2&gt; の内容をファイル &lt;file1&gt; の最後に追加する。&lt;file1&gt; と &lt;file2&gt; は違うファイルでなければならない。
-
 例：
     <B>fileconcat 'test.dat' test2.dat'</B>
-
 </pre>
-
 
 </BODY>
 </HTML>

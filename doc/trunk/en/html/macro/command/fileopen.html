@@ -19,24 +19,29 @@ Format:
 fileopen &lt;file handle&gt; &lt;file name&gt; &lt;append flag&gt;
 </B>
 </UL>
-<P></P>
 
+<p>
 Opens a file specified by &lt;file name&gt;.
-<P></P>
+</p>
 
-If the file does not exist, it is created and then opened. If the file is successfully opened, the file handle is returned in the integer variable &lt;file handle&gt;. Otherwise, &lt;file handle&gt; is set to -1.
-<P></P>
+<p>
+If the file does not exist, it is created and then opened.<br>
+If the file is successfully opened, the file handle is returned in the integer variable &lt;file handle&gt;. Otherwise, &lt;file handle&gt; is set to -1.
+</p>
 
+<p>
 If &lt;append flag&gt; is zero, the file pointer is set to the beginning of the file. If &lt;append flag&gt; is non-zero, the file pointer is set to the end of the file.
-<P></P>
+</p>
+
+<p>
+If the file is opened successfully, the system variable "result" is set to 0. Otherwise, "result" is set to non-zero.
+</p>
 
 <pre>
 Example:
 	fileopen fhandle 'data.dat' 0
-
 	fileopen fhandle 'data.dat' 1
 </pre>
 
 </BODY>
 </HTML>
-
