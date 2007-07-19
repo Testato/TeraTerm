@@ -13,6 +13,7 @@
 #include "helpid.h"
 #include "htmlhelp.h"
 #include "i18n.h"
+#include "commlib.h"
 
 /* help file names */
 #define HTML_HELP "teraterm.chm"
@@ -127,21 +128,18 @@ void ConvertToCP932(char *str, int len)
  */
 void ChangeTitle()
 {
-	int i;
 	char TempTitle[HostNameMaxLength + 50 + 1]; // バッファ拡張
-	char Num[11];
 
-	strcpy(TempTitle, ts.Title);
+	strncpy_s(TempTitle, sizeof(TempTitle), ts.Title, _TRUNCATE);
 
 	if ((ts.TitleFormat & 1)!=0)
 	{ // host name
-		strncat(TempTitle," - ",sizeof(TempTitle)-1-strlen(TempTitle));
-		i = sizeof(TempTitle)-1-strlen(TempTitle);
+		strncat_s(TempTitle,sizeof(TempTitle), " - ",_TRUNCATE);
 		if (Connecting) {
 #ifndef NO_I18N
 			strcpy(ts.UIMsg, "[connecting...]");
 			get_lang_msg("DLG_MAIN_TITLE_CONNECTING", ts.UIMsg, ts.UILanguageFile);
-			strncat(TempTitle,ts.UIMsg,i);
+			strncat_s(TempTitle,sizeof(TempTitle),ts.UIMsg,_TRUNCATE);
 #else
 			strncat(TempTitle,"[connecting...]",i);
 #endif
@@ -150,89 +148,58 @@ void ChangeTitle()
 #ifndef NO_I18N
 			strcpy(ts.UIMsg, "[disconnected]");
 			get_lang_msg("DLG_MAIN_TITLE_DISCONNECTED", ts.UIMsg, ts.UILanguageFile);
-			strncat(TempTitle,ts.UIMsg,i);
+			strncat_s(TempTitle,sizeof(TempTitle),ts.UIMsg,_TRUNCATE);
 #else
 			strncat(TempTitle,"[disconnected]",i);
 #endif
 		}
 		else if (cv.PortType==IdSerial)
 		{
-#if 1
 			// COM5 overに対応
 			char str[20]; // COMxx:xxxxxxbaud
 			if (ts.TitleFormat & 32) {
-				char baud[10];
-				switch (ts.Baud) {
-					case IdBaud110:    strncpy_s(baud, sizeof(baud), "110",    _TRUNCATE); break;
-					case IdBaud300:    strncpy_s(baud, sizeof(baud), "300",    _TRUNCATE); break;
-					case IdBaud600:    strncpy_s(baud, sizeof(baud), "600",    _TRUNCATE); break;
-					case IdBaud1200:   strncpy_s(baud, sizeof(baud), "1200",   _TRUNCATE); break;
-					case IdBaud2400:   strncpy_s(baud, sizeof(baud), "2400",   _TRUNCATE); break;
-					case IdBaud4800:   strncpy_s(baud, sizeof(baud), "4800",   _TRUNCATE); break;
-					case IdBaud9600:   strncpy_s(baud, sizeof(baud), "9600",   _TRUNCATE); break;
-					case IdBaud14400:  strncpy_s(baud, sizeof(baud), "14400",  _TRUNCATE); break;
-					case IdBaud19200:  strncpy_s(baud, sizeof(baud), "19200",  _TRUNCATE); break;
-					case IdBaud38400:  strncpy_s(baud, sizeof(baud), "38400",  _TRUNCATE); break;
-					case IdBaud57600:  strncpy_s(baud, sizeof(baud), "57600",  _TRUNCATE); break;
-#ifdef TERATERM32
-					case IdBaud115200: strncpy_s(baud, sizeof(baud), "115200", _TRUNCATE); break;
-#endif
-					case IdBaud230400: strncpy_s(baud, sizeof(baud), "230400", _TRUNCATE); break;
-					case IdBaud460800: strncpy_s(baud, sizeof(baud), "460800", _TRUNCATE); break;
-					case IdBaud921600: strncpy_s(baud, sizeof(baud), "921600", _TRUNCATE); break;
-					default: strncpy_s(baud, sizeof(baud), "", _TRUNCATE); break;
-				}
-				_snprintf_s(str, sizeof(str), _TRUNCATE, "COM%d:%sbaud", ts.ComPort, baud);
+				_snprintf_s(str, sizeof(str), _TRUNCATE, "COM%d:%dbaud", ts.ComPort, GetCommSerialBaudRate(ts.Baud));
 			}
 			else {
 				_snprintf_s(str, sizeof(str), _TRUNCATE, "COM%d", ts.ComPort);
 			}
 
 			if (ts.TitleFormat & 8) {
-				_snprintf(TempTitle, sizeof(TempTitle), "%s - %s", str, ts.Title);
+				_snprintf_s(TempTitle, sizeof(TempTitle), _TRUNCATE, "%s - %s", str, ts.Title);
 			} else {
 				strncat_s(TempTitle, sizeof(TempTitle), str, _TRUNCATE); 
 			}
-
-#else
-			switch (ts.ComPort) {
-			case 1: strncat(TempTitle,"COM1",i); break;
-			case 2: strncat(TempTitle,"COM2",i); break;
-			case 3: strncat(TempTitle,"COM3",i); break;
-			case 4: strncat(TempTitle,"COM4",i); break;
-			}
-#endif
 		}
 		else {
+			char str[sizeof(TempTitle)];
+			if (ts.TitleFormat & 16) {
+				_snprintf_s(str, sizeof(str), _TRUNCATE, "%s:%d", ts.HostName, ts.TCPPort);
+			}
+			else {
+				strncpy_s(str, sizeof(str), ts.HostName, _TRUNCATE);
+			}
+
 			if (ts.TitleFormat & 8) {
-				if (ts.TitleFormat & 16) {
-					_snprintf_s(TempTitle, sizeof(TempTitle), _TRUNCATE, "%s:%d - %s", ts.HostName, ts.TCPPort, ts.Title);
-				}
-				else {
-					// format ID = 13(8 + 5): <hots/port> - <title>
-					_snprintf_s(TempTitle, sizeof(TempTitle), _TRUNCATE, "%s - %s", ts.HostName, ts.Title);
-				}
-			} else {
-				if (ts.TitleFormat & 16) {
-					_snprintf_s(TempTitle, sizeof(TempTitle), _TRUNCATE, "%s - %s:%d", ts.Title, ts.HostName, ts.TCPPort);
-				}
-				else {
-					strncat_s(TempTitle, sizeof(TempTitle), ts.HostName, _TRUNCATE);
-				}
+				// format ID = 13(8 + 5): <hots/port> - <title>
+				_snprintf_s(TempTitle, sizeof(TempTitle), _TRUNCATE, "%s - %s", str, ts.Title);
+			}
+			else {
+				strncat_s(TempTitle, sizeof(TempTitle), ts.HostName, _TRUNCATE);
 			}
 		}
 	}
 
 	if ((ts.TitleFormat & 2)!=0)
 	{ // serial no.
-		strncat(TempTitle," (",sizeof(TempTitle)-1-strlen(TempTitle));
-		sprintf(Num,"%u",SerialNo);
-		strncat(TempTitle,Num,sizeof(TempTitle)-1-strlen(TempTitle));
-		strncat(TempTitle,")",sizeof(TempTitle)-1-strlen(TempTitle));
+		char Num[11];
+		strncat_s(TempTitle,sizeof(TempTitle)," (",_TRUNCATE);
+		_snprintf_s(Num,sizeof(Num),_TRUNCATE,"%u",SerialNo);
+		strncat_s(TempTitle,sizeof(TempTitle),Num,_TRUNCATE);
+		strncat_s(TempTitle,sizeof(TempTitle),")",_TRUNCATE);
 	}
 
 	if ((ts.TitleFormat & 4)!=0) // VT
-		strncat(TempTitle," VT",sizeof(TempTitle)-1-strlen(TempTitle));
+		strncat_s(TempTitle,sizeof(TempTitle)," VT",_TRUNCATE);
 
 	SetWindowText(HVTWin,TempTitle);
 
@@ -240,9 +207,7 @@ void ChangeTitle()
 	{
 		if ((ts.TitleFormat & 4)!=0) // TEK
 		{
-			TempTitle[strlen(TempTitle)-2] = 0;
-			strncat(TempTitle,"TEK",
-				sizeof(TempTitle)-1-strlen(TempTitle));
+			strncat_s(TempTitle,sizeof(TempTitle)," TEK",_TRUNCATE);
 		}
 		SetWindowText(HTEKWin,TempTitle);
 	}
@@ -328,6 +293,9 @@ void OpenHtmlHelp(HWND HWin, char *filename)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2007/07/19 11:02:11  maya
+ * タイトルバーに TCP ポート番号 と シリアルポートのボーレートが表示できるようにした。
+ *
  * Revision 1.12  2007/06/06 14:02:53  maya
  * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
  *
