@@ -114,6 +114,17 @@ void ConvertToCP932(char *str, int len)
 // (2005.3.13 yutaka) タイトルのSJISへの変換（日本語）を追加
 // (2006.6.15 maya)   ts.KanjiCodeがEUCだと、SJISでもEUCとして
 //                    変換してしまうので、ここでは変換しない
+// (2007.7.19 maya)   TCP ポート番号 と シリアルポートのボーレートの表示に対応
+/*
+ *  TitleFormat
+ *    0 0 0 0 0 0 (2)
+ *    | | | | | +----- displays TCP host/serial port
+ *    | | | | +------- displays session no
+ *    | | | +--------- displays VT/TEK
+ *    | | +----------- displays TCP host/serial port first
+ *    | +------------- displays TCP port number
+ *    +--------------- displays baud rate of serial port
+ */
 void ChangeTitle()
 {
 	int i;
@@ -148,13 +159,39 @@ void ChangeTitle()
 		{
 #if 1
 			// COM5 overに対応
-			char str[10];
-			_snprintf(str, sizeof(str), "COM%d", ts.ComPort);
+			char str[20]; // COMxx:xxxxxxbaud
+			if (ts.TitleFormat & 32) {
+				char baud[10];
+				switch (ts.Baud) {
+					case IdBaud110:    strncpy_s(baud, sizeof(baud), "110",    _TRUNCATE); break;
+					case IdBaud300:    strncpy_s(baud, sizeof(baud), "300",    _TRUNCATE); break;
+					case IdBaud600:    strncpy_s(baud, sizeof(baud), "600",    _TRUNCATE); break;
+					case IdBaud1200:   strncpy_s(baud, sizeof(baud), "1200",   _TRUNCATE); break;
+					case IdBaud2400:   strncpy_s(baud, sizeof(baud), "2400",   _TRUNCATE); break;
+					case IdBaud4800:   strncpy_s(baud, sizeof(baud), "4800",   _TRUNCATE); break;
+					case IdBaud9600:   strncpy_s(baud, sizeof(baud), "9600",   _TRUNCATE); break;
+					case IdBaud14400:  strncpy_s(baud, sizeof(baud), "14400",  _TRUNCATE); break;
+					case IdBaud19200:  strncpy_s(baud, sizeof(baud), "19200",  _TRUNCATE); break;
+					case IdBaud38400:  strncpy_s(baud, sizeof(baud), "38400",  _TRUNCATE); break;
+					case IdBaud57600:  strncpy_s(baud, sizeof(baud), "57600",  _TRUNCATE); break;
+#ifdef TERATERM32
+					case IdBaud115200: strncpy_s(baud, sizeof(baud), "115200", _TRUNCATE); break;
+#endif
+					case IdBaud230400: strncpy_s(baud, sizeof(baud), "230400", _TRUNCATE); break;
+					case IdBaud460800: strncpy_s(baud, sizeof(baud), "460800", _TRUNCATE); break;
+					case IdBaud921600: strncpy_s(baud, sizeof(baud), "921600", _TRUNCATE); break;
+					default: strncpy_s(baud, sizeof(baud), "", _TRUNCATE); break;
+				}
+				_snprintf_s(str, sizeof(str), _TRUNCATE, "COM%d:%sbaud", ts.ComPort, baud);
+			}
+			else {
+				_snprintf_s(str, sizeof(str), _TRUNCATE, "COM%d", ts.ComPort);
+			}
 
 			if (ts.TitleFormat & 8) {
 				_snprintf(TempTitle, sizeof(TempTitle), "%s - %s", str, ts.Title);
 			} else {
-				strncat(TempTitle, str, i); 
+				strncat_s(TempTitle, sizeof(TempTitle), str, _TRUNCATE); 
 			}
 
 #else
@@ -168,11 +205,20 @@ void ChangeTitle()
 		}
 		else {
 			if (ts.TitleFormat & 8) {
-				// format ID = 13(8 + 5): <hots/port> - <title>
-				_snprintf(TempTitle, sizeof(TempTitle), "%s - %s", ts.HostName, ts.Title);
-
+				if (ts.TitleFormat & 16) {
+					_snprintf_s(TempTitle, sizeof(TempTitle), _TRUNCATE, "%s:%d - %s", ts.HostName, ts.TCPPort, ts.Title);
+				}
+				else {
+					// format ID = 13(8 + 5): <hots/port> - <title>
+					_snprintf_s(TempTitle, sizeof(TempTitle), _TRUNCATE, "%s - %s", ts.HostName, ts.Title);
+				}
 			} else {
-				strncat(TempTitle,ts.HostName,i);
+				if (ts.TitleFormat & 16) {
+					_snprintf_s(TempTitle, sizeof(TempTitle), _TRUNCATE, "%s - %s:%d", ts.Title, ts.HostName, ts.TCPPort);
+				}
+				else {
+					strncat_s(TempTitle, sizeof(TempTitle), ts.HostName, _TRUNCATE);
+				}
 			}
 		}
 	}
@@ -282,6 +328,9 @@ void OpenHtmlHelp(HWND HWin, char *filename)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2007/06/06 14:02:53  maya
+ * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
+ *
  * Revision 1.11  2007/05/11 18:47:01  maya
  * ヘルプのオーナーが常にデスクトップになるように変更した。
  *
