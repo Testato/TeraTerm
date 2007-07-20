@@ -1200,7 +1200,12 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	    ts->DelayPerLine = GetDlgItemInt(Dialog,IDC_SERIALDELAYLINE,NULL,FALSE);
 
 	    ts->PortType = IdSerial;
+
+	    // ボーレートが変更されることがあるので、タイトル再表示の
+	    // メッセージを飛ばすようにした。 (2007.7.21 maya)
+	    PostMessage(GetParent(Dialog),WM_USER_CHANGETITLE,0,0);
 	  }
+
 	  EndDialog(Dialog, 1);
 #ifndef NO_I18N
       if (DlgSerialFont != NULL) {
@@ -3009,6 +3014,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.25  2007/07/14 00:22:52  maya
+ * 言語が日本語のときのみ TTXKanjiMenu が表示されるようにした。
+ *
  * Revision 1.24  2007/07/05 12:15:48  doda
  * 利用可能なCOMポートが無い時、新しい接続ダイアログでシリアルポートの選択を無効化した。
  *

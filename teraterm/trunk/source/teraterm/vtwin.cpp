@@ -160,6 +160,7 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_MESSAGE(WM_USER_GETSERIALNO,OnGetSerialNo)
 	ON_MESSAGE(WM_USER_KEYCODE,OnKeyCode)
 	ON_MESSAGE(WM_USER_PROTOCANCEL,OnProtoEnd)
+	ON_MESSAGE(WM_USER_CHANGETITLE,OnChangeTitle)
 	ON_MESSAGE(WM_COPYDATA,OnReceiveIpcMessage)
 	ON_COMMAND(ID_FILE_NEWCONNECTION, OnFileNewConnection)
 	ON_COMMAND(ID_FILE_DUPLICATESESSION, OnDuplicateSession)
@@ -2483,6 +2484,12 @@ LONG CVTWindow::OnKeyCode(UINT wParam, LONG lParam)
 LONG CVTWindow::OnProtoEnd(UINT wParam, LONG lParam)
 {
   ProtoDlgCancel();
+  return 0;
+}
+
+LONG CVTWindow::OnChangeTitle(UINT wParam, LONG lParam)
+{
+  ChangeTitle();
   return 0;
 }
 
@@ -5055,6 +5062,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.71  2007/07/14 00:22:33  maya
+ * 言語が日本語のときのみ TTXKanjiMenu が表示されるようにした。
+ *
  * Revision 1.70  2007/07/05 12:15:28  doda
  * 利用可能なCOMポートが無い時、新しい接続ダイアログでシリアルポートの選択を無効化した。
  *
