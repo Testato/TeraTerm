@@ -232,7 +232,38 @@ TitleFormat=&lt;format ID&gt;
 </pre>
 
 <p>
-&lt;format ID&gt; は以下のうちの一つを選んでください。
+&lt;format ID&gt; には整数値を指定する。プログラムにより、ビット列として扱われる。
+</p>
+
+<table>
+ <tr>
+  <td>1ビット目 (1)</td>
+  <td>TCP ホスト名もしくはシリアルポート番号を表示する</td>
+ </tr>
+ <tr>
+  <td>2ビット目 (2)</td>
+  <td>セッション番号を表示する</td>
+ </tr>
+ <tr>
+   <td>3ビット目 (4)</td>
+   <td>VT/TEK を表示する</td>
+  </tr>
+ <tr>
+   <td>4ビット目 (8)</td>
+   <td>&lt;host/port&gt; を先に表示する</td>
+  </tr>
+ <tr>
+  <td>5ビット目 (16)</td>
+  <td>TCP ポート番号を表示する</td>
+ </tr>
+ <tr>
+  <td>6ビット目 (32)</td>
+  <td>シリアルポートのボーレートを表示する</td>
+ </tr>
+</table>
+
+<p>
+以下に &lt;format ID&gt; の例を示します。
 </p>
 
 <pre>
@@ -246,6 +277,9 @@ Format ID   タイトルの形式
 6           &lt;title&gt; (session no.) VT/TEK
 7           &lt;title&gt; - &lt;host/port&gt; (session no.) VT/TEK
 13          &lt;host/port&gt; - &lt;title&gt; VT/TEK
+29          &lt;host:tcpport/port&gt; - &lt;title&gt; VT/TEK
+45          &lt;host/port:baud&gt; - &lt;title&gt; VT/TEK
+61          &lt;host:tcpport/port:baud&gt; - &lt;title&gt; VT/TEK
 </pre>
 
 <pre>

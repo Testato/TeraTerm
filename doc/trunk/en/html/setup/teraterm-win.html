@@ -212,7 +212,38 @@ TitleFormat=&lt;format ID&gt;
 </pre>
 
 <p>
-where the format ID should be one of the following:
+&lt;format ID&gt; is a integer value. It is treated as bit string.
+</p>
+
+<table>
+ <tr>
+  <td>1st bit (1)</td>
+  <td>Displays tcp hostname or serial port number</td>
+ </tr>
+ <tr>
+  <td>2nd bit (2)</td>
+  <td>Displays session No.</td>
+ </tr>
+ <tr>
+   <td>3rd bit (4)</td>
+   <td>Displays VT/TEK</td>
+  </tr>
+ <tr>
+   <td>4th bit (8)</td>
+   <td>Displays &lt;host/port&gt; first</td>
+  </tr>
+ <tr>
+  <td>5th bit (16)</td>
+  <td>Displays TCP port number</td>
+ </tr>
+ <tr>
+  <td>6th bit (32)</td>
+  <td>Displays the baud rate of serial port</td>
+ </tr>
+</table>
+
+<p>
+Examples of &lt;format ID&gt; are shown as follows.
 </p>
 
 <pre>
@@ -226,6 +257,9 @@ Format ID   Title format
 6           &lt;title&gt; (session no.) VT/TEK
 7           &lt;title&gt; - &lt;host/port&gt; (session no.) VT/TEK
 13          &lt;host/port&gt; - &lt;title&gt; VT/TEK
+29          &lt;host:tcpport/port&gt; - &lt;title&gt; VT/TEK
+45          &lt;host/port:baud&gt; - &lt;title&gt; VT/TEK
+61          &lt;host:tcpport/port:baud&gt; - &lt;title&gt; VT/TEK
 </pre>
 
 <pre>
