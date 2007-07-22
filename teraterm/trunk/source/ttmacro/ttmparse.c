@@ -120,6 +120,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
   if (_stricmp(Str,"beep")==0) *WordId = RsvBeep;
   else if (_stricmp(Str,"bplusrecv")==0) *WordId = RsvBPlusRecv;
   else if (_stricmp(Str,"bplussend")==0) *WordId = RsvBPlusSend;
+  else if (_stricmp(Str,"break")==0) *WordId = RsvBreak;
   else if (_stricmp(Str,"call")==0) *WordId = RsvCall;
   else if (_stricmp(Str,"changedir")==0) *WordId = RsvChangeDir;
   else if (_stricmp(Str,"clearscreen")==0) *WordId = RsvClearScreen;

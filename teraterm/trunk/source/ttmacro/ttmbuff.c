@@ -12,6 +12,7 @@
 #include "ttmbuff.h"
 
 int EndWhileFlag;
+int BreakFlag;
 
 #ifdef TERATERM32
   #define MAXBUFFLEN 2147483647
@@ -266,6 +267,7 @@ BOOL InitBuff(PCHAR FileName)
   SP = 0;
   NextFlag = FALSE;
   EndWhileFlag = 0;
+  BreakFlag = 0;
   for (i=0 ; i<=MAXNESTLEVEL-1 ; i++)
     BuffHandle[i] = 0;
   INest = 0;
@@ -447,5 +449,26 @@ int BackToWhile()
     CloseBuff(INest+1);
   }
   BuffPtr[INest] = PtrStack[SP];
+  return 0;
+}
+
+WORD BreakLoop()
+{
+  if (SP<1)
+    return ErrInvalidCtl;
+
+  switch (TypeStack[SP-1]) {
+    case CtlFor:
+    case CtlWhile:
+      SP--;
+      if (LevelStack[SP] < INest) {
+	INest = LevelStack[SP];
+	CloseBuff(INest+1);
+      }
+      BreakFlag = 1;
+      break;
+    default:
+      return ErrInvalidCtl;
+  }
   return 0;
 }

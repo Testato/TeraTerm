@@ -157,6 +157,7 @@
 #define RsvSprintf    117   // add 'sprintf' (2007.5.1 yutaka)
 #define RsvToLower    118   // add 'tolower' (2007.7.12 maya)
 #define RsvToUpper    119   // add 'toupper' (2007.7.12 maya)
+#define RsvBreak      120   // add 'break' (2007.7.20 doda)
 
 #define RsvOperator   150
 #define RsvNot	      151

@@ -247,6 +247,13 @@ WORD TTLBeep()
     return ErrSyntax;
 }
 
+WORD TTLBreak() {
+  if (GetFirstChar()!=0)
+    return ErrSyntax;
+
+  return BreakLoop();
+}
+
 WORD TTLCall()
 {
   TName LabName;
@@ -2781,23 +2788,44 @@ int ExecCmnd()
 	WORD ValType, VarType, VarId;
 	int Val;
 
+	Err = 0;
+
 	if (EndWhileFlag>0)
 	{
 		if (! GetReservedWord(&WId))
-			WId = 0;
-		if (WId==RsvWhile)
+			;
+		else if (WId==RsvWhile)
 			EndWhileFlag++;
 		else if (WId==RsvEndWhile)
 			EndWhileFlag--;
 		return 0;
 	}
 
+	if (BreakFlag>0)
+	{
+		if (! GetReservedWord(&WId))
+			;
+		else if ((WId==RsvIf) && (CheckThen(&Err)))
+			IfNest++;
+		else if (WId==RsvEndIf)
+		{
+			if (IfNest<1)
+				Err = ErrInvalidCtl;
+			else
+				IfNest--;
+		}
+		else if (WId==RsvFor || WId==RsvWhile)
+			BreakFlag++;
+		else if (WId==RsvNext || WId==RsvEndWhile)
+			BreakFlag--;
+		return Err;
+	}
+
 	if (EndIfFlag>0)
 	{
-		Err = 0;
 		if (! GetReservedWord(&WId))
-			WId = 0;
-		if ((WId==RsvIf) && CheckThen(&Err))
+			;
+		else if ((WId==RsvIf) && CheckThen(&Err))
 			EndIfFlag++;
 		else if (WId==RsvEndIf)
 			EndIfFlag--;
@@ -2806,10 +2834,9 @@ int ExecCmnd()
 
 	if (ElseFlag>0)
 	{
-		Err = 0;
 		if (! GetReservedWord(&WId))
-			WId = 0;
-		if ((WId==RsvIf) && CheckThen(&Err))
+			;
+		else if ((WId==RsvIf) && CheckThen(&Err))
 			EndIfFlag++;
 		else if (WId==RsvElse)
 			ElseFlag--;
@@ -2827,7 +2854,6 @@ int ExecCmnd()
 		return Err;
 	}
 
-	Err = 0;
 	if (GetReservedWord(&WId)) 
 		switch (WId) {
 		case RsvBeep:	  Err = TTLBeep(); break;
@@ -2835,6 +2861,7 @@ int ExecCmnd()
 			Err = TTLCommCmd(CmdBPlusRecv,IdTTLWaitCmndResult); break;
 		case RsvBPlusSend:
 			Err = TTLCommCmdFile(CmdBPlusSend,IdTTLWaitCmndResult); break;
+		case RsvBreak:    Err = TTLBreak(); break;
 		case RsvCall:	  Err = TTLCall(); break;
 		case RsvChangeDir:
 			Err = TTLCommCmdFile(CmdChangeDir,0); break;
