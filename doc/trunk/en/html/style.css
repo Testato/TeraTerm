@@ -102,3 +102,12 @@ img{
 	font-weight: 900;
 	color: #0000ff;
 }
+
+pre.macro-syntax {
+	font-weight: bold;
+	margin-left: 1em;
+}
+
+pre.macro-example {
+	margin-left: 1em;
+}

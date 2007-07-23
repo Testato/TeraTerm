@@ -735,6 +735,11 @@
 				</OBJECT>
 			<UL>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="break">
+					<param name="Local" value="html\macro\command\break.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="call">
 					<param name="Local" value="html\macro\command\call.html">
 					<param name="ImageNumber" value="11">
