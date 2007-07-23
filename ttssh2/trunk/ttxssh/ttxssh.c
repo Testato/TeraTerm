@@ -900,10 +900,10 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 {
 	static char *ssh_version[] = {"SSH1", "SSH2", NULL};
 	PGetHNRec GetHNRec;
-	char EntName[7];
+	char EntName[8];
 	char TempHost[HostNameMaxLength + 1];
 	WORD i, j, w;
-	char ComPortTable[99];
+	char ComPortTable[MAXCOMPORT];
 	int comports;
 	BOOL Ok;
 #ifndef NO_I18N
@@ -3872,6 +3872,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.63  2007/07/05 12:16:11  doda
+ * 利用可能なCOMポートが無い時、新しい接続ダイアログでシリアルポートの選択を無効化した。
+ *
  * Revision 1.62  2007/06/12 14:55:20  maya
  * BOF(Buffer Over Flow)が発生する処理を修正。
  *
