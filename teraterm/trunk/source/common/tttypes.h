@@ -739,6 +739,8 @@ typedef TComVar far *PComVar;
 #define ID_SHOWMENUBAR 995
 
 #define MAXNWIN 50
+#define MAXCOMPORT 200
+
 /* shared memory */
 typedef struct {
   /* Setup information from "teraterm.ini" */

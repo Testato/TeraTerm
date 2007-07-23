@@ -786,7 +786,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
     GetPrivateProfileInt(Section,"MaxComPort",4,FName);
   if (ts->MaxComPort < 4) ts->MaxComPort = 4;
   // COM16から99へ拡張 (2005.11.30 yutaka)
-  if (ts->MaxComPort > 99) ts->MaxComPort = 99;
+  // 99から200へ拡張 (2007.7.23 maya)
+  if (ts->MaxComPort > MAXCOMPORT) ts->MaxComPort = MAXCOMPORT;
   if ((ts->ComPort<1) || (ts->ComPort>ts->MaxComPort))
     ts->ComPort = 1;
 
@@ -2516,6 +2517,14 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.39  2007/07/04 11:18:40  doda
+ * 行末のタブの動作を変えるパラメータ VTCompatTab を追加した。
+ *   VTCompatTab = on/off (デフォルト: off)
+ *     on:  行末のタブの動作をVT/PuTTY/xterm等と同じにする。
+ *          (タブによる自動改行は発生しない)
+ *     off: 行末のタブの動作をFreeBSDのコンソール(syscons)等と同じにする。
+ *          (タブによる自動改行が発生する -- VT非互換)
+ *
  * Revision 1.38  2007/06/26 06:32:40  maya
  * teraterm.ini の CRReceive が LF をサポートしていなかったのを修正した。
  *

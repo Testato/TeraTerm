@@ -1051,7 +1051,7 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   PTTSet ts;
   int i, w;
   char Temp[7];
-  char ComPortTable[99];
+  char ComPortTable[MAXCOMPORT];
   int comports;
 #ifndef NO_I18N
   char uimsg[MAX_UIMSG];
@@ -1538,7 +1538,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   char TempHost[HostNameMaxLength+1];
   WORD i, j, w;
   BOOL Ok;
-  char ComPortTable[99];
+  char ComPortTable[MAXCOMPORT];
   int comports;
 #ifndef NO_I18N
   char uimsg[MAX_UIMSG];
@@ -2340,7 +2340,7 @@ BOOL CALLBACK GenDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
   PTTSet ts;
   WORD w;
-  char Temp[6];
+  char Temp[7];
 #ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   LOGFONT logfont;
@@ -2393,7 +2393,7 @@ BOOL CALLBACK GenDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       strcpy(Temp,"COM");
       for (w=1;w<=ts->MaxComPort;w++)
       {
-	uint2str(w,&Temp[3],2);
+	uint2str(w,&Temp[3],3);
 	SendDlgItemMessage(Dialog, IDC_GENPORT, CB_ADDSTRING,
 			   0, (LPARAM)Temp);
       }
@@ -3014,6 +3014,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.26  2007/07/20 21:55:27  maya
+ * シリアルポートダイアログでボーレートが変更されることがあるので、終了時にタイトルを変更するようにした。
+ *
  * Revision 1.25  2007/07/14 00:22:52  maya
  * 言語が日本語のときのみ TTXKanjiMenu が表示されるようにした。
  *
