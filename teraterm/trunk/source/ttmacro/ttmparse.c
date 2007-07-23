@@ -889,51 +889,53 @@ BOOL GetExpression(LPWORD ValType, int far *Val, LPWORD Err)
   }
   if (Type1!=TypInteger) return TRUE;
 
-  P2 = LinePtr;
-  if (! GetOperator(&WId)) return TRUE;
+  do {
+    P2 = LinePtr;
+    if (! GetOperator(&WId)) return TRUE;
 
-  switch (WId) {
-    case RsvLT:
-    case RsvEQ:
-    case RsvGT:
-    case RsvLE:
-    case RsvNE:
-    case RsvGE: break;
-    default:
-      LinePtr = P2;
+    switch (WId) {
+      case RsvLT:
+      case RsvEQ:
+      case RsvGT:
+      case RsvLE:
+      case RsvNE:
+      case RsvGE: break;
+      default:
+	LinePtr = P2;
+	return TRUE;
+    }
+
+    if (! GetSimpleExpression(&Type2,&Val2,&Er))
+    {
+      *Err = ErrSyntax;
+      LinePtr = P1;
       return TRUE;
-  }
+    }
 
-  if (! GetSimpleExpression(&Type2,&Val2,&Er))
-  {
-    *Err = ErrSyntax;
-    LinePtr = P1;
-    return TRUE;
-  }
+    if (Er!=0)
+    {
+      *Err = Er;
+      LinePtr = P1;
+      return TRUE;
+    }
 
-  if (Er!=0)
-  {
-    *Err = Er;
-    LinePtr = P1;
-    return TRUE;
-  }
+    if (Type2!=TypInteger)
+    {
+      *Err = ErrTypeMismatch;
+      return TRUE;
+    }
 
-  if (Type2!=TypInteger)
-  {
-    *Err = ErrTypeMismatch;
-    return TRUE;
-  }
-
-  *Val = 0;
-  switch (WId) {
-    case RsvLT: if (Val1 <Val2) *Val = 1; break;
-    case RsvEQ: if (Val1==Val2) *Val = 1; break;
-    case RsvGT: if (Val1 >Val2) *Val = 1; break;
-    case RsvLE: if (Val1<=Val2) *Val = 1; break;
-    case RsvNE: if (Val1!=Val2) *Val = 1; break;
-    case RsvGE: if (Val1>=Val2) *Val = 1; break;
-  }
-  return TRUE;
+    *Val = 0;
+    switch (WId) {
+      case RsvLT: if (Val1 <Val2) *Val = 1; break;
+      case RsvEQ: if (Val1==Val2) *Val = 1; break;
+      case RsvGT: if (Val1 >Val2) *Val = 1; break;
+      case RsvLE: if (Val1<=Val2) *Val = 1; break;
+      case RsvNE: if (Val1!=Val2) *Val = 1; break;
+      case RsvGE: if (Val1>=Val2) *Val = 1; break;
+    }
+	Val1 = *Val;
+  } while (TRUE);
 }
 
 void GetIntVal(int far *Val, LPWORD Err)
