@@ -3054,8 +3054,10 @@ void SSH_fail_channel_open(PTInstVar pvar, uint32 remote_channel_num)
 			// TODO: error check
 			return;
 		}
-		buffer_put_int(msg, remote_channel_num);  
-		buffer_put_int(msg, SSH2_OPEN_ADMINISTRATIVELY_PROHIBITED);  
+		buffer_put_int(msg, remote_channel_num);
+		buffer_put_int(msg, SSH2_OPEN_ADMINISTRATIVELY_PROHIBITED);
+		buffer_put_string(msg, "", 0); // description
+		buffer_put_string(msg, "", 0); // language tag
 
 		len = buffer_len(msg);
 		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN_FAILURE, len);
@@ -7423,6 +7425,10 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.80  2007/07/12 14:12:33  yutakapon
+ * keyboard-interactive methodでの認証失敗後のパスワード認証の
+ * 無条件トライを止めるようにした。
+ *
  * Revision 1.79  2007/06/06 14:10:12  maya
  * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
  *
