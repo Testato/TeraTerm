@@ -308,9 +308,9 @@ static void really_delete_request(PTInstVar pvar, int request_num)
 #endif							/* NO_INET6 */
 }
 
-static void free_channel(PTInstVar pvar, int i)
+void FWD_free_channel(PTInstVar pvar, uint32 local_channel_num)
 {
-	FWDChannel FAR *channel = &pvar->fwd_state.channels[i];
+	FWDChannel FAR *channel = &pvar->fwd_state.channels[local_channel_num];
 
 	UTIL_destroy_sock_write_buf(&channel->writebuf);
 	if (channel->filter != NULL) {
@@ -352,7 +352,7 @@ void FWD_channel_input_eof(PTInstVar pvar, uint32 local_channel_num)
 	channel->status |= FWD_CLOSED_REMOTE_IN;
 	if ((channel->status & FWD_CLOSED_REMOTE_OUT) == FWD_CLOSED_REMOTE_OUT) {
 		closed_local_connection(pvar, local_channel_num);
-		free_channel(pvar, local_channel_num);
+		FWD_free_channel(pvar, local_channel_num);
 	}
 }
 
@@ -371,7 +371,7 @@ void FWD_channel_output_eof(PTInstVar pvar, uint32 local_channel_num)
 	channel->status |= FWD_CLOSED_REMOTE_OUT;
 	if ((channel->status & FWD_CLOSED_REMOTE_IN) == FWD_CLOSED_REMOTE_IN) {
 		closed_local_connection(pvar, local_channel_num);
-		free_channel(pvar, local_channel_num);
+		FWD_free_channel(pvar, local_channel_num);
 	}
 }
 
@@ -536,7 +536,7 @@ static void channel_opening_error(PTInstVar pvar, int channel_num, int err)
 	}
 	buf[sizeof(buf) - 1] = 0;
 	notify_nonfatal_error(pvar, buf);
-	free_channel(pvar, channel_num);
+	FWD_free_channel(pvar, channel_num);
 }
 
 static void init_local_IP_numbers(PTInstVar pvar)
@@ -2038,7 +2038,7 @@ void FWD_failed_open(PTInstVar pvar, uint32 local_channel_num)
 						  "A program on the local machine attempted to connect to a forwarded port.\n"
 						  "The forwarding request was denied by the server. The connection has been closed.");
 #endif
-	free_channel(pvar, local_channel_num);
+	FWD_free_channel(pvar, local_channel_num);
 }
 
 static BOOL blocking_write(PTInstVar pvar, SOCKET s, const char FAR * data,
@@ -2124,7 +2124,7 @@ void FWD_end(PTInstVar pvar)
 
 	if (pvar->fwd_state.channels != NULL) {
 		for (i = 0; i < pvar->fwd_state.num_channels; i++) {
-			free_channel(pvar, i);
+			FWD_free_channel(pvar, i);
 		}
 		free(pvar->fwd_state.channels);
 	}
@@ -2172,6 +2172,9 @@ void FWD_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2007/07/24 17:07:56  maya
+ * エラーメッセージが正しく表示されない問題を修正した。
+ *
  * Revision 1.11  2007/06/06 14:10:12  maya
  * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
  *

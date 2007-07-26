@@ -45,6 +45,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "buffer.h"
 #include "ssh.h"
 #include "crypt.h"
+#include "fwd.h"
 
 // SSH2 macro
 #ifdef _DEBUG
@@ -3355,6 +3356,8 @@ void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
 			// changed window size from 128KB to 32KB. (2006.3.6 yutaka)
 			c = ssh2_channel_new(CHAN_TCP_PACKET_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_PORTFWD, local_channel_num);
 			if (c == NULL) {
+				// 転送チャネル内にあるソケットの解放漏れを修正 (2007.7.26 maya)
+				FWD_free_channel(pvar, local_channel_num);
 #ifndef NO_I18N
 				strcpy(pvar->ts->UIMsg, "Could not open new channel. TTSSH is already opening too many channels.");
 				UTIL_get_lang_msg("MSG_SSH_NO_FREE_CHANNEL", pvar);
@@ -6871,6 +6874,9 @@ static BOOL handle_SSH2_open_failure(PTInstVar pvar)
 
 	free(cstring);
 
+	// 転送チャネル内にあるソケットの解放漏れを修正 (2007.7.26 maya)
+	FWD_free_channel(pvar, c->local_num);
+
 	// チャネルの解放漏れを修正 (2007.5.1 maya)
 	ssh2_channel_delete(c);
 
@@ -7207,6 +7213,8 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 		// changed window size from 128KB to 32KB. (2006.3.6 yutaka)
 		c = ssh2_channel_new(CHAN_TCP_PACKET_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_PORTFWD, chan_num);
 		if (c == NULL) {
+			// 転送チャネル内にあるソケットの解放漏れを修正 (2007.7.26 maya)
+			FWD_free_channel(pvar, chan_num);
 #ifndef NO_I18N
 			strcpy(pvar->ts->UIMsg, "Could not open new channel. TTSSH is already opening too many channels.");
 			UTIL_get_lang_msg("MSG_SSH_NO_FREE_CHANNEL", pvar);
@@ -7238,6 +7246,8 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 		// changed window size from 128KB to 32KB. (2006.3.6 yutaka)
 		c = ssh2_channel_new(CHAN_TCP_PACKET_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_PORTFWD, chan_num);
 		if (c == NULL) {
+			// 転送チャネル内にあるソケットの解放漏れを修正 (2007.7.26 maya)
+			FWD_free_channel(pvar, chan_num);
 #ifndef NO_I18N
 			strcpy(pvar->ts->UIMsg, "Could not open new channel. TTSSH is already opening too many channels.");
 			UTIL_get_lang_msg("MSG_SSH_NO_FREE_CHANNEL", pvar);
@@ -7307,6 +7317,9 @@ static BOOL handle_SSH2_channel_close(PTInstVar pvar)
 		notify_closed_connection(pvar);
 
 	} else if (c->type == TYPE_PORTFWD) { 
+		// 転送チャネル内にあるソケットの解放漏れを修正 (2007.7.26 maya)
+		FWD_free_channel(pvar, c->local_num);
+
 		// チャネルの解放漏れを修正 (2007.4.26 yutaka)
 		ssh2_channel_delete(c);
 
@@ -7425,6 +7438,10 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.81  2007/07/24 17:09:29  maya
+ * リモートからの転送接続が失敗したときに SSH 接続が切れる問題を修正した。
+ * SSH_MSG_CHANNEL_OPEN_FAILURE のパケットが正しく作成されていなかったため。
+ *
  * Revision 1.80  2007/07/12 14:12:33  yutakapon
  * keyboard-interactive methodでの認証失敗後のパスワード認証の
  * 無条件トライを止めるようにした。

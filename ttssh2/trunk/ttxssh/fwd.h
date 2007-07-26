@@ -158,5 +158,6 @@ void FWD_received_data(PTInstVar pvar, uint32 local_channel_num,
 void FWD_channel_input_eof(PTInstVar pvar, uint32 local_channel_num);
 void FWD_channel_output_eof(PTInstVar pvar, uint32 local_channel_num);
 void FWD_end(PTInstVar pvar);
+void FWD_free_channel(PTInstVar pvar, uint32 local_channel_num);
 
 #endif
