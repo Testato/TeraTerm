@@ -1435,7 +1435,7 @@ static BOOL interactive_init_request(PTInstVar pvar, int request_num,
 											"Some port forwarding services may not be available.\n"
 											"(errno %d)", WSAGetLastError());
 #endif
-				notify_nonfatal_error(pvar,buf);
+				notify_verbose_message(pvar,buf,LOG_LEVEL_WARNING);
 			}
 			freeaddrinfo(res0);
 			/* free(request->listening_sockets); /* DO NOT FREE HERE, listening_sockets'll be freed in FWD_end */
@@ -2172,6 +2172,9 @@ void FWD_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2007/07/26 08:33:52  maya
+ * SSH のチャネルが開けないときにソケットが開いたままになっていたのを修正した。
+ *
  * Revision 1.12  2007/07/24 17:07:56  maya
  * エラーメッセージが正しく表示されない問題を修正した。
  *
