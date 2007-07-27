@@ -26,7 +26,7 @@ static char THIS_FILE[] = __FILE__;
 
 // CInpDlg dialog
 CInpDlg::CInpDlg(PCHAR Input, PCHAR Text, PCHAR Title,
-		 BOOL Paswd, int x, int y)
+		 PCHAR Default, BOOL Paswd, int x, int y)
 	: CDialog(CInpDlg::IDD)
 {
   //{{AFX_DATA_INIT(CInpDlg)
@@ -35,6 +35,7 @@ CInpDlg::CInpDlg(PCHAR Input, PCHAR Text, PCHAR Title,
   InputStr = Input;
   TextStr = Text;
   TitleStr = Title;
+  DefaultStr = Default;
   PaswdFlag = Paswd;
   PosX = x;
   PosY = y;
@@ -77,6 +78,7 @@ BOOL CInpDlg::OnInitDialog()
 
   SetWindowText(TitleStr);
   SetDlgItemText(IDC_INPTEXT,TextStr);
+  SetDlgItemText(IDC_INPEDIT,DefaultStr);
 
   TmpDC = ::GetDC(GetSafeHwnd());
   CalcTextExtent(TmpDC,TextStr,&s);

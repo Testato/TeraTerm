@@ -1372,7 +1372,7 @@ WORD TTLGetPassword()
 			  Temp,sizeof(Temp),Str);
   if (Temp[0]==0) // password not exist
   {
-    OpenInpDlg(Temp2, Str2, "Enter password", TRUE);
+    OpenInpDlg(Temp2, Str2, "Enter password", "", TRUE);
     if (Temp2[0]!=0) {
       Encrypt(Temp2,Temp);
       WritePrivateProfileString("Password",Str2,Temp,Str);
@@ -1541,20 +1541,29 @@ WORD TTLInclude()
 
 WORD TTLInputBox(BOOL Paswd)
 {
-  TStrVal Str1, Str2;
+  TStrVal Str1, Str2, Str3;
   WORD Err, ValType, VarId;
 
   Err = 0;
   GetStrVal(Str1,&Err);
   GetStrVal(Str2,&Err);
+  if (Err!=0) return Err;
+
+  // get 3rd arg(optional)
+  GetStrVal(Str3,&Err);
+  if (Err == ErrSyntax) { // missing 3rd arg is not an error
+    strncpy_s(Str3,sizeof(Str3),"",_TRUNCATE);
+    Err = 0;
+  }
+
   if ((Err==0) && (GetFirstChar()!=0))
     Err = ErrSyntax;
-
   if (Err!=0) return Err;
+
   SetInputStr("");
   if (CheckVar("inputstr",&ValType,&VarId) &&
       (ValType==TypString))
-    OpenInpDlg(StrVarPtr(VarId),Str1,Str2,Paswd);
+    OpenInpDlg(StrVarPtr(VarId),Str1,Str2,Str3,Paswd);
   return Err;
 }
 

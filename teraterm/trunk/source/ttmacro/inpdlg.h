@@ -8,7 +8,7 @@ class CInpDlg : public CDialog
 {
 public:
 	CInpDlg(PCHAR Input, PCHAR Text, PCHAR Title,
-		BOOL Paswd, int x, int y);
+		PCHAR Default, BOOL Paswd, int x, int y);
 
 	//{{AFX_DATA(CInpDlg)
 	enum { IDD = IDD_INPDLG };
@@ -18,7 +18,7 @@ public:
 	//}}AFX_VIRTUAL
 
 protected:
-	PCHAR InputStr, TextStr, TitleStr;
+	PCHAR InputStr, TextStr, TitleStr, DefaultStr;
 	BOOL PaswdFlag;
 	int PosX, PosY, init_WW, WW, WH, TW, TH, BH, BW, EW, EH;
 	SIZE s;

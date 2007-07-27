@@ -230,9 +230,9 @@ void SetDlgPos(int x, int y)
 
 extern "C" {
 void OpenInpDlg(PCHAR Buff, PCHAR Text, PCHAR Caption,
-				BOOL Paswd)
+				PCHAR Default, BOOL Paswd)
 {
-  CInpDlg InpDlg(Buff,Text,Caption,Paswd,DlgPosX,DlgPosY);
+  CInpDlg InpDlg(Buff,Text,Caption,Default,Paswd,DlgPosX,DlgPosY);
   InpDlg.DoModal();
 }
 }

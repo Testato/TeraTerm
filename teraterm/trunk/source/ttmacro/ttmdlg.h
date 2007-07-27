@@ -12,7 +12,7 @@ void ParseParam(PBOOL IOption, PBOOL VOption);
 BOOL GetFileName(HWND HWin);
 void SetDlgPos(int x, int y);
 void OpenInpDlg(PCHAR Buff, PCHAR Text, PCHAR Caption,
-		BOOL Paswd);
+		PCHAR Default, BOOL Paswd);
 int OpenErrDlg(PCHAR Msg, PCHAR Line);
 int OpenMsgDlg(PCHAR Text, PCHAR Caption, BOOL YesNo);
 void OpenStatDlg(PCHAR Text, PCHAR Caption);
