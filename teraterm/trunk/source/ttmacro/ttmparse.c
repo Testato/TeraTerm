@@ -239,9 +239,14 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
   else if (_stricmp(Str,"zmodemsend")==0) *WordId = RsvZmodemSend;
 
   else if (_stricmp(Str,"not")==0) *WordId = RsvNot;
-  else if (_stricmp(Str,"and")==0) *WordId = RsvAnd;
-  else if (_stricmp(Str,"or")==0) *WordId = RsvOr;
-  else if (_stricmp(Str,"xor")==0) *WordId = RsvXor;
+#ifdef AND_IS_LOGICAL_AND
+  else if (_stricmp(Str,"and")==0) *WordId = RsvLAnd;
+  else if (_stricmp(Str,"or")==0) *WordId = RsvLOr;
+#else
+  else if (_stricmp(Str,"and")==0) *WordId = RsvBAnd;
+  else if (_stricmp(Str,"or")==0) *WordId = RsvBOr;
+#endif /* AND_IS_LOGICAL_AND */
+  else if (_stricmp(Str,"xor")==0) *WordId = RsvBXor;
 
   return (*WordId!=0);
 }
@@ -335,14 +340,17 @@ BOOL GetOperator(LPWORD WordId)
   b = GetFirstChar();
   switch (b) {
     case 0: return FALSE;
-    case '*': *WordId = RsvMul; break;
-    case '+': *WordId = RsvPlus; break;
-    case '-': *WordId = RsvMinus; break;
-    case '/': *WordId = RsvDiv; break;
-    case '%': *WordId = RsvMod; break;
-    case '<': *WordId = RsvLT; break;
-    case '=': *WordId = RsvEQ; break;
-    case '>': *WordId = RsvGT; break;
+    case '*': *WordId = RsvMul;   return TRUE; break;
+    case '+': *WordId = RsvPlus;  return TRUE; break;
+    case '-': *WordId = RsvMinus; return TRUE; break;
+    case '/': *WordId = RsvDiv;   return TRUE; break;
+    case '%': *WordId = RsvMod;   return TRUE; break;
+    case '=': *WordId = RsvEQ;    return TRUE; break;
+    case '<': *WordId = RsvLT;    break;
+    case '>': *WordId = RsvGT;    break;
+    case '&': *WordId = RsvBAnd;  break;
+    case '|': *WordId = RsvBOr;   break;
+    case '^': *WordId = RsvBXor;  return TRUE; break;
     default:
       LinePtr--;
       if (! GetReservedWord(WordId) || (*WordId < RsvOperator))
@@ -350,23 +358,32 @@ BOOL GetOperator(LPWORD WordId)
 	LinePtr = P;
 	return FALSE;
       }
+      else
+        return TRUE;
   }
 
-  if (((*WordId==RsvLT) || (*WordId==RsvGT)) &&
-      (LinePtr<LineLen))
-  {
+  if (LinePtr<LineLen) {
     b = LineBuff[LinePtr];
-    if (b=='=')
-    {
-      if (*WordId==RsvLT)
-	*WordId=RsvLE;
-      else
-	*WordId=RsvGE;
+    if (b == '=') {
+      if (*WordId == RsvLT) {
+	*WordId = RsvLE;
+	LinePtr++;
+      }
+      else if (*WordId == RsvGT) {
+	*WordId = RsvGE;
+	LinePtr++;
+      }
+    }
+    else if ((b == '>') && (*WordId == RsvLT)) {
+      *WordId = RsvNE;
       LinePtr++;
     }
-    else if ((b=='>') && (*WordId==RsvLT))
-    {
-      *WordId = RsvNE;
+    else if ((b == '&') && (*WordId == RsvBAnd)) {
+      *WordId = RsvLAnd;
+      LinePtr++;
+    }
+    else if ((b == '|') && (*WordId == RsvBOr)) {
+      *WordId = RsvLOr;
       LinePtr++;
     }
   }
@@ -707,7 +724,7 @@ BOOL GetFactor(LPWORD ValType, int far *Val, LPWORD Err)
   }
   else if (GetFirstChar()=='(')
   {
-    if (GetExpression(ValType,Val,Err))
+    if (GetOrResult(ValType,Val,Err))
     {
       if ((*Err==0) && (GetFirstChar()!=')'))
 	*Err = ErrCloseParent;
@@ -747,7 +764,7 @@ BOOL GetTerm(LPWORD ValType, int far *Val, LPWORD Err)
 		if (! GetOperator(&WId)) return TRUE;
 
 		switch (WId) {
-		case RsvAnd:
+		case RsvBAnd:
 		case RsvMul:
 		case RsvDiv:
 		case RsvMod: break;
@@ -778,7 +795,7 @@ BOOL GetTerm(LPWORD ValType, int far *Val, LPWORD Err)
 		}
 
 		switch (WId) {
-		case RsvAnd: Val1 = Val1 & Val2; break;
+		case RsvBAnd: Val1 = Val1 & Val2; break;
 		case RsvMul: Val1 = Val1 * Val2; break;
 		case RsvDiv:
 			if (Val2!=0)
@@ -827,8 +844,8 @@ BOOL GetSimpleExpression(LPWORD ValType, int far *Val, LPWORD Err)
     if (! GetOperator(&WId)) return TRUE;
 
     switch (WId) {
-      case RsvOr:
-      case RsvXor:
+      case RsvBOr:
+      case RsvBXor:
       case RsvPlus:
       case RsvMinus: break;
       default:
@@ -858,8 +875,8 @@ BOOL GetSimpleExpression(LPWORD ValType, int far *Val, LPWORD Err)
     }
 
     switch (WId) {
-      case RsvOr:    Val1 = Val1 | Val2; break;
-      case RsvXor:   Val1 = Val1 ^ Val2; break;
+      case RsvBOr:   Val1 = Val1 | Val2; break;
+      case RsvBXor:  Val1 = Val1 ^ Val2; break;
       case RsvPlus:  Val1 = Val1 + Val2; break;
       case RsvMinus: Val1 = Val1 - Val2; break;
     }
@@ -938,12 +955,130 @@ BOOL GetExpression(LPWORD ValType, int far *Val, LPWORD Err)
   } while (TRUE);
 }
 
+BOOL GetAndResult(LPWORD ValType, int far *Val, LPWORD Err)
+{
+  WORD P1,P2, Type1,Type2, Er;
+  int Val1, Val2;
+  WORD WId;
+
+  P1 = LinePtr;
+  if (! GetExpression(&Type1,&Val1,&Er))
+  {
+    LinePtr = P1;
+    return FALSE;
+  }
+  *ValType = Type1;
+  *Val = Val1;
+  *Err = Er;
+  if (Er!=0)
+  {
+    LinePtr = P1;
+    return TRUE;
+  }
+  if (Type1!=TypInteger) return TRUE;
+
+  do {
+    P2 = LinePtr;
+    if (! GetOperator(&WId)) return TRUE;
+
+    if (WId != RsvLAnd) {
+	LinePtr = P2;
+	return TRUE;
+    }
+
+    if (! GetExpression(&Type2,&Val2,&Er))
+    {
+      *Err = ErrSyntax;
+      LinePtr = P1;
+      return TRUE;
+    }
+
+    if (Er!=0)
+    {
+      *Err = Er;
+      LinePtr = P1;
+      return TRUE;
+    }
+
+    if (Type2!=TypInteger)
+    {
+      *Err = ErrTypeMismatch;
+      return TRUE;
+    }
+
+    if (Val1 && Val2)
+      Val1 = 1;
+    else
+      Val1 = 0;
+
+    *Val = Val1;
+  } while (TRUE);
+}
+
+BOOL GetOrResult(LPWORD ValType, int far *Val, LPWORD Err)
+{
+  WORD P1,P2, Type1,Type2, Er;
+  int Val1, Val2;
+  WORD WId;
+
+  P1 = LinePtr;
+  if (! GetAndResult(&Type1,&Val1,&Er))
+  {
+    LinePtr = P1;
+    return FALSE;
+  }
+  *ValType = Type1;
+  *Val = Val1;
+  *Err = Er;
+  if (Er!=0)
+  {
+    LinePtr = P1;
+    return TRUE;
+  }
+  if (Type1!=TypInteger) return TRUE;
+
+  do {
+    P2 = LinePtr;
+    if (! GetOperator(&WId)) return TRUE;
+
+    if (WId != RsvLOr) {
+	LinePtr = P2;
+	return TRUE;
+    }
+
+    if (! GetAndResult(&Type2,&Val2,&Er))
+    {
+      *Err = ErrSyntax;
+      LinePtr = P1;
+      return TRUE;
+    }
+
+    if (Er!=0)
+    {
+      *Err = Er;
+      LinePtr = P1;
+      return TRUE;
+    }
+
+    if (Type2!=TypInteger)
+    {
+      *Err = ErrTypeMismatch;
+      return TRUE;
+    }
+
+    if (Val1 || Val2)
+      Val1 = 1;
+
+    *Val = Val1;
+  } while (TRUE);
+}
+
 void GetIntVal(int far *Val, LPWORD Err)
 {
   WORD ValType;
 
   if (*Err != 0) return;
-  if (! GetExpression(&ValType,Val,Err))
+  if (! GetOrResult(&ValType,Val,Err))
   {
     *Err = ErrSyntax;
     return;
@@ -998,7 +1133,7 @@ void GetStrVal(PCHAR Str, LPWORD Err)
 
   if (GetString(Str,Err))
     return;
-  else if (GetExpression(&VarType,&VarId,Err))
+  else if (GetOrResult(&VarType,&VarId,Err))
   {
     if (*Err!=0) return;
     if (VarType!=TypString)

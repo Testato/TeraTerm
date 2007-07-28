@@ -161,9 +161,9 @@
 
 #define RsvOperator   150
 #define RsvNot	      151
-#define RsvAnd	      152
-#define RsvOr	      153
-#define RsvXor	      154
+#define RsvBAnd	      152
+#define RsvBOr	      153
+#define RsvBXor	      154
 #define RsvMul	      155
 #define RsvPlus       156
 #define RsvMinus      157
@@ -175,6 +175,8 @@
 #define RsvLE	      163
 #define RsvNE	      164
 #define RsvGE	      165
+#define RsvLAnd       166
+#define RsvLOr        167
 
 // integer type for buffer pointer
 #ifdef TERATERM32
@@ -214,6 +216,8 @@ BOOL NewLabVar(PCHAR Name, BINT InitVal, WORD ILevel);
 void DelLabVar(WORD ILevel);
 void CopyLabel(WORD ILabel, BINT far *Ptr, LPWORD Level);
 BOOL GetExpression(LPWORD ValType, int far *Val, LPWORD Err);
+BOOL GetAndResult(LPWORD ValType, int far *Val, LPWORD Err);
+BOOL GetOrResult(LPWORD ValType, int far *Val, LPWORD Err);
 void GetIntVal(int far *Val, LPWORD Err);
 void SetIntVal(WORD VarId, int Val);
 int CopyIntVal(WORD VarId);
