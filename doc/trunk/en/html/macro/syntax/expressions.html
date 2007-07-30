@@ -23,14 +23,19 @@ The following are operators:
 </p>
 
 <pre>
-Category          Precedence    Operators
+Category             Precedence    Operators
 <hr>
-unary             1, high       not
-multiplicative    2             * / % and
-additive          3             + - or xor
-relational        4, low        = &lt;&gt; &lt; &gt; &lt;= &gt;=
+unary                1, high       not + -
+multiplicative       2             * / %
+bitwise conjunction  2             and &
+additive             3             + -
+bitwise disjunction  3             or xor | ^
+relational           4             = &lt;&gt; &lt; &gt; &lt;= &gt;=
+logical conjunction  5             &amp;&amp;
+logical disjunction  6, low        ||
 
 Note: the value of expression A % B is the remainder of A / B.
+      "and", "or", "xor" and "not" is bitwise operator, not logical operator.
 </pre>
 
 <pre>
