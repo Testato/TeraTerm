@@ -238,15 +238,17 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
   else if (_stricmp(Str,"zmodemrecv")==0) *WordId = RsvZmodemRecv;
   else if (_stricmp(Str,"zmodemsend")==0) *WordId = RsvZmodemSend;
 
-  else if (_stricmp(Str,"not")==0) *WordId = RsvNot;
 #ifdef AND_IS_LOGICAL_AND
+  else if (_stricmp(Str,"not")==0) *WordId = RsvLNot;
   else if (_stricmp(Str,"and")==0) *WordId = RsvLAnd;
   else if (_stricmp(Str,"or")==0) *WordId = RsvLOr;
+  else if (_stricmp(Str,"xor")==0) *WordId = RsvLXor;
 #else
+  else if (_stricmp(Str,"not")==0) *WordId = RsvBNot;
   else if (_stricmp(Str,"and")==0) *WordId = RsvBAnd;
   else if (_stricmp(Str,"or")==0) *WordId = RsvBOr;
-#endif /* AND_IS_LOGICAL_AND */
   else if (_stricmp(Str,"xor")==0) *WordId = RsvBXor;
+#endif /* AND_IS_LOGICAL_AND */
 
   return (*WordId!=0);
 }
@@ -351,6 +353,8 @@ BOOL GetOperator(LPWORD WordId)
     case '&': *WordId = RsvBAnd;  break;
     case '|': *WordId = RsvBOr;   break;
     case '^': *WordId = RsvBXor;  return TRUE; break;
+    case '~': *WordId = RsvBNot;  return TRUE; break;
+    case '!': *WordId = RsvLNot;  return TRUE; break;
     default:
       LinePtr--;
       if (! GetReservedWord(WordId) || (*WordId < RsvOperator))
@@ -680,19 +684,18 @@ BOOL GetFactor(LPWORD ValType, int far *Val, LPWORD Err)
   {
     if (CheckReservedWord(Name,&Id))
     {
-      if (Id==RsvNot)
-      {
-	if (GetFactor(ValType,Val,Err))
-	{
-	  if ((*Err==0) && (*ValType!=TypInteger))
-	    *Err = ErrTypeMismatch;
-	  *Val = ~ *Val;
+      if (GetFactor(ValType, Val, Err)) {
+	if ((*Err==0) && (*ValType!=TypInteger))
+	  *Err = ErrTypeMismatch;
+	switch (Id) {
+	  case RsvBNot:  *Val = ~(*Val); break;
+	  case RsvLNot:  *Val = !(*Val); break;
+	  default: *Err = ErrSyntax;
 	}
-	else
-	  *Err = ErrSyntax;
       }
-      else
+      else {
 	*Err = ErrSyntax;
+      }
     }
     else if (CheckVar(Name, ValType, &Id))
     {
@@ -708,19 +711,20 @@ BOOL GetFactor(LPWORD ValType, int far *Val, LPWORD Err)
     *ValType = TypInteger;
   else if (GetOperator(&Id))
   {
-    if ((Id==RsvPlus) || (Id==RsvMinus))
-    {
-      if (GetFactor(ValType,Val,Err))
-      {
-	if ((*Err==0) && (*ValType != TypInteger))
-	  *Err = ErrTypeMismatch;
-	if (Id==RsvMinus) *Val = -(*Val);
+    if (GetFactor(ValType, Val, Err)) {
+      if ((*Err==0) && (*ValType != TypInteger))
+	*Err = ErrTypeMismatch;
+      switch (Id) {
+	case RsvPlus:                  break;
+	case RsvMinus: *Val = -(*Val); break;
+	case RsvBNot:  *Val = ~(*Val); break;
+	case RsvLNot:  *Val = !(*Val); break;
+	default: *Err = ErrSyntax;
       }
-      else
-	*Err = ErrSyntax;
     }
-    else
+    else {
       *Err = ErrSyntax;
+    }
   }
   else if (GetFirstChar()=='(')
   {
@@ -1041,7 +1045,7 @@ BOOL GetOrResult(LPWORD ValType, int far *Val, LPWORD Err)
     P2 = LinePtr;
     if (! GetOperator(&WId)) return TRUE;
 
-    if (WId != RsvLOr) {
+    if (WId != RsvLOr && WId != RsvLXor) {
 	LinePtr = P2;
 	return TRUE;
     }
@@ -1066,8 +1070,16 @@ BOOL GetOrResult(LPWORD ValType, int far *Val, LPWORD Err)
       return TRUE;
     }
 
-    if (Val1 || Val2)
-      Val1 = 1;
+    if (WId == RsvLOr) {
+      if (Val1 || Val2)
+	Val1 = 1;
+    }
+    else {
+      if ((Val1 && !Val2) || (!Val1 && Val2))
+	Val1 = 1;
+      else
+	Val1 = 0;
+    }
 
     *Val = Val1;
   } while (TRUE);

@@ -160,7 +160,7 @@
 #define RsvBreak      120   // add 'break' (2007.7.20 doda)
 
 #define RsvOperator   150
-#define RsvNot	      151
+#define RsvBNot	      151
 #define RsvBAnd	      152
 #define RsvBOr	      153
 #define RsvBXor	      154
@@ -175,8 +175,10 @@
 #define RsvLE	      163
 #define RsvNE	      164
 #define RsvGE	      165
-#define RsvLAnd       166
-#define RsvLOr        167
+#define RsvLNot       166
+#define RsvLAnd       167
+#define RsvLOr        168
+#define RsvLXor       169
 
 // integer type for buffer pointer
 #ifdef TERATERM32
