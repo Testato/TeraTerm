@@ -225,8 +225,6 @@ ja.msg_language_description=ユーザーインターフェースの言語を選択してください。
 ja.msg_language_subcaption=Tera Term と TTSSH のユーザーインターフェースで使用する言語を選択して、「次へ」をクリックしてください。
 ja.msg_language_none=英語(&E)
 ja.msg_language_japanese=日本語(&J)
-en.msg_delete_confirm=Are you sure that you want to delete %s ?
-ja.msg_delete_confirm=%s を削除しますか？
 en.msg_cygtermhere_permission=Couldn't add the context menu because you don't have permission;
 ja.msg_cygtermhere_permission=権限がないためコンテキストメニューを追加できませんでした
 
@@ -501,7 +499,11 @@ begin
         ini[2] := '\ssh_known_hosts';
         ini[3] := '\cygterm.cfg';
 
-        conf := CustomMessage('msg_delete_confirm');
+        case ActiveLanguage of
+        'en': conf := 'Are you sure that you want to delete %s ?';
+        'ja': conf := '%s を削除しますか？';
+        end;
+
         app := ExpandConstant('{app}');
 
         // delete config files
