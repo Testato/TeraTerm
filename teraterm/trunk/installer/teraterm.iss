@@ -35,7 +35,7 @@ Source: ..\visualc\bin\release\ttpfile.dll; DestDir: {app}; Components: TeraTerm
 Source: ..\visualc\bin\release\ttpset.dll; DestDir: {app}; Components: TeraTerm
 Source: ..\visualc\bin\release\ttptek.dll; DestDir: {app}; Components: TeraTerm
 Source: ..\release\TERATERM.INI; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
-Source: ..\release\TSPECIAL1.TTF; DestDir: {fonts}; Components: TeraTerm; Attribs: readonly; Flags: overwritereadonly uninsneveruninstall; FontInstall: Tera Special; Check: CanInstallFont
+Source: ..\release\TSPECIAL1.TTF; DestDir: {fonts}; Components: TeraTerm; Attribs: readonly; Flags: overwritereadonly uninsneveruninstall; FontInstall: Tera Special; Check: isPowerUsersMore
 Source: ..\release\ttermp.hlp; DestDir: {app}; Components: TeraTerm
 Source: ..\release\ttermpj.hlp; DestDir: {app}; Components: TeraTerm
 Source: ..\..\doc\en\teraterm.chm; DestDir: {app}; Components: TeraTerm
@@ -180,6 +180,7 @@ Name: desktopicon; Description: {cm:task_desktopicon}; Components: TeraTerm
 Name: quicklaunchicon; Description: {cm:task_quicklaunchicon}; Components: TeraTerm
 Name: startupttmenuicon; Description: {cm:task_startupttmenuicon}; Components: TeraTerm_Menu
 Name: startupcollectoricon; Description: {cm:task_startupcollectoricon}; Components: Collector
+Name: cygtermhere; Description: {cm:task_cygtermhere}; Components: cygterm; Flags: unchecked
 
 [Run]
 Filename: {app}\ttermpro.exe; Flags: nowait postinstall skipifsilent unchecked; Description: {cm:launch_teraterm}; Components: TeraTerm
@@ -192,10 +193,12 @@ en.task_desktopicon=Create TeraTerm shortcut to &Desktop
 en.task_quicklaunchicon=Create TeraTerm shortcut to &Quick Launch
 en.task_startupttmenuicon=Create TeraTerm &Menu shortcut to Startup
 en.task_startupcollectoricon=Create &Collector shortcut to Startup
+en.task_cygtermhere=Add "Cy&gterm Here" to Context menu
 ja.task_desktopicon=デスクトップに TeraTerm のショートカットを作る(&D)
 ja.task_quicklaunchicon=クイック起動に TeraTerm のショートカットを作る(&Q)
 ja.task_startupttmenuicon=スタートアップに TeraTerm &Menu のショートカットを作る
 ja.task_startupcollectoricon=スタートアップに &Collector のショートカットを作る
+ja.task_cygtermhere=コンテキストメニューに "Cy&gterm Here" を追加する
 en.type_standard=Standard installation
 en.type_full=Full installation
 en.type_compact=Compact installation
@@ -212,13 +215,27 @@ ja.launch_teraterm=今すぐ &TeraTerm Pro を実行する
 ja.launch_logmett=今すぐ &LogMeTT を実行する
 ja.launch_ttmenu=今すぐ TeraTerm &Menu を実行する
 ja.launch_collector=今すぐ &Collector を実行する
+en.msg_language_caption=Select Language
+en.msg_language_description=Which language shoud be used?
+en.msg_language_subcaption=Select the user interface language of Tera Term and TTSSH, then click Next.
+en.msg_language_none=&English
+en.msg_language_japanese=&Japanese
+ja.msg_language_caption=言語の選択
+ja.msg_language_description=ユーザーインターフェースの言語を選択してください。
+ja.msg_language_subcaption=Tera Term と TTSSH のユーザーインターフェースで使用する言語を選択して、「次へ」をクリックしてください。
+ja.msg_language_none=英語(&E)
+ja.msg_language_japanese=日本語(&J)
+en.msg_delete_confirm=Are you sure that you want to delete %s ?
+ja.msg_delete_confirm=%s を削除しますか？
+en.msg_cygtermhere_permission=Couldn't add the context menu because you don't have permission;
+ja.msg_cygtermhere_permission=権限がないためコンテキストメニューを追加できませんでした
 
 [Code]
 var
   UILangFilePage: TInputOptionWizardPage;
 
 
-function CanInstallFont : Boolean;
+function isPowerUsersMore : Boolean;
 var
   Version: TWindowsVersion;
 begin;
@@ -248,7 +265,7 @@ end;
 
 function GetUserIniFilename : String;
 begin
-  Result := ExpandConstant('{userdocs}') + '\\TERATERM.INI';
+  Result := ExpandConstant('{userdocs}') + '\TERATERM.INI';
 end;
 
 function isUserIniExists : Boolean;
@@ -356,6 +373,68 @@ begin
 
 end;
 
+procedure WriteCygtermCfg;
+var
+  cfgfile  : String;
+  cfglines : TArrayOfString;
+  line     : String;
+  homeflg  : Boolean;
+  loginflg : Boolean;
+  i        : Integer;
+begin
+  homeflg  := false;
+  loginflg := false;
+  cfgfile  := ExpandConstant('{app}') + '\cygterm.cfg';
+
+  if LoadStringsFromFile(cfgfile, cfglines) then
+  begin
+    for i:=0 to GetArrayLength(cfglines)-1 do
+    begin
+      line := cfglines[i];
+      line := TrimLeft(line);
+
+      if CompareStr(Copy(line, 0, Length('HOME_CHDIR')), 'HOME_CHDIR') = 0 then
+      begin
+        cfglines[i] := 'HOME_CHDIR = No';
+        homeflg := true;
+      end
+      else if CompareStr(Copy(line, 0, Length('LOGIN_SHELL')), 'LOGIN_SHELL') = 0 then
+      begin
+        cfglines[i] := 'LOGIN_SHELL = No';
+        loginflg := true;
+      end;
+    end;
+    SaveStringsToFile(cfgfile, cfglines, false);
+
+    if not homeflg then
+    begin
+      SaveStringToFile(cfgfile, 'HOME_CHDIR = No' + #13#10, true);
+    end;
+    if not loginflg then
+    begin
+      SaveStringToFile(cfgfile, 'LOGIN_SHELL = No' + #13#10, true);
+    end;
+  end;
+end;
+
+procedure SetCygtermHere;
+begin
+  if IsTaskSelected('cygtermhere') then
+  begin
+    if isPowerUsersMore() then
+    begin
+      // write to registory
+      RegWriteStringValue(HKEY_CLASSES_ROOT, 'Directory\shell\cygterm', '', 'Cy&gterm Here');
+      RegWriteStringValue(HKEY_CLASSES_ROOT, 'Directory\shell\cygterm\command',
+                          '', ExpandConstant('{app}') + '\cygterm.exe -d "%L"');
+      // write to cygterm.cfg
+      WriteCygtermCfg();
+    end else begin
+      MsgBox(CustomMessage('msg_cygtermhere_permission'), mbInformation, MB_OK);
+    end;
+  end;
+end;
+
 procedure InitializeWizard;
 var
   UILangFilePageCaption     : String;
@@ -364,25 +443,11 @@ var
   UILangFilePageNone        : String;
   UILangFilePageJapanese    : String;
 begin
-
-  case ActiveLanguage of
-    'en':
-    begin
-      UILangFilePageCaption     := 'Select Language';
-      UILangFilePageDescription := 'Which language shoud be used?';
-      UILangFilePageSubCaption  := 'Select the user interface language of Tera Term and TTSSH, then click Next.';
-      UILangFilePageNone        := '&English';
-      UILangFilePageJapanese    := '&Japanese';
-    end;
-    'ja':
-    begin
-      UILangFilePageCaption     := '言語の選択';
-      UILangFilePageDescription := 'ユーザーインターフェースの言語を選択してください。';
-      UILangFilePageSubCaption  := 'Tera Term と TTSSH のユーザーインターフェースで使用する言語を選択して、「次へ」をクリックしてください。';
-      UILangFilePageNone        := '英語(&E)';
-      UILangFilePageJapanese    := '日本語(&J)';
-    end;
-  end;
+  UILangFilePageCaption     := CustomMessage('msg_language_caption');
+  UILangFilePageDescription := CustomMessage('msg_language_description');
+  UILangFilePageSubCaption  := CustomMessage('msg_language_subcaption');
+  UILangFilePageNone        := CustomMessage('msg_language_none');
+  UILangFilePageJapanese    := CustomMessage('msg_language_japanese');
 
   UILangFilePage := CreateInputOptionPage(wpSelectComponents,
     UILangFilePageCaption, UILangFilePageDescription,
@@ -405,13 +470,15 @@ begin
   case CurStep of
     ssDone:
       begin
-        iniFile := ExpandConstant('{app}') + '\\TERATERM.INI';
+        iniFile := ExpandConstant('{app}') + '\TERATERM.INI';
         SetIniFile(iniFile);
 
         if isUserIniExists() then begin
           iniFile := GetUserIniFilename();
           SetIniFile(iniFile);
         end;
+
+        SetCygtermHere();
 
       end; // ssDone
    end; // case CurStep of
@@ -434,14 +501,10 @@ begin
         ini[2] := '\ssh_known_hosts';
         ini[3] := '\cygterm.cfg';
 
-        case ActiveLanguage of
-        'en': conf := 'Are you sure that you want to delete %s ?';
-        'ja': conf := '%s を削除しますか？';
-        end;
-
+        conf := CustomMessage('msg_delete_confirm');
         app := ExpandConstant('{app}');
 
-        // 設定ファイルの削除
+        // delete config files
         for i := 0 to 3 do
         begin
           buf := app + ini[i];
@@ -453,13 +516,20 @@ begin
           end;
         end;
 
-        // レジストリの削除
+        // delete registory
         if RegKeyExists(HKEY_CURRENT_USER, 'Software\ShinpeiTools\TTermMenu') then begin
           confmsg := Format(conf, ['HKEY_CURRENT_USER' + '\Software\ShinpeiTools\TTermMenu']);
           res := MsgBox(confmsg, mbInformation, MB_YESNO or MB_DEFBUTTON2);
           if res = IDYES then begin
             RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, 'Software\ShinpeiTools\TTermMenu');
             RegDeleteKeyIfEmpty(HKEY_CURRENT_USER, 'Software\ShinpeiTools');
+          end;
+        end;
+        if RegKeyExists(HKEY_CLASSES_ROOT, 'Directory\shell\cygterm') then begin
+          confmsg := Format(conf, ['HKEY_CLASSES_ROOT' + '\Directory\shell\cygterm']);
+          res := MsgBox(confmsg, mbInformation, MB_YESNO);
+          if res = IDYES then begin
+            RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'Directory\shell\cygterm');
           end;
         end;
 
@@ -470,7 +540,7 @@ begin
 end;
 
 [InstallDelete]
-Name: {app}\OpenSSH-LICENCE.txt; Type: files; Tasks: ; Languages: ; Components: TTSSH
+Name: {app}\OpenSSH-LICENCE.txt; Type: files; Components: TTSSH
 Name: {app}\cygterm-README.txt; Type: files
 Name: {app}\cygterm-README-j.txt; Type: files
 Name: {app}\keycode.txt; Type: files

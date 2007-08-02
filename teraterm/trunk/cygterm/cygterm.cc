@@ -410,6 +410,11 @@ void get_args(int argc, char** argv)
                 }
             }
         }
+        else if (!strcmp(*argv, "-d")) {        // -d <exec directory>
+            if (*++argv == NULL)
+                break;
+            chdir(*argv);
+        }
     }
 }
 
