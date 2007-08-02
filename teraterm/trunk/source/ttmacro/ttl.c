@@ -47,7 +47,8 @@ static int EndIfFlag;
 // Window handle of the main window
 static HWND HMainWin;
 // Timeout
-static long int TimeLimit; //should be signed 32-bit
+static DWORD TimeLimit;
+static DWORD TimeStart;
 // for 'WaitEvent' command
 static int WakeupCondition;
 
@@ -1683,9 +1684,10 @@ WORD TTLPause()
 
   if (TimeOut>0)
   {
-    // stop using TTLStatus and TimeLimit
-	// for remove time-lag (2007.2.7 maya)
-    Sleep(1000 * TimeOut);
+    TTLStatus = IdTTLPause;
+    TimeLimit = (DWORD)(TimeOut*1000);
+    TimeStart = GetTickCount();
+    SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
   }
   return Err;
 }
@@ -1777,9 +1779,9 @@ WORD TTLRecvLn()
 
   if (TimeOut>0)
   {
-    TimeLimit = CalcTime() + (long int)TimeOut;
-    if (TimeLimit>=86400) TimeLimit = TimeLimit-86400;
-    SetTimer(HMainWin, IdTimeOutTimer,1000, NULL);
+    TimeLimit = (DWORD)(TimeOut*1000);
+    TimeStart = GetTickCount();
+    SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
   }
 
   return 0;
@@ -2602,9 +2604,9 @@ WORD TTLWait(BOOL Ln)
 
     if (TimeOut>0)
     {
-      TimeLimit = CalcTime() + (long int)TimeOut;
-      if (TimeLimit>=86400) TimeLimit = TimeLimit-86400;
-      SetTimer(HMainWin, IdTimeOutTimer,1000, NULL);
+      TimeLimit = (DWORD)(TimeOut*1000);
+      TimeStart = GetTickCount();
+      SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
     }
   }
   else
@@ -2653,9 +2655,9 @@ WORD TTLWaitEvent()
 
   if (TimeOut>0)
   {
-    TimeLimit = CalcTime() + (long int)TimeOut;
-    if (TimeLimit>=86400) TimeLimit = TimeLimit-86400;
-    SetTimer(HMainWin, IdTimeOutTimer,1000, NULL);
+    TimeLimit = (DWORD)(TimeOut*1000);
+    TimeStart = GetTickCount();
+    SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
   }
 
   TTLStatus = IdTTLSleep;
@@ -2688,9 +2690,9 @@ WORD TTLWaitRecv()
     TimeOut = CopyIntVal(VarId);
   if (TimeOut>0)
   {
-    TimeLimit = CalcTime() + (long int)TimeOut;
-    if (TimeLimit>=86400) TimeLimit = TimeLimit-86400;
-    SetTimer(HMainWin, IdTimeOutTimer,1000, NULL);
+    TimeLimit = (DWORD)(TimeOut*1000);
+    TimeStart = GetTickCount();
+    SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
   }
   return Err;
 }
@@ -3128,12 +3130,17 @@ void SetResult(int ResultCode)
 
 BOOL CheckTimeout()
 {
-  long int dT;
+  BOOL ret;
+  DWORD TimeUp = (TimeStart+TimeLimit);
 
-  dT = TimeLimit-CalcTime();
-  if (dT>43199) dT = dT - 86400;
-  else if (dT<-43200) dT = dT + 86400;
-  return (dT < 0);
+  if (TimeUp > TimeStart) {
+    ret = (GetTickCount() > TimeUp);
+  }
+  else { // for DWORD overflow (49.7 days)
+    DWORD TimeTmp = GetTickCount();
+    ret = (TimeUp < TimeTmp && TimeTmp >= TimeStart);
+  }
+  return ret;
 }
 
 BOOL TestWakeup(int Wakeup)

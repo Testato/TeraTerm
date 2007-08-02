@@ -419,6 +419,11 @@ void CCtrlWindow::OnTimer(UINT nIDEvent)
       TTLStatus = IdTTLRun;
     }
   }
+  else if (TTLStatus==IdTTLPause)
+  {
+    if (TimeOut)
+      TTLStatus = IdTTLRun;
+  }
   else if (TTLStatus==IdTTLSleep)
   {
     if ((TimeOut) &&
@@ -436,7 +441,7 @@ void CCtrlWindow::OnTimer(UINT nIDEvent)
   if (TimeOut || (TTLStatus==IdTTLRun))
     return;
 
-  SetTimer(IdTimeOutTimer,1000, NULL);
+  SetTimer(IdTimeOutTimer, 50, NULL);
 }
 
 void CCtrlWindow::PostNcDestroy()
