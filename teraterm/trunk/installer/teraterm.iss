@@ -232,8 +232,6 @@ ja.msg_language_description=ユーザーインターフェースの言語を選択してください。
 ja.msg_language_subcaption=Tera Term と TTSSH のユーザーインターフェースで使用する言語を選択して、「次へ」をクリックしてください。
 ja.msg_language_none=英語(&E)
 ja.msg_language_japanese=日本語(&J)
-en.msg_cygtermhere_permission=Couldn't add the context menu because you don't have permission;
-ja.msg_cygtermhere_permission=権限がないためコンテキストメニューを追加できませんでした
 
 [Code]
 var
@@ -378,64 +376,22 @@ begin
 
 end;
 
-procedure WriteCygtermCfg;
-var
-  cfgfile  : String;
-  cfglines : TArrayOfString;
-  line     : String;
-  homeflg  : Boolean;
-  loginflg : Boolean;
-  i        : Integer;
-begin
-  homeflg  := false;
-  loginflg := false;
-  cfgfile  := ExpandConstant('{app}') + '\cygterm.cfg';
-
-  if LoadStringsFromFile(cfgfile, cfglines) then
-  begin
-    for i:=0 to GetArrayLength(cfglines)-1 do
-    begin
-      line := cfglines[i];
-      line := TrimLeft(line);
-
-      if CompareStr(Copy(line, 0, Length('HOME_CHDIR')), 'HOME_CHDIR') = 0 then
-      begin
-        cfglines[i] := 'HOME_CHDIR = No';
-        homeflg := true;
-      end
-      else if CompareStr(Copy(line, 0, Length('LOGIN_SHELL')), 'LOGIN_SHELL') = 0 then
-      begin
-        cfglines[i] := 'LOGIN_SHELL = No';
-        loginflg := true;
-      end;
-    end;
-    SaveStringsToFile(cfgfile, cfglines, false);
-
-    if not homeflg then
-    begin
-      SaveStringToFile(cfgfile, 'HOME_CHDIR = No' + #13#10, true);
-    end;
-    if not loginflg then
-    begin
-      SaveStringToFile(cfgfile, 'LOGIN_SHELL = No' + #13#10, true);
-    end;
-  end;
-end;
-
 procedure SetCygtermHere;
+var
+  Version: TWindowsVersion;
 begin
   if IsTaskSelected('cygtermhere') then
   begin
-    if isPowerUsersMore() then
+    GetWindowsVersionEx(Version);
+    if Version.NTPlatform and (Version.Major >= 5) then
     begin
-      // write to registory
-      RegWriteStringValue(HKEY_CLASSES_ROOT, 'Directory\shell\cygterm', '', 'Cy&gterm Here');
-      RegWriteStringValue(HKEY_CLASSES_ROOT, 'Directory\shell\cygterm\command',
-                          '', ExpandConstant('{app}') + '\cygterm.exe -d "%L"');
-      // write to cygterm.cfg
-      WriteCygtermCfg();
+      RegWriteStringValue(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm', '', 'Cy&gterm Here');
+      RegWriteStringValue(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm\command',
+                          '', ExpandConstant('{app}') + '\cygterm.exe -nocd -nols -d "%L"');
     end else begin
-      MsgBox(CustomMessage('msg_cygtermhere_permission'), mbInformation, MB_OK);
+      RegWriteStringValue(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm', '', 'Cy&gterm Here');
+      RegWriteStringValue(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm\command',
+                          '', ExpandConstant('{app}') + '\cygterm.exe -nocd -nols -d "%L"');
     end;
   end;
 end;
@@ -534,11 +490,18 @@ begin
             RegDeleteKeyIfEmpty(HKEY_CURRENT_USER, 'Software\ShinpeiTools');
           end;
         end;
-        if RegKeyExists(HKEY_CLASSES_ROOT, 'Directory\shell\cygterm') then begin
-          confmsg := Format(conf, ['HKEY_CLASSES_ROOT' + '\Directory\shell\cygterm']);
+        if RegKeyExists(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm') then begin
+          confmsg := Format(conf, ['HKEY_CLASSES_ROOT' + '\Folder\shell\cygterm']);
           res := MsgBox(confmsg, mbInformation, MB_YESNO);
           if res = IDYES then begin
-            RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'Directory\shell\cygterm');
+            RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm');
+          end;
+        end;
+        if RegKeyExists(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm') then begin
+          confmsg := Format(conf, ['HKEY_CURRENT_USER' + '\Software\Classes\Folder\shell\cygterm']);
+          res := MsgBox(confmsg, mbInformation, MB_YESNO);
+          if res = IDYES then begin
+            RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm');
           end;
         end;
 
