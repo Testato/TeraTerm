@@ -210,6 +210,10 @@
             The expression should be enclosed in quotes to include spaces.
             One or more `-v' options are available.
 
+    -d 'directory'
+            The current directory is moved to the specified directory and
+            the shell is invoked.
+
     The terminal emulator or connection port number, and the shell on Cygwin,
     these need to be specified at least.  If these are given on the command
     line, cygterm.exe can be run without configuration file cygterm.cfg.

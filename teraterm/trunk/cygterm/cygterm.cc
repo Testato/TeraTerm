@@ -75,6 +75,10 @@
 // patch level 12 - add SOCKET_TIMEOUT setting.
 //   Written by IWAMOTO Kouichi. (sue@iwmt.org)
 //
+/////////////////////////////////////////////////////////////////////////////
+// patch level 13 - added -d option that is specifies the start directory
+//   Written by NAGATA Shinya. (maya.negeta@gmail.com)
+//
 
 static char Program[] = "CygTerm+";
 static char Version[] = "version 1.07_12 (2007/06/10)";
