@@ -52,9 +52,14 @@
       <li>added '<a href="../macro/command/break.html">break</a>' macro command.</li>
       <li>added an argument to <a href="../macro/command/inputbox.html">inputbox</a> macro command. New argument is used for default input string.</li>
       <li>added logical operator "&amp;&amp;", "||", "!" and bitwise operator "&amp;", "|", "^", "~" for macro.</li>
+      <li>added "Cygterm Here" context menu.
+        <ul>
+          <li>added cyglaunch.</li>
+        </ul></li>
       <li>changed the owner of HTML help file from TeraTerm instance to Windows desktop.</li>
       <li>changed the macro error does not occur when including the empty macro file.</li>
       <li>added to preserve comment and unknown parameter when saving cygterm.cfg file.</li>
+      <li>added to disable the serial port in New Connection dialog when there is no available COM ports.</li>
       <li>Bug fix: eliminated a unnecessary return code every time 1KB logging with the timestamp mode. Special thanks to Gentaro.</li>
       <li>Bug fix: BOF(Buffer Over Flow) problem in ttpmacro.exe program, which 256 byte longer command line parameter is specified.</li>
       <li>Bug fix: BOF(Buffer Over Flow) problem in ttpmacro.exe program when a line of macro is longer than 256 byte.</li>
@@ -65,9 +70,11 @@
       <li>Bug fix: statusbox does not display '\n' as LF when the statusbox is existing yet.</li>
       <li>Bug fix: some macros are not become an error when the parameter filename starts by ':'.</li>
       <li>Bug fix: the expression like "a &lt; b &lt; c" cannot be evaluated by the macro.</li>
-      <li>added to disable the serial port in New Connection dialog when there is no available COM ports.</li>
+      <li>Bug fix: ttpmacro control window was unresponsive while waiting for 'pause' macro command.</li>
       <li>added <a href="#kanjimenu_0.1.3">TTX KanjiMenu Plugin 0.1.3</a>(ttxkanjimenu.dll). Special thanks to Sunao HARA.</li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.41">2.41</a></li>
+      <li>upgraded CygTerm+ to <a href="#cygterm_1.07_13">1.07_13</a></li>
+      <li>upgraded Oniguruma to 5.9.0</li>
     </ul>
   </li>
 
@@ -1163,6 +1170,12 @@ SYNOPSIS:
 
 <h2><a name="cygterm">CygTerm+</a></h2>
 <ul>
+  <li class="history"><a name="cygterm_1.07_13">v1.07_13 2007/08/03 (by maya.negeta@gmail.com)</a>
+    <ul>
+      <li>Added '-d' option that is specifies the start directory.</li>
+    </ul>
+  </li>
+
   <li class="history"><a name="cygterm_1.07_12">v1.07_12 2007/06/10 (sue@iwmt.org)</a>
     <ul>
       <li>Add 'SOCKET_TIMEOUT' entry which timeout of waiting telnet connection in cygterm.cfg file.</li>

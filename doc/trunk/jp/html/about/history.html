@@ -52,9 +52,14 @@
       <li>マクロコマンド <a href="../macro/command/break.html">break</a> を新規追加した。</li>
       <li>マクロコマンド <a href="../macro/command/inputbox.html">inputbox</a> に引数を追加した。この新しい引数にデフォルト文字列を渡すことができる。</li>
       <li>マクロの演算子に論理演算子 &amp;&amp;, ||, ! およびビット演算子 &amp;, |, ^, ~ を追加した。なお、and, or, xor, notはビット演算子である（TeraTermオリジナル仕様）。</li>
+      <li>Cygterm Here コンテキストメニューを追加できるようにした。
+        <ul>
+          <li>cyglaunch を同梱した。</li>
+        </ul></li>
       <li>HTMLヘルプのオーナーが常にデスクトップになるように変更した。</li>
       <li>空のマクロファイルを include してもエラーとしないようにした。</li>
       <li>cygterm.cfg を保存する時、コメントや未知の設定も残すようにした。</li>
+      <li>利用可能なCOMポートがない時、新しい接続ダイアログでシリアルポートを無効にした。</li>
       <li>タイムスタンプ付きログで1KBごとに不要な改行が入るバグを修正。Gentaro氏に感謝します。</li>
       <li>ttpmacro.exeに256バイト以上のコマンドラインパラメータ指定があると、BOF(Buffer Over Flow)で落ちるバグを修正した。</li>
       <li>マクロファイルに 256 バイトを越える長い行があると、BOF(Buffer Over Flow)で落ちるバグを修正した。</li>
@@ -65,9 +70,11 @@
       <li>statusbox で、既存の statusbox にメッセージを表示したときに '\n' が改行にならない問題を修正した。</li>
       <li>いくつかのマクロで、渡されたファイル名が ':' で始まっている場合にエラーとならないことがある問題を修正した。</li>
       <li>マクロで、"a &lt; b &lt; c" のような式の評価が行えない問題を修正した。</li>
-      <li>利用可能なCOMポートがない時、新しい接続ダイアログでシリアルポートを無効にした。</li>
+      <li>pause マクロコマンドを待っている間に、コントロールウインドウを操作できない問題を修正した。</li>
       <li><a href="#kanjimenu_0.1.3">TTX KanjiMenu Plugin 0.1.3</a>(ttxkanjimenu.dll)を追加した。原直(Hara Sunao)氏に感謝します。</li>
       <li><a href="#ttssh_2.41">SSH2対応TTSSH(2.41)</a>へ差し替えた</li>
+      <li><a href="#cygterm_1.07_13">CygTerm+ 1.07_13</a>へ差し替えた</li>
+      <li>Oniguruma 5.9.0へ差し替えた</li>
     </ul>
   </li>
 
@@ -1165,6 +1172,12 @@
 
 <h2><a name="cygterm">CygTerm+</a></h2>
 <ul>
+  <li class="history"><a name="cygterm_1.07_13">v1.07_13 2007/08/03 (by maya.negeta@gmail.com)</a>
+    <ul>
+      <li>開始ディレクトリを指定する '-d' オプションを追加した。</li>
+    </ul>
+  </li>
+
   <li class="history"><a name="cygterm_1.07_12">v1.07_12 2007/06/10 (sue@iwmt.org)</a>
     <ul>
       <li>telnet接続の待ち受け時間を設定するオプション SOCKET_TIMEOUT を追加した。</li>
