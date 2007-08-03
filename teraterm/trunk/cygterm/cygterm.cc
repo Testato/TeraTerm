@@ -76,12 +76,12 @@
 //   Written by IWAMOTO Kouichi. (sue@iwmt.org)
 //
 /////////////////////////////////////////////////////////////////////////////
-// patch level 13 - added -d option that is specifies the start directory
+// patch level 13 - added '-d' option that is specifies the start directory
 //   Written by NAGATA Shinya. (maya.negeta@gmail.com)
 //
 
 static char Program[] = "CygTerm+";
-static char Version[] = "version 1.07_12 (2007/06/10)";
+static char Version[] = "version 1.07_13 (2007/08/03)";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -121,7 +121,7 @@ int cl_port = 0;
 
 // telnet socket timeout
 //----------------------
-int telsock_timeout = 5;	// timeout 5 sec
+int telsock_timeout = 5;    // timeout 5 sec
 
 // dumb terminal flag
 //-------------------
@@ -258,8 +258,8 @@ void parse_cfg_line(char *buf)
         }
     }
     else if (!strcasecmp(name, "SOCKET_TIMEOUT")) {
-	// telnet socket timeout
-	telsock_timeout = atoi(val);
+        // telnet socket timeout
+        telsock_timeout = atoi(val);
     }
 
     return;

@@ -250,8 +250,11 @@
                 zsh 4.1.1
 
 // C H A N G E S //
+v1.07_13 2007/08/03 (by maya.negeta@gmail.com)
+        * Added '-d' option that is specifies the start directory.
+
 v1.07_12 2007/06/10 (by sue@iwmt.org)
-	* Add 'SOCKET_TIMEOUT' entry which the timeout value of socket for waiting telnet connection in cygterm.cfg file.
+        * Add 'SOCKET_TIMEOUT' entry which the timeout value of socket for waiting telnet connection in cygterm.cfg file.
 
 v1.07_11 2007/01/31 (import from cygterm v1.07)
         * Avoid WinMainCRTStartup() redefinition error with gcc 3.4.

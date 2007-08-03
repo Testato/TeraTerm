@@ -252,10 +252,13 @@
                 zsh 4.1.1
 
 // 変 更 履 歴 //
+v1.07_13 2007/08/03 (by maya.negeta@gmail.com)
+        * 開始ディレクトリを指定する '-d' オプションを追加した。
+
 v1.07_12 2007/06/10 (by sue@iwmt.org)
         * telnetの待ち受けソケットのタイムアウトを設定するオプション SOCKET_TIMEOUT を追加した。
 
-	SOCKET_TIMEOUT = 秒数 
+        SOCKET_TIMEOUT = 秒数 
 
 v1.07_11 2007/01/31 (import from cygterm v1.07)
         * gcc 3.4 での WinMainCRTStartup() 再定義エラー回避
