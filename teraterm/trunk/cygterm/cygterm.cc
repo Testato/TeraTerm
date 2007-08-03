@@ -165,11 +165,11 @@ void api_error(char* string = "")
     char msg[1024];
     char *ptr = msg;
     if (string != NULL)
-        ptr += sprintf(ptr, "%s\n\n", string);
+        ptr += snprintf(ptr, sizeof(msg), "%s\n\n", string);
     FormatMessage(
         FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
         NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-        ptr, 256, NULL
+        ptr, sizeof(msg)-(ptr-msg), NULL
     );
     msg_print(msg);
 }
@@ -182,8 +182,8 @@ void c_error(char* string = "")
     char msg[1024];
     char *ptr = msg;
     if (string != NULL)
-        ptr += sprintf(ptr, "%s\n\n", string);
-    sprintf(ptr, "%s\n", strerror(errno));
+        ptr += snprintf(ptr, sizeof(msg), "%s\n\n", string);
+    snprintf(ptr, sizeof(msg)-(ptr-msg), "%s\n", strerror(errno));
     msg_print(msg);
 }
 
@@ -965,9 +965,10 @@ int main(int argc, char** argv)
         }
         in_addr addr;
         addr.s_addr = htonl(INADDR_LOOPBACK);
-        char tmp[128];
-        sprintf(tmp, cmd_term, inet_ntoa(addr), (int)ntohs(listen_port));
-        strcpy(cmd_term, tmp);
+        char tmp[256];
+        snprintf(tmp, sizeof(tmp), cmd_term, inet_ntoa(addr), (int)ntohs(listen_port));
+        strncpy(cmd_term, tmp, sizeof(cmd_term)-1);
+        cmd_term[sizeof(cmd_term)-1] = 0;
 
         // execute a terminal emulator
         if ((hTerm = exec_term()) == NULL) {
