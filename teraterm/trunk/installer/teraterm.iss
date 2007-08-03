@@ -69,6 +69,7 @@ Source: ..\..\ttssh2\ttxssh\Release\ttxssh.dll; DestDir: {app}; Components: TTSS
 Source: ..\release\ssh_known_hosts; DestDir: {app}; Components: TTSSH; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\cygterm\cygterm.exe; DestDir: {app}; Components: cygterm
 Source: ..\cygterm\cygterm.cfg; DestDir: {app}; Components: cygterm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
+Source: ..\cygterm\cyglaunch.exe; DestDir: {app}; Components: cygterm
 Source: ..\release\LogMeTT_license.txt; DestDir: {app}; Components: LogMeTT
 Source: ..\release\LogMeTT_README.txt; DestDir: {app}; Components: LogMeTT
 Source: ..\release\LogMeTTc.exe; DestDir: {app}; Components: LogMeTT
@@ -387,11 +388,11 @@ begin
     begin
       RegWriteStringValue(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm', '', 'Cy&gterm Here');
       RegWriteStringValue(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm\command',
-                          '', ExpandConstant('{app}') + '\cygterm.exe -nocd -nols -d "%L"');
+                          '', ExpandConstant('{app}') + '\cyglaunch.exe -nocd -nols -d "%L"');
     end else begin
       RegWriteStringValue(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm', '', 'Cy&gterm Here');
       RegWriteStringValue(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm\command',
-                          '', ExpandConstant('{app}') + '\cygterm.exe -nocd -nols -d "%L"');
+                          '', ExpandConstant('{app}') + '\cyglaunch.exe -nocd -nols -d "%L"');
     end;
   end;
 end;
