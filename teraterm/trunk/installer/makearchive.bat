@@ -12,6 +12,7 @@ copy /y ..\..\teraterm\visualc\bin\release\*.dll %dst%
 
 copy /y ..\..\teraterm\cygterm\cygterm.exe %dst%
 copy /y ..\..\teraterm\cygterm\cygterm.cfg %dst%
+copy /y ..\..\teraterm\cygterm\cyglaunch.exe %dst%
 
 copy /y ..\..\ttssh2\ttxssh\Release\ttxssh.dll %dst%
 copy /y ..\..\TTProxy\Release\TTXProxy.dll %dst%
