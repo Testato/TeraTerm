@@ -20,14 +20,14 @@ char *FName = ".\\TERATERM.INI";
 //
 // Connect to local cygwin
 //
-void OnCygwinConnection(char *CygwinDirectory)
+void OnCygwinConnection(char *CygwinDirectory, char *cmdline)
 {
 	char file[MAX_PATH], buf[1024];
 	char c, *envptr;
 	char *exename = "cygterm.exe";
+	char cmd[1024];
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
-	char *cmdline;
 
 	envptr = getenv("PATH");
 	if (strstr(envptr, "cygwin\\bin") != NULL) {
@@ -57,16 +57,15 @@ found_path:;
 	memset(&si, 0, sizeof(si));
 	GetStartupInfo(&si);
 	memset(&pi, 0, sizeof(pi));
-	
-	// search command line parameter(exclude command name).
-	cmdline = strchr(GetCommandLine(), ' ');
-	if (cmdline != NULL)
-		cmdline++;
-	printf("%s\n", cmdline);
 
+	strcpy(cmd, exename);
+	strcat(cmd, " ");
+	strncat(cmd, cmdline, sizeof(cmd)-strlen(cmd)-1);
+//printf("%s", cmd);
+//MessageBox(NULL, cmd, "", MB_OK);
 	if (CreateProcess(
-			exename, 
-			cmdline,
+			NULL,
+			cmd,
 			NULL, NULL, FALSE, 0,
 			NULL, NULL,
 			&si, &pi) == 0) {
@@ -77,7 +76,8 @@ found_path:;
 
 int main(int argc, char** argv)
 {
-	char Temp[256];
+	char Temp[256], Cmdline[256];
+	int i;
 	
 	// Cygwin install path
  	GetPrivateProfileString(Section,"CygwinDirectory","c:\\cygwin",
@@ -85,9 +85,14 @@ int main(int argc, char** argv)
 	
 	//printf("%s %d\n", Temp, GetLastError());
 	
-	OnCygwinConnection(Temp);
+	Cmdline[0] = 0;
+	for (i=1; i<argc; i++) {
+		strncat(Cmdline, argv[i], sizeof(Cmdline)-strlen(Cmdline)-1);
+		strncat(Cmdline, " ", sizeof(Cmdline)-strlen(Cmdline)-1);
+	}
+	//printf("%s\n", Cmdline);
+	
+	OnCygwinConnection(Temp, Cmdline);
 	
 	return 0;
 }
-
-

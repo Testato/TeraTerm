@@ -388,11 +388,11 @@ begin
     begin
       RegWriteStringValue(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm', '', 'Cy&gterm Here');
       RegWriteStringValue(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm\command',
-                          '', ExpandConstant('{app}') + '\cyglaunch.exe -nocd -nols -d "%L"');
+                          '', '"' + ExpandConstant('{app}') + '\cyglaunch.exe" -nocd -nols -d \"%L\"');
     end else begin
       RegWriteStringValue(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm', '', 'Cy&gterm Here');
       RegWriteStringValue(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm\command',
-                          '', ExpandConstant('{app}') + '\cyglaunch.exe -nocd -nols -d "%L"');
+                          '', '"' + ExpandConstant('{app}') + '\cyglaunch.exe" -nocd -nols -d \"%L\"');
     end;
   end;
 end;
