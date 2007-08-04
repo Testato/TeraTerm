@@ -760,7 +760,7 @@ typedef TMap far *PMap;
  * Increment the number of this macro value
  * when you change TMap or member of TMap.
  *
- * - At version 4.43, ttset_memfilemap was replaced with ttset_memfilemap_2.
+ * - At version 4.53, ttset_memfilemap was replaced with ttset_memfilemap_2.
  *   added tttset.VTCompatTab.
  */
 
