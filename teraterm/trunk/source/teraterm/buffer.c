@@ -1629,6 +1629,7 @@ static void invokeBrowser(LONG ptr)
 #ifdef URL_EMPHASIS
     LONG i, start, end;
     char url[1024];
+	char *uptr, ch;
 
     start = ptr;
     while (AttrBuff[start] & AttrURL) start--;
@@ -1639,10 +1640,20 @@ static void invokeBrowser(LONG ptr)
     end--;
  
     if (start + 1024 <= end) end = start + 1023;
+	uptr = url;
     for (i = 0; i < end - start + 1; i++) {
-	url[i] = CodeBuff[start + i];
+		ch = CodeBuff[start + i];
+		if ((start + i) % NumOfColumns == NumOfColumns - 1 
+			&& ch == '\\') {
+			// Emacs対応。行末に \ が来ている場合は、次の行に続くという意味で emacs が
+			// 自動で挿入する文字なので、URLには含めないようにする。
+			// (2007.8.7 yutaka)
+
+		} else {
+			*uptr++ = ch;
+		}
     }
-    url[i] = '\0';
+	*uptr = '\0';
     ShellExecute(NULL, NULL, url, NULL, NULL,SW_SHOWNORMAL);
 #endif
 }
@@ -2589,6 +2600,9 @@ void SetLineContinued()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2007/07/04 11:40:49  doda
+ * タブがすべてクリアされていた時、VTCompatTabの設定に関わらず常にタブで自動改行が発生しなかったのを修正した。
+ *
  * Revision 1.12  2007/07/04 11:18:17  doda
  * 行末のタブの動作を変えるパラメータ VTCompatTab を追加した。
  *   VTCompatTab = on/off (デフォルト: off)
