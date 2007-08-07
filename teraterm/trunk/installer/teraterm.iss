@@ -43,8 +43,6 @@ Source: ..\visualc\bin\release\ttpset.dll; DestDir: {app}; Components: TeraTerm
 Source: ..\visualc\bin\release\ttptek.dll; DestDir: {app}; Components: TeraTerm
 Source: ..\release\TERATERM.INI; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\release\TSPECIAL1.TTF; DestDir: {fonts}; Components: TeraTerm; Attribs: readonly; Flags: overwritereadonly uninsneveruninstall; FontInstall: Tera Special; Check: isPowerUsersMore
-Source: ..\release\ttermp.hlp; DestDir: {app}; Components: TeraTerm
-Source: ..\release\ttermpj.hlp; DestDir: {app}; Components: TeraTerm
 Source: ..\..\doc\en\teraterm.chm; DestDir: {app}; Components: TeraTerm
 Source: ..\..\doc\jp\teratermj.chm; DestDir: {app}; Components: TeraTerm
 Source: ..\release\license.txt; DestDir: {app}; Components: TeraTerm
@@ -55,8 +53,6 @@ Source: ..\release\NT98KEYB.CNF; DestDir: {app}; Components: TeraTerm
 Source: ..\release\PC98KEYB.CNF; DestDir: {app}; Components: TeraTerm
 Source: ..\visualc\bin\release\keycode.exe; DestDir: {app}; Components: TeraTerm
 Source: ..\visualc\bin\release\ttpmacro.exe; DestDir: {app}; Components: TeraTerm; Flags: {#IGNOREVER}
-Source: ..\release\macro.hlp; DestDir: {app}; Components: TeraTerm
-Source: ..\release\macroj.hlp; DestDir: {app}; Components: TeraTerm
 Source: ..\release\delpassw.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\dialup.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\login.ttl; DestDir: {app}; Components: TeraTerm
@@ -74,10 +70,12 @@ Source: ..\release\LogMeTT_license.txt; DestDir: {app}; Components: LogMeTT
 Source: ..\release\LogMeTT_README.txt; DestDir: {app}; Components: LogMeTT
 Source: ..\release\LogMeTTc.exe; DestDir: {app}; Components: LogMeTT
 Source: ..\release\LogMeTT.exe; DestDir: {app}; Components: LogMeTT
-Source: ..\release\LogMeTT.hlp; DestDir: {app}; Components: LogMeTT
-Source: ..\release\LogMeTT.cnt; DestDir: {app}; Components: LogMeTT
+Source: ..\release\logmett.chm; DestDir: {app}; Components: LogMeTT
+Source: ..\release\runltt.exe; DestDir: {app}; Components: LogMeTT
+Source: ..\release\KeyFile.ini; DestDir: {app}; Components: LogMeTT
 Source: ..\release\TTLEdit.exe; DestDir: {app}; Components: LogMeTT
 Source: ..\release\SynComp.pro; DestDir: {app}; Components: LogMeTT
+Source: ..\release\ttmacro.tpl; DestDir: {app}; Components: LogMeTT
 Source: ..\source\ttmenu\Release\ttpmenu.exe; DestDir: {app}; Components: TeraTerm_Menu; Flags: {#IGNOREVER}
 Source: ..\release\ttmenu_readme-j.txt; DestDir: {app}; Components: TeraTerm_Menu
 Source: ..\..\TTProxy\Release\TTXProxy.dll; DestDir: {app}; Components: TTProxy; Flags: {#IGNOREVER}
@@ -513,7 +511,7 @@ begin
 end;
 
 [InstallDelete]
-Name: {app}\OpenSSH-LICENCE.txt; Type: files; Components: TTSSH
+Name: {app}\OpenSSH-LICENCE.txt; Type: files
 Name: {app}\cygterm-README.txt; Type: files
 Name: {app}\cygterm-README-j.txt; Type: files
 Name: {app}\keycode.txt; Type: files
@@ -530,6 +528,11 @@ Name: {group}\TeraTerm Document.lnk; Type: files
 Name: {group}\TeraTerm Document(Japanese).lnk; Type: files
 Name: {group}\TTSSH Document.lnk; Type: files
 Name: {group}\TTSSH Document(Japanese).lnk; Type: files
+Name: {app}\LogMeTT.hlp; Type: files
+Name: {app}\macro.hlp; Type: files
+Name: {app}\macroj.hlp; Type: files
+Name: {app}\ttermp.hlp; Type: files
+Name: {app}\ttermpj.hlp; Type: files
 
 [_ISToolPreCompile]
 Name: convtext.bat

@@ -52,6 +52,43 @@ http://www.neocom.ca/forum/index.php
                  =============================
                  (in reverse chronological order)
 
+2007-07-23 (Ver 2.9 Release 2)
+New features added:
+- Application was redesigned to support Microsoft Windows Vista and Windows XP themes.
+- Replaced hardcoded macro Templates with the plain text file 'ttmacro.tpl' that can 
+be used as reference for building personal template library.
+- Added configurable name of Templates file to avoid overwriting custom templates 
+during upgrades.
+- Added tracking of admin rights when running under Windows Vista. Without admin rights 
+Vista does not allow to associate file extension with the application. Use ‘Run as 
+Administrator’ from Vista popup menu or change the properties of LogMeTTC.exe to be 
+always started as Administrator.
+- 'About' window was combined with Disclaimer message. It also contains 'What's new' tab. 
+- 'Help' menu is now calling Vista compatible LogMeTT and TeraTerm help files in .chm 
+format instead of old file with extension .hlp. This applies also to Context sensitive 
+help in editor area. LogMeTT help file however does not reflect all changes introduced in 
+this release.
+- Functionality of 'Print' speed button changed from showing Print Dialog to immediate 
+printing. Print Dialog is still accessible from File->Print… menu.
+- Added 'Show Special Characters' option and speed button. 
+- All previously hardcoded keywords used by syntax highlighter were migrated to external 
+KeyFile.ini file. This will allow to add new key words without recompiling the application. 
+KeyFile.ini also contains Help ID-s that are used by context sensitive help.
+- Upgraded Virtual Tree component to version 4.5.2
+- Added shortcuts F11 - "Run all selected" and F12 - "Apply Changes".
+- Added support of $[1]..$[8] key words that can be used as command line parameters for 
+RunLTT application. 
+- Added column selection mode. Use mouse while pressing <Alt> key to select columns in 
+Macro editor.
+Bugs fixed:
+- Fixed the error happening while duplicating expanded branch of the Connections tree. 
+- Fixed node path that was appearing in reverse order in Print Preview window and in the 
+header of printouts.
+- Lots of other changes, code cleanup and bug fixing of 3rd party freeware components used 
+by LogMeTT and LogMeTTC.
+
+
+
 2007-03-28 (Ver 2.9 Release 1)
 New features added:
 - Standalone TeraTerm Macro Editor - TTLEditor was created. It inherited all features 
@@ -68,16 +105,6 @@ TeraTerm windows opened in "Run All Selected" mode.
 
 Bugs fixed:
 - Few minor fixes and code optimization.
-
-
-2006-10-10 (Ver 2.8 Release 6)
-New features added:
-- Included 3 new macro commands: clipb2var, var2clipb and ifdefined into syntax highlighter.
-- Updated macro.hlp file, added description of new macro commands.
-- Updated TeraTerm icon in LogMeTT popup menu.
-
-Bugs fixed:
-- None.
 
 
 2006-07-24 (Ver 2.8 Release 5)
