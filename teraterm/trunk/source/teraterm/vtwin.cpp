@@ -331,9 +331,9 @@ CVTWindow::CVTWindow()
 		  /* read keycode map from "keyboard.cnf" */
 		  tempkm = (PKeyMap)malloc(sizeof(TKeyMap));
 		  if (tempkm!=NULL) {
-			  strcpy(Temp, ts.HomeDir);
-			  AppendSlash(Temp);
-			  strcat(Temp,"KEYBOARD.CNF");
+			  strncpy_s(Temp, sizeof(Temp), ts.HomeDir, _TRUNCATE);
+			  AppendSlash(Temp,sizeof(Temp));
+			  strncat_s(Temp,sizeof(Temp),"KEYBOARD.CNF",_TRUNCATE);
 			  (*ReadKeyboardCnf)(Temp,tempkm,TRUE);
 		  }
 		  FreeTTSET();
@@ -351,9 +351,9 @@ CVTWindow::CVTWindow()
 		  /* read keycode map from "keyboard.cnf" */
 		  tempkm = (PKeyMap)malloc(sizeof(TKeyMap));
 		  if (tempkm!=NULL) {
-			  strcpy(Temp, ts.HomeDir);
-			  AppendSlash(Temp);
-			  strcat(Temp,"KEYBOARD.CNF");
+			  strncpy_s(Temp, sizeof(Temp, ts.HomeDir), ts.HomeDir, _TRUNCATE);
+			  AppendSlash(Temp,sizeof(Temp));
+			  strncat_s(Temp,sizeof(Temp),"KEYBOARD.CNF",_TRUNCATE);
 			  (*ReadKeyboardCnf)(Temp,tempkm,TRUE);
 		  }
 		  FreeTTSET();
@@ -929,7 +929,7 @@ void CVTWindow::InitMenu(HMENU *Menu)
   {
     WinMenu = CreatePopupMenu();
 #ifndef NO_I18N
-    strcpy(ts.UIMsg, "&Window");
+    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "&Window", _TRUNCATE);
     get_lang_msg("MENU_WINDOW", ts.UIMsg, ts.UILanguageFile);
     ::InsertMenu(*Menu,ID_HELPMENU,
 		 MF_STRING | MF_ENABLED |
@@ -1139,15 +1139,15 @@ void CVTWindow::RestoreSetup()
   char TempName[MAXPATHLEN];
 
   if ( strlen(ts.SetupFName)==0 ) return;
-  ExtractFileName(ts.SetupFName,TempName);
+  ExtractFileName(ts.SetupFName,TempName,sizeof(TempName));
   ExtractDirName(ts.SetupFName,TempDir);
   if (TempDir[0]==0)
-	  strcpy(TempDir,ts.HomeDir);
-  FitFileName(TempName,".INI");
+	  strncpy_s(TempDir, sizeof(TempDir),ts.HomeDir, _TRUNCATE);
+  FitFileName(TempName,sizeof(TempName),".INI");
 
-  strcpy(ts.SetupFName,TempDir);
-  AppendSlash(ts.SetupFName);
-  strcat(ts.SetupFName,TempName);
+  strncpy_s(ts.SetupFName, sizeof(ts.SetupFName),TempDir, _TRUNCATE);
+  AppendSlash(ts.SetupFName,sizeof(ts.SetupFName));
+  strncat_s(ts.SetupFName,sizeof(ts.SetupFName),TempName,_TRUNCATE);
 
   if (LoadTTSET())
     (*ReadIniFile)(ts.SetupFName,&ts);
@@ -1375,7 +1375,7 @@ void CVTWindow::OnClose()
     return;
   }
 #ifndef NO_I18N
-  strcpy(ts.UIMsg, "Disconnect?");
+  strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Disconnect?", _TRUNCATE);
   get_lang_msg("MSG_DISCONNECT_CONF", ts.UIMsg, ts.UILanguageFile);
 #endif
   if (cv.Ready && (cv.PortType==IdTCPIP) &&
@@ -1489,9 +1489,9 @@ void CVTWindow::OnDropFiles(HDROP hDropInfo)
 				// いきなりファイルの内容を送り込む前に、ユーザに問い合わせを行う。(2006.1.21 yutaka)
 #ifndef NO_I18N
 				char uimsg[MAX_UIMSG];
-				strcpy(uimsg, "Tera Term: File Drag and Drop");
+				strncpy_s(uimsg, sizeof(uimsg), "Tera Term: File Drag and Drop", _TRUNCATE);
 				get_lang_msg("MSG_DANDD_CONF_TITLE", uimsg, ts.UILanguageFile);
-				strcpy(ts.UIMsg, "Are you sure that you want to send the file content?");
+				strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Are you sure that you want to send the file content?", _TRUNCATE);
 				get_lang_msg("MSG_DANDD_CONF", ts.UIMsg, ts.UILanguageFile);
 #endif
 				if (MessageBox(
@@ -2219,7 +2219,7 @@ LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
     {
       WinMenu = CreatePopupMenu();
 #ifndef NO_I18N
-      strcpy(ts.UIMsg, "&Window");
+      strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "&Window", _TRUNCATE);
       get_lang_msg("MENU_WINDOW", ts.UIMsg, ts.UILanguageFile);
       ::InsertMenu(MainMenu,ID_HELPMENU,
 	MF_STRING | MF_ENABLED |
@@ -2246,7 +2246,7 @@ LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
     SysMenu = ::GetSystemMenu(HVTWin,FALSE);
     AppendMenu(SysMenu, MF_SEPARATOR, 0, NULL);
 #ifndef NO_I18N
-    strcpy(ts.UIMsg, "Show menu &bar");
+    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Show menu &bar", _TRUNCATE);
     get_lang_msg("MENU_SHOW_MENUBAR", ts.UIMsg, ts.UILanguageFile);
     AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, ts.UIMsg);
 #else
@@ -2313,7 +2313,7 @@ LONG CVTWindow::OnChangeTBar(UINT wParam, LONG lParam)
     SysMenu = ::GetSystemMenu(HVTWin,FALSE);
     AppendMenu(SysMenu, MF_SEPARATOR, 0, NULL);
 #ifndef NO_I18N
-    strcpy(ts.UIMsg, "Show menu &bar");
+    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Show menu &bar", _TRUNCATE);
     get_lang_msg("MENU_SHOW_MENUBAR", ts.UIMsg, ts.UILanguageFile);
     AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, ts.UIMsg);
 #else
@@ -2363,15 +2363,13 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 
   /* Auto start logging (2007.5.31 maya) */
   if (ts.LogAutoStart && ts.LogFN[0]==0) {
-    strncpy(ts.LogFN, ts.LogDefaultName, sizeof(ts.LogFN));
-    ts.LogFN[sizeof(ts.LogFN)-1] = '\0';
+    strncpy_s(ts.LogFN, sizeof(ts.LogFN), ts.LogDefaultName, _TRUNCATE);
   }
   /* ログ採取が有効で開始していなければ開始する (2006.9.18 maya) */
   if ((ts.LogFN[0]!=0) && (LogVar==NULL) && NewFileVar(&LogVar))
   {
     LogVar->DirLen = 0;
-    strncpy(LogVar->FullName, ts.LogFN, sizeof(LogVar->FullName)-1);
-    LogVar->FullName[sizeof(LogVar->FullName)-1] = '\0';
+    strncpy_s(LogVar->FullName, sizeof(LogVar->FullName), ts.LogFN, _TRUNCATE);
     LogStart();
   }
 
@@ -2496,7 +2494,7 @@ LONG CVTWindow::OnChangeTitle(UINT wParam, LONG lParam)
 void CVTWindow::OnFileNewConnection()
 {
 //  char Command[MAXPATHLEN], Command2[MAXPATHLEN];
-	char Command[MAXPATHLEN + HostNameMaxLength], Command2[MAXPATHLEN + HostNameMaxLength]; // yutaka
+  char Command[MAXPATHLEN + HostNameMaxLength], Command2[MAXPATHLEN + HostNameMaxLength]; // yutaka
   TGetHNRec GetHNRec; /* record for dialog box */
 
   if (Connecting) return;
@@ -2514,7 +2512,7 @@ void CVTWindow::OnFileNewConnection()
   GetHNRec.MaxComPort = ts.MaxComPort;
 
 #ifdef TERATERM32
-  strcpy(Command,"ttermpro ");
+  strncpy_s(Command, sizeof(Command),"ttermpro ", _TRUNCATE);
 #else
   strcpy(Command,"teraterm ");
 #endif
@@ -2542,55 +2540,55 @@ void CVTWindow::OnFileNewConnection()
       ts.ComPort = GetHNRec.ComPort;
 
       if ((GetHNRec.PortType==IdTCPIP) &&
-	  LoadTTSET())
+          LoadTTSET())
       {
-	(*ParseParam)(Command, &ts, NULL);
-	FreeTTSET();
+        (*ParseParam)(Command, &ts, NULL);
+        FreeTTSET();
       }
       SetKeyMap();
       if (ts.MacroFN[0]!=0)
       {
-	RunMacro(ts.MacroFN,TRUE);
-	ts.MacroFN[0] = 0;
+        RunMacro(ts.MacroFN,TRUE);
+        ts.MacroFN[0] = 0;
       }
       else {
-	Connecting = TRUE;
-	ChangeTitle();
-	CommOpen(HVTWin,&ts,&cv);
+        Connecting = TRUE;
+        ChangeTitle();
+        CommOpen(HVTWin,&ts,&cv);
       }
       ResetSetup();
     }
     else {
       if (GetHNRec.PortType==IdSerial)
       {
-	Command[8] = 0;
-	strcat(Command," /C=");
-	uint2str(GetHNRec.ComPort,&Command[strlen(Command)],2);
+        Command[8] = 0;
+        strncat_s(Command,sizeof(Command)," /C=",_TRUNCATE);
+        uint2str(GetHNRec.ComPort,&Command[strlen(Command)],sizeof(Command)-strlen(Command),2);
       }
       else {
-	strcpy(Command2, &Command[9]);
-	Command[9] = 0;
-	if (GetHNRec.Telnet==0)
-	  strcat(Command," /T=0");
-	else
-	  strcat(Command," /T=1");
-	if (GetHNRec.TCPPort<65535)
-	{
-	  strcat(Command," /P=");
-	  uint2str(GetHNRec.TCPPort,&Command[strlen(Command)],5);
-	}
+        strncpy_s(Command2, sizeof(Command2), &Command[9], _TRUNCATE);
+        Command[9] = 0;
+        if (GetHNRec.Telnet==0)
+          strncat_s(Command,sizeof(Command)," /T=0",_TRUNCATE);
+        else
+          strncat_s(Command,sizeof(Command)," /T=1",_TRUNCATE);
+        if (GetHNRec.TCPPort<65535)
+        {
+          strncat_s(Command,sizeof(Command)," /P=",_TRUNCATE);
+          uint2str(GetHNRec.TCPPort,&Command[strlen(Command)],sizeof(Command)-strlen(Command),5);
+        }
 #ifndef NO_INET6
         /********************************/
         /* ここにプロトコル処理を入れる */
         /********************************/
         if (GetHNRec.ProtocolFamily == AF_INET) {
-          strcat(Command," /4");
+          strncat_s(Command,sizeof(Command)," /4",_TRUNCATE);
         } else if (GetHNRec.ProtocolFamily == AF_INET6) {
-          strcat(Command," /6");
+          strncat_s(Command,sizeof(Command)," /6",_TRUNCATE);
         }
 #endif /* NO_INET6 */
-	strcat(Command," ");
-	strncat(Command, Command2, sizeof(Command)-1-strlen(Command));
+        strncat_s(Command,sizeof(Command)," ",_TRUNCATE);
+        strncat_s(Command,sizeof(Command),Command2,_TRUNCATE);
       }
       TTXSetCommandLine(Command, sizeof(Command), &GetHNRec); /* TTPLUG */
       WinExec(Command,SW_SHOW);
@@ -2618,13 +2616,13 @@ void CVTWindow::OnDuplicateSession()
 	CopyTTSetToShmem(&ts);
 
 	if (ts.TCPPort == 23) { // telnet
-		_snprintf(Command, sizeof(Command), "%s %s:%d /DUPLICATE /nossh", 
+		_snprintf_s(Command, sizeof(Command), _TRUNCATE, "%s %s:%d /DUPLICATE /nossh", 
 			exec, ts.HostName, ts.TCPPort);
 
 	} else if (ts.TCPPort == 22) { // SSH
 		// ここの処理は TTSSH 側にやらせるべき (2004.12.7 yutaka)
 		// TTSSH側でのオプション生成を追加。(2005.4.8 yutaka)
-		_snprintf(Command, sizeof(Command), "%s %s:%d /DUPLICATE", 
+		_snprintf_s(Command, sizeof(Command), _TRUNCATE, "%s %s:%d /DUPLICATE", 
 			exec, ts.HostName, ts.TCPPort);
 
 		TTXSetCommandLine(Command, sizeof(Command), NULL); /* TTPLUG */
@@ -2654,11 +2652,11 @@ void CVTWindow::OnDuplicateSession()
 		char buf[80];
 #ifndef NO_I18N
 		char uimsg[MAX_UIMSG];
-		strcpy(uimsg, "ERROR");
+		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strcpy(ts.UIMsg, "Can't execute TeraTerm. (%d)");
+		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't execute TeraTerm. (%d)", _TRUNCATE);
 		get_lang_msg("MSG_USE_IME_ERROR", ts.UIMsg, ts.UILanguageFile);
-		_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+		_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
 #else
 		_snprintf(buf, sizeof(buf), "Can't execute TeraTerm. (%d)", GetLastError());
@@ -2688,7 +2686,7 @@ void CVTWindow::OnCygwinConnection()
 		goto found_path;
 	}
 
-	_snprintf(file, MAX_PATH, "%s\\bin", ts.CygwinDirectory);
+	_snprintf_s(file, sizeof(file), _TRUNCATE, "%s\\bin", ts.CygwinDirectory);
 	if (GetFileAttributes(file) == -1) { // open error
 		for (c = 'C' ; c <= 'Z' ; c++) {
 			file[0] = c;
@@ -2697,9 +2695,9 @@ void CVTWindow::OnCygwinConnection()
 			}
 		}
 #ifndef NO_I18N
-		strcpy(uimsg, "ERROR");
+		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strcpy(ts.UIMsg, "Can't find Cygwin directory.");
+		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't find Cygwin directory.", _TRUNCATE);
 		get_lang_msg("MSG_FIND_CYGTERM_DIR_ERROR", ts.UIMsg, ts.UILanguageFile);
 		::MessageBox(NULL, ts.UIMsg, uimsg, MB_OK | MB_ICONWARNING);
 #else
@@ -2709,9 +2707,9 @@ void CVTWindow::OnCygwinConnection()
 	}
 found_dll:;
 	if (envptr != NULL) {
-		_snprintf(buf, sizeof(buf), "PATH=%s;%s", file, envptr);
+		_snprintf_s(buf, sizeof(buf), _TRUNCATE, "PATH=%s;%s", file, envptr);
 	} else {
-		_snprintf(buf, sizeof(buf), "PATH=%s", file);
+		_snprintf_s(buf, sizeof(buf), _TRUNCATE, "PATH=%s", file);
 	}
 	_putenv(buf);
 
@@ -2727,9 +2725,9 @@ found_path:;
 			NULL, NULL,
 			&si, &pi) == 0) {
 #ifndef NO_I18N
-		strcpy(uimsg, "ERROR");
+		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strcpy(ts.UIMsg, "Can't execute Cygterm.");
+		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't execute Cygterm.", _TRUNCATE);
 		get_lang_msg("MSG_EXEC_CYGTERM_ERROR", ts.UIMsg, ts.UILanguageFile);
 		::MessageBox(NULL, ts.UIMsg, uimsg, MB_OK | MB_ICONWARNING);
 #else
@@ -2761,11 +2759,11 @@ void CVTWindow::OnTTMenuLaunch()
 		char buf[80];
 #ifndef NO_I18N
 		char uimsg[MAX_UIMSG];
-		strcpy(uimsg, "ERROR");
+		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strcpy(ts.UIMsg, "Can't execute TeraTerm Menu. (%d)");
+		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't execute TeraTerm Menu. (%d)", _TRUNCATE);
 		get_lang_msg("MSG_EXEC_TTMENU_ERROR", ts.UIMsg, ts.UILanguageFile);
-		_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+		_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
 #else
 		_snprintf(buf, sizeof(buf), "Can't execute TeraTerm Menu. (%d)", GetLastError());
@@ -2800,11 +2798,11 @@ void CVTWindow::OnLogMeInLaunch()
 		char buf[80];
 #ifndef NO_I18N
 		char uimsg[MAX_UIMSG];
-		strcpy(uimsg, "ERROR");
+		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strcpy(ts.UIMsg, "Can't execute LogMeTT. (%d)");
+		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't execute LogMeTT. (%d)", _TRUNCATE);
 		get_lang_msg("MSG_EXEC_LOGMETT_ERROR", ts.UIMsg, ts.UILanguageFile);
-		_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+		_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
 #else
 		_snprintf(buf, sizeof(buf), "Can't execute LogMeTT. (%d)", GetLastError());
@@ -2917,7 +2915,7 @@ void CVTWindow::OnViewLog()
 	GetStartupInfo(&si);
 	memset(&pi, 0, sizeof(pi));
 
-	_snprintf(command, sizeof(command), "%s %s", ts.ViewlogEditor, file);
+	_snprintf_s(command, sizeof(command), _TRUNCATE, "%s %s", ts.ViewlogEditor, file);
 
 	if (CreateProcess(
 			NULL, 
@@ -2928,11 +2926,11 @@ void CVTWindow::OnViewLog()
 		char buf[80];
 #ifndef NO_I18N
 		char uimsg[MAX_UIMSG];
-		strcpy(uimsg, "ERROR");
+		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strcpy(ts.UIMsg, "Can't view logging file. (%d)");
+		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't view logging file. (%d)", _TRUNCATE);
 		get_lang_msg("MSG_VIEW_LOGFILE_ERROR", ts.UIMsg, ts.UILanguageFile);
-		_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+		_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
 #else
 		_snprintf(buf, sizeof(buf), "Can't view logging file. (%d)", GetLastError());
@@ -2970,7 +2968,7 @@ void CVTWindow::OnReplayLog()
 	}
     ofn.hwndOwner = HVTWin;
 #ifndef NO_I18N
-	strncpy(ts.UIMsg, "all(*.*)\\0*.*\\0\\0", sizeof(ts.UIMsg));
+	strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "all(*.*)\\0*.*\\0\\0", _TRUNCATE);
 	get_lang_msg("FILEDLG_OPEN_LOGFILE_FILTER", ts.UIMsg, ts.UILanguageFile);
     ofn.lpstrFilter = ts.UIMsg;
 #else
@@ -2981,7 +2979,7 @@ void CVTWindow::OnReplayLog()
     ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
     ofn.lpstrDefExt = "log";
 #ifndef NO_I18N
-    strcpy(uimsg, "Select replay log file with binary mode");
+    strncpy_s(uimsg, sizeof(uimsg), "Select replay log file with binary mode", _TRUNCATE);
     get_lang_msg("FILEDLG_OPEN_LOGFILE_TITLE", uimsg, ts.UILanguageFile);
 	ofn.lpstrTitle = uimsg;
 #else
@@ -2992,7 +2990,7 @@ void CVTWindow::OnReplayLog()
 
 
 	// "/R"オプション付きでTeraTermを起動する（ログが再生される）
-	_snprintf(Command, sizeof(Command), "%s /R=\"%s\"", 
+	_snprintf_s(Command, sizeof(Command), _TRUNCATE, "%s /R=\"%s\"",
 		exec, szFile);
 
 	memset(&si, 0, sizeof(si));
@@ -3007,11 +3005,11 @@ void CVTWindow::OnReplayLog()
 			&si, &pi) == 0) {
 		char buf[80];
 #ifndef NO_I18N
-		strcpy(uimsg, "ERROR");
+		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strcpy(ts.UIMsg, "Can't execute TeraTerm. (%d)");
+		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't execute TeraTerm. (%d)", _TRUNCATE);
 		get_lang_msg("MSG_EXEC_TT_ERROR", ts.UIMsg, ts.UILanguageFile);
-		_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+		_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
 #else
 		_snprintf(buf, sizeof(buf), "Can't execute TeraTerm. (%d)", GetLastError());
@@ -3112,7 +3110,7 @@ void CVTWindow::OnFileDisconnect()
 {
   if (! cv.Ready) return;
 #ifndef NO_I18N
-  strcpy(ts.UIMsg, "Disconnect?");
+  strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Disconnect?", _TRUNCATE);
   get_lang_msg("MSG_DISCONNECT_CONF", ts.UIMsg, ts.UILanguageFile);
 #endif
   if ((cv.PortType==IdTCPIP) &&
@@ -3227,7 +3225,7 @@ static void doSelectFolder(HWND hWnd, char *path, int pathlen)
 	bi.pidlRoot = pidlRoot;
 	bi.pszDisplayName = lpBuffer;
 #ifndef NO_I18N
-	strcpy(ts.UIMsg, "select folder");
+	strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "select folder", _TRUNCATE);
 	get_lang_msg("DIRDLG_CYGTERM_DIR_TITLE", ts.UIMsg, ts.UILanguageFile);
 	bi.lpszTitle = ts.UIMsg;
 #else
@@ -3242,7 +3240,7 @@ static void doSelectFolder(HWND hWnd, char *path, int pathlen)
 		// PIDL形式の戻り値のファイルシステムのパスに変換
 		if (SHGetPathFromIDList(pidlBrowse, lpBuffer)) {
 			// 取得成功
-			strncpy(path, lpBuffer, pathlen);
+			strncpy_s(path, pathlen, lpBuffer, _TRUNCATE);
 		}
 		// SHBrowseForFolderの戻り値PIDLを解放
 		lpMalloc->Free(pidlBrowse);
@@ -3354,13 +3352,13 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 
 			// try to read CygTerm config file
 			memset(&settings, 0, sizeof(settings));
-			_snprintf(settings.term, sizeof(settings.term), ".\\ttermpro.exe %%s %%d /KR=SJIS /KT=SJIS /nossh");
-			_snprintf(settings.term_type, sizeof(settings.term_type), "vt100");
-			_snprintf(settings.port_start, sizeof(settings.port_start), "20000");
-			_snprintf(settings.port_range, sizeof(settings.port_range), "40");
-			_snprintf(settings.shell, sizeof(settings.shell), "/bin/tcsh");
-			_snprintf(settings.env1, sizeof(settings.env1), "MAKE_MODE=unix");
-			_snprintf(settings.env2, sizeof(settings.env2), "");
+			_snprintf_s(settings.term, sizeof(settings.term), _TRUNCATE, ".\\ttermpro.exe %%s %%d /KR=SJIS /KT=SJIS /nossh");
+			_snprintf_s(settings.term_type, sizeof(settings.term_type), _TRUNCATE, "vt100");
+			_snprintf_s(settings.port_start, sizeof(settings.port_start), _TRUNCATE, "20000");
+			_snprintf_s(settings.port_range, sizeof(settings.port_range), _TRUNCATE, "40");
+			_snprintf_s(settings.shell, sizeof(settings.shell), _TRUNCATE, "/bin/tcsh");
+			_snprintf_s(settings.env1, sizeof(settings.env1), _TRUNCATE, "MAKE_MODE=unix");
+			_snprintf_s(settings.env2, sizeof(settings.env2), _TRUNCATE, "");
 			settings.login_shell = FALSE;
 			settings.home_chdir = FALSE;
 
@@ -3377,25 +3375,25 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 						continue;
 
 					if (_stricmp(head, "TERM") == 0) {
-						_snprintf(settings.term, sizeof(settings.term), "%s", body);
+						_snprintf_s(settings.term, sizeof(settings.term), _TRUNCATE, "%s", body);
 
 					} else if (_stricmp(head, "TERM_TYPE") == 0) {
-						_snprintf(settings.term_type, sizeof(settings.term_type), "%s", body);
+						_snprintf_s(settings.term_type, sizeof(settings.term_type), _TRUNCATE, "%s", body);
 
 					} else if (_stricmp(head, "PORT_START") == 0) {
-						_snprintf(settings.port_start, sizeof(settings.port_start), "%s", body);
+						_snprintf_s(settings.port_start, sizeof(settings.port_start), _TRUNCATE, "%s", body);
 
 					} else if (_stricmp(head, "PORT_RANGE") == 0) {
-						_snprintf(settings.port_range, sizeof(settings.port_range), "%s", body);
+						_snprintf_s(settings.port_range, sizeof(settings.port_range), _TRUNCATE, "%s", body);
 
 					} else if (_stricmp(head, "SHELL") == 0) {
-						_snprintf(settings.shell, sizeof(settings.shell), "%s", body);
+						_snprintf_s(settings.shell, sizeof(settings.shell), _TRUNCATE, "%s", body);
 
 					} else if (_stricmp(head, "ENV_1") == 0) {
-						_snprintf(settings.env1, sizeof(settings.env1), "%s", body);
+						_snprintf_s(settings.env1, sizeof(settings.env1), _TRUNCATE, "%s", body);
 
 					} else if (_stricmp(head, "ENV_2") == 0) {
-						_snprintf(settings.env2, sizeof(settings.env2), "%s", body);
+						_snprintf_s(settings.env2, sizeof(settings.env2), _TRUNCATE, "%s", body);
 
 					} else if (_stricmp(head, "LOGIN_SHELL") == 0) {
 						if (strchr("YyTt", *body)) {
@@ -3482,11 +3480,11 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					if (tmp_fp == NULL) { 
 #ifndef NO_I18N
 						char uimsg[MAX_UIMSG];
-						strcpy(uimsg, "ERROR");
+						strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
 						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-						strcpy(ts.UIMsg, "Can't write CygTerm configuration file (%d).");
+						strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't write CygTerm configuration file (%d).", _TRUNCATE);
 						get_lang_msg("MSG_CYGTERM_CONF_WRITEFILE_ERROR", ts.UIMsg, ts.UILanguageFile);
-						_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+						_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 						MessageBox(hDlgWnd, buf, uimsg, MB_ICONEXCLAMATION);
 #else
 						_snprintf(buf, sizeof(buf), "Can't write CygTerm configuration file (%d).", GetLastError());
@@ -3582,11 +3580,11 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 						if (remove(cfgfile) != 0) {
 #ifndef NO_I18N
 							char uimsg[MAX_UIMSG];
-							strcpy(uimsg, "ERROR");
+							strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
 							get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-							strcpy(ts.UIMsg, "Can't remove old CygTerm configuration file (%d).");
+							strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't remove old CygTerm configuration file (%d).", _TRUNCATE);
 							get_lang_msg("MSG_CYGTERM_CONF_REMOVEFILE_ERROR", ts.UIMsg, ts.UILanguageFile);
-							_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+							_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 							MessageBox(hDlgWnd, buf, uimsg, MB_ICONEXCLAMATION);
 #else
 							_snprintf(buf, sizeof(buf), "Can't remove old CygTerm configuration file (%d).", GetLastError());
@@ -3596,11 +3594,11 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 						else if (rename(tmpfile, cfgfile) != 0) {
 #ifndef NO_I18N
 							char uimsg[MAX_UIMSG];
-							strcpy(uimsg, "ERROR");
+							strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
 							get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-							strcpy(ts.UIMsg, "Can't rename CygTerm configuration file (%d).");
+							strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't rename CygTerm configuration file (%d).", _TRUNCATE);
 							get_lang_msg("MSG_CYGTERM_CONF_RENAMEFILE_ERROR", ts.UIMsg, ts.UILanguageFile);
-							_snprintf(buf, sizeof(buf), ts.UIMsg, GetLastError());
+							_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 							MessageBox(hDlgWnd, buf, uimsg, MB_ICONEXCLAMATION);
 #else
 							_snprintf(buf, sizeof(buf), "Can't rename CygTerm configuration file (%d).", GetLastError());
@@ -3740,7 +3738,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					}
 					ofn.hwndOwner = hDlgWnd;
 #ifndef NO_I18N
-					strncpy(ts.UIMsg, "exe(*.exe)\\0*.exe\\0all(*.*)\\0*.*\\0\\0", sizeof(ts.UIMsg));
+					strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "exe(*.exe)\\0*.exe\\0all(*.*)\\0*.*\\0\\0", _TRUNCATE);
 					get_lang_msg("FILEDLG_SELECT_LOGVIEW_APP_FILTER", ts.UIMsg, ts.UILanguageFile);
 					ofn.lpstrFilter = ts.UIMsg;
 #else
@@ -3749,7 +3747,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					ofn.lpstrFile = ts.ViewlogEditor;
 					ofn.nMaxFile = sizeof(ts.ViewlogEditor);
 #ifndef NO_I18N
-					strcpy(uimsg, "Choose a executing file with launching logging file");
+					strncpy_s(uimsg, sizeof(uimsg), "Choose a executing file with launching logging file", _TRUNCATE);
 					get_lang_msg("FILEDLG_SELECT_LOGVIEW_APP_TITLE", uimsg, ts.UILanguageFile);
 					ofn.lpstrTitle = uimsg;
 #else
@@ -3791,9 +3789,9 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
 					if (isInvalidStrftimeChar(buf)) {
 #ifndef NO_I18N
-						strcpy(uimsg, "ERROR");
+						strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
 						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-						strcpy(ts.UIMsg, "Invalid character is included in log file name.");
+						strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Invalid character is included in log file name.", _TRUNCATE);
 						get_lang_msg("MSG_LOGFILE_INVALID_CHAR_ERROR", ts.UIMsg, ts.UILanguageFile);
 						MessageBox(hDlgWnd, ts.UIMsg, uimsg, MB_ICONEXCLAMATION);
 #else
@@ -3809,9 +3807,9 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					// 時刻文字列に変換
 					if (strftime(buf2, sizeof(buf2), buf, tm_local) == 0) {
 #ifndef NO_I18N
-						strcpy(uimsg, "ERROR");
+						strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
 						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-						strcpy(ts.UIMsg, "The log file name is too long.");
+						strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "The log file name is too long.", _TRUNCATE);
 						get_lang_msg("MSG_LOGFILE_TOOLONG_ERROR", ts.UIMsg, ts.UILanguageFile);
 						MessageBox(hDlgWnd, ts.UIMsg, uimsg, MB_ICONEXCLAMATION);
 #else
@@ -3822,9 +3820,9 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					}
 					if (isInvalidFileNameChar(buf2)) {
 #ifndef NO_I18N
-						strcpy(uimsg, "ERROR");
+						strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
 						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-						strcpy(ts.UIMsg, "Invalid character is included in log file name.");
+						strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Invalid character is included in log file name.", _TRUNCATE);
 						get_lang_msg("MSG_LOGFILE_INVALID_CHAR_ERROR", ts.UIMsg, ts.UILanguageFile);
 						MessageBox(hDlgWnd, ts.UIMsg, uimsg, MB_ICONEXCLAMATION);
 #else
@@ -3833,12 +3831,12 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 #endif
 						return FALSE;
 					}
-					strncpy(ts.LogDefaultName, buf, sizeof(ts.LogDefaultName));
+					strncpy_s(ts.LogDefaultName, sizeof(ts.LogDefaultName), buf, _TRUNCATE);
 
 					// Log Default File Path (2007.5.30 maya)
 					hWnd = GetDlgItem(hDlgWnd, IDC_DEFAULTPATH_EDITOR);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
-					strncpy(ts.LogDefaultPath, buf, sizeof(ts.LogDefaultPath));
+					strncpy_s(ts.LogDefaultPath, sizeof(ts.LogDefaultPath), buf, _TRUNCATE);
 
 					/* Auto start logging (2007.5.31 maya) */
 					hWnd = GetDlgItem(hDlgWnd, IDC_AUTOSTART);
@@ -3886,17 +3884,17 @@ static void SetupRGBbox(HWND hDlgWnd, int index)
 
 	hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_RED);
 	c = GetRValue(ts.ANSIColor[index]);
-	_snprintf(buf, sizeof(buf), "%d", c);
+	_snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d", c);
 	SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
 
 	hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_GREEN);
 	c = GetGValue(ts.ANSIColor[index]);
-	_snprintf(buf, sizeof(buf), "%d", c);
+	_snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d", c);
 	SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
 
 	hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_BLUE);
 	c = GetBValue(ts.ANSIColor[index]);
-	_snprintf(buf, sizeof(buf), "%d", c);
+	_snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d", c);
 	SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
 }
 
@@ -3969,7 +3967,7 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 
 			// (1)AlphaBlend 
 			hWnd = GetDlgItem(hDlgWnd, IDC_ALPHA_BLEND);
-			_snprintf(buf, sizeof(buf), "%d", ts.AlphaBlend);
+			_snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d", ts.AlphaBlend);
 			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
 
 			// (2)[BG] BGEnable 
@@ -3990,7 +3988,7 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 			// (4)ANSI color
 			hWnd = GetDlgItem(hDlgWnd, IDC_ANSI_COLOR);
 			for (i = 0 ; i < 16 ; i++) {
-				_snprintf(buf, sizeof(buf), "%d", i);
+				_snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d", i);
 				SendMessage(hWnd, LB_INSERTSTRING, i, (LPARAM)buf);
 			}
 			SetupRGBbox(hDlgWnd, 0);
@@ -4063,7 +4061,7 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					hWnd = GetDlgItem(hDlgWnd, IDC_MOUSE_CURSOR);
 					ret = SendMessage(hWnd, LB_GETCURSEL, 0, 0);
 					if (ret >= 0 && ret < MOUSE_CURSOR_MAX) {
-						strcpy(ts.MouseCursorName, MouseCursor[ret].name);
+						strncpy_s(ts.MouseCursorName, sizeof(ts.MouseCursorName), MouseCursor[ret].name, _TRUNCATE);
 					}
 
                     EndDialog(hDlgWnd, IDOK);
@@ -4392,7 +4390,7 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
 #ifndef NO_I18N
-			strcpy(ts.UIMsg, "General");
+			strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "General", _TRUNCATE);
 			get_lang_msg("DLG_TABSHEET_TITLE_GENERAL", ts.UIMsg, ts.UILanguageFile);
 			tc.pszText = ts.UIMsg;
 #else
@@ -4403,7 +4401,7 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
 #ifndef NO_I18N
-			strcpy(ts.UIMsg, "Visual");
+			strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Visual", _TRUNCATE);
 			get_lang_msg("DLG_TABSHEET_TITLE_VISUAL", ts.UIMsg, ts.UILanguageFile);
 			tc.pszText = ts.UIMsg;
 #else
@@ -4414,7 +4412,7 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
 #ifndef NO_I18N
-			strcpy(ts.UIMsg, "Log");
+			strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Log", _TRUNCATE);
 			get_lang_msg("DLG_TABSHEET_TITLE_LOG", ts.UIMsg, ts.UILanguageFile);
 			tc.pszText = ts.UIMsg;
 #else
@@ -4425,7 +4423,7 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
 #ifndef NO_I18N
-			strcpy(ts.UIMsg, "Cygwin");
+			strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Cygwin", _TRUNCATE);
 			get_lang_msg("DLG_TABSHEET_TITLE_CYGWIN", ts.UIMsg, ts.UILanguageFile);
 			tc.pszText = ts.UIMsg;
 #else
@@ -4647,7 +4645,7 @@ void CVTWindow::OnSetupSave()
 	char TmpSetupFN[MAXPATHLEN];
 	int ret;
 
-	strcpy(TmpSetupFN,ts.SetupFName);
+	strncpy_s(TmpSetupFN, sizeof(TmpSetupFN),ts.SetupFName, _TRUNCATE);
 	if (! LoadTTFILE()) return;
 	HelpId = HlpSetupSave;
 	Ok = (*GetSetupFname)(HVTWin,GSF_SAVE,&ts);
@@ -4659,9 +4657,9 @@ void CVTWindow::OnSetupSave()
 		if (errno != ENOENT) {  // ファイルがすでに存在する場合のみエラーとする (2005.12.13 yutaka)
 #ifndef NO_I18N
 			char uimsg[MAX_UIMSG];
-			strcpy(uimsg, "Tera Term: ERROR");
+			strncpy_s(uimsg, sizeof(uimsg), "Tera Term: ERROR", _TRUNCATE);
 			get_lang_msg("MSG_TT_ERROR", uimsg, ts.UILanguageFile);
-			strcpy(ts.UIMsg, "Teraterm.ini file doesn't have the writable permission.");
+			strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Teraterm.ini file doesn't have the writable permission.", _TRUNCATE);
 			MessageBox(ts.UIMsg, uimsg, MB_OK|MB_ICONEXCLAMATION);
 #else
 			MessageBox("Teraterm.ini file doesn't have the writable permission.", 
@@ -4759,9 +4757,9 @@ void ApplyBoradCastCommandHisotry(HWND Dialog)
 	int i = 1;
 
 	SendDlgItemMessage(Dialog, IDC_COMMAND_EDIT, CB_RESETCONTENT, 0, 0);
-	strcpy(EntName,"Command");
+	strncpy_s(EntName, sizeof(EntName),"Command", _TRUNCATE);
 	do {
-		uint2str(i,&EntName[7],2);
+		uint2str(i,&EntName[7],sizeof(EntName)-7,2);
 		GetPrivateProfileString("BroadcastCommands",EntName,"",
 								TempHost,sizeof(TempHost),ts.SetupFName);
 		if ( strlen(TempHost) > 0 )
@@ -4892,16 +4890,16 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 					checked = SendMessage(GetDlgItem(hWnd, IDC_ENTERKEY_CHECK), BM_GETCHECK, 0, 0);
 					if (checked & BST_CHECKED) { // 改行コードあり
 						if (SendMessage(GetDlgItem(hWnd, IDC_RADIO_CRLF), BM_GETCHECK, 0, 0) & BST_CHECKED) {
-							strcat(buf, "\r\n");
+							strncat_s(buf, sizeof(buf), "\r\n", _TRUNCATE);
 
 						} else if (SendMessage(GetDlgItem(hWnd, IDC_RADIO_CR), BM_GETCHECK, 0, 0) & BST_CHECKED) {
-							strcat(buf, "\r");
+							strncat_s(buf, sizeof(buf), "\r", _TRUNCATE);
 
 						} else if (SendMessage(GetDlgItem(hWnd, IDC_RADIO_LF), BM_GETCHECK, 0, 0) & BST_CHECKED) {
-							strcat(buf, "\n");
+							strncat_s(buf, sizeof(buf), "\n", _TRUNCATE);
 
 						} else {
-							strcat(buf, "\r");
+							strncat_s(buf, sizeof(buf), "\r", _TRUNCATE);
 
 						}
 					}
@@ -5062,6 +5060,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.72  2007/07/20 21:55:04  maya
+ * シリアルポートダイアログでボーレートが変更されることがあるので、終了時にタイトルを変更するようにした。
+ *
  * Revision 1.71  2007/07/14 00:22:33  maya
  * 言語が日本語のときのみ TTXKanjiMenu が表示されるようにした。
  *

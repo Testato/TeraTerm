@@ -57,7 +57,7 @@ BOOL PASCAL FAR StartTeraTerm(PTTSet ts)
     GetModuleFileName(hInst,Temp,sizeof(Temp));
     ExtractDirName(Temp, pm->ts.HomeDir);
     _chdir(pm->ts.HomeDir);
-    GetDefaultSetupFName(pm->ts.SetupFName, pm->ts.HomeDir);
+    GetDefaultSetupFName(pm->ts.HomeDir, pm->ts.SetupFName, sizeof(pm->ts.SetupFName));
 //    strcpy(Temp, pm->ts.HomeDir);
 //    AppendSlash(Temp);
 //    strcat(Temp,"KEYBOARD.CNF");
@@ -131,7 +131,7 @@ WORD PASCAL FAR GetKeyCode(PKeyMap KeyMap, WORD Scan)
 
 void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
 			BOOL AppliKeyMode, BOOL AppliCursorMode,
-			PCHAR KeyStr, LPINT Len, LPWORD Type)
+			PCHAR KeyStr, int destlen, LPINT Len, LPWORD Type)
 {
   MSG Msg;
   char Temp[201];
@@ -145,30 +145,30 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
     case IdUp:
       *Len = 3;
       if (AppliCursorMode)
-	strcpy(KeyStr,"\033OA");
+	strncpy_s(KeyStr,destlen,"\033OA",_TRUNCATE);
       else
-	strcpy(KeyStr,"\033[A");
+	strncpy_s(KeyStr,destlen,"\033[A",_TRUNCATE);
       break;
     case IdDown:
       *Len = 3;
-      if (AppliCursorMode) strcpy(KeyStr,"\033OB");
-		      else strcpy(KeyStr,"\033[B");
+      if (AppliCursorMode) strncpy_s(KeyStr,destlen,"\033OB",_TRUNCATE);
+		      else strncpy_s(KeyStr,destlen,"\033[B",_TRUNCATE);
       break;
     case IdRight:
       *Len = 3;
-      if (AppliCursorMode) strcpy(KeyStr,"\033OC");
-		      else strcpy(KeyStr,"\033[C");
+      if (AppliCursorMode) strncpy_s(KeyStr,destlen,"\033OC",_TRUNCATE);
+		      else strncpy_s(KeyStr,destlen,"\033[C",_TRUNCATE);
       break;
     case IdLeft:
       *Len = 3;
-      if (AppliCursorMode) strcpy(KeyStr,"\033OD");
-		      else strcpy(KeyStr,"\033[D");
+      if (AppliCursorMode) strncpy_s(KeyStr,destlen,"\033OD",_TRUNCATE);
+		      else strncpy_s(KeyStr,destlen,"\033[D",_TRUNCATE);
       break;
     case Id0:
       if (AppliKeyMode)
       {
 	*Len = 3;
-	strcpy(KeyStr,"\033Op");
+	strncpy_s(KeyStr,destlen,"\033Op",_TRUNCATE);
       }
       else {
 	*Len = 1;
@@ -179,7 +179,7 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
       if (AppliKeyMode)
       {
 	*Len = 3;
-	strcpy(KeyStr,"\033Oq");
+	strncpy_s(KeyStr,destlen,"\033Oq",_TRUNCATE);
       }  
       else {
 	*Len = 1;
@@ -190,7 +190,7 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
       if (AppliKeyMode)
       {
 	*Len = 3;
-	strcpy(KeyStr,"\033Or");
+	strncpy_s(KeyStr,destlen,"\033Or",_TRUNCATE);
       }  
       else {
 	*Len = 1;
@@ -201,7 +201,7 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
       if (AppliKeyMode)
       {
 	*Len = 3;
-	strcpy(KeyStr,"\033Os");
+	strncpy_s(KeyStr,destlen,"\033Os",_TRUNCATE);
       }
       else {
 	*Len = 1;
@@ -212,7 +212,7 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
       if (AppliKeyMode)
       {
 	*Len = 3;
-	strcpy(KeyStr,"\033Ot");
+	strncpy_s(KeyStr,destlen,"\033Ot",_TRUNCATE);
       }
       else {
 	*Len = 1;
@@ -223,7 +223,7 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
       if (AppliKeyMode)
       {
 	*Len = 3;
-	strcpy(KeyStr,"\033Ou");
+	strncpy_s(KeyStr,destlen,"\033Ou",_TRUNCATE);
       }
       else {
 	*Len = 1;
@@ -234,7 +234,7 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
       if (AppliKeyMode)
       {
 	*Len = 3;
-	strcpy(KeyStr,"\033Ov");
+	strncpy_s(KeyStr,destlen,"\033Ov",_TRUNCATE);
       }  
       else {
 	*Len = 1;
@@ -245,7 +245,7 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
       if (AppliKeyMode)
       {
 	*Len = 3;
-	strcpy(KeyStr,"\033Ow");
+	strncpy_s(KeyStr,destlen,"\033Ow",_TRUNCATE);
       }  
       else {
 	*Len = 1;
@@ -256,7 +256,7 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
       if (AppliKeyMode)
       {
 	*Len = 3;
-	strcpy(KeyStr,"\033Ox");
+	strncpy_s(KeyStr,destlen,"\033Ox",_TRUNCATE);
       }  
       else {
 	*Len = 1;
@@ -267,7 +267,7 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
       if (AppliKeyMode)
       {
 	*Len = 3;
-	strcpy(KeyStr,"\033Oy");
+	strncpy_s(KeyStr,destlen,"\033Oy",_TRUNCATE);
       }  
       else {
 	*Len = 1;
@@ -278,7 +278,7 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
       if (AppliKeyMode)
       {
 	*Len = 3;
-	strcpy(KeyStr,"\033Om");
+	strncpy_s(KeyStr,destlen,"\033Om",_TRUNCATE);
       }  
       else {
 	*Len = 1;
@@ -289,7 +289,7 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
       if (AppliKeyMode)
       {
 	*Len = 3;
-	strcpy(KeyStr,"\033Ol");
+	strncpy_s(KeyStr,destlen,"\033Ol",_TRUNCATE);
       }  
       else {
 	*Len = 1;
@@ -300,7 +300,7 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
       if (AppliKeyMode)
       {
 	*Len = 3;
-	strcpy(KeyStr,"\033On");
+	strncpy_s(KeyStr,destlen,"\033On",_TRUNCATE);
       }  
       else {
 	*Len = 1;
@@ -311,7 +311,7 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
       if (AppliKeyMode)
       {
 	*Len = 3;
-	strcpy(KeyStr,"\033OM");
+	strncpy_s(KeyStr,destlen,"\033OM",_TRUNCATE);
       }  
       else {
 	*Len = 1;
@@ -320,123 +320,123 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
       break;
     case IdPF1: /* DEC Key: PF1 */
 	*Len = 3;
-	strcpy(KeyStr,"\033OP");
+	strncpy_s(KeyStr,destlen,"\033OP",_TRUNCATE);
       break;
     case IdPF2: /* DEC Key: PF2 */
 	*Len = 3;
-	strcpy(KeyStr,"\033OQ");
+	strncpy_s(KeyStr,destlen,"\033OQ",_TRUNCATE);
       break;
     case IdPF3: /* DEC Key: PF3 */
 	*Len = 3;
-	strcpy(KeyStr,"\033OR");
+	strncpy_s(KeyStr,destlen,"\033OR",_TRUNCATE);
       break;
     case IdPF4: /* DEC Key: PF4 */
 	*Len = 3;
-	strcpy(KeyStr,"\033OS");
+	strncpy_s(KeyStr,destlen,"\033OS",_TRUNCATE);
       break;
     case IdFind: /* DEC Key: Find */
 	*Len = 4;
-	strcpy(KeyStr,"\033[1~");
+	strncpy_s(KeyStr,destlen,"\033[1~",_TRUNCATE);
       break;
     case IdInsert: /* DEC Key: Insert Here */
 	*Len = 4;
-	strcpy(KeyStr,"\033[2~");
+	strncpy_s(KeyStr,destlen,"\033[2~",_TRUNCATE);
       break;
     case IdRemove: /* DEC Key: Remove */
 	*Len = 4;
-	strcpy(KeyStr,"\033[3~");
+	strncpy_s(KeyStr,destlen,"\033[3~",_TRUNCATE);
       break;
     case IdSelect: /* DEC Key: Select */
 	*Len = 4;
-	strcpy(KeyStr,"\033[4~");
+	strncpy_s(KeyStr,destlen,"\033[4~",_TRUNCATE);
       break;
     case IdPrev: /* DEC Key: Prev */
 	*Len = 4;
-	strcpy(KeyStr,"\033[5~");
+	strncpy_s(KeyStr,destlen,"\033[5~",_TRUNCATE);
       break;
     case IdNext: /* DEC Key: Next */
 	*Len = 4;
-	strcpy(KeyStr,"\033[6~");
+	strncpy_s(KeyStr,destlen,"\033[6~",_TRUNCATE);
       break;
     case IdF6: /* DEC Key: F6 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[17~");
+	strncpy_s(KeyStr,destlen,"\033[17~",_TRUNCATE);
       break;
     case IdF7: /* DEC Key: F7 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[18~");
+	strncpy_s(KeyStr,destlen,"\033[18~",_TRUNCATE);
       break;
     case IdF8: /* DEC Key: F8 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[19~");
+	strncpy_s(KeyStr,destlen,"\033[19~",_TRUNCATE);
       break;
     case IdF9: /* DEC Key: F9 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[20~");
+	strncpy_s(KeyStr,destlen,"\033[20~",_TRUNCATE);
       break;
     case IdF10: /* DEC Key: F10 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[21~");
+	strncpy_s(KeyStr,destlen,"\033[21~",_TRUNCATE);
       break;
     case IdF11: /* DEC Key: F11 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[23~");
+	strncpy_s(KeyStr,destlen,"\033[23~",_TRUNCATE);
       break;
     case IdF12: /* DEC Key: F12 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[24~");
+	strncpy_s(KeyStr,destlen,"\033[24~",_TRUNCATE);
       break;
     case IdF13: /* DEC Key: F13 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[25~");
+	strncpy_s(KeyStr,destlen,"\033[25~",_TRUNCATE);
       break;
     case IdF14: /* DEC Key: F14 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[26~");
+	strncpy_s(KeyStr,destlen,"\033[26~",_TRUNCATE);
       break;
     case IdHelp: /* DEC Key: Help */
 	*Len = 5;
-	strcpy(KeyStr,"\033[28~");
+	strncpy_s(KeyStr,destlen,"\033[28~",_TRUNCATE);
       break;
     case IdDo: /* DEC Key: Do */
 	*Len = 5;
-	strcpy(KeyStr,"\033[29~");
+	strncpy_s(KeyStr,destlen,"\033[29~",_TRUNCATE);
       break;
     case IdF17: /* DEC Key: F17 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[31~");
+	strncpy_s(KeyStr,destlen,"\033[31~",_TRUNCATE);
       break;
     case IdF18: /* DEC Key: F18 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[32~");
+	strncpy_s(KeyStr,destlen,"\033[32~",_TRUNCATE);
       break;
     case IdF19: /* DEC Key: F19 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[33~");
+	strncpy_s(KeyStr,destlen,"\033[33~",_TRUNCATE);
       break;
     case IdF20: /* DEC Key: F20 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[34~");
+	strncpy_s(KeyStr,destlen,"\033[34~",_TRUNCATE);
       break;
     case IdXF1: /* XTERM F1 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[11~");
+	strncpy_s(KeyStr,destlen,"\033[11~",_TRUNCATE);
       break;
     case IdXF2: /* XTERM F2 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[12~");
+	strncpy_s(KeyStr,destlen,"\033[12~",_TRUNCATE);
       break;
     case IdXF3: /* XTERM F3 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[13~");
+	strncpy_s(KeyStr,destlen,"\033[13~",_TRUNCATE);
       break;
     case IdXF4: /* XTERM F4 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[14~");
+	strncpy_s(KeyStr,destlen,"\033[14~",_TRUNCATE);
       break;
     case IdXF5: /* XTERM F5 */
 	*Len = 5;
-	strcpy(KeyStr,"\033[15~");
+	strncpy_s(KeyStr,destlen,"\033[15~",_TRUNCATE);
       break;
     case IdHold:
     case IdPrint:
@@ -470,9 +470,9 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
 	Temp[*Len] = 0;
 	if ((*Type==IdBinary) || (*Type==IdText))
 	  *Len =
-	    Hex2Str(Temp,KeyStr,sizeof(Temp));
+	    Hex2Str(Temp,KeyStr,destlen);
 	else
-	  strcpy(KeyStr,Temp);
+	  strncpy_s(KeyStr,destlen,Temp,_TRUNCATE);
       }
       else
 	return;
@@ -568,7 +568,9 @@ void FAR PASCAL SetWinMenu(HMENU menu)
       UnregWin(Hw);
   }
 #ifndef NO_I18N
-  strcpy(buf, "&Window");
+  // buf が ts.UIMsg のポインタであることを期待してサイズを固定
+  // (2007.6.23 maya)
+  strncpy_s(buf, MAX_UIMSG, "&Window", _TRUNCATE);
   get_lang_msg("MENU_WINDOW_WINDOW", buf, langFile);
   AppendMenu(menu,MF_ENABLED | MF_STRING,ID_WINDOW_1+9, buf);
 #else
@@ -1398,7 +1400,7 @@ int PASCAL DetectComPorts(char *ComPortTable, int ComPortMax)
 		for (i=1; i<=ComPortMax; i++) {
 			FILE *fp;
 			char buf[10];
-			sprintf_s(buf, sizeof(buf), "\\\\.\\COM%d", i);
+			_snprintf_s(buf, sizeof(buf), _TRUNCATE, "\\\\.\\COM%d", i);
 			if ((fp = fopen(buf, "r")) != NULL) {
 				fclose(fp);
 				ComPortTable[comports++] = i;
@@ -1464,6 +1466,10 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2007/07/02 10:50:19  doda
+ * 旧バージョンとの間では共有メモリによる設定の共有が出来ないため、
+ * ファイルマッピングオブジェクト名を変更した。
+ *
  * Revision 1.9  2007/06/06 14:03:41  maya
  * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
  *

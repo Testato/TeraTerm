@@ -258,8 +258,8 @@ BOOL CCtrlWindow::OnInitDialog()
     PostQuitMessage(0);
   }
 
-  strcpy(Temp,"MACRO - ");
-  strcat(Temp,ShortName);
+  strncpy_s(Temp, sizeof(Temp), "MACRO - ", _TRUNCATE);
+  strncat_s(Temp, sizeof(Temp), ShortName, _TRUNCATE);
   SetWindowText(Temp);
 
   // send the initialization signal to TT
@@ -294,7 +294,7 @@ BOOL CCtrlWindow::OnCommand(WPARAM wParam, LPARAM lParam)
       if (Pause)
 #ifndef NO_I18N
       {
-        strcpy(uimsg, "Pau&se");
+        strncpy_s(uimsg, sizeof(uimsg),  "Pau&se", _TRUNCATE);
         get_lang_msg("BTN_PAUSE", uimsg, UILanguageFile);
 		SetDlgItemText(IDC_CTRLPAUSESTART, uimsg);
       }
@@ -304,7 +304,7 @@ BOOL CCtrlWindow::OnCommand(WPARAM wParam, LPARAM lParam)
       else
 #ifndef NO_I18N
 	  {
-        strcpy(uimsg, "&Start");
+        strncpy_s(uimsg, sizeof(uimsg),  "&Start", _TRUNCATE);
         get_lang_msg("BTN_START", uimsg, UILanguageFile);
 		SetDlgItemText(IDC_CTRLPAUSESTART, uimsg);
 	  }
@@ -353,7 +353,7 @@ void CCtrlWindow::OnPaint()
 
 	// line number (2005.7.18 yutaka)
 	// added line buffer (2005.7.22 yutaka)
-	_snprintf(buf, sizeof(buf), "%d:%s", GetLineNo(), GetLineBuffer());
+	_snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d:%s", GetLineNo(), GetLineBuffer());
 	SetDlgItemText(IDC_LINENO, buf);
 
 	OldMapMode = dc.GetMapMode();

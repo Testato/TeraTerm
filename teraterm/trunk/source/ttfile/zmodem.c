@@ -369,7 +369,7 @@ void ZSendFileDat(PFileVar fv, PZVar zv)
 		 &(fv->FullName[fv->DirLen]));
 
   /* file name */
-  strcpy(zv->PktOut,&(fv->FullName[fv->DirLen]));
+  strncpy_s(zv->PktOut, sizeof(zv->PktOut),&(fv->FullName[fv->DirLen]), _TRUNCATE);
   FTConvFName(zv->PktOut);  // replace ' ' by '_' in FName
   zv->PktOutCount = strlen(zv->PktOut);
   zv->CRC = 0;
@@ -380,7 +380,8 @@ void ZSendFileDat(PFileVar fv, PZVar zv)
   /* file size */
   fv->FileSize = GetFSize(fv->FullName);
 
-  sprintf(&(zv->PktOut[zv->PktOutCount]),
+  _snprintf_s(&(zv->PktOut[zv->PktOutCount]),
+	  sizeof(zv->PktOut) - zv->PktOutCount, _TRUNCATE,
 	  "%u", fv->FileSize);
   j = strlen(&(zv->PktOut[zv->PktOutCount]))-1;
   for (i = 0 ; i <= j ; i++)
@@ -498,25 +499,25 @@ void ZInit
   }
 
 #ifndef NO_I18N
-  strcpy(fv->DlgCaption,"Tera Term: ");
+  strncpy_s(fv->DlgCaption, sizeof(fv->DlgCaption),"Tera Term: ", _TRUNCATE);
 #else
   strcpy(fv->DlgCaption,"Tera Term: ZMODEM ");
 #endif
   switch (zv->ZMode) {
     case IdZSend:
 #ifndef NO_I18N
-      strcpy(uimsg, TitZSend);
+      strncpy_s(uimsg, sizeof(uimsg), TitZSend, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,"Send");
 #endif
       break;
     case IdZReceive:
 #ifndef NO_I18N
-      strcpy(uimsg, TitZRcv);
+      strncpy_s(uimsg, sizeof(uimsg), TitZRcv, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_ZRCV", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,"Receive");
 #endif
@@ -835,7 +836,7 @@ BOOL ZParseFile(PFileVar fv, PZVar zv)
   zv->PktIn[zv->PktInPtr] = 0; /* for safety */
 
   GetFileNamePos(zv->PktIn,&i,&j);
-  strcpy(&(fv->FullName[fv->DirLen]),&(zv->PktIn[j]));
+  strncpy_s(&(fv->FullName[fv->DirLen]),sizeof(fv->FullName) - fv->DirLen,&(zv->PktIn[j]),_TRUNCATE);
   /* file open */
   if (! FTCreateFile(fv)) return FALSE;
 

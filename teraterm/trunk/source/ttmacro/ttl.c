@@ -230,7 +230,7 @@ WORD TTLCommCmdInt(char Cmd, int Wait)
     Err = ErrLinkFirst;
   if (Err==0)
   {
-    sprintf(Str,"%d",Val);
+    _snprintf_s(Str,sizeof(Str),_TRUNCATE,"%d",Val);
     SetFile(Str);
     Err = SendCmnd(Cmd,Wait);
   }
@@ -292,7 +292,7 @@ WORD TTLClipb2Var()
   hText = GetClipboardData(CF_TEXT);
   if (hText != NULL) {
     clipbText = GlobalLock(hText);
-    strncpy(buf,clipbText,MaxStrLen-1);
+    strncpy_s(buf,sizeof(buf),clipbText,_TRUNCATE);
     GlobalUnlock(hText);
     SetStrVal(VarId,buf);
     SetResult(1);
@@ -319,7 +319,7 @@ WORD TTLVar2Clipb()
   
   hText = GlobalAlloc(GHND, sizeof(Str));
   clipbText = GlobalLock(hText);
-  lstrcpy(clipbText, Str);
+  strncpy_s(clipbText, sizeof(Str), Str, _TRUNCATE);
   GlobalUnlock(hText);
   
   if (OpenClipboard(NULL) == 0) {
@@ -425,7 +425,7 @@ WORD TTLConnect()
   // link to Tera Term
   if (strlen(TopicName)==0)
   {
-    strcpy(Cmnd,TTERMCOMMAND);
+    strncpy_s(Cmnd, sizeof(Cmnd),TTERMCOMMAND, _TRUNCATE);
 #ifdef TERATERM32
     w = HIWORD(HMainWin);
     Word2HexStr(w,TopicName);
@@ -435,9 +435,9 @@ WORD TTLConnect()
     w = HMainWin;
     Word2HexStr(w,TopicName);
 #endif
-    strcat(Cmnd,TopicName);
-    strcat(Cmnd," ");
-    strncat(Cmnd,Str,sizeof(Cmnd)-1-strlen(Cmnd));
+    strncat_s(Cmnd,sizeof(Cmnd),TopicName,_TRUNCATE);
+    strncat_s(Cmnd,sizeof(Cmnd)," ",_TRUNCATE);
+    strncat_s(Cmnd,sizeof(Cmnd),Str,_TRUNCATE);
     if (WinExec(Cmnd,SW_SHOW)<32)
       return ErrCantConnect;    
     TTLStatus = IdTTLInitDDE;
@@ -458,7 +458,7 @@ WORD TTLDelPassword()
   if (Err!=0) return Err;
   if (Str[0]==0) return Err;
 
-  GetAbsPath(Str);
+  GetAbsPath(Str,sizeof(Str));
   if (! DoesFileExist(Str)) return Err;
   if (Str2[0]==0) // delete all password
     WritePrivateProfileString("Password",NULL,NULL,Str);
@@ -573,7 +573,7 @@ WORD TTLExecCmnd()
   if (GetFirstChar()!=0)
     return ErrSyntax;
 
-  strcpy(LineBuff,NextLine);
+  strncpy_s(LineBuff, sizeof(LineBuff),NextLine, _TRUNCATE);
   LineLen = strlen(LineBuff);
   LinePtr = 0;
   b = GetFirstChar();
@@ -631,11 +631,11 @@ WORD TTLFileConcat()
     return Err;
   }
 
-  if (!GetAbsPath(FName1)) {
+  if (!GetAbsPath(FName1,sizeof(FName1))) {
     SetResult(-1);
     return Err;
   }
-  if (!GetAbsPath(FName2)) {
+  if (!GetAbsPath(FName2,sizeof(FName2))) {
     SetResult(-2);
     return Err;
   }
@@ -693,11 +693,11 @@ WORD TTLFileCopy()
     return Err;
   }
 
-  if (!GetAbsPath(FName1)) {
+  if (!GetAbsPath(FName1,sizeof(FName1))) {
     SetResult(-1);
     return Err;
   }
-  if (!GetAbsPath(FName2)) {
+  if (!GetAbsPath(FName2,sizeof(FName2))) {
     SetResult(-2);
     return Err;
   }
@@ -745,7 +745,7 @@ WORD TTLFileCreate()
     return Err;
   }
 
-  if (!GetAbsPath(FName)) {
+  if (!GetAbsPath(FName,sizeof(FName))) {
     SetIntVal(VarId,-1);
     SetResult(-1);
     return Err;
@@ -777,7 +777,7 @@ WORD TTLFileDelete()
     return Err;
   }
 
-  if (!GetAbsPath(FName)) {
+  if (!GetAbsPath(FName,sizeof(FName))) {
     SetResult(-1);
     return Err;
   }
@@ -828,7 +828,7 @@ WORD TTLFileOpen()
     Err = ErrSyntax;
   if (Err!=0) return Err;
 
-  if (!GetAbsPath(FName)) {
+  if (!GetAbsPath(FName,sizeof(FName))) {
     SetIntVal(VarId,-1);
     return Err;
   }
@@ -963,11 +963,11 @@ WORD TTLFileRename()
     return Err;
   }
 
-  if (!GetAbsPath(FName1)) {
+  if (!GetAbsPath(FName1,sizeof(FName1))) {
     SetResult(-1);
     return Err;
   }
-  if (!GetAbsPath(FName2)) {
+  if (!GetAbsPath(FName2,sizeof(FName2))) {
     SetResult(-2);
     return Err;
   }
@@ -989,7 +989,7 @@ WORD TTLFileSearch()
     Err = ErrSyntax;
   if (Err!=0) return Err;
 
-  GetAbsPath(FName);
+  GetAbsPath(FName,sizeof(FName));
   if (DoesFileExist(FName))
     SetResult(1);
   else
@@ -1189,8 +1189,8 @@ WORD TTLFindFirst()
     Err = ErrSyntax;
   if (Err!=0) return Err;
 
-  if (Dir[0]==0) strcpy(Dir,"*.*");
-  GetAbsPath(Dir);
+  if (Dir[0]==0) strncpy_s(Dir, sizeof(Dir),"*.*", _TRUNCATE);
+  GetAbsPath(Dir,sizeof(Dir));
   i = 0;
   while ((i<NumDirHandle) &&
          (DirHandle[i]!=-1L))
@@ -1304,8 +1304,7 @@ WORD TTLGetDate()
   // get current date & time
   time1 = time(NULL);
   ptm = localtime(&time1);
-  Str2[0] = 0;
-  sprintf(Str2,"%4.4d-%2.2d-%2.2d",
+  _snprintf_s(Str2,sizeof(Str2),_TRUNCATE,"%4.4d-%2.2d-%2.2d",
 	  ptm->tm_year+1900,
 	  ptm->tm_mon+1,
 	  ptm->tm_mday);
@@ -1368,7 +1367,7 @@ WORD TTLGetPassword()
   if (Str[0]==0) return Err;
   if (Str2[0]==0) return Err;
 
-  GetAbsPath(Str);
+  GetAbsPath(Str,sizeof(Str));
   GetPrivateProfileString("Password",Str2,"",
 			  Temp,sizeof(Temp),Str);
   if (Temp[0]==0) // password not exist
@@ -1403,8 +1402,7 @@ WORD TTLGetTime()
   time1 = time(NULL);
   ptm = localtime(&time1);
 
-  Str2[0] = 0;
-  sprintf(Str2,"%2.2d:%2.2d:%2.2d",
+  _snprintf_s(Str2,sizeof(Str2),_TRUNCATE,"%2.2d:%2.2d:%2.2d",
 	  ptm->tm_hour,
 	  ptm->tm_min,
 	  ptm->tm_sec);
@@ -1426,7 +1424,7 @@ WORD TTLGetTitle()
     Err = ErrLinkFirst;
   if (Err!=0) return Err;
 
-  Err = GetTTParam(CmdGetTitle,Str);
+  Err = GetTTParam(CmdGetTitle,Str,sizeof(Str));
   if (Err==0)
     SetStrVal(VarId,Str);
   return Err;
@@ -1528,7 +1526,7 @@ WORD TTLInclude()
 
   Err = 0;
   GetStrVal(Str,&Err);
-  if (!GetAbsPath(Str)) {
+  if (!GetAbsPath(Str,sizeof(Str))) {
     Err = ErrCantOpen;
     return Err;
   }
@@ -1582,7 +1580,7 @@ WORD TTLInt2Str()
     Err = ErrSyntax;
   if (Err!=0) return Err;
 
-  sprintf(Str2,"%d",Num);
+  _snprintf_s(Str2,sizeof(Str2),_TRUNCATE,"%d",Num);
 
   SetStrVal(VarId,Str2);
   return Err;
@@ -1625,8 +1623,8 @@ WORD TTLMakePath()
 
   if (Err!=0) return Err;
 
-  AppendSlash(Dir);
-  strcat(Dir,Name);
+  AppendSlash(Dir,sizeof(Dir));
+  strncat_s(Dir,sizeof(Dir),Name,_TRUNCATE);
   SetStrVal(VarId,Dir);
 
   return Err;
@@ -2129,15 +2127,15 @@ WORD TTLSprintf()
 			switch (*p) {
 				case '%':
 					if (strlen(subFmt) == 1) { // "%%" -> "%"
-						strncat(buf, "%", sizeof(buf)-strlen(buf)-1);
+						strncat_s(buf, sizeof(buf), "%", _TRUNCATE);
 						memset(subFmt, 0, sizeof(subFmt));
 					}
 					else {
 						// 一つ手前までをそのまま buf に格納
-						strncat(buf, subFmt, sizeof(buf)-strlen(buf)-1);
+						strncat_s(buf, sizeof(buf), subFmt, _TRUNCATE);
 						// 仕切り直し
 						memset(subFmt, 0, sizeof(subFmt));
-						strncat(subFmt, p, 1);
+						strncat_s(subFmt, sizeof(subFmt), p, 1);
 					}
 					break;
 
@@ -2180,14 +2178,14 @@ WORD TTLSprintf()
 						goto exit1;
 					}
 
-					strncat(subFmt, p, 1);
+					strncat_s(subFmt, sizeof(subFmt), p, 1);
 
 					if (type == STRING) {
 						// 文字列として読めるかトライ
 						TmpErr = 0;
 						GetStrVal(Str, &TmpErr);
 						if (TmpErr == 0) {
-							_snprintf(buf2, sizeof(buf2), subFmt, Str);
+							_snprintf_s(buf2, sizeof(buf2), _TRUNCATE, subFmt, Str);
 						}
 						else {
 							LockVar();
@@ -2203,10 +2201,10 @@ WORD TTLSprintf()
 						GetIntVal(&Num, &TmpErr);
 						if (TmpErr == 0) {
 							if (type == INTEGER) {
-								_snprintf(buf2, sizeof(buf2), subFmt, Num);
+								_snprintf_s(buf2, sizeof(buf2), _TRUNCATE, subFmt, Num);
 							}
 							else {
-								_snprintf(buf2, sizeof(buf2), subFmt, (double)Num);
+								_snprintf_s(buf2, sizeof(buf2), _TRUNCATE, subFmt, (double)Num);
 							}
 						}
 						else {
@@ -2218,19 +2216,19 @@ WORD TTLSprintf()
 						}
 					}
 
-					strncat(buf, buf2, sizeof(buf)-strlen(buf)-1);
+					strncat_s(buf, sizeof(buf), buf2, _TRUNCATE);
 					memset(subFmt, 0, sizeof(subFmt));
 					break;
 
 				default:
-					strncat(subFmt, p, 1);
+					strncat_s(subFmt, sizeof(subFmt), p, 1);
 			}
 		}
 		else if (*p == '%') {
-			strncat(subFmt, p, 1);
+			strncat_s(subFmt, sizeof(subFmt), p, 1);
 		}
 		else if (strlen(buf) < sizeof(buf)-1) {
-			strncat(buf, p, 1);
+			strncat_s(buf, sizeof(buf), p, 1);
 		}
 		else {
 			break;
@@ -2238,9 +2236,8 @@ WORD TTLSprintf()
 		p++;
 	}
 	if (strlen(subFmt) > 0) {
-		strncat(buf, subFmt, sizeof(buf)-strlen(buf)-1);
+		strncat_s(buf, sizeof(buf), subFmt, _TRUNCATE);
 	}
-	buf[sizeof(buf)-1] = '\0';
 
 	// マッチした行を inputstr へ格納する
 	LockVar();
@@ -2376,8 +2373,7 @@ WORD TTLStrConcat()
     Err = ErrSyntax;
   if (Err!=0) return Err;
 
-  strncat(StrVarPtr(VarId),Str,
-	  MaxStrLen-1-strlen(StrVarPtr(VarId)));
+  strncat_s(StrVarPtr(VarId),MaxStrLen,Str,_TRUNCATE);
   return Err;
 }
 
@@ -2569,7 +2565,7 @@ WORD TTLWait(BOOL Ln)
 	if (Err==0)
 	{
 	  if (ValType==TypString)
-	    strcpy(Str,StrVarPtr((WORD)Val));
+	    strncpy_s(Str, sizeof(Str),StrVarPtr((WORD)Val), _TRUNCATE);
 	  else
 	    Err=ErrTypeMismatch;
 	}
@@ -3034,7 +3030,9 @@ int ExecCmnd()
 							if (StrConst)
 								SetStrVal(VarId,Str);
 							else
-								strcpy(StrVarPtr(VarId),StrVarPtr((WORD)Val));
+							// StrVarPtr の返り値が TStrVal のポインタであることを期待してサイズを固定
+							// (2007.6.23 maya)
+								strncpy_s(StrVarPtr(VarId),MaxStrLen,StrVarPtr((WORD)Val),_TRUNCATE);
 							break;
 						}
 					else
@@ -3103,7 +3101,7 @@ void SetGroupMatchStr(int no, PCHAR Str)
 	WORD VarType, VarId;
 	char buf[128];
 
-	_snprintf(buf, sizeof(buf), "groupmatchstr%d", no);
+	_snprintf_s(buf, sizeof(buf), _TRUNCATE, "groupmatchstr%d", no);
 
 	if (CheckVar(buf,&VarType,&VarId) &&
 		(VarType==TypString))

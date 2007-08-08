@@ -38,7 +38,7 @@ void FAR PASCAL TEKInit(PTEKVar tk, PTTSet ts)
   tk->TEKlf.lfHeight  = ts->TEKFontSize.y; /* Font Height */
   tk->TEKlf.lfWidth   = ts->TEKFontSize.x; /* Font Width */
   tk->TEKlf.lfCharSet = ts->TEKFontCharSet; /* Character Set */
-  strcpy(tk->TEKlf.lfFaceName, ts->TEKFont);
+  strncpy_s(tk->TEKlf.lfFaceName, sizeof(tk->TEKlf.lfFaceName),  ts->TEKFont, _TRUNCATE);
 
   tk->MoveFlag = TRUE;
 
@@ -261,10 +261,10 @@ void FAR PASCAL TEKResizeWindow(PTEKVar tk, PTTSet ts, int W, int H)
 
   /* marker font */
   tk->TEKlf.lfCharSet = SYMBOL_CHARSET;
-  strcpy(tk->TEKlf.lfFaceName,"Symbol");
+  strncpy_s(tk->TEKlf.lfFaceName, sizeof(tk->TEKlf.lfFaceName), "Symbol", _TRUNCATE);
   tk->MarkerFont = CreateFontIndirect(&tk->TEKlf);
   tk->TEKlf.lfCharSet = ts->TEKFontCharSet;
-  strcpy(tk->TEKlf.lfFaceName, ts->TEKFont);
+  strncpy_s(tk->TEKlf.lfFaceName, sizeof(tk->TEKlf.lfFaceName),  ts->TEKFont, _TRUNCATE);
   SelectObject(TempDC,tk->MarkerFont);
   GetTextMetrics(TempDC, &Metrics);
   tk->MarkerW = Metrics.tmAveCharWidth;
@@ -694,9 +694,9 @@ void FAR PASCAL TEKPrint(PTEKVar tk, PTTSet ts, HDC PrintDC, BOOL SelFlag)
   {
 #ifndef NO_I18N
     char uimsg[MAX_UIMSG];
-    strcpy(uimsg, "Tera Term: Error");
+    strncpy_s(uimsg, sizeof(uimsg),  "Tera Term: Error", _TRUNCATE);
     get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
-	strcpy(ts->UIMsg, "Printer dose not support graphics");
+	strncpy_s(ts->UIMsg, sizeof(ts->UIMsg),  "Printer dose not support graphics", _TRUNCATE);
     get_lang_msg("MSG_TEK_PRINT_ERROR", ts->UIMsg, ts->UILanguageFile);
 	MessageBox(tk->HWin,ts->UIMsg,uimsg,MB_ICONEXCLAMATION);
 #else
@@ -775,7 +775,7 @@ void FAR PASCAL TEKSetupFont(PTEKVar tk, PTTSet ts)
 //  FreeTTDLG();
 //  if (! Ok) return;
 
-  strcpy(ts->TEKFont,tk->TEKlf.lfFaceName);
+  strncpy_s(ts->TEKFont, sizeof(ts->TEKFont), tk->TEKlf.lfFaceName, _TRUNCATE);
   ts->TEKFontSize.x = tk->TEKlf.lfWidth;
   ts->TEKFontSize.y = tk->TEKlf.lfHeight;
   ts->TEKFontCharSet = tk->TEKlf.lfCharSet;
@@ -878,7 +878,7 @@ void FAR PASCAL TEKRestoreSetup(PTEKVar tk, PTTSet ts)
   RECT R;
 
   /* change window */
-  strcpy(tk->TEKlf.lfFaceName,ts->TEKFont);
+  strncpy_s(tk->TEKlf.lfFaceName, sizeof(tk->TEKlf.lfFaceName), ts->TEKFont, _TRUNCATE);
   tk->TEKlf.lfWidth = ts->TEKFontSize.x;
   tk->TEKlf.lfHeight = ts->TEKFontSize.y;
   tk->TEKlf.lfCharSet = ts->TEKFontCharSet;

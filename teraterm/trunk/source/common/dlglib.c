@@ -82,7 +82,7 @@ void SetDlgNum(HWND HDlg, int id_Item, LONG Num)
   char Temp[16];
 
   /* In Win16, SetDlgItemInt can not be used to display long integer. */
-  sprintf(Temp,"%d",Num);
+  _snprintf_s(Temp,sizeof(Temp),_TRUNCATE,"%d",Num);
   SetDlgItemText(HDlg,id_Item,Temp);
 }
 
@@ -109,7 +109,7 @@ void SetDlgPercent(HWND HDlg, int id_Item, LONG a, LONG b)
 		Num = 100.0; 
 	else 
 		Num = 100.0 * (double)a / (double)b; 
-	sprintf(NumStr,"%3.1f%%",Num); 
+	_snprintf_s(NumStr,sizeof(NumStr),_TRUNCATE,"%3.1f%%",Num); 
 	SetDlgItemText(HDlg, id_Item, NumStr); 
 #endif
 }
@@ -143,4 +143,9 @@ LONG GetCurSel(HWND HDlg, int Id_Item)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2005/03/18 13:51:53  yutakakn
+ * 20MB以上のファイルをアップロードしようとすると、buffer overflowで
+ * 落ちる問題への対処。(2005.3.18 yutaka)
+ * cf. http://sourceforge.jp/tracker/index.php?func=detail&aid=5713&group_id=1412&atid=5333
+ *
  */

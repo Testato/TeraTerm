@@ -42,13 +42,13 @@ BOOL BPOpenFileToBeSent(PFileVar fv)
 
 void BPDispMode(PFileVar fv, PBPVar bv)
 {
-  strcpy(fv->DlgCaption,"Tera Term: B-Plus ");
+  strncpy_s(fv->DlgCaption, sizeof(fv->DlgCaption),"Tera Term: B-Plus ", _TRUNCATE);
   switch (bv->BPMode) {
     case IdBPSend:
-      strcat(fv->DlgCaption,"Send");
+      strncat_s(fv->DlgCaption,sizeof(fv->DlgCaption),"Send",_TRUNCATE);
       break;
     case IdBPReceive:
-      strcat(fv->DlgCaption,"Receive");
+      strncat_s(fv->DlgCaption,sizeof(fv->DlgCaption),"Receive",_TRUNCATE);
       break;
   }
 
@@ -522,7 +522,7 @@ void BPParseTPacket(PFileVar fv, PBPVar bv)
       Temp[j] = 0;
 
       GetFileNamePos(Temp,&i,&j);
-      strcpy(&(fv->FullName[fv->DirLen]),&(Temp[j]));
+	  strncpy_s(&(fv->FullName[fv->DirLen]),sizeof(fv->FullName) - fv->DirLen,&(Temp[j]),_TRUNCATE);
       /* file open */
       if (! FTCreateFile(fv))
       {
@@ -568,8 +568,9 @@ void BPParseTPacket(PFileVar fv, PBPVar bv)
 	Temp[j] = 0;
 
 	GetFileNamePos(Temp,&i,&j);
-	FitFileName(&(Temp[j]),NULL);
-	strcpy(&(fv->FullName[fv->DirLen]),&(Temp[j]));
+	FitFileName(&(Temp[j]),sizeof(Temp) - j,NULL);
+	strncpy_s(&(fv->FullName[fv->DirLen]),sizeof(fv->FullName) - fv->DirLen,
+		&(Temp[j]),_TRUNCATE);
 
 	/* file open */
 	if (! BPOpenFileToBeSent(fv))

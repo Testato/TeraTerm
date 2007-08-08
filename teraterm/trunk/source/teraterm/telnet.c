@@ -6,6 +6,7 @@
 
 #include "teraterm.h"
 #include "tttypes.h"
+#include <stdio.h>
 #include <string.h>
 #include "ttcommon.h"
 #include "ttwinman.h"
@@ -227,6 +228,11 @@ void ParseTelSB(BYTE b)
 	    (tr.SubOptBuff[0] == TERMTYPE) &&
 	    (tr.SubOptBuff[1] == 1))
 	{
+#if 1
+	  _snprintf_s(TmpStr, sizeof(TmpStr), _TRUNCATE, "%c%c%c%c%s%c%c", IAC, SB, TERMTYPE, 0, ts.TermType, IAC, SE);
+	  // 4 バイト目に 0 が入るので、ずらして長さをとる
+	  i = strlen(TmpStr + 4) + 4;
+#else
 	  TmpStr[0] = IAC;
 	  TmpStr[1] = SB;
 	  TmpStr[2] = TERMTYPE;
@@ -237,6 +243,7 @@ void ParseTelSB(BYTE b)
 	  i++;
 	  TmpStr[i] = SE;
 	  i++;
+#endif
 	  CommRawOut(&cv,TmpStr,i);
 
 	  if (tr.LogFile!=0)

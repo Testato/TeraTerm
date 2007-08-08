@@ -146,8 +146,7 @@ BOOL PrnStart(LPSTR DocumentName)
 #endif
 
   Doc.cbSize = sizeof(DOCINFO);
-  strncpy(DocName,DocumentName,sizeof(DocName));
-  DocName[sizeof(DocName)-1] = 0;
+  strncpy_s(DocName,sizeof(DocName),DocumentName,_TRUNCATE);
   Doc.lpszDocName = DocName;
   Doc.lpszOutput = NULL;
 #ifdef TERATERM32
@@ -244,13 +243,13 @@ int VTPrintInit(int PrnFlag)
     Prnlf.lfHeight = ts.VTFontSize.y;
     Prnlf.lfWidth = ts.VTFontSize.x;
     Prnlf.lfCharSet = ts.VTFontCharSet;
-    strcpy(Prnlf.lfFaceName, ts.VTFont);
+    strncpy_s(Prnlf.lfFaceName, sizeof(Prnlf.lfFaceName), ts.VTFont, _TRUNCATE);
   }
   else {
     Prnlf.lfHeight = ts.PrnFontSize.y;
     Prnlf.lfWidth = ts.PrnFontSize.x;
     Prnlf.lfCharSet = ts.PrnFontCharSet;
-    strcpy(Prnlf.lfFaceName, ts.PrnFont);
+    strncpy_s(Prnlf.lfFaceName, sizeof(Prnlf.lfFaceName), ts.PrnFont, _TRUNCATE);
   }
   Prnlf.lfWeight = FW_NORMAL;
   Prnlf.lfItalic = 0;
@@ -312,7 +311,7 @@ int VTPrintInit(int PrnFlag)
   Prnlf.lfHeight = PrnFH;
   Prnlf.lfCharSet = SYMBOL_CHARSET;
 
-  strcpy(Prnlf.lfFaceName,"Tera Special");
+  strncpy_s(Prnlf.lfFaceName, sizeof(Prnlf.lfFaceName),"Tera Special", _TRUNCATE);
   PrnFont[AttrSpecial] = CreateFontIndirect(&Prnlf);
   PrnFont[AttrSpecial | AttrBold] = PrnFont[AttrSpecial];
   PrnFont[AttrSpecial | AttrUnder] = PrnFont[AttrSpecial];

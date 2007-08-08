@@ -69,20 +69,20 @@ void XSetOpt(PFileVar fv, PXVar xv, WORD Opt)
 
   xv->XOpt = Opt;
 
-  strcpy(Tmp,"XMODEM (");
+  strncpy_s(Tmp, sizeof(Tmp),"XMODEM (", _TRUNCATE);
   switch (xv->XOpt) {
     case XoptCheck: /* Checksum */
-      strcat(Tmp,"checksum)");
+      strncat_s(Tmp,sizeof(Tmp),"checksum)",_TRUNCATE);
       xv->DataLen = 128;
       xv->CheckLen = 1;
       break;
     case XoptCRC: /* CRC */
-      strcat(Tmp,"CRC)");
+      strncat_s(Tmp,sizeof(Tmp),"CRC)",_TRUNCATE);
       xv->DataLen = 128;
       xv->CheckLen = 2;
       break;
     case Xopt1K: /* 1K */
-      strcat(Tmp,"1K)");
+      strncat_s(Tmp,sizeof(Tmp),"1K)",_TRUNCATE);
       xv->DataLen = 1024;
       xv->CheckLen = 2;
       break;

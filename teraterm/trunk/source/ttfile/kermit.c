@@ -419,11 +419,11 @@ BOOL KmtEncode(PFileVar fv, PKmtVar kv)
     kv->ByteStr[0] = kv->KmtMy.REPT;
     kv->ByteStr[1] = KmtChar((BYTE)(kv->RepeatCount));
     kv->ByteStr[2] = 0;
-    strcat(kv->ByteStr,TempStr);
+    strncat_s(kv->ByteStr,sizeof(kv->ByteStr),TempStr,_TRUNCATE);
     kv->RepeatCount = 1;
   }
   else
-    strcpy(kv->ByteStr,TempStr);
+    strncpy_s(kv->ByteStr, sizeof(kv->ByteStr),TempStr, _TRUNCATE);
 
   kv->RepeatCount--;
   return TRUE;
@@ -467,7 +467,7 @@ void KmtSendNextData(PFileVar fv, PKmtVar kv, PComVar cv)
   while (NextFlag &&
          (DataLenNew < kv->KmtYour.MAXL-kv->KmtMy.CHKT-4))
   {
-    strcpy(&(kv->PktOut[4+DataLen]),kv->ByteStr);
+    strncpy_s(&(kv->PktOut[4+DataLen]),sizeof(kv->PktOut) - (4+DataLen),kv->ByteStr,_TRUNCATE);
     DataLen = DataLenNew;
     NextFlag = KmtEncode(fv,kv);
     if (NextFlag) DataLenNew = DataLen + strlen(kv->ByteStr);
@@ -521,9 +521,9 @@ BOOL KmtSendNextFile(PFileVar fv, PKmtVar kv, PComVar cv)
     if (! fv->NoMsg)
 #ifndef NO_I18N
     {
-      strcpy(uimsg2, "Tera Term: Error");
+      strncpy_s(uimsg2, sizeof(uimsg2), "Tera Term: Error", _TRUNCATE);
       get_lang_msg("MSG_TT_ERROR", uimsg2, UILanguageFile);
-	  strcpy(uimsg, "Cannot open file");
+	  strncpy_s(uimsg, sizeof(uimsg), "Cannot open file", _TRUNCATE);
       get_lang_msg("MSG_CANTOEPN_FILE_ERROR", uimsg, UILanguageFile);
       MessageBox(fv->HWin,uimsg,uimsg,MB_ICONEXCLAMATION);
     }
@@ -544,7 +544,7 @@ BOOL KmtSendNextFile(PFileVar fv, PKmtVar kv, PComVar cv)
                 fv->ByteCount, fv->FileSize);
 
   KmtIncPacketNum(kv);
-  strcpy(&(kv->PktOut[4]),&(fv->FullName[fv->DirLen])); // put FName
+  strncpy_s(&(kv->PktOut[4]),sizeof(kv->PktOut)-4,&(fv->FullName[fv->DirLen]),_TRUNCATE); // put FName
   FTConvFName(&(kv->PktOut[4]));  // replace ' ' by '_' in FName
   KmtMakePacket(fv,kv,(BYTE)(kv->PktNum-kv->PktNumOffset),(BYTE)'F',
                 strlen(&(fv->FullName[fv->DirLen])));
@@ -565,7 +565,7 @@ void KmtSendReceiveInit(PFileVar fv, PKmtVar kv, PComVar cv)
       kv->KmtYour.MAXL - kv->KmtMy.CHKT - 4)
     fv->FullName[fv->DirLen+kv->KmtYour.MAXL-kv->KmtMy.CHKT-4] = 0;
 
-  strcpy(&(kv->PktOut[4]),&(fv->FullName[fv->DirLen]));
+  strncpy_s(&(kv->PktOut[4]),sizeof(kv->PktOut)-4,&(fv->FullName[fv->DirLen]),_TRUNCATE);
   KmtMakePacket(fv,kv,(BYTE)(kv->PktNum-kv->PktNumOffset),(BYTE)'R',
                 strlen(&(fv->FullName[fv->DirLen])));
   KmtSendPacket(fv,kv,cv);
@@ -591,43 +591,43 @@ void KmtInit
 #ifndef NO_I18N
   char uimsg[MAX_UIMSG];
 
-  strcpy(fv->DlgCaption,"Tera Term: Kermit ");
+  strncpy_s(fv->DlgCaption,sizeof(fv->DlgCaption),"Tera Term: Kermit ",_TRUNCATE);
 #else
   strcpy(fv->DlgCaption,"Tera Term: ");
 #endif
   switch (kv->KmtMode) {
     case IdKmtSend:
 #ifndef NO_I18N
-      strcpy(uimsg, TitKmtSend);
+      strncpy_s(uimsg, sizeof(uimsg), TitKmtSend, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,"Send");
 #endif
       break;
     case IdKmtReceive:
 #ifndef NO_I18N
-      strcpy(uimsg, TitKmtRcv);
+      strncpy_s(uimsg, sizeof(uimsg), TitKmtRcv, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTRCV", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,"Receive");
 #endif
       break;
     case IdKmtGet:
 #ifndef NO_I18N
-      strcpy(uimsg, TitKmtGet);
+      strncpy_s(uimsg, sizeof(uimsg), TitKmtGet, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTGET", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,"Get");
 #endif
       break;
     case IdKmtFinish:
 #ifndef NO_I18N
-      strcpy(uimsg, TitKmtFin);
+      strncpy_s(uimsg, sizeof(uimsg), TitKmtFin, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTFIN", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,"Finish");
 #endif
@@ -811,7 +811,7 @@ BOOL KmtReadPacket(PFileVar fv,  PKmtVar kv, PComVar cv)
 	KmtDecode(fv,kv,FNBuff,&Len);
 	FNBuff[Len] = 0;
 	GetFileNamePos(FNBuff,&i,&j);
-	strcpy(&(fv->FullName[fv->DirLen]),&FNBuff[j]);
+	strncpy_s(&(fv->FullName[fv->DirLen]),sizeof(fv->FullName) - fv->DirLen,&FNBuff[j],_TRUNCATE);
 	/* file open */
 	if (! FTCreateFile(fv)) return FALSE;
 	kv->KmtState = ReceiveData;
@@ -956,7 +956,7 @@ BOOL KmtReadPacket(PFileVar fv,  PKmtVar kv, PComVar cv)
 void KmtCancel(PFileVar fv, PKmtVar kv, PComVar cv)
 {
   KmtIncPacketNum(kv);
-  strcpy(&(kv->PktOut[4]),"Cancel");
+  strncpy_s(&(kv->PktOut[4]),sizeof(kv->PktOut)-4,"Cancel",_TRUNCATE);
   KmtMakePacket(fv,kv,(BYTE)(kv->PktNum-kv->PktNumOffset),(BYTE)'E',
                 strlen(&(kv->PktOut[4])));
   KmtSendPacket(fv,kv,cv);

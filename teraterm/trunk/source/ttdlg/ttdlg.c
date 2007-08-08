@@ -616,7 +616,7 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       if (ts->VTFlag>0)
       {
 #ifndef NO_I18N
-	strcpy(uimsg, "Full &color");
+	strncpy_s(uimsg, sizeof(uimsg), "Full &color", _TRUNCATE);
 	get_lang_msg("DLG_WIN_FULLCOLOR", uimsg, UILanguageFile);
 	SetDlgItemText(Dialog, IDC_WINCOLOREMU,uimsg);
 #else
@@ -655,15 +655,15 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	}
 	ShowDlgItem(Dialog,IDC_WINATTRTEXT,IDC_WINATTR);
 #ifndef NO_I18N
-	strcpy(uimsg, "Normal");
+	strncpy_s(uimsg, sizeof(uimsg), "Normal", _TRUNCATE);
 	get_lang_msg("DLG_TERM_NORMAL", uimsg, UILanguageFile);
 	SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
 			   0, (LPARAM)uimsg);
-	strcpy(uimsg, "Bold");
+	strncpy_s(uimsg, sizeof(uimsg), "Bold", _TRUNCATE);
 	get_lang_msg("DLG_TERM_BOLD", uimsg, UILanguageFile);
 	SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
 			   0, (LPARAM)uimsg);
-	strcpy(uimsg, "Blink");
+	strncpy_s(uimsg, sizeof(uimsg), "Blink", _TRUNCATE);
 	get_lang_msg("DLG_TERM_BLINK", uimsg, UILanguageFile);
 	SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
 			   0, (LPARAM)uimsg);
@@ -1134,12 +1134,12 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       SetDlgItemText(Dialog, IDC_SERIALHELP, uimsg);
 #endif
 
-      strcpy(Temp,"COM");
+      strncpy_s(Temp, sizeof(Temp),"COM", _TRUNCATE);
       w = 0;
 
       if ((comports = DetectComPorts(ComPortTable, ts->MaxComPort)) > 0) {
 	  for (i=0; i<comports; i++) {
-	      uint2str(ComPortTable[i], &Temp[3], 2);
+	      uint2str(ComPortTable[i], &Temp[3], sizeof(Temp)-3, 2);
 	      SendDlgItemMessage(Dialog, IDC_SERIALPORT, CB_ADDSTRING,
 				0, (LPARAM)Temp);
 	      if (ComPortTable[i] == ts->ComPort) {
@@ -1151,7 +1151,7 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  DisableDlgItem(Dialog, IDC_SERIALPORT_LABEL, IDC_SERIALPORT_LABEL);
       } else {
 	for (i=1; i<=ts->MaxComPort; i++) {
-	    uint2str(i,&Temp[3],2);
+	    uint2str(i,&Temp[3],sizeof(Temp)-3,2);
 	    SendDlgItemMessage(Dialog, IDC_SERIALPORT, CB_ADDSTRING,
 				0, (LPARAM)Temp);
 	}
@@ -1322,11 +1322,11 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       SendDlgItemMessage(Dialog, IDC_TCPIPHOST, EM_LIMITTEXT,
 			 HostNameMaxLength-1, 0);
 
-      strcpy(EntName,"Host");
+      strncpy_s(EntName, sizeof(EntName),"Host", _TRUNCATE);
 
       i = 1;
       do {
-	uint2str(i,&EntName[4],2);
+	uint2str(i,&EntName[4],sizeof(EntName)-4,2);
 	GetPrivateProfileString("Hosts",EntName,"",
 				TempHost,sizeof(TempHost),ts->SetupFName);
 	if (strlen(TempHost) > 0)
@@ -1373,12 +1373,12 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	      Index--;
 	    if (Index>99) Index = 99;
 
-	    strcpy(EntName,"Host");
+	    strncpy_s(EntName, sizeof(EntName),"Host", _TRUNCATE);
 	    for (i = 1 ; i <= Index ; i++)
 	    {
 	      SendDlgItemMessage(Dialog, IDC_TCPIPLIST, LB_GETTEXT,
 				 i-1, (LPARAM)TempHost);
-	      uint2str(i,&EntName[4],2);
+	      uint2str(i,&EntName[4],sizeof(EntName)-4,2);
 	      WritePrivateProfileString("Hosts",EntName,TempHost,ts->SetupFName);
 	    }
 
@@ -1606,11 +1606,11 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       if ( GetHNRec->PortType==IdFile )
 	GetHNRec->PortType = IdTCPIP;
 
-      strcpy(EntName,"Host");
+      strncpy_s(EntName, sizeof(EntName),"Host", _TRUNCATE);
 
       i = 1;
       do {
-	uint2str(i,&EntName[4],2);
+	uint2str(i,&EntName[4],sizeof(EntName)-4,2);
 	GetPrivateProfileString("Hosts",EntName,"",
 				TempHost,sizeof(TempHost),GetHNRec->SetupFN);
 	if ( strlen(TempHost) > 0 )
@@ -1640,11 +1640,11 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
       j = 0;
       w = 1;
-      strcpy(EntName,"COM");
+      strncpy_s(EntName, sizeof(EntName),"COM", _TRUNCATE);
       if ((comports=DetectComPorts(ComPortTable, GetHNRec->MaxComPort)) >= 0) {
 	for (i=0; i<comports; i++) {
 	  if (((GetCOMFlag() >> (ComPortTable[i]-1)) & 1)==0) {
-	    uint2str(ComPortTable[i], &EntName[3], 2);
+	    uint2str(ComPortTable[i], &EntName[3], sizeof(EntName)-3, 2);
 	    SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_ADDSTRING,
 			       0, (LPARAM)EntName);
 	    j++;
@@ -1656,7 +1656,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 	  if (((GetCOMFlag() >> (i-1)) & 1)==0)
 	  {
-	    uint2str(i,&EntName[3],2);
+	    uint2str(i,&EntName[3],sizeof(EntName)-3,2);
 	    SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_ADDSTRING,
 			       0, (LPARAM)EntName);
 	    j++;
@@ -1912,9 +1912,9 @@ BOOL CALLBACK DirDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	      if (_chdir(TmpDir) != 0)
 	      {
 #ifndef NO_I18N
-		strcpy(uimsg2, "Tera Term: Error");
+		strncpy_s(uimsg2, sizeof(uimsg2), "Tera Term: Error", _TRUNCATE);
 		get_lang_msg("MSG_TT_ERROR", uimsg2, UILanguageFile);
-		strcpy(uimsg, "Cannot find directory");
+		strncpy_s(uimsg, sizeof(uimsg), "Cannot find directory", _TRUNCATE);
 		get_lang_msg("MSG_FIND_DIR_ERROR", uimsg, UILanguageFile);
 		MessageBox(Dialog,uimsg,uimsg2,MB_ICONEXCLAMATION);
 #else
@@ -1986,7 +1986,7 @@ static void get_file_version(char *exefile, int *major, int *minor, int *release
 		goto error;
 
 	for (i = 0 ; i < (int)(unLen / sizeof(LANGANDCODEPAGE)) ; i++) {
-		_snprintf(fmt, sizeof(fmt), "\\StringFileInfo\\%04x%04x\\FileVersion", 
+		_snprintf_s(fmt, sizeof(fmt), _TRUNCATE, "\\StringFileInfo\\%04x%04x\\FileVersion", 
 			lplgcode[i].wLanguage, lplgcode[i].wCodePage);
 		VerQueryValue(buf, fmt, &pbuf, &unLen);
 		if (unLen > 0) { // get success
@@ -2268,7 +2268,7 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		// TeraTermのバージョンを設定する (2005.2.28 yutaka)
 		// __argv[0]では WinExec() したプロセスから参照できないようなので削除。(2005.3.14 yutaka)
 		get_file_version("ttermpro.exe", &a, &b, &c, &d);
-		_snprintf(buf, sizeof(buf), "Version %d.%d", a, b);
+		_snprintf_s(buf, sizeof(buf), _TRUNCATE, "Version %d.%d", a, b);
 		SendMessage(GetDlgItem(Dialog, IDC_TT_VERSION), WM_SETTEXT, 0, (LPARAM)buf);
 
 		// Onigurumaのバージョンを設定する 
@@ -2278,7 +2278,7 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		// (2005.10.8 yutaka)
 		// ライブラリをリンクし、正規の手順でバージョンを得ることにした。
 		// (2006.7.24 yutaka)
-		_snprintf(buf, sizeof(buf), "Oniguruma %s", onig_version());
+		_snprintf_s(buf, sizeof(buf), _TRUNCATE, "Oniguruma %s", onig_version());
 		SendMessage(GetDlgItem(Dialog, IDC_ONIGURUMA_LABEL), WM_SETTEXT, 0, (LPARAM)buf);
 
 		// static text のサイズを変更 (2007.4.16 maya)
@@ -2390,10 +2390,10 @@ BOOL CALLBACK GenDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
       SendDlgItemMessage(Dialog, IDC_GENPORT, CB_ADDSTRING,
 			 0, (LPARAM)"TCP/IP");
-      strcpy(Temp,"COM");
+      strncpy_s(Temp, sizeof(Temp),"COM", _TRUNCATE);
       for (w=1;w<=ts->MaxComPort;w++)
       {
-	uint2str(w,&Temp[3],3);
+	uint2str(w,&Temp[3],sizeof(Temp)-3,3);
 	SendDlgItemMessage(Dialog, IDC_GENPORT, CB_ADDSTRING,
 			   0, (LPARAM)Temp);
       }
@@ -2985,9 +2985,8 @@ BOOL WINAPI DllMain(HANDLE hInstance,
         pm = (PMap)MapViewOfFile(
         HMap,FILE_MAP_READ,0,0,0);
         if (pm != NULL) {
-          strncpy(UILanguageFile, pm->ts.UILanguageFile, sizeof(UILanguageFile)-1);
-          UILanguageFile[sizeof(UILanguageFile)-1] = 0;
-	    }
+          strncpy_s(UILanguageFile, sizeof(UILanguageFile), pm->ts.UILanguageFile, _TRUNCATE);
+        }
       }
 #endif
       break;
@@ -3014,6 +3013,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.27  2007/07/23 14:22:38  maya
+ * シリアル接続のCOM最大ポートを200まで拡張した。
+ *
  * Revision 1.26  2007/07/20 21:55:27  maya
  * シリアルポートダイアログでボーレートが変更されることがあるので、終了時にタイトルを変更するようにした。
  *

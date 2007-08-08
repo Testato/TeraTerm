@@ -144,8 +144,8 @@ void dprintf(char *format, ...)
 
   va_start(args,format);
 
-  vsprintf(buffer,format,args);
-  strcat(buffer,"\n");
+  _vsnprintf_s(buffer,sizeof(buffer),_TRUNCATE,format,args);
+  strncat_s(buffer,sizeof(buffer),"\n",_TRUNCATE);
 
   OutputDebugString(buffer);
 }
@@ -281,7 +281,7 @@ FARPROC GetProcAddressWithDllName(char *dllName,char *procName)
     return 0;
 }
 
-void RandomFile(char *filespec,char *filename)
+void RandomFile(char *filespec,char *filename, int destlen)
 {
   int    i;
   int    file_num;
@@ -290,8 +290,6 @@ void RandomFile(char *filespec,char *filename)
 
   HANDLE hFind;
   WIN32_FIND_DATA fd;
-
-  strcpy(filename,"");
 
   //絶対パスに変換
   if(!GetFullPathName(filespec,MAX_PATH,fullpath,&filePart))
@@ -342,9 +340,16 @@ void RandomFile(char *filespec,char *filename)
   FindClose(hFind);
 
   //ディレクトリ取得
-  ZeroMemory(filename,MAX_PATH);
-  strncpy(filename,fullpath,filePart - fullpath);
-  strcat(filename,fd.cFileName);
+  ZeroMemory(filename,destlen);
+  {
+    int tmplen;
+    char *tmp;
+    tmplen = filePart - fullpath + 1;
+    tmp = (char *)_alloca(tmplen);
+    strncpy_s(tmp,tmplen,fullpath,filePart - fullpath);
+    strncpy_s(filename,destlen,tmp,_TRUNCATE);
+  }
+  strncat_s(filename,destlen,fd.cFileName,_TRUNCATE);
 }
 
 BOOL LoadPictureWithSPI(char *nameSPI,char *nameFile,unsigned char *bufFile,long sizeFile,HLOCAL *hbuf,HLOCAL *hbmi)
@@ -523,8 +528,8 @@ void BGPreloadPicture(BGSrc *src)
   if(hFind != INVALID_HANDLE_VALUE && filePart)
   {
     //ディレクトリ取得
-    ZeroMemory(spiPath,MAX_PATH);
-    strncpy(spiPath,filespec,filePart - filespec);
+    ExtractDirName(filespec, spiPath);
+    AppendSlash(spiPath, sizeof(spiPath));
 
     do{
       HLOCAL hbuf,hbmi;
@@ -535,8 +540,8 @@ void BGPreloadPicture(BGSrc *src)
       if(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
         continue;
 
-      strcpy(spiFileName,spiPath);
-      strcat(spiFileName,fd.cFileName);
+      strncpy_s(spiFileName, sizeof(spiFileName), spiPath, _TRUNCATE);
+      strncat_s(spiFileName, sizeof(spiFileName), fd.cFileName, _TRUNCATE);
 
       if(LoadPictureWithSPI(spiFileName,src->file,fileBuf,fileSize,&hbuf,&hbmi))
       {
@@ -551,7 +556,7 @@ void BGPreloadPicture(BGSrc *src)
         LocalFree(hbmi);
         LocalFree(hbuf);
     
-        strcpy(src->file,src->fileTmp);
+        strncpy_s(src->file, sizeof(src->file),src->fileTmp, _TRUNCATE);
 
         break;
       }
@@ -588,7 +593,7 @@ void BGGetWallpaperInfo(WallpaperInfo *wi)
   HKEY hKey;
 
   wi->pattern = BG_CENTER;
-  strcpy(wi->filename,"");
+  strncpy_s(wi->filename, sizeof(wi->filename),"", _TRUNCATE);
 
   //レジストリキーのオープン
   if(RegOpenKeyEx(HKEY_CURRENT_USER, "Control Panel\\Desktop", 0, KEY_READ, &hKey) != ERROR_SUCCESS)
@@ -962,7 +967,7 @@ COLORREF BGGetColor(char *name,COLORREF defcolor,char *file)
   unsigned int r,g,b;
   char colorstr[256],defstr[256];
 
-  sprintf(defstr,"%d,%d,%d",GetRValue(defcolor),GetGValue(defcolor),GetBValue(defcolor));
+  _snprintf_s(defstr,sizeof(defstr),_TRUNCATE,"%d,%d,%d",GetRValue(defcolor),GetGValue(defcolor),GetBValue(defcolor));
 
   GetPrivateProfileString(BG_SECTION,name,defstr,colorstr,255,file);
 
@@ -980,7 +985,7 @@ BG_PATTERN BGGetStrIndex(char *name,BG_PATTERN def,char *file,char **strList,int
 
   def %= nList;
 
-  strcpy(defstr,strList[def]);
+  strncpy_s(defstr, sizeof(defstr),strList[def], _TRUNCATE);
   GetPrivateProfileString(BG_SECTION,name,defstr,str,64,file);
 
   for(i = 0;i < nList;i++)
@@ -1055,7 +1060,7 @@ void BGReadIniFile(char *file)
   BGDest.color   = BGGetColor("BGPictureBaseColor",BGSrc1.color,file);
 
   GetPrivateProfileString(BG_SECTION,"BGPictureFile",BGSrc1.file,path,MAX_PATH,file);
-  RandomFile(path,BGDest.file);
+  RandomFile(path,BGDest.file,sizeof(BGDest.file));
 
   BGSrc1.alpha   = 255 - GetPrivateProfileInt(BG_SECTION,"BGPictureTone",255 - BGSrc1.alpha,file);
 
@@ -1075,7 +1080,7 @@ void BGReadIniFile(char *file)
   BGSrc1.color     = BGGetColor("BGSrc1Color",BGSrc1.color,file);
 
   GetPrivateProfileString(BG_SECTION,"BGSrc1File",BGSrc1.file,path,MAX_PATH,file);
-  RandomFile(path,BGSrc1.file);
+  RandomFile(path,BGSrc1.file,sizeof(BGSrc1.file));
   
   //Src2 の読み出し
   BGSrc2.type      = BGGetType("BGSrc2Type",BGSrc2.type,file);
@@ -1085,7 +1090,7 @@ void BGReadIniFile(char *file)
   BGSrc2.color     = BGGetColor("BGSrc2Color",BGSrc2.color,file);
 
   GetPrivateProfileString(BG_SECTION,"BGSrc2File",BGSrc2.file,path,MAX_PATH,file);
-  RandomFile(path,BGSrc2.file);
+  RandomFile(path,BGSrc2.file,sizeof(BGSrc2.file));
 
   //Dest の読み出し
   BGDest.type      = BGGetType("BGDestType",BGDest.type,file);
@@ -1094,7 +1099,7 @@ void BGReadIniFile(char *file)
   BGDest.color     = BGGetColor("BGDestColor",BGDest.color,file);
 
   GetPrivateProfileString(BG_SECTION,"BGDestFile",BGDest.file,path,MAX_PATH,file);
-  RandomFile(path,BGDest.file);
+  RandomFile(path,BGDest.file,sizeof(BGDest.file));
 
   //その他読み出し
   BGReverseTextAlpha = GetPrivateProfileInt(BG_SECTION,"BGReverseTextAlpha",BGReverseTextAlpha,file);
@@ -1184,11 +1189,11 @@ void BGInitialize(void)
   ts.EtermLookfeel.BGNoCopyBits = BGGetOnOff("BGFlickerlessMove" ,TRUE ,ts.SetupFName);
 
   GetPrivateProfileString(BG_SECTION,"BGSPIPath","plugin",BGSPIPath,MAX_PATH,ts.SetupFName);
-  strcpy(ts.EtermLookfeel.BGSPIPath, BGSPIPath);
+  strncpy_s(ts.EtermLookfeel.BGSPIPath, sizeof(ts.EtermLookfeel.BGSPIPath), BGSPIPath, _TRUNCATE);
 
   //コンフィグファイルの決定
   GetPrivateProfileString(BG_SECTION,"BGThemeFile","",path,MAX_PATH,ts.SetupFName);
-  strcpy(ts.EtermLookfeel.BGThemeFile, path);
+  strncpy_s(ts.EtermLookfeel.BGThemeFile, sizeof(ts.EtermLookfeel.BGThemeFile), path, _TRUNCATE);
 
   if(!BGEnable)
     return;
@@ -1205,7 +1210,7 @@ void BGInitialize(void)
   
 #if 0
   GetPrivateProfileString(BG_SECTION,"BGSPIPath","plugin",BGSPIPath,MAX_PATH,ts.SetupFName);
-  strcpy(ts.EtermLookfeel.BGSPIPath, BGSPIPath);
+  strncpy_s(ts.EtermLookfeel.BGSPIPath, sizeof(ts.EtermLookfeel.BGSPIPath), BGSPIPath, _TRUNCATE);
 #endif
 
   //テンポラリーファイル名を生成
@@ -1219,21 +1224,21 @@ void BGInitialize(void)
   BGDest.pattern   = BG_STRETCH;
   BGDest.color     = RGB(0,0,0);
   BGDest.antiAlias = TRUE;
-  strcpy(BGDest.file,"");
+  strncpy_s(BGDest.file, sizeof(BGDest.file),"", _TRUNCATE);
 
   BGSrc1.type      = BG_WALLPAPER;
   BGSrc1.pattern   = BG_STRETCH;
   BGSrc1.color     = RGB(255,255,255);
   BGSrc1.antiAlias = TRUE;
   BGSrc1.alpha     = 255;
-  strcpy(BGSrc1.file,"");
+  strncpy_s(BGSrc1.file, sizeof(BGSrc1.file),"", _TRUNCATE);
 
   BGSrc2.type      = BG_COLOR;
   BGSrc2.pattern   = BG_STRETCH;
   BGSrc2.color     = RGB(0,0,0);
   BGSrc2.antiAlias = TRUE;
   BGSrc2.alpha     = 128;
-  strcpy(BGSrc2.file,"");
+  strncpy_s(BGSrc2.file, sizeof(BGSrc2.file),"", _TRUNCATE);
 
   BGReverseTextAlpha = 255;
 
@@ -1242,7 +1247,7 @@ void BGInitialize(void)
 
   //コンフィグファイルの決定
   GetPrivateProfileString(BG_SECTION,"BGThemeFile","",path,MAX_PATH,ts.SetupFName);
-  RandomFile(path,config_file);
+  RandomFile(path,config_file,sizeof(config_file));
 
   //設定のオーバーライド
   if(strcmp(config_file,""))
@@ -1261,8 +1266,8 @@ void BGInitialize(void)
   }
 
   //SPI のパスを整形
-  AppendSlash(BGSPIPath);
-  strcat(BGSPIPath,"*");
+  AppendSlash(BGSPIPath,sizeof(BGSPIPath));
+  strncat_s(BGSPIPath,sizeof(BGSPIPath),"*",_TRUNCATE);
 
   //壁紙 or 背景をプリロード
   BGPreloadSrc(&BGDest);
@@ -1560,7 +1565,7 @@ void SetLogFont()
   VTlf.lfClipPrecision = CLIP_CHARACTER_PRECIS;
   VTlf.lfQuality       = DEFAULT_QUALITY;
   VTlf.lfPitchAndFamily = FIXED_PITCH | FF_DONTCARE;
-  strcpy(VTlf.lfFaceName,ts.VTFont);
+  strncpy_s(VTlf.lfFaceName, sizeof(VTlf.lfFaceName),ts.VTFont, _TRUNCATE);
 }
 
 void ChangeFont()
@@ -1621,7 +1626,7 @@ void ChangeFont()
   VTlf.lfHeight = FontHeight;
   VTlf.lfCharSet = SYMBOL_CHARSET;
 
-  strcpy(VTlf.lfFaceName,"Tera Special");
+  strncpy_s(VTlf.lfFaceName, sizeof(VTlf.lfFaceName),"Tera Special", _TRUNCATE);
   VTFont[AttrSpecial] = CreateFontIndirect(&VTlf);
   VTFont[AttrSpecial | AttrBold] = VTFont[AttrSpecial];
   VTFont[AttrSpecial | AttrUnder] = VTFont[AttrSpecial];
@@ -2814,7 +2819,7 @@ void DispSetupFontDlg()
   FreeTTDLG();
   if (! Ok) return;
 
-  strcpy(ts.VTFont,VTlf.lfFaceName);
+  strncpy_s(ts.VTFont, sizeof(ts.VTFont),VTlf.lfFaceName, _TRUNCATE);
   ts.VTFontSize.x = VTlf.lfWidth;
   ts.VTFontSize.y = VTlf.lfHeight;
   ts.VTFontCharSet = VTlf.lfCharSet;
@@ -2892,6 +2897,11 @@ void DispSetActive(BOOL ActiveFlag)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2007/07/10 14:01:46  doda
+ * ウィンドウの横幅をある程度より小さくすると、それ以降マウスでのウィンドウサイズ変更が出来なくなる問題を修正した。
+ *
+ * https://sourceforge.jp/tracker/index.php?func=detail&aid=10654&group_id=1412&atid=5333
+ *
  * Revision 1.9  2006/03/12 14:27:41  yutakakn
  *   ・Additional settingsダイアログにおけるウィンドウの半透明変更を即座に反映させるようにした（teraterm.ini の AlphaBlend=256 の場合のみ）。
  *   ・文字の背景色をスクリーンの背景色と一致させるパッチのバグを修正した。パッチ作成に感謝します＞337氏

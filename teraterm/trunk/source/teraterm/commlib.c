@@ -366,9 +366,9 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 	if (cv->NoMsg==0)
 #ifndef NO_I18N
 	{
-	  strcpy(uimsg, "Tera Term: Error");
+	  strncpy_s(uimsg, sizeof(uimsg), "Tera Term: Error", _TRUNCATE);
 	  get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
-	  strcpy(ts->UIMsg, "Cannot use winsock");
+	  strncpy_s(ts->UIMsg, sizeof(ts->UIMsg), "Cannot use winsock", _TRUNCATE);
 	  get_lang_msg("MSG_WINSOCK_ERROR", ts->UIMsg, ts->UILanguageFile);
 	  MessageBox(cv->HWin,ts->UIMsg,uimsg,MB_TASKMODAL | MB_ICONEXCLAMATION);
 	}
@@ -387,7 +387,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 	hints.ai_family = ts->ProtocolFamily;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
-	_snprintf(pname, sizeof(pname), "%d", ts->TCPPort);
+	_snprintf_s(pname, sizeof(pname), _TRUNCATE, "%d", ts->TCPPort);
 
 	HAsync = WSAAsyncGetAddrInfo(HW, WM_USER_GETHOST,
 				     ts->HostName, pname, &hints, &cv->res0);
@@ -435,9 +435,9 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 	if (cv->NoMsg==0)
 #ifndef NO_I18N
 	{
-	  strcpy(uimsg, "Tera Term: Error");
+	  strncpy_s(uimsg, sizeof(uimsg), "Tera Term: Error", _TRUNCATE);
 	  get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
-	  strcpy(ts->UIMsg, "Invalid host");
+	  strncpy_s(ts->UIMsg, sizeof(ts->UIMsg), "Invalid host", _TRUNCATE);
 	  get_lang_msg("MSG_INVALID_HOST_ERROR", ts->UIMsg, ts->UILanguageFile);
 	  MessageBox(cv->HWin,ts->UIMsg,uimsg,MB_TASKMODAL | MB_ICONEXCLAMATION);
 	}
@@ -554,12 +554,12 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 #endif /* NO_INET6 */
 
     case IdSerial:
-      strcpy(P,"COM");
-      uint2str(ts->ComPort,&P[3],2);
+      strncpy_s(P, sizeof(P),"COM", _TRUNCATE);
+      uint2str(ts->ComPort,&P[3],sizeof(P)-3,2);
 #ifdef TERATERM32
-      strcpy(ErrMsg,P);
-      strcpy(P,"\\\\.\\");
-      strcat(P,ErrMsg);
+      strncpy_s(ErrMsg, sizeof(ErrMsg),P, _TRUNCATE);
+      strncpy_s(P, sizeof(P),"\\\\.\\", _TRUNCATE);
+      strncat_s(P, sizeof(P),ErrMsg, _TRUNCATE);
       cv->ComID =
 	CreateFile(P,GENERIC_READ | GENERIC_WRITE,
 		   0,NULL,OPEN_EXISTING,
@@ -573,10 +573,10 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 #endif
 
 #ifndef NO_I18N
-	strcpy(ts->UIMsg, "Cannot open %s");
+	strncpy_s(ts->UIMsg, sizeof(ts->UIMsg), "Cannot open %s", _TRUNCATE);
 	get_lang_msg("MSG_CANTOEPN_ERROR", ts->UIMsg, ts->UILanguageFile);
 #ifdef TERATERM32
-	_snprintf(ErrMsg, sizeof(ErrMsg), ts->UIMsg, &P[4]);
+	_snprintf_s(ErrMsg, sizeof(ErrMsg), _TRUNCATE, ts->UIMsg, &P[4]);
 #else
 	_snprintf(ErrMsg, sizeof(ErrMsg), ts->UIMsg, P);
 #endif
@@ -592,7 +592,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 	if (cv->NoMsg==0)
 #ifndef NO_I18N
 	{
-	  strcpy(uimsg, "Tera Term: Error");
+	  strncpy_s(uimsg, sizeof(uimsg), "Tera Term: Error", _TRUNCATE);
 	  get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
 	  MessageBox(cv->HWin,ErrMsg,uimsg,MB_TASKMODAL | MB_ICONEXCLAMATION);
 }
@@ -635,9 +635,9 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 	if (cv->NoMsg==0)
 #ifndef NO_I18N
 	{
-	  strcpy(uimsg, "Tera Term: Error");
+	  strncpy_s(uimsg, sizeof(uimsg), "Tera Term: Error", _TRUNCATE);
 	  get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
-	  strcpy(ts->UIMsg, "Cannot open file");
+	  strncpy_s(ts->UIMsg, sizeof(ts->UIMsg), "Cannot open file", _TRUNCATE);
 	  get_lang_msg("MSG_CANTOEPN_FILE_ERROR", ts->UIMsg, ts->UILanguageFile);
 	  MessageBox(cv->HWin,ts->UIMsg,uimsg,MB_TASKMODAL | MB_ICONEXCLAMATION);
 	}
@@ -677,8 +677,8 @@ void CommThread(void *arg)
   HANDLE REnd;
   char Temp[20];
 
-  strcpy(Temp,READENDNAME);
-  uint2str(cv->ComPort,&Temp[strlen(Temp)],2);	
+  strncpy_s(Temp, sizeof(Temp),READENDNAME, _TRUNCATE);
+  uint2str(cv->ComPort,&Temp[strlen(Temp)],sizeof(Temp)-strlen(Temp),2);
   REnd = OpenEvent(EVENT_ALL_ACCESS,FALSE, Temp);
   while (TRUE) {
     if (WaitCommEvent(cv->ComID,&Evt,NULL))
@@ -727,36 +727,36 @@ void CommStart(PComVar cv, LONG lParam)
       switch (HIWORD(lParam)) {
 	case WSAECONNREFUSED:
 #ifndef NO_I18N
-	  strcpy(ts->UIMsg, "Connection refused");
+	  strncpy_s(ts->UIMsg, sizeof(ts->UIMsg), "Connection refused", _TRUNCATE);
 	  get_lang_msg("MSG_COMM_REFUSE_ERROR", ts->UIMsg, ts->UILanguageFile);
-	  _snprintf(ErrMsg, sizeof(ErrMsg), "%s", ts->UIMsg);
+	  _snprintf_s(ErrMsg, sizeof(ErrMsg), _TRUNCATE, "%s", ts->UIMsg);
 #else
 	  strcpy(ErrMsg,"Connection refused");
 #endif
 	  break;
 	case WSAENETUNREACH:
 #ifndef NO_I18N
-	  strcpy(ts->UIMsg, "Network cannot be reached");
+	  strncpy_s(ts->UIMsg, sizeof(ts->UIMsg), "Network cannot be reached", _TRUNCATE);
 	  get_lang_msg("MSG_COMM_REACH_ERROR", ts->UIMsg, ts->UILanguageFile);
-	  _snprintf(ErrMsg, sizeof(ErrMsg), "%s", ts->UIMsg);
+	  _snprintf_s(ErrMsg, sizeof(ErrMsg), _TRUNCATE, "%s", ts->UIMsg);
 #else
 	  strcpy(ErrMsg,"Network cannot be reached");
 #endif
 	  break;
 	case WSAETIMEDOUT:
 #ifndef NO_I18N
-	  strcpy(ts->UIMsg, "Connection timed out");
+	  strncpy_s(ts->UIMsg, sizeof(ts->UIMsg), "Connection timed out", _TRUNCATE);
 	  get_lang_msg("MSG_COMM_CONNECT_ERROR", ts->UIMsg, ts->UILanguageFile);
-	  _snprintf(ErrMsg, sizeof(ErrMsg), "%s", ts->UIMsg);
+	  _snprintf_s(ErrMsg, sizeof(ErrMsg), _TRUNCATE, "%s", ts->UIMsg);
 #else
 	  strcpy(ErrMsg,"Connection timed out");
 #endif
 	  break;
 	default:
 #ifndef NO_I18N
-	  strcpy(ts->UIMsg, "Cannot connect the host");
+	  strncpy_s(ts->UIMsg, sizeof(ts->UIMsg), "Cannot connect the host", _TRUNCATE);
 	  get_lang_msg("MSG_COMM_TIMEOUT_ERROR", ts->UIMsg, ts->UILanguageFile);
-	  _snprintf(ErrMsg, sizeof(ErrMsg), "%s", ts->UIMsg);
+	  _snprintf_s(ErrMsg, sizeof(ErrMsg), _TRUNCATE, "%s", ts->UIMsg);
 #else
 	  strcpy(ErrMsg,ErrorCantConn);
 #endif
@@ -784,7 +784,7 @@ void CommStart(PComVar cv, LONG lParam)
 	  if (cv->NoMsg==0)
 #ifndef NO_I18N
 	  {
-	    strcpy(uimsg, "Tera Term: Error");
+	    strncpy_s(uimsg, sizeof(uimsg), "Tera Term: Error", _TRUNCATE);
 	    get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
 	    MessageBox(cv->HWin,ErrMsg,uimsg,MB_TASKMODAL | MB_ICONEXCLAMATION);
 	  }
@@ -815,16 +815,16 @@ void CommStart(PComVar cv, LONG lParam)
 
     case IdSerial:
 #ifdef TERATERM32
-      uint2str(cv->ComPort,Temp2,2);
-      strcpy(Temp,READENDNAME);
-      strcat(Temp,Temp2);
+      uint2str(cv->ComPort,Temp2,sizeof(Temp2),2);
+      strncpy_s(Temp, sizeof(Temp),READENDNAME, _TRUNCATE);
+      strncat_s(Temp, sizeof(Temp),Temp2, _TRUNCATE);
       ReadEnd = CreateEvent(NULL,FALSE,FALSE,Temp);
-      strcpy(Temp,WRITENAME);
-      strcat(Temp,Temp2);
+      strncpy_s(Temp, sizeof(Temp),WRITENAME, _TRUNCATE);
+      strncat_s(Temp, sizeof(Temp),Temp2, _TRUNCATE);
       memset(&wol,0,sizeof(OVERLAPPED));
       wol.hEvent = CreateEvent(NULL,TRUE,TRUE,Temp);
-      strcpy(Temp,READNAME);
-      strcat(Temp,Temp2);
+      strncpy_s(Temp, sizeof(Temp),READNAME, _TRUNCATE);
+      strncat_s(Temp, sizeof(Temp),Temp2, _TRUNCATE);
       memset(&rol,0,sizeof(OVERLAPPED));
       rol.hEvent = CreateEvent(NULL,TRUE,FALSE,Temp);
 
@@ -836,9 +836,9 @@ void CommStart(PComVar cv, LONG lParam)
 #endif
 #ifndef NO_I18N
       {
-	strcpy(uimsg, "Tera Term: Error");
+	strncpy_s(uimsg, sizeof(uimsg), "Tera Term: Error", _TRUNCATE);
 	get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
-	strcpy(ts->UIMsg, "Can't create thread");
+	strncpy_s(ts->UIMsg, sizeof(ts->UIMsg), "Can't create thread", _TRUNCATE);
 	get_lang_msg("MSG_TT_ERROR", ts->UIMsg, ts->UILanguageFile);
 	MessageBox(cv->HWin,ts->UIMsg,uimsg,MB_TASKMODAL | MB_ICONEXCLAMATION);
       }
@@ -1278,7 +1278,7 @@ BOOL PrnOpen(PCHAR DevName)
   COMSTAT Stat;
 #endif
 
-  strcpy(Temp,DevName);
+  strncpy_s(Temp, sizeof(Temp),DevName, _TRUNCATE);
   Temp[4] = 0; // COMn or LPTn
   LPTFlag = (Temp[0]=='L') ||
 	    (Temp[0]=='l');

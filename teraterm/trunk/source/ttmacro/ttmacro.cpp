@@ -67,10 +67,10 @@ BOOL CCtrlApp::InitInstance()
   /* Get home directory */
   GetModuleFileName(NULL,Temp,sizeof(Temp));
   ExtractDirName(Temp, HomeDir);
-  strcpy(ts.HomeDir, HomeDir);
+  strncpy_s(ts.HomeDir, sizeof(ts.HomeDir), HomeDir, _TRUNCATE);
 
   /* Get SetupFName */
-  GetDefaultSetupFName(SetupFName, HomeDir);
+  GetDefaultSetupFName(HomeDir, SetupFName, sizeof(SetupFName));
 
   /* Get LanguageFile name */
   GetPrivateProfileString("Tera Term", "UILanguageFile", "",

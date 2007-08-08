@@ -73,11 +73,11 @@ static void loadExtension(ExtensionList * * extensions, char const * fileName) {
 
   err = GetLastError();
 #ifndef NO_I18N
-  strcpy(uimsg, "Tera Term: Error");
+  strncpy_s(uimsg, sizeof(uimsg), "Tera Term: Error", _TRUNCATE);
   get_lang_msg("MSG_TT_ERROR", uimsg, ts.UILanguageFile);
-  strcpy(ts.UIMsg, "Cannot load extension %s (%d)");
+  strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Cannot load extension %s (%d)", _TRUNCATE);
   get_lang_msg("MSG_LOAD_EXT_ERROR", ts.UIMsg, ts.UILanguageFile);
-  _snprintf(buf, sizeof(buf), ts.UIMsg, fileName, err);
+  _snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, fileName, err);
   buf[sizeof(buf) - 1] = 0;
   MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONEXCLAMATION);
 #else
@@ -105,7 +105,7 @@ void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
       index--) {
     }
     index++;
-    strncpy(buf + index, "TTX*.DLL", sizeof(buf) - index);
+    strncpy_s(buf + index, sizeof(buf) - index, "TTX*.DLL", _TRUNCATE);
 
     searchHandle = _findfirst(buf,&searchData);
     if (searchHandle != -1L) {

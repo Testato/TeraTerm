@@ -50,7 +50,7 @@ WORD str2id(PCHAR far * List, PCHAR str, WORD DefId)
   return i;
 }
 
-void id2str(PCHAR far * List, WORD Id, WORD DefId, PCHAR str)
+void id2str(PCHAR far * List, WORD Id, WORD DefId, PCHAR str, int destlen)
 {
   int i;
 
@@ -63,7 +63,7 @@ void id2str(PCHAR far * List, WORD Id, WORD DefId, PCHAR str)
     if (List[i]==NULL)
       i = DefId - 1;
   } 
-  strcpy(str,List[i]);
+  strncpy_s(str,destlen,List[i],_TRUNCATE);
 }
 
 WORD GetOnOff(PCHAR Sect, PCHAR Key, PCHAR FName, BOOL Default)
@@ -90,22 +90,22 @@ void WriteOnOff(PCHAR Sect, PCHAR Key, PCHAR FName, WORD Flag)
 {
   char Temp[4];
 
-  if (Flag!=0) strcpy(Temp,"on");
-	  else strcpy(Temp,"off");
+  if (Flag!=0) strncpy_s(Temp, sizeof(Temp),"on", _TRUNCATE);
+	  else strncpy_s(Temp, sizeof(Temp),"off", _TRUNCATE);
   WritePrivateProfileString(Sect,Key,Temp,FName);
 }
 
 void WriteInt(PCHAR Sect, PCHAR Key, PCHAR FName, int i)
 {
   char Temp[15];
-  sprintf(Temp,"%d",i);
+  _snprintf_s(Temp,sizeof(Temp),_TRUNCATE,"%d",i);
   WritePrivateProfileString(Sect,Key,Temp,FName);
 }
 
 void WriteUint(PCHAR Sect, PCHAR Key, PCHAR FName, UINT i)
 {
   char Temp[15];
-  sprintf(Temp,"%u",i);
+  _snprintf_s(Temp,sizeof(Temp),_TRUNCATE,"%u",i);
   WritePrivateProfileString(Sect,Key,Temp,FName);
 }
 
@@ -113,7 +113,7 @@ void WriteInt2(PCHAR Sect, PCHAR Key, PCHAR FName,
   int i1, int i2)
 {
   char Temp[32];
-  sprintf(Temp,"%d,%d",i1,i2);
+  _snprintf_s(Temp,sizeof(Temp),_TRUNCATE,"%d,%d",i1,i2);
   WritePrivateProfileString(Sect,Key,Temp,FName);
 }
 
@@ -121,7 +121,7 @@ void WriteInt4(PCHAR Sect, PCHAR Key, PCHAR FName,
   int i1, int i2, int i3, int i4)
 {
   char Temp[64];
-  sprintf(Temp,"%d,%d,%d,%d",i1,i2,i3,i4);
+  _snprintf_s(Temp,sizeof(Temp),_TRUNCATE,"%d,%d,%d,%d",i1,i2,i3,i4);
   WritePrivateProfileString(Sect,Key,Temp,FName);
 }
 
@@ -129,7 +129,7 @@ void WriteInt6(PCHAR Sect, PCHAR Key, PCHAR FName,
   int i1, int i2, int i3, int i4, int i5, int i6)
 {
   char Temp[96];
-  sprintf(Temp,"%d,%d,%d,%d,%d,%d",i1,i2,i3,i4,i5,i6);
+  _snprintf_s(Temp,sizeof(Temp),_TRUNCATE,"%d,%d,%d,%d,%d,%d",i1,i2,i3,i4,i5,i6);
   WritePrivateProfileString(Sect,Key,Temp,FName);
 }
 
@@ -138,7 +138,7 @@ void WriteFont(PCHAR Sect, PCHAR Key, PCHAR FName,
 {
   char Temp[80];
   if (Name[0]!=0)
-    sprintf(Temp,"%s,%d,%d,%d",Name,x,y,charset);
+    _snprintf_s(Temp,sizeof(Temp),_TRUNCATE,"%s,%d,%d,%d",Name,x,y,charset);
   else
     Temp[0] = 0;
   WritePrivateProfileString(Sect,Key,Temp,FName);
@@ -652,11 +652,11 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   GetPrivateProfileString(Section,"FileDir","",
 			  ts->FileDir,sizeof(ts->FileDir),FName);
   if ( strlen(ts->FileDir)==0 )
-    strcpy(ts->FileDir,ts->HomeDir);
+    strncpy_s(ts->FileDir, sizeof(ts->FileDir),ts->HomeDir, _TRUNCATE);
   else {
     _getcwd(Temp,sizeof(Temp));
     if	(_chdir(ts->FileDir) != 0)
-      strcpy(ts->FileDir,ts->HomeDir);
+      strncpy_s(ts->FileDir, sizeof(ts->FileDir),ts->HomeDir, _TRUNCATE);
     _chdir(Temp);
   }
 
@@ -706,7 +706,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
     FT_BPAUTO * GetOnOff(Section,"BPAuto",FName,FALSE);
   if ((ts->FTFlag & FT_BPAUTO)!=0)
   {	/* Answerback */
-    strcpy(ts->Answerback,"\020++\0200");
+    strncpy_s(ts->Answerback, sizeof(ts->Answerback),"\020++\0200", _TRUNCATE);
     ts->AnswerbackLen = 5;
   }
 
@@ -977,7 +977,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   // mouse cursor 
   GetPrivateProfileString(Section,"MouseCursor","IBEAM",
 			  Temp,sizeof(Temp),FName);
-  strncpy(ts->MouseCursorName, Temp, sizeof(ts->MouseCursorName));
+  strncpy_s(ts->MouseCursorName, sizeof(ts->MouseCursorName), Temp, _TRUNCATE);
 
   // Translucent window
   ts->AlphaBlend = GetPrivateProfileInt(Section,"AlphaBlend ",255,FName);
@@ -987,17 +987,17 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   // Cygwin install path
   GetPrivateProfileString(Section,"CygwinDirectory ","c:\\cygwin",
 			  Temp,sizeof(Temp),FName);
-  strncpy(ts->CygwinDirectory, Temp, sizeof(Temp));
+  strncpy_s(ts->CygwinDirectory, sizeof(ts->CygwinDirectory), Temp, _TRUNCATE);
 
   // Viewlog Editor path
   GetPrivateProfileString(Section,"ViewlogEditor ","notepad.exe",
 			  Temp,sizeof(Temp),FName);
-  strncpy(ts->ViewlogEditor, Temp, sizeof(Temp));
+  strncpy_s(ts->ViewlogEditor, sizeof(ts->ViewlogEditor), Temp, _TRUNCATE);
 
   // Locale for UTF-8
   GetPrivateProfileString(Section,"Locale ", DEFAULT_LOCALE,
 			  Temp,sizeof(Temp),FName);
-  strncpy(ts->Locale, Temp, sizeof(ts->Locale));
+  strncpy_s(ts->Locale, sizeof(ts->Locale), Temp, _TRUNCATE);
 
   // CodePage
   ts->CodePage = GetPrivateProfileInt(Section,"CodePage ", DEFAULT_CODEPAGE, FName);
@@ -1006,15 +1006,16 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   // UI language message file
   GetPrivateProfileString(Section,"UILanguageFile","lang\\Default.lng",
                           Temp,sizeof(Temp),FName);
-  if (strlen(Temp) > 3
-	  && Temp[1] == ':' && Temp[2] == '\\'
-	  && 'a' <= tolower(Temp[0]) && tolower(Temp[0]) <= 'z') {
-    strncat(ts->UILanguageFile, Temp, sizeof(ts->UILanguageFile));
+  if (strlen(Temp) > 3 &&
+      Temp[1] == ':' &&
+      Temp[2] == '\\' &&
+      'a' <= tolower(Temp[0]) && tolower(Temp[0]) <= 'z') {
+    strncpy_s(ts->UILanguageFile, sizeof(ts->UILanguageFile), Temp, _TRUNCATE);
   }
   else {
-    strncpy(ts->UILanguageFile, ts->HomeDir, sizeof(ts->UILanguageFile)-1);
-    AppendSlash(ts->UILanguageFile);
-    strncat(ts->UILanguageFile, Temp, sizeof(ts->UILanguageFile) - strlen(ts->UILanguageFile) - 1);
+    strncpy_s(ts->UILanguageFile, sizeof(ts->UILanguageFile), ts->HomeDir, _TRUNCATE);
+    AppendSlash(ts->UILanguageFile,sizeof(ts->UILanguageFile));
+    strncat_s(ts->UILanguageFile, sizeof(ts->UILanguageFile), Temp, _TRUNCATE);
   }
 #endif
 
@@ -1054,18 +1055,18 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* Language */
   if (ts->Language==IdJapanese)
-    strcpy(Temp,"Japanese");
+    strncpy_s(Temp, sizeof(Temp),"Japanese", _TRUNCATE);
   else if (ts->Language==IdRussian)
-    strcpy(Temp,"Russian");
+    strncpy_s(Temp, sizeof(Temp),"Russian", _TRUNCATE);
   else
-    strcpy(Temp,"English");
+    strncpy_s(Temp, sizeof(Temp),"English", _TRUNCATE);
   WritePrivateProfileString(Section,"Language",Temp,FName);
 
   /* Port type */
   if (ts->PortType == IdSerial)
-    strcpy(Temp,"serial");
+    strncpy_s(Temp, sizeof(Temp),"serial", _TRUNCATE);
   else /* IdFile -> IdTCPIP */
-    strcpy(Temp,"tcpip");
+    strncpy_s(Temp, sizeof(Temp),"tcpip", _TRUNCATE);
 
   WritePrivateProfileString(Section,"Port",Temp,FName);
 
@@ -1089,21 +1090,21 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* CR Receive */
   if ( ts->CRReceive == IdCRLF ) {
-    strcpy(Temp,"CRLF");
+    strncpy_s(Temp,sizeof(Temp),"CRLF",_TRUNCATE);
   }
   else if ( ts->CRReceive == IdLF ) {
-    strcpy(Temp,"LF");
+    strncpy_s(Temp,sizeof(Temp),"LF",_TRUNCATE);
   }
   else {
-    strcpy(Temp,"CR");
+    strncpy_s(Temp,sizeof(Temp),"CR",_TRUNCATE);
   }
   WritePrivateProfileString(Section,"CRReceive",Temp,FName);
 
   /* CR Send */
   if (ts->CRSend == IdCRLF)
-    strcpy(Temp,"CRLF");
+    strncpy_s(Temp, sizeof(Temp),"CRLF", _TRUNCATE);
   else
-    strcpy(Temp,"CR");
+    strncpy_s(Temp, sizeof(Temp),"CR", _TRUNCATE);
   WritePrivateProfileString(Section,"CRSend",Temp,FName);
 
   /* Local echo */
@@ -1119,55 +1120,55 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* Kanji Code (receive)  */
   switch (ts->KanjiCode) {
-    case IdEUC: strcpy(Temp,"EUC"); break;
-    case IdJIS: strcpy(Temp,"JIS"); break;
-    case IdUTF8: strcpy(Temp,"UTF-8"); break;
-    case IdUTF8m: strcpy(Temp,"UTF-8m"); break;
+    case IdEUC: strncpy_s(Temp, sizeof(Temp),"EUC", _TRUNCATE); break;
+    case IdJIS: strncpy_s(Temp, sizeof(Temp),"JIS", _TRUNCATE); break;
+    case IdUTF8: strncpy_s(Temp, sizeof(Temp),"UTF-8", _TRUNCATE); break;
+    case IdUTF8m: strncpy_s(Temp, sizeof(Temp),"UTF-8m", _TRUNCATE); break;
     default:
-      strcpy(Temp,"SJIS");
+      strncpy_s(Temp, sizeof(Temp),"SJIS", _TRUNCATE);
   }
   WritePrivateProfileString(Section,"KanjiReceive",Temp,FName);
 
   /* Katakana (receive)  */
   if (ts->JIS7Katakana ==1)
-    strcpy(Temp,"7");
+    strncpy_s(Temp, sizeof(Temp),"7", _TRUNCATE);
   else
-    strcpy(Temp,"8");
+    strncpy_s(Temp, sizeof(Temp),"8", _TRUNCATE);
 
   WritePrivateProfileString(Section,"KatakanaReceive",Temp,FName);
 
   /* Kanji Code (transmit)  */
   switch (ts->KanjiCodeSend) {
-    case IdEUC: strcpy(Temp,"EUC"); break;
-    case IdJIS: strcpy(Temp,"JIS"); break;
-    case IdUTF8: strcpy(Temp,"UTF-8"); break;
+    case IdEUC: strncpy_s(Temp, sizeof(Temp),"EUC", _TRUNCATE); break;
+    case IdJIS: strncpy_s(Temp, sizeof(Temp),"JIS", _TRUNCATE); break;
+    case IdUTF8: strncpy_s(Temp, sizeof(Temp),"UTF-8", _TRUNCATE); break;
     default:
-      strcpy(Temp,"SJIS");
+      strncpy_s(Temp, sizeof(Temp),"SJIS", _TRUNCATE);
   }
   WritePrivateProfileString(Section,"KanjiSend",Temp,FName);
 
   /* Katakana (transmit)  */
   if (ts->JIS7KatakanaSend==1)
-    strcpy(Temp,"7");
+    strncpy_s(Temp, sizeof(Temp),"7", _TRUNCATE);
   else
-    strcpy(Temp,"8");
+    strncpy_s(Temp, sizeof(Temp),"8", _TRUNCATE);
 
   WritePrivateProfileString(Section,"KatakanaSend",Temp,FName);
 
   /* KanjiIn */
   if (ts->KanjiIn == IdKanjiInA)
-    strcpy(Temp,"@");
+    strncpy_s(Temp, sizeof(Temp),"@", _TRUNCATE);
   else
-    strcpy(Temp,"B");
+    strncpy_s(Temp, sizeof(Temp),"B", _TRUNCATE);
 
   WritePrivateProfileString(Section,"KanjiIn",Temp,FName);
 
   /* KanjiOut */
   switch (ts->KanjiOut) {
-    case IdKanjiOutB: strcpy(Temp,"B"); break;
-    case IdKanjiOutH: strcpy(Temp,"H"); break;
+    case IdKanjiOutB: strncpy_s(Temp, sizeof(Temp),"B", _TRUNCATE); break;
+    case IdKanjiOutH: strncpy_s(Temp, sizeof(Temp),"H", _TRUNCATE); break;
     default:
-      strcpy(Temp,"J");
+      strncpy_s(Temp, sizeof(Temp),"J", _TRUNCATE);
   }
   WritePrivateProfileString(Section,"KanjiOut",Temp,FName);
 
@@ -1180,48 +1181,48 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
   WriteOnOff(Section, "DisableAcceleratorSendBreak", FName, ts->DisableAcceleratorSendBreak);
   WriteOnOff(Section, "EnableContinuedLineCopy", FName, ts->EnableContinuedLineCopy);
   WritePrivateProfileString(Section,"MouseCursor", ts->MouseCursorName, FName);
-  _snprintf(Temp, sizeof(Temp), "%d", ts->AlphaBlend);
+  _snprintf_s(Temp, sizeof(Temp), _TRUNCATE, "%d", ts->AlphaBlend);
   WritePrivateProfileString(Section,"AlphaBlend", Temp, FName);
   WritePrivateProfileString(Section,"CygwinDirectory", ts->CygwinDirectory, FName);
   WritePrivateProfileString(Section,"ViewlogEditor", ts->ViewlogEditor, FName);
   WritePrivateProfileString(Section,"Locale", ts->Locale, FName);
-  _snprintf(Temp, sizeof(Temp), "%d", ts->CodePage);
+  _snprintf_s(Temp, sizeof(Temp), _TRUNCATE, "%d", ts->CodePage);
   WritePrivateProfileString(Section,"CodePage", Temp, FName);
 
   // ANSI color(2004.9.5 yutaka)
   Temp[0] = '\0';
   for (i = 0 ; i < 15 ; i++) {
-	  _snprintf(buf, sizeof(buf), "%d,%d,%d,%d, ", 
+	  _snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d,%d,%d,%d, ", 
 		  i, 
 		  GetRValue(ts->ANSIColor[i]),
 		  GetGValue(ts->ANSIColor[i]),
 		  GetBValue(ts->ANSIColor[i])
 		);
-	  strcat(Temp, buf);
+	  strncat_s(Temp, sizeof(Temp), buf, _TRUNCATE);
   }
   i = 15;
-	_snprintf(buf, sizeof(buf), "%d,%d,%d,%d", 
+	_snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d,%d,%d,%d", 
 		i, 
 		GetRValue(ts->ANSIColor[i]),
 		GetGValue(ts->ANSIColor[i]),
 		GetBValue(ts->ANSIColor[i])
 	);
-	strcat(Temp, buf);
+	strncat_s(Temp, sizeof(Temp), buf, _TRUNCATE);
   WritePrivateProfileString(Section,"ANSIColor", Temp, FName);
 
   /* AutoWinChange VT<->TEK */
   WriteOnOff(Section,"AutoWinSwitch",FName,ts->AutoWinSwitch);
 
   /* Terminal ID */
-  id2str(TermList,ts->TerminalID,IdVT100,Temp);
+  id2str(TermList,ts->TerminalID,IdVT100,Temp,sizeof(Temp));
   WritePrivateProfileString(Section,"TerminalID",Temp,FName);
 
   /* Russian character set (host)  */
-  id2str(RussList,ts->RussHost,IdKOI8,Temp);
+  id2str(RussList,ts->RussHost,IdKOI8,Temp,sizeof(Temp));
   WritePrivateProfileString(Section,"RussHost",Temp,FName);
 
   /* Russian character set (client)  */
-  id2str(RussList,ts->RussClient,IdWindows,Temp);
+  id2str(RussList,ts->RussClient,IdWindows,Temp,sizeof(Temp));
   WritePrivateProfileString(Section,"RussClient",Temp,FName);
 
   /* Title text */
@@ -1229,10 +1230,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* Cursor shape */
   switch (ts->CursorShape) {
-    case IdVCur : strcpy(Temp,"vertical"); break;
-    case IdHCur : strcpy(Temp,"horizontal"); break;
+    case IdVCur : strncpy_s(Temp, sizeof(Temp),"vertical", _TRUNCATE); break;
+    case IdHCur : strncpy_s(Temp, sizeof(Temp),"horizontal", _TRUNCATE); break;
     default:
-      strcpy(Temp,"block");
+      strncpy_s(Temp, sizeof(Temp),"block", _TRUNCATE);
   }
   WritePrivateProfileString(Section,"CursorShape",Temp,FName);
 
@@ -1322,7 +1323,7 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
   WriteOnOff(Section,"EnableBold",FName,ts->EnableBold);
 
   /* Russian character set (font) */
-  id2str(RussList,ts->RussFont,IdWindows,Temp);
+  id2str(RussList,ts->RussFont,IdWindows,Temp,sizeof(Temp));
   WritePrivateProfileString(Section,"RussFont",Temp,FName);
 
   /* TEK Font */
@@ -1331,8 +1332,8 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
     ts->TEKFontCharSet);
 
   /* BS key */
-  if ( ts->BSKey == IdDEL ) strcpy(Temp,"DEL");
-		       else strcpy(Temp,"BS");
+  if ( ts->BSKey == IdDEL ) strncpy_s(Temp, sizeof(Temp),"DEL", _TRUNCATE);
+		       else strncpy_s(Temp, sizeof(Temp),"BS", _TRUNCATE);
   WritePrivateProfileString(Section,"BSKey",Temp,FName);
 
   /* Delete key */
@@ -1342,48 +1343,48 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
   WriteOnOff(Section,"MetaKey",FName,ts->MetaKey);
 
   /* Russian keyboard type */
-  id2str(RussList2,ts->RussKeyb,IdWindows,Temp);
+  id2str(RussList2,ts->RussKeyb,IdWindows,Temp,sizeof(Temp));
   WritePrivateProfileString(Section,"RussKeyb",Temp,FName);
 
   /* Serial port ID */
-  uint2str(ts->ComPort,Temp,2);
+  uint2str(ts->ComPort,Temp,sizeof(Temp),2);
   WritePrivateProfileString(Section,"ComPort",Temp,FName);
 
   /* Baud rate */
-  id2str(BaudList,ts->Baud,IdBaud9600,Temp);
+  id2str(BaudList,ts->Baud,IdBaud9600,Temp,sizeof(Temp));
   WritePrivateProfileString(Section,"BaudRate",Temp,FName);
 
   /* Parity */
   switch (ts->Parity) {
-    case IdParityEven: strcpy(Temp,"even"); break;
-    case IdParityOdd:  strcpy(Temp,"odd"); break;
+    case IdParityEven: strncpy_s(Temp, sizeof(Temp),"even", _TRUNCATE); break;
+    case IdParityOdd:  strncpy_s(Temp, sizeof(Temp),"odd", _TRUNCATE); break;
     default:
-      strcpy(Temp,"none");
+      strncpy_s(Temp, sizeof(Temp),"none", _TRUNCATE);
   }
   WritePrivateProfileString(Section,"Parity",Temp,FName);
 
   /* Data bit */
   if (ts->DataBit==IdDataBit7)
-    strcpy(Temp,"7");
+    strncpy_s(Temp, sizeof(Temp),"7", _TRUNCATE);
   else
-    strcpy(Temp,"8");
+    strncpy_s(Temp, sizeof(Temp),"8", _TRUNCATE);
 
   WritePrivateProfileString(Section,"DataBit",Temp,FName);
 
   /* Stop bit */
   if (ts->StopBit == IdStopBit2)
-    strcpy(Temp,"2");
+    strncpy_s(Temp, sizeof(Temp),"2", _TRUNCATE);
   else
-    strcpy(Temp,"1");
+    strncpy_s(Temp, sizeof(Temp),"1", _TRUNCATE);
 
   WritePrivateProfileString(Section,"StopBit",Temp,FName);
 
   /* Flow control */
   switch (ts->Flow) {
-    case IdFlowX:    strcpy(Temp,"x"); break;
-    case IdFlowHard: strcpy(Temp,"hard"); break;
+    case IdFlowX:    strncpy_s(Temp, sizeof(Temp),"x", _TRUNCATE); break;
+    case IdFlowHard: strncpy_s(Temp, sizeof(Temp),"hard", _TRUNCATE); break;
     default:
-      strcpy(Temp,"none");
+      strncpy_s(Temp, sizeof(Temp),"none", _TRUNCATE);
   }
   WritePrivateProfileString(Section,"FlowCtrl",Temp,FName);
 
@@ -1431,10 +1432,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* XMODEM option */
   switch (ts->XmodemOpt) {
-    case XoptCRC: strcpy(Temp,"crc"); break;
-    case Xopt1K:  strcpy(Temp,"1k"); break;
+    case XoptCRC: strncpy_s(Temp, sizeof(Temp),"crc", _TRUNCATE); break;
+    case Xopt1K:  strncpy_s(Temp, sizeof(Temp),"1k", _TRUNCATE); break;
     default:
-      strcpy(Temp,"checksum");
+      strncpy_s(Temp, sizeof(Temp),"checksum", _TRUNCATE);
   }
   WritePrivateProfileString(Section,"XmodemOpt",Temp,FName);
 
@@ -1568,7 +1569,7 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
   WriteInt(Section,"QVWinSize",FName,ts->QVWinSize);
 
   /* Russian character set (print) -- special option */
-  id2str(RussList,ts->RussPrint,IdWindows,Temp);
+  id2str(RussList,ts->RussPrint,IdWindows,Temp,sizeof(Temp));
   WritePrivateProfileString(Section,"RussPrint",Temp,FName);
 
   /* Scroll threshold -- special option */
@@ -1600,9 +1601,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* "new-line (transmit)" option for non-telnet -- special option */
   if (ts->TCPCRSend == IdCRLF)
-    strcpy(Temp,"CRLF");
+    strncpy_s(Temp, sizeof(Temp),"CRLF", _TRUNCATE);
   else if (ts->TCPCRSend == IdCR)
-    strcpy(Temp,"CR");
+    strncpy_s(Temp, sizeof(Temp),"CR", _TRUNCATE);
   else
     Temp[0] = 0;
   WritePrivateProfileString(Section,"TCPCRSend",Temp,FName);
@@ -1889,10 +1890,10 @@ void FAR PASCAL ReadKeyboardCnf
 
   Ptr = 0;
 
-  strcpy(EntName,"User");
+  strncpy_s(EntName, sizeof(EntName),"User", _TRUNCATE);
   i = IdUser1;
   do {
-    uint2str(i-IdUser1+1,&EntName[4],2);
+    uint2str(i-IdUser1+1,&EntName[4],sizeof(EntName)-4,2);
     GetPrivateProfileString("User keys",EntName,"",
 			    TempStr,sizeof(TempStr),FName);
     if (strlen(TempStr)>0)
@@ -1930,7 +1931,7 @@ void FAR PASCAL ReadKeyboardCnf
 	{
 	  if (ShowWarning)
 	  {
-	    sprintf(TempStr,"Keycode %d is used more than once",KeyMap->Map[j]);
+	    _snprintf_s(TempStr,sizeof(TempStr),_TRUNCATE,"Keycode %d is used more than once",KeyMap->Map[j]);
 	    MessageBox(0,TempStr,
 	      "Tera Term: Error in keyboard setup file",MB_ICONEXCLAMATION);
 	  }
@@ -1947,12 +1948,11 @@ void FAR PASCAL CopySerialList(PCHAR IniSrc, PCHAR IniDest, PCHAR section, PCHAR
   if ( _stricmp(IniSrc,IniDest)==0 ) return;
 
   WritePrivateProfileString(section,NULL,NULL,IniDest);
-  strncpy(EntName,key,sizeof(EntName)-3);
-  EntName[sizeof(EntName)-3] = 0;
+  strncpy_s(EntName,sizeof(EntName)-2,key,_TRUNCATE);
 
   i = 1;
   do {
-    uint2str(i,&EntName[strlen(key)],2);
+    uint2str(i,&EntName[strlen(key)],sizeof(EntName)-strlen(key),2);
 
     /* Get one hostname from file IniSrc */
     GetPrivateProfileString(section,EntName,"",
@@ -1982,13 +1982,13 @@ void FAR PASCAL AddValueToList(PCHAR FName, PCHAR Host, PCHAR section, PCHAR key
   MemP = GlobalLock(MemH);
   if (MemP!=NULL)
   {
-    strcpy(MemP,Host);
+    strncpy_s(MemP,(HostNameMaxLength+1)*99,Host,_TRUNCATE);
     j = strlen(Host)+1;
-    strcpy(EntName,key);
+    strncpy_s(EntName, sizeof(EntName),key, _TRUNCATE);
     i = 1;
     Update = TRUE;
     do {
-      uint2str(i,&EntName[strlen(key)],2);
+      uint2str(i,&EntName[strlen(key)],sizeof(EntName)-strlen(key),2);
 
       /* Get a hostname */
       GetPrivateProfileString(section,EntName,"",
@@ -2010,7 +2010,7 @@ void FAR PASCAL AddValueToList(PCHAR FName, PCHAR Host, PCHAR section, PCHAR key
       j = 0;
       i = 1;
       do {
-        uint2str(i,&EntName[strlen(key)],2);
+        uint2str(i,&EntName[strlen(key)],sizeof(EntName)-strlen(key),2);
 
         if (MemP[j]!=0)
           WritePrivateProfileString(section,EntName,&MemP[j],FName);
@@ -2244,7 +2244,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
     else if ( _strnicmp(Temp,"/D=",3)==0 )
     {
       if (DDETopic != NULL)
-		strncpy_s(DDETopic,21,&Temp[3],_TRUNCATE);  // 20 = sizeof(TopicName) - 1
+		strncpy_s(DDETopic,21,&Temp[3],_TRUNCATE);  // 21 = sizeof(TopicName)
     }
     // TCPLocalEcho/TCPCRSend を無効にする (maya 2007.4.25)
     else if ( _strnicmp(Temp,"/E",2)==0 )
@@ -2256,7 +2256,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
       Dequote(&Temp[3],Temp2);
       if (strlen(Temp2)>0)
       {
-	ConvFName(ts->HomeDir,Temp2,".INI",Temp);
+	ConvFName(ts->HomeDir,Temp2,sizeof(Temp2),".INI",Temp,sizeof(Temp));
 	if (_stricmp(ts->SetupFName,Temp)!=0)
 	{
 	  strncpy_s(ts->SetupFName,sizeof(ts->SetupFName),Temp,_TRUNCATE);
@@ -2282,7 +2282,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
     else if ( _strnicmp(Temp,"/K=",3)==0 ) /* Keyboard setup file */
     {  
       Dequote(&Temp[3],Temp2);
-      ConvFName(ts->HomeDir,Temp2, ".CNF", ts->KeyCnfFN);
+      ConvFName(ts->HomeDir,Temp2,sizeof(Temp2), ".CNF", ts->KeyCnfFN, sizeof(ts->KeyCnfFN));
     }
     else if ( (_strnicmp(Temp,"/KR=",4)==0)  ||
 	      (_strnicmp(Temp,"/KT=",4)==0) ) /* kanji code */
@@ -2310,7 +2310,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
     else if ( _strnicmp(Temp,"/L=",3)==0 ) /* log file */
     {
       Dequote(&Temp[3],Temp2);
-      strncpy(ts->LogFN, Temp2, sizeof(ts->LogFN));
+      strncpy_s(ts->LogFN, sizeof(ts->LogFN), Temp2, _TRUNCATE);
     }
     else if ( _strnicmp(Temp,"/LA=",4)==0 ) /* language */
     {
@@ -2324,17 +2324,17 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
     else if ( _strnicmp(Temp,"/M=",3)==0 ) /* macro filename */
     {
       if ((Temp[3]==0) || (Temp[3]=='*'))
-	strcpy(ts->MacroFN,"*");
+	strncpy_s(ts->MacroFN, sizeof(ts->MacroFN),"*", _TRUNCATE);
       else {
 	Dequote(&Temp[3],Temp2);
-	ConvFName(ts->HomeDir,Temp2,".TTL",ts->MacroFN);
+	ConvFName(ts->HomeDir,Temp2,sizeof(Temp2),".TTL",ts->MacroFN,sizeof(ts->MacroFN));
       }
 	  /* Disable auto connect to serial when macro mode (2006.9.15 maya) */
 	  ts->ComAutoConnect = FALSE;
     }
     else if ( _strnicmp(Temp,"/M",2)==0 )
     {  /* macro option without file name */
-      strcpy(ts->MacroFN,"*");
+      strncpy_s(ts->MacroFN, sizeof(ts->MacroFN),"*", _TRUNCATE);
 	  /* Disable auto connect to serial when macro mode (2006.9.15 maya) */
 	  ts->ComAutoConnect = FALSE;
     }
@@ -2347,7 +2347,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
     else if ( _strnicmp(Temp,"/R=",3)==0 ) /* Replay filename */
     {
       Dequote(&Temp[3],Temp2);
-      ConvFName(ts->HomeDir,Temp2, "", ts->HostName);
+      ConvFName(ts->HomeDir,Temp2,sizeof(Temp2), "", ts->HostName, sizeof(ts->HostName));
       if ( strlen(ts->HostName)>0 )
 	ParamPort = IdFile;
     }
@@ -2517,6 +2517,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.40  2007/07/23 14:23:03  maya
+ * シリアル接続のCOM最大ポートを200まで拡張した。
+ *
  * Revision 1.39  2007/07/04 11:18:40  doda
  * 行末のタブの動作を変えるパラメータ VTCompatTab を追加した。
  *   VTCompatTab = on/off (デフォルト: off)

@@ -14,7 +14,7 @@
 #include "tt_res.h"
 
 #ifdef TERATERM32
-void GetLongFName(PCHAR FullName, PCHAR LongName)
+void GetLongFName(PCHAR FullName, PCHAR LongName, int destlen)
 { // for Win NT 3.51: convert short file name to long file name
   HANDLE hFind;
   WIN32_FIND_DATA data;
@@ -22,7 +22,7 @@ void GetLongFName(PCHAR FullName, PCHAR LongName)
   hFind = FindFirstFile(FullName,&data);
   if (hFind!=INVALID_HANDLE_VALUE)
   {
-    strcpy(LongName,data.cFileName);
+    strncpy_s(LongName,destlen,data.cFileName,_TRUNCATE);
     FindClose(hFind);
   }
 }
@@ -53,14 +53,15 @@ BOOL GetNextFname(PFileVar fv)
 
   GlobalLock(fv->FnStrMemHandle);
 
-  strcpy(&fv->FullName[fv->DirLen],&fv->FnStrMem[fv->FnPtr]);
+  strncpy_s(&fv->FullName[fv->DirLen],sizeof(fv->FullName) - fv->DirLen,
+    &fv->FnStrMem[fv->FnPtr],_TRUNCATE);
   fv->FnPtr = fv->FnPtr + strlen(&fv->FnStrMem[fv->FnPtr]) + 1;
 
   GlobalUnlock(fv->FnStrMemHandle);
 
 #ifdef TERATERM32
   // for Win NT 3.5: short name -> long name
-  GetLongFName(fv->FullName,&fv->FullName[fv->DirLen]);
+  GetLongFName(fv->FullName,&fv->FullName[fv->DirLen],sizeof(&fv->FullName) - fv->DirLen);
 #endif
 
   return TRUE;
@@ -130,7 +131,7 @@ void AddNum(PCHAR FName, int n)
   char Num[11];
   int i, j, k, dLen;
 
-  sprintf(Num,"%u",n);
+  _snprintf_s(Num,sizeof(Num),_TRUNCATE,"%u",n);
   GetFileNamePos(FName,&i,&j);
   k = strlen(FName);
   while ((k>j) && (FName[k]!='.'))
@@ -153,18 +154,18 @@ BOOL FTCreateFile(PFileVar fv)
   int i;
   char Temp[MAXPATHLEN];
 
-  FitFileName(&(fv->FullName[fv->DirLen]),NULL);
+  FitFileName(&(fv->FullName[fv->DirLen]),sizeof(fv->FullName) - fv->DirLen,NULL);
   if (! fv->OverWrite)
   {
     i = 0;
-    strcpy(Temp,fv->FullName);
+    strncpy_s(Temp, sizeof(Temp),fv->FullName, _TRUNCATE);
     while (DoesFileExist(Temp))
     {
       i++;
-      strcpy(Temp,fv->FullName);
+      strncpy_s(Temp, sizeof(Temp),fv->FullName, _TRUNCATE);
       AddNum(Temp,i);
     }
-    strcpy(fv->FullName,Temp);
+    strncpy_s(fv->FullName, sizeof(fv->FullName),Temp, _TRUNCATE);
   }
   fv->FileHandle = _lcreat(fv->FullName,0);
   fv->FileOpen = fv->FileHandle>0;

@@ -68,21 +68,21 @@ void DispErr(WORD Err)
   int i;
 
   switch (Err) {
-    case ErrCloseParent: strcpy(Msg,"\")\" expected."); break;
-    case ErrCantCall: strcpy(Msg,"Can't call sub."); break;
-    case ErrCantConnect: strcpy(Msg,"Can't link macro."); break;
-    case ErrCantOpen: strcpy(Msg,"Can't open file."); break;
-    case ErrDivByZero: strcpy(Msg,"Divide by zero."); break;
-    case ErrInvalidCtl: strcpy(Msg,"Invalid control."); break;
-    case ErrLabelAlreadyDef: strcpy(Msg,"Label already defined."); break;
-    case ErrLabelReq: strcpy(Msg,"Label requiered."); break;
-    case ErrLinkFirst: strcpy(Msg,"Link macro first."); break;
-    case ErrStackOver: strcpy(Msg,"Stack overflow."); break;
-    case ErrSyntax: strcpy(Msg,"Syntax error."); break;
-    case ErrTooManyLabels: strcpy(Msg,"Too many labels."); break;
-    case ErrTooManyVar: strcpy(Msg,"Too many variables."); break;
-    case ErrTypeMismatch: strcpy(Msg,"Type mismatch."); break;
-    case ErrVarNotInit: strcpy(Msg,"Variable not initialized."); break;
+    case ErrCloseParent: strncpy_s(Msg, sizeof(Msg),"\")\" expected.", _TRUNCATE); break;
+    case ErrCantCall: strncpy_s(Msg, sizeof(Msg),"Can't call sub.", _TRUNCATE); break;
+    case ErrCantConnect: strncpy_s(Msg, sizeof(Msg),"Can't link macro.", _TRUNCATE); break;
+    case ErrCantOpen: strncpy_s(Msg, sizeof(Msg),"Can't open file.", _TRUNCATE); break;
+    case ErrDivByZero: strncpy_s(Msg, sizeof(Msg),"Divide by zero.", _TRUNCATE); break;
+    case ErrInvalidCtl: strncpy_s(Msg, sizeof(Msg),"Invalid control.", _TRUNCATE); break;
+    case ErrLabelAlreadyDef: strncpy_s(Msg, sizeof(Msg),"Label already defined.", _TRUNCATE); break;
+    case ErrLabelReq: strncpy_s(Msg, sizeof(Msg),"Label requiered.", _TRUNCATE); break;
+    case ErrLinkFirst: strncpy_s(Msg, sizeof(Msg),"Link macro first.", _TRUNCATE); break;
+    case ErrStackOver: strncpy_s(Msg, sizeof(Msg),"Stack overflow.", _TRUNCATE); break;
+    case ErrSyntax: strncpy_s(Msg, sizeof(Msg),"Syntax error.", _TRUNCATE); break;
+    case ErrTooManyLabels: strncpy_s(Msg, sizeof(Msg),"Too many labels.", _TRUNCATE); break;
+    case ErrTooManyVar: strncpy_s(Msg, sizeof(Msg),"Too many variables.", _TRUNCATE); break;
+    case ErrTypeMismatch: strncpy_s(Msg, sizeof(Msg),"Type mismatch.", _TRUNCATE); break;
+    case ErrVarNotInit: strncpy_s(Msg, sizeof(Msg),"Variable not initialized.", _TRUNCATE); break;
   }
 
   i = OpenErrDlg(Msg,LineBuff);
@@ -628,7 +628,7 @@ BOOL NewIntVar(PCHAR Name, int InitVal)
 
   if (IntVarCount>=MaxNumOfIntVar) return FALSE;
   P = (IntVarIdOff+IntVarCount)*MaxNameLen;
-  strcpy(&NameBuff[P],Name);
+  strncpy_s(&NameBuff[P],MaxNameLen,Name,_TRUNCATE);
   IntVal[IntVarCount] = InitVal;
   IntVarCount++;
   return TRUE;
@@ -640,9 +640,9 @@ BOOL NewStrVar(PCHAR Name, PCHAR InitVal)
 
   if (StrVarCount>=MaxNumOfStrVar) return FALSE;
   P = (StrVarIdOff+StrVarCount)*MaxNameLen;
-  strcpy(&NameBuff[P],Name);
+  strncpy_s(&NameBuff[P],MaxNameLen,Name,_TRUNCATE);
   P = StrVarCount*MaxStrLen;
-  strcpy(&StrBuff[P],InitVal);
+  strncpy_s(&StrBuff[P],MaxStrLen,InitVal,_TRUNCATE);
   StrVarCount++;
   return TRUE;
 }
@@ -654,7 +654,7 @@ BOOL NewLabVar(PCHAR Name, BINT InitVal, WORD ILevel)
   if (LabVarCount>=MaxNumOfLabVar) return FALSE;
 
   P = (LabVarIdOff+LabVarCount)*MaxNameLen;
-  strcpy(&(NameBuff[P]),Name);
+  strncpy_s(&(NameBuff[P]),MaxNameLen,Name,_TRUNCATE);
   LabVal[LabVarCount] = InitVal;
   LabLevel[LabVarCount] = LOBYTE(ILevel);
   LabVarCount++;
@@ -1151,7 +1151,9 @@ void GetStrVal(PCHAR Str, LPWORD Err)
     if (VarType!=TypString)
       *Err = ErrTypeMismatch;
     else
-      strcpy(Str,&StrBuff[VarId*MaxStrLen]);
+      // Str が TStrVal のポインタであることを期待してサイズを固定
+      // (2007.6.23 maya)
+      strncpy_s(Str,MaxStrLen,&StrBuff[VarId*MaxStrLen],_TRUNCATE);
   }
   else
     *Err = ErrSyntax;
@@ -1184,7 +1186,9 @@ void GetStrVar(LPWORD VarId, LPWORD Err)
 
 void SetStrVal(WORD VarId, PCHAR Str)
 {
-  strcpy(&StrBuff[VarId*MaxStrLen],Str);
+  // StrBuf の運用上 MaxStrLen が正しいサイズなのでサイズを固定
+  // (2007.6.23 maya)
+  strncpy_s(&StrBuff[VarId*MaxStrLen],MaxStrLen,Str,_TRUNCATE);
 }
 
 PCHAR StrVarPtr(WORD VarId)

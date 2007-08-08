@@ -343,7 +343,7 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 	SetDdeComReady(1);
       break;
     case CmdSetFile:
-      strcpy(ParamFileName,&(Command[1]));
+      strncpy_s(ParamFileName, sizeof(ParamFileName),&(Command[1]), _TRUNCATE);
       break;
     case CmdSetBinary:
       ParamBinaryFlag = Command[1] & 1;
@@ -375,7 +375,7 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
       if ((FileVar==NULL) && NewFileVar(&FileVar))
       {
 	FileVar->DirLen = 0;
-	strcpy(FileVar->FullName,ParamFileName);
+	strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
 	FileVar->NumFname = 1;
 	FileVar->NoMsg = TRUE;
 	DdeCmnd = TRUE;
@@ -385,7 +385,7 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 	return DDE_FNOTPROCESSED;
       break;
     case CmdChangeDir:
-      strcpy(ts.FileDir,ParamFileName);
+      strncpy_s(ts.FileDir, sizeof(ts.FileDir),ParamFileName, _TRUNCATE);
       break;
     case CmdClearScreen:
       switch (ParamFileName[0]) {
@@ -409,8 +409,8 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 	  SetDdeComReady(1);
 	break;
       }
-      strcpy(Temp,"a "); // dummy exe name
-      strcat(Temp,ParamFileName);
+      strncpy_s(Temp, sizeof(Temp),"a ", _TRUNCATE); // dummy exe name
+      strncat_s(Temp,sizeof(Temp),ParamFileName,_TRUNCATE);
       if (LoadTTSET())
 	(*ParseParam)(Temp, &ts, NULL);
       FreeTTSET();
@@ -425,7 +425,7 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
       break;
     case CmdGetTitle:
       // title is transfered later by XTYP_REQUEST
-      strcpy(ParamFileName,ts.Title);
+      strncpy_s(ParamFileName, sizeof(ParamFileName),ts.Title, _TRUNCATE);
       break;
     case CmdInit: // initialization signal from TTMACRO
       if (StartupFlag) // in case of startup macro
@@ -463,7 +463,7 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
       if ((FileVar==NULL) && NewFileVar(&FileVar))
       {
 	FileVar->DirLen = 0;
-	strcpy(FileVar->FullName,ParamFileName);
+	strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
 	FileVar->NumFname = 1;
 	FileVar->NoMsg = TRUE;
 	DdeCmnd = TRUE;
@@ -477,7 +477,7 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 	return DDE_FNOTPROCESSED;
       break;
     case CmdLoadKeyMap:
-      strcpy(ts.KeyCnfFN,ParamFileName);
+      strncpy_s(ts.KeyCnfFN, sizeof(ts.KeyCnfFN),ParamFileName, _TRUNCATE);
       PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdLoadKeyMap,0);
       break;
     case CmdLogClose:
@@ -488,8 +488,8 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
       {
 	LogVar->DirLen = 0;
 	LogVar->NoMsg = TRUE;
-	strcpy(LogVar->FullName,ParamFileName);
-	ParseStrftimeFileName(LogVar->FullName);
+	strncpy_s(LogVar->FullName, sizeof(LogVar->FullName),ParamFileName, _TRUNCATE);
+	ParseStrftimeFileName(LogVar->FullName, sizeof(LogVar->FullName));
 	ts.TransBin = ParamBinaryFlag;
 	ts.Append = ParamAppendFlag;
 	LogStart();
@@ -527,7 +527,7 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
       if ((FileVar==NULL) && NewFileVar(&FileVar))
       {
 	FileVar->DirLen = 0;
-	strcpy(FileVar->FullName,ParamFileName);
+	strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
 	FileVar->NumFname = 1;
 	FileVar->NoMsg = TRUE;
 	DdeCmnd = TRUE;
@@ -537,7 +537,7 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 	return DDE_FNOTPROCESSED;
       break;
     case CmdRestoreSetup:
-      strcpy(ts.SetupFName,ParamFileName);
+      strncpy_s(ts.SetupFName, sizeof(ts.SetupFName),ParamFileName, _TRUNCATE);
       PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdRestoreSetup,0);
       break;
     case CmdSendBreak:
@@ -547,7 +547,7 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
       if ((SendVar==NULL) && NewFileVar(&SendVar))
       {
 	SendVar->DirLen = 0;
-	strcpy(SendVar->FullName,ParamFileName);
+	strncpy_s(SendVar->FullName, sizeof(SendVar->FullName),ParamFileName, _TRUNCATE);
 	ts.TransBin = ParamBinaryFlag;
 	SendVar->NoMsg = TRUE;
 	DdeCmnd = TRUE;
@@ -567,7 +567,7 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 	TelChangeEcho();
       break;
     case CmdSetTitle:
-      strcpy(ts.Title,ParamFileName);
+      strncpy_s(ts.Title, sizeof(ts.Title),ParamFileName, _TRUNCATE);
       ChangeTitle();
       break;
     case CmdShowTT:
@@ -589,7 +589,7 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
       if ((FileVar==NULL) && NewFileVar(&FileVar))
       {
 	FileVar->DirLen = 0;
-	strcpy(FileVar->FullName,ParamFileName);
+	strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
 	ts.XmodemOpt = ParamXmodemOpt;
 	ts.XmodemBin = ParamBinaryFlag;
 	FileVar->NoMsg = TRUE;
@@ -603,7 +603,7 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
       if ((FileVar==NULL) && NewFileVar(&FileVar))
       {
 	FileVar->DirLen = 0;
-	strcpy(FileVar->FullName,ParamFileName);
+	strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
 	ts.XmodemOpt = ParamXmodemOpt;
 	FileVar->NoMsg = TRUE;
 	DdeCmnd = TRUE;
@@ -626,7 +626,7 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
       if ((FileVar==NULL) && NewFileVar(&FileVar))
       {
 	FileVar->DirLen = 0;
-	strcpy(FileVar->FullName,ParamFileName);
+	strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
 	FileVar->NumFname = 1;
 	ts.XmodemBin = ParamBinaryFlag;
 	FileVar->NoMsg = TRUE;
@@ -856,16 +856,16 @@ void RunMacro(PCHAR FName, BOOL Startup)
 	SetTopic();
 	if (! InitDDE()) return;
 #ifdef TERATERM32
-	strcpy(Cmnd,"TTPMACRO /D=");
+	strncpy_s(Cmnd, sizeof(Cmnd),"TTPMACRO /D=", _TRUNCATE);
 #else
 	strcpy(Cmnd,"TTMACRO /D=");
 #endif
-	strcat(Cmnd,TopicName);
+	strncat_s(Cmnd,sizeof(Cmnd),TopicName,_TRUNCATE);
 	if (FName!=NULL)
 	{
-		strcat(Cmnd," ");
+		strncat_s(Cmnd,sizeof(Cmnd)," ",_TRUNCATE);
 		i = strlen(Cmnd);
-		strcat(Cmnd,FName);
+		strncat_s(Cmnd,sizeof(Cmnd),FName,_TRUNCATE);
 #ifdef TERATERM32
 		QuoteFName(&Cmnd[i]);
 #endif
@@ -873,7 +873,7 @@ void RunMacro(PCHAR FName, BOOL Startup)
 
 	StartupFlag = Startup;
 	if (Startup)
-		strcat(Cmnd," /S"); // "startup" flag
+		strncat_s(Cmnd,sizeof(Cmnd)," /S",_TRUNCATE); // "startup" flag
 
 #if 0
 	if (WinExec(Cmnd,SW_MINIMIZE) < 32)
@@ -914,6 +914,9 @@ void RunMacro(PCHAR FName, BOOL Startup)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2006/11/06 14:44:29  yutakapon
+ * マクロ通信において、XTYP_POKEメッセージにおけるビジー処理を行うようにした。
+ *
  * Revision 1.9  2006/11/05 17:07:49  yutakapon
  * コメントおよびデバッグ用コードの追加。
  *

@@ -805,40 +805,40 @@ void AnswerTerminalType()
   char Tmp[31];
 
   if (ts.TerminalID<IdVT320)
-    strcpy(Tmp,"\033[?");
+    strncpy_s(Tmp, sizeof(Tmp),"\033[?", _TRUNCATE);
   else
-    strcpy(Tmp,"\233?");
+    strncpy_s(Tmp, sizeof(Tmp),"\233?", _TRUNCATE);
 
   switch (ts.TerminalID) {
     case IdVT100:
-      strcat(Tmp,"1;2");
+      strncat_s(Tmp,sizeof(Tmp),"1;2",_TRUNCATE);
       break;
     case IdVT100J:
-      strcat(Tmp,"5;2");
+      strncat_s(Tmp,sizeof(Tmp),"5;2",_TRUNCATE);
       break;
     case IdVT101:
-      strcat(Tmp,"1;0");
+      strncat_s(Tmp,sizeof(Tmp),"1;0",_TRUNCATE);
       break;
     case IdVT102:
-      strcat(Tmp,"6");
+      strncat_s(Tmp,sizeof(Tmp),"6",_TRUNCATE);
       break;
     case IdVT102J:
-      strcat(Tmp,"15");
+      strncat_s(Tmp,sizeof(Tmp),"15",_TRUNCATE);
       break;
     case IdVT220J:
-      strcat(Tmp,"62;1;2;5;6;7;8");
+      strncat_s(Tmp,sizeof(Tmp),"62;1;2;5;6;7;8",_TRUNCATE);
       break;
     case IdVT282:
-      strcat(Tmp,"62;1;2;4;5;6;7;8;10;11");
+      strncat_s(Tmp,sizeof(Tmp),"62;1;2;4;5;6;7;8;10;11",_TRUNCATE);
       break;
     case IdVT320:
-      strcat(Tmp,"63;1;2;6;7;8");
+      strncat_s(Tmp,sizeof(Tmp),"63;1;2;6;7;8",_TRUNCATE);
       break;
     case IdVT382:
-      strcat(Tmp,"63;1;2;4;5;6;7;8;10;15");
+      strncat_s(Tmp,sizeof(Tmp),"63;1;2;4;5;6;7;8;10;15",_TRUNCATE);
       break;
   }
-  strcat(Tmp,"c");
+  strncat_s(Tmp,sizeof(Tmp),"c",_TRUNCATE);
 
   CommBinaryOut(&cv,Tmp,strlen(Tmp)); /* Report terminal ID */
 }
@@ -1422,7 +1422,7 @@ void CSScreenErase()
 	if ((StatusLine>0) &&
 	    (Y==NumOfLines))
 	  Y = 1;
-	sprintf(Report,"\033[%u;%uR",Y,CursorX+1);
+	_snprintf_s(Report,sizeof(Report),_TRUNCATE,"\033[%u;%uR",Y,CursorX+1);
 	CommBinaryOut(&cv,Report,strlen(Report));
 	break;
     }
@@ -1537,7 +1537,7 @@ void CSSetAttr()
 	CommBinaryOut(&cv,"\033[4;640;480t",12);
 	break;
       case 18: /* get terminal size */
-	sprintf(Report,"\033[8;%u;%u;t",NumOfLines-StatusLine,NumOfColumns);
+	_snprintf_s(Report,sizeof(Report),_TRUNCATE,"\033[8;%u;%u;t",NumOfLines-StatusLine,NumOfColumns);
 	CommBinaryOut(&cv,Report,strlen(Report));
 	break;
     }
@@ -2657,6 +2657,14 @@ int VTParse()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.19  2007/07/04 11:18:17  doda
+ * 行末のタブの動作を変えるパラメータ VTCompatTab を追加した。
+ *   VTCompatTab = on/off (デフォルト: off)
+ *     on:  行末のタブの動作をVT/PuTTY/xterm等と同じにする。
+ *          (タブによる自動改行は発生しない)
+ *     off: 行末のタブの動作をFreeBSDのコンソール(syscons)等と同じにする。
+ *          (タブによる自動改行が発生する -- VT非互換)
+ *
  * Revision 1.18  2007/07/04 10:52:48  doda
  * タブによって自動改行が発生した時に、行が継続していなかったのを修正した。
  *

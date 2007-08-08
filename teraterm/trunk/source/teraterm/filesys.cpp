@@ -234,8 +234,8 @@ BOOL NewFileVar(PFileVar *fv)
     if ((*fv)!=NULL)
     {
       memset(*fv, 0, sizeof(TFileVar));
-      strcpy((*fv)->FullName,ts.FileDir);
-      AppendSlash((*fv)->FullName);
+      strncpy_s((*fv)->FullName, sizeof((*fv)->FullName),ts.FileDir, _TRUNCATE);
+      AppendSlash((*fv)->FullName,sizeof((*fv)->FullName));
       (*fv)->DirLen = strlen((*fv)->FullName);
       (*fv)->FileOpen = FALSE;
       (*fv)->OverWrite = ((ts.FTFlag & FT_RENAME) == 0);
@@ -264,7 +264,7 @@ void FreeFileVar(PFileVar *fv)
 }
 
 // &h をホスト名に置換 (2007.5.14)
-void ConvertLogname(char *c)
+void ConvertLogname(char *c, int destlen)
 {
   char buf[MAXPATHLEN], buf2[MAXPATHLEN], *p = c;
 
@@ -276,30 +276,27 @@ void ConvertLogname(char *c)
         case 'h':
           if (cv.Open) {
             if (cv.PortType == IdTCPIP) {
-              _snprintf(buf2, sizeof(buf2), "%s%s", buf, ts.HostName);
-              strncpy(buf, buf2, sizeof(buf)-strlen(buf)-1);
+              strncat_s(buf,sizeof(buf),ts.HostName,_TRUNCATE);
             }
             else if (cv.PortType == IdSerial) {
-              _snprintf(buf2, sizeof(buf2), "%sCOM%d", buf, ts.ComPort);
-              strncpy(buf, buf2, sizeof(buf)-strlen(buf)-1);
+              strncpy_s(buf2,sizeof(buf2),buf,_TRUNCATE);
+              _snprintf_s(buf, sizeof(buf), _TRUNCATE, "%sCOM%d", buf2, ts.ComPort);
             }
           }
           break;
         default:
-          if (strlen(buf) < sizeof(buf)-3) {
-            strncat(buf, p, 2);
-          }
+          strncpy_s(buf2,sizeof(buf2),p,2);
+          strncat_s(buf,sizeof(buf),buf2,_TRUNCATE);
       }
       p++;
     }
     else {
-          if (strlen(buf) < sizeof(buf)-2) {
-            strncat(buf, p, 1);
-          }
+          strncpy_s(buf2,sizeof(buf2),p,1);
+          strncat_s(buf,sizeof(buf),buf2,_TRUNCATE);
     }
     p++;
   }
-  strcpy(c, buf);
+  strncpy_s(c, destlen, buf, _TRUNCATE);
 }
 
 extern "C" {
@@ -342,13 +339,12 @@ void LogStart()
 						  (0x2000 * ts.LogTimestamp));
 
 		// ログのデフォルトファイル名を設定 (2006.8.28 maya)
-		strncat(LogVar->FullName, ts.LogDefaultName, sizeof(LogVar->FullName)-1);
-		LogVar->FullName[sizeof(LogVar->FullName)-1] = '\0';
+		strncat_s(LogVar->FullName, sizeof(LogVar->FullName), ts.LogDefaultName, _TRUNCATE);
 
-		ParseStrftimeFileName(LogVar->FullName);
+		ParseStrftimeFileName(LogVar->FullName, sizeof(LogVar->FullName));
 
 		// &h をホスト名に置換 (2007.5.14)
-		ConvertLogname(LogVar->FullName);
+		ConvertLogname(LogVar->FullName, sizeof(LogVar->FullName));
 
 		if (! (*GetTransFname)(LogVar, logdir, GTF_LOG, &Option))
 		{
@@ -381,14 +377,13 @@ void LogStart()
 		char FileName[MAX_PATH];
 
 		// フルパス化
-		strncpy(FileName, LogVar->FullName, sizeof(FileName)-1);
-		FileName[sizeof(FileName)-1] = '\0';
-		ConvFName(logdir,FileName,"",LogVar->FullName);
+		strncpy_s(FileName, sizeof(FileName), LogVar->FullName, _TRUNCATE);
+		ConvFName(logdir,FileName,sizeof(FileName),"",LogVar->FullName,sizeof(LogVar->FullName));
 
-		ParseStrftimeFileName(LogVar->FullName);
+		ParseStrftimeFileName(LogVar->FullName, sizeof(LogVar->FullName));
 
 		// &h をホスト名に置換 (2007.5.14)
-		ConvertLogname(LogVar->FullName);
+		ConvertLogname(LogVar->FullName, sizeof(LogVar->FullName));
 		(*SetFileVar)(LogVar);
 	}
 
@@ -537,9 +532,9 @@ void CommentLogToFile(char *buf, int size)
 	if (LogVar == NULL || !LogVar->FileOpen) {
 #ifndef NO_I18N
 		char uimsg[MAX_UIMSG];
-		strcpy(uimsg, "ERROR");
+		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
 		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strcpy(ts.UIMsg, "It is not opened by the log file yet.");
+		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "It is not opened by the log file yet.", _TRUNCATE);
 		get_lang_msg("MSG_COMMENT_LOG_OPEN_ERROR", ts.UIMsg, ts.UILanguageFile);
 		::MessageBox(NULL, ts.UIMsg, uimsg, MB_OK|MB_ICONEXCLAMATION);
 #else
@@ -1300,6 +1295,9 @@ void QVStart(int mode)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  2007/06/06 14:02:53  maya
+ * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
+ *
  * Revision 1.14  2007/05/31 14:39:05  maya
  * 接続時に自動的にログ採取を開始できるようにした。
  *

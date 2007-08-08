@@ -105,7 +105,7 @@ void ConvertToCP932(char *str, int len)
 		}
 
 		*c = '\0';
-		strcpy(str, cc);
+		strncpy_s(str, len, cc, _TRUNCATE);
 	}
 }
 
@@ -137,7 +137,7 @@ void ChangeTitle()
 		strncat_s(TempTitle,sizeof(TempTitle), " - ",_TRUNCATE);
 		if (Connecting) {
 #ifndef NO_I18N
-			strcpy(ts.UIMsg, "[connecting...]");
+			strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "[connecting...]", _TRUNCATE);
 			get_lang_msg("DLG_MAIN_TITLE_CONNECTING", ts.UIMsg, ts.UILanguageFile);
 			strncat_s(TempTitle,sizeof(TempTitle),ts.UIMsg,_TRUNCATE);
 #else
@@ -146,7 +146,7 @@ void ChangeTitle()
 		}
 		else if (! cv.Ready) {
 #ifndef NO_I18N
-			strcpy(ts.UIMsg, "[disconnected]");
+			strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "[disconnected]", _TRUNCATE);
 			get_lang_msg("DLG_MAIN_TITLE_DISCONNECTED", ts.UIMsg, ts.UILanguageFile);
 			strncat_s(TempTitle,sizeof(TempTitle),ts.UIMsg,_TRUNCATE);
 #else
@@ -257,17 +257,17 @@ void OpenHelp(HWND HWin, UINT Command, DWORD Data)
 {
   char HelpFN[MAXPATHLEN];
 
-  strcpy(ts.UIMsg, HTML_HELP);
+  strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), HTML_HELP, _TRUNCATE);
   get_lang_msg("HELPFILE", ts.UIMsg, ts.UILanguageFile);
 
   // ヘルプのオーナーは常にデスクトップになる (2007.5.12 maya)
   HWin = GetDesktopWindow();
-  _snprintf(HelpFN, sizeof(HelpFN), "%s\\%s", ts.HomeDir, ts.UIMsg);
+  _snprintf_s(HelpFN, sizeof(HelpFN), _TRUNCATE, "%s\\%s", ts.HomeDir, ts.UIMsg);
   if (HtmlHelp(HWin, HelpFN, Command, Data) == NULL && Command != HH_CLOSE_ALL) {
     char buf[MAXPATHLEN];
-    strcpy(ts.UIMsg, "Can't open HTML help file(%s).");
+    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't open HTML help file(%s).", _TRUNCATE);
     get_lang_msg("MSG_OPENHELP_ERROR", ts.UIMsg, ts.UILanguageFile);
-    _snprintf(buf, sizeof(buf), ts.UIMsg, HelpFN);
+    _snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, HelpFN);
     MessageBox(HWin, buf, "Tera Term: HTML help", MB_OK | MB_ICONERROR);
   }
 }
@@ -293,6 +293,9 @@ void OpenHtmlHelp(HWND HWin, char *filename)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2007/07/19 23:27:29  maya
+ * タイトル変更部をリファクタリングした。
+ *
  * Revision 1.13  2007/07/19 11:02:11  maya
  * タイトルバーに TCP ポート番号 と シリアルポートのボーレートが表示できるようにした。
  *

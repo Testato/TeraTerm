@@ -44,15 +44,15 @@ void SetKeyMap()
   char TempName[MAXPATHLEN];
 
   if ( strlen(ts.KeyCnfFN)==0 ) return;
-  ExtractFileName(ts.KeyCnfFN,TempName);
+  ExtractFileName(ts.KeyCnfFN,TempName,sizeof(TempName));
   ExtractDirName(ts.KeyCnfFN,TempDir);
   if (TempDir[0]==0)
-    strcpy(TempDir,ts.HomeDir);
-  FitFileName(TempName,".CNF");
+    strncpy_s(TempDir, sizeof(TempDir),ts.HomeDir, _TRUNCATE);
+  FitFileName(TempName,sizeof(TempName),".CNF");
 
-  strcpy(ts.KeyCnfFN,TempDir);
-  AppendSlash(ts.KeyCnfFN);
-  strcat(ts.KeyCnfFN,TempName);
+  strncpy_s(ts.KeyCnfFN, sizeof(ts.KeyCnfFN),TempDir, _TRUNCATE);
+  AppendSlash(ts.KeyCnfFN,sizeof(ts.KeyCnfFN));
+  strncat_s(ts.KeyCnfFN,sizeof(ts.KeyCnfFN),TempName,_TRUNCATE);
 
   if ( KeyMap==NULL )
     KeyMap = (PKeyMap)malloc(sizeof(TKeyMap));
@@ -248,7 +248,7 @@ BOOL KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan)
   }
   else
     GetKeyStr(HWin,KeyMap,Key,AppliKeyMode,AppliCursorMode,
-	      Code,&CodeLength,&CodeType);
+	      Code,sizeof(Code),&CodeLength,&CodeType);
 
   if (CodeLength==0) return FALSE;
 
@@ -429,7 +429,7 @@ void KeyCodeSend(WORD KCode, WORD Count)
   }
   else
     GetKeyStr(HWin,KeyMap,Key,AppliKeyMode,AppliCursorMode,
-	      Code,&CodeLength,&CodeType);
+	      Code,sizeof(Code),&CodeLength,&CodeType);
 
   if (CodeLength==0) return;
   if (TalkStatus==IdTalkKeyb)

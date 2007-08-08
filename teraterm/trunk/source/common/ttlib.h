@@ -9,16 +9,16 @@ extern "C" {
 #endif
 
 BOOL GetFileNamePos(PCHAR PathName, int far *DirLen, int far *FNPos);
-BOOL ExtractFileName(PCHAR PathName, PCHAR FileName);
+BOOL ExtractFileName(PCHAR PathName, PCHAR FileName, int destlen);
 BOOL ExtractDirName(PCHAR PathName, PCHAR DirName);
-void FitFileName(PCHAR FileName, PCHAR DefExt);
-void AppendSlash(PCHAR Path);
+void FitFileName(PCHAR FileName, int destlen, PCHAR DefExt);
+void AppendSlash(PCHAR Path, int destlen);
 void Str2Hex(PCHAR Str, PCHAR Hex, int Len, int MaxHexLen, BOOL ConvSP);
 BYTE ConvHexChar(BYTE b);
 int Hex2Str(PCHAR Hex, PCHAR Str, int MaxLen);
 BOOL DoesFileExist(PCHAR FName);
 long GetFSize(PCHAR FName);
-void uint2str(UINT i, PCHAR Str, int len);
+void uint2str(UINT i, PCHAR Str, int destlen, int len);
 #ifdef WIN32
 void QuoteFName(PCHAR FName);
 #endif
@@ -26,12 +26,12 @@ int isInvalidFileNameChar(PCHAR FName);
 void deleteInvalidFileNameChar(PCHAR FName);
 int isInvalidStrftimeChar(PCHAR FName);
 void deleteInvalidStrftimeChar(PCHAR FName);
-void ParseStrftimeFileName(PCHAR FName);
-void ConvFName(PCHAR HomeDir, PCHAR Temp, PCHAR DefExt, PCHAR FName);
+void ParseStrftimeFileName(PCHAR FName, int destlen);
+void ConvFName(PCHAR HomeDir, PCHAR Temp, int templen, PCHAR DefExt, PCHAR FName, int destlen);
 void RestoreNewLine(PCHAR Text);
 void GetNthString(PCHAR Source, int Nth, int Size, PCHAR Dest);
 void GetNthNum(PCHAR Source, int Nth, int far *Num);
-void WINAPI GetDefaultSetupFName(char *dest, char *home);
+void WINAPI GetDefaultSetupFName(char *home, char *dest, int destlen);
 
 #ifndef NO_I18N
 void get_lang_msg(PCHAR key, PCHAR buf, PCHAR iniFile);

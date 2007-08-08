@@ -111,10 +111,10 @@ void QVInit
   if (qv->QVMode==IdQVReceive)
 #ifndef NO_I18N
   {
-    strcat(fv->DlgCaption,"Tera Term: ");
-    strcpy(uimsg, TitQVRcv);
+    strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), "Tera Term: ", _TRUNCATE);
+    strncpy_s(uimsg, sizeof(uimsg), TitQVRcv, _TRUNCATE);
     get_lang_msg("FILEDLG_TRANS_TITLE_QVRCV", uimsg, UILanguageFile);
-    strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+    strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
   }
 #else
     strcat(fv->DlgCaption,"Tera Term: Quick-VAN Receive");
@@ -369,7 +369,7 @@ BOOL QVParseVFILE(PFileVar fv, PQVVar qv)
 
   /* file name */
   GetFileNamePos(&(qv->PktIn[5]),&i,&j);
-  strcpy(&(fv->FullName[fv->DirLen]),&(qv->PktIn[5+j]));
+  strncpy_s(&(fv->FullName[fv->DirLen]),sizeof(fv->FullName) - fv->DirLen,&(qv->PktIn[5+j]),_TRUNCATE);
   /* file open */
   if (! FTCreateFile(fv)) return FALSE;
   /* file size */
@@ -796,13 +796,13 @@ void QVSendVFILE(PFileVar fv, PQVVar qv, PComVar cv)
   QVPutNum2(qv,qv->FileNum,&i);
   /* file name */
   SetDlgItemText(fv->HWin, IDC_PROTOFNAME, &(fv->FullName[fv->DirLen]));
-  strcpy(&(qv->PktOut[i]),_strupr(&(fv->FullName[fv->DirLen])));
+  strncpy_s(&(qv->PktOut[i]),sizeof(qv->PktOut)-i,_strupr(&(fv->FullName[fv->DirLen])),_TRUNCATE);
   FTConvFName(&(qv->PktOut[i]));  // replace ' ' by '_' in FName
   i = strlen(&(qv->PktOut[i])) + i;
   qv->PktOut[i] = 0;
   i++;
   /* file size */
-  sprintf(&(qv->PktOut[i]),"%u",fv->FileSize);
+  _snprintf_s(&(qv->PktOut[i]),sizeof(qv->PktOut)-i,_TRUNCATE,"%u",fv->FileSize);
   i = strlen(&(qv->PktOut[i])) + i;
   qv->PktOut[i] = 0;
   i++;

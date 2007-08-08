@@ -19,7 +19,7 @@ void FAR PASCAL GetDefaultSet(PTTSet ts);
 WORD FAR PASCAL GetKeyCode(PKeyMap KeyMap, WORD Scan);
 void FAR PASCAL GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
                         BOOL AppliKeyMode, BOOL AppliCursorMode,
-                        PCHAR KeyStr, LPINT Len, LPWORD Type);
+                        PCHAR KeyStr, int destlen, LPINT Len, LPWORD Type);
 
 void FAR PASCAL SetCOMFlag(WORD Com);
 WORD FAR PASCAL GetCOMFlag();

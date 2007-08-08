@@ -97,7 +97,7 @@ void CFileTransDlg::ChangeButton(BOOL PauseFlag)
   if (Pause)
   {
 #ifndef NO_I18N
-    strcpy(ts->UIMsg, "&Start");
+    strncpy_s(ts->UIMsg, sizeof(ts->UIMsg), "&Start", _TRUNCATE);
 	get_lang_msg("DLG_FILETRANS_START", ts->UIMsg, ts->UILanguageFile);
     SetDlgItemText(IDC_TRANSPAUSESTART, ts->UIMsg);
 #else
@@ -107,7 +107,7 @@ void CFileTransDlg::ChangeButton(BOOL PauseFlag)
   }
   else {
 #ifndef NO_I18N
-    strcpy(ts->UIMsg, "Pau&se");
+    strncpy_s(ts->UIMsg, sizeof(ts->UIMsg), "Pau&se", _TRUNCATE);
 	get_lang_msg("DLG_FILETRANS_PAUSE", ts->UIMsg, ts->UILanguageFile);
     SetDlgItemText(IDC_TRANSPAUSESTART, ts->UIMsg);
 #else
@@ -121,7 +121,7 @@ void CFileTransDlg::RefreshNum()
 {
   char NumStr[13];
 
-  sprintf(NumStr,"%u",fv->ByteCount);
+  _snprintf_s(NumStr,sizeof(NumStr),_TRUNCATE,"%u",fv->ByteCount);
   SetDlgItemText(IDC_TRANSBYTES, NumStr);
 }
 

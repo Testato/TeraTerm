@@ -125,11 +125,11 @@ void ParseParam(PBOOL IOption, PBOOL VOption)
     else {
       j++;
       if (j==1)
-	strcpy(FileName,Temp);
+	strncpy_s(FileName, sizeof(FileName),Temp, _TRUNCATE);
       else if (j==2)
-	strcpy(Param2,Temp);
+	strncpy_s(Param2, sizeof(Param2),Temp, _TRUNCATE);
       else if (j==3)
-	strcpy(Param3,Temp);
+	strncpy_s(Param3, sizeof(Param3),Temp, _TRUNCATE);
     }
   }
 
@@ -139,13 +139,13 @@ void ParseParam(PBOOL IOption, PBOOL VOption)
   {
     if (GetFileNamePos(FileName,&j,&k))
     {
-      FitFileName(&FileName[k],".TTL");
-      strcpy(ShortName,&FileName[k]);
+      FitFileName(&FileName[k],sizeof(FileName)-k,".TTL");
+      strncpy_s(ShortName, sizeof(ShortName),&FileName[k], _TRUNCATE);
       if (j==0)
       {
-	strcpy(FileName,HomeDir);
-	AppendSlash(FileName);
-	strcat(FileName,ShortName);
+	strncpy_s(FileName, sizeof(FileName),HomeDir, _TRUNCATE);
+	AppendSlash(FileName,sizeof(FileName));
+	strncat_s(FileName,sizeof(FileName),ShortName,_TRUNCATE);
       }
     }
     else
@@ -170,7 +170,7 @@ BOOL GetFileName(HWND HWin)
   memset(FNFilter, 0, sizeof(FNFilter));
   memset(&FNameRec, 0, sizeof(OPENFILENAME));
 #ifndef NO_I18N
-  strncpy(uimsg, "Macro files (*.ttl)\\0*.ttl\\0\\0", sizeof(uimsg));
+  strncpy_s(uimsg, sizeof(uimsg), "Macro files (*.ttl)\\0*.ttl\\0\\0", _TRUNCATE);
   get_lang_msg("FILEDLG_OPEN_MACRO_FILTER", uimsg, UILanguageFile);
   memcpy(FNFilter, uimsg, sizeof(FNFilter));
 #else
@@ -197,14 +197,14 @@ BOOL GetFileName(HWND HWin)
   FNameRec.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
   FNameRec.lpstrDefExt = "TTL";
 #ifndef NO_I18N
-  strncpy(uimsg2, "MACRO: Open macro", sizeof(uimsg2));
+  strncpy_s(uimsg2, sizeof(uimsg2), "MACRO: Open macro", _TRUNCATE);
   get_lang_msg("FILEDLG_OPEN_MACRO_TITLE", uimsg2, UILanguageFile);
   FNameRec.lpstrTitle = uimsg2;
 #else
   FNameRec.lpstrTitle = "MACRO: Open macro";
 #endif
   if (GetOpenFileName(&FNameRec))
-    strcpy(ShortName,&(FileName[FNameRec.nFileOffset]));
+    strncpy_s(ShortName, sizeof(ShortName), &(FileName[FNameRec.nFileOffset]), _TRUNCATE);
   else
     FileName[0] = 0;
 

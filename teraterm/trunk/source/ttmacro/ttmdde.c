@@ -422,7 +422,7 @@ void SetWait(int Index, PCHAR Str)
   if (PWaitStr[Index-1]!=NULL)
     free(PWaitStr[Index-1]);
   PWaitStr[Index-1] = malloc(strlen(Str)+1);
-  strcpy(PWaitStr[Index-1],Str);
+  strncpy_s(PWaitStr[Index-1],sizeof(PWaitStr) - (Index-1),Str,_TRUNCATE);
   WaitStrLen[Index-1] = strlen(Str);
   WaitCount[Index-1] = 0;
 }
@@ -437,7 +437,7 @@ int CmpWait(int Index, PCHAR Str)
 
 void SetWait2(PCHAR Str, int Len, int Pos)
 {
-  strcpy(Wait2SubStr,Str);
+  strncpy_s(Wait2SubStr, sizeof(Wait2SubStr),Str, _TRUNCATE);
   Wait2SubLen = strlen(Wait2SubStr);
 
   if (Len<1)
@@ -665,8 +665,12 @@ void SetFile(PCHAR FN)
 {
   char Cmd[256];
 
+#if 1
+  _snprintf_s(Cmd, sizeof(Cmd), _TRUNCATE, "%c%s", CmdSetFile, FN);
+#else
   Cmd[0] = CmdSetFile;
   strcpy(&(Cmd[1]),FN);
+#endif
   DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
 }
 
@@ -717,8 +721,7 @@ void SendSync()
   if (i>RingBufSize) i = RingBufSize;
   SyncSent = TRUE;
 
-  Cmd[0] = CmdSetSync;
-  sprintf(&Cmd[1],"%u",i);
+  _snprintf_s(Cmd,sizeof(Cmd),_TRUNCATE,"%c%u",CmdSetSync,i);
   DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
 }
 
@@ -741,8 +744,7 @@ void SetSync(BOOL OnFlag)
   else // sync mode off
     i = 0;
 
-  Cmd[0] = CmdSetSync;
-  sprintf(&Cmd[1],"%u",i);
+  _snprintf_s(Cmd,sizeof(Cmd),_TRUNCATE,"%c%u",CmdSetSync,i);
   DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
 }
 
@@ -763,7 +765,7 @@ WORD SendCmnd(char OpId, int WaitFlag)
   return 0;
 }
 
-WORD GetTTParam(char OpId, PCHAR Param)
+WORD GetTTParam(char OpId, PCHAR Param, int destlen)
 {
   HDDEDATA Data;
   PCHAR DataPtr;
@@ -777,7 +779,7 @@ WORD GetTTParam(char OpId, PCHAR Param)
   DataPtr = (PCHAR)DdeAccessData(Data,NULL);
   if (DataPtr!=NULL)
   {
-    strcpy(Param,DataPtr);
+    strncpy_s(Param,destlen,DataPtr,_TRUNCATE);
     DdeUnaccessData(Data);
   }
   DdeFreeDataHandle(Data);

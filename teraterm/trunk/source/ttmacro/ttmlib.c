@@ -51,9 +51,9 @@ void CalcTextExtent(HDC DC, PCHAR Text, LPSIZE s)
   s->cy = H;
 }
 
-void TTMGetDir(PCHAR Dir)
+void TTMGetDir(PCHAR Dir, int destlen)
 {
-  strcpy(Dir,CurrentDir);
+  strncpy_s(Dir, destlen, CurrentDir, _TRUNCATE);
 }
 
 void TTMSetDir(PCHAR Dir)
@@ -67,7 +67,7 @@ void TTMSetDir(PCHAR Dir)
   _chdir(Temp);
 }
 
-BOOL GetAbsPath(PCHAR FName)
+BOOL GetAbsPath(PCHAR FName, int destlen)
 {
   int i, j;
   char Temp[MAXPATHLEN];
@@ -78,9 +78,9 @@ BOOL GetAbsPath(PCHAR FName)
   else if (i>0) {
     return TRUE;
   }
-  strcpy(Temp,FName);
-  strcpy(FName,CurrentDir);
-  AppendSlash(FName);
-  strcat(FName,Temp);
+  strncpy_s(Temp, sizeof(Temp), FName, _TRUNCATE);
+  strncpy_s(FName,destlen,CurrentDir,_TRUNCATE);
+  AppendSlash(FName,destlen);
+  strncat_s(FName,destlen,Temp,_TRUNCATE);
   return TRUE;
 }

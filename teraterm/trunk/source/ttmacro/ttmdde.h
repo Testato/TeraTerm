@@ -70,7 +70,7 @@ void SetXOption(int XOption);
 void SendSync();
 void SetSync(BOOL OnFlag);
 WORD SendCmnd(char OpId, int WaitFlag);
-WORD GetTTParam(char OpId, PCHAR Param);
+WORD GetTTParam(char OpId, PCHAR Param, int destlen);
 
 extern BOOL Linked;
 extern WORD ComReady;

@@ -75,7 +75,7 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 	if (FuncId==GSF_LOADKEY)
 	{
 #ifndef NO_I18N
-		strncpy(uimsg, "keyboard setup files (*.cnf)\\0*.cnf\\0\\0", sizeof(uimsg));
+		strncpy_s(uimsg, sizeof(uimsg), "keyboard setup files (*.cnf)\\0*.cnf\\0\\0", _TRUNCATE);
 		get_lang_msg("FILEDLG_KEYBOARD_FILTER", uimsg, UILanguageFile);
 		memcpy(FNameFilter, uimsg, sizeof(FNameFilter));
 #else
@@ -86,7 +86,7 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 	}
 	else {
 #ifndef NO_I18N
-		strncpy(uimsg, "setup files (*.ini)\\0*.ini\\0\\0", sizeof(uimsg));
+		strncpy_s(uimsg, sizeof(uimsg), "setup files (*.ini)\\0*.ini\\0\\0", _TRUNCATE);
 		get_lang_msg("FILEDLG_SETUP_FILTER", uimsg, UILanguageFile);
 		memcpy(FNameFilter, uimsg, sizeof(FNameFilter));
 #else
@@ -111,26 +111,26 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 	{
 		ofn.lpstrDefExt = "cnf";
 		GetFileNamePos(ts->KeyCnfFN,&i,&j);
-		strcpy(Name,&(ts->KeyCnfFN[j]));
+		strncpy_s(Name, sizeof(Name),&(ts->KeyCnfFN[j]), _TRUNCATE);
 		memcpy(Dir,ts->KeyCnfFN,i);
 		Dir[i] = 0;
 
 		if ((strlen(Name)==0) || (_stricmp(Name,"KEYBOARD.CNF")==0))
-			strcpy(Name,"KEYBOARD.CNF");
+			strncpy_s(Name, sizeof(Name),"KEYBOARD.CNF", _TRUNCATE);
 	}
 	else {
 		ofn.lpstrDefExt = "ini";
 		GetFileNamePos(ts->SetupFName,&i,&j);
-		strcpy(Name,&(ts->SetupFName[j]));
+		strncpy_s(Name, sizeof(Name),&(ts->SetupFName[j]), _TRUNCATE);
 		memcpy(Dir,ts->SetupFName,i);
 		Dir[i] = 0;
 
 		if ((strlen(Name)==0) || (_stricmp(Name,"TERATERM.INI")==0))
-			strcpy(Name,"TERATERM.INI");
+			strncpy_s(Name, sizeof(Name),"TERATERM.INI", _TRUNCATE);
 	}
 
 	if (strlen(Dir)==0)
-		strcpy(Dir,ts->HomeDir);
+		strncpy_s(Dir, sizeof(Dir),ts->HomeDir, _TRUNCATE);
 
 	_chdir(Dir);
 
@@ -146,7 +146,7 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 //		ofn.lpstrInitialDir = ts->SetupFName;
 		ofn.lpstrInitialDir = Dir;
 #ifndef NO_I18N
-		strcpy(uimsg, "Tera Term: Save setup");
+		strncpy_s(uimsg, sizeof(uimsg), "Tera Term: Save setup", _TRUNCATE);
 		get_lang_msg("FILEDLG_SAVE_SETUP_TITLE", uimsg, UILanguageFile);
 		ofn.lpstrTitle = uimsg;
 #else
@@ -154,12 +154,12 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 #endif
 		Ok = GetSaveFileName(&ofn);
 		if (Ok)
-			strcpy(ts->SetupFName,Name);
+			strncpy_s(ts->SetupFName, sizeof(ts->SetupFName),Name, _TRUNCATE);
 		break;
 	case GSF_RESTORE:
 		ofn.Flags = ofn.Flags | OFN_FILEMUSTEXIST;
 #ifndef NO_I18N
-		strcpy(uimsg, "Tera Term: Restore setup");
+		strncpy_s(uimsg, sizeof(uimsg), "Tera Term: Restore setup", _TRUNCATE);
 		get_lang_msg("FILEDLG_RESTORE_SETUP_TITLE", uimsg, UILanguageFile);
 		ofn.lpstrTitle = uimsg;
 #else
@@ -167,12 +167,12 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 #endif
 		Ok = GetOpenFileName(&ofn);
 		if (Ok)
-			strcpy(ts->SetupFName,Name);
+			strncpy_s(ts->SetupFName, sizeof(ts->SetupFName),Name, _TRUNCATE);
 		break;
 	case GSF_LOADKEY:
 		ofn.Flags = ofn.Flags | OFN_FILEMUSTEXIST;
 #ifndef NO_I18N
-		strcpy(uimsg, "Tera Term: Load key map");
+		strncpy_s(uimsg, sizeof(uimsg), "Tera Term: Load key map", _TRUNCATE);
 		get_lang_msg("FILEDLG_LOAD_KEYMAP_TITLE", uimsg, UILanguageFile);
 		ofn.lpstrTitle = uimsg;
 #else
@@ -180,7 +180,7 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 #endif
 		Ok = GetOpenFileName(&ofn);
 		if (Ok)
-			strcpy(ts->KeyCnfFN,Name);
+			strncpy_s(ts->KeyCnfFN, sizeof(ts->KeyCnfFN),Name, _TRUNCATE);
 		break;
 	}
 
@@ -332,7 +332,7 @@ BOOL FAR PASCAL GetTransFname
 {
 #ifndef NO_I18N
 	char uimsg[MAX_UIMSG];
-	char FNFilter[sizeof(FileSendFilter)*2+128], *pf;
+	char FNFilter[sizeof(FileSendFilter)*3], *pf;
 #else
 	char FNFilter[11];
 #endif
@@ -348,67 +348,66 @@ BOOL FAR PASCAL GetTransFname
 	memset(FNFilter, 0, sizeof(FNFilter));  /* Set up for double null at end */
 	memset(&ofn, 0, sizeof(OPENFILENAME));
 
-	strcpy(fv->DlgCaption,"Tera Term: ");
+	strncpy_s(fv->DlgCaption, sizeof(fv->DlgCaption),"Tera Term: ", _TRUNCATE);
 	pf = FNFilter;
 	switch (FuncId) {
 	case GTF_SEND:
 #ifndef NO_I18N
-		strcpy(uimsg, TitSendFile);
+		strncpy_s(uimsg, sizeof(uimsg), TitSendFile, _TRUNCATE);
 		get_lang_msg("FILEDLG_TRANS_TITLE_SENDFILE", uimsg, UILanguageFile);
-		strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+		strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
 		strcat(fv->DlgCaption,"Send file");
 #endif
 		if (strlen(FileSendFilter) > 0) {
-			strcpy(uimsg, "User define");
+			strncpy_s(uimsg, sizeof(uimsg), "User define", _TRUNCATE);
 			get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, UILanguageFile);
-			pf = pf + _snprintf(pf, sizeof(FNFilter)-2, "%s(%s)", uimsg, FileSendFilter);
-			pf++;
-			strncpy(pf, FileSendFilter, sizeof(FNFilter) - (pf - FNFilter + 2));
-			pf = pf + strlen(pf);
-			pf++;
+			_snprintf_s(FNFilter, sizeof(FNFilter), _TRUNCATE, "%s(%s)", uimsg, FileSendFilter);
+			pf = pf + strlen(FNFilter) + 1;
+			strncat_s(FNFilter, sizeof(FNFilter) ,FileSendFilter, _TRUNCATE);
+			pf = pf + strlen(pf) + 1;
 		}
 		break;
 	case GTF_LOG:
 #ifndef NO_I18N
-		strcpy(uimsg, TitLog);
+		strncpy_s(uimsg, sizeof(uimsg), TitLog, _TRUNCATE);
 		get_lang_msg("FILEDLG_TRANS_TITLE_LOG", uimsg, UILanguageFile);
-		strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+		strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
 		strcat(fv->DlgCaption,"Log");
 #endif
 		break;
 	case GTF_BP:
 #ifndef NO_I18N
-		strcpy(uimsg, TitBPSend);
+		strncpy_s(uimsg, sizeof(uimsg), TitBPSend, _TRUNCATE);
 		get_lang_msg("FILEDLG_TRANS_TITLE_BPSEND", uimsg, UILanguageFile);
-		strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+		strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
 		strcat(fv->DlgCaption,"B-Plus Send");
 #endif
 		if (strlen(FileSendFilter) > 0) {
-			strcpy(uimsg, "User define");
+			strncpy_s(uimsg, sizeof(uimsg), "User define", _TRUNCATE);
 			get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, UILanguageFile);
-			pf = pf + _snprintf(pf, sizeof(FNFilter)-2, "%s(%s)", uimsg, FileSendFilter);
-			pf++;
-			strncpy(pf, FileSendFilter, sizeof(FNFilter) - (pf - FNFilter + 2));
-			pf = pf + strlen(pf);
-			pf++;
+			_snprintf_s(FNFilter, sizeof(FNFilter), _TRUNCATE, "%s(%s)", uimsg, FileSendFilter);
+			pf = pf + strlen(FNFilter) + 1;
+			strncat_s(FNFilter, sizeof(FNFilter) ,FileSendFilter, _TRUNCATE);
+			pf = pf + strlen(pf) + 1;
 		}
 		break;
 	default: return FALSE;
 	}
 
 #ifndef NO_I18N
-	strncpy(uimsg, "All(*.*)\\0*.*\\0\\0", sizeof(FNFilter));
+	strncpy_s(uimsg, sizeof(uimsg), "All(*.*)\\0*.*\\0\\0", _TRUNCATE);
 	get_lang_msg("FILEDLG_ALL_FILTER", uimsg, UILanguageFile);
+	// \0\0 で終わる必要があるので 2 バイト
 	memcpy(pf, uimsg, sizeof(FNFilter) - (pf - FNFilter + 2));
 #else
 	strcpy(FNFilter, "all");
 	strcpy(&(FNFilter[strlen(FNFilter)+1]), "*.*");
 #endif
 
-	ExtractFileName(fv->FullName, FileName);
+	ExtractFileName(fv->FullName, FileName ,sizeof(FileName));
 	strncpy_s(fv->FullName, sizeof(fv->FullName), FileName, _TRUNCATE);
 	ofn.lStructSize = sizeof(OPENFILENAME);
 	ofn.hwndOwner   = fv->HMainWin;
@@ -471,7 +470,7 @@ BOOL FAR PASCAL GetTransFname
 
 #ifdef TERATERM32
 		// for Win NT 3.5: short name -> long name
-		GetLongFName(fv->FullName,&fv->FullName[fv->DirLen]);
+		GetLongFName(fv->FullName,&fv->FullName[fv->DirLen],sizeof(&fv->FullName) - fv->DirLen);
 #endif
 
 		if (CurDir!=NULL)
@@ -581,32 +580,32 @@ BOOL FAR PASCAL GetMultiFname
 
   fv->NumFname = 0;
 
-  strcpy(fv->DlgCaption,"Tera Term: ");
+  strncpy_s(fv->DlgCaption, sizeof(fv->DlgCaption),"Tera Term: ", _TRUNCATE);
   pf = FNFilter;
   switch (FuncId) {
     case GMF_KERMIT:
 #ifndef NO_I18N
-      strcpy(uimsg, TitKmtSend);
+      strncpy_s(uimsg, sizeof(uimsg), TitKmtSend, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,"Kermit Send");
 #endif
       break;
     case GMF_Z:
 #ifndef NO_I18N
-      strcpy(uimsg, TitZSend);
+      strncpy_s(uimsg, sizeof(uimsg), TitZSend, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,"ZMODEM Send");
 #endif
       break;
     case GMF_QV:
 #ifndef NO_I18N
-      strcpy(uimsg, TitQVSend);
+      strncpy_s(uimsg, sizeof(uimsg), TitQVSend, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_QVSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,"Quick-VAN Send");
 #endif
@@ -614,13 +613,12 @@ BOOL FAR PASCAL GetMultiFname
     default: return FALSE;
   }
   if (strlen(FileSendFilter) > 0) {
-    strcpy(uimsg, "User define");
+    strncpy_s(uimsg, sizeof(uimsg), "User define", _TRUNCATE);
     get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, UILanguageFile);
-    pf = pf + _snprintf(pf, sizeof(FNFilter)-2, "%s(%s)", uimsg, FileSendFilter);
-    pf++;
-    strncpy(pf, FileSendFilter, sizeof(FNFilter) - (pf - FNFilter + 2));
-    pf = pf + strlen(pf);
-    pf++;
+    _snprintf_s(FNFilter, sizeof(FNFilter), _TRUNCATE, "%s(%s)", uimsg, FileSendFilter);
+    pf = pf + strlen(FNFilter) + 1;
+    strncat_s(FNFilter, sizeof(FNFilter) ,FileSendFilter, _TRUNCATE);
+    pf = pf + strlen(pf) + 1;
   }
 
   /* moemory should be zero-initialized */
@@ -642,8 +640,9 @@ BOOL FAR PASCAL GetMultiFname
   }
 
 #ifndef NO_I18N
-  strncpy(uimsg, "All(*.*)\\0*.*\\0\\0", sizeof(uimsg));
+  strncpy_s(uimsg, sizeof(uimsg), "All(*.*)\\0*.*\\0\\0", _TRUNCATE);
   get_lang_msg("FILEDLG_ALL_FILTER", uimsg, UILanguageFile);
+  // \0\0 で終わる必要があるので 2 バイト
   memcpy(pf, uimsg, sizeof(FNFilter) - (pf - FNFilter + 2));
 #else
   memset(FNFilter, 0, sizeof(FNFilter));  /* Set up for double null at end */
@@ -720,16 +719,16 @@ BOOL FAR PASCAL GetMultiFname
     { // single selection
       fv->NumFname = 1;
       fv->DirLen = ofn.nFileOffset;
-      strcpy(fv->FullName,fv->FnStrMem);
+      strncpy_s(fv->FullName, sizeof(fv->FullName),fv->FnStrMem, _TRUNCATE);
       fv->FnPtr = 0;
 #ifdef TERATERM32
       // for Win NT 3.5: short name -> long name
-      GetLongFName(fv->FullName,&fv->FullName[fv->DirLen]);
+      GetLongFName(fv->FullName,&fv->FullName[fv->DirLen],sizeof(&fv->FullName) - fv->DirLen);
 #endif
     }
     else { // multiple selection
-      strcpy(fv->FullName,fv->FnStrMem);
-      AppendSlash(fv->FullName);
+      strncpy_s(fv->FullName, sizeof(fv->FullName),fv->FnStrMem, _TRUNCATE);
+      AppendSlash(fv->FullName,sizeof(fv->FullName));
       fv->DirLen = strlen(fv->FullName);
       fv->FnPtr = strlen(fv->FnStrMem)+1;
     }
@@ -815,8 +814,8 @@ BOOL CALLBACK GetFnDlg
 	    GetDlgItemText(Dialog, IDC_GETFN, TempFull, sizeof(TempFull));
 	    if (strlen(TempFull)==0) return TRUE;
 	    GetFileNamePos(TempFull,&i,&j);
-	    FitFileName(&(TempFull[j]),NULL);
-	    strcat(fv->FullName,&(TempFull[j]));
+	    FitFileName(&(TempFull[j]),sizeof(TempFull) - j, NULL);
+	    strncat_s(fv->FullName,sizeof(fv->FullName),&(TempFull[j]),_TRUNCATE);
 	  }
 	  EndDialog(Dialog, 1);
 #ifndef NO_I18N
@@ -873,130 +872,130 @@ void FAR PASCAL SetFileVar(PFileVar fv)
 
   GetFileNamePos(fv->FullName,&(fv->DirLen),&i);
   if (fv->FullName[fv->DirLen]=='\\') fv->DirLen++;
-  strcpy(fv->DlgCaption,"Tera Term: ");
+  strncpy_s(fv->DlgCaption, sizeof(fv->DlgCaption),"Tera Term: ", _TRUNCATE);
   switch (fv->OpId) {
     case OpLog:
 #ifndef NO_I18N
-      strcpy(uimsg, TitLog);
+      strncpy_s(uimsg, sizeof(uimsg), TitLog, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_LOG", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,TitLog);
 #endif
     break;
     case OpSendFile:
 #ifndef NO_I18N
-      strcpy(uimsg, TitSendFile);
+      strncpy_s(uimsg, sizeof(uimsg), TitSendFile, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_SENDFILE", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,TitSendFile);
 #endif
       break;
     case OpKmtRcv:
 #ifndef NO_I18N
-      strcpy(uimsg, TitKmtRcv);
+      strncpy_s(uimsg, sizeof(uimsg), TitKmtRcv, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTRCV", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,TitKmtRcv);
 #endif
       break;
     case OpKmtGet:
 #ifndef NO_I18N
-      strcpy(uimsg, TitKmtGet);
+      strncpy_s(uimsg, sizeof(uimsg), TitKmtGet, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTGET", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,TitKmtGet);
 #endif
       break;
     case OpKmtSend:
 #ifndef NO_I18N
-      strcpy(uimsg, TitKmtSend);
+      strncpy_s(uimsg, sizeof(uimsg), TitKmtSend, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,TitKmtSend);
 #endif
       break;
     case OpKmtFin:
 #ifndef NO_I18N
-      strcpy(uimsg, TitKmtFin);
+      strncpy_s(uimsg, sizeof(uimsg), TitKmtFin, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_KMTFIN", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,TitKmtFin);
 #endif
       break;
     case OpXRcv:
 #ifndef NO_I18N
-      strcpy(uimsg, TitXRcv);
+      strncpy_s(uimsg, sizeof(uimsg), TitXRcv, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_XRCV", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,TitXRcv);
 #endif
       break;
     case OpXSend:
 #ifndef NO_I18N
-      strcpy(uimsg, TitXSend);
+      strncpy_s(uimsg, sizeof(uimsg), TitXSend, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_XSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,TitXSend);
 #endif
       break;
     case OpZRcv:
 #ifndef NO_I18N
-      strcpy(uimsg, TitZRcv);
+      strncpy_s(uimsg, sizeof(uimsg), TitZRcv, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_ZRCV", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,TitZRcv);
 #endif
       break;
     case OpZSend:
 #ifndef NO_I18N
-      strcpy(uimsg, TitZSend);
+      strncpy_s(uimsg, sizeof(uimsg), TitZSend, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,TitZSend);
 #endif
       break;
     case OpBPRcv:
 #ifndef NO_I18N
-      strcpy(uimsg, TitBPRcv);
+      strncpy_s(uimsg, sizeof(uimsg), TitBPRcv, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_BPRCV", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,TitBPRcv);
 #endif
       break;
     case OpBPSend:
 #ifndef NO_I18N
-      strcpy(uimsg, TitBPSend);
+      strncpy_s(uimsg, sizeof(uimsg), TitBPSend, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_BPSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,TitBPSend);
 #endif
       break;
     case OpQVRcv:
 #ifndef NO_I18N
-      strcpy(uimsg, TitQVRcv);
+      strncpy_s(uimsg, sizeof(uimsg), TitQVRcv, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_QVRCV", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,TitQVRcv);
 #endif
       break;
     case OpQVSend:
 #ifndef NO_I18N
-      strcpy(uimsg, TitQVSend);
+      strncpy_s(uimsg, sizeof(uimsg), TitQVSend, _TRUNCATE);
       get_lang_msg("FILEDLG_TRANS_TITLE_QVSEND", uimsg, UILanguageFile);
-      strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+      strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 #else
       strcat(fv->DlgCaption,TitQVSend);
 #endif
@@ -1134,7 +1133,7 @@ BOOL FAR PASCAL GetXFname
   memset(&ofn, 0, sizeof(OPENFILENAME));
 
 #ifndef NO_I18N
-  strcpy(fv->DlgCaption,"Tera Term: ");
+  strncpy_s(fv->DlgCaption, sizeof(fv->DlgCaption),"Tera Term: ", _TRUNCATE);
 #else
   strcpy(fv->DlgCaption,"Tera Term: XMODEM ");
 #endif
@@ -1142,9 +1141,9 @@ BOOL FAR PASCAL GetXFname
   if (Receive)
 #ifndef NO_I18N
   {
-    strcpy(uimsg, TitXRcv);
+    strncpy_s(uimsg, sizeof(uimsg), TitXRcv, _TRUNCATE);
     get_lang_msg("FILEDLG_TRANS_TITLE_XRCV", uimsg, UILanguageFile);
-    strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+    strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
   }
 #else
     strcat(fv->DlgCaption,"Receive");
@@ -1152,17 +1151,16 @@ BOOL FAR PASCAL GetXFname
   else
 #ifndef NO_I18N
   {
-    strcpy(uimsg, TitXSend);
+    strncpy_s(uimsg, sizeof(uimsg), TitXSend, _TRUNCATE);
     get_lang_msg("FILEDLG_TRANS_TITLE_XSEND", uimsg, UILanguageFile);
-    strncat(fv->DlgCaption, uimsg, sizeof(fv->DlgCaption)-1);
+    strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
     if (strlen(FileSendFilter) > 0) {
-      strcpy(uimsg, "User define");
+      strncpy_s(uimsg, sizeof(uimsg), "User define", _TRUNCATE);
       get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, UILanguageFile);
-      pf = pf + _snprintf(pf, sizeof(FNFilter)-2, "%s(%s)", uimsg, FileSendFilter);
-      pf++;
-      strncpy(pf, FileSendFilter, sizeof(FNFilter) - (pf - FNFilter + 2));
-      pf = pf + strlen(pf);
-      pf++;
+      _snprintf_s(FNFilter, sizeof(FNFilter), _TRUNCATE, "%s(%s)", uimsg, FileSendFilter);
+      pf = pf + strlen(FNFilter) + 1;
+      strncat_s(FNFilter, sizeof(FNFilter) ,FileSendFilter, _TRUNCATE);
+      pf = pf + strlen(pf) + 1;
     }
   }
 #else
@@ -1170,8 +1168,9 @@ BOOL FAR PASCAL GetXFname
 #endif
 
 #ifndef NO_I18N
-  strncpy(uimsg, "All(*.*)\\0*.*\\0\\0", sizeof(FNFilter));
+  strncpy_s(uimsg, sizeof(uimsg), "All(*.*)\\0*.*\\0\\0", _TRUNCATE);
   get_lang_msg("FILEDLG_ALL_FILTER", uimsg, UILanguageFile);
+  // \0\0 で終わる必要があるので 2 バイト
   memcpy(pf, uimsg, sizeof(FNFilter) - (pf - FNFilter + 2));
 #else
   strcpy(FNFilter, "all");
@@ -1380,10 +1379,8 @@ BOOL WINAPI DllMain(HANDLE hInstance,
         pm = (PMap)MapViewOfFile(
         HMap,FILE_MAP_READ,0,0,0);
         if (pm != NULL) {
-          strncpy(UILanguageFile, pm->ts.UILanguageFile, sizeof(UILanguageFile)-1);
-          UILanguageFile[sizeof(UILanguageFile)-1] = 0;
-          strncpy(FileSendFilter, pm->ts.FileSendFilter, sizeof(FileSendFilter)-1);
-          FileSendFilter[sizeof(FileSendFilter)-1] = 0;
+          strncpy_s(UILanguageFile, sizeof(UILanguageFile), pm->ts.UILanguageFile, _TRUNCATE);
+          strncpy_s(FileSendFilter, sizeof(FileSendFilter), pm->ts.FileSendFilter, _TRUNCATE);
         }
       }
 #endif
@@ -1411,6 +1408,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.22  2007/07/16 13:52:59  maya
+ * GetOpenFileName からファイル名を取得できないバグを修正した。
+ *
  * Revision 1.21  2007/07/02 10:51:06  doda
  * 旧バージョンとの間では共有メモリによる設定の共有が出来ないため、
  * ファイルマッピングオブジェクト名を変更した。

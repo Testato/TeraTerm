@@ -141,7 +141,7 @@ void PaintProc(HWND hWnd)
 
   if (KeyDown)
   {
-    sprintf(OutStr,"Key code is %u.",Scan);
+    _snprintf_s(OutStr,sizeof(OutStr),_TRUNCATE,"Key code is %u.",Scan);
     TextOut(hDC,10,10,OutStr,strlen(OutStr));
   }
   else

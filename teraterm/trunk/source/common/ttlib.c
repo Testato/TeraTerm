@@ -51,13 +51,13 @@ BOOL GetFileNamePos(PCHAR PathName, int far *DirLen, int far *FNPos)
   return TRUE;
 }
 
-BOOL ExtractFileName(PCHAR PathName, PCHAR FileName)
+BOOL ExtractFileName(PCHAR PathName, PCHAR FileName, int destlen)
 {
   int i, j;
 
   if (FileName==NULL) return FALSE;
   if (! GetFileNamePos(PathName,&i,&j)) return FALSE;
-  strcpy(FileName,&PathName[j]);
+  strncpy_s(FileName,destlen,&PathName[j],_TRUNCATE);
   return (strlen(FileName)>0);
 }
 
@@ -74,7 +74,7 @@ BOOL ExtractDirName(PCHAR PathName, PCHAR DirName)
 
 /* fit a filename to the windows-filename format */
 /* FileName must contain filename part only. */
-void FitFileName(PCHAR FileName, PCHAR DefExt)
+void FitFileName(PCHAR FileName, int destlen, PCHAR DefExt)
 {
   int i, j, NumOfDots;
   char Temp[MAXPATHLEN];
@@ -117,9 +117,10 @@ void FitFileName(PCHAR FileName, PCHAR DefExt)
 #ifdef TERATERM32
   if ((NumOfDots==0) &&
       (DefExt!=NULL))
-    strcat(Temp,DefExt); /* add the default extension */
+    /* add the default extension */
+    strncat_s(Temp,sizeof(Temp),DefExt,_TRUNCATE);
 
-  strcpy(FileName,Temp);
+  strncpy_s(FileName,destlen,Temp,_TRUNCATE);
 #else
   if (NumOfDots==0)
   {
@@ -140,12 +141,12 @@ void FitFileName(PCHAR FileName, PCHAR DefExt)
 }
 
 // Append a slash to the end of a path name
-void AppendSlash(PCHAR Path)
+void AppendSlash(PCHAR Path, int destlen)
 {
   if (strcmp(CharPrev((LPCTSTR)Path,
 	(LPCTSTR)(&Path[strlen(Path)])),
 	"\\") != 0)
-    strcat(Path,"\\");
+    strncat_s(Path,destlen,"\\",_TRUNCATE);
 }
 
 void Str2Hex(PCHAR Str, PCHAR Hex, int Len, int MaxHexLen, BOOL ConvSP)
@@ -254,13 +255,13 @@ long GetFSize(PCHAR FName)
   return (long)st.st_size;
 }
 
-void uint2str(UINT i, PCHAR Str, int len)
+void uint2str(UINT i, PCHAR Str, int destlen, int len)
 {
   char Temp[20];
 
-  sprintf(Temp,"%u",i);
+  _snprintf_s(Temp,sizeof(Temp),_TRUNCATE,"%u",i);
   Temp[len] = 0;
-  strcpy(Str,Temp);
+  strncpy_s(Str,destlen,Temp,_TRUNCATE);
 }
 
 #ifdef TERATERM32
@@ -441,15 +442,16 @@ void deleteInvalidStrftimeChar(PCHAR FName)
 }
 
 // フルパスから、ファイル名部分のみを strftime で変換する (2006.8.28 maya)
-void ParseStrftimeFileName(PCHAR FName)
+void ParseStrftimeFileName(PCHAR FName, int destlen)
 {
   char filename[MAX_PATH];
+  char dirname[MAX_PATH];
   char buf[80];
-  char *c;
   time_t time_local;
   struct tm *tm_local;
 
-  ExtractFileName(FName, filename);
+  // ファイル名部分のみを flename に格納
+  ExtractFileName(FName, filename ,sizeof(filename));
 
   // strftime に使用できない文字を削除
   deleteInvalidStrftimeChar(filename);
@@ -460,35 +462,34 @@ void ParseStrftimeFileName(PCHAR FName)
 
   // 時刻文字列に変換
   if (strftime(buf, sizeof(buf), filename, tm_local) == 0) {
-    strcpy(buf, filename);
+    strncpy_s(buf, sizeof(buf), filename, _TRUNCATE);
   }
 
   // ファイル名に使用できない文字を削除
   deleteInvalidFileNameChar(filename);
 
-  c = strrchr(FName, '\\');
-  if (c != NULL) {
-    strncpy(c + 1, buf, MAXPATHLEN-(c-FName)-2);
-  }
-  else { // "\"を含まない(フルパスでない)場合に対応 (2006.11.30 maya)
-    strncpy(FName, buf, MAXPATHLEN-1);
-  }
-  FName[MAXPATHLEN-1]=0;
+  ExtractDirName(FName, dirname);
+
+  // "\"を含まない(フルパスでない)場合に対応 (2006.11.30 maya)
+  strncpy_s(FName, destlen, dirname, _TRUNCATE);
+  AppendSlash(FName,destlen);
+  strncat_s(FName, destlen, filename, _TRUNCATE);
 }
 
-void ConvFName(PCHAR HomeDir, PCHAR Temp, PCHAR DefExt, PCHAR FName)
+void ConvFName(PCHAR HomeDir, PCHAR Temp, int templen, PCHAR DefExt, PCHAR FName, int destlen)
 {
+  // destlen = sizeof FName
   int DirLen, FNPos;
 
   FName[0] = 0;
   if ( ! GetFileNamePos(Temp,&DirLen,&FNPos) ) return;
-  FitFileName(&Temp[FNPos],DefExt);
+  FitFileName(&Temp[FNPos],templen - FNPos,DefExt);
   if ( DirLen==0 )
   {
-    strcpy(FName,HomeDir);
-    AppendSlash(FName);
+    strncpy_s(FName,destlen,HomeDir,_TRUNCATE);
+    AppendSlash(FName,destlen);
   }
-  strcat(FName,Temp);
+  strncat_s(FName,destlen,Temp,_TRUNCATE);
 }
 
 // "\n" を改行に変換する (2006.7.29 maya)
@@ -565,7 +566,7 @@ void GetNthNum(PCHAR Source, int Nth, int far *Num)
 
 // デフォルトの TERATERM.INI のフルパスを ttpmacro からも
 // 取得するために追加した。(2007.2.18 maya)
-void WINAPI GetDefaultSetupFName(char *dest, char *home)
+void WINAPI GetDefaultSetupFName(char *home, char *dest, int destlen)
 {
 	// My Documents に teraterm.ini がある場合、
 	// それを読み込むようにした。(2007.2.18 maya)
@@ -584,25 +585,32 @@ void WINAPI GetDefaultSetupFName(char *dest, char *home)
 		pmalloc->lpVtbl->Release(pmalloc);
 		goto homedir;
 	}
-	strcpy(MyDocSetupFName, MyDoc);
-	AppendSlash(MyDocSetupFName);
-	strcat(MyDocSetupFName, "TERATERM.INI");
+	strncpy_s(MyDocSetupFName, sizeof(MyDocSetupFName), MyDoc, _TRUNCATE);
+	AppendSlash(MyDocSetupFName,sizeof(MyDocSetupFName));
+	strncat_s(MyDocSetupFName, sizeof(MyDocSetupFName), "TERATERM.INI", _TRUNCATE);
 	if (GetFileAttributes(MyDocSetupFName) != -1) {
-		strcpy(dest, MyDocSetupFName);
+		strncpy_s(dest, destlen, MyDocSetupFName, _TRUNCATE);
 		return;
 	}
 
 homedir:
-	strcpy(dest, home);
-	AppendSlash(dest);
-	strcat(dest, "TERATERM.INI");
+	strncpy_s(dest, destlen, home, _TRUNCATE);
+	AppendSlash(dest,destlen);
+	strncat_s(dest, destlen, "TERATERM.INI", _TRUNCATE);
 }
 
 #ifndef NO_I18N
+#if 1
 void get_lang_msg(PCHAR key, PCHAR buf, PCHAR iniFile)
 {
 	GetI18nStr("Tera Term", key, buf, iniFile);
 }
+#else
+void get_lang_msg(PCHAR key, PCHAR buf, int buf_len, PCHAR def, PCHAR iniFile)
+{
+	GetI18nStr("Tera Term", key, buf, buf_len, def, iniFile);
+}
+#endif
 
 int get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PCHAR iniFile)
 {

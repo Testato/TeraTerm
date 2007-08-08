@@ -95,9 +95,9 @@ BOOL LoadIME()
   {
 #endif
 #ifndef NO_I18N
-    strcpy(uimsg, "Tera Term: Error");
+    strncpy_s(uimsg, sizeof(uimsg),  "Tera Term: Error", _TRUNCATE);
     get_lang_msg("MSG_TT_ERROR", uimsg, ts.UILanguageFile);
-    strcpy(ts.UIMsg, "Can't use IME");
+    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg),  "Can't use IME", _TRUNCATE);
     get_lang_msg("MSG_USE_IME_ERROR", ts.UIMsg, ts.UILanguageFile);
     MessageBox(0,ts.UIMsg,uimsg,MB_ICONEXCLAMATION);
 #else
