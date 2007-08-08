@@ -3262,8 +3262,8 @@ void SSH_request_X11_forwarding(PTInstVar pvar,
 		set_uint32(outmsg + 4 + protocol_len, data_len);
 		auth_data_ptr = outmsg + 8 + protocol_len;
 		for (i = 0; i < auth_data_len; i++) {
-			snprintf_s(auth_data_ptr + i * 2, outmsg_len - (auth_data_ptr - outmsg) - i * 2,
-				"%.2x", auth_data[i]);
+			_snprintf_s(auth_data_ptr + i * 2, outmsg_len - (auth_data_ptr - outmsg) - i * 2,
+				_TRUNCATE, "%.2x", auth_data[i]);
 		}
 		set_uint32(outmsg + 8 + protocol_len + data_len, screen_num);
 
@@ -7490,6 +7490,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.83  2007/08/08 16:04:09  maya
+ * 安全な関数を使用するように変更した。
+ *
  * Revision 1.82  2007/07/26 08:33:53  maya
  * SSH のチャネルが開けないときにソケットが開いたままになっていたのを修正した。
  *
