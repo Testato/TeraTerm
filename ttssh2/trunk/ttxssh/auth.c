@@ -118,7 +118,7 @@ static void init_auth_machine_banner(PTInstVar pvar, HWND dlg)
 #ifndef NO_I18N
 	char buf2[1024];
 	GetDlgItemText(dlg, IDC_SSHAUTHBANNER, buf2, sizeof(buf2));
-	_snprintf(buf, sizeof(buf), buf2, SSH_get_host_name(pvar));
+	_snprintf_s(buf, sizeof(buf), _TRUNCATE, buf2, SSH_get_host_name(pvar));
 #else
 	if (strlen(buf) + strlen(SSH_get_host_name(pvar)) < sizeof(buf) - 2) {
 		strcat(buf, SSH_get_host_name(pvar));
@@ -246,11 +246,11 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 	if (pvar->auth_state.failed_method != SSH_AUTH_NONE) {
 		/* must be retrying a failed attempt */
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "Authentication failed. Please retry.");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Authentication failed. Please retry.", _TRUNCATE);
 		UTIL_get_lang_msg("DLG_AUTH_BANNER2_FAILED", pvar);
 		SetDlgItemText(dlg, IDC_SSHAUTHBANNER2, "Retrying SSH Authentication");
 
-		strcpy(pvar->ts->UIMsg, "Retrying SSH Authentication");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Retrying SSH Authentication", _TRUNCATE);
 		UTIL_get_lang_msg("DLG_AUTH_TITLE_FAILED", pvar);
 		SetWindowText(dlg, pvar->ts->UIMsg);
 #else
@@ -348,7 +348,7 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 	// 変更する。(2005.3.12 yutaka)
 	if (pvar->settings.ssh2_keyboard_interactive == 1) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "Use p&lain password to log in (with keyboard-interactive)");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Use p&lain password to log in (with keyboard-interactive)", _TRUNCATE);
 		UTIL_get_lang_msg("DLG_AUTH_METHOD_PASSWORD_KBDINT", pvar);
 		SetDlgItemText(dlg, IDC_SSHUSEPASSWORD, pvar->ts->UIMsg);
 #else
@@ -358,7 +358,7 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 
 	if (pvar->settings.ssh_protocol_version == 1) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "Use challenge/response to log in(&TIS)");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Use challenge/response to log in(&TIS)", _TRUNCATE);
 		UTIL_get_lang_msg("DLG_AUTH_METHOD_CHALLENGE1", pvar);
 		SetDlgItemText(dlg, IDC_SSHUSETIS, pvar->ts->UIMsg);
 #else
@@ -366,7 +366,7 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 #endif
 	} else {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "Use &challenge/response to log in(keyboard-interactive)");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Use &challenge/response to log in(keyboard-interactive)", _TRUNCATE);
 		UTIL_get_lang_msg("DLG_AUTH_METHOD_CHALLENGE2", pvar);
 		SetDlgItemText(dlg, IDC_SSHUSETIS, pvar->ts->UIMsg);
 #else
@@ -416,7 +416,7 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize)
 	// フィルタの追加 (2004.12.19 yutaka)
 	// 3ファイルフィルタの追加 (2005.4.26 yutaka)
 #ifndef NO_I18N
-	strncpy(pvar->ts->UIMsg, "identity files\\0identity;id_rsa;id_dsa\\0identity(RSA1)\\0identity\\0id_rsa(SSH2)\\0id_rsa\\0id_dsa(SSH2)\\0id_dsa\\0all(*.*)\\0*.*\\0\\0", sizeof(pvar->ts->UIMsg));
+	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "identity files\\0identity;id_rsa;id_dsa\\0identity(RSA1)\\0identity\\0id_rsa(SSH2)\\0id_rsa\\0id_dsa(SSH2)\\0id_dsa\\0all(*.*)\\0*.*\\0\\0", _TRUNCATE);
 	UTIL_get_lang_msg("FILEDLG_OPEN_PRIVATEKEY_FILTER", pvar);
 	memcpy(filter, pvar->ts->UIMsg, sizeof(filter));
 	params.lpstrFilter = filter;
@@ -431,7 +431,7 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize)
 	params.lpstrFileTitle = NULL;
 	params.lpstrInitialDir = NULL;
 #ifndef NO_I18N
-	strcpy(pvar->ts->UIMsg, "Choose a file with the RSA/DSA private key");
+	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Choose a file with the RSA/DSA private key", _TRUNCATE);
 	UTIL_get_lang_msg("FILEDLG_OPEN_PRIVATEKEY_TITLE", pvar);
 	params.lpstrTitle = pvar->ts->UIMsg;
 #else
@@ -514,7 +514,7 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 		GetDlgItemText(dlg, file_ctl_ID, buf, sizeof(buf));
 		if (buf[0] == 0) {
 #ifndef NO_I18N
-			strcpy(pvar->ts->UIMsg, "You must specify a file containing the RSA/DSA private key.");
+			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "You must specify a file containing the RSA/DSA private key.", _TRUNCATE);
 			UTIL_get_lang_msg("MSG_KEYSPECIFY_ERROR", pvar);
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -563,9 +563,9 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 			if (key_pair == NULL) { // read error
 				char buf[1024];
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg, "read error SSH2 private key file\r\n%s");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "read error SSH2 private key file\r\n%s", _TRUNCATE);
 				UTIL_get_lang_msg("MSG_READKEY_ERROR", pvar);
-				_snprintf(buf, sizeof(buf), pvar->ts->UIMsg, errmsg);
+				_snprintf_s(buf, sizeof(buf), _TRUNCATE, pvar->ts->UIMsg, errmsg);
 #else
 				_snprintf(buf, sizeof(buf), "read error SSH2 private key file\r\n%s", errmsg);
 #endif
@@ -616,12 +616,14 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 	if (method == SSH_AUTH_RHOSTS || method == SSH_AUTH_RHOSTS_RSA) {
 		if (pvar->session_settings.DefaultAuthMethod != SSH_AUTH_RHOSTS) {
 #ifndef NO_I18N
-			strcpy(pvar->ts->UIMsg, "Rhosts authentication will probably fail because it was not "
-									"the default authentication method.\n"
-									"To use Rhosts authentication "
-									"in TTSSH, you need to set it to be the default by restarting\n"
-									"TTSSH and selecting \"SSH Authentication...\" from the Setup menu"
-									"before connecting.");
+			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+				"Rhosts authentication will probably fail because it was not "
+				"the default authentication method.\n"
+				"To use Rhosts authentication "
+				"in TTSSH, you need to set it to be the default by restarting\n"
+				"TTSSH and selecting \"SSH Authentication...\" from the Setup menu"
+				"before connecting.",
+				_TRUNCATE);
 			UTIL_get_lang_msg("MSG_RHOSTS_NOTDEFAULT_ERROR", pvar);
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -800,7 +802,7 @@ int AUTH_set_supported_auth_types(PTInstVar pvar, int types)
 {
 	char buf[1024];
 
-	_snprintf(buf, sizeof(buf),
+	_snprintf_s(buf, sizeof(buf), _TRUNCATE,
 			  "Server reports supported authentication method mask = %d",
 			  types);
 	buf[sizeof(buf) - 1] = 0;
@@ -823,9 +825,10 @@ int AUTH_set_supported_auth_types(PTInstVar pvar, int types)
 
 	if (types == 0) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg,
-			   "Server does not support any of the authentication options\n"
-			   "provided by TTSSH. This connection will now close.");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			"Server does not support any of the authentication options\n"
+			"provided by TTSSH. This connection will now close.",
+			_TRUNCATE);
 		UTIL_get_lang_msg("MSG_NOAUTHMETHOD_ERROR", pvar);
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -1094,9 +1097,10 @@ void AUTH_do_cred_dialog(PTInstVar pvar)
 							NULL ? cur_active : pvar->NotificationWindow,
 							dlg_proc, (LPARAM) pvar) == -1) {
 #ifndef NO_I18N
-			strcpy(pvar->ts->UIMsg,
-				   "Unable to display authentication dialog box.\n"
-				   "Connection terminated.");
+			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+				"Unable to display authentication dialog box.\n"
+				"Connection terminated.",
+				_TRUNCATE);
 			UTIL_get_lang_msg("MSG_CREATEWINDOW_AUTH_ERROR", pvar);
 			notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -1380,7 +1384,7 @@ void AUTH_do_default_cred_dialog(PTInstVar pvar)
 					   NULL ? cur_active : pvar->NotificationWindow,
 					   default_auth_dlg_proc, (LPARAM) pvar) == -1) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "Unable to display authentication setup dialog box.");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Unable to display authentication setup dialog box.", _TRUNCATE);
 		UTIL_get_lang_msg("MSG_CREATEWINDOW_AUTHSETUP_ERROR", pvar);
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -1423,13 +1427,13 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 	char *method = "unknown";
 
 	if (pvar->auth_state.user == NULL) {
-		strncpy(dest, "None", len);
+		strncpy_s(dest, len, "None", _TRUNCATE);
 	} else if (pvar->auth_state.cur_cred.method != SSH_AUTH_NONE) {
 		if (SSHv1(pvar)) {
 #ifndef NO_I18N
-			strcpy(pvar->ts->UIMsg, "User '%s', using %s");
+			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "User '%s', using %s", _TRUNCATE);
 			UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar);
-			_snprintf(dest, len, pvar->ts->UIMsg, pvar->auth_state.user,
+			_snprintf_s(dest, len, _TRUNCATE, pvar->ts->UIMsg, pvar->auth_state.user,
 					get_auth_method_name(pvar->auth_state.cur_cred.method));
 #else
 			_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user,
@@ -1449,9 +1453,10 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 					method = get_auth_method_name(pvar->auth_state.cur_cred.method);
 				}
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg, "User '%s', using %s");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "User '%s', using %s", _TRUNCATE);
 				UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar);
-				_snprintf(dest, len, pvar->ts->UIMsg, pvar->auth_state.user, method);
+				_snprintf_s(dest, len, _TRUNCATE,
+					pvar->ts->UIMsg, pvar->auth_state.user, method);
 #else
 				_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user, method);
 #endif
@@ -1463,9 +1468,10 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 					method = "DSA";
 				}
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg, "User '%s', using %s");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "User '%s', using %s", _TRUNCATE);
 				UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar);
-				_snprintf(dest, len, pvar->ts->UIMsg, pvar->auth_state.user, method);
+				_snprintf_s(dest, len, _TRUNCATE,
+					pvar->ts->UIMsg, pvar->auth_state.user, method);
 #else
 				_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user, method);
 #endif
@@ -1475,9 +1481,9 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 
 	} else {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "User '%s', using %s");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "User '%s', using %s", _TRUNCATE);
 		UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar);
-		_snprintf(dest, len, pvar->ts->UIMsg, pvar->auth_state.user,
+		_snprintf_s(dest, len, _TRUNCATE, pvar->ts->UIMsg, pvar->auth_state.user,
 				  get_auth_method_name(pvar->auth_state.failed_method));
 #else
 		_snprintf(dest, len, "User '%s', using %s", pvar->auth_state.user,
@@ -1507,6 +1513,9 @@ void AUTH_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.33  2007/06/06 14:10:12  maya
+ * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
+ *
  * Revision 1.32  2007/03/17 11:53:29  doda
  * プレインテキスト認証と一緒にキーボードインタラクティブ認証を使用するように設定している時、SSH認証ダイアログでプレインテキスト認証がrhosts認証と表示されるのを修正した。
  *

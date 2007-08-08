@@ -221,9 +221,16 @@ BOOL UTIL_is_sock_deeply_buffered(UTILSockWriteBuf FAR * buf)
 }
 
 #ifndef NO_I18N
+#if 1
 void UTIL_get_lang_msg(PCHAR key, PTInstVar pvar)
 {
 	GetI18nStr("TTSSH", key, pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+#else
+void UTIL_get_lang_msg(PCHAR key, PTInstVar pvar, PCHAR def)
+{
+	GetI18nStr("TTSSH", key, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		def, pvar->ts->UILanguageFile);
+#endif
 }
 
 int UTIL_get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PTInstVar pvar)
@@ -244,6 +251,9 @@ int UTIL_get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PTIns
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2007/06/06 14:10:12  maya
+ * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
+ *
  * Revision 1.3  2006/11/23 02:19:30  maya
  * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
  *

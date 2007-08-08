@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.8 2007-06-06 14:10:12 maya Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.9 2007-08-08 16:04:08 maya Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -231,9 +231,10 @@ static void cAES128_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 	if (bytes % block_size) {
 		char tmp[80];
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "AES128 encrypt error(1): bytes %d (%d)");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "AES128 encrypt error(1): bytes %d (%d)", _TRUNCATE);
 		UTIL_get_lang_msg("MSG_AES128_ENCRYPT_ERROR1", pvar);
-		_snprintf(tmp, sizeof(tmp), pvar->ts->UIMsg, bytes, block_size);
+		_snprintf_s(tmp, sizeof(tmp), _TRUNCATE,
+			pvar->ts->UIMsg, bytes, block_size);
 #else
 		_snprintf(tmp, sizeof(tmp), "AES128 encrypt error(1): bytes %d (%d)", bytes, block_size);
 #endif
@@ -244,7 +245,7 @@ static void cAES128_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 	if (EVP_Cipher(&pvar->evpcip[MODE_OUT], newbuf, buf, bytes) == 0) {
 		// TODO: failure
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "AES128 encrypt error(1): bytes %d (%d)");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "AES128 encrypt error(1): bytes %d (%d)", _TRUNCATE);
 		UTIL_get_lang_msg("MSG_AES128_ENCRYPT_ERROR2", pvar);
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -285,9 +286,9 @@ static void cAES128_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 	if (bytes % block_size) {
 		char tmp[80];
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "AES128 decrypt error(1): bytes %d (%d)");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "AES128 decrypt error(1): bytes %d (%d)", _TRUNCATE);
 		UTIL_get_lang_msg("MSG_AES128_DECRYPT_ERROR1", pvar);
-		_snprintf(tmp, sizeof(tmp), pvar->ts->UIMsg, bytes, block_size);
+		_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, pvar->ts->UIMsg, bytes, block_size);
 #else
 		_snprintf(tmp, sizeof(tmp), "AES128 decrypt error(1): bytes %d (%d)", bytes, block_size);
 #endif
@@ -298,7 +299,7 @@ static void cAES128_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 	if (EVP_Cipher(&pvar->evpcip[MODE_IN], newbuf, buf, bytes) == 0) {
 		// TODO:
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "AES128 decrypt error(2)");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "AES128 decrypt error(2)", _TRUNCATE);
 		UTIL_get_lang_msg("MSG_AES128_DECRYPT_ERROR2", pvar);
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -601,7 +602,7 @@ RSA FAR *make_key(PTInstVar pvar,
 
 	if (key == NULL || key->e == NULL || key->n == NULL) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "Error setting up RSA keys");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Error setting up RSA keys", _TRUNCATE);
 		UTIL_get_lang_msg("MSG_RSAKEY_SETUP_ERROR", pvar);
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -683,10 +684,11 @@ BOOL CRYPT_set_supported_ciphers(PTInstVar pvar, int sender_ciphers,
 
 	if (sender_ciphers == 0) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, 
-			   "The server does not support any of the TTSSH encryption algorithms.\n"
-			   "A secure connection cannot be made in the TTSSH-to-server direction.\n"
-			   "The connection will be closed.");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			"The server does not support any of the TTSSH encryption algorithms.\n"
+			"A secure connection cannot be made in the TTSSH-to-server direction.\n"
+			"The connection will be closed.",
+			_TRUNCATE);
 		UTIL_get_lang_msg("MSG_UNAVAILABLE_CIPHERS_ERROR", pvar);
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 
@@ -699,10 +701,11 @@ BOOL CRYPT_set_supported_ciphers(PTInstVar pvar, int sender_ciphers,
 		return FALSE;
 	} else if (receiver_ciphers == 0) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, 
-			   "The server does not support any of the TTSSH encryption algorithms.\n"
-			   "A secure connection cannot be made in the TTSSH-to-server direction.\n"
-			   "The connection will be closed.");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			"The server does not support any of the TTSSH encryption algorithms.\n"
+			"A secure connection cannot be made in the TTSSH-to-server direction.\n"
+			"The connection will be closed.",
+			_TRUNCATE);
 		UTIL_get_lang_msg("MSG_UNAVAILABLE_CIPHERS_ERROR", pvar);
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 
@@ -879,11 +882,12 @@ BOOL CRYPT_choose_ciphers(PTInstVar pvar)
 	if (pvar->crypt_state.sender_cipher == SSH_CIPHER_NONE
 		|| pvar->crypt_state.receiver_cipher == SSH_CIPHER_NONE) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg,
-			   "All the encryption algorithms that this program and the server both understand have been disabled.\n"
-			   "To communicate with this server, you will have to enable some more ciphers\n"
-			   "in the TTSSH Setup dialog box when you run Teraterm again.\n"
-			   "This connection will now close.");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			"All the encryption algorithms that this program and the server both understand have been disabled.\n"
+			"To communicate with this server, you will have to enable some more ciphers\n"
+			"in the TTSSH Setup dialog box when you run Teraterm again.\n"
+			"This connection will now close.",
+			_TRUNCATE);
 		UTIL_get_lang_msg("MSG_CHIPHER_NONE_ERROR", pvar);
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -935,8 +939,9 @@ int CRYPT_choose_session_key(PTInstVar pvar,
 
 	if (bit_delta < 128 || server_key_bits < 512 || host_key_bits < 512) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg,
-			   "Server RSA keys are too weak. A secure connection cannot be established.");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			"Server RSA keys are too weak. A secure connection cannot be established.",
+			_TRUNCATE);
 		UTIL_get_lang_msg("MSG_RASKEY_TOOWEAK_ERROR", pvar);
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -1281,7 +1286,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 	if (!isOK) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "No cipher selected!");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "No cipher selected!", _TRUNCATE);
 		UTIL_get_lang_msg("MSG_CHPHER_NOTSELECTED_ERROR", pvar);
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -1339,9 +1344,9 @@ static char FAR *get_cipher_name(int cipher)
 void CRYPT_get_cipher_info(PTInstVar pvar, char FAR * dest, int len)
 {
 #ifndef NO_I18N
-	strcpy(pvar->ts->UIMsg, "%s to server, %s from server");
+	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "%s to server, %s from server", _TRUNCATE);
 	UTIL_get_lang_msg("DLG_ABOUT_CIPHER_INFO", pvar);
-	_snprintf(dest, len, pvar->ts->UIMsg,
+	_snprintf_s(dest, len, _TRUNCATE, pvar->ts->UIMsg,
 			  get_cipher_name(pvar->crypt_state.sender_cipher),
 			  get_cipher_name(pvar->crypt_state.receiver_cipher));
 #else
@@ -1358,17 +1363,17 @@ void CRYPT_get_server_key_info(PTInstVar pvar, char FAR * dest, int len)
 		if (pvar->crypt_state.server_key.RSA_key == NULL
 			|| pvar->crypt_state.host_key.RSA_key == NULL) {
 #ifndef NO_I18N
-			strcpy(pvar->ts->UIMsg, "None");
+			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "None", _TRUNCATE);
 			UTIL_get_lang_msg("DLG_ABOUT_KEY_NONE", pvar);
-			strncpy(dest, pvar->ts->UIMsg, len);
+			strncpy_s(dest, len, pvar->ts->UIMsg, _TRUNCATE);
 #else
 			strncpy(dest, "None", len);
 #endif
 		} else {
 #ifndef NO_I18N
-			strcpy(pvar->ts->UIMsg, "%d-bit server key, %d-bit host key");
+			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "%d-bit server key, %d-bit host key", _TRUNCATE);
 			UTIL_get_lang_msg("DLG_ABOUT_KEY_INFO", pvar);
-			_snprintf(dest, len, pvar->ts->UIMsg,
+			_snprintf_s(dest, len, _TRUNCATE, pvar->ts->UIMsg,
 					BN_num_bits(pvar->crypt_state.server_key.RSA_key->n),
 					BN_num_bits(pvar->crypt_state.host_key.RSA_key->n));
 #else
@@ -1380,9 +1385,9 @@ void CRYPT_get_server_key_info(PTInstVar pvar, char FAR * dest, int len)
 
 	} else { // SSH2
 #ifndef NO_I18N
-			strcpy(pvar->ts->UIMsg, "%d-bit server key, %d-bit host key");
+			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "%d-bit server key, %d-bit host key", _TRUNCATE);
 			UTIL_get_lang_msg("DLG_ABOUT_KEY_INFO", pvar);
-			_snprintf(dest, len, pvar->ts->UIMsg,
+			_snprintf_s(dest, len, _TRUNCATE, pvar->ts->UIMsg,
 				pvar->server_key_bits,
 				pvar->client_key_bits);
 #else
@@ -1527,6 +1532,9 @@ void CRYPT_free_key_pair(CRYPTKeyPair FAR * key_pair)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2007/06/06 14:10:12  maya
+ * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
+ *
  * Revision 1.7  2007/01/22 13:45:19  maya
  * 表示メッセージの読み込み対応
  *

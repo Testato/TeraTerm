@@ -49,7 +49,7 @@
 				AdditionalOptions="/D&quot;_CRT_SECURE_NO_DEPRECATE&quot;&#x0D;&#x0A;"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\Teraterm\source\common;..\openssl\inc32;..\..\Teraterm\source\teraterm;..\zlib;..\matcher"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC"
 				RuntimeLibrary="1"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"

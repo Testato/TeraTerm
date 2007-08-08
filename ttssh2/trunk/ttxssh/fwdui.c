@@ -379,19 +379,19 @@ static void make_X_forwarding_spec(FWDRequestSpec FAR * spec)
 	X11_get_DISPLAY_info(spec->to_host, sizeof(spec->to_host),
 						 &spec->to_port);
 #ifndef NO_I18N
-	strcpy(pvar->ts->UIMsg, "remote X server");
+	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "remote X server", _TRUNCATE);
 	UTIL_get_lang_msg("MSG_FWD_REMOTE_XSERVER", pvar);
-	strncpy(spec->from_port_name, pvar->ts->UIMsg,
-			sizeof(spec->from_port_name));
+	strncpy_s(spec->from_port_name, sizeof(spec->from_port_name),
+			pvar->ts->UIMsg, _TRUNCATE);
 #else
 	strncpy(spec->from_port_name, "remote X server",
 			sizeof(spec->from_port_name));
 #endif
 	spec->from_port_name[sizeof(spec->from_port_name) - 1] = 0;
 #ifndef NO_I18N
-	strcpy(pvar->ts->UIMsg, "X server (screen %d)");
+	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "X server (screen %d)", _TRUNCATE);
 	UTIL_get_lang_msg("MSG_FWD_REMOTE_XSCREEN", pvar);
-	_snprintf(spec->to_port_name, sizeof(spec->to_port_name),
+	_snprintf_s(spec->to_port_name, sizeof(spec->to_port_name), _TRUNCATE,
 			  pvar->ts->UIMsg, spec->to_port - 6000);
 #else
 	_snprintf(spec->to_port_name, sizeof(spec->to_port_name),
@@ -499,7 +499,7 @@ static BOOL parse_request(FWDRequestSpec FAR * request, char FAR * str)
 		return FALSE;
 	}
 	*str = 0;
-	strncpy(request->to_host, host_start, sizeof(request->to_host));
+	strncpy_s(request->to_host, sizeof(request->to_host), host_start, _TRUNCATE);
 	request->to_host[sizeof(request->to_host) - 1] = 0;
 	*str = ':';
 	str++;
@@ -546,17 +546,17 @@ static void FWDUI_save_settings(PTInstVar pvar)
 
 			switch (spec->type) {
 			case FWD_LOCAL_TO_REMOTE:
-				_snprintf(str, str_remaining, "L%s:%s:%s",
+				_snprintf_s(str, str_remaining, _TRUNCATE, "L%s:%s:%s",
 						  spec->from_port_name, spec->to_host,
 						  spec->to_port_name);
 				break;
 			case FWD_REMOTE_TO_LOCAL:
-				_snprintf(str, str_remaining, "R%s:%s:%s",
+				_snprintf_s(str, str_remaining, _TRUNCATE, "R%s:%s:%s",
 						  spec->from_port_name, spec->to_host,
 						  spec->to_port_name);
 				break;
 			case FWD_REMOTE_X11_TO_LOCAL:
-				_snprintf(str, str_remaining, "X");
+				_snprintf_s(str, str_remaining, _TRUNCATE, "X");
 				break;
 			}
 
@@ -641,9 +641,9 @@ static void set_verbose_port(char FAR * buf, int bufsize, int port,
 							 char FAR * name)
 {
 	if (*name >= '0' && *name <= '9') {
-		strncpy(buf, name, bufsize);
+		strncpy_s(buf, bufsize, name, _TRUNCATE);
 	} else {
-		_snprintf(buf, bufsize, "%d (%s)", port, name);
+		_snprintf_s(buf, bufsize, _TRUNCATE, "%d (%s)", port, name);
 	}
 
 	buf[bufsize - 1] = 0;
@@ -668,9 +668,9 @@ static void get_spec_string(FWDRequestSpec FAR * spec, char FAR * buf,
 	switch (spec->type) {
 	case FWD_REMOTE_TO_LOCAL:
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "Remote %s to local \"%s\" port %s");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Remote %s to local \"%s\" port %s", _TRUNCATE);
 		UTIL_get_lang_msg("MSG_FWD_REMOTE", pvar);
-		_snprintf(buf, bufsize, pvar->ts->UIMsg,
+		_snprintf_s(buf, bufsize, _TRUNCATE, pvar->ts->UIMsg,
 				  verbose_from_port, spec->to_host, verbose_to_port);
 #else
 		_snprintf(buf, bufsize, "Remote %s to local \"%s\" port %s",
@@ -680,9 +680,9 @@ static void get_spec_string(FWDRequestSpec FAR * spec, char FAR * buf,
 		break;
 	case FWD_LOCAL_TO_REMOTE:
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "Local %s to remote \"%s\" port %s");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Local %s to remote \"%s\" port %s", _TRUNCATE);
 		UTIL_get_lang_msg("MSG_FWD_LOCAL", pvar);
-		_snprintf(buf, bufsize, pvar->ts->UIMsg,
+		_snprintf_s(buf, bufsize, _TRUNCATE, pvar->ts->UIMsg,
 				  verbose_from_port, spec->to_host, verbose_to_port);
 #else
 		_snprintf(buf, bufsize, "Local %s to remote \"%s\" port %s",
@@ -692,9 +692,9 @@ static void get_spec_string(FWDRequestSpec FAR * spec, char FAR * buf,
 		break;
 	case FWD_REMOTE_X11_TO_LOCAL:
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "Remote X applications to local X server");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Remote X applications to local X server", _TRUNCATE);
 		UTIL_get_lang_msg("MSG_FWD_X", pvar);
-		_snprintf(buf, bufsize, pvar->ts->UIMsg);
+		strncpy_s(buf, bufsize, pvar->ts->UIMsg, _TRUNCATE);
 #else
 		_snprintf(buf, bufsize, "Remote X applications to local X server");
 #endif
@@ -873,9 +873,10 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 			switch (specs[i].type) {
 			case FWD_REMOTE_TO_LOCAL:
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg, "You cannot have two forwardings from the same server port (%d).");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "You cannot have two forwardings from the same server port (%d).", _TRUNCATE);
 				UTIL_get_lang_msg("MSG_SAME_SERVERPORT_ERROR", pvar);
-				_snprintf(buf, sizeof(buf), pvar->ts->UIMsg, specs[i].from_port);
+				_snprintf_s(buf, sizeof(buf), _TRUNCATE,
+					pvar->ts->UIMsg, specs[i].from_port);
 #else
 				_snprintf(buf, sizeof(buf),
 						  "You cannot have two forwardings from the same server port (%d).",
@@ -884,9 +885,10 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 				break;
 			case FWD_LOCAL_TO_REMOTE:
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg, "You cannot have two forwardings from the same local port (%d).");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "You cannot have two forwardings from the same local port (%d).", _TRUNCATE);
 				UTIL_get_lang_msg("MSG_SAME_LOCALPORT_ERROR", pvar);
-				_snprintf(buf, sizeof(buf), pvar->ts->UIMsg, specs[i].from_port);
+				_snprintf_s(buf, sizeof(buf), _TRUNCATE,
+					pvar->ts->UIMsg, specs[i].from_port);
 #else
 				_snprintf(buf, sizeof(buf),
 						  "You cannot have two forwardings from the same local port (%d).",
@@ -912,9 +914,9 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 
 		if (num_unspecified_forwardings > 1) {
 #ifndef NO_I18N
-			strcpy(pvar->ts->UIMsg, "The following forwardings were not specified when this SSH session began:\n\n");
+			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "The following forwardings were not specified when this SSH session began:\n\n", _TRUNCATE);
 			UTIL_get_lang_msg("MSG_UNSPECIFYIED_FWDS_ERROR1", pvar);
-			strncpy(buf, pvar->ts->UIMsg, sizeof(buf));
+			strncpy_s(buf, sizeof(buf), pvar->ts->UIMsg, _TRUNCATE);
 #else
 			strncpy(buf,
 					"The following forwardings were not specified when this SSH session began:\n\n",
@@ -922,9 +924,9 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 #endif
 		} else {
 #ifndef NO_I18N
-			strcpy(pvar->ts->UIMsg, "The following forwarding was not specified when this SSH session began:\n\n");
+			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "The following forwarding was not specified when this SSH session began:\n\n", _TRUNCATE);
 			UTIL_get_lang_msg("MSG_UNSPECIFYIED_FWD_ERROR1", pvar);
-			strncpy(buf, pvar->ts->UIMsg, sizeof(buf));
+			strncpy_s(buf, sizeof(buf), pvar->ts->UIMsg, _TRUNCATE);
 #else
 			strncpy(buf,
 					"The following forwarding was not specified when this SSH session began:\n\n",
@@ -945,8 +947,7 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 #endif
 
 				if (buf_count < sizeof(buf)) {
-					strncpy(buf + buf_count, buf2,
-							sizeof(buf) - buf_count);
+					strncpy_s(buf + buf_count, sizeof(buf) - buf_count, buf2, _TRUNCATE);
 					buf_count += strlen(buf + buf_count);
 				}
 				if (buf_count < sizeof(buf)) {
@@ -959,11 +960,12 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 		if (buf_count < sizeof(buf)) {
 			if (num_unspecified_forwardings > 1) {
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg,
-					   "\nDue to a limitation of the SSH protocol, these forwardings will not work in the current SSH session.\n"
-					   "If you save these settings and start a new SSH session, the forwardings should work.");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+					"\nDue to a limitation of the SSH protocol, these forwardings will not work in the current SSH session.\n"
+					"If you save these settings and start a new SSH session, the forwardings should work.",
+					_TRUNCATE);
 				UTIL_get_lang_msg("MSG_UNSPECIFYIED_FWDS_ERROR2", pvar);
-				strncpy(buf + buf_count, pvar->ts->UIMsg, sizeof(buf) - buf_count);
+				strncpy_s(buf + buf_count, sizeof(buf) - buf_count, pvar->ts->UIMsg, _TRUNCATE);
 #else
 				strncpy(buf + buf_count,
 						"\nDue to a limitation of the SSH protocol, these forwardings will not work in the current SSH session.\n"
@@ -972,11 +974,12 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 #endif
 			} else {
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg,
-					   "\nDue to a limitation of the SSH protocol, this forwarding will not work in the current SSH session.\n"
-					   "If you save these settings and start a new SSH session, the forwarding should work.");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+					"\nDue to a limitation of the SSH protocol, this forwarding will not work in the current SSH session.\n"
+					"If you save these settings and start a new SSH session, the forwarding should work.",
+					_TRUNCATE);
 				UTIL_get_lang_msg("MSG_UNSPECIFYIED_FWD_ERROR2", pvar);
-				strncpy(buf + buf_count, pvar->ts->UIMsg, sizeof(buf) - buf_count);
+				strncpy_s(buf + buf_count, sizeof(buf) - buf_count, pvar->ts->UIMsg, _TRUNCATE);
 #else
 				strncpy(buf + buf_count,
 						"\nDue to a limitation of the SSH protocol, this forwarding will not work in the current SSH session.\n"
@@ -1152,7 +1155,7 @@ static BOOL end_fwd_edit_dlg(PTInstVar pvar, FWDRequestSpec FAR * spec,
 	grab_control_text(dlg, type, IDC_SSHRTLTOHOST, IDC_SSHLTRTOHOST,
 					  new_spec.to_host, sizeof(new_spec.to_host));
 	if (new_spec.to_host[0] == 0) {
-		strcpy(new_spec.to_host, "localhost");
+		strncpy_s(new_spec.to_host, sizeof(new_spec.to_host), "localhost", _TRUNCATE);
 	}
 	grab_control_text(dlg, type, IDC_SSHRTLTOPORT, IDC_SSHLTRTOPORT,
 					  new_spec.to_port_name,
@@ -1161,19 +1164,20 @@ static BOOL end_fwd_edit_dlg(PTInstVar pvar, FWDRequestSpec FAR * spec,
 	new_spec.from_port = parse_port_from_buf(new_spec.from_port_name);
 	if (new_spec.from_port < 0) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg,
-			   "Port \"%s\" is not a valid port number.\n"
-			   "Either choose a port name from the list, or enter a number between 1 and 65535.");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			"Port \"%s\" is not a valid port number.\n"
+			"Either choose a port name from the list, or enter a number between 1 and 65535.",
+			_TRUNCATE);
 		UTIL_get_lang_msg("MSG_INVALID_PORT_ERROR", pvar);
-		_snprintf(buf, sizeof(buf), pvar->ts->UIMsg,
-				  new_spec.to_port_name);
+		_snprintf_s(buf, sizeof(buf), _TRUNCATE,
+					pvar->ts->UIMsg, new_spec.to_port_name);
 #else
 		_snprintf(buf, sizeof(buf),
 				  "Port \"%s\" is not a valid port number.\n"
 				  "Either choose a port name from the list, or enter a number between 1 and 65535.",
 				  new_spec.from_port_name);
-#endif
 		buf[sizeof(buf) - 1] = 0;
+#endif
 		notify_nonfatal_error(pvar, buf);
 		return FALSE;
 	}
@@ -1181,19 +1185,20 @@ static BOOL end_fwd_edit_dlg(PTInstVar pvar, FWDRequestSpec FAR * spec,
 	new_spec.to_port = parse_port_from_buf(new_spec.to_port_name);
 	if (new_spec.to_port < 0) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg,
-			   "Port \"%s\" is not a valid port number.\n"
-			   "Either choose a port name from the list, or enter a number between 1 and 65535.");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			"Port \"%s\" is not a valid port number.\n"
+			"Either choose a port name from the list, or enter a number between 1 and 65535.",
+			_TRUNCATE);
 		UTIL_get_lang_msg("MSG_INVALID_PORT_ERROR", pvar);
-		_snprintf(buf, sizeof(buf), pvar->ts->UIMsg,
-				  new_spec.to_port_name);
+		_snprintf_s(buf, sizeof(buf), _TRUNCATE,
+					pvar->ts->UIMsg, new_spec.to_port_name);
 #else
 		_snprintf(buf, sizeof(buf),
 				  "Port \"%s\" is not a valid port number.\n"
 				  "Either choose a port name from the list, or enter a number between 1 and 65535.",
 				  new_spec.to_port_name);
-#endif
 		buf[sizeof(buf) - 1] = 0;
+#endif
 		notify_nonfatal_error(pvar, buf);
 		return FALSE;
 	}
@@ -1305,7 +1310,7 @@ static void add_forwarding_entry(PTInstVar pvar, HWND dlg)
 
 	if (result == -1) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "Unable to display forwarding edit dialog box.");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Unable to display forwarding edit dialog box.", _TRUNCATE);
 		UTIL_get_lang_msg("MSG_CREATEWINDOW_FWDEDIT_ERROR", pvar);
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -1345,7 +1350,7 @@ static void edit_forwarding_entry(PTInstVar pvar, HWND dlg)
 
 			if (result == -1) {
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg, "Unable to display forwarding edit dialog box.");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Unable to display forwarding edit dialog box.", _TRUNCATE);
 				UTIL_get_lang_msg("MSG_CREATEWINDOW_FWDEDIT_ERROR", pvar);
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -1480,7 +1485,7 @@ void FWDUI_do_forwarding_dialog(PTInstVar pvar)
 					   NULL ? cur_active : pvar->NotificationWindow,
 					   fwd_dlg_proc, (LPARAM) pvar) == -1) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "Unable to display forwarding setup dialog box.");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Unable to display forwarding setup dialog box.", _TRUNCATE);
 		UTIL_get_lang_msg("MSG_CREATEWINDOW_FWDSETUP_ERROR", pvar);
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -1492,6 +1497,9 @@ void FWDUI_do_forwarding_dialog(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2007/06/06 14:10:12  maya
+ * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
+ *
  * Revision 1.7  2007/01/04 08:36:42  maya
  * フォントを変更する部分を追加した。
  *

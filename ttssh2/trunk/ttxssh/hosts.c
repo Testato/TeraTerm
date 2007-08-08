@@ -157,8 +157,10 @@ static int begin_read_file(PTInstVar pvar, char FAR * name,
 		if (!suppress_errors) {
 			if (errno == ENOENT) {
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg, "An error occurred while trying to read a known_hosts file.\n"
-										"The specified filename does not exist.");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+					"An error occurred while trying to read a known_hosts file.\n"
+					"The specified filename does not exist.",
+					_TRUNCATE);
 				UTIL_get_lang_msg("MSG_HOSTS_READ_ENOENT_ERROR", pvar);
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -168,7 +170,7 @@ static int begin_read_file(PTInstVar pvar, char FAR * name,
 #endif
 			} else {
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg, "An error occurred while trying to read a known_hosts file.");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "An error occurred while trying to read a known_hosts file.", _TRUNCATE);
 				UTIL_get_lang_msg("MSG_HOSTS_READ_ERROR", pvar);
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -188,7 +190,7 @@ static int begin_read_file(PTInstVar pvar, char FAR * name,
 		if (pvar->hosts_state.file_data == NULL) {
 			if (!suppress_errors) {
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg, "Memory ran out while trying to allocate space to read a known_hosts file.");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Memory ran out while trying to allocate space to read a known_hosts file.", _TRUNCATE);
 				UTIL_get_lang_msg("MSG_HOSTS_ALLOC_ERROR", pvar);
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -202,7 +204,7 @@ static int begin_read_file(PTInstVar pvar, char FAR * name,
 	} else {
 		if (!suppress_errors) {
 #ifndef NO_I18N
-			strcpy(pvar->ts->UIMsg, "An error occurred while trying to read a known_hosts file.");
+			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "An error occurred while trying to read a known_hosts file.", _TRUNCATE);
 			UTIL_get_lang_msg("MSG_HOSTS_READ_ERROR", pvar);
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -222,7 +224,7 @@ static int begin_read_file(PTInstVar pvar, char FAR * name,
 	if (amount_read != length) {
 		if (!suppress_errors) {
 #ifndef NO_I18N
-			strcpy(pvar->ts->UIMsg, "An error occurred while trying to read a known_hosts file.");
+			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "An error occurred while trying to read a known_hosts file.", _TRUNCATE);
 			UTIL_get_lang_msg("MSG_HOSTS_READ_ERROR", pvar);
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -660,8 +662,10 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 		if (!is_pattern_char(ch) || ch == '*' || ch == '?') {
 			if (!suppress_errors) {
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg, "The host name contains an invalid character.\n"
-										"This session will be terminated.");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+					"The host name contains an invalid character.\n"
+					"This session will be terminated.",
+					_TRUNCATE);
 				UTIL_get_lang_msg("MSG_HOSTS_HOSTNAME_INVALID_ERROR", pvar);
 				notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -677,8 +681,10 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 	if (i == 0) {
 		if (!suppress_errors) {
 #ifndef NO_I18N
-			strcpy(pvar->ts->UIMsg, "The host name should not be empty.\n"
-									"This session will be terminated.");
+			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+				"The host name should not be empty.\n"
+				"This session will be terminated.",
+				_TRUNCATE);
 			UTIL_get_lang_msg("MSG_HOSTS_HOSTNAME_EMPTY_ERROR", pvar);
 			notify_fatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -840,17 +846,12 @@ static void init_hosts_dlg(PTInstVar pvar, HWND dlg)
 	for (i = 0; (ch = buf[i]) != 0 && ch != '#'; i++) {
 		buf2[i] = ch;
 	}
-	if (sizeof(buf2) - i - 1 > 0) {
-		strncpy(buf2 + i, pvar->hosts_state.prefetched_hostname,
-				sizeof(buf2) - i - 1);
-	}
+	strncpy_s(buf2 + i, sizeof(buf2) - i,
+			  pvar->hosts_state.prefetched_hostname, _TRUNCATE);
 	j = i + strlen(buf2 + i);
 	for (; buf[i] == '#'; i++) {
 	}
-	if (sizeof(buf2) - j - 1 > 0) {
-		strncpy(buf2 + j, buf + i, sizeof(buf2) - j - 1);
-	}
-	buf2[sizeof(buf2) - 1] = 0;
+	strncpy_s(buf2 + j, sizeof(buf2) - j, buf + i, _TRUNCATE);
 
 	SetDlgItemText(dlg, IDC_HOSTWARNING, buf2);
 
@@ -894,23 +895,22 @@ static char FAR *format_host_key(PTInstVar pvar)
 	enum hostkey_type type = pvar->hosts_state.hostkey.type;
 
 	if (type == KEY_RSA1) {
-		result = (char FAR *) malloc(host_len
-										   + 50 +
-										   get_ushort16_MSBfirst(pvar->hosts_state.hostkey.exp) /
-										   3 +
-										   get_ushort16_MSBfirst(pvar->hosts_state.hostkey.mod) /
-										   3);
+		int result_len = host_len + 50 +
+						 get_ushort16_MSBfirst(pvar->hosts_state.hostkey.exp) / 3 +
+						 get_ushort16_MSBfirst(pvar->hosts_state.hostkey.mod) / 3;
+		result = (char FAR *) malloc(result_len);
 
-		strcpy(result, pvar->hosts_state.prefetched_hostname);
+		strncpy_s(result, result_len, pvar->hosts_state.prefetched_hostname, _TRUNCATE);
 		index = host_len;
 
-		sprintf(result + index, " %d ", pvar->hosts_state.hostkey.bits);
+		_snprintf_s(result + index, result_len - host_len, _TRUNCATE,
+			" %d ", pvar->hosts_state.hostkey.bits);
 		index += strlen(result + index);
 		index += print_mp_int(result + index, pvar->hosts_state.hostkey.exp);
 		result[index] = ' ';
 		index++;
 		index += print_mp_int(result + index, pvar->hosts_state.hostkey.mod);
-		strcpy(result + index, " \r\n");
+		strncpy_s(result + index, result_len - index, " \r\n", _TRUNCATE);
 
 	} else if (type == KEY_RSA || type == KEY_DSA) {
 		Key *key = &pvar->hosts_state.hostkey;
@@ -934,7 +934,7 @@ static char FAR *format_host_key(PTInstVar pvar)
 			}
 
 			// setup
-			_snprintf(result, msize, "%s %s %s\r\n", 
+			_snprintf_s(result, msize, _TRUNCATE, "%s %s %s\r\n",
 				pvar->hosts_state.prefetched_hostname, 
 				get_sshname_from_key(key),
 				uu);
@@ -959,8 +959,10 @@ static void add_host_key(PTInstVar pvar)
 
 	if (name == NULL || name[0] == 0) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "The host and its key cannot be added, because no known-hosts file has been specified.\n"
-								"Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			"The host and its key cannot be added, because no known-hosts file has been specified.\n"
+			"Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.",
+			_TRUNCATE);
 		UTIL_get_lang_msg("MSG_HOSTS_FILE_UNSPECIFY_ERROR", pvar);
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -984,8 +986,10 @@ static void add_host_key(PTInstVar pvar)
 		if (fd == -1) {
 			if (errno == EACCES) {
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg, "An error occurred while trying to write the host key.\n"
-										"You do not have permission to write to the known-hosts file.");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+					"An error occurred while trying to write the host key.\n"
+					"You do not have permission to write to the known-hosts file.",
+					_TRUNCATE);
 				UTIL_get_lang_msg("MSG_HOSTS_WRITE_EACCES_ERROR", pvar);
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -995,8 +999,10 @@ static void add_host_key(PTInstVar pvar)
 #endif
 			} else {
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg, "An error occurred while trying to write the host key.\n"
-										"The host key could not be written.");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+					"An error occurred while trying to write the host key.\n"
+					"The host key could not be written.",
+					_TRUNCATE);
 				UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar);
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -1014,8 +1020,10 @@ static void add_host_key(PTInstVar pvar)
 
 		if (amount_written != length || close_result == -1) {
 #ifndef NO_I18N
-			strcpy(pvar->ts->UIMsg, "An error occurred while trying to write the host key.\n"
-									"The host key could not be written.");
+			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+				"An error occurred while trying to write the host key.\n"
+				"The host key could not be written.",
+				_TRUNCATE);
 			UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar);
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -1049,8 +1057,10 @@ static void delete_different_key(PTInstVar pvar)
 
 	if (name == NULL || name[0] == 0) {
 #ifndef NO_I18N
-		strcpy(pvar->ts->UIMsg, "The host and its key cannot be added, because no known-hosts file has been specified.\n"
-								"Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
+		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			"The host and its key cannot be added, because no known-hosts file has been specified.\n"
+			"Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.",
+			_TRUNCATE);
 		UTIL_get_lang_msg("MSG_HOSTS_FILE_UNSPECIFY_ERROR", pvar);
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -1080,8 +1090,10 @@ static void delete_different_key(PTInstVar pvar)
 		if (fd == -1) {
 			if (errno == EACCES) {
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg, "An error occurred while trying to write the host key.\n"
-										"You do not have permission to write to the known-hosts file.");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+					"An error occurred while trying to write the host key.\n"
+					"You do not have permission to write to the known-hosts file.",
+					_TRUNCATE);
 				UTIL_get_lang_msg("MSG_HOSTS_WRITE_EACCES_ERROR", pvar);
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -1091,8 +1103,10 @@ static void delete_different_key(PTInstVar pvar)
 #endif
 			} else {
 #ifndef NO_I18N
-				strcpy(pvar->ts->UIMsg, "An error occurred while trying to write the host key.\n"
-										"The host key could not be written.");
+				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+					"An error occurred while trying to write the host key.\n"
+					"The host key could not be written.",
+					_TRUNCATE);
 				UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar);
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -1218,8 +1232,10 @@ error1:
 		close_result = _close(fd);
 		if (amount_written != length || close_result == -1) {
 #ifndef NO_I18N
-			strcpy(pvar->ts->UIMsg, "An error occurred while trying to write the host key.\n"
-									"The host key could not be written.");
+			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+				"An error occurred while trying to write the host key.\n"
+				"The host key could not be written.",
+				_TRUNCATE);
 			UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar);
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 #else
@@ -1620,6 +1636,9 @@ void HOSTS_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  2007/06/06 14:10:12  maya
+ * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
+ *
  * Revision 1.15  2007/01/04 08:36:42  maya
  * フォントを変更する部分を追加した。
  *

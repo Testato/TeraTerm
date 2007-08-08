@@ -46,7 +46,7 @@ void X11_get_DISPLAY_info(char FAR * name_buf, int name_buf_len,
 {
 	char FAR *DISPLAY = getenv("DISPLAY");
 
-	strncpy(name_buf, "localhost", name_buf_len);
+	strncpy_s(name_buf, name_buf_len, "localhost", _TRUNCATE);
 	*port = 6000;
 
 	if (DISPLAY != NULL) {
@@ -58,16 +58,13 @@ void X11_get_DISPLAY_info(char FAR * name_buf, int name_buf_len,
 		if (i > 0) {
 			int num_chars = __min(name_buf_len - 1, i);
 
-			strncpy(name_buf, DISPLAY, num_chars);
-			name_buf[num_chars] = 0;
+			strncpy_s(name_buf, num_chars, DISPLAY, _TRUNCATE);
 		}
 
 		if (DISPLAY[i] == ':') {
 			*port = atoi(DISPLAY + i + 1) + 6000;
 		}
 	}
-
-	name_buf[name_buf_len - 1] = 0;
 }
 
 X11AuthData FAR *X11_load_local_auth_data(int screen_num)
@@ -252,8 +249,10 @@ int X11_unspoofing_filter(void FAR * void_closure, int direction,
 		default:
 		case MERGE_GOT_BAD_DATA:
 #ifndef NO_I18N
-			strcpy(closure->pvar->ts->UIMsg,"Remote X application sent incorrect authentication data.\n"
-											"Its X session is being cancelled.");
+			strncpy_s(closure->pvar->ts->UIMsg, sizeof(closure->pvar->ts->UIMsg),
+				"Remote X application sent incorrect authentication data.\n"
+				"Its X session is being cancelled.",
+				_TRUNCATE);
 			UTIL_get_lang_msg("MSG_X_AUTH_ERROR", closure->pvar);
 			notify_nonfatal_error(closure->pvar, closure->pvar->ts->UIMsg);
 #else
@@ -271,6 +270,9 @@ int X11_unspoofing_filter(void FAR * void_closure, int direction,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2007/06/06 14:10:12  maya
+ * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
+ *
  * Revision 1.3  2006/11/23 02:19:30  maya
  * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
  *
