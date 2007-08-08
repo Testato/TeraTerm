@@ -28,7 +28,7 @@ static void getSetupFName(char *SetupFName) {
 		homedir[i-homedir] = 0;
 	}
 
-	GetDefaultSetupFName(SetupFName, homedir);
+	GetDefaultSetupFName(SetupFName, homedir, sizeof(homedir));
 }
 
 static LCID getLCID() {
@@ -888,7 +888,7 @@ private:
     }
 
     int sendToSocketFormat(SOCKET s, const char* format, ...) {
-        char buf[1024];
+        char buf[1025];
         int len;
         va_list arglist;
         va_start(arglist, format);

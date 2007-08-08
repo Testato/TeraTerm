@@ -1,5 +1,5 @@
 /*
- * $Id: common.h,v 1.3 2006-08-03 13:33:18 yutakakn Exp $
+ * $Id: common.h,v 1.4 2007-08-08 16:02:19 maya Exp $
  */
 
 #ifndef _YCL_COMMON_H_
@@ -35,7 +35,7 @@ HINSTANCE GetInstanceHandle();
 //{
 
 inline void OutputDebugStringF(const char* format, ...) {
-	char buffer[1024];
+	char buffer[1025];
 	va_list arglist;
 	va_start(arglist, format);
 	wvsprintf(buffer, format, arglist);
@@ -52,7 +52,7 @@ inline void OutputDebugStringF(const char* format, ...) {
 
 inline bool YclAssert(bool condition, const char* message) {
 	if (!condition) {
-		char buffer[1024];
+		char buffer[1025];
 		wsprintf(buffer, "Assertion Failed!!\n\n"
 						 "  %s\n\n"
 						 "if ABORT button pushed then exit this program,\n"
@@ -116,6 +116,9 @@ void _free_dbg(void* pointer, const char* filename, int lineno);
 /*
  * $Changes
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2006/08/03 13:33:18  yutakakn
+ * (none)
+ *
  * Revision 1.1  2003/05/26 15:31:55  sugoroku
  * Initial revision
  *
