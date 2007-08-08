@@ -489,18 +489,18 @@ begin
             RegDeleteKeyIfEmpty(HKEY_CURRENT_USER, 'Software\ShinpeiTools');
           end;
         end;
-        if RegKeyExists(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm') then begin
-          confmsg := Format(conf, ['HKEY_CLASSES_ROOT' + '\Folder\shell\cygterm']);
-          res := MsgBox(confmsg, mbInformation, MB_YESNO);
-          if res = IDYES then begin
-            RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm');
-          end;
-        end;
         if RegKeyExists(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm') then begin
           confmsg := Format(conf, ['HKEY_CURRENT_USER' + '\Software\Classes\Folder\shell\cygterm']);
           res := MsgBox(confmsg, mbInformation, MB_YESNO);
           if res = IDYES then begin
             RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm');
+          end;
+        end;
+        if RegKeyExists(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm') then begin
+          confmsg := Format(conf, ['HKEY_CLASSES_ROOT' + '\Folder\shell\cygterm']);
+          res := MsgBox(confmsg, mbInformation, MB_YESNO);
+          if res = IDYES then begin
+            RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm');
           end;
         end;
 
