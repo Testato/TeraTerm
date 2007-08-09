@@ -320,13 +320,24 @@ void FreeBuffer()
   }
 }
 
-
 void BuffAllSelect()
 {
 	SelectStart.x = 0;
 	SelectStart.y = 0;
 	SelectEnd.x = NumOfColumns - 1;
 	SelectEnd.y = BuffEnd - 1;
+}
+
+void BuffDisplayedSelect()
+{
+	int X, Y;
+	DispConvWinToScreen(0, 0, &X, &Y, NULL);
+	SelectStart.x = X;
+	SelectStart.y = Y + PageStart;
+	SelectEnd.x = 0;
+	SelectEnd.y = SelectStart.y + NumOfLines;
+//	SelectEnd.x = X + NumOfColumns;
+//	SelectEnd.y = Y + PageStart + NumOfLines - 1;
 }
 
 void BuffReset()
@@ -986,7 +997,7 @@ void BuffCBCopy(BOOL Table)
   CBPtr[k] = 0;
 #ifndef NO_COPYLINE_FIX
     LineContinued = FALSE;
-    if (ts.EnableContinuedLineCopy && j!=SelectEnd.y && !BoxSelect)
+    if (ts.EnableContinuedLineCopy && j!=SelectEnd.y && !BoxSelect && j<BuffEnd-1)
     {
       LONG NextTmpPtr = NextLinePtr(TmpPtr);
       if ((AttrBuff[NextTmpPtr] & AttrLineContinued) != 0)
@@ -2600,6 +2611,10 @@ void SetLineContinued()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2007/08/07 14:00:05  yutakapon
+ * URLクリッカブルへのEmacs対応。行末に \ が来ている場合は、次の行に続くという意味で emacs が
+ * 自動で挿入する文字なので、URLには含めないようにする。
+ *
  * Revision 1.13  2007/07/04 11:40:49  doda
  * タブがすべてクリアされていた時、VTCompatTabの設定に関わらず常にタブで自動改行が発生しなかったのを修正した。
  *

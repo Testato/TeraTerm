@@ -195,6 +195,7 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_COMMAND(ID_EDIT_CLEARSCREEN, OnEditClearScreen)
 	ON_COMMAND(ID_EDIT_CLEARBUFFER, OnEditClearBuffer)
 	ON_COMMAND(ID_EDIT_SELECTALL, OnSelectAllBuffer)
+	ON_COMMAND(ID_EDIT_SELECTDISPLAYED, OnSelectDisplayedBuffer)
 	ON_COMMAND(ID_SETUP_ADDITIONALSETTINGS, OnExternalSetup)
 	ON_COMMAND(ID_SETUP_TERMINAL, OnSetupTerminal)
 	ON_COMMAND(ID_SETUP_WINDOW, OnSetupWindow)
@@ -846,6 +847,9 @@ void CVTWindow::InitMenu(HMENU *Menu)
   GetMenuString(EditMenu, ID_EDIT_CLEARBUFFER, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
   get_lang_msg("MENU_EDIT_CLBUFFER", ts.UIMsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_EDIT_CLEARBUFFER, MF_BYCOMMAND, ID_EDIT_CLEARBUFFER, ts.UIMsg);
+  GetMenuString(EditMenu, ID_EDIT_SELECTDISPLAYED, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_SELECTDISPLAYED", ts.UIMsg, ts.UILanguageFile);
+  ModifyMenu(EditMenu, ID_EDIT_SELECTDISPLAYED, MF_BYCOMMAND, ID_EDIT_SELECTDISPLAYED, ts.UIMsg);
   GetMenuString(EditMenu, ID_EDIT_SELECTALL, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
   get_lang_msg("MENU_EDIT_SELECTALL", ts.UIMsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_EDIT_SELECTALL, MF_BYCOMMAND, ID_EDIT_SELECTALL, ts.UIMsg);
@@ -3183,6 +3187,16 @@ void CVTWindow::OnSelectAllBuffer()
 	ChangeSelectRegion();
 }
 
+void CVTWindow::OnSelectDisplayedBuffer()
+{
+	// Select Displayed Buffer
+	POINT p = {0, 0};
+
+	ButtonDown(p, IdLeftButton);
+	BuffDisplayedSelect();
+	ButtonUp(FALSE);
+	ChangeSelectRegion();
+}
 
 
 // Additional settingsで使うタブコントロールの親ハンドル
@@ -5060,6 +5074,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.73  2007/08/08 15:56:35  maya
+ * 安全な関数を使用するように変更した。
+ *
  * Revision 1.72  2007/07/20 21:55:04  maya
  * シリアルポートダイアログでボーレートが変更されることがあるので、終了時にタイトルを変更するようにした。
  *

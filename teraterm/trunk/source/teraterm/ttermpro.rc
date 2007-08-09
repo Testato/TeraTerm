@@ -416,6 +416,7 @@ BEGIN
         MENUITEM "Clear &screen",               ID_EDIT_CLEARSCREEN
         MENUITEM "Clear &buffer",               ID_EDIT_CLEARBUFFER
         MENUITEM SEPARATOR
+        MENUITEM "Select &displayed",           ID_EDIT_SELECTDISPLAYED
         MENUITEM "Select &all",                 ID_EDIT_SELECTALL
     END
     POPUP "&Setup"
