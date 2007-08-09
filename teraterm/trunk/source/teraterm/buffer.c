@@ -324,8 +324,10 @@ void BuffAllSelect()
 {
 	SelectStart.x = 0;
 	SelectStart.y = 0;
-	SelectEnd.x = NumOfColumns - 1;
-	SelectEnd.y = BuffEnd - 1;
+	SelectEnd.x = 0;
+	SelectEnd.y = BuffEnd;
+//	SelectEnd.x = NumOfColumns;
+//	SelectEnd.y = BuffEnd - 1;
 }
 
 void BuffDisplayedSelect()
@@ -2611,6 +2613,9 @@ void SetLineContinued()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  2007/08/09 09:16:57  doda
+ * “表示画面を選択”を追加。
+ *
  * Revision 1.14  2007/08/07 14:00:05  yutakapon
  * URLクリッカブルへのEmacs対応。行末に \ が来ている場合は、次の行に続くという意味で emacs が
  * 自動で挿入する文字なので、URLには含めないようにする。
