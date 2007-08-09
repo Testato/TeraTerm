@@ -153,6 +153,7 @@
 #define HlpMacroCommandBeep 92001
 #define HlpMacroCommandBplusrecv 92002
 #define HlpMacroCommandBplussend 92003
+#define HlpMacroCommandBreak 92120
 #define HlpMacroCommandCall 92004
 #define HlpMacroCommandChangedir 92005
 #define HlpMacroCommandClearscreen 92006
@@ -246,6 +247,8 @@
 #define HlpMacroCommandStrlen 92095
 #define HlpMacroCommandStrscan 92096
 #define HlpMacroCommandTestlink 92097
+#define HlpMacroCommandTolower 92118
+#define HlpMacroCommandToupper 92119
 #define HlpMacroCommandUnlink 92099
 #define HlpMacroCommandVar2clipb 92114
 #define HlpMacroCommandWait 92100
