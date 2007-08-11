@@ -362,6 +362,7 @@ struct tttset {
   WORD DisableTCPEchoCR;  // TCPLocalEcho/TCPCRSend ‚ð–³Œø‚É‚·‚é (maya 2007.4.25)
   int ConnectingTimeout;
   WORD VTCompatTab;
+  WORD TelKeepAliveInterval;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -724,6 +725,8 @@ typedef TKeyMap far *PKeyMap;
 	char *Locale;
 	int *CodePage;
 	int *ConnetingTimeout;
+
+	time_t LastSendTime;
   }TComVar;
 typedef TComVar far *PComVar;
 
@@ -760,8 +763,11 @@ typedef TMap far *PMap;
  * Increment the number of this macro value
  * when you change TMap or member of TMap.
  *
+ * - At version 4.54, ttset_memfilemap was replaced with ttset_memfilemap_3.
+ *   added tttset.TelKeepAliveInterval.
+ *
  * - At version 4.53, ttset_memfilemap was replaced with ttset_memfilemap_2.
  *   added tttset.VTCompatTab.
  */
 
-#define TT_FILEMAPNAME "ttset_memfilemap_2"
+#define TT_FILEMAPNAME "ttset_memfilemap_3"

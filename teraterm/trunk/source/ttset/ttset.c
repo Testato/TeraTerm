@@ -870,6 +870,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   ts->TelPort =
     GetPrivateProfileInt(Section,"TelPort",23,FName);
 
+  /* Telnet keep-alive packet(NOP command) interval -- special option */
+  ts->TelKeepAliveInterval =
+    GetPrivateProfileInt(Section,"TelKeepAliveInterval", 300, FName);
+
   /* Local echo for non-telnet */
   ts->TCPLocalEcho = GetOnOff(Section,"TCPLocalEcho",FName,FALSE);
 
@@ -1595,6 +1599,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
   /* TCP port num for telnet -- special option */
   WriteUint(Section,"TelPort",FName,ts->TelPort);
+
+  /* Telnet keep-alive packet(NOP command) interval -- special option */
+  WriteUint(Section,"TelKeepAliveInterval", FName, ts->TelKeepAliveInterval);
 
   /* Local echo for non-telnet */
   WriteOnOff(Section,"TCPLocalEcho",FName,ts->TCPLocalEcho);
@@ -2517,6 +2524,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.41  2007/08/08 15:59:46  maya
+ * 安全な関数を使用するように変更した。
+ *
  * Revision 1.40  2007/07/23 14:23:03  maya
  * シリアル接続のCOM最大ポートを200まで拡張した。
  *

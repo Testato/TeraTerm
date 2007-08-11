@@ -2405,6 +2405,8 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 	TelEnableMyOpt(BINARY);
 	TelEnableHisOpt(BINARY);
       }
+
+      TelStartKeepAliveThread();
     }
     // TCPLocalEcho/TCPCRSend を無効にする (maya 2007.4.25)
     else if (!ts.DisableTCPEchoCR) {
@@ -5074,6 +5076,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.74  2007/08/09 09:16:57  doda
+ * “表示画面を選択”を追加。
+ *
  * Revision 1.73  2007/08/08 15:56:35  maya
  * 安全な関数を使用するように変更した。
  *

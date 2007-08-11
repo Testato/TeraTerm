@@ -27,6 +27,7 @@
 #include <stdio.h> /* for _snprintf() */
 #include "WSAAsyncGetAddrInfo.h"
 #endif /* NO_INET6 */
+#include <time.h>
 
 static SOCKET OpenSocket(PComVar);
 static void AsyncConnect(PComVar);
@@ -351,6 +352,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
   cv->Locale = ts->Locale;
   cv->CodePage = &ts->CodePage;
   cv->ConnetingTimeout = &ts->ConnectingTimeout;
+  cv->LastSendTime = time(NULL);
 
   if ((ts->PortType!=IdSerial) && (strlen(ts->HostName)==0))
   {
@@ -1113,6 +1115,10 @@ void CommSend(PComVar cv)
 
   if ( Max<=0 ) return;
   if ( Max > cv->OutBuffCount ) Max = cv->OutBuffCount;
+
+  if (cv->PortType == IdTCPIP && cv->TelFlag) {
+    cv->LastSendTime = time(NULL);
+  }
 
   C = Max;
   delay = 0;

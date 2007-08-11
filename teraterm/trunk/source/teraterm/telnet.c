@@ -11,6 +11,8 @@
 #include "ttcommon.h"
 #include "ttwinman.h"
 #include "commlib.h"
+#include <time.h>
+#include <process.h>
 
 #include "telnet.h"
 
@@ -39,6 +41,9 @@ typedef struct {
 typedef TelRec *PTelRec;
 
 static TelRec tr;
+
+static HANDLE keepalive_thread = (HANDLE)-1L;
+int nop_interval = 0;
 
 void DefaultTelRec()
 {
@@ -88,6 +93,8 @@ void EndTelnet()
     tr.LogFile = 0;
     _lclose(tr.LogFile);
   }
+
+  TelStopKeepAliveThread();
 }
 
 void TelWriteLog1(BYTE b)
@@ -724,4 +731,55 @@ void TelChangeEcho()
     TelEnableHisOpt(ECHO);
   else
     TelDisableHisOpt(ECHO);
+}
+
+void TelSendNOP()
+{
+  BYTE Str[2];
+
+  Str[0] = IAC;
+  Str[1] = NOP;
+  CommRawOut(&cv,Str,2);
+  CommSend(&cv);
+  if (tr.LogFile!=0)
+    TelWriteLog(Str,2);
+}
+
+static unsigned _stdcall TelKeepAliveThread(void *dummy) {
+  static int instance = 0;
+
+  if (instance > 0)
+    return 0;
+  instance++;
+
+  while (cv.Open && nop_interval > 0) {
+    if (time(NULL) >= cv.LastSendTime + nop_interval) {
+      TelSendNOP();
+    }
+
+    Sleep(100);
+  }
+  return 0;
+}
+
+void TelStartKeepAliveThread() {
+  unsigned tid;
+
+  if (ts.TelKeepAliveInterval > 0) {
+    nop_interval = ts.TelKeepAliveInterval;
+
+    keepalive_thread = (HANDLE)_beginthreadex(NULL, 0, TelKeepAliveThread, NULL, 0, &tid);
+    if (keepalive_thread == (HANDLE)-1) {
+      nop_interval = 0;
+    }
+  }
+}
+
+void TelStopKeepAliveThread() {
+  if (keepalive_thread != (HANDLE)-1L) {
+    nop_interval = 0;
+    WaitForSingleObject(keepalive_thread, INFINITE);
+    CloseHandle(keepalive_thread);
+    keepalive_thread = (HANDLE)-1L;
+  }
 }
