@@ -86,7 +86,6 @@ void TelSendAYT();
 void TelSendBreak();
 void TelChangeEcho();
 void TelSendNOP();
-void TelCheckIdle(time_t lasttime);
 void TelStartKeepAliveThread();
 void TelStopKeepAliveThread();
 
