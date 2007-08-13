@@ -2569,7 +2569,7 @@ void CVTWindow::OnFileNewConnection()
       {
         Command[8] = 0;
         strncat_s(Command,sizeof(Command)," /C=",_TRUNCATE);
-        uint2str(GetHNRec.ComPort,&Command[strlen(Command)],sizeof(Command)-strlen(Command),2);
+        uint2str(GetHNRec.ComPort,&Command[strlen(Command)],sizeof(Command)-strlen(Command),3);
       }
       else {
         strncpy_s(Command2, sizeof(Command2), &Command[9], _TRUNCATE);
@@ -5076,6 +5076,11 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.75  2007/08/11 08:25:17  doda
+ * telnet接続でのkeep-aliveパケット送信を実装。
+ * - 一定時間パケットの送信を行わなかった時、TELNET NOPコマンドを送信する。
+ * - 設定パラメータTelKeepAliveIntervalを追加。デフォルトは300(秒)。0でOFF。
+ *
  * Revision 1.74  2007/08/09 09:16:57  doda
  * “表示画面を選択”を追加。
  *

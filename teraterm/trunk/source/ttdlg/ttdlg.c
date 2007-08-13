@@ -1139,7 +1139,7 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
       if ((comports = DetectComPorts(ComPortTable, ts->MaxComPort)) > 0) {
 	  for (i=0; i<comports; i++) {
-	      uint2str(ComPortTable[i], &Temp[3], sizeof(Temp)-3, 2);
+	      uint2str(ComPortTable[i], &Temp[3], sizeof(Temp)-3, 3);
 	      SendDlgItemMessage(Dialog, IDC_SERIALPORT, CB_ADDSTRING,
 				0, (LPARAM)Temp);
 	      if (ComPortTable[i] == ts->ComPort) {
@@ -1151,7 +1151,7 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  DisableDlgItem(Dialog, IDC_SERIALPORT_LABEL, IDC_SERIALPORT_LABEL);
       } else {
 	for (i=1; i<=ts->MaxComPort; i++) {
-	    uint2str(i,&Temp[3],sizeof(Temp)-3,2);
+	    uint2str(i,&Temp[3],sizeof(Temp)-3,3);
 	    SendDlgItemMessage(Dialog, IDC_SERIALPORT, CB_ADDSTRING,
 				0, (LPARAM)Temp);
 	}
@@ -3013,6 +3013,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.28  2007/08/08 15:57:56  maya
+ * 安全な関数を使用するように変更した。
+ *
  * Revision 1.27  2007/07/23 14:22:38  maya
  * シリアル接続のCOM最大ポートを200まで拡張した。
  *

@@ -259,6 +259,7 @@ void uint2str(UINT i, PCHAR Str, int destlen, int len)
 {
   char Temp[20];
 
+  memset(Temp, 0, sizeof(Temp));
   _snprintf_s(Temp,sizeof(Temp),_TRUNCATE,"%u",i);
   Temp[len] = 0;
   strncpy_s(Str,destlen,Temp,_TRUNCATE);

@@ -557,7 +557,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 
     case IdSerial:
       strncpy_s(P, sizeof(P),"COM", _TRUNCATE);
-      uint2str(ts->ComPort,&P[3],sizeof(P)-3,2);
+      uint2str(ts->ComPort,&P[3],sizeof(P)-3,3);
 #ifdef TERATERM32
       strncpy_s(ErrMsg, sizeof(ErrMsg),P, _TRUNCATE);
       strncpy_s(P, sizeof(P),"\\\\.\\", _TRUNCATE);
@@ -680,7 +680,7 @@ void CommThread(void *arg)
   char Temp[20];
 
   strncpy_s(Temp, sizeof(Temp),READENDNAME, _TRUNCATE);
-  uint2str(cv->ComPort,&Temp[strlen(Temp)],sizeof(Temp)-strlen(Temp),2);
+  uint2str(cv->ComPort,&Temp[strlen(Temp)],sizeof(Temp)-strlen(Temp),3);
   REnd = OpenEvent(EVENT_ALL_ACCESS,FALSE, Temp);
   while (TRUE) {
     if (WaitCommEvent(cv->ComID,&Evt,NULL))
@@ -817,7 +817,7 @@ void CommStart(PComVar cv, LONG lParam)
 
     case IdSerial:
 #ifdef TERATERM32
-      uint2str(cv->ComPort,Temp2,sizeof(Temp2),2);
+      uint2str(cv->ComPort,Temp2,sizeof(Temp2),3);
       strncpy_s(Temp, sizeof(Temp),READENDNAME, _TRUNCATE);
       strncat_s(Temp, sizeof(Temp),Temp2, _TRUNCATE);
       ReadEnd = CreateEvent(NULL,FALSE,FALSE,Temp);

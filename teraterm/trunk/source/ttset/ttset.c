@@ -1351,7 +1351,7 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
   WritePrivateProfileString(Section,"RussKeyb",Temp,FName);
 
   /* Serial port ID */
-  uint2str(ts->ComPort,Temp,sizeof(Temp),2);
+  uint2str(ts->ComPort,Temp,sizeof(Temp),3);
   WritePrivateProfileString(Section,"ComPort",Temp,FName);
 
   /* Baud rate */
@@ -2524,6 +2524,11 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.42  2007/08/11 08:25:40  doda
+ * telnet接続でのkeep-aliveパケット送信を実装。
+ * - 一定時間パケットの送信を行わなかった時、TELNET NOPコマンドを送信する。
+ * - 設定パラメータTelKeepAliveIntervalを追加。デフォルトは300(秒)。0でOFF。
+ *
  * Revision 1.41  2007/08/08 15:59:46  maya
  * 安全な関数を使用するように変更した。
  *
