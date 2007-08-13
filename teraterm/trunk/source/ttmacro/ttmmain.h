@@ -32,9 +32,7 @@ public:
 
 protected:
 	HICON m_hIcon;
-#ifndef NO_I18N
 	HFONT DlgFont;
-#endif
 
 	//{{AFX_MSG(CCtrlWindow)
 	virtual BOOL OnInitDialog();

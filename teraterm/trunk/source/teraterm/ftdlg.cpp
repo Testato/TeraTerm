@@ -30,11 +30,7 @@ BEGIN_MESSAGE_MAP(CFileTransDlg, CDialog)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-#ifndef NO_I18N
 BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv, PTTSet pts)
-#else
-BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv)
-#endif
 {
   BOOL Ok;
   WNDCLASS wc;
@@ -42,11 +38,9 @@ BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv)
   fv = pfv;
   cv = pcv;
   cv->FilePause &= ~fv->OpId;
-#ifndef NO_I18N
   ts = pts;
   LOGFONT logfont;
   HFONT font;
-#endif
 
   wc.style = CS_PARENTDC;
   wc.lpfnWndProc = AfxWndProc;
@@ -72,7 +66,6 @@ BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv)
 
   fv->HWin = GetSafeHwnd();
 
-#ifndef NO_I18N
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
   GetObject(font, sizeof(LOGFONT), &logfont);
   if (get_lang_font("DLG_SYSTEM_FONT", fv->HWin, &logfont, &DlgFont, ts->UILanguageFile)) {
@@ -86,7 +79,6 @@ BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv)
 	SendDlgItemMessage(IDCANCEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
 	SendDlgItemMessage(IDC_TRANSHELP, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
   }
-#endif
 
   return Ok;
 }
@@ -96,24 +88,14 @@ void CFileTransDlg::ChangeButton(BOOL PauseFlag)
   Pause = PauseFlag;
   if (Pause)
   {
-#ifndef NO_I18N
-    strncpy_s(ts->UIMsg, sizeof(ts->UIMsg), "&Start", _TRUNCATE);
-	get_lang_msg("DLG_FILETRANS_START", ts->UIMsg, ts->UILanguageFile);
+    get_lang_msg("DLG_FILETRANS_START", ts->UIMsg, sizeof(ts->UIMsg), "&Start", ts->UILanguageFile);
     SetDlgItemText(IDC_TRANSPAUSESTART, ts->UIMsg);
-#else
-    SetDlgItemText(IDC_TRANSPAUSESTART, "&Start");
-#endif
     cv->FilePause |= fv->OpId;
   }
   else {
-#ifndef NO_I18N
-    strncpy_s(ts->UIMsg, sizeof(ts->UIMsg), "Pau&se", _TRUNCATE);
-	get_lang_msg("DLG_FILETRANS_PAUSE", ts->UIMsg, ts->UILanguageFile);
+    get_lang_msg("DLG_FILETRANS_PAUSE", ts->UIMsg, sizeof(ts->UIMsg), "Pau&se", ts->UILanguageFile);
     SetDlgItemText(IDC_TRANSPAUSESTART, ts->UIMsg);
-#else
-    SetDlgItemText(IDC_TRANSPAUSESTART, "Pau&se");
-#endif
-	cv->FilePause &= ~fv->OpId;
+    cv->FilePause &= ~fv->OpId;
   }
 }
 

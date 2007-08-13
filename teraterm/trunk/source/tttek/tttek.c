@@ -692,17 +692,10 @@ void FAR PASCAL TEKPrint(PTEKVar tk, PTTSet ts, HDC PrintDC, BOOL SelFlag)
   Caps = GetDeviceCaps(PrintDC,RASTERCAPS);
   if ((Caps & RC_BITBLT) != RC_BITBLT)
   {
-#ifndef NO_I18N
     char uimsg[MAX_UIMSG];
-    strncpy_s(uimsg, sizeof(uimsg),  "Tera Term: Error", _TRUNCATE);
-    get_lang_msg("MSG_TT_ERROR", uimsg, ts->UILanguageFile);
-	strncpy_s(ts->UIMsg, sizeof(ts->UIMsg),  "Printer dose not support graphics", _TRUNCATE);
-    get_lang_msg("MSG_TEK_PRINT_ERROR", ts->UIMsg, ts->UILanguageFile);
-	MessageBox(tk->HWin,ts->UIMsg,uimsg,MB_ICONEXCLAMATION);
-#else
-    MessageBox(tk->HWin,"Printer dose not support graphics",
-      "Tera Term: Error",MB_ICONEXCLAMATION);
-#endif
+    get_lang_msg("MSG_TT_ERROR", uimsg, sizeof(uimsg),  "Tera Term: Error", ts->UILanguageFile);
+    get_lang_msg("MSG_TEK_PRINT_ERROR", ts->UIMsg, sizeof(ts->UIMsg),  "Printer dose not support graphics", ts->UILanguageFile);
+    MessageBox(tk->HWin,ts->UIMsg,uimsg,MB_ICONEXCLAMATION);
     return;
   }
   if (tk->Active) TEKCaretOff(tk);

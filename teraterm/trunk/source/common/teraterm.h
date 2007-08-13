@@ -16,9 +16,7 @@
 // Added by 337 2006/03/01
 #define USE_NORMAL_BGCOLOR
 
-#ifndef NO_I18N
 #include "i18n.h"
-#endif
 
 #ifdef __WATCOMC__
   #if defined(__WINDOWS__)

@@ -8,9 +8,7 @@
 extern "C" {
 #endif
 
-#ifndef NO_I18N
 extern char UILanguageFile[MAX_PATH];
-#endif
 
 void CalcTextExtent(HDC DC, PCHAR Text, LPSIZE s);
 void TTMGetDir(PCHAR Dir);

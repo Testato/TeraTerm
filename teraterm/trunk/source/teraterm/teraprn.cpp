@@ -112,6 +112,7 @@ BOOL PrnStart(LPSTR DocumentName)
   DOCINFO Doc;
   char DocName[50];
   CWnd* pParent;
+  char uimsg[MAX_UIMSG];
 
   Printing = FALSE;
   PrintAbortFlag = FALSE;
@@ -122,21 +123,15 @@ BOOL PrnStart(LPSTR DocumentName)
     pParent = (CWnd*)pVTWin;
   else
     pParent = (CWnd*)pTEKWin;
-#ifndef NO_I18N
   PrnAbortDlg->Create(pParent,&PrintAbortFlag,&ts);
-#else
-  PrnAbortDlg->Create(pParent,&PrintAbortFlag);
-#endif
   HPrnAbortDlg = PrnAbortDlg->GetSafeHwnd();
 
-#ifndef NO_I18N
-  GetDlgItemText(HPrnAbortDlg, IDC_PRNABORT_PRINTING, ts.UIMsg, sizeof(ts.UIMsg));
-  get_lang_msg("DLG_PRNABORT_PRINTING", ts.UIMsg, ts.UILanguageFile);
+  GetDlgItemText(HPrnAbortDlg, IDC_PRNABORT_PRINTING, uimsg, sizeof(uimsg));
+  get_lang_msg("DLG_PRNABORT_PRINTING", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   SetDlgItemText(HPrnAbortDlg, IDC_PRNABORT_PRINTING, ts.UIMsg);
-  GetDlgItemText(HPrnAbortDlg, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
-  get_lang_msg("BTN_CANCEL", ts.UIMsg, ts.UILanguageFile);
+  GetDlgItemText(HPrnAbortDlg, IDCANCEL, uimsg, sizeof(uimsg));
+  get_lang_msg("BTN_CANCEL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   SetDlgItemText(HPrnAbortDlg, IDCANCEL, ts.UIMsg);
-#endif
 
 #ifdef TERATERM32
   SetAbortProc(PrintDC,PrnAbortProc);
@@ -563,11 +558,7 @@ void PrintFileDirect()
     pParent = (CWnd*)pVTWin;
   else
     pParent = (CWnd*)pTEKWin;
-#ifndef NO_I18N
   PrnAbortDlg->Create(pParent,&PrintAbortFlag,&ts);
-#else
-  PrnAbortDlg->Create(pParent,&PrintAbortFlag);
-#endif
   HPrnAbortDlg = PrnAbortDlg->GetSafeHwnd();
 
   HPrnFile = _lopen(PrnFName,OF_READ);

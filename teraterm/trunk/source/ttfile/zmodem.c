@@ -481,9 +481,7 @@ void ZInit
   (PFileVar fv, PZVar zv, PComVar cv, PTTSet ts)
 {
   int Max;
-#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
-#endif
 
   zv->CtlEsc = ((ts->FTFlag & FT_ZESCCTL)!=0);
   zv->MaxDataLen = ts->ZmodemDataLen;
@@ -498,29 +496,15 @@ void ZInit
     zv->ZMode = IdZReceive;
   }
 
-#ifndef NO_I18N
   strncpy_s(fv->DlgCaption, sizeof(fv->DlgCaption),"Tera Term: ", _TRUNCATE);
-#else
-  strcpy(fv->DlgCaption,"Tera Term: ZMODEM ");
-#endif
   switch (zv->ZMode) {
     case IdZSend:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitZSend, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", uimsg, sizeof(uimsg), TitZSend, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,"Send");
-#endif
       break;
     case IdZReceive:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitZRcv, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_ZRCV", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_ZRCV", uimsg, sizeof(uimsg), TitZRcv, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,"Receive");
-#endif
 	  break;
   }
 

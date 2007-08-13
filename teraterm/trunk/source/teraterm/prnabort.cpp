@@ -27,18 +27,12 @@ BEGIN_MESSAGE_MAP(CPrnAbortDlg, CDialog)
 END_MESSAGE_MAP()
 
 // CPrnAbortDlg message handler
-#ifndef NO_I18N
 BOOL CPrnAbortDlg::Create(CWnd* p_Parent, PBOOL AbortFlag, PTTSet pts)
-#else
-BOOL CPrnAbortDlg::Create(CWnd* p_Parent, PBOOL AbortFlag)
-#endif
 {
   BOOL Ok;
   HWND HParent;
-#ifndef NO_I18N
   LOGFONT logfont;
   HFONT font;
-#endif
 
   m_pParent = p_Parent;
   if (p_Parent!=NULL)
@@ -53,14 +47,12 @@ BOOL CPrnAbortDlg::Create(CWnd* p_Parent, PBOOL AbortFlag)
     ::EnableWindow(GetSafeHwnd(),TRUE);
   }
 
-#ifndef NO_I18N
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
   GetObject(font, sizeof(LOGFONT), &logfont);
   if (get_lang_font("DLG_SYSTEM_FONT", GetSafeHwnd(), &logfont, &DlgFont, pts->UILanguageFile)) {
 	SendDlgItemMessage(IDC_PRNABORT_PRINTING, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
 	SendDlgItemMessage(IDCANCEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
   }
-#endif
 
   return Ok;
 }

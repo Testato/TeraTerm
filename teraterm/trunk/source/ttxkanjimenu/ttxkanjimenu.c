@@ -338,39 +338,39 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 	mi.fMask  = MIIM_TYPE | MIIM_SUBMENU;
 	mi.fType  = MFT_STRING;
 	mi.hSubMenu = pvar->hmEncode;
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "&KanjiCode", _TRUNCATE);
-	GetI18nStr(IniSection, "MENU_KANJI", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	GetI18nStr(IniSection, "MENU_KANJI", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			   "&KanjiCode", pvar->ts->UILanguageFile);
 	mi.dwTypeData = pvar->ts->UIMsg;
 	InsertMenuItem(menu, ID_HELPMENU, FALSE, &mi);
 
 	flag = MF_STRING|MF_CHECKED;
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Recv: &Shift_JIS", _TRUNCATE);
-	GetI18nStr(IniSection, "MENU_RECV_SJIS", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	GetI18nStr(IniSection, "MENU_RECV_SJIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			   "Recv: &Shift_JIS", pvar->ts->UILanguageFile);
 	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdSJIS,  pvar->ts->UIMsg);
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Recv: &EUC-JP", _TRUNCATE);
-	GetI18nStr(IniSection, "MENU_RECV_EUCJP", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	GetI18nStr(IniSection, "MENU_RECV_EUCJP", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			   "Recv: &EUC-JP", pvar->ts->UILanguageFile);
 	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdEUC,   pvar->ts->UIMsg);
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Recv: &JIS", _TRUNCATE);
-	GetI18nStr(IniSection, "MENU_RECV_JIS", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	GetI18nStr(IniSection, "MENU_RECV_JIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			   "Recv: &JIS", pvar->ts->UILanguageFile);
 	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdJIS,   pvar->ts->UIMsg);
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Recv: &UTF-8", _TRUNCATE);
-	GetI18nStr(IniSection, "MENU_RECV_UTF8", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	GetI18nStr(IniSection, "MENU_RECV_UTF8", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			   "Recv: &UTF-8", pvar->ts->UILanguageFile);
 	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdUTF8,  pvar->ts->UIMsg);
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Recv: UTF-8&m", _TRUNCATE);
-	GetI18nStr(IniSection, "MENU_RECV_UTF8m", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	GetI18nStr(IniSection, "MENU_RECV_UTF8m", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			   "Recv: UTF-8&m", pvar->ts->UILanguageFile);
 	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdUTF8m, pvar->ts->UIMsg);
 	AppendMenu(pvar->hmEncode, MF_SEPARATOR, 0, NULL);
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Send: S&hift_JIS", _TRUNCATE);
-	GetI18nStr(IniSection, "MENU_SEND_SJIS", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	GetI18nStr(IniSection, "MENU_SEND_SJIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			   "Send: S&hift_JIS", pvar->ts->UILanguageFile);
 	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdSJIS,  pvar->ts->UIMsg);
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Send: EU&C-JP", _TRUNCATE);
-	GetI18nStr(IniSection, "MENU_SEND_EUCJP", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	GetI18nStr(IniSection, "MENU_SEND_EUCJP", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			   "Send: EU&C-JP", pvar->ts->UILanguageFile);
 	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdEUC,   pvar->ts->UIMsg);
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Send: J&IS", _TRUNCATE);
-	GetI18nStr(IniSection, "MENU_SEND_JIS", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	GetI18nStr(IniSection, "MENU_SEND_JIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			   "Send: J&IS", pvar->ts->UILanguageFile);
 	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdJIS,   pvar->ts->UIMsg);
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Send: U&TF-8", _TRUNCATE);
-	GetI18nStr(IniSection, "MENU_SEND_UTF8", pvar->ts->UIMsg, pvar->ts->UILanguageFile);
+	GetI18nStr(IniSection, "MENU_SEND_UTF8", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+			   "Send: U&TF-8", pvar->ts->UILanguageFile);
 	AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdUTF8,  pvar->ts->UIMsg);
 
 	CheckMenuRadioItem(pvar->hmEncode, ID_MI_KANJIRECV+IdSJIS, ID_MI_KANJIRECV+IdUTF8m, ID_MI_KANJIRECV+pvar->ts->KanjiCode, MF_BYCOMMAND);

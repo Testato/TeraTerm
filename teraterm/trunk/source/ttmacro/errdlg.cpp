@@ -45,14 +45,11 @@ BOOL CErrDlg::OnInitDialog()
 {
   RECT R;
   HDC TmpDC;
-#ifndef NO_I18N
-  char uimsg[MAX_UIMSG];
+  char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
   LOGFONT logfont;
   HFONT font;
-#endif
 
   CDialog::OnInitDialog();
-#ifndef NO_I18N
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
   GetObject(font, sizeof(LOGFONT), &logfont);
   if (get_lang_font("DLG_SYSTEM_FONT", m_hWnd, &logfont, &DlgFont, UILanguageFile)) {
@@ -62,13 +59,12 @@ BOOL CErrDlg::OnInitDialog()
     SendDlgItemMessage(IDCANCEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
   }
 
-  GetDlgItemText(IDOK, uimsg, sizeof(uimsg));
-  get_lang_msg("BTN_STOP", uimsg, UILanguageFile);
+  GetDlgItemText(IDOK, uimsg2, sizeof(uimsg2));
+  get_lang_msg("BTN_STOP", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
   SetDlgItemText(IDOK, uimsg);
-  GetDlgItemText(IDCANCEL, uimsg, sizeof(uimsg));
-  get_lang_msg("BTN_CONTINUE", uimsg, UILanguageFile);
+  GetDlgItemText(IDCANCEL, uimsg2, sizeof(uimsg2));
+  get_lang_msg("BTN_CONTINUE", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
   SetDlgItemText(IDCANCEL, uimsg);
-#endif
 
   SetDlgItemText(IDC_ERRMSG,MsgStr);
   SetDlgItemText(IDC_ERRLINE,LineStr);

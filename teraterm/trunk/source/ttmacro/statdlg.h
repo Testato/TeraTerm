@@ -25,9 +25,7 @@ protected:
 	PCHAR TextStr, TitleStr;
 	int  PosX, PosY, init_WW, WW, WH, TW, TH;
 	SIZE s;
-#ifndef NO_I18N
 	HFONT DlgFont;
-#endif
 
 	//{{AFX_MSG(CStatDlg)
 	virtual BOOL OnInitDialog();

@@ -125,81 +125,72 @@ void CTEKWindow::InitMenu(HMENU *Menu)
   *Menu = ::LoadMenu(AfxGetInstanceHandle(),
 					 MAKEINTRESOURCE(IDR_TEKMENU));
   EditMenu = GetSubMenu(MainMenu,1);
-#ifndef NO_I18N
   FileMenu = GetSubMenu(MainMenu,0);
   SetupMenu = GetSubMenu(MainMenu,2);
   HelpMenu = GetSubMenu(MainMenu,4);
+  char uimsg[MAX_UIMSG];
 
-  GetMenuString(*Menu, 0, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
-  get_lang_msg("TEKMENU_FILE", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(*Menu, 0, uimsg, sizeof(uimsg), MF_BYPOSITION);
+  get_lang_msg("TEKMENU_FILE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(*Menu, 0, MF_BYPOSITION, 0, ts.UIMsg);
-  GetMenuString(FileMenu, ID_TEKFILE_PRINT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("TEKMENU_FILE_PRINT", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_TEKFILE_PRINT, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("TEKMENU_FILE_PRINT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_TEKFILE_PRINT, MF_BYCOMMAND, ID_TEKFILE_PRINT, ts.UIMsg);
-  GetMenuString(FileMenu, ID_TEKFILE_EXIT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("TEKMENU_FILE_EXIT", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_TEKFILE_EXIT, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("TEKMENU_FILE_EXIT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_TEKFILE_EXIT, MF_BYCOMMAND, ID_TEKFILE_EXIT, ts.UIMsg);
 
-  GetMenuString(*Menu, 1, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
-  get_lang_msg("TEKMENU_EDIT", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(*Menu, 1, uimsg, sizeof(uimsg), MF_BYPOSITION);
+  get_lang_msg("TEKMENU_EDIT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(*Menu, 1, MF_BYPOSITION, 1, ts.UIMsg);
-  GetMenuString(EditMenu, ID_TEKEDIT_COPY, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("TEKMENU_EDIT_COPY", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(EditMenu, ID_TEKEDIT_COPY, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("TEKMENU_EDIT_COPY", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_TEKEDIT_COPY, MF_BYCOMMAND, ID_TEKEDIT_COPY, ts.UIMsg);
-  GetMenuString(EditMenu, ID_TEKEDIT_COPYSCREEN, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("TEKMENU_EDIT_COPYSCREEN", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(EditMenu, ID_TEKEDIT_COPYSCREEN, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("TEKMENU_EDIT_COPYSCREEN", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_TEKEDIT_COPYSCREEN, MF_BYCOMMAND, ID_TEKEDIT_COPYSCREEN, ts.UIMsg);
-  GetMenuString(EditMenu, ID_TEKEDIT_PASTE, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("TEKMENU_EDIT_PASTE", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(EditMenu, ID_TEKEDIT_PASTE, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("TEKMENU_EDIT_PASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_TEKEDIT_PASTE, MF_BYCOMMAND, ID_TEKEDIT_PASTE, ts.UIMsg);
-  GetMenuString(EditMenu, ID_TEKEDIT_PASTECR, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("TEKMENU_EDIT_PASTECR", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(EditMenu, ID_TEKEDIT_PASTECR, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("TEKMENU_EDIT_PASTECR", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_TEKEDIT_PASTECR, MF_BYCOMMAND, ID_TEKEDIT_PASTECR, ts.UIMsg);
-  GetMenuString(EditMenu, ID_TEKEDIT_CLEARSCREEN, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("TEKMENU_EDIT_CLSCREEN", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(EditMenu, ID_TEKEDIT_CLEARSCREEN, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("TEKMENU_EDIT_CLSCREEN", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_TEKEDIT_CLEARSCREEN, MF_BYCOMMAND, ID_TEKEDIT_CLEARSCREEN, ts.UIMsg);
 
-  GetMenuString(*Menu, 2, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
-  get_lang_msg("TEKMENU_SETUP", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(*Menu, 2, uimsg, sizeof(uimsg), MF_BYPOSITION);
+  get_lang_msg("TEKMENU_SETUP", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(*Menu, 2, MF_BYPOSITION, 2, ts.UIMsg);
-  GetMenuString(SetupMenu, ID_TEKSETUP_WINDOW, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("TEKMENU_SETUP_WINDOW", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(SetupMenu, ID_TEKSETUP_WINDOW, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("TEKMENU_SETUP_WINDOW", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(SetupMenu, ID_TEKSETUP_WINDOW, MF_BYCOMMAND, ID_TEKSETUP_WINDOW, ts.UIMsg);
-  GetMenuString(SetupMenu, ID_TEKSETUP_FONT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("TEKMENU_SETUP_FONT", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(SetupMenu, ID_TEKSETUP_FONT, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("TEKMENU_SETUP_FONT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(SetupMenu, ID_TEKSETUP_FONT, MF_BYCOMMAND, ID_TEKSETUP_FONT, ts.UIMsg);
 
-  GetMenuString(*Menu, ID_TEKVTWIN, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("TEKMENU_VTWIN", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(*Menu, ID_TEKVTWIN, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("TEKMENU_VTWIN", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(*Menu, ID_TEKVTWIN, MF_BYCOMMAND, ID_TEKVTWIN, ts.UIMsg);
 
-  GetMenuString(*Menu, 4, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
-  get_lang_msg("TEKMENU_HELP", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(*Menu, 4, uimsg, sizeof(uimsg), MF_BYPOSITION);
+  get_lang_msg("TEKMENU_HELP", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(*Menu, 4, MF_BYPOSITION, 4, ts.UIMsg);
-  GetMenuString(HelpMenu, ID_TEKHELP_INDEX, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("TEKMENU_HELP_INDEX", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(HelpMenu, ID_TEKHELP_INDEX, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("TEKMENU_HELP_INDEX", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(HelpMenu, ID_TEKHELP_INDEX, MF_BYCOMMAND, ID_TEKHELP_INDEX, ts.UIMsg);
-  GetMenuString(HelpMenu, ID_TEKHELP_ABOUT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("TEKMENU_HELP_ABOUT", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(HelpMenu, ID_TEKHELP_ABOUT, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("TEKMENU_HELP_ABOUT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(HelpMenu, ID_TEKHELP_ABOUT, MF_BYCOMMAND, ID_TEKHELP_ABOUT, ts.UIMsg);
 
-#endif
   if ((ts.MenuFlag & MF_SHOWWINMENU) !=0)
   {
     WinMenu = CreatePopupMenu();
-#ifndef NO_I18N
-    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "&Window", _TRUNCATE);
-    get_lang_msg("TEKMENU_WINDOW", ts.UIMsg, ts.UILanguageFile);
+    get_lang_msg("TEKMENU_WINDOW", ts.UIMsg, sizeof(ts.UIMsg), "&Window", ts.UILanguageFile);
     ::InsertMenu(*Menu,4,
 		 MF_STRING | MF_ENABLED |
 		 MF_POPUP | MF_BYPOSITION,
 		 (int)WinMenu, ts.UIMsg);
-#else
-    ::InsertMenu(*Menu,4,
-		 MF_STRING | MF_ENABLED |
-		 MF_POPUP | MF_BYPOSITION,
-		 (int)WinMenu, "&Window");
-#endif
   }
 }
 
@@ -226,11 +217,7 @@ void CTEKWindow::InitMenuPopup(HMENU SubMenu)
   }
   else if ( SubMenu == WinMenu )
   {
-#ifndef NO_I18N
     SetWinMenu(WinMenu, ts.UIMsg, ts.UILanguageFile);
-#else
-    SetWinMenu(WinMenu);
-#endif
   }
 }
 
@@ -404,56 +391,29 @@ void CTEKWindow::OnLButtonDown(UINT nFlags, CPoint point)
     if (WinMenu!=NULL)
       InitMenuPopup(WinMenu);
     PopupBase = CreatePopupMenu();
-#ifndef NO_I18N
-    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "&File", _TRUNCATE);
-    get_lang_msg("MENU_CONTROL", ts.UIMsg, ts.UILanguageFile);
+    get_lang_msg("MENU_CONTROL", ts.UIMsg, sizeof(ts.UIMsg), "&File", ts.UILanguageFile);
     AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-	       (UINT)GetSubMenu(PopupMenu,0), ts.UIMsg);
-    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "&Edit", _TRUNCATE);
-    get_lang_msg("TEKMENU_EDIT", ts.UIMsg, ts.UILanguageFile);
+               (UINT)GetSubMenu(PopupMenu,0), ts.UIMsg);
+    get_lang_msg("TEKMENU_EDIT", ts.UIMsg, sizeof(ts.UIMsg), "&Edit", ts.UILanguageFile);
     AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-	       (UINT)EditMenu, ts.UIMsg);
-    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "&Setup", _TRUNCATE);
-    get_lang_msg("TEKMENU_SETUP", ts.UIMsg, ts.UILanguageFile);
+               (UINT)EditMenu, ts.UIMsg);
+    get_lang_msg("TEKMENU_SETUP", ts.UIMsg, sizeof(ts.UIMsg), "&Setup", ts.UILanguageFile);
     AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-	       (UINT)GetSubMenu(PopupMenu,2), ts.UIMsg);
-    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "VT-Wind&ow", _TRUNCATE);
-    get_lang_msg("TEKMENU_VTWIN", ts.UIMsg, ts.UILanguageFile);
+               (UINT)GetSubMenu(PopupMenu,2), ts.UIMsg);
+    get_lang_msg("TEKMENU_VTWIN", ts.UIMsg, sizeof(ts.UIMsg), "VT-Wind&ow", ts.UILanguageFile);
     AppendMenu(PopupBase, MF_STRING | MF_ENABLED,
-	       ID_TEKVTWIN, ts.UIMsg);
-#else
-    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-	       (UINT)GetSubMenu(PopupMenu,0), "&File");
-    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-	       (UINT)EditMenu, "&Edit");
-    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-	       (UINT)GetSubMenu(PopupMenu,2), "&Setup");
-    AppendMenu(PopupBase, MF_STRING | MF_ENABLED,
-	       ID_TEKVTWIN, "VT&Win");
-#endif
-	if (WinMenu!=NULL) {
-#ifndef NO_I18N
-      strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "&Window", _TRUNCATE);
-      get_lang_msg("TEKMENU_WINDOW", ts.UIMsg, ts.UILanguageFile);
+               ID_TEKVTWIN, ts.UIMsg);
+    if (WinMenu!=NULL) {
+      get_lang_msg("TEKMENU_WINDOW", ts.UIMsg, sizeof(ts.UIMsg), "&Window", ts.UILanguageFile);
       AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-		 (UINT)WinMenu, ts.UIMsg);
-#else
-      AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-         (UINT)WinMenu, "&Window");
-#endif
-	}
-#ifndef NO_I18N
-    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "&Help", _TRUNCATE);
-    get_lang_msg("TEKMENU_HELP", ts.UIMsg, ts.UILanguageFile);
+                 (UINT)WinMenu, ts.UIMsg);
+    }
+    get_lang_msg("TEKMENU_HELP", ts.UIMsg, sizeof(ts.UIMsg), "&Help", ts.UILanguageFile);
     AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-           (UINT)GetSubMenu(PopupMenu,4), ts.UIMsg);
-#else
-    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-	       (UINT)GetSubMenu(PopupMenu,4), "&Help");
-#endif
+               (UINT)GetSubMenu(PopupMenu,4), ts.UIMsg);
     ::ClientToScreen(tk.HWin, &p);
     TrackPopupMenu(PopupBase,TPM_LEFTALIGN | TPM_LEFTBUTTON,
-		   p.x,p.y,0,tk.HWin,NULL);
+                   p.x,p.y,0,tk.HWin,NULL);
     if (WinMenu!=NULL)
     {
       DestroyMenu(WinMenu);
@@ -662,19 +622,11 @@ LONG CTEKWindow::OnChangeMenu(UINT wParam, LONG lParam)
     if (WinMenu==NULL)
     {
       WinMenu = CreatePopupMenu();
-#ifndef NO_I18N
-      strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "&Window", _TRUNCATE);
-      get_lang_msg("TEKMENU_WINDOW", ts.UIMsg, ts.UILanguageFile);
-	  ::InsertMenu(MainMenu,4,
-	MF_STRING | MF_ENABLED |
-	MF_POPUP | MF_BYPOSITION,
-	(int)WinMenu, ts.UIMsg);
-#else
-	  ::InsertMenu(MainMenu,4,
-	MF_STRING | MF_ENABLED |
-	MF_POPUP | MF_BYPOSITION,
-	(int)WinMenu, "&Window");
-#endif
+      get_lang_msg("TEKMENU_WINDOW", ts.UIMsg, sizeof(ts.UIMsg), "&Window", ts.UILanguageFile);
+      ::InsertMenu(MainMenu,4,
+                   MF_STRING | MF_ENABLED |
+                   MF_POPUP | MF_BYPOSITION,
+                   (int)WinMenu, ts.UIMsg);
     }
     else {
       RemoveMenu(MainMenu,4,MF_BYPOSITION);
@@ -689,13 +641,8 @@ LONG CTEKWindow::OnChangeMenu(UINT wParam, LONG lParam)
   {
     SysMenu = ::GetSystemMenu(tk.HWin,FALSE);
     AppendMenu(SysMenu, MF_SEPARATOR, 0, NULL);
-#ifndef NO_I18N
-    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Show menu &bar", _TRUNCATE);
-    get_lang_msg("TEKMENU_SHOW_MENUBAR", ts.UIMsg, ts.UILanguageFile);
+    get_lang_msg("TEKMENU_SHOW_MENUBAR", ts.UIMsg, sizeof(ts.UIMsg), "Show menu &bar", ts.UILanguageFile);
     AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, ts.UIMsg);
-#else
-    AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, "Show menu &bar");
-#endif
   }
   return 0;
 }
@@ -726,13 +673,8 @@ LONG CTEKWindow::OnChangeTBar(UINT wParam, LONG lParam)
   {
     SysMenu = ::GetSystemMenu(HTEKWin,FALSE);
     AppendMenu(SysMenu, MF_SEPARATOR, 0, NULL);
-#ifndef NO_I18N
-    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Show menu &bar", _TRUNCATE);
-    get_lang_msg("TEKMENU_SHOW_MENUBAR", ts.UIMsg, ts.UILanguageFile);
+    get_lang_msg("TEKMENU_SHOW_MENUBAR", ts.UIMsg, sizeof(ts.UIMsg), "Show menu &bar", ts.UILanguageFile);
     AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, ts.UIMsg);
-#else
-    AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, "Show menu &bar");
-#endif
   }
   return 0;
 }

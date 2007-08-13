@@ -20,9 +20,7 @@ public:
 protected:
 	PCHAR MsgStr, LineStr;
 	int PosX, PosY;
-#ifndef NO_I18N
 	HFONT DlgFont;
-#endif
 
 	//{{AFX_MSG(CErrDlg)
 	virtual BOOL OnInitDialog();

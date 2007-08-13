@@ -81,10 +81,8 @@ void CStatDlg::Update(PCHAR Text, PCHAR Title, int x, int y)
 
 BOOL CStatDlg::OnInitDialog()
 {
-#ifndef NO_I18N
   LOGFONT logfont;
   HFONT font;
-#endif
 
   CDialog::OnInitDialog();
   Update(TextStr,TitleStr,PosX,PosY);
@@ -94,13 +92,11 @@ BOOL CStatDlg::OnInitDialog()
   SetActiveWindow();
 #endif
 
-#ifndef NO_I18N
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
   GetObject(font, sizeof(LOGFONT), &logfont);
   if (get_lang_font("DLG_SYSTEM_FONT", m_hWnd, &logfont, &DlgFont, UILanguageFile)) {
     SendDlgItemMessage(IDC_STATTEXT, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
   }
-#endif
 
   return TRUE;
 }

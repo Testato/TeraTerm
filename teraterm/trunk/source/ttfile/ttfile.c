@@ -30,13 +30,11 @@
 
 static HANDLE hInst;
 
-#ifndef NO_I18N
 static HFONT DlgFoptFont;
 static HFONT DlgXoptFont;
 static HFONT DlgGetfnFont;
 
 char UILanguageFile[MAX_PATH];
-#endif
 char FileSendFilter[128];
 
 #ifdef TERATERM32
@@ -54,11 +52,7 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 {
 	int i, j;
 	OPENFILENAME ofn;
-#ifndef NO_I18N
 	char uimsg[MAX_UIMSG];
-#else
-	int Ptr;
-#endif
 
 	//  char FNameFilter[HostNameMaxLength + 1]; // 81(yutaka)
 	char FNameFilter[81]; // 81(yutaka)
@@ -74,26 +68,12 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 	memset(FNameFilter, 0, sizeof(FNameFilter));
 	if (FuncId==GSF_LOADKEY)
 	{
-#ifndef NO_I18N
-		strncpy_s(uimsg, sizeof(uimsg), "keyboard setup files (*.cnf)\\0*.cnf\\0\\0", _TRUNCATE);
-		get_lang_msg("FILEDLG_KEYBOARD_FILTER", uimsg, UILanguageFile);
+		get_lang_msg("FILEDLG_KEYBOARD_FILTER", uimsg, sizeof(uimsg), "keyboard setup files (*.cnf)\\0*.cnf\\0\\0", UILanguageFile);
 		memcpy(FNameFilter, uimsg, sizeof(FNameFilter));
-#else
-		strcpy(FNameFilter, "keyboard setup files (*.cnf)");
-		Ptr = strlen(FNameFilter) + 1;
-		strcpy(&(FNameFilter[Ptr]), "*.cnf");
-#endif
 	}
 	else {
-#ifndef NO_I18N
-		strncpy_s(uimsg, sizeof(uimsg), "setup files (*.ini)\\0*.ini\\0\\0", _TRUNCATE);
-		get_lang_msg("FILEDLG_SETUP_FILTER", uimsg, UILanguageFile);
+		get_lang_msg("FILEDLG_SETUP_FILTER", uimsg, sizeof(uimsg), "setup files (*.ini)\\0*.ini\\0\\0", UILanguageFile);
 		memcpy(FNameFilter, uimsg, sizeof(FNameFilter));
-#else
-		strcpy(FNameFilter, "setup files (*.ini)");
-		Ptr = strlen(FNameFilter) + 1;
-		strcpy(&(FNameFilter[Ptr]), "*.ini");
-#endif
 	}
 
 	/* OPENFILENAME record */
@@ -145,39 +125,24 @@ BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 //		ofn.lpstrInitialDir = __argv[0];
 //		ofn.lpstrInitialDir = ts->SetupFName;
 		ofn.lpstrInitialDir = Dir;
-#ifndef NO_I18N
-		strncpy_s(uimsg, sizeof(uimsg), "Tera Term: Save setup", _TRUNCATE);
-		get_lang_msg("FILEDLG_SAVE_SETUP_TITLE", uimsg, UILanguageFile);
+		get_lang_msg("FILEDLG_SAVE_SETUP_TITLE", uimsg, sizeof(uimsg), "Tera Term: Save setup", UILanguageFile);
 		ofn.lpstrTitle = uimsg;
-#else
-		ofn.lpstrTitle = "Tera Term: Save setup";
-#endif
 		Ok = GetSaveFileName(&ofn);
 		if (Ok)
 			strncpy_s(ts->SetupFName, sizeof(ts->SetupFName),Name, _TRUNCATE);
 		break;
 	case GSF_RESTORE:
 		ofn.Flags = ofn.Flags | OFN_FILEMUSTEXIST;
-#ifndef NO_I18N
-		strncpy_s(uimsg, sizeof(uimsg), "Tera Term: Restore setup", _TRUNCATE);
-		get_lang_msg("FILEDLG_RESTORE_SETUP_TITLE", uimsg, UILanguageFile);
+		get_lang_msg("FILEDLG_RESTORE_SETUP_TITLE", uimsg, sizeof(uimsg), "Tera Term: Restore setup", UILanguageFile);
 		ofn.lpstrTitle = uimsg;
-#else
-		ofn.lpstrTitle = "Tera Term: Restore setup";
-#endif
 		Ok = GetOpenFileName(&ofn);
 		if (Ok)
 			strncpy_s(ts->SetupFName, sizeof(ts->SetupFName),Name, _TRUNCATE);
 		break;
 	case GSF_LOADKEY:
 		ofn.Flags = ofn.Flags | OFN_FILEMUSTEXIST;
-#ifndef NO_I18N
-		strncpy_s(uimsg, sizeof(uimsg), "Tera Term: Load key map", _TRUNCATE);
-		get_lang_msg("FILEDLG_LOAD_KEYMAP_TITLE", uimsg, UILanguageFile);
+		get_lang_msg("FILEDLG_LOAD_KEYMAP_TITLE", uimsg, sizeof(uimsg), "Tera Term: Load key map", UILanguageFile);
 		ofn.lpstrTitle = uimsg;
-#else
-		ofn.lpstrTitle = "Tera Term: Load key map";
-#endif
 		Ok = GetOpenFileName(&ofn);
 		if (Ok)
 			strncpy_s(ts->KeyCnfFN, sizeof(ts->KeyCnfFN),Name, _TRUNCATE);
@@ -199,11 +164,9 @@ BOOL CALLBACK TFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 #ifdef TERATERM32
 	LPOFNOTIFY notify;
 #endif
-#ifndef NO_I18N
-	char uimsg[MAX_UIMSG];
+	char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
 	LOGFONT logfont;
 	HFONT font;
-#endif
 
 	switch (Message) {
 	case WM_INITDIALOG:
@@ -211,7 +174,6 @@ BOOL CALLBACK TFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		pl = (LPLONG)(ofn->lCustData);
 		SetWindowLong(Dialog, DWL_USER, (LONG)pl);
 
-#ifndef NO_I18N
       font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
       GetObject(font, sizeof(LOGFONT), &logfont);
       if (get_lang_font("DLG_TAHOMA_FONT", Dialog, &logfont, &DlgFoptFont, UILanguageFile)) {
@@ -225,22 +187,21 @@ BOOL CALLBACK TFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
         DlgFoptFont = NULL;
       }
 
-      GetDlgItemText(Dialog, IDC_FOPT, uimsg, sizeof(uimsg));
-      get_lang_msg("DLG_FOPT", uimsg, UILanguageFile);
+      GetDlgItemText(Dialog, IDC_FOPT, uimsg2, sizeof(uimsg2));
+      get_lang_msg("DLG_FOPT", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
       SetDlgItemText(Dialog, IDC_FOPT, uimsg);
-      GetDlgItemText(Dialog, IDC_FOPTBIN, uimsg, sizeof(uimsg));
-      get_lang_msg("DLG_FOPT_BINARY", uimsg, UILanguageFile);
+      GetDlgItemText(Dialog, IDC_FOPTBIN, uimsg2, sizeof(uimsg2));
+      get_lang_msg("DLG_FOPT_BINARY", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
       SetDlgItemText(Dialog, IDC_FOPTBIN, uimsg);
-      GetDlgItemText(Dialog, IDC_FOPTAPPEND, uimsg, sizeof(uimsg));
-      get_lang_msg("DLG_FOPT_APPEND", uimsg, UILanguageFile);
+      GetDlgItemText(Dialog, IDC_FOPTAPPEND, uimsg2, sizeof(uimsg2));
+      get_lang_msg("DLG_FOPT_APPEND", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
       SetDlgItemText(Dialog, IDC_FOPTAPPEND, uimsg);
-      GetDlgItemText(Dialog, IDC_PLAINTEXT, uimsg, sizeof(uimsg));
-      get_lang_msg("DLG_FOPT_PLAIN", uimsg, UILanguageFile);
+      GetDlgItemText(Dialog, IDC_PLAINTEXT, uimsg2, sizeof(uimsg2));
+      get_lang_msg("DLG_FOPT_PLAIN", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
       SetDlgItemText(Dialog, IDC_PLAINTEXT, uimsg);
-      GetDlgItemText(Dialog, IDC_TIMESTAMP, uimsg, sizeof(uimsg));
-      get_lang_msg("DLG_FOPT_TIMESTAMP", uimsg, UILanguageFile);
+      GetDlgItemText(Dialog, IDC_TIMESTAMP, uimsg2, sizeof(uimsg2));
+      get_lang_msg("DLG_FOPT_TIMESTAMP", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
       SetDlgItemText(Dialog, IDC_TIMESTAMP, uimsg);
-#endif
 
 		Lo = LOWORD(*pl) & 1;
 		Hi = HIWORD(*pl);
@@ -310,11 +271,9 @@ BOOL CALLBACK TFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 			*pl = MAKELONG(Lo,Hi);
 		}
-#ifndef NO_I18N
 		if (DlgFoptFont != NULL) {
 			DeleteObject(DlgFoptFont);
 		}
-#endif
 		break;
 		}
 		break;
@@ -330,12 +289,8 @@ BOOL CALLBACK TFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 BOOL FAR PASCAL GetTransFname
   (PFileVar fv, PCHAR CurDir, WORD FuncId, LPLONG Option)
 {
-#ifndef NO_I18N
 	char uimsg[MAX_UIMSG];
 	char FNFilter[sizeof(FileSendFilter)*3], *pf;
-#else
-	char FNFilter[11];
-#endif
 	OPENFILENAME ofn;
 	LONG opt;
 	char TempDir[MAXPATHLEN];
@@ -352,16 +307,10 @@ BOOL FAR PASCAL GetTransFname
 	pf = FNFilter;
 	switch (FuncId) {
 	case GTF_SEND:
-#ifndef NO_I18N
-		strncpy_s(uimsg, sizeof(uimsg), TitSendFile, _TRUNCATE);
-		get_lang_msg("FILEDLG_TRANS_TITLE_SENDFILE", uimsg, UILanguageFile);
+		get_lang_msg("FILEDLG_TRANS_TITLE_SENDFILE", uimsg, sizeof(uimsg), TitSendFile, UILanguageFile);
 		strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-		strcat(fv->DlgCaption,"Send file");
-#endif
 		if (strlen(FileSendFilter) > 0) {
-			strncpy_s(uimsg, sizeof(uimsg), "User define", _TRUNCATE);
-			get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, UILanguageFile);
+			get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, sizeof(uimsg), "User define", UILanguageFile);
 			_snprintf_s(FNFilter, sizeof(FNFilter), _TRUNCATE, "%s(%s)", uimsg, FileSendFilter);
 			pf = pf + strlen(FNFilter) + 1;
 			strncat_s(FNFilter, sizeof(FNFilter) ,FileSendFilter, _TRUNCATE);
@@ -369,25 +318,14 @@ BOOL FAR PASCAL GetTransFname
 		}
 		break;
 	case GTF_LOG:
-#ifndef NO_I18N
-		strncpy_s(uimsg, sizeof(uimsg), TitLog, _TRUNCATE);
-		get_lang_msg("FILEDLG_TRANS_TITLE_LOG", uimsg, UILanguageFile);
+		get_lang_msg("FILEDLG_TRANS_TITLE_LOG", uimsg, sizeof(uimsg), TitLog, UILanguageFile);
 		strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-		strcat(fv->DlgCaption,"Log");
-#endif
 		break;
 	case GTF_BP:
-#ifndef NO_I18N
-		strncpy_s(uimsg, sizeof(uimsg), TitBPSend, _TRUNCATE);
-		get_lang_msg("FILEDLG_TRANS_TITLE_BPSEND", uimsg, UILanguageFile);
+		get_lang_msg("FILEDLG_TRANS_TITLE_BPSEND", uimsg, sizeof(uimsg), TitBPSend, UILanguageFile);
 		strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-		strcat(fv->DlgCaption,"B-Plus Send");
-#endif
 		if (strlen(FileSendFilter) > 0) {
-			strncpy_s(uimsg, sizeof(uimsg), "User define", _TRUNCATE);
-			get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, UILanguageFile);
+			get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, sizeof(uimsg), "User define", UILanguageFile);
 			_snprintf_s(FNFilter, sizeof(FNFilter), _TRUNCATE, "%s(%s)", uimsg, FileSendFilter);
 			pf = pf + strlen(FNFilter) + 1;
 			strncat_s(FNFilter, sizeof(FNFilter) ,FileSendFilter, _TRUNCATE);
@@ -397,15 +335,9 @@ BOOL FAR PASCAL GetTransFname
 	default: return FALSE;
 	}
 
-#ifndef NO_I18N
-	strncpy_s(uimsg, sizeof(uimsg), "All(*.*)\\0*.*\\0\\0", _TRUNCATE);
-	get_lang_msg("FILEDLG_ALL_FILTER", uimsg, UILanguageFile);
+	get_lang_msg("FILEDLG_ALL_FILTER", uimsg, sizeof(uimsg), "All(*.*)\\0*.*\\0\\0", UILanguageFile);
 	// \0\0 で終わる必要があるので 2 バイト
 	memcpy(pf, uimsg, sizeof(FNFilter) - (pf - FNFilter + 2));
-#else
-	strcpy(FNFilter, "all");
-	strcpy(&(FNFilter[strlen(FNFilter)+1]), "*.*");
-#endif
 
 	ExtractFileName(fv->FullName, FileName ,sizeof(FileName));
 	strncpy_s(fv->FullName, sizeof(fv->FullName), FileName, _TRUNCATE);
@@ -491,11 +423,9 @@ BOOL CALLBACK TFn2Hook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 #ifdef TERATERM32
   LPOFNOTIFY notify;
 #endif
-#ifndef NO_I18N
-	char uimsg[MAX_UIMSG];
+	char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
 	LOGFONT logfont;
 	HFONT font;
-#endif
 
   switch (Message) {
     case WM_INITDIALOG:
@@ -503,7 +433,6 @@ BOOL CALLBACK TFn2Hook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       pw = (LPWORD)ofn->lCustData;
       SetWindowLong(Dialog, DWL_USER, (LONG)pw);
 
-#ifndef NO_I18N
       font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
       GetObject(font, sizeof(LOGFONT), &logfont);
       if (get_lang_font("DLG_TAHOMA_FONT", Dialog, &logfont, &DlgFoptFont, UILanguageFile)) {
@@ -517,13 +446,12 @@ BOOL CALLBACK TFn2Hook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
         DlgFoptFont = NULL;
       }
 
-      GetDlgItemText(Dialog, IDC_FOPT, uimsg, sizeof(uimsg));
-      get_lang_msg("DLG_FOPT", uimsg, UILanguageFile);
+      GetDlgItemText(Dialog, IDC_FOPT, uimsg2, sizeof(uimsg2));
+      get_lang_msg("DLG_FOPT", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
       SetDlgItemText(Dialog, IDC_FOPT, uimsg);
-      GetDlgItemText(Dialog, IDC_FOPTBIN, uimsg, sizeof(uimsg));
-      get_lang_msg("DLG_FOPT_BINARY", uimsg, UILanguageFile);
+      GetDlgItemText(Dialog, IDC_FOPTBIN, uimsg2, sizeof(uimsg2));
+      get_lang_msg("DLG_FOPT_BINARY", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
       SetDlgItemText(Dialog, IDC_FOPTBIN, uimsg);
-#endif
 
       SetRB(Dialog,*pw & 1,IDC_FOPTBIN,IDC_FOPTBIN);
       return TRUE;
@@ -546,11 +474,9 @@ BOOL CALLBACK TFn2Hook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  pw = (LPWORD)GetWindowLong(Dialog,DWL_USER);
 	  if (pw!=NULL)
 	    GetRB(Dialog,pw,IDC_FOPTBIN,IDC_FOPTBIN);
-#ifndef NO_I18N
 		if (DlgFoptFont != NULL) {
 			DeleteObject(DlgFoptFont);
 		}
-#endif
 	  break;
       }
       break;
@@ -563,12 +489,8 @@ BOOL FAR PASCAL GetMultiFname
   (PFileVar fv, PCHAR CurDir, WORD FuncId, LPWORD Option)
 {
   int i, len;
-#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   char FNFilter[sizeof(FileSendFilter)*2+128], *pf;
-#else
-  char FNFilter[11];
-#endif
   OPENFILENAME ofn;
   char TempDir[MAXPATHLEN];
   BOOL Ok;
@@ -584,37 +506,21 @@ BOOL FAR PASCAL GetMultiFname
   pf = FNFilter;
   switch (FuncId) {
     case GMF_KERMIT:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitKmtSend, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_KMTSEND", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_KMTSEND", uimsg, sizeof(uimsg), TitKmtSend, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,"Kermit Send");
-#endif
       break;
     case GMF_Z:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitZSend, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", uimsg, sizeof(uimsg), TitZSend, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,"ZMODEM Send");
-#endif
       break;
     case GMF_QV:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitQVSend, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_QVSEND", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_QVSEND", uimsg, sizeof(uimsg), TitQVSend, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,"Quick-VAN Send");
-#endif
       break;
     default: return FALSE;
   }
   if (strlen(FileSendFilter) > 0) {
-    strncpy_s(uimsg, sizeof(uimsg), "User define", _TRUNCATE);
-    get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, UILanguageFile);
+    get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, sizeof(uimsg), "User define", UILanguageFile);
     _snprintf_s(FNFilter, sizeof(FNFilter), _TRUNCATE, "%s(%s)", uimsg, FileSendFilter);
     pf = pf + strlen(FNFilter) + 1;
     strncat_s(FNFilter, sizeof(FNFilter) ,FileSendFilter, _TRUNCATE);
@@ -639,18 +545,11 @@ BOOL FAR PASCAL GetMultiFname
     }
   }
 
-#ifndef NO_I18N
-  strncpy_s(uimsg, sizeof(uimsg), "All(*.*)\\0*.*\\0\\0", _TRUNCATE);
-  get_lang_msg("FILEDLG_ALL_FILTER", uimsg, UILanguageFile);
+  get_lang_msg("FILEDLG_ALL_FILTER", uimsg, sizeof(uimsg), "All(*.*)\\0*.*\\0\\0", UILanguageFile);
   // \0\0 で終わる必要があるので 2 バイト
   memcpy(pf, uimsg, sizeof(FNFilter) - (pf - FNFilter + 2));
-#else
-  memset(FNFilter, 0, sizeof(FNFilter));  /* Set up for double null at end */
-  strcpy(FNFilter, "all");
-  strcpy(&(FNFilter[strlen(FNFilter)+1]), "*.*");
-#endif
-  memset(&ofn, 0, sizeof(OPENFILENAME));
 
+  memset(&ofn, 0, sizeof(OPENFILENAME));
   ofn.lStructSize = sizeof(OPENFILENAME);
   ofn.hwndOwner   = fv->HMainWin;
   ofn.lpstrFilter = FNFilter;
@@ -761,11 +660,9 @@ BOOL CALLBACK GetFnDlg
   PFileVar fv;
   char TempFull[MAXPATHLEN];
   int i, j;
-#ifndef NO_I18N
-	char uimsg[MAX_UIMSG];
+	char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
 	LOGFONT logfont;
 	HFONT font;
-#endif
 
   switch (Message) {
     case WM_INITDIALOG:
@@ -773,7 +670,6 @@ BOOL CALLBACK GetFnDlg
       SetWindowLong(Dialog, DWL_USER, lParam);
       SendDlgItemMessage(Dialog, IDC_GETFN, EM_LIMITTEXT, sizeof(TempFull)-1,0);
 
-#ifndef NO_I18N
       font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
       GetObject(font, sizeof(LOGFONT), &logfont);
       if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgGetfnFont, UILanguageFile)) {
@@ -787,22 +683,21 @@ BOOL CALLBACK GetFnDlg
         DlgGetfnFont = NULL;
       }
 
-	  GetWindowText(Dialog, uimsg, sizeof(uimsg));
-	  get_lang_msg("DLG_GETFN_TITLE", uimsg, UILanguageFile);
+	  GetWindowText(Dialog, uimsg2, sizeof(uimsg2));
+	  get_lang_msg("DLG_GETFN_TITLE", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
 	  SetWindowText(Dialog, uimsg);
-	  GetDlgItemText(Dialog, IDC_FILENAME, uimsg, sizeof(uimsg));
-	  get_lang_msg("DLG_GETFN_FILENAME", uimsg, UILanguageFile);
+	  GetDlgItemText(Dialog, IDC_FILENAME, uimsg2, sizeof(uimsg2));
+	  get_lang_msg("DLG_GETFN_FILENAME", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
 	  SetDlgItemText(Dialog, IDC_FILENAME, uimsg);
-	  GetDlgItemText(Dialog, IDOK, uimsg, sizeof(uimsg));
-	  get_lang_msg("BTN_OK", uimsg, UILanguageFile);
+	  GetDlgItemText(Dialog, IDOK, uimsg2, sizeof(uimsg2));
+	  get_lang_msg("BTN_OK", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
 	  SetDlgItemText(Dialog, IDOK, uimsg);
-	  GetDlgItemText(Dialog, IDCANCEL, uimsg, sizeof(uimsg));
-	  get_lang_msg("BTN_CANCEL", uimsg, UILanguageFile);
+	  GetDlgItemText(Dialog, IDCANCEL, uimsg2, sizeof(uimsg2));
+	  get_lang_msg("BTN_CANCEL", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
 	  SetDlgItemText(Dialog, IDCANCEL, uimsg);
-	  GetDlgItemText(Dialog, IDC_GETFNHELP, uimsg, sizeof(uimsg));
-	  get_lang_msg("BTN_HELP", uimsg, UILanguageFile);
+	  GetDlgItemText(Dialog, IDC_GETFNHELP, uimsg2, sizeof(uimsg2));
+	  get_lang_msg("BTN_HELP", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
 	  SetDlgItemText(Dialog, IDC_GETFNHELP, uimsg);
-#endif
 
       return TRUE;
     case WM_COMMAND:
@@ -818,19 +713,15 @@ BOOL CALLBACK GetFnDlg
 	    strncat_s(fv->FullName,sizeof(fv->FullName),&(TempFull[j]),_TRUNCATE);
 	  }
 	  EndDialog(Dialog, 1);
-#ifndef NO_I18N
 	  if (DlgGetfnFont != NULL) {
 	    DeleteObject(DlgGetfnFont);
 	  }
-#endif
 	  return TRUE;
 	case IDCANCEL:
 	  EndDialog(Dialog, 0);
-#ifndef NO_I18N
 	  if (DlgGetfnFont != NULL) {
 	    DeleteObject(DlgGetfnFont);
 	  }
-#endif
 	  return TRUE;
 	case IDC_GETFNHELP:
 	  if (fv!=NULL)
@@ -866,139 +757,67 @@ BOOL FAR PASCAL GetGetFname(HWND HWin, PFileVar fv)
 void FAR PASCAL SetFileVar(PFileVar fv)
 {
   int i;
-#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
-#endif
 
   GetFileNamePos(fv->FullName,&(fv->DirLen),&i);
   if (fv->FullName[fv->DirLen]=='\\') fv->DirLen++;
   strncpy_s(fv->DlgCaption, sizeof(fv->DlgCaption),"Tera Term: ", _TRUNCATE);
   switch (fv->OpId) {
     case OpLog:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitLog, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_LOG", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_LOG", uimsg, sizeof(uimsg), TitLog, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,TitLog);
-#endif
     break;
     case OpSendFile:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitSendFile, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_SENDFILE", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_SENDFILE", uimsg, sizeof(uimsg), TitSendFile, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,TitSendFile);
-#endif
       break;
     case OpKmtRcv:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitKmtRcv, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_KMTRCV", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_KMTRCV", uimsg, sizeof(uimsg), TitKmtRcv, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,TitKmtRcv);
-#endif
       break;
     case OpKmtGet:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitKmtGet, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_KMTGET", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_KMTGET", uimsg, sizeof(uimsg), TitKmtGet, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,TitKmtGet);
-#endif
       break;
     case OpKmtSend:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitKmtSend, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_KMTSEND", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_KMTSEND", uimsg, sizeof(uimsg), TitKmtSend, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,TitKmtSend);
-#endif
       break;
     case OpKmtFin:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitKmtFin, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_KMTFIN", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_KMTFIN", uimsg, sizeof(uimsg), TitKmtFin, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,TitKmtFin);
-#endif
       break;
     case OpXRcv:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitXRcv, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_XRCV", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_XRCV", uimsg, sizeof(uimsg), TitXRcv, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,TitXRcv);
-#endif
       break;
     case OpXSend:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitXSend, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_XSEND", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_XSEND", uimsg, sizeof(uimsg), TitXSend, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,TitXSend);
-#endif
       break;
     case OpZRcv:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitZRcv, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_ZRCV", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_ZRCV", uimsg, sizeof(uimsg), TitZRcv, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,TitZRcv);
-#endif
       break;
     case OpZSend:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitZSend, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_ZSEND", uimsg, sizeof(uimsg), TitZSend, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,TitZSend);
-#endif
       break;
     case OpBPRcv:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitBPRcv, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_BPRCV", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_BPRCV", uimsg, sizeof(uimsg), TitBPRcv, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,TitBPRcv);
-#endif
       break;
     case OpBPSend:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitBPSend, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_BPSEND", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_BPSEND", uimsg, sizeof(uimsg), TitBPSend, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,TitBPSend);
-#endif
       break;
     case OpQVRcv:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitQVRcv, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_QVRCV", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_QVRCV", uimsg, sizeof(uimsg), TitQVRcv, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,TitQVRcv);
-#endif
       break;
     case OpQVSend:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitQVSend, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_QVSEND", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_QVSEND", uimsg, sizeof(uimsg), TitQVSend, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,TitQVSend);
-#endif
       break;
   }
 }
@@ -1012,11 +831,9 @@ BOOL CALLBACK XFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 #ifdef TERATERM32
   LPOFNOTIFY notify;
 #endif
-#ifndef NO_I18N
-	char uimsg[MAX_UIMSG];
+	char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
 	LOGFONT logfont;
 	HFONT font;
-#endif
 
   switch (Message) {
     case WM_INITDIALOG:
@@ -1024,7 +841,6 @@ BOOL CALLBACK XFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       pl = (LPLONG)ofn->lCustData;
       SetWindowLong(Dialog, DWL_USER, (LONG)pl);
 
-#ifndef NO_I18N
       font = (HFONT)SendMessage(Dialog, WM_GETFONT, 0, 0);
       GetObject(font, sizeof(LOGFONT), &logfont);
       if (get_lang_font("DLG_TAHOMA_FONT", Dialog, &logfont, &DlgFoptFont, UILanguageFile)) {
@@ -1038,23 +854,21 @@ BOOL CALLBACK XFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
         DlgFoptFont = NULL;
       }
 
-      GetDlgItemText(Dialog, IDC_XOPT, uimsg, sizeof(uimsg));
-      get_lang_msg("DLG_XOPT", uimsg, UILanguageFile);
+      GetDlgItemText(Dialog, IDC_XOPT, uimsg2, sizeof(uimsg2));
+      get_lang_msg("DLG_XOPT", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
       SetDlgItemText(Dialog, IDC_XOPT, uimsg);
-      GetDlgItemText(Dialog, IDC_XOPTCHECK, uimsg, sizeof(uimsg));
-      get_lang_msg("DLG_XOPT_CHECKSUM", uimsg, UILanguageFile);
+      GetDlgItemText(Dialog, IDC_XOPTCHECK, uimsg2, sizeof(uimsg2));
+      get_lang_msg("DLG_XOPT_CHECKSUM", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
       SetDlgItemText(Dialog, IDC_XOPTCHECK, uimsg);
-      GetDlgItemText(Dialog, IDC_XOPTCRC, uimsg, sizeof(uimsg));
-      get_lang_msg("DLG_XOPT_CRC", uimsg, UILanguageFile);
+      GetDlgItemText(Dialog, IDC_XOPTCRC, uimsg2, sizeof(uimsg2));
+      get_lang_msg("DLG_XOPT_CRC", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
       SetDlgItemText(Dialog, IDC_XOPTCRC, uimsg);
-      GetDlgItemText(Dialog, IDC_XOPT1K, uimsg, sizeof(uimsg));
-      get_lang_msg("DLG_XOPT_1K", uimsg, UILanguageFile);
+      GetDlgItemText(Dialog, IDC_XOPT1K, uimsg2, sizeof(uimsg2));
+      get_lang_msg("DLG_XOPT_1K", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
       SetDlgItemText(Dialog, IDC_XOPT1K, uimsg);
-      GetDlgItemText(Dialog, IDC_XOPTBIN, uimsg, sizeof(uimsg));
-      get_lang_msg("DLG_XOPT_BINARY", uimsg, UILanguageFile);
+      GetDlgItemText(Dialog, IDC_XOPTBIN, uimsg2, sizeof(uimsg2));
+      get_lang_msg("DLG_XOPT_BINARY", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
       SetDlgItemText(Dialog, IDC_XOPTBIN, uimsg);
-#endif
-
 
       SetRB(Dialog,HIWORD(*pl),IDC_XOPTCHECK,IDC_XOPT1K);
       if (LOWORD(*pl)!=0xFFFF)
@@ -1096,11 +910,9 @@ BOOL CALLBACK XFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	      GetRB(Dialog,&Lo,IDC_XOPTBIN,IDC_XOPTBIN);
 	    *pl = MAKELONG(Lo,Hi);
 	  }
-#ifndef NO_I18N
 	if (DlgXoptFont != NULL) {
 		DeleteObject(DlgXoptFont);
 	}
-#endif
 	  break;
       }
       break;
@@ -1112,12 +924,8 @@ BOOL CALLBACK XFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 BOOL FAR PASCAL GetXFname
   (HWND HWin, BOOL Receive, LPLONG Option, PFileVar fv, PCHAR CurDir)
 {
-#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
   char FNFilter[sizeof(FileSendFilter)*2+128], *pf;
-#else
-  char FNFilter[11];
-#endif
   OPENFILENAME ofn;
   LONG opt;
   char TempDir[MAXPATHLEN];
@@ -1132,50 +940,29 @@ BOOL FAR PASCAL GetXFname
   memset(FNFilter, 0, sizeof(FNFilter));  /* Set up for double null at end */
   memset(&ofn, 0, sizeof(OPENFILENAME));
 
-#ifndef NO_I18N
   strncpy_s(fv->DlgCaption, sizeof(fv->DlgCaption),"Tera Term: ", _TRUNCATE);
-#else
-  strcpy(fv->DlgCaption,"Tera Term: XMODEM ");
-#endif
   pf = FNFilter;
   if (Receive)
-#ifndef NO_I18N
   {
-    strncpy_s(uimsg, sizeof(uimsg), TitXRcv, _TRUNCATE);
-    get_lang_msg("FILEDLG_TRANS_TITLE_XRCV", uimsg, UILanguageFile);
+    get_lang_msg("FILEDLG_TRANS_TITLE_XRCV", uimsg, sizeof(uimsg), TitXRcv, UILanguageFile);
     strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
   }
-#else
-    strcat(fv->DlgCaption,"Receive");
-#endif
   else
-#ifndef NO_I18N
   {
-    strncpy_s(uimsg, sizeof(uimsg), TitXSend, _TRUNCATE);
-    get_lang_msg("FILEDLG_TRANS_TITLE_XSEND", uimsg, UILanguageFile);
+    get_lang_msg("FILEDLG_TRANS_TITLE_XSEND", uimsg, sizeof(uimsg), TitXSend, UILanguageFile);
     strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
     if (strlen(FileSendFilter) > 0) {
-      strncpy_s(uimsg, sizeof(uimsg), "User define", _TRUNCATE);
-      get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, sizeof(uimsg), "User define", UILanguageFile);
       _snprintf_s(FNFilter, sizeof(FNFilter), _TRUNCATE, "%s(%s)", uimsg, FileSendFilter);
       pf = pf + strlen(FNFilter) + 1;
       strncat_s(FNFilter, sizeof(FNFilter) ,FileSendFilter, _TRUNCATE);
       pf = pf + strlen(pf) + 1;
     }
   }
-#else
-    strcat(fv->DlgCaption,"Send");
-#endif
 
-#ifndef NO_I18N
-  strncpy_s(uimsg, sizeof(uimsg), "All(*.*)\\0*.*\\0\\0", _TRUNCATE);
-  get_lang_msg("FILEDLG_ALL_FILTER", uimsg, UILanguageFile);
+  get_lang_msg("FILEDLG_ALL_FILTER", uimsg, sizeof(uimsg), "All(*.*)\\0*.*\\0\\0", UILanguageFile);
   // \0\0 で終わる必要があるので 2 バイト
   memcpy(pf, uimsg, sizeof(FNFilter) - (pf - FNFilter + 2));
-#else
-  strcpy(FNFilter, "all");
-  strcpy(&(FNFilter[strlen(FNFilter)+1]), "*.*");
-#endif
 
   ofn.lStructSize = sizeof(OPENFILENAME);
   ofn.hwndOwner   = HWin;
@@ -1356,10 +1143,8 @@ BOOL WINAPI DllMain(HANDLE hInstance,
   #pragma on (unreferenced);
 #endif
 {
-#ifndef NO_I18N
   PMap pm;
   HANDLE HMap = NULL;
-#endif
 
   hInst = hInstance;
   switch( ul_reason_for_call ) {
@@ -1371,7 +1156,6 @@ BOOL WINAPI DllMain(HANDLE hInstance,
     break;
   case DLL_PROCESS_ATTACH:
      /* do process initialization */
-#ifndef NO_I18N
       HMap = CreateFileMapping(
         (HANDLE) 0xFFFFFFFF, NULL, PAGE_READONLY,
         0, sizeof(TMap), TT_FILEMAPNAME);
@@ -1383,7 +1167,6 @@ BOOL WINAPI DllMain(HANDLE hInstance,
           strncpy_s(FileSendFilter, sizeof(FileSendFilter), pm->ts.FileSendFilter, _TRUNCATE);
         }
       }
-#endif
     break;
   case DLL_PROCESS_DETACH:
     /* do process cleanup */
@@ -1408,6 +1191,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.23  2007/08/08 15:58:28  maya
+ * 安全な関数を使用するように変更した。
+ *
  * Revision 1.22  2007/07/16 13:52:59  maya
  * GetOpenFileName からファイル名を取得できないバグを修正した。
  *

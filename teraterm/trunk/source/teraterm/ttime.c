@@ -79,9 +79,7 @@ BOOL LoadIME()
 {
   BOOL Err;
   PTTSet tempts;
-#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
-#endif
 
 #ifdef TERATERM32
   if (HIMEDLL != NULL) return TRUE;
@@ -94,16 +92,9 @@ BOOL LoadIME()
   if (HIMEDLL < HINSTANCE_ERROR)
   {
 #endif
-#ifndef NO_I18N
-    strncpy_s(uimsg, sizeof(uimsg),  "Tera Term: Error", _TRUNCATE);
-    get_lang_msg("MSG_TT_ERROR", uimsg, ts.UILanguageFile);
-    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg),  "Can't use IME", _TRUNCATE);
-    get_lang_msg("MSG_USE_IME_ERROR", ts.UIMsg, ts.UILanguageFile);
+    get_lang_msg("MSG_TT_ERROR", uimsg, sizeof(uimsg),  "Tera Term: Error", ts.UILanguageFile);
+    get_lang_msg("MSG_USE_IME_ERROR", ts.UIMsg, sizeof(ts.UIMsg), "Can't use IME", ts.UILanguageFile);
     MessageBox(0,ts.UIMsg,uimsg,MB_ICONEXCLAMATION);
-#else
-    MessageBox(0,"Can't use IME",
-      "Tera Term: Error",MB_ICONEXCLAMATION);
-#endif
     WritePrivateProfileString("Tera Term","IME","off",ts.SetupFName);
     ts.UseIME = 0;
     tempts = (PTTSet)malloc(sizeof(TTTSet));

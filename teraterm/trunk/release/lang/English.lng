@@ -135,6 +135,7 @@ FILEDLG_SELECT_LOGVIEW_APP_TITLE=Choose a executing file with launching logging 
 FILEDLG_SELECT_LOGVIEW_APP_FILTER=exe(*.exe)\0*.exe\0all(*.*)\0*.*\0\0
 MSG_LOGFILE_INVALID_CHAR_ERROR=Invalid character is included in log file name.
 MSG_LOGFILE_TOOLONG_ERROR=The log file name is too long.
+MSG_SAVESETUP_PERMISSION_ERROR=Teraterm.ini file doesn't have the writable permission.
 
 DLG_TABSHEET_TITLE=Tera Term: Additional settings
 DLG_TABSHEET_TITLE_GENERAL=General

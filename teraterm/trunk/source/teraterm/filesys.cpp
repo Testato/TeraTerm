@@ -177,19 +177,14 @@ static PProtoDlg PtDlg = NULL;
 BOOL OpenFTDlg(PFileVar fv)
 {
   PFileTransDlg FTDlg;
-#ifndef NO_I18N
   HWND HFTDlg;
-#endif
+  char uimsg[MAX_UIMSG];
 
   FTDlg = new CFileTransDlg();
   
   if (FTDlg!=NULL)
   {
-#ifndef NO_I18N
     FTDlg->Create(fv, &cv, &ts);
-#else
-    FTDlg->Create(fv, &cv);
-#endif
     FTDlg->RefreshNum();
     if (fv->OpId == OpLog)
       FTDlg->ShowWindow(SW_MINIMIZE);
@@ -200,28 +195,26 @@ BOOL OpenFTDlg(PFileVar fv)
   else
     SendDlg = FTDlg; /* File send */
 
-#ifndef NO_I18N
   HFTDlg=FTDlg->GetSafeHwnd();
 
-  GetDlgItemText(HFTDlg, IDC_TRANS_FILENAME, ts.UIMsg, sizeof(ts.UIMsg));
-  get_lang_msg("DLG_FILETRANS_FILENAME", ts.UIMsg, ts.UILanguageFile);
+  GetDlgItemText(HFTDlg, IDC_TRANS_FILENAME, uimsg, sizeof(uimsg));
+  get_lang_msg("DLG_FILETRANS_FILENAME", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   SetDlgItemText(HFTDlg, IDC_TRANS_FILENAME, ts.UIMsg);
-  GetDlgItemText(HFTDlg, IDC_FULLPATH_LABEL, ts.UIMsg, sizeof(ts.UIMsg));
-  get_lang_msg("DLG_FILETRANS_FULLPATH", ts.UIMsg, ts.UILanguageFile);
+  GetDlgItemText(HFTDlg, IDC_FULLPATH_LABEL, uimsg, sizeof(uimsg));
+  get_lang_msg("DLG_FILETRANS_FULLPATH", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   SetDlgItemText(HFTDlg, IDC_FULLPATH_LABEL, ts.UIMsg);
-  GetDlgItemText(HFTDlg, IDC_TRANS_TRANS, ts.UIMsg, sizeof(ts.UIMsg));
-  get_lang_msg("DLG_FILETRANS_TRNAS", ts.UIMsg, ts.UILanguageFile);
+  GetDlgItemText(HFTDlg, IDC_TRANS_TRANS, uimsg, sizeof(uimsg));
+  get_lang_msg("DLG_FILETRANS_TRNAS", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   SetDlgItemText(HFTDlg, IDC_TRANS_TRANS, ts.UIMsg);
-  GetDlgItemText(HFTDlg, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
-  get_lang_msg("BTN_CANCEL", ts.UIMsg, ts.UILanguageFile);
+  GetDlgItemText(HFTDlg, IDCANCEL, uimsg, sizeof(uimsg));
+  get_lang_msg("BTN_CANCEL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   SetDlgItemText(HFTDlg, IDCANCEL, ts.UIMsg);
-  GetDlgItemText(HFTDlg, IDC_TRANSPAUSESTART, ts.UIMsg, sizeof(ts.UIMsg));
-  get_lang_msg("DLG_FILETRANS_PAUSE", ts.UIMsg, ts.UILanguageFile);
+  GetDlgItemText(HFTDlg, IDC_TRANSPAUSESTART, uimsg, sizeof(uimsg));
+  get_lang_msg("DLG_FILETRANS_PAUSE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   SetDlgItemText(HFTDlg, IDC_TRANSPAUSESTART, ts.UIMsg);
-  GetDlgItemText(HFTDlg, IDC_TRANSHELP, ts.UIMsg, sizeof(ts.UIMsg));
-  get_lang_msg("BTN_HELP", ts.UIMsg, ts.UILanguageFile);
+  GetDlgItemText(HFTDlg, IDC_TRANSHELP, uimsg, sizeof(uimsg));
+  get_lang_msg("BTN_HELP", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   SetDlgItemText(HFTDlg, IDC_TRANSHELP, ts.UIMsg);
-#endif
 
   return (FTDlg!=NULL);
 }
@@ -530,16 +523,11 @@ void CommentLogToFile(char *buf, int size)
 	DWORD wrote;
 
 	if (LogVar == NULL || !LogVar->FileOpen) {
-#ifndef NO_I18N
 		char uimsg[MAX_UIMSG];
-		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
-		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "It is not opened by the log file yet.", _TRUNCATE);
-		get_lang_msg("MSG_COMMENT_LOG_OPEN_ERROR", ts.UIMsg, ts.UILanguageFile);
+		get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+		get_lang_msg("MSG_COMMENT_LOG_OPEN_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+					 "It is not opened by the log file yet.", ts.UILanguageFile);
 		::MessageBox(NULL, ts.UIMsg, uimsg, MB_OK|MB_ICONEXCLAMATION);
-#else
-		::MessageBox(NULL, "It is not opened by the log file yet.", "ERROR", MB_OK|MB_ICONEXCLAMATION);
-#endif
 		return;
 	}
 
@@ -896,9 +884,8 @@ BOOL OpenProtoDlg(PFileVar fv, int IdProto, int Mode, WORD Opt1, WORD Opt2)
 {
   int vsize;
   PProtoDlg pd;
-#ifndef NO_I18N
   HWND Hpd;
-#endif
+  char uimsg[MAX_UIMSG];
 
   ProtoId = IdProto;
 
@@ -950,32 +937,26 @@ BOOL OpenProtoDlg(PFileVar fv, int IdProto, int Mode, WORD Opt1, WORD Opt2)
     ProtoVar = NULL;
     return FALSE;
   }
-#ifndef NO_I18N
   pd->Create(fv,&ts);
-#else
-  pd->Create(fv);
-#endif
 
-#ifndef NO_I18N
   Hpd=pd->GetSafeHwnd();
 
-  GetDlgItemText(Hpd, IDC_PROT_FILENAME, ts.UIMsg, sizeof(ts.UIMsg));
-  get_lang_msg("DLG_PROT_FIELNAME", ts.UIMsg, ts.UILanguageFile);
+  GetDlgItemText(Hpd, IDC_PROT_FILENAME, uimsg, sizeof(uimsg));
+  get_lang_msg("DLG_PROT_FIELNAME", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   SetDlgItemText(Hpd, IDC_PROT_FILENAME, ts.UIMsg);
-  GetDlgItemText(Hpd, IDC_PROT_PROT, ts.UIMsg, sizeof(ts.UIMsg));
-  get_lang_msg("DLG_PROT_PROTO", ts.UIMsg, ts.UILanguageFile);
+  GetDlgItemText(Hpd, IDC_PROT_PROT, uimsg, sizeof(uimsg));
+  get_lang_msg("DLG_PROT_PROTO", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   SetDlgItemText(Hpd, IDC_PROT_PROT, ts.UIMsg);
-  GetDlgItemText(Hpd, IDC_PROT_PACKET, ts.UIMsg, sizeof(ts.UIMsg));
-  get_lang_msg("DLG_PROT_PACKET", ts.UIMsg, ts.UILanguageFile);
+  GetDlgItemText(Hpd, IDC_PROT_PACKET, uimsg, sizeof(uimsg));
+  get_lang_msg("DLG_PROT_PACKET", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   SetDlgItemText(Hpd, IDC_PROT_PACKET, ts.UIMsg);
-  GetDlgItemText(Hpd, IDC_PROT_TRANS, ts.UIMsg, sizeof(ts.UIMsg));
-  get_lang_msg("DLG_PROT_TRANS", ts.UIMsg, ts.UILanguageFile);
+  GetDlgItemText(Hpd, IDC_PROT_TRANS, uimsg, sizeof(uimsg));
+  get_lang_msg("DLG_PROT_TRANS", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   SetDlgItemText(Hpd, IDC_PROT_TRANS, ts.UIMsg);
-  GetDlgItemText(Hpd, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
-  get_lang_msg("BTN_CANCEL", ts.UIMsg, ts.UILanguageFile);
+  GetDlgItemText(Hpd, IDCANCEL, uimsg, sizeof(uimsg));
+  get_lang_msg("BTN_CANCEL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   SetDlgItemText(Hpd, IDCANCEL, ts.UIMsg);
-#endif
-  
+
   (*ProtoInit)(ProtoId,FileVar,ProtoVar,&cv,&ts);
 
   PtDlg = pd;
@@ -1295,6 +1276,9 @@ void QVStart(int mode)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  2007/08/08 15:56:35  maya
+ * 安全な関数を使用するように変更した。
+ *
  * Revision 1.15  2007/06/06 14:02:53  maya
  * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
  *

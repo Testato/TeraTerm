@@ -530,11 +530,7 @@ void FAR PASCAL UnregWin(HWND HWin)
   if (pm->NWin>0) pm->NWin--;
 }
 
-#ifndef NO_I18N
 void FAR PASCAL SetWinMenu(HMENU menu, PCHAR buf, PCHAR langFile)
-#else
-void FAR PASCAL SetWinMenu(HMENU menu)
-#endif
 {
   int i;
   char Temp[MAXPATHLEN];
@@ -567,15 +563,10 @@ void FAR PASCAL SetWinMenu(HMENU menu)
     else
       UnregWin(Hw);
   }
-#ifndef NO_I18N
   // buf が ts.UIMsg のポインタであることを期待してサイズを固定
   // (2007.6.23 maya)
-  strncpy_s(buf, MAX_UIMSG, "&Window", _TRUNCATE);
-  get_lang_msg("MENU_WINDOW_WINDOW", buf, langFile);
+  get_lang_msg("MENU_WINDOW_WINDOW", buf, MAX_UIMSG, "&Window", langFile);
   AppendMenu(menu,MF_ENABLED | MF_STRING,ID_WINDOW_1+9, buf);
-#else
-  AppendMenu(menu,MF_ENABLED | MF_STRING,ID_WINDOW_1+9,"&Window...");
-#endif
 }
 
 void FAR PASCAL SetWinList(HWND HWin, HWND HDlg, int IList)
@@ -1466,6 +1457,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2007/08/08 15:57:30  maya
+ * 安全な関数を使用するように変更した。
+ *
  * Revision 1.10  2007/07/02 10:50:19  doda
  * 旧バージョンとの間では共有メモリによる設定の共有が出来ないため、
  * ファイルマッピングオブジェクト名を変更した。

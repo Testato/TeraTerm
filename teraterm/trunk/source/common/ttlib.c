@@ -600,18 +600,10 @@ homedir:
 	strncat_s(dest, destlen, "TERATERM.INI", _TRUNCATE);
 }
 
-#ifndef NO_I18N
-#if 1
-void get_lang_msg(PCHAR key, PCHAR buf, PCHAR iniFile)
-{
-	GetI18nStr("Tera Term", key, buf, iniFile);
-}
-#else
 void get_lang_msg(PCHAR key, PCHAR buf, int buf_len, PCHAR def, PCHAR iniFile)
 {
 	GetI18nStr("Tera Term", key, buf, buf_len, def, iniFile);
 }
-#endif
 
 int get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PCHAR iniFile)
 {
@@ -627,4 +619,3 @@ int get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PCHAR iniF
 
 	return TRUE;
 }
-#endif

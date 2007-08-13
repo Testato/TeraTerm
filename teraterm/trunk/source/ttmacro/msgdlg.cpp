@@ -50,14 +50,11 @@ BOOL CMsgDlg::OnInitDialog()
   RECT R;
   HDC TmpDC;
   HWND HOk, HNo;
-#ifndef NO_I18N
-  char uimsg[MAX_UIMSG];
+  char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
   LOGFONT logfont;
   HFONT font;
-#endif
 
   CDialog::OnInitDialog();
-#ifndef NO_I18N
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
   GetObject(font, sizeof(LOGFONT), &logfont);
   if (get_lang_font("DLG_SYSTEM_FONT", m_hWnd, &logfont, &DlgFont, UILanguageFile)) {
@@ -66,10 +63,9 @@ BOOL CMsgDlg::OnInitDialog()
     SendDlgItemMessage(IDCANCEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
   }
 
-  GetDlgItemText(IDOK, uimsg, sizeof(uimsg));
-  get_lang_msg("BTN_OK", uimsg, UILanguageFile);
+  GetDlgItemText(IDOK, uimsg2, sizeof(uimsg2));
+  get_lang_msg("BTN_OK", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
   SetDlgItemText(IDOK, uimsg);
-#endif
 
   SetWindowText(TitleStr);
   SetDlgItemText(IDC_MSGTEXT,TextStr);
@@ -126,9 +122,7 @@ void CMsgDlg::Relocation(BOOL is_init, int new_WW)
   HDC TmpDC;
   HWND HText, HOk, HNo;
   int CW, CH;
-#ifndef NO_I18N
-  char uimsg[MAX_UIMSG];
-#endif
+  char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
 
   GetClientRect(&R);
   CW = R.right-R.left;
@@ -161,14 +155,12 @@ void CMsgDlg::Relocation(BOOL is_init, int new_WW)
     if (is_init) {
       ::SetWindowText(HOk,"&Yes");
       ::SetWindowText(HNo,"&No");
-#ifndef NO_I18N
-      GetDlgItemText(IDOK, uimsg, sizeof(uimsg));
-      get_lang_msg("BTN_YES", uimsg, UILanguageFile);
-	  ::SetWindowText(HOk,uimsg);
-      GetDlgItemText(IDCANCEL, uimsg, sizeof(uimsg));
-      get_lang_msg("BTN_NO", uimsg, UILanguageFile);
+      GetDlgItemText(IDOK, uimsg2, sizeof(uimsg2));
+      get_lang_msg("BTN_YES", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
+      ::SetWindowText(HOk,uimsg);
+      GetDlgItemText(IDCANCEL, uimsg2, sizeof(uimsg2));
+      get_lang_msg("BTN_NO", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
       ::SetWindowText(HNo,uimsg);
-#endif
     }
     ::MoveWindow(HOk,(2*TW-5*BW)/4,2*TH,BW,BH,TRUE);
     ::MoveWindow(HNo,(2*TW+BW)/4,2*TH,BW,BH,TRUE);

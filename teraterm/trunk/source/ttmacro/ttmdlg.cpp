@@ -160,23 +160,14 @@ BOOL GetFileName(HWND HWin)
   char FNFilter[31];
   OPENFILENAME FNameRec;
   OSVERSIONINFO osvi;
-#ifndef NO_I18N
-  char uimsg[MAX_UIMSG];
-  char uimsg2[MAX_UIMSG];
-#endif
+  char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
 
   if (FileName[0]!=0) return FALSE;
 
   memset(FNFilter, 0, sizeof(FNFilter));
   memset(&FNameRec, 0, sizeof(OPENFILENAME));
-#ifndef NO_I18N
-  strncpy_s(uimsg, sizeof(uimsg), "Macro files (*.ttl)\\0*.ttl\\0\\0", _TRUNCATE);
-  get_lang_msg("FILEDLG_OPEN_MACRO_FILTER", uimsg, UILanguageFile);
+  get_lang_msg("FILEDLG_OPEN_MACRO_FILTER", uimsg, sizeof(uimsg), "Macro files (*.ttl)\\0*.ttl\\0\\0", UILanguageFile);
   memcpy(FNFilter, uimsg, sizeof(FNFilter));
-#else
-  strcpy(FNFilter, "Macro files (*.ttl)");
-  strcpy(&(FNFilter[strlen(FNFilter)+1]), "*.ttl");
-#endif
 
   // sizeof(OPENFILENAME) Ç≈ÇÕ Windows98/NT Ç≈èIóπÇµÇƒÇµÇ‹Ç§ÇΩÇﬂ (2006.8.14 maya)
   osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
@@ -196,13 +187,8 @@ BOOL GetFileName(HWND HWin)
   FNameRec.lpstrInitialDir = HomeDir;
   FNameRec.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
   FNameRec.lpstrDefExt = "TTL";
-#ifndef NO_I18N
-  strncpy_s(uimsg2, sizeof(uimsg2), "MACRO: Open macro", _TRUNCATE);
-  get_lang_msg("FILEDLG_OPEN_MACRO_TITLE", uimsg2, UILanguageFile);
+  get_lang_msg("FILEDLG_OPEN_MACRO_TITLE", uimsg2, sizeof(uimsg2), "MACRO: Open macro", UILanguageFile);
   FNameRec.lpstrTitle = uimsg2;
-#else
-  FNameRec.lpstrTitle = "MACRO: Open macro";
-#endif
   if (GetOpenFileName(&FNameRec))
     strncpy_s(ShortName, sizeof(ShortName), &(FileName[FNameRec.nFileOffset]), _TRUNCATE);
   else

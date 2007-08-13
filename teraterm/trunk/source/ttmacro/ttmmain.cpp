@@ -195,18 +195,15 @@ BOOL CCtrlWindow::OnInitDialog()
   char Temp[MAXPATHLEN];
   BOOL IOption, VOption;
   int CmdShow;
-#ifndef NO_I18N
-  char uimsg[MAX_UIMSG];
+  char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
   LOGFONT logfont;
   HFONT font;
-#endif
 
 #ifndef TERATERM32
   SubClassDlg(GetSafeHwnd()); /* CTL3D */
 #endif
   CDialog::OnInitDialog();
 
-#ifndef NO_I18N
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
   GetObject(font, sizeof(LOGFONT), &logfont);
   if (get_lang_font("DLG_SYSTEM_FONT", m_hWnd, &logfont, &DlgFont, UILanguageFile)) {
@@ -214,13 +211,12 @@ BOOL CCtrlWindow::OnInitDialog()
     SendDlgItemMessage(IDC_CTRLEND, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
   }
 
-  GetDlgItemText(IDC_CTRLPAUSESTART, uimsg, sizeof(uimsg));
-  get_lang_msg("BTN_PAUSE", uimsg, UILanguageFile);
+  GetDlgItemText(IDC_CTRLPAUSESTART, uimsg2, sizeof(uimsg2));
+  get_lang_msg("BTN_PAUSE", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
   SetDlgItemText(IDC_CTRLPAUSESTART, uimsg);
-  GetDlgItemText(IDC_CTRLEND, uimsg, sizeof(uimsg));
-  get_lang_msg("BTN_END", uimsg, UILanguageFile);
+  GetDlgItemText(IDC_CTRLEND, uimsg2, sizeof(uimsg2));
+  get_lang_msg("BTN_END", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
   SetDlgItemText(IDC_CTRLEND, uimsg);
-#endif
 
   Pause = FALSE;
 
@@ -285,32 +281,20 @@ void CCtrlWindow::OnCancel( )
 
 BOOL CCtrlWindow::OnCommand(WPARAM wParam, LPARAM lParam)
 {
-#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
-#endif
 
   switch (LOWORD(wParam)) {
     case IDC_CTRLPAUSESTART:
       if (Pause)
-#ifndef NO_I18N
       {
-        strncpy_s(uimsg, sizeof(uimsg),  "Pau&se", _TRUNCATE);
-        get_lang_msg("BTN_PAUSE", uimsg, UILanguageFile);
-		SetDlgItemText(IDC_CTRLPAUSESTART, uimsg);
+        get_lang_msg("BTN_PAUSE", uimsg, sizeof(uimsg),  "Pau&se", UILanguageFile);
+        SetDlgItemText(IDC_CTRLPAUSESTART, uimsg);
       }
-#else
-	SetDlgItemText(IDC_CTRLPAUSESTART, "Pau&se");
-#endif
       else
-#ifndef NO_I18N
-	  {
-        strncpy_s(uimsg, sizeof(uimsg),  "&Start", _TRUNCATE);
-        get_lang_msg("BTN_START", uimsg, UILanguageFile);
-		SetDlgItemText(IDC_CTRLPAUSESTART, uimsg);
-	  }
-#else
-	SetDlgItemText(IDC_CTRLPAUSESTART, "&Start");
-#endif
+      {
+        get_lang_msg("BTN_START", uimsg, sizeof(uimsg),  "&Start", UILanguageFile);
+        SetDlgItemText(IDC_CTRLPAUSESTART, uimsg);
+      }
       Pause = ! Pause;
       return TRUE;
     case IDC_CTRLEND:

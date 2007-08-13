@@ -5,24 +5,11 @@
 #include "i18n.h"
 #include "ttlib.h"
 
-#if 1
-void FAR PASCAL GetI18nStr(PCHAR section, PCHAR key, PCHAR buf, PCHAR iniFile)
-{
-	static char tmp[MAX_UIMSG];
-
-	GetPrivateProfileString(section, key, buf, tmp, MAX_UIMSG, iniFile);
-	// buf が ts.UIMsg のポインタであることを期待してサイズを固定
-	// (2007.6.23 maya)
-	strncpy_s(buf, MAX_UIMSG, tmp, _TRUNCATE);
-	RestoreNewLine(buf);
-}
-#else
 void FAR PASCAL GetI18nStr(PCHAR section, PCHAR key, PCHAR buf, int buf_len, PCHAR def, PCHAR iniFile)
 {
-	GetPrivateProfileString(section, key, def, buf, buflen, iniFile);
+	GetPrivateProfileString(section, key, def, buf, buf_len, iniFile);
 	RestoreNewLine(buf);
 }
-#endif
 
 int FAR PASCAL GetI18nLogfont(PCHAR section, PCHAR key, PLOGFONT logfont, int ppi, PCHAR iniFile)
 {

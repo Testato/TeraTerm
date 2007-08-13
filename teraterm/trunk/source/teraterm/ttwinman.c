@@ -136,22 +136,12 @@ void ChangeTitle()
 	{ // host name
 		strncat_s(TempTitle,sizeof(TempTitle), " - ",_TRUNCATE);
 		if (Connecting) {
-#ifndef NO_I18N
-			strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "[connecting...]", _TRUNCATE);
-			get_lang_msg("DLG_MAIN_TITLE_CONNECTING", ts.UIMsg, ts.UILanguageFile);
+			get_lang_msg("DLG_MAIN_TITLE_CONNECTING", ts.UIMsg, sizeof(ts.UIMsg), "[connecting...]", ts.UILanguageFile);
 			strncat_s(TempTitle,sizeof(TempTitle),ts.UIMsg,_TRUNCATE);
-#else
-			strncat(TempTitle,"[connecting...]",i);
-#endif
 		}
 		else if (! cv.Ready) {
-#ifndef NO_I18N
-			strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "[disconnected]", _TRUNCATE);
-			get_lang_msg("DLG_MAIN_TITLE_DISCONNECTED", ts.UIMsg, ts.UILanguageFile);
+			get_lang_msg("DLG_MAIN_TITLE_DISCONNECTED", ts.UIMsg, sizeof(ts.UIMsg), "[disconnected]", ts.UILanguageFile);
 			strncat_s(TempTitle,sizeof(TempTitle),ts.UIMsg,_TRUNCATE);
-#else
-			strncat(TempTitle,"[disconnected]",i);
-#endif
 		}
 		else if (cv.PortType==IdSerial)
 		{
@@ -257,16 +247,14 @@ void OpenHelp(HWND HWin, UINT Command, DWORD Data)
 {
   char HelpFN[MAXPATHLEN];
 
-  strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), HTML_HELP, _TRUNCATE);
-  get_lang_msg("HELPFILE", ts.UIMsg, ts.UILanguageFile);
+  get_lang_msg("HELPFILE", ts.UIMsg, sizeof(ts.UIMsg), HTML_HELP, ts.UILanguageFile);
 
   // ヘルプのオーナーは常にデスクトップになる (2007.5.12 maya)
   HWin = GetDesktopWindow();
   _snprintf_s(HelpFN, sizeof(HelpFN), _TRUNCATE, "%s\\%s", ts.HomeDir, ts.UIMsg);
   if (HtmlHelp(HWin, HelpFN, Command, Data) == NULL && Command != HH_CLOSE_ALL) {
     char buf[MAXPATHLEN];
-    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't open HTML help file(%s).", _TRUNCATE);
-    get_lang_msg("MSG_OPENHELP_ERROR", ts.UIMsg, ts.UILanguageFile);
+    get_lang_msg("MSG_OPENHELP_ERROR", ts.UIMsg, sizeof(ts.UIMsg), "Can't open HTML help file(%s).", ts.UILanguageFile);
     _snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, HelpFN);
     MessageBox(HWin, buf, "Tera Term: HTML help", MB_OK | MB_ICONERROR);
   }
@@ -293,6 +281,9 @@ void OpenHtmlHelp(HWND HWin, char *filename)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  2007/08/08 15:56:35  maya
+ * 安全な関数を使用するように変更した。
+ *
  * Revision 1.14  2007/07/19 23:27:29  maya
  * タイトル変更部をリファクタリングした。
  *

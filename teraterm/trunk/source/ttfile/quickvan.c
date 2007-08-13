@@ -93,9 +93,7 @@ void QVSendACK(PFileVar fv, PQVVar qv, PComVar cv)
 void QVInit
   (PFileVar fv, PQVVar qv, PComVar cv, PTTSet ts)
 {
-#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
-#endif
 
   qv->WinSize = ts->QVWinSize;
   fv->LogFlag = ((ts->LogFlag & LOG_QV)!=0);
@@ -109,16 +107,11 @@ void QVInit
   fv->ByteCount = 0;
 
   if (qv->QVMode==IdQVReceive)
-#ifndef NO_I18N
   {
     strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), "Tera Term: ", _TRUNCATE);
-    strncpy_s(uimsg, sizeof(uimsg), TitQVRcv, _TRUNCATE);
-    get_lang_msg("FILEDLG_TRANS_TITLE_QVRCV", uimsg, UILanguageFile);
+    get_lang_msg("FILEDLG_TRANS_TITLE_QVRCV", uimsg, sizeof(uimsg), TitQVRcv, UILanguageFile);
     strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
   }
-#else
-    strcat(fv->DlgCaption,"Tera Term: Quick-VAN Receive");
-#endif
   SetWindowText(fv->HWin, fv->DlgCaption);
   SetDlgItemText(fv->HWin, IDC_PROTOPROT, "Quick-VAN");
 

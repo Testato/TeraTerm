@@ -36,9 +36,7 @@ static int compareOrder(const void * e1, const void * e2) {
 static void loadExtension(ExtensionList * * extensions, char const * fileName) {
   char buf[1024];
   DWORD err;
-#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
-#endif
 
   if (NumExtensions>=MAXNUMEXTENSIONS) return;
   LibHandle[NumExtensions] = LoadLibrary(fileName);
@@ -72,19 +70,10 @@ static void loadExtension(ExtensionList * * extensions, char const * fileName) {
   }
 
   err = GetLastError();
-#ifndef NO_I18N
-  strncpy_s(uimsg, sizeof(uimsg), "Tera Term: Error", _TRUNCATE);
-  get_lang_msg("MSG_TT_ERROR", uimsg, ts.UILanguageFile);
-  strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Cannot load extension %s (%d)", _TRUNCATE);
-  get_lang_msg("MSG_LOAD_EXT_ERROR", ts.UIMsg, ts.UILanguageFile);
+  get_lang_msg("MSG_TT_ERROR", uimsg, sizeof(uimsg), "Tera Term: Error", ts.UILanguageFile);
+  get_lang_msg("MSG_LOAD_EXT_ERROR", ts.UIMsg, sizeof(ts.UIMsg), "Cannot load extension %s (%d)", ts.UILanguageFile);
   _snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, fileName, err);
-  buf[sizeof(buf) - 1] = 0;
   MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONEXCLAMATION);
-#else
-  _snprintf(buf, sizeof(buf), "Cannot load extension %s (%d)", fileName, err);
-  buf[sizeof(buf) - 1] = 0;
-  MessageBox(NULL, buf, "Teraterm Error", MB_OK | MB_ICONEXCLAMATION);
-#endif
 }
 
 void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {

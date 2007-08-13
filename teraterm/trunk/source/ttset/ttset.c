@@ -1006,7 +1006,6 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   // CodePage
   ts->CodePage = GetPrivateProfileInt(Section,"CodePage ", DEFAULT_CODEPAGE, FName);
 
-#ifndef NO_I18N
   // UI language message file
   GetPrivateProfileString(Section,"UILanguageFile","lang\\Default.lng",
                           Temp,sizeof(Temp),FName);
@@ -1021,7 +1020,6 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
     AppendSlash(ts->UILanguageFile,sizeof(ts->UILanguageFile));
     strncat_s(ts->UILanguageFile, sizeof(ts->UILanguageFile), Temp, _TRUNCATE);
   }
-#endif
 
   // Broadcast Command History (2007.3.3 maya)
   ts->BroadcastCommandHistory =
@@ -2524,6 +2522,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.43  2007/08/13 22:19:11  maya
+ * COM100 以上が扱えない問題を修正した。
+ *
  * Revision 1.42  2007/08/11 08:25:40  doda
  * telnet接続でのkeep-aliveパケット送信を実装。
  * - 一定時間パケットの送信を行わなかった時、TELNET NOPコマンドを送信する。

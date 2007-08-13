@@ -502,10 +502,7 @@ void KmtSendEOTPacket(PFileVar fv, PKmtVar kv, PComVar cv)
 
 BOOL KmtSendNextFile(PFileVar fv, PKmtVar kv, PComVar cv)
 {
-#ifndef NO_I18N
-  char uimsg[MAX_UIMSG];
-  char uimsg2[MAX_UIMSG];
-#endif
+  char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
 
   if (! GetNextFname(fv))
   {
@@ -519,18 +516,11 @@ BOOL KmtSendNextFile(PFileVar fv, PKmtVar kv, PComVar cv)
   if (! fv->FileOpen)
   {
     if (! fv->NoMsg)
-#ifndef NO_I18N
     {
-      strncpy_s(uimsg2, sizeof(uimsg2), "Tera Term: Error", _TRUNCATE);
-      get_lang_msg("MSG_TT_ERROR", uimsg2, UILanguageFile);
-	  strncpy_s(uimsg, sizeof(uimsg), "Cannot open file", _TRUNCATE);
-      get_lang_msg("MSG_CANTOEPN_FILE_ERROR", uimsg, UILanguageFile);
+      get_lang_msg("MSG_TT_ERROR", uimsg2, sizeof(uimsg2), "Tera Term: Error", UILanguageFile);
+      get_lang_msg("MSG_CANTOEPN_FILE_ERROR", uimsg, sizeof(uimsg), "Cannot open file", UILanguageFile);
       MessageBox(fv->HWin,uimsg,uimsg,MB_ICONEXCLAMATION);
     }
-#else
-      MessageBox(fv->HWin,"Cannot open file","Tera Term: Error",
-		 MB_ICONEXCLAMATION);
-#endif
     return FALSE;
   }
   else
@@ -588,49 +578,25 @@ void KmtSendFinish(PFileVar fv, PKmtVar kv, PComVar cv)
 void KmtInit
   (PFileVar fv, PKmtVar kv, PComVar cv, PTTSet ts)
 {
-#ifndef NO_I18N
   char uimsg[MAX_UIMSG];
 
   strncpy_s(fv->DlgCaption,sizeof(fv->DlgCaption),"Tera Term: Kermit ",_TRUNCATE);
-#else
-  strcpy(fv->DlgCaption,"Tera Term: ");
-#endif
   switch (kv->KmtMode) {
     case IdKmtSend:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitKmtSend, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_KMTSEND", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_KMTSEND", uimsg, sizeof(uimsg), TitKmtSend, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,"Send");
-#endif
       break;
     case IdKmtReceive:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitKmtRcv, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_KMTRCV", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_KMTRCV", uimsg, sizeof(uimsg), TitKmtRcv, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,"Receive");
-#endif
       break;
     case IdKmtGet:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitKmtGet, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_KMTGET", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_KMTGET", uimsg, sizeof(uimsg), TitKmtGet, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,"Get");
-#endif
       break;
     case IdKmtFinish:
-#ifndef NO_I18N
-      strncpy_s(uimsg, sizeof(uimsg), TitKmtFin, _TRUNCATE);
-      get_lang_msg("FILEDLG_TRANS_TITLE_KMTFIN", uimsg, UILanguageFile);
+      get_lang_msg("FILEDLG_TRANS_TITLE_KMTFIN", uimsg, sizeof(uimsg), TitKmtFin, UILanguageFile);
       strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
-#else
-      strcat(fv->DlgCaption,"Finish");
-#endif
       break;
   }
 

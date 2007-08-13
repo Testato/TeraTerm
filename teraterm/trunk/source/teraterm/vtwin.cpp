@@ -77,7 +77,6 @@ static char THIS_FILE[] = __FILE__;
 // WM_COPYDATAによるプロセス間通信の種別 (2005.1.22 yutaka)
 #define IPC_BROADCAST_COMMAND 1
 
-#ifndef NO_I18N
 static HFONT DlgBroadcastFont;
 static HFONT DlgCommentFont;
 static HFONT DlgAdditionalFont;
@@ -85,7 +84,6 @@ static HFONT DlgGeneralFont;
 static HFONT DlgVisualFont;
 static HFONT DlgLogFont;
 static HFONT DlgCygwinFont;
-#endif
 
 typedef struct {
 	char *name;
@@ -731,220 +729,214 @@ void CVTWindow::InitMenu(HMENU *Menu)
 {
   *Menu = LoadMenu(AfxGetInstanceHandle(),
     MAKEINTRESOURCE(IDR_MENU));
+  char uimsg[MAX_UIMSG];
+
   FileMenu = GetSubMenu(*Menu,ID_FILE);
   TransMenu = GetSubMenu(FileMenu,ID_TRANSFER);
   EditMenu = GetSubMenu(*Menu,ID_EDIT);
   SetupMenu = GetSubMenu(*Menu,ID_SETUP);
   ControlMenu = GetSubMenu(*Menu,ID_CONTROL);
   HelpMenu = GetSubMenu(*Menu,ID_HELPMENU);
-#ifndef NO_I18N
-  GetMenuString(*Menu, ID_FILE, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
-  get_lang_msg("MENU_FILE", ts.UIMsg, ts.UILanguageFile);
+
+  GetMenuString(*Menu, ID_FILE, uimsg, sizeof(uimsg), MF_BYPOSITION);
+  get_lang_msg("MENU_FILE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(*Menu, ID_FILE, MF_BYPOSITION, ID_FILE, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_NEWCONNECTION, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_FILE_NEW", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_NEWCONNECTION, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_NEW", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_NEWCONNECTION, MF_BYCOMMAND, ID_FILE_NEWCONNECTION, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_DUPLICATESESSION, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_FILE_DUPLICATE", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_DUPLICATESESSION, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_DUPLICATE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_DUPLICATESESSION, MF_BYCOMMAND, ID_FILE_DUPLICATESESSION, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_CYGWINCONNECTION, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_FILE_GYGWIN", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_CYGWINCONNECTION, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_GYGWIN", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_CYGWINCONNECTION, MF_BYCOMMAND, ID_FILE_CYGWINCONNECTION, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_LOG, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_FILE_LOG", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_LOG, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_LOG", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_LOG, MF_BYCOMMAND, ID_FILE_LOG, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_COMMENTTOLOG, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_FILE_COMMENTLOG", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_COMMENTTOLOG, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_COMMENTLOG", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_COMMENTTOLOG, MF_BYCOMMAND, ID_FILE_COMMENTTOLOG, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_VIEWLOG, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_FILE_VIEWLOG", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_VIEWLOG, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_VIEWLOG", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_VIEWLOG, MF_BYCOMMAND, ID_FILE_VIEWLOG, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_SENDFILE, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_FILE_SENDFILE", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_SENDFILE, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_SENDFILE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_SENDFILE, MF_BYCOMMAND, ID_FILE_SENDFILE, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_REPLAYLOG, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_FILE_REPLAYLOG", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_REPLAYLOG, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_REPLAYLOG", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_REPLAYLOG, MF_BYCOMMAND, ID_FILE_REPLAYLOG, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_CHANGEDIR, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_FILE_CHANGEDIR", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_CHANGEDIR, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_CHANGEDIR", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_CHANGEDIR, MF_BYCOMMAND, ID_FILE_CHANGEDIR, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_LOGMEIN, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_FILE_LOGMETT", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_LOGMEIN, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_LOGMETT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_LOGMEIN, MF_BYCOMMAND, ID_FILE_LOGMEIN, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_PRINT2, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_FILE_PRINT", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_PRINT2, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_PRINT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_PRINT2, MF_BYCOMMAND, ID_FILE_PRINT2, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_DISCONNECT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_FILE_DISCONNECT", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_DISCONNECT, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_DISCONNECT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_DISCONNECT, MF_BYCOMMAND, ID_FILE_DISCONNECT, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_EXIT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_FILE_EXIT", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_EXIT, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_FILE_EXIT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_EXIT, MF_BYCOMMAND, ID_FILE_EXIT, ts.UIMsg);
 
-  GetMenuString(FileMenu, 8, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
-  get_lang_msg("MENU_TRANS", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, 8, uimsg, sizeof(uimsg), MF_BYPOSITION);
+  get_lang_msg("MENU_TRANS", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, 8, MF_BYPOSITION, 8, ts.UIMsg);
 
-  GetMenuString(FileMenu, ID_FILE_KERMITRCV, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_TRANS_KERMIT_RCV", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_KERMITRCV, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_KERMIT_RCV", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_KERMITRCV, MF_BYCOMMAND, ID_FILE_KERMITRCV, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_KERMITGET, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_TRANS_KERMIT_GET", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_KERMITGET, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_KERMIT_GET", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_KERMITGET, MF_BYCOMMAND, ID_FILE_KERMITGET, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_KERMITSEND, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_TRANS_KERMIT_SEND", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_KERMITSEND, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_KERMIT_SEND", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_KERMITSEND, MF_BYCOMMAND, ID_FILE_KERMITSEND, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_KERMITFINISH, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_TRANS_KERMIT_FINISH", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_KERMITFINISH, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_KERMIT_FINISH", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_KERMITFINISH, MF_BYCOMMAND, ID_FILE_KERMITFINISH, ts.UIMsg);
 
-  GetMenuString(FileMenu, ID_FILE_XRCV, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_TRANS_X_RCV", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_XRCV, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_X_RCV", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_XRCV, MF_BYCOMMAND, ID_FILE_XRCV, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_XSEND, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_TRANS_X_SEND", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_XSEND, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_X_SEND", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_XSEND, MF_BYCOMMAND, ID_FILE_XSEND, ts.UIMsg);
 
-  GetMenuString(FileMenu, ID_FILE_ZRCV, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_TRANS_Z_RCV", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_ZRCV, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_Z_RCV", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_ZRCV, MF_BYCOMMAND, ID_FILE_ZRCV, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_ZSEND, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_TRANS_Z_SEND", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_ZSEND, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_Z_SEND", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_ZSEND, MF_BYCOMMAND, ID_FILE_ZSEND, ts.UIMsg);
 
-  GetMenuString(FileMenu, ID_FILE_BPRCV, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_TRANS_BP_RCV", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_BPRCV, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_BP_RCV", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_BPRCV, MF_BYCOMMAND, ID_FILE_BPRCV, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_BPSEND, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_TRANS_BP_SEND", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_BPSEND, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_BP_SEND", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_BPSEND, MF_BYCOMMAND, ID_FILE_BPSEND, ts.UIMsg);
 
-  GetMenuString(FileMenu, ID_FILE_QVRCV, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_TRANS_QV_RCV", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_QVRCV, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_QV_RCV", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_QVRCV, MF_BYCOMMAND, ID_FILE_QVRCV, ts.UIMsg);
-  GetMenuString(FileMenu, ID_FILE_QVSEND, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_TRANS_QV_SEND", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(FileMenu, ID_FILE_QVSEND, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_TRANS_QV_SEND", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(FileMenu, ID_FILE_QVSEND, MF_BYCOMMAND, ID_FILE_QVSEND, ts.UIMsg);
 
-  GetMenuString(*Menu, ID_EDIT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
-  get_lang_msg("MENU_EDIT", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(*Menu, ID_EDIT, uimsg, sizeof(uimsg), MF_BYPOSITION);
+  get_lang_msg("MENU_EDIT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(*Menu, ID_EDIT, MF_BYPOSITION, ID_EDIT, ts.UIMsg);
-  GetMenuString(EditMenu, ID_EDIT_COPY2, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_EDIT_COPY", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(EditMenu, ID_EDIT_COPY2, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_COPY", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_EDIT_COPY2, MF_BYCOMMAND, ID_EDIT_COPY2, ts.UIMsg);
-  GetMenuString(EditMenu, ID_EDIT_COPYTABLE, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_EDIT_COPYTABLE", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(EditMenu, ID_EDIT_COPYTABLE, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_COPYTABLE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_EDIT_COPYTABLE, MF_BYCOMMAND, ID_EDIT_COPYTABLE, ts.UIMsg);
-  GetMenuString(EditMenu, ID_EDIT_PASTE2, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_EDIT_PASTE", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(EditMenu, ID_EDIT_PASTE2, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_PASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_EDIT_PASTE2, MF_BYCOMMAND, ID_EDIT_PASTE2, ts.UIMsg);
-  GetMenuString(EditMenu, ID_EDIT_PASTECR, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_EDIT_PASTECR", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(EditMenu, ID_EDIT_PASTECR, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_PASTECR", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_EDIT_PASTECR, MF_BYCOMMAND, ID_EDIT_PASTECR, ts.UIMsg);
-  GetMenuString(EditMenu, ID_EDIT_CLEARSCREEN, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_EDIT_CLSCREEN", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(EditMenu, ID_EDIT_CLEARSCREEN, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_CLSCREEN", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_EDIT_CLEARSCREEN, MF_BYCOMMAND, ID_EDIT_CLEARSCREEN, ts.UIMsg);
-  GetMenuString(EditMenu, ID_EDIT_CLEARBUFFER, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_EDIT_CLBUFFER", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(EditMenu, ID_EDIT_CLEARBUFFER, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_CLBUFFER", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_EDIT_CLEARBUFFER, MF_BYCOMMAND, ID_EDIT_CLEARBUFFER, ts.UIMsg);
-  GetMenuString(EditMenu, ID_EDIT_SELECTDISPLAYED, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_EDIT_SELECTDISPLAYED", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(EditMenu, ID_EDIT_SELECTDISPLAYED, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_SELECTDISPLAYED", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_EDIT_SELECTDISPLAYED, MF_BYCOMMAND, ID_EDIT_SELECTDISPLAYED, ts.UIMsg);
-  GetMenuString(EditMenu, ID_EDIT_SELECTALL, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_EDIT_SELECTALL", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(EditMenu, ID_EDIT_SELECTALL, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_SELECTALL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_EDIT_SELECTALL, MF_BYCOMMAND, ID_EDIT_SELECTALL, ts.UIMsg);
 
-  GetMenuString(*Menu, ID_SETUP, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
-  get_lang_msg("MENU_SETUP", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(*Menu, ID_SETUP, uimsg, sizeof(uimsg), MF_BYPOSITION);
+  get_lang_msg("MENU_SETUP", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(*Menu, ID_SETUP, MF_BYPOSITION, ID_SETUP, ts.UIMsg);
-  GetMenuString(SetupMenu, ID_SETUP_TERMINAL, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_SETUP_TERMINAL", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(SetupMenu, ID_SETUP_TERMINAL, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_TERMINAL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(SetupMenu, ID_SETUP_TERMINAL, MF_BYCOMMAND, ID_SETUP_TERMINAL, ts.UIMsg);
-  GetMenuString(SetupMenu, ID_SETUP_WINDOW, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_SETUP_WINDOW", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(SetupMenu, ID_SETUP_WINDOW, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_WINDOW", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(SetupMenu, ID_SETUP_WINDOW, MF_BYCOMMAND, ID_SETUP_WINDOW, ts.UIMsg);
-  GetMenuString(SetupMenu, ID_SETUP_FONT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_SETUP_FONT", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(SetupMenu, ID_SETUP_FONT, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_FONT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(SetupMenu, ID_SETUP_FONT, MF_BYCOMMAND, ID_SETUP_FONT, ts.UIMsg);
-  GetMenuString(SetupMenu, ID_SETUP_KEYBOARD, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_SETUP_KEYBOARD", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(SetupMenu, ID_SETUP_KEYBOARD, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_KEYBOARD", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(SetupMenu, ID_SETUP_KEYBOARD, MF_BYCOMMAND, ID_SETUP_KEYBOARD, ts.UIMsg);
-  GetMenuString(SetupMenu, ID_SETUP_SERIALPORT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_SETUP_SERIALPORT", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(SetupMenu, ID_SETUP_SERIALPORT, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_SERIALPORT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(SetupMenu, ID_SETUP_SERIALPORT, MF_BYCOMMAND, ID_SETUP_SERIALPORT, ts.UIMsg);
-  GetMenuString(SetupMenu, ID_SETUP_TCPIP, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_SETUP_TCPIP", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(SetupMenu, ID_SETUP_TCPIP, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_TCPIP", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(SetupMenu, ID_SETUP_TCPIP, MF_BYCOMMAND, ID_SETUP_TCPIP, ts.UIMsg);
-  GetMenuString(SetupMenu, ID_SETUP_GENERAL, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_SETUP_GENERAL", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(SetupMenu, ID_SETUP_GENERAL, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_GENERAL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(SetupMenu, ID_SETUP_GENERAL, MF_BYCOMMAND, ID_SETUP_GENERAL, ts.UIMsg);
-  GetMenuString(SetupMenu, ID_SETUP_ADDITIONALSETTINGS, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_SETUP_ADDITION", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(SetupMenu, ID_SETUP_ADDITIONALSETTINGS, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_ADDITION", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(SetupMenu, ID_SETUP_ADDITIONALSETTINGS, MF_BYCOMMAND, ID_SETUP_ADDITIONALSETTINGS, ts.UIMsg);
-  GetMenuString(SetupMenu, ID_SETUP_SAVE, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_SETUP_SAVE", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(SetupMenu, ID_SETUP_SAVE, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_SAVE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(SetupMenu, ID_SETUP_SAVE, MF_BYCOMMAND, ID_SETUP_SAVE, ts.UIMsg);
-  GetMenuString(SetupMenu, ID_SETUP_RESTORE, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_SETUP_RESTORE", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(SetupMenu, ID_SETUP_RESTORE, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_RESTORE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(SetupMenu, ID_SETUP_RESTORE, MF_BYCOMMAND, ID_SETUP_RESTORE, ts.UIMsg);
-  GetMenuString(SetupMenu, ID_SETUP_LOADKEYMAP, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_SETUP_LOADKEYMAP", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(SetupMenu, ID_SETUP_LOADKEYMAP, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_SETUP_LOADKEYMAP", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(SetupMenu, ID_SETUP_LOADKEYMAP, MF_BYCOMMAND, ID_SETUP_LOADKEYMAP, ts.UIMsg);
 
-  GetMenuString(*Menu, ID_CONTROL, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
-  get_lang_msg("MENU_CONTROL", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(*Menu, ID_CONTROL, uimsg, sizeof(uimsg), MF_BYPOSITION);
+  get_lang_msg("MENU_CONTROL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(*Menu, ID_CONTROL, MF_BYPOSITION, ID_CONTROL, ts.UIMsg);
-  GetMenuString(ControlMenu, ID_CONTROL_RESETTERMINAL, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_CONTROL_RESET", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(ControlMenu, ID_CONTROL_RESETTERMINAL, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_RESET", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(ControlMenu, ID_CONTROL_RESETTERMINAL, MF_BYCOMMAND, ID_CONTROL_RESETTERMINAL, ts.UIMsg);
-  GetMenuString(ControlMenu, ID_CONTROL_AREYOUTHERE, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_CONTROL_AREYOUTHERE", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(ControlMenu, ID_CONTROL_AREYOUTHERE, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_AREYOUTHERE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(ControlMenu, ID_CONTROL_AREYOUTHERE, MF_BYCOMMAND, ID_CONTROL_AREYOUTHERE, ts.UIMsg);
-  GetMenuString(ControlMenu, ID_CONTROL_SENDBREAK, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_CONTROL_SENDBREAK", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(ControlMenu, ID_CONTROL_SENDBREAK, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_SENDBREAK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(ControlMenu, ID_CONTROL_SENDBREAK, MF_BYCOMMAND, ID_CONTROL_SENDBREAK, ts.UIMsg);
-  GetMenuString(ControlMenu, ID_CONTROL_RESETPORT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_CONTROL_RESETPORT", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(ControlMenu, ID_CONTROL_RESETPORT, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_RESETPORT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(ControlMenu, ID_CONTROL_RESETPORT, MF_BYCOMMAND, ID_CONTROL_RESETPORT, ts.UIMsg);
-  GetMenuString(ControlMenu, ID_CONTROL_BROADCASTCOMMAND, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_CONTROL_BROADCAST", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(ControlMenu, ID_CONTROL_BROADCASTCOMMAND, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_BROADCAST", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(ControlMenu, ID_CONTROL_BROADCASTCOMMAND, MF_BYCOMMAND, ID_CONTROL_BROADCASTCOMMAND, ts.UIMsg);
-  GetMenuString(ControlMenu, ID_CONTROL_OPENTEK, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_CONTROL_OPENTEK", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(ControlMenu, ID_CONTROL_OPENTEK, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_OPENTEK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(ControlMenu, ID_CONTROL_OPENTEK, MF_BYCOMMAND, ID_CONTROL_OPENTEK, ts.UIMsg);
-  GetMenuString(ControlMenu, ID_CONTROL_CLOSETEK, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_CONTROL_CLOSETEK", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(ControlMenu, ID_CONTROL_CLOSETEK, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_CLOSETEK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(ControlMenu, ID_CONTROL_CLOSETEK, MF_BYCOMMAND, ID_CONTROL_CLOSETEK, ts.UIMsg);
-  GetMenuString(ControlMenu, ID_CONTROL_MACRO, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_CONTROL_MACRO", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(ControlMenu, ID_CONTROL_MACRO, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_CONTROL_MACRO", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(ControlMenu, ID_CONTROL_MACRO, MF_BYCOMMAND, ID_CONTROL_MACRO, ts.UIMsg);
 
-  GetMenuString(*Menu, ID_HELPMENU, ts.UIMsg, sizeof(ts.UIMsg), MF_BYPOSITION);
-  get_lang_msg("MENU_HELP", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(*Menu, ID_HELPMENU, uimsg, sizeof(uimsg), MF_BYPOSITION);
+  get_lang_msg("MENU_HELP", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(*Menu, ID_HELPMENU, MF_BYPOSITION, ID_HELPMENU, ts.UIMsg);
-  GetMenuString(HelpMenu, ID_HELP_INDEX2, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_HELP_INDEX", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(HelpMenu, ID_HELP_INDEX2, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_HELP_INDEX", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(HelpMenu, ID_HELP_INDEX2, MF_BYCOMMAND, ID_HELP_INDEX2, ts.UIMsg);
-  GetMenuString(HelpMenu, ID_HELP_ABOUT, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_HELP_ABOUT", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(HelpMenu, ID_HELP_ABOUT, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_HELP_ABOUT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(HelpMenu, ID_HELP_ABOUT, MF_BYCOMMAND, ID_HELP_ABOUT, ts.UIMsg);
-#endif
+
   if ((ts.MenuFlag & MF_SHOWWINMENU) !=0)
   {
     WinMenu = CreatePopupMenu();
-#ifndef NO_I18N
-    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "&Window", _TRUNCATE);
-    get_lang_msg("MENU_WINDOW", ts.UIMsg, ts.UILanguageFile);
+    get_lang_msg("MENU_WINDOW", ts.UIMsg, sizeof(ts.UIMsg), "&Window", ts.UILanguageFile);
     ::InsertMenu(*Menu,ID_HELPMENU,
-		 MF_STRING | MF_ENABLED |
-		 MF_POPUP | MF_BYPOSITION,
-		 (int)WinMenu, ts.UIMsg);
-#else
-    ::InsertMenu(*Menu,ID_HELPMENU,
-		 MF_STRING | MF_ENABLED |
-		 MF_POPUP | MF_BYPOSITION,
-		 (int)WinMenu, "&Window");
-#endif
+                 MF_STRING | MF_ENABLED |
+                 MF_POPUP | MF_BYPOSITION,
+                 (int)WinMenu, ts.UIMsg);
   }
 
   TTXModifyMenu(*Menu); /* TTPLUG */
@@ -1081,11 +1073,7 @@ void CVTWindow::InitMenuPopup(HMENU SubMenu)
 	}
 	else if (SubMenu == WinMenu)
 	{
-#ifndef NO_I18N
 		SetWinMenu(WinMenu, ts.UIMsg, ts.UILanguageFile);
-#else
-		SetWinMenu(WinMenu);
-#endif
 	}
 
 	TTXModifyPopupMenu(SubMenu); /* TTPLUG */
@@ -1094,17 +1082,17 @@ void CVTWindow::InitMenuPopup(HMENU SubMenu)
 // added ConfirmPasteMouseRButton (2007.3.17 maya)
 void CVTWindow::InitPasteMenu(HMENU *Menu)
 {
+  char uimsg[MAX_UIMSG];
+
   *Menu = LoadMenu(AfxGetInstanceHandle(),
     MAKEINTRESOURCE(IDR_PASTEMENU));
 
-#ifndef NO_I18N
-  GetMenuString(*Menu, ID_EDIT_PASTE2, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_EDIT_PASTE", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(*Menu, ID_EDIT_PASTE2, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_PASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(*Menu, ID_EDIT_PASTE2, MF_BYCOMMAND, ID_EDIT_PASTE2, ts.UIMsg);
-  GetMenuString(*Menu, ID_EDIT_PASTECR, ts.UIMsg, sizeof(ts.UIMsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_EDIT_PASTECR", ts.UIMsg, ts.UILanguageFile);
+  GetMenuString(*Menu, ID_EDIT_PASTECR, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_PASTECR", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(*Menu, ID_EDIT_PASTECR, MF_BYCOMMAND, ID_EDIT_PASTECR, ts.UIMsg);
-#endif
 }
 
 void CVTWindow::ResetSetup()
@@ -1378,19 +1366,12 @@ void CVTWindow::OnClose()
     MessageBeep(0);
     return;
   }
-#ifndef NO_I18N
-  strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Disconnect?", _TRUNCATE);
-  get_lang_msg("MSG_DISCONNECT_CONF", ts.UIMsg, ts.UILanguageFile);
-#endif
+  get_lang_msg("MSG_DISCONNECT_CONF", ts.UIMsg, sizeof(ts.UIMsg), "Disconnect?", ts.UILanguageFile);
   if (cv.Ready && (cv.PortType==IdTCPIP) &&
       ((ts.PortFlag & PF_CONFIRMDISCONN) != 0) &&
       ! CloseTT &&
-#ifndef NO_I18N
-      (::MessageBox(HVTWin,ts.UIMsg,"Tera Term",
-#else
-      (::MessageBox(HVTWin,"Disconnect?","Tera Term",
-#endif
-	MB_OKCANCEL | MB_ICONEXCLAMATION | MB_DEFBUTTON2)==IDCANCEL))
+      (::MessageBox(HVTWin, ts.UIMsg, "Tera Term",
+       MB_OKCANCEL | MB_ICONEXCLAMATION | MB_DEFBUTTON2)==IDCANCEL))
     return;
 
   FileTransEnd(0);
@@ -1491,20 +1472,13 @@ void CVTWindow::OnDropFiles(HDROP hDropInfo)
 
 			} else {
 				// いきなりファイルの内容を送り込む前に、ユーザに問い合わせを行う。(2006.1.21 yutaka)
-#ifndef NO_I18N
 				char uimsg[MAX_UIMSG];
-				strncpy_s(uimsg, sizeof(uimsg), "Tera Term: File Drag and Drop", _TRUNCATE);
-				get_lang_msg("MSG_DANDD_CONF_TITLE", uimsg, ts.UILanguageFile);
-				strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Are you sure that you want to send the file content?", _TRUNCATE);
-				get_lang_msg("MSG_DANDD_CONF", ts.UIMsg, ts.UILanguageFile);
-#endif
+				get_lang_msg("MSG_DANDD_CONF_TITLE", uimsg, sizeof(uimsg),
+							 "Tera Term: File Drag and Drop", ts.UILanguageFile);
+				get_lang_msg("MSG_DANDD_CONF", ts.UIMsg, sizeof(ts.UIMsg),
+							 "Are you sure that you want to send the file content?", ts.UILanguageFile);
 				if (MessageBox(
-#ifndef NO_I18N
 					ts.UIMsg, uimsg, MB_YESNO | MB_DEFBUTTON2) == IDYES) {
-#else
-					"Are you sure that you want to send the file content?", 
-					"Tera Term: File Drag and Drop", MB_YESNO | MB_DEFBUTTON2) == IDYES) {
-#endif
 						SendVar->DirLen = 0;
 						ts.TransBin = 0;
 						FileSendStart();
@@ -2222,19 +2196,11 @@ LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
     if (WinMenu==NULL)
     {
       WinMenu = CreatePopupMenu();
-#ifndef NO_I18N
-      strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "&Window", _TRUNCATE);
-      get_lang_msg("MENU_WINDOW", ts.UIMsg, ts.UILanguageFile);
+      get_lang_msg("MENU_WINDOW", ts.UIMsg, sizeof(ts.UIMsg), "&Window", ts.UILanguageFile);
       ::InsertMenu(MainMenu,ID_HELPMENU,
-	MF_STRING | MF_ENABLED |
-	MF_POPUP | MF_BYPOSITION,
-	(int)WinMenu, ts.UIMsg);
-#else
-      ::InsertMenu(MainMenu,ID_HELPMENU,
-	MF_STRING | MF_ENABLED |
-	MF_POPUP | MF_BYPOSITION,
-	(int)WinMenu, "&Window");
-#endif
+                   MF_STRING | MF_ENABLED |
+                   MF_POPUP | MF_BYPOSITION,
+                   (int)WinMenu, ts.UIMsg);
     }
     else {
       RemoveMenu(MainMenu,ID_HELPMENU,MF_BYPOSITION);
@@ -2249,13 +2215,8 @@ LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
   {
     SysMenu = ::GetSystemMenu(HVTWin,FALSE);
     AppendMenu(SysMenu, MF_SEPARATOR, 0, NULL);
-#ifndef NO_I18N
-    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Show menu &bar", _TRUNCATE);
-    get_lang_msg("MENU_SHOW_MENUBAR", ts.UIMsg, ts.UILanguageFile);
+    get_lang_msg("MENU_SHOW_MENUBAR", ts.UIMsg, sizeof(ts.UIMsg), "Show menu &bar", ts.UILanguageFile);
     AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, ts.UIMsg);
-#else
-    AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, "Show menu &bar");
-#endif
   }
   return 0;
 }
@@ -2316,13 +2277,8 @@ LONG CVTWindow::OnChangeTBar(UINT wParam, LONG lParam)
   {
     SysMenu = ::GetSystemMenu(HVTWin,FALSE);
     AppendMenu(SysMenu, MF_SEPARATOR, 0, NULL);
-#ifndef NO_I18N
-    strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Show menu &bar", _TRUNCATE);
-    get_lang_msg("MENU_SHOW_MENUBAR", ts.UIMsg, ts.UILanguageFile);
+    get_lang_msg("MENU_SHOW_MENUBAR", ts.UIMsg, sizeof(ts.UIMsg), "Show menu &bar", ts.UILanguageFile);
     AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, ts.UIMsg);
-#else
-    AppendMenu(SysMenu, MF_STRING, ID_SHOWMENUBAR, "Show menu &bar");
-#endif
   }
   return 0;
 }
@@ -2349,11 +2305,7 @@ LONG CVTWindow::OnCommNotify(UINT wParam, LONG lParam)
 
 LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 {
-#ifndef NO_I18N
   CommStart(&cv,lParam,&ts);
-#else
-  CommStart(&cv,lParam);
-#endif
 #ifndef NO_INET6
   if (ts.PortType == IdTCPIP && cv.RetryWithOtherProtocol == TRUE)
     Connecting = TRUE;
@@ -2656,20 +2608,13 @@ void CVTWindow::OnDuplicateSession()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
-#ifndef NO_I18N
 		char uimsg[MAX_UIMSG];
-		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
-		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't execute TeraTerm. (%d)", _TRUNCATE);
-		get_lang_msg("MSG_USE_IME_ERROR", ts.UIMsg, ts.UILanguageFile);
+		get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+		get_lang_msg("MSG_EXEC_TT_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+					 "Can't execute TeraTerm. (%d)", ts.UILanguageFile);
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
-#else
-		_snprintf(buf, sizeof(buf), "Can't execute TeraTerm. (%d)", GetLastError());
-		::MessageBox(NULL, buf, "ERROR", MB_OK | MB_ICONWARNING);
-#endif
 	}
-
 }
 
 
@@ -2683,9 +2628,7 @@ void CVTWindow::OnCygwinConnection()
 	char *exename = "cygterm.exe";
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
-#ifndef NO_I18N
 	char uimsg[MAX_UIMSG];
-#endif
 
 	envptr = getenv("PATH");
 	if (strstr(envptr, "cygwin\\bin") != NULL) {
@@ -2700,15 +2643,10 @@ void CVTWindow::OnCygwinConnection()
 				goto found_dll;
 			}
 		}
-#ifndef NO_I18N
-		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
-		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't find Cygwin directory.", _TRUNCATE);
-		get_lang_msg("MSG_FIND_CYGTERM_DIR_ERROR", ts.UIMsg, ts.UILanguageFile);
+		get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+		get_lang_msg("MSG_FIND_CYGTERM_DIR_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+					 "Can't find Cygwin directory.", ts.UILanguageFile);
 		::MessageBox(NULL, ts.UIMsg, uimsg, MB_OK | MB_ICONWARNING);
-#else
-		::MessageBox(NULL, "Can't find Cygwin directory.", "ERROR", MB_OK | MB_ICONWARNING);
-#endif
 		return;
 	}
 found_dll:;
@@ -2730,15 +2668,10 @@ found_path:;
 			NULL, NULL, FALSE, 0,
 			NULL, NULL,
 			&si, &pi) == 0) {
-#ifndef NO_I18N
-		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
-		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't execute Cygterm.", _TRUNCATE);
-		get_lang_msg("MSG_EXEC_CYGTERM_ERROR", ts.UIMsg, ts.UILanguageFile);
+		get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+		get_lang_msg("MSG_EXEC_CYGTERM_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+					 "Can't execute Cygterm.", ts.UILanguageFile);
 		::MessageBox(NULL, ts.UIMsg, uimsg, MB_OK | MB_ICONWARNING);
-#else
-		::MessageBox(NULL, "Can't execute Cygterm.", "ERROR", MB_OK | MB_ICONWARNING);
-#endif
 	}
 }
 
@@ -2763,18 +2696,12 @@ void CVTWindow::OnTTMenuLaunch()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
-#ifndef NO_I18N
 		char uimsg[MAX_UIMSG];
-		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
-		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't execute TeraTerm Menu. (%d)", _TRUNCATE);
-		get_lang_msg("MSG_EXEC_TTMENU_ERROR", ts.UIMsg, ts.UILanguageFile);
+		get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+		get_lang_msg("MSG_EXEC_TTMENU_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+					 "Can't execute TeraTerm Menu. (%d)", ts.UILanguageFile);
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
-#else
-		_snprintf(buf, sizeof(buf), "Can't execute TeraTerm Menu. (%d)", GetLastError());
-		::MessageBox(NULL, buf, "ERROR", MB_OK | MB_ICONWARNING);
-#endif
 	}
 }
 
@@ -2802,18 +2729,12 @@ void CVTWindow::OnLogMeInLaunch()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
-#ifndef NO_I18N
 		char uimsg[MAX_UIMSG];
-		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
-		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't execute LogMeTT. (%d)", _TRUNCATE);
-		get_lang_msg("MSG_EXEC_LOGMETT_ERROR", ts.UIMsg, ts.UILanguageFile);
+		get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+		get_lang_msg("MSG_EXEC_LOGMETT_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+					 "Can't execute LogMeTT. (%d)", ts.UILanguageFile);
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
-#else
-		_snprintf(buf, sizeof(buf), "Can't execute LogMeTT. (%d)", GetLastError());
-		::MessageBox(NULL, buf, "ERROR", MB_OK | MB_ICONWARNING);
-#endif
 	}
 }
 
@@ -2829,10 +2750,9 @@ static LRESULT CALLBACK OnCommentDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPAR
 {
 	char buf[256];
 	UINT ret;
-#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
-#endif
+	char uimsg[MAX_UIMSG];
 
     switch (msg) {
         case WM_INITDIALOG:
@@ -2840,7 +2760,6 @@ static LRESULT CALLBACK OnCommentDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPAR
 			// エディットコントロールにフォーカスをあてる
 			SetFocus(GetDlgItem(hDlgWnd, IDC_EDIT_COMMENT));
 
-#ifndef NO_I18N
 			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
 			GetObject(font, sizeof(LOGFONT), &logfont);
 			if (get_lang_font("DLG_SYSTEM_FONT", hDlgWnd, &logfont, &DlgCommentFont, ts.UILanguageFile)) {
@@ -2851,13 +2770,12 @@ static LRESULT CALLBACK OnCommentDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPAR
 				DlgCommentFont = NULL;
 			}
 
-			GetWindowText(hDlgWnd, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_COMMENT_TITLE", ts.UIMsg, ts.UILanguageFile);
+			GetWindowText(hDlgWnd, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_COMMENT_TITLE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetWindowText(hDlgWnd, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDOK, uimsg, sizeof(uimsg));
+			get_lang_msg("BTN_OK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
-#endif
 
 			return FALSE;
 
@@ -2870,11 +2788,9 @@ static LRESULT CALLBACK OnCommentDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPAR
 						//buf[sizeof(buf) - 1] = '\0';  // null-terminate
 						CommentLogToFile(buf, ret);
 					}
-#ifndef NO_I18N
       if (DlgCommentFont != NULL) {
         DeleteObject(DlgCommentFont);
       }
-#endif
                     EndDialog(hDlgWnd, IDOK);
                     break;
                 default:
@@ -2930,18 +2846,12 @@ void CVTWindow::OnViewLog()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
-#ifndef NO_I18N
 		char uimsg[MAX_UIMSG];
-		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
-		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't view logging file. (%d)", _TRUNCATE);
-		get_lang_msg("MSG_VIEW_LOGFILE_ERROR", ts.UIMsg, ts.UILanguageFile);
+		get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+		get_lang_msg("MSG_VIEW_LOGFILE_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+					 "Can't view logging file. (%d)", ts.UILanguageFile);
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
-#else
-		_snprintf(buf, sizeof(buf), "Can't view logging file. (%d)", GetLastError());
-		::MessageBox(NULL, buf, "ERROR", MB_OK | MB_ICONWARNING);
-#endif
 	}
 }
 
@@ -2956,9 +2866,7 @@ void CVTWindow::OnReplayLog()
 	char *exec = "ttermpro";
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
-#ifndef NO_I18N
     char uimsg[MAX_UIMSG];
-#endif
 
 	// バイナリモードで採取したログファイルを選択する
 	memset(&ofn, 0, sizeof(OPENFILENAME));
@@ -2973,24 +2881,16 @@ void CVTWindow::OnReplayLog()
 		ofn.lStructSize = OPENFILENAME_SIZE_VERSION_400;
 	}
     ofn.hwndOwner = HVTWin;
-#ifndef NO_I18N
-	strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "all(*.*)\\0*.*\\0\\0", _TRUNCATE);
-	get_lang_msg("FILEDLG_OPEN_LOGFILE_FILTER", ts.UIMsg, ts.UILanguageFile);
+	get_lang_msg("FILEDLG_OPEN_LOGFILE_FILTER", ts.UIMsg, sizeof(ts.UIMsg),
+				 "all(*.*)\\0*.*\\0\\0", ts.UILanguageFile);
     ofn.lpstrFilter = ts.UIMsg;
-#else
-    ofn.lpstrFilter = "all(*.*)\0*.*\0\0";
-#endif
     ofn.lpstrFile = szFile;
     ofn.nMaxFile = sizeof(szFile);
     ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
     ofn.lpstrDefExt = "log";
-#ifndef NO_I18N
-    strncpy_s(uimsg, sizeof(uimsg), "Select replay log file with binary mode", _TRUNCATE);
-    get_lang_msg("FILEDLG_OPEN_LOGFILE_TITLE", uimsg, ts.UILanguageFile);
+    get_lang_msg("FILEDLG_OPEN_LOGFILE_TITLE", uimsg, sizeof(uimsg),
+				 "Select replay log file with binary mode", ts.UILanguageFile);
 	ofn.lpstrTitle = uimsg;
-#else
-    ofn.lpstrTitle = "Select replay log file with binary mode";
-#endif
     if(GetOpenFileName(&ofn) == 0) 
         return;
 
@@ -3010,17 +2910,11 @@ void CVTWindow::OnReplayLog()
 			NULL, NULL,
 			&si, &pi) == 0) {
 		char buf[80];
-#ifndef NO_I18N
-		strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
-		get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-		strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't execute TeraTerm. (%d)", _TRUNCATE);
-		get_lang_msg("MSG_EXEC_TT_ERROR", ts.UIMsg, ts.UILanguageFile);
+		get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+		get_lang_msg("MSG_EXEC_TT_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+					 "Can't execute TeraTerm. (%d)", ts.UILanguageFile);
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
-#else
-		_snprintf(buf, sizeof(buf), "Can't execute TeraTerm. (%d)", GetLastError());
-		::MessageBox(NULL, buf, "ERROR", MB_OK | MB_ICONWARNING);
-#endif
 	}
 }
 
@@ -3115,17 +3009,10 @@ void CVTWindow::OnFilePrint()
 void CVTWindow::OnFileDisconnect()
 {
   if (! cv.Ready) return;
-#ifndef NO_I18N
-  strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Disconnect?", _TRUNCATE);
-  get_lang_msg("MSG_DISCONNECT_CONF", ts.UIMsg, ts.UILanguageFile);
-#endif
+  get_lang_msg("MSG_DISCONNECT_CONF", ts.UIMsg, sizeof(ts.UIMsg), "Disconnect?", ts.UILanguageFile);
   if ((cv.PortType==IdTCPIP) &&
       ((ts.PortFlag & PF_CONFIRMDISCONN) != 0) &&
-#ifndef NO_I18N
-      (::MessageBox(HVTWin,ts.UIMsg,"Tera Term",
-#else
-      (::MessageBox(HVTWin,"Disconnect?","Tera Term",
-#endif
+      (::MessageBox(HVTWin, ts.UIMsg, "Tera Term",
 	   MB_OKCANCEL | MB_ICONEXCLAMATION | MB_DEFBUTTON2)==IDCANCEL))
     return;
   ::PostMessage(HVTWin, WM_USER_COMMNOTIFY, 0, FD_CLOSE);
@@ -3240,13 +3127,8 @@ static void doSelectFolder(HWND hWnd, char *path, int pathlen)
 	bi.hwndOwner = hWnd;
 	bi.pidlRoot = pidlRoot;
 	bi.pszDisplayName = lpBuffer;
-#ifndef NO_I18N
-	strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "select folder", _TRUNCATE);
-	get_lang_msg("DIRDLG_CYGTERM_DIR_TITLE", ts.UIMsg, ts.UILanguageFile);
+	get_lang_msg("DIRDLG_CYGTERM_DIR_TITLE", ts.UIMsg, sizeof(ts.UIMsg), "select folder", ts.UILanguageFile);
 	bi.lpszTitle = ts.UIMsg;
-#else
-	bi.lpszTitle = "select folder";
-#endif
 	bi.ulFlags = 0;
 	bi.lpfn = 0;
 	bi.lParam = 0;
@@ -3316,15 +3198,13 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 	} cygterm_t;
 	cygterm_t settings;
 	char buf[256], *head, *body;
-#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
-#endif
+	char uimsg[MAX_UIMSG];
 
     switch (msg) {
         case WM_INITDIALOG:
 
-#ifndef NO_I18N
 			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
 			GetObject(font, sizeof(LOGFONT), &logfont);
 			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgCygwinFont, ts.UILanguageFile)) {
@@ -3355,16 +3235,15 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 				DlgCygwinFont = NULL;
 			}
 
-			GetDlgItemText(hDlgWnd, IDC_CYGWIN_PATH_LABEL, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_CYGWIN_PATH", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_CYGWIN_PATH_LABEL, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_CYGWIN_PATH", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_CYGWIN_PATH_LABEL, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDOK, uimsg, sizeof(uimsg));
+			get_lang_msg("BTN_OK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("BTN_CANCEL", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDCANCEL, uimsg, sizeof(uimsg));
+			get_lang_msg("BTN_CANCEL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
-#endif
 
 			// try to read CygTerm config file
 			memset(&settings, 0, sizeof(settings));
@@ -3494,18 +3373,11 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					fp = fopen(cfgfile, "r");
 					tmp_fp = fopen(tmpfile, "w");
 					if (tmp_fp == NULL) { 
-#ifndef NO_I18N
-						char uimsg[MAX_UIMSG];
-						strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
-						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-						strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't write CygTerm configuration file (%d).", _TRUNCATE);
-						get_lang_msg("MSG_CYGTERM_CONF_WRITEFILE_ERROR", ts.UIMsg, ts.UILanguageFile);
+						get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+						get_lang_msg("MSG_CYGTERM_CONF_WRITEFILE_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+									 "Can't write CygTerm configuration file (%d).", ts.UILanguageFile);
 						_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 						MessageBox(hDlgWnd, buf, uimsg, MB_ICONEXCLAMATION);
-#else
-						_snprintf(buf, sizeof(buf), "Can't write CygTerm configuration file (%d).", GetLastError());
-						MessageBox(hDlgWnd, buf, "ERROR", MB_ICONEXCLAMATION);
-#endif
 					} else {
 						if (fp != NULL) {
 							while (fgets(buf, sizeof(buf), fp) != NULL) {
@@ -3594,32 +3466,18 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 						fclose(tmp_fp);
 
 						if (remove(cfgfile) != 0) {
-#ifndef NO_I18N
-							char uimsg[MAX_UIMSG];
-							strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
-							get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-							strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't remove old CygTerm configuration file (%d).", _TRUNCATE);
-							get_lang_msg("MSG_CYGTERM_CONF_REMOVEFILE_ERROR", ts.UIMsg, ts.UILanguageFile);
+							get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+							get_lang_msg("MSG_CYGTERM_CONF_REMOVEFILE_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+										 "Can't remove old CygTerm configuration file (%d).", ts.UILanguageFile);
 							_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 							MessageBox(hDlgWnd, buf, uimsg, MB_ICONEXCLAMATION);
-#else
-							_snprintf(buf, sizeof(buf), "Can't remove old CygTerm configuration file (%d).", GetLastError());
-							MessageBox(hDlgWnd, buf, "ERROR", MB_ICONEXCLAMATION);
-#endif
 						}
 						else if (rename(tmpfile, cfgfile) != 0) {
-#ifndef NO_I18N
-							char uimsg[MAX_UIMSG];
-							strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
-							get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-							strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Can't rename CygTerm configuration file (%d).", _TRUNCATE);
-							get_lang_msg("MSG_CYGTERM_CONF_RENAMEFILE_ERROR", ts.UIMsg, ts.UILanguageFile);
+							get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+							get_lang_msg("MSG_CYGTERM_CONF_RENAMEFILE_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+										 "Can't rename CygTerm configuration file (%d).", ts.UILanguageFile);
 							_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 							MessageBox(hDlgWnd, buf, uimsg, MB_ICONEXCLAMATION);
-#else
-							_snprintf(buf, sizeof(buf), "Can't rename CygTerm configuration file (%d).", GetLastError());
-							MessageBox(hDlgWnd, buf, "ERROR", MB_ICONEXCLAMATION);
-#endif
 						}
 					}
 
@@ -3642,11 +3500,9 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 
         case WM_CLOSE:
 		    EndDialog(hDlgWnd, 0);
-#ifndef NO_I18N
 			if (DlgCygwinFont != NULL) {
 				DeleteObject(DlgCygwinFont);
 			}
-#endif
 			return TRUE;
 
         default:
@@ -3660,16 +3516,13 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 {
 	HWND hWnd;
 	LRESULT ret;
-#ifndef NO_I18N
 	char uimsg[MAX_UIMSG];
 	LOGFONT logfont;
 	HFONT font;
-#endif
 
 	switch (msg) {
 		case WM_INITDIALOG:
 
-#ifndef NO_I18N
 			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
 			GetObject(font, sizeof(LOGFONT), &logfont);
 			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgLogFont, ts.UILanguageFile)) {
@@ -3689,25 +3542,24 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 				DlgVisualFont = NULL;
 			}
 
-			GetDlgItemText(hDlgWnd, IDC_VIEWLOG_LABEL, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_LOG_EDITOR", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_VIEWLOG_LABEL, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_LOG_EDITOR", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_VIEWLOG_LABEL, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_DEFAULTNAME_LABEL, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_LOG_FILENAME", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_DEFAULTNAME_LABEL, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_LOG_FILENAME", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_DEFAULTNAME_LABEL, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_DEFAULTPATH_LABEL, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_LOG_FILEPATH", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_DEFAULTPATH_LABEL, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_LOG_FILEPATH", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_DEFAULTPATH_LABEL, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_AUTOSTART, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_LOG_AUTOSTART", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_AUTOSTART, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_LOG_AUTOSTART", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_AUTOSTART, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDOK, uimsg, sizeof(uimsg));
+			get_lang_msg("BTN_OK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("BTN_CANCEL", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDCANCEL, uimsg, sizeof(uimsg));
+			get_lang_msg("BTN_CANCEL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
-#endif
 
 			// (7)Viewlog Editor path (2005.1.29 yutaka)
 			hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
@@ -3753,22 +3605,14 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 						ofn.lStructSize = OPENFILENAME_SIZE_VERSION_400;
 					}
 					ofn.hwndOwner = hDlgWnd;
-#ifndef NO_I18N
-					strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "exe(*.exe)\\0*.exe\\0all(*.*)\\0*.*\\0\\0", _TRUNCATE);
-					get_lang_msg("FILEDLG_SELECT_LOGVIEW_APP_FILTER", ts.UIMsg, ts.UILanguageFile);
+					get_lang_msg("FILEDLG_SELECT_LOGVIEW_APP_FILTER", ts.UIMsg, sizeof(ts.UIMsg),
+								 "exe(*.exe)\\0*.exe\\0all(*.*)\\0*.*\\0\\0", ts.UILanguageFile);
 					ofn.lpstrFilter = ts.UIMsg;
-#else
-					ofn.lpstrFilter = "exe(*.exe)\0*.exe\0all(*.*)\0*.*\0\0";
-#endif
 					ofn.lpstrFile = ts.ViewlogEditor;
 					ofn.nMaxFile = sizeof(ts.ViewlogEditor);
-#ifndef NO_I18N
-					strncpy_s(uimsg, sizeof(uimsg), "Choose a executing file with launching logging file", _TRUNCATE);
-					get_lang_msg("FILEDLG_SELECT_LOGVIEW_APP_TITLE", uimsg, ts.UILanguageFile);
+					get_lang_msg("FILEDLG_SELECT_LOGVIEW_APP_TITLE", uimsg, sizeof(uimsg),
+								 "Choose a executing file with launching logging file", ts.UILanguageFile);
 					ofn.lpstrTitle = uimsg;
-#else
-					ofn.lpstrTitle = "Choose a executing file with launching logging file";
-#endif
 					ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_FORCESHOWHIDDEN | OFN_HIDEREADONLY;
 					if (GetOpenFileName(&ofn) != 0) {
 						hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
@@ -3788,11 +3632,7 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 
 			switch (LOWORD(wp)) {
 				case IDOK:
-#ifndef NO_I18N
 					char buf[80], buf2[80];
-#else
-					char buf[80], buf2[80], msg[80];
-#endif
 					time_t time_local;
 					struct tm *tm_local;
 
@@ -3804,16 +3644,10 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					hWnd = GetDlgItem(hDlgWnd, IDC_DEFAULTNAME_EDITOR);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
 					if (isInvalidStrftimeChar(buf)) {
-#ifndef NO_I18N
-						strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
-						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-						strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Invalid character is included in log file name.", _TRUNCATE);
-						get_lang_msg("MSG_LOGFILE_INVALID_CHAR_ERROR", ts.UIMsg, ts.UILanguageFile);
+						get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+						get_lang_msg("MSG_LOGFILE_INVALID_CHAR_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+									 "Invalid character is included in log file name.", ts.UILanguageFile);
 						MessageBox(hDlgWnd, ts.UIMsg, uimsg, MB_ICONEXCLAMATION);
-#else
-						strncpy(msg, "Invalid character is included in log file name.", sizeof(msg));
-						MessageBox(hDlgWnd, msg, "ERROR", MB_ICONEXCLAMATION);
-#endif
 						return FALSE;
 					}
 
@@ -3822,29 +3656,17 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					tm_local = localtime(&time_local);
 					// 時刻文字列に変換
 					if (strftime(buf2, sizeof(buf2), buf, tm_local) == 0) {
-#ifndef NO_I18N
-						strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
-						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-						strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "The log file name is too long.", _TRUNCATE);
-						get_lang_msg("MSG_LOGFILE_TOOLONG_ERROR", ts.UIMsg, ts.UILanguageFile);
+						get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+						get_lang_msg("MSG_LOGFILE_TOOLONG_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+									 "The log file name is too long.", ts.UILanguageFile);
 						MessageBox(hDlgWnd, ts.UIMsg, uimsg, MB_ICONEXCLAMATION);
-#else
-						strncpy(msg, "The log file name is too long.", sizeof(msg));
-						MessageBox(hDlgWnd, msg, "ERROR", MB_ICONEXCLAMATION);
-#endif
 						return FALSE;
 					}
 					if (isInvalidFileNameChar(buf2)) {
-#ifndef NO_I18N
-						strncpy_s(uimsg, sizeof(uimsg), "ERROR", _TRUNCATE);
-						get_lang_msg("MSG_ERROR", uimsg, ts.UILanguageFile);
-						strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Invalid character is included in log file name.", _TRUNCATE);
-						get_lang_msg("MSG_LOGFILE_INVALID_CHAR_ERROR", ts.UIMsg, ts.UILanguageFile);
+						get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+						get_lang_msg("MSG_LOGFILE_INVALID_CHAR_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+									 "Invalid character is included in log file name.", ts.UILanguageFile);
 						MessageBox(hDlgWnd, ts.UIMsg, uimsg, MB_ICONEXCLAMATION);
-#else
-						strncpy(msg, "Invalid character is included in log file name.", sizeof(msg));
-						MessageBox(hDlgWnd, msg, "ERROR", MB_ICONEXCLAMATION);
-#endif
 						return FALSE;
 					}
 					strncpy_s(ts.LogDefaultName, sizeof(ts.LogDefaultName), buf, _TRUNCATE);
@@ -3879,11 +3701,9 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 
 		case WM_CLOSE:
 			EndDialog(hDlgWnd, 0);
-#ifndef NO_I18N
 			if (DlgLogFont != NULL) {
 				DeleteObject(DlgLogFont);
 			}
-#endif
 			return TRUE;
 
 		default:
@@ -3922,15 +3742,13 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 	char buf[MAXPATHLEN];
 	LRESULT ret;
 	static HDC label_hdc = NULL;
-#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
-#endif
+	char uimsg[MAX_UIMSG];
 
     switch (msg) {
         case WM_INITDIALOG:
 
-#ifndef NO_I18N
 			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
 			GetObject(font, sizeof(LOGFONT), &logfont);
 			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgVisualFont, ts.UILanguageFile)) {
@@ -3955,31 +3773,30 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 				DlgVisualFont = NULL;
 			}
 
-			GetDlgItemText(hDlgWnd, IDC_ALPHABLEND, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_VISUAL_ALHPA", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_ALPHABLEND, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_VISUAL_ALHPA", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_ALPHABLEND, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_ETERM_LOOKFEEL, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_VISUAL_ETERM", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_ETERM_LOOKFEEL, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_VISUAL_ETERM", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_ETERM_LOOKFEEL, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_MOUSE, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_VISUAL_MOUSE", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_MOUSE, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_VISUAL_MOUSE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_MOUSE, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_RED, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_VISUAL_RED", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_RED, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_VISUAL_RED", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_RED, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_GREEN, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_VISUAL_GREEN", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_GREEN, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_VISUAL_GREEN", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_GREEN, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_BLUE, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_VISUAL_BLUE", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_BLUE, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_VISUAL_BLUE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_BLUE, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDOK, uimsg, sizeof(uimsg));
+			get_lang_msg("BTN_OK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("BTN_CANCEL", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDCANCEL, uimsg, sizeof(uimsg));
+			get_lang_msg("BTN_CANCEL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
-#endif
 
 			// (1)AlphaBlend 
 			hWnd = GetDlgItem(hDlgWnd, IDC_ALPHA_BLEND);
@@ -4102,11 +3919,9 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 
         case WM_CLOSE:
 		    EndDialog(hDlgWnd, 0);
-#ifndef NO_I18N
 			if (DlgVisualFont != NULL) {
 				DeleteObject(DlgVisualFont);
 			}
-#endif
 			return TRUE;
 
 #if 0
@@ -4149,15 +3964,13 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
 	HWND hWnd, hWnd2;
-#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
-#endif
+	char uimsg[MAX_UIMSG];
 
     switch (msg) {
         case WM_INITDIALOG:
 
-#ifndef NO_I18N
 			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
 			GetObject(font, sizeof(LOGFONT), &logfont);
 			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgGeneralFont, ts.UILanguageFile)) {
@@ -4176,34 +3989,33 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 				DlgGeneralFont = NULL;
 			}
 
-			GetDlgItemText(hDlgWnd, IDC_LINECOPY, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_GENERAL_CONTINUE", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_LINECOPY, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_GENERAL_CONTINUE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_LINECOPY, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_GENERAL_MOUSEPASTE", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_GENERAL_MOUSEPASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_CONFIRM_PASTE_RBUTTON, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_GENERAL_CONFIRMPASTE", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_CONFIRM_PASTE_RBUTTON, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_GENERAL_CONFIRMPASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_CONFIRM_PASTE_RBUTTON, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_DISABLE_SENDBREAK, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_GENERAL_DISABLESENDBREAK", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_DISABLE_SENDBREAK, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_GENERAL_DISABLESENDBREAK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_DISABLE_SENDBREAK, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_CLICKABLE_URL, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_GENERAL_CLICKURL", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_CLICKABLE_URL, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_GENERAL_CLICKURL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_CLICKABLE_URL, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_DELIMITER, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_GENERAL_DEMILITER", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_DELIMITER, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_GENERAL_DEMILITER", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_DELIMITER, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDC_ACCEPT_BROADCAST, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TAB_GENERAL_ACCEPTBROADCAST", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDC_ACCEPT_BROADCAST, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_GENERAL_ACCEPTBROADCAST", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_ACCEPT_BROADCAST, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("BTN_OK", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDOK, uimsg, sizeof(uimsg));
+			get_lang_msg("BTN_OK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("BTN_CANCEL", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hDlgWnd, IDCANCEL, uimsg, sizeof(uimsg));
+			get_lang_msg("BTN_CANCEL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
-#endif
 
 			// (1)Enable continued-line copy
 			hWnd = GetDlgItem(hDlgWnd, IDC_LINECOPY);
@@ -4349,11 +4161,9 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 
         case WM_CLOSE:
 		    EndDialog(hDlgWnd, 0);
-#ifndef NO_I18N
 			if (DlgGeneralFont != NULL) {
 				DeleteObject(DlgGeneralFont);
 			}
-#endif
 			return TRUE;
 
         default:
@@ -4377,74 +4187,49 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 	static HWND hTabCtrl; // parent
 	static HWND hTabSheet[MAX_TABSHEET]; //0:general 1:visual 2:log 3:Cygwin
 	int i;
-#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
-#endif
+	char uimsg[MAX_UIMSG];
 
 	switch (msg) {
         case WM_INITDIALOG:
-#ifndef NO_I18N
-		font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
-		GetObject(font, sizeof(LOGFONT), &logfont);
-		if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgAdditionalFont, ts.UILanguageFile)) {
-			SendDlgItemMessage(hDlgWnd, IDC_SETUP_TAB, WM_SETFONT, (WPARAM)DlgAdditionalFont, MAKELPARAM(TRUE,0));
-		}
-#endif
+			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
+			GetObject(font, sizeof(LOGFONT), &logfont);
+			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgAdditionalFont, ts.UILanguageFile)) {
+				SendDlgItemMessage(hDlgWnd, IDC_SETUP_TAB, WM_SETFONT, (WPARAM)DlgAdditionalFont, MAKELPARAM(TRUE,0));
+			}
 			gTabControlParent = hDlgWnd;
 
 			// コモンコントロールの初期化
 			InitCommonControls();
-#ifndef NO_I18N
-			GetWindowText(hDlgWnd, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_TABSHEET_TITLE", ts.UIMsg, ts.UILanguageFile);
+			GetWindowText(hDlgWnd, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TABSHEET_TITLE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetWindowText(hDlgWnd, ts.UIMsg);
-#endif
 
 			// シート枠の作成
 			hTabCtrl = GetDlgItem(hDlgWnd, IDC_SETUP_TAB);
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
-#ifndef NO_I18N
-			strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "General", _TRUNCATE);
-			get_lang_msg("DLG_TABSHEET_TITLE_GENERAL", ts.UIMsg, ts.UILanguageFile);
+			get_lang_msg("DLG_TABSHEET_TITLE_GENERAL", ts.UIMsg, sizeof(ts.UIMsg), "General", ts.UILanguageFile);
 			tc.pszText = ts.UIMsg;
-#else
-			tc.pszText = "General";
-#endif
 			TabCtrl_InsertItem(hTabCtrl, 0, &tc);
 
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
-#ifndef NO_I18N
-			strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Visual", _TRUNCATE);
-			get_lang_msg("DLG_TABSHEET_TITLE_VISUAL", ts.UIMsg, ts.UILanguageFile);
+			get_lang_msg("DLG_TABSHEET_TITLE_VISUAL", ts.UIMsg, sizeof(ts.UIMsg), "Visual", ts.UILanguageFile);
 			tc.pszText = ts.UIMsg;
-#else
-			tc.pszText = "Visual";
-#endif
 			TabCtrl_InsertItem(hTabCtrl, 1, &tc);
 
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
-#ifndef NO_I18N
-			strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Log", _TRUNCATE);
-			get_lang_msg("DLG_TABSHEET_TITLE_LOG", ts.UIMsg, ts.UILanguageFile);
+			get_lang_msg("DLG_TABSHEET_TITLE_LOG", ts.UIMsg, sizeof(ts.UIMsg), "Log", ts.UILanguageFile);
 			tc.pszText = ts.UIMsg;
-#else
-			tc.pszText = "Log";
-#endif
 			TabCtrl_InsertItem(hTabCtrl, 2, &tc);
 
 			ZeroMemory(&tc, sizeof(tc));
 			tc.mask = TCIF_TEXT;
-#ifndef NO_I18N
-			strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Cygwin", _TRUNCATE);
-			get_lang_msg("DLG_TABSHEET_TITLE_CYGWIN", ts.UIMsg, ts.UILanguageFile);
+			get_lang_msg("DLG_TABSHEET_TITLE_CYGWIN", ts.UIMsg, sizeof(ts.UIMsg), "Cygwin", ts.UILanguageFile);
 			tc.pszText = ts.UIMsg;
-#else
-			tc.pszText = "Cygwin";
-#endif
 			TabCtrl_InsertItem(hTabCtrl, 3, &tc);
 
 			// シートに載せる子ダイアログの作成
@@ -4515,11 +4300,9 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 				EndDialog(hTabSheet[i], FALSE);
 			}
 			EndDialog(hDlgWnd, FALSE);
-#ifndef NO_I18N
 			if (DlgAdditionalFont != NULL) {
 				DeleteObject(DlgAdditionalFont);
 			}
-#endif
 			return TRUE;
 
         default:
@@ -4671,16 +4454,11 @@ void CVTWindow::OnSetupSave()
 	// 書き込みできるかの判別を追加 (2005.11.3 yutaka)
 	if ((ret = _access(ts.SetupFName, 0x02)) != 0) {
 		if (errno != ENOENT) {  // ファイルがすでに存在する場合のみエラーとする (2005.12.13 yutaka)
-#ifndef NO_I18N
 			char uimsg[MAX_UIMSG];
-			strncpy_s(uimsg, sizeof(uimsg), "Tera Term: ERROR", _TRUNCATE);
-			get_lang_msg("MSG_TT_ERROR", uimsg, ts.UILanguageFile);
-			strncpy_s(ts.UIMsg, sizeof(ts.UIMsg), "Teraterm.ini file doesn't have the writable permission.", _TRUNCATE);
+			get_lang_msg("MSG_TT_ERROR", uimsg, sizeof(uimsg), "Tera Term: ERROR", ts.UILanguageFile);
+			get_lang_msg("MSG_SAVESETUP_PERMISSION_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+						 "Teraterm.ini file doesn't have the writable permission.", ts.UILanguageFile);
 			MessageBox(ts.UIMsg, uimsg, MB_OK|MB_ICONEXCLAMATION);
-#else
-			MessageBox("Teraterm.ini file doesn't have the writable permission.", 
-				"Tera Term: ERROR", MB_OK|MB_ICONEXCLAMATION);
-#endif
 			return;
 		}
 	}
@@ -4800,10 +4578,9 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 	UINT ret;
 	LRESULT checked;
 	LRESULT history;
-#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
-#endif
+	char uimsg[MAX_UIMSG];
 
     switch (msg) {
         case WM_INITDIALOG:
@@ -4820,7 +4597,6 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			// エディットコントロールにフォーカスをあてる
 			SetFocus(GetDlgItem(hWnd, IDC_COMMAND_EDIT));
 
-#ifndef NO_I18N
 			font = (HFONT)SendMessage(hWnd, WM_GETFONT, 0, 0);
 			GetObject(font, sizeof(LOGFONT), &logfont);
 			if (get_lang_font("DLG_SYSTEM_FONT", hWnd, &logfont, &DlgBroadcastFont, ts.UILanguageFile)) {
@@ -4837,25 +4613,24 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			else {
 				DlgBroadcastFont = NULL;
 			}
-			GetWindowText(hWnd, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_BROADCAST_TITLE", ts.UIMsg, ts.UILanguageFile);
+			GetWindowText(hWnd, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_BROADCAST_TITLE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetWindowText(hWnd, ts.UIMsg);
-			GetDlgItemText(hWnd, IDC_HISTORY_CHECK, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_BROADCAST_HISTORY", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hWnd, IDC_HISTORY_CHECK, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_BROADCAST_HISTORY", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hWnd, IDC_HISTORY_CHECK, ts.UIMsg);
-			GetDlgItemText(hWnd, IDC_ENTERKEY_CHECK, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_BROADCAST_ENTER", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hWnd, IDC_ENTERKEY_CHECK, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_BROADCAST_ENTER", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hWnd, IDC_ENTERKEY_CHECK, ts.UIMsg);
-			GetDlgItemText(hWnd, IDC_PARENT_ONLY, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_BROADCAST_PARENTONLY", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hWnd, IDC_PARENT_ONLY, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_BROADCAST_PARENTONLY", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hWnd, IDC_PARENT_ONLY, ts.UIMsg);
-			GetDlgItemText(hWnd, IDOK, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("DLG_BROADCAST_SUBMIT", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hWnd, IDOK, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_BROADCAST_SUBMIT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hWnd, IDOK, ts.UIMsg);
-			GetDlgItemText(hWnd, IDCANCEL, ts.UIMsg, sizeof(ts.UIMsg));
-			get_lang_msg("BTN_CLOSE", ts.UIMsg, ts.UILanguageFile);
+			GetDlgItemText(hWnd, IDCANCEL, uimsg, sizeof(uimsg));
+			get_lang_msg("BTN_CLOSE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hWnd, IDCANCEL, ts.UIMsg);
-#endif
 
 			return FALSE;
 
@@ -4967,18 +4742,15 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
         case WM_CLOSE:
 			//DestroyWindow(hWnd);
 		    EndDialog(hWnd, 0);
-#ifndef NO_I18N
 					if (DlgBroadcastFont != NULL) {
 						DeleteObject(DlgBroadcastFont);
 					}
-#endif
 			return TRUE;
 
         default:
             return FALSE;
     }
     return TRUE;
-
 }
 
 void CVTWindow::OnControlBroadcastCommand(void)
@@ -4991,9 +4763,9 @@ void CVTWindow::OnControlBroadcastCommand(void)
 		goto activate;
 
 	hDlgWnd = CreateDialog(
-				hInst, 
-				MAKEINTRESOURCE(IDD_BROADCAST_DIALOG), 
-				HVTWin, 
+				hInst,
+				MAKEINTRESOURCE(IDD_BROADCAST_DIALOG),
+				HVTWin,
 				(DLGPROC)BroadcastCommandDlgProc
 				);
 
@@ -5002,7 +4774,6 @@ void CVTWindow::OnControlBroadcastCommand(void)
 
 activate:;
 	::ShowWindow(hDlgWnd, SW_SHOW);
-
 }
 
 // WM_COPYDATAの受信
@@ -5076,6 +4847,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.76  2007/08/13 22:18:20  maya
+ * COM100 以上が扱えない問題を修正した。
+ *
  * Revision 1.75  2007/08/11 08:25:17  doda
  * telnet接続でのkeep-aliveパケット送信を実装。
  * - 一定時間パケットの送信を行わなかった時、TELNET NOPコマンドを送信する。

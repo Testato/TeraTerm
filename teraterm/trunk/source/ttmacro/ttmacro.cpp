@@ -25,9 +25,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#ifndef NO_I18N
 char UILanguageFile[MAX_PATH];
-#endif
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -50,20 +48,17 @@ CCtrlApp theApp;
 
 BOOL CCtrlApp::InitInstance()
 {
-#ifndef NO_I18N
   char Temp[MAXPATHLEN];
   char HomeDir[MAXPATHLEN];
   char SetupFName[MAXPATHLEN];
   TTTSet ts;
   static HMODULE HTTSET = NULL;
-#endif
 
   // インストーラで実行を検出するために mutex を作成する (2006.8.12 maya)
   // 2重起動防止のためではないので、特に返り値は見ない
   HANDLE hMutex;
   hMutex = CreateMutex(NULL, TRUE, "TeraTermProMacroAppMutex");
 
-#ifndef NO_I18N
   /* Get home directory */
   GetModuleFileName(NULL,Temp,sizeof(Temp));
   ExtractDirName(Temp, HomeDir);
@@ -75,7 +70,6 @@ BOOL CCtrlApp::InitInstance()
   /* Get LanguageFile name */
   GetPrivateProfileString("Tera Term", "UILanguageFile", "",
                           UILanguageFile, sizeof(UILanguageFile), SetupFName);
-#endif
 
   Busy = TRUE;
 #ifndef TERATERM32
