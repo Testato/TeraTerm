@@ -52,9 +52,7 @@ See LICENSE.TXT for the license.
 #include <stdlib.h>
 #include <crtdbg.h>
 
-#ifndef NO_I18N
 #include "i18n.h"
-#endif
 
 
 typedef struct _TInstVar FAR * PTInstVar;

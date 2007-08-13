@@ -248,18 +248,10 @@ int X11_unspoofing_filter(void FAR * void_closure, int direction,
 			return FWD_FILTER_REMOVE;
 		default:
 		case MERGE_GOT_BAD_DATA:
-#ifndef NO_I18N
-			strncpy_s(closure->pvar->ts->UIMsg, sizeof(closure->pvar->ts->UIMsg),
-				"Remote X application sent incorrect authentication data.\n"
-				"Its X session is being cancelled.",
-				_TRUNCATE);
-			UTIL_get_lang_msg("MSG_X_AUTH_ERROR", closure->pvar);
+			UTIL_get_lang_msg("MSG_X_AUTH_ERROR", closure->pvar,
+							  "Remote X application sent incorrect authentication data.\n"
+							  "Its X session is being cancelled.");
 			notify_nonfatal_error(closure->pvar, closure->pvar->ts->UIMsg);
-#else
-			notify_nonfatal_error(closure->pvar,
-								  "Remote X application sent incorrect authentication data.\n"
-								  "Its X session is being cancelled.");
-#endif
 			*length = 0;
 			return FWD_FILTER_CLOSECHANNEL;
 		}
@@ -270,6 +262,9 @@ int X11_unspoofing_filter(void FAR * void_closure, int direction,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2007/08/08 16:04:09  maya
+ * 安全な関数を使用するように変更した。
+ *
  * Revision 1.4  2007/06/06 14:10:12  maya
  * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
  *

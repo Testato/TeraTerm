@@ -48,10 +48,8 @@ See LICENSE.TXT for the license.
 #include <errno.h>
 #include <sys/stat.h>
 
-#ifndef NO_I18N
 static HFONT DlgHostsAddFont;
 static HFONT DlgHostsReplaceFont;
-#endif
 
 // BASE64構成文字列（ここでは'='は含まれていない）
 static char base64[] ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -156,27 +154,14 @@ static int begin_read_file(PTInstVar pvar, char FAR * name,
 	if (fd == -1) {
 		if (!suppress_errors) {
 			if (errno == ENOENT) {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-					"An error occurred while trying to read a known_hosts file.\n"
-					"The specified filename does not exist.",
-					_TRUNCATE);
-				UTIL_get_lang_msg("MSG_HOSTS_READ_ENOENT_ERROR", pvar);
+				UTIL_get_lang_msg("MSG_HOSTS_READ_ENOENT_ERROR", pvar,
+								  "An error occurred while trying to read a known_hosts file.\n"
+								  "The specified filename does not exist.");
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-				notify_nonfatal_error(pvar,
-									  "An error occurred while trying to read a known_hosts file.\n"
-									  "The specified filename does not exist.");
-#endif
 			} else {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "An error occurred while trying to read a known_hosts file.", _TRUNCATE);
-				UTIL_get_lang_msg("MSG_HOSTS_READ_ERROR", pvar);
+				UTIL_get_lang_msg("MSG_HOSTS_READ_ERROR", pvar,
+								  "An error occurred while trying to read a known_hosts file.");
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-				notify_nonfatal_error(pvar,
-									  "An error occurred while trying to read a known_hosts file.");
-#endif
 			}
 		}
 		return 0;
@@ -189,28 +174,18 @@ static int begin_read_file(PTInstVar pvar, char FAR * name,
 		pvar->hosts_state.file_data = malloc(length + 1);
 		if (pvar->hosts_state.file_data == NULL) {
 			if (!suppress_errors) {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Memory ran out while trying to allocate space to read a known_hosts file.", _TRUNCATE);
-				UTIL_get_lang_msg("MSG_HOSTS_ALLOC_ERROR", pvar);
+				UTIL_get_lang_msg("MSG_HOSTS_ALLOC_ERROR", pvar,
+								  "Memory ran out while trying to allocate space to read a known_hosts file.");
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-				notify_nonfatal_error(pvar,
-									  "Memory ran out while trying to allocate space to read a known_hosts file.");
-#endif
 			}
 			_close(fd);
 			return 0;
 		}
 	} else {
 		if (!suppress_errors) {
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "An error occurred while trying to read a known_hosts file.", _TRUNCATE);
-			UTIL_get_lang_msg("MSG_HOSTS_READ_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_HOSTS_READ_ERROR", pvar,
+							  "An error occurred while trying to read a known_hosts file.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-			notify_nonfatal_error(pvar,
-								  "An error occurred while trying to read a known_hosts file.");
-#endif
 		}
 		_close(fd);
 		return 0;
@@ -223,14 +198,9 @@ static int begin_read_file(PTInstVar pvar, char FAR * name,
 
 	if (amount_read != length) {
 		if (!suppress_errors) {
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "An error occurred while trying to read a known_hosts file.", _TRUNCATE);
-			UTIL_get_lang_msg("MSG_HOSTS_READ_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_HOSTS_READ_ERROR", pvar,
+							  "An error occurred while trying to read a known_hosts file.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-			notify_nonfatal_error(pvar,
-								  "An error occurred while trying to read a known_hosts file.");
-#endif
 		}
 		free(pvar->hosts_state.file_data);
 		pvar->hosts_state.file_data = NULL;
@@ -661,18 +631,10 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 
 		if (!is_pattern_char(ch) || ch == '*' || ch == '?') {
 			if (!suppress_errors) {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-					"The host name contains an invalid character.\n"
-					"This session will be terminated.",
-					_TRUNCATE);
-				UTIL_get_lang_msg("MSG_HOSTS_HOSTNAME_INVALID_ERROR", pvar);
+				UTIL_get_lang_msg("MSG_HOSTS_HOSTNAME_INVALID_ERROR", pvar,
+								  "The host name contains an invalid character.\n"
+								  "This session will be terminated.");
 				notify_fatal_error(pvar, pvar->ts->UIMsg);
-#else
-				notify_fatal_error(pvar,
-								   "The host name contains an invalid character.\n"
-								   "This session will be terminated.");
-#endif
 			}
 			return 0;
 		}
@@ -680,17 +642,10 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 
 	if (i == 0) {
 		if (!suppress_errors) {
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-				"The host name should not be empty.\n"
-				"This session will be terminated.",
-				_TRUNCATE);
-			UTIL_get_lang_msg("MSG_HOSTS_HOSTNAME_EMPTY_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_HOSTS_HOSTNAME_EMPTY_ERROR", pvar,
+							  "The host name should not be empty.\n"
+							  "This session will be terminated.");
 			notify_fatal_error(pvar, pvar->ts->UIMsg);
-#else
-			notify_fatal_error(pvar, "The host name should not be empty.\n"
-							   "This session will be terminated.");
-#endif
 		}
 		return 0;
 	}
@@ -958,18 +913,10 @@ static void add_host_key(PTInstVar pvar)
 	char FAR *name = pvar->hosts_state.file_names[0];
 
 	if (name == NULL || name[0] == 0) {
-#ifndef NO_I18N
-		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-			"The host and its key cannot be added, because no known-hosts file has been specified.\n"
-			"Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.",
-			_TRUNCATE);
-		UTIL_get_lang_msg("MSG_HOSTS_FILE_UNSPECIFY_ERROR", pvar);
+		UTIL_get_lang_msg("MSG_HOSTS_FILE_UNSPECIFY_ERROR", pvar,
+						  "The host and its key cannot be added, because no known-hosts file has been specified.\n"
+						  "Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-		notify_nonfatal_error(pvar,
-							  "The host and its key cannot be added, because no known-hosts file has been specified.\n"
-							  "Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
-#endif
 	} else {
 		char FAR *keydata = format_host_key(pvar);
 		int length = strlen(keydata);
@@ -985,31 +932,15 @@ static void add_host_key(PTInstVar pvar)
 			  _S_IREAD | _S_IWRITE);
 		if (fd == -1) {
 			if (errno == EACCES) {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-					"An error occurred while trying to write the host key.\n"
-					"You do not have permission to write to the known-hosts file.",
-					_TRUNCATE);
-				UTIL_get_lang_msg("MSG_HOSTS_WRITE_EACCES_ERROR", pvar);
+				UTIL_get_lang_msg("MSG_HOSTS_WRITE_EACCES_ERROR", pvar,
+								  "An error occurred while trying to write the host key.\n"
+								  "You do not have permission to write to the known-hosts file.");
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-				notify_nonfatal_error(pvar,
-									  "An error occurred while trying to write the host key.\n"
-									  "You do not have permission to write to the known-hosts file.");
-#endif
 			} else {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-					"An error occurred while trying to write the host key.\n"
-					"The host key could not be written.",
-					_TRUNCATE);
-				UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar);
+				UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar,
+								  "An error occurred while trying to write the host key.\n"
+								  "The host key could not be written.");
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-				notify_nonfatal_error(pvar,
-									  "An error occurred while trying to write the host key.\n"
-									  "The host key could not be written.");
-#endif
 			}
 			return;
 		}
@@ -1019,18 +950,10 @@ static void add_host_key(PTInstVar pvar)
 		close_result = _close(fd);
 
 		if (amount_written != length || close_result == -1) {
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-				"An error occurred while trying to write the host key.\n"
-				"The host key could not be written.",
-				_TRUNCATE);
-			UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar,
+							  "An error occurred while trying to write the host key.\n"
+							  "The host key could not be written.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-			notify_nonfatal_error(pvar,
-								  "An error occurred while trying to write the host key.\n"
-								  "The host key could not be written.");
-#endif
 		}
 	}
 }
@@ -1056,18 +979,10 @@ static void delete_different_key(PTInstVar pvar)
 	char FAR *name = pvar->hosts_state.file_names[0];
 
 	if (name == NULL || name[0] == 0) {
-#ifndef NO_I18N
-		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-			"The host and its key cannot be added, because no known-hosts file has been specified.\n"
-			"Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.",
-			_TRUNCATE);
-		UTIL_get_lang_msg("MSG_HOSTS_FILE_UNSPECIFY_ERROR", pvar);
+		UTIL_get_lang_msg("MSG_HOSTS_FILE_UNSPECIFY_ERROR", pvar,
+						  "The host and its key cannot be added, because no known-hosts file has been specified.\n"
+						  "Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-		notify_nonfatal_error(pvar,
-							  "The host and its key cannot be added, because no known-hosts file has been specified.\n"
-							  "Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
-#endif
 	}
 	else {
 		Key key; // 接続中のホストのキー
@@ -1089,31 +1004,15 @@ static void delete_different_key(PTInstVar pvar)
 
 		if (fd == -1) {
 			if (errno == EACCES) {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-					"An error occurred while trying to write the host key.\n"
-					"You do not have permission to write to the known-hosts file.",
-					_TRUNCATE);
-				UTIL_get_lang_msg("MSG_HOSTS_WRITE_EACCES_ERROR", pvar);
+				UTIL_get_lang_msg("MSG_HOSTS_WRITE_EACCES_ERROR", pvar,
+								  "An error occurred while trying to write the host key.\n"
+								  "You do not have permission to write to the known-hosts file.");
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-				notify_nonfatal_error(pvar,
-									  "An error occurred while trying to write the host key.\n"
-									  "You do not have permission to write to the known-hosts file.");
-#endif
 			} else {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-					"An error occurred while trying to write the host key.\n"
-					"The host key could not be written.",
-					_TRUNCATE);
-				UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar);
+				UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar,
+								  "An error occurred while trying to write the host key.\n"
+								  "The host key could not be written.");
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-				notify_nonfatal_error(pvar,
-									  "An error occurred while trying to write the host key.\n"
-									  "The host key could not be written.");
-#endif
 			}
 			free(filename);
 			return;
@@ -1231,18 +1130,10 @@ static void delete_different_key(PTInstVar pvar)
 error1:
 		close_result = _close(fd);
 		if (amount_written != length || close_result == -1) {
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-				"An error occurred while trying to write the host key.\n"
-				"The host key could not be written.",
-				_TRUNCATE);
-			UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar,
+							  "An error occurred while trying to write the host key.\n"
+							  "The host key could not be written.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-			notify_nonfatal_error(pvar,
-								  "An error occurred while trying to write the host key.\n"
-								  "The host key could not be written.");
-#endif
 			goto error2;
 		}
 
@@ -1268,10 +1159,9 @@ static BOOL CALLBACK hosts_add_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 										LPARAM lParam)
 {
 	PTInstVar pvar;
-#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
-#endif
+	char uimsg[MAX_UIMSG];
 
 	switch (msg) {
 	case WM_INITDIALOG:
@@ -1279,40 +1169,31 @@ static BOOL CALLBACK hosts_add_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		pvar->hosts_state.hosts_dialog = dlg;
 		SetWindowLong(dlg, DWL_USER, lParam);
 
-#ifndef NO_I18N
 		// 追加・置き換えとも init_hosts_dlg を呼んでいるので、その前にセットする必要がある
-		GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_UNKNONWHOST_TITLE", pvar);
+		GetWindowText(dlg, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_UNKNONWHOST_TITLE", pvar, uimsg);
 		SetWindowText(dlg, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_HOSTWARNING, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_UNKNOWNHOST_WARNINIG", pvar);
+		GetDlgItemText(dlg, IDC_HOSTWARNING, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_UNKNOWNHOST_WARNINIG", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_HOSTWARNING, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_HOSTWARNING2, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_UNKNOWNHOST_WARNINIG2", pvar);
+		GetDlgItemText(dlg, IDC_HOSTWARNING2, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_UNKNOWNHOST_WARNINIG2", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_HOSTWARNING2, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_HOSTFINGERPRINT, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_UNKNOWNHOST_FINGERPRINT", pvar);
+		GetDlgItemText(dlg, IDC_HOSTFINGERPRINT, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_UNKNOWNHOST_FINGERPRINT", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_HOSTFINGERPRINT, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_ADDTOKNOWNHOSTS, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_UNKNOWNHOST_ADD", pvar);
+		GetDlgItemText(dlg, IDC_ADDTOKNOWNHOSTS, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_UNKNOWNHOST_ADD", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_ADDTOKNOWNHOSTS, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_CONTINUE, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("BTN_CONTINUE", pvar);
+		GetDlgItemText(dlg, IDC_CONTINUE, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("BTN_CONTINUE", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_CONTINUE, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("BTN_DISCONNECT", pvar);
+		GetDlgItemText(dlg, IDCANCEL, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("BTN_DISCONNECT", pvar, uimsg);
 		SetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg);
-#endif
 
 		init_hosts_dlg(pvar, dlg);
 
-#ifndef NO_I18N
 		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
 		if (UTIL_get_lang_font("DLG_TAHOMA_FONT", dlg, &logfont, &DlgHostsAddFont, pvar)) {
@@ -1327,7 +1208,6 @@ static BOOL CALLBACK hosts_add_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		else {
 			DlgHostsAddFont = NULL;
 		}
-#endif
 
 		// add host check boxにチェックをデフォルトで入れておく 
 		SendMessage(GetDlgItem(dlg, IDC_ADDTOKNOWNHOSTS), BM_SETCHECK, BST_CHECKED, 0);
@@ -1353,11 +1233,9 @@ static BOOL CALLBACK hosts_add_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 
 			EndDialog(dlg, 1);
 
-#ifndef NO_I18N
 			if (DlgHostsAddFont != NULL) {
 				DeleteObject(DlgHostsAddFont);
 			}
-#endif
 
 			return TRUE;
 
@@ -1366,11 +1244,9 @@ static BOOL CALLBACK hosts_add_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			notify_closed_connection(pvar);
 			EndDialog(dlg, 0);
 
-#ifndef NO_I18N
 			if (DlgHostsAddFont != NULL) {
 				DeleteObject(DlgHostsAddFont);
 			}
-#endif
 
 			return TRUE;
 
@@ -1390,10 +1266,9 @@ static BOOL CALLBACK hosts_replace_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 											LPARAM lParam)
 {
 	PTInstVar pvar;
-#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
-#endif
+	char uimsg[MAX_UIMSG];
 
 	switch (msg) {
 	case WM_INITDIALOG:
@@ -1401,40 +1276,31 @@ static BOOL CALLBACK hosts_replace_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		pvar->hosts_state.hosts_dialog = dlg;
 		SetWindowLong(dlg, DWL_USER, lParam);
 
-#ifndef NO_I18N
 		// 追加・置き換えとも init_hosts_dlg を呼んでいるので、その前にセットする必要がある
-		GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_DIFFERENTHOST_TITLE", pvar);
+		GetWindowText(dlg, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_DIFFERENTHOST_TITLE", pvar, uimsg);
 		SetWindowText(dlg, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_HOSTWARNING, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_DIFFERENTHOST_WARNING", pvar);
+		GetDlgItemText(dlg, IDC_HOSTWARNING, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_DIFFERENTHOST_WARNING", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_HOSTWARNING, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_HOSTWARNING2, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_DIFFERENTHOST_WARNING2", pvar);
+		GetDlgItemText(dlg, IDC_HOSTWARNING2, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_DIFFERENTHOST_WARNING2", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_HOSTWARNING2, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_HOSTFINGERPRINT, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_DIFFERENTHOST_FINGERPRINT", pvar);
+		GetDlgItemText(dlg, IDC_HOSTFINGERPRINT, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_DIFFERENTHOST_FINGERPRINT", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_HOSTFINGERPRINT, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_ADDTOKNOWNHOSTS, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_DIFFERENTHOST_REPLACE", pvar);
+		GetDlgItemText(dlg, IDC_ADDTOKNOWNHOSTS, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_DIFFERENTHOST_REPLACE", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_ADDTOKNOWNHOSTS, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_CONTINUE, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("BTN_CONTINUE", pvar);
+		GetDlgItemText(dlg, IDC_CONTINUE, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("BTN_CONTINUE", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_CONTINUE, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("BTN_DISCONNECT", pvar);
+		GetDlgItemText(dlg, IDCANCEL, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("BTN_DISCONNECT", pvar, uimsg);
 		SetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg);
-#endif
 
 		init_hosts_dlg(pvar, dlg);
 
-#ifndef NO_I18N
 		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
 		if (UTIL_get_lang_font("DLG_TAHOMA_FONT", dlg, &logfont, &DlgHostsReplaceFont, pvar)) {
@@ -1448,7 +1314,6 @@ static BOOL CALLBACK hosts_replace_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		else {
 			DlgHostsReplaceFont = NULL;
 		}
-#endif
 
 		// デフォルトでチェックは入れない
 		return TRUE;			/* because we do not set the focus */
@@ -1473,11 +1338,9 @@ static BOOL CALLBACK hosts_replace_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 
 			EndDialog(dlg, 1);
 
-#ifndef NO_I18N
 			if (DlgHostsReplaceFont != NULL) {
 				DeleteObject(DlgHostsReplaceFont);
 			}
-#endif
 
 			return TRUE;
 
@@ -1486,11 +1349,9 @@ static BOOL CALLBACK hosts_replace_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			notify_closed_connection(pvar);
 			EndDialog(dlg, 0);
 
-#ifndef NO_I18N
 			if (DlgHostsReplaceFont != NULL) {
 				DeleteObject(DlgHostsReplaceFont);
 			}
-#endif
 
 			return TRUE;
 
@@ -1636,6 +1497,9 @@ void HOSTS_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  2007/08/08 16:04:09  maya
+ * 安全な関数を使用するように変更した。
+ *
  * Revision 1.16  2007/06/06 14:10:12  maya
  * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
  *

@@ -114,27 +114,14 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 	fd = _open(filename, _O_RDONLY | _O_SEQUENTIAL | _O_BINARY);
 	if (fd == -1) {
 		if (errno == ENOENT) {
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-				"An error occurred while trying to read the key file.\n"
-				"The specified filename does not exist.",
-				_TRUNCATE);
-			UTIL_get_lang_msg("MSG_KEYFILES_READ_ENOENT_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_KEYFILES_READ_ENOENT_ERROR", pvar,
+							  "An error occurred while trying to read the key file.\n"
+							  "The specified filename does not exist.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-			notify_nonfatal_error(pvar,
-								  "An error occurred while trying to read the key file.\n"
-								  "The specified filename does not exist.");
-#endif
 		} else {
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "An error occurred while trying to read the key file.", _TRUNCATE);
-			UTIL_get_lang_msg("MSG_KEYFILES_READ_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_KEYFILES_READ_ERROR", pvar,
+							  "An error occurred while trying to read the key file.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-			notify_nonfatal_error(pvar,
-								  "An error occurred while trying to read the key file.");
-#endif
 		}
 		return NULL;
 	}
@@ -145,26 +132,16 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 	if (length >= 0 && length < 0x7FFFFFFF) {
 		keyfile_data = malloc(length + 1);
 		if (keyfile_data == NULL) {
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Memory ran out while trying to allocate space to read the key file.", _TRUNCATE);
-			UTIL_get_lang_msg("MSG_KEYFILES_READ_ALLOC_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_KEYFILES_READ_ALLOC_ERROR", pvar,
+							  "Memory ran out while trying to allocate space to read the key file.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-			notify_nonfatal_error(pvar,
-								  "Memory ran out while trying to allocate space to read the key file.");
-#endif
 			_close(fd);
 			return NULL;
 		}
 	} else {
-#ifndef NO_I18N
-		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "An error occurred while trying to read the key file.", _TRUNCATE);
-		UTIL_get_lang_msg("MSG_KEYFILES_READ_ERROR", pvar);
+		UTIL_get_lang_msg("MSG_KEYFILES_READ_ERROR", pvar,
+						  "An error occurred while trying to read the key file.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-		notify_nonfatal_error(pvar,
-							  "An error occurred while trying to read the key file.");
-#endif
 		_close(fd);
 		return NULL;
 	}
@@ -177,27 +154,17 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 	_close(fd);
 
 	if (amount_read != length) {
-#ifndef NO_I18N
-		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "An error occurred while trying to read the key file.", _TRUNCATE);
-		UTIL_get_lang_msg("MSG_KEYFILES_READ_ERROR", pvar);
+		UTIL_get_lang_msg("MSG_KEYFILES_READ_ERROR", pvar,
+						  "An error occurred while trying to read the key file.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-		notify_nonfatal_error(pvar,
-							  "An error occurred while trying to read the key file.");
-#endif
 		free(keyfile_data);
 		return NULL;
 	}
 
 	if (strcmp(keyfile_data, ID_string) != 0) {
-#ifndef NO_I18N
-		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "The specified key file does not contain an SSH private key.", _TRUNCATE);
-		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_NOTCONTAIN_ERROR", pvar);
+		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_NOTCONTAIN_ERROR", pvar,
+						  "The specified key file does not contain an SSH private key.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-		notify_nonfatal_error(pvar,
-							  "The specified key file does not contain an SSH private key.");
-#endif
 		free(keyfile_data);
 		return NULL;
 	}
@@ -205,16 +172,9 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 	index = NUM_ELEM(ID_string);
 
 	if (length < index + 9) {
-#ifndef NO_I18N
-		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-			"The specified key file has been truncated and does not contain a valid private key.",
-			_TRUNCATE);
-		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar);
+		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar,
+						  "The specified key file has been truncated and does not contain a valid private key.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-		notify_nonfatal_error(pvar,
-							  "The specified key file has been truncated and does not contain a valid private key.");
-#endif
 		free(keyfile_data);
 		return NULL;
 	}
@@ -224,32 +184,18 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 	index += 9;
 	/* skip public key e and n mp_ints */
 	if (length < index + 2) {
-#ifndef NO_I18N
-		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-			"The specified key file has been truncated and does not contain a valid private key.",
-			_TRUNCATE);
-		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar);
+		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar,
+						  "The specified key file has been truncated and does not contain a valid private key.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-		notify_nonfatal_error(pvar,
-							  "The specified key file has been truncated and does not contain a valid private key.");
-#endif
 		free(keyfile_data);
 		return NULL;
 	}
 	N_index = index;
 	index += (get_ushort16_MSBfirst(keyfile_data + index) + 7) / 8 + 2;
 	if (length < index + 2) {
-#ifndef NO_I18N
-		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-			"The specified key file has been truncated and does not contain a valid private key.",
-			_TRUNCATE);
-		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar);
+		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar,
+						  "The specified key file has been truncated and does not contain a valid private key.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-		notify_nonfatal_error(pvar,
-							  "The specified key file has been truncated and does not contain a valid private key.");
-#endif
 		free(keyfile_data);
 		return NULL;
 	}
@@ -257,66 +203,36 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 	index += (get_ushort16_MSBfirst(keyfile_data + index) + 7) / 8 + 2;
 	/* skip comment */
 	if (length < index + 4) {
-#ifndef NO_I18N
-		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-			"The specified key file has been truncated and does not contain a valid private key.",
-			_TRUNCATE);
-		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar);
+		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar,
+						  "The specified key file has been truncated and does not contain a valid private key.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-		notify_nonfatal_error(pvar,
-							  "The specified key file has been truncated and does not contain a valid private key.");
-#endif
 		free(keyfile_data);
 		return NULL;
 	}
 	index += get_uint32_MSBfirst(keyfile_data + index) + 4;
 
 	if (length < index + 6) {
-#ifndef NO_I18N
-		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-			"The specified key file has been truncated and does not contain a valid private key.",
-			_TRUNCATE);
-		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar);
+		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar,
+						  "The specified key file has been truncated and does not contain a valid private key.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-		notify_nonfatal_error(pvar,
-							  "The specified key file has been truncated and does not contain a valid private key.");
-#endif
 		free(keyfile_data);
 		return NULL;
 	}
 	if (cipher != SSH_CIPHER_NONE) {
 		if ((length - index) % 8 != 0) {
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-				"The specified key file cannot be decrypted using the passphrase.\n"
-				"The file does not have the correct length.",
-				_TRUNCATE);
-			UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_LENGTH_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_LENGTH_ERROR", pvar,
+							  "The specified key file cannot be decrypted using the passphrase.\n"
+							  "The file does not have the correct length.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-			notify_nonfatal_error(pvar,
-								  "The specified key file cannot be decrypted using the passphrase.\n"
-								  "The file does not have the correct length.");
-#endif
 			free(keyfile_data);
 			return NULL;
 		}
 		if (!CRYPT_passphrase_decrypt
 			(cipher, passphrase, keyfile_data + index, length - index)) {
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-				"The specified key file cannot be decrypted using the passphrase.\n"
-				"The cipher type used to encrypt the file is not supported by TTSSH for this purpose.",
-				_TRUNCATE);
-			UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_NOCIPHER_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_NOCIPHER_ERROR", pvar,
+							  "The specified key file cannot be decrypted using the passphrase.\n"
+							  "The cipher type used to encrypt the file is not supported by TTSSH for this purpose.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-			notify_nonfatal_error(pvar,
-								  "The specified key file cannot be decrypted using the passphrase.\n"
-								  "The cipher type used to encrypt the file is not supported by TTSSH for this purpose.");
-#endif
 			free(keyfile_data);
 			return NULL;
 		}
@@ -325,34 +241,19 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 	if (keyfile_data[index] != keyfile_data[index + 2]
 		|| keyfile_data[index + 1] != keyfile_data[index + 3]) {
 		*invalid_passphrase = TRUE;
-#ifndef NO_I18N
 		if (is_auto_login) {
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-				"The specified key file cannot be decrypted using the empty passphrase.\n"
-				"For auto-login, you must create a key file with no passphrase.\n"
-				"BEWARE: This means the key can easily be stolen.",
-				_TRUNCATE);
-			UTIL_get_lang_msg("MSG_KEYFILES_PASSPHRASE_EMPTY_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_KEYFILES_PASSPHRASE_EMPTY_ERROR", pvar,
+							  "The specified key file cannot be decrypted using the empty passphrase.\n"
+							  "For auto-login, you must create a key file with no passphrase.\n"
+							  "BEWARE: This means the key can easily be stolen.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		}
 		else {
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-				"The specified key file cannot be decrypted using the passphrase.\n"
-				"The passphrase is incorrect.",
-				_TRUNCATE);
-			UTIL_get_lang_msg("MSG_KEYFILES_PASSPHRASE_ERROR", pvar);
-			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-		}
-#else
-		notify_nonfatal_error(pvar, is_auto_login
-							  ?
-							  "The specified key file cannot be decrypted using the empty passphrase.\n"
-							  "For auto-login, you must create a key file with no passphrase.\n"
-							  "BEWARE: This means the key can easily be stolen."
-							  :
+			UTIL_get_lang_msg("MSG_KEYFILES_PASSPHRASE_ERROR", pvar,
 							  "The specified key file cannot be decrypted using the passphrase.\n"
 							  "The passphrase is incorrect.");
-#endif
+			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+		}
 		memset(keyfile_data, 0, length);
 		free(keyfile_data);
 		return NULL;
@@ -380,16 +281,9 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 		|| length <
 		Q_index + (get_ushort16_MSBfirst(keyfile_data + Q_index) + 7) / 8 +
 		2) {
-#ifndef NO_I18N
-		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-			"The specified key file has been truncated and does not contain a valid private key.",
-			_TRUNCATE);
-		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar);
+		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar,
+						  "The specified key file has been truncated and does not contain a valid private key.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-		notify_nonfatal_error(pvar,
-							  "The specified key file has been truncated and does not contain a valid private key.");
-#endif
 		memset(keyfile_data, 0, length);
 		free(keyfile_data);
 		return NULL;
@@ -403,17 +297,10 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 	key->q = get_bignum(keyfile_data + Q_index);
 
 	if (!normalize_key(key)) {
-#ifndef NO_I18N
-		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-			"Error in crytography library.\n"
-			"Perhaps the stored key is invalid.",
-			_TRUNCATE);
-		UTIL_get_lang_msg("MSG_KEYFILES_CRYPTOLIB_ERROR", pvar);
+		UTIL_get_lang_msg("MSG_KEYFILES_CRYPTOLIB_ERROR", pvar,
+						  "Error in crytography library.\n"
+						  "Perhaps the stored key is invalid.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
-#else
-		notify_nonfatal_error(pvar, "Error in crytography library.\n"
-							  "Perhaps the stored key is invalid.");
-#endif
 
 		RSA_free(key);
 		key = NULL;
@@ -536,6 +423,9 @@ error:
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2007/08/08 16:04:09  maya
+ * 安全な関数を使用するように変更した。
+ *
  * Revision 1.7  2007/06/06 14:10:12  maya
  * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
  *

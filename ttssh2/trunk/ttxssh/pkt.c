@@ -239,14 +239,9 @@ int PKT_recv(PTInstVar pvar, char FAR * buf, int buflen)
 			} else if (total_packet_size > 4 * 1024 * 1024) {
 				// 4MBを超える巨大なパケットが届いたら、異常終了する。
 				// 実際にはデータ化けで復号失敗時に、誤認識することが多い。
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Oversized packet received from server; connection will close.", _TRUNCATE);
-				UTIL_get_lang_msg("MSG_PKT_OVERSIZED_ERROR", pvar);
+				UTIL_get_lang_msg("MSG_PKT_OVERSIZED_ERROR", pvar,
+								  "Oversized packet received from server; connection will close.");
 				notify_fatal_error(pvar, pvar->ts->UIMsg);
-#else
-				notify_fatal_error(pvar,
-								   "Oversized packet received from server; connection will close.");
-#endif
 			} else {
 				int amount_read =
 					recv_data(pvar, max(total_packet_size, READAMOUNT));
@@ -309,6 +304,9 @@ void PKT_end(PTInstVar pvar)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2007/08/08 16:04:09  maya
+ * 安全な関数を使用するように変更した。
+ *
  * Revision 1.6  2007/06/06 14:10:12  maya
  * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
  *

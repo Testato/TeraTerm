@@ -88,12 +88,10 @@ static HICON SecureLargeIcon = NULL;
 static HICON SecureSmallIcon = NULL;
 #endif
 
-#ifndef NO_I18N
 static HFONT DlgHostFont;
 static HFONT DlgAboutFont;
 static HFONT DlgSetupFont;
 static HFONT DlgKeygenFont;
-#endif
 
 static TInstVar FAR *pvar;
 
@@ -762,13 +760,9 @@ void notify_nonfatal_error(PTInstVar pvar, char FAR * msg)
 		// 未接続の状態では通知先ウィンドウがないので、デスクトップをオーナーとして
 		// メッセージボックスを出現させる。(2006.6.11 yutaka)
 		if (pvar->NotificationWindow == NULL) {
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Tera Term: not fatal error", _TRUNCATE);
-			UTIL_get_lang_msg("MSG_ERROR_NONFAITAL", pvar);
+			UTIL_get_lang_msg("MSG_ERROR_NONFAITAL", pvar,
+							  "Tera Term: not fatal error");
 			MessageBox(NULL, msg, pvar->ts->UIMsg, MB_OK|MB_ICONINFORMATION);
-#else
-			MessageBox(NULL, msg, "Tera Term: not fatal error", MB_OK|MB_ICONINFORMATION);
-#endif
 			msg[0] = '\0';
 
 		} else {
@@ -906,10 +900,9 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 	char ComPortTable[MAXCOMPORT];
 	int comports;
 	BOOL Ok;
-#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
-#endif
+	char uimsg[MAX_UIMSG];
 
 	GET_VAR();
 
@@ -918,59 +911,45 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		GetHNRec = (PGetHNRec) lParam;
 		SetWindowLong(dlg, DWL_USER, lParam);
 
-#ifndef NO_I18N
-		GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_HOST_TITLE", pvar);
+		GetWindowText(dlg, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_HOST_TITLE", pvar, uimsg);
 		SetWindowText(dlg, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_HOSTNAMELABEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_HOST_TCPIP_HOST", pvar);
+		GetDlgItemText(dlg, IDC_HOSTNAMELABEL, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_HOST_TCPIP_HOST", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_HOSTNAMELABEL, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_HISTORY, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_HOST_TCPIP_HISTORY", pvar);
+		GetDlgItemText(dlg, IDC_HISTORY, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_HOST_TCPIP_HISTORY", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_HISTORY, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_SERVICELABEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_HOST_TCPIP_SERVICE", pvar);
+		GetDlgItemText(dlg, IDC_SERVICELABEL, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_HOST_TCPIP_SERVICE", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_SERVICELABEL, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_HOSTOTHER, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_HOST_TCPIP_OTHER", pvar);
+		GetDlgItemText(dlg, IDC_HOSTOTHER, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_HOST_TCPIP_OTHER", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_HOSTOTHER, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_HOSTTCPPORTLABEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_HOST_TCPIP_PORT", pvar);
+		GetDlgItemText(dlg, IDC_HOSTTCPPORTLABEL, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_HOST_TCPIP_PORT", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_HOSTTCPPORTLABEL, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_SSH_VERSION_LABEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_HOST_TCPIP_SSHVERSION", pvar);
+		GetDlgItemText(dlg, IDC_SSH_VERSION_LABEL, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_HOST_TCPIP_SSHVERSION", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_SSH_VERSION_LABEL, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_HOSTTCPPROTOCOLLABEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_HOST_TCPIP_PROTOCOL", pvar);
+		GetDlgItemText(dlg, IDC_HOSTTCPPROTOCOLLABEL, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_HOST_TCPIP_PROTOCOL", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_HOSTTCPPROTOCOLLABEL, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_HOSTSERIAL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_HOST_SERIAL", pvar);
+		GetDlgItemText(dlg, IDC_HOSTSERIAL, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_HOST_SERIAL", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_HOSTSERIAL, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_HOSTCOMLABEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_HOST_SERIAL_PORT", pvar);
+		GetDlgItemText(dlg, IDC_HOSTCOMLABEL, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_HOST_SERIAL_PORT", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_HOSTCOMLABEL, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_HOSTHELP, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_HOST_HELP", pvar);
+		GetDlgItemText(dlg, IDC_HOSTHELP, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_HOST_HELP", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_HOSTHELP, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDOK, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("BTN_OK", pvar);
+		GetDlgItemText(dlg, IDOK, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("BTN_OK", pvar, uimsg);
 		SetDlgItemText(dlg, IDOK, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("BTN_CANCEL", pvar);
+		GetDlgItemText(dlg, IDCANCEL, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("BTN_CANCEL", pvar, uimsg);
 		SetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg);
-#endif
 
 		// ホストヒストリのチェックボックスを追加 (2005.10.21 yutaka)
 		if (pvar->ts->HistoryList > 0) {
@@ -1103,7 +1082,6 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 			SetFocus(hwnd);
 		}
 
-#ifndef NO_I18N
 		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
 		if (UTIL_get_lang_font("DLG_SYSTEM_FONT", dlg, &logfont, &DlgHostFont, pvar)) {
@@ -1131,7 +1109,6 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		else {
 			DlgHostFont = NULL;
 		}
-#endif
 
 		// SetFocus()でフォーカスをあわせた場合、FALSEを返す必要がある。
 		// TRUEを返すと、TABSTOP対象の一番はじめのコントロールが選ばれる。
@@ -1152,15 +1129,10 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 					if (Ok) {
 						GetHNRec->TCPPort = i;
 					} else {
-#ifndef NO_I18N
-						strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "The TCP port must be a number.", _TRUNCATE);
-						UTIL_get_lang_msg("MSG_TCPPORT_NAN_ERROR", pvar);
+						UTIL_get_lang_msg("MSG_TCPPORT_NAN_ERROR", pvar,
+										  "The TCP port must be a number.");
 						MessageBox(dlg, pvar->ts->UIMsg,
 								   "Teraterm", MB_OK | MB_ICONEXCLAMATION);
-#else
-						MessageBox(dlg, "The TCP port must be a number.",
-								   "Teraterm", MB_OK | MB_ICONEXCLAMATION);
-#endif
 						return TRUE;
 					}
 #ifndef NO_INET6
@@ -1221,23 +1193,19 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 			}
 			EndDialog(dlg, 1);
 
-#ifndef NO_I18N
 			if (DlgHostFont != NULL) {
 				DeleteObject(DlgHostFont);
 			}
-#endif
 
 			return TRUE;
 
 		case IDCANCEL:
 			EndDialog(dlg, 0);
 
-#ifndef NO_I18N
 			if (DlgHostFont != NULL) {
 				DeleteObject(DlgHostFont);
 			}
-#endif
-			
+
 			return TRUE;
 
 		case IDC_HOSTTCPIP:
@@ -1422,15 +1390,9 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 			} else {
 				char buf[1024];
 
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Unrecognized command-line option: %s", _TRUNCATE);
-				UTIL_get_lang_msg("MSG_UNKNOWN_OPTION_ERROR", pvar);
+				UTIL_get_lang_msg("MSG_UNKNOWN_OPTION_ERROR", pvar,
+								  "Unrecognized command-line option: %s");
 				_snprintf_s(buf, sizeof(buf), _TRUNCATE, pvar->ts->UIMsg, option);
-#else
-				_snprintf(buf, sizeof(buf),
-						  "Unrecognized command-line option: %s", option);
-#endif
-				buf[sizeof(buf) - 1] = 0;
 
 				MessageBox(NULL, buf, "TTSSH", MB_OK | MB_ICONEXCLAMATION);
 			}
@@ -1676,51 +1638,20 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu)
 	GET_VAR();
 
 	/* inserts before ID_HELP_ABOUT */
-#ifndef NO_I18N
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "About &TTSSH...", _TRUNCATE);
-	UTIL_get_lang_msg("MENU_ABOUT", pvar);
+	UTIL_get_lang_msg("MENU_ABOUT", pvar, "About &TTSSH...");
 	insertMenuBeforeItem(menu, 50990, MF_ENABLED, ID_ABOUTMENU, pvar->ts->UIMsg);
-#else
-	insertMenuBeforeItem(menu, 50990, MF_ENABLED, ID_ABOUTMENU,
-						 "About &TTSSH...");
-#endif
 
 	/* inserts before ID_SETUP_TCPIP */
-#ifndef NO_I18N
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "SS&H...", _TRUNCATE);
-	UTIL_get_lang_msg("MENU_SSH", pvar);
+	UTIL_get_lang_msg("MENU_SSH", pvar, "SS&H...");
 	insertMenuBeforeItem(menu, 50360, MF_ENABLED, ID_SSHSETUPMENU, pvar->ts->UIMsg);
-#else
-	insertMenuBeforeItem(menu, 50360, MF_ENABLED, ID_SSHSETUPMENU,
-						 "SS&H...");
-#endif
 	/* inserts before ID_SETUP_TCPIP */
-#ifndef NO_I18N
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "SSH &Authentication...", _TRUNCATE);
-	UTIL_get_lang_msg("MENU_SSH_AUTH", pvar);
+	UTIL_get_lang_msg("MENU_SSH_AUTH", pvar, "SSH &Authentication...");
 	insertMenuBeforeItem(menu, 50360, MF_ENABLED, ID_SSHAUTHSETUPMENU, pvar->ts->UIMsg);
-#else
-	insertMenuBeforeItem(menu, 50360, MF_ENABLED, ID_SSHAUTHSETUPMENU,
-						 "SSH &Authentication...");
-#endif
 	/* inserts before ID_SETUP_TCPIP */
-#ifndef NO_I18N
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "SSH F&orwarding...", _TRUNCATE);
-	UTIL_get_lang_msg("MENU_SSH_FORWARD", pvar);
+	UTIL_get_lang_msg("MENU_SSH_FORWARD", pvar, "SSH F&orwarding...");
 	insertMenuBeforeItem(menu, 50360, MF_ENABLED, ID_SSHFWDSETUPMENU, pvar->ts->UIMsg);
-#else
-	insertMenuBeforeItem(menu, 50360, MF_ENABLED, ID_SSHFWDSETUPMENU,
-						 "SSH F&orwarding...");
-#endif
-
-#ifndef NO_I18N
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "SSH KeyGe&nerator...", _TRUNCATE);
-	UTIL_get_lang_msg("MENU_SSH_KEYGEN", pvar);
+	UTIL_get_lang_msg("MENU_SSH_KEYGEN", pvar, "SSH KeyGe&nerator...");
 	insertMenuBeforeItem(menu, 50360, MF_ENABLED, ID_SSHKEYGENMENU, pvar->ts->UIMsg);
-#else
-	insertMenuBeforeItem(menu, 50360, MF_ENABLED, ID_SSHKEYGENMENU,
-						 "SSH KeyGenerator...");
-#endif
 }
 
 static void append_about_text(HWND dlg, char FAR * prefix, char FAR * msg)
@@ -1796,16 +1727,14 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 {
 	char buf[1024];
 	int a, b, c, d;
-	
-#ifndef NO_I18N
-	GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-	UTIL_get_lang_msg("DLG_ABOUT_TITLE", pvar);
-	SetWindowText(dlg, pvar->ts->UIMsg);
+	char uimsg[MAX_UIMSG];
 
-	GetDlgItemText(dlg, IDOK, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-	UTIL_get_lang_msg("BTN_OK", pvar);
+	GetWindowText(dlg, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_ABOUT_TITLE", pvar, uimsg);
+	SetWindowText(dlg, pvar->ts->UIMsg);
+	GetDlgItemText(dlg, IDOK, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("BTN_OK", pvar, uimsg);
 	SetDlgItemText(dlg, IDOK, pvar->ts->UIMsg);
-#endif
 	
 	// TTSSHのバージョンを設定する (2005.2.28 yutaka)
 	get_file_version("ttxssh.dll", &a, &b, &c, &d);
@@ -1834,80 +1763,34 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 	if (pvar->socket != INVALID_SOCKET) {
 		if (SSHv1(pvar)) {
 			SSH_get_server_ID_info(pvar, buf, sizeof(buf));
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Server ID: ", _TRUNCATE);
-			UTIL_get_lang_msg("DLG_ABOUT_SERVERID", pvar);
+			UTIL_get_lang_msg("DLG_ABOUT_SERVERID", pvar, "Server ID: ");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
-#else
-			append_about_text(dlg, "Server ID: ", buf);
-#endif
 			SSH_get_protocol_version_info(pvar, buf, sizeof(buf));
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Using protocol: ", _TRUNCATE);
-			UTIL_get_lang_msg("DLG_ABOUT_PROTOCOL", pvar);
+			UTIL_get_lang_msg("DLG_ABOUT_PROTOCOL", pvar, "Using protocol: ");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
-#else
-			append_about_text(dlg, "Using protocol: ", buf);
-#endif
 			CRYPT_get_cipher_info(pvar, buf, sizeof(buf));
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Encryption: ", _TRUNCATE);
-			UTIL_get_lang_msg("DLG_ABOUT_ENCRYPTION", pvar);
+			UTIL_get_lang_msg("DLG_ABOUT_ENCRYPTION", pvar, "Encryption: ");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
-#else
-			append_about_text(dlg, "Encryption: ", buf);
-#endif
 			CRYPT_get_server_key_info(pvar, buf, sizeof(buf));
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Server keys: ", _TRUNCATE);
-			UTIL_get_lang_msg("DLG_ABOUT_SERVERKEY", pvar);
+			UTIL_get_lang_msg("DLG_ABOUT_SERVERKEY", pvar, "Server keys: ");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
-#else
-			append_about_text(dlg, "Server keys: ", buf);
-#endif
 			AUTH_get_auth_info(pvar, buf, sizeof(buf));
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Authentication: ", _TRUNCATE);
-			UTIL_get_lang_msg("DLG_ABOUT_AUTH", pvar);
+			UTIL_get_lang_msg("DLG_ABOUT_AUTH", pvar, "Authentication: ");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
-#else
-			append_about_text(dlg, "Authentication: ", buf);
-#endif
 			SSH_get_compression_info(pvar, buf, sizeof(buf));
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Compression: ", _TRUNCATE);
-			UTIL_get_lang_msg("DLG_ABOUT_COMP", pvar);
+			UTIL_get_lang_msg("DLG_ABOUT_COMP", pvar, "Compression: ");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
-#else
-			append_about_text(dlg, "Compression: ", buf);
-#endif
 
 		} else { // SSH2
 			SSH_get_server_ID_info(pvar, buf, sizeof(buf));
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Server ID: ", _TRUNCATE);
-			UTIL_get_lang_msg("DLG_ABOUT_SERVERID", pvar);
+			UTIL_get_lang_msg("DLG_ABOUT_SERVERID", pvar, "Server ID: ");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
-#else
-			append_about_text(dlg, "Server ID: ", buf);
-#endif
-
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Client ID: ", _TRUNCATE);
-			UTIL_get_lang_msg("DLG_ABOUT_CLIENTID", pvar);
+			UTIL_get_lang_msg("DLG_ABOUT_CLIENTID", pvar, "Client ID: ");
 			append_about_text(dlg, pvar->ts->UIMsg, pvar->client_version_string);
-#else
-			append_about_text(dlg, "Client ID: ", pvar->client_version_string);
-#endif
 
 			SSH_get_protocol_version_info(pvar, buf, sizeof(buf));
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Using protocol: ", _TRUNCATE);
-			UTIL_get_lang_msg("DLG_ABOUT_PROTOCOL", pvar);
+			UTIL_get_lang_msg("DLG_ABOUT_PROTOCOL", pvar, "Using protocol: ");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
-#else
-			append_about_text(dlg, "Using protocol: ", buf);
-#endif
 
 			if (pvar->kex_type == KEX_DH_GRP1_SHA1) {
 				strncpy_s(buf, sizeof(buf), KEX_DH1, _TRUNCATE);
@@ -1923,13 +1806,8 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 			} else {
 				strncpy_s(buf, sizeof(buf), "ssh-rsa", _TRUNCATE);
 			}
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Host Key: ", _TRUNCATE);
-			UTIL_get_lang_msg("DLG_ABOUT_HOSTKEY", pvar);
+			UTIL_get_lang_msg("DLG_ABOUT_HOSTKEY", pvar, "Host Key: ");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
-#else
-			append_about_text(dlg, "Host Key: ", buf);
-#endif
 
 			// add HMAC algorithm (2004.12.17 yutaka)
 			buf[0] = '\0';
@@ -1938,71 +1816,36 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 			} else if (pvar->ctos_hmac == HMAC_MD5) {
 				strncat_s(buf, sizeof(buf), "hmac-md5", _TRUNCATE);
 			}
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), " to server, ", _TRUNCATE);
-			UTIL_get_lang_msg("DLG_ABOUT_TOSERVER", pvar);
+			UTIL_get_lang_msg("DLG_ABOUT_TOSERVER", pvar, " to server, ");
 			strncat_s(buf, sizeof(buf), pvar->ts->UIMsg, _TRUNCATE);
-#else
-			strcat(buf, " to server, ");
-#endif
 			if (pvar->stoc_hmac == HMAC_SHA1) {
 				strncat_s(buf, sizeof(buf), "hmac-sha1", _TRUNCATE);
 			} else if (pvar->stoc_hmac == HMAC_MD5) {
 				strncat_s(buf, sizeof(buf), "hmac-md5", _TRUNCATE);
 			}
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), " from server", _TRUNCATE);
-			UTIL_get_lang_msg("DLG_ABOUT_FROMSERVER", pvar);
+			UTIL_get_lang_msg("DLG_ABOUT_FROMSERVER", pvar, " from server");
 			strncat_s(buf, sizeof(buf), pvar->ts->UIMsg, _TRUNCATE);
-#else
-			strcat(buf, " from server");
-#endif
 			append_about_text(dlg, "HMAC: ", buf);
 
 			CRYPT_get_cipher_info(pvar, buf, sizeof(buf));
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Encryption: ", _TRUNCATE);
-			UTIL_get_lang_msg("DLG_ABOUT_ENCRYPTION", pvar);
+			UTIL_get_lang_msg("DLG_ABOUT_ENCRYPTION", pvar, "Encryption: ");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
-#else
-			append_about_text(dlg, "Encryption: ", buf);
-#endif
 			CRYPT_get_server_key_info(pvar, buf, sizeof(buf));
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Server keys: ", _TRUNCATE);
-			UTIL_get_lang_msg("DLG_ABOUT_SERVERKEY", pvar);
+			UTIL_get_lang_msg("DLG_ABOUT_SERVERKEY", pvar, "Server keys: ");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
-#else
-			append_about_text(dlg, "Server keys: ", buf);
-#endif
+
 			AUTH_get_auth_info(pvar, buf, sizeof(buf));
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Authentication: ", _TRUNCATE);
-			UTIL_get_lang_msg("DLG_ABOUT_AUTH", pvar);
+			UTIL_get_lang_msg("DLG_ABOUT_AUTH", pvar, "Authentication: ");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
-#else
-			append_about_text(dlg, "Authentication: ", buf);
-#endif
 
 			SSH_get_compression_info(pvar, buf, sizeof(buf));
 			if (pvar->ctos_compression == COMP_DELAYED) { // 遅延パケット圧縮の場合 (2006.6.23 yutaka)
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Delayed Compression: ", _TRUNCATE);
-				UTIL_get_lang_msg("DLG_ABOUT_COMPDELAY", pvar);
+				UTIL_get_lang_msg("DLG_ABOUT_COMPDELAY", pvar, "Delayed Compression: ");
 				append_about_text(dlg, pvar->ts->UIMsg, buf);
-#else
-				append_about_text(dlg, "Delayed Compression: ", buf);
-#endif
 			} else {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Compression: ", _TRUNCATE);
-				UTIL_get_lang_msg("DLG_ABOUT_COMP", pvar);
+				UTIL_get_lang_msg("DLG_ABOUT_COMP", pvar, "Compression: ");
 				append_about_text(dlg, pvar->ts->UIMsg, buf);
-#else
-				append_about_text(dlg, "Compression: ", buf);
-#endif
 			}
-
 		}
 	}
 }
@@ -2010,13 +1853,11 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 static BOOL CALLBACK TTXAboutDlg(HWND dlg, UINT msg, WPARAM wParam,
 								 LPARAM lParam)
 {
-#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
-#endif
+
 	switch (msg) {
 	case WM_INITDIALOG:
-#ifndef NO_I18N
 		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
 		if (UTIL_get_lang_font("DLG_TAHOMA_FONT", dlg, &logfont, &DlgAboutFont, pvar)) {
@@ -2034,27 +1875,22 @@ static BOOL CALLBACK TTXAboutDlg(HWND dlg, UINT msg, WPARAM wParam,
 		else {
 			DlgAboutFont = NULL;
 		}
-#endif
 		init_about_dlg((PTInstVar) lParam, dlg);
 		return TRUE;
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
 		case IDOK:
 			EndDialog(dlg, 1);
-#ifndef NO_I18N
 			if (DlgAboutFont != NULL) {
 				DeleteObject(DlgAboutFont);
 			}
-#endif
 			return TRUE;
 		case IDCANCEL:			/* there isn't a cancel button, but other Windows
 								   UI things can send this message */
 			EndDialog(dlg, 0);
-#ifndef NO_I18N
 			if (DlgAboutFont != NULL) {
 				DeleteObject(DlgAboutFont);
 			}
-#endif
 			return TRUE;
 		}
 		break;
@@ -2067,13 +1903,9 @@ static char FAR *get_cipher_name(int cipher)
 {
 	switch (cipher) {
 	case SSH_CIPHER_NONE:
-#ifndef NO_I18N
-		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "<ciphers below this line are disabled>", _TRUNCATE);
-		UTIL_get_lang_msg("DLG_SSHSETUP_CIPHER_BORDER", pvar);
+		UTIL_get_lang_msg("DLG_SSHSETUP_CIPHER_BORDER", pvar,
+						  "<ciphers below this line are disabled>");
 		return pvar->ts->UIMsg;
-#else
-		return "<ciphers below this line are disabled>";
-#endif
 	case SSH_CIPHER_RC4:
 		return "RC4";
 	case SSH_CIPHER_3DES:
@@ -2116,68 +1948,53 @@ static void init_setup_dlg(PTInstVar pvar, HWND dlg)
 	HWND cipherControl = GetDlgItem(dlg, IDC_SSHCIPHERPREFS);
 	int i;
 	int ch;
+	char uimsg[MAX_UIMSG];
 	
-#ifndef NO_I18N
-	GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-	UTIL_get_lang_msg("DLG_SSHSETUP_TITLE", pvar);
+	GetWindowText(dlg, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_SSHSETUP_TITLE", pvar, uimsg);
 	SetWindowText(dlg, pvar->ts->UIMsg);
-
-	GetDlgItemText(dlg, IDC_COMPRESSLABEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-	UTIL_get_lang_msg("DLG_SSHSETUP_COMPRESS", pvar);
+	GetDlgItemText(dlg, IDC_COMPRESSLABEL, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_SSHSETUP_COMPRESS", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_COMPRESSLABEL, pvar->ts->UIMsg);
-
-	GetDlgItemText(dlg, IDC_COMPRESSNONE, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-	UTIL_get_lang_msg("DLG_SSHSETUP_COMPRESS_NONE", pvar);
+	GetDlgItemText(dlg, IDC_COMPRESSNONE, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_SSHSETUP_COMPRESS_NONE", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_COMPRESSNONE, pvar->ts->UIMsg);
-
-	GetDlgItemText(dlg, IDC_COMPRESSHIGH, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-	UTIL_get_lang_msg("DLG_SSHSETUP_COMPRESS_HIGHEST", pvar);
+	GetDlgItemText(dlg, IDC_COMPRESSHIGH, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_SSHSETUP_COMPRESS_HIGHEST", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_COMPRESSHIGH, pvar->ts->UIMsg);
-
-	GetDlgItemText(dlg, IDC_CIPHERORDER, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-	UTIL_get_lang_msg("DLG_SSHSETUP_CHIPER", pvar);
+	GetDlgItemText(dlg, IDC_CIPHERORDER, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_SSHSETUP_CHIPER", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_CIPHERORDER, pvar->ts->UIMsg);
-
-	GetDlgItemText(dlg, IDC_SSHMOVECIPHERUP, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-	UTIL_get_lang_msg("DLG_SSHSETUP_CHIPER_UP", pvar);
+	GetDlgItemText(dlg, IDC_SSHMOVECIPHERUP, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_SSHSETUP_CHIPER_UP", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_SSHMOVECIPHERUP, pvar->ts->UIMsg);
-
-	GetDlgItemText(dlg, IDC_SSHMOVECIPHERDOWN, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-	UTIL_get_lang_msg("DLG_SSHSETUP_CHIPER_DOWN", pvar);
+	GetDlgItemText(dlg, IDC_SSHMOVECIPHERDOWN, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_SSHSETUP_CHIPER_DOWN", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_SSHMOVECIPHERDOWN, pvar->ts->UIMsg);
-
-	GetDlgItemText(dlg, IDC_KNOWNHOSTS, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-	UTIL_get_lang_msg("DLG_SSHSETUP_KNOWNHOST", pvar);
+	GetDlgItemText(dlg, IDC_KNOWNHOSTS, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_SSHSETUP_KNOWNHOST", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_KNOWNHOSTS, pvar->ts->UIMsg);
-
-	GetDlgItemText(dlg, IDC_CHOOSEREADWRITEFILE, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-	UTIL_get_lang_msg("DLG_SSHSETUP_KNOWNHOST_RW", pvar);
+	GetDlgItemText(dlg, IDC_CHOOSEREADWRITEFILE, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_SSHSETUP_KNOWNHOST_RW", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_CHOOSEREADWRITEFILE, pvar->ts->UIMsg);
-
-	GetDlgItemText(dlg, IDC_CHOOSEREADONLYFILE, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-	UTIL_get_lang_msg("DLG_SSHSETUP_KNOWNHOST_RO", pvar);
+	GetDlgItemText(dlg, IDC_CHOOSEREADONLYFILE, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_SSHSETUP_KNOWNHOST_RO", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_CHOOSEREADONLYFILE, pvar->ts->UIMsg);
-
-	GetDlgItemText(dlg, IDC_HEARTBEATLABEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-	UTIL_get_lang_msg("DLG_SSHSETUP_HEARTBEAT", pvar);
+	GetDlgItemText(dlg, IDC_HEARTBEATLABEL, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_SSHSETUP_HEARTBEAT", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_HEARTBEATLABEL, pvar->ts->UIMsg);
-
-	GetDlgItemText(dlg, IDC_HEARTBEATLABEL2, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-	UTIL_get_lang_msg("DLG_SSHSETUP_HEARTBEAT_UNIT", pvar);
+	GetDlgItemText(dlg, IDC_HEARTBEATLABEL2, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_SSHSETUP_HEARTBEAT_UNIT", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_HEARTBEATLABEL2, pvar->ts->UIMsg);
-
-	GetDlgItemText(dlg, IDC_NOTICEBANNER, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-	UTIL_get_lang_msg("DLG_SSHSETUP_NOTICE", pvar);
+	GetDlgItemText(dlg, IDC_NOTICEBANNER, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_SSHSETUP_NOTICE", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_NOTICEBANNER, pvar->ts->UIMsg);
-
 	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "OK", _TRUNCATE);
-	UTIL_get_lang_msg("BTN_OK", pvar);
+	UTIL_get_lang_msg("BTN_OK", pvar, uimsg);
 	SetDlgItemText(dlg, IDOK, pvar->ts->UIMsg);
-
 	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Cancel", _TRUNCATE);
-	UTIL_get_lang_msg("BTN_CANCEL", pvar);
+	UTIL_get_lang_msg("BTN_CANCEL", pvar, uimsg);
 	SetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg);
-#endif
 	
 	SendMessage(compressionControl, TBM_SETRANGE, TRUE, MAKELONG(0, 9));
 	SendMessage(compressionControl, TBM_SETPOS, TRUE,
@@ -2400,21 +2217,15 @@ static int get_keys_file_name(HWND parent, char FAR * buf, int bufsize,
 	params.nMaxFile = sizeof(fullname_buf);
 	params.lpstrFileTitle = NULL;
 	params.lpstrInitialDir = NULL;
-#ifndef NO_I18N
 	if (readonly) {
-		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Choose a read-only known-hosts file to add", _TRUNCATE);
-		UTIL_get_lang_msg("MSG_OPEN_KNOWNHOSTS_RO_TITLE", pvar);
+		UTIL_get_lang_msg("MSG_OPEN_KNOWNHOSTS_RO_TITLE", pvar,
+						  "Choose a read-only known-hosts file to add");
 	}
 	else {
-		strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Choose a read/write known-hosts file", _TRUNCATE);
-		UTIL_get_lang_msg("MSG_OPEN_KNOWNHOSTS_RW_TITLE", pvar);
+		UTIL_get_lang_msg("MSG_OPEN_KNOWNHOSTS_RW_TITLE", pvar,
+						  "Choose a read/write known-hosts file");
 	}
 	params.lpstrTitle = pvar->ts->UIMsg;
-#else
-	params.lpstrTitle =
-		readonly ? "Choose a read-only known-hosts file to add" :
-		"Choose a read/write known-hosts file";
-#endif
 	params.Flags = (readonly ? OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST : 0)
 		| OFN_HIDEREADONLY | (!readonly ? OFN_NOREADONLYRETURN : 0);
 	params.lpstrDefExt = NULL;
@@ -2427,15 +2238,9 @@ static int get_keys_file_name(HWND parent, char FAR * buf, int bufsize,
 
 		if (err != 0) {
 			char buf[1024];
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Unable to display file dialog box: error %d", _TRUNCATE);
-			UTIL_get_lang_msg("MSG_OPEN_FILEDLG_KNOWNHOSTS_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_OPEN_FILEDLG_KNOWNHOSTS_ERROR", pvar,
+							  "Unable to display file dialog box: error %d");
 			_snprintf_s(buf, sizeof(buf), _TRUNCATE, pvar->ts->UIMsg, err);
-#else
-			_snprintf(buf, sizeof(buf),
-					  "Cannot show file dialog box: error %d", err);
-#endif
-			buf[sizeof(buf) - 1] = 0;
 			MessageBox(parent, buf, "TTSSH Error",
 					   MB_OK | MB_ICONEXCLAMATION);
 		}
@@ -2475,15 +2280,14 @@ static void choose_read_only_file(HWND dlg)
 static BOOL CALLBACK TTXSetupDlg(HWND dlg, UINT msg, WPARAM wParam,
 								 LPARAM lParam)
 {
-#ifndef NO_I18N
 	LOGFONT logfont;
 	HFONT font;
-#endif
+
 	switch (msg) {
 	case WM_INITDIALOG:
 		SetWindowLong(dlg, DWL_USER, lParam);
 		init_setup_dlg((PTInstVar) lParam, dlg);
-#ifndef NO_I18N
+
 		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
 		GetObject(font, sizeof(LOGFONT), &logfont);
 		if (UTIL_get_lang_font("DLG_TAHOMA_FONT", dlg, &logfont, &DlgSetupFont, pvar)) {
@@ -2509,7 +2313,7 @@ static BOOL CALLBACK TTXSetupDlg(HWND dlg, UINT msg, WPARAM wParam,
 		else {
 			DlgSetupFont = NULL;
 		}
-#endif
+
 		return TRUE;
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
@@ -2517,20 +2321,16 @@ static BOOL CALLBACK TTXSetupDlg(HWND dlg, UINT msg, WPARAM wParam,
 			complete_setup_dlg((PTInstVar) GetWindowLong(dlg, DWL_USER),
 							   dlg);
 			EndDialog(dlg, 1);
-#ifndef NO_I18N
 			if (DlgSetupFont != NULL) {
 				DeleteObject(DlgSetupFont);
 			}
-#endif
 			return TRUE;
 		case IDCANCEL:			/* there isn't a cancel button, but other Windows
 								   UI things can send this message */
 			EndDialog(dlg, 0);
-#ifndef NO_I18N
 			if (DlgSetupFont != NULL) {
 				DeleteObject(DlgSetupFont);
 			}
-#endif
 			return TRUE;
 		case IDC_SSHMOVECIPHERUP:
 			move_cur_sel_delta(GetDlgItem(dlg, IDC_SSHCIPHERPREFS), -1);
@@ -2955,46 +2755,36 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 								 LPARAM lParam)
 {
 	static enum hostkey_type key_type;
-#ifndef NO_I18N
 	char uimsg[MAX_UIMSG];
 	LOGFONT logfont;
 	HFONT font;
-#endif
 
 	switch (msg) {
 	case WM_INITDIALOG: 
 		{
-#ifndef NO_I18N
-		GetWindowText(dlg, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_KEYGEN_TITLE", pvar);
+		GetWindowText(dlg, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_KEYGEN_TITLE", pvar, uimsg);
 		SetWindowText(dlg, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_KEYTYPE, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_KEYGEN_KEYTYPE", pvar);
+		GetDlgItemText(dlg, IDC_KEYTYPE, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_KEYGEN_KEYTYPE", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_KEYTYPE, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_KEY_LABEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_KEYGEN_PASSPHRASE", pvar);
+		GetDlgItemText(dlg, IDC_KEY_LABEL, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_KEYGEN_PASSPHRASE", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_KEY_LABEL, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_CONFIRM_LABEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_KEYGEN_PASSPHRASE2", pvar);
+		GetDlgItemText(dlg, IDC_CONFIRM_LABEL, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_KEYGEN_PASSPHRASE2", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_CONFIRM_LABEL, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_SAVE_PUBLIC_KEY, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_KEYGEN_SAVEPUBLIC", pvar);
+		GetDlgItemText(dlg, IDC_SAVE_PUBLIC_KEY, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_KEYGEN_SAVEPUBLIC", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_SAVE_PUBLIC_KEY, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDC_SAVE_PRIVATE_KEY, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_KEYGEN_SAVEPRIVATE", pvar);
+		GetDlgItemText(dlg, IDC_SAVE_PRIVATE_KEY, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_KEYGEN_SAVEPRIVATE", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_SAVE_PRIVATE_KEY, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDOK, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("DLG_KEYGEN_GENERATE", pvar);
+		GetDlgItemText(dlg, IDOK, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_KEYGEN_GENERATE", pvar, uimsg);
 		SetDlgItemText(dlg, IDOK, pvar->ts->UIMsg);
-
-		GetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg));
-		UTIL_get_lang_msg("BTN_CANCEL", pvar);
+		GetDlgItemText(dlg, IDCANCEL, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("BTN_CANCEL", pvar, uimsg);
 		SetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg);
 
 		font = (HFONT)SendMessage(dlg, WM_GETFONT, 0, 0);
@@ -3016,7 +2806,6 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 		else {
 			DlgHostFont = NULL;
 		}
-#endif
 
 		// default key type
 		SendMessage(GetDlgItem(dlg, IDC_RSA_TYPE), BM_SETCHECK, BST_CHECKED, 0);
@@ -3062,11 +2851,9 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 			// don't forget to free SSH resource!
 			free_ssh_key();
 			EndDialog(dlg, 0); // dialog close
-#ifndef NO_I18N
 			if (DlgKeygenFont != NULL) {
 				DeleteObject(DlgKeygenFont);
 			}
-#endif
 			return TRUE;
 
 		// if radio button pressed...
@@ -3098,45 +2885,29 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 			ofn.lStructSize = sizeof(ofn);
 			ofn.hwndOwner = dlg;
 			if (key_type == KEY_RSA1) {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "SSH1 RSA key(identity.pub)\\0identity.pub\\0All Files(*.*)\\0*.*\\0\\0", _TRUNCATE);
-				UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_RSA1_FILTER", pvar);
+				UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_RSA1_FILTER", pvar,
+								  "SSH1 RSA key(identity.pub)\\0identity.pub\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
-#else
-				ofn.lpstrFilter = "SSH1 RSA key(identity.pub)\0identity.pub\0All Files(*.*)\0*.*\0\0";
-#endif
 				strncpy_s(filename, sizeof(filename), "identity.pub", _TRUNCATE);
 			} else if (key_type == KEY_RSA) {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "SSH2 RSA key(id_rsa.pub)\\0id_rsa.pub\\0All Files(*.*)\\0*.*\\0\\0", _TRUNCATE);
-				UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_RSA_FILTER", pvar);
+				UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_RSA_FILTER", pvar,
+								  "SSH2 RSA key(id_rsa.pub)\\0id_rsa.pub\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
-#else
-				ofn.lpstrFilter = "SSH2 RSA key(id_rsa.pub)\0id_rsa.pub\0All Files(*.*)\0*.*\0\0";
-#endif
 				strncpy_s(filename, sizeof(filename), "id_rsa.pub", _TRUNCATE);
 			} else {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "SSH2 DSA key(id_dsa.pub)\\0id_dsa.pub\\0All Files(*.*)\\0*.*\\0\\0", _TRUNCATE);
-				UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_DSA_FILTER", pvar);
+				UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_DSA_FILTER", pvar,
+								  "SSH2 DSA key(id_dsa.pub)\\0id_dsa.pub\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
-#else
-				ofn.lpstrFilter = "SSH2 DSA key(id_dsa.pub)\0id_dsa.pub\0All Files(*.*)\0*.*\0\0";
-#endif
 				strncpy_s(filename, sizeof(filename), "id_dsa.pub", _TRUNCATE);
 			}
 			ofn.lpstrFile = filename;
 			ofn.nMaxFile = sizeof(filename);
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Save public key as:", _TRUNCATE);
-			UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_TITLE", pvar);
+			UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_TITLE", pvar,
+							  "Save public key as:");
 			ofn.lpstrTitle = pvar->ts->UIMsg;
-#else
-			ofn.lpstrTitle = "Save public key as:";
-#endif
 			if (GetSaveFileName(&ofn) == 0) { // failure
 				ret = CommDlgExtendedError();
 				break;
@@ -3147,16 +2918,11 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 			// saving public key file
 			fp = fopen(filename, "wb");
 			if (fp == NULL) {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Can't open key file", _TRUNCATE);
-				UTIL_get_lang_msg("MSG_SAVE_KEY_OPENFILE_ERROR", pvar);
+				UTIL_get_lang_msg("MSG_SAVE_KEY_OPENFILE_ERROR", pvar,
+								  "Can't open key file");
 				strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "ERROR", _TRUNCATE);
-				UTIL_get_lang_msg("MSG_ERROR", pvar);
+				UTIL_get_lang_msg("MSG_ERROR", pvar, "ERROR");
 				MessageBox(dlg, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
-#else
-				MessageBox(dlg, "Can't open key file", "ERROR", MB_OK | MB_ICONEXCLAMATION);
-#endif
 				break;
 			}
 
@@ -3245,31 +3011,21 @@ public_error:
 
 			// check matching
 			if (strcmp(buf, buf_conf) != 0) {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Two passphrases don't match.", _TRUNCATE);
-				UTIL_get_lang_msg("MSG_SAVE_PRIVATE_KEY_MISMATCH_ERROR", pvar);
+				UTIL_get_lang_msg("MSG_SAVE_PRIVATE_KEY_MISMATCH_ERROR", pvar,
+								  "Two passphrases don't match.");
 				strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "ERROR", _TRUNCATE);
-				UTIL_get_lang_msg("MSG_ERROR", pvar);
+				UTIL_get_lang_msg("MSG_ERROR", pvar, "ERROR");
 				MessageBox(dlg, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
-#else
-				MessageBox(dlg, "Two passphrases don't match.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
-#endif
 				break;
 			}
 
 			// check empty-passphrase (this is warning level)
 			if (buf[0] == '\0') {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Are you sure that you want to use a empty passphrase?", _TRUNCATE);
-				UTIL_get_lang_msg("MSG_SAVE_PRIVATEKEY_EMPTY_WARN", pvar);
+				UTIL_get_lang_msg("MSG_SAVE_PRIVATEKEY_EMPTY_WARN", pvar,
+								  "Are you sure that you want to use a empty passphrase?");
 				strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "WARNING", _TRUNCATE);
-				UTIL_get_lang_msg("MSG_WARNING", pvar);
+				UTIL_get_lang_msg("MSG_WARNING", pvar, "WARNING");
 				ret = MessageBox(dlg, uimsg, pvar->ts->UIMsg, MB_YESNO | MB_ICONWARNING);
-#else
-				ret = MessageBox(dlg, "Are you sure that you want to use a empty passphrase?", "WARNING", MB_YESNO | MB_ICONWARNING);
-#endif
 				if (ret == IDNO)
 					break;
 			}
@@ -3281,45 +3037,29 @@ public_error:
 			ofn.lStructSize = sizeof(ofn);
 			ofn.hwndOwner = dlg;
 			if (key_type == KEY_RSA1) {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "SSH1 RSA key(identity)\\0identity\\0All Files(*.*)\\0*.*\\0\\0", _TRUNCATE);
-				UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_RSA1_FILTER", pvar);
+				UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_RSA1_FILTER", pvar,
+								  "SSH1 RSA key(identity)\\0identity\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
-#else
-				ofn.lpstrFilter = "SSH1 RSA key(identity)\0identity\0All Files(*.*)\0*.*\0\0";
-#endif
 				strncpy_s(filename, sizeof(filename), "identity", _TRUNCATE);
 			} else if (key_type == KEY_RSA) {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "SSH2 RSA key(id_rsa)\\0id_rsa\\0All Files(*.*)\\0*.*\\0\\0", _TRUNCATE);
-				UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_RSA_FILTER", pvar);
+				UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_RSA_FILTER", pvar,
+								  "SSH2 RSA key(id_rsa)\\0id_rsa\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
-#else
-				ofn.lpstrFilter = "SSH2 RSA key(id_rsa)\0id_rsa\0All Files(*.*)\0*.*\0\0";
-#endif
 				strncpy_s(filename, sizeof(filename), "id_rsa", _TRUNCATE);
 			} else {
-#ifndef NO_I18N
-				strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "SSH2 DSA key(id_dsa)\\0id_dsa\\0All Files(*.*)\\0*.*\\0\\0", _TRUNCATE);
-				UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_DSA_FILTER", pvar);
+				UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_DSA_FILTER", pvar,
+								  "SSH2 DSA key(id_dsa)\\0id_dsa\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
-#else
-				ofn.lpstrFilter = "SSH2 DSA key(id_dsa)\0id_dsa\0All Files(*.*)\0*.*\0\0";
-#endif
 				strncpy_s(filename, sizeof(filename), "id_dsa", _TRUNCATE);
 			}
 			ofn.lpstrFile = filename;
 			ofn.nMaxFile = sizeof(filename);
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Save private key as:", _TRUNCATE);
-			UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_TITLE", pvar);
+			UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_TITLE", pvar,
+							  "Save private key as:");
 			ofn.lpstrTitle = pvar->ts->UIMsg;
-#else
-			ofn.lpstrTitle = "Save private key as:";
-#endif
 			if (GetSaveFileName(&ofn) == 0) { // failure
 				ret = CommDlgExtendedError();
 				break;
@@ -3428,16 +3168,11 @@ public_error:
 				// saving private key file (binary mode)
 				fp = fopen(filename, "wb");
 				if (fp == NULL) {
-#ifndef NO_I18N
-					strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Can't open key file", _TRUNCATE);
-					UTIL_get_lang_msg("MSG_SAVE_KEY_OPENFILE_ERROR", pvar);
+					UTIL_get_lang_msg("MSG_SAVE_KEY_OPENFILE_ERROR", pvar,
+									  "Can't open key file");
 					strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
-					strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "ERROR", _TRUNCATE);
-					UTIL_get_lang_msg("MSG_ERROR", pvar);
+					UTIL_get_lang_msg("MSG_ERROR", pvar, "ERROR");
 					MessageBox(dlg, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
-#else
-					MessageBox(dlg, "Can't open key file", "ERROR", MB_OK | MB_ICONEXCLAMATION);
-#endif
 					break;
 				}
 				fwrite(buffer_ptr(enc), buffer_len(enc), 1, fp);
@@ -3463,16 +3198,11 @@ error:;
 
 				fp = fopen(filename, "w");
 				if (fp == NULL) {
-#ifndef NO_I18N
-					strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Can't open key file", _TRUNCATE);
-					UTIL_get_lang_msg("MSG_SAVE_KEY_OPENFILE_ERROR", pvar);
+					UTIL_get_lang_msg("MSG_SAVE_KEY_OPENFILE_ERROR", pvar,
+									  "Can't open key file");
 					strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
-					strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "ERROR", _TRUNCATE);
-					UTIL_get_lang_msg("MSG_ERROR", pvar);
+					UTIL_get_lang_msg("MSG_ERROR", pvar, "ERROR");
 					MessageBox(dlg, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
-#else
-					MessageBox(dlg, "Can't open key file", "ERROR", MB_OK | MB_ICONEXCLAMATION);
-#endif
 					break;
 				}
 
@@ -3482,16 +3212,11 @@ error:;
 					ret = PEM_write_DSAPrivateKey(fp, private_key.dsa, cipher, buf, len, NULL, NULL);
 				}
 				if (ret == 0) {
-#ifndef NO_I18N
-					strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Can't open key file", _TRUNCATE);
-					UTIL_get_lang_msg("MSG_SAVE_KEY_WRITEFILE_ERROR", pvar);
+					UTIL_get_lang_msg("MSG_SAVE_KEY_WRITEFILE_ERROR", pvar,
+									  "Can't open key file");
 					strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
-					strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "ERROR", _TRUNCATE);
-					UTIL_get_lang_msg("MSG_ERROR", pvar);
+					UTIL_get_lang_msg("MSG_ERROR", pvar, "ERROR");
 					MessageBox(dlg, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
-#else
-					MessageBox(dlg, "Can't write key file", "ERROR", MB_OK | MB_ICONEXCLAMATION);
-#endif
 				}
 				fclose(fp);
 			}
@@ -3510,9 +3235,8 @@ error:;
 
 static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 {
-#ifndef NO_I18N
 	char uimsg[MAX_UIMSG];
-#endif
+
 	GET_VAR();
 
 	if (pvar->fatal_error) {
@@ -3523,17 +3247,11 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 	case ID_SSHKEYGENMENU: 
 		if (DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SSHKEYGEN), hWin, TTXKeyGenerator,
 			(LPARAM) pvar) == -1) {
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Unable to display Key Generator dialog box.", _TRUNCATE);
-			UTIL_get_lang_msg("MSG_CREATEWINDOW_KEYGEN_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_CREATEWINDOW_KEYGEN_ERROR", pvar,
+							  "Unable to display Key Generator dialog box.");
 			strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "TTSSH Error", _TRUNCATE);
-			UTIL_get_lang_msg("MSG_TTSSH_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_TTSSH_ERROR", pvar, "TTSSH Error");
 			MessageBox(hWin, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
-#else
-			MessageBox(hWin, "Cannot create Key Generator window.",
-				"TTSSH Error", MB_OK | MB_ICONEXCLAMATION);
-#endif
 		}
 		return 1;
 
@@ -3542,17 +3260,11 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 			(hInst, MAKEINTRESOURCE(IDD_ABOUTDIALOG), hWin, TTXAboutDlg,
 			 (LPARAM) pvar)
 			== -1) {
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Unable to display About dialog box.", _TRUNCATE);
-			UTIL_get_lang_msg("MSG_CREATEWINDOW_ABOUT_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_CREATEWINDOW_ABOUT_ERROR", pvar,
+							  "Unable to display About dialog box.");
 			strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "TTSSH Error", _TRUNCATE);
-			UTIL_get_lang_msg("MSG_TTSSH_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_TTSSH_ERROR", pvar, "TTSSH Error");
 			MessageBox(hWin, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
-#else
-			MessageBox(hWin, "Cannot create About box window.",
-					   "TTSSH Error", MB_OK | MB_ICONEXCLAMATION);
-#endif
 		}
 		return 1;
 	case ID_SSHAUTH:
@@ -3563,17 +3275,11 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 			(hInst, MAKEINTRESOURCE(IDD_SSHSETUP), hWin, TTXSetupDlg,
 			 (LPARAM) pvar)
 			== -1) {
-#ifndef NO_I18N
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Unable to display TTSSH Setup dialog box.", _TRUNCATE);
-			UTIL_get_lang_msg("MSG_CREATEWINDOW_SETUP_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_CREATEWINDOW_SETUP_ERROR", pvar,
+							  "Unable to display TTSSH Setup dialog box.");
 			strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
-			strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "TTSSH Error", _TRUNCATE);
-			UTIL_get_lang_msg("MSG_TTSSH_ERROR", pvar);
+			UTIL_get_lang_msg("MSG_TTSSH_ERROR", pvar, "TTSSH Error");
 			MessageBox(hWin, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
-#else
-			MessageBox(hWin, "Cannot create TTSSH Setup window.",
-					   "TTSSH Error", MB_OK | MB_ICONEXCLAMATION);
-#endif
 		}
 		return 1;
 	case ID_SSHAUTHSETUPMENU:
@@ -3888,6 +3594,9 @@ int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.65  2007/08/08 16:04:09  maya
+ * 安全な関数を使用するように変更した。
+ *
  * Revision 1.64  2007/07/23 14:23:36  maya
  * シリアル接続のCOM最大ポートを200まで拡張した。
  *
