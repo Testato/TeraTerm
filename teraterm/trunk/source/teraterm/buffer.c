@@ -330,7 +330,7 @@ void BuffAllSelect()
 //	SelectEnd.y = BuffEnd - 1;
 }
 
-void BuffDisplayedSelect()
+void BuffScreenSelect()
 {
 	int X, Y;
 	DispConvWinToScreen(0, 0, &X, &Y, NULL);
@@ -2613,6 +2613,11 @@ void SetLineContinued()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  2007/08/09 17:52:27  doda
+ * "全て選択"の動作を修正。
+ *   - 最下行の行末が一文字分選択されなかったのを修正。
+ *   - 最終行の後ろの改行も含めて選択されるように変更。
+ *
  * Revision 1.15  2007/08/09 09:16:57  doda
  * “表示画面を選択”を追加。
  *

@@ -141,7 +141,7 @@ protected:
 	afx_msg void OnEditPasteCR();
 	afx_msg void OnEditClearScreen();
 	afx_msg void OnEditClearBuffer();
-	afx_msg void OnSelectDisplayedBuffer();
+	afx_msg void OnSelectScreenBuffer();
 	afx_msg void OnSelectAllBuffer();
 	afx_msg void OnSetupTerminal();
 	afx_msg void OnSetupWindow();

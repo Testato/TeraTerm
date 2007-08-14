@@ -181,7 +181,7 @@
 #define ID_CONTROL_BROADCASTCOMMAND     52017
 #define ID_FILE_VIEWLOG                 52018
 #define ID_FILE_REPLAYLOG               52019
-#define ID_EDIT_SELECTDISPLAYED         52020
+#define ID_EDIT_SELECTSCREEN            52020
 
 // Next default values for new objects
 // 

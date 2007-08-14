@@ -193,7 +193,7 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_COMMAND(ID_EDIT_CLEARSCREEN, OnEditClearScreen)
 	ON_COMMAND(ID_EDIT_CLEARBUFFER, OnEditClearBuffer)
 	ON_COMMAND(ID_EDIT_SELECTALL, OnSelectAllBuffer)
-	ON_COMMAND(ID_EDIT_SELECTDISPLAYED, OnSelectDisplayedBuffer)
+	ON_COMMAND(ID_EDIT_SELECTSCREEN, OnSelectScreenBuffer)
 	ON_COMMAND(ID_SETUP_ADDITIONALSETTINGS, OnExternalSetup)
 	ON_COMMAND(ID_SETUP_TERMINAL, OnSetupTerminal)
 	ON_COMMAND(ID_SETUP_WINDOW, OnSetupWindow)
@@ -847,9 +847,9 @@ void CVTWindow::InitMenu(HMENU *Menu)
   GetMenuString(EditMenu, ID_EDIT_CLEARBUFFER, uimsg, sizeof(uimsg), MF_BYCOMMAND);
   get_lang_msg("MENU_EDIT_CLBUFFER", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_EDIT_CLEARBUFFER, MF_BYCOMMAND, ID_EDIT_CLEARBUFFER, ts.UIMsg);
-  GetMenuString(EditMenu, ID_EDIT_SELECTDISPLAYED, uimsg, sizeof(uimsg), MF_BYCOMMAND);
-  get_lang_msg("MENU_EDIT_SELECTDISPLAYED", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-  ModifyMenu(EditMenu, ID_EDIT_SELECTDISPLAYED, MF_BYCOMMAND, ID_EDIT_SELECTDISPLAYED, ts.UIMsg);
+  GetMenuString(EditMenu, ID_EDIT_SELECTSCREEN, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+  get_lang_msg("MENU_EDIT_SELECTSCREEN", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+  ModifyMenu(EditMenu, ID_EDIT_SELECTSCREEN, MF_BYCOMMAND, ID_EDIT_SELECTSCREEN, ts.UIMsg);
   GetMenuString(EditMenu, ID_EDIT_SELECTALL, uimsg, sizeof(uimsg), MF_BYCOMMAND);
   get_lang_msg("MENU_EDIT_SELECTALL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   ModifyMenu(EditMenu, ID_EDIT_SELECTALL, MF_BYCOMMAND, ID_EDIT_SELECTALL, ts.UIMsg);
@@ -3069,7 +3069,7 @@ void CVTWindow::OnEditClearBuffer()
 
 void CVTWindow::OnSelectAllBuffer()
 {
-	// バッファの全選択
+	// Select all of buffer
 	POINT p = {0, 0};
 
 	ButtonDown(p, IdLeftButton);
@@ -3078,13 +3078,13 @@ void CVTWindow::OnSelectAllBuffer()
 	ChangeSelectRegion();
 }
 
-void CVTWindow::OnSelectDisplayedBuffer()
+void CVTWindow::OnSelectScreenBuffer()
 {
-	// Select Displayed Buffer
+	// Select screen buffer
 	POINT p = {0, 0};
 
 	ButtonDown(p, IdLeftButton);
-	BuffDisplayedSelect();
+	BuffScreenSelect();
 	ButtonUp(FALSE);
 	ChangeSelectRegion();
 }
@@ -4849,6 +4849,9 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.78  2007/08/14 09:36:11  maya
+ * ウインドウのサイズ変更ができないことがある問題を修正した。
+ *
  * Revision 1.77  2007/08/13 22:26:08  maya
  * 国際化関数を修正した。
  * NO_I18N マクロを削除した。
