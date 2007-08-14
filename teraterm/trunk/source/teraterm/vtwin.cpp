@@ -2171,7 +2171,7 @@ LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
 // TTXKanjiMenu のために、メニューが表示されていても
 // 再描画するようにした。 (2007.7.14 maya)
 //  if (Show != (MainMenu!=NULL))
-//  {
+  {
     if (! Show)
     {
       if (WinMenu!=NULL)
@@ -2183,10 +2183,12 @@ LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
     else
       InitMenu(&MainMenu);
 
-    AdjustSize = TRUE;
     ::SetMenu(HVTWin, MainMenu);
     ::DrawMenuBar(HVTWin);
-//  }
+  }
+
+  if (Show != (MainMenu!=NULL))
+    AdjustSize = TRUE;
 
   B1 = ((ts.MenuFlag & MF_SHOWWINMENU)!=0);
   B2 = (WinMenu!=NULL);
@@ -4847,6 +4849,10 @@ void CVTWindow::OnHelpAbout()
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.77  2007/08/13 22:26:08  maya
+ * 国際化関数を修正した。
+ * NO_I18N マクロを削除した。
+ *
  * Revision 1.76  2007/08/13 22:18:20  maya
  * COM100 以上が扱えない問題を修正した。
  *
