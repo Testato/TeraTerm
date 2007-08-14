@@ -936,7 +936,8 @@ BOOL ConnectHost(HWND hWnd, UINT idItem, char *szJobName)
 	::lstrcpy(szName, (szJobName == NULL) ? g_MenuData.szName[idItem - ID_MENU_MIN] : szJobName);
 
 	if (RegLoadLoginHostInformation(szName, &jobInfo) == FALSE) {
-		ErrorMessage(hWnd, "レジストリからのデータ読み出しに失敗しました。\r\n");
+		//ErrorMessage(hWnd, "レジストリからのデータ読み出しに失敗しました。\r\n");
+		ErrorMessage(hWnd, "Couldn't read the registory data.\r\n");
 		return FALSE;
 	}
 
@@ -1444,7 +1445,8 @@ BOOL LoadLoginHostInformation(HWND hWnd)
 	::SendDlgItemMessage(hWnd, LIST_HOST, LB_GETTEXT, (WPARAM) index, (LPARAM) (LPCTSTR) szName);
 
 	if (RegLoadLoginHostInformation(szName, &g_JobInfo) == FALSE) {
-		ErrorMessage(hWnd, "レジストリのオープンに失敗しました。\r\n");
+		//ErrorMessage(hWnd, "レジストリを開けませんでした。\r\n");
+		ErrorMessage(hWnd, "Couldn't open the registory.\r\n");
 		return FALSE;
 	}
 
@@ -1545,13 +1547,15 @@ BOOL DeleteLoginHostInformation(HWND hWnd)
 	}
 
 	if (::SendDlgItemMessage(hWnd, LIST_HOST, LB_GETTEXT, (WPARAM) index, (LPARAM) (LPCTSTR) szEntryName) == LB_ERR) {
-		::MessageBox(hWnd, "削除する登録の取得に失敗しました。", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
+		//::MessageBox(hWnd, "削除する登録の取得に失敗しました。", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
+		::MessageBox(hWnd, "Couldn't get the deleting entry", "TeraTerm Menu", MB_ICONSTOP | MB_OK);
 		return FALSE;
 	}
 
 	::wsprintf(szSubKey, "%s\\%s", TTERM_KEY, szEntryName);
 	if (::RegDeleteKey(HKEY_CURRENT_USER, szSubKey) != ERROR_SUCCESS) {
-		ErrorMessage(hWnd, "レジストリの削除に失敗しました。\r\n");
+//		ErrorMessage(hWnd, "レジストリの削除に失敗しました。\r\n");
+		ErrorMessage(hWnd, "Couldn't delete the registory.\r\n");
 		return FALSE;
 	}
 
@@ -2157,7 +2161,8 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR nCmdLine, int nCmdShow)
 
 	if (::FindWindow(TTPMENU_CLASS, NULL) == NULL) {
 		if (::RegisterClass(&winClass) == 0) {
-			ErrorMessage(NULL, "ウインドウクラスの登録に失敗しました。\r\n");
+			//ErrorMessage(NULL, "ウインドウクラスの登録に失敗しました。\r\n");
+			ErrorMessage(NULL, "Couldn't register the window class.\r\n");
 			return FALSE;
 		}
 	}
@@ -2187,6 +2192,9 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR nCmdLine, int nCmdShow)
 
 /*
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2007/03/17 03:42:19  maya
+ * ダイアログにおいて、バージョン情報を取得するように変更した。
+ *
  * Revision 1.9  2007/03/10 00:59:32  maya
  * Windows Vista でカーソル位置を正しく取得できないのを修正。
  *
