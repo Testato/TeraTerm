@@ -259,58 +259,6 @@ BOOL OpenFileDlg(HWND hWnd, UINT editCtl, TCHAR *title, TCHAR *filter, TCHAR *de
 }
 
 /* ==========================================================================
-	Function Name	: (BOOL) BrowseForFolder()
-	Outline			: フォルダを参照するダイアログを開く。
-	Arguments		: HWND		hWnd		(in)		親ウインドウのハンドル
-					: char		*szTitle	(in)		ウインドウタイトル
-					: char		*szPath		(in/out)	パス
-	Return Value	: 成功 TRUE
-					: 失敗 FALSE
-	Reference		: 
-	Renewal			: 
-	Notes			: 
-	Attention		: 
-	Up Date			: 
-   ======1=========2=========3=========4=========5=========6=========7======= */
-BOOL BrowseForFolder(HWND hWnd, TCHAR *szTitle, TCHAR *szPath)
-{
-	BOOL			bRet = TRUE;
-	LPMALLOC		pMalloc;
-	BROWSEINFO		bi;
-	LPCITEMIDLIST	itemDList;
-
-	bi.pszDisplayName	= (TCHAR *) malloc(MAX_PATH);
-	bi.lpszTitle		= (TCHAR *) malloc(MAX_PATH);
-
-	bi.hwndOwner	= NULL;
-	bi.pidlRoot		= NULL;
-	::lstrcpy((TCHAR *) bi.lpszTitle, szTitle);
-	bi.ulFlags		= 0;
-	bi.lpfn			= BrowseCallbackProc;
-	bi.lParam		= (LPARAM) szPath;
-	bi.iImage		= NULL;
-
-	if ((itemDList = ::SHBrowseForFolder(&bi)) == NULL) {
-		bRet = FALSE;	
-		goto END;
-	}
-
-	if (::SHGetPathFromIDList(itemDList, szPath) == FALSE) {
-		bRet = FALSE;
-		::MessageBox(hWnd, _T("指定されたパスは無効です。"), szTitle, MB_ICONSTOP | MB_OK);
-		goto END;
-	}
-
-END:
-	if (SUCCEEDED(::SHGetMalloc(&pMalloc)))
-		pMalloc->Free((void *) itemDList);
-	free(bi.pszDisplayName);
-	free((void *) bi.lpszTitle);
-
-	return bRet;
-}
-
-/* ==========================================================================
 	Function Name	: (int CALLBACK) BrowseCallbackProc()
 	Outline			: BrowseForFolder()のコールバック関数。
 	Arguments		: HWND		hWnd		(in)	親ウインドウのハンドル
