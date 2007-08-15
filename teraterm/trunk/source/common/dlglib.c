@@ -140,12 +140,3 @@ LONG GetCurSel(HWND HDlg, int Id_Item)
 
   return n;
 }
-
-/*
- * $Log: not supported by cvs2svn $
- * Revision 1.2  2005/03/18 13:51:53  yutakakn
- * 20MB以上のファイルをアップロードしようとすると、buffer overflowで
- * 落ちる問題への対処。(2005.3.18 yutaka)
- * cf. http://sourceforge.jp/tracker/index.php?func=detail&aid=5713&group_id=1412&atid=5333
- *
- */

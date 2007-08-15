@@ -911,38 +911,3 @@ void RunMacro(PCHAR FName, BOOL Startup)
 	}
 #endif
 }
-
-/*
- * $Log: not supported by cvs2svn $
- * Revision 1.10  2006/11/06 14:44:29  yutakapon
- * マクロ通信において、XTYP_POKEメッセージにおけるビジー処理を行うようにした。
- *
- * Revision 1.9  2006/11/05 17:07:49  yutakapon
- * コメントおよびデバッグ用コードの追加。
- *
- * Revision 1.8  2006/11/05 16:06:10  yutakapon
- * XTYP_POKE処理でbreak文が抜けていたので追加した。
- *
- * Revision 1.7  2006/09/14 17:01:09  maya
- * ComAutoConnect セクションを削除した。
- * /M コマンドラインパラメータが指定されている場合、TeraTerm 起動時に自動的にシリアルポートへ接続しないようにした。
- *
- * Revision 1.6  2006/08/28 12:27:16  maya
- * デフォルトのログファイル名を指定できるようにした。
- *   エディットコントロールを "Additional settings" ダイアログに追加した。
- *   teraterm.ini ファイルに LogDefaultName エントリを追加した。
- *   ファイル名に strftime のフォーマットを使えるようにした。
- *
- * Revision 1.5  2005/08/14 12:41:04  yutakakn
- * ログ採取中には ttpmacro.exe のプロセス優先度を下げないようにした。
- *
- * Revision 1.4  2005/05/23 14:48:57  yutakakn
- * ttpmacro.exeのプロセス優先度を下げないようにした。
- *
- * Revision 1.3  2005/05/15 09:23:19  yutakakn
- * 暫定処置として ttermpro.exe のプロセス優先度は常に下げることにした。
- *
- * Revision 1.2  2004/11/28 13:57:30  yutakakn
- * TeraTerm本体からのマクロ実行において、ログ採取時のみにプロセス優先度を下げるようにした。
- *
- */

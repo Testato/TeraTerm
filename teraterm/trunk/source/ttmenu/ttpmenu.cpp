@@ -2189,38 +2189,3 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR nCmdLine, int nCmdShow)
 
 	return TRUE;
 }
-
-/*
- * $Log: not supported by cvs2svn $
- * Revision 1.10  2007/03/17 03:42:19  maya
- * ダイアログにおいて、バージョン情報を取得するように変更した。
- *
- * Revision 1.9  2007/03/10 00:59:32  maya
- * Windows Vista でカーソル位置を正しく取得できないのを修正。
- *
- * Revision 1.8  2006/08/12 06:31:07  maya
- * アプリケーションが起動中の場合にインストーラで警告を出すため、mutex を作るようにした。
- *
- * Revision 1.7  2005/10/12 15:35:47  yutakakn
- * マルチモニタ環境において、ポップアップメニューの座標計算が間違っていたバグを修正した。
- *
- * Revision 1.6  2005/01/28 13:58:28  yutakakn
- *  SSH自動ログインにおいて、秘密鍵の指定をできるようにした。
- *
- * Revision 1.5  2005/01/25 14:06:06  yutakakn
- * SSH自動ログインにおいて、ユーザパラメータを指定できるようにした。
- * また、マクロの指定を削除した。
- * デフォルトオプションに漢字コード(/KT, /KR)を追加した。
- *
- * Revision 1.4  2004/12/14 13:23:40  yutakakn
- * ttermpro.exe の初期フォルダパスをカレントに変更。
- * 'use TTSSH' -> 'use SSH'へリネーム。
- *
- * Revision 1.3  2004/12/03 13:35:41  yutakakn
- * SSH2自動ログインをサポートした
- * ただし、現在はpassword認証のみ。
- *
- * Revision 1.2  2004/12/02 14:01:27  yutakakn
- * メニュー文字列の英語化
- *
- */
