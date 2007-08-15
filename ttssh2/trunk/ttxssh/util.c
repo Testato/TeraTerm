@@ -240,19 +240,3 @@ int UTIL_get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PTIns
 
 	return TRUE;
 }
-
-/*
- * $Log: not supported by cvs2svn $
- * Revision 1.5  2007/08/08 16:04:09  maya
- * 安全な関数を使用するように変更した。
- *
- * Revision 1.4  2007/06/06 14:10:12  maya
- * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
- *
- * Revision 1.3  2006/11/23 02:19:30  maya
- * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
- *
- * Revision 1.2  2004/12/19 15:39:58  yutakakn
- * CVS LogIDの追加
- *
- */

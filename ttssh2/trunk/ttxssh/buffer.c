@@ -357,25 +357,3 @@ int buffer_decompress(z_stream *zstream, char *payload, int len, buffer_t *compb
 
 	return 0; // success
 }
-
-/*
- * $Log: not supported by cvs2svn $
- * Revision 1.7  2005/07/09 17:08:47  yutakakn
- * SSH2 packet compressionをサポートした。
- *
- * Revision 1.6  2005/07/02 12:46:41  yutakakn
- * buffer_append()において4KB以上のバッファの再アロケート処理を追加した。
- *
- * Revision 1.5  2005/07/02 08:43:32  yutakakn
- * SSH2_MSG_CHANNEL_OPEN_FAILURE ハンドラを追加した。
- *
- * Revision 1.4  2005/06/26 14:26:24  yutakakn
- * update: SSH2 port-forwarding (remote to local)
- *
- * Revision 1.3  2005/04/23 17:26:57  yutakakn
- * キー作成ダイアログの追加。
- *
- * Revision 1.2  2004/12/19 15:37:37  yutakakn
- * CVS LogIDの追加
- *
- */

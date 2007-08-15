@@ -1288,31 +1288,3 @@ void FWDUI_do_forwarding_dialog(PTInstVar pvar)
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 	}
 }
-
-/*
- * $Log: not supported by cvs2svn $
- * Revision 1.9  2007/08/08 16:04:08  maya
- * 安全な関数を使用するように変更した。
- *
- * Revision 1.8  2007/06/06 14:10:12  maya
- * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
- *
- * Revision 1.7  2007/01/04 08:36:42  maya
- * フォントを変更する部分を追加した。
- *
- * Revision 1.6  2006/12/06 14:31:13  maya
- * 表示メッセージの読み込み対応
- *
- * Revision 1.5  2006/12/06 14:25:40  maya
- * 表示メッセージの読み込み対応
- *
- * Revision 1.4  2006/11/29 16:58:52  maya
- * 表示メッセージの読み込み対応
- *
- * Revision 1.3  2006/11/23 02:19:30  maya
- * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
- *
- * Revision 1.2  2004/12/19 15:39:26  yutakakn
- * CVS LogIDの追加
- *
- */

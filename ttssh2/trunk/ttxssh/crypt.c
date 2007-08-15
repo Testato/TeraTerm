@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.10 2007-08-13 22:30:03 maya Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.11 2007-08-15 04:03:26 maya Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -1440,28 +1440,3 @@ void CRYPT_free_key_pair(CRYPTKeyPair FAR * key_pair)
 
 	free(key_pair);
 }
-
-/*
- * $Log: not supported by cvs2svn $
- * Revision 1.9  2007/08/08 16:04:08  maya
- * 安全な関数を使用するように変更した。
- *
- * Revision 1.8  2007/06/06 14:10:12  maya
- * プリプロセッサにより構造体が変わってしまうので、INET6 と I18N の #define を逆転させた。
- *
- * Revision 1.7  2007/01/22 13:45:19  maya
- * 表示メッセージの読み込み対応
- *
- * Revision 1.6  2006/11/23 02:19:30  maya
- * 表示メッセージを言語ファイルから読み込みむコードの作成を開始した。
- *
- * Revision 1.5  2006/03/26 17:07:17  yutakakn
- * fingerprint表示を追加
- *
- * Revision 1.4  2005/07/09 05:16:06  yutakakn
- * OpenSSL 0.9.8でビルドできるようにした。
- *
- * Revision 1.3  2004/12/22 17:28:14  yutakakn
- * SSH2公開鍵認証(RSA/DSA)をサポートした。
- *
- */
