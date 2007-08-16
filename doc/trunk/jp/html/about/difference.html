@@ -55,6 +55,102 @@ UTF-8 TeraTerm Pro with TTSSH2とTeraTerm 2.3との機能差分について以下に示します。
 	<td><IMG SRC="../image/ttsecure_new.png" ALT="TeraTerm" WIDTH="32" HEIGHT="32">[*4]</td>
 </tr>
 
+<tr>
+	<td>最大COMポート</td>
+	<td>16</td>
+	<td>200</td>
+</tr>
+
+<tr>
+	<td>シリアルボーレート</td>
+	<td>110～115200</td>
+	<td>110～921600</td>
+</tr>
+
+<tr>
+	<td>プラグイン組み込み</td>
+	<td>環境変数"TERATERM_EXTENSIONS"の設定が必要</td>
+	<td>設定不要</td>
+</tr>
+
+<tr>
+	<td>TTSSH</td>
+	<td>SSH 1.5</td>
+	<td>SSH 1.5 and 2</td>
+</tr>
+
+<tr>
+	<td>日本語文字コード</td>
+	<td>EUC-JP/Shift_JIS/JIS</td>
+	<td>EUC-JP/Shift_JIS/JIS/UTF-8/UTF-8 MAC</td>
+</tr>
+
+<tr>
+	<td>Unicode</td>
+	<td>未サポート</td>
+	<td>単一言語サポート[*5]</td>
+</tr>
+
+<tr>
+	<td>IPv6</td>
+	<td>No</td>
+	<td>Yes</td>
+</tr>
+
+<tr>
+	<td>半透明ウィンドウ</td>
+	<td>No</td>
+	<td>Yes</td>
+</tr>
+
+<tr>
+	<td>ハートビート[*6]</td>
+	<td>No</td>
+	<td>telnet, SSH1 and 2</td>
+</tr>
+
+<tr>
+	<td>ウィンドウの最大化</td>
+	<td>No</td>
+	<td>Yes</td>
+</tr>
+
+<tr>
+	<td>スクロールロックキー</td>
+	<td>No</td>
+	<td>Yes</td>
+</tr>
+
+<tr>
+	<td>右クリックの禁止</td>
+	<td>No</td>
+	<td>Yes</td>
+</tr>
+
+<tr>
+	<td>オンラインヘルプ</td>
+	<td>WinHelp</td>
+	<td>HtmlHelp</td>
+</tr>
+
+<tr>
+	<td>クリッカブルURL</td>
+	<td>No</td>
+	<td>Yes</td>
+</tr>
+
+<tr>
+	<td>ホイールマウス</td>
+	<td>No</td>
+	<td>Yes</td>
+</tr>
+
+<tr>
+	<td>国際化対応</td>
+	<td>No</td>
+	<td>Yes[*7]</td>
+</tr>
+
 </table>
 
 <p></p>
@@ -64,6 +160,9 @@ UTF-8 TeraTerm Pro with TTSSH2とTeraTerm 2.3との機能差分について以下に示します。
   <li>[*2] 改造版 Tera Term を不特定多数の人に配布する場合には作者（寺西高氏）の許可が必要。ただし、プラグインは除く。いかなる場合においても金銭的利益を得るためにTeraTermを配布するには作者（寺西高氏）の許可が必要。
   <li>[*3] <a href="http://www.opensource.org/licenses/bsd-license.php">修正BSDライセンス</a>に準拠する。
   <li>[*4] アイコンの制作は坂本龍彦氏による。
+  <li>[*5] 内部でUnicode(UCS-2)とMBCSとの相互変換を行っているため、多言語同時表示は不可。すなわち、日本語版Windows上で日本語以外の言語を表示することはできない。ロケール設定により、中国語版Windows上でUTF-8による中国語を扱うことは可能。
+  <li>[*6] NAT環境において一定時間通信がないと、ルータが通信経路テーブルをクリアしてしまうために、SSHセッションが切断されてしまうという現象に対して、ハートビート機能により現象を回避することができる。
+  <li>[*7] 言語ファイル(lang\*.lng)によりメニューやメッセージの表示言語を切り替えることができる。切り替えの有効化にはTeraTermの再起動が必要。
 </ul>
 
 <hr>
