@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-int PASCAL DetectComPorts(char *ComPortTable, int ComPortMax);
+int PASCAL DetectComPorts(char *ComPortTable, int ComPortMax, char **ComPortDesc);
 void PASCAL CopyShmemToTTSet(PTTSet ts);
 void PASCAL CopyTTSetToShmem(PTTSet ts);
 BOOL FAR PASCAL StartTeraTerm(PTTSet ts);

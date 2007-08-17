@@ -1007,8 +1007,9 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
   PTTSet ts;
   int i, w;
-  char Temp[7];
+  char Temp[128];
   char ComPortTable[MAXCOMPORT];
+  static char *ComPortDesc[MAXCOMPORT];
   int comports;
   char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
   LOGFONT logfont;
@@ -1090,15 +1091,17 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       strncpy_s(Temp, sizeof(Temp),"COM", _TRUNCATE);
       w = 0;
 
-      if ((comports = DetectComPorts(ComPortTable, ts->MaxComPort)) > 0) {
-	  for (i=0; i<comports; i++) {
-	      uint2str(ComPortTable[i], &Temp[3], sizeof(Temp)-3, 3);
-	      SendDlgItemMessage(Dialog, IDC_SERIALPORT, CB_ADDSTRING,
-				0, (LPARAM)Temp);
-	      if (ComPortTable[i] == ts->ComPort) {
-		  w = i;
-	      }
-	  }
+      if ((comports = DetectComPorts(ComPortTable, ts->MaxComPort, ComPortDesc)) > 0) {
+		  for (i=0; i<comports; i++) {
+			  uint2str(ComPortTable[i], &Temp[3], sizeof(Temp)-3, 3);
+			  strncat_s(Temp, sizeof(Temp), ": ", _TRUNCATE);
+			  strncat_s(Temp, sizeof(Temp), ComPortDesc[i], _TRUNCATE);
+			  SendDlgItemMessage(Dialog, IDC_SERIALPORT, CB_ADDSTRING,
+					0, (LPARAM)Temp);
+			  if (ComPortTable[i] == ts->ComPort) {
+			  w = i;
+			  }
+		  }
       } else if (comports == 0) {
 	  DisableDlgItem(Dialog, IDC_SERIALPORT, IDC_SERIALPORT);
 	  DisableDlgItem(Dialog, IDC_SERIALPORT_LABEL, IDC_SERIALPORT_LABEL);
@@ -1475,11 +1478,12 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
   PGetHNRec GetHNRec;
-  char EntName[7];
+  char EntName[128];
   char TempHost[HostNameMaxLength+1];
   WORD i, j, w;
   BOOL Ok;
   char ComPortTable[MAXCOMPORT];
+  static char *ComPortDesc[MAXCOMPORT];
   int comports;
   char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
   LOGFONT logfont;
@@ -1578,22 +1582,24 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       j = 0;
       w = 1;
       strncpy_s(EntName, sizeof(EntName),"COM", _TRUNCATE);
-      if ((comports=DetectComPorts(ComPortTable, GetHNRec->MaxComPort)) >= 0) {
-	for (i=0; i<comports; i++) {
-	  if (((GetCOMFlag() >> (ComPortTable[i]-1)) & 1)==0) {
-	    uint2str(ComPortTable[i], &EntName[3], sizeof(EntName)-3, 2);
-	    SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_ADDSTRING,
-			       0, (LPARAM)EntName);
-	    j++;
-	    if (GetHNRec->ComPort==ComPortTable[i]) w = j;
-	  }
-	}
+	  if ((comports=DetectComPorts(ComPortTable, GetHNRec->MaxComPort, ComPortDesc)) >= 0) {
+		  for (i=0; i<comports; i++) {
+			  if (((GetCOMFlag() >> (ComPortTable[i]-1)) & 1)==0) {
+				  uint2str(ComPortTable[i], &EntName[3], sizeof(EntName)-3, 3);
+				  strncat_s(EntName, sizeof(EntName), ": ", _TRUNCATE);
+				  strncat_s(EntName, sizeof(EntName), ComPortDesc[i], _TRUNCATE);
+				  SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_ADDSTRING,
+					  0, (LPARAM)EntName);
+				  j++;
+				  if (GetHNRec->ComPort==ComPortTable[i]) w = j;
+			  }
+		  }
       } else {
 	for (i=1; i<=GetHNRec->MaxComPort ;i++)
 	{
 	  if (((GetCOMFlag() >> (i-1)) & 1)==0)
 	  {
-	    uint2str(i,&EntName[3],sizeof(EntName)-3,2);
+	    uint2str(i,&EntName[3],sizeof(EntName)-3,3);
 	    SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_ADDSTRING,
 			       0, (LPARAM)EntName);
 	    j++;

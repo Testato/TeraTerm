@@ -11,6 +11,9 @@
 #include "ttlib.h"
 #include "language.h"
 #include <stdio.h>
+#include <windows.h>
+#include <tchar.h>
+#include <setupapi.h>
 
 /* first instance flag */
 static BOOL FirstInstance = TRUE;
@@ -1353,7 +1356,110 @@ int FAR PASCAL CommTextEcho(PComVar cv, PCHAR B, int C)
   return i;
 }
 
-int PASCAL DetectComPorts(char *ComPortTable, int ComPortMax)
+// listup serial port driver 
+// cf. http://www.codeproject.com/system/setupdi.asp?df=100&forumid=4368&exp=0&select=479661
+// (2007.8.17 yutaka)
+static void ListupSerialPort(char *ComPortTable, int comports, char **ComPortDesc, int ComPortMax)
+{
+	GUID ClassGuid[1];
+	DWORD dwRequiredSize;
+	BOOL bRet;
+	HDEVINFO DeviceInfoSet = NULL;
+
+	SP_DEVINFO_DATA DeviceInfoData;
+	DWORD dwMemberIndex = 0;
+	int i;
+	
+	DeviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
+
+	// 以前のメモリをフリーしておく
+	for (i = 0 ; i < ComPortMax ; i++) {
+		free(ComPortDesc[i]);
+		ComPortDesc[i] = NULL;
+	}
+
+// Get ClassGuid from ClassName for PORTS class
+	bRet =
+		SetupDiClassGuidsFromName(_T("PORTS"), (LPGUID) & ClassGuid, 1,
+								  &dwRequiredSize);
+	if (!bRet)
+		goto cleanup;
+
+// Get class devices
+	DeviceInfoSet =
+		SetupDiGetClassDevs(ClassGuid, NULL, NULL, DIGCF_PROFILE);
+
+	if (DeviceInfoSet) {
+// Enumerate devices
+		dwMemberIndex = 0;
+		while (SetupDiEnumDeviceInfo
+			   (DeviceInfoSet, dwMemberIndex++, &DeviceInfoData)) {
+			TCHAR szFriendlyName[MAX_PATH];
+			TCHAR szPortName[MAX_PATH];
+			//TCHAR szMessage[MAX_PATH];
+			DWORD dwReqSize = 0;
+			DWORD dwPropType;
+			DWORD dwType = REG_SZ;
+			HKEY hKey = NULL;
+
+// Get friendlyname
+			bRet = SetupDiGetDeviceRegistryProperty(DeviceInfoSet,
+													&DeviceInfoData,
+													SPDRP_FRIENDLYNAME,
+													&dwPropType,
+													(LPBYTE)
+													szFriendlyName,
+													sizeof(szFriendlyName),
+													&dwReqSize);
+
+// Open device parameters reg key
+			hKey = SetupDiOpenDevRegKey(DeviceInfoSet,
+										&DeviceInfoData,
+										DICS_FLAG_GLOBAL,
+										0, DIREG_DEV, KEY_READ);
+			if (hKey) {
+// Qurey for portname
+				long lRet;
+				dwReqSize = sizeof(szPortName);
+				lRet = RegQueryValueEx(hKey,
+											_T("PortName"),
+											0,
+											&dwType,
+											(LPBYTE) & szPortName,
+											&dwReqSize);
+
+// Close reg key
+				RegCloseKey(hKey);
+			}
+
+#if 0
+			sprintf(szMessage, _T("Name: %s\nPort: %s\n"), szFriendlyName,
+					 szPortName);
+		   	printf("%s\n", szMessage);
+#endif
+
+			if (_strnicmp(szPortName, "COM", 3) == 0) {  // COMポートドライバを発見
+				int port = atoi(&szPortName[3]);
+				int i;
+
+				for (i = 0 ; i < comports ; i++) {
+					if (ComPortTable[i] == port) {  // 接続を確認
+						ComPortDesc[i] = _strdup(szFriendlyName);
+						break;
+					}
+				}
+			}
+
+		}
+	}
+
+  cleanup:
+// Destroy device info list
+	SetupDiDestroyDeviceInfoList(DeviceInfoSet);
+}
+
+
+int PASCAL DetectComPorts(char *ComPortTable, int ComPortMax, char **ComPortDesc)
 {
 	HMODULE h;
 	TCHAR   devicesBuff[65535];
@@ -1385,6 +1491,9 @@ int PASCAL DetectComPorts(char *ComPortTable, int ComPortMax)
 				ComPortTable[min] = s;
 			}
 		}
+
+		ListupSerialPort(ComPortTable, comports, ComPortDesc, ComPortMax);
+
 	}
 	else {
 #if 1
