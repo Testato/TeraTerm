@@ -1094,8 +1094,11 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       if ((comports = DetectComPorts(ComPortTable, ts->MaxComPort, ComPortDesc)) > 0) {
 		  for (i=0; i<comports; i++) {
 			  uint2str(ComPortTable[i], &Temp[3], sizeof(Temp)-3, 3);
+// Serial dialogはドロップダウンリストの幅が大きくできないので、Descriptionはなしとする。
+#if 0
 			  strncat_s(Temp, sizeof(Temp), ": ", _TRUNCATE);
 			  strncat_s(Temp, sizeof(Temp), ComPortDesc[i], _TRUNCATE);
+#endif
 			  SendDlgItemMessage(Dialog, IDC_SERIALPORT, CB_ADDSTRING,
 					0, (LPARAM)Temp);
 			  if (ComPortTable[i] == ts->ComPort) {

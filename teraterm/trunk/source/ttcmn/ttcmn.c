@@ -1365,10 +1365,16 @@ static void ListupSerialPort(char *ComPortTable, int comports, char **ComPortDes
 	DWORD dwRequiredSize;
 	BOOL bRet;
 	HDEVINFO DeviceInfoSet = NULL;
-
 	SP_DEVINFO_DATA DeviceInfoData;
 	DWORD dwMemberIndex = 0;
 	int i;
+	HMODULE h;
+
+	// for Windows9x/NTëŒçÙ
+	if (((h = GetModuleHandle("setupapi.dll")) == NULL) ||
+		(GetProcAddress(h, "SetupDiClassGuidsFromNameA") == NULL)) {	
+		return;
+	}
 	
 	DeviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
 
