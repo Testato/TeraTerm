@@ -1024,8 +1024,10 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		if ((comports=DetectComPorts(ComPortTable, GetHNRec->MaxComPort, ComPortDesc)) >= 0) {
 			for (i=0; i<comports; i++) {
 				_snprintf_s(&EntName[3], sizeof(EntName)-3, _TRUNCATE, "%d", ComPortTable[i]);
-	  		    strncat_s(EntName, sizeof(EntName), ": ", _TRUNCATE);
-				strncat_s(EntName, sizeof(EntName), ComPortDesc[i], _TRUNCATE);
+				if (ComPortDesc[i] != NULL) {
+					strncat_s(EntName, sizeof(EntName), ": ", _TRUNCATE);
+					strncat_s(EntName, sizeof(EntName), ComPortDesc[i], _TRUNCATE);
+				}
 				SendDlgItemMessage(dlg, IDC_HOSTCOM, CB_ADDSTRING,
 								   0, (LPARAM)EntName);
 				j++;
