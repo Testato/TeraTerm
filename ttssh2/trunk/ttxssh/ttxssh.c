@@ -894,10 +894,11 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 {
 	static char *ssh_version[] = {"SSH1", "SSH2", NULL};
 	PGetHNRec GetHNRec;
-	char EntName[8];
+	char EntName[128];
 	char TempHost[HostNameMaxLength + 1];
 	WORD i, j, w;
 	char ComPortTable[MAXCOMPORT];
+	static char *ComPortDesc[MAXCOMPORT];
 	int comports;
 	BOOL Ok;
 	LOGFONT logfont;
@@ -1020,9 +1021,11 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		j = 0;
 		w = 1;
 		strncpy_s(EntName, sizeof(EntName), "COM", _TRUNCATE);
-		if ((comports=DetectComPorts(ComPortTable, GetHNRec->MaxComPort)) >= 0) {
+		if ((comports=DetectComPorts(ComPortTable, GetHNRec->MaxComPort, ComPortDesc)) >= 0) {
 			for (i=0; i<comports; i++) {
 				_snprintf_s(&EntName[3], sizeof(EntName)-3, _TRUNCATE, "%d", ComPortTable[i]);
+	  		    strncat_s(EntName, sizeof(EntName), ": ", _TRUNCATE);
+				strncat_s(EntName, sizeof(EntName), ComPortDesc[i], _TRUNCATE);
 				SendDlgItemMessage(dlg, IDC_HOSTCOM, CB_ADDSTRING,
 								   0, (LPARAM)EntName);
 				j++;
