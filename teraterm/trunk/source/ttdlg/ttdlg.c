@@ -1589,8 +1589,10 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		  for (i=0; i<comports; i++) {
 			  if (((GetCOMFlag() >> (ComPortTable[i]-1)) & 1)==0) {
 				  uint2str(ComPortTable[i], &EntName[3], sizeof(EntName)-3, 3);
-				  strncat_s(EntName, sizeof(EntName), ": ", _TRUNCATE);
-				  strncat_s(EntName, sizeof(EntName), ComPortDesc[i], _TRUNCATE);
+				  if (ComPortDesc[i] != NULL) {
+					  strncat_s(EntName, sizeof(EntName), ": ", _TRUNCATE);
+					  strncat_s(EntName, sizeof(EntName), ComPortDesc[i], _TRUNCATE);
+				  }
 				  SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_ADDSTRING,
 					  0, (LPARAM)EntName);
 				  j++;

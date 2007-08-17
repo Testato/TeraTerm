@@ -77,7 +77,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="setupapi.lib"
 				OutputFile=".\..\bin\Release/ttpcmn.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -173,7 +172,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="setupapi.lib"
 				OutputFile=".\..\bin\Debug/ttpcmn.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
