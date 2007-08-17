@@ -1182,11 +1182,15 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 					GetDlgItemText(dlg, IDC_HOSTCOM, EntName,
 								   sizeof(EntName) - 1);
 					if (strncmp(EntName, "COM", 3) == 0 && EntName[3] != '\0') {
+#if 0
 						GetHNRec->ComPort = (BYTE) (EntName[3]) - 0x30;
 						if (strlen(EntName) > 4)
 							GetHNRec->ComPort =
 								GetHNRec->ComPort * 10 + (BYTE) (EntName[4]) -
 								0x30;
+#else
+						GetHNRec->ComPort = atoi(&EntName[3]);
+#endif
 						if (GetHNRec->ComPort > GetHNRec->MaxComPort)
 							GetHNRec->ComPort = 1;
 					} else {
