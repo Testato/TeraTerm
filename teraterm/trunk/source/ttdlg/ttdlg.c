@@ -1631,85 +1631,89 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       return TRUE;
 
     case WM_COMMAND:
-      switch (LOWORD(wParam)) {
+		switch (LOWORD(wParam)) {
 	case IDOK:
-	  GetHNRec = (PGetHNRec)GetWindowLong(Dialog,DWL_USER);
-	  if ( GetHNRec!=NULL )
-	  {
+		GetHNRec = (PGetHNRec)GetWindowLong(Dialog,DWL_USER);
+		if ( GetHNRec!=NULL )
+		{
 #ifndef NO_INET6
-            char afstr[BUFSIZ];
+			char afstr[BUFSIZ];
 #endif /* NO_INET6 */
-	    GetRB(Dialog,&GetHNRec->PortType,IDC_HOSTTCPIP,IDC_HOSTSERIAL);
-	    if ( GetHNRec->PortType==IdTCPIP )
-	      GetDlgItemText(Dialog, IDC_HOSTNAME, GetHNRec->HostName, HostNameMaxLength);
-	    else
-	      GetHNRec->HostName[0] = 0;
-	    GetRB(Dialog,&GetHNRec->Telnet,IDC_HOSTTELNET,IDC_HOSTTELNET);
-	    i = GetDlgItemInt(Dialog,IDC_HOSTTCPPORT,&Ok,FALSE);
-	    if (Ok) GetHNRec->TCPPort = i;
+			GetRB(Dialog,&GetHNRec->PortType,IDC_HOSTTCPIP,IDC_HOSTSERIAL);
+			if ( GetHNRec->PortType==IdTCPIP )
+				GetDlgItemText(Dialog, IDC_HOSTNAME, GetHNRec->HostName, HostNameMaxLength);
+			else
+				GetHNRec->HostName[0] = 0;
+			GetRB(Dialog,&GetHNRec->Telnet,IDC_HOSTTELNET,IDC_HOSTTELNET);
+			i = GetDlgItemInt(Dialog,IDC_HOSTTCPPORT,&Ok,FALSE);
+			if (Ok) GetHNRec->TCPPort = i;
 #ifndef NO_INET6
 #define getaf(str) \
-((strcmp((str), "IPv6") == 0) ? AF_INET6 : \
- ((strcmp((str), "IPv4") == 0) ? AF_INET : AF_UNSPEC))
-            memset(afstr, 0, sizeof(afstr));
-            GetDlgItemText(Dialog, IDC_HOSTTCPPROTOCOL, afstr, sizeof(afstr));
-            GetHNRec->ProtocolFamily = getaf(afstr);
+	((strcmp((str), "IPv6") == 0) ? AF_INET6 : \
+	((strcmp((str), "IPv4") == 0) ? AF_INET : AF_UNSPEC))
+			memset(afstr, 0, sizeof(afstr));
+			GetDlgItemText(Dialog, IDC_HOSTTCPPROTOCOL, afstr, sizeof(afstr));
+			GetHNRec->ProtocolFamily = getaf(afstr);
 #endif /* NO_INET6 */
-	    memset(EntName,0,sizeof(EntName));
-	    GetDlgItemText(Dialog, IDC_HOSTCOM, EntName, sizeof(EntName)-1);
-	    if (strncmp(EntName, "COM", 3) == 0 && EntName[3] != '\0') {
-	      GetHNRec->ComPort = (BYTE)(EntName[3])-0x30;
-	      if (strlen(EntName)>4)
-		GetHNRec->ComPort = GetHNRec->ComPort*10 + (BYTE)(EntName[4])-0x30;
-	      if (GetHNRec->ComPort > GetHNRec->MaxComPort)
-		GetHNRec->ComPort = 1;
-	    }
-	    else {
-	      GetHNRec->ComPort = 1;
-	    }
-	  }
-	  EndDialog(Dialog, 1);
-      if (DlgHostFont != NULL) {
-        DeleteObject(DlgHostFont);
-      }
-	  return TRUE;
+			memset(EntName,0,sizeof(EntName));
+			GetDlgItemText(Dialog, IDC_HOSTCOM, EntName, sizeof(EntName)-1);
+			if (strncmp(EntName, "COM", 3) == 0 && EntName[3] != '\0') {
+#if 0
+				GetHNRec->ComPort = (BYTE)(EntName[3])-0x30;
+				if (strlen(EntName)>4)
+					GetHNRec->ComPort = GetHNRec->ComPort*10 + (BYTE)(EntName[4])-0x30;
+#else
+				GetHNRec->ComPort = atoi(&EntName[3]);
+#endif
+				if (GetHNRec->ComPort > GetHNRec->MaxComPort)
+					GetHNRec->ComPort = 1;
+			}
+			else {
+				GetHNRec->ComPort = 1;
+			}
+		}
+		EndDialog(Dialog, 1);
+		if (DlgHostFont != NULL) {
+			DeleteObject(DlgHostFont);
+		}
+		return TRUE;
 
 	case IDCANCEL:
-	  EndDialog(Dialog, 0);
-      if (DlgHostFont != NULL) {
-        DeleteObject(DlgHostFont);
-      }
-	  return TRUE;
+		EndDialog(Dialog, 0);
+		if (DlgHostFont != NULL) {
+			DeleteObject(DlgHostFont);
+		}
+		return TRUE;
 
 	case IDC_HOSTTCPIP:
-	  EnableDlgItem(Dialog,IDC_HOSTNAMELABEL,IDC_HOSTTCPPORT);
+		EnableDlgItem(Dialog,IDC_HOSTNAMELABEL,IDC_HOSTTCPPORT);
 #ifndef NO_INET6
-          EnableDlgItem(Dialog,IDC_HOSTTCPPROTOCOLLABEL,IDC_HOSTTCPPROTOCOL);
+		EnableDlgItem(Dialog,IDC_HOSTTCPPROTOCOLLABEL,IDC_HOSTTCPPROTOCOL);
 #endif /* NO_INET6 */
-	  DisableDlgItem(Dialog,IDC_HOSTCOMLABEL,IDC_HOSTCOM);
-	  return TRUE;
+		DisableDlgItem(Dialog,IDC_HOSTCOMLABEL,IDC_HOSTCOM);
+		return TRUE;
 
 	case IDC_HOSTSERIAL:
-	  EnableDlgItem(Dialog,IDC_HOSTCOMLABEL,IDC_HOSTCOM);
-	  DisableDlgItem(Dialog,IDC_HOSTNAMELABEL,IDC_HOSTTCPPORT);
+		EnableDlgItem(Dialog,IDC_HOSTCOMLABEL,IDC_HOSTCOM);
+		DisableDlgItem(Dialog,IDC_HOSTNAMELABEL,IDC_HOSTTCPPORT);
 #ifndef NO_INET6
-          DisableDlgItem(Dialog,IDC_HOSTTCPPROTOCOLLABEL,IDC_HOSTTCPPROTOCOL);
+		DisableDlgItem(Dialog,IDC_HOSTTCPPROTOCOLLABEL,IDC_HOSTTCPPROTOCOL);
 #endif /* NO_INET6 */
-	  break;
+		break;
 
 	case IDC_HOSTTELNET:
-	  GetRB(Dialog,&i,IDC_HOSTTELNET,IDC_HOSTTELNET);
-	  if ( i==1 )
-	  {
-	    GetHNRec = (PGetHNRec)GetWindowLong(Dialog,DWL_USER);
-	    if ( GetHNRec!=NULL )
-	      SetDlgItemInt(Dialog,IDC_HOSTTCPPORT,GetHNRec->TelPort,FALSE);
-	  }
-	  break;
+		GetRB(Dialog,&i,IDC_HOSTTELNET,IDC_HOSTTELNET);
+		if ( i==1 )
+		{
+			GetHNRec = (PGetHNRec)GetWindowLong(Dialog,DWL_USER);
+			if ( GetHNRec!=NULL )
+				SetDlgItemInt(Dialog,IDC_HOSTTCPPORT,GetHNRec->TelPort,FALSE);
+		}
+		break;
 
 	case IDC_HOSTHELP:
-	  PostMessage(GetParent(Dialog),WM_USER_DLGHELP2,0,0);
-      }
+		PostMessage(GetParent(Dialog),WM_USER_DLGHELP2,0,0);
+		}
   }
   return FALSE;
 }
