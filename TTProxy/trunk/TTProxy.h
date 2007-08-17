@@ -8,6 +8,8 @@ using namespace yebisuya;
 
 extern BOOL PASCAL TTXBind(WORD Version, TTXExports* exports);
 
+char UILanguageFile[MAX_PATH];
+
 class TTProxy : public DynamicLinkLibrary<TTProxy> {
 	enum {
 		ID_ABOUTMENU = 63001,
@@ -194,6 +196,8 @@ private:
 		*hooks->ReadIniFile = TTXReadINIFile;
 		*hooks->WriteIniFile = TTXWriteINIFile;
 		*hooks->ParseParam = TTXParseParam;
+		strncpy_s(UILanguageFile, sizeof(UILanguageFile),
+		          getInstance().ts->UILanguageFile, _TRUNCATE);
 	}
 
 	static void PASCAL TTXOpenTCP(TTXSockHooks* hooks) {
@@ -219,11 +223,13 @@ private:
 		/* move from TTXInit (2006.12.12 maya) */
 		setTTProxyLocale();
 #endif
-		LCID lcid = getLCID();
+		char uimsg[MAX_UIMSG];
 		/* inserts before ID_HELP_ABOUT */
-		InsertMenu(menu, 50990, MF_BYCOMMAND | MF_ENABLED, ID_ABOUTMENU, Resource::loadString(IDS_ABOUT, lcid));
+		UTIL_get_lang_msg("MENU_ABOUT", uimsg, sizeof(uimsg), "About TT&Proxy...");
+		InsertMenu(menu, 50990, MF_BYCOMMAND | MF_ENABLED, ID_ABOUTMENU, uimsg);
 		/* inserts before ID_SETUP_TCPIP */
-		InsertMenu(menu, 50360, MF_BYCOMMAND | MF_ENABLED, ID_PROXYSETUPMENU, Resource::loadString(IDS_MENUCAPTION, lcid));
+		UTIL_get_lang_msg("NEMU_SETUP", uimsg, sizeof(uimsg), "&Proxy...");
+		InsertMenu(menu, 50360, MF_BYCOMMAND | MF_ENABLED, ID_PROXYSETUPMENU, uimsg);
 	}
 
 	static int PASCAL TTXProcessCommand(HWND hWin, WORD cmd) {
@@ -231,7 +237,7 @@ private:
 
 		switch (cmd) {
 		case ID_ABOUTMENU:
-			ProxyWSockHook::aboutDialog(hWin, lcid);
+			ProxyWSockHook::aboutDialog(hWin);
 			return 1;
 		case ID_PROXYSETUPMENU:
 			ProxyWSockHook::setupDialog(hWin, lcid);

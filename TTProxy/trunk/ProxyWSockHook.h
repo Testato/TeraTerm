@@ -18,34 +18,35 @@ using namespace yebisuya;
 #include "ttlib.h"
 #include "i18n.h"
 
-static void getSetupFName(char *SetupFName) {
-	char homedir[MAX_PATH];
-	char *i;
+extern char UILanguageFile[MAX_PATH];
 
-	GetModuleFileName(GetInstanceHandle(), homedir, sizeof(homedir));
-	i = strrchr(homedir, '\\');
-	if (i != NULL) {
-		homedir[i-homedir] = 0;
+void UTIL_get_lang_msg(PCHAR key, PCHAR buf, int buf_len, PCHAR def)
+{
+	GetI18nStr("TTProxy", key, buf, buf_len, def, UILanguageFile);
+}
+
+int UTIL_get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font)
+{
+	if (GetI18nLogfont("TTProxy", key, logfont,
+					   GetDeviceCaps(GetDC(dlg),LOGPIXELSY),
+					   UILanguageFile) == FALSE) {
+		return FALSE;
 	}
 
-	GetDefaultSetupFName(SetupFName, homedir, sizeof(homedir));
+	if ((*font = CreateFontIndirect(logfont)) == NULL) {
+		return FALSE;
+	}
+
+	return TRUE;
 }
 
 static LCID getLCID() {
-	char SetupFName[MAX_PATH];
-	char UILanguageFile[MAX_UIMSG];
 	char strLCID[5];
 	LCID lcid;
 
-	getSetupFName(SetupFName);
-
-	/* Get LanguageFile name */
-	GetPrivateProfileString("Tera Term", "UILanguageFile", "",
-							UILanguageFile, sizeof(UILanguageFile),
-							SetupFName);
-
-	GetPrivateProfileString("TTProxy", "LCID", "1033", // 0x409 English(US)
-							strLCID, sizeof(strLCID), UILanguageFile);
+	UTIL_get_lang_msg("LCID", strLCID, sizeof(strLCID),
+					  "1033" // 0x409 English(US)
+					  );
 	lcid = atoi(strLCID);
 
 	return lcid;
@@ -838,9 +839,20 @@ private:
             char *buf2;
             const char *ver;
             int n, a, b, c, d, len;
+			char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG], uimsg3[MAX_UIMSG];
 
+			GetWindowText(uimsg2, sizeof(uimsg2));
+			UTIL_get_lang_msg("DLG_ABOUT_TITLE", uimsg, sizeof(uimsg), uimsg2);
+			SetWindowText(uimsg);
+
+			UTIL_get_lang_msg("DLG_ABOUT_EXTENTION", uimsg, sizeof(uimsg),
+			                  "Teraterm proxy extension");
+			UTIL_get_lang_msg("DLG_ABOUT_YEBISUYA", uimsg2, sizeof(uimsg2),
+			                  "YebisuyaHompo");
+			UTIL_get_lang_msg("DLG_ABOUT_HOMEPAGE", uimsg3, sizeof(uimsg3),
+			                  "TTProxy home page");
             buf = GetDlgItemText(IDC_VERSION);
-            len = buf.length() + 4;
+            len = buf.length() + 50;
             buf2 = (char *)_alloca(len);
             if (buf2 == NULL) {
                 return true;
@@ -848,15 +860,19 @@ private:
             ver = FileVersion::getOwnVersion().getFileVersion();
             n = sscanf_s(ver, "%d, %d, %d, %d", &a, &b, &c, &d);
             if (n == 4) {
-                sprintf_s(buf2, len, buf, a, b, c, d);
+                sprintf_s(buf2, len, buf, uimsg, a, b, c, d, uimsg2, uimsg3);
             }
             SetDlgItemText(IDC_VERSION, (n == 4) ? buf2 : buf);
+
+			GetDlgItemText(IDOK, uimsg, sizeof(uimsg));
+			UTIL_get_lang_msg("BTN_OK", uimsg, sizeof(uimsg),"OK");
+			SetDlgItemText(IDOK, uimsg);
 
             return true;
         }
     public :
-        int open(HWND owner, LCID lcid) {
-            return Dialog::open(instance().resource_module, IDD_ABOUTDIALOG, lcid, owner);
+        int open(HWND owner) {
+            return Dialog::open(instance().resource_module, IDD_ABOUTDIALOG, owner);
         }
     };
     friend class AboutDialog;
@@ -1738,9 +1754,9 @@ public:
         }
         return false;
     }
-    static bool aboutDialog(HWND owner, LCID lcid) {
+    static bool aboutDialog(HWND owner) {
         AboutDialog dlg;
-        if (dlg.open(owner, lcid) == IDOK) {
+        if (dlg.open(owner) == IDOK) {
             return true;
         }
         return false;

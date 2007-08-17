@@ -81,15 +81,6 @@ END
 // Dialog
 //
 
-IDD_ABOUTDIALOG DIALOGEX 0, 0, 226, 87
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "TTProxyについて"
-FONT 9, "MS UI Gothic", 0, 0, 0x0
-BEGIN
-    LTEXT           "TTProxy\nTeraterm proxy拡張, %d.%d.%d.%d\nCopyright (C) 2006-2007 TeraTerm Project\nTeraTerm Project: http://ttssh2.sourceforge.jp/\nCopyright (C) 2003-2006 蛭子屋本舗\nTTProxyホームページ: http://yebisuya.dip.jp/Software/TTProxy/",IDC_VERSION,7,7,212,51
-    DEFPUSHBUTTON   "OK",IDOK,82,63,50,14
-END
-
 IDD_OPTION_SETTING DIALOG  0, 0, 215, 239
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "その他の設定"
@@ -192,14 +183,6 @@ END
 #ifdef APSTUDIO_INVOKED
 GUIDELINES DESIGNINFO 
 BEGIN
-    IDD_ABOUTDIALOG, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 219
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 78
-    END
-
     IDD_OPTION_SETTING, DIALOG
     BEGIN
         LEFTMARGIN, 8
@@ -311,9 +294,9 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 IDD_ABOUTDIALOG DIALOGEX 0, 0, 226, 87
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About TTProxy"
-FONT 8, "MS Sans Serif", 0, 0, 0x0
+FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
-    LTEXT           "TTProxy\nTeraterm proxy extension, %d.%d.%d.%d\nCopyright (C) 2006-2007 TeraTerm Project\nTeraTerm Project: http://ttssh2.sourceforge.jp/\nCopyright (C) 2003-2006 YebisuyaHompo\nTTProxy home page: http://yebisuya.dip.jp/Software/TTProxy/",IDC_VERSION,7,7,212,52
+    LTEXT           "TTProxy\n%s, %d.%d.%d.%d\nCopyright (C) 2006-2007 TeraTerm Project\nTeraTerm Project: http://ttssh2.sourceforge.jp/\nCopyright (C) 2003-2006 %s\n%s: http://yebisuya.dip.jp/Software/TTProxy/",IDC_VERSION,7,7,212,52
     DEFPUSHBUTTON   "OK",IDOK,82,63,50,14
 END
 
