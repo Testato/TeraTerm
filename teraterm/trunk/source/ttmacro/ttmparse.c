@@ -123,6 +123,8 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 	else if (_stricmp(Str,"break")==0) *WordId = RsvBreak;
 	else if (_stricmp(Str,"call")==0) *WordId = RsvCall;
 	else if (_stricmp(Str,"changedir")==0) *WordId = RsvChangeDir;
+	else if (_stricmp(Str,"circularleftshift")==0) *WordId = RsvCLShift;
+	else if (_stricmp(Str,"circularrightshift")==0) *WordId = RsvCRShift;
 	else if (_stricmp(Str,"clearscreen")==0) *WordId = RsvClearScreen;
 	else if (_stricmp(Str,"clipb2var")==0) *WordId = RsvClipb2Var;	// add 'clipb2var' (2006.9.17 maya)
 	else if (_stricmp(Str,"closesbox")==0) *WordId = RsvCloseSBox;
@@ -378,8 +380,18 @@ BOOL GetOperator(LPWORD WordId)
 				LinePtr++;
 			}
 		}
-		else if ((b == '>') && (*WordId == RsvLT)) {
-			*WordId = RsvNE;
+		else if (b == '>') {
+			if (*WordId == RsvLT) {
+				*WordId = RsvNE;
+				LinePtr++;
+			}
+			else if (*WordId == RsvGT) {
+				*WordId = RsvLRShift;
+				LinePtr++;
+			}
+		}
+		else if ((b == '<') && (*WordId == RsvLT)) {
+			*WordId = RsvLLShift;
 			LinePtr++;
 		}
 		else if ((b == '&') && (*WordId == RsvBAnd)) {
@@ -391,6 +403,15 @@ BOOL GetOperator(LPWORD WordId)
 			LinePtr++;
 		}
 	}
+
+	if (LinePtr<LineLen) {
+		b = LineBuff[LinePtr];
+		if ((b == '>') && (*WordId == RsvLRShift)) {
+			*WordId = RsvARShift;
+			LinePtr++;
+		}
+	}
+
 	return TRUE;
 }
 
@@ -715,10 +736,10 @@ BOOL GetFactor(LPWORD ValType, int far *Val, LPWORD Err)
 			if ((*Err==0) && (*ValType != TypInteger))
 				*Err = ErrTypeMismatch;
 			switch (Id) {
-				case RsvPlus:                  break;
-				case RsvMinus: *Val = -(*Val); break;
-				case RsvBNot:  *Val = ~(*Val); break;
-				case RsvLNot:  *Val = !(*Val); break;
+				case RsvPlus:                    break;
+				case RsvMinus:   *Val = -(*Val); break;
+				case RsvBNot:    *Val = ~(*Val); break;
+				case RsvLNot:    *Val = !(*Val); break;
 				default: *Err = ErrSyntax;
 			}
 		}
@@ -830,6 +851,7 @@ BOOL GetSimpleExpression(LPWORD ValType, int far *Val, LPWORD Err)
 	WORD P1, P2, Type1,Type2, Er;
 	int Val1,Val2;
 	WORD WId;
+	unsigned int u_Val1;
 
 	P1 = LinePtr;
 	if (! GetTerm(&Type1,&Val1,&Er)) return FALSE;
@@ -851,7 +873,11 @@ BOOL GetSimpleExpression(LPWORD ValType, int far *Val, LPWORD Err)
 			case RsvBOr:
 			case RsvBXor:
 			case RsvPlus:
-			case RsvMinus: break;
+			case RsvMinus:
+			case RsvLRShift:
+			case RsvLLShift:
+			case RsvARShift:
+				break;
 			default:
 				LinePtr = P2;
 				return TRUE;
@@ -879,10 +905,16 @@ BOOL GetSimpleExpression(LPWORD ValType, int far *Val, LPWORD Err)
 		}
 
 		switch (WId) {
-			case RsvBOr:   Val1 = Val1 | Val2; break;
-			case RsvBXor:  Val1 = Val1 ^ Val2; break;
-			case RsvPlus:  Val1 = Val1 + Val2; break;
-			case RsvMinus: Val1 = Val1 - Val2; break;
+			case RsvBOr:     Val1 = Val1 | Val2;  break;
+			case RsvBXor:    Val1 = Val1 ^ Val2;  break;
+			case RsvPlus:    Val1 = Val1 + Val2;  break;
+			case RsvMinus:   Val1 = Val1 - Val2;  break;
+			case RsvLRShift: Val1 = Val1 >> Val2; break;
+			case RsvLLShift: Val1 = Val1 << Val2; break;
+			case RsvARShift:
+				u_Val1 = Val1;
+				Val1 = u_Val1 >> Val2;
+				break;
 		}
 		*Val = Val1;
 	} while (TRUE);
@@ -986,8 +1018,8 @@ BOOL GetAndResult(LPWORD ValType, int far *Val, LPWORD Err)
 		if (! GetOperator(&WId)) return TRUE;
 
 		if (WId != RsvLAnd) {
-				LinePtr = P2;
-				return TRUE;
+			LinePtr = P2;
+			return TRUE;
 		}
 
 		if (! GetExpression(&Type2,&Val2,&Er))

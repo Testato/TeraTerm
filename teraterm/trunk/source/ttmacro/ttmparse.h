@@ -158,6 +158,8 @@
 #define RsvToLower    118   // add 'tolower' (2007.7.12 maya)
 #define RsvToUpper    119   // add 'toupper' (2007.7.12 maya)
 #define RsvBreak      120   // add 'break' (2007.7.20 doda)
+#define RsvCRShift    121   // circular right shift
+#define RsvCLShift    122   // circular left shift
 
 #define RsvOperator   150
 #define RsvBNot	      151
@@ -179,6 +181,9 @@
 #define RsvLAnd       167
 #define RsvLOr        168
 #define RsvLXor       169
+#define RsvLRShift    170 // logical right shift
+#define RsvLLShift    171 // logical left shift
+#define RsvARShift    172 // arithmetic right shift
 
 // integer type for buffer pointer
 #ifdef TERATERM32

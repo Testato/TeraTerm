@@ -445,6 +445,44 @@ WORD TTLConnect()
   return Err;
 }
 
+WORD TTLCircularLeftShift()
+{
+  WORD VarId, Err;
+  int x, n;
+  unsigned int u_x;
+
+  Err = 0;
+  GetIntVar(&VarId,&Err);
+  GetIntVal(&x,&Err);
+  GetIntVal(&n,&Err);
+  if ((Err==0) && (GetFirstChar()!=0))
+    Err = ErrSyntax;
+  if (Err!=0) return Err;
+
+  u_x = x;
+  SetIntVal(VarId, (x << n) | (u_x >> (32-n)));
+  return Err;
+}
+
+WORD TTLCircularRightShift()
+{
+  WORD VarId, Err;
+  int x, n;
+  unsigned int u_x;
+
+  Err = 0;
+  GetIntVar(&VarId,&Err);
+  GetIntVal(&x,&Err);
+  GetIntVal(&n,&Err);
+  if ((Err==0) && (GetFirstChar()!=0))
+    Err = ErrSyntax;
+  if (Err!=0) return Err;
+
+  u_x = x;
+  SetIntVal(VarId, (u_x >> n) | (x << (32-n)));
+  return Err;
+}
+
 WORD TTLDelPassword()
 {
   TStrVal Str, Str2;
@@ -2877,8 +2915,10 @@ int ExecCmnd()
 		case RsvClipb2Var:	Err = TTLClipb2Var(); break;	// add 'clipb2var' (2006.9.17 maya)
 		case RsvCloseSBox:  Err = TTLCloseSBox(); break;
 		case RsvCloseTT:	  Err = TTLCloseTT(); break;
+		case RsvCLShift:	  Err = TTLCircularLeftShift(); break;
 		case RsvCode2Str:   Err = TTLCode2Str(); break;
 		case RsvConnect:	  Err = TTLConnect(); break;
+		case RsvCRShift:	  Err = TTLCircularRightShift(); break;
 		case RsvDelPassword: Err = TTLDelPassword(); break;
 		case RsvDisconnect:
 			Err = TTLCommCmd(CmdDisconnect,0); break;
