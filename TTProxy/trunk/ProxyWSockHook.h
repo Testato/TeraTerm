@@ -530,6 +530,7 @@ private:
         virtual bool dispatch(int message, int wParam, long lParam) {
             if (message == WM_COMMAND && wParam == MAKEWPARAM(IDC_REFER, BN_CLICKED)) {
                 char buffer[1024];
+                char uimsg[MAX_UIMSG];
                 OPENFILENAME ofn = {
                     sizeof ofn,
                     *this,
@@ -537,8 +538,9 @@ private:
                 ofn.lpstrFile = buffer;
                 ofn.nMaxFile = countof(buffer);
                 ofn.Flags = OFN_LONGNAMES | OFN_NONETWORKBUTTON | OFN_PATHMUSTEXIST | OFN_NOREADONLYRETURN | OFN_HIDEREADONLY;
-                static String title = Resource::loadString(IDS_LOGFILE_SELECT);
-                ofn.lpstrTitle = title;
+                UTIL_get_lang_msg("MSG_LOGFILE_SELECT", uimsg, sizeof(uimsg),
+                                  "Select Logfile");
+                ofn.lpstrTitle = uimsg;
                 if (logfile != NULL) {
                     strcpy_s(buffer, sizeof buffer, logfile);
                 }else{
@@ -557,7 +559,58 @@ private:
             return Dialog::dispatch(message, wParam, lParam);
         }
         virtual bool onInitDialog() {
+            char uimsg[MAX_UIMSG], uitmp[MAX_UIMSG];
+
             Dialog::onInitDialog();
+
+            GetWindowText(uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_OTHER_TITLE", uimsg, sizeof(uimsg), uitmp);
+            SetWindowText(uimsg);
+            GetDlgItemText(IDC_GRP_COMMON, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_OTHER_COMMON", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_GRP_COMMON, uimsg);
+            GetDlgItemText(IDC_TIMEOUT_LABEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_OTHER_TIMEOUT", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_TIMEOUT_LABEL, uimsg);
+            GetDlgItemText(IDC_TIMEOUT_SECONDS, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_OTHER_SECOND", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_TIMEOUT_SECONDS, uimsg);
+            GetDlgItemText(IDC_LOGFILE_LABEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_OTHER_LOG", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_LOGFILE_LABEL, uimsg);
+            GetDlgItemText(IDC_REFER, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_OTHER_REFER", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_REFER, uimsg);
+            GetDlgItemText(IDC_GRP_SOCKS, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_OTHER_SOCKS", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_GRP_SOCKS, uimsg);
+            GetDlgItemText(IDC_RESOLVE_LABEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_OTHER_RESOLV", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_RESOLVE_LABEL, uimsg);
+            GetDlgItemText(IDC_GRP_TELNET, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_OTHER_TELNET", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_GRP_TELNET, uimsg);
+            GetDlgItemText(IDC_HOSTNAME_LABEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_OTHER_HOST", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_HOSTNAME_LABEL, uimsg);
+            GetDlgItemText(IDC_USERNAME_LABEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_OTHER_USER", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_USERNAME_LABEL, uimsg);
+            GetDlgItemText(IDC_PASSWORD_LABEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_OTHER_PASS", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_PASSWORD_LABEL, uimsg);
+            GetDlgItemText(IDC_CONNECTED_LABEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_OTHER_CONNECT", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_CONNECTED_LABEL, uimsg);
+            GetDlgItemText(IDC_ERROR_LABEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_OTHER_ERROR", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_ERROR_LABEL, uimsg);
+            GetDlgItemText(IDOK, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("BTN_OK", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDOK, uimsg);
+            GetDlgItemText(IDCANCEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("BTN_CANCEL", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDCANCEL, uimsg);
 
             host = GetDlgItem(IDC_HOSTNAME);
             user = GetDlgItem(IDC_USERNAME);
@@ -569,9 +622,12 @@ private:
             SetDlgItemInt(IDC_TIMEOUT, timeout, false);
 
             resolveCombo <<= GetDlgItem(IDC_RESOLVE);
-            resolveCombo.addString(instance().loadString(IDS_RESOLVE_AUTO));
-            resolveCombo.addString(instance().loadString(IDS_RESOLVE_REMOTE));
-            resolveCombo.addString(instance().loadString(IDS_RESOLVE_LOCAL));
+            UTIL_get_lang_msg("DLG_OTHER_RESOLV_AUTO", uimsg, sizeof(uimsg), "auto resolve");
+            resolveCombo.addString(uimsg);
+            UTIL_get_lang_msg("DLG_OTHER_RESOLV_REMOTE", uimsg, sizeof(uimsg), "resolve remote");
+            resolveCombo.addString(uimsg);
+            UTIL_get_lang_msg("DLG_OTHER_RESOLV_LOCAL", uimsg, sizeof(uimsg), "resolve local");
+            resolveCombo.addString(uimsg);
             resolveCombo.setCurSel(resolve);
 
             host.SetWindowText(HostnamePrompt);
@@ -591,7 +647,10 @@ private:
                 || pass.GetWindowTextLength() == 0
                 || conn.GetWindowTextLength() == 0
                 || erro.GetWindowTextLength() == 0) {
-                MessageBox(instance().loadString(IDS_EMPTY_PARAMETER), FileVersion::getOwnVersion().getProductName(), MB_OK | MB_ICONERROR);
+                char uimsg[MAX_UIMSG];
+                UTIL_get_lang_msg("MSG_EMPTY_PARAMETER", uimsg, sizeof(uimsg),
+                                  "Some parameters are empty!");
+                MessageBox(uimsg, FileVersion::getOwnVersion().getProductName(), MB_OK | MB_ICONERROR);
                 return;
             }
 
@@ -655,7 +714,40 @@ private:
             return Dialog::dispatch(message, wParam, lParam);
         }
         virtual bool onInitDialog() {
+            char uimsg[MAX_UIMSG], uitmp[MAX_UIMSG];
+
             Dialog::onInitDialog();
+
+            GetWindowText(uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_SETUP_TITLE", uimsg, sizeof(uimsg), uitmp);
+            SetWindowText(uimsg);
+            GetDlgItemText(IDC_URL_LABEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_SETUP_URL", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_URL_LABEL, uimsg);
+            GetDlgItemText(IDC_TYPE_LEBEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_SETUP_TYPE", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_TYPE_LEBEL, uimsg);
+            GetDlgItemText(IDC_HOSTNAME_LABEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_SETUP_HOST", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_HOSTNAME_LABEL, uimsg);
+            GetDlgItemText(IDC_PORT_LABEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_SETUP_PORT", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_PORT_LABEL, uimsg);
+            GetDlgItemText(IDC_USERNAME_LABEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_SETUP_USER", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_USERNAME_LABEL, uimsg);
+            GetDlgItemText(IDC_PASSWORD_LABEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_SETUP_PASS", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_PASSWORD_LABEL, uimsg);
+            GetDlgItemText(IDC_OPTIONS, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("DLG_SETUP_OTHER", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDC_OPTIONS, uimsg);
+            GetDlgItemText(IDOK, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("BTN_OK", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDOK, uimsg);
+            GetDlgItemText(IDCANCEL, uitmp, sizeof(uitmp));
+            UTIL_get_lang_msg("BTN_CANCEL", uimsg, sizeof(uimsg), uitmp);
+            SetDlgItemText(IDCANCEL, uimsg);
 
             url  <<= GetDlgItem(IDC_URL);
             type <<= GetDlgItem(IDC_TYPE);
@@ -665,7 +757,8 @@ private:
             pass <<= GetDlgItem(IDC_PASSWORD);
 
             lock = true;
-            type.addString(instance().loadString(IDS_TYPE_NONE));
+            UTIL_get_lang_msg("MSG_TYPE_NONE", uimsg, sizeof(uimsg), "Without Proxy");
+            type.addString(uimsg);
             type.addString("HTTP");
             type.addString("TELNET");
             type.addString("SOCKS4");
@@ -698,13 +791,18 @@ private:
             return true;
         }
         virtual void onOK() {
+            char uimsg[MAX_UIMSG];
             if (proxy.type != ProxyInfo::TYPE_NONE || proxy.type != ProxyInfo::TYPE_SSL) {
                 if (proxy.host == NULL) {
-                    MessageBox(instance().loadString(IDS_EMPTY_HOSTNAME), FileVersion::getOwnVersion().getProductName(), MB_OK | MB_ICONERROR);
+                    UTIL_get_lang_msg("MSG_EMPTY_HOSTNAME", uimsg, sizeof(uimsg),
+                                      "Hostname is empty!");
+                    MessageBox(uimsg, FileVersion::getOwnVersion().getProductName(), MB_OK | MB_ICONERROR);
                     return;
                 }
                 if (port.GetWindowTextLength() != 0 && proxy.port <= 0) {
-                    MessageBox(instance().loadString(IDS_ILLEGAL_PORT), FileVersion::getOwnVersion().getProductName(), MB_OK | MB_ICONERROR);
+                    UTIL_get_lang_msg("MSG_ILLEGAL_PORT", uimsg, sizeof(uimsg),
+                                      "Illegal port number!");
+                    MessageBox(uimsg, FileVersion::getOwnVersion().getProductName(), MB_OK | MB_ICONERROR);
                     return;
                 }
             }
@@ -1034,20 +1132,22 @@ private:
             }
         } while (strcmp(buf,"\r\n") != 0);
         if (status_code != 200) {
-            int msgid;
+            char uimsg[MAX_UIMSG];
             switch (status_code) {
             case 401:
             case 407:
-                msgid = IDS_PROXY_UNAUTHORIZED;
+                UTIL_get_lang_msg("MSG_PROXY_UNAUTHORIZED", uimsg, sizeof(uimsg),
+                                  "Proxy authorization failed!");
                 break;
             case 400:
             case 405:
             case 406:
             case 403:
-                msgid = IDS_PROXY_BAD_REQUEST;
+                UTIL_get_lang_msg("MSG_PROXY_BAD_REQUEST", uimsg, sizeof(uimsg),
+                                  "Proxy prevent this connection!");
                 break;
             }
-            return setError(s, msgid);
+            return setError(s, uimsg);
         }
         return 0;
     }
@@ -1087,6 +1187,7 @@ private:
         int auth_result;
         unsigned char buf[256];
         unsigned char* ptr = buf;
+        char uimsg[MAX_UIMSG];
         *ptr++ = SOCKS5_VERSION;
         if (proxy.user != NULL && proxy.pass != NULL) {
             *ptr++ = 2; // support 2 auth methods : SOCKS5_AUTH_NOAUTH, SOCKS5_AUTH_USERPASS
@@ -1102,7 +1203,10 @@ private:
             return SOCKET_ERROR;
 
         if (buf[0] != SOCKS5_VERSION || buf[1] == SOCKS5_REJECT) {
-            return setError(s, IDS_PROXY_BAD_REQUEST);
+            char uimsg[MAX_UIMSG];
+            UTIL_get_lang_msg("MSG_PROXY_BAD_REQUEST", uimsg, sizeof(uimsg),
+                              "Proxy prevent this connection!");
+            return setError(s, uimsg);
         }
         auth_method = buf[1];
 
@@ -1135,12 +1239,16 @@ private:
             auth_result = buf[1] != 0;
             break;
         default:
-            return setError(s, IDS_PROXY_BAD_REQUEST);
+            UTIL_get_lang_msg("MSG_PROXY_BAD_REQUEST", uimsg, sizeof(uimsg),
+                              "Proxy prevent this connection!");
+            return setError(s, uimsg);
         }
         if (auth_result == SOCKET_ERROR) {
             return SOCKET_ERROR;
         }else if (auth_result != 0) {
-            return setError(s, IDS_PROXY_UNAUTHORIZED);
+            UTIL_get_lang_msg("MSG_PROXY_UNAUTHORIZED", uimsg, sizeof(uimsg),
+                              "Proxy authorization failed!");
+            return setError(s, uimsg);
         }
         /* request to connect */
         ptr = buf;
@@ -1190,7 +1298,9 @@ private:
         if (recieveFromSocket(s, buf, 4) == SOCKET_ERROR)
             return SOCKET_ERROR;
         if (buf[0] != SOCKS5_VERSION || buf[1] != SOCKS5_REP_SUCCEEDED) {   /* check reply code */
-            return setError(s, IDS_PROXY_BAD_REQUEST);
+            UTIL_get_lang_msg("MSG_PROXY_BAD_REQUEST", uimsg, sizeof(uimsg),
+                              "Proxy prevent this connection!");
+            return setError(s, uimsg);
         }
         // buf[2] is reserved
         switch (buf[3]) { /* case by ATYP */
@@ -1286,16 +1396,20 @@ private:
         if (recieveFromSocket(s, buf, 8) == SOCKET_ERROR) {
             return SOCKET_ERROR;
         }
-        int messageid = 0;
+        char uimsg[MAX_UIMSG];
+        uimsg[0] = NULL;
         if (buf[0] != 0) {
-            messageid = IDS_PROXY_BAD_REQUEST;
+            UTIL_get_lang_msg("MSG_PROXY_BAD_REQUEST", uimsg, sizeof(uimsg),
+                              "Proxy prevent this connection!");
         }else if (buf[1] == SOCKS4_REP_IDENT_FAIL || buf[1] == SOCKS4_REP_USERID) {
-            messageid = IDS_PROXY_UNAUTHORIZED;
+            UTIL_get_lang_msg("MSG_PROXY_UNAUTHORIZED", uimsg, sizeof(uimsg),
+                              "Proxy authorization failed!");
         }else if (buf[1] != SOCKS4_REP_SUCCEEDED) {
-            messageid = IDS_PROXY_BAD_REQUEST;
+            UTIL_get_lang_msg("MSG_PROXY_BAD_REQUEST", uimsg, sizeof(uimsg),
+                              "Proxy prevent this connection!");
         }
-        if (messageid != 0) {
-            return setError(s, messageid);
+        if (uimsg[0] != NULL) {
+            return setError(s, uimsg);
         }
     
         /* Conguraturation, connected via SOCKS4 server! */
@@ -1304,6 +1418,7 @@ private:
 
     int begin_relay_telnet(ProxyInfo& proxy, String realhost, short realport, SOCKET s) {
         int err = 0;
+        char uimsg[MAX_UIMSG];
 
         while (!err) {
             switch (wait_for_prompt(s, prompt_table, countof(prompt_table), 10)) {
@@ -1327,15 +1442,14 @@ private:
                 break;
             }
         }
-        return setError(s, IDS_PROXY_BAD_REQUEST);
+        UTIL_get_lang_msg("MSG_PROXY_BAD_REQUEST", uimsg, sizeof(uimsg),
+                          "Proxy prevent this connection!");
+        return setError(s, uimsg);
     }
 
-    String loadString(int id) {
-        return Resource::loadString(resource_module, id);
-    }
-    int setError(SOCKET s, int id) {
-        if (id != 0)
-            showMessage(id);
+    int setError(SOCKET s, char *p) {
+        if (*p != NULL)
+            showMessage(p);
         HWND window;
         UINT message;
         long event;
@@ -1348,9 +1462,9 @@ private:
         WSASetLastError(WSAECONNREFUSED);
         return SOCKET_ERROR;
     }
-    void showMessage(int id) {
+    void showMessage(char *p) {
         if (shower != NULL) {
-            shower->showMessage(loadString(id));
+            shower->showMessage(p);
         }
     }
 
@@ -1476,8 +1590,115 @@ private:                                                   \
                 if (!ssl->connect(s, info->realhost)) {
                     shutdown(s, SD_BOTH);
                     int error_code = ssl->get_verify_result();
+                    char uimsg[MAX_UIMSG];
                     delete ssl;
-                    return setError(s, error_code);
+                    switch (error_code) {
+                        case IDS_UNABLE_TO_GET_ISSUER_CERT:
+                            UTIL_get_lang_msg("MSG_UNABLE_TO_GET_ISSUER_CERT", uimsg, sizeof(uimsg),
+                                              "Unable to get Issuer Certificate");
+                        case IDS_UNABLE_TO_GET_CRL:
+                            UTIL_get_lang_msg("MSG_UNABLE_TO_GET_CRL", uimsg, sizeof(uimsg),
+                                              "Unable to get Ceritifcate CRL");
+                        case IDS_UNABLE_TO_DECRYPT_CERT_SIGNATURE:
+                            UTIL_get_lang_msg("MSG_UNABLE_TO_DECRYPT_CERT_SIGNATURE", uimsg, sizeof(uimsg),
+                                              "Unable to decrypt Certificate's Signature");
+                        case IDS_UNABLE_TO_DECRYPT_CRL_SIGNATURE:
+                            UTIL_get_lang_msg("MSG_UNABLE_TO_DECRYPT_CRL_SIGNATURE", uimsg, sizeof(uimsg),
+                                              "Unable to decrypt CRL's Signature");
+                        case IDS_UNABLE_TO_DECODE_ISSUER_PUBLIC_KEY:
+                            UTIL_get_lang_msg("MSG_UNABLE_TO_DECODE_ISSUER_PUBLIC_KEY", uimsg, sizeof(uimsg),
+                                              "Unable to decode Issuer Public Key");
+                        case IDS_CERT_SIGNATURE_FAILURE:
+                            UTIL_get_lang_msg("MSG_CERT_SIGNATURE_FAILURE", uimsg, sizeof(uimsg),
+                                              "Certificate Signature failure");
+                        case IDS_CRL_SIGNATURE_FAILURE:
+                            UTIL_get_lang_msg("MSG_CRL_SIGNATURE_FAILURE", uimsg, sizeof(uimsg),
+                                              "CRL Signature failure");
+                        case IDS_CERT_NOT_YET_VALID:
+                            UTIL_get_lang_msg("MSG_CERT_NOT_YET_VALID", uimsg, sizeof(uimsg),
+                                              "Certificate is not yet valid");
+                        case IDS_CERT_HAS_EXPIRED:
+                            UTIL_get_lang_msg("MSG_CERT_HAS_EXPIRED", uimsg, sizeof(uimsg),
+                                              "Certificate has expired");
+                        case IDS_CRL_NOT_YET_VALID:
+                            UTIL_get_lang_msg("MSG_CRL_NOT_YET_VALID", uimsg, sizeof(uimsg),
+                                              "CRL is not yet valid");
+                        case IDS_CRL_HAS_EXPIRED:
+                            UTIL_get_lang_msg("MSG_CRL_HAS_EXPIRED", uimsg, sizeof(uimsg),
+                                              "CRL has expired");
+                        case IDS_ERROR_IN_CERT_NOT_BEFORE_FIELD:
+                            UTIL_get_lang_msg("MSG_ERROR_IN_CERT_NOT_BEFORE_FIELD", uimsg, sizeof(uimsg),
+                                              "Format error in Certificate's notBefore field");
+                        case IDS_ERROR_IN_CERT_NOT_AFTER_FIELD:
+                            UTIL_get_lang_msg("MSG_ERROR_IN_CERT_NOT_AFTER_FIELD", uimsg, sizeof(uimsg),
+                                              "Format error in Certificate's notAfter field");
+                        case IDS_ERROR_IN_CRL_LAST_UPDATE_FIELD:
+                            UTIL_get_lang_msg("MSG_ERROR_IN_CRL_LAST_UPDATE_FIELD", uimsg, sizeof(uimsg),
+                                              "Format error in CRL's lastUpdate field");
+                        case IDS_ERROR_IN_CRL_NEXT_UPDATE_FIELD:
+                            UTIL_get_lang_msg("MSG_ERROR_IN_CRL_NEXT_UPDATE_FIELD", uimsg, sizeof(uimsg),
+                                              "Format error in CRL's nextUpdate field");
+                        case IDS_OUT_OF_MEM:
+                            UTIL_get_lang_msg("MSG_OUT_OF_MEM", uimsg, sizeof(uimsg),
+                                              "Out of memory");
+                        case IDS_DEPTH_ZERO_SELF_SIGNED_CERT:
+                            UTIL_get_lang_msg("MSG_DEPTH_ZERO_SELF_SIGNED_CERT", uimsg, sizeof(uimsg),
+                                              "Self-signed Certificate");
+                        case IDS_SELF_SIGNED_CERT_IN_CHAIN:
+                            UTIL_get_lang_msg("MSG_SELF_SIGNED_CERT_IN_CHAIN", uimsg, sizeof(uimsg),
+                                              "Self-signed Certificate found in Certificate chain");
+                        case IDS_UNABLE_TO_GET_ISSUER_CERT_LOCALLY:
+                            UTIL_get_lang_msg("MSG_UNABLE_TO_GET_ISSUER_CERT_LOCALLY", uimsg, sizeof(uimsg),
+                                              "Unable to get Local Issuer Certificate");
+                        case IDS_UNABLE_TO_VERIFY_LEAF_SIGNATURE:
+                            UTIL_get_lang_msg("MSG_UNABLE_TO_VERIFY_LEAF_SIGNATURE", uimsg, sizeof(uimsg),
+                                              "Unable to verify the first Certificate");
+                        case IDS_CERT_CHAIN_TOO_LONG:
+                            UTIL_get_lang_msg("MSG_CERT_CHAIN_TOO_LONG", uimsg, sizeof(uimsg),
+                                              "Certificate chain too long");
+                        case IDS_CERT_REVOKED:
+                            UTIL_get_lang_msg("MSG_CERT_REVOKED", uimsg, sizeof(uimsg),
+                                              "Certificate revoked");
+                        case IDS_INVALID_CA:
+                            UTIL_get_lang_msg("MSG_INVALID_CA", uimsg, sizeof(uimsg),
+                                              "Invalid CA Certificate");
+                        case IDS_PATH_LENGTH_EXCEEDED:
+                            UTIL_get_lang_msg("MSG_PATH_LENGTH_EXCEEDED", uimsg, sizeof(uimsg),
+                                              "Path length constraint exceeded");
+                        case IDS_INVALID_PURPOSE:
+                            UTIL_get_lang_msg("MSG_INVALID_PURPOSE", uimsg, sizeof(uimsg),
+                                              "Unsupported Certificate purpose");
+                        case IDS_CERT_UNTRUSTED:
+                            UTIL_get_lang_msg("MSG_CERT_UNTRUSTED", uimsg, sizeof(uimsg),
+                                              "Certificate not trusted");
+                        case IDS_CERT_REJECTED:
+                            UTIL_get_lang_msg("MSG_CERT_REJECTED", uimsg, sizeof(uimsg),
+                                              "Certificate rejected");
+                        case IDS_SUBJECT_ISSUER_MISMATCH:
+                            UTIL_get_lang_msg("MSG_SUBJECT_ISSUER_MISMATCH", uimsg, sizeof(uimsg),
+                                              "Subject Issuer mismatch");
+                        case IDS_AKID_SKID_MISMATCH:
+                            UTIL_get_lang_msg("MSG_AKID_SKID_MISMATCH", uimsg, sizeof(uimsg),
+                                              "Authority and Subject Key Identifier mismatch");
+                        case IDS_AKID_ISSUER_SERIAL_MISMATCH:
+                            UTIL_get_lang_msg("MSG_AKID_ISSUER_SERIAL_MISMATCH", uimsg, sizeof(uimsg),
+                                              "Authority and Issuer Serial Number mismatch");
+                        case IDS_KEYUSAGE_NO_CERTSIGN:
+                            UTIL_get_lang_msg("MSG_KEYUSAGE_NO_CERTSIGN", uimsg, sizeof(uimsg),
+                                              "Key usage does not include Ceritifcate signing");
+                        case IDS_APPLICATION_VERIFICATION:
+                            UTIL_get_lang_msg("MSG_APPLICATION_VERIFICATION", uimsg, sizeof(uimsg),
+                                              "Application verification failure");
+                        case IDS_UNMATCH_COMMON_NAME:
+                            UTIL_get_lang_msg("MSG_UNMATCH_COMMON_NAME", uimsg, sizeof(uimsg),
+                                              "Umatch Common Name");
+                        case IDS_UNABLE_TO_GET_COMMON_NAME:
+                            UTIL_get_lang_msg("MSG_UNABLE_TO_GET_COMMON_NAME", uimsg, sizeof(uimsg),
+                                              "Unable to get Common Name");
+                        default:
+                            uimsg[0] = NULL;
+                    }
+                    return setError(s, uimsg);
                 }
                 sslmap.put(s,ssl);
             }

@@ -10,6 +10,41 @@
 
 #include "SSLLIB.h"
 
+#define IDS_UNABLE_TO_GET_ISSUER_CERT   200
+#define IDS_UNABLE_TO_GET_CRL           201
+#define IDS_UNABLE_TO_DECRYPT_CERT_SIGNATURE 202
+#define IDS_UNABLE_TO_DECRYPT_CRL_SIGNATURE 203
+#define IDS_UNABLE_TO_DECODE_ISSUER_PUBLIC_KEY 204
+#define IDS_CERT_SIGNATURE_FAILURE      205
+#define IDS_CRL_SIGNATURE_FAILURE       206
+#define IDS_CERT_NOT_YET_VALID          207
+#define IDS_CERT_HAS_EXPIRED            208
+#define IDS_CRL_NOT_YET_VALID           209
+#define IDS_CRL_HAS_EXPIRED             210
+#define IDS_ERROR_IN_CERT_NOT_BEFORE_FIELD 211
+#define IDS_ERROR_IN_CERT_NOT_AFTER_FIELD 212
+#define IDS_ERROR_IN_CRL_LAST_UPDATE_FIELD 213
+#define IDS_ERROR_IN_CRL_NEXT_UPDATE_FIELD 214
+#define IDS_OUT_OF_MEM                  215
+#define IDS_DEPTH_ZERO_SELF_SIGNED_CERT 216
+#define IDS_SELF_SIGNED_CERT_IN_CHAIN   217
+#define IDS_UNABLE_TO_GET_ISSUER_CERT_LOCALLY 218
+#define IDS_UNABLE_TO_VERIFY_LEAF_SIGNATURE 219
+#define IDS_CERT_CHAIN_TOO_LONG         220
+#define IDS_CERT_REVOKED                221
+#define IDS_INVALID_CA                  222
+#define IDS_PATH_LENGTH_EXCEEDED        223
+#define IDS_INVALID_PURPOSE             224
+#define IDS_CERT_UNTRUSTED              225
+#define IDS_CERT_REJECTED               226
+#define IDS_SUBJECT_ISSUER_MISMATCH     227
+#define IDS_AKID_SKID_MISMATCH          228
+#define IDS_AKID_ISSUER_SERIAL_MISMATCH 229
+#define IDS_KEYUSAGE_NO_CERTSIGN        230
+#define IDS_APPLICATION_VERIFICATION    231
+#define IDS_UNMATCH_COMMON_NAME         232
+#define IDS_UNABLE_TO_GET_COMMON_NAME   233
+
 class SSLSocket {
 private:
     class SSLContext {
@@ -169,37 +204,37 @@ public:
                         verify_result = 0;
                         int id = X509_get_ext_by_NID(x509, NID_subject_alt_name, -1);
                         if (id >= 0) {
-	                        X509_EXTENSION* ex = X509_get_ext(x509, id);
-	                        STACK_OF(GENERAL_NAME)* alt = (STACK_OF(GENERAL_NAME)*) X509V3_EXT_d2i(ex);
-	                        if (alt != NULL) {
-								int i;
+                            X509_EXTENSION* ex = X509_get_ext(x509, id);
+                            STACK_OF(GENERAL_NAME)* alt = (STACK_OF(GENERAL_NAME)*) X509V3_EXT_d2i(ex);
+                            if (alt != NULL) {
+                                int i;
                                 int count = 0;
-	                            int n = sk_GENERAL_NAME_num(alt);
-	                            for (i = 0; i < n; i++) {
-		                            GENERAL_NAME* gn = sk_GENERAL_NAME_value(alt, i);
-		                            if (gn->type == GEN_DNS) {
-		                                char *sn = (char*) ASN1_STRING_data(gn->d.ia5);
-		                                int sl = ASN1_STRING_length(gn->d.ia5);
+                                int n = sk_GENERAL_NAME_num(alt);
+                                for (i = 0; i < n; i++) {
+                                    GENERAL_NAME* gn = sk_GENERAL_NAME_value(alt, i);
+                                    if (gn->type == GEN_DNS) {
+                                        char *sn = (char*) ASN1_STRING_data(gn->d.ia5);
+                                        int sl = ASN1_STRING_length(gn->d.ia5);
                                         count++;
-		                                if (ssl_match_cert_ident(sn, sl, hostname))
-    			                            break;
-		                            }
-	                            }
-	                            X509V3_EXT_METHOD* method = X509V3_EXT_get(ex);
-	                            sk_GENERAL_NAME_free(alt);
-	                            if (i < n)
-		                            match = true;
-	                            else if (count > 0)
-	                                verify_result = IDS_UNMATCH_COMMON_NAME; /* common name‚ªˆê’v‚µ‚È‚©‚Á‚½ */
-	                        }
+                                        if (ssl_match_cert_ident(sn, sl, hostname))
+                                            break;
+                                    }
+                                }
+                                X509V3_EXT_METHOD* method = X509V3_EXT_get(ex);
+                                sk_GENERAL_NAME_free(alt);
+                                if (i < n)
+                                    match = true;
+                                else if (count > 0)
+                                    verify_result = IDS_UNMATCH_COMMON_NAME; /* common name‚ªˆê’v‚µ‚È‚©‚Á‚½ */
+                            }
                         }
                         if (!match && verify_result == 0) {
-	                        X509_NAME* xn = X509_get_subject_name(x509);
+                            X509_NAME* xn = X509_get_subject_name(x509);
                             char buf[1024];
-	                        if (X509_NAME_get_text_by_NID(xn, NID_commonName, buf, sizeof buf) == -1)
-	                            verify_result = IDS_UNABLE_TO_GET_COMMON_NAME; /* common name‚ÌŽæ“¾‚ÉŽ¸”s‚µ‚½ */
-	                        else if (!ssl_match_cert_ident(buf, strlen(buf), hostname))
-	                            verify_result = IDS_UNMATCH_COMMON_NAME; /* common name‚ªˆê’v‚µ‚È‚©‚Á‚½ */
+                            if (X509_NAME_get_text_by_NID(xn, NID_commonName, buf, sizeof buf) == -1)
+                                verify_result = IDS_UNABLE_TO_GET_COMMON_NAME; /* common name‚ÌŽæ“¾‚ÉŽ¸”s‚µ‚½ */
+                            else if (!ssl_match_cert_ident(buf, strlen(buf), hostname))
+                                verify_result = IDS_UNMATCH_COMMON_NAME; /* common name‚ªˆê’v‚µ‚È‚©‚Á‚½ */
                             else
                                 match = true;
                         }
