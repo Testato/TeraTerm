@@ -173,22 +173,6 @@ private:
 		ProxyWSockHook::setMessageShower(&getInstance().shower);
 	}
 
-#if 0
-	static void setTTProxyLocale() {
-		LCID lcid = ::GetThreadLocale();
-		WORD langid = LANGIDFROMLCID(lcid);
-		WORD primarylid = PRIMARYLANGID(langid);
-		WORD sortid = SORTIDFROMLCID(lcid);
-		// not use the resource language of TeraTerm print dialog (2006.12.12 maya)
-		//::EnumResourceLanguages(::GetModuleHandle(NULL), RT_DIALOG, MAKEINTRESOURCE(2100), EnumProc, (LONG) &langid);
-		if (primarylid != PRIMARYLANGID(langid)) {
-			sortid = SORT_DEFAULT;
-		}
-		if (lcid != MAKELCID(langid, sortid))
-			::SetThreadLocale(MAKELCID(langid, sortid));
-	}
-#endif
-
 	static void PASCAL TTXGetSetupHooks(TTXSetupHooks* hooks) {
 		getInstance().ORIG_ReadIniFile = *hooks->ReadIniFile;
 		getInstance().ORIG_WriteIniFile = *hooks->WriteIniFile;
@@ -219,10 +203,6 @@ private:
 	}
 
 	static void PASCAL TTXModifyMenu(HMENU menu) {
-#if 0
-		/* move from TTXInit (2006.12.12 maya) */
-		setTTProxyLocale();
-#endif
 		char uimsg[MAX_UIMSG];
 		/* inserts before ID_HELP_ABOUT */
 		UTIL_get_lang_msg("MENU_ABOUT", uimsg, sizeof(uimsg), "About TT&Proxy...");
@@ -233,14 +213,12 @@ private:
 	}
 
 	static int PASCAL TTXProcessCommand(HWND hWin, WORD cmd) {
-		LCID lcid = getLCID();
-
 		switch (cmd) {
 		case ID_ABOUTMENU:
 			ProxyWSockHook::aboutDialog(hWin);
 			return 1;
 		case ID_PROXYSETUPMENU:
-			ProxyWSockHook::setupDialog(hWin, lcid);
+			ProxyWSockHook::setupDialog(hWin);
 			return 1;
 		case ID_ASYNCMESSAGEBOX:
 			if (getInstance().error_message != NULL) {
