@@ -1367,7 +1367,6 @@ static void ListupSerialPort(char *ComPortTable, int comports, char **ComPortDes
 	HDEVINFO DeviceInfoSet = NULL;
 	SP_DEVINFO_DATA DeviceInfoData;
 	DWORD dwMemberIndex = 0;
-	int i;
 
 	HMODULE SETUPAPI;
 	typedef BOOL (WINAPI *LPFNSetupDiClassGuidsFromName)(
@@ -1389,12 +1388,6 @@ static void ListupSerialPort(char *ComPortTable, int comports, char **ComPortDes
 	LPFNSetupDiDestroyDeviceInfoList FNSetupDiDestroyDeviceInfoList;
 
 	DeviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
-
-	// à»ëOÇÃÉÅÉÇÉäÇÉtÉäÅ[ÇµÇƒÇ®Ç≠
-	for (i = 0 ; i < ComPortMax ; i++) {
-		free(ComPortDesc[i]);
-		ComPortDesc[i] = NULL;
-	}
 
 	// dynamic load "setupapi" for win98/Me/NT4
 	SETUPAPI = LoadLibrary("setupapi.dll");
