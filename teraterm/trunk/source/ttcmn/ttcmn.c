@@ -1368,60 +1368,23 @@ static void ListupSerialPort(char *ComPortTable, int comports, char **ComPortDes
 	SP_DEVINFO_DATA DeviceInfoData;
 	DWORD dwMemberIndex = 0;
 
-	HMODULE SETUPAPI;
-	typedef BOOL (WINAPI *LPFNSetupDiClassGuidsFromName)(
-		PCSTR, LPGUID, DWORD, PDWORD);
-	typedef HDEVINFO (WINAPI *LPFNSetupDiGetClassDevs)(
-		LPGUID, PCSTR, HWND, DWORD);
-	typedef BOOL (WINAPI *LPFNSetupDiEnumDeviceInfo)(
-		HDEVINFO, DWORD, PSP_DEVINFO_DATA);
-	typedef BOOL (WINAPI *LPFNSetupDiGetDeviceRegistryProperty)(
-		HDEVINFO, PSP_DEVINFO_DATA, DWORD, PDWORD, PBYTE, DWORD, PDWORD);
-	typedef HKEY (WINAPI *LPFNSetupDiOpenDevRegKey)(
-		HDEVINFO, PSP_DEVINFO_DATA, DWORD, DWORD, DWORD, REGSAM);
-	typedef BOOL (WINAPI *LPFNSetupDiDestroyDeviceInfoList)(HDEVINFO);
-	LPFNSetupDiClassGuidsFromName FNSetupDiClassGuidsFromName;
-	LPFNSetupDiGetClassDevs FNSetupDiGetClassDevs;
-	LPFNSetupDiEnumDeviceInfo FNSetupDiEnumDeviceInfo;
-	LPFNSetupDiGetDeviceRegistryProperty FNSetupDiGetDeviceRegistryProperty;
-	LPFNSetupDiOpenDevRegKey FNSetupDiOpenDevRegKey;
-	LPFNSetupDiDestroyDeviceInfoList FNSetupDiDestroyDeviceInfoList;
-
 	DeviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
-
-	// dynamic load "setupapi" for win98/Me/NT4
-	SETUPAPI = LoadLibrary("setupapi.dll");
-	if (SETUPAPI == NULL) {
-		return;
-	}
-	FNSetupDiClassGuidsFromName =
-		(LPFNSetupDiClassGuidsFromName)GetProcAddress(SETUPAPI, "SetupDiClassGuidsFromNameA");
-	FNSetupDiGetClassDevs =
-		(LPFNSetupDiGetClassDevs)GetProcAddress(SETUPAPI, "SetupDiGetClassDevsA");
-	FNSetupDiEnumDeviceInfo =
-		(LPFNSetupDiEnumDeviceInfo)GetProcAddress(SETUPAPI, "SetupDiEnumDeviceInfo");
-	FNSetupDiGetDeviceRegistryProperty =
-		(LPFNSetupDiGetDeviceRegistryProperty)GetProcAddress(SETUPAPI, "SetupDiGetDeviceRegistryPropertyA");
-	FNSetupDiOpenDevRegKey =
-		(LPFNSetupDiOpenDevRegKey)GetProcAddress(SETUPAPI, "SetupDiOpenDevRegKey");
-	FNSetupDiDestroyDeviceInfoList =
-		(LPFNSetupDiDestroyDeviceInfoList)GetProcAddress(SETUPAPI, "SetupDiDestroyDeviceInfoList");
 
 // Get ClassGuid from ClassName for PORTS class
 	bRet =
-		FNSetupDiClassGuidsFromName(_T("PORTS"), (LPGUID) & ClassGuid, 1,
+		SetupDiClassGuidsFromName(_T("PORTS"), (LPGUID) & ClassGuid, 1,
 								  &dwRequiredSize);
 	if (!bRet)
 		goto cleanup;
 
 // Get class devices
 	DeviceInfoSet =
-		FNSetupDiGetClassDevs(&ClassGuid[0], NULL, NULL, DIGCF_PROFILE);
+		SetupDiGetClassDevs(&ClassGuid[0], NULL, NULL, DIGCF_PROFILE);
 
 	if (DeviceInfoSet) {
 // Enumerate devices
 		dwMemberIndex = 0;
-		while (FNSetupDiEnumDeviceInfo
+		while (SetupDiEnumDeviceInfo
 			   (DeviceInfoSet, dwMemberIndex++, &DeviceInfoData)) {
 			TCHAR szFriendlyName[MAX_PATH];
 			TCHAR szPortName[MAX_PATH];
@@ -1432,7 +1395,7 @@ static void ListupSerialPort(char *ComPortTable, int comports, char **ComPortDes
 			HKEY hKey = NULL;
 
 // Get friendlyname
-			bRet = FNSetupDiGetDeviceRegistryProperty(DeviceInfoSet,
+			bRet = SetupDiGetDeviceRegistryProperty(DeviceInfoSet,
 													&DeviceInfoData,
 													SPDRP_FRIENDLYNAME,
 													&dwPropType,
@@ -1442,7 +1405,7 @@ static void ListupSerialPort(char *ComPortTable, int comports, char **ComPortDes
 													&dwReqSize);
 
 // Open device parameters reg key
-			hKey = FNSetupDiOpenDevRegKey(DeviceInfoSet,
+			hKey = SetupDiOpenDevRegKey(DeviceInfoSet,
 										&DeviceInfoData,
 										DICS_FLAG_GLOBAL,
 										0, DIREG_DEV, KEY_READ);
@@ -1484,9 +1447,7 @@ static void ListupSerialPort(char *ComPortTable, int comports, char **ComPortDes
 
   cleanup:
 // Destroy device info list
-	FNSetupDiDestroyDeviceInfoList(DeviceInfoSet);
-
-	FreeLibrary(SETUPAPI);
+	SetupDiDestroyDeviceInfoList(DeviceInfoSet);
 }
 
 

@@ -77,10 +77,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="setupapi.lib"
 				OutputFile=".\..\bin\Release/ttpcmn.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\ttpcmn.def"
+				DelayLoadDLLs="setupapi.dll"
 				ProgramDatabaseFile=".\..\bin\Release/ttpcmn.pdb"
 				SubSystem="2"
 				ImportLibrary=".\..\bin\Release/ttpcmn.lib"
@@ -172,10 +174,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="setupapi.lib"
 				OutputFile=".\..\bin\Debug/ttpcmn.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\ttpcmn.def"
+				DelayLoadDLLs="setupapi.dll"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\..\bin\Debug/ttpcmn.pdb"
 				SubSystem="2"
