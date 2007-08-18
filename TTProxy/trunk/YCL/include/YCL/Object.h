@@ -1,5 +1,5 @@
 /*
- * $Id: Object.h,v 1.3 2006-08-03 13:33:18 yutakakn Exp $
+ * $Id: Object.h,v 1.4 2007-08-18 08:52:18 maya Exp $
  */
 
 #ifndef _YCL_OBJECT_H_
@@ -58,14 +58,3 @@ public:
 }
 
 #endif//_YCL_OBJECT_H_
-
-/*
- * $Changes
- * $Log: not supported by cvs2svn $
- * Revision 1.2  2003/06/12 08:34:01  sugoroku
- * 同じポインタがセットされたときに解放してしまわないように修正
- *
- * Revision 1.1.1.1  2003/05/26 15:32:04  sugoroku
- * 新規作成
- *
- */

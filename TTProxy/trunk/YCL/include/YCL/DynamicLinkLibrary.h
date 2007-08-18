@@ -1,5 +1,5 @@
 /*
- * $Id: DynamicLinkLibrary.h,v 1.3 2006-08-03 13:33:18 yutakakn Exp $
+ * $Id: DynamicLinkLibrary.h,v 1.4 2007-08-18 08:52:18 maya Exp $
  */
 
 #ifndef _YCL_DYNAMICLINKLIBRARY_H_
@@ -40,14 +40,3 @@ public:
 }
 
 #endif//_YCL_DYNAMICLINKLIBRARY_H_
-
-/*
- * $Changes
- * $Log: not supported by cvs2svn $
- * Revision 1.2  2003/12/19 19:59:33  sugoroku
- * コンパイルエラーが出ていたので修正
- *
- * Revision 1.1.1.1  2003/05/26 15:32:00  sugoroku
- * 新規作成
- *
- */

@@ -1,5 +1,5 @@
 /*
- * $Id: Resource.h,v 1.5 2007-08-18 05:47:27 maya Exp $
+ * $Id: Resource.h,v 1.6 2007-08-18 08:52:18 maya Exp $
  */
 
 #ifndef _YCL_RESOURCE_H_
@@ -140,21 +140,3 @@ public:
 }
 
 #endif//_YCL_RESOURCE_H_
-
-/*
- * $Changes
- * $Log: not supported by cvs2svn $
- * Revision 1.4  2007/03/08 13:33:47  maya
- * SetThreadLocale で TTProxy の言語を変えるのをやめた。
- * lng ファイルから LCID を読み込む。
- *
- * Revision 1.3  2006/08/03 13:33:18  yutakakn
- * (none)
- *
- * Revision 1.2  2003/06/06 15:49:21  sugoroku
- * 文字列リソースをバッファに直接読み込むメソッドを追加
- *
- * Revision 1.1.1.1  2003/05/26 15:32:04  sugoroku
- * 新規作成
- *
- */

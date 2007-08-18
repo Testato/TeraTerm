@@ -1,5 +1,5 @@
 /*
- * $Id: Integer.h,v 1.3 2006-08-03 13:33:18 yutakakn Exp $
+ * $Id: Integer.h,v 1.4 2007-08-18 08:52:18 maya Exp $
  */
 
 #ifndef _YCL_INTEGER_H_
@@ -129,14 +129,3 @@ public:
 }
 
 #endif//_YCL_INTEGER_H_
-
-/*
- * $Changes
- * $Log: not supported by cvs2svn $
- * Revision 1.2  2003/06/03 09:43:27  sugoroku
- * 数値<->文字列変換メソッドを追加
- *
- * Revision 1.1.1.1  2003/05/26 15:32:00  sugoroku
- * 新規作成
- *
- */

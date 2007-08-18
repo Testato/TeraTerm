@@ -1,5 +1,5 @@
 /*
- * $Id: String.h,v 1.3 2006-08-03 13:33:18 yutakakn Exp $
+ * $Id: String.h,v 1.4 2007-08-18 08:52:18 maya Exp $
  */
 
 #ifndef _YCL_STRING_H_
@@ -665,14 +665,3 @@ public:
 }
 
 #endif//_YCL_STRING_H_
-
-/*
- * $Changes
- * $Log: not supported by cvs2svn $
- * Revision 1.2  2003/11/19 10:16:54  sugoroku
- * lastIndexOf‚Ì1•¶š”Å‚ÉƒoƒO‚ª‚ ‚Á‚½‚Ì‚ÅC³
- *
- * Revision 1.1.1.1  2003/05/26 15:32:07  sugoroku
- * V‹Kì¬
- *
- */

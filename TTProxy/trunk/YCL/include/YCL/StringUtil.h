@@ -1,5 +1,5 @@
 /*
- * $Id: StringUtil.h,v 1.3 2006-08-03 13:33:18 yutakakn Exp $
+ * $Id: StringUtil.h,v 1.4 2007-08-18 08:52:18 maya Exp $
  */
 
 #ifndef _YCL_STRINGUTIL_H_
@@ -205,20 +205,3 @@ public:
 }
 
 #endif//_YCL_STRINGUTIL_H_
-/*
- * $Changes
- * $Log: not supported by cvs2svn $
- * Revision 1.4  2003/07/18 16:06:16  sugoroku
- * 文字列の省略・折り返しを行うメソッドを追加
- *
- * Revision 1.3  2003/06/06 10:34:38  sugoroku
- * escape・unescapeにStringBufferを指定するパターンを追加
- * escape・unescapeにoffset、lengthを指定するパターンを追加
- *
- * Revision 1.2  2003/06/03 09:51:29  sugoroku
- * String::isLeadByteを使用するように変更
- *
- * Revision 1.1  2003/06/03 09:42:29  sugoroku
- * 文字列操作用ユーティリティクラスの追加
- *
- */

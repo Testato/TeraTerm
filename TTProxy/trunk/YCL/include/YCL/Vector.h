@@ -1,5 +1,5 @@
 /*
- * $Id: Vector.h,v 1.3 2006-08-03 13:33:18 yutakakn Exp $
+ * $Id: Vector.h,v 1.4 2007-08-18 08:52:18 maya Exp $
  */
 
 #ifndef _YCL_VECTOR_H_
@@ -199,14 +199,3 @@ public:
 }
 
 #endif//_YCL_VECTOR_H_
-
-/*
- * $Changes
- * $Log: not supported by cvs2svn $
- * Revision 1.2  2003/08/12 16:27:14  sugoroku
- * isEmpty‚ÌğŒ®‚ğŠÔˆá‚¦‚Ä‚¢‚½‚Ì‚ÅC³
- *
- * Revision 1.1.1.1  2003/05/26 15:32:07  sugoroku
- * V‹Kì¬
- *
- */

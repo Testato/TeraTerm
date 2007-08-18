@@ -1,5 +1,5 @@
 /*
- * $Id: HASHCODE.h,v 1.3 2006-08-03 13:33:18 yutakakn Exp $
+ * $Id: HASHCODE.h,v 1.4 2007-08-18 08:52:18 maya Exp $
  */
 #ifndef _YCL_HASHCODE_H_
 #define _YCL_HASHCODE_H_
@@ -37,10 +37,3 @@ public:
 }
 
 #endif//_YCL_HASHCODE_H_
-/*
- * Changes:
- * $Log: not supported by cvs2svn $
- * Revision 1.2  2003/11/28 11:14:10  sugoroku
- * CVSキーワードを追加
- *
- */

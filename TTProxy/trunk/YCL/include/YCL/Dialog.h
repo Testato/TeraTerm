@@ -1,5 +1,5 @@
 /*
- * $Id: Dialog.h,v 1.5 2007-08-18 05:47:27 maya Exp $
+ * $Id: Dialog.h,v 1.6 2007-08-18 08:52:18 maya Exp $
  */
 
 #ifndef _YCL_DIALOG_H_
@@ -143,18 +143,3 @@ protected:
 }
 
 #endif//_YCL_DIALOG_H_
-
-/*
- * $Changes
- * $Log: not supported by cvs2svn $
- * Revision 1.4  2007/03/08 13:33:47  maya
- * SetThreadLocale で TTProxy の言語を変えるのをやめた。
- * lng ファイルから LCID を読み込む。
- *
- * Revision 1.3  2006/08/03 13:33:18  yutakakn
- * (none)
- *
- * Revision 1.1  2003/05/26 15:32:00  sugoroku
- * Initial revision
- *
- */

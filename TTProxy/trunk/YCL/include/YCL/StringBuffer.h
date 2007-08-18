@@ -1,5 +1,5 @@
 /*
- * $Id: StringBuffer.h,v 1.3 2006-08-03 13:33:18 yutakakn Exp $
+ * $Id: StringBuffer.h,v 1.4 2007-08-18 08:52:18 maya Exp $
  */
 
 #ifndef _YCL_STRINGBUFFER_H_
@@ -379,20 +379,3 @@ public:
 }
 
 #endif//_YCL_STRINGBUFFER_H_
-
-/*
- * $Changes
- * $Log: not supported by cvs2svn $
- * Revision 1.4  2003/11/19 10:16:05  sugoroku
- * 文字列の挿入時にバグがあったので修正
- *
- * Revision 1.3  2003/06/06 05:26:05  sugoroku
- * 初期状態から文字を追加した場合にNULLポインタアクセスがあったので修正
- *
- * Revision 1.2  2003/06/03 10:25:56  sugoroku
- * デフォルトコンストラクタ使用時にはメモリを消費しないように変更
- *
- * Revision 1.1.1.1  2003/05/26 15:32:07  sugoroku
- * 新規作成
- *
- */

@@ -1,5 +1,5 @@
 /*
- * $Id: IniFile.h,v 1.3 2006-08-03 13:33:18 yutakakn Exp $
+ * $Id: IniFile.h,v 1.4 2007-08-18 08:52:18 maya Exp $
  */
 
 #ifndef _YCL_INIFILE_H_
@@ -314,33 +314,3 @@ public:
 }
 
 #endif//_YCL_INIFILE_H_
-
-/*
- * $Changes
- * $Log: not supported by cvs2svn $
- * Revision 1.8  2003/12/12 13:13:08  sugoroku
- * 値の存在確認用メソッドを追加
- *
- * Revision 1.7  2003/12/12 10:59:39  sugoroku
- * openメソッドが正常動作していなかったので修正
- *
- * Revision 1.6  2003/06/24 07:14:24  sugoroku
- * IniFileからの読み込み時に""は取り除かれているので常にエスケープ文字を展開するように変更
- *
- * Revision 1.5  2003/06/06 15:50:33  sugoroku
- * デフォルト値がNULLだった場合に無限ループに陥ることがあったので修正
- *
- * Revision 1.4  2003/06/06 10:37:37  sugoroku
- * 取得する文字列がバッファサイズよりも長くても取得できるように修正
- * 文字列はエスケープしたあと""で括って書き込むように変更
- *
- * Revision 1.3  2003/06/02 10:21:47  sugoroku
- * []演算子を扱えるように変更
- *
- * Revision 1.2  2003/05/30 19:33:50  sugoroku
- * const_segがなくても不変な定数は.rdataに格納されるようなのでconst_segを削除
- *
- * Revision 1.1.1.1  2003/05/26 15:32:00  sugoroku
- * 新規作成
- *
- */

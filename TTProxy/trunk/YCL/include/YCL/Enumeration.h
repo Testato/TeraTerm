@@ -1,5 +1,5 @@
 /*
- * $Id: Enumeration.h,v 1.3 2006-08-03 13:33:18 yutakakn Exp $
+ * $Id: Enumeration.h,v 1.4 2007-08-18 08:52:18 maya Exp $
  */
 
 #ifndef _YCL_ENUMERATION_H_
@@ -30,11 +30,3 @@ public:
 }
 
 #endif//_YCL_ENUMERATION_H_
-
-/*
- * $Changes
- * $Log: not supported by cvs2svn $
- * Revision 1.1  2003/05/26 15:32:00  sugoroku
- * Initial revision
- *
- */

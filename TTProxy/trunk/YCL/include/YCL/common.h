@@ -1,5 +1,5 @@
 /*
- * $Id: common.h,v 1.4 2007-08-08 16:02:19 maya Exp $
+ * $Id: common.h,v 1.5 2007-08-18 08:52:18 maya Exp $
  */
 
 #ifndef _YCL_COMMON_H_
@@ -112,14 +112,3 @@ void _free_dbg(void* pointer, const char* filename, int lineno);
 #pragma warning(disable: 4786)
 
 #endif//_YCL_COMMON_H_
-
-/*
- * $Changes
- * $Log: not supported by cvs2svn $
- * Revision 1.3  2006/08/03 13:33:18  yutakakn
- * (none)
- *
- * Revision 1.1  2003/05/26 15:31:55  sugoroku
- * Initial revision
- *
- */

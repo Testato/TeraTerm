@@ -1,5 +1,5 @@
 /*
- * $Id: Array.h,v 1.3 2006-08-03 13:33:18 yutakakn Exp $
+ * $Id: Array.h,v 1.4 2007-08-18 08:52:18 maya Exp $
  */
 
 #ifndef _YCL_ARRAY_H_
@@ -69,14 +69,3 @@ public:
 }
 
 #endif//_YCL_ARRAY_H_
-
-/*
- * $Changes
- * $Log: not supported by cvs2svn $
- * Revision 1.2  2003/06/02 10:22:47  sugoroku
- * copyメソッドのソースとディスティネーションが分かりにくかったのでメソッド名を変更
- *
- * Revision 1.1.1.1  2003/05/26 15:31:55  sugoroku
- * 新規作成
- *
- */
