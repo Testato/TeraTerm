@@ -1018,9 +1018,6 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		/////// SSH version
 
 
-		for (i = 0 ; i < sizeof(ComPortDesc) ; i++) {
-			ComPortDesc[i] = NULL;
-		}
 		j = 0;
 		w = 1;
 		strncpy_s(EntName, sizeof(EntName), "COM", _TRUNCATE);
@@ -1047,9 +1044,6 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 				if (GetHNRec->ComPort == i)
 					w = j;
 			}
-		}
-		for (i = 0 ; i < sizeof(ComPortDesc) ; i++) {
-			free(ComPortDesc[i]);
 		}
 
 		if (j > 0)
