@@ -386,12 +386,12 @@ BOOL GetOperator(LPWORD WordId)
 				LinePtr++;
 			}
 			else if (*WordId == RsvGT) {
-				*WordId = RsvLRShift;
+				*WordId = RsvARShift;
 				LinePtr++;
 			}
 		}
 		else if ((b == '<') && (*WordId == RsvLT)) {
-			*WordId = RsvLLShift;
+			*WordId = RsvALShift;
 			LinePtr++;
 		}
 		else if ((b == '&') && (*WordId == RsvBAnd)) {
@@ -407,7 +407,7 @@ BOOL GetOperator(LPWORD WordId)
 	if (LinePtr<LineLen) {
 		b = LineBuff[LinePtr];
 		if ((b == '>') && (*WordId == RsvLRShift)) {
-			*WordId = RsvARShift;
+			*WordId = RsvLRShift;
 			LinePtr++;
 		}
 	}
@@ -874,9 +874,9 @@ BOOL GetSimpleExpression(LPWORD ValType, int far *Val, LPWORD Err)
 			case RsvBXor:
 			case RsvPlus:
 			case RsvMinus:
-			case RsvLRShift:
-			case RsvLLShift:
 			case RsvARShift:
+			case RsvALShift:
+			case RsvLRShift:
 				break;
 			default:
 				LinePtr = P2;
@@ -909,9 +909,9 @@ BOOL GetSimpleExpression(LPWORD ValType, int far *Val, LPWORD Err)
 			case RsvBXor:    Val1 = Val1 ^ Val2;  break;
 			case RsvPlus:    Val1 = Val1 + Val2;  break;
 			case RsvMinus:   Val1 = Val1 - Val2;  break;
-			case RsvLRShift: Val1 = Val1 >> Val2; break;
-			case RsvLLShift: Val1 = Val1 << Val2; break;
-			case RsvARShift:
+			case RsvARShift: Val1 = Val1 >> Val2; break;
+			case RsvALShift: Val1 = Val1 << Val2; break;
+			case RsvLRShift:
 				u_Val1 = Val1;
 				Val1 = u_Val1 >> Val2;
 				break;

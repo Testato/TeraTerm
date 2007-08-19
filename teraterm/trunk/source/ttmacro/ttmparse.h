@@ -181,9 +181,9 @@
 #define RsvLAnd       167
 #define RsvLOr        168
 #define RsvLXor       169
-#define RsvLRShift    170 // logical right shift
-#define RsvLLShift    171 // logical left shift
-#define RsvARShift    172 // arithmetic right shift
+#define RsvARShift    170 // arithmetic right shift
+#define RsvALShift    171 // arithmetic left shift
+#define RsvLRShift    172 // logical right shift
 
 // integer type for buffer pointer
 #ifdef TERATERM32
