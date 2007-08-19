@@ -165,6 +165,36 @@ UTF-8 TeraTerm Pro with TTSSH2とTeraTerm 2.3との機能差分について以下に示します。
   <li>[*7] 言語ファイル(lang\*.lng)によりメニューやメッセージの表示言語を切り替えることができる。切り替えの有効化にはTeraTermの再起動が必要。</li>
 </ul>
 
+<p></p>
+
+そのほかの細かな新機能について以下に示します。<br><br>
+
+<ul>
+  <li>ANSIカラー色変更&行連結機能</li>
+  <li>マウスカーソルの種別変更</li>
+  <li>ログファイルへのコメント追加</li>
+  <li>Broadcast command機能</li>
+  <li>バッファの全選択</li>
+  <li>ホスト名の最大長拡張</li>
+  <li>TeraTerm Menu, LogMeTTの同梱</li>
+  <li>セッションの複製</li>
+  <li>スクロールバッファの最大長拡張</li>
+  <li>エクスプローラからのディレクトリのドラッグ&ドロップに対応</li>
+  <li>2つめ以降のTeraTermの起動時にもディスクから teraterm.ini を読む</li>
+  <li>VisualStyle(WindowsXP)対応</li>
+  <li>新しいタイトルフォーマット</li>
+  <li>ログ採取の新しいタイプを追加</li>
+  <li>TELNET/HTTP/SOCKSプロキシ</li>
+  <li>デフォルトログファイル名（strftimeフォーマット使用可）</li>
+  <li>SSH認証鍵作成ウィザード</li>
+  <li>CygTermダイアログ設定</li>
+  <li>Collectorによるタブ化</li>
+  <li>&lt;ESC&gt;[Jによる画面クリア時にカレントバッファをスクロールアウト</li>
+  <li>ログ再生メニューの追加</li>
+  <li>改行コード LF のサポート</li>
+</ul>
+
+
 <hr>
 
 <h2>修正されたオリジナルバグ</h2>
@@ -182,7 +212,64 @@ UTF-8 TeraTerm Pro with TTSSH2とTeraTerm 2.3との機能差分について以下に示します。
   <li>ZMODEMの送信において、ファイルサイズが20MBを超えるとクラッシュする。</li>
 </ol>
 
+
 <hr>
+
+<h2>新しいショートカットキー</h2>
+
+<table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
+<tr>
+	<td width="30%"><b>キー</b></td>
+	<td width="70%"><b>機能</b></td>
+</tr>
+
+<tr>
+	<td>ScrollLock</td>
+	<td>TeraTermウィンドウのスクロールロック/ロック解除（トグル）</td>
+</tr>
+
+<tr>
+	<td>Alt + Enter</td>
+	<td>ウィンドウの最大化（トグル）</td>
+</tr>
+
+<tr>
+	<td>Alt + D</td>
+	<td>セッションの複製（SSH, telnetのみ）</td>
+</tr>
+
+<tr>
+	<td>Alt + G</td>
+	<td>Cygwin接続</td>
+</tr>
+
+<tr>
+	<td>左クリック → Shift+左クリック</td>
+	<td>ページをまたぐテキスト選択、選択済みテキスト領域の伸縮</td>
+</tr>
+
+<tr>
+	<td>Shift + マウスドラッグ</td>
+	<td>廃止（ページをまたぐテキスト選択サポートのため）</td>
+</tr>
+
+<tr>
+	<td>Alt + マウスドラッグ</td>
+	<td>ブロック選択</td>
+</tr>
+
+
+</table>
+
+
+<hr>
+
+<h2>新設されたマクロコマンド</h2>
+
+
+<hr>
+
+<h2>新設されたteraterm.iniのエントリ</h2>
 
 
 
