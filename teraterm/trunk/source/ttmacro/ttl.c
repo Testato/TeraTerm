@@ -445,44 +445,6 @@ WORD TTLConnect()
 	return Err;
 }
 
-WORD TTLCircularLeftShift()
-{
-	WORD VarId, Err;
-	int x, n;
-	unsigned int u_x;
-
-	Err = 0;
-	GetIntVar(&VarId,&Err);
-	GetIntVal(&x,&Err);
-	GetIntVal(&n,&Err);
-	if ((Err==0) && (GetFirstChar()!=0))
-		Err = ErrSyntax;
-	if (Err!=0) return Err;
-
-	u_x = x;
-	SetIntVal(VarId, (x << n) | (u_x >> (32-n)));
-	return Err;
-}
-
-WORD TTLCircularRightShift()
-{
-	WORD VarId, Err;
-	int x, n;
-	unsigned int u_x;
-
-	Err = 0;
-	GetIntVar(&VarId,&Err);
-	GetIntVal(&x,&Err);
-	GetIntVal(&n,&Err);
-	if ((Err==0) && (GetFirstChar()!=0))
-		Err = ErrSyntax;
-	if (Err!=0) return Err;
-
-	u_x = x;
-	SetIntVal(VarId, (u_x >> n) | (x << (32-n)));
-	return Err;
-}
-
 WORD TTLDelPassword()
 {
 	TStrVal Str, Str2;
@@ -1831,6 +1793,46 @@ WORD TTLReturn()
 		return ErrSyntax;
 }
 
+// add 'rotateleft' (2007.8.19 maya)
+WORD TTLRotateLeft()
+{
+	WORD VarId, Err;
+	int x, n;
+	unsigned int u_x;
+
+	Err = 0;
+	GetIntVar(&VarId,&Err);
+	GetIntVal(&x,&Err);
+	GetIntVal(&n,&Err);
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	u_x = x;
+	SetIntVal(VarId, (x << n) | (u_x >> (32-n)));
+	return Err;
+}
+
+// add 'rotateright' (2007.8.19 maya)
+WORD TTLRotateRight()
+{
+	WORD VarId, Err;
+	int x, n;
+	unsigned int u_x;
+
+	Err = 0;
+	GetIntVar(&VarId,&Err);
+	GetIntVal(&x,&Err);
+	GetIntVal(&n,&Err);
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	u_x = x;
+	SetIntVal(VarId, (u_x >> n) | (x << (32-n)));
+	return Err;
+}
+
 WORD TTLSend()
 {
 	TStrVal Str;
@@ -2923,14 +2925,10 @@ int ExecCmnd()
 			Err = TTLCloseSBox(); break;
 		case RsvCloseTT:
 			Err = TTLCloseTT(); break;
-		case RsvCLShift:
-			Err = TTLCircularLeftShift(); break;
 		case RsvCode2Str:
 			Err = TTLCode2Str(); break;
 		case RsvConnect:
 			Err = TTLConnect(); break;
-		case RsvCRShift:
-			Err = TTLCircularRightShift(); break;
 		case RsvDelPassword:
 			Err = TTLDelPassword(); break;
 		case RsvDisconnect:
@@ -3065,6 +3063,10 @@ int ExecCmnd()
 			Err = TTLCommCmdFile(CmdRestoreSetup,0); break;
 		case RsvReturn:
 			Err = TTLReturn(); break;
+		case RsvRotateL:
+			Err = TTLRotateLeft(); break;   // add 'rotateleft' (2007.8.19 maya)
+		case RsvRotateR:
+			Err = TTLRotateRight(); break;  // add 'rotateright' (2007.8.19 maya)
 		case RsvSend:
 			Err = TTLSend(); break;
 		case RsvSendBreak:

@@ -123,8 +123,6 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 	else if (_stricmp(Str,"break")==0) *WordId = RsvBreak;
 	else if (_stricmp(Str,"call")==0) *WordId = RsvCall;
 	else if (_stricmp(Str,"changedir")==0) *WordId = RsvChangeDir;
-	else if (_stricmp(Str,"circularleftshift")==0) *WordId = RsvCLShift;
-	else if (_stricmp(Str,"circularrightshift")==0) *WordId = RsvCRShift;
 	else if (_stricmp(Str,"clearscreen")==0) *WordId = RsvClearScreen;
 	else if (_stricmp(Str,"clipb2var")==0) *WordId = RsvClipb2Var;	// add 'clipb2var' (2006.9.17 maya)
 	else if (_stricmp(Str,"closesbox")==0) *WordId = RsvCloseSBox;
@@ -198,6 +196,8 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 	else if (_stricmp(Str,"recvln")==0) *WordId = RsvRecvLn;
 	else if (_stricmp(Str,"restoresetup")==0) *WordId = RsvRestoreSetup;
 	else if (_stricmp(Str,"return")==0) *WordId = RsvReturn;
+	else if (_stricmp(Str,"rotateleft")==0) *WordId = RsvRotateL;	// add 'rotateleft' (2007.8.19 maya)
+	else if (_stricmp(Str,"rotateright")==0) *WordId = RsvRotateR;	// add 'rotateright' (2007.8.19 maya)
 	else if (_stricmp(Str,"send")==0) *WordId = RsvSend;
 	else if (_stricmp(Str,"sendbreak")==0) *WordId = RsvSendBreak;
 	else if (_stricmp(Str,"sendfile")==0) *WordId = RsvSendFile;
