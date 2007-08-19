@@ -28,7 +28,14 @@
     <ul>
       <li>added support for selecting a current screen buffer. Also, added `select screen' new menu under edit menu.</li>
       <li>added support for showing the device description of COM port on the connection dialog.</li>
+      <li>added support of telnet keep-alive.</li>
+      <li>expanded the maximum number of serial connection to 200.</li>
+      <li>added shift operator ">>", "<<", ">>>" for macro.</li>
+      <li>added 'rotateleft', 'rotateright' macro command.</li>
+      <li>replaced internal string functions to secure functions.</li>
+      <li>Bug fix: window size could not be changed at first time.</li>
       <li>Bug fix: CR+LF code at the end of line would not been selected when you select "Select all" menu under edit menu.</li>
+      <li>upgraded TTProxy to <a href="#ttproxy_1.0.0.14">1.0.0.14</a></li>
     </ul>
   </li>
 
@@ -1352,6 +1359,12 @@ SYNOPSIS:
 
 <h2><a name="ttproxy">TTProxy</a></h2>
 <ul>
+  <li class="history"><a name="ttproxy_1.0.0.14">2007.8.19 (Ver 1.0.0.14 not released)</a>
+    <ul>
+      <li>added support for dynamic loading of user interface messages.</li>
+    </ul>
+  </li>
+
   <li class="history"><a name="ttproxy_1.0.0.13">2007.5.7 (Ver 1.0.0.13)</a>
     <ul>
       <li>"protocol://&lt;user&lt;:password&gt;@&gt;proxyserver:proxyport" style parameter became unsupported.<br>

@@ -20,23 +20,70 @@
 演算子の優先順位による分類は以下のとおり
 </p>
 
-<pre>
-種類              優先順位    演算子
-<hr>
-ビット否定演算子  1 (最高)    not ~
-論理否定演算子    1           !
-乗除演算子        2           * / %
-ビット積演算子    2           and &
-加減演算子        3           + -
-ビット和演算子    3           or xor | ^
-関係演算子        4           = &lt;&gt; &lt; &gt; &lt;= &gt;=
-論理積演算子      5           &amp;&amp;
-論理和演算子      6 (最低)    ||
+<table border="1">
+  <tr>
+    <th>優先順位</th>
+    <th>演算子</th>
+    <th>種類</th>
+  </tr>
 
-注: A % B の値は A / B の余り。
-    and, or, xor, not はビット演算子です。(論理演算子ではありません)
-    ~, !, &amp;, |, &amp;&amp, || は、バージョン4.53以降で使えます。
-</pre>
+  <tr>
+    <td rowspan="2">1(最高)</td>
+    <td>not ~</td>
+    <td>ビット否定演算子</td>
+  </tr>
+  <tr>
+    <td>!</td>
+    <td>論理否定演算子</td>
+  </tr>
+
+  <tr>
+    <td rowspan="2">2</td>
+    <td>* / %</td>
+    <td>乗除演算子</td>
+  </tr>
+  <tr>
+    <td>and &amp;</td>
+    <td>ビット積演算子</td>
+  </tr>
+
+  <tr>
+    <td rowspan="3">3</td>
+    <td>+ -</td>
+    <td>加減演算子</td>
+  </tr>
+  <tr>
+    <td>or xor | ^</td>
+    <td>ビット和演算子</td>
+  </tr>
+  <tr>
+    <td>>> << >>></td>
+    <td>ビットシフト演算子</td>
+  </tr>
+
+  <tr>
+    <td>4</td>
+    <td>= &lt;&gt; &lt; &gt; &lt;= &gt;=</td>
+    <td>関係演算子</td>
+  </tr>
+
+  <tr>
+    <td>5</td>
+    <td>&amp;&amp;</td>
+    <td>論理積演算子</td>
+  </tr>
+
+  <tr>
+    <td>6(最低)</td>
+    <td>||</td>
+    <td>論理和演算子</td>
+  </tr>
+</table>
+<p>
+A % B の値は A / B の余り。<br>
+and, or, xor, not はビット演算子です。(論理演算子ではありません)<br>
+~, !, &amp;, |, &amp;&amp, || は、バージョン4.53以降で使えます。
+</p>
 
 <pre>
 例:

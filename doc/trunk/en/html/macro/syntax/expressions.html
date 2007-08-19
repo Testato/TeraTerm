@@ -22,23 +22,70 @@ if it is true, or 0 if false.
 The following are operators:
 </p>
 
-<pre>
-Category             Precedence    Operators
-<hr>
-bitwise negation     1, high       not ~
-logical negation     1             !
-multiplicative       2             * / %
-bitwise conjunction  2             and &
-additive             3             + -
-bitwise disjunction  3             or xor | ^
-relational           4             = &lt;&gt; &lt; &gt; &lt;= &gt;=
-logical conjunction  5             &amp;&amp;
-logical disjunction  6, low        ||
+<table border="1">
+  <tr>
+    <th>Precedence</th>
+    <th>Operators</th>
+    <th>Category</th>
+  </tr>
 
-Note: the value of expression A % B is the remainder of A / B.
-      "and", "or", "xor" and "not" is bitwise operator, not logical operator.
-      ~, !, &amp;, |, ^, &amp;&amp; and || is available in version 4.53 or later.
-</pre>
+  <tr>
+    <td rowspan="2">1, high</td>
+    <td>not ~</td>
+    <td>bitwise negation</td>
+  </tr>
+  <tr>
+    <td>!</td>
+    <td>logical negation</td>
+  </tr>
+
+  <tr>
+    <td rowspan="2">2</td>
+    <td>* / %</td>
+    <td>multiplicative</td>
+  </tr>
+  <tr>
+    <td>and &amp;</td>
+    <td>bitwise conjunction</td>
+  </tr>
+
+  <tr>
+    <td rowspan="3">3</td>
+    <td>+ -</td>
+    <td>additive</td>
+  </tr>
+  <tr>
+    <td>or xor | ^</td>
+    <td>bitwise disjunction</td>
+  </tr>
+  <tr>
+    <td>>> << >>></td>
+    <td>shift</td>
+  </tr>
+
+  <tr>
+    <td>4</td>
+    <td>= &lt;&gt; &lt; &gt; &lt;= &gt;=</td>
+    <td>relational</td>
+  </tr>
+
+  <tr>
+    <td>5</td>
+    <td>&amp;&amp;</td>
+    <td>logical conjunction</td>
+  </tr>
+
+  <tr>
+    <td>6, low</td>
+    <td>||</td>
+    <td>logical disjunction</td>
+  </tr>
+</table>
+<p>
+the value of expression A % B is the remainder of A / B.<br>
+"and", "or", "xor" and "not" is bitwise operator, not logical operator.<br>
+~, !, &amp;, |, ^, &amp;&amp; and || is available in version 4.53 or later.
+</p>
 
 <pre>
 Example:
