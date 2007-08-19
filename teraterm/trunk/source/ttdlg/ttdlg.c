@@ -1583,9 +1583,6 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 #endif /* NO_INET6 */
 
 
-      for (i = 0 ; i < sizeof(ComPortDesc) ; i++) {
-        ComPortDesc[i] = NULL;
-      }
       j = 0;
       w = 1;
       strncpy_s(EntName, sizeof(EntName),"COM", _TRUNCATE);
@@ -1615,9 +1612,6 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	    if (GetHNRec->ComPort==i) w = j;
 	  }
 	}
-      }
-      for (i = 0 ; i < sizeof(ComPortDesc) ; i++) {
-        free(ComPortDesc[i]);
       }
       if (j>0)
 	SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_SETCURSEL,w-1,0);

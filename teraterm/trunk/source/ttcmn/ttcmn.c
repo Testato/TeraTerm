@@ -1367,8 +1367,15 @@ static void ListupSerialPort(char *ComPortTable, int comports, char **ComPortDes
 	HDEVINFO DeviceInfoSet = NULL;
 	SP_DEVINFO_DATA DeviceInfoData;
 	DWORD dwMemberIndex = 0;
+	int i;
 
 	DeviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
+
+	// ˆÈ‘O‚Ìƒƒ‚ƒŠ‚ğƒtƒŠ[‚µ‚Ä‚¨‚­
+	for (i = 0 ; i < ComPortMax ; i++) {
+		free(ComPortDesc[i]);
+		ComPortDesc[i] = NULL;
+	}
 
 // Get ClassGuid from ClassName for PORTS class
 	bRet =
