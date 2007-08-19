@@ -22,22 +22,22 @@ extern char UILanguageFile[MAX_PATH];
 
 void UTIL_get_lang_msg(PCHAR key, PCHAR buf, int buf_len, PCHAR def)
 {
-	GetI18nStr("TTProxy", key, buf, buf_len, def, UILanguageFile);
+    GetI18nStr("TTProxy", key, buf, buf_len, def, UILanguageFile);
 }
 
 int UTIL_get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font)
 {
-	if (GetI18nLogfont("TTProxy", key, logfont,
-					   GetDeviceCaps(GetDC(dlg),LOGPIXELSY),
-					   UILanguageFile) == FALSE) {
-		return FALSE;
-	}
+    if (GetI18nLogfont("TTProxy", key, logfont,
+                       GetDeviceCaps(GetDC(dlg),LOGPIXELSY),
+                       UILanguageFile) == FALSE) {
+        return FALSE;
+    }
 
-	if ((*font = CreateFontIndirect(logfont)) == NULL) {
-		return FALSE;
-	}
+    if ((*font = CreateFontIndirect(logfont)) == NULL) {
+        return FALSE;
+    }
 
-	return TRUE;
+    return TRUE;
 }
 
 class ProxyWSockHook {
@@ -526,6 +526,7 @@ private:
         Window conn;
         Window erro;
         Window log;
+        HFONT DlgFont;
     protected:
         virtual bool dispatch(int message, int wParam, long lParam) {
             if (message == WM_COMMAND && wParam == MAKEWPARAM(IDC_REFER, BN_CLICKED)) {
@@ -560,8 +561,38 @@ private:
         }
         virtual bool onInitDialog() {
             char uimsg[MAX_UIMSG], uitmp[MAX_UIMSG];
+            LOGFONT logfont;
+            HFONT font;
 
             Dialog::onInitDialog();
+
+            font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
+            GetObject(font, sizeof(LOGFONT), &logfont);
+            if (UTIL_get_lang_font("DLG_TAHOMA_FONT", HWND(), &logfont, &DlgFont)) {
+                SendDlgItemMessage(IDC_GRP_COMMON, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_TIMEOUT_LABEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_TIMEOUT, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_TIMEOUT_SECONDS, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_LOGFILE_LABEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_LOGFILE, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_REFER, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_GRP_SOCKS, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_RESOLVE_LABEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(CBS_DROPDOWNLIST, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_GRP_TELNET, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_HOSTNAME_LABEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_HOSTNAME, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_USERNAME_LABEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_USERNAME, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_PASSWORD_LABEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_PASSWORD, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_CONNECTED_LABEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_CONNECTED, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_ERROR_LABEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_ERROR, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDOK, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDCANCEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+            }
 
             GetWindowText(uitmp, sizeof(uitmp));
             UTIL_get_lang_msg("DLG_OTHER_TITLE", uimsg, sizeof(uimsg), uitmp);
@@ -666,7 +697,16 @@ private:
 
             logfile = log.GetWindowTextLength() > 0 ? log.GetWindowText() : NULL;
 
+            if (DlgFont != NULL) {
+                DeleteObject(DlgFont);
+            }
             Dialog::onOK();
+        }
+        virtual void onCancel() {
+            if (DlgFont != NULL) {
+                DeleteObject(DlgFont);
+            }
+            Dialog::onCancel();
         }
     public:
         String logfile;
@@ -694,6 +734,7 @@ private:
         EditBoxCtrl  user;
         EditBoxCtrl  pass;
         bool lock;
+        HFONT DlgFont;
     protected:
         virtual bool dispatch(int message, int wParam, long lParam) {
             if (message == WM_COMMAND) {
@@ -715,8 +756,30 @@ private:
         }
         virtual bool onInitDialog() {
             char uimsg[MAX_UIMSG], uitmp[MAX_UIMSG];
+            LOGFONT logfont;
+            HFONT font;
 
             Dialog::onInitDialog();
+
+            font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
+            GetObject(font, sizeof(LOGFONT), &logfont);
+            if (UTIL_get_lang_font("DLG_TAHOMA_FONT", HWND(), &logfont, &DlgFont)) {
+                SendDlgItemMessage(IDC_URL_LABEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_URL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_TYPE_LEBEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_TYPE, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_HOSTNAME_LABEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_HOSTNAME, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_PORT_LABEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_PORT, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_USERNAME_LABEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_USERNAME, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_PASSWORD_LABEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_PASSWORD, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDC_OPTIONS, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDOK, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDCANCEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+            }
 
             GetWindowText(uitmp, sizeof(uitmp));
             UTIL_get_lang_msg("DLG_SETUP_TITLE", uimsg, sizeof(uimsg), uitmp);
@@ -806,7 +869,16 @@ private:
                     return;
                 }
             }
+            if (DlgFont != NULL) {
+                DeleteObject(DlgFont);
+            }
             Dialog::onOK();
+        }
+        virtual void onCancel() {
+            if (DlgFont != NULL) {
+                DeleteObject(DlgFont);
+            }
+            Dialog::onCancel();
         }
         void onOptions() {
             OptionsSettingDialog dlg;
@@ -910,23 +982,33 @@ private:
 
     class AboutDialog : public Dialog {
     private:
+        HFONT DlgFont;
         virtual bool onInitDialog() {
             String buf;
             char *buf2;
             const char *ver;
             int n, a, b, c, d, len;
-			char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG], uimsg3[MAX_UIMSG];
+            char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG], uimsg3[MAX_UIMSG];
+            LOGFONT logfont;
+            HFONT font;
 
-			GetWindowText(uimsg2, sizeof(uimsg2));
-			UTIL_get_lang_msg("DLG_ABOUT_TITLE", uimsg, sizeof(uimsg), uimsg2);
-			SetWindowText(uimsg);
+            font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
+            GetObject(font, sizeof(LOGFONT), &logfont);
+            if (UTIL_get_lang_font("DLG_TAHOMA_FONT", HWND(), &logfont, &DlgFont)) {
+                SendDlgItemMessage(IDC_VERSION, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+                SendDlgItemMessage(IDOK, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+            }
 
-			UTIL_get_lang_msg("DLG_ABOUT_EXTENTION", uimsg, sizeof(uimsg),
-			                  "Teraterm proxy extension");
-			UTIL_get_lang_msg("DLG_ABOUT_YEBISUYA", uimsg2, sizeof(uimsg2),
-			                  "YebisuyaHompo");
-			UTIL_get_lang_msg("DLG_ABOUT_HOMEPAGE", uimsg3, sizeof(uimsg3),
-			                  "TTProxy home page");
+            GetWindowText(uimsg2, sizeof(uimsg2));
+            UTIL_get_lang_msg("DLG_ABOUT_TITLE", uimsg, sizeof(uimsg), uimsg2);
+            SetWindowText(uimsg);
+
+            UTIL_get_lang_msg("DLG_ABOUT_EXTENTION", uimsg, sizeof(uimsg),
+                              "Teraterm proxy extension");
+            UTIL_get_lang_msg("DLG_ABOUT_YEBISUYA", uimsg2, sizeof(uimsg2),
+                              "YebisuyaHompo");
+            UTIL_get_lang_msg("DLG_ABOUT_HOMEPAGE", uimsg3, sizeof(uimsg3),
+                              "TTProxy home page");
             buf = GetDlgItemText(IDC_VERSION);
             len = buf.length() + 50;
             buf2 = (char *)_alloca(len);
@@ -940,11 +1022,17 @@ private:
             }
             SetDlgItemText(IDC_VERSION, (n == 4) ? buf2 : buf);
 
-			GetDlgItemText(IDOK, uimsg, sizeof(uimsg));
-			UTIL_get_lang_msg("BTN_OK", uimsg, sizeof(uimsg),"OK");
-			SetDlgItemText(IDOK, uimsg);
+            GetDlgItemText(IDOK, uimsg, sizeof(uimsg));
+            UTIL_get_lang_msg("BTN_OK", uimsg, sizeof(uimsg),"OK");
+            SetDlgItemText(IDOK, uimsg);
 
             return true;
+        }
+        virtual void onOK() {
+            if (DlgFont != NULL) {
+                DeleteObject(DlgFont);
+            }
+            Dialog::onOK();
         }
     public :
         int open(HWND owner) {
