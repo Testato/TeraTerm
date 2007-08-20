@@ -33,15 +33,6 @@ static HFONT DlgGetfnFont;
 char UILanguageFile[MAX_PATH];
 char FileSendFilter[128];
 
-BOOL IS_WIN4()
-{
-  OSVERSIONINFO verinfo;
-
-  verinfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-  if (!GetVersionEx(&verinfo)) return FALSE;
-  return (verinfo.dwMajorVersion>=4);
-}
-
 BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 {
 	int i, j;
@@ -338,14 +329,8 @@ BOOL FAR PASCAL GetTransFname
 	if (FuncId!=GTF_BP)
 	{
 		ofn.Flags = ofn.Flags | OFN_ENABLETEMPLATE | OFN_ENABLEHOOK;
-		if (IS_WIN4())
-		{
-			ofn.Flags = ofn.Flags | OFN_EXPLORER;
-			ofn.lpTemplateName = MAKEINTRESOURCE(IDD_FOPT);
-		}
-		else {
-			ofn.lpTemplateName = MAKEINTRESOURCE(IDD_FOPTOLD);
-		}
+		ofn.Flags = ofn.Flags | OFN_EXPLORER;
+		ofn.lpTemplateName = MAKEINTRESOURCE(IDD_FOPT);
 		ofn.lpfnHook = (LPOFNHOOKPROC)(&TFnHook);
 	}
 	opt = *Option;
@@ -377,9 +362,6 @@ BOOL FAR PASCAL GetTransFname
 			*Option = MAKELONG(LOWORD(opt),HIWORD(*Option));
 
 		fv->DirLen = ofn.nFileOffset;
-
-		// for Win NT 3.5: short name -> long name
-		GetLongFName(fv->FullName,&fv->FullName[fv->DirLen],sizeof(&fv->FullName) - fv->DirLen);
 
 		if (CurDir!=NULL)
 		{
@@ -532,34 +514,20 @@ BOOL FAR PASCAL GetMultiFname
   ofn.lpstrInitialDir = CurDir;
   ofn.Flags = OFN_SHOWHELP | OFN_ALLOWMULTISELECT |
 	      OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-  if (IS_WIN4())
-    ofn.Flags = ofn.Flags | OFN_EXPLORER;
+  ofn.Flags = ofn.Flags | OFN_EXPLORER;
   ofn.lCustData = 0;
   if (FuncId==GMF_Z)
   {
     ofn.Flags = ofn.Flags | OFN_ENABLETEMPLATE | OFN_ENABLEHOOK;
     ofn.lCustData = (DWORD)Option;
     ofn.lpfnHook = (LPOFNHOOKPROC)(&TFn2Hook);
-    if (IS_WIN4())
-      ofn.lpTemplateName = MAKEINTRESOURCE(IDD_FOPT);
-    else
-      ofn.lpTemplateName = MAKEINTRESOURCE(IDD_ZOPTOLD);
+    ofn.lpTemplateName = MAKEINTRESOURCE(IDD_FOPT);
   }
   ofn.hInstance = hInst;
 
   Ok = GetOpenFileName(&ofn);
   if (Ok)
   {
-    if (! IS_WIN4())
-    {  // for old style dialog box
-      i = 0;
-      do { // replace space by NULL
-	if (fv->FnStrMem[i]==' ')
-	  fv->FnStrMem[i] = 0;
-	i++;
-      } while (fv->FnStrMem[i]!=0);
-      fv->FnStrMem[i+1] = 0; // add one more NULL
-    }
     /* count number of file names */
     len = strlen(fv->FnStrMem);
     i = 0;
@@ -578,8 +546,6 @@ BOOL FAR PASCAL GetMultiFname
       fv->DirLen = ofn.nFileOffset;
       strncpy_s(fv->FullName, sizeof(fv->FullName),fv->FnStrMem, _TRUNCATE);
       fv->FnPtr = 0;
-      // for Win NT 3.5: short name -> long name
-      GetLongFName(fv->FullName,&fv->FullName[fv->DirLen],sizeof(&fv->FullName) - fv->DirLen);
     }
     else { // multiple selection
       strncpy_s(fv->FullName, sizeof(fv->FullName),fv->FnStrMem, _TRUNCATE);
@@ -921,14 +887,8 @@ BOOL FAR PASCAL GetXFname
 
   ofn.lpstrTitle = fv->DlgCaption;
   ofn.lpfnHook = (LPOFNHOOKPROC)(&XFnHook);
-  if (IS_WIN4())
-  {
-    ofn.Flags = ofn.Flags | OFN_EXPLORER;
-    ofn.lpTemplateName = MAKEINTRESOURCE(IDD_XOPT);
-  }
-  else {
-    ofn.lpTemplateName = MAKEINTRESOURCE(IDD_XOPTOLD);
-  }
+  ofn.Flags = ofn.Flags | OFN_EXPLORER;
+  ofn.lpTemplateName = MAKEINTRESOURCE(IDD_XOPT);
   ofn.hInstance = hInst;
 
   Ok = GetOpenFileName(&ofn);

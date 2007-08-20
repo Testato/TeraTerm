@@ -13,19 +13,6 @@
 
 #include "tt_res.h"
 
-void GetLongFName(PCHAR FullName, PCHAR LongName, int destlen)
-{ // for Win NT 3.51: convert short file name to long file name
-  HANDLE hFind;
-  WIN32_FIND_DATA data;
-
-  hFind = FindFirstFile(FullName,&data);
-  if (hFind!=INVALID_HANDLE_VALUE)
-  {
-    strncpy_s(LongName,destlen,data.cFileName,_TRUNCATE);
-    FindClose(hFind);
-  }
-}
-
 void FTConvFName(PCHAR FName)
 { // replace ' ' by '_' in FName
   int i;
@@ -56,9 +43,6 @@ BOOL GetNextFname(PFileVar fv)
   fv->FnPtr = fv->FnPtr + strlen(&fv->FnStrMem[fv->FnPtr]) + 1;
 
   GlobalUnlock(fv->FnStrMemHandle);
-
-  // for Win NT 3.5: short name -> long name
-  GetLongFName(fv->FullName,&fv->FullName[fv->DirLen],sizeof(&fv->FullName) - fv->DirLen);
 
   return TRUE;
 }
