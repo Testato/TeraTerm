@@ -1914,10 +1914,10 @@ static void init_setup_dlg(PTInstVar pvar, HWND dlg)
 	GetDlgItemText(dlg, IDC_NOTICEBANNER, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_SSHSETUP_NOTICE", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_NOTICEBANNER, pvar->ts->UIMsg);
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "OK", _TRUNCATE);
+	GetDlgItemText(dlg, IDOK, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("BTN_OK", pvar, uimsg);
 	SetDlgItemText(dlg, IDOK, pvar->ts->UIMsg);
-	strncpy_s(pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg), "Cancel", _TRUNCATE);
+	GetDlgItemText(dlg, IDCANCEL, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("BTN_CANCEL", pvar, uimsg);
 	SetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg);
 	
