@@ -380,9 +380,6 @@ int FAR PASCAL TEKParse(PTEKVar tk, PTTSet ts, PComVar cv)
   BOOL f;
   int c;
   BYTE b;
-#ifndef TERATERM32
-  MSG DummyMsg;
-#endif
 
   if (tk->ButtonDown)
     return 0;
@@ -428,9 +425,6 @@ int FAR PASCAL TEKParse(PTEKVar tk, PTTSet ts, PComVar cv)
             tk->ParseMode = ModeFirst;
             ParseFirst(tk,ts,cv,b);
         }
-#ifndef TERATERM32
-        PeekMessage(&DummyMsg, 0, 0, 0, PM_NOREMOVE);
-#endif
       }
       else tk->IgnoreCount--;
     }
@@ -898,16 +892,9 @@ void FAR PASCAL TEKEnd(PTEKVar tk)
   if (tk->MemBackGround != NULL) DeleteObject(tk->MemBackGround);
 }
 
-#ifdef TERATERM32
-#ifdef WATCOM
-  #pragma off (unreferenced);
-#endif
 BOOL WINAPI DllMain(HANDLE hInstance, 
                     ULONG ul_reason_for_call,
 					LPVOID lpReserved)
-#ifdef WATCOM
-  #pragma on (unreferenced);
-#endif
 {
   hInst = hInstance;
   switch( ul_reason_for_call ) { 
@@ -926,18 +913,3 @@ BOOL WINAPI DllMain(HANDLE hInstance,
   }
    return( 1 );
  }
-#else
-#ifdef WATCOM
-#pragma off (unreferenced);
-#endif
-int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
-			WORD wHeapSize, LPSTR lpszCmdLine )
-#ifdef WATCOM
-#pragma on (unreferenced);
-#endif
-{
-  hInst = hInstance;
-  return( 1 );
-}
-#endif
-

@@ -85,57 +85,8 @@ typedef struct {
 
 static TInstVar FAR * pvar;
 
-#ifdef TERATERM32
-  /* WIN32 allows multiple instances of a DLL */
-  static TInstVar InstVar;
-#else
-  /* WIN16 does not allow multiple instances of a DLL */
-
-  /* maximum number of Tera Term instances */
-  #define MAXNUMINST 32
-  /* list of task handles for Tera Term instances */
-  static HANDLE FAR TaskList[MAXNUMINST];
-  /* variable sets for instances */
-  static TInstVar FAR InstVar[MAXNUMINST];
-
-  static BOOL NewVar()
-  {
-    int i = 0;
-    HANDLE Task = GetCurrentTask();
-
-    if (TaskList[0]==NULL)
-
-    if (Task==NULL) return FALSE;
-    while ((i<MAXNUMINST) && (TaskList[i]!=NULL)) i++;
-    if (i>=MAXNUMINST) return FALSE;
-    pvar = &InstVar[i];
-    TaskList[i] = Task;
-    return TRUE;
-  }
-
-  void DelVar()
-  {
-    int i = 0;
-    HANDLE Task = GetCurrentTask();
-
-    if (Task==NULL) return;
-    while ((i<MAXNUMINST) && (TaskList[i]!=Task)) i++;
-    if (i>=MAXNUMINST) return;
-    TaskList[i] = NULL;
-  }
-
-  BOOL GetVar()
-  {
-    int i = 0;
-    HANDLE Task = GetCurrentTask();
-
-    if (Task==NULL) return FALSE;
-    while ((i<MAXNUMINST) && (TaskList[i]!=Task)) i++;
-    if (i>=MAXNUMINST) return FALSE;
-    pvar = &InstVar[i];
-    return TRUE;
-  }
-#endif
+/* WIN32 allows multiple instances of a DLL */
+static TInstVar InstVar;
 
 /* When this function is called, you should save copies of the ts and cv
    pointers if you need to access them later. All sorts of global session data
@@ -149,14 +100,9 @@ static TInstVar FAR * pvar;
    going to be used.
 */
 static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
-#ifndef TERATERM32
-  if (! NewVar()) return; /* should be called first */
-#endif
   pvar->ts = ts;
   pvar->cv = cv;
-#ifdef TERATERM32
   printf("TTXInit %d\n", ORDER);
-#endif
 }
 
 /* This function is called when Teraterm is opening a TCP connection, before
@@ -186,12 +132,7 @@ static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
    Thus, the extension with highest load order puts its hooks in last.
 */
 static void PASCAL FAR TTXOpenTCP(TTXSockHooks FAR * hooks) {
-#ifndef TERATERM32
-  if (! GetVar()) return; /* should be called first */
-#endif
-#ifdef TERATERM32
   printf("TTXOpenTCP %d\n", ORDER);
-#endif
 }
 
 /* This function is called when Teraterm is closing a TCP connection, after
@@ -205,12 +146,7 @@ static void PASCAL FAR TTXOpenTCP(TTXSockHooks FAR * hooks) {
    below).
 */
 static void PASCAL FAR TTXCloseTCP(TTXSockHooks FAR * hooks) {
-#ifndef TERATERM32
-  if (! GetVar()) return; /* should be called first */
-#endif
-#ifdef TERATERM32
   printf("TTXCloseTCP %d\n", ORDER);
-#endif
 }
 
 /* This function is called when Teraterm has loaded the TTDLG library. It
@@ -246,12 +182,7 @@ static void PASCAL FAR TTXCloseTCP(TTXSockHooks FAR * hooks) {
    Thus, the extension with highest load order puts its hooks in last.
 */
 static void PASCAL FAR TTXGetUIHooks(TTXUIHooks FAR * hooks) {
-#ifndef TERATERM32
-  if (! GetVar()) return; /* should be called first */
-#endif
-#ifdef TERATERM32
   printf("TTXSetUIHooks %d\n", ORDER);
-#endif
 }
 
 /* This function is called when Teraterm has loaded the TTSETUP library. It
@@ -273,12 +204,7 @@ static void PASCAL FAR TTXGetUIHooks(TTXUIHooks FAR * hooks) {
    Thus, the extension with highest load order puts its hooks in last.
 */
 static void PASCAL FAR TTXGetSetupHooks(TTXSetupHooks FAR * hooks) {
-#ifndef TERATERM32
-  if (! GetVar()) return; /* should be called first */
-#endif
-#ifdef TERATERM32
   printf("TTXSetSetupHooks %d\n", ORDER);
-#endif
 }
 
 /* This function is called whenever Teraterm changes the window size.
@@ -286,12 +212,7 @@ static void PASCAL FAR TTXGetSetupHooks(TTXSetupHooks FAR * hooks) {
    This function is called for each extension, in load order (see below).
 */
 static void PASCAL FAR TTXSetWinSize(int rows, int cols) {
-#ifndef TERATERM32
-  if (! GetVar()) return; /* should be called first */
-#endif
-#ifdef TERATERM32
   printf("TTXSetWinSize %d\n", ORDER);
-#endif
 }
 
 /* This function is called when Teraterm creates a new menu. This can happen
@@ -312,12 +233,7 @@ static void PASCAL FAR TTXSetWinSize(int rows, int cols) {
 static void PASCAL FAR TTXModifyMenu(HMENU menu) {
   UINT flag = MF_ENABLED;
 
-#ifndef TERATERM32
-  if (! GetVar()) return; /* should be called first */
-#endif
-#ifdef TERATERM32
   printf("TTXModifyMenu %d\n", ORDER);
-#endif
 //  pvar->SetupMenu = GetSubMenu(menu, 2);
 //  AppendMenu(pvar->SetupMenu,MF_SEPARATOR,0,NULL); 
 //  if (pvar->ts->Debug>0) flag |= MF_CHECKED;
@@ -389,16 +305,11 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
    This function is called for each extension, in load order (see below).
 */
 static void PASCAL FAR TTXModifyPopupMenu(HMENU menu) {
-#ifndef TERATERM32
-  if (! GetVar()) return; /* should be called first */
-#endif
-#ifdef TERATERM32
   printf("TTXModifyPopupMenu %d\n", ORDER);
 
 	// メニューが呼び出されたら、最新の設定に更新する。(2007.5.25 yutaka)
 	CheckMenuRadioItem(pvar->hmEncode, ID_MI_KANJIRECV+IdSJIS, ID_MI_KANJIRECV+IdUTF8m, ID_MI_KANJIRECV+pvar->ts->KanjiCode, MF_BYCOMMAND);
 	CheckMenuRadioItem(pvar->hmEncode, ID_MI_KANJISEND+IdSJIS, ID_MI_KANJISEND+IdUTF8, ID_MI_KANJISEND+pvar->ts->KanjiCodeSend, MF_BYCOMMAND);
-#endif
 }
 
 /* This function is called when Teraterm receives a command message.
@@ -415,12 +326,8 @@ static void PASCAL FAR TTXModifyPopupMenu(HMENU menu) {
 static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
 	WORD val;
 
-#ifndef TERATERM32
-  if (! GetVar()) return 0; /* should be called first */
-#endif
-#ifdef TERATERM32
   printf("TTXProcessCommand %d\n", ORDER);
-#endif
+
 	if( (cmd & ID_MI_KANJIMASK) == ID_MI_KANJIRECV ) {
 		// 範囲チェックを追加 
 		// TTProxyのバージョンダイアログを開くと、当該ハンドラが呼ばれ、誤動作していたのを修正。
@@ -462,12 +369,7 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
    below).
 */
 static void PASCAL FAR TTXEnd(void) {
-#ifdef TERATERM32
   printf("TTXEnd %d\n", ORDER);
-#endif
-#ifndef TERATERM32
-  DelVar(); /* should be called last */
-#endif
 }
 
 /* This record contains all the information that the extension forwards to the
@@ -538,11 +440,7 @@ static TTXExports Exports = {
    extra functions that have been added since this extension was compiled
    will automatically be NULL and thus get default behaviour.)
 */
-#ifdef TERATERM32
 BOOL __declspec(dllexport) PASCAL FAR TTXBind(WORD Version, TTXExports FAR * exports) {
-#else
-BOOL __export PASCAL FAR TTXBind(WORD Version, TTXExports FAR * exports) {
-#endif
   int size = sizeof(Exports) - sizeof(exports->size);
   /* do version checking if necessary */
   /* if (Version!=TTVERSION) return FALSE; */
@@ -556,7 +454,6 @@ BOOL __export PASCAL FAR TTXBind(WORD Version, TTXExports FAR * exports) {
   return TRUE;
 }
 
-#ifdef TERATERM32
 BOOL WINAPI DllMain(HANDLE hInstance, 
 		    ULONG ul_reason_for_call,
 		    LPVOID lpReserved)
@@ -579,20 +476,3 @@ BOOL WINAPI DllMain(HANDLE hInstance,
   }
   return TRUE;
 }
-#else
-  #ifdef WATCOM
-  #pragma off (unreferenced);
-  #endif
-int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
-		     WORD wHeapSize, LPSTR lpszCmdLine )
-  #ifdef WATCOM
-  #pragma on (unreferenced);
-  #endif
-{
-  int i;
-  for (i=0; i<MAXNUMINST; i++)
-    TaskList[i]=NULL;
-  hInst = hInstance;
-  return (1);
-}
-#endif

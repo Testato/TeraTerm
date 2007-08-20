@@ -40,15 +40,10 @@ static void loadExtension(ExtensionList * * extensions, char const * fileName) {
 
   if (NumExtensions>=MAXNUMEXTENSIONS) return;
   LibHandle[NumExtensions] = LoadLibrary(fileName);
-#ifdef TERATERM32
   if (LibHandle[NumExtensions] != NULL) {
     TTXBindProc bind = (TTXBindProc)GetProcAddress(LibHandle[NumExtensions], "_TTXBind@8");
     if (bind==NULL)
       bind = (TTXBindProc)GetProcAddress(LibHandle[NumExtensions], "TTXBind");
-#else
-  if (LibHandle[NumExtensions] >= HINSTANCE_ERROR) {
-    TTXBindProc bind = (TTXBindProc)GetProcAddress(LibHandle[NumExtensions], "TTXBIND");
-#endif
     if (bind != NULL) {
       ExtensionList * newExtension =
         (ExtensionList *)malloc(sizeof(ExtensionList));

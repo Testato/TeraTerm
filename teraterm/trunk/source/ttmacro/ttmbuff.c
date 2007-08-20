@@ -14,11 +14,7 @@
 int EndWhileFlag;
 int BreakFlag;
 
-#ifdef TERATERM32
-  #define MAXBUFFLEN 2147483647
-#else
-  #define MAXBUFFLEN 32767
-#endif
+#define MAXBUFFLEN 2147483647
 
 #define MAXNESTLEVEL 10
 

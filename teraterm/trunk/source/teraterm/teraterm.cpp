@@ -19,9 +19,6 @@
 #include "tektypes.h"
 #include "tekwin.h"
 #include "ttdde.h"
-#ifndef TERATERM32
-  #include "ttctl3d.h"
-#endif
 
 #include "teraapp.h"
 
@@ -52,9 +49,6 @@ BOOL CTeraApp::InitInstance()
   hMutex = CreateMutex(NULL, TRUE, "TeraTermProAppMutex");
 
   hInst = m_hInstance;
-#ifndef TERATERM32
-  LoadCtl3d(m_hInstance);
-#endif
   m_pMainWnd = new CVTWindow();
   pVTWin = m_pMainWnd;
   return TRUE;
@@ -62,12 +56,7 @@ BOOL CTeraApp::InitInstance()
 
 int CTeraApp::ExitInstance()
 {
-#ifdef TERATERM32
   return CWinApp::ExitInstance();
-#else
-  FreeCtl3d();
-  return 0;
-#endif
 }
 
 // Tera Term main engine

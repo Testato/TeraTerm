@@ -12,11 +12,7 @@
 #include <sys\utime.h>
 #include <sys\stat.h>
 
-#ifdef TERATERM32
 #include "tt_res.h"
-#else
-#include "tt_res16.h"
-#endif
 #include "dlglib.h"
 #include "ftlib.h"
 #include "ttlib.h"

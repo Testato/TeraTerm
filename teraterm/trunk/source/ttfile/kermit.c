@@ -8,11 +8,7 @@
 #include "ttftypes.h"
 #include <string.h>
 
-#ifdef TERATERM32
 #include "tt_res.h"
-#else
-#include "tt_res16.h"
-#endif
 #include "ttcommon.h"
 #include "ttlib.h"
 #include "dlglib.h"

@@ -294,11 +294,7 @@ BOOL KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan)
       case IdCommand:
 	Code[CodeLength] = 0;
 	if (sscanf(Code, "%d", &wId) == 1)
-#ifdef TERATERM32
 	  PostMessage(HWin,WM_COMMAND,MAKELONG(wId,0),0);
-#else
-	  PostMessage(HWin,WM_COMMAND,wId,0);
-#endif
 	break;
     }
   }

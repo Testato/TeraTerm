@@ -13,7 +13,6 @@
 
 #include "tt_res.h"
 
-#ifdef TERATERM32
 void GetLongFName(PCHAR FullName, PCHAR LongName, int destlen)
 { // for Win NT 3.51: convert short file name to long file name
   HANDLE hFind;
@@ -26,7 +25,6 @@ void GetLongFName(PCHAR FullName, PCHAR LongName, int destlen)
     FindClose(hFind);
   }
 }
-#endif
 
 void FTConvFName(PCHAR FName)
 { // replace ' ' by '_' in FName
@@ -59,10 +57,8 @@ BOOL GetNextFname(PFileVar fv)
 
   GlobalUnlock(fv->FnStrMemHandle);
 
-#ifdef TERATERM32
   // for Win NT 3.5: short name -> long name
   GetLongFName(fv->FullName,&fv->FullName[fv->DirLen],sizeof(&fv->FullName) - fv->DirLen);
-#endif
 
   return TRUE;
 }
@@ -141,10 +137,6 @@ void AddNum(PCHAR FName, int n)
 
   if (strlen(FName)+dLen > MAXPATHLEN - 1)
     dLen = MAXPATHLEN - 1 - strlen(FName);
-#ifndef TERATERM32
-  if (k - j + dLen > 8)
-    dLen = 8 - k + j;
-#endif
   memmove(&FName[k+dLen],&FName[k],strlen(FName)-k+1);
   memcpy(&FName[k+dLen-strlen(Num)],Num,strlen(Num));
 }

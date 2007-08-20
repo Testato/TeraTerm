@@ -30,14 +30,7 @@
 
 #include "ttl.h"
 
-#ifdef TERATERM32
-  #define TTERMCOMMAND "TTERMPRO /D="
-#else
-  #include <sys/stat.h>
-  #include <sys/utime.h>
-  #include <i86.h>
-  #define TTERMCOMMAND "TERATERM /D="
-#endif
+#define TTERMCOMMAND "TTERMPRO /D="
 
 // for 'ExecCmnd' command
 static BOOL ParseAgain;
@@ -426,15 +419,10 @@ WORD TTLConnect()
 	if (strlen(TopicName)==0)
 	{
 		strncpy_s(Cmnd, sizeof(Cmnd),TTERMCOMMAND, _TRUNCATE);
-#ifdef TERATERM32
 		w = HIWORD(HMainWin);
 		Word2HexStr(w,TopicName);
 		w = LOWORD(HMainWin);
 		Word2HexStr(w,&(TopicName[4]));
-#else
-		w = HMainWin;
-		Word2HexStr(w,TopicName);
-#endif
 		strncat_s(Cmnd,sizeof(Cmnd),TopicName,_TRUNCATE);
 		strncat_s(Cmnd,sizeof(Cmnd)," ",_TRUNCATE);
 		strncat_s(Cmnd,sizeof(Cmnd),Str,_TRUNCATE);
@@ -673,12 +661,6 @@ WORD TTLFileCopy()
 {
 	WORD Err;
 	TStrVal FName1, FName2;
-#ifndef TERATERM32
-	int FH1, FH2, c;
-	BYTE buf[1024];
-	struct _stat st;
-	struct _utimbuf ut;
-#endif
 
 	Err = 0;
 	GetStrVal(FName1,&Err);
@@ -703,27 +685,7 @@ WORD TTLFileCopy()
 	}
 	if (_stricmp(FName1,FName2)==0) return Err;
 
-#ifdef TERATERM32
 	CopyFile(FName1,FName2,FALSE);
-#else
-	FH1 = _lopen(FName1,OF_READ);
-	if (FH1<0) return Err;
-	FH2 = _lcreat(FName2,0);
-	if (FH2!=-1)
-	{
-		do {
-			c = _lread(FH1,&(buf[0]),sizeof(buf));
-			if (c>0)
-				_lwrite(FH2,&(buf[0]),c);
-		} while (c >= sizeof(buf));
-		_lclose(FH2);
-	}
-	_lclose(FH1);
-	_stat(FName1,&st);
-	ut.actime = st.st_atime;
-	ut.modtime = st.st_mtime;
-	_utime(FName2,&ut);
-#endif
 	SetResult(0);
 	return Err;
 }
@@ -1929,11 +1891,7 @@ WORD TTLSetDate()
 	WORD Err;
 	TStrVal Str;
 	int y, m, d;
-#ifdef TERATERM32
 	SYSTEMTIME Time;
-#else
-	union REGS regs;
-#endif
 
 	Err = 0;
 	GetStrVal(Str,&Err);
@@ -1947,19 +1905,11 @@ WORD TTLSetDate()
 	if (sscanf(&(Str[5]),"%u",&m)!=1) return 0;
 	Str[10] = 0;
 	if (sscanf(&(Str[8]),"%u",&d)!=1) return 0;
-#ifdef TERATERM32
 	GetLocalTime(&Time);
 	Time.wYear = y;
 	Time.wMonth = m;
 	Time.wDay = d;
 	SetLocalTime(&Time);
-#else
-	regs.h.ah = 0x2b;
-	regs.w.cx = y;
-	regs.h.dh = m;
-	regs.h.dl = d;
-	int86(0x21,&regs,&regs);
-#endif
 	return Err;
 }
 
@@ -2050,11 +2000,7 @@ WORD TTLSetTime()
 	WORD Err;
 	TStrVal Str;
 	int h, m, s;
-#ifdef TERATERM32
 	SYSTEMTIME Time;
-#else
-	union REGS regs;
-#endif
 
 	Err = 0;
 	GetStrVal(Str,&Err);
@@ -2069,20 +2015,11 @@ WORD TTLSetTime()
 	Str[8] = 0;
 	if (sscanf(&(Str[6]),"%u",&s)!=1) return 0;
 
-#ifdef TERATERM32
 	GetLocalTime(&Time);
 	Time.wHour = h;
 	Time.wMinute = m;
 	Time.wSecond = s;
 	SetLocalTime(&Time);
-#else
-	regs.h.ah = 0x2d;
-	regs.h.ch = h;
-	regs.h.cl = m;
-	regs.h.dh = s;
-	regs.h.dl = 0;
-	int86(0x21,&regs,&regs);
-#endif
 
 	return Err;
 }

@@ -43,9 +43,6 @@ BOOL Wait2Found;
 #define RCountLimit (RingBufSize/2)
 
 static HWND HMainWin = NULL;
-#ifndef TERATERM32
-static PFNCALLBACK DdeCallbackPtr = NULL;
-#endif
 static DWORD Inst = 0;
 static HCONV ConvH = 0;
 
@@ -205,27 +202,11 @@ BOOL InitDDE(HWND HWin)
     WaitCount[i] = 0;
   }
 
-#ifdef TERATERM32
   if (DdeInitialize(&Inst, (PFNCALLBACK)DdeCallbackProc,
 	APPCMD_CLIENTONLY |
 	CBF_SKIP_REGISTRATIONS |
 	CBF_SKIP_UNREGISTRATIONS,0)
       != DMLERR_NO_ERROR) return FALSE;
-#else
-  DdeCallbackPtr = (PFNCALLBACK)MakeProcInstance((FARPROC)DdeCallbackProc,
-    (HINSTANCE)GetWindowWord(HWin,GWW_HINSTANCE));
-  if (DdeCallbackPtr==NULL) return FALSE;
-  if (DdeInitialize(&Inst, DdeCallbackPtr,
-	APPCMD_CLIENTONLY |
-	CBF_SKIP_REGISTRATIONS |
-	CBF_SKIP_UNREGISTRATIONS,0)
-      != DMLERR_NO_ERROR) 
-  {
-    FreeProcInstance((FARPROC)DdeCallbackPtr);
-    DdeCallbackPtr = NULL;
-    return FALSE;
-  }
-#endif
 
   Service= DdeCreateStringHandle(Inst, ServiceName, CP_WINANSI);
   Topic  = DdeCreateStringHandle(Inst, TopicName, CP_WINANSI);
@@ -239,15 +220,10 @@ BOOL InitDDE(HWND HWin)
   Linked = TRUE;
 
   Cmd[0] = CmdSetHWnd;
-#ifdef TERATERM32
   w = HIWORD(HWin);
   Word2HexStr(w,&(Cmd[1]));
   w = LOWORD(HWin);
   Word2HexStr(w,&(Cmd[5]));
-#else
-  w = HWin;
-  Word2HexStr(w,&(Cmd[1]));
-#endif
 
   DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,
     CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
@@ -287,11 +263,6 @@ void EndDDE()
 
     DdeUninitialize(Temp);  // Ignore the return value
   }
-#ifndef TERATERM32
-  if (DdeCallbackPtr != NULL)
-    FreeProcInstance((FARPROC)DdeCallbackPtr);
-  DdeCallbackPtr = NULL;
-#endif
 }
 
 void DDEOut1Byte(BYTE B)

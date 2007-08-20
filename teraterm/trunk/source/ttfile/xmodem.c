@@ -7,12 +7,7 @@
 #include "tttypes.h"
 #include "ttftypes.h"
 
-#ifdef TERATERM32
 #include "tt_res.h"
-#else
-#include <string.h>
-#include "tt_res16.h"
-#endif
 #include "ttcommon.h"
 #include "ttlib.h"
 #include "ftlib.h"

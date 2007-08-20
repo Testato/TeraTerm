@@ -7,11 +7,7 @@
 #include "teraterm.h"
 #include "tttypes.h"
 #include "ttftypes.h"
-#ifdef TERATERM32
 #include "tt_res.h"
-#else
-#include "tt_res16.h"
-#endif
 #include "ftdlg.h"
 #include "protodlg.h"
 #include "ttwinman.h"
@@ -80,11 +76,7 @@ BOOL LoadTTFILE()
 {
   BOOL Err;
 
-#ifdef TERATERM32
   if (HTTFILE != NULL)
-#else
-  if (HTTFILE >= HINSTANCE_ERROR)
-#endif
   {
     TTFILECount++;
     return TRUE;
@@ -92,13 +84,8 @@ BOOL LoadTTFILE()
   else
     TTFILECount = 0;
 
-#ifdef TERATERM32
   HTTFILE = LoadLibrary("TTPFILE.DLL");
   if (HTTFILE == NULL) return FALSE;
-#else
-  HTTFILE = LoadLibrary("TTFILE.DLL");
-  if (HTTFILE < HINSTANCE_ERROR) return FALSE;
-#endif
 
   Err = FALSE;
   GetSetupFname = (PGetSetupFname)GetProcAddress(HTTFILE,
@@ -158,11 +145,7 @@ BOOL FreeTTFILE()
   if (TTFILECount==0) return FALSE;
   TTFILECount--;
   if (TTFILECount>0) return TRUE;
-#ifdef TERATERM32
   if (HTTFILE!=NULL)
-#else
-  if (HTTFILE>=HINSTANCE_ERROR)
-#endif
   {
     FreeLibrary(HTTFILE);
     HTTFILE = NULL;

@@ -33,15 +33,9 @@ BOOL LoadTTSET()
 {
   BOOL Err;
 
-#ifdef TERATERM32
   if (HTTSET != NULL) return TRUE;
   HTTSET = LoadLibrary("TTPSET.DLL");
   if (HTTSET == NULL) return FALSE;
-#else
-  if (HTTSET >= HINSTANCE_ERROR) return TRUE;
-  HTTSET = LoadLibrary("TTSET.DLL");
-  if (HTTSET < HINSTANCE_ERROR) return FALSE;
-#endif
 
   Err = FALSE;
   ReadIniFile =
@@ -88,11 +82,7 @@ BOOL LoadTTSET()
 
 void FreeTTSET()
 {
-#ifdef TERATERM32
   if (HTTSET != NULL)
-#else
-  if (HTTSET >= HINSTANCE_ERROR)
-#endif
   {
     FreeLibrary(HTTSET);
     HTTSET = NULL;

@@ -1,4 +1,0 @@
-#include "kc_res16.h"
-
-IDI_KEYCODE             ICON    DISCARDABLE     "keycod16.ico"
-

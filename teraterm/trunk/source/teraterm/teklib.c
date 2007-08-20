@@ -57,15 +57,9 @@ BOOL LoadTTTEK()
 {
   BOOL Err;
 
-#ifdef TERATERM32
   if (HTTTEK != NULL) return TRUE;
   HTTTEK = LoadLibrary("TTPTEK.DLL");
   if (HTTTEK == NULL) return FALSE;
-#else
-  if (HTTTEK >= HINSTANCE_ERROR) return TRUE;
-  HTTTEK = LoadLibrary("TTTEK.DLL");
-  if (HTTTEK < HINSTANCE_ERROR) return FALSE;
-#endif
 
   Err = FALSE;
   TEKInit = (PTEKInit)GetProcAddress(HTTTEK,
@@ -154,11 +148,7 @@ BOOL LoadTTTEK()
 
 void FreeTTTEK()
 {
-#ifdef TERATERM32
   if (HTTTEK!=NULL)
-#else
-  if (HTTTEK>=HINSTANCE_ERROR)
-#endif
   {
     FreeLibrary(HTTTEK);
     HTTTEK = NULL;

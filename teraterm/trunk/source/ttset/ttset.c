@@ -19,17 +19,11 @@
 
 static PCHAR far TermList[] =
   {"VT100","VT100J","VT101","VT102","VT102J","VT220J","VT282","VT320","VT382",NULL};
-#ifdef TERATERM32
 // expansion (2005.11.30 yutaka)
 static PCHAR BaudList[] =
   {"110","300","600","1200","2400","4800","9600",
    "14400","19200","38400","57600","115200",
    "230400", "460800", "921600", NULL};
-#else
-static PCHAR far BaudList[] =
-  {"110","300","600","1200","2400","4800","9600",
-   "14400","19200","38400","57600",NULL};
-#endif
 
 static PCHAR far RussList[] =
 {"Windows","KOI8-R","CP-866","ISO-8859-5",NULL};
@@ -174,25 +168,12 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
   else if (_stricmp(Temp,"English")==0)
     ts->Language = IdEnglish;
   else {
-#ifdef TERATERM32
     switch (PRIMARYLANGID(GetSystemDefaultLangID())) {
       case LANG_JAPANESE: ts->Language = IdJapanese; break;
       case LANG_RUSSIAN:  ts->Language = IdRussian; break;
       default:
 			  ts->Language = IdEnglish;
     }
-#else
-    switch (GetKBCodePage()) {
-      case 932: // Japanese
-        ts->Language=IdJapanese;
-        break;
-      case 1251: // Windows 3.1 Cyrillic
-        ts->Language=IdRussian;
-        break;
-      default:
-        ts->Language=IdJapanese;
-    }
-#endif
   }
 
   /* Port type */
@@ -769,17 +750,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
     ts->MenuFlag |= MF_NOLANGUAGE;
 
   /* Maximum scroll buffer size  -- special option */
-#ifdef TERATERM32
   ts->ScrollBuffMax =
     GetPrivateProfileInt(Section,"MaxBuffSize",10000,FName);
   if (ts->ScrollBuffMax<24)
     ts->ScrollBuffMax = 10000;
-#else
-  ts->ScrollBuffMax =
-    GetPrivateProfileInt(Section,"MaxBuffSize",800,FName);
-  if (ts->ScrollBuffMax<24)
-    ts->ScrollBuffMax = 800;
-#endif
 
   /* Max com port number -- special option */
   ts->MaxComPort =
@@ -1049,11 +1023,7 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	  char buf[20];
 
   /* version */
-#ifdef TERATERM32
   WritePrivateProfileString(Section,"Version","2.3",FName);
-#else
-  WritePrivateProfileString(Section,"Version","1.4",FName);
-#endif
 
   /* Language */
   if (ts->Language==IdJapanese)
@@ -2482,16 +2452,9 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
   }
 }
 
-#ifdef TERATERM32
-#ifdef WATCOM
-  #pragma off (unreferenced);
-#endif
 BOOL WINAPI DllMain(HANDLE hInst, 
 		    ULONG ul_reason_for_call,
 		    LPVOID lpReserved)
-#ifdef WATCOM
-  #pragma on (unreferenced);
-#endif
 {
   switch( ul_reason_for_call ) { 
   case DLL_THREAD_ATTACH:
@@ -2509,12 +2472,3 @@ BOOL WINAPI DllMain(HANDLE hInst,
   }
    return TRUE;
  }
-#else
-#pragma off (unreferenced);
-int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
-		     WORD wHeapSize, LPSTR lpszCmdLine )
-#pragma on (unreferenced);
-{
-  return( 1 );
-}
-#endif

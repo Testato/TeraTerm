@@ -7,11 +7,7 @@
 #include "stdafx.h"
 #include "teraterm.h"
 #include <direct.h>
-#ifdef TERATERM32
 #include "ttm_res.h"
-#else
-#include "ttm_re16.h"
-#endif
 #include "tttypes.h"
 #include "ttlib.h"
 #include <commdlg.h>
@@ -97,19 +93,12 @@ void ParseParam(PBOOL IOption, PBOOL VOption)
   SleepFlag = FALSE;
   *IOption = FALSE;
   *VOption = FALSE;
-#ifdef TERATERM32
   // 256バイト以上のコマンドラインパラメータ指定があると、BOF(Buffer Over Flow)で
   // 落ちるバグを修正。(2007.5.25 yutaka)
   Param = GetCommandLine();
   i = 0;
   // the first term shuld be executable filename of TTMACRO
   NextParam(Param, &i, Temp, sizeof(Temp));
-#else
-  i = (int)*(LPBYTE)MAKELP(GetCurrentPDB(),0x80);
-  memcpy(Param,MAKELP(GetCurrentPDB(),0x81),i);
-  Param[i] = 0;
-  i = 0;
-#endif
   j = 0;
 
   while (NextParam(Param, &i, Temp, sizeof(Temp)))

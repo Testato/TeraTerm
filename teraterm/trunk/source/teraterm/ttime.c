@@ -13,7 +13,6 @@
 #include "ttime.h"
 #include "ttlib.h"
 
-#ifdef TERATERM32
 #ifndef _IMM_
   #define _IMM_
 
@@ -41,35 +40,6 @@ static TImmReleaseContext PImmReleaseContext;
 static TImmSetCompositionFont PImmSetCompositionFont;
 static TImmSetCompositionWindow PImmSetCompositionWindow;
 
-#else
-
-typedef struct tagIMESTRUCT {
-  UINT	 fnc;
-  WPARAM wParam;
-  UINT	 wCount;
-  UINT	 dchSource;
-  UINT	 dchDest;
-  LPARAM lParam1;
-  LPARAM lParam2;
-  LPARAM lParam3;
-} IMESTRUCT;
-typedef IMESTRUCT FAR  *LPIMESTRUCT;
-
-#define MCW_DEFAULT 0x00
-#define MCW_WINDOW  0x02
-#define IME_SETCONVERSIONWINDOW 0x08
-#define IME_SETCONVERSIONFONTEX 0x19
-
-typedef LRESULT (WINAPI *TSendIMEMessageEx)
-  (HWND, LPARAM);
-
-typedef BOOL (WINAPI *TWINNLSEnableIME)
-  (HWND HWin, BOOL bEnable);
-
-static TSendIMEMessageEx PSendIMEMessageEx;
-static TWINNLSEnableIME PWINNLSEnableIME;
-
-#endif
 
 static HANDLE HIMEDLL = NULL;
 static LOGFONT lfIME;
@@ -81,17 +51,10 @@ BOOL LoadIME()
   PTTSet tempts;
   char uimsg[MAX_UIMSG];
 
-#ifdef TERATERM32
   if (HIMEDLL != NULL) return TRUE;
   HIMEDLL = LoadLibrary("IMM32.DLL");
   if (HIMEDLL == NULL)
   {
-#else
-  if (HIMEDLL >= HINSTANCE_ERROR) return TRUE;
-  HIMEDLL = LoadLibrary("WINNLS.DLL");
-  if (HIMEDLL < HINSTANCE_ERROR)
-  {
-#endif
     get_lang_msg("MSG_TT_ERROR", uimsg, sizeof(uimsg),  "Tera Term: Error", ts.UILanguageFile);
     get_lang_msg("MSG_USE_IME_ERROR", ts.UIMsg, sizeof(ts.UIMsg), "Can't use IME", ts.UILanguageFile);
     MessageBox(0,ts.UIMsg,uimsg,MB_ICONEXCLAMATION);
@@ -110,7 +73,6 @@ BOOL LoadIME()
 
   Err = FALSE;
 
-#ifdef TERATERM32
   PImmGetCompositionString = (TImmGetCompositionString)GetProcAddress(
     HIMEDLL, "ImmGetCompositionStringA");
   if (PImmGetCompositionString==NULL) Err = TRUE;
@@ -130,13 +92,7 @@ BOOL LoadIME()
   PImmSetCompositionWindow = (TImmSetCompositionWindow)GetProcAddress(
     HIMEDLL, "ImmSetCompositionWindow");
   if (PImmSetCompositionWindow==NULL) Err = TRUE;
-#else
-  PSendIMEMessageEx = (TSendIMEMessageEx)GetProcAddress(HIMEDLL, "SendIMEMessageEx");
-  if (PSendIMEMessageEx==NULL) Err = TRUE;
 
-  PWINNLSEnableIME = (TWINNLSEnableIME)GetProcAddress(HIMEDLL, "WINNLSEnableIME");
-  if (PWINNLSEnableIME==NULL) Err = TRUE;
-#endif	
   if ( Err )
   {
     FreeLibrary(HIMEDLL);
@@ -150,50 +106,27 @@ BOOL LoadIME()
 void FreeIME()
 {
   HANDLE HTemp;
-#ifndef TERATERM32
-  MSG Msg;
-#endif
 
-#ifdef TERATERM32
   if (HIMEDLL==NULL) return;
-#else
-  if (HIMEDLL<HINSTANCE_ERROR) return;
-#endif
   HTemp = HIMEDLL;
   HIMEDLL = NULL;
 
   /* position of conv. window -> default */
   SetConversionWindow(HVTWin,-1,0);
-#ifdef TERATERM32
   Sleep(1); // for safety
-#else
-  PeekMessage(&Msg,NULL,0,0,PM_NOREMOVE);
-#endif
   FreeLibrary(HTemp);
 }
 
 BOOL CanUseIME()
 {
-#ifdef TERATERM32
   return (HIMEDLL != NULL);
-#else
-  return (HIMEDLL >= HINSTANCE_ERROR);
-#endif
 }
 
 void SetConversionWindow(HWND HWin, int X, int Y)
 {
-#ifdef TERATERM32
   HIMC	hIMC;
   COMPOSITIONFORM cf;
-#else
-  HANDLE HIME;
-  HANDLE HIMElf;
-  LPLOGFONT PIMElf;
-  LPIMESTRUCT PIME;
-#endif
 
-#ifdef TERATERM32
   if (HIMEDLL == NULL) return;
 // Adjust the position of conversion window
   hIMC = (*PImmGetContext)(HVTWin);
@@ -210,35 +143,6 @@ void SetConversionWindow(HWND HWin, int X, int Y)
   // Set font for the conversion window
   (*PImmSetCompositionFont)(hIMC,&lfIME);
   (*PImmReleaseContext)(HVTWin,hIMC);
-#else
-  if (HIMEDLL < HINSTANCE_ERROR) return;
-  HIME = GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE,sizeof(IMESTRUCT));
-
-  /* Set position of conversion window */
-  PIME = (LPIMESTRUCT)GlobalLock(HIME);
-  (*PIME).fnc = IME_SETCONVERSIONWINDOW;
-  if (X<0) (*PIME).wParam = MCW_DEFAULT;
-      else (*PIME).wParam = MCW_WINDOW;
-  (*PIME).lParam1 = MAKELONG(X,Y);
-  GlobalUnlock(HIME);
-  PSendIMEMessageEx(HWin, (LPARAM)HIME);
-
-  /* Set font of conversion window */
-  HIMElf = GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE,sizeof(LOGFONT));
-  PIMElf = (PLOGFONT)GlobalLock(HIMElf);
-  memcpy(PIMElf,&lfIME,sizeof(LOGFONT));
-  GlobalUnlock(HIMElf);
-
-  PIME = (LPIMESTRUCT)GlobalLock(HIME);
-  (*PIME).fnc = IME_SETCONVERSIONFONTEX;
-  if (X<0) (*PIME).lParam1 = NULL;
-      else (*PIME).lParam1 = (LPARAM)HIMElf;
-  GlobalUnlock(HIME);
-  PSendIMEMessageEx(HWin, (LPARAM)HIME);
-
-  GlobalFree(HIME);
-  GlobalFree(HIMElf);
-#endif
 }
 
 void SetConversionLogFont(PLOGFONT lf)
@@ -246,7 +150,6 @@ void SetConversionLogFont(PLOGFONT lf)
   memcpy(&lfIME,lf,sizeof(LOGFONT));
 }
 
-#ifdef TERATERM32
 HGLOBAL GetConvString(UINT wParam, LPARAM lParam)
 {
 	HIMC hIMC;
@@ -292,4 +195,3 @@ skip:
 	(*PImmReleaseContext)(HVTWin, hIMC);
 	return hstr;
 }
-#endif

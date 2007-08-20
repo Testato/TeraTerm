@@ -6,14 +6,8 @@
 /* TERATERM.EXE, Communication routines */
 #include "teraterm.h"
 #include "tttypes.h"
-#ifdef TERATERM32
 #include "tt_res.h"
 #include <process.h>
-#else
-#include "tt_res16.h"
-#include <stdlib.h>
-#include <string.h>
-#endif
 
 #include "ttcommon.h"
 #include "ttwsk.h"
@@ -85,7 +79,6 @@ static int CloseSocket(SOCKET s)
 #define CommXonLim 2048
 #define CommXoffLim 2048
 
-#ifdef TERATERM32
 #define READENDNAME "ReadEnd"
 #define WRITENAME "Write"
 #define READNAME "Read"
@@ -93,7 +86,6 @@ static int CloseSocket(SOCKET s)
 
 static HANDLE ReadEnd;
 static OVERLAPPED wol, rol;
-#endif
 
 // Winsock async operation handle
 static HANDLE HAsync=0;
@@ -102,11 +94,7 @@ BOOL TCPIPClosed = TRUE;
 
 /* Printer port handle for
    direct pass-thru printing */
-#ifdef TERATERM32
 static HANDLE PrnID = INVALID_HANDLE_VALUE;
-#else
-static int PrnID = -1;
-#endif
 static BOOL LPTFlag;
 
 // Initialize ComVar.
@@ -141,18 +129,12 @@ void CommInit(PComVar cv)
 void CommResetSerial(PTTSet ts, PComVar cv)
 {
   DCB dcb;
-#ifdef TERATERM32
   DWORD DErr;
   COMMTIMEOUTS ctmo;
-#else
-  COMSTAT Stat;
-  BYTE b;
-#endif
 
   if (! cv->Open ||
       (cv->PortType != IdSerial)) return;
 
-#ifdef TERATERM32
   ClearCommError(cv->ComID,&DErr,NULL);
   SetupComm(cv->ComID,CommInQueSize,CommOutQueSize);
   /* flush input and output buffers */
@@ -163,12 +145,6 @@ void CommResetSerial(PTTSet ts, PComVar cv)
   ctmo.ReadIntervalTimeout = MAXDWORD;
   ctmo.WriteTotalTimeoutConstant = 500;
   SetCommTimeouts(cv->ComID,&ctmo);
-#else
-  while (GetCommError(cv->ComID, &Stat)!=0) {};
-  /* flush input and output buffers */
-  FlushComm(cv->ComID,0);
-  FlushComm(cv->ComID,1);
-#endif
   cv->InBuffCount = 0;
   cv->InPtr = 0;
   cv->OutBuffCount = 0;
@@ -177,15 +153,8 @@ void CommResetSerial(PTTSet ts, PComVar cv)
   cv->DelayPerChar = ts->DelayPerChar;
   cv->DelayPerLine = ts->DelayPerLine;
 
-#ifdef TERATERM32
   memset(&dcb,0,sizeof(DCB));
   dcb.DCBlength = sizeof(DCB);
-#else
-  GetCommState(cv->ComID,&dcb);
-  b = dcb.Id;
-  memset(&dcb,0,sizeof(DCB));
-  dcb.Id = b;
-#endif
   switch (ts->Baud) {
     case IdBaud110: dcb.BaudRate = 110; break;
     case IdBaud300: dcb.BaudRate = 300; break;
@@ -198,9 +167,7 @@ void CommResetSerial(PTTSet ts, PComVar cv)
     case IdBaud19200: dcb.BaudRate = 19200; break;
     case IdBaud38400: dcb.BaudRate = 38400; break;
     case IdBaud57600: dcb.BaudRate = 57600; break;
-#ifdef TERATERM32
     case IdBaud115200: dcb.BaudRate = 115200; break;
-#endif
 	// add (2005.11.30 yutaka)
     case IdBaud230400: dcb.BaudRate = 230400; break;
     case IdBaud460800: dcb.BaudRate = 460800; break;
@@ -221,10 +188,8 @@ void CommResetSerial(PTTSet ts, PComVar cv)
       break;
   }
 
-#ifdef TERATERM32
   dcb.fDtrControl = DTR_CONTROL_ENABLE;
   dcb.fRtsControl = RTS_CONTROL_ENABLE;
-#endif
   switch (ts->Flow) {
     case IdFlowX:
       dcb.fOutX = TRUE;
@@ -236,12 +201,7 @@ void CommResetSerial(PTTSet ts, PComVar cv)
       break;
     case IdFlowHard:
       dcb.fOutxCtsFlow = TRUE;
-#ifdef TERATERM32
       dcb.fRtsControl = RTS_CONTROL_HANDSHAKE;
-#else
-      dcb.CtsTimeout = 30;
-      dcb.fRtsflow = TRUE;
-#endif
       break;
   }
 
@@ -254,19 +214,11 @@ void CommResetSerial(PTTSet ts, PComVar cv)
     case IdStopBit2: dcb.StopBits = TWOSTOPBITS; break;
   }
 
-#ifdef TERATERM32
   SetCommState(cv->ComID, &dcb);
 
   /* enable receive request */
   SetCommMask(cv->ComID,0);
   SetCommMask(cv->ComID,EV_RXCHAR);
-#else
-  SetCommState(&dcb);
-
-  /* enable receive request */
-  SetCommEventMask(cv->ComID,0);
-  SetCommEventMask(cv->ComID,EV_RXCHAR);
-#endif
 }
 
 void CommOpen(HWND HW, PTTSet ts, PComVar cv)
@@ -310,11 +262,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
   cv->RetryWithOtherProtocol = TRUE;
 #endif /* NO_INET6 */
   cv->s = INVALID_SOCKET;
-#ifdef TERATERM32
   cv->ComID = INVALID_HANDLE_VALUE;
-#else
-  cv->ComID = -1;
-#endif
   cv->CanSend = TRUE;
   cv->RRQ = FALSE;
   cv->SendKanjiFlag = FALSE;
@@ -538,7 +486,6 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
     case IdSerial:
       strncpy_s(P, sizeof(P),"COM", _TRUNCATE);
       uint2str(ts->ComPort,&P[3],sizeof(P)-3,3);
-#ifdef TERATERM32
       strncpy_s(ErrMsg, sizeof(ErrMsg),P, _TRUNCATE);
       strncpy_s(P, sizeof(P),"\\\\.\\", _TRUNCATE);
       strncat_s(P, sizeof(P),ErrMsg, _TRUNCATE);
@@ -548,18 +495,9 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
                    FILE_FLAG_OVERLAPPED,NULL);
       if (cv->ComID == INVALID_HANDLE_VALUE )
       {
-#else
-      cv->ComID = OpenComm(P,CommInQueSize,CommOutQueSize);
-      if (cv->ComID <0)
-      {
-#endif
 
         get_lang_msg("MSG_CANTOEPN_ERROR", ts->UIMsg, sizeof(ts->UIMsg), "Cannot open %s", ts->UILanguageFile);
-#ifdef TERATERM32
         _snprintf_s(ErrMsg, sizeof(ErrMsg), _TRUNCATE, ts->UIMsg, &P[4]);
-#else
-        _snprintf(ErrMsg, sizeof(ErrMsg), ts->UIMsg, P);
-#endif
 
         if (cv->NoMsg==0)
         {
@@ -575,10 +513,6 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 
         /* notify to VT window that Comm Port is open */
         PostMessage(cv->HWin, WM_USER_COMMOPEN, 0, 0);
-#ifndef TERATERM32
-        // disable comm notification
-        EnableCommNotification(cv->ComID,0,-1,-1);
-#endif
         InvalidHost = FALSE;
 
         COMFlag = GetCOMFlag();
@@ -588,14 +522,9 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
       break; /* end of "case IdSerial:" */
 
     case IdFile:
-#ifdef TERATERM32
       cv->ComID = CreateFile(ts->HostName,GENERIC_READ,0,NULL,
 	OPEN_EXISTING,0,NULL);
       InvalidHost = (cv->ComID == INVALID_HANDLE_VALUE);
-#else
-      cv->ComID = _lopen(ts->HostName,0);
-      InvalidHost = (cv->ComID<=0);
-#endif
       if (InvalidHost)
       {
         if (cv->NoMsg==0)
@@ -627,7 +556,6 @@ BreakSC:
   }
 }
 
-#ifdef TERATERM32
 void CommThread(void *arg)
 {
   DWORD Evt;
@@ -653,17 +581,12 @@ void CommThread(void *arg)
     }
   }
 }
-#endif
 
 void CommStart(PComVar cv, LONG lParam, PTTSet ts)
 {
   char ErrMsg[31];
-#ifdef TERATERM32
   char Temp[20];
   char Temp2[3];
-#else
-  COMSTAT Stat;
-#endif
   char uimsg[MAX_UIMSG];
 
   if (! cv->Open ) return;
@@ -741,7 +664,6 @@ void CommStart(PComVar cv, LONG lParam, PTTSet ts)
       break;
 
     case IdSerial:
-#ifdef TERATERM32
       uint2str(cv->ComPort,Temp2,sizeof(Temp2),3);
       strncpy_s(Temp, sizeof(Temp),READENDNAME, _TRUNCATE);
       strncat_s(Temp, sizeof(Temp),Temp2, _TRUNCATE);
@@ -756,25 +678,12 @@ void CommStart(PComVar cv, LONG lParam, PTTSet ts)
       rol.hEvent = CreateEvent(NULL,TRUE,FALSE,Temp);
 
       /* create the receiver thread */
-#ifdef __WATCOMC__
-      if (_beginthread(CommThread,8192,cv) == -1)
-#else
       if (_beginthread(CommThread,0,cv) == -1)
-#endif
       {
         get_lang_msg("MSG_TT_ERROR", uimsg, sizeof(uimsg), "Tera Term: Error", ts->UILanguageFile);
         get_lang_msg("MSG_TT_ERROR", ts->UIMsg, sizeof(ts->UIMsg), "Can't create thread", ts->UILanguageFile);
         MessageBox(cv->HWin,ts->UIMsg,uimsg,MB_TASKMODAL | MB_ICONEXCLAMATION);
       }
-#else
-      // flush input que
-      while (GetCommError(cv->ComID, &Stat)!=0) {};
-      FlushComm(cv->ComID,1);
-      // enable receive request
-      SetCommEventMask(cv->ComID,EV_RXCHAR);
-      EnableCommNotification(cv->ComID,cv->HWin,-1,-1);
-      GetCommEventMask(cv->ComID,EV_RXCHAR);
-#endif
       break;
     case IdFile: cv->RRQ = TRUE; break;
   }
@@ -824,7 +733,6 @@ void CommClose(PComVar cv)
       FreeWinsock();
       break;
     case IdSerial:
-#ifdef TERATERM32
       if ( cv->ComID != INVALID_HANDLE_VALUE )
       {
 	CloseHandle(ReadEnd);
@@ -836,43 +744,22 @@ void CommClose(PComVar cv)
 	EscapeCommFunction(cv->ComID,CLRDTR);
 	SetCommMask(cv->ComID,0);
 	CloseHandle(cv->ComID);
-#else
-      if (cv->ComID >= 0)
-      {
-	FlushComm(cv->ComID,0);
-	FlushComm(cv->ComID,1);
-	EscapeCommFunction(cv->ComID,CLRDTR);
-	EnableCommNotification(cv->ComID,0,-1,-1) ;
-	CloseComm(cv->ComID);
-#endif
 	COMFlag = GetCOMFlag();
 	COMFlag = COMFlag & ~(1 << (cv->ComPort-1));
 	SetCOMFlag(COMFlag); 
       }
       break;
     case IdFile:
-#ifdef TERATERM32
       if (cv->ComID != INVALID_HANDLE_VALUE)
 	CloseHandle(cv->ComID);
       break;
   }
   cv->ComID = INVALID_HANDLE_VALUE;
-#else
-      if (cv->ComID >= 0)
-	_lclose(cv->ComID);
-      break;
-  }
-  cv->ComID = -1;
-#endif
   cv->PortType = 0;
 }
 
 void CommProcRRQ(PComVar cv)
 {
-#ifndef TERATERM32
-  COMSTAT Stat;
-#endif
-
   if ( ! cv->Ready ) return;
   /* disable receive request */
   switch (cv->PortType) {
@@ -881,10 +768,6 @@ void CommProcRRQ(PComVar cv)
 	PWSAAsyncSelect(cv->s,cv->HWin,WM_USER_COMMNOTIFY, FD_OOB | FD_CLOSE);
       break;
     case IdSerial:
-#ifndef TERATERM32
-      EnableCommNotification(cv->ComID,0,-1,-1);
-      while (GetCommError(cv->ComID, &Stat)!=0) {};
-#endif
       break;
   }
   cv->RRQ = TRUE;
@@ -893,13 +776,8 @@ void CommProcRRQ(PComVar cv)
 
 void CommReceive(PComVar cv)
 {
-#ifdef TERATERM32
   DWORD C;
   DWORD DErr;
-#else
-  int C;
-  COMSTAT Stat;
-#endif
 
   if (! cv->Ready || ! cv->RRQ ||
       (cv->InBuffCount>=InBuffSize)) return;
@@ -925,7 +803,6 @@ void CommReceive(PComVar cv)
 	cv->InBuffCount = cv->InBuffCount + C;
 	break;
       case IdSerial:
-#ifdef TERATERM32
 	do {
 	  ClearCommError(cv->ComID,&DErr,NULL);
 	  if (! ReadFile(cv->ComID,&(cv->InBuff[cv->InBuffCount]),
@@ -945,23 +822,10 @@ void CommReceive(PComVar cv)
 	  cv->InBuffCount = cv->InBuffCount + C;
 	} while ((C!=0) && (cv->InBuffCount<InBuffSize));
 	ClearCommError(cv->ComID,&DErr,NULL);
-#else
-	do {
-	  C = ReadComm(cv->ComID, &cv->InBuff[cv->InBuffCount], InBuffSize-cv->InBuffCount);
-	  C = abs(C);
-	  do {} while (GetCommError(cv->ComID, &Stat)!=0);
-	  cv->InBuffCount = cv->InBuffCount + C;
-	} while ((C!=0) && (cv->InBuffCount<InBuffSize));
-#endif
 	break;
       case IdFile:
-#ifdef TERATERM32
 	ReadFile(cv->ComID,&(cv->InBuff[cv->InBuffCount]),
 		 InBuffSize-cv->InBuffCount,&C,NULL);
-#else
-	C = _lread(cv->ComID, &cv->InBuff[cv->InBuffCount],
-		   InBuffSize-cv->InBuffCount);
-#endif
 	cv->InBuffCount = cv->InBuffCount + C;
 	break;
     }
@@ -976,16 +840,9 @@ void CommReceive(PComVar cv)
 	    WM_USER_COMMNOTIFY, FD_READ | FD_OOB | FD_CLOSE);
 	break;
       case IdSerial:
-#ifdef TERATERM32
 	cv->RRQ = FALSE;
 	SetEvent(ReadEnd);
 	return;
-#else
-	while (GetCommError(cv->ComID, &Stat)!=0) {};
-	EnableCommNotification(cv->ComID,cv->HWin,-1,-1);
-	GetCommEventMask(cv->ComID,EV_RXCHAR);
-	break;
-#endif
       case IdFile:
 	PostMessage(cv->HWin, WM_USER_COMMNOTIFY, 0, FD_CLOSE);
 	break;
@@ -1001,9 +858,7 @@ void CommSend(PComVar cv)
   COMSTAT Stat;
   BYTE LineEnd;
   int C, D, Max;
-#ifdef TERATERM32
   DWORD DErr;
-#endif
 
   if ((! cv->Open) || (! cv->Ready))
   {
@@ -1020,11 +875,7 @@ void CommSend(PComVar cv)
       Max = cv->OutBuffCount;
       break;
     case IdSerial:
-#ifdef TERATERM32
       ClearCommError(cv->ComID,&DErr,&Stat);
-#else
-      GetCommError(cv->ComID,&Stat);
-#endif
       Max = OutBuffSize - Stat.cbOutQue;
       break;
     case IdFile: Max = cv->OutBuffCount;
@@ -1074,7 +925,6 @@ void CommSend(PComVar cv)
       break;
 
     case IdSerial:
-#ifdef TERATERM32
       if (! WriteFile(cv->ComID,&(cv->OutBuff[cv->OutPtr]),C,(LPDWORD)&D,&wol))
       {
 	if (GetLastError() == ERROR_IO_PENDING)
@@ -1089,11 +939,6 @@ void CommSend(PComVar cv)
 	  D = C; /* ignore error */
       }
       ClearCommError(cv->ComID,&DErr,&Stat);
-#else
-      D = WriteComm(cv->ComID, &cv->OutBuff[cv->OutPtr], C);
-      D = abs(D);
-      while (GetCommError(cv->ComID, &Stat)!=0) {};
-#endif
       break;
     case IdFile: D = C; break;
   }
@@ -1179,9 +1024,7 @@ int GetCommSerialBaudRate(int id)
 		case IdBaud38400:
 			return 38400;
 		case IdBaud57600:
-#ifdef TERATERM32
 		case IdBaud115200:
-#endif
 		case IdBaud230400:
 		case IdBaud460800:
 		case IdBaud921600:
@@ -1195,18 +1038,13 @@ BOOL PrnOpen(PCHAR DevName)
 {
   char Temp[MAXPATHLEN];
   DCB dcb;
-#ifdef TERATERM32
   DWORD DErr;
   COMMTIMEOUTS ctmo;
-#else
-  COMSTAT Stat;
-#endif
 
   strncpy_s(Temp, sizeof(Temp),DevName, _TRUNCATE);
   Temp[4] = 0; // COMn or LPTn
   LPTFlag = (Temp[0]=='L') ||
 	    (Temp[0]=='l');
-#ifdef TERATERM32
   PrnID =
     CreateFile(Temp,GENERIC_WRITE,
 	       0,NULL,OPEN_EXISTING,
@@ -1227,18 +1065,6 @@ BOOL PrnOpen(PCHAR DevName)
   memset(&ctmo,0,sizeof(ctmo));
   ctmo.WriteTotalTimeoutConstant = 1000;
   SetCommTimeouts(PrnID,&ctmo);
-#else
-  PrnID = OpenComm(Temp,0,CommOutQueSize);
-  if (PrnID<0) return FALSE;
-  if (GetCommState(PrnID,&dcb)==0)
-  {
-    BuildCommDCB(DevName,&dcb);
-    SetCommState(&dcb);
-  }
-  GetCommError(PrnID, &Stat);
-  /* flush output buffer */
-  FlushComm(PrnID,0);
-#endif
   if (! LPTFlag)
     EscapeCommFunction(PrnID,SETDTR);
   return TRUE;
@@ -1247,19 +1073,12 @@ BOOL PrnOpen(PCHAR DevName)
 int PrnWrite(PCHAR b, int c)
 {
   int d;
-#ifdef TERATERM32
   DWORD DErr;
-#endif
   COMSTAT Stat;
 
-#ifdef TERATERM32
   if (PrnID == INVALID_HANDLE_VALUE )
-#else
-  if (PrnID < 0)
-#endif
     return c;
 
-#ifdef TERATERM32
   ClearCommError(PrnID,&DErr,&Stat);
   if (! LPTFlag &&
       (OutBuffSize - (int)Stat.cbOutQue < c))
@@ -1268,32 +1087,18 @@ int PrnWrite(PCHAR b, int c)
   if (! WriteFile(PrnID,b,c,(LPDWORD)&d,NULL))
     d = 0;
   ClearCommError(PrnID,&DErr,NULL);
-#else
-  GetCommError(PrnID,&Stat);
-  if (OutBuffSize - Stat.cbOutQue < c)
-    c = OutBuffSize - Stat.cbOutQue;
-  if (c<=0) return 0;
-  d = WriteComm(PrnID, b, c);
-  d = abs(d);
-  GetCommError(PrnID, &Stat);
-#endif
   return d;
 }
 
 void PrnCancel()
 {
-#ifdef TERATERM32
   PurgeComm(PrnID,
     PURGE_TXABORT | PURGE_TXCLEAR);
-#else
-  FlushComm(PrnID,0);
-#endif
   PrnClose();
 }
 
 void PrnClose()
 {
-#ifdef TERATERM32
   if (PrnID != INVALID_HANDLE_VALUE)
   {
     if (!LPTFlag)
@@ -1301,13 +1106,4 @@ void PrnClose()
     CloseHandle(PrnID);
   }
   PrnID = INVALID_HANDLE_VALUE;
-#else
-  if (PrnID >= 0)
-  {
-    if (!LPTFlag)
-      EscapeCommFunction(PrnID,CLRDTR);
-    CloseComm(PrnID);
-  }
-  PrnID = -1;
-#endif
 }

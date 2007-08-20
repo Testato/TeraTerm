@@ -8,12 +8,7 @@
 #include "tttypes.h"
 #include "ttftypes.h"
 #include "ttlib.h"
-#ifdef TERATERM32
 #include "tt_res.h"
-#else
-#include "ttctl3d.h"
-#include "tt_res16.h"
-#endif
 #include "ftdlg.h"
 
 #ifdef _DEBUG
@@ -51,11 +46,7 @@ BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv, PTTSet pts)
   wc.hCursor = LoadCursor(NULL,IDC_ARROW);
   wc.hbrBackground = (HBRUSH)(COLOR_BTNFACE+1);
   wc.lpszMenuName = NULL;
-#ifdef TERATERM32
   wc.lpszClassName = "FTDlg32";
-#else
-  wc.lpszClassName = "FTDlg";
-#endif
   RegisterClass(&wc);
 
   Pause = FALSE;
@@ -112,22 +103,17 @@ void CFileTransDlg::RefreshNum()
 
 BOOL CFileTransDlg::OnInitDialog()
 {
-#ifndef TERATERM32
-  SubClassDlg(GetSafeHwnd()); /* CTL3D */
-#endif
   SetWindowText(fv->DlgCaption);
   SetDlgItemText(IDC_TRANSFNAME, &(fv->FullName[fv->DirLen]));
 
   // ログファイルはフルパス表示にする(2004.8.6 yutaka)
   SetDlgItemText(IDC_EDIT_FULLPATH, &(fv->FullName[0]));
 
-#ifdef TERATERM32
   // set the small icon
   ::PostMessage(GetSafeHwnd(),WM_SETICON,0,
     (LPARAM)LoadImage(AfxGetInstanceHandle(),
       MAKEINTRESOURCE(IDI_TTERM),
       IMAGE_ICON,16,16,0));
-#endif
   return 1;
 }
 

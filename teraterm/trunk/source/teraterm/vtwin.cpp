@@ -46,19 +46,10 @@
 #include <io.h>
 #include <errno.h>
 
-#ifdef TERATERM32
 #include "tt_res.h"
-#else
-#include "ttctl3d.h"
-#include "tt_res16.h"
-#endif
 #include "vtwin.h"
 
-#ifdef TERATERM32
 #define VTClassName "VTWin32"
-#else
-#define VTClassName "VTWin"
-#endif
 
 /* mouse buttons */
 #define IdLeftButton 0
@@ -305,9 +296,6 @@ CVTWindow::CVTWindow()
   char *Param;
   int CmdShow;
   PKeyMap tempkm;
-#ifndef TERATERM32
-  int i;
-#endif
 
 #if 0
   #include <crtdbg.h>
@@ -363,16 +351,9 @@ CVTWindow::CVTWindow()
   }
 
   /* Parse command line parameters*/
-#ifdef TERATERM32
   // 256バイト以上のコマンドラインパラメータ指定があると、BOF(Buffer Over Flow)で
   // 落ちるバグを修正。(2007.6.12 maya)
   Param = GetCommandLine();
-#else
-  strcpy(Temp,"teraterm ");
-  i = (int)*(LPBYTE)MAKELP(GetCurrentPDB(),0x80);
-  memcpy(&Temp[9],MAKELP(GetCurrentPDB(),0x81),i);
-  Temp[9+i] = 0;
-#endif
   if (LoadTTSET())
     (*ParseParam)(Param, &ts, &(TopicName[0]));
   FreeTTSET();
@@ -472,13 +453,11 @@ CVTWindow::CVTWindow()
 //-->
 #endif
 
-#ifdef TERATERM32
   // set the small icon
   ::PostMessage(HVTWin,WM_SETICON,0,
     (LPARAM)LoadImage(AfxGetInstanceHandle(),
       MAKEINTRESOURCE(IDI_VT),
       IMAGE_ICON,16,16,0));
-#endif
   MainMenu = NULL;
   WinMenu = NULL;
   if ((ts.HideTitle==0) && (ts.PopupMenu==0))
@@ -514,11 +493,7 @@ CVTWindow::CVTWindow()
     Startup();
     return;
   }
-#ifdef TERATERM32
   CmdShow = SW_SHOWDEFAULT;
-#else
-  CmdShow = AfxGetApp()->m_nCmdShow;
-#endif
   if (ts.Minimize>0)
     CmdShow = SW_SHOWMINIMIZED;
   ShowWindow(CmdShow);
@@ -1259,13 +1234,8 @@ LRESULT CVTWindow::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
 BOOL CVTWindow::OnCommand(WPARAM wParam, LPARAM lParam)
 {
-#ifdef TERATERM32
   WORD wID = LOWORD(wParam);
   WORD wNotifyCode = HIWORD(wParam);
-#else
-  WORD wID = wParam;
-  WORD wNotifyCode = HIWORD(lParam);
-#endif	
   
   if (wNotifyCode==1)
   {
@@ -1417,11 +1387,7 @@ void CVTWindow::OnDestroy()
 
 void CVTWindow::OnDropFiles(HDROP hDropInfo)
 {
-#ifdef TERATERM32
 	::SetForegroundWindow(HVTWin);
-#else
-	::SetActiveWindow(HVTWin);
-#endif
 	if (cv.Ready && (SendVar==NULL) && NewFileVar(&SendVar))
 	{
 		if (DragQueryFile(hDropInfo,0,SendVar->FullName,
@@ -1846,11 +1812,7 @@ void CVTWindow::OnSysChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CVTWindow::OnSysColorChange()
 {
-#ifndef TERATERM32
-  SysColorChange();
-#else
   CFrameWnd::OnSysColorChange();
-#endif
 }
 
 void CVTWindow::OnSysCommand(UINT nID, LPARAM lParam)
@@ -2025,7 +1987,6 @@ LONG CVTWindow::OnExitSizeMove(UINT wParam, LONG lParam)
 
 LONG CVTWindow::OnIMEComposition(UINT wParam, LONG lParam)
 {
-#ifdef TERATERM32
 	HGLOBAL hstr;
 	//LPSTR lpstr;
 	wchar_t *lpstr;
@@ -2074,7 +2035,6 @@ skip:
 		GlobalFree(hstr);
 		return 0;
 	}
-#endif
 	return CFrameWnd::DefWindowProc
 		(WM_IME_COMPOSITION,wParam,lParam);
 }
@@ -2289,9 +2249,6 @@ LONG CVTWindow::OnCommNotify(UINT wParam, LONG lParam)
 {
   switch (LOWORD(lParam)) {
     case FD_READ:  // TCP/IP
-#ifndef TERATERM32
-    case CN_EVENT: // Win 3.1 serial
-#endif
       CommProcRRQ(&cv);
       break;
     case FD_CLOSE:
@@ -2471,11 +2428,7 @@ void CVTWindow::OnFileNewConnection()
   GetHNRec.ComPort = ts.ComPort;
   GetHNRec.MaxComPort = ts.MaxComPort;
 
-#ifdef TERATERM32
   strncpy_s(Command, sizeof(Command),"ttermpro ", _TRUNCATE);
-#else
-  strcpy(Command,"teraterm ");
-#endif
   GetHNRec.HostName = &Command[9];
 
   if (! LoadTTDLG()) return;

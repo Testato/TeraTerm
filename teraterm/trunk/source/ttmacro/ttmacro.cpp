@@ -6,12 +6,7 @@
 
 #include "stdafx.h"
 #include "teraterm.h"
-#ifdef TERATERM32
-  #include "ttm_res.h"
-#else
-  #include "ttm_re16.h"
-  #include "ttctl3d.h"
-#endif
+#include "ttm_res.h"
 #include "ttmmain.h"
 #include "ttl.h"
 
@@ -72,9 +67,6 @@ BOOL CCtrlApp::InitInstance()
                           UILanguageFile, sizeof(UILanguageFile), SetupFName);
 
   Busy = TRUE;
-#ifndef TERATERM32
-  LoadCtl3d(m_hInstance);
-#endif
   m_pMainWnd = new CCtrlWindow();
   PCtrlWindow(m_pMainWnd)->Create();
   Busy = FALSE;  
@@ -83,9 +75,6 @@ BOOL CCtrlApp::InitInstance()
 
 int CCtrlApp::ExitInstance()
 {
-#ifndef TERATERM32
-  FreeCtl3d();
-#endif
   m_pMainWnd = NULL;
   return ExitCode;
 }

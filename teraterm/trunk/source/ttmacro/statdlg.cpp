@@ -7,11 +7,7 @@
 #include "stdafx.h"
 #include "teraterm.h"
 #include "ttlib.h"
-#ifdef TERATERM32
 #include "ttm_res.h"
-#else
-#include "ttm_re16.h"
-#endif
 #include "ttmlib.h"
 
 #include "statdlg.h"
@@ -86,11 +82,7 @@ BOOL CStatDlg::OnInitDialog()
 
   CDialog::OnInitDialog();
   Update(TextStr,TitleStr,PosX,PosY);
-#ifdef TERATERM32
   SetForegroundWindow();
-#else
-  SetActiveWindow();
-#endif
 
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
   GetObject(font, sizeof(LOGFONT), &logfont);

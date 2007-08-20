@@ -40,21 +40,12 @@ BOOL LoadTTDLG()
 {
   BOOL Err;
 
-#ifdef TERATERM32
   if (HTTDLG == NULL)
-#else
-  if (HTTDLG < HINSTANCE_ERROR)
-#endif
   {
     TTDLGUseCount = 0;
 
-#ifdef TERATERM32
     HTTDLG = LoadLibrary("TTPDLG.DLL");
     if (HTTDLG==NULL) return FALSE;
-#else
-    HTTDLG = LoadLibrary("TTDLG.DLL");
-    if (HTTDLG<HINSTANCE_ERROR) return FALSE;
-#endif
 
     Err = FALSE;
     SetupTerminal = (PSetupTerminal)GetProcAddress(HTTDLG,
@@ -119,11 +110,7 @@ BOOL FreeTTDLG()
   if (TTDLGUseCount==0) return FALSE; 
  TTDLGUseCount--;
   if (TTDLGUseCount>0) return TRUE;
-#ifdef TERATERM32
   if (HTTDLG!=NULL)
-#else
-  if (HTTDLG>=HINSTANCE_ERROR)
-#endif
   {
     FreeLibrary(HTTDLG);
     HTTDLG = NULL;

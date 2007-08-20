@@ -6,9 +6,7 @@
 
 extern char UILanguageFile[MAX_PATH];
 
-#ifdef TERATERM32
 void GetLongFName(PCHAR FullName, PCHAR LongName, int destlen);
-#endif
 void FTConvFName(PCHAR FName);
 BOOL GetNextFname(PFileVar fv);
 WORD UpdateCRC(BYTE b, WORD CRC);

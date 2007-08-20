@@ -7,11 +7,7 @@
 #include "stdafx.h"
 #include "teraterm.h"
 #include "ttlib.h"
-#ifdef TERATERM32
 #include "ttm_res.h"
-#else
-#include "ttm_re16.h"
-#endif
 
 #include "errdlg.h"
 #include "ttmlib.h"
@@ -78,10 +74,7 @@ BOOL CErrDlg::OnInitDialog()
     ::ReleaseDC(GetSafeHwnd(),TmpDC);
   }
   SetWindowPos(&wndTop,PosX,PosY,0,0,SWP_NOSIZE);
-#ifdef TERATERM32
   SetForegroundWindow();
-#else
-  SetActiveWindow();
-#endif
+
   return TRUE;
 }

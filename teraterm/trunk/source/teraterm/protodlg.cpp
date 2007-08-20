@@ -5,11 +5,7 @@
 /* TERATERM.EXE, file-transfer-protocol dialog box */
 #include "stdafx.h"
 #include "teraterm.h"
-#ifdef TERATERM32
 #include "tt_res.h"
-#else
-#include "tt_res16.h"
-#endif
 #include "tttypes.h"
 #include "ttftypes.h"
 #include "ttlib.h"

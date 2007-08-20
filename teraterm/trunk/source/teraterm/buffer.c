@@ -21,16 +21,11 @@
 #define URL_EMPHASIS 1
 
 #define BuffXMax 300
-#ifdef TERATERM32
 //#define BuffYMax 100000
 //#define BuffSizeMax 8000000
 // スクロールバッファの最大長を拡張 (2004.11.28 yutaka)
 #define BuffYMax 500000
 #define BuffSizeMax (BuffYMax * 80)
-#else
-#define BuffYMax 800
-#define BuffSizeMax 65535
-#endif
 
 // status line
 int StatusLine;	//0: none 1: shown 

@@ -6,12 +6,7 @@
 
 #include "stdafx.h"
 #include "teraterm.h"
-#ifdef TERATERM32
-  #include "ttm_res.h"
-#else
-  #include "ttm_re16.h"
-  #include "ttctl3d.h"
-#endif
+#include "ttm_res.h"
 #include "ttmdlg.h"
 #include "ttl.h"
 #include "ttmparse.h"
@@ -199,9 +194,6 @@ BOOL CCtrlWindow::OnInitDialog()
   LOGFONT logfont;
   HFONT font;
 
-#ifndef TERATERM32
-  SubClassDlg(GetSafeHwnd()); /* CTL3D */
-#endif
   CDialog::OnInitDialog();
 
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
@@ -229,13 +221,13 @@ BOOL CCtrlWindow::OnInitDialog()
     (CRTWidth-Rect.right+Rect.left) / 2,
     (CRTHeight-Rect.bottom+Rect.top) / 2,
     0,0,SWP_NOSIZE | SWP_NOZORDER);
-#ifdef TERATERM32
+
   // set the small icon
   ::PostMessage(GetSafeHwnd(),WM_SETICON,0,
     (LPARAM)LoadImage(AfxGetInstanceHandle(),
     MAKEINTRESOURCE(IDI_TTMACRO),
     IMAGE_ICON,16,16,0));
-#endif
+
   ParseParam(&IOption,&VOption);
 
   if (TopicName[0] != 0) InitDDE(GetSafeHwnd());
@@ -265,11 +257,7 @@ BOOL CCtrlWindow::OnInitDialog()
   if (IOption)
     CmdShow = SW_SHOWMINIMIZED;
   else
-#ifdef TERATERM32
     CmdShow = SW_SHOWDEFAULT;
-#else
-    CmdShow = AfxGetApp()->m_nCmdShow;
-#endif
   ShowWindow(CmdShow);
   return TRUE;
 }
@@ -357,11 +345,7 @@ HCURSOR CCtrlWindow::OnQueryDragIcon()
 
 void CCtrlWindow::OnSysColorChange()
 {
-#ifndef TERATERM32
-  SysColorChange();
-#else
   CDialog::OnSysColorChange();
-#endif
 }
 
 void CCtrlWindow::OnTimer(UINT nIDEvent)

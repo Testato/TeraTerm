@@ -45,23 +45,14 @@ void ShowDlgItem(HWND HDlg, int FirstId, int LastId)
 void SetRB(HWND HDlg, int R, int FirstId, int LastId)
 {
   HWND HControl;
-#ifdef TERATERM32
   DWORD Style;
-#else
-  WORD Style;
-#endif
 
   if ( R<1 ) return;
   if ( FirstId+R-1 > LastId ) return;
   HControl = GetDlgItem(HDlg, FirstId + R - 1);
   SendMessage(HControl, BM_SETCHECK, 1, 0);
-#ifdef TERATERM32
   Style = GetClassLong(HControl, GCL_STYLE);
   SetClassLong(HControl, GCL_STYLE, Style | WS_TABSTOP);
-#else
-  Style = GetClassLong(HControl, GCW_STYLE);
-  SetClassWord(HControl, GCW_STYLE, Style | WS_TABSTOP);
-#endif
 }
 
 void GetRB(HWND HDlg, LPWORD R, int FirstId, int LastId)

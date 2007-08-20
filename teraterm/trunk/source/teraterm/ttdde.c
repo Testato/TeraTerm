@@ -29,10 +29,6 @@ BOOL CloseTT = FALSE;
 
 static BOOL DdeCmnd = FALSE;
 
-#ifndef TERATERM32
-static FARPROC DdeCallbackPtr = NULL;
-#endif
-
 static DWORD Inst = 0;
 static HSZ Service = 0;
 static HSZ Topic = 0;
@@ -90,7 +86,6 @@ void Byte2HexStr(BYTE b, LPSTR HexStr)
 
 void SetTopic()
 {
-#ifdef TERATERM32
   WORD w;
 
   w = HIWORD(HVTWin);
@@ -99,10 +94,6 @@ void SetTopic()
   w = LOWORD(HVTWin);
   Byte2HexStr(HIBYTE(w),&(TopicName[4]));
   Byte2HexStr(LOBYTE(w),&(TopicName[6]));
-#else
-  Byte2HexStr(HIBYTE(HVTWin),&(TopicName[0]));
-  Byte2HexStr(LOBYTE(HVTWin),&(TopicName[2]));
-#endif 
 }
 
 HDDEDATA WildConnect(HSZ ServiceHsz, HSZ TopicHsz, UINT ClipFmt)
@@ -722,14 +713,7 @@ BOOL InitDDE()
 
   Ok = TRUE;
 
-#ifdef TERATERM32
   if (DdeInitialize(&Inst,(PFNCALLBACK)DdeCallbackProc,0,0) == DMLERR_NO_ERROR)
-#else
-  DdeCallbackPtr = (PFNCALLBACK)MakeProcInstance((FARPROC)DdeCallbackProc,
-    (HINSTANCE)GetWindowWord(HVTWin,GWW_HINSTANCE));
-  if ((DdeCallbackPtr!=NULL) &&
-      (DdeInitialize(&Inst,DdeCallbackPtr,0,0) == DMLERR_NO_ERROR))
-#endif
   {
     Service= DdeCreateStringHandle(Inst, ServiceName, CP_WINANSI);
     Topic  = DdeCreateStringHandle(Inst, TopicName, CP_WINANSI);
@@ -791,11 +775,6 @@ void EndDDE()
     Item2 = 0;
 
     DdeUninitialize(Temp);
-#ifndef TERATERM32
-    if (DdeCallbackPtr != NULL)
-      FreeProcInstance((FARPROC)DdeCallbackPtr);
-    DdeCallbackPtr = NULL;
-#endif
   }
   TopicName[0] = 0;
   
@@ -855,20 +834,14 @@ void RunMacro(PCHAR FName, BOOL Startup)
 
 	SetTopic();
 	if (! InitDDE()) return;
-#ifdef TERATERM32
 	strncpy_s(Cmnd, sizeof(Cmnd),"TTPMACRO /D=", _TRUNCATE);
-#else
-	strcpy(Cmnd,"TTMACRO /D=");
-#endif
 	strncat_s(Cmnd,sizeof(Cmnd),TopicName,_TRUNCATE);
 	if (FName!=NULL)
 	{
 		strncat_s(Cmnd,sizeof(Cmnd)," ",_TRUNCATE);
 		i = strlen(Cmnd);
 		strncat_s(Cmnd,sizeof(Cmnd),FName,_TRUNCATE);
-#ifdef TERATERM32
 		QuoteFName(&Cmnd[i]);
-#endif
 	}
 
 	StartupFlag = Startup;

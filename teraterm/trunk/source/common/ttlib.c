@@ -11,11 +11,6 @@
 #include "tttypes.h"
 #include <shlobj.h>
 
-#ifndef TERATERM32
-  #define CharNext AnsiNext
-  #define CharPrev AnsiPrev
-#endif
-
 BOOL GetFileNamePos(PCHAR PathName, int far *DirLen, int far *FNPos)
 {
   BYTE b;
@@ -79,10 +74,7 @@ void FitFileName(PCHAR FileName, int destlen, PCHAR DefExt)
   int i, j, NumOfDots;
   char Temp[MAXPATHLEN];
   BYTE b;
-#ifndef TERATERM32
-  int NameLen;
-#endif
-  
+
   NumOfDots = 0;
   i = 0;
   j = 0;
@@ -96,15 +88,7 @@ void FitFileName(PCHAR FileName, int destlen, PCHAR DefExt)
   do {
     b = FileName[i];
     i++;
-#ifdef TERATERM32
     if (b=='.') NumOfDots++;
-#else
-    if (b=='.')
-    {
-      NumOfDots++;
-      NameLen = j;
-    }
-#endif
     if ((b!=0) &&
 	(j < MAXPATHLEN-1))
     {
@@ -114,30 +98,12 @@ void FitFileName(PCHAR FileName, int destlen, PCHAR DefExt)
   } while (b!=0);
   Temp[j] = 0;
 
-#ifdef TERATERM32
   if ((NumOfDots==0) &&
       (DefExt!=NULL))
     /* add the default extension */
     strncat_s(Temp,sizeof(Temp),DefExt,_TRUNCATE);
 
   strncpy_s(FileName,destlen,Temp,_TRUNCATE);
-#else
-  if (NumOfDots==0)
-  {
-    NameLen = j;
-    if (DefExt!=NULL)
-      strcat(Temp,DefExt); /* add the default extension */
-  }
-  for (i=0; i<=NameLen-1; i++)
-    if (Temp[i]=='.') /* convert dots in the filename */
-      Temp[i] = '_'; /* to underscores. */
-  strcpy(FileName,Temp);
-  if (NameLen>8)
-    FileName[8] = 0;
-  else
-    FileName[NameLen] = 0;
-  strncat(FileName,&Temp[NameLen],12-sizeof(FileName));
-#endif
 }
 
 // Append a slash to the end of a path name
@@ -265,7 +231,6 @@ void uint2str(UINT i, PCHAR Str, int destlen, int len)
   strncpy_s(Str,destlen,Temp,_TRUNCATE);
 }
 
-#ifdef TERATERM32
 void QuoteFName(PCHAR FName)
 {
   int i;
@@ -278,7 +243,6 @@ void QuoteFName(PCHAR FName)
   FName[i+1] = '\"';
   FName[i+2] = 0;
 }
-#endif
 
 // ファイル名に使用できない文字が含まれているか確かめる (2006.8.28 maya)
 int isInvalidFileNameChar(PCHAR FName)

@@ -2,32 +2,14 @@
  Copyright(C) 1994-1998 T. Teranishi
  All rights reserved. */
 
-/* keycode.exe for Tera Term (Pro) (16 and 32-bit verisions) */
+/* keycode.exe for Tera Term Pro */
 
-#ifdef __WATCOMC__
-  #if defined(__WINDOWS__)
-    #define TERATERM16
-  #elif defined(__NT__)
-    #define TERATERM32
-  #endif
-#endif
-
-#if ! defined(TERATERM16) && ! defined(TERATERM32)
-//  #define TERATERM16
-  #define TERATERM32
-#endif
-  
 #include <windows.h>
 #include <stdio.h>
 #include <string.h>
 
-#ifdef TERATERM32
-  #include "kc_res.h"
-  #define ClassName "KeyCodeWin32"
-#else
-  #include "kc_res16.h"
-  #define ClassName "KeyCodeWin"
-#endif
+#include "kc_res.h"
+#define ClassName "KeyCodeWin32"
 
 // Prototypes
 LRESULT WINAPI MainWndProc( HWND, UINT, WPARAM, LPARAM );
@@ -82,13 +64,11 @@ int PASCAL WinMain(HINSTANCE hInstance,
     NULL);
 
   ShowWindow(hWnd, nCmdShow);
-#ifdef TERATERM32
   // set the small icon
   PostMessage(hWnd,WM_SETICON,0,
     (LPARAM)LoadImage(hInstance,
     MAKEINTRESOURCE(IDI_KEYCODE),
     IMAGE_ICON,16,16,0));
-#endif
   while(GetMessage(&msg, NULL, 0, 0)) {
     TranslateMessage(&msg);
     DispatchMessage(&msg);

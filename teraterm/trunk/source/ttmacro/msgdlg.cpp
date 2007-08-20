@@ -7,11 +7,7 @@
 #include "stdafx.h"
 #include "teraterm.h"
 #include "ttlib.h"
-#ifdef TERATERM32
 #include "ttm_res.h"
-#else
-#include "ttm_re16.h"
-#endif
 #include "ttmlib.h"
 
 #include "msgdlg.h"
@@ -88,11 +84,8 @@ BOOL CMsgDlg::OnInitDialog()
   
   Relocation(TRUE, WW);
 
-#ifdef TERATERM32
   SetForegroundWindow();
-#else
-  SetActiveWindow();
-#endif
+
   return TRUE;
 }
 

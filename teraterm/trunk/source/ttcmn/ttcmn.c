@@ -22,15 +22,9 @@ static HINSTANCE hInst;
 
 static PMap pm;
 
-#ifdef TERATERM32
-  static HANDLE HMap = NULL;
-  #define VTCLASSNAME "VTWin32"
-  #define TEKCLASSNAME "TEKWin32"
-#else
-  static TMap map;
-  #define VTCLASSNAME "VTWin"
-  #define TEKCLASSNAME "TEKWin"
-#endif
+static HANDLE HMap = NULL;
+#define VTCLASSNAME "VTWin32"
+#define TEKCLASSNAME "TEKWin32"
 
 
 void PASCAL CopyShmemToTTSet(PTTSet ts)
@@ -602,11 +596,7 @@ void FAR PASCAL SelectWin(int WinId)
   if ((WinId>=0) && (WinId<pm->NWin))
   {
 	ShowWindow(pm->WinList[WinId],SW_SHOWNORMAL);
-#ifdef TERATERM32
 	SetForegroundWindow(pm->WinList[WinId]);
-#else
-	SetActiveWindow(pm->WinList[WinId]);
-#endif
   }
 }
 
@@ -1512,7 +1502,6 @@ int PASCAL DetectComPorts(char *ComPortTable, int ComPortMax, char **ComPortDesc
 	return comports;
 }
 
-#ifdef TERATERM32
 BOOL WINAPI DllMain(HANDLE hInstance, 
 		    ULONG ul_reason_for_call,
 		    LPVOID lpReserved)
@@ -1545,18 +1534,3 @@ BOOL WINAPI DllMain(HANDLE hInstance,
   }
   return TRUE;
 }
-#else
-#ifdef WATCOM
-#pragma off (unreferenced);
-#endif
-int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
-		     WORD wHeapSize, LPSTR lpszCmdLine )
-#ifdef WATCOM
-#pragma on (unreferenced);
-#endif
-{
-  hInst = hInstance;
-  pm = &map;
-  return( 1 );
-}
-#endif

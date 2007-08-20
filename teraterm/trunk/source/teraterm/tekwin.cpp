@@ -15,19 +15,11 @@
 #include "ttdialog.h"
 #include "teraprn.h"
 #include "helpid.h"
-#ifdef TERATERM32
 #include "tt_res.h"
-#else
-#include "tt_res16.h"
-#endif
 #include "tekwin.h"
 #include "ttlib.h"
 
-#ifdef TERATERM32
 #define TEKClassName "TEKWin32"
-#else
-#define TEKClassName "TEKWin"
-#endif
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -82,13 +74,11 @@ CTEKWindow::CTEKWindow()
   // register this window to the window list
   RegWin(HVTWin,HTEKWin);
 
-#ifdef TERATERM32
   // set the small icon
   ::PostMessage(HTEKWin,WM_SETICON,0,
     (LPARAM)LoadImage(AfxGetInstanceHandle(),
       MAKEINTRESOURCE(IDI_TEK),
       IMAGE_ICON,16,16,0));
-#endif
   MainMenu = NULL;
   WinMenu = NULL;
   if ((ts.HideTitle==0) && (ts.PopupMenu==0))

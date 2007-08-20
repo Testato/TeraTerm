@@ -186,12 +186,7 @@
 #define RsvLRShift    172 // logical right shift
 
 // integer type for buffer pointer
-#ifdef TERATERM32
-  typedef DWORD BINT;
-#else
-  typedef WORD BINT;
-#endif
-
+typedef DWORD BINT;
 
 #define MaxNameLen (LONG)32
 #define MaxStrLen (LONG)256

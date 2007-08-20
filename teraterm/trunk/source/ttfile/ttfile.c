@@ -19,11 +19,7 @@
 #include "bplus.h"
 #include "quickvan.h"
 // resource IDs
-#ifdef TERATERM32
 #include "file_res.h"
-#else
-#include "file_r16.h"
-#endif
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -37,7 +33,6 @@ static HFONT DlgGetfnFont;
 char UILanguageFile[MAX_PATH];
 char FileSendFilter[128];
 
-#ifdef TERATERM32
 BOOL IS_WIN4()
 {
   OSVERSIONINFO verinfo;
@@ -46,7 +41,6 @@ BOOL IS_WIN4()
   if (!GetVersionEx(&verinfo)) return FALSE;
   return (verinfo.dwMajorVersion>=4);
 }
-#endif
 
 BOOL FAR PASCAL GetSetupFname(HWND HWin, WORD FuncId, PTTSet ts)
 {
@@ -161,9 +155,7 @@ BOOL CALLBACK TFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	LPOPENFILENAME ofn;
 	WORD Lo, Hi;
 	LPLONG pl;
-#ifdef TERATERM32
 	LPOFNOTIFY notify;
-#endif
 	char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
 	LOGFONT logfont;
 	HFONT font;
@@ -242,7 +234,6 @@ BOOL CALLBACK TFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		break;
 		}
 		break;
-#ifdef TERATERM32
 	case WM_NOTIFY:	// for Explorer-style dialog
 		notify = (LPOFNOTIFY)lParam;
 		switch (notify->hdr.code) {
@@ -277,14 +268,9 @@ BOOL CALLBACK TFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		break;
 		}
 		break;
-#endif
 	}
 	return FALSE;
 }
-
-#ifndef TERATERM32
-  typedef UINT (CALLBACK *LPOFNHOOKPROC)(HWND, UINT, WPARAM, LPARAM);
-#endif
 
 BOOL FAR PASCAL GetTransFname
   (PFileVar fv, PCHAR CurDir, WORD FuncId, LPLONG Option)
@@ -352,7 +338,6 @@ BOOL FAR PASCAL GetTransFname
 	if (FuncId!=GTF_BP)
 	{
 		ofn.Flags = ofn.Flags | OFN_ENABLETEMPLATE | OFN_ENABLEHOOK;
-#ifdef TERATERM32
 		if (IS_WIN4())
 		{
 			ofn.Flags = ofn.Flags | OFN_EXPLORER;
@@ -362,10 +347,6 @@ BOOL FAR PASCAL GetTransFname
 			ofn.lpTemplateName = MAKEINTRESOURCE(IDD_FOPTOLD);
 		}
 		ofn.lpfnHook = (LPOFNHOOKPROC)(&TFnHook);
-#else
-		ofn.lpTemplateName = MAKEINTRESOURCE(IDD_FOPTOLD);
-		ofn.lpfnHook = (LPOFNHOOKPROC)MakeProcInstance(TFnHook, hInst);
-#endif
 	}
 	opt = *Option;
 	if (FuncId!=GTF_LOG)
@@ -388,9 +369,6 @@ BOOL FAR PASCAL GetTransFname
 		Ok = GetOpenFileName(&ofn);
 	}
 
-#ifndef TERATERM32
-	FreeProcInstance(ofn.lpfnHook);
-#endif
 	if (Ok)
 	{
 		if (FuncId==GTF_LOG)
@@ -400,10 +378,8 @@ BOOL FAR PASCAL GetTransFname
 
 		fv->DirLen = ofn.nFileOffset;
 
-#ifdef TERATERM32
 		// for Win NT 3.5: short name -> long name
 		GetLongFName(fv->FullName,&fv->FullName[fv->DirLen],sizeof(&fv->FullName) - fv->DirLen);
-#endif
 
 		if (CurDir!=NULL)
 		{
@@ -420,9 +396,7 @@ BOOL CALLBACK TFn2Hook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
   LPOPENFILENAME ofn;
   LPWORD pw;
-#ifdef TERATERM32
   LPOFNOTIFY notify;
-#endif
 	char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
 	LOGFONT logfont;
 	HFONT font;
@@ -466,7 +440,6 @@ BOOL CALLBACK TFn2Hook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  break;
       }
       break;
-#ifdef TERATERM32
     case WM_NOTIFY: // for Explorer-style dialog
       notify = (LPOFNOTIFY)lParam;
       switch (notify->hdr.code) {
@@ -480,7 +453,6 @@ BOOL CALLBACK TFn2Hook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  break;
       }
       break;
-#endif
   }
   return FALSE;
 }
@@ -560,38 +532,26 @@ BOOL FAR PASCAL GetMultiFname
   ofn.lpstrInitialDir = CurDir;
   ofn.Flags = OFN_SHOWHELP | OFN_ALLOWMULTISELECT |
 	      OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-#ifdef TERATERM32
   if (IS_WIN4())
     ofn.Flags = ofn.Flags | OFN_EXPLORER;
-#endif
   ofn.lCustData = 0;
   if (FuncId==GMF_Z)
   {
     ofn.Flags = ofn.Flags | OFN_ENABLETEMPLATE | OFN_ENABLEHOOK;
     ofn.lCustData = (DWORD)Option;
-#ifdef TERATERM32
     ofn.lpfnHook = (LPOFNHOOKPROC)(&TFn2Hook);
     if (IS_WIN4())
       ofn.lpTemplateName = MAKEINTRESOURCE(IDD_FOPT);
     else
       ofn.lpTemplateName = MAKEINTRESOURCE(IDD_ZOPTOLD);
-#else
-    ofn.lpfnHook = (LPOFNHOOKPROC)MakeProcInstance(TFn2Hook, hInst);
-    ofn.lpTemplateName = MAKEINTRESOURCE(IDD_ZOPTOLD);
-#endif
   }
   ofn.hInstance = hInst;
 
   Ok = GetOpenFileName(&ofn);
-#ifndef TERATERM32
-  FreeProcInstance(ofn.lpfnHook);
-#endif
   if (Ok)
   {
-#ifdef TERATERM32
     if (! IS_WIN4())
     {  // for old style dialog box
-#endif
       i = 0;
       do { // replace space by NULL
 	if (fv->FnStrMem[i]==' ')
@@ -599,9 +559,7 @@ BOOL FAR PASCAL GetMultiFname
 	i++;
       } while (fv->FnStrMem[i]!=0);
       fv->FnStrMem[i+1] = 0; // add one more NULL
-#ifdef TERATERM32
     }
-#endif
     /* count number of file names */
     len = strlen(fv->FnStrMem);
     i = 0;
@@ -620,10 +578,8 @@ BOOL FAR PASCAL GetMultiFname
       fv->DirLen = ofn.nFileOffset;
       strncpy_s(fv->FullName, sizeof(fv->FullName),fv->FnStrMem, _TRUNCATE);
       fv->FnPtr = 0;
-#ifdef TERATERM32
       // for Win NT 3.5: short name -> long name
       GetLongFName(fv->FullName,&fv->FullName[fv->DirLen],sizeof(&fv->FullName) - fv->DirLen);
-#endif
     }
     else { // multiple selection
       strncpy_s(fv->FullName, sizeof(fv->FullName),fv->FnStrMem, _TRUNCATE);
@@ -734,24 +690,10 @@ BOOL CALLBACK GetFnDlg
 
 BOOL FAR PASCAL GetGetFname(HWND HWin, PFileVar fv)
 {
-#ifndef TERATERM32
-  DLGPROC GetFnProc;
-  BOOL Ok;
-#endif
-
-#ifdef TERATERM32
   return
     (BOOL)DialogBoxParam(hInst,
 	  MAKEINTRESOURCE(IDD_GETFNDLG),
 	  HWin, GetFnDlg, (LONG)fv);
-#else
-  GetFnProc = MakeProcInstance(GetFnDlg, hInst);
-  Ok = (BOOL)DialogBoxParam(hInst,
-	  MAKEINTRESOURCE(IDD_GETFNDLG),
-	  HWin, GetFnProc, (LPARAM)fv);
-  FreeProcInstance(GetFnProc);
-  return Ok;
-#endif
 }
 
 void FAR PASCAL SetFileVar(PFileVar fv)
@@ -828,9 +770,7 @@ BOOL CALLBACK XFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   LPOPENFILENAME ofn;
   WORD Hi, Lo;
   LPLONG pl;
-#ifdef TERATERM32
   LPOFNOTIFY notify;
-#endif
 	char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
 	LOGFONT logfont;
 	HFONT font;
@@ -895,7 +835,6 @@ BOOL CALLBACK XFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  break;
       }
       break;
-#ifdef TERATERM32
     case WM_NOTIFY:	// for Explorer-style dialog
       notify = (LPOFNOTIFY)lParam;
       switch (notify->hdr.code) {
@@ -916,7 +855,6 @@ BOOL CALLBACK XFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  break;
       }
       break;
-#endif
   }
   return FALSE;
 }
@@ -982,7 +920,6 @@ BOOL FAR PASCAL GetXFname
   ofn.lCustData = (DWORD)&opt;
 
   ofn.lpstrTitle = fv->DlgCaption;
-#ifdef TERATERM32
   ofn.lpfnHook = (LPOFNHOOKPROC)(&XFnHook);
   if (IS_WIN4())
   {
@@ -992,16 +929,10 @@ BOOL FAR PASCAL GetXFname
   else {
     ofn.lpTemplateName = MAKEINTRESOURCE(IDD_XOPTOLD);
   }
-#else
-  ofn.lpfnHook = (LPOFNHOOKPROC)MakeProcInstance(XFnHook, hInst);
-  ofn.lpTemplateName = MAKEINTRESOURCE(IDD_XOPTOLD);
-#endif
   ofn.hInstance = hInst;
 
   Ok = GetOpenFileName(&ofn);
-#ifndef TERATERM32
-  FreeProcInstance(ofn.lpfnHook);
-#endif
+
   if (Ok)
   {
     fv->DirLen = ofn.nFileOffset;
@@ -1132,16 +1063,9 @@ BOOL FAR PASCAL ProtoCancel
   return TRUE;
 }
 
-#ifdef TERATERM32
-#ifdef WATCOM
-  #pragma off (unreferenced);
-#endif
 BOOL WINAPI DllMain(HANDLE hInstance,
 		    ULONG ul_reason_for_call,
 		    LPVOID lpReserved)
-#ifdef WATCOM
-  #pragma on (unreferenced);
-#endif
 {
   PMap pm;
   HANDLE HMap = NULL;
@@ -1174,17 +1098,3 @@ BOOL WINAPI DllMain(HANDLE hInstance,
   }
    return TRUE;
  }
-#else
-#ifdef WATCOM
-#pragma off (unreferenced);
-#endif
-int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
-		     WORD wHeapSize, LPSTR lpszCmdLine )
-#ifdef WATCOM
-#pragma on (unreferenced);
-#endif
-{
-  hInst = hInstance;
-  return (1);
-}
-#endif

@@ -33,11 +33,7 @@ void CheckWinsock()
   WORD wVersionRequired;
   WSADATA WSData;
 
-#ifdef TERATERM32
   if (HWinsock == NULL) return;
-#else
-  if (HWinsock < HINSTANCE_ERROR) return;
-#endif
 #if 0
   wVersionRequired = 1*256+1;
   if ((PWSAStartup(wVersionRequired, &WSData) != 0) ||
@@ -84,17 +80,11 @@ BOOL LoadWinsock()
 {
   BOOL Err;
 
-#ifdef TERATERM32
   if (HWinsock == NULL)
   {
     HWinsock = LoadLibrary("WSOCK32.DLL");
     if (HWinsock == NULL) return FALSE;
-#else
-  if (HWinsock < HINSTANCE_ERROR)
-  {
-    HWinsock = LoadLibrary("WINSOCK.DLL");
-    if (HWinsock < HINSTANCE_ERROR) return FALSE;
-#endif
+
     Err = FALSE;
 
     Pclosesocket = (Tclosesocket)GetProcAddress(HWinsock, MAKEINTRESOURCE(IdCLOSESOCKET));
@@ -162,32 +152,17 @@ BOOL LoadWinsock()
 
   CheckWinsock();
 
-#ifdef TERATERM32
   return (HWinsock != NULL);
-#else
-  return (HWinsock >= HINSTANCE_ERROR);
-#endif
 }
 
 void FreeWinsock()
 {
   HANDLE HTemp;
-#ifndef TERATERM32
-  MSG Msg;
-#endif
 
-#ifdef TERATERM32
   if (HWinsock == NULL) return;
-#else
-  if (HWinsock < HINSTANCE_ERROR) return;
-#endif
   HTemp = HWinsock;
   HWinsock = NULL;
   PWSACleanup();
-#ifdef TERATERM32
   Sleep(50); // for safety
-#else
-  PeekMessage(&Msg,NULL,0,0,PM_NOREMOVE);
-#endif
   FreeLibrary(HTemp);
 }

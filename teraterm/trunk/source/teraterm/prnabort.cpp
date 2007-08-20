@@ -7,11 +7,7 @@
 #include "teraterm.h"
 #include "tttypes.h"
 #include "ttlib.h"
-#ifdef TERATERM32
 #include "tt_res.h"
-#else
-#include "tt_res16.h"
-#endif
 #include "prnabort.h"
 
 #ifdef _DEBUG

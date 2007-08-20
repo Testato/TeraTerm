@@ -14,11 +14,7 @@
 #include "ttlib.h"
 #include "dlglib.h"
 #include "ttcommon.h"
-#ifdef TERATERM32
-  #include "dlg_res.h"
-#else
-  #include "dlg_re16.h"
-#endif
+#include "dlg_res.h"
 
 // Oniguruma: Regular expression library
 #define ONIG_EXTERN extern
@@ -842,15 +838,9 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       HRed = GetDlgItem(Dialog, IDC_WINREDBAR);
       HGreen = GetDlgItem(Dialog, IDC_WINGREENBAR);
       HBlue = GetDlgItem(Dialog, IDC_WINBLUEBAR);
-#ifdef TERATERM32
       Wnd = (HWND)lParam;
       ScrollCode = LOWORD(wParam);
       NewPos = HIWORD(wParam);
-#else
-      Wnd = (HWND)HIWORD(lParam);
-      ScrollCode = wParam;
-      NewPos = LOWORD(lParam);
-#endif
       if ( Wnd == HRed ) i = IOffset;
       else if ( Wnd == HGreen ) i = IOffset + 1;
       else if ( Wnd == HBlue ) i = IOffset + 2;
@@ -1359,11 +1349,7 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  return TRUE;
 
 	case IDC_TCPIPHOST:
-#ifdef TERATERM32
 	  if (HIWORD(wParam)==EN_CHANGE)
-#else
-	  if (HIWORD(lParam)==EN_CHANGE)
-#endif
 	  {
 	    GetDlgItemText(Dialog, IDC_TCPIPHOST, TempHost, sizeof(TempHost));
 	    if (strlen(TempHost)==0)
@@ -1389,11 +1375,7 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	  break;
 
 	case IDC_TCPIPLIST:
-#ifdef TERATERM32
 	  if (HIWORD(wParam)==LBN_SELCHANGE)
-#else
-	  if (HIWORD(lParam)==LBN_SELCHANGE)
-#endif
 	  {
 	    i = SendDlgItemMessage(Dialog,IDC_TCPIPLIST,LB_GETCOUNT,0,0);
 	    Index = SendDlgItemMessage(Dialog, IDC_TCPIPLIST, LB_GETCURSEL, 0, 0);
@@ -1791,11 +1773,7 @@ BOOL CALLBACK DirDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
       ScreenToClient(Dialog,&D);
       DH = R.bottom-R.top;  
       TmpDC = GetDC(Dialog);
-#ifdef TERATERM32
       GetTextExtentPoint32(TmpDC,CurDir,strlen(CurDir),&s);
-#else
-      GetTextExtentPoint(TmpDC,CurDir,strlen(CurDir),&s);
-#endif
       ReleaseDC(Dialog,TmpDC);
       DW = s.cx + s.cx/10;
 
@@ -2145,13 +2123,7 @@ static void do_subclass_window(HWND hWnd, url_subclass_t *parent)
 }
 
 
-#ifdef WATCOM
-  #pragma off (unreferenced);
-#endif
 BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
-#ifdef WATCOM
-  #pragma on (unreferenced);
-#endif
 {
 	int a, b, c, d;
 	char buf[30];
@@ -2450,11 +2422,7 @@ BOOL CALLBACK WinListDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam
       }
 	  return TRUE;
 	case IDC_WINLISTLIST:
-#ifdef TERATERM32
 	  if (HIWORD(wParam)==LBN_DBLCLK)
-#else
-	  if (HIWORD(lParam)==LBN_DBLCLK)
-#endif
 	    PostMessage(Dialog,WM_COMMAND,IDOK,0);
 	  break;
 	case IDC_WINLISTCLOSE:
@@ -2495,11 +2463,6 @@ BOOL CALLBACK WinListDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam
 
 BOOL FAR PASCAL SetupTerminal(HWND WndParent, PTTSet ts)
 {
-#ifndef TERATERM32
-  DLGPROC TermProc;
-  BOOL Ok;
-#endif
-
   int i;
 
   if (ts->Language==IdJapanese) // Japanese mode
@@ -2509,172 +2472,66 @@ BOOL FAR PASCAL SetupTerminal(HWND WndParent, PTTSet ts)
   else
     i = IDD_TERMDLG;
 
-#ifdef TERATERM32
   return
     (BOOL)DialogBoxParam(hInst,
       MAKEINTRESOURCE(i),
       WndParent, TermDlg, (LPARAM)ts);
-#else
-  TermProc = MakeProcInstance(TermDlg, hInst);
-  Ok = (BOOL)DialogBoxParam(hInst,
-    MAKEINTRESOURCE(i),
-    WndParent, TermProc, (LPARAM)ts);
-  FreeProcInstance(TermProc);
-  return Ok;
-#endif
 }
 
 BOOL FAR PASCAL SetupWin(HWND WndParent, PTTSet ts)
 {
-#ifndef TERATERM32
-  DLGPROC WinProc;
-  BOOL Ok;
-#endif
-
-#ifdef TERATERM32
   return
     (BOOL)DialogBoxParam(hInst,
       MAKEINTRESOURCE(IDD_WINDLG),
       WndParent, WinDlg, (LPARAM)ts);
-#else
-  WinProc = MakeProcInstance(WinDlg, hInst);
-  Ok = (BOOL)DialogBoxParam(hInst,
-    MAKEINTRESOURCE(IDD_WINDLG),
-    WndParent, WinProc, (LPARAM)ts);
-  FreeProcInstance(WinProc);
-  return Ok;
-#endif
 }
 
 BOOL FAR PASCAL SetupKeyboard(HWND WndParent, PTTSet ts)
 {
-#ifndef TERATERM32
-  DLGPROC KeybProc;
-  BOOL Ok;
-#endif
-
-#ifdef TERATERM32
   return
     (BOOL)DialogBoxParam(hInst,
       MAKEINTRESOURCE(IDD_KEYBDLG),
       WndParent, KeybDlg, (LPARAM)ts);
-#else
-  KeybProc = MakeProcInstance(KeybDlg, hInst);
-  Ok = (BOOL)DialogBoxParam(hInst,
-    MAKEINTRESOURCE(IDD_KEYBDLG),
-    WndParent, KeybProc, (LPARAM)ts);
-  FreeProcInstance(KeybProc);
-  return Ok;
-#endif
 }
 
 BOOL FAR PASCAL SetupSerialPort(HWND WndParent, PTTSet ts)
 {
-#ifndef TERATERM32
-  DLGPROC SerialProc;
-  BOOL Ok;
-#endif
-
-#ifdef TERATERM32
   return
     (BOOL)DialogBoxParam(hInst,
       MAKEINTRESOURCE(IDD_SERIALDLG),
       WndParent, SerialDlg, (LPARAM)ts);
-#else
-  SerialProc = MakeProcInstance(SerialDlg, hInst);
-  Ok = (BOOL)DialogBoxParam(hInst,
-    MAKEINTRESOURCE(IDD_SERIALDLG),
-    WndParent, SerialProc, (LPARAM)ts);
-  FreeProcInstance(SerialProc);
-  return Ok;
-#endif
 }
 
 BOOL FAR PASCAL SetupTCPIP(HWND WndParent, PTTSet ts)
 {
-#ifndef TERATERM32
-  DLGPROC TCPIPProc;
-  BOOL Ok;
-#endif
-
-#ifdef TERATERM32
   return
     (BOOL)DialogBoxParam(hInst,
       MAKEINTRESOURCE(IDD_TCPIPDLG),
       WndParent, TCPIPDlg, (LPARAM)ts);
-#else
-  TCPIPProc = MakeProcInstance(TCPIPDlg, hInst);
-  Ok = (BOOL)DialogBoxParam(hInst,
-    MAKEINTRESOURCE(IDD_TCPIPDLG),
-    WndParent, TCPIPProc, (LPARAM)ts);
-  FreeProcInstance(TCPIPProc);
-  return Ok;
-#endif
 }
 
 BOOL FAR PASCAL GetHostName(HWND WndParent, PGetHNRec GetHNRec)
 {
-#ifndef TERATERM32
-  DLGPROC HostProc;
-  BOOL Ok;
-#endif
-
-#ifdef TERATERM32
   return
     (BOOL)DialogBoxParam(hInst,
       MAKEINTRESOURCE(IDD_HOSTDLG),
       WndParent, HostDlg, (LPARAM)GetHNRec);
-#else
-  HostProc = MakeProcInstance(HostDlg, hInst);
-  Ok = (BOOL)DialogBoxParam(hInst,
-    MAKEINTRESOURCE(IDD_HOSTDLG),
-    WndParent, HostProc, (LPARAM)GetHNRec);
-  FreeProcInstance(HostProc);
-  return Ok;
-#endif
 }
 
 BOOL FAR PASCAL ChangeDirectory(HWND WndParent, PCHAR CurDir)
 {
-#ifndef TERATERM32
-  DLGPROC DirProc;
-  BOOL Ok;
-#endif
-
-#ifdef TERATERM32
   return
     (BOOL)DialogBoxParam(hInst,
       MAKEINTRESOURCE(IDD_DIRDLG),
       WndParent, DirDlg, (LPARAM)CurDir);
-#else
-  DirProc = MakeProcInstance(DirDlg, hInst);
-  Ok = (BOOL)DialogBoxParam(hInst,
-    MAKEINTRESOURCE(IDD_DIRDLG),
-    WndParent, DirProc, (LPARAM)CurDir);
-  FreeProcInstance(DirProc);
-  return Ok;
-#endif
 }
 
 BOOL FAR PASCAL AboutDialog(HWND WndParent)
 {
-#ifndef TERATERM32
-  DLGPROC AboutProc;
-  BOOL Ok;
-#endif
-#ifdef TERATERM32
   return
     (BOOL)DialogBox(hInst,
       MAKEINTRESOURCE(IDD_ABOUTDLG),
       WndParent, AboutDlg);
-#else
-  AboutProc = MakeProcInstance(AboutDlg, hInst);
-  Ok = (BOOL)DialogBox(hInst,
-    MAKEINTRESOURCE(IDD_ABOUTDLG),
-    WndParent, AboutProc);
-  FreeProcInstance(AboutProc);
-  return Ok;
-#endif
 }
 
 BOOL CALLBACK TFontHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
@@ -2769,10 +2626,6 @@ BOOL CALLBACK TFontHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
   return FALSE;
 }
 
-#ifndef TERATERM32
-  typedef UINT (CALLBACK *LPCFHOOKPROC)(HWND,UINT,WPARAM,LPARAM);
-#endif
-
 BOOL FAR PASCAL ChooseFontDlg(HWND WndParent, LPLOGFONT LogFont, PTTSet ts)
 {
   CHOOSEFONT cf;
@@ -2787,79 +2640,37 @@ BOOL FAR PASCAL ChooseFontDlg(HWND WndParent, LPLOGFONT LogFont, PTTSet ts)
   if (ts!=NULL)
   {
     cf.Flags = cf.Flags | CF_ENABLEHOOK;
-#ifdef TERATERM32
     cf.lpfnHook = (LPCFHOOKPROC)(&TFontHook);
-#else
-    cf.lpfnHook = (LPCFHOOKPROC)MakeProcInstance(TFontHook, hInst);
-#endif
     cf.lCustData = (DWORD)ts;
   }
   cf.lpTemplateName = MAKEINTRESOURCE(IDD_FONTDLG);
   cf.nFontType = REGULAR_FONTTYPE;
   cf.hInstance = hInst;
   Ok = ChooseFont(&cf);
-#ifndef TERATERM32
-  FreeProcInstance(cf.lpfnHook);
-#endif
   return Ok;
 }
 
 BOOL FAR PASCAL SetupGeneral(HWND WndParent, PTTSet ts)
 {
-#ifndef TERATERM32
-  DLGPROC GenProc;
-  BOOL Ok;
-#endif
-
-#ifdef TERATERM32
   return
     (BOOL)DialogBoxParam(hInst,
       MAKEINTRESOURCE(IDD_GENDLG),
       WndParent, (DLGPROC)&GenDlg, (LPARAM)ts);
-#else
-  GenProc = MakeProcInstance(GenDlg, hInst);
-  Ok = (BOOL)DialogBoxParam(hInst,
-    MAKEINTRESOURCE(IDD_GENDLG),
-    WndParent, GenProc, (LPARAM)ts);
-  FreeProcInstance(GenProc);
-  return Ok;
-#endif
 }
 
 BOOL FAR PASCAL WindowWindow(HWND WndParent, PBOOL Close)
 {
-#ifndef TERATERM32
-  DLGPROC WinListProc;
-  BOOL Ok;
-#endif
-
   *Close = FALSE;
-#ifdef TERATERM32
   return
     (BOOL)DialogBoxParam(hInst,
       MAKEINTRESOURCE(IDD_WINLISTDLG),
       WndParent,
       (DLGPROC)&WinListDlg, (LPARAM)Close);
-#else
-  WinListProc = MakeProcInstance(WinListDlg, hInst);
-  Ok = (BOOL)DialogBoxParam(hInst,
-    MAKEINTRESOURCE(IDD_WINLISTDLG),
-    WndParent, WinListProc, (LPARAM)Close);
-  FreeProcInstance(WinListProc);
-  return Ok;
-#endif
 }
 
-#ifdef TERATERM32
-#ifdef WATCOM
-  #pragma off (unreferenced);
-#endif
 BOOL WINAPI DllMain(HANDLE hInstance,
 		    ULONG ul_reason_for_call,
 		    LPVOID lpReserved)
-#ifdef WATCOM
-  #pragma on (unreferenced);
-#endif
 {
   PMap pm;
   HANDLE HMap = NULL;
@@ -2891,17 +2702,3 @@ BOOL WINAPI DllMain(HANDLE hInstance,
   }
   return TRUE;
 }
-#else
-#ifdef WATCOM
-#pragma off (unreferenced);
-#endif
-int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
-		     WORD wHeapSize, LPSTR lpszCmdLine)
-#ifdef WATCOM
-#pragma on (unreferenced);
-#endif
-{
-  hInst = hInstance;
-  return (1);
-}
-#endif

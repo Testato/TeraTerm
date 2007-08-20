@@ -8,12 +8,7 @@
 #include "ttftypes.h"
 #include <stdio.h>
 
-#ifdef TERATERM32
 #include "tt_res.h"
-#else
-#include <string.h>
-#include "tt_res16.h"
-#endif
 
 #include "dlglib.h"
 #include "ftlib.h"

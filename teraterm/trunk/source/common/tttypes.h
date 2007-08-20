@@ -98,11 +98,7 @@
 #define WM_USER_ACCELCOMMAND WM_USER+1
 #define WM_USER_CHANGEMENU WM_USER+2
 #define WM_USER_CLOSEIME WM_USER+3
-#ifdef TERATERM32
 #define WM_USER_COMMNOTIFY WM_USER+4
-#else
-#define WM_USER_COMMNOTIFY WM_COMMNOTIFY
-#endif
 #define WM_USER_COMMOPEN WM_USER+5
 #define WM_USER_COMMSTART WM_USER+6
 #define WM_USER_DLGHELP2 WM_USER+7
@@ -664,11 +660,7 @@ typedef TKeyMap far *PKeyMap;
     WORD ComPort;
     unsigned int s; /* SOCKET */
     WORD RetryCount;
-#ifdef TERATERM32
     HANDLE ComID;
-#else
-    int ComID;
-#endif
     BOOL CanSend, RRQ;
 
     BOOL SendKanjiFlag;

@@ -14,11 +14,7 @@
 #include "ttcommon.h"
 #include "ttlib.h"
 
-#ifdef TERATERM32
 #include "tt_res.h"
-#else
-#include "tt_res16.h"
-#endif
 #include "prnabort.h"
 
 #include "teraprn.h"
@@ -27,10 +23,6 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
-
-#ifndef TERATERM32
-  #define CharNext AnsiNext
 #endif
 
 static PRINTDLG PrnDlg;
@@ -56,9 +48,6 @@ static int PrnBuffCount = 0;
 
 static CPrnAbortDlg *PrnAbortDlg;
 static HWND HPrnAbortDlg;
-#ifndef TERATERM32
-static FARPROC PPrnAbort;
-#endif
 
 /* Print Abortion Call Back Function */
 BOOL CALLBACK PrnAbortProc(HDC PDC, int Code)
@@ -76,9 +65,6 @@ BOOL CALLBACK PrnAbortProc(HDC PDC, int Code)
   {
     HPrnAbortDlg = NULL;
     PrnAbortDlg = NULL;
-#ifndef TERATERM32
-    FreeProcInstance(PPrnAbort);
-#endif
     return FALSE;
   }
   else
@@ -133,21 +119,14 @@ BOOL PrnStart(LPSTR DocumentName)
   get_lang_msg("BTN_CANCEL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
   SetDlgItemText(HPrnAbortDlg, IDCANCEL, ts.UIMsg);
 
-#ifdef TERATERM32
   SetAbortProc(PrintDC,PrnAbortProc);
-#else
-  PPrnAbort = MakeProcInstance((FARPROC)PrnAbortProc,AfxGetInstanceHandle());
-  SetAbortProc(PrintDC,(ABORTPROC)PPrnAbort);
-#endif
 
   Doc.cbSize = sizeof(DOCINFO);
   strncpy_s(DocName,sizeof(DocName),DocumentName,_TRUNCATE);
   Doc.lpszDocName = DocName;
   Doc.lpszOutput = NULL;
-#ifdef TERATERM32
   Doc.lpszDatatype = NULL;
   Doc.fwType = 0;
-#endif TERATERM32
   if (StartDoc(PrintDC, &Doc) > 0)
     Printing = TRUE;
   else
@@ -454,20 +433,14 @@ void VTPrintEnd()
 extern "C" {
 void OpenPrnFile()
 {
-#ifdef TERATERM32
   char Temp[MAXPATHLEN];
-#endif
 
   KillTimer(HVTWin,IdPrnStartTimer);
   if (HPrnFile > 0) return;
   if (PrnFName[0] == 0)
   {
-#ifdef TERATERM32
     GetTempPath(sizeof(Temp),Temp);
     if (GetTempFileName(Temp,"tmp",0,PrnFName)==0) return;
-#else
-    if (GetTempFileName(0,"tmp",0,PrnFName)==0) return;
-#endif
     HPrnFile = _lcreat(PrnFName,0);
   }
   else {
