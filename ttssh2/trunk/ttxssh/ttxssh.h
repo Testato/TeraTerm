@@ -94,139 +94,139 @@ These are the fields that WOULD go in Teraterm's 'ts' structure, if
 we could put them there.
 */
 typedef struct _TS_SSH {
-  BOOL Enabled;
-  int CompressionLevel; /* 0 = NONE, else 1-9 */
-  char DefaultUserName[256];
+	BOOL Enabled;
+	int CompressionLevel; /* 0 = NONE, else 1-9 */
+	char DefaultUserName[256];
 
-  /* this next option is a string of digits. Each digit represents a
-     cipher. The first digit is the most preferred cipher, and so on.
-     The digit SSH_CIPHER_NONE signifies that any ciphers after it are
-     disabled. */
-  char CipherOrder[16];
+	/* this next option is a string of digits. Each digit represents a
+	   cipher. The first digit is the most preferred cipher, and so on.
+	   The digit SSH_CIPHER_NONE signifies that any ciphers after it are
+	   disabled. */
+	char CipherOrder[16];
 
-  char KnownHostsFiles[2048];
-  int DefaultAuthMethod;
-  char DefaultRhostsLocalUserName[256];
-  char DefaultRhostsHostPrivateKeyFile[1024];
-  char DefaultRSAPrivateKeyFile[1024];
+	char KnownHostsFiles[2048];
+	int DefaultAuthMethod;
+	char DefaultRhostsLocalUserName[256];
+	char DefaultRhostsHostPrivateKeyFile[1024];
+	char DefaultRSAPrivateKeyFile[1024];
 
-  char DefaultForwarding[2048];
-  BOOL TryDefaultAuth;
+	char DefaultForwarding[2048];
+	BOOL TryDefaultAuth;
 
-  int LogLevel;      /* 0 = NONE, 100 = Verbose */
-  int WriteBufferSize;
-  int LocalForwardingIdentityCheck;
+	int LogLevel;      /* 0 = NONE, 100 = Verbose */
+	int WriteBufferSize;
+	int LocalForwardingIdentityCheck;
 
-  int ssh_protocol_version; // SSH version (2004.10.11 yutaka)
-  int ssh_heartbeat_overtime; // SSH heartbeat(keepalive) (2004.12.11 yutaka)
-  int ssh2_keyboard_interactive; // SSH2 keyboard-interactive (2005.1.23 yutaka)
-  int remember_password;  // whether password will permanently store on heap memory (2006.8.5 yutaka) 
+	int ssh_protocol_version; // SSH version (2004.10.11 yutaka)
+	int ssh_heartbeat_overtime; // SSH heartbeat(keepalive) (2004.12.11 yutaka)
+	int ssh2_keyboard_interactive; // SSH2 keyboard-interactive (2005.1.23 yutaka)
+	int remember_password;  // whether password will permanently store on heap memory (2006.8.5 yutaka) 
 } TS_SSH;
 
 typedef struct _TInstVar {
-  PTTSet ts;
-  PComVar cv;
+	PTTSet ts;
+	PComVar cv;
 
-  /* shared memory for settings across instances. Basically it's
-     a cache for the INI file.*/
-  TS_SSH FAR * ts_SSH;
+	/* shared memory for settings across instances. Basically it's
+	   a cache for the INI file.*/
+	TS_SSH FAR * ts_SSH;
 
-  int fatal_error;
-  int showing_err;
-  char FAR * err_msg;
+	int fatal_error;
+	int showing_err;
+	char FAR * err_msg;
 
-  Tconnect Pconnect;
-  Trecv Precv;
-  Tsend Psend;
-  TWSAAsyncSelect PWSAAsyncSelect;
-  TWSAGetLastError PWSAGetLastError;
+	Tconnect Pconnect;
+	Trecv Precv;
+	Tsend Psend;
+	TWSAAsyncSelect PWSAAsyncSelect;
+	TWSAGetLastError PWSAGetLastError;
 
-  PReadIniFile ReadIniFile;
-  PWriteIniFile WriteIniFile;
-  PParseParam ParseParam;
+	PReadIniFile ReadIniFile;
+	PWriteIniFile WriteIniFile;
+	PParseParam ParseParam;
 
-  SOCKET socket;
-  HWND NotificationWindow;
-  unsigned int notification_msg;
-  long notification_events;
-  HICON OldSmallIcon;
-  HICON OldLargeIcon;
+	SOCKET socket;
+	HWND NotificationWindow;
+	unsigned int notification_msg;
+	long notification_events;
+	HICON OldSmallIcon;
+	HICON OldLargeIcon;
 
-  BOOL hostdlg_activated;
-  BOOL hostdlg_Enabled;
+	BOOL hostdlg_activated;
+	BOOL hostdlg_Enabled;
 
-  int protocol_major;
-  int protocol_minor;
+	int protocol_major;
+	int protocol_minor;
 
-  PKTState pkt_state;
-  SSHState ssh_state;
-  AUTHState auth_state;
-  CRYPTState crypt_state;
-  HOSTSState hosts_state;
-  FWDState fwd_state;
+	PKTState pkt_state;
+	SSHState ssh_state;
+	AUTHState auth_state;
+	CRYPTState crypt_state;
+	HOSTSState hosts_state;
+	FWDState fwd_state;
 
 /* The settings applied to the current session. The user may change
    the settings but usually we don't want that to affect the session
    in progress (race conditions). So user setup changes usually
    modify the 'settings' field below. */
-  TS_SSH session_settings;
+	TS_SSH session_settings;
 
 /* our copy of the global settings. This is synced up with the shared
    memory only when we do a ReadIniFile or WriteIniFile
    (i.e. the user loads or saves setup) */
-  TS_SSH settings;
+	TS_SSH settings;
 
-  // SSH2
-  DH *kexdh;
-  char server_version_string[128];
-  char client_version_string[128];
-  buffer_t *my_kex;
-  buffer_t *peer_kex;
-  enum kex_exchange kex_type; // KEX algorithm
-  enum hostkey_type hostkey_type;
-  SSHCipher ctos_cipher;
-  SSHCipher stoc_cipher;
-  enum hmac_type ctos_hmac;
-  enum hmac_type stoc_hmac;
-  enum compression_algorithm ctos_compression;
-  enum compression_algorithm stoc_compression;
-  int we_need;
-  int key_done;
-  int rekeying;
-  char *session_id;
-  int session_id_len;
-  Newkeys ssh2_keys[MODE_MAX];
-  EVP_CIPHER_CTX evpcip[MODE_MAX];
-  int userauth_success;
-  int shell_id;
-  /*int remote_id;*/
-  int session_nego_status;
-  /*
-  unsigned int local_window;
-  unsigned int local_window_max;
-  unsigned int local_consumed;
-  unsigned int local_maxpacket;
-  unsigned int remote_window;
-  unsigned int remote_maxpacket;
-  */
-  int client_key_bits;
-  int server_key_bits;
-  int kexgex_min;
-  int kexgex_bits;
-  int kexgex_max;
-  int ssh2_autologin;
-  int ask4passwd;
-  SSHAuthMethod ssh2_authmethod;
-  char ssh2_username[MAX_PATH];
-  char ssh2_password[MAX_PATH];
-  char ssh2_keyfile[MAX_PATH];
-  time_t ssh_heartbeat_tick;
-  HANDLE ssh_heartbeat_thread;
-  int keyboard_interactive_done;
-  int keyboard_interactive_password_input;
-  int userauth_retry_count;
-  buffer_t *decomp_buffer;
-  char *ssh2_authlist;
+	// SSH2
+	DH *kexdh;
+	char server_version_string[128];
+	char client_version_string[128];
+	buffer_t *my_kex;
+	buffer_t *peer_kex;
+	enum kex_exchange kex_type; // KEX algorithm
+	enum hostkey_type hostkey_type;
+	SSHCipher ctos_cipher;
+	SSHCipher stoc_cipher;
+	enum hmac_type ctos_hmac;
+	enum hmac_type stoc_hmac;
+	enum compression_algorithm ctos_compression;
+	enum compression_algorithm stoc_compression;
+	int we_need;
+	int key_done;
+	int rekeying;
+	char *session_id;
+	int session_id_len;
+	Newkeys ssh2_keys[MODE_MAX];
+	EVP_CIPHER_CTX evpcip[MODE_MAX];
+	int userauth_success;
+	int shell_id;
+	/*int remote_id;*/
+	int session_nego_status;
+	/*
+	unsigned int local_window;
+	unsigned int local_window_max;
+	unsigned int local_consumed;
+	unsigned int local_maxpacket;
+	unsigned int remote_window;
+	unsigned int remote_maxpacket;
+	*/
+	int client_key_bits;
+	int server_key_bits;
+	int kexgex_min;
+	int kexgex_bits;
+	int kexgex_max;
+	int ssh2_autologin;
+	int ask4passwd;
+	SSHAuthMethod ssh2_authmethod;
+	char ssh2_username[MAX_PATH];
+	char ssh2_password[MAX_PATH];
+	char ssh2_keyfile[MAX_PATH];
+	time_t ssh_heartbeat_tick;
+	HANDLE ssh_heartbeat_thread;
+	int keyboard_interactive_done;
+	int keyboard_interactive_password_input;
+	int userauth_retry_count;
+	buffer_t *decomp_buffer;
+	char *ssh2_authlist;
 } TInstVar;
 
 #define LOG_LEVEL_FATAL      5
@@ -250,4 +250,3 @@ void get_file_version(char *exefile, int *major, int *minor, int *release, int *
 int uuencode(unsigned char *src, int srclen, unsigned char *target, int targsize);
 
 #endif
-

@@ -49,7 +49,7 @@ See LICENSE.TXT for the license.
 #define CHANNEL_READ_BUF_SIZE 30000
 
 static LRESULT CALLBACK accept_wnd_proc(HWND wnd, UINT msg, WPARAM wParam,
-										LPARAM lParam);
+                                        LPARAM lParam);
 
 static int find_request_num(PTInstVar pvar, SOCKET s)
 {
@@ -100,7 +100,7 @@ static int find_channel_num(PTInstVar pvar, SOCKET s)
 }
 
 static int find_request_num_from_async_request(PTInstVar pvar,
-											   HANDLE request)
+                                               HANDLE request)
 {
 	int i;
 
@@ -109,8 +109,7 @@ static int find_request_num_from_async_request(PTInstVar pvar,
 
 	for (i = 0; i < pvar->fwd_state.num_requests; i++) {
 		if ((pvar->fwd_state.requests[i].status & FWD_DELETED) == 0
-			&& pvar->fwd_state.requests[i].to_host_lookup_handle ==
-			request) {
+		 && pvar->fwd_state.requests[i].to_host_lookup_handle == request) {
 			return i;
 		}
 	}
@@ -120,7 +119,7 @@ static int find_request_num_from_async_request(PTInstVar pvar,
 
 #ifndef NO_INET6
 static int find_listening_socket_num(PTInstVar pvar, int request_num,
-									 SOCKET s)
+                                     SOCKET s)
 {
 	FWDRequest FAR *request = pvar->fwd_state.requests + request_num;
 	int i;
@@ -208,10 +207,10 @@ static void safe_WSACancelAsyncRequest(PTInstVar pvar, HANDLE request)
 static int check_local_channel_num(PTInstVar pvar, int local_num)
 {
 	if (local_num < 0 || local_num >= pvar->fwd_state.num_channels
-		|| pvar->fwd_state.channels[local_num].status == 0) {
+	 || pvar->fwd_state.channels[local_num].status == 0) {
 		UTIL_get_lang_msg("MSG_FWD_LOCAL_CHANNEL_ERROR", pvar,
-						  "The server attempted to manipulate a forwarding channel that does not exist.\n"
-						  "Either the server has a bug or is hostile. You should close this connection.");
+		                  "The server attempted to manipulate a forwarding channel that does not exist.\n"
+		                  "Either the server has a bug or is hostile. You should close this connection.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		return 0;
 	} else {
@@ -231,8 +230,8 @@ static void request_error(PTInstVar pvar, int request_num, int err)
 
 #ifndef NO_INET6
 	for (i = 0;
-		 i < pvar->fwd_state.requests[request_num].num_listening_sockets;
-		 ++i) {
+	     i < pvar->fwd_state.requests[request_num].num_listening_sockets;
+	     ++i) {
 		if (s[i] != INVALID_SOCKET) {
 			safe_closesocket(pvar, s[i]);
 			pvar->fwd_state.requests[request_num].listening_sockets[i] =
@@ -248,8 +247,8 @@ static void request_error(PTInstVar pvar, int request_num, int err)
 #endif							/* NO_INET6 */
 
 	UTIL_get_lang_msg("MSG_FWD_REQUEST_ERROR", pvar,
-					  "Communications error while listening for a connection to forward.\n"
-					  "The listening port will be terminated.");
+	                  "Communications error while listening for a connection to forward.\n"
+	                  "The listening port will be terminated.");
 	notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 }
 
@@ -258,7 +257,7 @@ static void send_local_connection_closure(PTInstVar pvar, int channel_num)
 	FWDChannel FAR *channel = pvar->fwd_state.channels + channel_num;
 
 	if ((channel->status & (FWD_REMOTE_CONNECTED | FWD_LOCAL_CONNECTED))
-		== (FWD_REMOTE_CONNECTED | FWD_LOCAL_CONNECTED)) {
+	 == (FWD_REMOTE_CONNECTED | FWD_LOCAL_CONNECTED)) {
 		SSH_channel_input_eof(pvar, channel->remote_num, channel_num);
 		SSH_channel_output_eof(pvar, channel->remote_num);
 		channel->status |= FWD_CLOSED_LOCAL_IN | FWD_CLOSED_LOCAL_OUT;
@@ -318,7 +317,7 @@ void FWD_free_channel(PTInstVar pvar, uint32 local_channel_num)
 
 		request->num_channels--;
 		if (request->num_channels == 0
-			&& (request->status & FWD_DELETED) != 0) {
+		 && (request->status & FWD_DELETED) != 0) {
 			really_delete_request(pvar, channel->request_num);
 		}
 		channel->request_num = -1;
@@ -368,35 +367,35 @@ static char FAR *describe_socket_error(PTInstVar pvar, int code)
 	switch (code) {
 	case WSAECONNREFUSED:
 		UTIL_get_lang_msg("MSG_FWD_REFUSED_ERROR", pvar,
-						  "Connection refused (perhaps the service is not currently running)");
+		                  "Connection refused (perhaps the service is not currently running)");
 		return pvar->ts->UIMsg;
 	case WSAENETDOWN:
 	case WSAENETUNREACH:
 	case WSAEHOSTUNREACH:
 		UTIL_get_lang_msg("MSG_FWD_NETDOWN_ERROR", pvar,
-						  "The machine could not be contacted (possibly a network problem)");
+		                  "The machine could not be contacted (possibly a network problem)");
 		return pvar->ts->UIMsg;
 	case WSAETIMEDOUT:
 	case WSAEHOSTDOWN:
 		UTIL_get_lang_msg("MSG_FWD_MACHINEDOWN_ERROR", pvar,
-						  "The machine could not be contacted (possibly the machine is down)");
+		                  "The machine could not be contacted (possibly the machine is down)");
 		return pvar->ts->UIMsg;
 	case WSATRY_AGAIN:
 	case WSANO_RECOVERY:
 	case WSANO_ADDRESS:
 	case WSAHOST_NOT_FOUND:
 		UTIL_get_lang_msg("MSG_FWD_ADDRNOTFOUTD_ERROR", pvar,
-						  "No address was found for the machine.");
+		                  "No address was found for the machine.");
 		return pvar->ts->UIMsg;
 	default:
 		UTIL_get_lang_msg("MSG_FWD_CONNECT_ERROR", pvar,
-						  "The forwarding connection could not be established");
+		                  "The forwarding connection could not be established");
 		return pvar->ts->UIMsg;
 	}
 }
 
 static void channel_error(PTInstVar pvar, char FAR * action,
-						  int channel_num, int err)
+                          int channel_num, int err)
 {
 	char FAR *err_msg;
 	char uimsg[MAX_UIMSG];
@@ -417,15 +416,14 @@ static void channel_error(PTInstVar pvar, char FAR * action,
 		char buf[1024];
 
 		UTIL_get_lang_msg("MSG_FWD_CHANNEL_ERROR", pvar,
-						  "Communications error %s forwarded local %s.\n"
-						  "%s (code %d).\n"
-						  "The forwarded connection will be closed.");
+		                  "Communications error %s forwarded local %s.\n"
+		                  "%s (code %d).\n"
+		                  "The forwarded connection will be closed.");
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE,
-					pvar->ts->UIMsg, action,
-					pvar->fwd_state.requests[pvar->fwd_state.
-											 channels[channel_num].
-											 request_num].spec.
-					from_port_name, err_msg, err);
+		            pvar->ts->UIMsg, action,
+		            pvar->fwd_state.requests[pvar->fwd_state.channels[channel_num].
+		                                     request_num].spec.from_port_name,
+		            err_msg, err);
 		notify_nonfatal_error(pvar, buf);
 	}
 }
@@ -441,23 +439,23 @@ static void channel_opening_error(PTInstVar pvar, int channel_num, int err)
 	SSH_fail_channel_open(pvar, channel->remote_num);
 	if (request->spec.type == FWD_REMOTE_X11_TO_LOCAL) {
 		UTIL_get_lang_msg("MSG_FWD_CHANNEL_OPEN_X_ERROR", pvar,
-						  "The server attempted to forward a connection through this machine.\n"
-						  "It requested a connection to the X server on %s (screen %d).\n"
-						  "%s.\n" "The forwarded connection will be closed.");
+		                  "The server attempted to forward a connection through this machine.\n"
+		                  "It requested a connection to the X server on %s (screen %d).\n"
+		                  "%s.\n" "The forwarded connection will be closed.");
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE,
-					pvar->ts->UIMsg,
-					request->spec.to_host, request->spec.to_port - 6000,
-					uimsg);
+		            pvar->ts->UIMsg,
+		            request->spec.to_host, request->spec.to_port - 6000,
+		            uimsg);
 	} else {
 		strncpy_s(uimsg, sizeof(uimsg), describe_socket_error(pvar, err), _TRUNCATE);
 		UTIL_get_lang_msg("MSG_FWD_CHANNEL_OPEN_ERROR", pvar,
-						  "The server attempted to forward a connection through this machine.\n"
-						  "It requested a connection to %s (port %s).\n" "%s.\n"
-						  "The forwarded connection will be closed.");
+		                  "The server attempted to forward a connection through this machine.\n"
+		                  "It requested a connection to %s (port %s).\n" "%s.\n"
+		                  "The forwarded connection will be closed.");
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE,
-					pvar->ts->UIMsg,
-					request->spec.to_host, request->spec.to_port_name,
-					uimsg);
+		            pvar->ts->UIMsg,
+		            request->spec.to_host, request->spec.to_port_name,
+		            uimsg);
 	}
 	notify_nonfatal_error(pvar, buf);
 	FWD_free_channel(pvar, channel_num);
@@ -621,7 +619,7 @@ static BOOL validate_IP_number(PTInstVar pvar, uint32 addr)
 }
 
 static int alloc_channel(PTInstVar pvar, int new_status,
-						 int new_request_num)
+                         int new_request_num)
 {
 	int i;
 	int new_num_channels;
@@ -638,8 +636,8 @@ static int alloc_channel(PTInstVar pvar, int new_status,
 		new_num_channels = pvar->fwd_state.num_channels * 2 + 1;
 		pvar->fwd_state.channels =
 			(FWDChannel FAR *) realloc(pvar->fwd_state.channels,
-									   sizeof(FWDChannel) *
-									   new_num_channels);
+			                           sizeof(FWDChannel) *
+			                           new_num_channels);
 
 		for (; i < new_num_channels; i++) {
 			channel = pvar->fwd_state.channels + i;
@@ -672,15 +670,15 @@ static HWND make_accept_wnd(PTInstVar pvar)
 		UTIL_get_lang_msg("DLG_FWDMON_TITLE", pvar, "TTSSH Port Forwarding Monitor");
 		pvar->fwd_state.accept_wnd =
 			CreateWindow("STATIC", pvar->ts->UIMsg,
-						 WS_DISABLED | WS_POPUP, 0, 0, 1, 1, NULL, NULL,
-						 hInst, NULL);
+			             WS_DISABLED | WS_POPUP, 0, 0, 1, 1, NULL, NULL,
+			             hInst, NULL);
 		if (pvar->fwd_state.accept_wnd != NULL) {
 			pvar->fwd_state.old_accept_wnd_proc =
 				(WNDPROC) SetWindowLong(pvar->fwd_state.accept_wnd,
-										GWL_WNDPROC,
-										(LONG) accept_wnd_proc);
+				                        GWL_WNDPROC,
+				                        (LONG) accept_wnd_proc);
 			SetWindowLong(pvar->fwd_state.accept_wnd, GWL_USERDATA,
-						  (LONG) pvar);
+			              (LONG) pvar);
 		}
 	}
 
@@ -690,8 +688,8 @@ static HWND make_accept_wnd(PTInstVar pvar)
 static void connected_local_connection(PTInstVar pvar, int channel_num)
 {
 	SSH_confirm_channel_open(pvar,
-							 pvar->fwd_state.channels[channel_num].
-							 remote_num, channel_num);
+	                         pvar->fwd_state.channels[channel_num].
+	                         remote_num, channel_num);
 	pvar->fwd_state.channels[channel_num].status |= FWD_LOCAL_CONNECTED;
 }
 
@@ -702,24 +700,23 @@ static void make_local_connection(PTInstVar pvar, int channel_num)
 		pvar->fwd_state.requests + channel->request_num;
 #ifndef NO_INET6
 	for (channel->to_host_addrs = request->to_host_addrs;
-		 channel->to_host_addrs;
-		 channel->to_host_addrs = channel->to_host_addrs->ai_next) {
+	     channel->to_host_addrs;
+	     channel->to_host_addrs = channel->to_host_addrs->ai_next) {
 		channel->local_socket = socket(channel->to_host_addrs->ai_family,
-									   channel->to_host_addrs->ai_socktype,
-									   channel->to_host_addrs->
-									   ai_protocol);
+		                               channel->to_host_addrs->ai_socktype,
+		                               channel->to_host_addrs->ai_protocol);
 		if (channel->local_socket == INVALID_SOCKET)
 			continue;
 		if (WSAAsyncSelect
-			(channel->local_socket, make_accept_wnd(pvar), WM_SOCK_IO,
-			 FD_CONNECT | FD_READ | FD_CLOSE | FD_WRITE) == SOCKET_ERROR) {
+		    (channel->local_socket, make_accept_wnd(pvar), WM_SOCK_IO,
+		     FD_CONNECT | FD_READ | FD_CLOSE | FD_WRITE) == SOCKET_ERROR) {
 			closesocket(channel->local_socket);
 			channel->local_socket = INVALID_SOCKET;
 			continue;
 		}
 		if (connect(channel->local_socket,
-					channel->to_host_addrs->ai_addr,
-					channel->to_host_addrs->ai_addrlen) != SOCKET_ERROR) {
+		            channel->to_host_addrs->ai_addr,
+		            channel->to_host_addrs->ai_addrlen) != SOCKET_ERROR) {
 			connected_local_connection(pvar, channel_num);
 			return;
 		} else if (WSAGetLastError() == WSAEWOULDBLOCK) {
@@ -742,14 +739,14 @@ static void make_local_connection(PTInstVar pvar, int channel_num)
 	addr.sin_addr.s_addr = htonl(request->to_host_addr);
 
 	if ((channel->local_socket =
-		 socket(AF_INET, SOCK_STREAM, 0)) != INVALID_SOCKET
-		&& WSAAsyncSelect(channel->local_socket, make_accept_wnd(pvar),
-						  WM_SOCK_IO,
-						  FD_CONNECT | FD_READ | FD_CLOSE | FD_WRITE) !=
-		SOCKET_ERROR) {
+	     socket(AF_INET, SOCK_STREAM, 0)) != INVALID_SOCKET
+	  && WSAAsyncSelect(channel->local_socket, make_accept_wnd(pvar),
+	                    WM_SOCK_IO,
+	                    FD_CONNECT | FD_READ | FD_CLOSE | FD_WRITE) !=
+	     SOCKET_ERROR) {
 		if (connect
-			(channel->local_socket, (struct sockaddr FAR *) &addr,
-			 sizeof(addr)) != SOCKET_ERROR) {
+		    (channel->local_socket, (struct sockaddr FAR *) &addr,
+		     sizeof(addr)) != SOCKET_ERROR) {
 			connected_local_connection(pvar, channel_num);
 			return;
 		} else if (WSAGetLastError() == WSAEWOULDBLOCK) {
@@ -764,7 +761,7 @@ static void make_local_connection(PTInstVar pvar, int channel_num)
 
 #ifndef NO_INET6
 static void accept_local_connection(PTInstVar pvar, int request_num,
-									int listening_socket_num)
+                                    int listening_socket_num)
 {
 #else
 static void accept_local_connection(PTInstVar pvar, int request_num)
@@ -789,7 +786,7 @@ static void accept_local_connection(PTInstVar pvar, int request_num)
 
 #ifndef NO_INET6
 	s = accept(request->listening_sockets[listening_socket_num],
-			   (struct sockaddr FAR *) &addr, &addrlen);
+	           (struct sockaddr FAR *) &addr, &addrlen);
 #else
 	s = accept(request->listening_socket, &addr, &addrlen);
 #endif							/* NO_INET6 */
@@ -804,16 +801,16 @@ static void accept_local_connection(PTInstVar pvar, int request_num)
 	if (!validate_IP_number(pvar, (struct sockaddr FAR *) &addr)) {
 		char hname[NI_MAXHOST];
 		if (getnameinfo((struct sockaddr FAR *) &addr, addrlen,
-						hname, sizeof(hname), NULL, 0, NI_NUMERICHOST)) {
+		                hname, sizeof(hname), NULL, 0, NI_NUMERICHOST)) {
 			/* NOT REACHED */
 		}
 		UTIL_get_lang_msg("MSG_FWD_HOSTILE_ATTACK_ERROR", pvar,
-						  "Host with IP number %s tried to connect to "
-						  "forwarded local port %d.\n"
-						  "This could be some kind of hostile attack.");
+		                  "Host with IP number %s tried to connect to "
+		                  "forwarded local port %d.\n"
+		                  "This could be some kind of hostile attack.");
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE,
-					pvar->ts->UIMsg, hname,
-					request->spec.from_port);
+		            pvar->ts->UIMsg, hname,
+		            request->spec.from_port);
 		notify_nonfatal_error(pvar, buf);
 		safe_closesocket(pvar, s);
 		return;
@@ -823,10 +820,10 @@ static void accept_local_connection(PTInstVar pvar, int request_num)
 		(pvar,
 		 ntohl(((struct sockaddr_in *) (&addr))->sin_addr.S_un.S_addr))) {
 		_snprintf(buf, sizeof(buf),
-				  "Host with IP number %d.%d.%d.%d tried to connect to "
-				  "forwarded local port %d.\n"
-				  "This could be some kind of hostile attack.", IP[0],
-				  IP[1], IP[2], IP[3], request->spec.from_port);
+		          "Host with IP number %d.%d.%d.%d tried to connect to "
+		          "forwarded local port %d.\n"
+		          "This could be some kind of hostile attack.", IP[0],
+		          IP[1], IP[2], IP[3], request->spec.from_port);
 		buf[NUM_ELEM(buf) - 1] = 0;
 		notify_nonfatal_error(pvar, buf);
 		safe_closesocket(pvar, s);
@@ -837,19 +834,19 @@ static void accept_local_connection(PTInstVar pvar, int request_num)
 #ifndef NO_INET6
 	// SSH2 port-forwardingに接続元のリモートポートが必要。(2005.2.27 yutaka)
 	if (getnameinfo
-		((struct sockaddr FAR *) &addr, addrlen, hname, sizeof(hname),
-		 strport, sizeof(strport), NI_NUMERICHOST | NI_NUMERICSERV)) {
+	    ((struct sockaddr FAR *) &addr, addrlen, hname, sizeof(hname),
+	     strport, sizeof(strport), NI_NUMERICHOST | NI_NUMERICSERV)) {
 		/* NOT REACHED */
 	}
 	_snprintf_s(buf, sizeof(buf), _TRUNCATE,
-			  "Host %s connecting to port %d; forwarding to %s:%d",
-			  hname, request->spec.from_port, request->spec.to_host,
-			  request->spec.to_port);
+	          "Host %s connecting to port %d; forwarding to %s:%d",
+	          hname, request->spec.from_port, request->spec.to_host,
+	          request->spec.to_port);
 #else
 	_snprintf(buf, sizeof(buf),
-			  "Host %d.%d.%d.%d connecting to port %d; forwarding to %s:%d",
-			  IP[0], IP[1], IP[2], IP[3], request->spec.from_port,
-			  request->spec.to_host, request->spec.to_port);
+	          "Host %d.%d.%d.%d connecting to port %d; forwarding to %s:%d",
+	          IP[0], IP[1], IP[2], IP[3], request->spec.from_port,
+	          request->spec.to_host, request->spec.to_port);
 	buf[NUM_ELEM(buf) - 1] = 0;
 #endif							/* NO_INET6 */
 	notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
@@ -870,7 +867,7 @@ static void accept_local_connection(PTInstVar pvar, int request_num)
 
 	// add originator-port (2005.2.27 yutaka)
 	SSH_open_channel(pvar, channel_num, request->spec.to_host,
-					 request->spec.to_port, buf, atoi(strport));
+	                 request->spec.to_port, buf, atoi(strport));
 }
 
 static void write_local_connection_buffer(PTInstVar pvar, int channel_num)
@@ -878,7 +875,7 @@ static void write_local_connection_buffer(PTInstVar pvar, int channel_num)
 	FWDChannel FAR *channel = pvar->fwd_state.channels + channel_num;
 
 	if ((channel->status & (FWD_REMOTE_CONNECTED | FWD_LOCAL_CONNECTED))
-		== (FWD_REMOTE_CONNECTED | FWD_LOCAL_CONNECTED)) {
+	 == (FWD_REMOTE_CONNECTED | FWD_LOCAL_CONNECTED)) {
 		if (!UTIL_sock_write_more
 			(pvar, &channel->writebuf, channel->local_socket)) {
 			channel_error(pvar, "writing", channel_num, WSAGetLastError());
@@ -891,7 +888,7 @@ static void read_local_connection(PTInstVar pvar, int channel_num)
 	FWDChannel FAR *channel = pvar->fwd_state.channels + channel_num;
 
 	if ((channel->status & (FWD_REMOTE_CONNECTED | FWD_LOCAL_CONNECTED))
-		!= (FWD_REMOTE_CONNECTED | FWD_LOCAL_CONNECTED)) {
+	 != (FWD_REMOTE_CONNECTED | FWD_LOCAL_CONNECTED)) {
 		return;
 	}
 
@@ -907,15 +904,15 @@ static void read_local_connection(PTInstVar pvar, int channel_num)
 			if (channel->filter != NULL) {
 				action =
 					channel->filter(channel->filter_closure,
-									FWD_FILTER_FROM_CLIENT, &amount,
-									&new_buf);
+					                FWD_FILTER_FROM_CLIENT, &amount,
+					                &new_buf);
 			}
 
 			if (amount > 0
-				&& (channel->status & FWD_CLOSED_REMOTE_OUT) == 0) {
+			 && (channel->status & FWD_CLOSED_REMOTE_OUT) == 0) {
 				// ポートフォワーディングにおいてクライアントからの送信要求を、SSH通信に乗せてサーバまで送り届ける。
 				SSH_channel_send(pvar, channel_num, channel->remote_num, new_buf,
-								 amount);
+				                 amount);
 			}
 
 			switch (action) {
@@ -929,7 +926,7 @@ static void read_local_connection(PTInstVar pvar, int channel_num)
 				break;
 			}
 		} else if (amount == 0
-				   || (err = WSAGetLastError()) == WSAEWOULDBLOCK) {
+		        || (err = WSAGetLastError()) == WSAEWOULDBLOCK) {
 			return;
 		} else {
 			channel_error(pvar, "reading", channel_num, err);
@@ -968,13 +965,13 @@ static void found_to_host_addr(PTInstVar pvar, int request_num)
 }
 
 static LRESULT CALLBACK accept_wnd_proc(HWND wnd, UINT msg, WPARAM wParam,
-										LPARAM lParam)
+                                        LPARAM lParam)
 {
 	PTInstVar pvar = (PTInstVar) GetWindowLong(wnd, GWL_USERDATA);
 
-	if (msg == WM_SOCK_ACCEPT
-		&& (LOWORD(lParam) == FD_READ || LOWORD(lParam) == FD_CLOSE
-			|| LOWORD(lParam) == FD_WRITE)) {
+	if (msg == WM_SOCK_ACCEPT &&
+	    (LOWORD(lParam) == FD_READ || LOWORD(lParam) == FD_CLOSE ||
+	     LOWORD(lParam) == FD_WRITE)) {
 		msg = WM_SOCK_IO;
 	}
 
@@ -996,11 +993,11 @@ static LRESULT CALLBACK accept_wnd_proc(HWND wnd, UINT msg, WPARAM wParam,
 #ifndef NO_INET6
 					listening_socket_num =
 						find_listening_socket_num(pvar, request_num,
-												  (SOCKET) wParam);
+						                          (SOCKET) wParam);
 					if (listening_socket_num == -1)
 						return FALSE;
 					accept_local_connection(pvar, request_num,
-											listening_socket_num);
+					                        listening_socket_num);
 #else
 					accept_local_connection(pvar, request_num);
 #endif							/* NO_INET6 */
@@ -1022,11 +1019,10 @@ static LRESULT CALLBACK accept_wnd_proc(HWND wnd, UINT msg, WPARAM wParam,
 			} else {
 				found_to_host_addr(pvar, request_num);
 			}
-			pvar->fwd_state.requests[request_num].to_host_lookup_handle =
-				0;
+			pvar->fwd_state.requests[request_num].to_host_lookup_handle = 0;
 #ifdef NO_INET6
 			free(pvar->fwd_state.requests[request_num].
-				 to_host_hostent_buf);
+			     to_host_hostent_buf);
 			pvar->fwd_state.requests[request_num].to_host_hostent_buf =
 				NULL;
 #endif							/* NO_INET6 */
@@ -1058,26 +1054,25 @@ static LRESULT CALLBACK accept_wnd_proc(HWND wnd, UINT msg, WPARAM wParam,
 							 channel->to_host_addrs->ai_next) {
 							channel->local_socket =
 								socket(channel->to_host_addrs->ai_family,
-									   channel->to_host_addrs->ai_socktype,
-									   channel->to_host_addrs->
-									   ai_protocol);
+								       channel->to_host_addrs->ai_socktype,
+								       channel->to_host_addrs->ai_protocol);
 							if (channel->local_socket == INVALID_SOCKET)
 								continue;
 							if (WSAAsyncSelect
-								(channel->local_socket,
-								 make_accept_wnd(pvar), WM_SOCK_IO,
-								 FD_CONNECT | FD_READ | FD_CLOSE |
-								 FD_WRITE) == SOCKET_ERROR) {
+							    (channel->local_socket,
+							     make_accept_wnd(pvar), WM_SOCK_IO,
+							     FD_CONNECT | FD_READ | FD_CLOSE | FD_WRITE
+							    ) == SOCKET_ERROR) {
 								closesocket(channel->local_socket);
 								channel->local_socket = INVALID_SOCKET;
 								continue;
 							}
 							if (connect(channel->local_socket,
-										channel->to_host_addrs->ai_addr,
-										channel->to_host_addrs->
-										ai_addrlen) != SOCKET_ERROR) {
+							            channel->to_host_addrs->ai_addr,
+							            channel->to_host_addrs->ai_addrlen
+							           ) != SOCKET_ERROR) {
 								connected_local_connection(pvar,
-														   channel_num);
+								                           channel_num);
 								return TRUE;
 							} else if (WSAGetLastError() == WSAEWOULDBLOCK) {
 								/* do nothing, we'll just wait */
@@ -1089,21 +1084,21 @@ static LRESULT CALLBACK accept_wnd_proc(HWND wnd, UINT msg, WPARAM wParam,
 							}
 						}
 						channel_opening_error(pvar, channel_num,
-											  HIWORD(lParam));
+						                      HIWORD(lParam));
 						return TRUE;
 					}
 				} else {
 					channel_error(pvar, "accessing", channel_num,
-								  HIWORD(lParam));
+					              HIWORD(lParam));
 					return TRUE;
 				}
 #else
 				if (LOWORD(lParam) == FD_CONNECT) {
 					channel_opening_error(pvar, channel_num,
-										  HIWORD(lParam));
+					                      HIWORD(lParam));
 				} else {
 					channel_error(pvar, "accessing", channel_num,
-								  HIWORD(lParam));
+					              HIWORD(lParam));
 				}
 #endif							/* NO_INET6 */
 			} else {
@@ -1128,11 +1123,11 @@ static LRESULT CALLBACK accept_wnd_proc(HWND wnd, UINT msg, WPARAM wParam,
 	}
 
 	return CallWindowProc(pvar->fwd_state.old_accept_wnd_proc, wnd, msg,
-						  wParam, lParam);
+	                      wParam, lParam);
 }
 
 int FWD_compare_specs(void const FAR * void_spec1,
-					  void const FAR * void_spec2)
+                      void const FAR * void_spec2)
 {
 	FWDRequestSpec FAR *spec1 = (FWDRequestSpec FAR *) void_spec1;
 	FWDRequestSpec FAR *spec2 = (FWDRequestSpec FAR *) void_spec2;
@@ -1151,13 +1146,13 @@ int FWD_compare_specs(void const FAR * void_spec1,
    ending up. Maybe some SSH implementation depends on this information being
    reliable, for security? */
 static BOOL can_server_listen_using(FWDRequestSpec FAR * listener,
-									FWDRequestSpec FAR * spec)
+                                    FWDRequestSpec FAR * spec)
 {
 	return listener->type == spec->type
-		&& listener->from_port == spec->from_port
-		&& listener->to_port == spec->to_port
-		&& (spec->type == FWD_REMOTE_X11_TO_LOCAL
-			|| strcmp(listener->to_host, spec->to_host) == 0);
+	    && listener->from_port == spec->from_port
+	    && listener->to_port == spec->to_port
+	    && (spec->type == FWD_REMOTE_X11_TO_LOCAL
+	     || strcmp(listener->to_host, spec->to_host) == 0);
 }
 
 BOOL FWD_can_server_listen_for(PTInstVar pvar, FWDRequestSpec FAR * spec)
@@ -1170,8 +1165,8 @@ BOOL FWD_can_server_listen_for(PTInstVar pvar, FWDRequestSpec FAR * spec)
 	} else {
 		FWDRequestSpec FAR *listener =
 			bsearch(spec, pvar->fwd_state.server_listening_specs,
-					num_server_listening_requests,
-					sizeof(FWDRequestSpec), FWD_compare_specs);
+			        num_server_listening_requests,
+			        sizeof(FWDRequestSpec), FWD_compare_specs);
 
 		if (listener == NULL) {
 			return FALSE;
@@ -1196,7 +1191,7 @@ int FWD_get_num_request_specs(PTInstVar pvar)
 }
 
 void FWD_get_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
-						   int num_specs)
+                           int num_specs)
 {
 	int i;
 
@@ -1216,7 +1211,7 @@ void FWD_get_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 */
 #ifndef NO_INET6
 static SOCKET FAR *delete_request(PTInstVar pvar, int request_num,
-								  int *p_num_listening_sockets)
+                                  int *p_num_listening_sockets)
 {
 #else
 static SOCKET delete_request(PTInstVar pvar, int request_num)
@@ -1264,16 +1259,16 @@ static SOCKET delete_request(PTInstVar pvar, int request_num)
 }
 
 static BOOL are_specs_identical(FWDRequestSpec FAR * spec1,
-								FWDRequestSpec FAR * spec2)
+                                FWDRequestSpec FAR * spec2)
 {
 	return spec1->type == spec2->type
-		&& spec1->from_port == spec2->from_port
-		&& spec1->to_port == spec2->to_port
-		&& strcmp(spec1->to_host, spec2->to_host) == 0;
+	    && spec1->from_port == spec2->from_port
+	    && spec1->to_port == spec2->to_port
+	    && strcmp(spec1->to_host, spec2->to_host) == 0;
 }
 
 static BOOL interactive_init_request(PTInstVar pvar, int request_num,
-									 BOOL report_error)
+                                     BOOL report_error)
 {
 	FWDRequest FAR *request = pvar->fwd_state.requests + request_num;
 
@@ -1285,7 +1280,8 @@ static BOOL interactive_init_request(PTInstVar pvar, int request_num,
 		SOCKET s;
 		char pname[NI_MAXSERV];
 
-		_snprintf(pname, sizeof(pname), "%d", request->spec.from_port);
+		_snprintf_s(pname, sizeof(pname), _TRUNCATE,
+		            "%d", request->spec.from_port);
 		memset(&hints, 0, sizeof(hints));
 		hints.ai_family = AF_UNSPEC;	/* a user will be able to specify protocol in future version */
 		hints.ai_flags = AI_PASSIVE;
@@ -1295,21 +1291,20 @@ static BOOL interactive_init_request(PTInstVar pvar, int request_num,
 
 		/* count number of listening sockets and allocate area for them */
 		for (request->num_listening_sockets = 0, res = res0; res;
-			 res = res->ai_next)
+		     res = res->ai_next)
 			request->num_listening_sockets++;
 		request->listening_sockets =
 			(SOCKET FAR *) malloc(sizeof(SOCKET) *
-								  request->num_listening_sockets);
+			                      request->num_listening_sockets);
 		if (request->listening_sockets == NULL) {
 			freeaddrinfo(res0);
 			return FALSE;
 		}
 
 		for (request->num_listening_sockets = 0, res = res0; res;
-			 res = res->ai_next) {
+		     res = res->ai_next) {
 			s = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
-			request->listening_sockets[request->num_listening_sockets++] =
-				s;
+			request->listening_sockets[request->num_listening_sockets++] = s;
 			if (s == INVALID_SOCKET)
 				continue;
 			if (bind(s, res->ai_addr, res->ai_addrlen) == SOCKET_ERROR) {
@@ -1318,8 +1313,8 @@ static BOOL interactive_init_request(PTInstVar pvar, int request_num,
 			}
 			if (WSAAsyncSelect
 				(s, make_accept_wnd(pvar), WM_SOCK_ACCEPT,
-				 FD_ACCEPT | FD_READ | FD_CLOSE | FD_WRITE) ==
-				SOCKET_ERROR) {
+				 FD_ACCEPT | FD_READ | FD_CLOSE | FD_WRITE
+				) == SOCKET_ERROR) {
 				s = INVALID_SOCKET;
 				continue;
 			}
@@ -1332,11 +1327,11 @@ static BOOL interactive_init_request(PTInstVar pvar, int request_num,
 			if (report_error) {
 				char buf[256];
 				UTIL_get_lang_msg("MSG_FWD_SOCKET_ERROR", pvar,
-								  "Some socket(s) required for port forwarding could not be initialized.\n"
-								  "Some port forwarding services may not be available.\n"
-								  "(errno %d)");
+				                  "Some socket(s) required for port forwarding could not be initialized.\n"
+				                  "Some port forwarding services may not be available.\n"
+				                  "(errno %d)");
 				_snprintf_s(buf, sizeof(buf), _TRUNCATE,
-							pvar->ts->UIMsg, WSAGetLastError());
+				            pvar->ts->UIMsg, WSAGetLastError());
 				notify_verbose_message(pvar,buf,LOG_LEVEL_WARNING);
 			}
 			freeaddrinfo(res0);
@@ -1380,8 +1375,8 @@ static BOOL interactive_init_request(PTInstVar pvar, int request_num,
    closed. */
 #ifndef NO_INET6
 static BOOL init_request(PTInstVar pvar, int request_num,
-						 BOOL report_error, SOCKET FAR * listening_sockets,
-						 int num_listening_sockets)
+                         BOOL report_error, SOCKET FAR * listening_sockets,
+                         int num_listening_sockets)
 {
 #else
 static BOOL init_request(PTInstVar pvar, int request_num,
@@ -1433,7 +1428,7 @@ static BOOL init_request(PTInstVar pvar, int request_num,
 }
 
 void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
-						   int num_specs)
+                           int num_specs)
 {
 	FWDRequestSpec FAR *new_specs =
 		(FWDRequestSpec FAR *) malloc(sizeof(FWDRequestSpec) * num_specs);
@@ -1459,7 +1454,7 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 	for (i = 0; i < num_specs - 1; i++) {
 		if (FWD_compare_specs(new_specs + i, new_specs + i + 1) == 0) {
 			UTIL_get_lang_msg("MSG_FWD_DUPLICATE_ERROR", pvar,
-							  "TTSSH INTERNAL ERROR: Could not set port forwards because duplicate type/port requests were found");
+			                  "TTSSH INTERNAL ERROR: Could not set port forwards because duplicate type/port requests were found");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 			free(new_specs);
 			return;
@@ -1470,7 +1465,7 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 #ifndef NO_INET6
 	ptr_to_saved_sockets =
 		(saved_sockets_t FAR *) malloc(sizeof(saved_sockets_t) *
-									   num_specs);
+		                               num_specs);
 #else
 	saved_sockets = (SOCKET FAR *) malloc(sizeof(SOCKET) * num_specs);
 #endif							/* NO_INET6 */
@@ -1491,10 +1486,10 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 				&pvar->fwd_state.requests[i].spec;
 			FWDRequestSpec FAR *new_spec =
 				bsearch(cur_spec, new_specs, num_specs,
-						sizeof(FWDRequestSpec), FWD_compare_specs);
+				        sizeof(FWDRequestSpec), FWD_compare_specs);
 
 			if (new_spec != NULL
-				&& are_specs_identical(cur_spec, new_spec)) {
+			 && are_specs_identical(cur_spec, new_spec)) {
 				specs_accounted_for[new_spec - new_specs] = 1;
 				num_new_requests--;
 			} else {
@@ -1509,12 +1504,10 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 
 #ifndef NO_INET6
 				if (new_spec != NULL) {
-					ptr_to_saved_sockets[new_spec -
-										 new_specs].listening_sockets =
-						listening_sockets;
-					ptr_to_saved_sockets[new_spec -
-										 new_specs].num_listening_sockets =
-						num_listening_sockets;
+					ptr_to_saved_sockets[new_spec -  new_specs].
+						listening_sockets = listening_sockets;
+					ptr_to_saved_sockets[new_spec - new_specs].
+						num_listening_sockets = num_listening_sockets;
 				} else if (listening_sockets != NULL) {
 					/* if there is no new spec(new request), free listening_sockets */
 					int i;
@@ -1542,13 +1535,12 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 
 	if (num_new_requests > num_free_requests) {
 		int total_requests =
-			pvar->fwd_state.num_requests + num_new_requests -
-			num_free_requests;
+			pvar->fwd_state.num_requests + num_new_requests - num_free_requests;
 
 		pvar->fwd_state.requests =
 			(FWDRequest FAR *) realloc(pvar->fwd_state.requests,
-									   sizeof(FWDRequest) *
-									   total_requests);
+			                           sizeof(FWDRequest) *
+			                           total_requests);
 		for (i = pvar->fwd_state.num_requests; i < total_requests; i++) {
 			pvar->fwd_state.requests[i].status = FWD_DELETED;
 			pvar->fwd_state.requests[i].num_channels = 0;
@@ -1558,10 +1550,8 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 
 	for (i = 0; i < num_specs; i++) {
 		if (!specs_accounted_for[i]) {
-			while ((pvar->fwd_state.requests[free_request].
-					status & FWD_DELETED) == 0
-				   || pvar->fwd_state.requests[free_request].
-				   num_channels != 0) {
+			while ((pvar->fwd_state.requests[free_request].status & FWD_DELETED) == 0
+			    || pvar->fwd_state.requests[free_request].num_channels != 0) {
 				free_request++;
 			}
 
@@ -1570,9 +1560,8 @@ void FWD_set_request_specs(PTInstVar pvar, FWDRequestSpec FAR * specs,
 			pvar->fwd_state.requests[free_request].spec = new_specs[i];
 #ifndef NO_INET6
 			if (!init_request(pvar, free_request, report_err,
-							  ptr_to_saved_sockets[i].listening_sockets,
-							  ptr_to_saved_sockets[i].
-							  num_listening_sockets)) {
+			                  ptr_to_saved_sockets[i].listening_sockets,
+			                  ptr_to_saved_sockets[i].num_listening_sockets)) {
 #else
 			if (!init_request
 				(pvar, free_request, report_err, saved_sockets[i])) {
@@ -1605,8 +1594,8 @@ void FWD_prep_forwarding(PTInstVar pvar)
 			switch (request->spec.type) {
 			case FWD_REMOTE_TO_LOCAL:
 				SSH_request_forwarding(pvar, request->spec.from_port,
-									   request->spec.to_host,
-									   request->spec.to_port);
+				                       request->spec.to_host,
+				                       request->spec.to_port);
 				num_server_listening_requests++;
 				break;
 			case FWD_REMOTE_X11_TO_LOCAL:{
@@ -1615,16 +1604,13 @@ void FWD_prep_forwarding(PTInstVar pvar)
 					pvar->fwd_state.X11_auth_data =
 						X11_load_local_auth_data(screen_num);
 					SSH_request_X11_forwarding(pvar,
-											   X11_get_spoofed_protocol_name
-											   (pvar->fwd_state.
-												X11_auth_data),
-											   X11_get_spoofed_protocol_data
-											   (pvar->fwd_state.
-												X11_auth_data),
-											   X11_get_spoofed_protocol_data_len
-											   (pvar->fwd_state.
-												X11_auth_data),
-											   screen_num);
+					                           X11_get_spoofed_protocol_name
+					                           (pvar->fwd_state.X11_auth_data),
+					                           X11_get_spoofed_protocol_data
+					                           (pvar->fwd_state.X11_auth_data),
+					                           X11_get_spoofed_protocol_data_len
+					                           (pvar->fwd_state.X11_auth_data),
+					                           screen_num);
 					num_server_listening_requests++;
 					break;
 				}
@@ -1638,7 +1624,7 @@ void FWD_prep_forwarding(PTInstVar pvar)
 	if (num_server_listening_requests > 0) {
 		FWDRequestSpec FAR *server_listening_requests =
 			(FWDRequestSpec FAR *) malloc(sizeof(FWDRequestSpec) *
-										  num_server_listening_requests);
+			                              num_server_listening_requests);
 
 		pvar->fwd_state.server_listening_specs = server_listening_requests;
 
@@ -1657,8 +1643,8 @@ void FWD_prep_forwarding(PTInstVar pvar)
 
 		/* No two server-side request specs can have the same port. */
 		qsort(pvar->fwd_state.server_listening_specs,
-			  num_server_listening_requests, sizeof(FWDRequestSpec),
-			  FWD_compare_specs);
+		      num_server_listening_requests, sizeof(FWDRequestSpec),
+		      FWD_compare_specs);
 	}
 }
 
@@ -1677,10 +1663,8 @@ void FWD_enter_interactive_mode(PTInstVar pvar)
 }
 
 static void create_local_channel(PTInstVar pvar, uint32 remote_channel_num,
-								 int request_num, void *filter_closure,
-								 FWDFilter filter,
-								 int *chan_num
-								 )
+                                 int request_num, void *filter_closure,
+                                 FWDFilter filter, int *chan_num)
 {
 	char buf[1024];
 	int channel_num;
@@ -1693,7 +1677,7 @@ static void create_local_channel(PTInstVar pvar, uint32 remote_channel_num,
 
 #ifndef NO_INET6
 	if (request->to_host_addrs == NULL
-		&& request->to_host_lookup_handle == 0) {
+	 && request->to_host_lookup_handle == 0) {
 		HANDLE task_handle;
 #else
 	if (request->to_host_addr == 0 && request->to_host_lookup_handle == 0) {
@@ -1714,8 +1698,8 @@ static void create_local_channel(PTInstVar pvar, uint32 remote_channel_num,
 		hints.ai_socktype = SOCK_STREAM;
 		task_handle =
 			WSAAsyncGetAddrInfo(make_accept_wnd(pvar), WM_SOCK_GOTNAME,
-								request->spec.to_host, pname, &hints,
-								&request->to_host_addrs);
+			                    request->spec.to_host, pname, &hints,
+			                    &request->to_host_addrs);
 #else
 		task_handle =
 			WSAAsyncGetHostByName(make_accept_wnd(pvar), WM_SOCK_GOTNAME,
@@ -1727,12 +1711,12 @@ static void create_local_channel(PTInstVar pvar, uint32 remote_channel_num,
 		if (task_handle == 0) {
 			SSH_fail_channel_open(pvar, remote_channel_num);
 			UTIL_get_lang_msg("MSG_FWD_DENIED_HANDLE_ERROR", pvar,
-							  "The server attempted to forward a connection through this machine.\n"
-							  "It requested a connection to machine %s on port %s.\n"
-							  "An error occurred while processing the request, and it has been denied.");
+			                  "The server attempted to forward a connection through this machine.\n"
+			                  "It requested a connection to machine %s on port %s.\n"
+			                  "An error occurred while processing the request, and it has been denied.");
 			_snprintf_s(buf, sizeof(buf), _TRUNCATE,
-						pvar->ts->UIMsg,
-						request->spec.to_host, request->spec.to_port_name);
+			            pvar->ts->UIMsg,
+			            request->spec.to_host, request->spec.to_port_name);
 			notify_nonfatal_error(pvar, buf);
 #ifndef NO_INET6
 	  /*****/
@@ -1771,9 +1755,9 @@ static void create_local_channel(PTInstVar pvar, uint32 remote_channel_num,
 }
 
 void FWD_open(PTInstVar pvar, uint32 remote_channel_num,
-			  char FAR * local_hostname, int local_port,
-			  char FAR * originator, int originator_len,
-			  int *chan_num)
+              char FAR * local_hostname, int local_port,
+              char FAR * originator, int originator_len,
+              int *chan_num)
 {
 	int i;
 	char buf[1024];
@@ -1783,21 +1767,20 @@ void FWD_open(PTInstVar pvar, uint32 remote_channel_num,
 
 		if (SSHv1(pvar)) {
 			if ((request->status & FWD_DELETED) == 0
-				&& request->spec.type == FWD_REMOTE_TO_LOCAL
-				&& request->spec.to_port == local_port
-				&& strcmp(request->spec.to_host, local_hostname) == 0) {
+			 && request->spec.type == FWD_REMOTE_TO_LOCAL
+			 && request->spec.to_port == local_port
+			 && strcmp(request->spec.to_host, local_hostname) == 0) {
 				create_local_channel(pvar, remote_channel_num, i, NULL, NULL, chan_num);
 				return;
 			}
 
 		} else { // SSH2
 			if ((request->status & FWD_DELETED) == 0
-				&& request->spec.type == FWD_REMOTE_TO_LOCAL
-				&& request->spec.from_port == local_port
-				//&& strcmp(request->spec.to_host, local_hostname) == 0) {
-				) {
-				create_local_channel(pvar, remote_channel_num, i, NULL, NULL, 
-					chan_num);
+			 && request->spec.type == FWD_REMOTE_TO_LOCAL
+			 && request->spec.from_port == local_port
+			// && strcmp(request->spec.to_host, local_hostname) == 0) {
+			) {
+				create_local_channel(pvar, remote_channel_num, i, NULL, NULL, chan_num);
 				return;
 			}
 		}
@@ -1812,26 +1795,26 @@ void FWD_open(PTInstVar pvar, uint32 remote_channel_num,
 			pvar->fwd_state.server_listening_specs + i;
 
 		if (spec->type == FWD_REMOTE_TO_LOCAL
-			&& spec->to_port == local_port
-			&& strcmp(spec->to_host, local_hostname) == 0) {
+		 && spec->to_port == local_port
+		 && strcmp(spec->to_host, local_hostname) == 0) {
 			return;				/* no error message needed. The user just turned this off, that's all */
 		}
 	}
 
 	/* this forwarding was not prespecified */
 	UTIL_get_lang_msg("MSG_FWD_DENIED_ERROR", pvar,
-					  "The server attempted to forward a connection through this machine.\n"
-					  "It requested a connection to machine %s on port %d.\n"
-					  "You did not specify this forwarding to TTSSH in advance, and therefore the request was denied.");
+	                  "The server attempted to forward a connection through this machine.\n"
+	                  "It requested a connection to machine %s on port %d.\n"
+	                  "You did not specify this forwarding to TTSSH in advance, and therefore the request was denied.");
 	_snprintf_s(buf, sizeof(buf), _TRUNCATE,
-				pvar->ts->UIMsg,
-				local_hostname, local_port);
+	            pvar->ts->UIMsg,
+	            local_hostname, local_port);
 	notify_nonfatal_error(pvar, buf);
 }
 
 void FWD_X11_open(PTInstVar pvar, uint32 remote_channel_num,
-				  char FAR * originator, int originator_len,
-				  int *chan_num)
+                  char FAR * originator, int originator_len,
+                  int *chan_num)
 {
 	int i;
 
@@ -1839,14 +1822,13 @@ void FWD_X11_open(PTInstVar pvar, uint32 remote_channel_num,
 		FWDRequest FAR *request = pvar->fwd_state.requests + i;
 
 		if ((request->status & FWD_DELETED) == 0
-			&& request->spec.type == FWD_REMOTE_X11_TO_LOCAL) {
+		 && request->spec.type == FWD_REMOTE_X11_TO_LOCAL) {
 			create_local_channel(pvar, remote_channel_num, i,
-								 X11_init_unspoofing_filter(pvar,
-															pvar->
-															fwd_state.
-															X11_auth_data),
-								 X11_unspoofing_filter,
-								 chan_num);
+			                     X11_init_unspoofing_filter(pvar,
+			                                                pvar->fwd_state.
+			                                                X11_auth_data),
+			                     X11_unspoofing_filter,
+			                     chan_num);
 			return;
 		}
 	}
@@ -1866,14 +1848,14 @@ void FWD_X11_open(PTInstVar pvar, uint32 remote_channel_num,
 
 	/* this forwarding was not prespecified */
 	UTIL_get_lang_msg("MSG_FWD_DENIED_X_ERROR", pvar,
-					  "The server attempted to forward a connection through this machine.\n"
-					  "It requested a connection to the local X server.\n"
-					  "You did not specify this forwarding to TTSSH in advance, and therefore the request was denied.");
+	                  "The server attempted to forward a connection through this machine.\n"
+	                  "It requested a connection to the local X server.\n"
+	                  "You did not specify this forwarding to TTSSH in advance, and therefore the request was denied.");
 	notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 }
 
 void FWD_confirmed_open(PTInstVar pvar, uint32 local_channel_num,
-						uint32 remote_channel_num)
+                        uint32 remote_channel_num)
 {
 	SOCKET s;
 	FWDChannel FAR *channel;
@@ -1901,29 +1883,28 @@ void FWD_failed_open(PTInstVar pvar, uint32 local_channel_num)
 		return;
 
 	UTIL_get_lang_msg("MSG_FWD_DENIED_BY_SERVER_ERROR", pvar,
-					  "A program on the local machine attempted to connect to a forwarded port.\n"
-					  "The forwarding request was denied by the server. The connection has been closed.");
+	                  "A program on the local machine attempted to connect to a forwarded port.\n"
+	                  "The forwarding request was denied by the server. The connection has been closed.");
 	notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 	FWD_free_channel(pvar, local_channel_num);
 }
 
 static BOOL blocking_write(PTInstVar pvar, SOCKET s, const char FAR * data,
-						   int length)
+                           int length)
 {
 	u_long do_block = 0;
 
 	return (pvar->PWSAAsyncSelect) (s, make_accept_wnd(pvar), 0,
-									0) == SOCKET_ERROR
-		|| ioctlsocket(s, FIONBIO, &do_block) == SOCKET_ERROR
-		|| (pvar->Psend) (s, data, length, 0) != length
-		|| (pvar->PWSAAsyncSelect) (s, pvar->fwd_state.accept_wnd,
-									WM_SOCK_ACCEPT,
-									FD_READ | FD_CLOSE | FD_WRITE) ==
-		SOCKET_ERROR;
+	                                0) == SOCKET_ERROR
+	    || ioctlsocket(s, FIONBIO, &do_block) == SOCKET_ERROR
+	    || (pvar->Psend) (s, data, length, 0) != length
+	    || (pvar->PWSAAsyncSelect) (s, pvar->fwd_state.accept_wnd,
+	                                WM_SOCK_ACCEPT,
+	                                FD_READ | FD_CLOSE | FD_WRITE) == SOCKET_ERROR;
 }
 
 void FWD_received_data(PTInstVar pvar, uint32 local_channel_num,
-					   unsigned char FAR * data, int length)
+                       unsigned char FAR * data, int length)
 {
 	SOCKET s;
 	FWDChannel FAR *channel;
@@ -1937,7 +1918,7 @@ void FWD_received_data(PTInstVar pvar, uint32 local_channel_num,
 	if (channel->filter != NULL) {
 		action =
 			channel->filter(channel->filter_closure,
-							FWD_FILTER_FROM_SERVER, &length, &data);
+			                FWD_FILTER_FROM_SERVER, &length, &data);
 	}
 
 	s = channel->local_socket;
@@ -1946,8 +1927,8 @@ void FWD_received_data(PTInstVar pvar, uint32 local_channel_num,
 			(pvar, &channel->writebuf, blocking_write, s, data, length)) {
 			closed_local_connection(pvar, local_channel_num);
 			UTIL_get_lang_msg("MSG_FWD_COMM_ERROR", pvar,
-							  "A communications error occurred while sending forwarded data to a local port.\n"
-							  "The forwarded connection will be closed.");
+			                  "A communications error occurred while sending forwarded data to a local port.\n"
+			                  "The forwarded connection will be closed.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		}
 	}

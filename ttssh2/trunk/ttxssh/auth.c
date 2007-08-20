@@ -61,7 +61,7 @@ static int auth_types_to_control_IDs[] = {
 };
 
 static LRESULT CALLBACK password_wnd_proc(HWND control, UINT msg,
-										  WPARAM wParam, LPARAM lParam)
+                                          WPARAM wParam, LPARAM lParam)
 {
 	switch (msg) {
 	case WM_CHAR:
@@ -69,13 +69,13 @@ static LRESULT CALLBACK password_wnd_proc(HWND control, UINT msg,
 			char chars[] = { (char) wParam, 0 };
 
 			SendMessage(control, EM_REPLACESEL, (WPARAM) TRUE,
-						(LPARAM) (char FAR *) chars);
+			            (LPARAM) (char FAR *) chars);
 			return 0;
 		}
 	}
 
 	return CallWindowProc((WNDPROC) GetWindowLong(control, GWL_USERDATA),
-						  control, msg, wParam, lParam);
+	                      control, msg, wParam, lParam);
 }
 
 static void init_password_control(HWND dlg)
@@ -83,8 +83,8 @@ static void init_password_control(HWND dlg)
 	HWND passwordControl = GetDlgItem(dlg, IDC_SSHPASSWORD);
 
 	SetWindowLong(passwordControl, GWL_USERDATA,
-				  SetWindowLong(passwordControl, GWL_WNDPROC,
-								(LONG) password_wnd_proc));
+	              SetWindowLong(passwordControl, GWL_WNDPROC,
+	                            (LONG) password_wnd_proc));
 
 	SetFocus(passwordControl);
 }
@@ -131,7 +131,7 @@ static void update_server_supported_types(PTInstVar pvar, HWND dlg)
 	}
 
 	for (control = IDC_SSHUSEPASSWORD; control <= MAX_AUTH_CONTROL;
-		 control++) {
+	     control++) {
 		BOOL enabled = FALSE;
 		int method;
 		HWND item = GetDlgItem(dlg, control);
@@ -139,8 +139,8 @@ static void update_server_supported_types(PTInstVar pvar, HWND dlg)
 		if (item != NULL) {
 			for (method = 0; method <= SSH_AUTH_MAX; method++) {
 				if (auth_types_to_control_IDs[method] == control
-					&& (supported_methods & (1 << method)) != 0) {
-					enabled = TRUE;
+				    && (supported_methods & (1 << method)) != 0) {
+				    enabled = TRUE;
 				}
 			}
 
@@ -231,7 +231,7 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 	}
 
 	set_auth_options_status(dlg,
-							auth_types_to_control_IDs[default_method]);
+	                        auth_types_to_control_IDs[default_method]);
 
 	if (default_method == SSH_AUTH_TIS) {
 		/* we disabled the password control, so fix the focus */
@@ -244,17 +244,17 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 		EnableWindow(GetDlgItem(dlg, IDC_SSHUSERNAMELABEL), FALSE);
 	} else if (pvar->session_settings.DefaultUserName[0] != 0) {
 		SetDlgItemText(dlg, IDC_SSHUSERNAME,
-					   pvar->session_settings.DefaultUserName);
+		               pvar->session_settings.DefaultUserName);
 	} else {
 		SetFocus(GetDlgItem(dlg, IDC_SSHUSERNAME));
 	}
 
 	SetDlgItemText(dlg, IDC_RSAFILENAME,
-				   pvar->session_settings.DefaultRSAPrivateKeyFile);
+	               pvar->session_settings.DefaultRSAPrivateKeyFile);
 	SetDlgItemText(dlg, IDC_HOSTRSAFILENAME,
-				   pvar->session_settings.DefaultRhostsHostPrivateKeyFile);
+	               pvar->session_settings.DefaultRhostsHostPrivateKeyFile);
 	SetDlgItemText(dlg, IDC_LOCALUSERNAME,
-				   pvar->session_settings.DefaultRhostsLocalUserName);
+	               pvar->session_settings.DefaultRhostsLocalUserName);
 
 	update_server_supported_types(pvar, dlg);
 
@@ -317,17 +317,17 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 	// 変更する。(2005.3.12 yutaka)
 	if (pvar->settings.ssh2_keyboard_interactive == 1) {
 		UTIL_get_lang_msg("DLG_AUTH_METHOD_PASSWORD_KBDINT", pvar,
-						  "Use p&lain password to log in (with keyboard-interactive)");
+		                  "Use p&lain password to log in (with keyboard-interactive)");
 		SetDlgItemText(dlg, IDC_SSHUSEPASSWORD, pvar->ts->UIMsg);
 	}
 
 	if (pvar->settings.ssh_protocol_version == 1) {
 		UTIL_get_lang_msg("DLG_AUTH_METHOD_CHALLENGE1", pvar,
-						  "Use challenge/response to log in(&TIS)");
+		                  "Use challenge/response to log in(&TIS)");
 		SetDlgItemText(dlg, IDC_SSHUSETIS, pvar->ts->UIMsg);
 	} else {
 		UTIL_get_lang_msg("DLG_AUTH_METHOD_CHALLENGE2", pvar,
-						  "Use &challenge/response to log in(keyboard-interactive)");
+		                  "Use &challenge/response to log in(keyboard-interactive)");
 		SetDlgItemText(dlg, IDC_SSHUSETIS, pvar->ts->UIMsg);
 	}
 #endif
@@ -366,7 +366,7 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize, PTInstVar
 	// フィルタの追加 (2004.12.19 yutaka)
 	// 3ファイルフィルタの追加 (2005.4.26 yutaka)
 	UTIL_get_lang_msg("FILEDLG_OPEN_PRIVATEKEY_FILTER", pvar,
-					  "identity files\\0identity;id_rsa;id_dsa\\0identity(RSA1)\\0identity\\0id_rsa(SSH2)\\0id_rsa\\0id_dsa(SSH2)\\0id_dsa\\0all(*.*)\\0*.*\\0\\0");
+	                  "identity files\\0identity;id_rsa;id_dsa\\0identity(RSA1)\\0identity\\0id_rsa(SSH2)\\0id_rsa\\0id_dsa(SSH2)\\0id_dsa\\0all(*.*)\\0*.*\\0\\0");
 	memcpy(filter, pvar->ts->UIMsg, sizeof(filter));
 	params.lpstrFilter = filter;
 	params.lpstrCustomFilter = NULL;
@@ -377,7 +377,7 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize, PTInstVar
 	params.lpstrFileTitle = NULL;
 	params.lpstrInitialDir = NULL;
 	UTIL_get_lang_msg("FILEDLG_OPEN_PRIVATEKEY_TITLE", pvar,
-					  "Choose a file with the RSA/DSA private key");
+	                  "Choose a file with the RSA/DSA private key");
 	params.lpstrTitle = pvar->ts->UIMsg;
 	params.Flags =
 		OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
@@ -437,7 +437,7 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 		GetDlgItemText(dlg, file_ctl_ID, buf, sizeof(buf));
 		if (buf[0] == 0) {
 			UTIL_get_lang_msg("MSG_KEYSPECIFY_ERROR", pvar,
-							  "You must specify a file containing the RSA/DSA private key.");
+			                  "You must specify a file containing the RSA/DSA private key.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 			SetFocus(GetDlgItem(dlg, file_ctl_ID));
 			destroy_malloced_string(&password);
@@ -448,8 +448,8 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 			BOOL invalid_passphrase = FALSE;
 
 			key_pair = KEYFILES_read_private_key(pvar, buf, password,
-												 &invalid_passphrase,
-												 FALSE);
+			                                     &invalid_passphrase,
+			                                     FALSE);
 
 			if (key_pair == NULL) {
 				if (invalid_passphrase) {
@@ -472,16 +472,16 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 			//GetCurrentDirectory(sizeof(errmsg), errmsg);
 
 			key_pair = read_SSH2_private_key(pvar, buf, password,
-									&invalid_passphrase,
-									FALSE,
-									errmsg,
-									sizeof(errmsg)
-									);
+			                                 &invalid_passphrase,
+			                                 FALSE,
+			                                 errmsg,
+			                                 sizeof(errmsg)
+			                                );
 
 			if (key_pair == NULL) { // read error
 				char buf[1024];
 				UTIL_get_lang_msg("MSG_READKEY_ERROR", pvar,
-								  "read error SSH2 private key file\r\n%s");
+				                  "read error SSH2 private key file\r\n%s");
 				_snprintf_s(buf, sizeof(buf), _TRUNCATE, pvar->ts->UIMsg, errmsg);
 				notify_nonfatal_error(pvar, buf);
 				// パスフレーズが鍵と一致しなかった場合はIDC_SSHPASSWORDにフォーカスを移す (2006.10.29 yasuhide)
@@ -530,12 +530,12 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 	if (method == SSH_AUTH_RHOSTS || method == SSH_AUTH_RHOSTS_RSA) {
 		if (pvar->session_settings.DefaultAuthMethod != SSH_AUTH_RHOSTS) {
 			UTIL_get_lang_msg("MSG_RHOSTS_NOTDEFAULT_ERROR", pvar,
-							  "Rhosts authentication will probably fail because it was not "
-							  "the default authentication method.\n"
-							  "To use Rhosts authentication "
-							  "in TTSSH, you need to set it to be the default by restarting\n"
-							  "TTSSH and selecting \"SSH Authentication...\" from the Setup menu"
-							  "before connecting.");
+			                  "Rhosts authentication will probably fail because it was not "
+			                  "the default authentication method.\n"
+			                  "To use Rhosts authentication "
+			                  "in TTSSH, you need to set it to be the default by restarting\n"
+			                  "TTSSH and selecting \"SSH Authentication...\" from the Setup menu"
+			                  "before connecting.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		}
 
@@ -545,17 +545,17 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 	pvar->auth_state.auth_dialog = NULL;
 
 	GetDlgItemText(dlg, IDC_RSAFILENAME,
-				   pvar->session_settings.DefaultRSAPrivateKeyFile,
-				   sizeof(pvar->session_settings.
-						  DefaultRSAPrivateKeyFile));
+	               pvar->session_settings.DefaultRSAPrivateKeyFile,
+	               sizeof(pvar->session_settings.
+	                      DefaultRSAPrivateKeyFile));
 	GetDlgItemText(dlg, IDC_HOSTRSAFILENAME,
-				   pvar->session_settings.DefaultRhostsHostPrivateKeyFile,
-				   sizeof(pvar->session_settings.
-						  DefaultRhostsHostPrivateKeyFile));
+	               pvar->session_settings.DefaultRhostsHostPrivateKeyFile,
+	               sizeof(pvar->session_settings.
+	                      DefaultRhostsHostPrivateKeyFile));
 	GetDlgItemText(dlg, IDC_LOCALUSERNAME,
-				   pvar->session_settings.DefaultRhostsLocalUserName,
-				   sizeof(pvar->session_settings.
-						  DefaultRhostsLocalUserName));
+	               pvar->session_settings.DefaultRhostsLocalUserName,
+	               sizeof(pvar->session_settings.
+	              DefaultRhostsLocalUserName));
 
 	if (SSHv1(pvar)) {
 		SSH_notify_user_name(pvar);
@@ -566,15 +566,15 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 	}
 
 	EndDialog(dlg, 1);
-			if (DlgAuthFont != NULL) {
-				DeleteObject(DlgAuthFont);
-			}
+	if (DlgAuthFont != NULL) {
+		DeleteObject(DlgAuthFont);
+	}
 
 	return TRUE;
 }
 
 static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
-								   LPARAM lParam)
+                                   LPARAM lParam)
 {
 	const int IDC_TIMER1 = 300;
 	const int autologin_timeout = 10; // ミリ秒
@@ -689,36 +689,36 @@ int AUTH_set_supported_auth_types(PTInstVar pvar, int types)
 	char buf[1024];
 
 	_snprintf_s(buf, sizeof(buf), _TRUNCATE,
-			  "Server reports supported authentication method mask = %d",
-			  types);
+	          "Server reports supported authentication method mask = %d",
+	          types);
 	buf[sizeof(buf) - 1] = 0;
 	notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
 
 	if (SSHv1(pvar)) {
 		types &= (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA)
-			| (1 << SSH_AUTH_RHOSTS_RSA) | (1 << SSH_AUTH_RHOSTS)
-			| (1 << SSH_AUTH_TIS);
+		       | (1 << SSH_AUTH_RHOSTS_RSA) | (1 << SSH_AUTH_RHOSTS)
+		       | (1 << SSH_AUTH_TIS);
 	} else {
 		// for SSH2(yutaka)
 //		types &= (1 << SSH_AUTH_PASSWORD);
 		// 公開鍵認証を有効にする (2004.12.18 yutaka)
 		// TISを追加。SSH2ではkeyboard-interactiveとして扱う。(2005.3.12 yutaka)
 		types &= (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA)
-			| (1 << SSH_AUTH_DSA)
-			| (1 << SSH_AUTH_TIS);
+		       | (1 << SSH_AUTH_DSA)
+		       | (1 << SSH_AUTH_TIS);
 	}
 	pvar->auth_state.supported_types = types;
 
 	if (types == 0) {
 		UTIL_get_lang_msg("MSG_NOAUTHMETHOD_ERROR", pvar,
-						  "Server does not support any of the authentication options\n"
-						  "provided by TTSSH. This connection will now close.");
+		                  "Server does not support any of the authentication options\n"
+		                  "provided by TTSSH. This connection will now close.");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 		return 0;
 	} else {
 		if (pvar->auth_state.auth_dialog != NULL) {
 			update_server_supported_types(pvar,
-										  pvar->auth_state.auth_dialog);
+			                              pvar->auth_state.auth_dialog);
 		}
 
 		return 1;
@@ -744,10 +744,10 @@ static void try_default_auth(PTInstVar pvar)
 				pvar->auth_state.cur_cred.key_pair
 					=
 					KEYFILES_read_private_key(pvar,
-											  pvar->session_settings.
-											  DefaultRSAPrivateKeyFile,
-											  password,
-											  &invalid_passphrase, TRUE);
+					                          pvar->session_settings.
+					                          DefaultRSAPrivateKeyFile,
+					                          password,
+					                          &invalid_passphrase, TRUE);
 				if (pvar->auth_state.cur_cred.key_pair == NULL) {
 					return;
 				} else {
@@ -765,10 +765,10 @@ static void try_default_auth(PTInstVar pvar)
 				pvar->auth_state.cur_cred.key_pair
 					=
 					KEYFILES_read_private_key(pvar,
-											  pvar->session_settings.
-											  DefaultRhostsHostPrivateKeyFile,
-											  password,
-											  &invalid_passphrase, TRUE);
+					                          pvar->session_settings.
+					                          DefaultRhostsHostPrivateKeyFile,
+					                          password,
+					                          &invalid_passphrase, TRUE);
 				if (pvar->auth_state.cur_cred.key_pair == NULL) {
 					return;
 				} else {
@@ -881,7 +881,7 @@ static BOOL end_TIS_dlg(PTInstVar pvar, HWND dlg)
 }
 
 static BOOL CALLBACK TIS_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
-								  LPARAM lParam)
+                                  LPARAM lParam)
 {
 	PTInstVar pvar;
 	LOGFONT logfont;
@@ -960,12 +960,12 @@ void AUTH_do_cred_dialog(PTInstVar pvar)
 		}
 
 		if (!DialogBoxParam(hInst, dialog_template,
-							cur_active !=
-							NULL ? cur_active : pvar->NotificationWindow,
-							dlg_proc, (LPARAM) pvar) == -1) {
+		                    cur_active !=
+		                    NULL ? cur_active : pvar->NotificationWindow,
+		                    dlg_proc, (LPARAM) pvar) == -1) {
 			UTIL_get_lang_msg("MSG_CREATEWINDOW_AUTH_ERROR", pvar,
-							  "Unable to display authentication dialog box.\n"
-							  "Connection terminated.");
+			                  "Unable to display authentication dialog box.\n"
+			                  "Connection terminated.");
 			notify_fatal_error(pvar, pvar->ts->UIMsg);
 		}
 	}
@@ -1018,30 +1018,30 @@ static void init_default_auth_dlg(PTInstVar pvar, HWND dlg)
 	switch (pvar->settings.DefaultAuthMethod) {
 	case SSH_AUTH_RSA:
 		CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL,
-						 IDC_SSHUSERSA);
+		                 IDC_SSHUSERSA);
 		break;
 	case SSH_AUTH_RHOSTS:
 	case SSH_AUTH_RHOSTS_RSA:
 		CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL,
-						 IDC_SSHUSERHOSTS);
+		                 IDC_SSHUSERHOSTS);
 		break;
 	case SSH_AUTH_TIS:
 		CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL,
-						 IDC_SSHUSETIS);
+		                 IDC_SSHUSETIS);
 		break;
 	case SSH_AUTH_PASSWORD:
 	default:
 		CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL,
-						 IDC_SSHUSEPASSWORD);
+		                 IDC_SSHUSEPASSWORD);
 	}
 
 	SetDlgItemText(dlg, IDC_SSHUSERNAME, pvar->settings.DefaultUserName);
 	SetDlgItemText(dlg, IDC_RSAFILENAME,
-				   pvar->settings.DefaultRSAPrivateKeyFile);
+	               pvar->settings.DefaultRSAPrivateKeyFile);
 	SetDlgItemText(dlg, IDC_HOSTRSAFILENAME,
-				   pvar->settings.DefaultRhostsHostPrivateKeyFile);
+	               pvar->settings.DefaultRhostsHostPrivateKeyFile);
 	SetDlgItemText(dlg, IDC_LOCALUSERNAME,
-				   pvar->settings.DefaultRhostsLocalUserName);
+	               pvar->settings.DefaultRhostsLocalUserName);
 
 	// SSH2 keyboard-interactive method (2005.2.22 yutaka)
 	if (pvar->settings.ssh2_keyboard_interactive) {
@@ -1067,16 +1067,16 @@ static BOOL end_default_auth_dlg(PTInstVar pvar, HWND dlg)
 	}
 
 	GetDlgItemText(dlg, IDC_SSHUSERNAME, pvar->settings.DefaultUserName,
-				   sizeof(pvar->settings.DefaultUserName));
+	               sizeof(pvar->settings.DefaultUserName));
 	GetDlgItemText(dlg, IDC_RSAFILENAME,
-				   pvar->settings.DefaultRSAPrivateKeyFile,
-				   sizeof(pvar->settings.DefaultRSAPrivateKeyFile));
+	               pvar->settings.DefaultRSAPrivateKeyFile,
+	               sizeof(pvar->settings.DefaultRSAPrivateKeyFile));
 	GetDlgItemText(dlg, IDC_HOSTRSAFILENAME,
-				   pvar->settings.DefaultRhostsHostPrivateKeyFile,
-				   sizeof(pvar->settings.DefaultRhostsHostPrivateKeyFile));
+	               pvar->settings.DefaultRhostsHostPrivateKeyFile,
+	               sizeof(pvar->settings.DefaultRhostsHostPrivateKeyFile));
 	GetDlgItemText(dlg, IDC_LOCALUSERNAME,
-				   pvar->settings.DefaultRhostsLocalUserName,
-				   sizeof(pvar->settings.DefaultRhostsLocalUserName));
+	               pvar->settings.DefaultRhostsLocalUserName,
+	               sizeof(pvar->settings.DefaultRhostsLocalUserName));
 
 	// SSH2 keyboard-interactive method (2005.2.22 yutaka)
 	{
@@ -1211,11 +1211,11 @@ void AUTH_do_default_cred_dialog(PTInstVar pvar)
 	HWND cur_active = GetActiveWindow();
 
 	if (DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SSHAUTHSETUP),
-					   cur_active !=
-					   NULL ? cur_active : pvar->NotificationWindow,
-					   default_auth_dlg_proc, (LPARAM) pvar) == -1) {
+		               cur_active != NULL ? cur_active
+		                                  : pvar->NotificationWindow,
+		               default_auth_dlg_proc, (LPARAM) pvar) == -1) {
 		UTIL_get_lang_msg("MSG_CREATEWINDOW_AUTHSETUP_ERROR", pvar,
-						  "Unable to display authentication setup dialog box.");
+		                  "Unable to display authentication setup dialog box.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 	}
 }
@@ -1258,7 +1258,7 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 		if (SSHv1(pvar)) {
 			UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar, "User '%s', using %s");
 			_snprintf_s(dest, len, _TRUNCATE, pvar->ts->UIMsg, pvar->auth_state.user,
-					get_auth_method_name(pvar->auth_state.cur_cred.method));
+			            get_auth_method_name(pvar->auth_state.cur_cred.method));
 
 		} else { 
 			// SSH2:認証メソッドの判別 (2004.12.23 yutaka)
@@ -1274,7 +1274,7 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 				}
 				UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar, "User '%s', using %s");
 				_snprintf_s(dest, len, _TRUNCATE,
-					pvar->ts->UIMsg, pvar->auth_state.user, method);
+				            pvar->ts->UIMsg, pvar->auth_state.user, method);
 
 			} else {
 				if (pvar->auth_state.cur_cred.key_pair->RSA_key != NULL) {
@@ -1284,7 +1284,7 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 				}
 				UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar, "User '%s', using %s");
 				_snprintf_s(dest, len, _TRUNCATE,
-					pvar->ts->UIMsg, pvar->auth_state.user, method);
+				            pvar->ts->UIMsg, pvar->auth_state.user, method);
 			}
 
 		}
@@ -1292,7 +1292,7 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 	} else {
 		UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar, "User '%s', using %s");
 		_snprintf_s(dest, len, _TRUNCATE, pvar->ts->UIMsg, pvar->auth_state.user,
-				  get_auth_method_name(pvar->auth_state.failed_method));
+		            get_auth_method_name(pvar->auth_state.failed_method));
 	}
 
 	dest[len - 1] = 0;

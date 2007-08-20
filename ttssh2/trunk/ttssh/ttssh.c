@@ -25,28 +25,28 @@ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABI
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 #include <tchar.h>
 #include <windows.h>
 
-int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR cmdLine, int show) {
-  TCHAR buf[2048];
-  int i, filename_index = 0;
-  STARTUPINFO startup_info;
-  PROCESS_INFORMATION process_info;
+int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance,
+                   LPSTR cmdLine, int show) {
+	TCHAR buf[2048];
+	int i, filename_index = 0;
+	STARTUPINFO startup_info;
+	PROCESS_INFORMATION process_info;
 
-  SetEnvironmentVariable(_TEXT("TERATERM_EXTENSIONS"), _TEXT("1"));
+	SetEnvironmentVariable(_TEXT("TERATERM_EXTENSIONS"), _TEXT("1"));
 
-  GetModuleFileName(NULL, buf, sizeof(buf));
-  for (i = 0; buf[i] != 0; i++) {
-    if (buf[i] ==  _TEXT('\\') || buf[i] == _TEXT('/') || buf[i] == _TEXT(':')) {
-      filename_index = i + 1;
-    }
-  }
-  _tcsncpy(buf + filename_index, _TEXT("ttermpro.exe"), sizeof(buf) - filename_index);
+	GetModuleFileName(NULL, buf, sizeof(buf));
+	for (i = 0; buf[i] != 0; i++) {
+		if (buf[i] ==  _TEXT('\\') || buf[i] == _TEXT('/') || buf[i] == _TEXT(':')) {
+			filename_index = i + 1;
+		}
+	}
+	_tcsncpy(buf + filename_index, _TEXT("ttermpro.exe"), sizeof(buf) - filename_index);
 
-  GetStartupInfo(&startup_info);
-  CreateProcess(buf, GetCommandLine(), NULL, NULL, FALSE, 0, NULL, NULL,
-    &startup_info, &process_info);
-  return 0;
+	GetStartupInfo(&startup_info);
+	CreateProcess(buf, GetCommandLine(), NULL, NULL, FALSE, 0, NULL, NULL,
+	&startup_info, &process_info);
+	return 0;
 }

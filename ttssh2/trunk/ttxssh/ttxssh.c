@@ -143,12 +143,12 @@ static void uninit_TTSSH(PTInstVar pvar)
 
 	if (pvar->OldLargeIcon != NULL) {
 		PostMessage(pvar->NotificationWindow, WM_SETICON, ICON_BIG,
-					(LPARAM) pvar->OldLargeIcon);
+		            (LPARAM) pvar->OldLargeIcon);
 		pvar->OldLargeIcon = NULL;
 	}
 	if (pvar->OldSmallIcon != NULL) {
 		PostMessage(pvar->NotificationWindow, WM_SETICON, ICON_SMALL,
-					(LPARAM) pvar->OldSmallIcon);
+		            (LPARAM) pvar->OldSmallIcon);
 		pvar->OldSmallIcon = NULL;
 	}
 
@@ -236,17 +236,18 @@ static BOOL read_BOOL_option(PCHAR fileName, char FAR * keyName, BOOL def)
 
 	buf[0] = 0;
 	GetPrivateProfileString("TTSSH", keyName, "", buf, sizeof(buf),
-							fileName);
+	                        fileName);
 	if (buf[0] == 0) {
 		return def;
 	} else {
 		return atoi(buf) != 0 ||
-			_stricmp(buf, "yes") == 0 || _stricmp(buf, "y") == 0;
+		       _stricmp(buf, "yes") == 0 ||
+		       _stricmp(buf, "y") == 0;
 	}
 }
 
 static void read_string_option(PCHAR fileName, char FAR * keyName,
-							   char FAR * def, char FAR * buf, int bufSize)
+                               char FAR * def, char FAR * buf, int bufSize)
 {
 
 	buf[0] = 0;
@@ -259,13 +260,13 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 	TS_SSH FAR *settings = pvar->ts_SSH;
 
 #define READ_STD_STRING_OPTION(name) \
-  read_string_option(fileName, #name, "", settings->name, sizeof(settings->name))
+	read_string_option(fileName, #name, "", settings->name, sizeof(settings->name))
 
 	settings->Enabled = read_BOOL_option(fileName, "Enabled", FALSE);
 
 	buf[0] = 0;
 	GetPrivateProfileString("TTSSH", "Compression", "", buf, sizeof(buf),
-							fileName);
+	                        fileName);
 	settings->CompressionLevel = atoi(buf);
 	if (settings->CompressionLevel < 0 || settings->CompressionLevel > 9) {
 		settings->CompressionLevel = 0;
@@ -281,17 +282,17 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 	normalize_cipher_order(settings->CipherOrder);
 
 	read_string_option(fileName, "KnownHostsFiles", "ssh_known_hosts",
-					   settings->KnownHostsFiles,
-					   sizeof(settings->KnownHostsFiles));
+	                   settings->KnownHostsFiles,
+	                   sizeof(settings->KnownHostsFiles));
 
 	buf[0] = 0;
 	GetPrivateProfileString("TTSSH", "DefaultAuthMethod", "", buf,
-							sizeof(buf), fileName);
+	                        sizeof(buf), fileName);
 	settings->DefaultAuthMethod = atoi(buf);
 	if (settings->DefaultAuthMethod != SSH_AUTH_PASSWORD
-		&& settings->DefaultAuthMethod != SSH_AUTH_RSA
-		&& settings->DefaultAuthMethod != SSH_AUTH_TIS  // add (2005.3.12 yutaka)
-		&& settings->DefaultAuthMethod != SSH_AUTH_RHOSTS) {
+	 && settings->DefaultAuthMethod != SSH_AUTH_RSA
+	 && settings->DefaultAuthMethod != SSH_AUTH_TIS  // add (2005.3.12 yutaka)
+	 && settings->DefaultAuthMethod != SSH_AUTH_RHOSTS) {
 		/* this default can never be SSH_AUTH_RHOSTS_RSA because that is not a
 		   selection in the dialog box; SSH_AUTH_RHOSTS_RSA is automatically chosen
 		   when the dialog box has rhosts selected and an host private key file
@@ -301,12 +302,12 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 
 	buf[0] = 0;
 	GetPrivateProfileString("TTSSH", "LogLevel", "", buf, sizeof(buf),
-							fileName);
+	                        fileName);
 	settings->LogLevel = atoi(buf);
 
 	buf[0] = 0;
 	GetPrivateProfileString("TTSSH", "WriteBufferSize", "", buf,
-							sizeof(buf), fileName);
+	                        sizeof(buf), fileName);
 	settings->WriteBufferSize = atoi(buf);
 	if (settings->WriteBufferSize <= 0) {
 		settings->WriteBufferSize = 2 * 1024 * 1024;
@@ -340,36 +341,36 @@ static void write_ssh_options(PTInstVar pvar, PCHAR fileName,
 	char buf[1024];
 
 	WritePrivateProfileString("TTSSH", "Enabled",
-							  settings->Enabled ? "1" : "0", fileName);
+	                          settings->Enabled ? "1" : "0", fileName);
 
 	_itoa(settings->CompressionLevel, buf, 10);
 	WritePrivateProfileString("TTSSH", "Compression", buf, fileName);
 
 	WritePrivateProfileString("TTSSH", "DefaultUserName",
-							  settings->DefaultUserName, fileName);
+	                          settings->DefaultUserName, fileName);
 
 	if (copy_forward) {
 		WritePrivateProfileString("TTSSH", "DefaultForwarding",
-								  settings->DefaultForwarding, fileName);
+		                          settings->DefaultForwarding, fileName);
 	}
 
 	WritePrivateProfileString("TTSSH", "CipherOrder",
-							  settings->CipherOrder, fileName);
+	                          settings->CipherOrder, fileName);
 
 	WritePrivateProfileString("TTSSH", "KnownHostsFiles",
-							  settings->KnownHostsFiles, fileName);
+	                          settings->KnownHostsFiles, fileName);
 
 	WritePrivateProfileString("TTSSH", "DefaultRhostsLocalUserName",
-							  settings->DefaultRhostsLocalUserName,
-							  fileName);
+	                          settings->DefaultRhostsLocalUserName,
+	                          fileName);
 
 	WritePrivateProfileString("TTSSH", "DefaultRhostsHostPrivateKeyFile",
-							  settings->DefaultRhostsHostPrivateKeyFile,
-							  fileName);
+	                          settings->DefaultRhostsHostPrivateKeyFile,
+	                          fileName);
 
 	WritePrivateProfileString("TTSSH", "DefaultRSAPrivateKeyFile",
-							  settings->DefaultRSAPrivateKeyFile,
-							  fileName);
+	                          settings->DefaultRSAPrivateKeyFile,
+	                          fileName);
 
 	_itoa(settings->DefaultAuthMethod, buf, 10);
 	WritePrivateProfileString("TTSSH", "DefaultAuthMethod", buf, fileName);
@@ -381,29 +382,28 @@ static void write_ssh_options(PTInstVar pvar, PCHAR fileName,
 	WritePrivateProfileString("TTSSH", "WriteBufferSize", buf, fileName);
 
 	WritePrivateProfileString("TTSSH", "LocalForwardingIdentityCheck",
-							  settings->
-							  LocalForwardingIdentityCheck ? "1" : "0",
-							  fileName);
+	                          settings->LocalForwardingIdentityCheck ? "1" : "0",
+	                          fileName);
 
 	// SSH protocol version (2004.10.11 yutaka)
 	WritePrivateProfileString("TTSSH", "ProtocolVersion",
-		settings->ssh_protocol_version==2 ? "2" : "1",
-		fileName);
+	    settings->ssh_protocol_version==2 ? "2" : "1",
+	    fileName);
 
 	// SSH heartbeat time(second) (2004.12.11 yutaka)
 	_snprintf_s(buf, sizeof(buf), _TRUNCATE,
-		"%d", settings->ssh_heartbeat_overtime);
+	            "%d", settings->ssh_heartbeat_overtime);
 	WritePrivateProfileString("TTSSH", "HeartBeat", buf, fileName);
 
 	// SSH2 keyboard-interactive (2005.1.23 yutaka)
 	WritePrivateProfileString("TTSSH", "KeyboardInteractive", 
-		settings->ssh2_keyboard_interactive ? "1" : "0", 
-		fileName);
+	    settings->ssh2_keyboard_interactive ? "1" : "0", 
+	    fileName);
 
 	// Remember password (2006.8.5 yutaka)
 	WritePrivateProfileString("TTSSH", "RememberPassword", 
-		settings->remember_password ? "1" : "0", 
-		fileName);
+	    settings->remember_password ? "1" : "0", 
+	    fileName);
 }
 
 
@@ -456,7 +456,7 @@ static unsigned short find_local_port(PTInstVar pvar)
 			}
 
 			if (bind(connecter, res->ai_addr, res->ai_addrlen) !=
-				SOCKET_ERROR) {
+			    SOCKET_ERROR) {
 				return port;
 				freeaddrinfo(res0);
 				closesocket(connecter);
@@ -486,9 +486,9 @@ static unsigned short find_local_port(PTInstVar pvar)
 		}
 
 		if (bind
-			(connecter, (struct sockaddr FAR *) &connecter_addr,
-			 sizeof(connecter_addr)) != SOCKET_ERROR) {
-			closesocket(connecter);
+		    (connecter, (struct sockaddr FAR *) &connecter_addr,
+		     sizeof(connecter_addr)) != SOCKET_ERROR) {
+		    closesocket(connecter);
 			return connecter_addr.sin_port;
 		} else if (WSAGetLastError() != WSAEADDRINUSE) {
 			closesocket(connecter);
@@ -503,8 +503,8 @@ static unsigned short find_local_port(PTInstVar pvar)
 }
 
 static int PASCAL FAR TTXconnect(SOCKET s,
-								 const struct sockaddr FAR * name,
-								 int namelen)
+                                 const struct sockaddr FAR * name,
+                                 int namelen)
 {
 	GET_VAR();
 
@@ -530,9 +530,9 @@ static int PASCAL FAR TTXconnect(SOCKET s,
 #if 0							/* symbol "in6addr_any" is not included in wsock32.lib */
 			/* if wsock32.lib will be linked, we can't refer "in6addr_any" */
 			((struct sockaddr_in6 FAR *) &ss)->sin6_addr = in6addr_any;
-#eles
+#else
 			memset(&((struct sockaddr_in6 FAR *) &ss)->sin6_addr, 0,
-				   sizeof(struct in_addr6));
+			       sizeof(struct in_addr6));
 #endif							/* 0 */
 			((struct sockaddr_in6 FAR *) &ss)->sin6_port =
 				htons(find_local_port(pvar));
@@ -563,7 +563,7 @@ static int PASCAL FAR TTXconnect(SOCKET s,
 }
 
 static int PASCAL FAR TTXWSAAsyncSelect(SOCKET s, HWND hWnd, u_int wMsg,
-										long lEvent)
+                                        long lEvent)
 {
 	GET_VAR();
 
@@ -598,7 +598,7 @@ static int PASCAL FAR TTXrecv(SOCKET s, char FAR * buf, int len, int flags)
 }
 
 static int PASCAL FAR TTXsend(SOCKET s, char const FAR * buf, int len,
-							  int flags)
+                              int flags)
 {
 	GET_VAR();
 
@@ -618,11 +618,11 @@ void notify_established_secure_connection(PTInstVar pvar)
 	// 16x16 のアイコンを明示的に取得するようにした (2006.8.9 maya)
 	if (SecureLargeIcon == NULL) {
 		SecureLargeIcon = LoadImage(hInst, MAKEINTRESOURCE(IDI_SECURETT),
-									IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR);
+		                            IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR);
 	}
 	if (SecureSmallIcon == NULL) {
 		SecureSmallIcon = LoadImage(hInst, MAKEINTRESOURCE(IDI_SECURETT),
-									IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
+		                            IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	}
 
 	if (SecureLargeIcon != NULL && SecureSmallIcon != NULL) {
@@ -631,16 +631,16 @@ void notify_established_secure_connection(PTInstVar pvar)
 			(HICON) GetClassLong(pvar->NotificationWindow, GCL_HICON);
 		pvar->OldSmallIcon =
 			(HICON) SendMessage(pvar->NotificationWindow, WM_GETICON,
-								ICON_SMALL, 0);
+			                    ICON_SMALL, 0);
 
 		PostMessage(pvar->NotificationWindow, WM_SETICON, ICON_BIG,
-					(LPARAM) SecureLargeIcon);
+		            (LPARAM) SecureLargeIcon);
 		PostMessage(pvar->NotificationWindow, WM_SETICON, ICON_SMALL,
-					(LPARAM) SecureSmallIcon);
+		            (LPARAM) SecureSmallIcon);
 	}
 
 	notify_verbose_message(pvar, "Entering secure mode",
-						   LOG_LEVEL_VERBOSE);
+	                       LOG_LEVEL_VERBOSE);
 }
 
 void notify_closed_connection(PTInstVar pvar)
@@ -650,7 +650,7 @@ void notify_closed_connection(PTInstVar pvar)
 	HOSTS_notify_disconnecting(pvar);
 
 	PostMessage(pvar->NotificationWindow, WM_USER_COMMNOTIFY,
-				pvar->socket, MAKELPARAM(FD_CLOSE, 0));
+	            pvar->socket, MAKELPARAM(FD_CLOSE, 0));
 
 }
 
@@ -677,13 +677,13 @@ void notify_nonfatal_error(PTInstVar pvar, char FAR * msg)
 		// メッセージボックスを出現させる。(2006.6.11 yutaka)
 		if (pvar->NotificationWindow == NULL) {
 			UTIL_get_lang_msg("MSG_ERROR_NONFAITAL", pvar,
-							  "Tera Term: not fatal error");
+			                  "Tera Term: not fatal error");
 			MessageBox(NULL, msg, pvar->ts->UIMsg, MB_OK|MB_ICONINFORMATION);
 			msg[0] = '\0';
 
 		} else {
 			PostMessage(pvar->NotificationWindow, WM_COMMAND,
-						ID_SSHASYNCMESSAGEBOX, 0);
+			            ID_SSHASYNCMESSAGEBOX, 0);
 		}
 	}
 	if (msg[0] != 0) {
@@ -707,8 +707,8 @@ void notify_fatal_error(PTInstVar pvar, char FAR * msg)
 		HOSTS_notify_disconnecting(pvar);
 
 		PostMessage(pvar->NotificationWindow, WM_USER_COMMNOTIFY,
-					pvar->socket, MAKELPARAM(FD_CLOSE,
-											 (pvar->PWSAGetLastError) ()));
+		            pvar->socket, MAKELPARAM(FD_CLOSE,
+		                                     (pvar->PWSAGetLastError) ()));
 	}
 }
 
@@ -720,7 +720,7 @@ void notify_verbose_message(PTInstVar pvar, char FAR * msg, int level)
 
 		get_teraterm_dir_relative_name(buf, NUM_ELEM(buf), "TTSSH.LOG");
 		file = _open(buf, _O_RDWR | _O_APPEND | _O_CREAT | _O_TEXT,
-					 _S_IREAD | _S_IWRITE);
+		             _S_IREAD | _S_IWRITE);
 
 		if (file >= 0) {
 			_write(file, msg, strlen(msg));
@@ -786,7 +786,7 @@ static void PASCAL FAR TTXCloseTCP(TTXSockHooks FAR * hooks)
 		pvar->socket = INVALID_SOCKET;
 
 		notify_verbose_message(pvar, "Terminating SSH session...",
-							   LOG_LEVEL_VERBOSE);
+		                       LOG_LEVEL_VERBOSE);
 
 		*hooks->Precv = pvar->Precv;
 		*hooks->Psend = pvar->Psend;
@@ -806,7 +806,7 @@ static void enable_dlg_items(HWND dlg, int from, int to, BOOL enabled)
 }
 
 static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
-								LPARAM lParam)
+                                LPARAM lParam)
 {
 	static char *ssh_version[] = {"SSH1", "SSH2", NULL};
 	PGetHNRec GetHNRec;
@@ -884,41 +884,41 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		do {
 			_snprintf_s(&EntName[4], sizeof(EntName)-4, _TRUNCATE, "%d", i);
 			GetPrivateProfileString("Hosts", EntName, "",
-									TempHost, sizeof(TempHost),
-									GetHNRec->SetupFN);
+			                        TempHost, sizeof(TempHost),
+			                        GetHNRec->SetupFN);
 			if (strlen(TempHost) > 0)
 				SendDlgItemMessage(dlg, IDC_HOSTNAME, CB_ADDSTRING,
-								   0, (LPARAM) TempHost);
+				                   0, (LPARAM) TempHost);
 			i++;
 		} while ((i <= 99) && (strlen(TempHost) > 0));
 
 		SendDlgItemMessage(dlg, IDC_HOSTNAME, EM_LIMITTEXT,
-						   HostNameMaxLength - 1, 0);
+		                   HostNameMaxLength - 1, 0);
 
 		SendDlgItemMessage(dlg, IDC_HOSTNAME, CB_SETCURSEL, 0, 0);
 
 		CheckRadioButton(dlg, IDC_HOSTTELNET, IDC_HOSTOTHER,
-						 pvar->settings.Enabled ? IDC_HOSTSSH : GetHNRec->
-						 Telnet ? IDC_HOSTTELNET : IDC_HOSTOTHER);
+		                 pvar->settings.Enabled ? IDC_HOSTSSH : GetHNRec->
+		                 Telnet ? IDC_HOSTTELNET : IDC_HOSTOTHER);
 		SendDlgItemMessage(dlg, IDC_HOSTTCPPORT, EM_LIMITTEXT, 5, 0);
 		SetDlgItemInt(dlg, IDC_HOSTTCPPORT, GetHNRec->TCPPort, FALSE);
 #ifndef NO_INET6
 		for (i = 0; ProtocolFamilyList[i]; ++i) {
 			SendDlgItemMessage(dlg, IDC_HOSTTCPPROTOCOL, CB_ADDSTRING,
-							   0, (LPARAM) ProtocolFamilyList[i]);
+			                   0, (LPARAM) ProtocolFamilyList[i]);
 		}
 		SendDlgItemMessage(dlg, IDC_HOSTTCPPROTOCOL, EM_LIMITTEXT,
-						   ProtocolFamilyMaxLength - 1, 0);
+		                   ProtocolFamilyMaxLength - 1, 0);
 		SendDlgItemMessage(dlg, IDC_HOSTTCPPROTOCOL, CB_SETCURSEL, 0, 0);
 #endif							/* NO_INET6 */
 
 		/////// SSH version
 		for (i = 0; ssh_version[i]; ++i) {
 			SendDlgItemMessage(dlg, IDC_SSH_VERSION, CB_ADDSTRING,
-							   0, (LPARAM) ssh_version[i]);
+			                   0, (LPARAM) ssh_version[i]);
 		}
 		SendDlgItemMessage(dlg, IDC_SSH_VERSION, EM_LIMITTEXT,
-						   NUM_ELEM(ssh_version) - 1, 0);
+		                   NUM_ELEM(ssh_version) - 1, 0);
 
 		if (pvar->settings.ssh_protocol_version == 1) {
 			SendDlgItemMessage(dlg, IDC_SSH_VERSION, CB_SETCURSEL, 0, 0); // SSH1
@@ -945,7 +945,7 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 					strncat_s(EntName, sizeof(EntName), ComPortDesc[i], _TRUNCATE);
 				}
 				SendDlgItemMessage(dlg, IDC_HOSTCOM, CB_ADDSTRING,
-								   0, (LPARAM)EntName);
+				                   0, (LPARAM)EntName);
 				j++;
 				if (GetHNRec->ComPort == ComPortTable[i])
 					w = j;
@@ -955,7 +955,7 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 			for (i = 1; i <= GetHNRec->MaxComPort; i++) {
 				_snprintf_s(&EntName[3], sizeof(EntName)-3, _TRUNCATE, "%d", i);
 				SendDlgItemMessage(dlg, IDC_HOSTCOM, CB_ADDSTRING,
-								   0, (LPARAM) EntName);
+				                   0, (LPARAM) EntName);
 				j++;
 				if (GetHNRec->ComPort == i)
 					w = j;
@@ -970,7 +970,7 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		}
 
 		CheckRadioButton(dlg, IDC_HOSTTCPIP, IDC_HOSTSERIAL,
-						 IDC_HOSTTCPIP + GetHNRec->PortType - 1);
+		                 IDC_HOSTTCPIP + GetHNRec->PortType - 1);
 
 		if (GetHNRec->PortType == IdTCPIP) {
 			enable_dlg_items(dlg, IDC_HOSTCOMLABEL, IDC_HOSTCOM, FALSE);
@@ -981,9 +981,9 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 #ifndef NO_INET6
 		else {
 			enable_dlg_items(dlg, IDC_HOSTNAMELABEL, IDC_HOSTTCPPORT,
-							 FALSE);
+			                 FALSE);
 			enable_dlg_items(dlg, IDC_HOSTTCPPROTOCOLLABEL,
-							 IDC_HOSTTCPPROTOCOL, FALSE);
+			                 IDC_HOSTTCPPROTOCOL, FALSE);
 
 			enable_dlg_items(dlg, IDC_SSH_VERSION, IDC_SSH_VERSION, FALSE); // disabled
 			enable_dlg_items(dlg, IDC_SSH_VERSION_LABEL, IDC_SSH_VERSION_LABEL, FALSE); // disabled (2004.11.23 yutaka)
@@ -1051,9 +1051,9 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 						GetHNRec->TCPPort = i;
 					} else {
 						UTIL_get_lang_msg("MSG_TCPPORT_NAN_ERROR", pvar,
-										  "The TCP port must be a number.");
+						                  "The TCP port must be a number.");
 						MessageBox(dlg, pvar->ts->UIMsg,
-								   "Teraterm", MB_OK | MB_ICONEXCLAMATION);
+						           "Teraterm", MB_OK | MB_ICONEXCLAMATION);
 						return TRUE;
 					}
 #ifndef NO_INET6
@@ -1062,12 +1062,12 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
  ((strcmp((str), "IPv4") == 0) ? AF_INET : AF_UNSPEC))
 					memset(afstr, 0, sizeof(afstr));
 					GetDlgItemText(dlg, IDC_HOSTTCPPROTOCOL, afstr,
-								   sizeof(afstr));
+					               sizeof(afstr));
 					GetHNRec->ProtocolFamily = getaf(afstr);
 #endif							/* NO_INET6 */
 					GetHNRec->PortType = IdTCPIP;
 					GetDlgItemText(dlg, IDC_HOSTNAME, GetHNRec->HostName,
-								   HostNameMaxLength);
+					               HostNameMaxLength);
 					GetHNRec->Telnet = FALSE;
 					pvar->hostdlg_activated = TRUE;
 					pvar->hostdlg_Enabled = FALSE;
@@ -1098,7 +1098,7 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 					GetHNRec->HostName[0] = 0;
 					memset(EntName, 0, sizeof(EntName));
 					GetDlgItemText(dlg, IDC_HOSTCOM, EntName,
-								   sizeof(EntName) - 1);
+					               sizeof(EntName) - 1);
 					if (strncmp(EntName, "COM", 3) == 0 && EntName[3] != '\0') {
 #if 0
 						GetHNRec->ComPort = (BYTE) (EntName[3]) - 0x30;
@@ -1135,10 +1135,10 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 
 		case IDC_HOSTTCPIP:
 			enable_dlg_items(dlg, IDC_HOSTNAMELABEL, IDC_HOSTTCPPORT,
-							 TRUE);
+			                 TRUE);
 #ifndef NO_INET6
 			enable_dlg_items(dlg, IDC_HOSTTCPPROTOCOLLABEL,
-							 IDC_HOSTTCPPROTOCOL, TRUE);
+			                 IDC_HOSTTCPPROTOCOL, TRUE);
 #endif							/* NO_INET6 */
 			enable_dlg_items(dlg, IDC_HOSTCOMLABEL, IDC_HOSTCOM, FALSE);
 
@@ -1156,10 +1156,10 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		case IDC_HOSTSERIAL:
 			enable_dlg_items(dlg, IDC_HOSTCOMLABEL, IDC_HOSTCOM, TRUE);
 			enable_dlg_items(dlg, IDC_HOSTNAMELABEL, IDC_HOSTTCPPORT,
-							 FALSE);
+			                 FALSE);
 #ifndef NO_INET6
 			enable_dlg_items(dlg, IDC_HOSTTCPPROTOCOLLABEL,
-							 IDC_HOSTTCPPROTOCOL, FALSE);
+			                 IDC_HOSTTCPPROTOCOL, FALSE);
 #endif							/* NO_INET6 */
 			enable_dlg_items(dlg, IDC_SSH_VERSION, IDC_SSH_VERSION, FALSE); // disabled
 			enable_dlg_items(dlg, IDC_SSH_VERSION_LABEL, IDC_SSH_VERSION_LABEL, FALSE); // disabled (2004.11.23 yutaka)
@@ -1170,7 +1170,7 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 
 		case IDC_HOSTSSH:
 			enable_dlg_items(dlg, IDC_SSH_VERSION,
-							 IDC_SSH_VERSION, TRUE);
+			                 IDC_SSH_VERSION, TRUE);
 			goto hostssh_enabled;
 
 		case IDC_HOSTTELNET:
@@ -1183,7 +1183,7 @@ hostssh_enabled:
 			if (IsDlgButtonChecked(dlg, IDC_HOSTTELNET)) {
 				if (GetHNRec != NULL)
 					SetDlgItemInt(dlg, IDC_HOSTTCPPORT, GetHNRec->TelPort,
-								  FALSE);
+					              FALSE);
 			} else if (IsDlgButtonChecked(dlg, IDC_HOSTSSH)) {
 				SetDlgItemInt(dlg, IDC_HOSTTCPPORT, 22, FALSE);
 			}
@@ -1199,7 +1199,7 @@ hostssh_enabled:
 static BOOL FAR PASCAL TTXGetHostName(HWND parent, PGetHNRec rec)
 {
 	return (BOOL) DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_HOSTDLG),
-								 parent, TTXHostDlg, (LONG) rec);
+	                             parent, TTXHostDlg, (LONG) rec);
 }
 
 static void PASCAL FAR TTXGetUIHooks(TTXUIHooks FAR * hooks)
@@ -1232,7 +1232,7 @@ static void FAR PASCAL TTXWriteINIFile(PCHAR fileName, PTTSet ts)
 }
 
 static void read_ssh_options_from_user_file(PTInstVar pvar,
-											char FAR * user_file_name)
+                                            char FAR * user_file_name)
 {
 	if (user_file_name[0] == '.') {
 		read_ssh_options(pvar, user_file_name);
@@ -1279,27 +1279,27 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 		if (MATCH_STR(option + 1, "ssh") == 0) {
 			if (option[4] == 0) {
 				pvar->settings.Enabled = 1;
-			} else if (MATCH_STR(option + 4, "-L") == 0
-					   || MATCH_STR(option + 4, "-R") == 0
-					   || _stricmp(option + 4, "-X") == 0) {
+			} else if (MATCH_STR(option + 4, "-L") == 0 ||
+			           MATCH_STR(option + 4, "-R") == 0 ||
+			           _stricmp(option + 4, "-X") == 0) {
 				if (pvar->settings.DefaultForwarding[0] == 0) {
 					strncpy_s(pvar->settings.DefaultForwarding,
-						sizeof(pvar->settings.DefaultForwarding),
-						option + 5, _TRUNCATE);
+					          sizeof(pvar->settings.DefaultForwarding),
+					          option + 5, _TRUNCATE);
 				} else {
 					strncat_s(pvar->settings.DefaultForwarding,
-						sizeof(pvar->settings.DefaultForwarding),
-						";", _TRUNCATE);
+					          sizeof(pvar->settings.DefaultForwarding),
+					          ";", _TRUNCATE);
 					strncat_s(pvar->settings.DefaultForwarding,
-						sizeof(pvar->settings.DefaultForwarding),
-						option + 5, _TRUNCATE);
+					          sizeof(pvar->settings.DefaultForwarding),
+					          option + 5, _TRUNCATE);
 				}
 			} else if (MATCH_STR(option + 4, "-f=") == 0) {
 				read_ssh_options_from_user_file(pvar, option + 7);
 			} else if (MATCH_STR(option + 4, "-v") == 0) {
 				pvar->settings.LogLevel = LOG_LEVEL_VERBOSE;
-			} else if (_stricmp(option + 4, "-autologin") == 0
-					   || _stricmp(option + 4, "-autologon") == 0) {
+			} else if (_stricmp(option + 4, "-autologin") == 0 ||
+			           _stricmp(option + 4, "-autologon") == 0) {
 				pvar->settings.TryDefaultAuth = TRUE;
 
 			} else if (MATCH_STR(option + 4, "-consume=") == 0) {
@@ -1316,7 +1316,7 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 				char buf[1024];
 
 				UTIL_get_lang_msg("MSG_UNKNOWN_OPTION_ERROR", pvar,
-								  "Unrecognized command-line option: %s");
+				                  "Unrecognized command-line option: %s");
 				_snprintf_s(buf, sizeof(buf), _TRUNCATE, pvar->ts->UIMsg, option);
 
 				MessageBox(NULL, buf, "TTSSH", MB_OK | MB_ICONEXCLAMATION);
@@ -1413,7 +1413,7 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 }
 
 static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
-									 PCHAR DDETopic)
+                                     PCHAR DDETopic)
 {
 	// スペースを含むファイル名を認識するように修正 (2006.10.7 maya)
 	int i;
@@ -1429,7 +1429,7 @@ static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
 
 	for (i = 0; param[i] != 0; i++) {
 		if (inQuotes ? param[i] == '"'
-					 : (param[i] == ' ' || param[i] == '\t')) {
+		             : (param[i] == ' ' || param[i] == '\t')) {
 			if (option != NULL) {
 				char ch = param[i];
 				PCHAR Equal;
@@ -1444,8 +1444,7 @@ static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
 					strncat_s(buf, buf_len, option, _TRUNCATE);
 					option[Equal - option + 1] = c;
 					strncat_s(buf, buf_len, Equal + 2, _TRUNCATE);
-					if (parse_option
-						(pvar, *buf == '"' ? buf + 1 : buf)) {
+					if (parse_option(pvar, *buf == '"' ? buf + 1 : buf)) {
 						memset(option, ' ', i + 1 - (option - param));
 					} else {
 						param[i] = ch;
@@ -1453,8 +1452,7 @@ static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
 					free(buf);
 				}
 				else {
-					if (parse_option
-						(pvar, *option == '"' ? option + 1 : option)) {
+					if (parse_option(pvar, *option == '"' ? option + 1 : option)) {
 						memset(option, ' ', i + 1 - (option - param));
 					} else {
 						param[i] = ch;
@@ -1479,10 +1477,10 @@ static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
 				continue;
 			}
 			if ((option[0] == '-' || option[0] == '/') &&
-				(MATCH_STR(option + 1, "ssh-f=") == 0 ||
-				 MATCH_STR(option + 1, "ssh-consume=") == 0 ||
-				 MATCH_STR_I(option + 1, "f=") == 0 ||
-				 MATCH_STR(option + 1, "keyfile=") == 0)) {
+			    (MATCH_STR(option + 1, "ssh-f=") == 0 ||
+			     MATCH_STR(option + 1, "ssh-consume=") == 0 ||
+			     MATCH_STR_I(option + 1, "f=") == 0 ||
+			     MATCH_STR(option + 1, "keyfile=") == 0)) {
 				if (param[i] == '"') {
 					inQuotes = TRUE;
 				}
@@ -1501,8 +1499,7 @@ static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
 			strncat_s(buf, buf_len, option, _TRUNCATE);
 			option[Equal - option + 1] = c;
 			strncat_s(buf, buf_len, Equal + 2, _TRUNCATE);
-			if (parse_option
-				(pvar, *buf == '"' ? buf + 1 : buf)) {
+			if (parse_option(pvar, *buf == '"' ? buf + 1 : buf)) {
 				memset(option, ' ', i + 1 - (option - param));
 			}
 			free(buf);
@@ -1541,7 +1538,7 @@ static void PASCAL FAR TTXSetWinSize(int rows, int cols)
 }
 
 static void insertMenuBeforeItem(HMENU menu, WORD beforeItemID, WORD flags,
-								 WORD newItemID, char FAR * text)
+                                 WORD newItemID, char FAR * text)
 {
 	int i, j;
 
@@ -1550,8 +1547,7 @@ static void insertMenuBeforeItem(HMENU menu, WORD beforeItemID, WORD flags,
 
 		for (j = GetMenuItemCount(submenu) - 1; j >= 0; j--) {
 			if (GetMenuItemID(submenu, j) == beforeItemID) {
-				InsertMenu(submenu, j, MF_BYPOSITION | flags, newItemID,
-						   text);
+				InsertMenu(submenu, j, MF_BYPOSITION | flags, newItemID, text);
 				return;
 			}
 		}
@@ -1582,10 +1578,10 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu)
 static void append_about_text(HWND dlg, char FAR * prefix, char FAR * msg)
 {
 	SendDlgItemMessage(dlg, IDC_ABOUTTEXT, EM_REPLACESEL, 0,
-					   (LPARAM) prefix);
+	                   (LPARAM) prefix);
 	SendDlgItemMessage(dlg, IDC_ABOUTTEXT, EM_REPLACESEL, 0, (LPARAM) msg);
 	SendDlgItemMessage(dlg, IDC_ABOUTTEXT, EM_REPLACESEL, 0,
-					   (LPARAM) (char FAR *) "\r\n");
+	                   (LPARAM) (char FAR *) "\r\n");
 }
 
 // 実行ファイルからバージョン情報を得る (2005.2.28 yutaka)
@@ -1623,8 +1619,8 @@ void get_file_version(char *exefile, int *major, int *minor, int *release, int *
 
 	for (i = 0 ; i < (int)(unLen / sizeof(LANGANDCODEPAGE)) ; i++) {
 		_snprintf_s(fmt, sizeof(fmt), _TRUNCATE,
-			"\\StringFileInfo\\%04x%04x\\FileVersion", 
-			lplgcode[i].wLanguage, lplgcode[i].wCodePage);
+		            "\\StringFileInfo\\%04x%04x\\FileVersion", 
+		            lplgcode[i].wLanguage, lplgcode[i].wCodePage);
 		VerQueryValue(buf, fmt, &pbuf, &unLen);
 		if (unLen > 0) { // get success
 			int n, a, b, c, d;
@@ -1776,7 +1772,7 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 }
 
 static BOOL CALLBACK TTXAboutDlg(HWND dlg, UINT msg, WPARAM wParam,
-								 LPARAM lParam)
+                                 LPARAM lParam)
 {
 	LOGFONT logfont;
 	HFONT font;
@@ -1829,7 +1825,7 @@ static char FAR *get_cipher_name(int cipher)
 	switch (cipher) {
 	case SSH_CIPHER_NONE:
 		UTIL_get_lang_msg("DLG_SSHSETUP_CIPHER_BORDER", pvar,
-						  "<ciphers below this line are disabled>");
+		                  "<ciphers below this line are disabled>");
 		return pvar->ts->UIMsg;
 	case SSH_CIPHER_RC4:
 		return "RC4";
@@ -1861,10 +1857,10 @@ static void set_move_button_status(HWND dlg)
 	int curPos = (int) SendMessage(cipherControl, LB_GETCURSEL, 0, 0);
 	int maxPos = (int) SendMessage(cipherControl, LB_GETCOUNT, 0, 0) - 1;
 
-	EnableWindow(GetDlgItem(dlg, IDC_SSHMOVECIPHERUP), curPos > 0
-				 && curPos <= maxPos);
-	EnableWindow(GetDlgItem(dlg, IDC_SSHMOVECIPHERDOWN), curPos >= 0
-				 && curPos < maxPos);
+	EnableWindow(GetDlgItem(dlg, IDC_SSHMOVECIPHERUP),
+	             curPos > 0 && curPos <= maxPos);
+	EnableWindow(GetDlgItem(dlg, IDC_SSHMOVECIPHERDOWN),
+	             curPos >= 0 && curPos < maxPos);
 }
 
 static void init_setup_dlg(PTInstVar pvar, HWND dlg)
@@ -1923,7 +1919,7 @@ static void init_setup_dlg(PTInstVar pvar, HWND dlg)
 	
 	SendMessage(compressionControl, TBM_SETRANGE, TRUE, MAKELONG(0, 9));
 	SendMessage(compressionControl, TBM_SETPOS, TRUE,
-				pvar->settings.CompressionLevel);
+	            pvar->settings.CompressionLevel);
 
 	normalize_cipher_order(pvar->settings.CipherOrder);
 
@@ -1945,34 +1941,34 @@ static void init_setup_dlg(PTInstVar pvar, HWND dlg)
 	if (ch != 0) {
 		pvar->settings.KnownHostsFiles[i] = 0;
 		SetDlgItemText(dlg, IDC_READWRITEFILENAME,
-					   pvar->settings.KnownHostsFiles);
+		               pvar->settings.KnownHostsFiles);
 		pvar->settings.KnownHostsFiles[i] = ch;
 		SetDlgItemText(dlg, IDC_READONLYFILENAME,
-					   pvar->settings.KnownHostsFiles + i + 1);
+		               pvar->settings.KnownHostsFiles + i + 1);
 	} else {
 		SetDlgItemText(dlg, IDC_READWRITEFILENAME,
-					   pvar->settings.KnownHostsFiles);
+		               pvar->settings.KnownHostsFiles);
 	}
 
 	// SSH2 HeartBeat(keep-alive)を追加 (2005.2.22 yutaka)
 	{
 		char buf[10];
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE,
-			"%d", pvar->settings.ssh_heartbeat_overtime);
+		            "%d", pvar->settings.ssh_heartbeat_overtime);
 		SetDlgItemText(dlg, IDC_HEARTBEAT_EDIT, buf);
 	}
 
 }
 
 void get_teraterm_dir_relative_name(char FAR * buf, int bufsize,
-									char FAR * basename)
+                                    char FAR * basename)
 {
 	int filename_start = 0;
 	int i;
 	int ch;
 
 	if (basename[0] == '\\' || basename[0] == '/'
-		|| (basename[0] != 0 && basename[1] == ':')) {
+	 || (basename[0] != 0 && basename[1] == ':')) {
 		strncpy_s(buf, bufsize, basename, _TRUNCATE);
 		return;
 	}
@@ -1990,7 +1986,7 @@ void get_teraterm_dir_relative_name(char FAR * buf, int bufsize,
 }
 
 int copy_teraterm_dir_relative_path(char FAR * dest, int destsize,
-									char FAR * basename)
+                                    char FAR * basename)
 {
 	char buf[1024];
 	int filename_start = 0;
@@ -1998,7 +1994,7 @@ int copy_teraterm_dir_relative_path(char FAR * dest, int destsize,
 	int ch, ch2;
 
 	if (basename[0] != '\\' && basename[0] != '/'
-		&& (basename[0] == 0 || basename[1] != ':')) {
+	 && (basename[0] == 0 || basename[1] != ':')) {
 		strncpy_s(dest, destsize, basename, _TRUNCATE);
 		return strlen(dest);
 	}
@@ -2014,9 +2010,8 @@ int copy_teraterm_dir_relative_path(char FAR * dest, int destsize,
 		ch = toupper(buf[i]);
 		ch2 = toupper(basename[i]);
 
-		if (ch == ch2
-			|| ((ch == '\\' || ch == '/')
-				&& (ch2 == '\\' || ch2 == '/'))) {
+		if (ch == ch2 ||
+		    ((ch == '\\' || ch == '/') && (ch2 == '\\' || ch2 == '/'))) {
 		} else {
 			break;
 		}
@@ -2066,8 +2061,8 @@ static void complete_setup_dlg(PTInstVar pvar, HWND dlg)
 	buf[0] = 0;
 	GetDlgItemText(dlg, IDC_READWRITEFILENAME, buf, sizeof(buf));
 	j = copy_teraterm_dir_relative_path(pvar->settings.KnownHostsFiles,
-										sizeof(pvar->settings.
-											   KnownHostsFiles), buf);
+	                                    sizeof(pvar->settings.KnownHostsFiles),
+	                                    buf);
 	buf[0] = 0;
 	bufindex = 0;
 	GetDlgItemText(dlg, IDC_READONLYFILENAME, buf, sizeof(buf));
@@ -2090,9 +2085,8 @@ static void complete_setup_dlg(PTInstVar pvar, HWND dlg)
 		pvar->settings.KnownHostsFiles[j] = ';';
 		j++;
 		copy_teraterm_dir_relative_path(pvar->settings.KnownHostsFiles + j,
-										sizeof(pvar->settings.
-											   KnownHostsFiles) - j,
-										buf + bufindex);
+		                                sizeof(pvar->settings. KnownHostsFiles) - j,
+		                                buf + bufindex);
 	}
 
 	// get SSH HeartBeat(keep-alive)
@@ -2119,14 +2113,14 @@ static void move_cur_sel_delta(HWND listbox, int delta)
 			SendMessage(listbox, LB_GETTEXT, curPos, (LPARAM) buf);
 			SendMessage(listbox, LB_DELETESTRING, curPos, 0);
 			SendMessage(listbox, LB_INSERTSTRING, newPos,
-						(LPARAM) (char FAR *) buf);
+			            (LPARAM) (char FAR *) buf);
 			SendMessage(listbox, LB_SETCURSEL, newPos, 0);
 		}
 	}
 }
 
 static int get_keys_file_name(HWND parent, char FAR * buf, int bufsize,
-							  int readonly)
+                              int readonly)
 {
 	OPENFILENAME params;
 	char fullname_buf[2048] = "ssh_known_hosts";
@@ -2143,15 +2137,15 @@ static int get_keys_file_name(HWND parent, char FAR * buf, int bufsize,
 	params.lpstrInitialDir = NULL;
 	if (readonly) {
 		UTIL_get_lang_msg("MSG_OPEN_KNOWNHOSTS_RO_TITLE", pvar,
-						  "Choose a read-only known-hosts file to add");
+		                  "Choose a read-only known-hosts file to add");
 	}
 	else {
 		UTIL_get_lang_msg("MSG_OPEN_KNOWNHOSTS_RW_TITLE", pvar,
-						  "Choose a read/write known-hosts file");
+		                  "Choose a read/write known-hosts file");
 	}
 	params.lpstrTitle = pvar->ts->UIMsg;
 	params.Flags = (readonly ? OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST : 0)
-		| OFN_HIDEREADONLY | (!readonly ? OFN_NOREADONLYRETURN : 0);
+	             | OFN_HIDEREADONLY | (!readonly ? OFN_NOREADONLYRETURN : 0);
 	params.lpstrDefExt = NULL;
 
 	if (GetOpenFileName(&params) != 0) {
@@ -2163,10 +2157,10 @@ static int get_keys_file_name(HWND parent, char FAR * buf, int bufsize,
 		if (err != 0) {
 			char buf[1024];
 			UTIL_get_lang_msg("MSG_OPEN_FILEDLG_KNOWNHOSTS_ERROR", pvar,
-							  "Unable to display file dialog box: error %d");
+			                  "Unable to display file dialog box: error %d");
 			_snprintf_s(buf, sizeof(buf), _TRUNCATE, pvar->ts->UIMsg, err);
 			MessageBox(parent, buf, "TTSSH Error",
-					   MB_OK | MB_ICONEXCLAMATION);
+			           MB_OK | MB_ICONEXCLAMATION);
 		}
 
 		return 0;
@@ -2199,7 +2193,7 @@ static void choose_read_only_file(HWND dlg)
 }
 
 static BOOL CALLBACK TTXSetupDlg(HWND dlg, UINT msg, WPARAM wParam,
-								 LPARAM lParam)
+                                 LPARAM lParam)
 {
 	LOGFONT logfont;
 	HFONT font;
@@ -2239,8 +2233,7 @@ static BOOL CALLBACK TTXSetupDlg(HWND dlg, UINT msg, WPARAM wParam,
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
 		case IDOK:
-			complete_setup_dlg((PTInstVar) GetWindowLong(dlg, DWL_USER),
-							   dlg);
+			complete_setup_dlg((PTInstVar) GetWindowLong(dlg, DWL_USER), dlg);
 			EndDialog(dlg, 1);
 			if (DlgSetupFont != NULL) {
 				DeleteObject(DlgSetupFont);
@@ -2403,52 +2396,52 @@ static RC4_KEY rc4;
 
 static void seed_rng(void)
 {
-    if (RAND_status() != 1)
+	if (RAND_status() != 1)
 		return;
 }
 
 static void arc4random_stir(void)
 {
-    unsigned char rand_buf[SEED_SIZE];
-    int i;
+	unsigned char rand_buf[SEED_SIZE];
+	int i;
 
-    memset(&rc4, 0, sizeof(rc4));
+	memset(&rc4, 0, sizeof(rc4));
 	if (RAND_bytes(rand_buf, sizeof(rand_buf)) <= 0) {
-        //fatal("Couldn't obtain random bytes (error %ld)",
-        //    ERR_get_error());
+		//fatal("Couldn't obtain random bytes (error %ld)",
+		//    ERR_get_error());
 	}
-    RC4_set_key(&rc4, sizeof(rand_buf), rand_buf);
+	RC4_set_key(&rc4, sizeof(rand_buf), rand_buf);
 
-    /*
-     * Discard early keystream, as per recommendations in:
-     * http://www.wisdom.weizmann.ac.il/~itsik/RC4/Papers/Rc4_ksa.ps
-     */
-    for(i = 0; i <= 256; i += sizeof(rand_buf))
-        RC4(&rc4, sizeof(rand_buf), rand_buf, rand_buf);
+	/*
+	 * Discard early keystream, as per recommendations in:
+	 * http://www.wisdom.weizmann.ac.il/~itsik/RC4/Papers/Rc4_ksa.ps
+	 */
+	for(i = 0; i <= 256; i += sizeof(rand_buf))
+		RC4(&rc4, sizeof(rand_buf), rand_buf, rand_buf);
 
-    memset(rand_buf, 0, sizeof(rand_buf));
+	memset(rand_buf, 0, sizeof(rand_buf));
 
-    rc4_ready = REKEY_BYTES;
+	rc4_ready = REKEY_BYTES;
 }
 
 static unsigned int arc4random(void)
 {
-    unsigned int r = 0;
-    static int first_time = 1;
+	unsigned int r = 0;
+	static int first_time = 1;
 
-    if (rc4_ready <= 0) {
+	if (rc4_ready <= 0) {
 		if (first_time) {
-            seed_rng();
+			seed_rng();
 		}
-        first_time = 0;
-        arc4random_stir();
-    }
+		first_time = 0;
+		arc4random_stir();
+	}
 
-    RC4(&rc4, sizeof(r), (unsigned char *)&r, (unsigned char *)&r);
+	RC4(&rc4, sizeof(r), (unsigned char *)&r, (unsigned char *)&r);
 
-    rc4_ready -= sizeof(r);
+	rc4_ready -= sizeof(r);
 
-    return(r);
+	return(r);
 }
 
 //
@@ -2470,7 +2463,7 @@ static unsigned int arc4random(void)
  */
 struct ssh1_3des_ctx
 {
-        EVP_CIPHER_CTX  k1, k2, k3;
+	EVP_CIPHER_CTX  k1, k2, k3;
 };
 
 static int ssh1_3des_init(EVP_CIPHER_CTX *ctx, const u_char *key, const u_char *iv, int enc)
@@ -2612,68 +2605,68 @@ int uuencode(unsigned char *src, int srclen, unsigned char *target, int targsize
 {
 	char base64[] ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 	char pad = '=';
-    int datalength = 0;
-    unsigned char input[3];
-    unsigned char output[4];
-    int i;
+	int datalength = 0;
+	unsigned char input[3];
+	unsigned char output[4];
+	int i;
 
-    while (srclen > 2) {
-        input[0] = *src++;
-        input[1] = *src++;
-        input[2] = *src++;
-        srclen -= 3;
+	while (srclen > 2) {
+		input[0] = *src++;
+		input[1] = *src++;
+		input[2] = *src++;
+		srclen -= 3;
 
-        output[0] = input[0] >> 2;
-        output[1] = ((input[0] & 0x03) << 4) + (input[1] >> 4);
-        output[2] = ((input[1] & 0x0f) << 2) + (input[2] >> 6);
-        output[3] = input[2] & 0x3f;
+		output[0] = input[0] >> 2;
+		output[1] = ((input[0] & 0x03) << 4) + (input[1] >> 4);
+		output[2] = ((input[1] & 0x0f) << 2) + (input[2] >> 6);
+		output[3] = input[2] & 0x3f;
 		if (output[0] >= 64 || 
-			output[1] >= 64 ||
-			output[2] >= 64 ||
-			output[3] >= 64)
+		    output[1] >= 64 ||
+		    output[2] >= 64 ||
+		    output[3] >= 64)
 			return -1;
 
-        if (datalength + 4 > targsize)
-            return (-1);
-        target[datalength++] = base64[output[0]];
-        target[datalength++] = base64[output[1]];
-        target[datalength++] = base64[output[2]];
-        target[datalength++] = base64[output[3]];
-    }
+		if (datalength + 4 > targsize)
+			return (-1);
+		target[datalength++] = base64[output[0]];
+		target[datalength++] = base64[output[1]];
+		target[datalength++] = base64[output[2]];
+		target[datalength++] = base64[output[3]];
+	}
 
-    if (srclen != 0) {
-        /* Get what's left. */
-        input[0] = input[1] = input[2] = '\0';
-        for (i = 0; i < srclen; i++)
-            input[i] = *src++;
+	if (srclen != 0) {
+		/* Get what's left. */
+		input[0] = input[1] = input[2] = '\0';
+		for (i = 0; i < srclen; i++)
+			input[i] = *src++;
 
-        output[0] = input[0] >> 2;
-        output[1] = ((input[0] & 0x03) << 4) + (input[1] >> 4);
-        output[2] = ((input[1] & 0x0f) << 2) + (input[2] >> 6);
+		output[0] = input[0] >> 2;
+		output[1] = ((input[0] & 0x03) << 4) + (input[1] >> 4);
+		output[2] = ((input[1] & 0x0f) << 2) + (input[2] >> 6);
 		if (output[0] >= 64 || 
-			output[1] >= 64 ||
-			output[2] >= 64)
+		    output[1] >= 64 ||
+		    output[2] >= 64)
 			return -1;
 
-        if (datalength + 4 > targsize)
-            return (-1);
-        target[datalength++] = base64[output[0]];
-        target[datalength++] = base64[output[1]];
-        if (srclen == 1)
-            target[datalength++] = pad;
-        else
-            target[datalength++] = base64[output[2]];
-        target[datalength++] = pad;
-    }
-    if (datalength >= targsize)
-        return (-1);
-    target[datalength] = '\0';  /* Returned value doesn't count \0. */
+		if (datalength + 4 > targsize)
+			return (-1);
+		target[datalength++] = base64[output[0]];
+		target[datalength++] = base64[output[1]];
+		if (srclen == 1)
+			target[datalength++] = pad;
+		else
+			target[datalength++] = base64[output[2]];
+		target[datalength++] = pad;
+	}
+	if (datalength >= targsize)
+		return (-1);
+	target[datalength] = '\0';  /* Returned value doesn't count \0. */
 
 	return (datalength); // success
 }
 
 static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
-								 LPARAM lParam)
+                                     LPARAM lParam)
 {
 	static enum hostkey_type key_type;
 	char uimsg[MAX_UIMSG];
@@ -2807,19 +2800,19 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 			ofn.hwndOwner = dlg;
 			if (key_type == KEY_RSA1) {
 				UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_RSA1_FILTER", pvar,
-								  "SSH1 RSA key(identity.pub)\\0identity.pub\\0All Files(*.*)\\0*.*\\0\\0");
+				                  "SSH1 RSA key(identity.pub)\\0identity.pub\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
 				strncpy_s(filename, sizeof(filename), "identity.pub", _TRUNCATE);
 			} else if (key_type == KEY_RSA) {
 				UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_RSA_FILTER", pvar,
-								  "SSH2 RSA key(id_rsa.pub)\\0id_rsa.pub\\0All Files(*.*)\\0*.*\\0\\0");
+				                  "SSH2 RSA key(id_rsa.pub)\\0id_rsa.pub\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
 				strncpy_s(filename, sizeof(filename), "id_rsa.pub", _TRUNCATE);
 			} else {
 				UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_DSA_FILTER", pvar,
-								  "SSH2 DSA key(id_dsa.pub)\\0id_dsa.pub\\0All Files(*.*)\\0*.*\\0\\0");
+				                  "SSH2 DSA key(id_dsa.pub)\\0id_dsa.pub\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
 				strncpy_s(filename, sizeof(filename), "id_dsa.pub", _TRUNCATE);
@@ -2827,7 +2820,7 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 			ofn.lpstrFile = filename;
 			ofn.nMaxFile = sizeof(filename);
 			UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_TITLE", pvar,
-							  "Save public key as:");
+			                  "Save public key as:");
 			ofn.lpstrTitle = pvar->ts->UIMsg;
 			if (GetSaveFileName(&ofn) == 0) { // failure
 				ret = CommDlgExtendedError();
@@ -2840,7 +2833,7 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 			fp = fopen(filename, "wb");
 			if (fp == NULL) {
 				UTIL_get_lang_msg("MSG_SAVE_KEY_OPENFILE_ERROR", pvar,
-								  "Can't open key file");
+				                  "Can't open key file");
 				strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
 				UTIL_get_lang_msg("MSG_ERROR", pvar, "ERROR");
 				MessageBox(dlg, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
@@ -2933,7 +2926,7 @@ public_error:
 			// check matching
 			if (strcmp(buf, buf_conf) != 0) {
 				UTIL_get_lang_msg("MSG_SAVE_PRIVATE_KEY_MISMATCH_ERROR", pvar,
-								  "Two passphrases don't match.");
+				                  "Two passphrases don't match.");
 				strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
 				UTIL_get_lang_msg("MSG_ERROR", pvar, "ERROR");
 				MessageBox(dlg, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
@@ -2943,7 +2936,7 @@ public_error:
 			// check empty-passphrase (this is warning level)
 			if (buf[0] == '\0') {
 				UTIL_get_lang_msg("MSG_SAVE_PRIVATEKEY_EMPTY_WARN", pvar,
-								  "Are you sure that you want to use a empty passphrase?");
+				                  "Are you sure that you want to use a empty passphrase?");
 				strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
 				UTIL_get_lang_msg("MSG_WARNING", pvar, "WARNING");
 				ret = MessageBox(dlg, uimsg, pvar->ts->UIMsg, MB_YESNO | MB_ICONWARNING);
@@ -2959,19 +2952,19 @@ public_error:
 			ofn.hwndOwner = dlg;
 			if (key_type == KEY_RSA1) {
 				UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_RSA1_FILTER", pvar,
-								  "SSH1 RSA key(identity)\\0identity\\0All Files(*.*)\\0*.*\\0\\0");
+				                  "SSH1 RSA key(identity)\\0identity\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
 				strncpy_s(filename, sizeof(filename), "identity", _TRUNCATE);
 			} else if (key_type == KEY_RSA) {
 				UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_RSA_FILTER", pvar,
-								  "SSH2 RSA key(id_rsa)\\0id_rsa\\0All Files(*.*)\\0*.*\\0\\0");
+				                  "SSH2 RSA key(id_rsa)\\0id_rsa\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
 				strncpy_s(filename, sizeof(filename), "id_rsa", _TRUNCATE);
 			} else {
 				UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_DSA_FILTER", pvar,
-								  "SSH2 DSA key(id_dsa)\\0id_dsa\\0All Files(*.*)\\0*.*\\0\\0");
+				                  "SSH2 DSA key(id_dsa)\\0id_dsa\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
 				strncpy_s(filename, sizeof(filename), "id_dsa", _TRUNCATE);
@@ -2979,7 +2972,7 @@ public_error:
 			ofn.lpstrFile = filename;
 			ofn.nMaxFile = sizeof(filename);
 			UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_TITLE", pvar,
-							  "Save private key as:");
+			                  "Save private key as:");
 			ofn.lpstrTitle = pvar->ts->UIMsg;
 			if (GetSaveFileName(&ofn) == 0) { // failure
 				ret = CommDlgExtendedError();
@@ -3090,7 +3083,7 @@ public_error:
 				fp = fopen(filename, "wb");
 				if (fp == NULL) {
 					UTIL_get_lang_msg("MSG_SAVE_KEY_OPENFILE_ERROR", pvar,
-									  "Can't open key file");
+					                  "Can't open key file");
 					strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
 					UTIL_get_lang_msg("MSG_ERROR", pvar, "ERROR");
 					MessageBox(dlg, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
@@ -3120,7 +3113,7 @@ error:;
 				fp = fopen(filename, "w");
 				if (fp == NULL) {
 					UTIL_get_lang_msg("MSG_SAVE_KEY_OPENFILE_ERROR", pvar,
-									  "Can't open key file");
+					                  "Can't open key file");
 					strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
 					UTIL_get_lang_msg("MSG_ERROR", pvar, "ERROR");
 					MessageBox(dlg, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
@@ -3134,7 +3127,7 @@ error:;
 				}
 				if (ret == 0) {
 					UTIL_get_lang_msg("MSG_SAVE_KEY_WRITEFILE_ERROR", pvar,
-									  "Can't open key file");
+					                  "Can't open key file");
 					strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
 					UTIL_get_lang_msg("MSG_ERROR", pvar, "ERROR");
 					MessageBox(dlg, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
@@ -3169,7 +3162,7 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 		if (DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SSHKEYGEN), hWin, TTXKeyGenerator,
 			(LPARAM) pvar) == -1) {
 			UTIL_get_lang_msg("MSG_CREATEWINDOW_KEYGEN_ERROR", pvar,
-							  "Unable to display Key Generator dialog box.");
+			                  "Unable to display Key Generator dialog box.");
 			strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
 			UTIL_get_lang_msg("MSG_TTSSH_ERROR", pvar, "TTSSH Error");
 			MessageBox(hWin, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
@@ -3177,12 +3170,10 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 		return 1;
 
 	case ID_ABOUTMENU:
-		if (DialogBoxParam
-			(hInst, MAKEINTRESOURCE(IDD_ABOUTDIALOG), hWin, TTXAboutDlg,
-			 (LPARAM) pvar)
-			== -1) {
+		if (DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_ABOUTDIALOG),
+		                   hWin, TTXAboutDlg, (LPARAM) pvar) == -1) {
 			UTIL_get_lang_msg("MSG_CREATEWINDOW_ABOUT_ERROR", pvar,
-							  "Unable to display About dialog box.");
+			                  "Unable to display About dialog box.");
 			strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
 			UTIL_get_lang_msg("MSG_TTSSH_ERROR", pvar, "TTSSH Error");
 			MessageBox(hWin, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
@@ -3192,12 +3183,10 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 		AUTH_do_cred_dialog(pvar);
 		return 1;
 	case ID_SSHSETUPMENU:
-		if (DialogBoxParam
-			(hInst, MAKEINTRESOURCE(IDD_SSHSETUP), hWin, TTXSetupDlg,
-			 (LPARAM) pvar)
-			== -1) {
+		if (DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SSHSETUP),
+		                   hWin, TTXSetupDlg, (LPARAM) pvar) == -1) {
 			UTIL_get_lang_msg("MSG_CREATEWINDOW_SETUP_ERROR", pvar,
-							  "Unable to display TTSSH Setup dialog box.");
+			                  "Unable to display TTSSH Setup dialog box.");
 			strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
 			UTIL_get_lang_msg("MSG_TTSSH_ERROR", pvar, "TTSSH Error");
 			MessageBox(hWin, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
@@ -3343,14 +3332,14 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 				pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) {
 				replace_blank_to_mark(pvar->auth_state.cur_cred.password, mark, sizeof(mark));
 				_snprintf_s(tmp, sizeof(tmp), _TRUNCATE,
-					" /auth=password /user=%s /passwd=%s", pvar->auth_state.user, mark);
+				            " /auth=password /user=%s /passwd=%s", pvar->auth_state.user, mark);
 				strncat_s(cmd, cmdlen, tmp, _TRUNCATE);
 
 			} else if (pvar->settings.remember_password &&
 						pvar->auth_state.cur_cred.method == SSH_AUTH_RSA) {
 				replace_blank_to_mark(pvar->auth_state.cur_cred.password, mark, sizeof(mark));
 				_snprintf_s(tmp, sizeof(tmp), _TRUNCATE,
-					" /auth=publickey /user=%s /passwd=%s", pvar->auth_state.user, mark);
+				            " /auth=publickey /user=%s /passwd=%s", pvar->auth_state.user, mark);
 				strncat_s(cmd, cmdlen, tmp, _TRUNCATE);
 
 				replace_blank_to_mark(pvar->session_settings.DefaultRSAPrivateKeyFile, mark, sizeof(mark));
@@ -3390,7 +3379,7 @@ static void PASCAL FAR TTXEnd(void)
 		}
 
 		MessageBox(NULL, pvar->err_msg, "TTSSH",
-				   MB_TASKMODAL | MB_ICONEXCLAMATION);
+		           MB_TASKMODAL | MB_ICONEXCLAMATION);
 
 		free(pvar->err_msg);
 		pvar->err_msg = NULL;
@@ -3440,7 +3429,7 @@ PASCAL FAR TTXBind(WORD Version, TTXExports FAR * exports)
 static HANDLE __mem_mapping = NULL;
 
 BOOL WINAPI DllMain(HANDLE hInstance,
-					ULONG ul_reason_for_call, LPVOID lpReserved)
+                    ULONG ul_reason_for_call, LPVOID lpReserved)
 {
 	switch (ul_reason_for_call) {
 	case DLL_THREAD_ATTACH:
@@ -3456,14 +3445,14 @@ BOOL WINAPI DllMain(HANDLE hInstance,
 		pvar = &InstVar;
 		__mem_mapping =
 			CreateFileMapping((HANDLE) 0xFFFFFFFF, NULL, PAGE_READWRITE, 0,
-							  sizeof(TS_SSH), "TTSSH_1-4_TS_data");
+			                  sizeof(TS_SSH), "TTSSH_1-4_TS_data");
 		if (__mem_mapping == NULL) {
 			/* fake it. The settings won't be shared, but what the heck. */
 			pvar->ts_SSH = NULL;
 		} else {
 			pvar->ts_SSH =
 				(TS_SSH *) MapViewOfFile(__mem_mapping, FILE_MAP_WRITE, 0,
-										 0, 0);
+				                         0, 0);
 		}
 		if (pvar->ts_SSH == NULL) {
 			/* fake it. The settings won't be shared, but what the heck. */

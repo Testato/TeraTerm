@@ -58,31 +58,31 @@ static int recv_data(PTInstVar pvar, unsigned long up_to_amount)
 	/* Shuffle data to the start of the buffer */
 	if (pvar->pkt_state.datastart != 0) {
 		memmove(pvar->pkt_state.buf,
-				pvar->pkt_state.buf + pvar->pkt_state.datastart,
-				pvar->pkt_state.datalen);
+		        pvar->pkt_state.buf + pvar->pkt_state.datastart,
+		        pvar->pkt_state.datalen);
 		pvar->pkt_state.datastart = 0;
 	}
 
 	buf_ensure_size(&pvar->pkt_state.buf, &pvar->pkt_state.buflen,
-					up_to_amount);
+	                up_to_amount);
 
 	_ASSERT(pvar->pkt_state.buf != NULL);
 
 	amount_read = (pvar->Precv) (pvar->socket,
-								 pvar->pkt_state.buf +
-								 pvar->pkt_state.datalen,
-								 up_to_amount - pvar->pkt_state.datalen,
-								 0);
+	                             pvar->pkt_state.buf +
+	                             pvar->pkt_state.datalen,
+	                             up_to_amount - pvar->pkt_state.datalen,
+	                             0);
 
 	if (amount_read > 0) {
 		/* Update seen_newline if necessary */
 		if (!pvar->pkt_state.seen_server_ID
-			&& !pvar->pkt_state.seen_newline) {
+		 && !pvar->pkt_state.seen_newline) {
 			int i;
 
 			for (i = 0; i < amount_read; i++) {
 				if (pvar->pkt_state.buf[pvar->pkt_state.datalen + i] ==
-					'\n') {
+				    '\n') {
 					pvar->pkt_state.seen_newline = 1;
 				}
 			}
@@ -106,19 +106,17 @@ static int recv_line_data(PTInstVar pvar)
 	/* Shuffle data to the start of the buffer */
 	if (pvar->pkt_state.datastart != 0) {
 		memmove(pvar->pkt_state.buf,
-				pvar->pkt_state.buf + pvar->pkt_state.datastart,
-				pvar->pkt_state.datalen);
+		        pvar->pkt_state.buf + pvar->pkt_state.datastart,
+		        pvar->pkt_state.datalen);
 		pvar->pkt_state.datastart = 0;
 	}
 
 	buf_ensure_size(&pvar->pkt_state.buf, &pvar->pkt_state.buflen,
-					up_to_amount);
+	                up_to_amount);
 
 	for (i = 0 ; i < (int)up_to_amount ; i++) {
 		amount_read = (pvar->Precv) (pvar->socket,
-									&buf[i],
-									1,
-									0);
+		                             &buf[i], 1, 0);
 		if (amount_read != 1) {
 			return 0; // error
 		} 
@@ -158,16 +156,16 @@ int PKT_recv(PTInstVar pvar, char FAR * buf, int buflen)
 			buflen -= grabbed;
 
 		} else if (!pvar->pkt_state.seen_server_ID &&
-				   (pvar->pkt_state.seen_newline
-					|| pvar->pkt_state.datalen >= 255)) {
+		           (pvar->pkt_state.seen_newline
+		            || pvar->pkt_state.datalen >= 255)) {
 			/* We're looking for the initial ID string and either we've seen the
 			   terminating newline, or we've exceeded the limit at which we should see
 			   a newline. */
 			unsigned int i;
 
 			for (i = 0;
-				 pvar->pkt_state.buf[i] != '\n'
-				 && i < pvar->pkt_state.datalen; i++) {
+			     pvar->pkt_state.buf[i] != '\n'
+			     && i < pvar->pkt_state.datalen; i++) {
 			}
 			if (pvar->pkt_state.buf[i] == '\n') {
 				i++;
@@ -190,8 +188,8 @@ int PKT_recv(PTInstVar pvar, char FAR * buf, int buflen)
 			pvar->pkt_state.datalen -= i;
 
 		} else if (pvar->pkt_state.seen_server_ID
-				   && pvar->pkt_state.datalen >=
-				   (unsigned int) SSH_get_min_packet_size(pvar)) {
+		           && pvar->pkt_state.datalen >=
+		           (unsigned int) SSH_get_min_packet_size(pvar)) {
 			char FAR *data =
 				pvar->pkt_state.buf + pvar->pkt_state.datastart;
 			uint32 padding;
@@ -291,7 +289,7 @@ int PKT_recv(PTInstVar pvar, char FAR * buf, int buflen)
 
 	if (SSH_is_any_payload(pvar)) {
 		PostMessage(pvar->NotificationWindow, WM_USER_COMMNOTIFY,
-					pvar->socket, MAKELPARAM(FD_READ, 0));
+		            pvar->socket, MAKELPARAM(FD_READ, 0));
 	}
 
 	return amount_in_buf;

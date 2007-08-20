@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.11 2007-08-15 04:03:26 maya Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.12 2007-08-20 14:21:57 maya Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -84,7 +84,7 @@ static void crc_update(uint32 FAR * a, uint32 b)
 */
 
 static int check_crc(unsigned char FAR * S, unsigned char FAR * buf,
-					 uint32 len, unsigned char FAR * IV)
+                     uint32 len, unsigned char FAR * IV)
 {
 	uint32 crc;
 	unsigned char FAR *c;
@@ -113,8 +113,8 @@ detect_attack
 Detects a crc32 compensation attack on a packet
 */
 static int detect_attack(CRYPTDetectAttack FAR * statics,
-						 unsigned char FAR * buf, uint32 len,
-						 unsigned char *FAR IV)
+                         unsigned char FAR * buf, uint32 len,
+                         unsigned char *FAR IV)
 {
 	uint32 FAR *h = statics->h;
 	uint32 n = statics->n;
@@ -188,7 +188,7 @@ static int detect_attack(CRYPTDetectAttack FAR * statics,
 }
 
 BOOL CRYPT_detect_attack(PTInstVar pvar, unsigned char FAR * buf,
-						 int bytes)
+                         int bytes)
 {
 	if (SSHv1(pvar)) {
 		switch (pvar->crypt_state.sender_cipher) {
@@ -196,12 +196,12 @@ BOOL CRYPT_detect_attack(PTInstVar pvar, unsigned char FAR * buf,
 			return FALSE;
 		case SSH_CIPHER_IDEA:
 			return detect_attack(&pvar->crypt_state.detect_attack_statics,
-								 buf, bytes,
-								 pvar->crypt_state.dec.cIDEA.ivec) ==
-				DEATTACK_DETECTED;
+			                     buf, bytes,
+			                     pvar->crypt_state.dec.cIDEA.ivec) ==
+			       DEATTACK_DETECTED;
 		default:
 			return detect_attack(&pvar->crypt_state.detect_attack_statics,
-								 buf, bytes, NULL) == DEATTACK_DETECTED;
+			                     buf, bytes, NULL) == DEATTACK_DETECTED;
 		}
 	} else {
 		return FALSE;
@@ -215,7 +215,7 @@ static void no_encrypt(PTInstVar pvar, unsigned char FAR * buf, int bytes)
 
 // for SSH2(yutaka)
 static void cAES128_encrypt(PTInstVar pvar, unsigned char FAR * buf,
-						  int bytes)
+                            int bytes)
 {
 //	unsigned char key[AES128_KEYLEN], iv[AES128_IVLEN];
 	unsigned char *newbuf = malloc(bytes);
@@ -231,9 +231,9 @@ static void cAES128_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 	if (bytes % block_size) {
 		char tmp[80];
 		UTIL_get_lang_msg("MSG_AES128_ENCRYPT_ERROR1", pvar,
-						  "AES128 encrypt error(1): bytes %d (%d)");
+		                  "AES128 encrypt error(1): bytes %d (%d)");
 		_snprintf_s(tmp, sizeof(tmp), _TRUNCATE,
-			pvar->ts->UIMsg, bytes, block_size);
+		            pvar->ts->UIMsg, bytes, block_size);
 		notify_fatal_error(pvar, tmp);
 		goto error;
 	}
@@ -241,7 +241,7 @@ static void cAES128_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 	if (EVP_Cipher(&pvar->evpcip[MODE_OUT], newbuf, buf, bytes) == 0) {
 		// TODO: failure
 		UTIL_get_lang_msg("MSG_AES128_ENCRYPT_ERROR2", pvar,
-						  "AES128 encrypt error(1): bytes %d (%d)");
+		                  "AES128 encrypt error(1): bytes %d (%d)");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 
 	} else {
@@ -262,7 +262,7 @@ error:
 }
 
 static void cAES128_decrypt(PTInstVar pvar, unsigned char FAR * buf,
-						  int bytes)
+                            int bytes)
 {
 //	unsigned char key[AES128_KEYLEN], iv[AES128_IVLEN];
 	unsigned char *newbuf = malloc(bytes);
@@ -278,7 +278,7 @@ static void cAES128_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 	if (bytes % block_size) {
 		char tmp[80];
 		UTIL_get_lang_msg("MSG_AES128_DECRYPT_ERROR1", pvar,
-						  "AES128 decrypt error(1): bytes %d (%d)");
+		                  "AES128 decrypt error(1): bytes %d (%d)");
 		_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, pvar->ts->UIMsg, bytes, block_size);
 		notify_fatal_error(pvar, tmp);
 		goto error;
@@ -287,7 +287,7 @@ static void cAES128_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 	if (EVP_Cipher(&pvar->evpcip[MODE_IN], newbuf, buf, bytes) == 0) {
 		// TODO:
 		UTIL_get_lang_msg("MSG_AES128_DECRYPT_ERROR2", pvar,
-						  "AES128 decrypt error(2)");
+		                  "AES128 decrypt error(2)");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 
 	} else {
@@ -317,7 +317,7 @@ error:;
 
 // for SSH2(yutaka)
 static void c3DES_CBC_encrypt(PTInstVar pvar, unsigned char FAR * buf,
-						  int bytes)
+                              int bytes)
 {
 	unsigned char key[24], iv[8];
 	unsigned char *newbuf = malloc(bytes);
@@ -376,7 +376,7 @@ static void c3DES_CBC_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 }
 
 static void c3DES_CBC_decrypt(PTInstVar pvar, unsigned char FAR * buf,
-						  int bytes)
+                              int bytes)
 {
 	unsigned char key[24], iv[8];
 	unsigned char *newbuf = malloc(bytes);
@@ -434,29 +434,29 @@ static void c3DES_CBC_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 
 
 static void c3DES_encrypt(PTInstVar pvar, unsigned char FAR * buf,
-						  int bytes)
+                          int bytes)
 {
 	Cipher3DESState FAR *encryptstate = &pvar->crypt_state.enc.c3DES;
 
 	DES_ncbc_encrypt(buf, buf, bytes,
-					 &encryptstate->k1, &encryptstate->ivec1, DES_ENCRYPT);
+	                 &encryptstate->k1, &encryptstate->ivec1, DES_ENCRYPT);
 	DES_ncbc_encrypt(buf, buf, bytes,
-					 &encryptstate->k2, &encryptstate->ivec2, DES_DECRYPT);
+	                 &encryptstate->k2, &encryptstate->ivec2, DES_DECRYPT);
 	DES_ncbc_encrypt(buf, buf, bytes,
-					 &encryptstate->k3, &encryptstate->ivec3, DES_ENCRYPT);
+	                 &encryptstate->k3, &encryptstate->ivec3, DES_ENCRYPT);
 }
 
 static void c3DES_decrypt(PTInstVar pvar, unsigned char FAR * buf,
-						  int bytes)
+                          int bytes)
 {
 	Cipher3DESState FAR *decryptstate = &pvar->crypt_state.dec.c3DES;
 
 	DES_ncbc_encrypt(buf, buf, bytes,
-					 &decryptstate->k3, &decryptstate->ivec3, DES_DECRYPT);
+	                 &decryptstate->k3, &decryptstate->ivec3, DES_DECRYPT);
 	DES_ncbc_encrypt(buf, buf, bytes,
-					 &decryptstate->k2, &decryptstate->ivec2, DES_ENCRYPT);
+	                 &decryptstate->k2, &decryptstate->ivec2, DES_ENCRYPT);
 	DES_ncbc_encrypt(buf, buf, bytes,
-					 &decryptstate->k1, &decryptstate->ivec1, DES_DECRYPT);
+	                 &decryptstate->k1, &decryptstate->ivec1, DES_DECRYPT);
 }
 
 static void cDES_encrypt(PTInstVar pvar, unsigned char FAR * buf,
@@ -465,7 +465,7 @@ static void cDES_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 	CipherDESState FAR *encryptstate = &pvar->crypt_state.enc.cDES;
 
 	DES_ncbc_encrypt(buf, buf, bytes,
-					 &encryptstate->k, &encryptstate->ivec, DES_ENCRYPT);
+	                 &encryptstate->k, &encryptstate->ivec, DES_ENCRYPT);
 }
 
 static void cDES_decrypt(PTInstVar pvar, unsigned char FAR * buf,
@@ -474,27 +474,27 @@ static void cDES_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 	CipherDESState FAR *decryptstate = &pvar->crypt_state.dec.cDES;
 
 	DES_ncbc_encrypt(buf, buf, bytes,
-					 &decryptstate->k, &decryptstate->ivec, DES_DECRYPT);
+	                 &decryptstate->k, &decryptstate->ivec, DES_DECRYPT);
 }
 
 static void cIDEA_encrypt(PTInstVar pvar, unsigned char FAR * buf,
-						  int bytes)
+                          int bytes)
 {
 	CipherIDEAState FAR *encryptstate = &pvar->crypt_state.enc.cIDEA;
 	int num = 0;
 
 	idea_cfb64_encrypt(buf, buf, bytes, &encryptstate->k,
-					   encryptstate->ivec, &num, IDEA_ENCRYPT);
+	                   encryptstate->ivec, &num, IDEA_ENCRYPT);
 }
 
 static void cIDEA_decrypt(PTInstVar pvar, unsigned char FAR * buf,
-						  int bytes)
+                          int bytes)
 {
 	CipherIDEAState FAR *decryptstate = &pvar->crypt_state.dec.cIDEA;
 	int num = 0;
 
 	idea_cfb64_encrypt(buf, buf, bytes, &decryptstate->k,
-					   decryptstate->ivec, &num, IDEA_DECRYPT);
+	                   decryptstate->ivec, &num, IDEA_DECRYPT);
 }
 
 static void flip_endianness(unsigned char FAR * cbuf, int bytes)
@@ -506,38 +506,38 @@ static void flip_endianness(unsigned char FAR * cbuf, int bytes)
 		uint32 w = *buf;
 
 		*buf = ((w << 24) & 0xFF000000) | ((w << 8) & 0x00FF0000)
-			| ((w >> 8) & 0x0000FF00) | ((w >> 24) & 0x000000FF);
+		     | ((w >> 8) & 0x0000FF00) | ((w >> 24) & 0x000000FF);
 		count--;
 		buf++;
 	}
 }
 
 static void cBlowfish_encrypt(PTInstVar pvar, unsigned char FAR * buf,
-							  int bytes)
+                              int bytes)
 {
 	CipherBlowfishState FAR *encryptstate =
 		&pvar->crypt_state.enc.cBlowfish;
 
 	flip_endianness(buf, bytes);
 	BF_cbc_encrypt(buf, buf, bytes, &encryptstate->k, encryptstate->ivec,
-				   BF_ENCRYPT);
+	               BF_ENCRYPT);
 	flip_endianness(buf, bytes);
 }
 
 static void cBlowfish_decrypt(PTInstVar pvar, unsigned char FAR * buf,
-							  int bytes)
+                              int bytes)
 {
 	CipherBlowfishState FAR *decryptstate =
 		&pvar->crypt_state.dec.cBlowfish;
 
 	flip_endianness(buf, bytes);
 	BF_cbc_encrypt(buf, buf, bytes, &decryptstate->k, decryptstate->ivec,
-				   BF_DECRYPT);
+	               BF_DECRYPT);
 	flip_endianness(buf, bytes);
 }
 
 static void cRC4_encrypt(PTInstVar pvar, unsigned char FAR * buf,
-						 int bytes)
+                         int bytes)
 {
 	CipherRC4State FAR *encryptstate = &pvar->crypt_state.enc.cRC4;
 	int num = 0;
@@ -546,7 +546,7 @@ static void cRC4_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 }
 
 static void cRC4_decrypt(PTInstVar pvar, unsigned char FAR * buf,
-						 int bytes)
+                         int bytes)
 {
 	CipherRC4State FAR *decryptstate = &pvar->crypt_state.dec.cRC4;
 	int num = 0;
@@ -555,7 +555,7 @@ static void cRC4_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 }
 
 void CRYPT_set_random_data(PTInstVar pvar, unsigned char FAR * buf,
-						   int bytes)
+                           int bytes)
 {
 	RAND_bytes(buf, bytes);
 }
@@ -574,8 +574,8 @@ static BIGNUM FAR *get_bignum(unsigned char FAR * bytes)
 
 // make_key()を fingerprint 生成でも利用するので、staticを削除。(2006.3.27 yutaka)
 RSA FAR *make_key(PTInstVar pvar,
-						 int bits, unsigned char FAR * exp,
-						 unsigned char FAR * mod)
+                  int bits, unsigned char FAR * exp,
+                  unsigned char FAR * mod)
 {
 	RSA FAR *key = RSA_new();
 
@@ -586,7 +586,7 @@ RSA FAR *make_key(PTInstVar pvar,
 
 	if (key == NULL || key->e == NULL || key->n == NULL) {
 		UTIL_get_lang_msg("MSG_RSAKEY_SETUP_ERROR", pvar,
-						  "Error setting up RSA keys");
+		                  "Error setting up RSA keys");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 
 		if (key != NULL) {
@@ -611,7 +611,7 @@ void CRYPT_set_server_cookie(PTInstVar pvar, unsigned char FAR * cookie)
 		memcpy(pvar->crypt_state.server_cookie, cookie, SSH_COOKIE_LENGTH);
 	} else {
 		memcpy(pvar->crypt_state.server_cookie, cookie,
-			   SSH2_COOKIE_LENGTH);
+		       SSH2_COOKIE_LENGTH);
 	}
 }
 
@@ -619,13 +619,13 @@ void CRYPT_set_client_cookie(PTInstVar pvar, unsigned char FAR * cookie)
 {
 	if (SSHv2(pvar)) {
 		memcpy(pvar->crypt_state.client_cookie, cookie,
-			   SSH2_COOKIE_LENGTH);
+		       SSH2_COOKIE_LENGTH);
 	}
 }
 
 BOOL CRYPT_set_server_RSA_key(PTInstVar pvar,
-							  int bits, unsigned char FAR * exp,
-							  unsigned char FAR * mod)
+                              int bits, unsigned char FAR * exp,
+                              unsigned char FAR * mod)
 {
 	pvar->crypt_state.server_key.RSA_key = make_key(pvar, bits, exp, mod);
 
@@ -633,8 +633,8 @@ BOOL CRYPT_set_server_RSA_key(PTInstVar pvar,
 }
 
 BOOL CRYPT_set_host_RSA_key(PTInstVar pvar,
-							int bits, unsigned char FAR * exp,
-							unsigned char FAR * mod)
+                            int bits, unsigned char FAR * exp,
+                            unsigned char FAR * mod)
 {
 	pvar->crypt_state.host_key.RSA_key = make_key(pvar, bits, exp, mod);
 
@@ -642,14 +642,14 @@ BOOL CRYPT_set_host_RSA_key(PTInstVar pvar,
 }
 
 BOOL CRYPT_set_supported_ciphers(PTInstVar pvar, int sender_ciphers,
-								 int receiver_ciphers)
+                                 int receiver_ciphers)
 {
 	int cipher_mask;
 
 	if (SSHv1(pvar)) {
 		cipher_mask = (1 << SSH_CIPHER_DES)
-			| (1 << SSH_CIPHER_3DES)
-			| (1 << SSH_CIPHER_BLOWFISH);
+		            | (1 << SSH_CIPHER_3DES)
+		            | (1 << SSH_CIPHER_BLOWFISH);
 
 	} else { // for SSH2(yutaka)
 		// SSH2がサポートするデータ通信用アルゴリズム（公開鍵交換用とは別）
@@ -664,16 +664,16 @@ BOOL CRYPT_set_supported_ciphers(PTInstVar pvar, int sender_ciphers,
 
 	if (sender_ciphers == 0) {
 		UTIL_get_lang_msg("MSG_UNAVAILABLE_CIPHERS_ERROR", pvar,
-						  "The server does not support any of the TTSSH encryption algorithms.\n"
-						  "A secure connection cannot be made in the TTSSH-to-server direction.\n"
-						  "The connection will be closed.");
+		                  "The server does not support any of the TTSSH encryption algorithms.\n"
+		                  "A secure connection cannot be made in the TTSSH-to-server direction.\n"
+		                  "The connection will be closed.");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 		return FALSE;
 	} else if (receiver_ciphers == 0) {
 		UTIL_get_lang_msg("MSG_UNAVAILABLE_CIPHERS_ERROR", pvar,
-						  "The server does not support any of the TTSSH encryption algorithms.\n"
-						  "A secure connection cannot be made in the TTSSH-to-server direction.\n"
-						  "The connection will be closed.");
+		                  "The server does not support any of the TTSSH encryption algorithms.\n"
+		                  "A secure connection cannot be made in the TTSSH-to-server direction.\n"
+		                  "The connection will be closed.");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 		return FALSE;
 	} else {
@@ -724,11 +724,11 @@ int CRYPT_get_receiver_MAC_size(PTInstVar pvar)
 // ※本関数は SSH2 でのみ使用される。
 // (2004.12.17 yutaka)
 BOOL CRYPT_verify_receiver_MAC(PTInstVar pvar, uint32 sequence_number,
-							   char FAR * data, int len, char FAR * MAC)
+                               char FAR * data, int len, char FAR * MAC)
 {
-    HMAC_CTX c;
-    unsigned char m[EVP_MAX_MD_SIZE];
-    unsigned char b[4];
+	HMAC_CTX c;
+	unsigned char m[EVP_MAX_MD_SIZE];
+	unsigned char b[4];
 	struct Mac *mac;
 
 	mac = &pvar->ssh2_keys[MODE_IN].mac;
@@ -737,18 +737,18 @@ BOOL CRYPT_verify_receiver_MAC(PTInstVar pvar, uint32 sequence_number,
 	if (mac == NULL || mac->enabled == 0) 
 		return TRUE;
 
-    if (mac->key == NULL)
+	if (mac->key == NULL)
 		goto error;
 
-    if ((u_int)mac->mac_len > sizeof(m))
+	if ((u_int)mac->mac_len > sizeof(m))
 		goto error;
 
-    HMAC_Init(&c, mac->key, mac->key_len, mac->md);
-    set_uint32_MSBfirst(b, sequence_number);
-    HMAC_Update(&c, b, sizeof(b));
-    HMAC_Update(&c, data, len);
-    HMAC_Final(&c, m, NULL);
-    HMAC_cleanup(&c);
+	HMAC_Init(&c, mac->key, mac->key_len, mac->md);
+	set_uint32_MSBfirst(b, sequence_number);
+	HMAC_Update(&c, b, sizeof(b));
+	HMAC_Update(&c, data, len);
+	HMAC_Final(&c, m, NULL);
+	HMAC_cleanup(&c);
 
 	if (memcmp(m, MAC, mac->mac_len)) {
 		goto error;
@@ -777,10 +777,10 @@ int CRYPT_get_sender_MAC_size(PTInstVar pvar)
 
 // for SSH2
 BOOL CRYPT_build_sender_MAC(PTInstVar pvar, uint32 sequence_number,
-							char FAR * data, int len, char FAR * MAC)
+                            char FAR * data, int len, char FAR * MAC)
 {
-	HMAC_CTX c;    
-	static u_char m[EVP_MAX_MD_SIZE];    
+	HMAC_CTX c;
+	static u_char m[EVP_MAX_MD_SIZE];
 	u_char b[4];
 	struct Mac *mac;
 
@@ -788,8 +788,8 @@ BOOL CRYPT_build_sender_MAC(PTInstVar pvar, uint32 sequence_number,
 		mac = &pvar->ssh2_keys[MODE_OUT].mac;
 		if (mac == NULL || mac->enabled == 0) 
 			return FALSE;
-		    
-		HMAC_Init(&c, mac->key, mac->key_len, mac->md);    
+
+		HMAC_Init(&c, mac->key, mac->key_len, mac->md);
 		set_uint32_MSBfirst(b, sequence_number);
 		HMAC_Update(&c, b, sizeof(b));
 		HMAC_Update(&c, data, len);
@@ -828,8 +828,8 @@ BOOL CRYPT_choose_ciphers(PTInstVar pvar)
 {
 	if (SSHv1(pvar)) {
 		pvar->crypt_state.sender_cipher = choose_cipher(pvar,
-														pvar->crypt_state.
-														supported_sender_ciphers);
+		                                                pvar->crypt_state.
+		                                                supported_sender_ciphers);
 		pvar->crypt_state.receiver_cipher =
 			choose_cipher(pvar, pvar->crypt_state.supported_receiver_ciphers);
 
@@ -842,10 +842,10 @@ BOOL CRYPT_choose_ciphers(PTInstVar pvar)
 	if (pvar->crypt_state.sender_cipher == SSH_CIPHER_NONE
 		|| pvar->crypt_state.receiver_cipher == SSH_CIPHER_NONE) {
 		UTIL_get_lang_msg("MSG_CHIPHER_NONE_ERROR", pvar,
-						  "All the encryption algorithms that this program and the server both understand have been disabled.\n"
-						  "To communicate with this server, you will have to enable some more ciphers\n"
-						  "in the TTSSH Setup dialog box when you run Teraterm again.\n"
-						  "This connection will now close.");
+		                  "All the encryption algorithms that this program and the server both understand have been disabled.\n"
+		                  "To communicate with this server, you will have to enable some more ciphers\n"
+		                  "in the TTSSH Setup dialog box when you run Teraterm again.\n"
+		                  "This connection will now close.");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 		return FALSE;
 	} else {
@@ -869,7 +869,7 @@ int CRYPT_get_encrypted_session_key_len(PTInstVar pvar)
 }
 
 int CRYPT_choose_session_key(PTInstVar pvar,
-							 unsigned char FAR * encrypted_key_buf)
+                             unsigned char FAR * encrypted_key_buf)
 {
 	int server_key_bits =
 		BN_num_bits(pvar->crypt_state.server_key.RSA_key->n);
@@ -889,7 +889,7 @@ int CRYPT_choose_session_key(PTInstVar pvar,
 
 	if (bit_delta < 128 || server_key_bits < 512 || host_key_bits < 512) {
 		UTIL_get_lang_msg("MSG_RASKEY_TOOWEAK_ERROR", pvar,
-						  "Server RSA keys are too weak. A secure connection cannot be established.");
+		                  "Server RSA keys are too weak. A secure connection cannot be established.");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 		return 0;
 	} else {
@@ -902,63 +902,63 @@ int CRYPT_choose_session_key(PTInstVar pvar,
 
 		BN_bn2bin(pvar->crypt_state.host_key.RSA_key->n, session_buf);
 		BN_bn2bin(pvar->crypt_state.server_key.RSA_key->n,
-				  session_buf + host_key_bytes);
+		          session_buf + host_key_bytes);
 		memcpy(session_buf + server_key_bytes + host_key_bytes,
-			   pvar->crypt_state.server_cookie, 8);
+		       pvar->crypt_state.server_cookie, 8);
 		MD5(session_buf, session_buf_len, session_id);
 
 		free(session_buf);
 
 		RAND_bytes(pvar->crypt_state.sender_cipher_key,
-				   SSH_SESSION_KEY_LENGTH);
+		           SSH_SESSION_KEY_LENGTH);
 		memcpy(pvar->crypt_state.receiver_cipher_key,
-			   pvar->crypt_state.sender_cipher_key,
-			   SSH_SESSION_KEY_LENGTH);
+		       pvar->crypt_state.sender_cipher_key,
+		       SSH_SESSION_KEY_LENGTH);
 
 		memcpy(encrypted_key_buf + encrypted_key_bytes -
-			   SSH_SESSION_KEY_LENGTH, pvar->crypt_state.sender_cipher_key,
-			   SSH_SESSION_KEY_LENGTH);
+		       SSH_SESSION_KEY_LENGTH, pvar->crypt_state.sender_cipher_key,
+		       SSH_SESSION_KEY_LENGTH);
 		for (i = 0; i < sizeof(session_id); i++) {
 			encrypted_key_buf[encrypted_key_bytes -
-							  SSH_SESSION_KEY_LENGTH + i]
+			                  SSH_SESSION_KEY_LENGTH + i]
 				^= session_id[i];
 		}
 
 		if (host_key_bits > server_key_bits) {
 			if (RSA_public_encrypt(SSH_SESSION_KEY_LENGTH,
-								   encrypted_key_buf +
-								   encrypted_key_bytes -
-								   SSH_SESSION_KEY_LENGTH,
-								   encrypted_key_buf +
-								   encrypted_key_bytes - server_key_bytes,
-								   pvar->crypt_state.server_key.RSA_key,
-								   RSA_PKCS1_PADDING) < 0)
+			                       encrypted_key_buf +
+			                       encrypted_key_bytes -
+			                       SSH_SESSION_KEY_LENGTH,
+			                       encrypted_key_buf +
+			                       encrypted_key_bytes - server_key_bytes,
+			                       pvar->crypt_state.server_key.RSA_key,
+			                       RSA_PKCS1_PADDING) < 0)
 				return 0;
 
 			if (RSA_public_encrypt(server_key_bytes,
-								   encrypted_key_buf +
-								   encrypted_key_bytes - server_key_bytes,
-								   encrypted_key_buf,
-								   pvar->crypt_state.host_key.RSA_key,
-								   RSA_PKCS1_PADDING) < 0)
+			                       encrypted_key_buf +
+			                       encrypted_key_bytes - server_key_bytes,
+			                       encrypted_key_buf,
+			                       pvar->crypt_state.host_key.RSA_key,
+			                       RSA_PKCS1_PADDING) < 0)
 				return 0;
 		} else {
 			if (RSA_public_encrypt(SSH_SESSION_KEY_LENGTH,
-								   encrypted_key_buf +
-								   encrypted_key_bytes -
-								   SSH_SESSION_KEY_LENGTH,
-								   encrypted_key_buf +
-								   encrypted_key_bytes - host_key_bytes,
-								   pvar->crypt_state.host_key.RSA_key,
-								   RSA_PKCS1_PADDING) < 0)
+			                       encrypted_key_buf +
+			                       encrypted_key_bytes -
+			                       SSH_SESSION_KEY_LENGTH,
+			                       encrypted_key_buf +
+			                       encrypted_key_bytes - host_key_bytes,
+			                       pvar->crypt_state.host_key.RSA_key,
+			                       RSA_PKCS1_PADDING) < 0)
 				return 0;
 
 			if (RSA_public_encrypt(host_key_bytes,
-								   encrypted_key_buf +
-								   encrypted_key_bytes - host_key_bytes,
-								   encrypted_key_buf,
-								   pvar->crypt_state.server_key.RSA_key,
-								   RSA_PKCS1_PADDING) < 0)
+			                       encrypted_key_buf +
+			                       encrypted_key_bytes - host_key_bytes,
+			                       encrypted_key_buf,
+			                       pvar->crypt_state.server_key.RSA_key,
+			                       RSA_PKCS1_PADDING) < 0)
 				return 0;
 		}
 	}
@@ -967,9 +967,9 @@ int CRYPT_choose_session_key(PTInstVar pvar,
 }
 
 int CRYPT_generate_RSA_challenge_response(PTInstVar pvar,
-										  unsigned char FAR * challenge,
-										  int challenge_len,
-										  unsigned char FAR * response)
+                                          unsigned char FAR * challenge,
+                                          int challenge_len,
+                                          unsigned char FAR * response)
 {
 	int server_key_bits =
 		BN_num_bits(pvar->crypt_state.server_key.RSA_key->n);
@@ -983,29 +983,29 @@ int CRYPT_generate_RSA_challenge_response(PTInstVar pvar,
 
 	decrypted_challenge_len =
 		RSA_private_decrypt(challenge_len, challenge, challenge,
-							AUTH_get_cur_cred(pvar)->key_pair->RSA_key,
-							RSA_PKCS1_PADDING);
+		                    AUTH_get_cur_cred(pvar)->key_pair->RSA_key,
+		                    RSA_PKCS1_PADDING);
 	if (decrypted_challenge_len < 0) {
 		free(session_buf);
 		return 0;
 	}
 	if (decrypted_challenge_len >= SSH_RSA_CHALLENGE_LENGTH) {
 		memcpy(decrypted_challenge,
-			   challenge + decrypted_challenge_len -
-			   SSH_RSA_CHALLENGE_LENGTH, SSH_RSA_CHALLENGE_LENGTH);
+		       challenge + decrypted_challenge_len -
+		       SSH_RSA_CHALLENGE_LENGTH, SSH_RSA_CHALLENGE_LENGTH);
 	} else {
 		memset(decrypted_challenge, 0,
-			   SSH_RSA_CHALLENGE_LENGTH - decrypted_challenge_len);
+		       SSH_RSA_CHALLENGE_LENGTH - decrypted_challenge_len);
 		memcpy(decrypted_challenge + SSH_RSA_CHALLENGE_LENGTH -
-			   decrypted_challenge_len, challenge,
-			   decrypted_challenge_len);
+		       decrypted_challenge_len, challenge,
+		       decrypted_challenge_len);
 	}
 
 	BN_bn2bin(pvar->crypt_state.host_key.RSA_key->n, session_buf);
 	BN_bn2bin(pvar->crypt_state.server_key.RSA_key->n,
-			  session_buf + host_key_bytes);
+	          session_buf + host_key_bytes);
 	memcpy(session_buf + server_key_bytes + host_key_bytes,
-		   pvar->crypt_state.server_cookie, 8);
+	       pvar->crypt_state.server_cookie, 8);
 	MD5(session_buf, session_buf_len, decrypted_challenge + 32);
 
 	free(session_buf);
@@ -1038,7 +1038,7 @@ static void cIDEA_init(char FAR * session_key, CipherIDEAState FAR * state)
 }
 
 static void cBlowfish_init(char FAR * session_key,
-						   CipherBlowfishState FAR * state)
+                           CipherBlowfishState FAR * state)
 {
 	BF_set_key(&state->k, 32, session_key);
 	memset(state->ivec, 0, 8);
@@ -1050,13 +1050,11 @@ static void cBlowfish_init(char FAR * session_key,
 //
 // for SSH2(yutaka)
 //
-void cipher_init_SSH2(
-		EVP_CIPHER_CTX *evp, 
-		const u_char *key, u_int keylen, 
-		const u_char *iv, u_int ivlen,	
-		int encrypt,	
-		const EVP_CIPHER *(*func)(void)
-)
+void cipher_init_SSH2(EVP_CIPHER_CTX *evp,
+                      const u_char *key, u_int keylen,
+                      const u_char *iv, u_int ivlen,
+                      int encrypt,
+                      const EVP_CIPHER *(*func)(void))
 {
 	EVP_CIPHER *type;
 	int klen;
@@ -1094,10 +1092,10 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				struct Enc *enc;
 
 				enc = &pvar->ssh2_keys[MODE_OUT].enc;
-				cipher_init_SSH2(&pvar->evpcip[MODE_OUT], 
-						enc->key, 24, enc->iv, 8, 
-						CIPHER_ENCRYPT,
-						EVP_des_ede3_cbc);
+				cipher_init_SSH2(&pvar->evpcip[MODE_OUT],
+				                 enc->key, 24, enc->iv, 8,
+				                 CIPHER_ENCRYPT,
+				                 EVP_des_ede3_cbc);
 
 				//debug_print(10, enc->key, 24);
 				//debug_print(11, enc->iv, 24);
@@ -1113,9 +1111,9 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 				enc = &pvar->ssh2_keys[MODE_OUT].enc;
 				cipher_init_SSH2(&pvar->evpcip[MODE_OUT], 
-						enc->key, 16, enc->iv, 16, 
-						CIPHER_ENCRYPT,
-						EVP_aes_128_cbc);
+				                 enc->key, 16, enc->iv, 16, 
+				                 CIPHER_ENCRYPT,
+				                 EVP_aes_128_cbc);
 
 				//debug_print(10, enc->key, 24);
 				//debug_print(11, enc->iv, 24);
@@ -1147,7 +1145,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 			}
 		case SSH_CIPHER_BLOWFISH:{
 				cBlowfish_init(encryption_key,
-							&pvar->crypt_state.enc.cBlowfish);
+				               &pvar->crypt_state.enc.cBlowfish);
 				pvar->crypt_state.encrypt = cBlowfish_encrypt;
 				break;
 			}
@@ -1166,9 +1164,9 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 				enc = &pvar->ssh2_keys[MODE_IN].enc;
 				cipher_init_SSH2(&pvar->evpcip[MODE_IN], 
-						enc->key, 24, enc->iv, 8, 
-						CIPHER_DECRYPT,
-						EVP_des_ede3_cbc);
+				                 enc->key, 24, enc->iv, 8, 
+				                 CIPHER_DECRYPT,
+				                 EVP_des_ede3_cbc);
 
 				//debug_print(12, enc->key, 24);
 				//debug_print(13, enc->iv, 24);
@@ -1184,9 +1182,9 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 				enc = &pvar->ssh2_keys[MODE_IN].enc;
 				cipher_init_SSH2(&pvar->evpcip[MODE_IN], 
-						enc->key, 16, enc->iv, 16, 
-						CIPHER_DECRYPT,
-						EVP_aes_128_cbc);
+				                 enc->key, 16, enc->iv, 16, 
+				                 CIPHER_DECRYPT,
+				                 EVP_aes_128_cbc);
 
 				//debug_print(12, enc->key, 24);
 				//debug_print(13, enc->iv, 24);
@@ -1217,7 +1215,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 			}
 		case SSH_CIPHER_BLOWFISH:{
 				cBlowfish_init(decryption_key,
-							&pvar->crypt_state.dec.cBlowfish);
+				               &pvar->crypt_state.dec.cBlowfish);
 				pvar->crypt_state.decrypt = cBlowfish_decrypt;
 				break;
 			}
@@ -1229,7 +1227,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 	if (!isOK) {
 		UTIL_get_lang_msg("MSG_CHPHER_NOTSELECTED_ERROR", pvar,
-						  "No cipher selected!");
+		                  "No cipher selected!");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 		return FALSE;
 	} else {
@@ -1283,32 +1281,32 @@ static char FAR *get_cipher_name(int cipher)
 void CRYPT_get_cipher_info(PTInstVar pvar, char FAR * dest, int len)
 {
 	UTIL_get_lang_msg("DLG_ABOUT_CIPHER_INFO", pvar,
-					  "%s to server, %s from server");
+	                  "%s to server, %s from server");
 	_snprintf_s(dest, len, _TRUNCATE, pvar->ts->UIMsg,
-			  get_cipher_name(pvar->crypt_state.sender_cipher),
-			  get_cipher_name(pvar->crypt_state.receiver_cipher));
+	          get_cipher_name(pvar->crypt_state.sender_cipher),
+	          get_cipher_name(pvar->crypt_state.receiver_cipher));
 }
 
 void CRYPT_get_server_key_info(PTInstVar pvar, char FAR * dest, int len)
 {
 	if (SSHv1(pvar)) {
 		if (pvar->crypt_state.server_key.RSA_key == NULL
-			|| pvar->crypt_state.host_key.RSA_key == NULL) {
+		 || pvar->crypt_state.host_key.RSA_key == NULL) {
 			UTIL_get_lang_msg("DLG_ABOUT_KEY_NONE", pvar, "None");
 			strncpy_s(dest, len, pvar->ts->UIMsg, _TRUNCATE);
 		} else {
 			UTIL_get_lang_msg("DLG_ABOUT_KEY_INFO", pvar,
-							  "%d-bit server key, %d-bit host key");
+			                  "%d-bit server key, %d-bit host key");
 			_snprintf_s(dest, len, _TRUNCATE, pvar->ts->UIMsg,
-					BN_num_bits(pvar->crypt_state.server_key.RSA_key->n),
-					BN_num_bits(pvar->crypt_state.host_key.RSA_key->n));
+			            BN_num_bits(pvar->crypt_state.server_key.RSA_key->n),
+			            BN_num_bits(pvar->crypt_state.host_key.RSA_key->n));
 		}
 	} else { // SSH2
 			UTIL_get_lang_msg("DLG_ABOUT_KEY_INFO", pvar,
-							  "%d-bit server key, %d-bit host key");
+			                  "%d-bit server key, %d-bit host key");
 			_snprintf_s(dest, len, _TRUNCATE, pvar->ts->UIMsg,
-				pvar->server_key_bits,
-				pvar->client_key_bits);
+			            pvar->server_key_bits,
+			            pvar->client_key_bits);
 	}
 }
 
@@ -1333,24 +1331,24 @@ void CRYPT_end(PTInstVar pvar)
 
 	if (pvar->crypt_state.detect_attack_statics.h != NULL) {
 		memset(pvar->crypt_state.detect_attack_statics.h, 0,
-			   pvar->crypt_state.detect_attack_statics.n * HASH_ENTRYSIZE);
+		       pvar->crypt_state.detect_attack_statics.n * HASH_ENTRYSIZE);
 		free(pvar->crypt_state.detect_attack_statics.h);
 	}
 
 	memset(pvar->crypt_state.sender_cipher_key, 0,
-		   sizeof(pvar->crypt_state.sender_cipher_key));
+	       sizeof(pvar->crypt_state.sender_cipher_key));
 	memset(pvar->crypt_state.receiver_cipher_key, 0,
-		   sizeof(pvar->crypt_state.receiver_cipher_key));
+	       sizeof(pvar->crypt_state.receiver_cipher_key));
 	memset(pvar->crypt_state.server_cookie, 0,
-		   sizeof(pvar->crypt_state.server_cookie));
+	       sizeof(pvar->crypt_state.server_cookie));
 	memset(pvar->crypt_state.client_cookie, 0,
-		   sizeof(pvar->crypt_state.client_cookie));
+	       sizeof(pvar->crypt_state.client_cookie));
 	memset(&pvar->crypt_state.enc, 0, sizeof(pvar->crypt_state.enc));
 	memset(&pvar->crypt_state.dec, 0, sizeof(pvar->crypt_state.dec));
 }
 
 int CRYPT_passphrase_decrypt(int cipher, char FAR * passphrase,
-							 char FAR * buf, int bytes)
+                             char FAR * buf, int bytes)
 {
 	unsigned char passphrase_key[16];
 
@@ -1361,20 +1359,20 @@ int CRYPT_passphrase_decrypt(int cipher, char FAR * passphrase,
 			Cipher3DESState state;
 
 			DES_set_key((const_DES_cblock FAR *) passphrase_key,
-						&state.k1);
+			            &state.k1);
 			DES_set_key((const_DES_cblock FAR *) (passphrase_key + 8),
-						&state.k2);
+			            &state.k2);
 			DES_set_key((const_DES_cblock FAR *) passphrase_key,
-						&state.k3);
+			            &state.k3);
 			memset(state.ivec1, 0, 8);
 			memset(state.ivec2, 0, 8);
 			memset(state.ivec3, 0, 8);
 			DES_ncbc_encrypt(buf, buf, bytes,
-							 &state.k3, &state.ivec3, DES_DECRYPT);
+			                 &state.k3, &state.ivec3, DES_DECRYPT);
 			DES_ncbc_encrypt(buf, buf, bytes,
-							 &state.k2, &state.ivec2, DES_ENCRYPT);
+			                 &state.k2, &state.ivec2, DES_ENCRYPT);
 			DES_ncbc_encrypt(buf, buf, bytes,
-							 &state.k1, &state.ivec1, DES_DECRYPT);
+			                 &state.k1, &state.ivec1, DES_DECRYPT);
 			break;
 		}
 
@@ -1384,7 +1382,7 @@ int CRYPT_passphrase_decrypt(int cipher, char FAR * passphrase,
 
 			cIDEA_init(passphrase_key, &state);
 			idea_cfb64_encrypt(buf, buf, bytes, &state.k, state.ivec,
-							   &num, IDEA_DECRYPT);
+			                   &num, IDEA_DECRYPT);
 			break;
 		}
 
@@ -1393,7 +1391,7 @@ int CRYPT_passphrase_decrypt(int cipher, char FAR * passphrase,
 
 			cDES_init(passphrase_key, &state);
 			DES_ncbc_encrypt(buf, buf, bytes,
-							 &state.k, &state.ivec, DES_DECRYPT);
+			                 &state.k, &state.ivec, DES_DECRYPT);
 			break;
 		}
 

@@ -142,7 +142,7 @@ void HOSTS_open(PTInstVar pvar)
 // known_hostsファイルの内容をすべて pvar->hosts_state.file_data へ読み込む
 //
 static int begin_read_file(PTInstVar pvar, char FAR * name,
-						   int suppress_errors)
+                           int suppress_errors)
 {
 	int fd;
 	int length;
@@ -155,12 +155,12 @@ static int begin_read_file(PTInstVar pvar, char FAR * name,
 		if (!suppress_errors) {
 			if (errno == ENOENT) {
 				UTIL_get_lang_msg("MSG_HOSTS_READ_ENOENT_ERROR", pvar,
-								  "An error occurred while trying to read a known_hosts file.\n"
-								  "The specified filename does not exist.");
+				                  "An error occurred while trying to read a known_hosts file.\n"
+				                  "The specified filename does not exist.");
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 			} else {
 				UTIL_get_lang_msg("MSG_HOSTS_READ_ERROR", pvar,
-								  "An error occurred while trying to read a known_hosts file.");
+				                  "An error occurred while trying to read a known_hosts file.");
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 			}
 		}
@@ -175,7 +175,7 @@ static int begin_read_file(PTInstVar pvar, char FAR * name,
 		if (pvar->hosts_state.file_data == NULL) {
 			if (!suppress_errors) {
 				UTIL_get_lang_msg("MSG_HOSTS_ALLOC_ERROR", pvar,
-								  "Memory ran out while trying to allocate space to read a known_hosts file.");
+				                  "Memory ran out while trying to allocate space to read a known_hosts file.");
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 			}
 			_close(fd);
@@ -184,7 +184,7 @@ static int begin_read_file(PTInstVar pvar, char FAR * name,
 	} else {
 		if (!suppress_errors) {
 			UTIL_get_lang_msg("MSG_HOSTS_READ_ERROR", pvar,
-							  "An error occurred while trying to read a known_hosts file.");
+			                  "An error occurred while trying to read a known_hosts file.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		}
 		_close(fd);
@@ -199,7 +199,7 @@ static int begin_read_file(PTInstVar pvar, char FAR * name,
 	if (amount_read != length) {
 		if (!suppress_errors) {
 			UTIL_get_lang_msg("MSG_HOSTS_READ_ERROR", pvar,
-							  "An error occurred while trying to read a known_hosts file.");
+			                  "An error occurred while trying to read a known_hosts file.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		}
 		free(pvar->hosts_state.file_data);
@@ -500,7 +500,7 @@ static char FAR *parse_bignum(char FAR * data)
 // known_hostsファイルの内容を解析し、指定したホストの公開鍵を探す。
 //
 static int check_host_key(PTInstVar pvar, char FAR * hostname,
-						  char FAR * data)
+                          char FAR * data)
 {
 	int index = eat_spaces(data);
 	int matched = 0;
@@ -621,7 +621,7 @@ static int check_host_key(PTInstVar pvar, char FAR * hostname,
 // known_hostsファイルからホスト名に合致する行を読む
 //
 static int read_host_key(PTInstVar pvar, char FAR * hostname,
-						 int suppress_errors, int return_always)
+                         int suppress_errors, int return_always)
 {
 	int i;
 	int while_flg;
@@ -632,8 +632,8 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 		if (!is_pattern_char(ch) || ch == '*' || ch == '?') {
 			if (!suppress_errors) {
 				UTIL_get_lang_msg("MSG_HOSTS_HOSTNAME_INVALID_ERROR", pvar,
-								  "The host name contains an invalid character.\n"
-								  "This session will be terminated.");
+				                  "The host name contains an invalid character.\n"
+				                  "This session will be terminated.");
 				notify_fatal_error(pvar, pvar->ts->UIMsg);
 			}
 			return 0;
@@ -643,8 +643,8 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 	if (i == 0) {
 		if (!suppress_errors) {
 			UTIL_get_lang_msg("MSG_HOSTS_HOSTNAME_EMPTY_ERROR", pvar,
-							  "The host name should not be empty.\n"
-							  "This session will be terminated.");
+			                  "The host name should not be empty.\n"
+			                  "This session will be terminated.");
 			notify_fatal_error(pvar, pvar->ts->UIMsg);
 		}
 		return 0;
@@ -663,8 +663,7 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 
 	do {
 		if (pvar->hosts_state.file_data == NULL
-			|| pvar->hosts_state.file_data[pvar->hosts_state.
-										   file_data_index] == 0) {
+		 || pvar->hosts_state.file_data[pvar->hosts_state.file_data_index] == 0) {
 			char FAR *filename;
 			int keep_going = 1;
 
@@ -674,8 +673,7 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 
 			do {
 				filename =
-					pvar->hosts_state.file_names[pvar->hosts_state.
-												 file_num];
+					pvar->hosts_state.file_names[pvar->hosts_state.file_num];
 
 				if (filename == NULL) {
 					return 1;
@@ -683,8 +681,7 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 					pvar->hosts_state.file_num++;
 
 					if (filename[0] != 0) {
-						if (begin_read_file
-							(pvar, filename, suppress_errors)) {
+						if (begin_read_file(pvar, filename, suppress_errors)) {
 							pvar->hosts_state.file_data_index = 0;
 							keep_going = 0;
 						}
@@ -695,8 +692,8 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 
 		pvar->hosts_state.file_data_index +=
 			check_host_key(pvar, hostname,
-						   pvar->hosts_state.file_data +
-						   pvar->hosts_state.file_data_index);
+			               pvar->hosts_state.file_data +
+			               pvar->hosts_state.file_data_index);
 
 		if (!return_always) {
 			// 有効なキーが見つかるまで
@@ -735,7 +732,7 @@ void HOSTS_prefetch_host_key(PTInstVar pvar, char FAR * hostname)
 }
 
 static BOOL equal_mp_ints(unsigned char FAR * num1,
-						  unsigned char FAR * num2)
+                          unsigned char FAR * num2)
 {
 	if (num1 == NULL || num2 == NULL) {
 		return FALSE;
@@ -764,7 +761,7 @@ static BOOL match_key(PTInstVar pvar, Key *key)
 
 		/* just check for equal exponent and modulus */
 		return equal_mp_ints(exp, pvar->hosts_state.hostkey.exp)
-			&& equal_mp_ints(mod, pvar->hosts_state.hostkey.mod);
+		    && equal_mp_ints(mod, pvar->hosts_state.hostkey.mod);
 		/*
 		return equal_mp_ints(exp, pvar->hosts_state.key_exp)
 			&& equal_mp_ints(mod, pvar->hosts_state.key_mod);
@@ -773,16 +770,16 @@ static BOOL match_key(PTInstVar pvar, Key *key)
 	} else if (key->type == KEY_RSA) {  // SSH2 RSA host public key
 
 		return key->rsa != NULL && pvar->hosts_state.hostkey.rsa != NULL &&
-			   BN_cmp(key->rsa->e, pvar->hosts_state.hostkey.rsa->e) == 0 && 
-			   BN_cmp(key->rsa->n, pvar->hosts_state.hostkey.rsa->n) == 0;
+		       BN_cmp(key->rsa->e, pvar->hosts_state.hostkey.rsa->e) == 0 && 
+		       BN_cmp(key->rsa->n, pvar->hosts_state.hostkey.rsa->n) == 0;
 
 	} else { // // SSH2 DSA host public key
 
 		return key->dsa != NULL && pvar->hosts_state.hostkey.dsa && 
-			   BN_cmp(key->dsa->p, pvar->hosts_state.hostkey.dsa->p) == 0 && 
-			   BN_cmp(key->dsa->q, pvar->hosts_state.hostkey.dsa->q) == 0 &&
-			   BN_cmp(key->dsa->g, pvar->hosts_state.hostkey.dsa->g) == 0 &&
-			   BN_cmp(key->dsa->pub_key, pvar->hosts_state.hostkey.dsa->pub_key) == 0;
+		       BN_cmp(key->dsa->p, pvar->hosts_state.hostkey.dsa->p) == 0 && 
+		       BN_cmp(key->dsa->q, pvar->hosts_state.hostkey.dsa->q) == 0 &&
+		       BN_cmp(key->dsa->g, pvar->hosts_state.hostkey.dsa->g) == 0 &&
+		       BN_cmp(key->dsa->pub_key, pvar->hosts_state.hostkey.dsa->pub_key) == 0;
 
 	}
 
@@ -802,7 +799,7 @@ static void init_hosts_dlg(PTInstVar pvar, HWND dlg)
 		buf2[i] = ch;
 	}
 	strncpy_s(buf2 + i, sizeof(buf2) - i,
-			  pvar->hosts_state.prefetched_hostname, _TRUNCATE);
+	          pvar->hosts_state.prefetched_hostname, _TRUNCATE);
 	j = i + strlen(buf2 + i);
 	for (; buf[i] == '#'; i++) {
 	}
@@ -851,15 +848,15 @@ static char FAR *format_host_key(PTInstVar pvar)
 
 	if (type == KEY_RSA1) {
 		int result_len = host_len + 50 +
-						 get_ushort16_MSBfirst(pvar->hosts_state.hostkey.exp) / 3 +
-						 get_ushort16_MSBfirst(pvar->hosts_state.hostkey.mod) / 3;
+		                 get_ushort16_MSBfirst(pvar->hosts_state.hostkey.exp) / 3 +
+		                 get_ushort16_MSBfirst(pvar->hosts_state.hostkey.mod) / 3;
 		result = (char FAR *) malloc(result_len);
 
 		strncpy_s(result, result_len, pvar->hosts_state.prefetched_hostname, _TRUNCATE);
 		index = host_len;
 
 		_snprintf_s(result + index, result_len - host_len, _TRUNCATE,
-			" %d ", pvar->hosts_state.hostkey.bits);
+		            " %d ", pvar->hosts_state.hostkey.bits);
 		index += strlen(result + index);
 		index += print_mp_int(result + index, pvar->hosts_state.hostkey.exp);
 		result[index] = ' ';
@@ -890,9 +887,9 @@ static char FAR *format_host_key(PTInstVar pvar)
 
 			// setup
 			_snprintf_s(result, msize, _TRUNCATE, "%s %s %s\r\n",
-				pvar->hosts_state.prefetched_hostname, 
-				get_sshname_from_key(key),
-				uu);
+			            pvar->hosts_state.prefetched_hostname, 
+			            get_sshname_from_key(key),
+			            uu);
 		}
 error:
 		if (blob != NULL)
@@ -914,8 +911,8 @@ static void add_host_key(PTInstVar pvar)
 
 	if (name == NULL || name[0] == 0) {
 		UTIL_get_lang_msg("MSG_HOSTS_FILE_UNSPECIFY_ERROR", pvar,
-						  "The host and its key cannot be added, because no known-hosts file has been specified.\n"
-						  "Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
+		                  "The host and its key cannot be added, because no known-hosts file has been specified.\n"
+		                  "Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 	} else {
 		char FAR *keydata = format_host_key(pvar);
@@ -927,19 +924,18 @@ static void add_host_key(PTInstVar pvar)
 
 		get_teraterm_dir_relative_name(buf, sizeof(buf), name);
 		fd = _open(buf,
-			  _O_APPEND | _O_CREAT | _O_WRONLY | _O_SEQUENTIAL |
-			  _O_BINARY,
-			  _S_IREAD | _S_IWRITE);
+		          _O_APPEND | _O_CREAT | _O_WRONLY | _O_SEQUENTIAL | _O_BINARY,
+		          _S_IREAD | _S_IWRITE);
 		if (fd == -1) {
 			if (errno == EACCES) {
 				UTIL_get_lang_msg("MSG_HOSTS_WRITE_EACCES_ERROR", pvar,
-								  "An error occurred while trying to write the host key.\n"
-								  "You do not have permission to write to the known-hosts file.");
+				                  "An error occurred while trying to write the host key.\n"
+				                  "You do not have permission to write to the known-hosts file.");
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 			} else {
 				UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar,
-								  "An error occurred while trying to write the host key.\n"
-								  "The host key could not be written.");
+				                  "An error occurred while trying to write the host key.\n"
+				                  "The host key could not be written.");
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 			}
 			return;
@@ -951,8 +947,8 @@ static void add_host_key(PTInstVar pvar)
 
 		if (amount_written != length || close_result == -1) {
 			UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar,
-							  "An error occurred while trying to write the host key.\n"
-							  "The host key could not be written.");
+			                  "An error occurred while trying to write the host key.\n"
+			                  "The host key could not be written.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		}
 	}
@@ -980,8 +976,8 @@ static void delete_different_key(PTInstVar pvar)
 
 	if (name == NULL || name[0] == 0) {
 		UTIL_get_lang_msg("MSG_HOSTS_FILE_UNSPECIFY_ERROR", pvar,
-						  "The host and its key cannot be added, because no known-hosts file has been specified.\n"
-						  "Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
+		                  "The host and its key cannot be added, because no known-hosts file has been specified.\n"
+		                  "Restart Teraterm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 	}
 	else {
@@ -996,22 +992,20 @@ static void delete_different_key(PTInstVar pvar)
 
 		// 書き込み一時ファイルを開く
 		tmpnam(filename);
-		fd =
-			_open(filename,
-				  _O_CREAT | _O_WRONLY | _O_SEQUENTIAL | _O_BINARY |
-				  _O_TRUNC,
-				  _S_IREAD | _S_IWRITE);
+		fd = _open(filename,
+		          _O_CREAT | _O_WRONLY | _O_SEQUENTIAL | _O_BINARY | _O_TRUNC,
+		          _S_IREAD | _S_IWRITE);
 
 		if (fd == -1) {
 			if (errno == EACCES) {
 				UTIL_get_lang_msg("MSG_HOSTS_WRITE_EACCES_ERROR", pvar,
-								  "An error occurred while trying to write the host key.\n"
-								  "You do not have permission to write to the known-hosts file.");
+				                  "An error occurred while trying to write the host key.\n"
+				                  "You do not have permission to write to the known-hosts file.");
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 			} else {
 				UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar,
-								  "An error occurred while trying to write the host key.\n"
-								  "The host key could not be written.");
+				                  "An error occurred while trying to write the host key.\n"
+				                  "The host key could not be written.");
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 			}
 			free(filename);
@@ -1069,7 +1063,7 @@ static void delete_different_key(PTInstVar pvar)
 					if (negated) {
 						host_index++;
 						if (match_pattern(data + host_index,
-										  pvar->ssh_state.hostname)) {
+						                  pvar->ssh_state.hostname)) {
 							matched = 0;
 							// 接続バージョンチェックのために host_index を進めてから抜ける
 							host_index--;
@@ -1081,7 +1075,7 @@ static void delete_different_key(PTInstVar pvar)
 						}
 					}
 					else if (match_pattern(data + host_index,
-									  pvar->ssh_state.hostname)) {
+					                       pvar->ssh_state.hostname)) {
 						matched = 1;
 					}
 					host_index += eat_to_end_of_pattern(data + host_index);
@@ -1118,7 +1112,7 @@ static void delete_different_key(PTInstVar pvar)
 				length = pvar->hosts_state.file_data_index - data_index;
 				amount_written =
 					_write(fd, pvar->hosts_state.file_data + data_index,
-						   length);
+					       length);
 
 				if (amount_written != length) {
 					goto error1;
@@ -1131,8 +1125,8 @@ error1:
 		close_result = _close(fd);
 		if (amount_written != length || close_result == -1) {
 			UTIL_get_lang_msg("MSG_HOSTS_WRITE_ERROR", pvar,
-							  "An error occurred while trying to write the host key.\n"
-							  "The host key could not be written.");
+			                  "An error occurred while trying to write the host key.\n"
+			                  "The host key could not be written.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 			goto error2;
 		}
@@ -1156,7 +1150,7 @@ error2:
 // (2006.3.25 yutaka)
 //
 static BOOL CALLBACK hosts_add_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
-										LPARAM lParam)
+                                        LPARAM lParam)
 {
 	PTInstVar pvar;
 	LOGFONT logfont;
@@ -1263,7 +1257,7 @@ static BOOL CALLBACK hosts_add_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 // 置き換え時の確認ダイアログを分離
 //
 static BOOL CALLBACK hosts_replace_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
-											LPARAM lParam)
+                                            LPARAM lParam)
 {
 	PTInstVar pvar;
 	LOGFONT logfont;
@@ -1370,8 +1364,8 @@ void HOSTS_do_unknown_host_dialog(HWND wnd, PTInstVar pvar)
 		HWND cur_active = GetActiveWindow();
 
 		DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SSHUNKNOWNHOST),
-					   cur_active != NULL ? cur_active : wnd,
-					   hosts_add_dlg_proc, (LPARAM) pvar);
+		               cur_active != NULL ? cur_active : wnd,
+		               hosts_add_dlg_proc, (LPARAM) pvar);
 	}
 }
 
@@ -1381,8 +1375,8 @@ void HOSTS_do_different_host_dialog(HWND wnd, PTInstVar pvar)
 		HWND cur_active = GetActiveWindow();
 
 		DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SSHDIFFERENTHOST),
-					   cur_active != NULL ? cur_active : wnd,
-					   hosts_replace_dlg_proc, (LPARAM) pvar);
+		               cur_active != NULL ? cur_active : wnd,
+		               hosts_replace_dlg_proc, (LPARAM) pvar);
 	}
 }
 
@@ -1397,8 +1391,8 @@ BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname, Key *key)
 
 	// すでに known_hosts ファイルからホスト公開鍵を読み込んでいるなら、それと比較する。
 	if (pvar->hosts_state.prefetched_hostname != NULL
-		&& _stricmp(pvar->hosts_state.prefetched_hostname, hostname) == 0
-		&& match_key(pvar, key)) {
+	 && _stricmp(pvar->hosts_state.prefetched_hostname, hostname) == 0
+	 && match_key(pvar, key)) {
 
 		if (SSHv1(pvar)) {
 			SSH_notify_host_OK(pvar);
@@ -1456,10 +1450,10 @@ BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname, Key *key)
 
 	if (found_different_key) {
 		PostMessage(pvar->NotificationWindow, WM_COMMAND,
-					ID_SSHDIFFERENTHOST, 0);
+		            ID_SSHDIFFERENTHOST, 0);
 	} else {
 		PostMessage(pvar->NotificationWindow, WM_COMMAND,
-					ID_SSHUNKNOWNHOST, 0);
+		            ID_SSHUNKNOWNHOST, 0);
 	}
 
 	return TRUE;
@@ -1469,7 +1463,7 @@ void HOSTS_notify_disconnecting(PTInstVar pvar)
 {
 	if (pvar->hosts_state.hosts_dialog != NULL) {
 		PostMessage(pvar->hosts_state.hosts_dialog, WM_COMMAND, IDCANCEL,
-					0);
+		            0);
 		/* the main window might not go away if it's not enabled. (see vtwin.cpp) */
 		EnableWindow(pvar->NotificationWindow, TRUE);
 	}

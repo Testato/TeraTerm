@@ -202,61 +202,61 @@ int buffer_overflow_verify(buffer_t *msg, int len)
 // for SSH1
 void buffer_put_bignum(buffer_t *buffer, BIGNUM *value)
 {
-    unsigned int bits, bin_size;
-    unsigned char *buf;
-    int oi;
-    char msg[2];
+	unsigned int bits, bin_size;
+	unsigned char *buf;
+	int oi;
+	char msg[2];
 	
-    bits = BN_num_bits(value);
+	bits = BN_num_bits(value);
 	bin_size = (bits + 7) / 8;
-    buf = malloc(bin_size);
+	buf = malloc(bin_size);
 	if (buf == NULL) {
 		*buf = 0;
 		goto error;
 	}
 
-    buf[0] = '\0';
-    /* Get the value of in binary */
-    oi = BN_bn2bin(value, buf);
+	buf[0] = '\0';
+	/* Get the value of in binary */
+	oi = BN_bn2bin(value, buf);
 	if (oi != bin_size) {
 		goto error;
 	}
 
-    /* Store the number of bits in the buffer in two bytes, msb first. */
+	/* Store the number of bits in the buffer in two bytes, msb first. */
 	set_ushort16_MSBfirst(msg, bits);
 	buffer_append(buffer, msg, 2);
 
-    /* Store the binary data. */
-    buffer_append(buffer, (char *)buf, oi);
+	/* Store the binary data. */
+	buffer_append(buffer, (char *)buf, oi);
 
 error:
-    free(buf);
+	free(buf);
 }
 
 // for SSH2
 void buffer_put_bignum2(buffer_t *msg, BIGNUM *value)
 {
-    unsigned int bytes;
-    unsigned char *buf;
-    int oi;
-    unsigned int hasnohigh = 0;
-	
-    bytes = BN_num_bytes(value) + 1; /* extra padding byte */
-    buf = malloc(bytes);
+	unsigned int bytes;
+	unsigned char *buf;
+	int oi;
+	unsigned int hasnohigh = 0;
+
+	bytes = BN_num_bytes(value) + 1; /* extra padding byte */
+	buf = malloc(bytes);
 	if (buf == NULL) {
 		*buf = 0;
 		goto error;
 	}
 
-    buf[0] = '\0';
-    /* Get the value of in binary */
-    oi = BN_bn2bin(value, buf+1);
-    hasnohigh = (buf[1] & 0x80) ? 0 : 1;
-    buffer_put_string(msg, buf+hasnohigh, bytes-hasnohigh);
-    //memset(buf, 0, bytes);
+	buf[0] = '\0';
+	/* Get the value of in binary */
+	oi = BN_bn2bin(value, buf+1);
+	hasnohigh = (buf[1] & 0x80) ? 0 : 1;
+	buffer_put_string(msg, buf+hasnohigh, bytes-hasnohigh);
+	//memset(buf, 0, bytes);
 
 error:
-    free(buf);
+	free(buf);
 }
 
 void buffer_get_bignum2(char **data, BIGNUM *value)

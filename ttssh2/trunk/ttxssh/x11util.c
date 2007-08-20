@@ -42,7 +42,7 @@ typedef struct {
 } X11UnspoofingFilterClosure;
 
 void X11_get_DISPLAY_info(char FAR * name_buf, int name_buf_len,
-						  int FAR * port)
+                          int FAR * port)
 {
 	char FAR *DISPLAY = getenv("DISPLAY");
 
@@ -124,7 +124,7 @@ void X11_dispose_auth_data(X11AuthData FAR * auth_data)
 }
 
 void *X11_init_unspoofing_filter(PTInstVar pvar,
-								 X11AuthData FAR * auth_data)
+                                 X11AuthData FAR * auth_data)
 {
 	X11UnspoofingFilterClosure FAR *closure =
 		malloc(sizeof(X11UnspoofingFilterClosure));
@@ -143,11 +143,11 @@ void *X11_init_unspoofing_filter(PTInstVar pvar,
 #define MERGE_GOT_BAD_DATA  2
 
 static int merge_into_X11_init_packet(X11UnspoofingFilterClosure FAR *
-									  closure, int length,
-									  unsigned char FAR * buf)
+                                      closure, int length,
+                                      unsigned char FAR * buf)
 {
 	buf_ensure_size_growing(&closure->init_buf, &closure->init_buf_len,
-							closure->init_data_len + length);
+	                        closure->init_data_len + length);
 	memcpy(closure->init_buf + closure->init_data_len, buf, length);
 	closure->init_data_len += length;
 
@@ -176,17 +176,17 @@ static int merge_into_X11_init_packet(X11UnspoofingFilterClosure FAR *
 		padded_data_len = (data_len + 3) & ~0x3;
 
 		if (closure->init_data_len <
-			12 + padded_name_len + padded_data_len) {
+		    12 + padded_name_len + padded_data_len) {
 			return MERGE_NEED_MORE;
 		} else if (name_len ==
-				   (int) strlen(closure->auth_data->spoofed_protocol)
-				   && memcmp(closure->init_buf + 12,
-							 closure->auth_data->spoofed_protocol,
-							 name_len) == 0
-				   && data_len == closure->auth_data->spoofed_data_len
-				   && memcmp(closure->init_buf + 12 + padded_name_len,
-							 closure->auth_data->spoofed_data,
-							 data_len) == 0) {
+		           (int) strlen(closure->auth_data->spoofed_protocol)
+		           && memcmp(closure->init_buf + 12,
+		                     closure->auth_data->spoofed_protocol,
+		                     name_len) == 0
+		           && data_len == closure->auth_data->spoofed_data_len
+		           && memcmp(closure->init_buf + 12 + padded_name_len,
+		                     closure->auth_data->spoofed_data,
+		                     data_len) == 0) {
 			return MERGE_GOT_GOOD_DATA;
 		} else {
 			return MERGE_GOT_BAD_DATA;
@@ -195,8 +195,8 @@ static int merge_into_X11_init_packet(X11UnspoofingFilterClosure FAR *
 }
 
 static void insert_real_X11_auth_data(X11UnspoofingFilterClosure FAR *
-									  closure, int FAR * length,
-									  unsigned char FAR * FAR * buf)
+                                      closure, int FAR * length,
+                                      unsigned char FAR * FAR * buf)
 {
 	int name_len = closure->auth_data->local_protocol == NULL
 		? 0 : strlen(closure->auth_data->local_protocol);
@@ -225,11 +225,11 @@ static void insert_real_X11_auth_data(X11UnspoofingFilterClosure FAR *
 
 	memcpy(*buf + 12, closure->auth_data->local_protocol, name_len);
 	memcpy(*buf + 12 + padded_name_len, closure->auth_data->local_data,
-		   data_len);
+	       data_len);
 }
 
 int X11_unspoofing_filter(void FAR * void_closure, int direction,
-						  int FAR * length, unsigned char FAR * FAR * buf)
+                          int FAR * length, unsigned char FAR * FAR * buf)
 {
 	X11UnspoofingFilterClosure FAR *closure =
 		(X11UnspoofingFilterClosure FAR *) void_closure;
@@ -249,8 +249,8 @@ int X11_unspoofing_filter(void FAR * void_closure, int direction,
 		default:
 		case MERGE_GOT_BAD_DATA:
 			UTIL_get_lang_msg("MSG_X_AUTH_ERROR", closure->pvar,
-							  "Remote X application sent incorrect authentication data.\n"
-							  "Its X session is being cancelled.");
+			                  "Remote X application sent incorrect authentication data.\n"
+			                  "Its X session is being cancelled.");
 			notify_nonfatal_error(closure->pvar, closure->pvar->ts->UIMsg);
 			*length = 0;
 			return FWD_FILTER_CLOSECHANNEL;

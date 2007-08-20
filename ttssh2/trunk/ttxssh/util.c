@@ -41,7 +41,7 @@ void UTIL_init_sock_write_buf(UTILSockWriteBuf FAR * buf)
 }
 
 static int send_until_block(PTInstVar pvar, SOCKET s,
-							const char FAR * data, int len)
+                            const char FAR * data, int len)
 {
 	int total_sent = 0;
 
@@ -65,9 +65,9 @@ static int send_until_block(PTInstVar pvar, SOCKET s,
 }
 
 BOOL UTIL_sock_buffered_write(PTInstVar pvar, UTILSockWriteBuf FAR * buf,
-							  UTILBlockingWriteCallback blocking_write,
-							  SOCKET socket, const char FAR * data,
-							  int len)
+                              UTILBlockingWriteCallback blocking_write,
+                              SOCKET socket, const char FAR * data,
+                              int len)
 {
 	int curlen;
 	int desiredlen;

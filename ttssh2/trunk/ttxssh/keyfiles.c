@@ -79,9 +79,9 @@ static BOOL normalize_key(RSA FAR * key)
 
 		if (key->dmp1 != NULL && key->dmq1 != NULL && key->iqmp != NULL) {
 			OK = BN_sub(r, key->p, BN_value_one())
-				&& BN_mod(key->dmp1, key->d, r, ctx)
-				&& BN_sub(r, key->q, BN_value_one())
-				&& BN_mod(key->dmq1, key->d, r, ctx);
+			  && BN_mod(key->dmp1, key->d, r, ctx)
+			  && BN_sub(r, key->q, BN_value_one())
+			  && BN_mod(key->dmq1, key->d, r, ctx);
 		}
 	}
 
@@ -92,10 +92,10 @@ static BOOL normalize_key(RSA FAR * key)
 }
 
 static RSA FAR *read_RSA_private_key(PTInstVar pvar,
-									 char FAR * relative_name,
-									 char FAR * passphrase,
-									 BOOL FAR * invalid_passphrase,
-									 BOOL is_auto_login)
+                                     char FAR * relative_name,
+                                     char FAR * passphrase,
+                                     BOOL FAR * invalid_passphrase,
+                                     BOOL is_auto_login)
 {
 	char filename[2048];
 	int fd;
@@ -109,18 +109,18 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 	*invalid_passphrase = FALSE;
 
 	get_teraterm_dir_relative_name(filename, sizeof(filename),
-								   relative_name);
+	                               relative_name);
 
 	fd = _open(filename, _O_RDONLY | _O_SEQUENTIAL | _O_BINARY);
 	if (fd == -1) {
 		if (errno == ENOENT) {
 			UTIL_get_lang_msg("MSG_KEYFILES_READ_ENOENT_ERROR", pvar,
-							  "An error occurred while trying to read the key file.\n"
-							  "The specified filename does not exist.");
+			                  "An error occurred while trying to read the key file.\n"
+			                  "The specified filename does not exist.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		} else {
 			UTIL_get_lang_msg("MSG_KEYFILES_READ_ERROR", pvar,
-							  "An error occurred while trying to read the key file.");
+			                  "An error occurred while trying to read the key file.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		}
 		return NULL;
@@ -133,14 +133,14 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 		keyfile_data = malloc(length + 1);
 		if (keyfile_data == NULL) {
 			UTIL_get_lang_msg("MSG_KEYFILES_READ_ALLOC_ERROR", pvar,
-							  "Memory ran out while trying to allocate space to read the key file.");
+			                  "Memory ran out while trying to allocate space to read the key file.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 			_close(fd);
 			return NULL;
 		}
 	} else {
 		UTIL_get_lang_msg("MSG_KEYFILES_READ_ERROR", pvar,
-						  "An error occurred while trying to read the key file.");
+		                  "An error occurred while trying to read the key file.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		_close(fd);
 		return NULL;
@@ -155,7 +155,7 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 
 	if (amount_read != length) {
 		UTIL_get_lang_msg("MSG_KEYFILES_READ_ERROR", pvar,
-						  "An error occurred while trying to read the key file.");
+		                  "An error occurred while trying to read the key file.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		free(keyfile_data);
 		return NULL;
@@ -163,7 +163,7 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 
 	if (strcmp(keyfile_data, ID_string) != 0) {
 		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_NOTCONTAIN_ERROR", pvar,
-						  "The specified key file does not contain an SSH private key.");
+		                  "The specified key file does not contain an SSH private key.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		free(keyfile_data);
 		return NULL;
@@ -173,7 +173,7 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 
 	if (length < index + 9) {
 		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar,
-						  "The specified key file has been truncated and does not contain a valid private key.");
+		                  "The specified key file has been truncated and does not contain a valid private key.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		free(keyfile_data);
 		return NULL;
@@ -185,7 +185,7 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 	/* skip public key e and n mp_ints */
 	if (length < index + 2) {
 		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar,
-						  "The specified key file has been truncated and does not contain a valid private key.");
+		                  "The specified key file has been truncated and does not contain a valid private key.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		free(keyfile_data);
 		return NULL;
@@ -194,7 +194,7 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 	index += (get_ushort16_MSBfirst(keyfile_data + index) + 7) / 8 + 2;
 	if (length < index + 2) {
 		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar,
-						  "The specified key file has been truncated and does not contain a valid private key.");
+		                  "The specified key file has been truncated and does not contain a valid private key.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		free(keyfile_data);
 		return NULL;
@@ -204,7 +204,7 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 	/* skip comment */
 	if (length < index + 4) {
 		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar,
-						  "The specified key file has been truncated and does not contain a valid private key.");
+		                  "The specified key file has been truncated and does not contain a valid private key.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		free(keyfile_data);
 		return NULL;
@@ -213,7 +213,7 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 
 	if (length < index + 6) {
 		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar,
-						  "The specified key file has been truncated and does not contain a valid private key.");
+		                  "The specified key file has been truncated and does not contain a valid private key.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		free(keyfile_data);
 		return NULL;
@@ -221,8 +221,8 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 	if (cipher != SSH_CIPHER_NONE) {
 		if ((length - index) % 8 != 0) {
 			UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_LENGTH_ERROR", pvar,
-							  "The specified key file cannot be decrypted using the passphrase.\n"
-							  "The file does not have the correct length.");
+			                  "The specified key file cannot be decrypted using the passphrase.\n"
+			                  "The file does not have the correct length.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 			free(keyfile_data);
 			return NULL;
@@ -230,8 +230,8 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 		if (!CRYPT_passphrase_decrypt
 			(cipher, passphrase, keyfile_data + index, length - index)) {
 			UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_NOCIPHER_ERROR", pvar,
-							  "The specified key file cannot be decrypted using the passphrase.\n"
-							  "The cipher type used to encrypt the file is not supported by TTSSH for this purpose.");
+			                  "The specified key file cannot be decrypted using the passphrase.\n"
+			                  "The cipher type used to encrypt the file is not supported by TTSSH for this purpose.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 			free(keyfile_data);
 			return NULL;
@@ -239,19 +239,19 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 	}
 
 	if (keyfile_data[index] != keyfile_data[index + 2]
-		|| keyfile_data[index + 1] != keyfile_data[index + 3]) {
+	 || keyfile_data[index + 1] != keyfile_data[index + 3]) {
 		*invalid_passphrase = TRUE;
 		if (is_auto_login) {
 			UTIL_get_lang_msg("MSG_KEYFILES_PASSPHRASE_EMPTY_ERROR", pvar,
-							  "The specified key file cannot be decrypted using the empty passphrase.\n"
-							  "For auto-login, you must create a key file with no passphrase.\n"
-							  "BEWARE: This means the key can easily be stolen.");
+			                  "The specified key file cannot be decrypted using the empty passphrase.\n"
+			                  "For auto-login, you must create a key file with no passphrase.\n"
+			                  "BEWARE: This means the key can easily be stolen.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		}
 		else {
 			UTIL_get_lang_msg("MSG_KEYFILES_PASSPHRASE_ERROR", pvar,
-							  "The specified key file cannot be decrypted using the passphrase.\n"
-							  "The passphrase is incorrect.");
+			                  "The specified key file cannot be decrypted using the passphrase.\n"
+			                  "The passphrase is incorrect.");
 			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		}
 		memset(keyfile_data, 0, length);
@@ -278,11 +278,10 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 		}
 	}
 	if (Q_index == 0
-		|| length <
-		Q_index + (get_ushort16_MSBfirst(keyfile_data + Q_index) + 7) / 8 +
-		2) {
+	 || length <
+	    Q_index + (get_ushort16_MSBfirst(keyfile_data + Q_index) + 7) / 8 + 2) {
 		UTIL_get_lang_msg("MSG_KEYFILES_PRIVATEKEY_TRUNCATE_ERROR", pvar,
-						  "The specified key file has been truncated and does not contain a valid private key.");
+		              "The specified key file has been truncated and does not contain a valid private key.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 		memset(keyfile_data, 0, length);
 		free(keyfile_data);
@@ -298,8 +297,8 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 
 	if (!normalize_key(key)) {
 		UTIL_get_lang_msg("MSG_KEYFILES_CRYPTOLIB_ERROR", pvar,
-						  "Error in crytography library.\n"
-						  "Perhaps the stored key is invalid.");
+		                  "Error in crytography library.\n"
+		                  "Perhaps the stored key is invalid.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 
 		RSA_free(key);
@@ -312,14 +311,14 @@ static RSA FAR *read_RSA_private_key(PTInstVar pvar,
 }
 
 CRYPTKeyPair FAR *KEYFILES_read_private_key(PTInstVar pvar,
-											char FAR * relative_name,
-											char FAR * passphrase,
-											BOOL FAR * invalid_passphrase,
-											BOOL is_auto_login)
+                                            char FAR * relative_name,
+                                            char FAR * passphrase,
+                                            BOOL FAR * invalid_passphrase,
+                                            BOOL is_auto_login)
 {
 	RSA FAR *RSA_key = read_RSA_private_key(pvar, relative_name,
-											passphrase, invalid_passphrase,
-											is_auto_login);
+	                                        passphrase, invalid_passphrase,
+	                                        is_auto_login);
 
 	if (RSA_key == NULL) {
 		return FALSE;
@@ -341,12 +340,12 @@ CRYPTKeyPair FAR *KEYFILES_read_private_key(PTInstVar pvar,
 //
 
 CRYPTKeyPair *read_SSH2_private_key(PTInstVar pvar,
-							char FAR * relative_name,
-							char FAR * passphrase,
-							BOOL FAR * invalid_passphrase,
-							BOOL is_auto_login,
-							char *errmsg,
-							int errmsg_len)
+                                    char FAR * relative_name,
+                                    char FAR * passphrase,
+                                    BOOL FAR * invalid_passphrase,
+                                    BOOL is_auto_login,
+                                    char *errmsg,
+                                    int errmsg_len)
 {
 	char filename[2048];
 	FILE *fp = NULL;
@@ -361,7 +360,7 @@ CRYPTKeyPair *read_SSH2_private_key(PTInstVar pvar,
 	// 相対パスを絶対パスへ変換する。こうすることにより、「ドットで始まる」ディレクトリに
 	// あるファイルを読み込むことができる。(2005.2.7 yutaka)
 	get_teraterm_dir_relative_name(filename, sizeof(filename),
-								   relative_name);
+	                               relative_name);
 
 	fp = fopen(filename, "r");
 	if (fp == NULL) {
