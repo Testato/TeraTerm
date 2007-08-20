@@ -83,10 +83,8 @@ static char FAR *ProtocolFamilyList[] = { "UNSPEC", "IPv6", "IPv4", NULL };
    "protocols" range. */
 #define ORDER 2500
 
-#ifdef TERATERM32
 static HICON SecureLargeIcon = NULL;
 static HICON SecureSmallIcon = NULL;
-#endif
 
 static HFONT DlgHostFont;
 static HFONT DlgAboutFont;
@@ -95,84 +93,9 @@ static HFONT DlgKeygenFont;
 
 static TInstVar FAR *pvar;
 
-#ifdef TERATERM32
   /* WIN32 allows multiple instances of a DLL */
 static TInstVar InstVar;
 #define GET_VAR()
-#else
-  /* WIN16 does not allow multiple instances of a DLL */
-
-  /* maximum number of Tera Term instances */
-#define MAXNUMINST 32
-  /* list of task handles for Tera Term instances */
-static HANDLE FAR TaskList[MAXNUMINST];
-  /* variable sets for instances */
-static TInstVar FAR *FAR InstVar[MAXNUMINST];
-
-/* Here's how the TS settings work.
-   Whenever the TS settings are read or written to the INI file, then
-   the shared memory containing those settings is updated.
-   When Teraterm starts, the shared memory is read to initialize the TS
-   settings. */
-
-  /* TS settings shared across instances */
-static TS_SSH ts_SSH_settings;
-
-
-extern void SSH2_update_cipher_myproposal(PTInstVar pvar);
-
-
-static BOOL NewVar()
-{
-	int i = 0;
-	HANDLE Task = GetCurrentTask();
-
-	if (TaskList[0] == NULL)
-
-		if (Task == NULL)
-			return FALSE;
-	while ((i < MAXNUMINST) && (TaskList[i] != NULL))
-		i++;
-	if (i >= MAXNUMINST)
-		return FALSE;
-	pvar = (TInstVar FAR *) malloc(sizeof(TInstVar));
-	InstVar[i] = pvar;
-	TaskList[i] = Task;
-	return TRUE;
-}
-
-void DelVar()
-{
-	int i = 0;
-	HANDLE Task = GetCurrentTask();
-
-	if (Task == NULL)
-		return;
-	while ((i < MAXNUMINST) && (TaskList[i] != Task))
-		i++;
-	if (i >= MAXNUMINST)
-		return;
-	free(TaskList[i]);
-	TaskList[i] = NULL;
-}
-
-BOOL GetVar()
-{
-	int i = 0;
-	HANDLE Task = GetCurrentTask();
-
-	if (Task == NULL)
-		return FALSE;
-	while ((i < MAXNUMINST) && (TaskList[i] != Task))
-		i++;
-	if (i >= MAXNUMINST)
-		return FALSE;
-	pvar = InstVar[i];
-	return TRUE;
-}
-
-#define GET_VAR() if (!GetVar()) return
-#endif
 
 /*
 This code makes lots of assumptions about the order in which Teraterm
@@ -234,11 +157,6 @@ static void uninit_TTSSH(PTInstVar pvar)
 
 static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv)
 {
-#ifndef TERATERM32
-	if (!NewVar())
-		return;					/* should be called first */
-	pvar->ts_SSH = &ts_SSH_settings;
-#endif
 	pvar->settings = *pvar->ts_SSH;
 	pvar->ts = ts;
 	pvar->cv = cv;
@@ -696,7 +614,6 @@ static int PASCAL FAR TTXsend(SOCKET s, char const FAR * buf, int len,
 
 void notify_established_secure_connection(PTInstVar pvar)
 {
-#ifdef TERATERM32
 	// LoadIcon ではなく LoadImage を使うようにし、
 	// 16x16 のアイコンを明示的に取得するようにした (2006.8.9 maya)
 	if (SecureLargeIcon == NULL) {
@@ -721,7 +638,6 @@ void notify_established_secure_connection(PTInstVar pvar)
 		PostMessage(pvar->NotificationWindow, WM_SETICON, ICON_SMALL,
 					(LPARAM) SecureSmallIcon);
 	}
-#endif
 
 	notify_verbose_message(pvar, "Entering secure mode",
 						   LOG_LEVEL_VERBOSE);
@@ -2212,7 +2128,6 @@ static void move_cur_sel_delta(HWND listbox, int delta)
 static int get_keys_file_name(HWND parent, char FAR * buf, int bufsize,
 							  int readonly)
 {
-#ifdef TERATERM32
 	OPENFILENAME params;
 	char fullname_buf[2048] = "ssh_known_hosts";
 
@@ -2256,9 +2171,6 @@ static int get_keys_file_name(HWND parent, char FAR * buf, int bufsize,
 
 		return 0;
 	}
-#else
-	return 0;
-#endif
 }
 
 static void choose_read_write_file(HWND dlg)
@@ -3483,9 +3395,6 @@ static void PASCAL FAR TTXEnd(void)
 		free(pvar->err_msg);
 		pvar->err_msg = NULL;
 	}
-#ifndef TERATERM32
-	DelVar();
-#endif
 }
 
 /* This record contains all the information that the extension forwards to the
@@ -3513,14 +3422,9 @@ static TTXExports Exports = {
 	TTXSetCommandLine
 };
 
-#ifdef TERATERM32
 BOOL __declspec(dllexport)
 PASCAL FAR TTXBind(WORD Version, TTXExports FAR * exports)
 {
-#else
-BOOL __export PASCAL FAR TTXBind(WORD Version, TTXExports FAR * exports)
-{
-#endif
 	int size = sizeof(Exports) - sizeof(exports->size);
 	/* do version checking if necessary */
 	/* if (Version!=TTVERSION) return FALSE; */
@@ -3533,7 +3437,6 @@ BOOL __export PASCAL FAR TTXBind(WORD Version, TTXExports FAR * exports)
 	return TRUE;
 }
 
-#ifdef TERATERM32
 static HANDLE __mem_mapping = NULL;
 
 BOOL WINAPI DllMain(HANDLE hInstance,
@@ -3582,20 +3485,3 @@ BOOL WINAPI DllMain(HANDLE hInstance,
 	}
 	return TRUE;
 }
-#else
-#ifdef WATCOM
-#pragma off (unreferenced);
-#endif
-int CALLBACK LibMain(HANDLE hInstance, WORD wDataSegment,
-					 WORD wHeapSize, LPSTR lpszCmdLine)
-#ifdef WATCOM
-#pragma on (unreferenced);
-#endif
-{
-	int i;
-	for (i = 0; i < MAXNUMINST; i++)
-		TaskList[i] = NULL;
-	hInst = hInstance;
-	return (1);
-}
-#endif

@@ -356,7 +356,6 @@ static char FAR *alloc_control_text(HWND ctl)
 
 static int get_key_file_name(HWND parent, char FAR * buf, int bufsize, PTInstVar pvar)
 {
-#ifdef TERATERM32
 	OPENFILENAME params;
 	char fullname_buf[2048] = "identity";
 	char filter[MAX_UIMSG];
@@ -390,9 +389,6 @@ static int get_key_file_name(HWND parent, char FAR * buf, int bufsize, PTInstVar
 	} else {
 		return 0;
 	}
-#else
-	return 0;
-#endif
 }
 
 static void choose_RSA_key_file(HWND dlg, PTInstVar pvar)
