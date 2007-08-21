@@ -406,7 +406,7 @@ BOOL GetOperator(LPWORD WordId)
 
 	if (LinePtr<LineLen) {
 		b = LineBuff[LinePtr];
-		if ((b == '>') && (*WordId == RsvLRShift)) {
+		if ((b == '>') && (*WordId == RsvARShift)) {
 			*WordId = RsvLRShift;
 			LinePtr++;
 		}
