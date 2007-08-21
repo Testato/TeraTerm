@@ -593,6 +593,9 @@ private:
                 SendDlgItemMessage(IDOK, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
                 SendDlgItemMessage(IDCANCEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
             }
+            else {
+                DlgFont = NULL;
+            }
 
             GetWindowText(uitmp, sizeof(uitmp));
             UTIL_get_lang_msg("DLG_OTHER_TITLE", uimsg, sizeof(uimsg), uitmp);
@@ -779,6 +782,9 @@ private:
                 SendDlgItemMessage(IDC_OPTIONS, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
                 SendDlgItemMessage(IDOK, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
                 SendDlgItemMessage(IDCANCEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+            }
+            else {
+                DlgFont = NULL;
             }
 
             GetWindowText(uitmp, sizeof(uitmp));
@@ -997,6 +1003,9 @@ private:
             if (UTIL_get_lang_font("DLG_TAHOMA_FONT", HWND(), &logfont, &DlgFont)) {
                 SendDlgItemMessage(IDC_VERSION, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
                 SendDlgItemMessage(IDOK, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+            }
+            else {
+                DlgFont = NULL;
             }
 
             GetWindowText(uimsg2, sizeof(uimsg2));
