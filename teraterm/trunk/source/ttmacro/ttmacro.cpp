@@ -43,9 +43,6 @@ CCtrlApp theApp;
 
 BOOL CCtrlApp::InitInstance()
 {
-  char Temp[MAXPATHLEN];
-  char HomeDir[MAXPATHLEN];
-  char SetupFName[MAXPATHLEN];
   TTTSet ts;
   static HMODULE HTTSET = NULL;
 
@@ -54,17 +51,7 @@ BOOL CCtrlApp::InitInstance()
   HANDLE hMutex;
   hMutex = CreateMutex(NULL, TRUE, "TeraTermProMacroAppMutex");
 
-  /* Get home directory */
-  GetModuleFileName(NULL,Temp,sizeof(Temp));
-  ExtractDirName(Temp, HomeDir);
-  strncpy_s(ts.HomeDir, sizeof(ts.HomeDir), HomeDir, _TRUNCATE);
-
-  /* Get SetupFName */
-  GetDefaultSetupFName(HomeDir, SetupFName, sizeof(SetupFName));
-
-  /* Get LanguageFile name */
-  GetPrivateProfileString("Tera Term", "UILanguageFile", "",
-                          UILanguageFile, sizeof(UILanguageFile), SetupFName);
+  GetUILanguageFile(UILanguageFile, sizeof(UILanguageFile));
 
   Busy = TRUE;
   m_pMainWnd = new CCtrlWindow();

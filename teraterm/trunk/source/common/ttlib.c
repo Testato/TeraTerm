@@ -564,6 +564,24 @@ homedir:
 	strncat_s(dest, destlen, "TERATERM.INI", _TRUNCATE);
 }
 
+void GetUILanguageFile(char *buf, int buflen)
+{
+	char HomeDir[MAX_PATH];
+	char Temp[MAX_PATH];
+	char SetupFName[MAX_PATH];
+
+	/* Get home directory */
+	GetModuleFileName(NULL,Temp,sizeof(Temp));
+	ExtractDirName(Temp, HomeDir);
+
+	/* Get SetupFName */
+	GetDefaultSetupFName(HomeDir, SetupFName, sizeof(SetupFName));
+
+	/* Get LanguageFile name */
+	GetPrivateProfileString("Tera Term", "UILanguageFile", "",
+	                        buf, buflen, SetupFName);
+}
+
 void get_lang_msg(PCHAR key, PCHAR buf, int buf_len, PCHAR def, PCHAR iniFile)
 {
 	GetI18nStr("Tera Term", key, buf, buf_len, def, iniFile);

@@ -3,7 +3,6 @@
  All rights reserved. */
 
 #include "i18n.h"
-#include "ttlib.h"
 
 void FAR PASCAL GetI18nStr(PCHAR section, PCHAR key, PCHAR buf, int buf_len, PCHAR def, PCHAR iniFile)
 {
