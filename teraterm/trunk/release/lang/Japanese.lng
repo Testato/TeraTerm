@@ -819,6 +819,7 @@ FILEDLG_LOG_FILTER=ログファイル(*.log)\0*.ini\0すべてのファイル(*.*)\0*.*\0\0
 
 BTN_OK=OK
 BTN_CANCEL=キャンセル
+BTN_DEFAULT=デフォルト
 
 
 [TTXKanjiMenu]
