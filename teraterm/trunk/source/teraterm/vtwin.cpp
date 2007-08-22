@@ -1635,6 +1635,7 @@ BOOL CVTWindow::OnMouseWheel(
    CPoint pt      // カーソル位置
 )
 {
+#if 0
 	int line, i, backward;
 	short delta;
 
@@ -1652,6 +1653,15 @@ BOOL CVTWindow::OnMouseWheel(
 			OnVScroll(SB_LINEUP, 0, NULL);
 		}
 	}
+#else
+	// 上記のコードはVistaでは動かないため、正負のみでスクロールさせる。
+	// (2007.8.22 yutaka)
+	if (zDelta < 0) {
+		OnVScroll(SB_LINEDOWN, 0, NULL);
+	} else {
+		OnVScroll(SB_LINEUP, 0, NULL);
+	}
+#endif
 
 	return (TRUE);
 }
