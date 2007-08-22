@@ -28,13 +28,21 @@
     <ul>
       <li>added support for selecting a current screen buffer. Also, added `select screen' new menu under edit menu.</li>
       <li>added support for showing the device description of COM port on the connection dialog.</li>
-      <li>added support of telnet keep-alive.</li>
+      <li>added support of telnet keep-alive.
+        <ul>
+          <li>TeraTerm will send TELNET NOP command to host when no commucation does for a long time.</li>
+          <li>added TelKeepAliveInterval entry in teraterm.ini file. The default value is 300 per seconds. 0 is turn off.</li>
+        </ul></li>
       <li>expanded the maximum number of serial connection to 200.</li>
       <li>added shift operator ">>", "<<", ">>>" for macro.</li>
       <li>added 'rotateleft', 'rotateright' macro command.</li>
-      <li>replaced internal string functions to secure functions.</li>
+      <li>replaced internal string functions to secure functions.
+        <ul>
+          <li>deleted _CRT_SECURE_NO_DEPRECATE build option.</li>
+        </ul></li>
       <li>Bug fix: window size could not be changed at first time.</li>
       <li>Bug fix: CR+LF code at the end of line would not been selected when you select "Select all" menu under edit menu.</li>
+      <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.42">2.42</a></li>
       <li>upgraded TTProxy to <a href="#ttproxy_1.0.0.14">1.0.0.14</a></li>
     </ul>
   </li>
@@ -814,6 +822,15 @@ SYNOPSIS:
 
 <h2><a name="ttssh">TTSSH</a></h2>
 <ul>
+  <li class="history"><a name="ttssh_2.42">2007.8.22 (Ver 2.42 un-released)</a>
+    <ul>
+      <li>replaced internal string functions to secure functions.
+        <ul>
+          <li>deleted _CRT_SECURE_NO_DEPRECATE build option.</li>
+        </ul></li>
+    </ul>
+  </li>
+
   <li class="history"><a name="ttssh_2.41">2007.8.8 (Ver 2.41)</a>
     <ul>
       <li>deleted unconditional login retry with password authentication after keyboard-interactive authentication is failure.</li>

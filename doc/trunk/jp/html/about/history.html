@@ -28,13 +28,21 @@
     <ul>
       <li>バッファの画面表示部分の選択をできるようにした。編集メニュー配下に「表示画面を選択」を追加。</li>
       <li>COMポートのDevice descriptionを接続ダイアログに表示するようにした。</li>
-      <li>telnetキープアライブ機能を追加した。</li>
+      <li>telnetキープアライブ機能を追加した。
+        <ul>
+          <li>一定時間パケットの送信を行わなかった時、TELNET NOPコマンドを送信する。</li>
+          <li>teraterm.iniの設定パラメータTelKeepAliveIntervalを追加。デフォルトは300(秒)。0でOFF。</li>
+        </ul></li>
       <li>シリアル接続のCOM最大ポートを200まで拡張した。</li>
       <li>マクロの演算子にシフト演算子 >>, <<, >>> を追加した。</li>
       <li>マクロコマンド rotateleft, rotateright を新規追加した。</li>
-      <li>内部で使用している文字列系関数のセキュアバージョンへの全置換を実施。</li>
+      <li>内部で使用している文字列系関数のセキュアバージョンへの全置換を実施。
+        <ul>
+          <li>ビルドオプションから _CRT_SECURE_NO_DEPRECATE を削除した。</li>
+        </ul></li>
       <li>初回のウインドウのサイズ変更ができないことがある問題を修正した。</li>
       <li>編集メニューの“全て選択”で、最終行の改行が選択されない問題を修正した。</li>
+      <li><a href="#ttssh_2.42">SSH2対応TTSSH(2.42)</a>へ差し替えた</li>
       <li><a href="#ttproxy_1.0.0.14">TTProxy(1.0.0.14)</a>へ差し替えた</li>
     </ul>
   </li>
@@ -816,6 +824,16 @@
 
 <h2><a name="ttssh">TTSSH</a></h2>
 <ul>
+
+  <li class="history"><a name="ttssh_2.42">2007.8.22 (Ver 2.42 未リリース)</a>
+    <ul>
+      <li>内部で使用している文字列系関数のセキュアバージョンへの全置換を実施。
+        <ul>
+          <li>ビルドオプションから _CRT_SECURE_NO_DEPRECATE を削除した。</li>
+        </ul></li>
+    </ul>
+  </li>
+
   <li class="history"><a name="ttssh_2.41">2007.8.8 (Ver 2.41)</a>
     <ul>
       <li>keyboard-interactive認証が失敗したあとのパスワード認証の無条件トライを止めるようにした。</li>
