@@ -13,11 +13,6 @@
 <h1>Differences from 2.3</h1>
 
 <p>
-TBD
-</p>
-
-
-<p>
 </p>
 
 <h2>Feature Differences</h2>
@@ -169,8 +164,390 @@ TBD
   <li>[*7] You can switch the messeage language by using the language file(lang\*.lng). You need to re-startup TeraTerm to active new messeage language.
 </ul>
 
+<p></p>
+
+Other new features are shown below.<br><br>
+
+<ul>
+  <li>ANSI color change and continued-line copy.</li>
+  <li>Changing mouse cursor type.</li>
+  <li>Adding a comment to loggin file.</li>
+  <li>Broadcast command feature.</li>
+  <li>Selecting all buffer.</li>
+  <li>Extend the maximum length of the host name.</li>
+  <li>TeraTerm Menu and LogMeTT included.</li>
+  <li>Duplicate session.</li>
+  <li>Extend the maximum byte of TeraTerm scroll buffer.</li>
+  <li>Support for a drag-and-drop operation moving the folder from explorer.</li>
+  <li>The second later TeraTerm instance can read teraterm.ini file from not the shared memory but disk file system.</li>
+  <li>Support for VisualStyle(WindowsXP).</li>
+  <li>Add new title format.</li>
+  <li>Add new type of log collection.</li>
+  <li>Support for TELNET/HTTP/SOCKS proxy.</li>
+  <li>Support for a default log file name(You can use strftime format).</li>
+  <li>Add the wizard generating SSH authentication key.</li>
+  <li>Add CygTerm configuration dialog.</li>
+  <li>Support for having tabs by using Collector.</li>
+  <li>Add scroll through the screen buffer to the back page when &lt;ESC&gt;[J esacpe sequence is done.</li>
+  <li>Add log reply menu.</li>
+  <li>Add New-line to `LF' type.</li>
+</ul>
+
 <hr>
 
+<h2>Bug fixes: TeraTerm 2.3</h2>
+
+<ol>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+</ol>
+
+
+
+<hr>
+
+<h2>Keyboard shortcut</h2>
+
+<table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
+<tr>
+	<td width="30%"><b>Key</b></td>
+	<td width="70%"><b>Function</b></td>
+</tr>
+
+<tr>
+	<td>ScrollLock</td>
+	<td>TeraTermウィンドウのスクロールロック/ロック解除（トグル）</td>
+</tr>
+
+<tr>
+	<td>Alt + Enter</td>
+	<td>ウィンドウの最大化（トグル）</td>
+</tr>
+
+<tr>
+	<td>Alt + D</td>
+	<td>セッションの複製（SSH, telnetのみ）</td>
+</tr>
+
+<tr>
+	<td>Alt + G</td>
+	<td>Cygwin接続</td>
+</tr>
+
+<tr>
+	<td>左クリック → Shift+左クリック</td>
+	<td>ページをまたぐテキスト選択、選択済みテキスト領域の伸縮</td>
+</tr>
+
+<tr>
+	<td>Shift + マウスドラッグ</td>
+	<td>廃止（ページをまたぐテキスト選択サポートのため）</td>
+</tr>
+
+<tr>
+	<td>Alt + マウスドラッグ</td>
+	<td>ブロック選択</td>
+</tr>
+
+</table>
+
+
+<hr>
+
+<h2>新設されたマクロコマンド</h2>
+
+<table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
+<tr>
+	<td width="30%"><b>コマンド</b></td>
+	<td width="70%"><b>機能</b></td>
+</tr>
+
+<tr>
+	<td>connect</td>
+	<td>SSHによる自動ログイン用パラメータを追加。</td>
+</tr>
+
+<tr>
+	<td>waitregex</td>
+	<td>waitlnコマンドの正規表現バージョン。1つの行に対するパターンマッチを正規表現で行うことができる。</td>
+</tr>
+
+<tr>
+	<td>ifdefined</td>
+	<td>変数のタイプを調べることができる。</td>
+</tr>
+
+<tr>
+	<td>mpause</td>
+	<td>ミリ秒単位でのスリープを行う。</td>
+</tr>
+
+<tr>
+	<td>sprintf</td>
+	<td>C言語のprintfライクに書式指定の文字列を生成できる。</td>
+</tr>
+
+<tr>
+	<td>str2int</td>
+	<td>16進の文字列も数値へ変換できるようにした。</td>
+</tr>
+
+<tr>
+	<td>fileread</td>
+	<td>ファイルから指定したバイト数のデータを読み込む。</td>
+</tr>
+
+<tr>
+	<td>clipb2var</td>
+	<td>クリップボードからデータを読み出す。</td>
+</tr>
+
+<tr>
+	<td>var2clipb</td>
+	<td>クリップボードへデータを書き出す。</td>
+</tr>
+
+<tr>
+	<td>random</td>
+	<td>乱数を生成する。</td>
+</tr>
+
+<tr>
+	<td>tolower</td>
+	<td>アルファベットを小文字にする。</td>
+</tr>
+
+<tr>
+	<td>toupper</td>
+	<td>アルファベットを大文字にする。</td>
+</tr>
+
+<tr>
+	<td>break</td>
+	<td>forやwhileループから抜ける。</td>
+</tr>
+
+<tr>
+	<td>inputbox</td>
+	<td>デフォルト文字列を指定できるようにした。</td>
+</tr>
+
+<tr>
+	<td>rotateleft</td>
+	<td>左方向にビットローテートする。</td>
+</tr>
+
+<tr>
+	<td>rotateright</td>
+	<td>右方向にビットローテートする。</td>
+</tr>
+
+</table>
+
+
+<hr>
+
+<h2>新設されたteraterm.iniのエントリ</h2>
+
+<p>
+"Tera Term"セクションについて以下に示します。
+</p>
+
+<table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
+<tr>
+	<td width="30%"><b>エントリ</b></td>
+	<td width="70%"><b>意味</b></td>
+</tr>
+
+
+<tr>
+	<td>UILanguageFile</td>
+	<td>I18N向けの言語ファイルの指定。デフォルトはEnglish。 </td>
+</tr>
+
+<tr>
+	<td>ConnectingTimeout</td>
+	<td>TCP接続状態で、切断するまでのタイムアウト時間（秒）。TeraTermの/timeoutコマンドラインオプションでも変更可能。 </td>
+</tr>
+
+<tr>
+	<td>DisablePasteMouseRButton</td>
+	<td>マウスの右クリックでのペーストを禁止する。 </td>
+</tr>
+
+<tr>
+	<td>ConfirmPasteMouseRButton</td>
+	<td>マウスの右クリックでのペースト前に問い合わせダイアログを表示する。 </td>
+</tr>
+
+<tr>
+	<td>DisableAcceleratorSendBreak</td>
+	<td>シリアルコンソールにおいて Alt+B によるBreak送信を無効にする。 </td>
+</tr>
+
+<tr>
+	<td>ANSIColor</td>
+	<td>16色のカラーテーブルの設定情報。 </td>
+</tr>
+
+<tr>
+	<td>EnableContinuedLineCopy</td>
+	<td>行連結機能を有効にする。 </td>
+</tr>
+
+<tr>
+	<td>MouseCursor</td>
+	<td>マウスカーソルの種別を変更する。 </td>
+</tr>
+
+<tr>
+	<td>AlphaBlend</td>
+	<td>ウィンドウの半透明度を設定する。 </td>
+</tr>
+
+<tr>
+	<td>CygwinDirectory</td>
+	<td>Cygwinのインストール先を指定する。 </td>
+</tr>
+
+<tr>
+	<td>ViewlogEditor</td>
+	<td>ログを開くエディタを指定する。 </td>
+</tr>
+
+<tr>
+	<td>Locale</td>
+	<td>Unicodeを扱うためのOSのロケールを指定する。 </td>
+</tr>
+
+<tr>
+	<td>CodePage</td>
+	<td>Unicodeを扱うためのOSのコードページを指定する。 </td>
+</tr>
+
+<tr>
+	<td>UseNormalBGColor</td>
+	<td>文字の背景色をスクリーンの背景色と一致させる。 </td>
+</tr>
+
+<tr>
+	<td>KanjiReceive</td>
+	<td>"UTF-8"と"UTF-8m"の追加。 </td>
+</tr>
+
+<tr>
+	<td>KanjiSend</td>
+	<td>"UTF-8"の追加。UTF-8-MACでは送信時はNFCでよいので"UTF-8m"は不要。 </td>
+</tr>
+
+<tr>
+	<td>URLColor</td>
+	<td>クリッカブルURLの強調表示の色。実際には動作しない。 </td>
+</tr>
+
+<tr>
+	<td>EnableClickableUrl</td>
+	<td>クリッカブルURLを有効にする。 </td>
+</tr>
+
+<tr>
+	<td>LogTypePlainText</td>
+	<td>ログ採取のファイル形式を plain text （制御コードを含まない）にする。 </td>
+</tr>
+
+<tr>
+	<td>LogTimestamp</td>
+	<td>ログ採取時に行の先頭に、採取時のOSのタイムスタンプを挿入する。 </td>
+</tr>
+
+<tr>
+	<td>LogDefaultName</td>
+	<td>ログ採取時のデフォルトのファイル名を設定する。<a href="http://msdn2.microsoft.com/ja-jp/library/fe06s4ak(VS.80).aspx">strftime</a>形式も使用可能。 </td>
+</tr>
+
+<tr>
+	<td>LogDefaultPath</td>
+	<td>ログ採取時のデフォルトパス名を設定する。 </td>
+</tr>
+
+<tr>
+	<td>LogAutoStart</td>
+	<td>接続時に自動的にログ採取を行う。 </td>
+</tr>
+
+<tr>
+	<td>BroadcastCommandHistory</td>
+	<td>Broadcast Commandのコマンド履歴をteraterm.iniへ保存する。 </td>
+</tr>
+
+<tr>
+	<td>AcceptBroadcast</td>
+	<td>"off"の場合、Broadcast Commandダイアログを呼び出したウィンドウにはコマンドを送出しない。 </td>
+</tr>
+
+<tr>
+	<td>TitleFormat</td>
+	<td>フォーマットIDに"13", "29", "45", "61"を追加。 </td>
+</tr>
+
+<tr>
+	<td>FileSendFilter</td>
+	<td>送信ダイアログのファイル名フィルタを設定する。 </td>
+</tr>
+
+<tr>
+	<td>VTCompatTab</td>
+	<td>行末のタブ表示を VT 端末互換にする。 </td>
+</tr>
+
+</table>
+
+
+
+<p>
+"TTSSH"セクションについて以下に示します。
+</p>
+
+<table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
+<tr>
+	<td width="30%"><b>エントリ</b></td>
+	<td width="70%"><b>意味</b></td>
+</tr>
+
+<tr>
+	<td>CipherOrder</td>
+	<td>3DES-CBCの"7"、AES128の"8"を追加。</td>
+</tr>
+
+<tr>
+	<td>ProtocolVersion</td>
+	<td>SSHプロトコルバージョン</td>
+</tr>
+
+<tr>
+	<td>HeartBeat</td>
+	<td>キープアライブ（ハートビート）間隔</td>
+</tr>
+
+<tr>
+	<td>KeyboardInteractive</td>
+	<td>パスワード認証の前にキーボードインタラクティブ認証を試みるかどうか。</td>
+</tr>
+
+<tr>
+	<td>RememberPassword</td>
+	<td>パスワードをメモリ上へ保持するかどうか。</td>
+</tr>
+
+</table>
 
 
 </body>
