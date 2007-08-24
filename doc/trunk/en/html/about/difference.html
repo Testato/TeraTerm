@@ -198,23 +198,23 @@ Other new features are shown below.<br><br>
 <h2>Bug fixes: TeraTerm 2.3</h2>
 
 <ol>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
+  <li>TeraTerm window size could not be changed after the window size is smaller than 120 dot(94 dot on XP LUNA style). This is TeraTerm 2.3 original bug.</li>
+  <li>A tab at end-of-line would lost.</li>
+  <li>BOF(Buffer Over Flow) problem in ttpmacro.exe program, which 256 byte longer command line parameter is specified.</li>
+  <li>BOF(Buffer Over Flow) problem in ttpmacro.exe program when a line of macro is longer than 256 byte.</li>
+  <li>The program of ttermpro.exe can not send the server data to ttpmacro.exe program with DDE transaction.</li>
+  <li>The 'pause' macro command had a time-lag about 1 sec.</li>
+  <li>The macro script might stall with logging mode.</li>
+  <li>The cpu scheduling of TeraTerm process could occupy while macro script running.</li>
+  <li>The division operator of macro language does not work.</li>
+  <li>TeraTerm would crash when the sending file size exceeded 20MB with ZMODEM protocol.</li>
 </ol>
 
 
 
 <hr>
 
-<h2>Keyboard shortcut</h2>
+<h2>New keyboard shortcut</h2>
 
 <table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
 <tr>
@@ -224,37 +224,39 @@ Other new features are shown below.<br><br>
 
 <tr>
 	<td>ScrollLock</td>
-	<td>TeraTermウィンドウのスクロールロック/ロック解除（トグル）</td>
+	<td>TeraTerm window scroll locked or unlocked(toggle) </td>
 </tr>
 
 <tr>
 	<td>Alt + Enter</td>
-	<td>ウィンドウの最大化（トグル）</td>
+	<td>Switch to TeraTerm next/prev window</td>
 </tr>
 
 <tr>
 	<td>Alt + D</td>
-	<td>セッションの複製（SSH, telnetのみ）</td>
+	<td>Duplicate session (SSH, telnet only) </td>
 </tr>
 
 <tr>
 	<td>Alt + G</td>
-	<td>Cygwin接続</td>
+	<td>Cygwin connection</td>
 </tr>
 
 <tr>
-	<td>左クリック → Shift+左クリック</td>
-	<td>ページをまたぐテキスト選択、選択済みテキスト領域の伸縮</td>
+	<td>Left click, Shift + Left click </td>
+	<td>Select several pages of output from TeraTerm window. 
+	    Or expand ans contract of text area that has been selected. 
+    </td>
 </tr>
 
 <tr>
-	<td>Shift + マウスドラッグ</td>
-	<td>廃止（ページをまたぐテキスト選択サポートのため）</td>
+	<td>Shift + Mouse drag</td>
+	<td>Deleted to support for above key shortcut</td>
 </tr>
 
 <tr>
-	<td>Alt + マウスドラッグ</td>
-	<td>ブロック選択</td>
+	<td>Alt + MouseDrag </td>
+	<td>Select rectangular block of text</td>
 </tr>
 
 </table>
@@ -262,92 +264,92 @@ Other new features are shown below.<br><br>
 
 <hr>
 
-<h2>新設されたマクロコマンド</h2>
+<h2>New macro command</h2>
 
 <table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
 <tr>
-	<td width="30%"><b>コマンド</b></td>
-	<td width="70%"><b>機能</b></td>
+	<td width="30%"><b>Command</b></td>
+	<td width="70%"><b>Feature</b></td>
 </tr>
 
 <tr>
 	<td>connect</td>
-	<td>SSHによる自動ログイン用パラメータを追加。</td>
+	<td>has SSH auto login parameters</td>
 </tr>
 
 <tr>
 	<td>waitregex</td>
-	<td>waitlnコマンドの正規表現バージョン。1つの行に対するパターンマッチを正規表現で行うことができる。</td>
+	<td>is waitln regular expression version.</td>
 </tr>
 
 <tr>
 	<td>ifdefined</td>
-	<td>変数のタイプを調べることができる。</td>
+	<td>can retrieve the type of the variable value.</td>
 </tr>
 
 <tr>
 	<td>mpause</td>
-	<td>ミリ秒単位でのスリープを行う。</td>
+	<td>can sleep per milisecond.</td>
 </tr>
 
 <tr>
 	<td>sprintf</td>
-	<td>C言語のprintfライクに書式指定の文字列を生成できる。</td>
+	<td>can generate the format string as like printf function of C language.</td>
 </tr>
 
 <tr>
 	<td>str2int</td>
-	<td>16進の文字列も数値へ変換できるようにした。</td>
+	<td>can convert a hexadecimal string to a number.</td>
 </tr>
 
 <tr>
 	<td>fileread</td>
-	<td>ファイルから指定したバイト数のデータを読み込む。</td>
+	<td>can read specified byte data from file.</td>
 </tr>
 
 <tr>
 	<td>clipb2var</td>
-	<td>クリップボードからデータを読み出す。</td>
+	<td>can copy data from the Clipboard.</td>
 </tr>
 
 <tr>
 	<td>var2clipb</td>
-	<td>クリップボードへデータを書き出す。</td>
+	<td>can copy data to the Clipboard.</td>
 </tr>
 
 <tr>
 	<td>random</td>
-	<td>乱数を生成する。</td>
+	<td>can generate the random number.</td>
 </tr>
 
 <tr>
 	<td>tolower</td>
-	<td>アルファベットを小文字にする。</td>
+	<td>can translate characters to lowercase.</td>
 </tr>
 
 <tr>
 	<td>toupper</td>
-	<td>アルファベットを大文字にする。</td>
+	<td>can translate characters to uppercase.</td>
 </tr>
 
 <tr>
 	<td>break</td>
-	<td>forやwhileループから抜ける。</td>
+	<td>can exit from within a for or while loop.</td>
 </tr>
 
 <tr>
 	<td>inputbox</td>
-	<td>デフォルト文字列を指定できるようにした。</td>
+	<td>can specify a default string which the text box contains as default text.</td>
 </tr>
 
 <tr>
 	<td>rotateleft</td>
-	<td>左方向にビットローテートする。</td>
+	<td>can rotate the 32bit value toward the left per bit.</td>
 </tr>
 
 <tr>
 	<td>rotateright</td>
-	<td>右方向にビットローテートする。</td>
+	<td>can rotate the 32bit value toward the right per bit.</td>
 </tr>
 
 </table>
@@ -355,10 +357,10 @@ Other new features are shown below.<br><br>
 
 <hr>
 
-<h2>新設されたteraterm.iniのエントリ</h2>
+<h2>New teraterm.ini entry</h2>
 
 <p>
-"Tera Term"セクションについて以下に示します。
+"Tera Term" sections are shown below.
 </p>
 
 <table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
@@ -513,7 +515,7 @@ Other new features are shown below.<br><br>
 
 
 <p>
-"TTSSH"セクションについて以下に示します。
+"TTSSH" sections are shown below.
 </p>
 
 <table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
