@@ -195,12 +195,12 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	}
 
 	/* VT win position */
-	GetPrivateProfileString(Section, "VTPos", "-32768,-32768", Temp, sizeof(Temp), FName);	/* default: random position */
+	GetPrivateProfileString(Section, "VTPos", "-2147483648,-2147483648", Temp, sizeof(Temp), FName);	/* default: random position */
 	GetNthNum(Temp, 1, (int far *) (&ts->VTPos.x));
 	GetNthNum(Temp, 2, (int far *) (&ts->VTPos.y));
 
 	/* TEK win position */
-	GetPrivateProfileString(Section, "TEKPos", "-32768,-32768", Temp, sizeof(Temp), FName);	/* default: random position */
+	GetPrivateProfileString(Section, "TEKPos", "-2147483648,-2147483648", Temp, sizeof(Temp), FName);	/* default: random position */
 	GetNthNum(Temp, 1, (int far *) &(ts->TEKPos.x));
 	GetNthNum(Temp, 2, (int far *) &(ts->TEKPos.y));
 
@@ -1084,12 +1084,6 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 		strncpy_s(Temp, sizeof(Temp), "tcpip", _TRUNCATE);
 
 	WritePrivateProfileString(Section, "Port", Temp, FName);
-
-	/* VT win position */
-	WriteInt2(Section, "VTPos", FName, ts->VTPos.x, ts->VTPos.y);
-
-	/* TEK win position */
-	WriteInt2(Section, "TEKPos", FName, ts->TEKPos.x, ts->TEKPos.y);
 
 	/* VT terminal size  */
 	WriteInt2(Section, "TerminalSize", FName,
