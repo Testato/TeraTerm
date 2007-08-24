@@ -324,7 +324,12 @@ BOOL FAR PASCAL GetTransFname
 	ofn.nFilterIndex = 1;
 	ofn.lpstrFile = fv->FullName;
 	ofn.nMaxFile = sizeof(fv->FullName);
-	ofn.lpstrInitialDir = CurDir;
+	if (FuncId == GTF_LOG) {
+		// ログ保存の場合は初期フォルダを決め打ちしないようにする。(2007.8.24 yutaka)
+		ofn.lpstrInitialDir = NULL;
+	} else {
+		ofn.lpstrInitialDir = CurDir;
+	}
 	ofn.Flags = OFN_SHOWHELP | OFN_HIDEREADONLY;
 	if (FuncId!=GTF_BP)
 	{
