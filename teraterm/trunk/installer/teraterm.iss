@@ -183,6 +183,12 @@ Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: ViewlogEditor; Strin
 Filename: {app}\teraterm.ini; Section: TTSSH; Key: KeyboardInteractive; String: 0; Flags: createkeyifdoesntexist; Components: TTSSH
 Filename: {userdocs}\teraterm.ini; Section: TTSSH; Key: KeyboardInteractive; String: 0; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TTSSH
 
+[Registry]
+Root: HKCU; Subkey: Software\Classes\Folder\shell\cygterm; ValueType: string; ValueData: Cy&gterm Here; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: cygterm; Tasks: cygtermhere
+Root: HKCU; Subkey: Software\Classes\Folder\shell\cygterm\command; ValueType: string; ValueData: """{app}\cyglaunch.exe"" -nocd -nols -d \""%L\"""; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: cygterm; Tasks: cygtermhere
+Root: HKCR; Subkey: Folder\shell\cygterm; ValueType: string; ValueData: Cy&gterm Here; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: cygterm; Tasks: cygtermhere
+Root: HKCR; Subkey: Folder\shell\cygterm\command; ValueType: string; ValueData: """{app}\cyglaunch.exe"" -nocd -nols -d \""%L\"""; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: cygterm; Tasks: cygtermhere
+
 [Tasks]
 Name: desktopicon; Description: {cm:task_desktopicon}; Components: TeraTerm
 Name: quicklaunchicon; Description: {cm:task_quicklaunchicon}; Components: TeraTerm
@@ -239,15 +245,31 @@ var
   UILangFilePage: TInputOptionWizardPage;
 
 
-function isPowerUsersMore : Boolean;
+function isIA64 : Boolean;
+begin
+  if ProcessorArchitecture = paIA64 then
+    Result := True
+  else
+    Result := False;
+end;
+
+function isMinimumOfWin2K : Boolean;
 var
   Version: TWindowsVersion;
 begin;
   GetWindowsVersionEx(Version);
-  if not Version.NTPlatform then begin
+  if Version.Major >= 5 then
+    Result := True
+  else
+    Result := False;
+end;
+
+function isPowerUsersMore : Boolean;
+begin;
+  if not UsingWinNT() then begin
     Result := True;
   end else begin
-    if Version.Major >= 5 then begin
+    if isMinimumOfWin2K() then begin
       if IsAdminLoggedOn() or IsPowerUserLoggedOn() then begin
         Result := True;
       end else begin
@@ -257,14 +279,6 @@ begin;
       Result := True;
     end;
   end;
-end;
-
-function isIA64 : Boolean;
-begin
-  if ProcessorArchitecture = paIA64 then
-    Result := True
-  else
-    Result := False;
 end;
 
 function GetUserIniFilename : String;
@@ -377,26 +391,6 @@ begin
 
 end;
 
-procedure SetCygtermHere;
-var
-  Version: TWindowsVersion;
-begin
-  if IsTaskSelected('cygtermhere') then
-  begin
-    GetWindowsVersionEx(Version);
-    if Version.NTPlatform and (Version.Major >= 5) then
-    begin
-      RegWriteStringValue(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm', '', 'Cy&gterm Here');
-      RegWriteStringValue(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm\command',
-                          '', '"' + ExpandConstant('{app}') + '\cyglaunch.exe" -nocd -nols -d \"%L\"');
-    end else begin
-      RegWriteStringValue(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm', '', 'Cy&gterm Here');
-      RegWriteStringValue(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm\command',
-                          '', '"' + ExpandConstant('{app}') + '\cyglaunch.exe" -nocd -nols -d \"%L\"');
-    end;
-  end;
-end;
-
 procedure InitializeWizard;
 var
   UILangFilePageCaption     : String;
@@ -440,8 +434,12 @@ begin
           SetIniFile(iniFile);
         end;
 
-        SetCygtermHere();
-
+        if not IsTaskSelected('cygtermhere') then
+        begin;
+          RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm');
+          RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm');
+        end;
+        
       end; // ssDone
    end; // case CurStep of
 end; // CurStepChanged
@@ -491,22 +489,8 @@ begin
             RegDeleteKeyIfEmpty(HKEY_CURRENT_USER, 'Software\ShinpeiTools');
           end;
         end;
-        if RegKeyExists(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm') then begin
-          confmsg := Format(conf, ['HKEY_CURRENT_USER' + '\Software\Classes\Folder\shell\cygterm']);
-          res := MsgBox(confmsg, mbInformation, MB_YESNO);
-          if res = IDYES then begin
-            RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm');
-          end;
-        end;
-        if RegKeyExists(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm') then begin
-          confmsg := Format(conf, ['HKEY_CLASSES_ROOT' + '\Folder\shell\cygterm']);
-          res := MsgBox(confmsg, mbInformation, MB_YESNO);
-          if res = IDYES then begin
-            RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm');
-          end;
-        end;
 
-        // ãÛÇ≈Ç»ÇØÇÍÇŒçÌèúÇ≥ÇÍÇ»Ç¢
+        // directory is deleted only if empty
         RemoveDir(app);
       end;
   end;
