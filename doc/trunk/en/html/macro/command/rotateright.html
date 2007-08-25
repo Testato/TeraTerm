@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>rotateright</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<h1>rotateright</h1>
+
+<h2>Format</h2>
+
+<pre class="macro-syntax">
+rotateright &lt;intvar&gt; &lt;intval&gt; &lt;digit&gt;
+</pre>
+
+<p>
+Rotates &lt;intval&gt; &lt;digit&gt; digits to right, and returns it in the integer variable &lt;intvar&gt;.
+</p>
+
+
+<h2>Example</h2>
+
+<pre>
+rotateright b $00000008 4
+sprintf '0x%08x' b
+messagebox inputstr '0x80000000'
+</pre>
+
+</BODY>
+</HTML>

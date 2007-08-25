@@ -1092,6 +1092,16 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="rotateleft">
+					<param name="Local" value="html\macro\command\rotateleft.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="rotateright">
+					<param name="Local" value="html\macro\command\rotateright.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="setdate">
 					<param name="Local" value="html\macro\command\setdate.html">
 					<param name="ImageNumber" value="11">

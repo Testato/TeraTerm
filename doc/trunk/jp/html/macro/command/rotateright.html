@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>rotateright</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<h1>rotateright</h1>
+
+<h2>形式</h2>
+
+<pre class="macro-syntax">
+rotateright &lt;intvar&gt; &lt;intval&gt; &lt;digit&gt;
+</pre>
+
+<p>
+整数値 &lt;intval&gt; を右に &lt;digit&gt; 桁ローテート(循環シフト)した値を整数型変数 &lt;intvar&gt; にコピーする。
+</p>
+
+
+<h2>例</h2>
+
+<pre>
+rotateright b $00000008 4
+sprintf '0x%08x' b
+messagebox inputstr '0x80000000'
+</pre>
+
+</BODY>
+</HTML>
