@@ -158,8 +158,8 @@
 #define RsvToLower      118   // add 'tolower' (2007.7.12 maya)
 #define RsvToUpper      119   // add 'toupper' (2007.7.12 maya)
 #define RsvBreak        120   // add 'break' (2007.7.20 doda)
-#define RsvRotateR      121   // add 'rotateleft' (2007.8.19 maya)
-#define RsvRotateL      122   // add 'rotateright' (2007.8.19 maya)
+#define RsvRotateR      121   // add 'rotateright' (2007.8.19 maya)
+#define RsvRotateL      122   // add 'rotateleft' (2007.8.19 maya)
 
 #define RsvOperator   150
 #define RsvBNot       151
