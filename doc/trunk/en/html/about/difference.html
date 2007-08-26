@@ -365,149 +365,150 @@ Other new features are shown below.<br><br>
 
 <table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
 <tr>
-	<td width="30%"><b>エントリ</b></td>
-	<td width="70%"><b>意味</b></td>
+	<td width="30%"><b>Entry</b></td>
+	<td width="70%"><b>Feature</b></td>
 </tr>
 
 
 <tr>
 	<td>UILanguageFile</td>
-	<td>I18N向けの言語ファイルの指定。デフォルトはEnglish。 </td>
+	<td>can specify the I18N language file. The default language is English.</td>
 </tr>
 
 <tr>
 	<td>ConnectingTimeout</td>
-	<td>TCP接続状態で、切断するまでのタイムアウト時間（秒）。TeraTermの/timeoutコマンドラインオプションでも変更可能。 </td>
+	<td>is disconnection timeout value per second while TCP connecting.
+	    Also, this value can be specified at /timeout command line option.</td>
 </tr>
 
 <tr>
 	<td>DisablePasteMouseRButton</td>
-	<td>マウスの右クリックでのペーストを禁止する。 </td>
+	<td>can disable pasting by right-click.</td>
 </tr>
 
 <tr>
 	<td>ConfirmPasteMouseRButton</td>
-	<td>マウスの右クリックでのペースト前に問い合わせダイアログを表示する。 </td>
+	<td>can require the user to confirm an action before pasting by right-click is carried out.</td>
 </tr>
 
 <tr>
 	<td>DisableAcceleratorSendBreak</td>
-	<td>シリアルコンソールにおいて Alt+B によるBreak送信を無効にする。 </td>
+	<td>can disable sending break signal by Alt+B key shortcut.</td>
 </tr>
 
 <tr>
 	<td>ANSIColor</td>
-	<td>16色のカラーテーブルの設定情報。 </td>
+	<td>can configure ANSI color table.</td>
 </tr>
 
 <tr>
 	<td>EnableContinuedLineCopy</td>
-	<td>行連結機能を有効にする。 </td>
+	<td>can enable concatenating the next line.</td>
 </tr>
 
 <tr>
 	<td>MouseCursor</td>
-	<td>マウスカーソルの種別を変更する。 </td>
+	<td>can change the kind of the mouse pointer.</td>
 </tr>
 
 <tr>
 	<td>AlphaBlend</td>
-	<td>ウィンドウの半透明度を設定する。 </td>
+	<td>can setup the transparency value of TeraTerm window.</td>
 </tr>
 
 <tr>
 	<td>CygwinDirectory</td>
-	<td>Cygwinのインストール先を指定する。 </td>
+	<td>can specify a folder of Cygwin installation.</td>
 </tr>
 
 <tr>
 	<td>ViewlogEditor</td>
-	<td>ログを開くエディタを指定する。 </td>
+	<td>can specify a editor program which open a log file.</td>
 </tr>
 
 <tr>
 	<td>Locale</td>
-	<td>Unicodeを扱うためのOSのロケールを指定する。 </td>
+	<td>can specify a locale for Unicode.</td>
 </tr>
 
 <tr>
 	<td>CodePage</td>
-	<td>Unicodeを扱うためのOSのコードページを指定する。 </td>
+	<td>can specify code page for Unicode. </td>
 </tr>
 
 <tr>
 	<td>UseNormalBGColor</td>
-	<td>文字の背景色をスクリーンの背景色と一致させる。 </td>
+	<td>can enable matching a character with a screen for a background color.</td>
 </tr>
 
 <tr>
 	<td>KanjiReceive</td>
-	<td>"UTF-8"と"UTF-8m"の追加。 </td>
+	<td>added "UTF-8" and "UTF-8m" option for Unicode.</td>
 </tr>
 
 <tr>
 	<td>KanjiSend</td>
-	<td>"UTF-8"の追加。UTF-8-MACでは送信時はNFCでよいので"UTF-8m"は不要。 </td>
+	<td>added "UTF-8" option for Unicode. Besides, "UTF-8m" is not necessary because sending procedure is NFC at UTF-8-MAC.</td>
 </tr>
 
 <tr>
 	<td>URLColor</td>
-	<td>クリッカブルURLの強調表示の色。実際には動作しない。 </td>
+	<td>can specify the emphasis color of Clickable URL. Actually, it does not work.</td>
 </tr>
 
 <tr>
 	<td>EnableClickableUrl</td>
-	<td>クリッカブルURLを有効にする。 </td>
+	<td>can enable Clickable URL.</td>
 </tr>
 
 <tr>
 	<td>LogTypePlainText</td>
-	<td>ログ採取のファイル形式を plain text （制御コードを含まない）にする。 </td>
+	<td>can not include control codes in logging file.</td>
 </tr>
 
 <tr>
 	<td>LogTimestamp</td>
-	<td>ログ採取時に行の先頭に、採取時のOSのタイムスタンプを挿入する。 </td>
+	<td>can insert OS timestamp in the head of the line while log collection doing.</td>
 </tr>
 
 <tr>
 	<td>LogDefaultName</td>
-	<td>ログ採取時のデフォルトのファイル名を設定する。<a href="http://msdn2.microsoft.com/ja-jp/library/fe06s4ak(VS.80).aspx">strftime</a>形式も使用可能。 </td>
+	<td>can specify the default file name when log collection starts. You can use <a href="http://msdn2.microsoft.com/ja-jp/library/fe06s4ak(VS.80).aspx">strftime</a> format.</td>
 </tr>
 
 <tr>
 	<td>LogDefaultPath</td>
-	<td>ログ採取時のデフォルトパス名を設定する。 </td>
+	<td>can specify the default path name when log collection starts. </td>
 </tr>
 
 <tr>
 	<td>LogAutoStart</td>
-	<td>接続時に自動的にログ採取を行う。 </td>
+	<td>can automatically start log collection when TeraTerm connect to remote server.</td>
 </tr>
 
 <tr>
 	<td>BroadcastCommandHistory</td>
-	<td>Broadcast Commandのコマンド履歴をteraterm.iniへ保存する。 </td>
+	<td>can record command historys of Broadcast Command to teraterm.ini file.</td>
 </tr>
 
 <tr>
 	<td>AcceptBroadcast</td>
-	<td>"off"の場合、Broadcast Commandダイアログを呼び出したウィンドウにはコマンドを送出しない。 </td>
+	<td>does not send the command the user input to own window when this option is off.</td>
 </tr>
 
 <tr>
 	<td>TitleFormat</td>
-	<td>フォーマットIDに"13", "29", "45", "61"を追加。 </td>
+	<td>added "13", "29", "45" and "61" as format ID.</td>
 </tr>
 
 <tr>
 	<td>FileSendFilter</td>
-	<td>送信ダイアログのファイル名フィルタを設定する。 </td>
+	<td>can configure filters of file name on sending dialog.</td>
 </tr>
 
 <tr>
 	<td>VTCompatTab</td>
-	<td>行末のタブ表示を VT 端末互換にする。 </td>
+	<td>can enable that the tab display at the end of line is VT compatible terminal.</td>
 </tr>
 
 </table>
@@ -520,33 +521,33 @@ Other new features are shown below.<br><br>
 
 <table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
 <tr>
-	<td width="30%"><b>エントリ</b></td>
-	<td width="70%"><b>意味</b></td>
+	<td width="30%"><b>Entry</b></td>
+	<td width="70%"><b>Feature</b></td>
 </tr>
 
 <tr>
 	<td>CipherOrder</td>
-	<td>3DES-CBCの"7"、AES128の"8"を追加。</td>
+	<td>added "7" as 3DES-CBC, "8" as AES128.</td>
 </tr>
 
 <tr>
 	<td>ProtocolVersion</td>
-	<td>SSHプロトコルバージョン</td>
+	<td>can be SSH protocol version.</td>
 </tr>
 
 <tr>
 	<td>HeartBeat</td>
-	<td>キープアライブ（ハートビート）間隔</td>
+	<td>can be keep-alive(heart-beat) interval per second.</td>
 </tr>
 
 <tr>
 	<td>KeyboardInteractive</td>
-	<td>パスワード認証の前にキーボードインタラクティブ認証を試みるかどうか。</td>
+	<td>can configure whether TTSSH will try to do keyboard-interactive authentication before password authentication.</td>
 </tr>
 
 <tr>
 	<td>RememberPassword</td>
-	<td>パスワードをメモリ上へ保持するかどうか。</td>
+	<td>can configure whether the password string which the user input will preserve on memory.</td>
 </tr>
 
 </table>
