@@ -1699,6 +1699,28 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 
+	case IDC_HOSTCOM:
+		if(HIWORD(wParam) == CBN_DROPDOWN) {
+			HWND hostcom = GetDlgItem(Dialog, IDC_HOSTCOM);
+			int count = SendMessage(hostcom, CB_GETCOUNT, 0, 0);
+			int i, len, max_len = 0;
+			char *lbl;
+			HDC TmpDC = GetDC(hostcom);
+			SIZE s;
+			for (i=0; i<count; i++) {
+				len = SendMessage(hostcom, CB_GETLBTEXTLEN, i, 0);
+				lbl = (char *)calloc(len+1, sizeof(char));
+				SendMessage(hostcom, CB_GETLBTEXT, i, (LPARAM)lbl);
+				GetTextExtentPoint32(TmpDC, lbl, len, &s);
+				if (s.cx > max_len)
+					max_len = s.cx;
+				free(lbl);
+			}
+			SendMessage(hostcom, CB_SETDROPPEDWIDTH,
+			            max_len + GetSystemMetrics(SM_CXVSCROLL), 0);
+		}
+		break;
+
 	case IDC_HOSTHELP:
 		PostMessage(GetParent(Dialog),WM_USER_DLGHELP2,0,0);
 		}
