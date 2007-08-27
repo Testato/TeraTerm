@@ -55,6 +55,20 @@
 #define IDC_BUTTON1                     1042
 #define IDC_KEYFILE_BUTTON              1042
 #define IDC_VERSION                     1043
+#define IDC_INCLUDE                     1044
+#define LBL_TTMPATH                     1045
+#define LBL_OPTION                      1046
+#define LBL_LOG                         1047
+#define LBL_PROMPT_USER                 1048
+#define LBL_PROMPT_PASS                 1049
+#define GRP_AUTOLOGIN                   1050
+#define GRP_INITFILE                    1051
+#define LBL_LIST                        1052
+#define GRP_CONFIG                      1053
+#define GRP_LAUNCH                      1054
+#define LBL_HOST                        1055
+#define LBL_ENTRY                       1056
+#define GRP_PROMPT                      1057
 #define ID_MENUITEM40013                40013
 #define ID_MENUITEM40014                40014
 #define ID_MENUITEM40015                40015
@@ -80,7 +94,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        116
 #define _APS_NEXT_COMMAND_VALUE         40043
-#define _APS_NEXT_CONTROL_VALUE         1044
+#define _APS_NEXT_CONTROL_VALUE         1058
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

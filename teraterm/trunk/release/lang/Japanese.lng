@@ -765,6 +765,9 @@ MENU_EXEC=実行
 MENU_CLOSE=終了
 MENU_NOTRAY=(なし)
 
+DLG_ABOUT_TITLE=バージョン情報
+DLG_ABOUT_APPNAME=支援ツール
+
 DLG_CONFIG_TITLE=リスト編集
 DLG_CONFIG_ITEM=リスト項目
 DLG_CONFIG_CONFIG=設定内容
@@ -790,21 +793,21 @@ DLG_ETC_LOGFILE=ログファイル
 DLG_ETC_PROMPT=プロンプト
 DLG_ETC_USER=ユーザ名
 DLG_ETC_PASS=パスワード
-DLG_ETC_DEFAULT=デフォルト
 
-MSG_ERROR_MAKETTL=ttpmenu.TTLの作成に失敗しました。
-MSG_ERROR_LAUNCH=アプリケーションの実行に失敗しました。
+MSG_ERROR_READREG=レジストリからのデータ読み出しに失敗しました。\n
+MSG_ERROR_MAKETTL=ttpmenu.TTLの作成に失敗しました。\n
+MSG_ERROR_LAUNCH=アプリケーションの実行に失敗しました。\n
 MSG_ERROR_NOREGNAME=登録名を入力して下さい。
 MSG_ERROR_INVALIDREGNAME=登録名に"\\"は使用できません。
 MSG_ERROR_NOHOST=ホスト名を入力して下さい。
 MSG_ERROR_NOMACRO=マクロファイル名を入力して下さい。
-MSG_ERROR_CHECKFILE=ファイル[%s]のチェックに失敗しました。
-MSG_ERROR_SAVEREG=レジストリへの保存に失敗しました。
-MSG_ERROR_OPENREG=レジストリを開けませんでした。
+MSG_ERROR_CHECKFILE=ファイル[%s]のチェックに失敗しました。\n
+MSG_ERROR_SAVEREG=レジストリへの保存に失敗しました。\n
+MSG_ERROR_OPENREG=レジストリを開けませんでした。\n
 MSG_ERROR_SELECTREG=削除する登録を選択して下さい。
 MSG_ERROR_GETDELETEREG=削除する登録の取得に失敗しました。
-MSG_ERROR_DELETEREG=レジストリの削除に失敗しました。
-MSG_ERROR_WINCLASS=ウインドウクラスの登録に失敗しました。
+MSG_ERROR_DELETEREG=レジストリの削除に失敗しました。\n
+MSG_ERROR_WINCLASS=ウインドウクラスの登録に失敗しました。\n
 
 FILEDLG_MACRO_TITLE=マクロファイルを指定
 FILEDLG_MACRO_FILTER=マクロファイル(*.ttl)\0*.ttl\0すべてのファイル(*.*)\0*.*\0\0
@@ -815,7 +818,7 @@ FILEDLG_TERATERM_FILTER=実行ファイル(*.exe)\0*.exe\0すべてのファイル(*.*)\0*.*\0
 FILEDLG_INI_TITLE=設定ファイルを指定
 FILEDLG_INI_FILTER=設定ファイル(*.ini)\0*.ini\0すべてのファイル(*.*)\0*.*\0\0
 FILEDLG_LOG_TITLE=ログファイルを指定
-FILEDLG_LOG_FILTER=ログファイル(*.log)\0*.ini\0すべてのファイル(*.*)\0*.*\0\0
+FILEDLG_LOG_FILTER=ログファイル(*.log)\0*.log\0すべてのファイル(*.*)\0*.*\0\0
 
 BTN_OK=OK
 BTN_CANCEL=キャンセル

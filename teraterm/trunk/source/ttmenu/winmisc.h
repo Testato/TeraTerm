@@ -17,6 +17,7 @@
 
 #include	<stdio.h>
 #include	<time.h>
+#include	"i18n.h"
 
 // Window Position
 #define		POSITION_LEFTTOP		0x00
@@ -41,5 +42,7 @@ UINT	GetResourceType(LPCTSTR lpszPath);
 int		CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpData);
 TCHAR	*PathTok(TCHAR *str, TCHAR *separator);
 TCHAR	*lstrstri(TCHAR *s1, TCHAR *s2);
+void	UTIL_get_lang_msg(PCHAR key, PCHAR buf, int buf_len, PCHAR def, PCHAR iniFile);
+int		UTIL_get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PCHAR iniFile);
 
 #endif

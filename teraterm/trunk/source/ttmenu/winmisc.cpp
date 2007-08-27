@@ -423,3 +423,22 @@ BOOL SetForceForegroundWindow(HWND hWnd)
 	return	ret;
 }
 
+void UTIL_get_lang_msg(PCHAR key, PCHAR buf, int buf_len, PCHAR def, PCHAR iniFile)
+{
+	GetI18nStr("TTMenu", key, buf, buf_len, def, iniFile);
+}
+
+int UTIL_get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PCHAR iniFile)
+{
+	if (GetI18nLogfont("TTMenu", key, logfont,
+					   GetDeviceCaps(GetDC(dlg),LOGPIXELSY),
+					   iniFile) == FALSE) {
+		return FALSE;
+	}
+
+	if ((*font = CreateFontIndirect(logfont)) == NULL) {
+		return FALSE;
+	}
+
+	return TRUE;
+}

@@ -49,6 +49,7 @@
 				AdditionalOptions="/D&quot;_CRT_SECURE_NO_DEPRECATE&quot;"
 				Optimization="1"
 				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\common"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -142,6 +143,7 @@
 				AdditionalOptions="/D&quot;_CRT_SECURE_NO_DEPRECATE&quot;"
 				Optimization="0"
 				InlineFunctionExpansion="0"
+				AdditionalIncludeDirectories="..\common"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				StringPooling="false"
 				RuntimeLibrary="1"
@@ -207,6 +209,10 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\common\i18n.c"
+			>
+		</File>
+		<File
 			RelativePath="left.ico"
 			>
 		</File>
@@ -242,6 +248,10 @@
 		</File>
 		<File
 			RelativePath="teraterm.ico"
+			>
+		</File>
+		<File
+			RelativePath="..\common\ttlib.c"
 			>
 		</File>
 		<File
