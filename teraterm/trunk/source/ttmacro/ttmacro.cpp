@@ -43,7 +43,6 @@ CCtrlApp theApp;
 
 BOOL CCtrlApp::InitInstance()
 {
-  TTTSet ts;
   static HMODULE HTTSET = NULL;
 
   // インストーラで実行を検出するために mutex を作成する (2006.8.12 maya)
