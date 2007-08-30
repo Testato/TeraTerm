@@ -1089,6 +1089,11 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 			if ((comports = DetectComPorts(ComPortTable, ts->MaxComPort, ComPortDesc)) > 0) {
 				for (i=0; i<comports; i++) {
+					// MaxComPort を越えるポートは表示しない
+					if (ComPortTable[i] > ts->MaxComPort) {
+						continue;
+					}
+
 					uint2str(ComPortTable[i], &Temp[3], sizeof(Temp)-3, 3);
 // Serial dialogはドロップダウンリストの幅が大きくできないので、Descriptionはなしとする。
 #if 0
@@ -1575,6 +1580,11 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			strncpy_s(EntName, sizeof(EntName),"COM", _TRUNCATE);
 			if ((comports=DetectComPorts(ComPortTable, GetHNRec->MaxComPort, ComPortDesc)) >= 0) {
 				for (i=0; i<comports; i++) {
+					// MaxComPort を越えるポートは表示しない
+					if (ComPortTable[i] > GetHNRec->MaxComPort) {
+						continue;
+					}
+
 					if (((GetCOMFlag() >> (ComPortTable[i]-1)) & 1)==0) {
 						uint2str(ComPortTable[i], &EntName[3], sizeof(EntName)-3, 3);
 						if (ComPortDesc[i] != NULL) {

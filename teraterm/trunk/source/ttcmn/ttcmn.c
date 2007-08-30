@@ -1462,10 +1462,11 @@ int PASCAL DetectComPorts(char *ComPortTable, int ComPortMax, char **ComPortDesc
 	    (QueryDosDevice(NULL, devicesBuff, 65535) != 0)) {
 	        p = devicesBuff;
 		while (*p != '\0') {
-			if (strncmp(p, "COM", 3) == 0 && p[3] != '\0')
+			if (strncmp(p, "COM", 3) == 0 && p[3] != '\0') {
 				ComPortTable[comports++] = atoi(p+3);
-			if (comports >= ComPortMax)
-				break;
+				if (comports >= ComPortMax)
+					break;
+			}
 			p += (strlen(p)+1);
 		}
 
@@ -1485,7 +1486,7 @@ int PASCAL DetectComPorts(char *ComPortTable, int ComPortMax, char **ComPortDesc
 #if 1
 		for (i=1; i<=ComPortMax; i++) {
 			FILE *fp;
-			char buf[10];
+			char buf[11]; // \\.\COMxxx + NULL
 			_snprintf_s(buf, sizeof(buf), _TRUNCATE, "\\\\.\\COM%d", i);
 			if ((fp = fopen(buf, "r")) != NULL) {
 				fclose(fp);
