@@ -1279,7 +1279,7 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 					SendDlgItemMessage(Dialog, IDC_TCPIPLIST, LB_ADDSTRING,
 					                   0, (LPARAM)TempHost);
 				i++;
-			} while ((i <= 99) && (strlen(TempHost)>0));
+			} while ((i <= MAXHOSTLIST) && (strlen(TempHost)>0));
 
 			/* append a blank item to the bottom */
 			TempHost[0] = 0;
@@ -1316,8 +1316,8 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 							Index = 0;
 						else
 							Index--;
-						if (Index>99)
-							Index = 99;
+						if (Index>MAXHOSTLIST)
+							Index = MAXHOSTLIST;
 
 						strncpy_s(EntName, sizeof(EntName),"Host", _TRUNCATE);
 						for (i = 1 ; i <= Index ; i++) {
@@ -1549,7 +1549,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 					SendDlgItemMessage(Dialog, IDC_HOSTNAME, CB_ADDSTRING,
 					                   0, (LPARAM)TempHost);
 				i++;
-			} while ((i <= 99) && (strlen(TempHost)>0));
+			} while ((i <= MAXHOSTLIST) && (strlen(TempHost)>0));
 
 			SendDlgItemMessage(Dialog, IDC_HOSTNAME, EM_LIMITTEXT,
 			                   HostNameMaxLength-1, 0);

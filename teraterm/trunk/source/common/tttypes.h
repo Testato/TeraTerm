@@ -732,6 +732,7 @@ typedef TComVar far *PComVar;
 
 #define MAXNWIN 50
 #define MAXCOMPORT 200
+#define MAXHOSTLIST 99
 
 /* shared memory */
 typedef struct {
