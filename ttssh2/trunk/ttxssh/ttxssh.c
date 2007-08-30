@@ -939,6 +939,11 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		strncpy_s(EntName, sizeof(EntName), "COM", _TRUNCATE);
 		if ((comports=DetectComPorts(ComPortTable, GetHNRec->MaxComPort, ComPortDesc)) >= 0) {
 			for (i=0; i<comports; i++) {
+				// MaxComPort を越えるポートは表示しない
+				if (ComPortTable[i] > GetHNRec->MaxComPort) {
+					continue;
+				}
+
 				_snprintf_s(&EntName[3], sizeof(EntName)-3, _TRUNCATE, "%d", ComPortTable[i]);
 				if (ComPortDesc[i] != NULL) {
 					strncat_s(EntName, sizeof(EntName), ": ", _TRUNCATE);
