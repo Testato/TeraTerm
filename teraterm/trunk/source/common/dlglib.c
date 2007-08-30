@@ -8,87 +8,86 @@
 
 void EnableDlgItem(HWND HDlg, int FirstId, int LastId)
 {
-  int i;
-  HWND HControl;
+	int i;
+	HWND HControl;
 
-  for (i = FirstId ; i <= LastId ; i++)
-  {
-    HControl = GetDlgItem(HDlg, i);
-    EnableWindow(HControl,TRUE);
-  }
+	for (i = FirstId ; i <= LastId ; i++) {
+		HControl = GetDlgItem(HDlg, i);
+		EnableWindow(HControl,TRUE);
+	}
 }
 
 void DisableDlgItem(HWND HDlg, int FirstId, int LastId)
 {
-  int i;
-  HWND HControl;
+	int i;
+	HWND HControl;
 
-  for (i = FirstId ; i <= LastId ; i++)
-  {
-    HControl = GetDlgItem(HDlg, i);
-    EnableWindow(HControl,FALSE);
-  }
+	for (i = FirstId ; i <= LastId ; i++) {
+		HControl = GetDlgItem(HDlg, i);
+		EnableWindow(HControl,FALSE);
+	}
 }
 
 void ShowDlgItem(HWND HDlg, int FirstId, int LastId)
 {
-  int i;
-  HWND HControl;
+	int i;
+	HWND HControl;
 
-  for (i = FirstId ; i <= LastId ; i++)
-  {
-    HControl = GetDlgItem(HDlg, i);
-    ShowWindow(HControl,SW_SHOW);
-  }
+	for (i = FirstId ; i <= LastId ; i++) {
+		HControl = GetDlgItem(HDlg, i);
+		ShowWindow(HControl,SW_SHOW);
+	}
 }
 
 void SetRB(HWND HDlg, int R, int FirstId, int LastId)
 {
-  HWND HControl;
-  DWORD Style;
+	HWND HControl;
+	DWORD Style;
 
-  if ( R<1 ) return;
-  if ( FirstId+R-1 > LastId ) return;
-  HControl = GetDlgItem(HDlg, FirstId + R - 1);
-  SendMessage(HControl, BM_SETCHECK, 1, 0);
-  Style = GetClassLong(HControl, GCL_STYLE);
-  SetClassLong(HControl, GCL_STYLE, Style | WS_TABSTOP);
+	if ( R<1 )
+		return;
+	if ( FirstId+R-1 > LastId )
+		return;
+	HControl = GetDlgItem(HDlg, FirstId + R - 1);
+	SendMessage(HControl, BM_SETCHECK, 1, 0);
+	Style = GetClassLong(HControl, GCL_STYLE);
+	SetClassLong(HControl, GCL_STYLE, Style | WS_TABSTOP);
 }
 
 void GetRB(HWND HDlg, LPWORD R, int FirstId, int LastId)
 {
-  int i;
+	int i;
 
-  *R = 0;
-  for (i = FirstId ; i <= LastId ; i++)
-    if (SendDlgItemMessage(HDlg, i, BM_GETCHECK, 0, 0) != 0)
-    {
-      *R = i - FirstId + 1;
-      return;
-    }
+	*R = 0;
+	for (i = FirstId ; i <= LastId ; i++)
+		if (SendDlgItemMessage(HDlg, i, BM_GETCHECK, 0, 0) != 0)
+		{
+			*R = i - FirstId + 1;
+			return;
+		}
 }
 
 void SetDlgNum(HWND HDlg, int id_Item, LONG Num)
 {
-  char Temp[16];
+	char Temp[16];
 
-  /* In Win16, SetDlgItemInt can not be used to display long integer. */
-  _snprintf_s(Temp,sizeof(Temp),_TRUNCATE,"%d",Num);
-  SetDlgItemText(HDlg,id_Item,Temp);
+	/* In Win16, SetDlgItemInt can not be used to display long integer. */
+	_snprintf_s(Temp,sizeof(Temp),_TRUNCATE,"%d",Num);
+	SetDlgItemText(HDlg,id_Item,Temp);
 }
 
 void SetDlgPercent(HWND HDlg, int id_Item, LONG a, LONG b)
 {
 #if 0
-  int Num;
-  char NumStr[10];
+	int Num;
+	char NumStr[10];
 
-  if (b==0)
-    Num = 100;
-  else
-    Num = 100 * a / b;
-  sprintf(NumStr,"%u %c",Num,'%');
-  SetDlgItemText(HDlg, id_Item, NumStr);
+	if (b==0)
+		Num = 100;
+	else
+		Num = 100 * a / b;
+	sprintf(NumStr,"%u %c",Num,'%');
+	SetDlgItemText(HDlg, id_Item, NumStr);
 #else
 	// 20MB以上のファイルをアップロードしようとすると、buffer overflowで
 	// 落ちる問題への対処。(2005.3.18 yutaka)
@@ -107,27 +106,26 @@ void SetDlgPercent(HWND HDlg, int id_Item, LONG a, LONG b)
 
 void SetDropDownList(HWND HDlg, int Id_Item, PCHAR far *List, int nsel)
 {
-  int i;
+	int i;
 
-  i = 0;
-  while (List[i] != NULL)
-  {
-    SendDlgItemMessage(HDlg, Id_Item, CB_ADDSTRING,
-		       0, (LPARAM)List[i]);
-    i++;
-  }
-  SendDlgItemMessage(HDlg, Id_Item, CB_SETCURSEL,nsel-1,0);
+	i = 0;
+	while (List[i] != NULL) {
+		SendDlgItemMessage(HDlg, Id_Item, CB_ADDSTRING,
+		                   0, (LPARAM)List[i]);
+		i++;
+	}
+	SendDlgItemMessage(HDlg, Id_Item, CB_SETCURSEL,nsel-1,0);
 }
 
 LONG GetCurSel(HWND HDlg, int Id_Item)
 {
-  LONG n;
+	LONG n;
 
-  n = SendDlgItemMessage(HDlg, Id_Item, CB_GETCURSEL, 0, 0);
-  if (n==CB_ERR)
-    n = 0;
-  else
-    n++;
+	n = SendDlgItemMessage(HDlg, Id_Item, CB_GETCURSEL, 0, 0);
+	if (n==CB_ERR)
+		n = 0;
+	else
+		n++;
 
-  return n;
+	return n;
 }
