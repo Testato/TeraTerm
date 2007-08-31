@@ -160,6 +160,7 @@
 #define RsvBreak        120   // add 'break' (2007.7.20 doda)
 #define RsvRotateR      121   // add 'rotateright' (2007.8.19 maya)
 #define RsvRotateL      122   // add 'rotateleft' (2007.8.19 maya)
+#define RsvSetEnv       123   // reactivate 'setenv' (2007.8.31 maya)
 
 #define RsvOperator   150
 #define RsvBNot       151

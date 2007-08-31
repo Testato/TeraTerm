@@ -1944,21 +1944,22 @@ WORD TTLSetDlgPos()
 	return Err;
 }
 
-/*WORD TTLSetEnv()
+// reactivate 'setenv' (2007.8.31 maya)
+WORD TTLSetEnv()
 {
-  WORD Err;
-  TStrVal Str, Str2;
+	WORD Err;
+	TStrVal Str, Str2;
 
-  Err = 0;
-  GetStrVal(Str,&Err);
-  GetStrVal(Str2,&Err);
-  if ((Err==0) && (GetFirstChar()!=0))
-    Err = ErrSyntax;
-  if (Err!=0) return Err;
+	Err = 0;
+	GetStrVal(Str,&Err);
+	GetStrVal(Str2,&Err);
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
 
-  setenv(Str,Str2,1);
-  return Err;
-} */
+	_putenv_s(Str,Str2);
+	return Err;
+}
 
 WORD TTLSetExitCode()
 {
@@ -3022,6 +3023,8 @@ int ExecCmnd()
 			Err = TTLSetDlgPos(); break;
 		case RsvSetEcho:
 			Err = TTLCommCmdBin(CmdSetEcho,0); break;
+		case RsvSetEnv:
+			Err = TTLSetEnv(); break;
 		case RsvSetExitCode:
 			Err = TTLSetExitCode(); break;
 		case RsvSetSync:
