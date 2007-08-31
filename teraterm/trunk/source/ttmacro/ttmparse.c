@@ -343,73 +343,63 @@ BOOL GetOperator(LPWORD WordId)
 	P = LinePtr;
 	b = GetFirstChar();
 	switch (b) {
-		case 0: return FALSE;
-		case '*': *WordId = RsvMul;     return TRUE; break;
-		case '+': *WordId = RsvPlus;    return TRUE; break;
-		case '-': *WordId = RsvMinus;   return TRUE; break;
-		case '/': *WordId = RsvDiv;     return TRUE; break;
-		case '%': *WordId = RsvMod;     return TRUE; break;
-		case '=': *WordId = RsvEQ;      return TRUE; break;
-		case '<': *WordId = RsvLT;      break;
-		case '>': *WordId = RsvGT;      break;
-		case '&': *WordId = RsvBAnd;    break;
-		case '|': *WordId = RsvBOr;     break;
-		case '^': *WordId = RsvBXor;    return TRUE; break;
-		case '~': *WordId = RsvBNot;    return TRUE; break;
-		case '!': *WordId = RsvLNot;    return TRUE; break;
+		case 0:	return FALSE; break;
+		case '*': *WordId = RsvMul;   break;
+		case '+': *WordId = RsvPlus;  break;
+		case '-': *WordId = RsvMinus; break;
+		case '/': *WordId = RsvDiv;   break;
+		case '%': *WordId = RsvMod;   break;
+		case '=': *WordId = RsvEQ;
+			if (LinePtr < LineLen && LineBuff[LinePtr] == '=') {
+				LinePtr++;
+			}
+			break;
+		case '<': *WordId = RsvLT;
+			if (LinePtr < LineLen) {
+				switch (LineBuff[LinePtr++]) {
+					case '=': *WordId = RsvLE; break;
+					case '>': *WordId = RsvNE; break;
+					case '<': *WordId = RsvALShift; break;
+					default: LinePtr--;
+				}
+			}
+			break;
+		case '>': *WordId = RsvGT;
+			if (LinePtr < LineLen) {
+				switch (LineBuff[LinePtr++]) {
+					case '=': *WordId = RsvGE; break;
+					case '>': *WordId = RsvARShift;
+						if (LinePtr < LineLen && LineBuff[LinePtr] == '>') {
+							*WordId = RsvLRShift; LinePtr++;
+						}
+						break;
+					default: LinePtr--;
+				}
+			}
+			break;
+		case '&': *WordId = RsvBAnd;
+			if (LinePtr < LineLen && LineBuff[LinePtr] == '&') {
+				*WordId = RsvLAnd; LinePtr++;
+			}
+			break;
+		case '|': *WordId = RsvBOr;
+			if (LinePtr < LineLen && LineBuff[LinePtr] == '|') {
+				*WordId = RsvLOr; LinePtr++;
+			}
+			break;
+		case '^': *WordId = RsvBXor; break;
+		case '~': *WordId = RsvBNot; break;
+		case '!': *WordId = RsvLNot;
+			if (LinePtr < LineLen && LineBuff[LinePtr] == '=') {
+				*WordId = RsvNE; LinePtr++;
+			}
+			break;
 		default:
 			LinePtr--;
-			if (! GetReservedWord(WordId) || (*WordId < RsvOperator))
-			{
+			if (! GetReservedWord(WordId) || (*WordId < RsvOperator)) {
 				LinePtr = P;
 				return FALSE;
 			}
-			else
-				return TRUE;
-	}
-
-	if (LinePtr<LineLen) {
-		b = LineBuff[LinePtr];
-		if (b == '=') {
-			if (*WordId == RsvLT) {
-				*WordId = RsvLE;
-				LinePtr++;
-			}
-			else if (*WordId == RsvGT) {
-				*WordId = RsvGE;
-				LinePtr++;
-			}
-		}
-		else if (b == '>') {
-			if (*WordId == RsvLT) {
-				*WordId = RsvNE;
-				LinePtr++;
-			}
-			else if (*WordId == RsvGT) {
-				*WordId = RsvARShift;
-				LinePtr++;
-			}
-		}
-		else if ((b == '<') && (*WordId == RsvLT)) {
-			*WordId = RsvALShift;
-			LinePtr++;
-		}
-		else if ((b == '&') && (*WordId == RsvBAnd)) {
-			*WordId = RsvLAnd;
-			LinePtr++;
-		}
-		else if ((b == '|') && (*WordId == RsvBOr)) {
-			*WordId = RsvLOr;
-			LinePtr++;
-		}
-	}
-
-	if (LinePtr<LineLen) {
-		b = LineBuff[LinePtr];
-		if ((b == '>') && (*WordId == RsvARShift)) {
-			*WordId = RsvLRShift;
-			LinePtr++;
-		}
 	}
 
 	return TRUE;
