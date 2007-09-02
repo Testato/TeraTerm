@@ -18,11 +18,12 @@ void FAR PASCAL GetDefaultSet(PTTSet ts);
 // void FAR PASCAL LoadDefaultSet(PCHAR SetupFName);
 WORD FAR PASCAL GetKeyCode(PKeyMap KeyMap, WORD Scan);
 void FAR PASCAL GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
-                        BOOL AppliKeyMode, BOOL AppliCursorMode,
-                        PCHAR KeyStr, int destlen, LPINT Len, LPWORD Type);
+                          BOOL AppliKeyMode, BOOL AppliCursorMode,
+                          PCHAR KeyStr, int destlen, LPINT Len, LPWORD Type);
 
-void FAR PASCAL SetCOMFlag(WORD Com);
-WORD FAR PASCAL GetCOMFlag();
+void FAR PASCAL SetCOMFlag(int com);
+void FAR PASCAL ClearCOMFlag(int com);
+int FAR PASCAL CheckCOMFlag(int com);
 
 int FAR PASCAL RegWin(HWND HWinVT, HWND HWinTEK);
 void FAR PASCAL UnregWin(HWND HWin);

@@ -4,8 +4,9 @@ EXPORTS
   GetDefaultSet @3
   GetKeyCode @4
   GetKeyStr @5
-  SetCOMFlag @6
-  GetCOMFlag @7
+  SetCOMFlag @44
+  ClearCOMFlag @45
+  CheckCOMFlag @46
   RegWin @10
   UnregWin @11
   SetWinMenu @12

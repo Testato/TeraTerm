@@ -743,8 +743,11 @@ typedef struct {
 	// Window list
 	int NWin;
 	HWND WinList[MAXNWIN];
-	/* COM port use flag - bit0-15 : COM1-16 */
-	WORD ComFlag;
+	/* COM port use flag
+	 * char[0] : COM1-16
+	 * char[1] : COM17-32 ...
+	 */
+	unsigned char ComFlag[(MAXCOMPORT-1)/CHAR_BIT+1];
 } TMap;
 typedef TMap far *PMap;
 
@@ -755,6 +758,7 @@ typedef TMap far *PMap;
  *
  * - At version 4.54, ttset_memfilemap was replaced with ttset_memfilemap_3.
  *   added tttset.TelKeepAliveInterval.
+ *   changed pm.ComFlag type.
  *
  * - At version 4.53, ttset_memfilemap was replaced with ttset_memfilemap_2.
  *   added tttset.VTCompatTab.

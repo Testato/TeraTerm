@@ -223,7 +223,6 @@ void CommResetSerial(PTTSet ts, PComVar cv)
 
 void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 {
-  WORD COMFlag;
 #ifdef NO_INET6
   int Err;
 #endif /* NO_INET6 */
@@ -515,15 +514,13 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
         PostMessage(cv->HWin, WM_USER_COMMOPEN, 0, 0);
         InvalidHost = FALSE;
 
-        COMFlag = GetCOMFlag();
-        COMFlag = COMFlag | (1 << (ts->ComPort-1));
-        SetCOMFlag(COMFlag);
+        SetCOMFlag(ts->ComPort);
       }
       break; /* end of "case IdSerial:" */
 
     case IdFile:
       cv->ComID = CreateFile(ts->HostName,GENERIC_READ,0,NULL,
-	OPEN_EXISTING,0,NULL);
+                             OPEN_EXISTING,0,NULL);
       InvalidHost = (cv->ComID == INVALID_HANDLE_VALUE);
       if (InvalidHost)
       {
@@ -704,8 +701,6 @@ BOOL CommCanClose(PComVar cv)
 
 void CommClose(PComVar cv)
 {
-  WORD COMFlag;
-
   if ( ! cv->Open ) return;
   cv->Open = FALSE;
 
@@ -744,9 +739,7 @@ void CommClose(PComVar cv)
 	EscapeCommFunction(cv->ComID,CLRDTR);
 	SetCommMask(cv->ComID,0);
 	CloseHandle(cv->ComID);
-	COMFlag = GetCOMFlag();
-	COMFlag = COMFlag & ~(1 << (cv->ComPort-1));
-	SetCOMFlag(COMFlag); 
+	ClearCOMFlag(cv->ComPort);
       }
       break;
     case IdFile:

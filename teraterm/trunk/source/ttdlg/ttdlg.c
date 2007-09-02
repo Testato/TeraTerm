@@ -1585,30 +1585,35 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 						continue;
 					}
 
-					if (((GetCOMFlag() >> (ComPortTable[i]-1)) & 1)==0) {
-						uint2str(ComPortTable[i], &EntName[3], sizeof(EntName)-3, 3);
-						if (ComPortDesc[i] != NULL) {
-							strncat_s(EntName, sizeof(EntName), ": ", _TRUNCATE);
-							strncat_s(EntName, sizeof(EntName), ComPortDesc[i], _TRUNCATE);
-						}
-						SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_ADDSTRING,
-						                   0, (LPARAM)EntName);
-						j++;
-						if (GetHNRec->ComPort==ComPortTable[i])
-							w = j;
+					// 使用中のポートは表示しない
+					if (CheckCOMFlag(ComPortTable[i]) == 1) {
+						continue;
 					}
+
+					uint2str(ComPortTable[i], &EntName[3], sizeof(EntName)-3, 3);
+					if (ComPortDesc[i] != NULL) {
+						strncat_s(EntName, sizeof(EntName), ": ", _TRUNCATE);
+						strncat_s(EntName, sizeof(EntName), ComPortDesc[i], _TRUNCATE);
+					}
+					SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_ADDSTRING,
+					                   0, (LPARAM)EntName);
+					j++;
+					if (GetHNRec->ComPort==ComPortTable[i])
+						w = j;
 				}
 			} else {
 				for (i=1; i<=GetHNRec->MaxComPort ;i++)
 				{
-					if (((GetCOMFlag() >> (i-1)) & 1)==0) {
-						uint2str(i,&EntName[3],sizeof(EntName)-3,3);
-						SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_ADDSTRING,
-						                   0, (LPARAM)EntName);
-						j++;
-						if (GetHNRec->ComPort==i)
-							w = j;
+					// 使用中のポートは表示しない
+					if (CheckCOMFlag(i) == 1) {
+						continue;
 					}
+					uint2str(i,&EntName[3],sizeof(EntName)-3,3);
+					SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_ADDSTRING,
+					                   0, (LPARAM)EntName);
+					j++;
+					if (GetHNRec->ComPort==i)
+						w = j;
 				}
 			}
 			if (j>0)

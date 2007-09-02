@@ -478,14 +478,19 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
   PeekMessage(&Msg,HWin, WM_CHAR, WM_CHAR,PM_REMOVE);
 }
 
-void FAR PASCAL SetCOMFlag(WORD Com)
+void FAR PASCAL SetCOMFlag(int Com)
 {
-  pm->ComFlag = Com;
+  pm->ComFlag[(Com-1)/CHAR_BIT] |= 1 << ((Com-1)%CHAR_BIT);
 }
 
-WORD FAR PASCAL GetCOMFlag()
+void FAR PASCAL ClearCOMFlag(int Com)
 {
-  return (pm->ComFlag);
+  pm->ComFlag[(Com-1)/CHAR_BIT] &= ~(1 << ((Com-1)%CHAR_BIT));
+}
+
+int FAR PASCAL CheckCOMFlag(int Com)
+{
+  return ((pm->ComFlag[(Com-1)/CHAR_BIT] & 1 << (Com-1)%CHAR_BIT) > 0);
 }
 
 int FAR PASCAL RegWin(HWND HWinVT, HWND HWinTEK)
