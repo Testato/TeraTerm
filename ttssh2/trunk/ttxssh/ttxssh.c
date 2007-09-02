@@ -944,6 +944,11 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 					continue;
 				}
 
+				// 使用中のポートは表示しない
+				if (CheckCOMFlag(ComPortTable[i]) == 1) {
+					continue;
+				}
+
 				_snprintf_s(&EntName[3], sizeof(EntName)-3, _TRUNCATE, "%d", ComPortTable[i]);
 				if (ComPortDesc[i] != NULL) {
 					strncat_s(EntName, sizeof(EntName), ": ", _TRUNCATE);
@@ -958,6 +963,11 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 
 		} else {
 			for (i = 1; i <= GetHNRec->MaxComPort; i++) {
+				// 使用中のポートは表示しない
+				if (CheckCOMFlag(i) == 1) {
+					continue;
+				}
+
 				_snprintf_s(&EntName[3], sizeof(EntName)-3, _TRUNCATE, "%d", i);
 				SendDlgItemMessage(dlg, IDC_HOSTCOM, CB_ADDSTRING,
 				                   0, (LPARAM) EntName);
