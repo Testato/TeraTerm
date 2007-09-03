@@ -1125,6 +1125,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="setenv">
+					<param name="Local" value="html\macro\command\setenv.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="settime">
 					<param name="Local" value="html\macro\command\settime.html">
 					<param name="ImageNumber" value="11">
