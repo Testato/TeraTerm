@@ -6,6 +6,7 @@
 
 #include "teraterm.h"
 #include <string.h>
+#include <stdio.h>
 #include "ttmdlg.h"
 #include "ttmparse.h"
 
@@ -1160,6 +1161,11 @@ void GetIntVar(LPWORD VarId, LPWORD Err)
 
 void GetStrVal(PCHAR Str, LPWORD Err)
 {
+	GetStrVal2(Str, Err, FALSE);
+}
+
+void GetStrVal2(PCHAR Str, LPWORD Err, BOOL AutoConversion)
+{
 	WORD VarType;
 	int VarId;
 
@@ -1171,12 +1177,19 @@ void GetStrVal(PCHAR Str, LPWORD Err)
 	else if (GetOrResult(&VarType,&VarId,Err))
 	{
 		if (*Err!=0) return;
-		if (VarType!=TypString)
-			*Err = ErrTypeMismatch;
-		else
-			// Str が TStrVal のポインタであることを期待してサイズを固定
-			// (2007.6.23 maya)
-			strncpy_s(Str,MaxStrLen,&StrBuff[VarId*MaxStrLen],_TRUNCATE);
+		switch (VarType) {
+			case TypString:
+				strncpy_s(Str,MaxStrLen,&StrBuff[VarId*MaxStrLen],_TRUNCATE);
+				break;
+			case TypInteger:
+				if (AutoConversion)
+					_snprintf_s(Str,sizeof(Str),_TRUNCATE,"%d",VarId);
+				else
+					*Err = ErrTypeMismatch;
+				break;
+			default:
+				*Err = ErrTypeMismatch;
+		}
 	}
 	else
 		*Err = ErrSyntax;

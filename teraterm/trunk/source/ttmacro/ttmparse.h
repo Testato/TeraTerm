@@ -226,6 +226,7 @@ void SetIntVal(WORD VarId, int Val);
 int CopyIntVal(WORD VarId);
 void GetIntVar(LPWORD VarId, LPWORD Err);
 void GetStrVal(PCHAR Str, LPWORD Err);
+void GetStrVal2(PCHAR Str, LPWORD Err, BOOL AutoConversion);
 void GetStrVar(LPWORD VarId, LPWORD Err);
 void SetStrVal(WORD VarId, PCHAR Str);
 PCHAR StrVarPtr(WORD VarId);

@@ -1601,8 +1601,8 @@ int MessageCommand(int BoxId, LPWORD Err)
 	TStrVal Str1, Str2;
 
 	*Err = 0;
-	GetStrVal(Str1,Err);
-	GetStrVal(Str2,Err);
+	GetStrVal2(Str1, Err, TRUE);
+	GetStrVal2(Str2, Err, TRUE);
 	if ((*Err==0) && (GetFirstChar()!=0))
 		*Err = ErrSyntax;
 	if (*Err!=0) return 0;
