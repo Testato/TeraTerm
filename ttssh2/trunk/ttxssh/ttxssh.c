@@ -805,6 +805,52 @@ static void enable_dlg_items(HWND dlg, int from, int to, BOOL enabled)
 	}
 }
 
+// C-n/C-p をサポート (2007.9.4 maya)
+// ドロップダウンの中のエディットコントロールを
+// サブクラス化するためのウインドウプロシージャ
+static WNDPROC OrigHostnameEditProc; // Original window procedure
+static LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
+                                         WPARAM wParam, LPARAM lParam)
+{
+	HWND parent;
+	int  max_item, select_item;
+
+	switch (msg) {
+		// キーが押されたのを検知する
+		case WM_KEYDOWN:
+			if (GetKeyState(VK_CONTROL) < 0) {
+				switch (wParam) {
+					case 0x4e: // Ctrl+n
+						parent = GetParent(dlg);
+						max_item = SendMessage(parent, CB_GETCOUNT, 0, 0);
+						select_item = SendMessage(parent, CB_GETCURSEL, 0, 0);
+						if (select_item < max_item - 1) {
+							PostMessage(parent, CB_SETCURSEL, select_item + 1, 0);
+						}
+						return 0;
+					case 0x50: // Ctrl+p
+						parent = GetParent(dlg);
+						select_item = SendMessage(parent, CB_GETCURSEL, 0, 0);
+						if (select_item > 0) {
+							PostMessage(parent, CB_SETCURSEL, select_item - 1, 0);
+						}
+						return 0;
+				}
+			}
+			break;
+
+		// C-n/C-p の結果送られる文字で音が鳴るので捨てる
+		case WM_CHAR:
+			switch (wParam) {
+				case 0x0e:
+				case 0x10:
+					return 0;
+			}
+	}
+
+	return CallWindowProc(OrigHostnameEditProc, dlg, msg, wParam, lParam);
+}
+
 static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
                                 LPARAM lParam)
 {
@@ -820,6 +866,8 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 	LOGFONT logfont;
 	HFONT font;
 	char uimsg[MAX_UIMSG];
+	HWND hwndHostname;     // HOSTNAME dropdown
+	HWND hwndHostnameEdit; // Edit control on HOSTNAME dropdown
 
 	GET_VAR();
 
@@ -896,6 +944,12 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		                   HostNameMaxLength - 1, 0);
 
 		SendDlgItemMessage(dlg, IDC_HOSTNAME, CB_SETCURSEL, 0, 0);
+
+		// C-n/C-p のためにサブクラス化 (2007.9.4 maya)
+		hwndHostname = GetDlgItem(dlg, IDC_HOSTNAME);
+		hwndHostnameEdit = GetWindow(hwndHostname, GW_CHILD);
+		OrigHostnameEditProc = (WNDPROC)GetWindowLong(hwndHostnameEdit, GWL_WNDPROC);
+		SetWindowLong(hwndHostnameEdit, GWL_WNDPROC, (LONG)HostnameEditProc);
 
 		CheckRadioButton(dlg, IDC_HOSTTELNET, IDC_HOSTOTHER,
 		                 pvar->settings.Enabled ? IDC_HOSTSSH : GetHNRec->
