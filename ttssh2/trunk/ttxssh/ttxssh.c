@@ -805,7 +805,7 @@ static void enable_dlg_items(HWND dlg, int from, int to, BOOL enabled)
 	}
 }
 
-// C-n/C-p/C-a/C-e をサポート (2007.9.5 maya)
+// C-p/C-n/C-b/C-f/C-a/C-e をサポート (2007.9.5 maya)
 // ドロップダウンの中のエディットコントロールを
 // サブクラス化するためのウインドウプロシージャ
 static WNDPROC OrigHostnameEditProc; // Original window procedure
@@ -813,44 +813,55 @@ static LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
                                          WPARAM wParam, LPARAM lParam)
 {
 	HWND parent;
-	int  max_item, select_item;
+	int  max, select;
 
 	switch (msg) {
 		// キーが押されたのを検知する
 		case WM_KEYDOWN:
 			if (GetKeyState(VK_CONTROL) < 0) {
 				switch (wParam) {
-					case 0x4e: // Ctrl+n ... down
-						parent = GetParent(dlg);
-						max_item = SendMessage(parent, CB_GETCOUNT, 0, 0);
-						select_item = SendMessage(parent, CB_GETCURSEL, 0, 0);
-						if (select_item < max_item - 1) {
-							PostMessage(parent, CB_SETCURSEL, select_item + 1, 0);
-						}
-						return 0;
 					case 0x50: // Ctrl+p ... up
 						parent = GetParent(dlg);
-						select_item = SendMessage(parent, CB_GETCURSEL, 0, 0);
-						if (select_item > 0) {
-							PostMessage(parent, CB_SETCURSEL, select_item - 1, 0);
+						select = SendMessage(parent, CB_GETCURSEL, 0, 0);
+						if (select > 0) {
+							PostMessage(parent, CB_SETCURSEL, select - 1, 0);
 						}
 						return 0;
-					case 0x41: // Ctrl+a ... left
+					case 0x4e: // Ctrl+n ... down
+						parent = GetParent(dlg);
+						max = SendMessage(parent, CB_GETCOUNT, 0, 0);
+						select = SendMessage(parent, CB_GETCURSEL, 0, 0);
+						if (select < max - 1) {
+							PostMessage(parent, CB_SETCURSEL, select + 1, 0);
+						}
+						return 0;
+					case 0x42: // Ctrl+b ... left
+						SendMessage(dlg, EM_GETSEL, 0, (LPARAM)&select);
+						PostMessage(dlg, EM_SETSEL, select-1, select-1);
+						return 0;
+					case 0x46: // Ctrl+f ... right
+						SendMessage(dlg, EM_GETSEL, 0, (LPARAM)&select);
+						max = GetWindowTextLength(dlg) ;
+						PostMessage(dlg, EM_SETSEL, select+1, select+1);
+						return 0;
+					case 0x41: // Ctrl+a ... home
 						PostMessage(dlg, EM_SETSEL, 0, 0);
 						return 0;
-					case 0x45: // Ctrl+e ... right
-						max_item = GetWindowTextLength(dlg) ;
-						PostMessage(dlg, EM_SETSEL, max_item, max_item);
+					case 0x45: // Ctrl+e ... end
+						max = GetWindowTextLength(dlg) ;
+						PostMessage(dlg, EM_SETSEL, max, max);
 						return 0;
 				}
 			}
 			break;
 
-		// C-n/C-p/C-a/C-e の結果送られる文字で音が鳴るので捨てる
+		// 上のキーを押した結果送られる文字で音が鳴るので捨てる
 		case WM_CHAR:
 			switch (wParam) {
 				case 0x01:
+				case 0x02:
 				case 0x05:
+				case 0x06:
 				case 0x0e:
 				case 0x10:
 					return 0;
@@ -875,8 +886,8 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 	LOGFONT logfont;
 	HFONT font;
 	char uimsg[MAX_UIMSG];
-	HWND hwndHostname;     // HOSTNAME dropdown
-	HWND hwndHostnameEdit; // Edit control on HOSTNAME dropdown
+	HWND hwndHostname     = NULL; // HOSTNAME dropdown
+	HWND hwndHostnameEdit = NULL; // Edit control on HOSTNAME dropdown
 
 	GET_VAR();
 
