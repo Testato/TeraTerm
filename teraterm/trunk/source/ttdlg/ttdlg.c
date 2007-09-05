@@ -1471,6 +1471,61 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	return FALSE;
 }
 
+// C-n/C-p/C-a/C-e をサポート (2007.9.5 maya)
+// ドロップダウンの中のエディットコントロールを
+// サブクラス化するためのウインドウプロシージャ
+WNDPROC OrigHostnameEditProc; // Original window procedure
+LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
+                                         WPARAM wParam, LPARAM lParam)
+{
+	HWND parent;
+	int  max_item, select_item;
+
+	switch (msg) {
+		// キーが押されたのを検知する
+		case WM_KEYDOWN:
+			if (GetKeyState(VK_CONTROL) < 0) {
+				switch (wParam) {
+					case 0x4e: // Ctrl+n ... down
+						parent = GetParent(dlg);
+						max_item = SendMessage(parent, CB_GETCOUNT, 0, 0);
+						select_item = SendMessage(parent, CB_GETCURSEL, 0, 0);
+						if (select_item < max_item - 1) {
+							PostMessage(parent, CB_SETCURSEL, select_item + 1, 0);
+						}
+						return 0;
+					case 0x50: // Ctrl+p ... up
+						parent = GetParent(dlg);
+						select_item = SendMessage(parent, CB_GETCURSEL, 0, 0);
+						if (select_item > 0) {
+							PostMessage(parent, CB_SETCURSEL, select_item - 1, 0);
+						}
+						return 0;
+					case 0x41: // Ctrl+a ... left
+						PostMessage(dlg, EM_SETSEL, 0, 0);
+						return 0;
+					case 0x45: // Ctrl+e ... right
+						max_item = GetWindowTextLength(dlg) ;
+						PostMessage(dlg, EM_SETSEL, max_item, max_item);
+						return 0;
+				}
+			}
+			break;
+
+		// C-n/C-p/C-a/C-e の結果送られる文字で音が鳴るので捨てる
+		case WM_CHAR:
+			switch (wParam) {
+				case 0x01:
+				case 0x05:
+				case 0x0e:
+				case 0x10:
+					return 0;
+			}
+	}
+
+	return CallWindowProc(OrigHostnameEditProc, dlg, msg, wParam, lParam);
+}
+
 BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
 	PGetHNRec GetHNRec;
@@ -1484,6 +1539,8 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
 	LOGFONT logfont;
 	HFONT font;
+	HWND hwndHostname     = NULL; // HOSTNAME dropdown
+	HWND hwndHostnameEdit = NULL; // Edit control on HOSTNAME dropdown
 
 	switch (Message) {
 		case WM_INITDIALOG:
@@ -1560,6 +1617,12 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			                   HostNameMaxLength-1, 0);
 
 			SendDlgItemMessage(Dialog, IDC_HOSTNAME, CB_SETCURSEL,0,0);
+
+			// C-n/C-p のためにサブクラス化 (2007.9.4 maya)
+			hwndHostname = GetDlgItem(Dialog, IDC_HOSTNAME);
+			hwndHostnameEdit = GetWindow(hwndHostname, GW_CHILD);
+			OrigHostnameEditProc = (WNDPROC)GetWindowLong(hwndHostnameEdit, GWL_WNDPROC);
+			SetWindowLong(hwndHostnameEdit, GWL_WNDPROC, (LONG)HostnameEditProc);
 
 			SetRB(Dialog,GetHNRec->Telnet,IDC_HOSTTELNET,IDC_HOSTTELNET);
 			SendDlgItemMessage(Dialog, IDC_HOSTTCPPORT, EM_LIMITTEXT,5,0);
@@ -1680,6 +1743,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 							GetHNRec->ComPort = 1;
 						}
 					}
+					SetWindowLong(hwndHostnameEdit, GWL_WNDPROC, (LONG)OrigHostnameEditProc);
 					EndDialog(Dialog, 1);
 					if (DlgHostFont != NULL) {
 						DeleteObject(DlgHostFont);
@@ -1687,6 +1751,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 					return TRUE;
 
 				case IDCANCEL:
+					SetWindowLong(hwndHostnameEdit, GWL_WNDPROC, (LONG)OrigHostnameEditProc);
 					EndDialog(Dialog, 0);
 					if (DlgHostFont != NULL) {
 						DeleteObject(DlgHostFont);
