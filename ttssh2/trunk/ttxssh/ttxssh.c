@@ -805,7 +805,7 @@ static void enable_dlg_items(HWND dlg, int from, int to, BOOL enabled)
 	}
 }
 
-// C-n/C-p をサポート (2007.9.4 maya)
+// C-n/C-p/C-a/C-e をサポート (2007.9.5 maya)
 // ドロップダウンの中のエディットコントロールを
 // サブクラス化するためのウインドウプロシージャ
 static WNDPROC OrigHostnameEditProc; // Original window procedure
@@ -820,7 +820,7 @@ static LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
 		case WM_KEYDOWN:
 			if (GetKeyState(VK_CONTROL) < 0) {
 				switch (wParam) {
-					case 0x4e: // Ctrl+n
+					case 0x4e: // Ctrl+n ... down
 						parent = GetParent(dlg);
 						max_item = SendMessage(parent, CB_GETCOUNT, 0, 0);
 						select_item = SendMessage(parent, CB_GETCURSEL, 0, 0);
@@ -828,20 +828,29 @@ static LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
 							PostMessage(parent, CB_SETCURSEL, select_item + 1, 0);
 						}
 						return 0;
-					case 0x50: // Ctrl+p
+					case 0x50: // Ctrl+p ... up
 						parent = GetParent(dlg);
 						select_item = SendMessage(parent, CB_GETCURSEL, 0, 0);
 						if (select_item > 0) {
 							PostMessage(parent, CB_SETCURSEL, select_item - 1, 0);
 						}
 						return 0;
+					case 0x41: // Ctrl+a ... left
+						PostMessage(dlg, EM_SETSEL, 0, 0);
+						return 0;
+					case 0x45: // Ctrl+e ... right
+						max_item = GetWindowTextLength(dlg) ;
+						PostMessage(dlg, EM_SETSEL, max_item, max_item);
+						return 0;
 				}
 			}
 			break;
 
-		// C-n/C-p の結果送られる文字で音が鳴るので捨てる
+		// C-n/C-p/C-a/C-e の結果送られる文字で音が鳴るので捨てる
 		case WM_CHAR:
 			switch (wParam) {
+				case 0x01:
+				case 0x05:
 				case 0x0e:
 				case 0x10:
 					return 0;
@@ -1185,6 +1194,7 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 					}
 				}
 			}
+			SetWindowLong(hwndHostnameEdit, GWL_WNDPROC, (LONG)OrigHostnameEditProc);
 			EndDialog(dlg, 1);
 
 			if (DlgHostFont != NULL) {
@@ -1194,6 +1204,7 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 			return TRUE;
 
 		case IDCANCEL:
+			SetWindowLong(hwndHostnameEdit, GWL_WNDPROC, (LONG)OrigHostnameEditProc);
 			EndDialog(dlg, 0);
 
 			if (DlgHostFont != NULL) {
@@ -1258,27 +1269,27 @@ hostssh_enabled:
 			}
 			return TRUE;
 
-	case IDC_HOSTCOM:
-		if(HIWORD(wParam) == CBN_DROPDOWN) {
-			HWND hostcom = GetDlgItem(dlg, IDC_HOSTCOM);
-			int count = SendMessage(hostcom, CB_GETCOUNT, 0, 0);
-			int i, len, max_len = 0;
-			char *lbl;
-			HDC TmpDC = GetDC(hostcom);
-			SIZE s;
-			for (i=0; i<count; i++) {
-				len = SendMessage(hostcom, CB_GETLBTEXTLEN, i, 0);
-				lbl = (char *)calloc(len+1, sizeof(char));
-				SendMessage(hostcom, CB_GETLBTEXT, i, (LPARAM)lbl);
-				GetTextExtentPoint32(TmpDC, lbl, len, &s);
-				if (s.cx > max_len)
-					max_len = s.cx;
-				free(lbl);
+		case IDC_HOSTCOM:
+			if(HIWORD(wParam) == CBN_DROPDOWN) {
+				HWND hostcom = GetDlgItem(dlg, IDC_HOSTCOM);
+				int count = SendMessage(hostcom, CB_GETCOUNT, 0, 0);
+				int i, len, max_len = 0;
+				char *lbl;
+				HDC TmpDC = GetDC(hostcom);
+				SIZE s;
+				for (i=0; i<count; i++) {
+					len = SendMessage(hostcom, CB_GETLBTEXTLEN, i, 0);
+					lbl = (char *)calloc(len+1, sizeof(char));
+					SendMessage(hostcom, CB_GETLBTEXT, i, (LPARAM)lbl);
+					GetTextExtentPoint32(TmpDC, lbl, len, &s);
+					if (s.cx > max_len)
+						max_len = s.cx;
+					free(lbl);
+				}
+				SendMessage(hostcom, CB_SETDROPPEDWIDTH,
+							max_len + GetSystemMetrics(SM_CXVSCROLL), 0);
 			}
-			SendMessage(hostcom, CB_SETDROPPEDWIDTH,
-			            max_len + GetSystemMetrics(SM_CXVSCROLL), 0);
-		}
-		break;
+			break;
 
 		case IDC_HOSTHELP:
 			PostMessage(GetParent(dlg), WM_USER_DLGHELP2, 0, 0);
