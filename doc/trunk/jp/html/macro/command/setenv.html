@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>setenv</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+
+<h1>setenv</h1>
+
+<h2>形式</h2>
+
+<pre class="macro-syntax">
+setenv &lt;envname&gt; &lt;strval&gt;
+</pre>
+
+<p>
+環境変数 &lt;envname&gt; に &lt;strval&gt; をセットする。<br>
+セットされた値はマクロ内でのみ有効で、システムには影響しません。<br>
+すでに値がセットされている環境変数を &lt;envname&gt; に指定した場合、値は上書きされます。
+</p>
+
+
+<h2>例</h2>
+
+<pre>
+setenv 'TEMP' 'C:\'
+</pre>
+
+</BODY>
+</HTML>
