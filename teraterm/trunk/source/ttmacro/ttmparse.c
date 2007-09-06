@@ -924,9 +924,14 @@ BOOL EvalBitShift(LPWORD ValType, int far *Val, LPWORD Err)
 		}
 
 		switch (WId) {
-			case RsvARShift: Val1 = Val1 >> Val2; break;
-			case RsvALShift: Val1 = Val1 << Val2; break;
+			case RsvARShift:
+				Val1 = Val1 >> Val2;
+				break;
+			case RsvALShift:
+				Val1 = Val1 << Val2;
+				break;
 			case RsvLRShift:
+				// use unsigned int for logical left shift
 				u_Val1 = Val1;
 				Val1 = u_Val1 >> Val2;
 				break;
