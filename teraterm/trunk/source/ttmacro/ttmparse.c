@@ -931,7 +931,7 @@ BOOL EvalBitShift(LPWORD ValType, int far *Val, LPWORD Err)
 				Val1 = Val1 << Val2;
 				break;
 			case RsvLRShift:
-				// use unsigned int for logical left shift
+				// use unsigned int for logical right shift
 				u_Val1 = Val1;
 				Val1 = u_Val1 >> Val2;
 				break;
