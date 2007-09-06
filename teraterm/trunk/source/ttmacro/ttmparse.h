@@ -219,8 +219,6 @@ BOOL NewLabVar(PCHAR Name, BINT InitVal, WORD ILevel);
 void DelLabVar(WORD ILevel);
 void CopyLabel(WORD ILabel, BINT far *Ptr, LPWORD Level);
 BOOL GetExpression(LPWORD ValType, int far *Val, LPWORD Err);
-BOOL GetAndResult(LPWORD ValType, int far *Val, LPWORD Err);
-BOOL GetOrResult(LPWORD ValType, int far *Val, LPWORD Err);
 void GetIntVal(int far *Val, LPWORD Err);
 void SetIntVal(WORD VarId, int Val);
 int CopyIntVal(WORD VarId);

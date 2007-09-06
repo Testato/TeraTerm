@@ -1454,7 +1454,7 @@ WORD TTLIf()
 	WORD Err, ValType, Tmp, WId;
 	int Val;
 
-	if (! GetOrResult(&ValType,&Val,&Err))
+	if (! GetExpression(&ValType,&Val,&Err))
 		return ErrSyntax;
 
 	if (Err!=0) return Err;
@@ -3098,7 +3098,7 @@ int ExecCmnd()
 			if (StrConst)
 				ValType = TypString;
 			else
-				if (! GetOrResult(&ValType,&Val,&Err))
+				if (! GetExpression(&ValType,&Val,&Err))
 					Err = ErrSyntax;
 
 			if (Err==0)

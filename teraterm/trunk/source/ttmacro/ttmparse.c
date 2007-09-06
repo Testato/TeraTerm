@@ -686,6 +686,14 @@ void CopyLabel(WORD ILabel, BINT far *Ptr, LPWORD Level)
 	*Level = (WORD)LabLevel[ILabel];
 }
 
+/*
+ * Precedence: 1
+ *   Evaluate variable.
+ *   Evaluate number.
+ *   Evaluate parenthesis.
+ *   Evaluate following operator.
+ *     not, ~, !, +(unary), -(unary)
+ */
 BOOL GetFactor(LPWORD ValType, int far *Val, LPWORD Err)
 {
 	TName Name;
@@ -693,10 +701,8 @@ BOOL GetFactor(LPWORD ValType, int far *Val, LPWORD Err)
 
 	P = LinePtr;
 	*Err = 0;
-	if (GetIdentifier(Name))
-	{
-		if (CheckReservedWord(Name,&Id))
-		{
+	if (GetIdentifier(Name)) {
+		if (CheckReservedWord(Name,&Id)) {
 			if (GetFactor(ValType, Val, Err)) {
 				if ((*Err==0) && (*ValType!=TypInteger))
 					*Err = ErrTypeMismatch;
@@ -710,8 +716,7 @@ BOOL GetFactor(LPWORD ValType, int far *Val, LPWORD Err)
 				*Err = ErrSyntax;
 			}
 		}
-		else if (CheckVar(Name, ValType, &Id))
-		{
+		else if (CheckVar(Name, ValType, &Id)) {
 			switch (*ValType) {
 				case TypInteger: *Val = IntVal[Id]; break;
 				case TypString: *Val = Id; break;
@@ -722,8 +727,7 @@ BOOL GetFactor(LPWORD ValType, int far *Val, LPWORD Err)
 	}
 	else if (GetNumber(Val))
 		*ValType = TypInteger;
-	else if (GetOperator(&Id))
-	{
+	else if (GetOperator(&Id)) {
 		if (GetFactor(ValType, Val, Err)) {
 			if ((*Err==0) && (*ValType != TypInteger))
 				*Err = ErrTypeMismatch;
@@ -739,10 +743,8 @@ BOOL GetFactor(LPWORD ValType, int far *Val, LPWORD Err)
 			*Err = ErrSyntax;
 		}
 	}
-	else if (GetFirstChar()=='(')
-	{
-		if (GetOrResult(ValType,Val,Err))
-		{
+	else if (GetFirstChar()=='(') {
+		if (GetExpression(ValType, Val, Err)) {
 			if ((*Err==0) && (GetFirstChar()!=')'))
 				*Err = ErrCloseParent;
 		}
@@ -758,149 +760,170 @@ BOOL GetFactor(LPWORD ValType, int far *Val, LPWORD Err)
 	return TRUE;
 }
 
-BOOL GetTerm(LPWORD ValType, int far *Val, LPWORD Err)
+/*
+ * Precedence: 2
+ *   Evaluate following operator.
+ *     *, /, %
+ */
+BOOL EvalMultiplication(LPWORD ValType, int far *Val, LPWORD Err)
 {
-	WORD P1, P2, Type1, Type2, Er;
+	WORD P, Type, Er;
 	int Val1, Val2;
 	WORD WId;
 
-	P1 = LinePtr;
-	if (! GetFactor(&Type1,&Val1,&Er)) return FALSE;
-	*ValType = Type1;
+	if (! GetFactor(&Type, &Val1, &Er)) return FALSE;
+	*ValType = Type;
 	*Val = Val1;
 	*Err = Er;
-	if (Er!=0)
-	{
-		LinePtr = P1;
-		return TRUE;
-	}
-	if (Type1!=TypInteger) return TRUE;
+	if (Er) return TRUE;
+	if (Type!=TypInteger) return TRUE;
 
-	do {
-		P2 = LinePtr;
+	while (TRUE) {
+		P = LinePtr;
 		if (! GetOperator(&WId)) return TRUE;
 
 		switch (WId) {
-		case RsvBAnd:
-		case RsvMul:
-		case RsvDiv:
-		case RsvMod: break;
-		default:
-			LinePtr = P2;
-			return TRUE;
+			case RsvMul:
+			case RsvDiv:
+			case RsvMod:
+				break;
+			default:
+				LinePtr = P;
+				return TRUE;
 		}
 
-		if (! GetFactor(&Type2,&Val2,&Er))
-		{
+		if (! GetFactor(&Type, &Val2, &Er)) {
 			*Err = ErrSyntax;
-			LinePtr = P1;
 			return TRUE;
 		}
 
-		if (Er!=0)
-		{
+		if (Er) {
 			*Err = Er;
-			LinePtr = P1;
 			return TRUE;
 		}
 
-		if (Type2!=TypInteger)
-		{
+		if (Type!=TypInteger) {
 			*Err = ErrTypeMismatch;
-			LinePtr = P1;
+			return TRUE;
+		}
+
+		if (Val2 == 0 && WId != RsvMul) {
+			*Err = ErrDivByZero;
 			return TRUE;
 		}
 
 		switch (WId) {
-		case RsvBAnd: Val1 = Val1 & Val2; break;
-		case RsvMul:  Val1 = Val1 * Val2; break;
-		case RsvDiv:
-			if (Val2!=0)
-				Val1 = Val1 / Val2;
-			else {
-				*Err = ErrDivByZero;
-				LinePtr = P1;
-				return TRUE;
-			}
-			break;	// ’Ç‰ÁBœŽZŒ‹‰Ê‚ª‚¨‚©‚µ‚­‚È‚éƒoƒO‚ÌC³B(2005.8.14 yutaka)
-
-		case RsvMod:
-			if (Val2!=0)
-				Val1 = Val1 % Val2;
-			else {
-				*Err = ErrDivByZero;
-				LinePtr = P1;
-				return TRUE;
-			}
+			case RsvMul: Val1 = Val1 * Val2; break;
+			case RsvDiv: Val1 = Val1 / Val2; break;
+			case RsvMod: Val1 = Val1 % Val2; break;
 		}
-
 		*Val = Val1;
-	} while (TRUE);
+	}
 }
 
-BOOL GetSimpleExpression(LPWORD ValType, int far *Val, LPWORD Err)
+/*
+ * Precedence: 3
+ *   Evaluate following operator.
+ *     +, -
+ */
+BOOL EvalAddition(LPWORD ValType, int far *Val, LPWORD Err)
 {
-	WORD P1, P2, Type1,Type2, Er;
-	int Val1,Val2;
+	WORD P, Type, Er;
+	int Val1, Val2;
+	WORD WId;
+
+	if (! EvalMultiplication(&Type, &Val1, &Er)) return FALSE;
+	*ValType = Type;
+	*Val = Val1;
+	*Err = Er;
+	if (Er) return TRUE;
+	if (Type!=TypInteger) return TRUE;
+
+	while (TRUE) {
+		P = LinePtr;
+		if (! GetOperator(&WId)) return TRUE;
+
+		switch (WId) {
+			case RsvPlus:
+			case RsvMinus:
+				break;
+			default:
+				LinePtr = P;
+				return TRUE;
+		}
+
+		if (! EvalMultiplication(&Type, &Val2, &Er)) {
+			*Err = ErrSyntax;
+			return TRUE;
+		}
+
+		if (Er) {
+			*Err = Er;
+			return TRUE;
+		}
+
+		if (Type!=TypInteger) {
+			*Err = ErrTypeMismatch;
+			return TRUE;
+		}
+
+		switch (WId) {
+			case RsvPlus:    Val1 = Val1 + Val2;  break;
+			case RsvMinus:   Val1 = Val1 - Val2;  break;
+		}
+		*Val = Val1;
+	}
+}
+
+/*
+ * Precedence: 4
+ *   Evaluate following operator.
+ *     >>, <<, >>>
+ */
+BOOL EvalBitShift(LPWORD ValType, int far *Val, LPWORD Err)
+{
+	WORD P, Type, Er;
+	int Val1, Val2;
 	WORD WId;
 	unsigned int u_Val1;
 
-	P1 = LinePtr;
-	if (! GetTerm(&Type1,&Val1,&Er)) return FALSE;
-	*ValType = Type1;
+	if (! EvalAddition(&Type, &Val1, &Er)) return FALSE;
+	*ValType = Type;
 	*Val = Val1;
 	*Err = Er;
-	if (Er!=0)
-	{
-		LinePtr = P1;
-		return TRUE;
-	}
-	if (Type1!=TypInteger) return TRUE;
+	if (Er) return TRUE;
+	if (Type!=TypInteger) return TRUE;
 
-	do {
-		P2 = LinePtr;
+	while (TRUE) {
+		P = LinePtr;
 		if (! GetOperator(&WId)) return TRUE;
 
 		switch (WId) {
-			case RsvBOr:
-			case RsvBXor:
-			case RsvPlus:
-			case RsvMinus:
 			case RsvARShift:
 			case RsvALShift:
 			case RsvLRShift:
 				break;
 			default:
-				LinePtr = P2;
+				LinePtr = P;
 				return TRUE;
 		}
 
-		if (! GetTerm(&Type2,&Val2,&Er))
-		{
+		if (! EvalAddition(&Type, &Val2, &Er)) {
 			*Err = ErrSyntax;
-			LinePtr = P1;
 			return TRUE;
 		}
 
-		if (Er!=0)
-		{
+		if (Er) {
 			*Err = Er;
-			LinePtr = P1;
 			return TRUE;
 		}
 
-		if (Type2!=TypInteger)
-		{
+		if (Type!=TypInteger) {
 			*Err = ErrTypeMismatch;
-			LinePtr = P1;
 			return TRUE;
 		}
 
 		switch (WId) {
-			case RsvBOr:     Val1 = Val1 | Val2;  break;
-			case RsvBXor:    Val1 = Val1 ^ Val2;  break;
-			case RsvPlus:    Val1 = Val1 + Val2;  break;
-			case RsvMinus:   Val1 = Val1 - Val2;  break;
 			case RsvARShift: Val1 = Val1 >> Val2; break;
 			case RsvALShift: Val1 = Val1 << Val2; break;
 			case RsvLRShift:
@@ -909,163 +932,335 @@ BOOL GetSimpleExpression(LPWORD ValType, int far *Val, LPWORD Err)
 				break;
 		}
 		*Val = Val1;
-	} while (TRUE);
+	}
 }
 
-BOOL GetExpression(LPWORD ValType, int far *Val, LPWORD Err)
+/*
+ * Precedence: 5
+ *   Evaluate following operator.
+ *     &
+ */
+BOOL EvalBitAnd(LPWORD ValType, int far *Val, LPWORD Err)
 {
-	WORD P1,P2, Type1,Type2, Er;
+	WORD P, Type, Er;
 	int Val1, Val2;
 	WORD WId;
 
-	P1 = LinePtr;
-	if (! GetSimpleExpression(&Type1,&Val1,&Er))
-	{
-		LinePtr = P1;
-		return FALSE;
-	}
-	*ValType = Type1;
+	if (! EvalBitShift(&Type, &Val1, &Er)) return FALSE;
+	*ValType = Type;
 	*Val = Val1;
 	*Err = Er;
-	if (Er!=0)
-	{
-		LinePtr = P1;
-		return TRUE;
-	}
-	if (Type1!=TypInteger) return TRUE;
+	if (Er) return TRUE;
+	if (Type!=TypInteger) return TRUE;
 
-	do {
-		P2 = LinePtr;
+	while (TRUE) {
+		P = LinePtr;
+		if (! GetOperator(&WId)) return TRUE;
+
+		if (WId != RsvBAnd) {
+			LinePtr = P;
+			return TRUE;
+		}
+
+		if (! EvalBitShift(&Type, &Val2, &Er)) {
+			*Err = ErrSyntax;
+			return TRUE;
+		}
+
+		if (Er) {
+			*Err = Er;
+			return TRUE;
+		}
+
+		if (Type!=TypInteger) {
+			*Err = ErrTypeMismatch;
+			return TRUE;
+		}
+
+		Val1 = Val1 & Val2;
+		*Val = Val1;
+	}
+}
+
+/*
+ * Precedence: 6
+ *   Evaluate following operator.
+ *     ^
+ */
+BOOL EvalBitXor(LPWORD ValType, int far *Val, LPWORD Err)
+{
+	WORD P, Type, Er;
+	int Val1, Val2;
+	WORD WId;
+
+	if (! EvalBitAnd(&Type, &Val1, &Er)) return FALSE;
+	*ValType = Type;
+	*Val = Val1;
+	*Err = Er;
+	if (Er) return TRUE;
+	if (Type!=TypInteger) return TRUE;
+
+	while (TRUE) {
+		P = LinePtr;
+		if (! GetOperator(&WId)) return TRUE;
+
+		if (WId != RsvBXor) {
+			LinePtr = P;
+			return TRUE;
+		}
+
+		if (! EvalBitAnd(&Type, &Val2, &Er)) {
+			*Err = ErrSyntax;
+			return TRUE;
+		}
+
+		if (Er) {
+			*Err = Er;
+			return TRUE;
+		}
+
+		if (Type!=TypInteger) {
+			*Err = ErrTypeMismatch;
+			return TRUE;
+		}
+
+		Val1 = Val1 ^ Val2;
+		*Val = Val1;
+	}
+}
+
+/*
+ * Precedence: 7
+ *   Evaluate following operator.
+ *     |
+ */
+BOOL EvalBitOr(LPWORD ValType, int far *Val, LPWORD Err)
+{
+	WORD P, Type, Er;
+	int Val1, Val2;
+	WORD WId;
+
+	if (! EvalBitXor(&Type, &Val1, &Er)) return FALSE;
+	*ValType = Type;
+	*Val = Val1;
+	*Err = Er;
+	if (Er) return TRUE;
+	if (Type!=TypInteger) return TRUE;
+
+	while (TRUE) {
+		P = LinePtr;
+		if (! GetOperator(&WId)) return TRUE;
+
+		if (WId != RsvBOr) {
+			LinePtr = P;
+			return TRUE;
+		}
+
+		if (! EvalBitXor(&Type, &Val2, &Er)) {
+			*Err = ErrSyntax;
+			return TRUE;
+		}
+
+		if (Er) {
+			*Err = Er;
+			return TRUE;
+		}
+
+		if (Type!=TypInteger) {
+			*Err = ErrTypeMismatch;
+			return TRUE;
+		}
+
+		Val1 = Val1 | Val2;
+		*Val = Val1;
+	}
+}
+
+/*
+ * Precedence: 8
+ *   Evaluate following operator.
+ *     <, >, <=, >=
+ */
+BOOL EvalGreater(LPWORD ValType, int far *Val, LPWORD Err)
+{
+	WORD P, Type, Er;
+	int Val1, Val2;
+	WORD WId;
+
+	if (! EvalBitOr(&Type, &Val1, &Er)) return FALSE;
+	*ValType = Type;
+	*Val = Val1;
+	*Err = Er;
+	if (Er) return TRUE;
+	if (Type!=TypInteger) return TRUE;
+
+	while (TRUE) {
+		P = LinePtr;
 		if (! GetOperator(&WId)) return TRUE;
 
 		switch (WId) {
 			case RsvLT:
-			case RsvEQ:
 			case RsvGT:
 			case RsvLE:
-			case RsvNE:
-			case RsvGE: break;
+			case RsvGE:
+				break;
 			default:
-				LinePtr = P2;
+				LinePtr = P;
 				return TRUE;
 		}
 
-		if (! GetSimpleExpression(&Type2,&Val2,&Er))
-		{
+		if (! EvalBitOr(&Type, &Val2, &Er)) {
 			*Err = ErrSyntax;
-			LinePtr = P1;
 			return TRUE;
 		}
 
-		if (Er!=0)
-		{
+		if (Er) {
 			*Err = Er;
-			LinePtr = P1;
 			return TRUE;
 		}
 
-		if (Type2!=TypInteger)
-		{
+		if (Type!=TypInteger) {
 			*Err = ErrTypeMismatch;
 			return TRUE;
 		}
 
-		*Val = 0;
 		switch (WId) {
-			case RsvLT: if (Val1 <Val2) *Val = 1; break;
-			case RsvEQ: if (Val1==Val2) *Val = 1; break;
-			case RsvGT: if (Val1 >Val2) *Val = 1; break;
-			case RsvLE: if (Val1<=Val2) *Val = 1; break;
-			case RsvNE: if (Val1!=Val2) *Val = 1; break;
-			case RsvGE: if (Val1>=Val2) *Val = 1; break;
+			case RsvLT: Val1 = (Val1 <Val2); break;
+			case RsvGT: Val1 = (Val1 >Val2); break;
+			case RsvLE: Val1 = (Val1<=Val2); break;
+			case RsvGE: Val1 = (Val1>=Val2); break;
 		}
-	Val1 = *Val;
-	} while (TRUE);
+		*Val = Val1;
+	}
 }
 
-BOOL GetAndResult(LPWORD ValType, int far *Val, LPWORD Err)
+/*
+ * Precedence: 9
+ *   Evaluate following operator.
+ *     =, ==, <>, !=
+ */
+BOOL EvalEqual(LPWORD ValType, int far *Val, LPWORD Err)
 {
-	WORD P1,P2, Type1,Type2, Er;
+	WORD P, Type, Er;
 	int Val1, Val2;
 	WORD WId;
 
-	P1 = LinePtr;
-	if (! GetExpression(&Type1,&Val1,&Er))
-	{
-		LinePtr = P1;
-		return FALSE;
-	}
-	*ValType = Type1;
+	if (! EvalGreater(&Type, &Val1, &Er)) return FALSE;
+	*ValType = Type;
 	*Val = Val1;
 	*Err = Er;
-	if (Er!=0)
-	{
-		LinePtr = P1;
-		return TRUE;
-	}
-	if (Type1!=TypInteger) return TRUE;
+	if (Er) return TRUE;
+	if (Type!=TypInteger) return TRUE;
 
-	do {
-		P2 = LinePtr;
+	while (TRUE) {
+		P = LinePtr;
+		if (! GetOperator(&WId)) return TRUE;
+
+		switch (WId) {
+			case RsvEQ:
+			case RsvNE:
+				break;
+			default:
+				LinePtr = P;
+				return TRUE;
+		}
+
+		if (! EvalGreater(&Type, &Val2, &Er)) {
+			*Err = ErrSyntax;
+			return TRUE;
+		}
+
+		if (Er) {
+			*Err = Er;
+			return TRUE;
+		}
+
+		if (Type!=TypInteger) {
+			*Err = ErrTypeMismatch;
+			return TRUE;
+		}
+
+		switch (WId) {
+			case RsvEQ: Val1 = (Val1==Val2); break;
+			case RsvNE: Val1 = (Val1!=Val2); break;
+		}
+		*Val = Val1;
+	}
+}
+
+/*
+ * Precedence: 10
+ *   Evaluate following operator.
+ *     &&
+ */
+BOOL EvalLogicalAnd(LPWORD ValType, int far *Val, LPWORD Err)
+{
+	WORD P, Type, Er;
+	int Val1, Val2;
+	WORD WId;
+
+	if (! EvalEqual(&Type, &Val1, &Er)) return FALSE;
+	*ValType = Type;
+	*Val = Val1;
+	*Err = Er;
+	if (Er) return TRUE;
+	if (Type!=TypInteger) return TRUE;
+
+	while (TRUE) {
+		P = LinePtr;
 		if (! GetOperator(&WId)) return TRUE;
 
 		if (WId != RsvLAnd) {
-			LinePtr = P2;
+			LinePtr = P;
 			return TRUE;
 		}
 
-		if (! GetExpression(&Type2,&Val2,&Er))
-		{
+		if (! EvalEqual(&Type, &Val2, &Er)) {
 			*Err = ErrSyntax;
-			LinePtr = P1;
 			return TRUE;
 		}
 
-		if (Er!=0)
-		{
+		if (Er) {
 			*Err = Er;
-			LinePtr = P1;
 			return TRUE;
 		}
 
-		if (Type2!=TypInteger)
-		{
+		if (Type!=TypInteger) {
 			*Err = ErrTypeMismatch;
 			return TRUE;
 		}
 
-		if (Val1 && Val2)
-			Val1 = 1;
-		else
-			Val1 = 0;
-
+		Val1 = Val1 && Val2;
 		*Val = Val1;
-	} while (TRUE);
+	}
 }
 
-BOOL GetOrResult(LPWORD ValType, int far *Val, LPWORD Err)
+/*
+ * Precedence: 11
+ *   Evaluate following operator.
+ *     ||
+ */
+BOOL GetExpression(LPWORD ValType, int far *Val, LPWORD Err)
 {
-	WORD P1,P2, Type1,Type2, Er;
+	WORD P1, P2, Type, Er;
 	int Val1, Val2;
 	WORD WId;
 
 	P1 = LinePtr;
-	if (! GetAndResult(&Type1,&Val1,&Er))
-	{
+	if (! EvalLogicalAnd(&Type, &Val1, &Er)) {
 		LinePtr = P1;
 		return FALSE;
 	}
-	*ValType = Type1;
+	*ValType = Type;
 	*Val = Val1;
 	*Err = Er;
-	if (Er!=0)
-	{
+	if (Er) {
 		LinePtr = P1;
 		return TRUE;
 	}
-	if (Type1!=TypInteger) return TRUE;
+	if (Type!=TypInteger) return TRUE;
 
-	do {
+	while (TRUE) {
 		P2 = LinePtr;
 		if (! GetOperator(&WId)) return TRUE;
 
@@ -1074,39 +1269,30 @@ BOOL GetOrResult(LPWORD ValType, int far *Val, LPWORD Err)
 			return TRUE;
 		}
 
-		if (! GetAndResult(&Type2,&Val2,&Er))
-		{
+		if (! EvalLogicalAnd(&Type, &Val2, &Er)) {
 			*Err = ErrSyntax;
 			LinePtr = P1;
 			return TRUE;
 		}
 
-		if (Er!=0)
-		{
+		if (Er) {
 			*Err = Er;
 			LinePtr = P1;
 			return TRUE;
 		}
 
-		if (Type2!=TypInteger)
-		{
+		if (Type!=TypInteger) {
 			*Err = ErrTypeMismatch;
+			LinePtr = P1;
 			return TRUE;
 		}
 
-		if (WId == RsvLOr) {
-			if (Val1 || Val2)
-				Val1 = 1;
+		switch (WId) {
+			case RsvLOr:  Val1 = Val1 || Val2; break;
+			case RsvLXor: Val1 = (Val1 && !Val2) || (!Val1 && Val2); break;
 		}
-		else {
-			if ((Val1 && !Val2) || (!Val1 && Val2))
-				Val1 = 1;
-			else
-				Val1 = 0;
-		}
-
 		*Val = Val1;
-	} while (TRUE);
+	}
 }
 
 void GetIntVal(int far *Val, LPWORD Err)
@@ -1114,7 +1300,7 @@ void GetIntVal(int far *Val, LPWORD Err)
 	WORD ValType;
 
 	if (*Err != 0) return;
-	if (! GetOrResult(&ValType,Val,Err))
+	if (! GetExpression(&ValType,Val,Err))
 	{
 		*Err = ErrSyntax;
 		return;
@@ -1174,7 +1360,7 @@ void GetStrVal2(PCHAR Str, LPWORD Err, BOOL AutoConversion)
 
 	if (GetString(Str,Err))
 		return;
-	else if (GetOrResult(&VarType,&VarId,Err))
+	else if (GetExpression(&VarType,&VarId,Err))
 	{
 		if (*Err!=0) return;
 		switch (VarType) {
