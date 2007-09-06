@@ -286,6 +286,17 @@ begin
   Result := ExpandConstant('{app}') + '\TERATERM.INI';
 end;
 
+function isGetDefaultIniExists : Boolean;
+var
+  iniFile: String;
+begin
+  iniFile  := GetDefaultIniFilename();
+  if FileExists(iniFile) then
+    Result := True
+  else
+    Result := False;
+end;
+
 function GetUserIniFilename : String;
 begin
   Result := ExpandConstant('{userdocs}') + '\TERATERM.INI';
@@ -415,7 +426,12 @@ begin
     UILangFilePageSubCaption, True, False);
   UILangFilePage.Add(UILangFilePageNone);
   UILangFilePage.Add(UILangFilePageJapanese);
-  UILangFilePage.SelectedValueIndex := 0;
+  case ActiveLanguage of
+    'ja':
+      UILangFilePage.SelectedValueIndex := 1;
+    else
+      UILangFilePage.SelectedValueIndex := 0;
+  end;
 end;
 
 function NextButtonClick(CurPageID: Integer): Boolean;
@@ -430,11 +446,15 @@ begin
         begin
           iniFile := GetIniString('Tera Term', 'UILanguageFile', '', GetUserIniFilename());
           if iniFile = 'lang\Japanese.lng' then
-            UILangFilePage.SelectedValueIndex := 1;
-        end else begin
+            UILangFilePage.SelectedValueIndex := 1
+          else
+            UILangFilePage.SelectedValueIndex := 0;
+        end else if isGetDefaultIniExists() then begin
           iniFile := GetIniString('Tera Term', 'UILanguageFile', '', GetDefaultIniFilename());
           if iniFile = 'lang\Japanese.lng' then
-            UILangFilePage.SelectedValueIndex := 1;
+            UILangFilePage.SelectedValueIndex := 1
+          else
+            UILangFilePage.SelectedValueIndex := 0;
         end;
 
       end;
