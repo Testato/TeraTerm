@@ -281,6 +281,11 @@ begin;
   end;
 end;
 
+function GetDefaultIniFilename : String;
+begin
+  Result := ExpandConstant('{app}') + '\TERATERM.INI';
+end;
+
 function GetUserIniFilename : String;
 begin
   Result := ExpandConstant('{userdocs}') + '\TERATERM.INI';
@@ -410,23 +415,41 @@ begin
     UILangFilePageSubCaption, True, False);
   UILangFilePage.Add(UILangFilePageNone);
   UILangFilePage.Add(UILangFilePageJapanese);
+  UILangFilePage.SelectedValueIndex := 0;
+end;
 
-  case ActiveLanguage of
-    'ja':
-      UILangFilePage.SelectedValueIndex := 1;
-    else
-      UILangFilePage.SelectedValueIndex := 0;
+function NextButtonClick(CurPageID: Integer): Boolean;
+var
+  iniFile : String;
+begin
+  case CurPageID of
+    wpSelectComponents:
+      begin
+
+        if isUserIniExists() then
+        begin
+          iniFile := GetIniString('Tera Term', 'UILanguageFile', '', GetUserIniFilename());
+          if iniFile = 'lang\Japanese.lng' then
+            UILangFilePage.SelectedValueIndex := 1;
+        end else begin
+          iniFile := GetIniString('Tera Term', 'UILanguageFile', '', GetDefaultIniFilename());
+          if iniFile = 'lang\Japanese.lng' then
+            UILangFilePage.SelectedValueIndex := 1;
+        end;
+
+      end;
   end;
+  Result := True;
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
 var
-  iniFile  : String;
+  iniFile : String;
 begin
   case CurStep of
     ssDone:
       begin
-        iniFile := ExpandConstant('{app}') + '\TERATERM.INI';
+        iniFile := GetDefaultIniFilename();
         SetIniFile(iniFile);
 
         if isUserIniExists() then begin
@@ -439,7 +462,7 @@ begin
           RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, 'Software\Classes\Folder\shell\cygterm');
           RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm');
         end;
-        
+
       end; // ssDone
    end; // case CurStep of
 end; // CurStepChanged
