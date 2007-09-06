@@ -1369,7 +1369,7 @@ void GetStrVal2(PCHAR Str, LPWORD Err, BOOL AutoConversion)
 				break;
 			case TypInteger:
 				if (AutoConversion)
-					_snprintf_s(Str,sizeof(Str),_TRUNCATE,"%d",VarId);
+					_snprintf_s(Str,MaxStrLen,_TRUNCATE,"%d",VarId);
 				else
 					*Err = ErrTypeMismatch;
 				break;
