@@ -744,8 +744,9 @@ typedef struct {
 	int NWin;
 	HWND WinList[MAXNWIN];
 	/* COM port use flag
-	 * char[0] : COM1-16
-	 * char[1] : COM17-32 ...
+	 *           bit 8  7  6  5  4  3  2  1
+	 * char[0] : COM 8  7  6  5  4  3  2  1
+	 * char[1] : COM16 15 14 13 12 11 10  9 ...
 	 */
 	unsigned char ComFlag[(MAXCOMPORT-1)/CHAR_BIT+1];
 } TMap;
