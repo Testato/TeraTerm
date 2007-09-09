@@ -402,7 +402,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Print...\tAlt+P",            ID_FILE_PRINT2
         MENUITEM SEPARATOR
-        MENUITEM "&Disconnect",                 ID_FILE_DISCONNECT
+        MENUITEM "&Disconnect\tAlt+I",          ID_FILE_DISCONNECT
         MENUITEM "E&xit\tAlt+Q",                ID_FILE_EXIT
     END
     POPUP "&Edit"
@@ -512,6 +512,7 @@ BEGIN
     "B",            ID_ACC_SENDBREAK,       VIRTKEY, ALT, NOINVERT
     "G",            ID_FILE_CYGWINCONNECTION, VIRTKEY, ALT, NOINVERT
     "D",            ID_FILE_DUPLICATESESSION, VIRTKEY, ALT, NOINVERT
+    "I",            ID_ACC_DISCONNECT,      VIRTKEY, ALT, NOINVERT
 END
 
 

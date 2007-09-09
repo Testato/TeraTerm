@@ -112,6 +112,7 @@
 #define ID_ACC_PASTECR                  50006
 #define ID_ACC_AREYOUTHERE              50007
 #define ID_ACC_PASTE                    50008
+#define ID_ACC_DISCONNECT               50009
 #define ID_FILE_NEWCONNECTION           50110
 #define ID_FILE_LOG                     50120
 #define ID_FILE_SENDFILE                50130
@@ -189,7 +190,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        120
-#define _APS_NEXT_COMMAND_VALUE         52020
+#define _APS_NEXT_COMMAND_VALUE         52022
 #define _APS_NEXT_CONTROL_VALUE         2508
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

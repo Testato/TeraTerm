@@ -1229,8 +1229,11 @@ BOOL CVTWindow::OnCommand(WPARAM wParam, LPARAM lParam)
 				OnControlAreYouThere();
 				return TRUE;
 			case ID_ACC_PASTE:
-			OnEditPaste();
-			return TRUE;
+				OnEditPaste();
+				return TRUE;
+			case ID_ACC_DISCONNECT:
+				OnFileDisconnect();
+				return TRUE;
 		}
 		if (ActiveWin==IdVT) {
 			switch (wID) {
