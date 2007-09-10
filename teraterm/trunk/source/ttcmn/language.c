@@ -102,58 +102,55 @@ error:
 // Japanese SJIS -> JIS
 WORD FAR PASCAL SJIS2JIS(WORD KCode)
 {
-  WORD x0,x1,x2,y0;
-  BYTE b = LOBYTE(KCode);
+	WORD x0,x1,x2,y0;
+	BYTE b = LOBYTE(KCode);
 
-  if ((b>=0x40) && (b<=0x7f))
-  {
-    x0 = 0x8140;
-    y0 = 0x2121;
-  }
-  else if ((b>=0x80) && (b<=0x9e))
-  {
-    x0 = 0x8180;
-    y0 = 0x2160;
-  }
-  else {
-    x0 = 0x819f;
-    y0 = 0x2221;
-  }
-  if (HIBYTE(KCode) >= 0xe0)
-  {
-    x0 = x0 + 0x5f00;
-    y0 = y0 + 0x3e00;
-  }
-  x1 = (KCode-x0) / 0x100;
-  x2 = (KCode-x0) % 0x100;
-  return (y0 + x1*0x200 + x2);
+	if ((b>=0x40) && (b<=0x7f)) {
+		x0 = 0x8140;
+		y0 = 0x2121;
+	}
+	else if ((b>=0x80) && (b<=0x9e)) {
+		x0 = 0x8180;
+		y0 = 0x2160;
+	}
+	else {
+		x0 = 0x819f;
+		y0 = 0x2221;
+	}
+	if (HIBYTE(KCode) >= 0xe0) {
+		x0 = x0 + 0x5f00;
+		y0 = y0 + 0x3e00;
+	}
+	x1 = (KCode-x0) / 0x100;
+	x2 = (KCode-x0) % 0x100;
+	return (y0 + x1*0x200 + x2);
 }
 
 // Japanese SJIS -> EUC
 WORD FAR PASCAL SJIS2EUC(WORD KCode)
 {
-  return (SJIS2JIS(KCode) | 0x8080);
+	return (SJIS2JIS(KCode) | 0x8080);
 }
 
 // Japanese JIS -> SJIS
 WORD FAR PASCAL JIS2SJIS(WORD KCode)
 {
-  WORD n1, n2, SJIS;
+	WORD n1, n2, SJIS;
 
-  n1 = (KCode-0x2121) / 0x200;
-  n2 = (KCode-0x2121) % 0x200;
+	n1 = (KCode-0x2121) / 0x200;
+	n2 = (KCode-0x2121) % 0x200;
 
-  if (n1<=0x1e)
-    SJIS = 0x8100 + n1*256;
-  else
-    SJIS = 0xC100 + n1*256;
+	if (n1<=0x1e)
+		SJIS = 0x8100 + n1*256;
+	else
+		SJIS = 0xC100 + n1*256;
 
-  if (n2<=0x3e)
-    return (SJIS + n2 + 0x40);
-  else if ((n2>=0x3f) && (n2<=0x5d))
-    return (SJIS + n2 + 0x41);
-  else
-    return (SJIS + n2 - 0x61);
+	if (n2<=0x3e)
+		return (SJIS + n2 + 0x40);
+	else if ((n2>=0x3f) && (n2<=0x5d))
+		return (SJIS + n2 + 0x41);
+	else
+		return (SJIS + n2 - 0x61);
 }
 
 /* Russian charset conversion table by Andrey Nikiforov 19971114 */
@@ -310,21 +307,22 @@ BYTE FAR PASCAL RussConv(int cin, int cout, BYTE b)
 // cin: input character set (IdWindows/IdKOI8/Id866/IdISO)
 // cin: output character set (IdWindows/IdKOI8/Id866/IdISO)
 {
-  if (b<128) return b;
-  return cpconv[cin-1][cout-1][b-128];
+	if (b<128)
+		return b;
+	return cpconv[cin-1][cout-1][b-128];
 }
 
 // Russian character set conversion for a character string
-void FAR PASCAL RussConvStr
-  (int cin, int cout, PCHAR Str, int count)
+void FAR PASCAL RussConvStr(int cin, int cout, PCHAR Str, int count)
 // cin: input character set (IdWindows/IdKOI8/Id866/IdISO)
 // cin: output character set (IdWindows/IdKOI8/Id866/IdISO)
 {
-  int i;
+	int i;
 
-  if (count<=0) return;
+	if (count<=0)
+		return;
 
-  for (i=0; i<=count-1; i++)
-   if ((BYTE)Str[i]>=128)
-      Str[i] = (char)cpconv[cin-1][cout-1][(BYTE)Str[i]-128];
+	for (i=0; i<=count-1; i++)
+		if ((BYTE)Str[i]>=128)
+			Str[i] = (char)cpconv[cin-1][cout-1][(BYTE)Str[i]-128];
 }
