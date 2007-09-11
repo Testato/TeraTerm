@@ -4406,8 +4406,6 @@ void CVTWindow::OnSetupSave()
 		(*WriteIniFile)(ts.SetupFName,&ts);
 		/* copy host list */
 		(*CopyHostList)(TmpSetupFN,ts.SetupFName);
-		/* copy broadcast command history list */
-		(*CopySerialList)(TmpSetupFN,ts.SetupFName,"BroadcastCommands","Command");
 		FreeTTSET();
 	}
 
