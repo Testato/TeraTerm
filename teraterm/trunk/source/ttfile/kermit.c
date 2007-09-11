@@ -254,7 +254,16 @@ void KmtParseInit(PKmtVar kv, BOOL AckFlag)
             (kv->KmtYour.REPT>0x20) &&
             (kv->KmtYour.REPT<0x7F))
           kv->KmtMy.REPT = kv->KmtYour.REPT;
-        kv->RepeatFlag = kv->KmtMy.REPT = kv->KmtYour.REPT;
+		/*
+		Very old bug:
+		Kermit fails to properly negotiate to NOT use "repeat"
+		compression when talking to a primitive partner (a
+		prominent example of a kermit implementation that does
+		not support repeat is the bootloader "U-Boot").
+
+		by Anders Larsen (2007/9/11 yutaka)
+		 */
+        kv->RepeatFlag = kv->KmtMy.REPT == kv->KmtYour.REPT;
         break;
     }
   }
