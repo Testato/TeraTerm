@@ -199,15 +199,15 @@ void SetDlgPos(int x, int y)
   DlgPosX = x;
   DlgPosY = y;
   if (StatDlg!=NULL) // update status box position
-    StatDlg->Update(NULL,NULL,DlgPosX,DlgPosY);
+    StatDlg->Update(NULL,NULL,TRUE,DlgPosX,DlgPosY);
 }
 }
 
 extern "C" {
 void OpenInpDlg(PCHAR Buff, PCHAR Text, PCHAR Caption,
-				PCHAR Default, BOOL Paswd)
+                PCHAR Default, BOOL Paswd, BOOL SPECIAL)
 {
-  CInpDlg InpDlg(Buff,Text,Caption,Default,Paswd,DlgPosX,DlgPosY);
+  CInpDlg InpDlg(Buff,Text,Caption,Default,Paswd,SPECIAL,DlgPosX,DlgPosY);
   InpDlg.DoModal();
 }
 }
@@ -221,24 +221,24 @@ int OpenErrDlg(PCHAR Msg, PCHAR Line)
 }
 
 extern "C" {
-int OpenMsgDlg(PCHAR Text, PCHAR Caption, BOOL YesNo)
+int OpenMsgDlg(PCHAR Text, PCHAR Caption, BOOL YesNo, BOOL SPECIAL)
 {
-  CMsgDlg MsgDlg(Text,Caption,YesNo,DlgPosX,DlgPosY);
+  CMsgDlg MsgDlg(Text,Caption,YesNo,SPECIAL,DlgPosX,DlgPosY);
   return MsgDlg.DoModal();
 }
 }
 
 extern "C" {
-void OpenStatDlg(PCHAR Text, PCHAR Caption)
+void OpenStatDlg(PCHAR Text, PCHAR Caption, BOOL SPECIAL)
 {
   if (StatDlg==NULL)
   {
     StatDlg = new CStatDlg();
-    StatDlg->Create(Text,Caption,DlgPosX,DlgPosY);
+    StatDlg->Create(Text,Caption,SPECIAL,DlgPosX,DlgPosY);
   }
   else // if status box already exists,
        // update text and caption only.
-    StatDlg->Update(Text,Caption,32767,0);
+    StatDlg->Update(Text,Caption,SPECIAL,32767,0);
 }
 }
 

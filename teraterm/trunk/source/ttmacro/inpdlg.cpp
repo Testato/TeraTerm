@@ -22,12 +22,14 @@ static char THIS_FILE[] = __FILE__;
 
 // CInpDlg dialog
 CInpDlg::CInpDlg(PCHAR Input, PCHAR Text, PCHAR Title,
-		 PCHAR Default, BOOL Paswd, int x, int y)
-	: CDialog(CInpDlg::IDD)
+                 PCHAR Default, BOOL Paswd, BOOL SPECIAL,
+                 int x, int y) : CDialog(CInpDlg::IDD)
 {
   //{{AFX_DATA_INIT(CInpDlg)
   //}}AFX_DATA_INIT
-  RestoreNewLine(Text); // (2006.7.29 maya)
+  if (SPECIAL) { // (2007.9.11 maya)
+    RestoreNewLine(Text); // (2006.7.29 maya)
+  }
   InputStr = Input;
   TextStr = Text;
   TitleStr = Title;

@@ -26,9 +26,12 @@ BEGIN_MESSAGE_MAP(CStatDlg, CDialog)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-BOOL CStatDlg::Create(PCHAR Text, PCHAR Title, int x, int y)
+BOOL CStatDlg::Create(PCHAR Text, PCHAR Title, BOOL SPECIAL, int x, int y)
 {
-  RestoreNewLine(Text); // (2006.7.29 maya)
+  _SPECIAL = SPECIAL;
+  if (SPECIAL) { // (2007.9.11 maya)
+    RestoreNewLine(Text); // (2006.7.29 maya)
+  }
   TextStr = Text;
   TitleStr = Title;
   PosX = x;
@@ -36,13 +39,15 @@ BOOL CStatDlg::Create(PCHAR Text, PCHAR Title, int x, int y)
   return CDialog::Create(CStatDlg::IDD, GetDesktopWindow());
 }
 
-void CStatDlg::Update(PCHAR Text, PCHAR Title, int x, int y)
+void CStatDlg::Update(PCHAR Text, PCHAR Title, BOOL SPECIAL, int x, int y)
 {
   RECT R;
   HDC TmpDC;
 
   if (Title!=NULL) {
-    RestoreNewLine(Text); // (2007.7.18 maya)
+    if (SPECIAL) { // (2007.9.11 maya)
+      RestoreNewLine(Text); // (2007.7.18 maya)
+    }
     SetWindowText(Title);
     TitleStr = Title;
   }
@@ -61,7 +66,7 @@ void CStatDlg::Update(PCHAR Text, PCHAR Title, int x, int y)
     TH = s.cy;
 
     SetDlgItemText(IDC_STATTEXT,Text);
-	TextStr = Text;
+    TextStr = Text;
   }
 
   if (x!=32767)
@@ -81,7 +86,7 @@ BOOL CStatDlg::OnInitDialog()
   HFONT font;
 
   CDialog::OnInitDialog();
-  Update(TextStr,TitleStr,PosX,PosY);
+  Update(TextStr,TitleStr,_SPECIAL,PosX,PosY);
   SetForegroundWindow();
 
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);

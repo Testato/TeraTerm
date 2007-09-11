@@ -1334,7 +1334,7 @@ WORD TTLGetPassword()
 	                        Temp,sizeof(Temp),Str);
 	if (Temp[0]==0) // password not exist
 	{
-		OpenInpDlg(Temp2, Str2, "Enter password", "", TRUE);
+		OpenInpDlg(Temp2, Str2, "Enter password", "", TRUE, FALSE);
 		if (Temp2[0]!=0) {
 			Encrypt(Temp2,Temp);
 			WritePrivateProfileString("Password",Str2,Temp,Str);
@@ -1504,16 +1504,31 @@ WORD TTLInputBox(BOOL Paswd)
 {
 	TStrVal Str1, Str2, Str3;
 	WORD Err, ValType, VarId;
+	int sp = 1;
+	BOOL SPECIAL;
 
 	Err = 0;
 	GetStrVal(Str1,&Err);
 	GetStrVal(Str2,&Err);
 	if (Err!=0) return Err;
 
-	// get 3rd arg(optional)
-	GetStrVal(Str3,&Err);
-	if (Err == ErrSyntax) { // missing 3rd arg is not an error
+	if (!Paswd) {
+		// get 3rd arg(optional)
+		GetStrVal(Str3,&Err);
+		if (Err == ErrSyntax) {
+			// missing 3rd arg is not an error
+			strncpy_s(Str3,sizeof(Str3),"",_TRUNCATE);
+			Err = 0;
+		}
+	}
+	else {
 		strncpy_s(Str3,sizeof(Str3),"",_TRUNCATE);
+	}
+
+	// get 4th(3rd) arg(optional)
+	GetIntVal(&sp, &Err);
+	if (Err == ErrSyntax) {
+		// missing 4rd(3rd) arg is not an error
 		Err = 0;
 	}
 
@@ -1521,10 +1536,11 @@ WORD TTLInputBox(BOOL Paswd)
 		Err = ErrSyntax;
 	if (Err!=0) return Err;
 
+	SPECIAL = (sp == 0) ? FALSE : TRUE;
 	SetInputStr("");
 	if (CheckVar("inputstr",&ValType,&VarId) &&
 	    (ValType==TypString))
-		OpenInpDlg(StrVarPtr(VarId),Str1,Str2,Str3,Paswd);
+		OpenInpDlg(StrVarPtr(VarId),Str1,Str2,Str3,Paswd,SPECIAL);
 	return Err;
 }
 
@@ -1599,20 +1615,32 @@ WORD TTLMakePath()
 int MessageCommand(int BoxId, LPWORD Err)
 {
 	TStrVal Str1, Str2;
+	int sp = 1;
+	BOOL SPECIAL;
 
 	*Err = 0;
 	GetStrVal2(Str1, Err, TRUE);
 	GetStrVal2(Str2, Err, TRUE);
+	if (*Err!=0) return 0;
+
+	// get 3th arg(optional)
+	GetIntVal(&sp, Err);
+	if (*Err == ErrSyntax) {
+		// missing 3rd arg is not an error
+		*Err = 0;
+	}
+
 	if ((*Err==0) && (GetFirstChar()!=0))
 		*Err = ErrSyntax;
 	if (*Err!=0) return 0;
 
+	SPECIAL = (sp == 0) ? FALSE : TRUE;
 	if (BoxId==IdMsgBox)
-		OpenMsgDlg(Str1,Str2,FALSE);
+		OpenMsgDlg(Str1,Str2,FALSE,SPECIAL);
 	else if (BoxId==IdYesNoBox)
-		return OpenMsgDlg(Str1,Str2,TRUE);
+		return OpenMsgDlg(Str1,Str2,TRUE,SPECIAL);
 	else if (BoxId==IdStatusBox)
-		OpenStatDlg(Str1,Str2);
+		OpenStatDlg(Str1,Str2,SPECIAL);
 	return 0;
 }
 

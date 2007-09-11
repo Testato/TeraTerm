@@ -7,7 +7,9 @@
 class CMsgDlg : public CDialog
 {
 public:
-	CMsgDlg(PCHAR Text, PCHAR Title, BOOL YesNo, int x, int y);
+	CMsgDlg(PCHAR Text, PCHAR Title,
+	        BOOL YesNo, BOOL SPECIAL,
+	        int x, int y);
 
 	//{{AFX_DATA(CMsgDlg)
 	enum { IDD = IDD_MSGDLG };
