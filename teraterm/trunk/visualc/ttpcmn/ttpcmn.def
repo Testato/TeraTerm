@@ -23,6 +23,7 @@ EXPORTS
   CommBinaryEcho @26
   CommTextEcho @27
   DetectComPorts @42
+  GetDefaultFName @47
   
   SJIS2JIS @30
   SJIS2EUC @31

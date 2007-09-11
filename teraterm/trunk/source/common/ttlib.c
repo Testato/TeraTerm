@@ -533,11 +533,9 @@ void GetNthNum(PCHAR Source, int Nth, int far *Num)
 		*Num = 0;
 }
 
-// デフォルトの TERATERM.INI のフルパスを ttpmacro からも
-// 取得するために追加した。(2007.2.18 maya)
-void GetDefaultSetupFName(char *home, char *dest, int destlen)
+void WINAPI GetDefaultFName(char *home, char *file, char *dest, int destlen)
 {
-	// My Documents に teraterm.ini がある場合、
+	// My Documents に file がある場合、
 	// それを読み込むようにした。(2007.2.18 maya)
 	char MyDoc[MAX_PATH];
 	char MyDocSetupFName[MAX_PATH];
@@ -556,7 +554,7 @@ void GetDefaultSetupFName(char *home, char *dest, int destlen)
 	}
 	strncpy_s(MyDocSetupFName, sizeof(MyDocSetupFName), MyDoc, _TRUNCATE);
 	AppendSlash(MyDocSetupFName,sizeof(MyDocSetupFName));
-	strncat_s(MyDocSetupFName, sizeof(MyDocSetupFName), "TERATERM.INI", _TRUNCATE);
+	strncat_s(MyDocSetupFName, sizeof(MyDocSetupFName), file, _TRUNCATE);
 	if (GetFileAttributes(MyDocSetupFName) != -1) {
 		strncpy_s(dest, destlen, MyDocSetupFName, _TRUNCATE);
 		return;
@@ -565,7 +563,14 @@ void GetDefaultSetupFName(char *home, char *dest, int destlen)
 homedir:
 	strncpy_s(dest, destlen, home, _TRUNCATE);
 	AppendSlash(dest,destlen);
-	strncat_s(dest, destlen, "TERATERM.INI", _TRUNCATE);
+	strncat_s(dest, destlen, file, _TRUNCATE);
+}
+
+// デフォルトの TERATERM.INI のフルパスを ttpmacro からも
+// 取得するために追加した。(2007.2.18 maya)
+void GetDefaultSetupFName(char *home, char *dest, int destlen)
+{
+	GetDefaultFName(home, "TERATERM.INI", dest, destlen);
 }
 
 void GetUILanguageFile(char *buf, int buflen)

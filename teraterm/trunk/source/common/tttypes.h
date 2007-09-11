@@ -356,6 +356,7 @@ struct tttset {
 	int ConnectingTimeout;
 	WORD VTCompatTab;
 	WORD TelKeepAliveInterval;
+	WORD MaxBroadcatHistory;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -759,6 +760,7 @@ typedef TMap far *PMap;
  *
  * - At version 4.54, ttset_memfilemap was replaced with ttset_memfilemap_3.
  *   added tttset.TelKeepAliveInterval.
+ *   added tttset.MaxBroadcatHistory.
  *   changed pm.ComFlag type.
  *
  * - At version 4.53, ttset_memfilemap was replaced with ttset_memfilemap_2.

@@ -31,6 +31,7 @@ void ConvFName(PCHAR HomeDir, PCHAR Temp, int templen, PCHAR DefExt, PCHAR FName
 void RestoreNewLine(PCHAR Text);
 void GetNthString(PCHAR Source, int Nth, int Size, PCHAR Dest);
 void GetNthNum(PCHAR Source, int Nth, int far *Num);
+void WINAPI GetDefaultFName(char *home, char *file, char *dest, int destlen);
 void GetDefaultSetupFName(char *home, char *dest, int destlen);
 void GetUILanguageFile(char *buf, int buflen);
 

@@ -887,6 +887,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->TelKeepAliveInterval =
 		GetPrivateProfileInt(Section, "TelKeepAliveInterval", 300, FName);
 
+	/* Max number of broadcast commad history */
+	ts->MaxBroadcatHistory =
+		GetPrivateProfileInt(Section, "MaxBroadcatHistory", 99, FName);
+
 	/* Local echo for non-telnet */
 	ts->TCPLocalEcho = GetOnOff(Section, "TCPLocalEcho", FName, FALSE);
 
@@ -1649,6 +1653,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	/* Telnet keep-alive packet(NOP command) interval -- special option */
 	WriteUint(Section, "TelKeepAliveInterval", FName,
 	          ts->TelKeepAliveInterval);
+
+	/* Max number of broadcast commad history */
+	WriteUint(Section, "MaxBroadcatHistory", FName,
+	          ts->MaxBroadcatHistory);
 
 	/* Local echo for non-telnet */
 	WriteOnOff(Section, "TCPLocalEcho", FName, ts->TCPLocalEcho);

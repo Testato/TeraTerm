@@ -4485,23 +4485,24 @@ void CVTWindow::OnControlResetPort()
 	CommResetSerial(&ts,&cv);
 }
 
-void ApplyBoradCastCommandHisotry(HWND Dialog)
+void ApplyBoradCastCommandHisotry(HWND Dialog, char *historyfile)
 {
-	char EntName[10];
-	char TempHost[HostNameMaxLength+1];
+	char EntName[13];
+	char Command[HostNameMaxLength+1];
 	int i = 1;
 
 	SendDlgItemMessage(Dialog, IDC_COMMAND_EDIT, CB_RESETCONTENT, 0, 0);
 	strncpy_s(EntName, sizeof(EntName),"Command", _TRUNCATE);
 	do {
-		uint2str(i,&EntName[7],sizeof(EntName)-7,2);
+		_snprintf_s(EntName, sizeof(EntName), _TRUNCATE,
+		            "%s%d", "Command", i);
 		GetPrivateProfileString("BroadcastCommands",EntName,"",
-		                        TempHost,sizeof(TempHost),ts.SetupFName);
-		if ( strlen(TempHost) > 0 )
+		                        Command,sizeof(Command), historyfile);
+		if (strlen(Command) > 0)
 			SendDlgItemMessage(Dialog, IDC_COMMAND_EDIT, CB_ADDSTRING,
-			                   0, (LPARAM)TempHost);
-			i++;
-		} while ((i <= 99) && (strlen(TempHost)>0));
+			                   0, (LPARAM)Command);
+		i++;
+	} while ((i <= ts.MaxBroadcatHistory) && (strlen(Command)>0));
 
 	SendDlgItemMessage(Dialog, IDC_COMMAND_EDIT, EM_LIMITTEXT,
 	                   HostNameMaxLength-1, 0);
@@ -4522,6 +4523,9 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 	LOGFONT logfont;
 	HFONT font;
 	char uimsg[MAX_UIMSG];
+	char HomeDir[MAX_PATH];
+	char Temp[MAX_PATH];
+	char historyfile[MAX_PATH];
 
 	switch (msg) {
 		case WM_INITDIALOG:
@@ -4533,7 +4537,11 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			if (ts.BroadcastCommandHistory) {
 				SendMessage(GetDlgItem(hWnd, IDC_HISTORY_CHECK), BM_SETCHECK, BST_CHECKED, 0);
 			}
-			ApplyBoradCastCommandHisotry(hWnd);
+			/* Get home directory */
+			GetModuleFileName(NULL,Temp,sizeof(Temp));
+			ExtractDirName(Temp, HomeDir);
+			GetDefaultFName(HomeDir, "broadcast.log", historyfile, sizeof(historyfile));
+			ApplyBoradCastCommandHisotry(hWnd, historyfile);
 
 			// エディットコントロールにフォーカスをあてる
 			SetFocus(GetDlgItem(hWnd, IDC_COMMAND_EDIT));
@@ -4609,11 +4617,15 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 					// ブロードキャストコマンドの履歴を保存 (2007.3.3 maya)
 					history = SendMessage(GetDlgItem(hWnd, IDC_HISTORY_CHECK), BM_GETCHECK, 0, 0);
 					if (history) {
+						/* Get home directory */
+						GetModuleFileName(NULL,Temp,sizeof(Temp));
+						ExtractDirName(Temp, HomeDir);
+						GetDefaultFName(HomeDir, "broadcast.log", historyfile, sizeof(historyfile));
 						if (LoadTTSET()) {
-							(*AddValueToList)(ts.SetupFName, buf, "BroadcastCommands", "Command");
+							(*AddValueToList)(historyfile, buf, "BroadcastCommands", "Command");
 							FreeTTSET();
 						}
-						ApplyBoradCastCommandHisotry(hWnd);
+						ApplyBoradCastCommandHisotry(hWnd, historyfile);
 						ts.BroadcastCommandHistory = TRUE;
 					}
 					else {
