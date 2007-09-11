@@ -13,7 +13,7 @@
 
 Format:
 <UL>
-<B>messagebox &lt;message&gt; &lt;title&gt;</B>
+<B>messagebox &lt;message&gt; &lt;title&gt; [&lt;special&gt;(optional)]</B>
 </UL>
 
 <p>
@@ -21,7 +21,8 @@ Displays a dialog box with &lt;message&gt; and &lt;title&gt;.
 </p>
 
 <p>
-Following strings in &lt;message&gt; is treated as spacial character.
+If &lt;special&gt; is non-zero, following strings in &lt;message&gt; is treated as spacial character.<br>
+If &lt;special&gt; is not specified then 1 is used.
 </p>
 
 <pre>

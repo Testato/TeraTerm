@@ -13,7 +13,7 @@
 
 形式：
 <UL>
-<B>statusbox &lt;message&gt; &lt;title&gt;</B>
+<B>statusbox &lt;message&gt; &lt;title&gt; [&lt;special&gt;(オプション)]</B>
 </UL>
 
 <p>
@@ -27,7 +27,8 @@
 </p>
 
 <p>
-&lt;message&gt; に含まれる以下の文字列は、特殊文字と扱われます。
+&lt;special&gt; が 0 でない場合は、&lt;message&gt; に含まれる以下の文字列は特殊文字として扱われます。<br>
+&lt;special&gt; が指定されない場合は 1 が使用されます。
 </p>
 
 <pre>

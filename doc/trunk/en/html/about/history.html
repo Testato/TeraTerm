@@ -33,21 +33,28 @@
           <li>TeraTerm will send TELNET NOP command to host when no commucation does for a long time.</li>
           <li>added TelKeepAliveInterval entry in teraterm.ini file. The default value is 300 per seconds. 0 is turn off.</li>
         </ul></li>
+      <li>added Alt+I accelerator key as disconnect.</li>
       <li>added shift operator ">>", "<<", ">>>" for macro.</li>
       <li>added '<a href="../macro/command/rotateleft.html">rotateleft</a>', '<a href="../macro/command/rotateright.html">rotateright</a>' macro command.</li>
       <li>added '<a href="../macro/command/setenv.html">setenv</a>' macro command.</li>
+      <li>added new argument to macro command '<a href="../macro/command/messagebox.html">messagebox</a>', '<a href="../macro/command/yesnobox.html">yesnobox</a>', '<a href="../macro/command/inputbox.html">inputbox</a>', '<a href="../macro/command/passwordbox.html">passwordbox</a>' and '<a href="../macro/command/statusbox.html">statusbox</a>'. It controls whether to parse '\n','\t' as special characters.</li>
       <li>expanded the maximum number of serial connection to 200.</li>
       <li>changed the initial directory of log file to any directory.</li>
       <li>add support Ctrl+p, Ctrl+n, Ctrl+b, Ctrl+f, Ctrl+a and Ctrl+e shortcut key in "Host" drop-down on "New connectin" dialog. Shortcut keys are compatible with up-arrow, down-arrow, left-arrow, right-arrow, Home and End key.</li>
-      <li>replaced internal string functions to secure functions.
-        <ul>
-          <li>deleted _CRT_SECURE_NO_DEPRECATE build option.</li>
-        </ul></li>
       <li>stopped saving VTPos and TEKPos when saving teraterm.ini.</li>
+      <li>changed the save file for the history of broadcast command to broadcast.log.</li>
+      <li>added setting of the number for the history of broadcast command.
+        <ul>
+          <li>added <a href="../setup/teraterm-misc.html#broadcast">MaxBroadcatHistory</a> entry to teraterm.ini.</li>
+        </ul></li>
       <li>Bug fix: window size could not be changed at first time.</li>
       <li>Bug fix: CR+LF code at the end of line would not been selected when you select "Select all" menu under edit menu.</li>
       <li>Bug fix: Mouse wheel would not be rotated on Windows Vista.</li>
       <li>Bug fix: Kermit fails to properly negotiate to NOT use "repeat" compression when talking to a primitive partner. Special thanks to Anders Larsen.</li>
+      <li>replaced internal string functions to secure functions.
+        <ul>
+          <li>deleted _CRT_SECURE_NO_DEPRECATE build option.</li>
+        </ul></li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.42">2.42</a></li>
       <li>upgraded TeraTerm Menu to <a href="#ttmenu_1.06">1.06</a></li>
       <li>upgraded TTProxy to <a href="#ttproxy_1.0.0.14">1.0.0.14</a></li>
