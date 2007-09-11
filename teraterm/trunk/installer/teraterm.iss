@@ -1,7 +1,7 @@
 #define AppName "UTF-8 TeraTerm Pro with TTSSH2"
 #define AppVer "4.53"
 
-;#define DEBUG 1
+#define DEBUG 1
 #ifdef DEBUG
 #define IGNOREVER "ignoreversion"
 #else
@@ -126,6 +126,8 @@ Name: {userstartup}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app
 Name: {userstartup}\Collector; Filename: {app}\collector\collector.exe; WorkingDir: {app}\Collector; IconFilename: {app}\collector\collector.exe; Components: Collector; Tasks: startupcollectoricon; IconIndex: 0; Flags: createonlyiffileexists
 
 [INI]
+Filename: {app}\teraterm.ini; Section: Tera Term; Key: MaxBroadcatHistory; String: 99; Flags: createkeyifdoesntexist; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: MaxBroadcatHistory; String: 99; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: TelKeepAliveInterval; String: 300; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: TelKeepAliveInterval; String: 300; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: VTCompatTab; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
@@ -489,12 +491,13 @@ end; // CurStepChanged
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 var
-  ini     : array[0..3] of String;
+  ini     : array[0..4] of String;
   buf     : String;
   conf    : String;
   confmsg : String;
   app     : String;
-  i, res  : integer;
+  userdoc : String;
+  i, j, res : integer;
 begin
   case CurUninstallStep of
     usPostUninstall:
@@ -503,18 +506,27 @@ begin
         ini[1] := '\KEYBOARD.CNF';
         ini[2] := '\ssh_known_hosts';
         ini[3] := '\cygterm.cfg';
+        ini[4] := '\broadcast.log';
 
         case ActiveLanguage of
         'en': conf := 'Are you sure that you want to delete %s ?';
         'ja': conf := '%s ÇçÌèúÇµÇ‹Ç∑Ç©ÅH';
         end;
 
-        app := ExpandConstant('{app}');
+        app     := ExpandConstant('{app}');
+        userdoc := ExpandConstant('{userdocs}');
 
         // delete config files
-        for i := 0 to 3 do
+        for i := 0 to 4 do
         begin
           buf := app + ini[i];
+          if FileExists(buf) then begin
+            confmsg := Format(conf, [buf]);
+            res := MsgBox(confmsg, mbInformation, MB_YESNO or MB_DEFBUTTON2);
+            if res = IDYES then
+              DeleteFile(buf);
+          end;
+          buf := userdoc + ini[i];
           if FileExists(buf) then begin
             confmsg := Format(conf, [buf]);
             res := MsgBox(confmsg, mbInformation, MB_YESNO or MB_DEFBUTTON2);
