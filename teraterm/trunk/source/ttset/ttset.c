@@ -1028,19 +1028,12 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	// UI language message file
 	GetPrivateProfileString(Section, "UILanguageFile", "lang\\Default.lng",
 	                        Temp, sizeof(Temp), FName);
-	if (strlen(Temp) > 3 &&
-		Temp[1] == ':' &&
-		Temp[2] == '\\' &&
-		'a' <= tolower(Temp[0]) && tolower(Temp[0]) <= 'z') {
-		strncpy_s(ts->UILanguageFile, sizeof(ts->UILanguageFile), Temp,
-		          _TRUNCATE);
-	}
-	else {
-		strncpy_s(ts->UILanguageFile, sizeof(ts->UILanguageFile),
-		          ts->HomeDir, _TRUNCATE);
-		AppendSlash(ts->UILanguageFile, sizeof(ts->UILanguageFile));
-		strncat_s(ts->UILanguageFile, sizeof(ts->UILanguageFile), Temp,
-				  _TRUNCATE);
+	{
+		char CurDir[MAX_PATH];
+		GetCurrentDirectory(sizeof(CurDir), CurDir);
+		SetCurrentDirectory(ts->HomeDir);
+		_fullpath(ts->UILanguageFile, Temp, sizeof(ts->UILanguageFile));
+		SetCurrentDirectory(CurDir);
 	}
 
 	// Broadcast Command History (2007.3.3 maya)

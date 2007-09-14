@@ -578,6 +578,7 @@ void GetUILanguageFile(char *buf, int buflen)
 	char HomeDir[MAX_PATH];
 	char Temp[MAX_PATH];
 	char SetupFName[MAX_PATH];
+	char CurDir[MAX_PATH];
 
 	/* Get home directory */
 	GetModuleFileName(NULL,Temp,sizeof(Temp));
@@ -585,10 +586,15 @@ void GetUILanguageFile(char *buf, int buflen)
 
 	/* Get SetupFName */
 	GetDefaultSetupFName(HomeDir, SetupFName, sizeof(SetupFName));
-
+	
 	/* Get LanguageFile name */
 	GetPrivateProfileString("Tera Term", "UILanguageFile", "",
-	                        buf, buflen, SetupFName);
+	                        Temp, sizeof(Temp), SetupFName);
+
+	GetCurrentDirectory(sizeof(CurDir), CurDir);
+	SetCurrentDirectory(HomeDir);
+	_fullpath(buf, Temp, buflen);
+	SetCurrentDirectory(CurDir);
 }
 
 void get_lang_msg(PCHAR key, PCHAR buf, int buf_len, PCHAR def, PCHAR iniFile)
