@@ -176,6 +176,7 @@ HlpMacroCommandFilecopy=html\macro\command\filecopy.html
 HlpMacroCommandFilecreate=html\macro\command\filecreate.html
 HlpMacroCommandFiledelete=html\macro\command\filedelete.html
 HlpMacroCommandFilemarkptr=html\macro\command\filemarkptr.html
+HlpMacroCommandFilenamebox=html\macro\command\filenamebox.html
 HlpMacroCommandFileopen=html\macro\command\fileopen.html
 HlpMacroCommandFileread=html\macro\command\fileread.html
 HlpMacroCommandFilereadln=html\macro\command\filereadln.html

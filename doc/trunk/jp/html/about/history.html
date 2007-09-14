@@ -37,7 +37,7 @@
       <li>マクロの演算子にシフト演算子 >>, <<, >>> を追加した。</li>
       <li>マクロコマンド <a href="../macro/command/rotateleft.html">rotateleft</a>, <a href="../macro/command/rotateright.html">rotateright</a> を新規追加した。</li>
       <li>マクロコマンド <a href="../macro/command/setenv.html">setenv</a> を新規追加した。</li>
-      <li>マクロコマンド <a href="../macro/command/messagebox.html">messagebox</a>, <a href="../macro/command/yesnobox.html">yesnobox</a>, <a href="../macro/command/inputbox.html">inputbox</a>, <a href="../macro/command/passwordbox.html">passwordbox</a>, <a href="../macro/command/statusbox.html">statusbox</a> に、'\n' と '\t' を特殊文字として解釈するかどうかを制御する引数を追加した。</li>
+      <li>マクロコマンド <a href="../macro/command/filenamebox.html">filenamebox</a> を新規追加した。</li>
       <li>シリアル接続のCOM最大ポートを200まで拡張した。</li>
       <li>ログ採取のファイル選択ダイアログにおいて、初期フォルダを決め打ちしないようにした。</li>
       <li>New connection ダイアログの Host ドロップダウンで、Ctrl+p, Ctrl+n, Ctrl+b, Ctrl+f, Ctrl+a, Ctrl+e ショートカットキーをサポートした。それぞれ↑, ↓, ←, →, Home, End キーに対応する。</li>
@@ -47,6 +47,7 @@
         <ul>
           <li>teraterm.ini に <a href="../setup/teraterm-misc.html#broadcast">MaxBroadcatHistory</a> エントリを追加した。</li>
         </ul></li>
+      <li>マクロコマンド <a href="../macro/command/messagebox.html">messagebox</a>, <a href="../macro/command/yesnobox.html">yesnobox</a>, <a href="../macro/command/inputbox.html">inputbox</a>, <a href="../macro/command/passwordbox.html">passwordbox</a>, <a href="../macro/command/statusbox.html">statusbox</a> に、'\n' と '\t' を特殊文字として解釈するかどうかを制御する引数を追加した。</li>
       <li>初回のウインドウのサイズ変更ができないことがある問題を修正した。</li>
       <li>編集メニューの“全て選択”で、最終行の改行が選択されない問題を修正した。</li>
       <li>Windows Vistaでマウスホイールが効かない問題を修正した。</li>
@@ -856,7 +857,7 @@
       <li>すでにソケットが開かれているためにポートフォワードを開始できないとき、ポップアップでエラーを表示しないようにした。</li>
       <li>コマンドライン入力におけるBOF(Buffer Over Flow)への対処を追加した。</li>
       <li>リモート側からの SSH ポートフォワード接続が失敗したときに SSH 接続が切断される問題を修正した。</li>
-      <li>SSH のチャネルが開けないときにソケットが開いたままになっていた問題を修正した。</li>
+      <li>SSH のチャネルが開けないときにソケットが開いたままになる問題を修正した。</li>
     </ul>
   </li>
 
