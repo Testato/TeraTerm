@@ -147,6 +147,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 	else if (_stricmp(Str,"filecreate")==0) *WordId = RsvFileCreate;
 	else if (_stricmp(Str,"filedelete")==0) *WordId = RsvFileDelete;
 	else if (_stricmp(Str,"filemarkptr")==0) *WordId = RsvFileMarkPtr;
+	else if (_stricmp(Str,"filenamebox")==0) *WordId  = RsvFilenameBox;	// add 'filenamebox' (2007.9.13 maya)
 	else if (_stricmp(Str,"fileopen")==0) *WordId = RsvFileOpen;
 	else if (_stricmp(Str,"filereadln")==0) *WordId = RsvFileReadln;
 	else if (_stricmp(Str,"fileread")==0) *WordId = RsvFileRead;	// add

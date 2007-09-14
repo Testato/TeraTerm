@@ -775,6 +775,39 @@ WORD TTLFileMarkPtr()
 	return Err;
 }
 
+// add 'filenamebox' (2007.9.13 maya)
+WORD TTLFilenameBox()
+{
+	TStrVal Str1;
+	WORD Err, ValType, VarId;
+	OPENFILENAME ofn;
+	char uimsg[MAX_UIMSG];
+
+	Err = 0;
+	GetStrVal(Str1,&Err);
+	if (Err!=0) return Err;
+
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	SetInputStr("");
+	if (CheckVar("inputstr",&ValType,&VarId) &&
+	    (ValType==TypString)) {
+		memset(&ofn, 0, sizeof(OPENFILENAME));
+		ofn.lStructSize     = sizeof(OPENFILENAME);
+		ofn.hwndOwner       = HMainWin;
+		ofn.lpstrTitle      = Str1;
+		ofn.lpstrFile       = StrVarPtr(VarId);
+		ofn.nMaxFile        = MaxStrLen;
+		get_lang_msg("FILEDLG_ALL_FILTER", uimsg, sizeof(uimsg), "All(*.*)\\0*.*\\0\\0", UILanguageFile);
+		ofn.lpstrFilter     = uimsg;
+		ofn.lpstrInitialDir = NULL;
+		GetOpenFileName(&ofn);
+	}
+	return Err;
+}
+
 WORD TTLFileOpen()
 {
 	WORD Err, VarId;
@@ -2929,6 +2962,8 @@ int ExecCmnd()
 			Err = TTLFileDelete(); break;
 		case RsvFileMarkPtr:
 			Err = TTLFileMarkPtr(); break;
+		case RsvFilenameBox:
+			Err = TTLFilenameBox(); break;  // add 'filenamebox' (2007.9.13 maya)
 		case RsvFileOpen:
 			Err = TTLFileOpen(); break;
 		case RsvFileReadln:

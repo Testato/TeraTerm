@@ -184,6 +184,7 @@
 #define HlpMacroCommandFilecreate       92025
 #define HlpMacroCommandFiledelete       92026
 #define HlpMacroCommandFilemarkptr      92027
+#define HlpMacroCommandFilenamebox      92124
 #define HlpMacroCommandFileopen         92028
 #define HlpMacroCommandFileread         92116
 #define HlpMacroCommandFilereadln       92029
