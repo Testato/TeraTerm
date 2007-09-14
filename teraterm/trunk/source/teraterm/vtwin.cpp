@@ -4508,15 +4508,6 @@ void ApplyBoradCastCommandHisotry(HWND Dialog, char *historyfile)
 	SendDlgItemMessage(Dialog, IDC_COMMAND_EDIT, CB_SETCURSEL,0,0);
 }
 
-void GetBroadcastLogFName(char *dest, int destlen) {
-	char HomeDir[MAX_PATH];
-	char Temp[MAX_PATH];
-
-	GetModuleFileName(NULL,Temp,sizeof(Temp));
-	ExtractDirName(Temp, HomeDir);
-	GetDefaultFName(HomeDir, "broadcast.log", dest, destlen);
-}
-
 //
 // すべてのターミナルへ同一コマンドを送信するモードレスダイアログの表示
 // (2005.1.22 yutaka)
@@ -4542,7 +4533,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			if (ts.BroadcastCommandHistory) {
 				SendMessage(GetDlgItem(hWnd, IDC_HISTORY_CHECK), BM_SETCHECK, BST_CHECKED, 0);
 			}
-			GetBroadcastLogFName(historyfile, sizeof(historyfile));
+			GetDefaultFName(ts.HomeDir, "broadcast.log", historyfile, sizeof(historyfile));
 			ApplyBoradCastCommandHisotry(hWnd, historyfile);
 
 			// エディットコントロールにフォーカスをあてる
@@ -4619,7 +4610,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 					// ブロードキャストコマンドの履歴を保存 (2007.3.3 maya)
 					history = SendMessage(GetDlgItem(hWnd, IDC_HISTORY_CHECK), BM_GETCHECK, 0, 0);
 					if (history) {
-						GetBroadcastLogFName(historyfile, sizeof(historyfile));
+						GetDefaultFName(ts.HomeDir, "broadcast.log", historyfile, sizeof(historyfile));
 						if (LoadTTSET()) {
 							(*AddValueToList)(historyfile, buf, "BroadcastCommands", "Command");
 							FreeTTSET();
@@ -4688,7 +4679,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 
 				case IDC_COMMAND_EDIT:
 					if (HIWORD(wp) == CBN_DROPDOWN) {
-						GetBroadcastLogFName(historyfile, sizeof(historyfile));
+						GetDefaultFName(ts.HomeDir, "broadcast.log", historyfile, sizeof(historyfile));
 						ApplyBoradCastCommandHisotry(hWnd, historyfile);
 					}
 					return FALSE;
