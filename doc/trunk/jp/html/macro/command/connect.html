@@ -1,206 +1,227 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>connect</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>connect</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">connect</FONT>
-</div>
+<body>
+
+
+<h1>connect</h1>
 
 <p>
-形式：
-<UL>
- <B>connect &lt;command line parameters&gt;</B>
-</UL>
+接続する。
 </p>
 
+<pre class="macro-syntax">
+connect &lt;command line parameters&gt;
+</pre>
+
+<h2>解説</h2>
+
+<p>
 MACRO が Tera Term とリンクされていない場合、Tera Term を起動してMACRO とリンクする。&lt;command line parameters&gt;  は、Tera Term を起動する時のコマンドラインパラメータ。
-<P></P>
+</p>
 
-MACRO が Tera Term とすでにリンクされていて、Tera Term がホストに接続されていない場合、Tera Term をコマンドライン <command line parameters> で指定されるホストに接続させる。
-<P></P>
+<p>
+MACRO が Tera Term とすでにリンクされていて、Tera Term がホストに接続されていない場合、Tera Term をコマンドライン &lt;command line parameters&gt; で指定されるホストに接続させる。Tera Term のコマンドラインパラメータについては、"<a href="../../commandline/teraterm.html">Tera Term Pro コマンドライン</a>"を参照。
+</p>
 
-Tera Term のコマンドラインパラメータについては、Tera Term ヘルプを参照。
-<P></P>
-
+<p>
 MACRO が Tera Term とすでにリンクされていて、Tera Term がホストにすでに接続されている場合、このコマンドは無視される。
-<P></P>
+</p>
 
+<p>
 このコマンドの結果、リンクと接続の状態に応じて以下のうちの一つの値がシステム変数 result に格納される。
-<P></P>
+</p>
 
-<pre>
-値	状態
-<hr>
-0	Tera Term とリンクされていない。
-1	ホストへの接続はされていないが、Tera Term へのリンクはされている。
-2	リンクおよび接続両方ともされている。
-</pre>
+<table>
+ <tr>
+  <th>値</th>
+  <th>状態</th>
+ </tr>
+ <tr>
+  <td>0</td>
+  <td>Tera Term とリンクされていない。</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>ホストへの接続はされていないが、Tera Term へのリンクはされている。</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>リンクおよび接続両方ともされている。</td>
+ </tr>
+</table>
 
-"connect" コマンドを実行する前にリンクと接続の状態を調べるには、"testlink" コマンドを使うことができる。
-<P></P>
+<p>
+"connect" コマンドを実行する前にリンクと接続の状態を調べるには、"<a href="testlink.html">testlink</a>" コマンドを使うことができる。
+</p>
 
-Tera Term と MACRO のリンクしていない状態では、"connect" と "testlink" 以外の通信コマンドは実行できない。
-<P></P>
+<p>
+Tera Term と MACRO のリンクしていない状態では、"connect" と "<a href="testlink.html">testlink</a>" 以外の通信コマンドは実行できない。
+</p>
 
-<pre>
-TeraTermマクロから接続する方法には、3つの種類があります。
+<h2>Boris による解説</h2>
 
-  - telnet接続 (port 23) 
-  - SSH1 および SSH2 接続 (port 22) 
-  - General connection
-  - COM port 接続
+<p>
+TeraTermマクロから接続する方法には、4 つの種類があります。
+</p>
 
+<ul>
+ <li>telnet接続 (port 23)</li>
+ <li>SSH1 および SSH2 接続 (port 22)</li>
+ <li>General connection</li>
+ <li>COM port 接続</li>
+</ul>
 
-・telnet接続
-  
-  connect '<em>myserver</em>:23 /nossh'
-  or
-  connect '<em>myserver</em>:23 /telnet'
-  or
-  connect '<em>myserver</em>:23'
-  
-  /nossh を使う方を強く推奨します。このオプションがない場合、TeraTermは teraterm.ini
-  が最後に保存されたときと同じメソッド（telnet もしくは SSH）を使って、接続しようとします。
-  もし、SSHを使って接続しようとするならば、connectマクロは失敗するでしょう。
+<h3>telnet接続</h2>
 
+<pre class="macro-example">
+<code>connect '<em>myserver</em>:23 /nossh'
+connect '<em>myserver</em>:23 /telnet'
+connect '<em>myserver</em>:23'
+</code></pre>
 
-・SSH接続
-  
-  connect '<em>myserver</em> /ssh'
-  
-  この方法は、SSHバージョンを指定せずにSSH接続をします。
-  
-  connect '<em>myserver</em> /ssh /1'
-  or
-  connect '<em>myserver</em> /ssh /2'
-  
-  /1 と /2 のオプションは、SSH1およびSSH2であることを指定します。
-  
-  connect '<em>myserver</em> /ssh /auth=password /user=<em>username</em> /passwd=<em>password</em>'
-  or
-  connect '<em>myserver</em> /ssh /1 /auth=password /user=<em>username</em> /passwd=<em>password</em>'
-  or
-  connect '<em>myserver</em> /ssh /2 /auth=password /user=<em>username</em> /passwd=<em>password</em>'
-  or
-  connect '<em>myserver</em> /ssh /auth=publickey /user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
-  or
-  connect '<em>myserver</em> /ssh /1 /auth=publickey /user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
-  or
-  connect '<em>myserver</em> /ssh /2 /auth=publickey /user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
-  
-  この6つの方法は、マクロからユーザ名とパスワード**を渡すことにより、SSH認証ダイアログを
-  スキップさせることができます。/auth=passwordはパスワード認証、/auth=publickeyは
-  公開鍵認証であることを表します。
+<p>
+/nossh を使う方を強く推奨します。このオプションがない場合、TeraTermは teraterm.ini が最後に保存されたときと同じメソッド（telnet もしくは SSH）を使って、接続しようとします。もし、SSHを使って接続しようとするならば、connectマクロは失敗するでしょう。
+</p>
 
-  connect '<em>myserver</em> /ssh /auth=password /user=<em>username</em> /ask4passwd'
-  or
-  connect '<em>myserver</em> /ssh /1 /auth=password /user=<em>username</em> /ask4passwd'
-  or
-  connect '<em>myserver</em> /ssh /2 /auth=password /user=<em>username</em> /ask4passwd'
-  or
-  connect '<em>myserver</em> /ssh /auth=publickey /user=<em>username</em> /ask4passwd /keyfile=<em>private-key-file</em>'
-  or
-  connect '<em>myserver</em> /ssh /1 /auth=publickey /user=<em>username</em> /ask4passwd /keyfile=<em>private-key-file</em>'
-  or
-  connect '<em>myserver</em> /ssh /2 /auth=publickey /user=<em>username</em> /ask4passwd /keyfile=<em>private-key-file</em>'
-  
-  この6つの方法は、マクロからユーザ名と認証方法を渡して、ポップアップでパスワードの入力を促します。
+<h3>SSH接続</h3>
 
+<pre class="macro-example">
+<code>connect '<em>myserver</em> /ssh'
+</code></pre>
 
-・General connection
+<p>
+この方法は、SSHバージョンを指定せずにSSH接続をします。
+</p>
 
-  connect '<em>myserver</em> /timeout=&lt;value&gt;'
-    
-  Note: This option value is connecting timeout value(per seconds). Connecting to myserver 
-  could be canceled after timeout has occurred with the specified value. Conversely, no action 
-  if the value is zero. The default value is zero. Also this value would be saved as 
-  `ConnectingTimeout' entry in teraterm.ini file.
+<pre class="macro-example">
+<code>connect '<em>myserver</em> /ssh /1'
+connect '<em>myserver</em> /ssh /2'
+</code></pre>
 
+<p>
+/1 と /2 のオプションは、SSH1およびSSH2であることを指定します。
+</p>
 
-・COMポート接続
-  
-  connect '/C=x'
-  
-  xはCOMポート番号を表します。たとえば、COM1に接続したいのなら、 connect '/C=1' とします。
-  
-  出典: http://www.neocom.ca/forum/viewtopic.php?t=28
-</pre>
+<pre class="macro-example">
+<code>connect '<em>myserver</em> /ssh /auth=password /user=<em>username</em> /passwd=<em>password</em>'
+connect '<em>myserver</em> /ssh /1 /auth=password /user=<em>username</em> /passwd=<em>password</em>'
+connect '<em>myserver</em> /ssh /2 /auth=password /user=<em>username</em> /passwd=<em>password</em>'
+connect '<em>myserver</em> /ssh /auth=publickey /user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
+connect '<em>myserver</em> /ssh /1 /auth=publickey /user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
+connect '<em>myserver</em> /ssh /2 /auth=publickey /user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
+</code></pre>
 
+<p>
+この6つの方法は、マクロからユーザ名とパスワードを渡すことにより、SSH認証ダイアログをスキップさせることができます。/auth=passwordはパスワード認証、/auth=publickeyは公開鍵認証であることを表します。
+</p>
 
-参照:
-<UL>
-<li><A HREF="closett.html">"closett"</A></li>
-<li><A HREF="disconnect.html">"disconnect"</A></li>
-<li><A HREF="testlink.html">"testlink"</A></li>
-<li><A HREF="unlink.html">"unlink"</A></li>
-</UL>
+<pre class="macro-example">
+<code>connect 'myserver /ssh /auth=password /user=username /ask4passwd'
+connect 'myserver /ssh /1 /auth=password /user=username /ask4passwd'
+connect 'myserver /ssh /2 /auth=password /user=username /ask4passwd'
+connect 'myserver /ssh /auth=publickey /user=username /ask4passwd /keyfile=private-key-file'
+connect 'myserver /ssh /1 /auth=publickey /user=username /ask4passwd /keyfile=private-key-file'
+connect 'myserver /ssh /2 /auth=publickey /user=username /ask4passwd /keyfile=private-key-file'
+</code></pre>
 
-<pre>
-例：
-	; パラメータなしで Tera Term を起動
-	connect ''
-	
-	; 接続が成功しなかった場合、5秒でタイムアウトが発生
-	connect '<em>myserver</em> /timeout=5'
-	
-	; Tera Term を起動し、telnet セッションを開く
-	connect '<em>myserver</em>:23 /nossh'
-	
-	; Tera Term を起動し、SSH セッションを開く
-	connect '<em>myserver</em> /ssh'
-	
-	; Tera Term を起動し、SSH1 セッションを開く
-	connect '<em>myserver</em> /ssh /1'
-	
-	; Tera Term を起動し、SSH2 セッションを開く
-	connect '<em>myserver</em> /ssh /2'
-	
-	; Tera Term を起動する。SSH セッションを開き、ユーザ名とパスワード**のプロンプトは表示されない。
-	connect '<em>myserver</em> /ssh /auth=password /user=<em>username</em> /passwd=<em>password</em>'
-	
-	; Tera Term を起動する。SSH1 セッションを開き、ユーザ名とパスワード**のプロンプトは表示されない。
-	connect '<em>myserver</em> /ssh /1 /auth=password /user=<em>username</em> /passwd=<em>password</em>'
-	
-	; Tera Term を起動する。SSH2 セッションを開き、ユーザ名とパスワード**のプロンプトは表示されない。
-	connect '<em>myserver</em> /ssh /2 /auth=password /user=<em>username</em> /passwd=<em>password</em>'
-	
-	; Tera Term を起動する。SSH セッションを開き、ユーザ名とパスワード**と秘密鍵ファイルのプロンプトは表示されない。
-	connect '<em>myserver</em> /ssh /auth=publickey/user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
-	
-	; Tera Term を起動する。SSH1 セッションを開き、ユーザ名とパスワード**と秘密鍵ファイルのプロンプトは表示されない。
-	connect '<em>myserver</em> /ssh /1 /auth=publickey/user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
-	
-	; Tera Term を起動する。SSH2 セッションを開き、ユーザ名とパスワード**と秘密鍵ファイルのプロンプトは表示されない。
-	connect '<em>myserver</em> /ssh /2 /auth=publickey /user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
-	
-	; Tera Term を起動し、シリアルポート接続を開く。ポート番号は1から99の範囲内
-	connect '/C=x'
+<p>
+この6つの方法は、マクロからユーザ名と認証方法を渡して、ポップアップでパスワードの入力を促します。
+</p>
 
-	CommandLine = '111.111.11.11'	
-	connect CommandLine
-</pre>
+<h3>General connection</h3>
 
-<pre>
-注意:
-* このページの例において斜体で表示されている値を、実際の値に置き換える必要があります。
+<pre class="macro-example">
+<code>connect 'myserver /timeout=&lt;value&gt;'
+</code></pre>
 
-** パスワードにはスペースを含むことが可能です。パスワードの中でスペースを表すには、
-   "@"で置き換えてください。もし"@"がパスワードの一部である場合は、連続した"@"
-   つまり"@@"で置き換えてください。
+<p>
+Note: This option value is connecting timeout value(per seconds). Connecting to myserver could be canceled after timeout has occurred with the specified value. Conversely, no action if the value is zero. The default value is zero. Also this value would be saved as `ConnectingTimeout' entry in teraterm.ini file.
+</p>
 
-*** TeraTermマクロにユーザ名とパスワードを指定した場合、そのマクロファイルをプレーン
-    テキストとして保存したのなら、セキュリティ的に安全な場所に置く必要があることを
-    肝に銘じておいてください。
-</pre>
+<h3>COMポート接続</h3>
 
+<pre class="macro-example">
+<code>connect '/C=x'
+</code></pre>
 
-</BODY>
-</HTML>
+<p>
+xはCOMポート番号を表します。たとえば、COM1に接続したいのなら、 connect '/C=1' とします。
+</p>
 
+<p>
+出典: http://www.neocom.ca/forum/viewtopic.php?t=28
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>; パラメータなしで Tera Term を起動
+connect ''
+
+; 接続が成功しなかった場合、5秒でタイムアウトが発生
+connect '<em>myserver</em> /timeout=5'
+
+; Tera Term を起動し、telnet セッションを開く
+connect '<em>myserver</em>:23 /nossh'
+
+; Tera Term を起動し、SSH セッションを開く
+connect '<em>myserver</em> /ssh'
+
+; Tera Term を起動し、SSH1 セッションを開く
+connect '<em>myserver</em> /ssh /1'
+
+; Tera Term を起動し、SSH2 セッションを開く
+connect '<em>myserver</em> /ssh /2'
+
+; Tera Term を起動する。SSH セッションを開き、ユーザ名とパスワードのプロンプトは表示されない。
+connect '<em>myserver</em> /ssh /auth=password /user=<em>username</em> /passwd=<em>password</em>'
+
+; Tera Term を起動する。SSH1 セッションを開き、ユーザ名とパスワードのプロンプトは表示されない。
+connect '<em>myserver</em> /ssh /1 /auth=password /user=<em>username</em> /passwd=<em>password</em>'
+
+; Tera Term を起動する。SSH2 セッションを開き、ユーザ名とパスワードのプロンプトは表示されない。
+connect '<em>myserver</em> /ssh /2 /auth=password /user=<em>username</em> /passwd=<em>password</em>'
+
+; Tera Term を起動する。SSH セッションを開き、ユーザ名とパスワードと秘密鍵ファイルのプロンプトは表示されない。
+connect '<em>myserver</em> /ssh /auth=publickey/user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
+
+; Tera Term を起動する。SSH1 セッションを開き、ユーザ名とパスワードと秘密鍵ファイルのプロンプトは表示されない。
+connect '<em>myserver</em> /ssh /1 /auth=publickey/user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
+
+; Tera Term を起動する。SSH2 セッションを開き、ユーザ名とパスワードと秘密鍵ファイルのプロンプトは表示されない。
+connect '<em>myserver</em> /ssh /2 /auth=publickey /user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
+
+; Tera Term を起動し、シリアルポート接続を開く。ポート番号は 1 から 200 の範囲内
+connect '/C=x'
+
+CommandLine = '111.111.11.11'
+connect CommandLine
+</code></pre>
+
+<h2>注意</h2>
+
+<ol>
+ <li>このページの例において斜体で表示されている値を、実際の値に置き換える必要があります。</li>
+ <li>パスワードにはスペースを含むことが可能です。パスワードの中でスペースを表すには、 "@" で置き換えてください。もし "@" がパスワードの一部である場合は、連続した "@" つまり "@@" で置き換えてください。</li>
+ <li>TeraTermマクロにユーザ名とパスワードを指定した場合、そのマクロファイルをプレーンテキストとして保存したのなら、セキュリティ的に安全な場所に置く必要があることを肝に銘じておいてください。</li>
+</ol>
+
+<h2>参照</h2>
+
+<ul>
+ <li>"<A HREF="closett.html">closett</A>"</li>
+ <li>"<A HREF="disconnect.html">disconnect</A>"</li>
+ <li>"<A HREF="testlink.html">testlink</A>"</li>
+ <li>"<A HREF="unlink.html">unlink</A>"</li>
+</ul>
+
+</body>
+</html>

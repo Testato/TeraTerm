@@ -4,9 +4,9 @@
 - Compiler
   Visual Studio 2005 SP1 Standard Edition (or higher edition)
 - Installer
-  Inno Setup 5.1.13 (http://innosetup.org/isinfo.php)
+  Inno Setup 5.1.14 (http://innosetup.org/isinfo.php)
   ISTool 5.1.8 (http://innosetup.org/isdl.php#qsp)
-    It is included in QuickStart Pack 5.1.11.
+    It is included in QuickStart Pack 5.1.14.
   Japanese-5-5.1.11.isl (http://innosetup.org/files/istrans/)
 - others
   ActivePerl 5.8 later version
@@ -153,6 +153,9 @@
        ttermpro.rc
        ttxssh.rc
        ttmacro.rc // only modifying
+       ttpmenu.rc // only modifying
+       TTProxy.rc // only modifying
+       ttxkanjimenu.rc // only modifying
        teraterm.iss
        html/about/hisotry.html
        Note: Don't update the version number until the release, because the installer does not overwrite file when versions are same.
@@ -184,3 +187,5 @@
 
        (3) TTSSH Changelog http://www.neocom.ca/forum/viewtopic.php?t=29
            Added current modification.
+
+  8. Delete spanshots.

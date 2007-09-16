@@ -1,39 +1,47 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>call</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>call</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">call</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
-<B>call &lt;label&gt;</B>
-</UL>
-<P></P>
 
-Calls a subroutine beginning with the &lt;label&gt; line.
-<P></P>
+<h1>call</h1>
 
-<pre>
-Example:
-	messagebox "I'm in main." "test"	
-	call sub					Jump to ":sub".
-	messagebox "Now I'm in main" "test"	
-	end	
+<p>
+Calls a subroutine.
+</p>
 
-	:sub						Start of the subroutine.
-	messagebox "Now I'm in sub" "test"	
-	return						Go back to the main routine.
+<pre class="macro-syntax">
+call &lt;label&gt;
 </pre>
 
-</BODY>
-</HTML>
+<h2>Remarks</h2>
 
+<p>
+Calls a subroutine beginning with the &lt;label&gt; line.
+</p>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+<code>messagebox "I'm in main." "test"
+; Jump to ":sub".
+<strong>call sub</strong>
+messagebox "Now I'm in main" "test"
+end
+
+; Start of the subroutine.
+:sub
+messagebox "Now I'm in sub" "test"
+; Go back to the main routine.
+return
+</code></pre>
+
+</body>
+</html>

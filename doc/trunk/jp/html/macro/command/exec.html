@@ -1,36 +1,38 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>exec</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>exec</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">exec</FONT><BR><BR>
+<h1>exec</h1>
 
-形式：
-<UL>
-<B>
+<p>
+アプリケーションを起動する。
+</p>
+
+<pre class="macro-syntax">
 exec &lt;command line&gt;
-</B>
-</UL>
-
-<pre>
-
-コマンドライン文字列 &lt;command line&gt; に従い、アプリケーションを起動する。
-
-</pre><P></P>
-
-<pre>
-
-例：
-     <B>exec 'notepad readme.txt'</B>                       「メモ帳」を起動
-
 </pre>
 
+<h2>解説</h2>
 
-</BODY>
-</HTML>
+<p>
+コマンドライン文字列 &lt;command line&gt; に従い、アプリケーションを起動する。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>; 「メモ帳」を起動
+exec 'notepad readme.txt'
+</code></pre>
+
+</body>
+</html>

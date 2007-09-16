@@ -4,9 +4,9 @@
 - コンパイラ
   Visual Studio 2005 SP1 (Standard Edition 以上)
 - インストーラ
-  Inno Setup 5.1.13 (http://innosetup.org/isinfo.php)
+  Inno Setup 5.1.14 (http://innosetup.org/isinfo.php)
   ISTool 5.1.8 (http://innosetup.org/isdl.php#qsp)
-    QuickStart Pack 5.1.11 の中に入っています。
+    QuickStart Pack 5.1.14 の中に入っています。
   Japanese-5-5.1.11.isl (http://innosetup.org/files/istrans/)
 - その他
   ActivePerl 5.8 以上
@@ -151,13 +151,16 @@
   4. FileのCompileでヘルプファイルをコンパイルする
 
 
- * リリースの方法
+* リリースの方法
   リリースの方法について以下に示します。
 
   1. バージョンを上げ、日付を変更する
        ttermpro.rc
        ttxssh.rc
        ttmacro.rc // 変更時のみ
+       ttpmenu.rc // 変更時のみ
+       TTProxy.rc // 変更時のみ
+       ttxkanjimenu.rc // 変更時のみ
        teraterm.iss
        html/about/hisotry.html
        ※バージョン番号が同じだとインストーラが上書きしないので、リリースまではバージョン番号を上げないこと。
@@ -192,3 +195,5 @@
 
        (3) TTSSH Changelog http://www.neocom.ca/forum/viewtopic.php?t=29
            今回の変更を追加する
+
+  8. スナップショットを削除する

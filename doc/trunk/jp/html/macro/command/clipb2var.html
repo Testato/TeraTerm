@@ -1,43 +1,54 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>clipb2var</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>clipb2var</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">clipb2var</FONT><BR><BR>
-</div>
+<body>
 
-形式:
-<UL>
-<B>clipb2var &lt;strvar&gt;</B>
-</UL>
-<P></P>
 
-クリップボードのテキストデータを&lt;strvar&gt;へ代入する。
-<P></P>
+<h1>clipb2var</h1>
 
+<p>
+クリップボードのテキストデータをコピーする。
+</p>
+
+<pre class="macro-syntax">
+clipb2var &lt;strvar&gt;
+</pre>
+
+<h2>解説</h2>
+
+<p>
+クリップボードのテキストデータを &lt;strvar&gt; へ代入する。<br>
 このコマンドの実行結果はシステム変数 result に格納される。変数 result の値の意味は以下のとおり。
-<P></P>
+</p>
 
-<pre>
-値	意味
-<hr>
-0	クリップボードを開けなかった。またはテキストデータではなかった。
-1	&lt;strvar&gt;への代入に成功した。
-</pre>
+<table>
+ <tr>
+  <th>値</th>
+  <th>意味</th>
+ </tr>
+ <tr>
+  <td>0</td>
+  <td>クリップボードを開けなかった。またはテキストデータではなかった。</td>
+ </tr>
+  <tr>
+  <td>1</td>
+  <td>&lt;strvar&gt; への代入に成功した。</td>
+ </tr>
+</table>
 
-<pre>
-例:
-	clipb2var data
-	messagebox data 'clipboard data'
-</pre>
+<h2>例</h2>
 
-</BODY>
-</HTML>
+<pre class="macro-example">
+<code>clipb2var data
+messagebox data 'clipboard data'
+</code></pre>
 
+</body>
+</html>

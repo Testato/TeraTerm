@@ -9,19 +9,28 @@
 </head>
 
 <body>
+
+
 <h1>break</h1>
 
-<h2>形式:</h2>
+<p>
+ループから抜ける。
+</p>
+
 <pre class="macro-syntax">
 break
 </pre>
+
+<h2>解説</h2>
+
 <p>
-  "for" や "while" のループから抜ける。
+"for" や "while" のループから抜ける。
 </p>
 
-<h2>例:</h2>
-<pre class="macro-example"><code>
-for i 1 10
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>for i 1 10
   yesnobox 'ループから抜けますか?' 'TeraTerm'
   if result <strong>break</strong>
 next

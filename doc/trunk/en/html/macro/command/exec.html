@@ -1,32 +1,38 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>exec</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>exec</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">exec</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
-<B>exec &lt;command line&gt;</B>
-</UL>
-<P></P>
 
-Runs an application specified by &lt;command line&gt;.
-<P></P>
+<h1>exec</h1>
 
-<pre>
-Example:
-	exec 'notepad readme.txt'	Run "Notepad".
+<p>
+Runs an application.
+</p>
+
+<pre class="macro-syntax">
+exec &lt;command line&gt;
 </pre>
 
-</BODY>
-</HTML>
+<h2>Remarks</h2>
 
+<p>
+Runs an application specified by &lt;command line&gt;.
+</p>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+<code>; Run "Notepad".
+exec 'notepad readme.txt'
+</code></pre>
+
+</body>
+</html>

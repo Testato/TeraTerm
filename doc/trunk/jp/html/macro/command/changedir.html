@@ -1,39 +1,38 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>changedir</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>changedir</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<FONT SIZE="+2">changedir</FONT><BR><BR>
+<body>
 
 
-形式：
-<UL>
-<B>
-changedir &lt;path&gt;
-</B>
-</UL><P></P>
+<h1>changedir</h1>
 
-<pre>
-
+<p>
 Tera Term の現在のディレクトリを変更する。
-<b>注意:</b><A HREF="setdir.html"> setdir</A> コマンドは MACRO の現在のディレクトリを変更する。通信コマンド(kmtsend 等)で指定されるファイル名は
-Tera Term の現在のディレクトリを基準にする。その他のコマンド(fileopen 等)で指定されるファイル名は MACRO 
-の現在のディレクトリを基準にする。
+</p>
 
-</pre><P></P>
-
-<pre>
-
-例:
-
-	changedir 'c:\'
-
+<pre class="macro-syntax">
+changedir &lt;path&gt;
 </pre>
 
-</BODY>
-</HTML>
+<h2>解説</h2>
+
+<p>
+Tera Term の現在のディレクトリを &lt;path&gt; に変更する。<br>
+<strong>注意:</strong><A HREF="setdir.html"> setdir</A> コマンドは MACRO の現在のディレクトリを変更する。通信コマンド(kmtsend 等)で指定されるファイル名は Tera Term の現在のディレクトリを基準にする。その他のコマンド(fileopen 等)で指定されるファイル名は MACRO の現在のディレクトリを基準にする。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>changedir 'c:\'
+</code></pre>
+
+</body>
+</html>

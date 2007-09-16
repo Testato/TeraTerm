@@ -808,11 +808,6 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="ifdefined">
-					<param name="Local" value="html\macro\command\ifdefined.html">
-					<param name="ImageNumber" value="11">
-					</OBJECT>
-				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="include">
 					<param name="Local" value="html\macro\command\include.html">
 					<param name="ImageNumber" value="11">
@@ -1079,6 +1074,11 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="gettime">
 					<param name="Local" value="html\macro\command\gettime.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="ifdefined">
+					<param name="Local" value="html\macro\command\ifdefined.html">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
