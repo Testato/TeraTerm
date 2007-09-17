@@ -1,35 +1,38 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>filedelete</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>filedelete</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">filedelete</FONT><BR><BR>
-
-形式：
-<UL>
-<B>
-filedelete &lt;filename&gt;
-</B>
-</UL>
+<h1>filedelete</h1>
 
 <p>
-ファイル &lt;filename&gt; を削除する。
+ファイルを削除する。
 </p>
 
+<pre class="macro-syntax">
+filedelete &lt;filename&gt;
+</pre>
+
+<h2>解説</h2>
+
 <p>
+ファイル &lt;filename&gt; を削除する。<br>
 ファイルの削除が成功した場合、システム変数 result に 0 が格納される。それ以外の場合, result に 0 以外が格納される。
 </p>
 
-<pre>
-例：
-     <B>filedelete 'temp.log'</B>
-</pre>
+<h2>例</h2>
 
-</BODY>
-</HTML>
+<pre class="macro-example">
+<code>filedelete 'temp.log'
+</code></pre>
+
+</body>
+</html>

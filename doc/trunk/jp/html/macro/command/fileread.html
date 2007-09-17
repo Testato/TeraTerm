@@ -1,48 +1,51 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>fileread</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>fileread</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">fileread</FONT><BR><BR>
+<h1>fileread</h1>
 
-形式：
-<UL>
-<B>
+<p>
+ファイルを読む。
+</p>
+
+<pre class="macro-syntax">
 fileread &lt;file handle&gt; &lt;read byte&gt; &lt;strvar&gt;
-</B>
-</UL>
+</pre>
 
-<pre>
+<h2>解説</h2>
 
- &lt;file handle&gt; により指定されたファイルから特定したバイト数のデータを読み出す。
-データは文字列変数 &lt;strvar&gt; へ記憶され、ファイルポインタは読み込んだバイト数分進められる。
-データを読み込み終わる前にファイルポインタがファイルの終わりまで行った 場合は、
-システム変数"result"に1が格納される。 それ以外は、"result"に０が格納される。
-変数 &lt;read byte&gt; のとる値の範囲は１から225でなければならない。
+<p>
+&lt;file handle&gt; により指定されたファイルから特定したバイト数のデータを読み出す。<br>
+データは文字列変数 &lt;strvar&gt; へ記憶され、ファイルポインタは読み込んだバイト数分進められる。<br>
+データを読み込み終わる前にファイルポインタがファイルの終わりまで行った場合は、システム変数 "result" に 1 が格納される。 それ以外は、"result" に 0 が格納される。<br>
+変数 &lt;read byte&gt; のとる値の範囲は 1 から 225 でなければならない。
+</p>
 
-</pre><P></P>
+<h2>例</h2>
 
-<pre>
-     例：
-<B>         filename = 'foo.txt'
+<pre class="macro-example">
+<code>filename = 'foo.txt'
 
-         fileopen fp filename 0
+fileopen fp filename 0
 
-         :loop
-         fileread fp 10 data
-         messagebox data filename
-         if result goto fclose
-         goto loop
+:loop
+<strong>fileread</strong> fp 10 data
+messagebox data filename
+if result goto fclose
+goto loop
 
-         :fclose
-         fileclose fp
+:fclose
+fileclose fp
+</code></pre>
 
-</B></pre>
-</BODY>
-</HTML>
+</body>
+</html>

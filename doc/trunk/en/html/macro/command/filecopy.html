@@ -1,42 +1,39 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>filecopy</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>filecopy</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">filecopy</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
-<B>
+
+<h1>filecopy</h1>
+
+<p>
+Copies a file.
+</p>
+
+<pre class="macro-syntax">
 filecopy &lt;file1&gt; &lt;file2&gt;
-</B>
-</UL>
+</pre>
+
+<h2>Remarks</h2>
 
 <p>
-Copies file &lt;file1&gt; to file &lt;file2&gt;.
-</p>
-
-<p>
-If &lt;file2&gt; already exists, it is overwritten.<br>
-&lt;file1&gt; and &lt;file2&gt; must not be same.
-</p>
-
-<p>
+Copies file &lt;file1&gt; to file &lt;file2&gt;.<br>
+If &lt;file2&gt; already exists, it is overwritten. &lt;file1&gt; and &lt;file2&gt; must not be same.<br>
 If the file is deleted successfully, the system variable "result" is set to 0. Otherwise, "result" is set to non-zero.
 </p>
 
-<pre>
-Example:
-	filecopy 'test.dat' test2.dat'
-</pre>
+<h2>Example</h2>
 
-</BODY>
-</HTML>
+<pre class="macro-example">
+<code>filecopy 'test.dat' 'test2.dat'
+</code></pre>
+
+</body>
+</html>

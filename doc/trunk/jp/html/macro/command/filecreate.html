@@ -1,43 +1,40 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>filecreate</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>filecreate</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">filecreate</FONT><BR><BR>
+<h1>filecreate</h1>
 
-形式：
-<UL>
-<B>
+<p>
+ファイルを作成する。
+</p>
+
+<pre class="macro-syntax">
 filecreate &lt;file handle&gt; &lt;filename&gt;
-</B>
-</UL>
+</pre>
+
+<h2>解説</h2>
 
 <p>
-ファイル &lt;filename&gt; を新しく作成しオープンする
-</p>
-
-<p>
-ファイルポインタはファイルの先頭にセットされる。すでに同じ名前のファイルが存在する場合、ファイルサイズは0にされる。</p>
-
-<p>
-もしファイルが正しく作成され、オープンされた場合、ファイルハンドルが整数変数 &lt;file handle&gt; に格納される。それ以外の場合、&lt;file handle&gt; に-1が格納される。
-</p>
-
-<p>
+ファイル &lt;filename&gt; を新しく作成しオープンする。<br>
+ファイルポインタはファイルの先頭にセットされる。すでに同じ名前のファイルが存在する場合、ファイルサイズは0にされる。<br>
+もしファイルが正しく作成され、オープンされた場合、ファイルハンドルが整数変数 &lt;file handle&gt; に格納される。それ以外の場合、&lt;file handle&gt; に-1が格納される。<br>
 ファイルの作成が成功した場合、システム変数 result に 0 が格納される。それ以外の場合, result に 0 以外が格納される。
 </p>
 
-<pre>
-例：
-    <B>filecreate fhandle 'data.dat'</B>
-</pre>
+<h2>例</h2>
 
-</BODY>
-</HTML>
+<pre class="macro-example">
+<code>filecreate fhandle 'data.dat'
+</code></pre>
+
+</body>
+</html>
