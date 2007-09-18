@@ -2302,27 +2302,27 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 
 			TelEnableMyOpt(SGA);
 
-		if (ts.TelEcho>0)
-			TelChangeEcho();
-		else
-			TelEnableHisOpt(ECHO);
+			if (ts.TelEcho>0)
+				TelChangeEcho();
+			else
+				TelEnableHisOpt(ECHO);
 
-		TelEnableMyOpt(NAWS);
-		if (ts.TelBin>0) {
-			TelEnableMyOpt(BINARY);
-			TelEnableHisOpt(BINARY);
-		}
+			TelEnableMyOpt(NAWS);
+			if (ts.TelBin>0) {
+				TelEnableMyOpt(BINARY);
+				TelEnableHisOpt(BINARY);
+			}
 
-		TelStartKeepAliveThread();
-	}
-	// TCPLocalEcho/TCPCRSend ‚ð–³Œø‚É‚·‚é (maya 2007.4.25)
-	else if (!ts.DisableTCPEchoCR) {
-		if (ts.TCPCRSend>0) {
-			ts.CRSend = ts.TCPCRSend;
-			cv.CRSend = ts.TCPCRSend;
+			TelStartKeepAliveThread();
 		}
-		if (ts.TCPLocalEcho>0)
-			ts.LocalEcho = ts.TCPLocalEcho;
+		// TCPLocalEcho/TCPCRSend ‚ð–³Œø‚É‚·‚é (maya 2007.4.25)
+		else if (!ts.DisableTCPEchoCR) {
+			if (ts.TCPCRSend>0) {
+				ts.CRSend = ts.TCPCRSend;
+				cv.CRSend = ts.TCPCRSend;
+			}
+			if (ts.TCPLocalEcho>0)
+				ts.LocalEcho = ts.TCPLocalEcho;
 		}
 	}
 
