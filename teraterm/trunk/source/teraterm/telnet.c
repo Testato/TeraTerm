@@ -786,10 +786,12 @@ void TelStopKeepAliveThread() {
 }
 
 void TelUpdateKeepAliveInterval() {
-  if (ts.TelKeepAliveInterval > 0 && keepalive_thread == (HANDLE)-1)
-    TelStartKeepAliveThread();
-  else if (ts.TelKeepAliveInterval == 0 && keepalive_thread != (HANDLE)-1)
-    TelStopKeepAliveThread();
-  else
-    nop_interval = ts.TelKeepAliveInterval;
+  if (cv.Open && cv.TelFlag && ts.TCPPort==ts.TelPort) {
+    if (ts.TelKeepAliveInterval > 0 && keepalive_thread == (HANDLE)-1)
+      TelStartKeepAliveThread();
+    else if (ts.TelKeepAliveInterval == 0 && keepalive_thread != (HANDLE)-1)
+      TelStopKeepAliveThread();
+    else
+      nop_interval = ts.TelKeepAliveInterval;
+  }
 }
