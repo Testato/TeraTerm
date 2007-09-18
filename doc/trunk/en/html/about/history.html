@@ -36,6 +36,34 @@
         </ul></li>
       <li>added Alt+I accelerator key as disconnect.</li>
       <li>added shift operator ">>", "<<", ">>>" for macro.</li>
+      <li>changed the priority of macro operator in the following order:
+        <ul><pre>
+New:
+Priority Operator
+1       not ~ ! +(unary) -(unary)
+2       * / %
+3       + -
+4       >> << >>>
+5       and &
+6       xor ^
+7       or |
+8       < > <= >=
+9       = == <> !=
+10       &&
+11       ||
+        
+Old:
+Priority Operator
+1        not ~
+1        !
+2        * / %
+2        and &
+3        + -
+3        or xor | ^
+4        = <> < > <= >=
+5        &&
+6        ||
+        </pre></ul></li>
       <li>added '<a href="../macro/command/rotateleft.html">rotateleft</a>', '<a href="../macro/command/rotateright.html">rotateright</a>' macro command.</li>
       <li>added '<a href="../macro/command/setenv.html">setenv</a>' macro command.</li>
       <li>added '<a href="../macro/command/filenamebox.html">filenamebox</a>' macro command.</li>

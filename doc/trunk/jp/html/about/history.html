@@ -36,6 +36,34 @@
         </ul></li>
       <li>接続断のアクセラレータキーとして Alt+I を追加した。</li>
       <li>マクロの演算子にシフト演算子 >>, <<, >>> を追加した。</li>
+      <li>マクロの演算子の優先度を変更した。
+        <ul><pre>
+新:
+優先度  演算子
+1       not ~ ! +(単項) -(単項)
+2       * / %
+3       + -
+4       >> << >>>
+5       and &
+6       xor ^
+7       or |
+8       < > <= >=
+9       = == <> !=
+10       &&
+11       ||
+        
+旧:
+優先度  演算子
+1       not ~
+1       !
+2       * / %
+2       and &
+3       + -
+3       or xor | ^
+4       = <> < > <= >=
+5       &&
+6       ||
+        </pre></ul></li>
       <li>マクロコマンド <a href="../macro/command/rotateleft.html">rotateleft</a>, <a href="../macro/command/rotateright.html">rotateright</a> を新規追加した。</li>
       <li>マクロコマンド <a href="../macro/command/setenv.html">setenv</a> を新規追加した。</li>
       <li>マクロコマンド <a href="../macro/command/filenamebox.html">filenamebox</a> を新規追加した。</li>
