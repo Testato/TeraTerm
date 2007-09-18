@@ -4358,7 +4358,9 @@ void CVTWindow::OnSetupTCPIP()
 	HelpId = HlpSetupTCPIP;
 	if (! LoadTTDLG())
 		return;
-	(*SetupTCPIP)(HVTWin, &ts);
+	if ((*SetupTCPIP)(HVTWin, &ts)) {
+		TelUpdateKeepAliveInterval();
+	}
 	FreeTTDLG();
 }
 

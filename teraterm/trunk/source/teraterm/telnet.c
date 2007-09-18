@@ -759,6 +759,7 @@ static unsigned _stdcall TelKeepAliveThread(void *dummy) {
 
     Sleep(100);
   }
+  instance--;
   return 0;
 }
 
@@ -782,4 +783,13 @@ void TelStopKeepAliveThread() {
     CloseHandle(keepalive_thread);
     keepalive_thread = (HANDLE)-1L;
   }
+}
+
+void TelUpdateKeepAliveInterval() {
+  if (ts.TelKeepAliveInterval > 0 && keepalive_thread == (HANDLE)-1)
+    TelStartKeepAliveThread();
+  else if (ts.TelKeepAliveInterval == 0 && keepalive_thread != (HANDLE)-1)
+    TelStopKeepAliveThread();
+  else
+    nop_interval = ts.TelKeepAliveInterval;
 }

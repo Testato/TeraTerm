@@ -88,6 +88,7 @@ void TelChangeEcho();
 void TelSendNOP();
 void TelStartKeepAliveThread();
 void TelStopKeepAliveThread();
+void TelUpdateKeepAliveInterval();
 
 extern int TelStatus;
 
