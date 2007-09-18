@@ -56,6 +56,11 @@
 	Telnet プロトコルを使用します。通常は選択してください。
       </dd>
 
+      <dt>Keep alive</dt>
+      <dd>
+	一定間隔で Telnet サーバに対して、NOP(IAC NOP: 255 241)を送信します。キープアライブ（ハートビート）機能とも呼ばれます。0で当該機能は無効となります。デフォルトは300秒（5分）です。
+      </dd>
+
       <dt>Terminal type</dt>
       <dd>
 	Telnet プロトコルで接続したときホストに報告する terminal type。<br>

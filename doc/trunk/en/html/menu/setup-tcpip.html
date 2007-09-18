@@ -56,6 +56,11 @@
 	Enables the telnet protocol. Usually, you should select this option.
       </dd>
 
+      <dt>Keep alive</dt>
+      <dd>
+	This feature is called by Telnet keep-alive(heart-beat) mechanism. If this feature is enabled, TeraTerm will send NOP message(IAC NOP: 255 241) periodically. 0 to turn off. The default value is 300 seconds.
+      </dd>
+
       <dt>Terminal type</dt>
       <dd>
 	Terminal type to be reported to the host when the telnet connection
