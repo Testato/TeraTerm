@@ -1212,6 +1212,9 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 				SendDlgItemMessage(Dialog, IDC_TCPIPUP, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_TCPIPREMOVE, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_TCPIPDOWN, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TCPIPTELNETKEEPALIVELABEL, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TCPIPTELNETKEEPALIVE, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_TCPIPTELNETKEEPALIVESEC, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_TCPIPHISTORY, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_TCPIPAUTOCLOSE, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_TCPIPPORTLABEL, WM_SETFONT, (WPARAM)DlgTcpipFont, MAKELPARAM(TRUE,0));
@@ -1257,6 +1260,12 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			GetDlgItemText(Dialog, IDC_TCPIPTELNET, uimsg2, sizeof(uimsg2));
 			get_lang_msg("DLG_TCPIP_TELNET", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
 			SetDlgItemText(Dialog, IDC_TCPIPTELNET, uimsg);
+			GetDlgItemText(Dialog, IDC_TCPIPTELNETKEEPALIVELABEL, uimsg2, sizeof(uimsg2));
+			get_lang_msg("DLG_TCPIP_KEEPALIVE", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
+			SetDlgItemText(Dialog, IDC_TCPIPTELNETKEEPALIVELABEL, uimsg);
+			GetDlgItemText(Dialog, IDC_TCPIPTELNETKEEPALIVESEC, uimsg2, sizeof(uimsg2));
+			get_lang_msg("DLG_TCPIP_KEEPALIVE_SEC", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
+			SetDlgItemText(Dialog, IDC_TCPIPTELNETKEEPALIVESEC, uimsg);
 			GetDlgItemText(Dialog, IDC_TCPIPTERMTYPELABEL, uimsg2, sizeof(uimsg2));
 			get_lang_msg("DLG_TCPIP_TERMTYPE", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
 			SetDlgItemText(Dialog, IDC_TCPIPTERMTYPELABEL, uimsg);
@@ -1296,6 +1305,8 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			SetRB(Dialog,ts->AutoWinClose,IDC_TCPIPAUTOCLOSE,IDC_TCPIPAUTOCLOSE);
 
 			SetDlgItemInt(Dialog,IDC_TCPIPPORT,ts->TCPPort,FALSE);
+
+			SetDlgItemInt(Dialog,IDC_TCPIPTELNETKEEPALIVE,ts->TelKeepAliveInterval,FALSE);
 
 			SetRB(Dialog,ts->Telnet,IDC_TCPIPTELNET,IDC_TCPIPTELNET);
 
@@ -1339,6 +1350,8 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 						ts->TCPPort = GetDlgItemInt(Dialog,IDC_TCPIPPORT,&Ok,FALSE);
 						if (! Ok)
 							ts->TCPPort = ts->TelPort;
+
+						ts->TelKeepAliveInterval = GetDlgItemInt(Dialog,IDC_TCPIPTELNETKEEPALIVE,&Ok,FALSE);
 
 						GetRB(Dialog,&ts->Telnet,IDC_TCPIPTELNET,IDC_TCPIPTELNET);
 

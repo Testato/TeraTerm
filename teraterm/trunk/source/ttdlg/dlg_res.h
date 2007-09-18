@@ -86,6 +86,8 @@
 #define IDC_TCPIPTELNET                 510
 #define IDC_TCPIPTERMTYPELABEL          511
 #define IDC_TCPIPTERMTYPE               512
+#define IDC_TCPIPTELNETKEEPALIVE        513
+#define IDC_TCPIPTELNETKEEPALIVESEC     514
 #define IDC_TCPIPHELP                   599
 #define IDD_HOSTDLG                     600
 #define IDC_HOSTTCPIP                   601
@@ -163,6 +165,7 @@
 #define IDC_TERMRUSSHOSTLABEL           1066
 #define IDC_TERMRUSSCLIENTLABEL         1067
 #define IDC_WINLISTLABEL                1068
+#define IDC_TCPIPTELNETKEEPALIVELABEL   1069
 #define IDC_SAMPLE                      1073
 #define IDC_FONTLABEL                   1088
 #define IDC_SIZELABEL                   1090
@@ -184,7 +187,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        102
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1069
+#define _APS_NEXT_CONTROL_VALUE         1070
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
