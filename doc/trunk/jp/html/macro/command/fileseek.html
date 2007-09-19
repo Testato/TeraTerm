@@ -1,45 +1,66 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>fileseek</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>fileseek</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">fileseek</FONT><BR><BR>
+<h1>fileseek</h1>
 
-形式：
-<UL>
-<B>
+<p>
+ファイルポインタを移動する。
+</p>
+
+<pre class="macro-syntax">
 fileseek &lt;file handle&gt; &lt;offset&gt; &lt;origin&gt;
-</B>
-</UL>
-
-<pre>
-
-ファイルハンドル &lt;file handle&gt; で指定されるファイルのファイルポインタを移動する。
-
-移動後のファイルポインタは、
-
-&lt;origin&gt; が0のとき、ファイルの最初から &lt;offset&gt; バイト
-&lt;origin&gt; が1のとき、現在の位置から &lt;offset&gt; バイト
-&lt;origin&gt; が2のとき、ファイルの最後から &lt;offset&gt; バイト
-
-となる。
-
-例：
-    <B>fileseek fhandle 0 0</B>                              ファイルの最初へ移動
-
-    <B>fileseek fhandle 10 1</B>                             現在の位置から10バイト先へ移動
-
-    <B>fileseek fhandle 0 2</B>                              ファイルの最後へ移動
-    <B>fileseek fhandle 0-10 2</B>                           ファイルの最後から10バイト前の位置へ移動
-
 </pre>
 
+<h2>解説</h2>
 
-</BODY>
-</HTML>
+<p>
+ファイルハンドル &lt;file handle&gt; で指定されるファイルのファイルポインタを移動する。<br>
+移動後のファイルポインタは下記のようになる。
+</p>
+
+<table>
+ <tr>
+  <th>&lt;origin&gt;</th>
+  <td>0</td>
+  <td>ファイルの最初から &lt;offset&gt; バイト</td>
+ </tr>
+ <tr>
+  <th>&lt;origin&gt;</th>
+  <td>1</td>
+  <td>現在の位置から &lt;offset&gt; バイト</td>
+ </tr>
+ <tr>
+  <th>&lt;origin&gt;</th>
+  <td>2</td>
+  <td>ファイルの最後から &lt;offset&gt; バイト</td>
+ </tr>
+</table>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>; ファイルの最初へ移動
+fileseek fhandle 0 0
+
+; 現在の位置から 10 バイト先へ移動
+fileseek fhandle 10 1
+
+; ファイルの最後へ移動
+fileseek fhandle 0 2
+
+; ファイルの最後から 10 バイト前の位置へ移動
+fileseek fhandle 0-10 2
+</code></pre>
+
+</body>
+</html>

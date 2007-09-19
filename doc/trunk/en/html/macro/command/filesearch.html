@@ -1,36 +1,39 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>filesearch</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>filesearch</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">filesearch</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
-<B>
+
+<h1>filesearch</h1>
+
+<p>
+Search a file.
+</p>
+
+<pre class="macro-syntax">
 filesearch &lt;filename&gt;
-</B>
-</UL>
-<P></P>
-
-Searches for the file specified by &lt;filename&gt;.
-If it is found, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
-<P></P>
-
-<pre>
-Example:
-	filesearch 'readme.txt'
-	if result=0 messagebox 'File not found.' 'error'
 </pre>
 
-</BODY>
-</HTML>
+<h2>Remarks</h2>
 
+<p>
+Searches for the file specified by &lt;filename&gt;.<br>
+If it is found, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
+</p>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+<code>filesearch 'readme.txt'
+if result=0 messagebox 'File not found.' 'error'
+</code></pre>
+
+</body>
+</html>

@@ -1,40 +1,39 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>filerename</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>filerename</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">filerename</FONT><BR><BR>
+<h1>filerename</h1>
 
-形式：
-<UL>
-<B>
+<p>
+ファイル名を変更する。
+</p>
+
+<pre class="macro-syntax">
 filerename &lt;file1&gt; &lt;file2&gt;
-</B>
-</UL>
+</pre>
+
+<h2>解説</h2>
 
 <p>
-ファイル &lt;file1&gt; を &lt;file2&gt; という名前に変更する。
-</p>
-
-<p>
-&lt;file1&gt; と &lt;file2&gt; は違う名前でなければならない。
-</p>
-
-<p>
+ファイル &lt;file1&gt; を &lt;file2&gt; という名前に変更する。<br>
+&lt;file1&gt; と &lt;file2&gt; は違う名前でなければならない。<br>
 ファイル名の変更が成功した場合、システム変数 result に 0 が格納される。それ以外の場合, result に 0 以外が格納される。
 </p>
 
-<pre>
-例：
-    <B>filerename 'test.dat' test2.dat'</B>
-</pre>
+<h2>例</h2>
 
-</BODY>
-</HTML>
+<pre class="macro-example">
+<code>filerename 'test.dat' test2.dat'
+</code></pre>
+
+</body>
+</html>

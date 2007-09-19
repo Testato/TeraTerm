@@ -1,45 +1,49 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>filestrseek</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>filestrseek</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">filestrseek</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
-<B>
+
+<h1>filestrseek</h1>
+
+<p>
+Forward searchs a string from a file.
+</p>
+
+<pre class="macro-syntax">
 filestrseek &lt;file handle&gt; &lt;string&gt;
-</B>
-</UL>
-<P></P>
-
-Searches for &lt;string&gt; in the file specified by &lt;file handle&gt;.
-The search is done forward and started from the current position of the file pointer.
-For the backward search, use the "<A HREF="filestrseek2.html">filestrseek2</A>" command.
-<P></P>
-
-If &lt;string&gt; is found, the file pointer is moved to the next character of the string and the system variable "result" is set to 1. If &lt;string&gt; is not found, the file pointer is not moved and "result" is set to zero.
-<P></P>
-
-<pre>
-Example:
-	fileopen fhandle 'teraterm.log' 0	
-	filestrseek fhandle 'abc'		Search for the string "abc" in the file "teraterm.log".
-	if result=0 goto not_found	
-	filereadln fhandle str			Read characters from the next of "abc" to the end of the line.
-	
-	:not_found	
-	fileclose fhandle
 </pre>
 
-</BODY>
-</HTML>
+<h2>Remarks</h2>
 
+<p>
+Searches for &lt;string&gt; in the file specified by &lt;file handle&gt;.<br>
+The search is done forward and started from the current position of the file pointer. For the backward search, use the "<a href="filestrseek2.html">filestrseek2</a>" command.<br>
+If &lt;string&gt; is found, the file pointer is moved to the next character of the string and the system variable "result" is set to 1.<br>
+If &lt;string&gt; is not found, the file pointer is not moved and "result" is set to zero.
+</p>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+<code>fileopen fhandle 'teraterm.log' 0
+
+; Search for the string "abc" in the file "teraterm.log".
+filestrseek fhandle 'abc'
+if result=0 goto not_found
+; Read characters from the next of "abc" to the end of the line.
+filereadln fhandle str
+
+:not_found
+fileclose fhandle
+</code></pre>
+
+</body>
+</html>
