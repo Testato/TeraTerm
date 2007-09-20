@@ -1,45 +1,49 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>for,next</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>for, next</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">for,next</FONT><BR><BR>
+<h1>for, next</h1>
 
-形式：
-<UL>
-<B>
-for &lt;intvar&gt; &lt;first&gt; &lt;last&gt;<BR>
-   ...<BR>
-   ...<BR>
-  next
-</B>
-</UL>
+<p>
+繰り返す。
+</p>
 
-<pre>
-
-"for" と "next" の間のコマンドを、整数変数 &lt;intvar&gt; の値が &lt;last&gt; と等しく
-なるまで、繰りかえす。
-
-&lt;intvar&gt; の初期値は &lt;first&gt; 。もし &lt;last&gt; が &lt;fast&gt; より大きい場合、
-&lt;intvar&gt; は "next" 行に来るたびに 1 足される。もし &lt;last&gt; が &lt;fast&gt; より
-小さい場合、&lt;intvar&gt; は "next" 行にくるたびに 1 引かれる。
-
-例：
-    <B>for i 1 10</B>                                  10回繰り返す。
-     <B>sendln 'abc'</B>
-    <B>next</B>
-
-    <B>for i 5 1</B>                                   5回繰り返す。
-     Bsendln 'abc'</B>
-    <B>next</B>
+<pre class="macro-syntax">
+for &lt;intvar&gt; &lt;first&gt; &lt;last&gt;<br>
+  ...<br>
+  ...<br>
+next
 </pre>
 
+<h2>解説</h2>
 
-</BODY>
-</HTML>
+<p>
+"for" と "next" の間のコマンドを、整数変数 &lt;intvar&gt; の値が &lt;last&gt; と等しくなるまで、繰りかえす。<br>
+&lt;intvar&gt; の初期値は &lt;first&gt; 。もし &lt;last&gt; が &lt;fast&gt; より大きい場合、&lt;intvar&gt; は "next" 行に来るたびに 1 足される。もし &lt;last&gt; が &lt;fast&gt; より小さい場合、&lt;intvar&gt; は "next" 行にくるたびに 1 引かれる。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>; 10回繰り返す。
+for i 1 10
+  sendln 'abc'
+next
+
+; 5回繰り返す。
+for i 5 1
+  Bsendln 'abc'
+next
+</code></pre>
+
+</body>
+</html>

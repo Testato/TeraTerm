@@ -1,32 +1,37 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>filewriteln</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>filewriteln</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">filewriteln</FONT><BR><BR>
+<h1>filewriteln</h1>
 
-形式：
-<UL>
-<B>
+<p>
+ファイルに文字列を改行付きで書き込む。
+</p>
+
+<pre class="macro-syntax">
 filewriteln &lt;file handle&gt; &lt;string&gt;
-</B>
-</UL>
-
-<pre>
-
-ファイルハンドル &lt;file handle&gt; で指定されるファイルへ、文字列 &lt;string&gt; と改行文字 (CR+LF) を書き込む。
-
-例：
-     <B>filewriteln fhandle '---------cut here---------'</B>
-
 </pre>
 
+<h2>解説</h2>
 
-</BODY>
-</HTML>
+<p>
+ファイルハンドル &lt;file handle&gt; で指定されるファイルへ、文字列 &lt;string&gt; と改行文字 (CR+LF) を書き込む。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>filewriteln fhandle '---------cut here---------'
+</code></pre>
+
+</body>
+</html>

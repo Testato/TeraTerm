@@ -1,39 +1,43 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>getdir</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>getdir</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">getdir</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
- <B>
+
+<h1>getdir</h1>
+
+<p>
+Gets current working directory for MACRO.
+</p>
+
+<pre class="macro-syntax">
 getdir &lt;strvar&gt;
- </B>
-</UL>
-<P></P>
-
-Returns the current working directory for MACRO (not for Tera Term) to the string variable &lt;strvar&gt;.
-<P></P>
-
-
-
-<pre>
-See also:
-	"<A HREF="setdir.html">setdir</A>"
-
-Example:
-	getdir dir
 </pre>
 
-</BODY>
-</HTML>
+<h2>Remarks</h2>
 
+<p>
+Returns the current date in the string variable &lt;strvar&gt;, with the format "YYYY-MM-DD".
+</p>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+<code>getdir dir
+</code></pre>
+
+<h2>See also</h2>
+
+<ul>
+ <li>"<a href="setdir.html">setdir</a>"</li>
+</ul>
+
+</body>
+</html>

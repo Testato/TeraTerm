@@ -1,36 +1,37 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>flushrecv</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>flushrecv</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">flushrecv</FONT><BR><BR>
+<h1>flushrecv</h1>
 
-形式：
-<UL>
-<B>
+<p>
+MACRO の受信バッファーの内容を消す。
+</p>
+
+<pre class="macro-syntax">
 flushrecv
-</B>
-</UL><P></P>
-
-MACRO の受信バッファーの内容を消す。<P></P>
-
-<pre>
-
-ホストから受信した文字は MACRO に転送され、MACRO の受信バッファーに保存される。受信文字を処理するコマンド(<A HREF="wait.html">"wait"</A> コマンド等)はそれらの
-文字をバッファーから読み出す。バッファーの中の文字は受信文字を処理するコマンドがそれらを読みだすか、バッファーがあふれるか、flushrecv コマンド
-がバッファーの内容を消すまで保持される。
-
-バッファーの中に古い文字がたまっているために受信文字を処理するコマンドの結果が予期しないものになることがあり、flushrecv コマンドによってそれを
-防ぐことができる。
-
 </pre>
 
+<h2>解説</h2>
 
-</BODY>
-</HTML>
+<p>
+ホストから受信した文字は MACRO に転送され、MACRO の受信バッファーに保存される。<br>
+受信文字を処理するコマンド("<a href="wait.html">wait</a>" コマンド等)はそれらの文字をバッファーから読み出す。<br>
+バッファーの中の文字は受信文字を処理するコマンドがそれらを読みだすか、バッファーがあふれるか、flushrecv コマンドがバッファーの内容を消すまで保持される。
+</p>
+
+<p>
+バッファーの中に古い文字がたまっているために受信文字を処理するコマンドの結果が予期しないものになることがあり、flushrecv コマンドによってそれを防ぐことができる。
+</p>
+
+</body>
+</html>

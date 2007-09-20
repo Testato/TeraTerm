@@ -1,32 +1,37 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>filewrite</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>filewrite</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">filewrite</FONT><BR><BR>
+<h1>filewrite</h1>
 
-形式：
-<UL>
-<B>
+<p>
+ファイルに文字列を書き込む。
+</p>
+
+<pre class="macro-syntax">
 filewrite &lt;file handle&gt; &lt;string&gt;
-</B>
-</UL>
-
-<pre>
-
-ファイルハンドル &lt;file handle&gt; で指定されるファイルへ、文字列 &lt;string&gt; を書き込む。
-
-例：
-     <B>filewrite fhandle '---------cut here---------'#13#10</B>
-
 </pre>
 
+<h2>解説</h2>
 
-</BODY>
-</HTML>
+<p>
+ファイルハンドル &lt;file handle&gt; で指定されるファイルへ、文字列 &lt;string&gt; を書き込む。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>filewrite fhandle '---------cut here---------'#13#10
+</code></pre>
+
+</body>
+</html>
