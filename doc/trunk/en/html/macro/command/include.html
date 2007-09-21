@@ -1,46 +1,48 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>include</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>include</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">include</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
-<B>include &lt;include file name&gt;</B>
-</UL>
+
+<h1>include</h1>
 
 <p>
 Moves control to the include file.
 </p>
 
-<pre>
-Example:
------ Main file "main.ttl" ------
-	i=10	
-	:loop	
-	include 'sub.ttl' ; Move to the include file.
-	if i>=0 goto loop	
-	end
+<pre class="macro-syntax">
+include &lt;include file name&gt;
+</pre>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+<code>----- Main file "main.ttl" ------
+i=10
+:loop
+; Move to the include file.
+include 'sub.ttl'
+if i&gt;=0 goto loop
+end
 ----- End of "main.ttl" ---------
 
 ----- Include file "sub.ttl" ----
-	if i<0 then
-	  messagebox 'error!' 'sub'
-	  exit ; Go back to the main file.
-	endif
-	i = i - 1
-	; Go back to the main file.
+if i&lt;0 then
+  messagebox 'error!' 'sub'
+  ; Go back to the main file.
+  exit
+endif
+i = i - 1
+; Go back to the main file.
 ----- End of "sub.ttl" ----------
-</pre>
+</code></pre>
 
-</BODY>
-</HTML>
+</body>
+</html>

@@ -1,45 +1,62 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>ifdefined</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>ifdefined</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">ifdefined</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
-<B>ifdefined &lt;var&gt;</B>
-</UL>
-<P></P>
 
+<h1>ifdefined</h1>
+
+<p>
+Checks the type.
+</p>
+
+<pre class="macro-syntax">
+ifdefined &lt;var&gt;
+</pre>
+
+<h2>Remarks</h2>
+
+<p>
 Sets the type of &lt;var&gt;. One of the following values in the system variable "result":
-<P></P>
+</p>
 
-<P></P>
+<table>
+ <tr>
+  <th>Value</th>
+  <th>Meaning</th>
+ </tr>
+ <tr>
+  <td>0</td>
+  <td>undefined</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>integer</td>
+ </tr>
+ <tr>
+  <td>3</td>
+  <td>string</td>
+ </tr>
+ <tr>
+  <td>4</td>
+  <td>label</td>
+ </tr>
+</table>
 
-<pre>
-Value	Meaning 
-<hr>
-0	undefined
-1	integer
-3	string
-4	label
-</pre>
+<h2>Example</h2>
 
-<pre>
-Example:
-	ifdefined data
-	int2str valstr result
-	messagebox valstr 'variable type'
-</pre>
+<pre class="macro-example">
+<code>ifdefined data
+int2str valstr result
+messagebox valstr 'variable type'
+</code></pre>
 
-</BODY>
-</HTML>
-
+</body>
+</html>

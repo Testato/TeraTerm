@@ -1,23 +1,29 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>inputbox</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>inputbox</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
 
 <h1>inputbox</h1>
 
-形式：
-<UL>
-<B>inputbox &lt;message&gt; &lt;title&gt; [&lt;default&gt;(オプション)] [&lt;special&gt;(オプション)]</B>
-</UL>
+<p>
+文字列を入力するためのダイアログボックスを開く。
+</p>
+
+<pre class="macro-syntax">
+inputbox &lt;message&gt; &lt;title&gt; [&lt;default&gt;(オプション)] [&lt;special&gt;(オプション)]
+</pre>
+
+<h2>解説</h2>
 
 <p>
-文字列を入力するためのダイアログボックスを開く。<br>
 文字列 &lt;message&gt; はダイアログボックスに表示されるメッセージ、文字列 &lt;title&gt; はダイアログボックスのタイトル。入力された文字列はシステム変数 inputstr に代入される。
 </p>
 
@@ -30,17 +36,31 @@
 &lt;special&gt; が指定されない場合は 1 が使用されます。
 </p>
 
-<pre>
-\\    "\"
-\n    改行
-\t    タブ
-</pre>
+<table>
+ <tr>
+  <th>入力</th>
+  <th>出力</th>
+ </tr>
+ <tr>
+  <td>\\</td>
+  <td>"\"</td>
+ </tr>
+ <tr>
+  <td>\n</td>
+  <td>改行</td>
+ </tr>
+ <tr>
+  <td>\t</td>
+  <td>タブ</td>
+ </tr>
+</table>
 
-<pre>
-例：
-    inputbox 'Password:' 'Login'
-    sendln inputstr
-</pre>
+<h2>例</h2>
 
-</BODY>
-</HTML>
+<pre class="macro-example">
+<code>inputbox 'Password:' 'Login'
+sendln inputstr
+</code></pre>
+
+</body>
+</html>

@@ -1,35 +1,38 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>logwrite</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>logwrite</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">logwrite</FONT><BR><BR>
+<h1>logwrite</h1>
 
-形式；
-<UL>
-<B>
+<p>
+文字列をログに書き込む。
+</p>
+
+<pre class="macro-syntax">
 logwrite &lt;string&gt;
-</B>
-</UL><P></P>
-
-<pre>
-
-文字列 &lt;string&gt; を Tera Term のログファイルに追加して書き込む。
-このコマンドは Tera Term がログを取っている時だけ有効。ログを一時中断している時でも書き込むことができる。
-
-</pre><P></P>
-
-<pre>
-
-例：
-     <B>logwrite 'LOG FILE'#13#10</B>
-
 </pre>
-</BODY>
-</HTML>
+
+<h2>解説</h2>
+
+<p>
+文字列 &lt;string&gt; を Tera Term のログファイルに追加して書き込む。<br>
+このコマンドは Tera Term がログを取っている時だけ有効。ログを一時中断している時でも書き込むことができる。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>logwrite 'LOG FILE'#13#10
+</code></pre>
+
+</body>
+</html>

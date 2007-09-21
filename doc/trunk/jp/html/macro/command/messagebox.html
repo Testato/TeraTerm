@@ -1,23 +1,30 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>messagebox</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>messagebox</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
 
 <h1>messagebox</h1>
 
-形式：
-<UL>
-<B>messagebox &lt;message&gt; &lt;title&gt; [&lt;special&gt;(オプション)]</B>
-</UL>
+<p>
+ダイアログボックスを開き、ユーザーにメッセージを知らせる。
+</p>
+
+<pre class="macro-syntax">
+messagebox &lt;message&gt; &lt;title&gt; [&lt;special&gt;(オプション)]
+</pre>
+
+<h2>解説</h2>
 
 <p>
-ダイアログボックスを開き、ユーザーにメッセージを知らせる。文字列 &lt;message&gt; はダイアログボックスに表示されるメッセージ、文字列 &lt;title&gt; はダイアログボックスのタイトル。<br>
+文字列 &lt;message&gt; はダイアログボックスに表示されるメッセージ、文字列 &lt;title&gt; はダイアログボックスのタイトル。
 </p>
 
 <p>
@@ -25,16 +32,30 @@
 &lt;special&gt; が指定されない場合は 1 が使用されます。
 </p>
 
-<pre>
-\\    "\"
-\n    改行
-\t    タブ
-</pre>
+<table>
+ <tr>
+  <th>入力</th>
+  <th>出力</th>
+ </tr>
+ <tr>
+  <td>\\</td>
+  <td>"\"</td>
+ </tr>
+ <tr>
+  <td>\n</td>
+  <td>改行</td>
+ </tr>
+ <tr>
+  <td>\t</td>
+  <td>タブ</td>
+ </tr>
+</table>
 
-<pre>
-例：
-     <B>messagebox ErrorMessage 'Error'</B>
-</pre>
+<h2>例</h2>
 
-</BODY>
-</HTML>
+<pre class="macro-example">
+<code>messagebox ErrorMessage 'Error'
+</code></pre>
+
+</body>
+</html>

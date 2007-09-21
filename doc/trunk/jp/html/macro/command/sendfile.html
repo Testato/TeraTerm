@@ -1,39 +1,39 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>sendfile</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>sendfile</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">sendfile</FONT><BR><BR>
+<h1>sendfile</h1>
 
-形式：
+<p>
+ファイルを送信する。
+</p>
 
-<UL>
-<B>
+<pre class="macro-syntax">
 sendfile &lt;filename&gt; &lt;binary flag&gt;
-</B>
-</UL><BR>
-ファイルを送信する。送信が終わるまで次のコマンドは実行されない。
-<BR>
-
-<pre>
-
-<binary flag> の値が0以外のとき、ファイルの内容をそのまま送信する。
-<binary flag> の値が0のとき、ファイルの中に含まれる漢字、改行文字を変換して送信する。TAB ($09), LF ($0A), CR ($0D) 
-以外の制御文字は送信されない。
-
-</pre><P></P>
-
-<pre>
-
-例：
-     <B>sendfile 'data.dat' 1</B>
-
 </pre>
-</BODY>
-</HTML>
+
+<h2>解説</h2>
+
+<p>
+&lt;filename&gt; で指定されたファイルを送信する。送信が終わるまで次のコマンドは実行されない。<br>
+&lt;binary flag&gt; の値が 0 以外のとき、ファイルの内容をそのまま送信する。<br>
+&lt;binary flag&gt; の値が 0 のとき、ファイルの中に含まれる漢字、改行文字を変換して送信する。TAB ($09), LF ($0A), CR ($0D) 以外の制御文字は送信されない。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>sendfile 'data.dat' 1
+</code></pre>
+
+</body>
+</html>

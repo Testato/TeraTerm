@@ -1,33 +1,40 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>mpause</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>mpause</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">mpause</FONT><BR><BR>
-</div>
+<body>
 
-形式:
-<UL>
-<B>mpause &lt;time&gt;</B>
-</UL>
-<P></P>
 
-TTL の実行を &lt;time&gt; ミリ秒だけ休止する。
-<P></P>
+<h1>mpause</h1>
 
-<pre>
-例:
-	mpause 200	200ミリ秒休止
-	mpause Time
+<p>
+休止する。
+</p>
+
+<pre class="macro-syntax">
+mpause &lt;time&gt;
 </pre>
 
-</BODY>
-</HTML>
+<h2>解説</h2>
 
+<p>
+TTL の実行を &lt;time&gt; ミリ秒だけ休止する。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>; 200ミリ秒休止
+mpause 200
+
+mpause Time
+</code></pre>
+
+</body>
+</html>

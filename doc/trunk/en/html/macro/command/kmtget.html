@@ -1,35 +1,39 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>kmtget</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>kmtget</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">kmtget</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
-<B>
+
+<h1>kmtget</h1>
+
+<p>
+Receives a file with the Kermit Get command.
+</p>
+
+<pre class="macro-syntax">
 kmtget &lt;filename&gt;
-</B>
-</UL>
-<P></P>
+</pre>
 
-Causes Tera Term to get the file &lt;filename&gt; from the host by using the Kermit Get command. The host should be in the server state. Pauses until the end of the file transfer.
+<h2>Remarks</h2>
+
+<p>
+Causes Tera Term to get the file &lt;filename&gt; from the host by using the Kermit Get command.<br>
+The host should be in the server state. Pauses until the end of the file transfer.<br>
 If the file is transferred successfully, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
-<P></P>
+</p>
 
-<PRE>
-Example:
-	kmtget '*.*'
-</PRE>
+<h2>Example</h2>
 
-</BODY>
-</HTML>
+<pre class="macro-example">
+<code>kmtget'*.*'
+</code></pre>
 
+</body>
+</html>

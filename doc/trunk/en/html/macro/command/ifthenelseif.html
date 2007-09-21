@@ -1,92 +1,100 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>if, then, elseif, else, endif</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>if, then, elseif, else, endif</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">if, then, elseif, else, endif</FONT><BR><BR>
-</div>
+<body>
 
-1)Format:
-<UL>
-<B>
+
+<h1>if, then, elseif, else, endif</h1>
+
+<p>
+Conditional branching
+</p>
+
+<h2>1) Format 1</h2>
+
+<pre class="macro-syntax">
 if &lt;int&gt; &lt;statement&gt;
-</B>
-</UL>
-<P></P>
+</pre>
 
+<h3>Remarks</h3>
+
+<p>
 Executes a &lt;statement&gt;, if &lt;int&gt; is non-zero.
-<P></P>
+</p>
 
-<pre>
-Example:
-	if A&gt;1 goto label		If A&gt;1, jump to ':label'.
+<h3>Example</h3>
 
-	if result A=0			If result&lt;&gt;0, assign 0 to A.
+<pre class="macro-example">
+<code>; If A&gt;1, jump to ':label'.
+if A&gt;1 goto label
+
+; If result&lt;&gt;0, assign 0 to A.
+if result A=0
+</code></pre>
+
+
+<h2>2) Format 2</h2>
+
+<pre class="macro-syntax">
+if &lt;int 1&gt; then
+  ...
+  (Statements for the case:  &lt;int 1&gt; is true (non-zero).)
+  ...
+[elseif &lt;int 2&gt; then]
+  ...
+  (Statements for the case:  &lt;int 1&gt; is false (zero) and &lt;int 2&gt; is true.)
+  ...
+[elseif &lt;int N&gt; then]
+  ...
+  (Statements for the case:  &lt;int 1&gt;, &lt;int 2&gt;,... and &lt;int N-1&gt; are all false, and &lt;int N&gt; is true.)
+  ...
+[else]
+  ...
+  (Statements for the case:  all the conditions above are false (zero).)
+  ...
+endif
 </pre>
 
+<h3>Remarks</h3>
 
+<p>
+'if' and 'elseif' statements must end with 'then'.<br>
+'elseif' and 'else' can be omitted.<br>
+'endif' can not be omitted.
+</p>
 
-2)Format:
-<B><pre>
-	if &lt;int 1&gt; then
-		...
-		(Statements for the case:  &lt;int 1&gt; is true (non-zero).)
-		...
-	[elseif &lt;int 2&gt; then]
-		...
-		(Statements for the case:  &lt;int 1&gt; is false (zero) and &lt;int 2&gt; is true.)
-		...
-	[elseif &lt;int N&gt; then]
-		...
-		(Statements for the case:  &lt;int 1&gt;, &lt;int 2&gt;,... and &lt;int N-1&gt; are all false, and &lt;int N&gt; is true.)
-		...
-	[else]
-		...
-		(Statements for the case:  all the conditions above are false (zero).)
-		...
-	endif
-</pre></B>
-<P></P>
+<h3>Example</h3>
 
-'if' and 'elseif' statements must end with 'then'.<BR>
-'elseif' and 'else' can be omitted.<BR>
-'endif' can not be omitted.<BR>
-<P></P>
+<pre class="macro-example">
+<code>if a=1 then
+  b = 1
+  c = 2
+  d = 3
+endif
 
-<pre>
-Example:
-	if a=1 then
-	  b = 1
-	  c = 2
-	  d = 3
-	endif
+if i&lt;0 then
+  i=0
+else
+  i=i+1
+endif
 
-	if i<0 then
-	  i=0
-	else
-	  i=i+1
-	endif
+if i=1 then
+  c = '1'
+elseif i=2 then
+  c = '2'
+elseif i=3 then
+  c = '3'
+else
+  c = '?'
+endif
+</code></pre>
 
-	if i=1 then
-	  c = '1'
-	elseif i=2 then
-	  c = '2'
-	elseif i=3 then
-	  c = '3'
-	else
-	  c = '?'
-	endif
-</pre>
-
-
-
-</BODY>
-</HTML>
-
+</body>
+</html>

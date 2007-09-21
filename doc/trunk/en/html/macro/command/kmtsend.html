@@ -1,35 +1,39 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>kmtsend</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>kmtsend</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">kmtsend</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
-<B>
+
+<h1>kmtsend</h1>
+
+<p>
+Sends a file with the Kermit protocol.
+</p>
+
+<pre class="macro-syntax">
 kmtsend &lt;filename&gt;
-</B>
-</UL>
-<P></P>
+</pre>
 
-Causes Tera Term to send the file &lt;filename&gt; to the host with the Kermit protocol. Pauses until the end of the file transfer.
+<h2>Remarks</h2>
+
+<p>
+Causes Tera Term to send the file &lt;filename&gt; to the host with the Kermit protocol.<br>
+Pauses until the end of the file transfer.<br>
 If the file is transferred successfully, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
-<P></P>
+</p>
 
-<PRE>
-Example:
-	kmtsend 'readme.txt'
-</PRE>
+<h2>Example</h2>
 
-</BODY>
-</HTML>
+<pre class="macro-example">
+<code>kmtsend 'readme.txt'
+</code></pre>
 
+</body>
+</html>

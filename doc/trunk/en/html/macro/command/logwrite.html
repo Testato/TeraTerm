@@ -1,35 +1,38 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>logwrite</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>logwrite</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">logwrite</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
- <B>logwrite &lt;string&gt;</B>
-</UL>
-<P></P>
 
-Appends a &lt;string&gt; to the log file of the Tera Term.
-<P></P>
+<h1>logwrite</h1>
 
-This command is valid only while Tera Term is logging. The &lt;string&gt; can be written even while logging is paused.
-<P></P>
+<p>
+Writes a string to the log file.
+</p>
 
-<pre>
-Example:
-	logwrite 'LOG FILE'#13#10
+<pre class="macro-syntax">
+logwrite &lt;string&gt;
 </pre>
 
-</BODY>
-</HTML>
+<h2>Remarks</h2>
 
+<p>
+Appends a &lt;string&gt; to the log file of the Tera Term.<br>
+This command is valid only while Tera Term is logging. The &lt;string&gt; can be written even while logging is paused.
+</p>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+<code>logwrite 'LOG FILE'#13#10
+</code></pre>
+
+</body>
+</html>

@@ -1,47 +1,58 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>recvln</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>recvln</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">recvln</FONT><BR><BR>
+<h1>recvln</h1>
 
-形式：
-<UL>
-<B>
+<p>
+一行分の文字を受信する。
+</p>
+
+<pre class="macro-syntax">
 recvln
-</B>
-</UL><P></P>
-
-ホストから一行分の文字を受信し、システム変数 inputstr に格納する。<P></P>
-
-<pre>
-
-このコマンドは一行受信するか、Tera Term とホストの通信が終了するか、タイムアウトが起きるまで待つ。システム変数 timeout が0より大きい場合、
-&lt;timeout&gt; 秒の時間がすぎるとタイムアウトが起こる。 timeout の値が0以下の場合は、タイムアウトはない。
-
-もし、一行分の文字が受信された場合、システム変数 result に1が格納される。そうでない場合 result に0が格納される。
-
-</pre><P></P>
-<pre>
-
-例：
-     <B>fileopen file 'log.txt' 0</B>                                   ログファイルを開く
-     <B>setsync 1</B>                                                     同期モードに入る
-     <B>result=1</B>
-     <B>while result=1</B>
-       <B>recvln</B>                                                       一行受信
-       <B>filewriteln file inputstr</B>                                  それをログファイルに書く
-     <B>endwhile</B>
-     <B>setsync 0</B>                                                      非同期モードに入る
-
-同期モードについては<A HREF="setsync.html">"setsync"</A>を参照。
-
 </pre>
-</BODY>
-</HTML>
+
+<h2>解説</h2>
+
+<p>
+ホストから一行分の文字を受信し、システム変数 inputstr に格納する。<br>
+このコマンドは一行受信するか、Tera Term とホストの通信が終了するか、タイムアウトが起きるまで待つ。<br>
+システム変数 timeout が 0 より大きい場合、&lt;timeout&gt; 秒の時間がすぎるとタイムアウトが起こる。 timeout の値が 0 以下の場合は、タイムアウトはない。<br>
+もし、一行分の文字が受信された場合、システム変数 result に1が格納される。そうでない場合 result に0が格納される。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>; ログファイルを開く
+fileopen file 'log.txt' 0
+; 同期モードに入る
+setsync 1
+result=1
+
+while result=1
+  ; 一行受信
+  recvln
+  ; それをログファイルに書く
+  filewriteln file inputstr
+endwhile
+
+; 非同期モードに入る
+setsync 0
+</code></pre>
+
+<p>
+同期モードについては "<a href="setsync.html">setsync</a>" を参照。
+</p>
+
+</body>
+</html>

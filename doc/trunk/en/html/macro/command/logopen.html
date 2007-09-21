@@ -1,38 +1,49 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>logopen</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>logopen</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">logopen</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
- <B>logopen &lt;filename&gt; &lt;binary flag&gt; &lt;append flag&gt;</B>
-</UL>
-<P></P>
 
-Causes Tera Term to start logging. Received characters are written to the file &lt;filename&gt;.
-<P></P>
+<h1>logopen</h1>
 
-If &lt;binary flag&gt; is zero, received new-line characters are converted (CR -&gt; CR/CRLF) and escape sequences are stripped out. If &lt;binary flag&gt; is non-zero, received characters are written without any modifications.
-<P></P>
+<p>
+Causes Tera Term to start logging.
+</p>
 
-If &lt;append flag&gt; is non-zero and the file &lt;filename&gt; already exists, received characters are appended to it. If &lt;append flag&gt; is zero and the file &lt;filename&gt; already exists, the file is overwritten.
-<P></P>
-
-<pre>
-Example:
-	logopen 'myhost.log' 0 0
+<pre class="macro-syntax">
+logopen &lt;filename&gt; &lt;binary flag&gt; &lt;append flag&gt;
 </pre>
 
-</BODY>
-</HTML>
+<h2>Remarks</h2>
 
+<p>
+Received characters are written to the file &lt;filename&gt;.
+</p>
+
+<p>
+If &lt;binary flag&gt; is zero, received new-line characters are converted (CR -&gt; CR/CRLF) and escape sequences are stripped out.<br>
+If &lt;binary flag&gt; is non-zero, received characters are written without any modifications.
+</p>
+
+<p>
+If &lt;append flag&gt; is non-zero and the file &lt;filename&gt; already exists, received characters are appended to it.</p>
+
+<p>
+If &lt;append flag&gt; is zero and the file &lt;filename&gt; already exists, the file is overwritten.
+</p>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+<code>logopen 'myhost.log' 0 0
+</code></pre>
+
+</body>
+</html>

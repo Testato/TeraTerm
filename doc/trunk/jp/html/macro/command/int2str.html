@@ -1,32 +1,38 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>int2str</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>int2str</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">int2str</FONT><BR><BR>
+<h1>int2str</h1>
 
-形式：
-<UL>
-<B>
+<p>
+整数値を文字列に変換する。
+</p>
+
+<pre class="macro-syntax">
 int2str &lt;strvar&gt; &lt;integer value&gt;
-</B>
-</UL>
-
-<pre>
-
-整数値 &lt;integer value&gt; を10進表現の文字列に変換して文字列型変数 &lt;strvar&gt; に代入する。
-
-例：
-    <B>int2str valstr 123</B>                                         valstrに '123' を代入
-
 </pre>
 
+<h2>解説</h2>
 
-</BODY>
-</HTML>
+<p>
+整数値 &lt;integer value&gt; を10進表現の文字列に変換して文字列型変数 &lt;strvar&gt; に代入する。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>; valstrに '123' を代入
+int2str valstr 123
+</code></pre>
+
+</body>
+</html>

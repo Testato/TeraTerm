@@ -1,35 +1,43 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>setdir</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>setdir</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">setdir</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
- <B>setdir &lt;dir&gt;</B>
-</UL>
-<P></P>
 
-Changes the current working directory for MACRO to &lt;dir&gt;.
-<P></P>
+<h1>setdir</h1>
 
-Note: the <A HREF="changedir.html">changedir</A> command changes the current directory for Tera Term. File names specified for the communication commands (e.g. kmtsend) are based on the current directory for Tera Term. File names specified for other commands (e.g. fileopen) are based on the current directory for MACRO.
-<P></P>
+<p>
+Changes the current working directory for MACRO.
+</p>
 
-<pre>
-Example:
-	setdir 'c:\'
+<pre class="macro-syntax">
+setdir &lt;dir&gt;
 </pre>
 
-</BODY>
-</HTML>
+<h2>Remarks</h2>
 
+<p>
+Changes the current working directory for MACRO to &lt;dir&gt;.
+</p>
+
+<p>
+<strong>Note:</strong> the <a href="changedir.html">changedir</a> command changes the current directory for Tera Term.<br>
+File names specified for the communication commands (e.g. kmtsend) are based on the current directory for Tera Term.<br>
+File names specified for other commands (e.g. fileopen) are based on the current directory for MACRO.
+</p>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+<code>setdir'c:\'
+</code></pre>
+
+</body>
+</html>

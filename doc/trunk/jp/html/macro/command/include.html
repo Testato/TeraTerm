@@ -1,47 +1,48 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>include</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>include</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">include</FONT><BR><BR>
-
-形式：
-<UL>
-<B>
-include &lt;include file name&gt;
-</B>
-</UL>
+<h1>include</h1>
 
 <p>
 インクルードファイルに移る。
 </p>
 
-<pre>
-例：
------メインファイル"main.ttl"------
-   i=10
-   :loop
-   include 'sub.ttl' ; インクルードファイルへ移る。
-   if i&gt;=0 goto loop
-   end
+<pre class="macro-syntax">
+include &lt;include file name&gt;
+</pre>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>-----メインファイル"main.ttl"------
+i=10
+:loop
+; インクルードファイルへ移る。
+include 'sub.ttl'
+if i&gt;=0 goto loop
+end
 -----メインファイル終わり----------
 
 -----インクルードファイル"sub.ttl"----
-   if i&lt;0 then
-     messagebox 'error!' 'sub'
-     exit ; メインファイルへ戻る。
-   endif
-   i = i - 1
-   ; メインファイルへ戻る。
+if i&lt;0 then
+  messagebox 'error!' 'sub'
+  ; メインファイルへ戻る。
+  exit
+endif
+i = i - 1
+; メインファイルへ戻る。
 -----インクルードファイル終わり-------
-</pre>
+</code></pre>
 
-</BODY>
-</HTML>
+</body>
+</html>

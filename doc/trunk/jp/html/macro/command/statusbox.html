@@ -1,20 +1,27 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>statusbox</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>statusbox</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
 
 <h1>statusbox</h1>
 
-形式：
-<UL>
-<B>statusbox &lt;message&gt; &lt;title&gt; [&lt;special&gt;(オプション)]</B>
-</UL>
+<p>
+ステータスダイアログボックスが表示する。
+</p>
+
+<pre class="macro-syntax">
+statusbox &lt;message&gt; &lt;title&gt; [&lt;special&gt;(オプション)]
+</pre>
+
+<h2>解説</h2>
 
 <p>
 ステータスダイアログボックスが表示されていない場合、それを表示する。<br>
@@ -22,8 +29,8 @@
 </p>
 
 <p>
-<A HREF="setdlgpos.html">"setdlgpos"</A> コマンドはステータスダイアログボックスの位置を変える。<br>
-<A HREF="closesbox.html">"closesbox"</A> コマンドはステータスダイアログボックスを閉じる。
+"<a href="setdlgpos.html">setdlgpos</a>" コマンドはステータスダイアログボックスの位置を変える。<br>
+"<a href="closesbox.html">closesbox</a>" コマンドはステータスダイアログボックスを閉じる。
 </p>
 
 <p>
@@ -31,21 +38,39 @@
 &lt;special&gt; が指定されない場合は 1 が使用されます。
 </p>
 
-<pre>
-\\    "\"
-\n    改行
-\t    タブ
-</pre>
+<table>
+ <tr>
+  <th>入力</th>
+  <th>出力</th>
+ </tr>
+ <tr>
+  <td>\\</td>
+  <td>"\"</td>
+ </tr>
+ <tr>
+  <td>\n</td>
+  <td>改行</td>
+ </tr>
+ <tr>
+  <td>\t</td>
+  <td>タブ</td>
+ </tr>
+</table>
 
-<pre>
-例:
-    setdlgpos 200 200            表示位置を指定
-    statusbox 'Message' 'Title'  ダイアログボックスを表示
-    pause 3
-    setdlgpos 0 0                ダイアログボックスを移動
-    pause 3
-    closesbox                    ダイアログボックスを閉じる
-</pre>
+<h2>例</h2>
 
-</BODY>
-</HTML>
+<pre class="macro-example">
+<code>; 表示位置を指定
+setdlgpos 200 200
+; ダイアログボックスを表示
+statusbox 'Message' 'Title'
+pause 3
+; ダイアログボックスを移動
+setdlgpos 0 0
+pause 3
+; ダイアログボックスを閉じる
+closesbox
+</code></pre>
+
+</body>
+</html>

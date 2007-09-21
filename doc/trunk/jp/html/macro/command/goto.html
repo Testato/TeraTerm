@@ -1,38 +1,45 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>goto</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>goto</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">goto</FONT><BR><BR>
+<h1>goto</h1>
 
-形式：
-<UL>
-<B>
+<p>
+ラベルへジャンプする。
+</p>
+
+<pre class="macro-syntax">
 goto &lt;label&gt;
-</B>
-</UL>
-
-
-<pre>
-
-&lt;label&gt;行の次の行へジャンプする。
-
-例：
-    <B>goto label<B>                            ':label' の次の行へジャンプ。
-    <B>...</B>
-    <B>...</B>
-    <B>...</B>
-    <B>:label</B>                               ラベル行
-    <B>send 'abc'</B>   
-
 </pre>
 
+<h2>解説</h2>
 
-</BODY>
-</HTML>
+<p>
+&lt;label&gt;行の次の行へジャンプする。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>; ':label' の次の行へジャンプ。
+goto label
+...
+...
+...
+
+; ラベル行
+:label
+send 'abc'
+</code></pre>
+
+</body>
+</html>
