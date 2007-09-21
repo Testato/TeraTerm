@@ -574,6 +574,9 @@ Name: {app}\macro.hlp; Type: files
 Name: {app}\macroj.hlp; Type: files
 Name: {app}\ttermp.hlp; Type: files
 Name: {app}\ttermpj.hlp; Type: files
+Name: {app}\copyfont.bat; Type: files
+Name: {app}\copyfont.pif; Type: files
+Name: {app}\libeay.txt; Type: files
 
 [_ISToolPreCompile]
 Name: convtext.bat
