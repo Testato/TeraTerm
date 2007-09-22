@@ -323,11 +323,6 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 	// SSH heartbeat time(second) (2004.12.11 yutaka)
 	settings->ssh_heartbeat_overtime = GetPrivateProfileInt("TTSSH", "HeartBeat", 60, fileName);
 
-	// SSH2 keyboard-interactive (2005.1.23 yutaka)
-	// デフォルトでは無効とする。OpenSSH 4.0ではkeyboard-interactiveメソッドが定義されていない場合に、
-	// 当該メソッドを使うとコネクションが切られてしまう。(2005.3.12 yutaka)
-	settings->ssh2_keyboard_interactive = GetPrivateProfileInt("TTSSH", "KeyboardInteractive", 0, fileName);
-
 	// パスワード認証および公開鍵認証に使うパスワードをメモリ上に保持しておくかどうかを
 	// 表す。(2006.8.5 yutaka)
 	settings->remember_password = GetPrivateProfileInt("TTSSH", "RememberPassword", 1, fileName);
@@ -394,11 +389,6 @@ static void write_ssh_options(PTInstVar pvar, PCHAR fileName,
 	_snprintf_s(buf, sizeof(buf), _TRUNCATE,
 	            "%d", settings->ssh_heartbeat_overtime);
 	WritePrivateProfileString("TTSSH", "HeartBeat", buf, fileName);
-
-	// SSH2 keyboard-interactive (2005.1.23 yutaka)
-	WritePrivateProfileString("TTSSH", "KeyboardInteractive", 
-	    settings->ssh2_keyboard_interactive ? "1" : "0", 
-	    fileName);
 
 	// Remember password (2006.8.5 yutaka)
 	WritePrivateProfileString("TTSSH", "RememberPassword", 

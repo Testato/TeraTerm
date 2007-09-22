@@ -119,7 +119,6 @@ typedef struct _TS_SSH {
 
 	int ssh_protocol_version; // SSH version (2004.10.11 yutaka)
 	int ssh_heartbeat_overtime; // SSH heartbeat(keepalive) (2004.12.11 yutaka)
-	int ssh2_keyboard_interactive; // SSH2 keyboard-interactive (2005.1.23 yutaka)
 	int remember_password;  // whether password will permanently store on heap memory (2006.8.5 yutaka) 
 } TS_SSH;
 
@@ -222,7 +221,6 @@ typedef struct _TInstVar {
 	char ssh2_keyfile[MAX_PATH];
 	time_t ssh_heartbeat_tick;
 	HANDLE ssh_heartbeat_thread;
-	int keyboard_interactive_done;
 	int keyboard_interactive_password_input;
 	int userauth_retry_count;
 	buffer_t *decomp_buffer;

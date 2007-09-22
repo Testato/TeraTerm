@@ -69,7 +69,6 @@
 #define IDC_HEARTBEAT_EDIT              1053
 #define IDC_HEARTBEATLABEL2             1054
 #define IDC_CHECK1                      1055
-#define IDC_KEYBOARD_INTERACTIVE_CHECK  1055
 #define IDC_HISTORY                     1055
 #define IDC_REMEMBER_PASSWORD           1055
 #define IDC_TTSSH_VERSION               1056

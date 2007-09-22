@@ -202,8 +202,6 @@ BEGIN
     CONTROL         "Use r&hosts to log in (SSH1)",IDC_SSHUSERHOSTS,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,13,104,99,10
     CONTROL         "Use challenge/response to log in (SSH1:&TIS, SSH2:keyboard-interactive)",IDC_SSHUSETIS,
                     "Button",BS_AUTORADIOBUTTON | WS_TABSTOP,14,149,278,10
-    CONTROL         "k&eyboard-interactive(SSH2)",IDC_KEYBOARD_INTERACTIVE_CHECK,
-                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,150,45,145,10
     PUSHBUTTON      "Private &key file:",IDC_CHOOSERSAFILE,117,73,58,14,WS_GROUP
     EDITTEXT        IDC_RSAFILENAME,179,74,118,13,ES_AUTOHSCROLL
     RTEXT           "Local &user name:",IDC_LOCALUSERNAMELABEL,118,104,91,8,0,WS_EX_RIGHT

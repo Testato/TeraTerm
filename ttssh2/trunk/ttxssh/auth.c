@@ -313,14 +313,6 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 #endif
 
 #if 1
-	// パスワード認証を試す前に、keyboard-interactiveメソッドを試す場合は、ラベル名を
-	// 変更する。(2005.3.12 yutaka)
-	if (pvar->settings.ssh2_keyboard_interactive == 1) {
-		UTIL_get_lang_msg("DLG_AUTH_METHOD_PASSWORD_KBDINT", pvar,
-		                  "Use p&lain password to log in (with keyboard-interactive)");
-		SetDlgItemText(dlg, IDC_SSHUSEPASSWORD, pvar->ts->UIMsg);
-	}
-
 	if (pvar->settings.ssh_protocol_version == 1) {
 		UTIL_get_lang_msg("DLG_AUTH_METHOD_CHALLENGE1", pvar,
 		                  "Use challenge/response to log in(&TIS)");
@@ -987,9 +979,6 @@ static void init_default_auth_dlg(PTInstVar pvar, HWND dlg)
 	GetDlgItemText(dlg, IDC_SSHUSEPASSWORD, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_AUTHSETUP_METHOD_PASSWORD", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_SSHUSEPASSWORD, pvar->ts->UIMsg);
-	GetDlgItemText(dlg, IDC_KEYBOARD_INTERACTIVE_CHECK, uimsg, sizeof(uimsg));
-	UTIL_get_lang_msg("DLG_AUTHSETUP_METHOD_PASSWORD_KBDINT", pvar, uimsg);
-	SetDlgItemText(dlg, IDC_KEYBOARD_INTERACTIVE_CHECK, pvar->ts->UIMsg);
 	GetDlgItemText(dlg, IDC_SSHUSERSA, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_AUTHSETUP_METHOD_RSA", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_SSHUSERSA, pvar->ts->UIMsg);
@@ -1042,12 +1031,6 @@ static void init_default_auth_dlg(PTInstVar pvar, HWND dlg)
 	               pvar->settings.DefaultRhostsHostPrivateKeyFile);
 	SetDlgItemText(dlg, IDC_LOCALUSERNAME,
 	               pvar->settings.DefaultRhostsLocalUserName);
-
-	// SSH2 keyboard-interactive method (2005.2.22 yutaka)
-	if (pvar->settings.ssh2_keyboard_interactive) {
-		SendMessage(GetDlgItem(dlg, IDC_KEYBOARD_INTERACTIVE_CHECK), BM_SETCHECK, BST_CHECKED, 0);
-	}
-
 }
 
 static BOOL end_default_auth_dlg(PTInstVar pvar, HWND dlg)
@@ -1078,17 +1061,6 @@ static BOOL end_default_auth_dlg(PTInstVar pvar, HWND dlg)
 	               pvar->settings.DefaultRhostsLocalUserName,
 	               sizeof(pvar->settings.DefaultRhostsLocalUserName));
 
-	// SSH2 keyboard-interactive method (2005.2.22 yutaka)
-	{
-		LRESULT ret;
-		ret = SendMessage(GetDlgItem(dlg, IDC_KEYBOARD_INTERACTIVE_CHECK), BM_GETCHECK, 0, 0);
-		if (ret & BST_CHECKED) {
-			pvar->settings.ssh2_keyboard_interactive = 1;
-		} else {
-			pvar->settings.ssh2_keyboard_interactive = 0;
-		}
-	}
-
 	EndDialog(dlg, 1);
 	return TRUE;
 }
@@ -1114,7 +1086,6 @@ static BOOL CALLBACK default_auth_dlg_proc(HWND dlg, UINT msg,
 			SendDlgItemMessage(dlg, IDC_SSHUSERNAMELABEL, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHUSERNAME, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHUSEPASSWORD, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
-			SendDlgItemMessage(dlg, IDC_KEYBOARD_INTERACTIVE_CHECK, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHUSERSA, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_CHOOSERSAFILE, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_RSAFILENAME, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
@@ -1266,8 +1237,7 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 			if (pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD ||
 				pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
 				// keyboard-interactiveメソッドを追加 (2005.1.24 yutaka)
-				if (pvar->keyboard_interactive_done == 1 ||
-					pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
+				if (pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
 					method = "keyboard-interactive";
 				} else {
 					method = get_auth_method_name(pvar->auth_state.cur_cred.method);

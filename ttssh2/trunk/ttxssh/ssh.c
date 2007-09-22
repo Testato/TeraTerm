@@ -5752,8 +5752,6 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 	unsigned char *outmsg;
 	int len;
 
-	// SSH2 keyboard-interactive methodの初期化 (2005.1.22 yutaka)
-	pvar->keyboard_interactive_done = 0;
 	// パスワードが入力されたら 1 を立てる (2005.3.12 yutaka)
 	pvar->keyboard_interactive_password_input = 0;
 
@@ -5988,7 +5986,6 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	unsigned char *outmsg;
 	int len;
 	char *connect_id = "ssh-connection";
-	int kbdint = 0;
 
 	notify_verbose_message(pvar, "SSH2_MSG_SERVICE_ACCEPT is received.", LOG_LEVEL_VERBOSE);
 
@@ -6016,52 +6013,21 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 		buffer_put_string(msg, s, strlen(s));
 
 	} else if (pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) { // パスワード認証
-		// 初回は keyboard-interactive メソッドでトライする (2005.1.22 yutaka)
-		// cf. http://www.openssh.com/txt/draft-ietf-secsh-auth-kbdinteract-02.txt
+		// password authentication method
+		s = connect_id;
+		buffer_put_string(msg, s, strlen(s));
+		s = "password";
+		buffer_put_string(msg, s, strlen(s));
+		buffer_put_char(msg, 0); // 0
 
-		// 認証リストに"password"がなければ、keyboard-interactiveでトライする。(2007.4.27 yutaka)
-		if (strstr(pvar->ssh2_authlist, "password") == NULL) {
-			pvar->settings.ssh2_keyboard_interactive = 1;
-			pvar->keyboard_interactive_done = 0;
-		}
-
-		if (pvar->settings.ssh2_keyboard_interactive == 1 &&
-			pvar->keyboard_interactive_done == 0) { // keyboard-interactive method
-			pvar->keyboard_interactive_done = 1;
-			kbdint = 1;
-
-			//s = "ssh-userauth";  // service name
-			s = connect_id;
-			buffer_put_string(msg, s, strlen(s));
-			s = "keyboard-interactive";  // method name
-			buffer_put_string(msg, s, strlen(s));
-			s = "";  // language tag
-			buffer_put_string(msg, s, strlen(s));
-			s = "";  // submethods
-			buffer_put_string(msg, s, strlen(s));
-
-
+		if (pvar->ssh2_autologin == 1) { // SSH2自動ログイン
+			s = pvar->ssh2_password;
 		} else {
-			// password authentication method
-			s = connect_id;
-			buffer_put_string(msg, s, strlen(s));
-			s = "password";
-			buffer_put_string(msg, s, strlen(s));
-			buffer_put_char(msg, 0); // 0
-
-			if (pvar->ssh2_autologin == 1) { // SSH2自動ログイン
-				s = pvar->ssh2_password;
-			} else {
-				s = pvar->auth_state.cur_cred.password;  // パスワード
-			}
-			buffer_put_string(msg, s, strlen(s));
-
+			s = pvar->auth_state.cur_cred.password;  // パスワード
 		}
+		buffer_put_string(msg, s, strlen(s));
 
 	} else if (pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) { // keyboard-interactive (2005.3.12 yutaka)
-		pvar->keyboard_interactive_done = 1;
-		kbdint = 1;
-
 		//s = "ssh-userauth";  // service name
 		s = connect_id;
 		buffer_put_string(msg, s, strlen(s));
@@ -6144,7 +6110,8 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 
 	SSH2_dispatch_init(5);
 	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
-	if (kbdint == 1) { // keyboard-interactive method
+	if (pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
+		// keyboard-interactive method
 		SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_INFO_REQUEST);
 	} 
 	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_SUCCESS);
@@ -6360,22 +6327,6 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 
 	// retry countの追加 (2005.3.10 yutaka)
 	pvar->userauth_retry_count++;
-
-	// サーバが keyboard-interactive しかサポートしていない場合、サーバに余計な
-	// エラーログが残るため削除。(2007.7.11 yutaka)
-#if 0
-	// keyboard-interactive methodでトライして失敗した場合、次にpassword authentication method
-	// で無条件にトライしてみる。(2005.1.22 yutaka)
-	if (pvar->keyboard_interactive_done == 1) {
-		handle_SSH2_authrequest(pvar);
-		pvar->keyboard_interactive_done = 0; // clear flag
-		return TRUE;
-	}
-#else
-	if (pvar->keyboard_interactive_done == 1) {
-		pvar->keyboard_interactive_done = 0; // clear flag
-	}
-#endif
 
 	if (pvar->ssh2_autologin == 1) {
 		// SSH2自動ログインが有効の場合は、リトライは行わない。(2004.12.4 yutaka)
