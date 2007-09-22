@@ -1,33 +1,42 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>strscan</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>strscan</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">strscan</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
-<B>strscan &lt;string&gt; &lt;substring&gt;</B>
-</UL>
-<P></P>
 
-Searches for &lt;substring&gt; in &lt;string&gt;.
-If &lt;substring&gt; is found, its position is returned in the system variable "result". If &lt;string&gt; contains more than one occurrence of &lt;substring&gt;, the position of the first one is returned. If &lt;substring&gt; is not found, "result" is set to zero.
-<P></P>
+<h1>strscan</h1>
 
-<pre>
-Example:
-  strscan 'tera term' 'term'		result = 6
+<p>
+Searches for substring in string.
+</p>
+
+<h2>Format</h2>
+
+<pre class="macro-syntax">
+strscan &lt;string&gt; &lt;substring&gt;
 </pre>
+
+<h2>Remarks</h2>
+
+<p>
+Searches for &lt;substring&gt; in &lt;string&gt;.<br>
+If &lt;substring&gt; is found, its position is returned in the system variable "result".<br>
+If &lt;string&gt; contains more than one occurrence of &lt;substring&gt;, the position of the first one is returned. If &lt;substring&gt; is not found, "result" is set to zero.
+</p>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+<code>strscan 'tera term' 'term'
+; result = 6
+</code></pre>
 
 </BODY>
 </HTML>
-

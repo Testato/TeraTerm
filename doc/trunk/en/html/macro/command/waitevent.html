@@ -1,59 +1,83 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>waitevent</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>waitevent</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">waitevent</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
- <B>waitevent &lt;events&gt;</B>
-</UL>
-<P></P>
 
-Pauses until one of the events specified by &lt;events&gt; occurs.
+<h1>waitevent</h1>
 
-&lt;events&gt; can be combination of the following event identifiers.
-<P></P>
+<p>
+Waits an event.
+</p>
 
-<pre>
-Event		Event identifier
-<hr>
-timeout		1
-unlink		2
-disconnection	4
-connection	8
+<pre class="macro-syntax">
+waitevent &lt;events&gt;
 </pre>
 
-<P></P>
+<h2>Remarks</h2>
 
-The timeout event occurs when &lt;timeout&gt; seconds have passed.
-&lt;timeout&gt; is the value of the system variable "timeout".
-If &lt;timeout&gt; is less than or equal to zero, this event never occurs.
-<P></P>
+<p>
+Pauses until one of the events specified by &lt;events&gt; occurs. &lt;events&gt; can be combination of the following event identifiers.
+</p>
+
+<table>
+ <tr>
+  <th>Event</th>
+  <th>Event identifier</th>
+ </tr>
+ <tr>
+  <td>timeout</td>
+  <td>1</td>
+ </tr>
+ <tr>
+  <td>unlink</td>
+  <td>2</td>
+ </tr>
+ <tr>
+  <td>disconnection</td>
+  <td>4</td>
+ </tr>
+ <tr>
+  <td>connection</td>
+  <td>8</td>
+ </tr>
+</table>
+
+<p>
+The timeout event occurs when &lt;timeout&gt; seconds have passed. &lt;timeout&gt; is the value of the system variable "timeout". If &lt;timeout&gt; is less than or equal to zero, this event never occurs.
+</p>
+
+<p>
 The unlink event occurs when Tera Term is closed.
-<P></P>
+</p>
+
+<p>
 The disconnection (connection) event occurs when the communication between Tera Term and the host is closed (opend).
-<P></P>
+</p>
+
+<p>
 The "waitevent" command returns the identifier of the actual event in the system variable "result".
-<P></P>
+</p>
 
-<pre>
-Example:
-	waitevent 4	Wait the disconnection event
-	waitevent	2 or 8	Wait the unlink or connection events
-	if result=2 goto label1	The unlink event occured
-	if result=8 goto label2	The connection event occured
-</pre>
+<h2>Example</h2>
 
-</BODY>
-</HTML>
+<pre class="macro-example">
+<code>; Wait the disconnection event
+waitevent 4
+; Wait the unlink or connection events
+waitevent 2 or 8
+; The unlink event occured
+if result=2 goto label1
+; The connection event occured
+if result=8 goto label2
+</code></pre>
 
+</body>
+</html>

@@ -1,61 +1,74 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>waitregex</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>waitregex</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">waitregex</FONT><BR><BR>
-</div>
-
-Format:
-<UL>
- <B>waitregex &lt;string1 with regular expression&gt; &lt;string2 with regular expression&gt; ...</B></UL>
-<P></P>
-
-Supports <A HREF="../../reference/RE.txt">Oniguruma Regular Expressions</A>.
-<P></P>
-
-Pauses until the string (maximum 256 characters), which matches one or more character strings with regular expression is received from the host, or until the timeout occurs. Maximum number of the regular expression strings is 10.
-<P></P>
-
-If the system variable "timeout" is greater than zero, the timeout occurs when &lt;timeout&gt; seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.
-<P></P>
+<body>
 
 
+<h1>waitregex</h1>
+
+<p>
+Waits a line that contains string with regular expression.
+</p>
+
+<pre class="macro-syntax">
+waitregex &lt;string1 with regular expression&gt; [&lt;string2 with regular expression&gt; ...]
+</pre>
+
+<h2>Remarks</h2>
+
+<p>
+Supports <a href="../../reference/RE.txt">Oniguruma Regular Expressions</a>.<br>
+Pauses until the string (maximum 256 characters), which matches one or more character strings with regular expression is received from the host, or until the timeout occurs. Maximum number of the regular expression strings is 10.<br>
+If the system variable "timeout" is greater than zero, the timeout occurs when &lt;timeout&gt; seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.<br>
 The "waitregex" command returns one of the following values in the system variable "result":
-<P></P>
+</p>
 
-<pre>
-Value	Meaning
-<hr>
-0	Timeout. No string, which satisfies the condition, has been received.
-1	&lt;string1 with regular expression&gt; has received.
-2	&lt;string2 with regular expression&gt; has received.
-n	&lt;stringn with regular expression&gt; has received. n=1..10.
-</pre>
-<P></P>
+<table>
+ <tr>
+  <th>Value</th>
+  <th>Meaning</th>
+ </tr>
+ <tr>
+  <td>0</td>
+  <td>Timeout.</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>&lt;string1 with regular expression&gt; has received.</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>&lt;string2 with regular expression&gt; has received.</td>
+ </tr>
+ <tr>
+  <td>n</td>
+  <td>&lt;stringn with regular expression&gt; has received. n=1..10.</td>
+ </tr>
+</table>
 
-The received line is stored in the system variable "inputstr".
-The first matched pattern is stored in the system variable "matchstr".
+<p>
+The received line is stored in the system variable "inputstr".<br>
+The first matched pattern is stored in the system variable "matchstr".<br>
 Group matched patterns of regular expressions are stored in 9 system variables from "groupmatchstr1" to "groupmatchstr9".
-<P></P>
+</p>
 
-<pre>
-Example:
-	timeout = 30
-	waitregex 'Longhorn' '.*@sai' 'Pentium\d+' 'TeraTermX{3}'
-	int2str s result
-	messagebox s 'result'
-	messagebox inputstr 'inputstr'
-	messagebox matchstr 'matchstr'
-</pre>
+<h2>Example</h2>
 
-</BODY>
-</HTML>
+<pre class="macro-example">
+<code>timeout = 30
+waitregex 'Longhorn' '.*@sai' 'Pentium\d+' 'TeraTermX{3}'
+int2str s result
+messagebox s 'result'
+messagebox inputstr 'inputstr'
+messagebox matchstr 'matchstr'
+</code></pre>
 
+</body>
+</html>

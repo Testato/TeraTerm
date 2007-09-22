@@ -1,32 +1,40 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>strlen</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>strlen</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">strlen</FONT><BR><BR>
+<h1>strlen</h1>
 
-形式：
-<UL>
-<B>
+<p>
+文字列の長さを返す。
+</p>
+
+<h2>形式</h2>
+
+<pre class="macro-syntax">
 strlen &lt;string&gt;
-</B>
-</UL>
-
-<pre>
-
-文字列 &lt;string&gt; の長さをシステム変数 result に格納する。
-
-例：
-    <B>strlen 'abc'</B>                                result の値は3
-
 </pre>
 
+<h2>解説</h2>
 
-</BODY>
-</HTML>
+<p>
+文字列 &lt;string&gt; の長さをシステム変数 result に格納する。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>strscan 'tera term' 'term'
+; result の値は6
+</code></pre>
+
+</body>
+</html>

@@ -1,36 +1,42 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>strscan</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>strscan</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">strscan</FONT><BR><BR>
+<h1>strscan</h1>
 
-形式：
-<UL>
-<B>
+<p>
+文字列に文字列が含まれているか検索する。
+</p>
+
+<h2>形式</h2>
+
+<pre class="macro-syntax">
 strscan &lt;string&gt; &lt;substring&gt;
-</B>
-</UL>
-
-<pre>
-
-文字列 &lt;string&gt; の中に 副文字列  &lt;substring&gt; が含まれているかどうか調べる。
-もし、  &lt;substring&gt; が見つかった場合、その位置がシステム変数 result に格納される。
- &lt;substring&gt; が複数含まれている場合、最初のものの位置が格納される。
-もし、 &lt;substring&gt; が見つからなかった場合、 result に0が格納される。
-
-
-例：
-    <B>strscan 'tera term' 'term'</B>                                          result の値は6
-
 </pre>
 
+<h2>解説</h2>
+
+<p>
+文字列 &lt;string&gt; の中に 副文字列  &lt;substring&gt; が含まれているかどうか調べる。<br>
+もし、  &lt;substring&gt; が見つかった場合、その位置がシステム変数 result に格納される。<br>
+&lt;substring&gt; が複数含まれている場合、最初のものの位置が格納される。もし、 &lt;substring&gt; が見つからなかった場合、 result に0が格納される。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>strscan 'tera term' 'term'
+; result の値は6
+</code></pre>
 
 </BODY>
 </HTML>

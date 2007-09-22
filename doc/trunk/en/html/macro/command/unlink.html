@@ -1,46 +1,54 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>unlink</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>settitle</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">unlink</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
- <B>unlink</B>
-</UL>
-<P></P>
 
+<h1>settitle</h1>
+
+<p>
 Terminates the link between the current Tera Term window and MACRO.
-MACRO enters the unlinked state and can not controll the Tera Term window any more.
-<P></P>
+</p>
 
+<pre class="macro-syntax">
+unlink
+</pre>
+
+<h2>Remarks</h2>
+
+<p>
+MACRO enters the unlinked state and can not controll the Tera Term window any more.<br>
 In the unlinked state, the "connect" command can open a new Tera Term window and link MACRO to it.
-<P></P>
+</p>
 
-<pre>
-See also:
-	"<A HREF="closett.html">closett</A>"
-	"<A HREF="connect.html">connect</A>"
-	"<A HREF="disconnect.html">disconnect</A>"
-	"<A HREF="testlink.html">testlink</A>"
-</pre>
+<h2>Example</h2>
 
-<pre>
-Example:
-	connect 'host1'			open a Tera Term window and link MACRO to it
-	unlink				terminate the link
-	connect 'host2'			open another Tera Term window and link MACRO to it
-</pre>
+<pre class="macro-example">
+<code>; open a Tera Term window and link MACRO to it
+connect 'host'
 
-</BODY>
-</HTML>
+; terminate the link
+unlink
 
+; open another Tera Term window and link MACRO to it
+connect 'host2'
+</code></pre>
+
+<h2>See also</h2>
+
+<ul>
+ <li>"<a href="closett.html">closett</a>"</li>
+ <li>"<a href="connect.html">connect</a>"</li>
+ <li>"<a href="disconnect.html">disconnect</a>"</li>
+ <li>"<a href="testlink.html">testlink</a>"</li>
+</ul>
+
+</body>
+</html>

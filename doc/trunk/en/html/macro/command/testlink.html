@@ -1,51 +1,68 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>testlink</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>testlink</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">testlink</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
- <B>testlink</B>
-</UL>
-<P></P>
 
+<h1>testlink</h1>
+
+<p>
 Reports the current link and connection status.
+</p>
+
+<pre class="macro-syntax">
+testlink
+</pre>
+
+<h2>Remarks</h2>
+
+<p>
 The system variable "result" is set to one of the following values depending on the link and connection status:
-<P></P>
+</p>
 
-<pre>
-Value	Status
-<hr>
-0	Link to Tera Term has not been made.
-1	Connection to the host has not been made, but link to Tera Term has been made.
-2	Both connection and link have been made.
-</pre>
+<table>
+ <tr>
+  <th>Value</th>
+  <th>Status</th>
+ </tr>
+ <tr>
+  <td>0</td>
+  <td>Link to Tera Term has not been made.</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>Connection to the host has not been made, but link to Tera Term has been made.</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>Both connection and link have been made.</td>
+ </tr>
+</table>
 
-<pre>
-See also:
-	"<A HREF="closett.html">closett</A>"
-	"<A HREF="connect.html">connect</A>"
-	"<A HREF="disconnect.html">disconnect</A>"
-	"<A HREF="unlink.html">unlink</A>"
-</pre>
+<h2>Example</h2>
 
-<pre>
-Example:
-	testlink	
-	if result=0 connect 'host'			If MACRO is not linked to Tera Term, 
-							execute the connect command.
-</pre>
+<pre class="macro-example">
+<code>; If MACRO is not linked to Tera Term, 
+testlink
+; execute the connect command.
+if result=0 connect 'host'
+</code></pre>
 
-</BODY>
-</HTML>
+<h2>See also</h2>
 
+<ul>
+ <li>"<a href="closett.html">closett</a>"</li>
+ <li>"<a href="connect.html">connect</a>"</li>
+ <li>"<a href="disconnect.html">disconnect</a>"</li>
+ <li>"<a href="unlink.html">unlink</a>"</li>
+</ul>
+
+</body>
+</html>

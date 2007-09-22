@@ -1,45 +1,56 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>waitln</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>waitln</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">waitln</FONT><BR><BR>
+<h1>waitln</h1>
 
-形式：
-<UL>
-<B>
-waitln &lt;string1&gt; &lt;string2&gt; ...
-</B>
-</UL>
+<p>
+文字列を含む行を待つ。
+</p>
 
-<pre>
-
-文字列 &lt;string1&gt;, &lt;string2&gt;, ...  のうち一つを含む行をホストから受信するか、タイムアウトが発生するまで MACRO を停止させる。
-文字列は最大10個まで指定できる。
-
-システム変数 timeout が0より大きい場合、&lt;timeout&gt; 秒の時間がすぎるとタイムアウトが発生する。
-timeout の値が0以下の場合は、タイムアウトは発生しない。
-
-このコマンドは受信した行をシステム変数 inputstr に格納し、以下の値をシステム変数 result に格納する。
-
-</pre><P></P>
-
-<pre>
-変数 result の値の意味は、
-
-値　　　　　　　　　　　　　　　　　　　　　　　　意味<hr>
-0                                                 タイムアウト。
-1                                                 &lt;string1&gt; を含む行を受信した。
-2                                                 &lt;string2&gt; を含む行を受信した。
-
+<pre class="macro-syntax">
+waitln &lt;string1&gt; [&lt;string2&gt; ...]
 </pre>
 
+<h2>解説</h2>
 
-</BODY>
-</HTML>
+<p>
+文字列 &lt;string1&gt;, [&lt;string2&gt;, ...] のうち一つを含む行をホストから受信するか、タイムアウトが発生するまで MACRO を停止させる。文字列は最大 10 個まで指定できる。<br>
+システム変数 timeout が 0 より大きい場合、&lt;timeout&gt; 秒の時間がすぎるとタイムアウトが発生する。timeout の値が 0 以下の場合は、タイムアウトは発生しない。<br>
+このコマンドは受信した行をシステム変数 inputstr に格納し、以下の値をシステム変数 result に格納する。
+</p>
+
+<table>
+ <tr>
+  <th>値</th>
+  <th>意味</th>
+ </tr>
+ <tr>
+  <td>0</td>
+  <td>タイムアウト。</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>&lt;string1&gt; を含む行を受信した。</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>&lt;string2&gt; を含む行を受信した。</td>
+ </tr>
+ <tr>
+  <td>n</td>
+  <td>&lt;stringn&gt; を含む行を受信した。n=1..10</td>
+ </tr>
+</table>
+
+</body>
+</html>

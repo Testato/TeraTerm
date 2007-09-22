@@ -1,32 +1,40 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>strlen</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>strlen</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">strlen</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
-<B>strlen &lt;string&gt;</B>
-</UL>
-<P></P>
 
-Returns the length of &lt;string&gt; in the system variable "result".
-<P></P>
+<h1>strlen</h1>
 
-<pre>
-Example:
-  strlen 'abc'		result = 3
+<p>
+Returns a length of string.
+</p>
+
+<h2>Format</h2>
+
+<pre class="macro-syntax">
+strlen &lt;string&gt;
 </pre>
 
-</BODY>
-</HTML>
+<h2>Remarks</h2>
 
+<p>
+Returns the length of &lt;string&gt; in the system variable "result".
+</p>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+<code>strscan 'tera term' 'term'
+; result = 6
+</code></pre>
+
+</body>
+</html>

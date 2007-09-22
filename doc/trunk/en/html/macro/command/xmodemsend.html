@@ -1,44 +1,66 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>xmodemsend</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>xmodemsend</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">xmodemsend</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
-<B>
+
+<h1>xmodemsend</h1>
+
+<p>
+Sends a file from the host with the XMODEM protocol.
+</p>
+
+<pre class="macro-syntax">
 xmodemsend &lt;filename&gt; &lt;option&gt;
-</B>
-</UL>
-<P></P>
+</pre>
 
-Causes Tera Term to send the file &lt;filename&gt; to the host with the XMODEM protocol. Pauses until the end of the file transfer.
+<h2>Remarks</h2>
+
+<p>
+Causes Tera Term to send the file &lt;filename&gt; to the host with the XMODEM protocol. Pauses until the end of the file transfer.<br>
 If the file is transferred successfully, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
-<P></P>
+</p>
 
+<p>
 &lt;option&gt; specifies the XMODEM option, and can be one of the following:
-<P></P>
+</p>
 
-<PRE>
-&lt;option&gt;	XMODEM option
-1	Checksum
-2	CRC
-3	1K
-others	Checksum
+<table>
+ <tr>
+  <th>&lt;option&gt;</th>
+  <th>XMODEM option</th>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>Checksum</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>CRC</td>
+ </tr>
+ <tr>
+  <td>3</td>
+  <td>1K</td>
+ </tr>
+ <tr>
+  <td>others</td>
+  <td>Checksum</td>
+ </tr>
+</table>
 
-Example:
-	xmodemsend 'readme.txt' 1		XMODEM send, checksum
-</PRE>
+<h2>Example</h2>
 
-</BODY>
-</HTML>
+<pre class="macro-syntax">
+<code>; XMODEM send, checksum
+xmodemsend 'readme.txt' 1
+</code></pre>
 
+</body>
+</html>

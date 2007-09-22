@@ -1,39 +1,43 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>zmodemsend</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>zmodemsend</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">zmodemsend</FONT><BR><BR>
+<h1>zmodemsend</h1>
 
-形式：
-<UL>
-<B>
+<p>
+ZMODEM プロトコルでファイルを送信する。
+</p>
+
+<pre class="macro-syntax">
 zmodemsend &lt;filename&gt; &lt;binary flag&gt;
-</B>
-</UL>
-
-<pre>
-
-ファイル &lt;filename&gt; を ZMODEM プロトコルで送信する。
-送信が終わるまで次のコマンドは実行されない。
-ファイルが正しく転送された場合、システム変数 result に1が格納される。それ以外の場合、 result に0が格納される。
-
-ファイルがバイナリファイルの場合は、&lt;binary flag&gt; は0以外でなければならない。
-テキストファイルの場合は、&lt;binary flag&gt; は0でなければならない。
-
-</pre><P></P>
-
-<pre>
-
-例：
-     <B>zmodem 'readme.txt' 0</B>
-
 </pre>
-</BODY>
-</HTML>
+
+<h2>解説</h2>
+
+<p>
+ファイル &lt;filename&gt; を ZMODEM プロトコルで送信する。送信が終わるまで次のコマンドは実行されない。<br>
+ファイルが正しく転送された場合、システム変数 result に1が格納される。それ以外の場合、 result に0が格納される。
+</p>
+
+<p>
+ファイルがバイナリファイルの場合は、&lt;binary flag&gt; は 0 以外でなければならない。<br>
+テキストファイルの場合は、&lt;binary flag&gt; は0でなければならない。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-syntax">
+<code>zmodem 'readme.txt' 0
+</code></pre>
+
+</body>
+</html>

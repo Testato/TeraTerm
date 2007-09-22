@@ -1,52 +1,68 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>testlink</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>testlink</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">testlink</FONT><BR><BR>
+<h1>testlink</h1>
 
-形式：
-<UL>
-<B>
-testlink
-</B
-</UL><P></P>
-
-<pre>
-
+<p>
 現在のリンクおよび接続の状態を報告する。
-リンクと接続の状態に応じて以下のうちの一つの値がシステム変数 result に格納される。
+</p>
 
-</pre><P></P>
-
-<pre>
-
-値							状態
-<hr>
-0							Tera Term とリンクされていない。
-1							ホストへの接続はされていないが、Tera Term へのリンクはされている。
-2							リンクおよび接続両方ともされている。
-
-参照：
-      <A HREF="closett.html">"closett"</A>
-      <A HREF="connect.html">"connect"</A>
-      <A HREF="disconnect.html">"disconnect"</A>
-      <A HREF="unlink.html">"unlink"</A>
-
-</pre><P></P>
-
-<pre>
-
-例：
-    <B>testlink</B>                                          もし MACRO が Tera Term にリンクされていなければ
-    <B>if result=0 connect 'host'</B>                      connect コマンドを実行
-
+<pre class="macro-syntax">
+testlink
 </pre>
-</BODY>
-</HTML>
+
+<h2>解説</h2>
+
+<p>
+リンクと接続の状態に応じて以下のうちの一つの値がシステム変数 result に格納される。
+</p>
+
+<table>
+ <tr>
+  <th>値</th>
+  <th>状態</th>
+ </tr>
+ <tr>
+  <td>0</td>
+  <td>Tera Term とリンクされていない。</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>ホストへの接続はされていないが、Tera Term へのリンクはされている。</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>リンクおよび接続両方ともされている。</td>
+ </tr>
+</table>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>; もし MACRO が Tera Term にリンクされていなければ
+testlink
+; connect コマンドを実行
+if result=0 connect 'host'
+</code></pre>
+
+<h2>参照</h2>
+
+<ul>
+ <li>"<a href="closett.html">closett</a>"</li>
+ <li>"<a href="connect.html">connect</a>"</li>
+ <li>"<a href="disconnect.html">disconnect</a>"</li>
+ <li>"<a href="unlink.html">unlink</a>"</li>
+</ul>
+
+</body>
+</html>

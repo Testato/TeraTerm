@@ -1,43 +1,56 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>waitln</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>waitln</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">waitln</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
- <B>waitln &lt;string1&gt; &lt;string2&gt; ...</B>
-</UL>
-<P></P>
 
-Pauses until a line which contains one of the character strings is received from the host, or until the timeout occurs. Maximum number of the strings is 10.
-<P></P>
+<h1>waitln</h1>
 
-If the system variable "timeout" is greater than zero, the timeout occurs when &lt;timeout&gt; seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.
-<P></P>
+<p>
+Waits a line that contains string.
+</p>
 
-The "waitln" command returns the received line in the system variable "inputstr" and one of the following values in the system variable "result":
-<P></P>
-
-<pre>
-Value	Meaning
-<hr>
-0	Timeout.
-1	A line which contains &lt;string1&gt; has received.
-2	A line which contains &lt;string2&gt; has received.
+<pre class="macro-syntax">
+waitln &lt;string1&gt; [&lt;string2&gt; ...]
 </pre>
 
-<P></P>
+<h2>Remarks</h2>
 
-</BODY>
-</HTML>
+<p>
+Pauses until a line which contains one of the character strings is received from the host, or until the timeout occurs. Maximum number of the strings is 10.<br>
+If the system variable "timeout" is greater than zero, the timeout occurs when &lt;timeout&gt; seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.<br>
+The "waitln" command returns the received line in the system variable "inputstr" and one of the following values in the system variable "result":
+</p>
 
+<table>
+ <tr>
+  <th>Value</th>
+  <th>Meaning</th>
+ </tr>
+ <tr>
+  <td>0</td>
+  <td>Timeout.</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>A line which contains &lt;string1&gt; has received.</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>A line which contains &lt;string2&gt; has received.</td>
+ </tr>
+ <tr>
+  <td>n</td>
+  <td>A line which contains &lt;stringn&gt; has received. n=1..10.</td>
+ </tr>
+</table>
+
+</body>
+</html>

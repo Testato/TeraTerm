@@ -1,45 +1,66 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>xmodemsend</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>xmodemsend</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">xmodemsend</FONT><BR><BR>
+<h1>xmodemsend</h1>
 
-形式：
-<UL>
-<B>
+<p>
+XMODEM プロトコルでファイルを送信する。
+</p>
+
+<pre class="macro-syntax">
 xmodemsend &lt;filename&gt; &lt;option&gt;
-</B>
-</UL><P></P>
-
-<pre>
-
-XMODEM プロトコルでファイル &lt;filename&gt; を送信する。
-送信が終わるまで次のコマンドは実行されない。
-ファイルが正しく転送された場合、システム変数 result に1が格納される。それ以外の場合、 result に0が格納される。
-
-</pre><P></P>
-
-<pre>
-
-&lt;option&gt; によって、XMODEM のオプションを指定する。
-
-&lt;option&gt;                                          XMODEM option<hr>
-1　　　　　　　　　　　　　　　　　　　　　　     Checksum
-2                                                 CRC
-3                                                 1K
-それ以外                                          Checksum
-
-
-例：
-     <B>xmodemsend 'readme.txt' 1</B>                                            XMODEM send, checksum
-
 </pre>
-</BODY>
-</HTML>
+
+<h2>解説</h2>
+
+<p>
+XMODEM プロトコルでファイル &lt;filename&gt; を送信する。送信が終わるまで次のコマンドは実行されない。<br>
+ファイルが正しく転送された場合、システム変数 result に 1 が格納される。それ以外の場合、 result に 0 が格納される。
+</p>
+
+<p>
+&lt;option&gt; によって、XMODEM のオプションを指定する。
+</p>
+
+<table>
+ <tr>
+  <th>&lt;option&gt;</th>
+  <th>XMODEM オプション</th>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>Checksum</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>CRC</td>
+ </tr>
+ <tr>
+  <td>3</td>
+  <td>1K</td>
+ </tr>
+ <tr>
+  <td>それ以外</td>
+  <td>Checksum</td>
+ </tr>
+</table>
+
+<h2>例</h2>
+
+<pre class="macro-syntax">
+<code>; XMODEM send, checksum
+xmodemsend 'readme.txt' 1
+</code></pre>
+
+</body>
+</html>

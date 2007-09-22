@@ -1,33 +1,40 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>strconcat</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>strconcat</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">strconcat</FONT><BR><BR>
+<h1>strconcat</h1>
 
-形式：
-<UL>
-<B>
+<p>
+文字列を継ぎ足すする。
+</p>
+
+<h2>形式</h2>
+
+<pre class="macro-syntax">
 strconcat &lt;strvar&gt; &lt;string&gt;
-</B>
-</UL>
-
-<pre>
-
-文字列変数 &lt;strvar&gt; の文字列値の最後に 文字列 &lt;string&gt; を継ぎ足す。
-
-例：
-    <B>filename = 'c:\teraterm\'</B>
-    <B>strconcat filename 'test.txt'</B>
-
 </pre>
 
+<h2>解説</h2>
 
-</BODY>
-</HTML>
+<p>
+文字列変数 &lt;strvar&gt; の文字列値の最後に 文字列 &lt;string&gt; を継ぎ足す。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>filename = 'c:\teraterm\'
+strconcat filename 'test.txt'
+</code></pre>
+
+</body>
+</html>

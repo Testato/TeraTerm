@@ -1,50 +1,68 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>waitrecv</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>waitrecv</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">waitrecv</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
- <B>waitrecv&lt;sub-string&gt; &lt;len&gt; &lt;pos&gt;</B>
-</UL>
-<P></P>
 
-Pauses until a string, which satisfies a condition, is received from the host, or until the timeout occurs.
-<P></P>
+<h1>waitrecv</h1>
 
-The condition is:
-	The length of the string is &lt;len&gt;, and the string contains
-	the &lt;sub-string&gt; beginning at the &lt;pos&gt;th character.
-<P></P>
+<p>
+Waits string.
+</p>
 
-For example, if &lt;sub-string&gt; is "def" and &lt;len&gt; is 9 and &lt;pos&gt; is 4, the string "abcdefghi" satisfies the condition.
-<P></P>
-
-If such a string is received, it is saved in the system variable "inputstr".
-<P></P>
-If the system variable "timeout" is greater than zero, the timeout occurs when &lt;timeout&gt; seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.
-<P></P>
-The "waitrecv" command returns one of the following values in the system variable "result":
-
-<pre>
-Value	Meaning
-<hr>
--1	A string, which contains the <sub-string> beginning at the <pos>th character, 
-	has been received, and saved in the "inputstr", but its length is less than <len> because of the timeout.
-0	Timeout. No string, which satisfies the condition, has been received.
-1	A string, which satisfies the condition, has been received, and saved in the "inputstr".
+<pre class="macro-syntax">
+waitrecv &lt;sub-string&gt; &lt;len&gt; &lt;pos&gt;
 </pre>
 
-</BODY>
-</HTML>
+<h2>Remarks</h2>
 
+<p>
+Pauses until a string, which satisfies a condition, is received from the host, or until the timeout occurs.
+</p>
+
+<p>
+The condition is:<br>
+The length of the string is &lt;len&gt;, and the string contains the &lt;sub-string&gt; beginning at the &lt;pos&gt;th character.<br>
+For example, if &lt;sub-string&gt; is "def" and &lt;len&gt; is 9 and &lt;pos&gt; is 4, the string "abcdefghi" satisfies the condition.
+</p>
+
+<p>
+If such a string is received, it is saved in the system variable "inputstr".
+</p>
+
+<p>
+If the system variable "timeout" is greater than zero, the timeout occurs when &lt;timeout&gt; seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.
+</p>
+
+<p>
+The "waitrecv" command returns one of the following values in the system variable "result":
+</p>
+
+<table>
+ <tr>
+  <th>Value</th>
+  <th>Meaning</th>
+ </tr>
+ <tr>
+  <td>-1</td>
+  <td>A string, which contains the &lt;sub-string&gt; beginning at the &lt;pos&gt;th character, has been received, and saved in the "inputstr", but its length is less than &lt;len&gt; because of the timeout.</td>
+ </tr>
+ <tr>
+  <td>0</td>
+  <td>Timeout. No string, which satisfies the condition, has been received.</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>A string, which satisfies the condition, has been received, and saved in the "inputstr".</td>
+ </tr>
+</table>
+
+</body>
+</html>

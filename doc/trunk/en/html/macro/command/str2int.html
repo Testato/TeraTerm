@@ -1,48 +1,63 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>str2int</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>str2int</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">str2int</FONT><BR><BR>
-</div>
+<body>
 
-Format:
-<UL>
-<B>str2int &lt;intvar&gt; &lt;string&gt;</B>
-</UL>
-<P></P>
 
-<pre>
-Converts the &lt;string&gt; to its numeric value.
-You can specify the &lt;string&gt as a format of decimal and hexadecimal number.
+<h1>str2int</h1>
 
-   A decimal number - 123, 0009
-   A hexadecimal number - 0x7b, $7b
-   
-The value is returned in the integer variable &lt;intvar&gt;. 
-If the string is converted successfully, the system variable "result" is set to 1. 
-Otherwise, "result" is set to zero.
-<P></P>
+<p>
+Converts a string to integer value.
+</p>
 
-Example:
-    <B>str2int val '123'</B>                                                val=123, result=1
-    <B>str2int val '123abc'</B>                                             val=123, result=1
-    <B>str2int val '0009'</B>                                               val=9,   result=1
-    <B>str2int val 'abc'</B>                                                val=0,   result=0
-
-    <B>hexnum='0x456FE3'</B>
-    <B>str2int val hexnum</B>                                               val=4550627, result=1
-    <B>sprintf '%d %x' val val</B>
-    <B>messagebox inputstr 'test'</B>
+<pre class="macro-syntax">
+str2int &lt;intvar&gt; &lt;string&gt;
 </pre>
 
-</BODY>
-</HTML>
+<h2>Remarks</h2>
 
+<p>
+Converts the &lt;string&gt; to its numeric value. The value is returned in the integer variable &lt;intvar&gt;.<br>
+You can specify the &lt;string&gt as a format of decimal and hexadecimal number.
+</p>
+
+<pre>
+A decimal number     - 123, 0009
+A hexadecimal number - 0x7b, $7b
+</pre>
+
+<p>
+If the string is converted successfully, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
+</p>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+<code>str2int val '123'
+; val=123, result=1
+
+str2int val '123abc'
+; val=123, result=1
+
+str2int val '0009'
+; val=9,   result=1
+
+str2int val 'abc'
+; val=0,   result=0
+
+hexnum='0x456FE3'
+str2int val hexnum
+sprintf '%d %x' val val
+messagebox inputstr 'test'
+; val=4550627, result=1
+</code></pre>
+
+</body>
+</html>

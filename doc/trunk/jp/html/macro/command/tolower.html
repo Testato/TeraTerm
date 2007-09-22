@@ -1,33 +1,38 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>tolower</TITLE>
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>tolower</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
 
 
-<FONT SIZE="+2">tolower</FONT><BR><BR>
+<h1>tolower</h1>
 
-形式：
-<UL>
-<B>
+<p>
+文字列をすべて小文字に変換する。
+</p>
+
+<pre class="macro-syntax">
 tolower &lt;strvar&gt; &lt;string&gt;
-</B>
-</UL>
+</pre>
+
+<h2>解説</h2>
 
 <p>
 &lt;string&gt; に含まれるアルファベットを全て小文字にし、 &lt;strvar&gt; に代入する。
 </p>
 
-<pre>
-例：
-    ; valstrに 'abcdefgh' が代入される
-    tolower valstr 'abCDefGH'
-</pre>
+<h2>例</h2>
 
+<pre class="macro-example">
+<code>; valstrに 'abcdefgh' が代入される
+tolower valstr 'abCDefGH'
+</code></pre>
 
-</BODY>
-</HTML>
+</body>
+</html>

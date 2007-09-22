@@ -1,44 +1,55 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>var2clipb</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>var2clipb</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
 
-<DIV ALIGN="left">
-<FONT SIZE="+2">var2clipb</FONT><BR><BR>
-</div>
+<body>
 
-形式:
-<UL>
-<B>var2clipb &lt;string&gt;</B>
-</UL>
-<P></P>
 
-&lt;string&gt;をクリップボードにコピーする。
-<P></P>
+<h1>var2clipb</h1>
 
+<p>
+テキストデータをクリップボードにコピーする。
+</p>
+
+<pre class="macro-syntax">
+var2clipb &lt;string&gt;
+</pre>
+
+<h2>解説</h2>
+
+<p>
+&lt;string&gt;をクリップボードにコピーする。<br>
 このコマンドの実行結果はシステム変数 result に格納される。変数 result の値の意味は以下のとおり。
-<P></P>
+</p>
 
-<pre>
-値	意味 
-<hr>
-0       クリップボードを開けなかった。
-1       クリップボードへのコピーに成功した。
-</pre>
+<table>
+ <tr>
+  <th>値</th>
+  <th>意味</th>
+ </tr>
+ <tr>
+  <td>0</td>
+  <td>クリップボードを開けなかった。</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>クリップボードへのコピーに成功した。</td>
+ </tr>
+</table>
 
-<pre>
-例:
-	var2clipb 'TeraTerm 4.46'
-	clipb2var data
-	messagebox data 'clipboard data'
-</pre>
+<h2>例</h2>
 
-</BODY>
-</HTML>
+<pre class="macro-example">
+<code>var2clipb 'TeraTerm 4.46'
+clipb2var data
+messagebox data 'clipboard data'
+</code></pre>
 
+</body>
+</html>
