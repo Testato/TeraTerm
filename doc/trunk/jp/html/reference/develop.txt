@@ -4,10 +4,10 @@
 - コンパイラ
   Visual Studio 2005 SP1 (Standard Edition 以上)
 - インストーラ
-  Inno Setup 5.2.0 (http://innosetup.org/isinfo.php)
-  ISTool 5.1.8 (http://innosetup.org/isdl.php#qsp)
+  Inno Setup 5.2.0 (http://www.jrsoftware.org/isinfo.php)
+  ISTool 5.1.8 (http://www.jrsoftware.org/isdl.php#qsp)
     QuickStart Pack 5.2.0 の中に入っています。
-  Japanese-5-5.1.11.isl (http://innosetup.org/files/istrans/)
+  Japanese-5-5.1.11.isl (http://www.jrsoftware.org/files/istrans/)
 - その他
   ActivePerl 5.8 以上
     OpenSSL のコンパイル、ドキュメントファイルの文字コード・改行コード変換に必要です。
@@ -68,14 +68,8 @@
 
 
 * TeraTerm Menuのビルド方法
-  TeraTerm Menuのビルド方法について以下に示します。
-  ビルドにはVisual Studio 2005(VC++8.0)が必要です。
-
-  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
-  2. teraterm\source\ttmenu\ttpmenu.sln をVisual Studioで開く
-  3. ソリューションをビルドする
-  4. ビルドに成功すると teraterm\source\ttmenu ディレクトリに実行プログラムが生成される
-
+  TeraTerm Menu は ttermpro.sln に含まれている。「ソリューションのビルド」を
+  すれば teraterm\source\ttmenu ディレクトリに実行プログラムが生成される。
 
 * TTProxyのビルド方法
   TTProxyのビルド方法について以下に示します。
@@ -154,7 +148,20 @@
 * リリースの方法
   リリースの方法について以下に示します。
 
-  1. バージョンを上げ、日付を変更する
+  1. 依存ライブラリ、ツールの最新版をチェックする。
+    Visual Studio
+      http://www.microsoft.com/japan/msdn/vstudio/downloads/default.aspx
+    Inno Setup
+      http://www.jrsoftware.org/isdl.php
+      http://www.jrsoftware.org/files/istrans/
+    Oniguruma
+      http://www.geocities.jp/kosako3/oniguruma/
+    OpenSSL
+      http://www.openssl.org/
+    zlib
+      http://www.zlib.net/
+
+  2. バージョンを上げ、日付を変更する
        ttermpro.rc
        ttxssh.rc
        ttmacro.rc // 変更時のみ
@@ -165,26 +172,26 @@
        html/about/hisotry.html
        ※バージョン番号が同じだとインストーラが上書きしないので、リリースまではバージョン番号を上げないこと。
 
-  2. 動作確認をする
+  3. 動作確認をする
        プログラムをコンパイルし直す
        インストーラを作成する
          ISTool で teraterm\installer\teraterm.iss を開き、[Project]-[Compile Setup]で作成される
        インストールおよび実行をテストする
 
-  3. cvs のタグをつける
+  4. cvs のタグをつける
 
-  4. SourceForge.jp を更新する
+  5. SourceForge.jp を更新する
        [リリースファイル]-[リリースファイル/変更]-[新規作成]
          英語の変更履歴を入力してリリースを作成する
          ログインしていなくても変更履歴が表示されることを確認する
        [リリースファイル]-[変更履歴]-[翻訳]
          言語がJapaneseになっていることを確認し、日本語の変更履歴を入力する
 
-  5. プロジェクトページを更新する
+  6. プロジェクトページを更新する
 
-  6. メーリングリストにアナウンスする
+  7. メーリングリストにアナウンスする
 
-  7. フォーラムに告知する
+  8. フォーラムに告知する
        (1) Announcements http://www.neocom.ca/forum/viewforum.php?f=5
            Announcements に新規投稿する。種類は Announcement
            一つ前の Announcement の種類を Normal に変更する
@@ -196,4 +203,4 @@
        (3) TTSSH Changelog http://www.neocom.ca/forum/viewtopic.php?t=29
            今回の変更を追加する
 
-  8. スナップショットを削除する
+  9. スナップショットを削除する

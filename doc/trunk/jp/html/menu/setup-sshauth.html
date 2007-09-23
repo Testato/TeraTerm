@@ -21,9 +21,6 @@
       <dt>Use plain passwd to log in</dt>
       <dd>
 	パスワード認証を用いる場合に指定します。
-	SSH2 接続の場合では "keyboard-interactive (SSH2)" を指定できます。
-	この場合、通信路にはパスワードそのものは流れません。
-	（通常のパスワード認証の場合は、暗号化された上でパスワードそのものが流れます。）
       </dd>
 
       <dt>Use RSA/DSA key to login</dt>
@@ -40,7 +37,10 @@
 	Use challenge/response to log in (SSH1:TIS, SSH2:keyboard-interactive)
       </dt>
       <dd>
-	チャレンジ／レスポンス認証を用いる場合に指定します。
+	チャレンジ/レスポンス認証を用いる場合に指定します。<br>
+	SSH2 接続の場合では keyboard-interactive が使用されます。
+	この場合、通信路にはパスワードそのものは流れません。
+	（通常のパスワード認証の場合は、暗号化された上でパスワードそのものが流れます。）
       </dd>
     </dl>
   </body>

@@ -65,14 +65,8 @@
 
 
 * How to build TeraTerm Menu
-  To build TeraTerm Menu source code is shown in the following step:
-  And you need Visual Studio 2005(VC++8.0) to build.
-
-  1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
-  2. Open teraterm\source\ttmenu\ttpmenu.sln with Visual Studio.
-  3. Build TeraTerm Menu solution.
-  4. TeraTerm Menu execution program will be generated in teraterm\source\ttmenu directory if the building is successful.
-
+  TeraTerm Menu is included in ttermpro.sln. Do "Build solution",
+  TeraTerm Menu execution program will be generated in teraterm\source\ttmenu directory
 
 * How to build TTProxy
   To build TTProxy source code is shown in the following step:
@@ -149,7 +143,20 @@
 * How to release TeraTerm installation package
   To release TeraTerm installation package is shown in the following step:
 
-  1. Increase the software version and modify date.
+  1. Check latest libraries and tools.
+    Visual Studio
+      http://www.microsoft.com/japan/msdn/vstudio/downloads/default.aspx
+    Inno Setup
+      http://www.jrsoftware.org/isdl.php
+      http://www.jrsoftware.org/files/istrans/
+    Oniguruma
+      http://www.geocities.jp/kosako3/oniguruma/
+    OpenSSL
+      http://www.openssl.org/
+    zlib
+      http://www.zlib.net/
+
+  2. Increase the software version and modify date.
        ttermpro.rc
        ttxssh.rc
        ttmacro.rc // only modifying
@@ -160,23 +167,23 @@
        html/about/hisotry.html
        Note: Don't update the version number until the release, because the installer does not overwrite file when versions are same.
 
-  2. Evaluate executable program file.
+  3. Evaluate executable program file.
        - Rebuild TeraTerm program
        - Make installer package
          Open "teraterm\installer\teraterm.iss" with ISTool and call [Project]-[Compile Setup] 
          with InnoSetup.
        - Test TeraTerm installation and evaluate it.
 
-  3. Added CVS tag.
+  4. Added CVS tag.
        The naming rule is `Rxxx_RTM'(ex. R450_RTM).
 
-  4. Update SourceForge.jp project site.
+  5. Update SourceForge.jp project site.
 
-  5. Update SourceForge.jp project home page.
+  6. Update SourceForge.jp project home page.
 
-  6. Announce release to mailing list(in Japan).
+  7. Announce release to mailing list(in Japan).
 
-  7. Announce release to forum(in Canada).
+  8. Announce release to forum(in Canada).
        (1) Announcements http://www.neocom.ca/forum/viewforum.php?f=5
            Create new topic in `Announcements' entry.
            Change the type of previous Announcement from Announcement to Normal.
@@ -188,4 +195,4 @@
        (3) TTSSH Changelog http://www.neocom.ca/forum/viewtopic.php?t=29
            Added current modification.
 
-  8. Delete spanshots.
+  9. Delete spanshots.
