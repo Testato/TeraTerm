@@ -194,6 +194,8 @@ typedef DWORD BINT;
 #define MaxStrLen (LONG)256
 #define MaxLineLen (LONG)501
 
+#define INT_BIT (CHAR_BIT * sizeof(int))
+
 typedef char TName[MaxNameLen];
 typedef TName far *PName;
 typedef char TStrVal [MaxStrLen];

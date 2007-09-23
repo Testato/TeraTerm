@@ -886,7 +886,6 @@ BOOL EvalBitShift(LPWORD ValType, int far *Val, LPWORD Err)
 	WORD P, Type, Er;
 	int Val1, Val2;
 	WORD WId;
-	unsigned int u_Val1;
 
 	if (! EvalAddition(&Type, &Val1, &Er)) return FALSE;
 	*ValType = Type;
@@ -924,18 +923,28 @@ BOOL EvalBitShift(LPWORD ValType, int far *Val, LPWORD Err)
 			return TRUE;
 		}
 
-		switch (WId) {
-			case RsvARShift:
-				Val1 = Val1 >> Val2;
-				break;
-			case RsvALShift:
-				Val1 = Val1 << Val2;
-				break;
-			case RsvLRShift:
+		if (WId == RsvALShift)
+			Val2 = -Val2;
+
+		if (Val2 <= -(int)INT_BIT) {	/* Val2 <= -32 */
+			Val1 = 0;
+		} else if (Val2 < 0 ) {		/* -32 < Val2 < 0 */
+			Val1 = Val1 << -Val2;
+		} else if (Val2 == 0 ) {	/* Val2 == 0 */
+			; /* do nothing */
+		} else if (Val2 < INT_BIT) {	/* 0 < Val2 < 32 */
+			if (WId == RsvLRShift) {
 				// use unsigned int for logical right shift
-				u_Val1 = Val1;
-				Val1 = u_Val1 >> Val2;
-				break;
+				Val1 = (unsigned int)Val1 >> Val2;
+			} else {
+				Val1 = Val1 >> Val2;
+			}
+		} else {			/* Val2 >= 32 */
+			if (Val1 > 0 || WId == RsvLRShift) {
+				Val1 = 0;
+			} else {
+				Val1 = ~0; 
+			}
 		}
 		*Val = Val1;
 	}

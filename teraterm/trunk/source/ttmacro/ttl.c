@@ -1816,44 +1816,46 @@ WORD TTLReturn()
 		return ErrSyntax;
 }
 
-// add 'rotateleft' (2007.8.19 maya)
-WORD TTLRotateLeft()
+// add 'rotateleft' and 'rotateright' (2007.8.19 maya)
+#define ROTATE_DIR_LEFT 0
+#define ROTATE_DIR_RIGHT 1
+WORD BitRotate(int direction)
 {
 	WORD VarId, Err;
 	int x, n;
-	unsigned int u_x;
 
 	Err = 0;
-	GetIntVar(&VarId,&Err);
-	GetIntVal(&x,&Err);
-	GetIntVal(&n,&Err);
+	GetIntVar(&VarId, &Err);
+	GetIntVal(&x, &Err);
+	GetIntVal(&n, &Err);
 	if ((Err==0) && (GetFirstChar()!=0))
 		Err = ErrSyntax;
 	if (Err!=0) return Err;
 
-	u_x = x;
-	SetIntVal(VarId, (x << n) | (u_x >> (32-n)));
+	if (direction == ROTATE_DIR_RIGHT)
+		n = -n;
+
+	n %= INT_BIT;
+
+	if (n < 0)
+		n += INT_BIT;
+
+	if (n == 0) {
+		SetIntVal(VarId, x);
+	} else {
+		SetIntVal(VarId, (x << n) | ((unsigned int)x >> (INT_BIT-n)));
+	}
 	return Err;
 }
 
-// add 'rotateright' (2007.8.19 maya)
+WORD TTLRotateLeft()
+{
+	return BitRotate(ROTATE_DIR_LEFT);
+}
+
 WORD TTLRotateRight()
 {
-	WORD VarId, Err;
-	int x, n;
-	unsigned int u_x;
-
-	Err = 0;
-	GetIntVar(&VarId,&Err);
-	GetIntVal(&x,&Err);
-	GetIntVal(&n,&Err);
-	if ((Err==0) && (GetFirstChar()!=0))
-		Err = ErrSyntax;
-	if (Err!=0) return Err;
-
-	u_x = x;
-	SetIntVal(VarId, (u_x >> n) | (x << (32-n)));
-	return Err;
+	return BitRotate(ROTATE_DIR_RIGHT);
 }
 
 WORD TTLSend()
