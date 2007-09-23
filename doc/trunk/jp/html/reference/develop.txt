@@ -148,7 +148,7 @@
 * リリースの方法
   リリースの方法について以下に示します。
 
-  1. 依存ライブラリ、ツールの最新版をチェックする。
+  1. 依存ライブラリ、ツール、インポート元の最新版をチェックする。
     Visual Studio
       http://www.microsoft.com/japan/msdn/vstudio/downloads/default.aspx
     Inno Setup
@@ -160,6 +160,10 @@
       http://www.openssl.org/
     zlib
       http://www.zlib.net/
+    CygTerm
+      http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/
+    LogMeTT
+      http://www.neocom.ca/forum/viewtopic.php?t=567
 
   2. バージョンを上げ、日付を変更する
        ttermpro.rc

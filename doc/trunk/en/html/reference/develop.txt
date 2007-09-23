@@ -155,6 +155,10 @@
       http://www.openssl.org/
     zlib
       http://www.zlib.net/
+    CygTerm
+      http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/
+    LogMeTT
+      http://www.neocom.ca/forum/viewtopic.php?t=567
 
   2. Increase the software version and modify date.
        ttermpro.rc
