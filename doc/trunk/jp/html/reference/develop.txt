@@ -35,6 +35,29 @@
   cvsの処理が失敗することがあるので、ファイルをエディタ等で開いたままで行わないでください。
 
 
+* マクロコマンド追加時の作業リスト
+- コーディング
+-- コマンドの内部 ID を採番する
+   ... teraterm/source/ttmacro/ttmparse.h
+-- コマンド名を走査して内部 ID に変換する
+   ... CheckReservedWord@teraterm/source/ttmacro/ttmparse.c
+-- コマンドの内部 ID から実際に処理をする関数を呼ぶ
+   ... ExecCmnd@teraterm/source/ttmacro/ttl.c
+-- 処理する関数を作る
+- ヘルプ(言語ごと)
+-- コマンドのヘルプを作る
+   ... doc/LANG/html/macro/command/hogefunc.html
+-- コマンド一覧ページに追加する
+   ... doc/LANG/html/macro/command/index.html
+-- ヘルプトピックに追加する
+   ... doc/LANG/teraterm.hhc
+-- ヘルプページのコンテキスト ID を採番する
+   値は コマンドの内部 ID + 92000
+   ... teraterm/source/common/helpid.h
+-- コンテキスト ID と呼び出すファイルのエイリアスを作成する
+   ... doc/LANG/teraterm.hhp
+
+
 * TeraTermのビルド方法
   TeraTermのビルド方法について以下に示します。
   ビルドにはVisual Studio 2005 Standard Edition以上が必要です（Visual Studio 2005 Express Editionは不可）。
