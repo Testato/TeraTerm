@@ -31,6 +31,27 @@
 - Should not have opened checkout file.
   CVS commit procedure may be failure while checkout file will have been opened.
 
+* What to do when new macro command is added?
+- Coding
+-- get a new number of command internal ID.
+   ... teraterm/source/ttmacro/ttmparse.h
+-- add a if statement to below function.
+   ... CheckReservedWord@teraterm/source/ttmacro/ttmparse.c
+-- add a caller doing the macro command.
+   ... ExecCmnd@teraterm/source/ttmacro/ttl.c
+-- make a function code for the macro command.
+
+- Help topic
+-- make the command help file.
+   ... doc/LANG/html/macro/command/hogefunc.html
+-- add the file to help topic.
+   ... doc/LANG/teraterm.hhc
+-- get a new number of context ID in help page.
+   The value is internal ID + 92000.
+   ... teraterm/source/common/helpid.h
+-- make the alias between context ID and calling file.
+   ... doc/LANG/teraterm.hhp
+
 
 * How to build TeraTerm
   To build TeraTerm source code is shown in the following step:
