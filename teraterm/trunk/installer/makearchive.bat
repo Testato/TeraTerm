@@ -1,9 +1,16 @@
-CALL convtext.bat
-CALL makechm.bat
-CALL build.bat
+rem CALL convtext.bat
+rem CALL makechm.bat
+rem CALL build.bat
 
-set dst=archive
+rem  for XP or later
+set today=snapshot-%date:~0,4%%date:~5,2%%date:~8,2%
 
+for %%a in (%today%, %today%_1, %today%_2, %today%_3, %today%_4, %today%_5) do (
+set dst=%%a
+if not exist %%a goto create
+)
+
+:create
 del /s /q %dst%\*.*
 mkdir %dst%
 
