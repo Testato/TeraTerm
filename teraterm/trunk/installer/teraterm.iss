@@ -1,5 +1,5 @@
 #define AppName "UTF-8 TeraTerm Pro with TTSSH2"
-#define AppVer "4.53"
+#define AppVer "4.54-beta1"
 
 [Setup]
 AppCopyright=TeraTerm Project
@@ -61,12 +61,12 @@ Source: ..\cygterm\cygterm.cfg; DestDir: {app}; Components: cygterm; Flags: only
 Source: ..\cygterm\cyglaunch.exe; DestDir: {app}; Components: cygterm
 Source: ..\release\LogMeTT_license.txt; DestDir: {app}; Components: LogMeTT
 Source: ..\release\LogMeTT_README.txt; DestDir: {app}; Components: LogMeTT
-Source: ..\release\LogMeTTc.exe; DestDir: {app}; Components: LogMeTT
-Source: ..\release\LogMeTT.exe; DestDir: {app}; Components: LogMeTT
+Source: ..\release\LogMeTTc.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
+Source: ..\release\LogMeTT.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
 Source: ..\release\logmett.chm; DestDir: {app}; Components: LogMeTT
 Source: ..\release\runltt.exe; DestDir: {app}; Components: LogMeTT
 Source: ..\release\KeyFile.ini; DestDir: {app}; Components: LogMeTT
-Source: ..\release\TTLEdit.exe; DestDir: {app}; Components: LogMeTT
+Source: ..\release\TTLEdit.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
 Source: ..\release\SynComp.pro; DestDir: {app}; Components: LogMeTT
 Source: ..\release\ttmacro.tpl; DestDir: {app}; Components: LogMeTT
 Source: ..\source\ttmenu\Release\ttpmenu.exe; DestDir: {app}; Components: TeraTerm_Menu; Flags: ignoreversion
