@@ -1,5 +1,5 @@
 #define AppName "UTF-8 TeraTerm Pro with TTSSH2"
-#define AppVer "4.54-beta1"
+#define AppVer "4.53"
 
 [Setup]
 AppCopyright=TeraTerm Project

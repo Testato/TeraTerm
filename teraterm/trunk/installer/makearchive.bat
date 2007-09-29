@@ -1,6 +1,6 @@
-rem CALL convtext.bat
-rem CALL makechm.bat
-rem CALL build.bat
+CALL convtext.bat
+CALL makechm.bat
+CALL build.bat
 
 rem  for XP or later
 set today=snapshot-%date:~0,4%%date:~5,2%%date:~8,2%
