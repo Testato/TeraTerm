@@ -871,6 +871,7 @@
       <li>New connection ダイアログで使用中のシリアルポートを表示しないようにした。</li>
       <li>パスワード認証を選択しているときに keyboard-interactive 認証を使用するのをやめた。これに伴い、Authentication Setup ダイアログの keyboard-interactive チェックボックスを削除した。keyboard-interactive 認証を使用するためには、challange/response を選択する必要がある。</li>
       <li>New connection ダイアログの Host ドロップダウンで、Ctrl+p, Ctrl+n, Ctrl+b, Ctrl+f, Ctrl+a, Ctrl+e ショートカットキーをサポートした。それぞれ↑, ↓, ←, →, Home, End キーに対応する。</li>
+      <li>パケット送信処理にTCPコネクション切断の誤検出をしないようにした。</li>
       <li>内部で使用している文字列系関数のセキュアバージョンへの全置換を実施。
         <ul>
           <li>ビルドオプションから _CRT_SECURE_NO_DEPRECATE を削除した。</li>
