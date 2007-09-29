@@ -766,6 +766,7 @@ static int retry_send_packet(PTInstVar pvar, char FAR * data, int len)
 
 static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 {
+#if 0
 	u_long do_block = 0;
 
 	if ((pvar->PWSAAsyncSelect) (pvar->socket, pvar->NotificationWindow,
@@ -776,6 +777,10 @@ static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 	                             pvar->notification_msg,
 	                             pvar->notification_events) ==
 		SOCKET_ERROR) {
+#else
+	// ソケットをノンブロッキングのままでパケット送信を行う。(2007.9.26 yutaka)
+	if (retry_send_packet(pvar, data, len)) {
+#endif
 		UTIL_get_lang_msg("MSG_SSH_SEND_PKT_ERROR", pvar,
 		                  "A communications error occurred while sending an SSH packet.\n"
 		                  "The connection will close.");
