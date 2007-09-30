@@ -315,8 +315,8 @@ IDI_VT_CLASSIC          ICON                    "..\\common\\vt_classic.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,53,0,0
- PRODUCTVERSION 4,53,0,0
+ FILEVERSION 4,54,0,0
+ PRODUCTVERSION 4,54,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -333,12 +333,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "TeraTerm Project T. Teranishi"
             VALUE "FileDescription", "Tera Term Pro"
-            VALUE "FileVersion", "4, 53, 0, 0"
+            VALUE "FileVersion", "4, 54, 0, 0"
             VALUE "InternalName", "TTERMPRO"
             VALUE "LegalCopyright", "(C)TeraTerm Project 2004-2007, (C)T. Teranishi 1994-1998"
             VALUE "OriginalFilename", "TTERMPRO.EXE"
             VALUE "ProductName", "Tera Term Pro"
-            VALUE "ProductVersion", "4, 53, 0, 0"
+            VALUE "ProductVersion", "4, 54, 0, 0"
         END
     END
     BLOCK "VarFileInfo"
