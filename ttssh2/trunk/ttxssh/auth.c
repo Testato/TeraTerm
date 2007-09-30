@@ -569,6 +569,7 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
                                    LPARAM lParam)
 {
 	const int IDC_TIMER1 = 300;
+	const int IDC_TIMER2 = 301;
 	const int autologin_timeout = 10; // ミリ秒
 	PTInstVar pvar;
 	LOGFONT logfont;
@@ -613,16 +614,57 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		if (pvar->ssh2_autologin == 1) {
 			SetTimer(dlg, IDC_TIMER1, autologin_timeout, 0);
 		}
+		else {
+			// サポートされているメソッドをチェックする。(2007.9.24 maya)
+			// 設定が有効で、まだ取りに行っておらず、ユーザ名が確定している
+			if (pvar->session_settings.CheckAuthListFirst &&
+			    !pvar->tryed_ssh2_authlist) {
+				// ダイアログのユーザ名を反映
+				if (pvar->auth_state.user == NULL) {
+					pvar->auth_state.user =
+						alloc_control_text(GetDlgItem(dlg, IDC_SSHUSERNAME));
+				}
+				if (strlen(pvar->auth_state.user) > 0) {
+					SetTimer(dlg, IDC_TIMER2, autologin_timeout, 0);
+				}
+				else {
+					// ユーザ名の KILLFOCUS 時にチェックするため
+					pvar->auth_state.user = NULL;
+				}
+			}
+		}
 		return FALSE;			/* because we set the focus */
 
 	case WM_TIMER:
 		pvar = (PTInstVar) GetWindowLong(dlg, DWL_USER);
 		// 認証準備ができてから、認証データを送信する。早すぎると、落ちる。(2004.12.16 yutaka)
-		if (!(pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME)) {
-			KillTimer(dlg, IDC_TIMER1);
-			SendMessage(dlg, WM_COMMAND, IDOK, 0);
+		if (wParam == IDC_TIMER1) {
+			// 自動ログインのため
+			if (!(pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME)) {
+				KillTimer(dlg, IDC_TIMER1);
+				SendMessage(dlg, WM_COMMAND, IDOK, 0);
+			}
 		}
-		return TRUE;
+		else if (wParam == IDC_TIMER2) {
+			// authlist を得るため
+			if (!(pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME)) {
+				// WM_INITDIALOG 時点ではプロトコルバージョンが分からない
+				if (SSHv2(pvar)) {
+					KillTimer(dlg, IDC_TIMER2);
+
+					// ユーザ名を変更させない
+					EnableWindow(GetDlgItem(dlg, IDC_SSHUSERNAME), FALSE);
+
+					// none を送る
+					do_SSH2_userauth(pvar);
+				}
+				else {
+					// SSH2 でない場合は none を送らない
+					KillTimer(dlg, IDC_TIMER2);
+				}
+			}
+		}
+		return FALSE;
 
 	case WM_COMMAND:
 		pvar = (PTInstVar) GetWindowLong(dlg, DWL_USER);
@@ -646,6 +688,31 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			}
 
 			return TRUE;
+
+		case IDC_SSHUSERNAME:
+			// ユーザ名がフォーカスを失ったとき (2007.9.29 maya)
+			if (!(pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME) &&
+			    HIWORD(wParam) == EN_KILLFOCUS) {
+				// 設定が有効でまだ取りに行っていないなら
+				if (SSHv2(pvar) &&
+					pvar->session_settings.CheckAuthListFirst &&
+					!pvar->tryed_ssh2_authlist) {
+					// ダイアログのユーザ名を反映
+					if (pvar->auth_state.user == NULL) {
+						pvar->auth_state.user =
+							alloc_control_text(GetDlgItem(dlg, IDC_SSHUSERNAME));
+					}
+
+					// ユーザ名を変更させない
+					EnableWindow(GetDlgItem(dlg, IDC_SSHUSERNAME), FALSE);
+
+					// none を送る
+					do_SSH2_userauth(pvar);
+					return TRUE;
+				}
+			}
+
+			return FALSE;
 
 		case IDC_SSHUSEPASSWORD:
 		case IDC_SSHUSERSA:

@@ -2292,6 +2292,7 @@ void SSH_init(PTInstVar pvar)
 	pvar->userauth_retry_count = 0;
 	pvar->decomp_buffer = NULL;
 	pvar->ssh2_authlist = NULL; // (2007.4.27 yutaka)
+	pvar->tryed_ssh2_authlist = FALSE;
 
 }
 
@@ -2744,6 +2745,8 @@ void SSH_end(PTInstVar pvar)
 			free(pvar->ssh2_authlist);
 			pvar->ssh2_authlist = NULL;
 		}
+
+		pvar->tryed_ssh2_authlist = FALSE;
 	}
 #endif
 
@@ -6008,7 +6011,7 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 	}
 	buffer_put_string(msg, s, strlen(s));
 
-	if (pvar->ssh2_authlist == NULL) { // "none"メソッドの送信
+	if (!pvar->tryed_ssh2_authlist) { // "none"メソッドの送信
 		// 認証リストをサーバから取得する。
 		// SSH2_MSG_USERAUTH_FAILUREが返るが、サーバにはログは残らない。
 		// (2007.4.27 yutaka)
@@ -6304,9 +6307,11 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 	partial = data[0];
 	data += 1;
 
-	// 認証リストが空の場合はまだログインをしていない。
-	if (pvar->ssh2_authlist == NULL) {
+	// tryed_ssh2_authlist が FALSE の場合は、まだ認証を試行をしていない。
+	if (!pvar->tryed_ssh2_authlist) {
 		int type = 0;
+
+		pvar->tryed_ssh2_authlist = TRUE;
 
 		// 認証ダイアログのラジオボタンを更新
 		if (strstr(cstring, "password")) {
@@ -6323,7 +6328,10 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 
 		pvar->ssh2_authlist = cstring; // 不要になったらフリーすること
 
-		handle_SSH2_authrequest(pvar); // ログイン処理へ
+		if (!pvar->session_settings.CheckAuthListFirst) {
+			// まず none で試行して返ってきたところなので、実際のログイン処理へ
+			handle_SSH2_authrequest(pvar);
+		}
 		return TRUE;
 	}
 

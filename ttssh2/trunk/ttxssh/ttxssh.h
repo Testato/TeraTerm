@@ -119,7 +119,11 @@ typedef struct _TS_SSH {
 
 	int ssh_protocol_version; // SSH version (2004.10.11 yutaka)
 	int ssh_heartbeat_overtime; // SSH heartbeat(keepalive) (2004.12.11 yutaka)
-	int remember_password;  // whether password will permanently store on heap memory (2006.8.5 yutaka) 
+	// whether password will permanently store on heap memory (2006.8.5 yutaka)
+	int remember_password;
+
+	// try auth with "none" method for disable unsupported on dialog (2007.9.24 maya)
+	BOOL CheckAuthListFirst;
 } TS_SSH;
 
 typedef struct _TInstVar {
@@ -225,6 +229,7 @@ typedef struct _TInstVar {
 	int userauth_retry_count;
 	buffer_t *decomp_buffer;
 	char *ssh2_authlist;
+	BOOL tryed_ssh2_authlist;
 } TInstVar;
 
 #define LOG_LEVEL_FATAL      5

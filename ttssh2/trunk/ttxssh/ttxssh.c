@@ -327,6 +327,10 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 	// 表す。(2006.8.5 yutaka)
 	settings->remember_password = GetPrivateProfileInt("TTSSH", "RememberPassword", 1, fileName);
 
+	// 初回の認証ダイアログでサポートされているメソッドをチェックし、
+	// 無効なメソッドをグレイアウトする (2007.9.24 maya)
+	settings->CheckAuthListFirst = read_BOOL_option(fileName, "CheckAuthListFirst", TRUE);
+
 	clear_local_settings(pvar);
 }
 
@@ -394,6 +398,11 @@ static void write_ssh_options(PTInstVar pvar, PCHAR fileName,
 	WritePrivateProfileString("TTSSH", "RememberPassword", 
 	    settings->remember_password ? "1" : "0", 
 	    fileName);
+
+	// 初回の認証ダイアログでサポートされているメソッドをチェックし、
+	// 無効なメソッドをグレイアウトする (2007.9.24 maya)
+	WritePrivateProfileString("TTSSH", "CheckAuthListFirst",
+	                          settings->CheckAuthListFirst ? "1" : "0", fileName);
 }
 
 
