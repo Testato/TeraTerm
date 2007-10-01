@@ -24,10 +24,10 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.55">2007.9.30 (Ver 4.55 未リリース)</a>
+  <li class="history"><a name="teraterm_4.55">2007.10.1 (Ver 4.55 未リリース)</a>
     <ul>
       <li>アプリケーションエラーが発生したときに、スタックトレースとレジスタ情報をメッセージボックスに表示させるようにした。メッセージボックスの内容は CTRL+C でクリップボードへコピーできる（Windows2000以降）。</li>
-      
+      <li><a href="#ttssh_2.43">SSH2対応TTSSH(2.43)</a>へ差し替えた</li>
     </ul>
   </li>
   
@@ -873,6 +873,12 @@
 
 <h2><a name="ttssh">TTSSH</a></h2>
 <ul>
+  <li class="history"><a name="ttssh_2.43">2007.10.1 (Ver 2.43 未リリース)</a>
+    <ul>
+      <li>known_hostsファイルへ公開鍵を追記もしくは置換する際、known_hostsダイアログでのユーザの問い合わせを確認してから、サーバ通信を再開するようにした。これによりknown_hostsの確認を待たずに、サーバへユーザ情報を送ってしまう問題を回避する。</li>
+    </ul>
+  </li>
+      
   <li class="history"><a name="ttssh_2.42">2007.9.30 (Ver 2.42)</a>
     <ul>
       <li>New connection ダイアログで使用中のシリアルポートを表示しないようにした。</li>
