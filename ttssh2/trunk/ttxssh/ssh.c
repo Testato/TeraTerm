@@ -6328,7 +6328,8 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 
 		pvar->ssh2_authlist = cstring; // 不要になったらフリーすること
 
-		if (!pvar->session_settings.CheckAuthListFirst) {
+		if (!pvar->session_settings.CheckAuthListFirst ||
+		    pvar->ssh2_autologin == 1) {
 			// まず none で試行して返ってきたところなので、実際のログイン処理へ
 			handle_SSH2_authrequest(pvar);
 		}
