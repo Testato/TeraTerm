@@ -640,14 +640,16 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		// 認証準備ができてから、認証データを送信する。早すぎると、落ちる。(2004.12.16 yutaka)
 		if (wParam == IDC_TIMER1) {
 			// 自動ログインのため
-			if (!(pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME)) {
+			if (!(pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME) &&
+			    (pvar->ssh_state.status_flags & STATUS_HOST_OK)) {
 				KillTimer(dlg, IDC_TIMER1);
 				SendMessage(dlg, WM_COMMAND, IDOK, 0);
 			}
 		}
 		else if (wParam == IDC_TIMER2) {
 			// authlist を得るため
-			if (!(pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME)) {
+			if (!(pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME) &&
+			    (pvar->ssh_state.status_flags & STATUS_HOST_OK)) {
 				// WM_INITDIALOG 時点ではプロトコルバージョンが分からない
 				if (SSHv2(pvar)) {
 					KillTimer(dlg, IDC_TIMER2);
@@ -672,7 +674,9 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		switch (LOWORD(wParam)) {
 		case IDOK:
 			// 認証準備ができてから、認証データを送信する。早すぎると、落ちる。(2001.1.25 yutaka)
-			if (pvar->userauth_retry_count == 0 && (pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME)) {
+			if (pvar->userauth_retry_count == 0 &&
+				((pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME) ||
+				 !(pvar->ssh_state.status_flags & STATUS_HOST_OK))) {
 				return FALSE;
 			}
 
@@ -692,6 +696,7 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		case IDC_SSHUSERNAME:
 			// ユーザ名がフォーカスを失ったとき (2007.9.29 maya)
 			if (!(pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME) &&
+			    (pvar->ssh_state.status_flags & STATUS_HOST_OK) &&
 			    HIWORD(wParam) == EN_KILLFOCUS) {
 				// 設定が有効でまだ取りに行っていないなら
 				if (SSHv2(pvar) &&
