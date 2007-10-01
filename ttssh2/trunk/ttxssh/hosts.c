@@ -1448,12 +1448,25 @@ BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname, Key *key)
 	free(pvar->hosts_state.prefetched_hostname);
 	pvar->hosts_state.prefetched_hostname = _strdup(hostname);
 
+	// known_hostsダイアログは同期的に表示させ、この時点においてユーザに確認
+	// させる必要があるため、直接コールに変更する。
+	// これによりknown_hostsの確認を待たずに、サーバへユーザ情報を送ってしまう問題を回避する。
+	// (2007.10.1 yutaka)
 	if (found_different_key) {
+#if 0
 		PostMessage(pvar->NotificationWindow, WM_COMMAND,
 		            ID_SSHDIFFERENTHOST, 0);
+#else
+		HOSTS_do_different_host_dialog(pvar->NotificationWindow, pvar);
+#endif
 	} else {
+#if 0
 		PostMessage(pvar->NotificationWindow, WM_COMMAND,
 		            ID_SSHUNKNOWNHOST, 0);
+#else
+		HOSTS_do_unknown_host_dialog(pvar->NotificationWindow, pvar);
+#endif
+
 	}
 
 	return TRUE;
