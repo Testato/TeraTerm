@@ -5,7 +5,7 @@ CALL build.bat
 rem  for XP or later
 set today=snapshot-%date:~0,4%%date:~5,2%%date:~8,2%
 
-for %%a in (%today%, %today%_1, %today%_2, %today%_3, %today%_4, %today%_5) do (
+for %%a in (%today%, %today%_2, %today%_3, %today%_4, %today%_5) do (
 set dst=%%a
 if not exist %%a goto create
 )
