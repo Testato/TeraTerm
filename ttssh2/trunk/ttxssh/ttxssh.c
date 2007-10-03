@@ -805,14 +805,16 @@ static void enable_dlg_items(HWND dlg, int from, int to, BOOL enabled)
 }
 
 // C-p/C-n/C-b/C-f/C-a/C-e をサポート (2007.9.5 maya)
+// C-d/C-k をサポート (2007.10.3 yutaka)
 // ドロップダウンの中のエディットコントロールを
 // サブクラス化するためのウインドウプロシージャ
-static WNDPROC OrigHostnameEditProc; // Original window procedure
-static LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
+WNDPROC OrigHostnameEditProc; // Original window procedure
+LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
                                          WPARAM wParam, LPARAM lParam)
 {
 	HWND parent;
-	int  max, select;
+	int  max, select, len;
+	char *str;
 
 	switch (msg) {
 		// キーが押されたのを検知する
@@ -850,6 +852,31 @@ static LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
 						max = GetWindowTextLength(dlg) ;
 						PostMessage(dlg, EM_SETSEL, max, max);
 						return 0;
+
+					case 0x44: // Ctrl+d
+					case 0x4b: // Ctrl+k
+						SendMessage(dlg, EM_GETSEL, 0, (LPARAM)&select);
+						max = GetWindowTextLength(dlg);
+						max++; // '\0'
+						str = malloc(max);
+						if (str != NULL) {
+							len = GetWindowText(dlg, str, max);
+							if (select >= 0 && select < len) {
+								if (wParam == 0x44) { // カーソル配下の文字のみを削除する
+									memmove(&str[select], &str[select + 1], len - select - 1);
+									str[len - 1] = '\0';
+
+								} else if (wParam == 0x4b) { // カーソルから行末まで削除する
+									str[select] = '\0';
+								}
+
+								SetWindowText(dlg, str);
+								SendMessage(dlg, EM_SETSEL, select, select);
+							}
+							free(str);
+							return 0;
+						}
+						break;
 				}
 			}
 			break;
@@ -859,8 +886,10 @@ static LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
 			switch (wParam) {
 				case 0x01:
 				case 0x02:
+				case 0x04:
 				case 0x05:
 				case 0x06:
+				case 0x0b:
 				case 0x0e:
 				case 0x10:
 					return 0;
