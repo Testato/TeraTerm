@@ -1283,7 +1283,7 @@ int FAR PASCAL CommTextEcho(PComVar cv, PCHAR B, int C)
 // listup serial port driver 
 // cf. http://www.codeproject.com/system/setupdi.asp?df=100&forumid=4368&exp=0&select=479661
 // (2007.8.17 yutaka)
-static void ListupSerialPort(char *ComPortTable, int comports, char **ComPortDesc, int ComPortMax)
+static void ListupSerialPort(unsigned char *ComPortTable, int comports, char **ComPortDesc, int ComPortMax)
 {
 	GUID ClassGuid[1];
 	DWORD dwRequiredSize;
@@ -1382,7 +1382,7 @@ static void ListupSerialPort(char *ComPortTable, int comports, char **ComPortDes
 }
 
 
-int PASCAL DetectComPorts(char *ComPortTable, int ComPortMax, char **ComPortDesc)
+int PASCAL DetectComPorts(unsigned char *ComPortTable, int ComPortMax, char **ComPortDesc)
 {
 	HMODULE h;
 	TCHAR   devicesBuff[65535];
