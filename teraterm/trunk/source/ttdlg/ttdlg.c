@@ -1004,7 +1004,7 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	PTTSet ts;
 	int i, w;
 	char Temp[128];
-	unsigned char ComPortTable[MAXCOMPORT];
+	WORD ComPortTable[MAXCOMPORT];
 	static char *ComPortDesc[MAXCOMPORT];
 	int comports;
 	char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
@@ -1556,7 +1556,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	char TempHost[HostNameMaxLength+1];
 	WORD i, j, w;
 	BOOL Ok;
-	unsigned char ComPortTable[MAXCOMPORT];
+	WORD ComPortTable[MAXCOMPORT];
 	static char *ComPortDesc[MAXCOMPORT];
 	int comports;
 	char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
