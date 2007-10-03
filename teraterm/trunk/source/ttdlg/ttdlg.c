@@ -1084,7 +1084,6 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			get_lang_msg("BTN_HELP", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
 			SetDlgItemText(Dialog, IDC_SERIALHELP, uimsg);
 
-			strncpy_s(Temp, sizeof(Temp),"COM", _TRUNCATE);
 			w = 0;
 
 			if ((comports = DetectComPorts(ComPortTable, ts->MaxComPort, ComPortDesc)) > 0) {
@@ -1094,7 +1093,7 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 						continue;
 					}
 
-					uint2str(ComPortTable[i], &Temp[3], sizeof(Temp)-3, 3);
+					_snprintf_s(Temp, sizeof(Temp), _TRUNCATE, "COM%d", ComPortTable[i]);
 // Serial dialogはドロップダウンリストの幅が大きくできないので、Descriptionはなしとする。
 #if 0
 					strncat_s(Temp, sizeof(Temp), ": ", _TRUNCATE);
@@ -1111,7 +1110,7 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 				DisableDlgItem(Dialog, IDC_SERIALPORT_LABEL, IDC_SERIALPORT_LABEL);
 			} else {
 				for (i=1; i<=ts->MaxComPort; i++) {
-					uint2str(i,&Temp[3],sizeof(Temp)-3,3);
+					_snprintf_s(Temp, sizeof(Temp), _TRUNCATE, "COM%d", i);
 					SendDlgItemMessage(Dialog, IDC_SERIALPORT, CB_ADDSTRING,
 					                   0, (LPARAM)Temp);
 				}
@@ -1664,7 +1663,6 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 			j = 0;
 			w = 1;
-			strncpy_s(EntName, sizeof(EntName),"COM", _TRUNCATE);
 			if ((comports=DetectComPorts(ComPortTable, GetHNRec->MaxComPort, ComPortDesc)) >= 0) {
 				for (i=0; i<comports; i++) {
 					// MaxComPort を越えるポートは表示しない
@@ -1677,7 +1675,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 						continue;
 					}
 
-					uint2str(ComPortTable[i], &EntName[3], sizeof(EntName)-3, 3);
+					_snprintf_s(EntName, sizeof(EntName), _TRUNCATE, "COM%d", ComPortTable[i]);
 					if (ComPortDesc[i] != NULL) {
 						strncat_s(EntName, sizeof(EntName), ": ", _TRUNCATE);
 						strncat_s(EntName, sizeof(EntName), ComPortDesc[i], _TRUNCATE);
@@ -1695,7 +1693,7 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 					if (CheckCOMFlag(i) == 1) {
 						continue;
 					}
-					uint2str(i,&EntName[3],sizeof(EntName)-3,3);
+					_snprintf_s(EntName, sizeof(EntName), _TRUNCATE, "COM%d", i);
 					SendDlgItemMessage(Dialog, IDC_HOSTCOM, CB_ADDSTRING,
 					                   0, (LPARAM)EntName);
 					j++;
@@ -2412,9 +2410,8 @@ BOOL CALLBACK GenDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 			SendDlgItemMessage(Dialog, IDC_GENPORT, CB_ADDSTRING,
 							   0, (LPARAM)"TCP/IP");
-			strncpy_s(Temp, sizeof(Temp),"COM", _TRUNCATE);
 			for (w=1;w<=ts->MaxComPort;w++) {
-				uint2str(w,&Temp[3],sizeof(Temp)-3,3);
+				_snprintf_s(Temp, sizeof(Temp), _TRUNCATE, "COM%d", w);
 				SendDlgItemMessage(Dialog, IDC_GENPORT, CB_ADDSTRING,
 								   0, (LPARAM)Temp);
 			}

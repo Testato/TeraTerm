@@ -2653,11 +2653,14 @@ void CVTWindow::OnFileNewConnection()
 		}
 		else {
 			if (GetHNRec.PortType==IdSerial) {
+				char comport[4];
 				Command[8] = 0;
-				strncat_s(Command,sizeof(Command)," /C=",_TRUNCATE);
-				uint2str(GetHNRec.ComPort,&Command[strlen(Command)],sizeof(Command)-strlen(Command),3);
+				strncat_s(comport,sizeof(comport)," /C=",_TRUNCATE);
+				_snprintf_s(comport, sizeof(comport), _TRUNCATE, "%d", GetHNRec.ComPort);
+				strncat_s(Command,sizeof(Command),comport,_TRUNCATE);
 			}
 			else {
+				char tcpport[6];
 				strncpy_s(Command2, sizeof(Command2), &Command[9], _TRUNCATE);
 				Command[9] = 0;
 				if (GetHNRec.Telnet==0)
@@ -2666,7 +2669,8 @@ void CVTWindow::OnFileNewConnection()
 					strncat_s(Command,sizeof(Command)," /T=1",_TRUNCATE);
 				if (GetHNRec.TCPPort<65535) {
 					strncat_s(Command,sizeof(Command)," /P=",_TRUNCATE);
-					uint2str(GetHNRec.TCPPort,&Command[strlen(Command)],sizeof(Command)-strlen(Command),5);
+					_snprintf_s(tcpport, sizeof(tcpport), _TRUNCATE, "%d", GetHNRec.TCPPort);
+					strncat_s(Command,sizeof(Command),tcpport,_TRUNCATE);
 				}
 #ifndef NO_INET6
 				/********************************/

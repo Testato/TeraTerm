@@ -1378,7 +1378,7 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	WritePrivateProfileString(Section, "RussKeyb", Temp, FName);
 
 	/* Serial port ID */
-	uint2str(ts->ComPort, Temp, sizeof(Temp), 3);
+	_snprintf_s(Temp, sizeof(Temp), _TRUNCATE, "%d", ts->ComPort);
 	WritePrivateProfileString(Section, "ComPort", Temp, FName);
 
 	/* Baud rate */
@@ -2302,10 +2302,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 		}
 		else if (_strnicmp(Temp, "/C=", 3) == 0) {	/* COM port num */
 			ParamPort = IdSerial;
-			if (strlen(&Temp[3]) >= 1)
-				ParamCom = (WORD) (Temp[3] - 0x30);
-			if (strlen(&Temp[3]) >= 2)
-				ParamCom = ParamCom * 10 + (WORD) (Temp[4] - 0x30);
+			ParamCom = atoi(&Temp[3]);
 			if ((ParamCom < 1) || (ParamCom > ts->MaxComPort))
 				ParamCom = 0;
 		}

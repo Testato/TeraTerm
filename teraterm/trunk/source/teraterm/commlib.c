@@ -483,8 +483,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 #endif /* NO_INET6 */
 
     case IdSerial:
-      strncpy_s(P, sizeof(P),"COM", _TRUNCATE);
-      uint2str(ts->ComPort,&P[3],sizeof(P)-3,3);
+      _snprintf_s(P, sizeof(P), _TRUNCATE, "COM%d", ts->ComPort);
       strncpy_s(ErrMsg, sizeof(ErrMsg),P, _TRUNCATE);
       strncpy_s(P, sizeof(P),"\\\\.\\", _TRUNCATE);
       strncat_s(P, sizeof(P),ErrMsg, _TRUNCATE);
@@ -561,8 +560,7 @@ void CommThread(void *arg)
   HANDLE REnd;
   char Temp[20];
 
-  strncpy_s(Temp, sizeof(Temp),READENDNAME, _TRUNCATE);
-  uint2str(cv->ComPort,&Temp[strlen(Temp)],sizeof(Temp)-strlen(Temp),3);
+  _snprintf_s(Temp, sizeof(Temp), _TRUNCATE, "%s%d", READENDNAME, cv->ComPort);
   REnd = OpenEvent(EVENT_ALL_ACCESS,FALSE, Temp);
   while (TRUE) {
     if (WaitCommEvent(cv->ComID,&Evt,NULL))
@@ -583,7 +581,6 @@ void CommStart(PComVar cv, LONG lParam, PTTSet ts)
 {
   char ErrMsg[31];
   char Temp[20];
-  char Temp2[3];
   char uimsg[MAX_UIMSG];
 
   if (! cv->Open ) return;
@@ -661,16 +658,12 @@ void CommStart(PComVar cv, LONG lParam, PTTSet ts)
       break;
 
     case IdSerial:
-      uint2str(cv->ComPort,Temp2,sizeof(Temp2),3);
-      strncpy_s(Temp, sizeof(Temp),READENDNAME, _TRUNCATE);
-      strncat_s(Temp, sizeof(Temp),Temp2, _TRUNCATE);
+      _snprintf_s(Temp, sizeof(Temp), _TRUNCATE, "%s%d", READENDNAME, cv->ComPort);
       ReadEnd = CreateEvent(NULL,FALSE,FALSE,Temp);
-      strncpy_s(Temp, sizeof(Temp),WRITENAME, _TRUNCATE);
-      strncat_s(Temp, sizeof(Temp),Temp2, _TRUNCATE);
+      _snprintf_s(Temp, sizeof(Temp), _TRUNCATE, "%s%d", WRITENAME, cv->ComPort);
       memset(&wol,0,sizeof(OVERLAPPED));
       wol.hEvent = CreateEvent(NULL,TRUE,TRUE,Temp);
-      strncpy_s(Temp, sizeof(Temp),READNAME, _TRUNCATE);
-      strncat_s(Temp, sizeof(Temp),Temp2, _TRUNCATE);
+      _snprintf_s(Temp, sizeof(Temp), _TRUNCATE, "%s%d", READNAME, cv->ComPort);
       memset(&rol,0,sizeof(OVERLAPPED));
       rol.hEvent = CreateEvent(NULL,TRUE,FALSE,Temp);
 
