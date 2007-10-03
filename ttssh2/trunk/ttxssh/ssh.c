@@ -6297,6 +6297,7 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 	char *data;
 	char *cstring;
 	int partial;
+	char buf[1024];
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
@@ -6327,6 +6328,8 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 			return FALSE;
 
 		pvar->ssh2_authlist = cstring; // 不要になったらフリーすること
+		_snprintf_s(buf, sizeof(buf), _TRUNCATE, "method list from server: %s", cstring);
+		notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
 
 		if (!pvar->session_settings.CheckAuthListFirst ||
 		    pvar->ssh2_autologin == 1) {
