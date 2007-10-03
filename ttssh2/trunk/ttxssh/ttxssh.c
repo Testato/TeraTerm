@@ -878,7 +878,7 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 	char EntName[128];
 	char TempHost[HostNameMaxLength + 1];
 	WORD i, j, w;
-	char ComPortTable[MAXCOMPORT];
+	unsigned char ComPortTable[MAXCOMPORT];
 	static char *ComPortDesc[MAXCOMPORT];
 	int comports;
 	BOOL Ok;
