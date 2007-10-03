@@ -708,6 +708,11 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 							alloc_control_text(GetDlgItem(dlg, IDC_SSHUSERNAME));
 					}
 
+					// ユーザ名が入力されているかチェックする
+					if (strlen(pvar->auth_state.user) == 0) {
+						return FALSE;
+					}
+
 					// ユーザ名を変更させない
 					EnableWindow(GetDlgItem(dlg, IDC_SSHUSERNAME), FALSE);
 
