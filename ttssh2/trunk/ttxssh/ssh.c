@@ -6346,10 +6346,21 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 	pvar->userauth_retry_count++;
 
 	if (pvar->ssh2_autologin == 1) {
+		char uimsg[MAX_UIMSG];
 		// SSH2自動ログインが有効の場合は、リトライは行わない。(2004.12.4 yutaka)
 		UTIL_get_lang_msg("MSG_SSH_AUTH_FAILURE_ERROR", pvar,
-		                  "SSH2 autologin error: user authentication failed");
-		notify_fatal_error(pvar, pvar->ts->UIMsg);
+		                  "SSH2 autologin error: user authentication failed.");
+		strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
+
+		if (pvar->ssh2_authlist != NULL || strlen(pvar->ssh2_authlist) != 0) {
+			if ((pvar->auth_state.supported_types & pvar->ssh2_authmethod) == 0) {
+				// 使用した認証メソッドはサポートされていなかった
+				UTIL_get_lang_msg("MSG_SSH_SERVER_UNSUPPORT_AUTH_METHOD_ERROR", pvar,
+				                  "\nAuthentication method is not supported by server.");
+				strncat_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
+			}
+		}
+		notify_fatal_error(pvar, uimsg);
 		return TRUE;
 	}
 
