@@ -46,6 +46,10 @@ static HFONT DlgAuthFont;
 static HFONT DlgTisFont;
 static HFONT DlgAuthSetupFont;
 
+const int IDC_TIMER1 = 300;
+const int IDC_TIMER2 = 301;
+const int autologin_timeout = 10; // ƒ~ƒŠ•b
+
 void destroy_malloced_string(char FAR * FAR * str)
 {
 	if (*str != NULL) {
@@ -578,9 +582,6 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
                                    LPARAM lParam)
 {
-	const int IDC_TIMER1 = 300;
-	const int IDC_TIMER2 = 301;
-	const int autologin_timeout = 10; // ƒ~ƒŠ•b
 	PTInstVar pvar;
 	LOGFONT logfont;
 	HFONT font;
