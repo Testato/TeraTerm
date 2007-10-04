@@ -304,7 +304,7 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 				EnableWindow(GetDlgItem(dlg, IDC_RSAFILENAME), FALSE);
 			}
 
-		// /auth=challange ‚ð’Ç‰Á (2007.10.5 maya)
+		// /auth=challenge ‚ð’Ç‰Á (2007.10.5 maya)
 		} else if (pvar->ssh2_authmethod == SSH_AUTH_TIS) {
 			CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL, IDC_SSHUSETIS);
 			EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORD), FALSE);
@@ -988,7 +988,7 @@ static BOOL CALLBACK TIS_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			DlgTisFont = NULL;
 		}
 
-		// /auth=challange ‚ð’Ç‰Á (2007.10.5 maya)
+		// /auth=challenge ‚ð’Ç‰Á (2007.10.5 maya)
 		if (pvar->ssh2_autologin == 1) {
 			SetDlgItemText(dlg, IDC_SSHPASSWORD, pvar->ssh2_password);
 			SendMessage(dlg, WM_COMMAND, IDOK, 0);

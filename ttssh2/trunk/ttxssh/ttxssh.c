@@ -1515,8 +1515,8 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 				//pvar->auth_state.cur_cred.method = SSH_AUTH_PASSWORD;
 				pvar->ssh2_authmethod = SSH_AUTH_PASSWORD;
 
-			// /auth=challange ‚ð’Ç‰Á (2007.10.5 maya)
-			} else if (MATCH_STR(option + 5, "=challange") == 0) { // keyboard-interactive”FØ
+			// /auth=challenge ‚ð’Ç‰Á (2007.10.5 maya)
+			} else if (MATCH_STR(option + 5, "=challenge") == 0) { // keyboard-interactive”FØ
 				//pvar->auth_state.cur_cred.method = SSH_AUTH_TIS;
 				pvar->ssh2_authmethod = SSH_AUTH_TIS;
 
