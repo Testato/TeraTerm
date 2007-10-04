@@ -11,7 +11,7 @@ extern "C" {
 extern char UILanguageFile[MAX_PATH];
 
 void CalcTextExtent(HDC DC, PCHAR Text, LPSIZE s);
-void TTMGetDir(PCHAR Dir);
+void TTMGetDir(PCHAR Dir, int destlen);
 void TTMSetDir(PCHAR Dir);
 int GetAbsPath(PCHAR FName, int destlen);
 

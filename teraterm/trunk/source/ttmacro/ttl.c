@@ -1318,7 +1318,7 @@ WORD TTLGetDir()
 		Err = ErrSyntax;
 	if (Err!=0) return Err;
 
-	TTMGetDir(Str);
+	TTMGetDir(Str, sizeof(Str));
 	SetStrVal(VarId,Str);
 	return Err;
 }
