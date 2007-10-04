@@ -300,11 +300,21 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 				EnableWindow(GetDlgItem(dlg, IDC_RSAFILENAME), FALSE);
 			}
 
+		// /auth=challange を追加 (2007.10.5 maya)
+		} else if (pvar->ssh2_authmethod == SSH_AUTH_TIS) {
+			CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL, IDC_SSHUSETIS);
+			EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORD), FALSE);
+			SetDlgItemText(dlg, IDC_SSHPASSWORD, "");
+			// TIS ではパスワードの入力が別ダイアログなので、
+			// 自動ログインでなくてもタイマーをセットする。
+			if (pvar->ssh2_autologin != 0)
+				SetTimer(dlg, IDC_TIMER1, autologin_timeout, 0);
+
 		} else {
 			// TODO
 
 		}
-		
+
 		if (pvar->ask4passwd == 1) {
 			SetFocus(GetDlgItem(dlg, IDC_SSHPASSWORD));
 		}
@@ -975,6 +985,12 @@ static BOOL CALLBACK TIS_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		}
 		else {
 			DlgTisFont = NULL;
+		}
+
+		// /auth=challange を追加 (2007.10.5 maya)
+		if (pvar->ssh2_autologin == 1) {
+			SetDlgItemText(dlg, IDC_SSHPASSWORD, pvar->ssh2_password);
+			SendMessage(dlg, WM_COMMAND, IDOK, 0);
 		}
 
 		return FALSE;			/* because we set the focus */

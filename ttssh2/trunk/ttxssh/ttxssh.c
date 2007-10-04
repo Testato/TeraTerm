@@ -1511,9 +1511,14 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 			//
 			pvar->ssh2_autologin = 1; // for SSH2 (2004.11.30 yutaka)
 
-			if (MATCH_STR(option + 5, "=password") == 0) { // パスワード/keyboard-interactive認証
+			if (MATCH_STR(option + 5, "=password") == 0) { // パスワード
 				//pvar->auth_state.cur_cred.method = SSH_AUTH_PASSWORD;
 				pvar->ssh2_authmethod = SSH_AUTH_PASSWORD;
+
+			// /auth=challange を追加 (2007.10.5 maya)
+			} else if (MATCH_STR(option + 5, "=challange") == 0) { // keyboard-interactive認証
+				//pvar->auth_state.cur_cred.method = SSH_AUTH_TIS;
+				pvar->ssh2_authmethod = SSH_AUTH_TIS;
 
 			} else if (MATCH_STR(option + 5, "=publickey") == 0) { // 公開鍵認証
 				//pvar->auth_state.cur_cred.method = SSH_AUTH_RSA;
