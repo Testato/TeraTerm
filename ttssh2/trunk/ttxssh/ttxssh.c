@@ -3474,14 +3474,14 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 
 			// パスワードを覚えている場合のみ、コマンドラインに渡す。(2006.8.3 yutaka)
 			if (pvar->settings.remember_password &&
-				pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) {
+			    pvar->auth_state.cur_cred.method == SSH_AUTH_PASSWORD) {
 				replace_blank_to_mark(pvar->auth_state.cur_cred.password, mark, sizeof(mark));
 				_snprintf_s(tmp, sizeof(tmp), _TRUNCATE,
 				            " /auth=password /user=%s /passwd=%s", pvar->auth_state.user, mark);
 				strncat_s(cmd, cmdlen, tmp, _TRUNCATE);
 
 			} else if (pvar->settings.remember_password &&
-						pvar->auth_state.cur_cred.method == SSH_AUTH_RSA) {
+			           pvar->auth_state.cur_cred.method == SSH_AUTH_RSA) {
 				replace_blank_to_mark(pvar->auth_state.cur_cred.password, mark, sizeof(mark));
 				_snprintf_s(tmp, sizeof(tmp), _TRUNCATE,
 				            " /auth=publickey /user=%s /passwd=%s", pvar->auth_state.user, mark);
@@ -3491,8 +3491,12 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 				_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, " /keyfile=%s", mark);
 				strncat_s(cmd, cmdlen, tmp, _TRUNCATE);
 
-			} else if (pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
-				// keyboard-interactive認証の場合は何もしない。
+			} else if (pvar->settings.remember_password &&
+			           pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
+				replace_blank_to_mark(pvar->auth_state.cur_cred.password, mark, sizeof(mark));
+				_snprintf_s(tmp, sizeof(tmp), _TRUNCATE,
+				            " /auth=challenge /user=%s /passwd=%s", pvar->auth_state.user, mark);
+				strncat_s(cmd, cmdlen, tmp, _TRUNCATE);
 
 			} else {
 				// don't come here
