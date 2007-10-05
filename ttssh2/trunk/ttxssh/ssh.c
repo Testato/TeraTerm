@@ -6360,7 +6360,7 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 		strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
 
 		if (pvar->ssh2_authlist != NULL || strlen(pvar->ssh2_authlist) != 0) {
-			if ((pvar->auth_state.supported_types & pvar->ssh2_authmethod) == 0) {
+			if ((pvar->auth_state.supported_types & (1 << pvar->ssh2_authmethod)) == 0) {
 				// 使用した認証メソッドはサポートされていなかった
 				UTIL_get_lang_msg("MSG_SSH_SERVER_UNSUPPORT_AUTH_METHOD_ERROR", pvar,
 				                  "\nAuthentication method is not supported by server.");
