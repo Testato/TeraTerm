@@ -6336,6 +6336,13 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 			// まず none で試行して返ってきたところなので、実際のログイン処理へ
 			handle_SSH2_authrequest(pvar);
 		}
+		else {
+			// TIS 用に OK を押すタイマーを仕掛ける
+			if (pvar->ssh2_authmethod == SSH_AUTH_TIS &&
+			    pvar->auth_state.auth_dialog != NULL) {
+				SendMessage(pvar->auth_state.auth_dialog, WM_COMMAND, IDOK, 0);
+			}
+		}
 		return TRUE;
 	}
 

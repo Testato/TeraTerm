@@ -46,10 +46,6 @@ static HFONT DlgAuthFont;
 static HFONT DlgTisFont;
 static HFONT DlgAuthSetupFont;
 
-const int IDC_TIMER1 = 300;
-const int IDC_TIMER2 = 301;
-const int autologin_timeout = 10; // ミリ秒
-
 void destroy_malloced_string(char FAR * FAR * str)
 {
 	if (*str != NULL) {
@@ -309,10 +305,6 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 			CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL, IDC_SSHUSETIS);
 			EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORD), FALSE);
 			SetDlgItemText(dlg, IDC_SSHPASSWORD, "");
-			// TIS ではパスワードの入力が別ダイアログなので、
-			// 自動ログインでなくてもタイマーをセットする。
-			if (pvar->ssh2_autologin != 0)
-				SetTimer(dlg, IDC_TIMER1, autologin_timeout, 0);
 
 		} else {
 			// TODO
@@ -582,6 +574,10 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
                                    LPARAM lParam)
 {
+	const int IDC_TIMER1 = 300;
+	const int IDC_TIMER2 = 301;
+	const int IDC_TIMER3 = 302;
+	const int autologin_timeout = 10; // ミリ秒
 	PTInstVar pvar;
 	LOGFONT logfont;
 	HFONT font;
@@ -629,19 +625,12 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			// サポートされているメソッドをチェックする。(2007.9.24 maya)
 			// 設定が有効で、まだ取りに行っておらず、ユーザ名が確定している
 			if (pvar->session_settings.CheckAuthListFirst &&
-			    !pvar->tryed_ssh2_authlist) {
-				// ダイアログのユーザ名を反映
-				if (pvar->auth_state.user == NULL) {
-					pvar->auth_state.user =
-						alloc_control_text(GetDlgItem(dlg, IDC_SSHUSERNAME));
-				}
-				if (strlen(pvar->auth_state.user) > 0) {
-					SetTimer(dlg, IDC_TIMER2, autologin_timeout, 0);
-				}
-				else {
-					// ユーザ名の KILLFOCUS 時にチェックするため
-					pvar->auth_state.user = NULL;
-				}
+			    !pvar->tryed_ssh2_authlist &&
+			    GetWindowTextLength(GetDlgItem(dlg, IDC_SSHUSERNAME)) > 0) {
+				SetTimer(dlg, IDC_TIMER2, autologin_timeout, 0);
+			}
+			else {
+				SetTimer(dlg, IDC_TIMER3, autologin_timeout, 0);
 			}
 		}
 		return FALSE;			/* because we set the focus */
@@ -659,23 +648,47 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		}
 		else if (wParam == IDC_TIMER2) {
 			// authlist を得るため
-			if (!(pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME) &&
-			    (pvar->ssh_state.status_flags & STATUS_HOST_OK)) {
-				// WM_INITDIALOG 時点ではプロトコルバージョンが分からない
-				if (SSHv2(pvar)) {
+			if (SSHv2(pvar)) {
+				if (!(pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME) &&
+				    (pvar->ssh_state.status_flags & STATUS_HOST_OK)) {
 					KillTimer(dlg, IDC_TIMER2);
+
+					// ダイアログのユーザ名を取得する
+					if (pvar->auth_state.user == NULL) {
+						pvar->auth_state.user =
+							alloc_control_text(GetDlgItem(dlg, IDC_SSHUSERNAME));
+					}
 
 					// ユーザ名を変更させない
 					EnableWindow(GetDlgItem(dlg, IDC_SSHUSERNAME), FALSE);
 
 					// none を送る
 					do_SSH2_userauth(pvar);
-				}
-				else {
-					// SSH2 でない場合は none を送らない
-					KillTimer(dlg, IDC_TIMER2);
+
+					// TIS 用に OK を押すタイマーを仕掛けるのは
+					// 認証に失敗したあとにしないと
+					// Unexpected SSH2 message になる。
 				}
 			}
+			else if (SSHv1(pvar)) {
+				KillTimer(dlg, IDC_TIMER2);
+				// TIS 用に OK を押すタイマーを仕掛ける
+				if (pvar->ssh2_authmethod == SSH_AUTH_TIS) {
+					SendMessage(dlg, WM_COMMAND, IDOK, 0);
+				}
+				// SSH1 では none を送らない
+			}
+			// プロトコルバージョン確定前は何もしない
+		}
+		else if (wParam == IDC_TIMER3) {
+			if (SSHv2(pvar) || SSHv1(pvar)) {
+				KillTimer(dlg, IDC_TIMER3);
+				// TIS 用に OK を押すタイマーを仕掛ける
+				if (pvar->ssh2_authmethod == SSH_AUTH_TIS) {
+					SendMessage(dlg, WM_COMMAND, IDOK, 0);
+				}
+			}
+			// プロトコルバージョン確定前は何もしない
 		}
 		return FALSE;
 
