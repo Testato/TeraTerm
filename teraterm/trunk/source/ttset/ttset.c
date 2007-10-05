@@ -530,7 +530,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	GetNthNum(Temp, 4, &(ts->VTFontCharSet));
 
 	/* Bold font flag */
-	ts->EnableBold = GetOnOff(Section, "EnableBold", FName, FALSE);
+	ts->EnableBold = GetOnOff(Section, "EnableBold", FName, TRUE);
 
 	/* Russian character set (font) */
 	GetPrivateProfileString(Section, "RussFont", "",
