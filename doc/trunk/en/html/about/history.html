@@ -29,10 +29,12 @@
       <li>added reporting the stacktrace and register dump of TeraTerm process when the application error occurs.</li>
       <li>add support Ctrl+d, Ctrl+k shortcut key in "Host" drop-down on "New connectin" dialog. The former is deleting the character at point and the latter is killing the text from point to the end of the line.</li>
       <li>expanded the maximum number of serial connection to 256.</li>
+      <li>changed the default value of "Bold style font" to On.</li>
+      <li>Bug fix: 'getdir' macro command caused crash.</li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.43">2.43</a></li>
     </ul>
   </li>
-  
+
   <li class="history"><a name="teraterm_4.54">2007.9.30 (Ver 4.54)</a>
     <ul>
       <li>added support for selecting a current screen buffer. Also, added `select screen' new menu under edit menu.</li>
@@ -875,6 +877,10 @@ SYNOPSIS:
 <ul>
   <li class="history"><a name="ttssh_2.43">2007.10.1 (Ver 2.43 not-released)</a>
     <ul>
+      <li>added challenge-response(keyboard-interactive) authentication method to autologin.
+        <ul>
+          <li>added "challenge" value to "/auth" command line switch.</li>
+        <ul></li>
       <li>Security fix: TeraTerm would temporarily halt server communication for the user confirmation when the server public key trys to add in known_hosts file.</li>
       <li>add support Ctrl+d, Ctrl+k shortcut key in "Host" drop-down on "New connectin" dialog. The former is deleting the character at point and the latter is killing the text from point to the end of the line.</li>
     </ul>
