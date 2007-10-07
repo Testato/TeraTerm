@@ -226,12 +226,12 @@ ja.launch_ttmenu=今すぐ TeraTerm &Menu を実行する
 ja.launch_collector=今すぐ &Collector を実行する
 en.msg_language_caption=Select Language
 en.msg_language_description=Which language shoud be used?
-en.msg_language_subcaption=Select the user interface language of Tera Term and TTSSH, then click Next.
+en.msg_language_subcaption=Select the language of application's menu and dialog, then click Next.
 en.msg_language_none=&English
 en.msg_language_japanese=&Japanese
 ja.msg_language_caption=言語の選択
 ja.msg_language_description=ユーザーインターフェースの言語を選択してください。
-ja.msg_language_subcaption=Tera Term と TTSSH のユーザーインターフェースで使用する言語を選択して、「次へ」をクリックしてください。
+ja.msg_language_subcaption=アプリケーションのメニューやダイアログ等で使用する言語を選択して、「次へ」をクリックしてください。
 ja.msg_language_none=英語(&E)
 ja.msg_language_japanese=日本語(&J)
 
