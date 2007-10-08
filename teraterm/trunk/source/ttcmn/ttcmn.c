@@ -280,6 +280,36 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
 				KeyStr[0] = 0x0D;
 			}
 			break;
+		case IdSlash: /* numaric pad slash key */
+			if (AppliKeyMode) {
+				*Len = 3;
+				strncpy_s(KeyStr,destlen,"\033Oo",_TRUNCATE);
+			}
+			else {
+				*Len = 1;
+				KeyStr[0] = '/';
+			}
+			break;
+		case IdAsterisk: /* numaric pad asterisk key */
+			if (AppliKeyMode) {
+				*Len = 3;
+				strncpy_s(KeyStr,destlen,"\033Oj",_TRUNCATE);
+			}
+			else {
+				*Len = 1;
+				KeyStr[0] = '*';
+			}
+			break;
+		case IdPlus: /* numaric pad plus key */
+			if (AppliKeyMode) {
+				*Len = 3;
+				strncpy_s(KeyStr,destlen,"\033Ok",_TRUNCATE);
+			}
+			else {
+				*Len = 1;
+				KeyStr[0] = '+';
+			}
+			break;
 		case IdPF1: /* DEC Key: PF1 */
 			*Len = 3;
 			strncpy_s(KeyStr,destlen,"\033OP",_TRUNCATE);

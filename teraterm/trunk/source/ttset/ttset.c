@@ -1828,6 +1828,12 @@ void FAR PASCAL ReadKeyboardCnf
 
 	GetInt(KeyMap, IdEnter, VTNumeric, "NumEnter", FName);
 
+	GetInt(KeyMap, IdSlash, VTNumeric, "NumSlash", FName);
+
+	GetInt(KeyMap, IdAsterisk, VTNumeric, "NumAsterisk", FName);
+
+	GetInt(KeyMap, IdPlus, VTNumeric, "NumPlus", FName);
+
 	GetInt(KeyMap, IdPF1, VTNumeric, "PF1", FName);
 
 	GetInt(KeyMap, IdPF2, VTNumeric, "PF2", FName);
