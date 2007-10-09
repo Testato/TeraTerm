@@ -342,13 +342,16 @@ static LONG CALLBACK ApplicationFaultHandler(EXCEPTION_POINTERS *ExInfo)
 	IMAGEHLP_LINE	ih_line;
 	int frame;
 	char msg[3072], buf[256];
-	HMODULE h;
+	HMODULE h, h2;
 
-	// Windows95/98では動かないためスキップする。(2007.10.9 yutaka)
+	// Windows98/Me/NT4では動かないためスキップする。(2007.10.9 yutaka)
+	h2 = LoadLibrary("imagehlp.dll");
 	if (((h = GetModuleHandle("imagehlp.dll")) == NULL) ||
 		(GetProcAddress(h, "SymGetLineFromAddr") == NULL)) {
+			FreeLibrary(h2);
 			goto error;
 	}
+	FreeLibrary(h2);
 
 	/* シンボル情報格納用バッファの初期化 */
 	gptr = GlobalAlloc(GMEM_FIXED, 10000);
