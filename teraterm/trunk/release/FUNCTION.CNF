@@ -47,22 +47,18 @@ Num7=71
 Num8=72
 ;Num pad 9 key
 Num9=73
-;Cntrl + Num pad '+' key
-NumMinus=1102
 ;Num pad '+' key
-NumComma=78
+NumPlus=78
 ;Num pad '.' key
 NumPeriod=83
 ;Num pad Enter key
 NumEnter=284
-;Num pad NumLock key
-PF1=325
 ;Num pad '/' key
-PF2=309
+NumSlash=309
 ;Num pad '*' key
-PF3=55
+NumAsterisk=55
 ;Num pad '-' key
-PF4=74
+NumMinus=74
 
 [VT function keys]
 Hold=off

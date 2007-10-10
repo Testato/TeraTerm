@@ -11,15 +11,15 @@ Right=333
 ;Left arrow key
 Left=331
 ;Insert key
-Insert=338
+Find=338
 ;Home key
-Find=327
+Insert=327
 ;PageUp key
-Prev=329
+Remove=329
 ;Delete key
-Remove=339
+Select=339
 ;End key
-Select=335
+Prev=335
 ;PageDown key
 Next=337
 
@@ -44,18 +44,22 @@ Num7=71
 Num8=72
 ;Num pad 9 key
 Num9=73
+;Ctrl + Num pad '+' key
+NumMinus=1102
 ;Num pad '+' key
-NumPlus=78
+NumComma=78
 ;Num pad '.' key
 NumPeriod=83
 ;Num pad Enter key
 NumEnter=284
+;Num pad NumLock key
+PF1=325
 ;Num pad '/' key
-NumSlash=309
+PF2=309
 ;Num pad '*' key
-NumAsterisk=55
+PF3=55
 ;Num pad '-' key
-NumMinus=74
+PF4=74
 
 [VT function keys]
 Hold=off
