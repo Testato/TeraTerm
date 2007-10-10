@@ -28,18 +28,32 @@ Tera Term インストール時のキー設定は各キーの機能が VT 端末にできるだけ近くなるよ
 配布パッケージには以下のキーボード設定ファイルが含まれています。
 </p>
 
-<pre>
-<span class="syntax">IBMKEYB.CNF</span>     IBM-PC/AT (いわゆる DOS/V マシン) 101 (106) キーボード用
-                  設定ファイルの例 (Windows 95/NT 用)
+<dl>
+  <dt>IBMKEYB.CNF</dt>
+  <dd>IBM-PC/AT (いわゆる DOS/V マシン) 101 (106) キーボード用設定ファイルの例 (Windows 95/NT 用)</dd>
 
-<span class="syntax">PC98KEYB.CNF</span>    NEC PC 98 キーボード用設定ファイルの例 (Windows 95 用)
+  <dt>PC98KEYB.CNF</dt>
+  <dd>NEC PC 98 キーボード用設定ファイルの例 (Windows 95 用)</dd>
 
-<span class="syntax">NT98KEYB.CNF</span>    NEC PC 98 キーボード 用設定ファイルの例 (Windows NT 用)
+  <dt>NT98KEYB.CNF</dt>
+  <dd>NEC PC 98 キーボード 用設定ファイルの例 (Windows NT 用)</dd>
 
-<span class="syntax">FUNCTION.CNF</span>    IBMKEYB.CNF の F1-F10 を有効にしたもの
+  <dt>FUNCTION.CNF</dt>
+  <dd>IBMKEYB.CNF をベースにしたカスタマイズ例<br>
+      <ul>
+        <li>F1-F10 が有効</li>
+        <li>特殊キー(*1)は刻印のキーシーケンスを送出する</li>
+      </ul></dd>
 
-<span class="syntax">KEYBOARD.CNF</span>    インストール時には IBMKEYB.CNF と同一
-</pre>
+  <dt>KEYBOARD.CNF</dt>
+  <dd>インストール時には IBMKEYB.CNF と同一</dd>
+</dl>
+
+<p>
+(*1) ここで言う特殊キーとは、Ins, Del, Home, End, PageUp, PageDown およびテンキーの *, /, +, -, Ctrl+"+" キーのことを指す。<br>
+VT220 ではこれらのキーの位置には違うキーが配置されている。オリジナルの TeraTerm Pro から、キーボード設定ファイルでは、この VT220 でキー位置が対応するキーシーケンスが送出されるようになっている。<br>
+しかし、<strong>FUNCTION.CNF</strong> は、キーに刻印されているキーシーケンスを送出するよう設定している。
+</p>
 
 <p>
 インストーラーは <strong>IBMKEYB.CNF</strong> を <strong>KEYBOARD.CNF</strong> としてコピーします。もし違う設定を使いたい場合には、自分で適切なファイルをコピーして <strong>KEYBOARD.CNF</strong> を作成し直してください。
@@ -48,6 +62,7 @@ Tera Term インストール時のキー設定は各キーの機能が VT 端末にできるだけ近くなるよ
 <p>
 PC98 NX シリーズの PC の場合、<strong>IBMKEYB.CNF</strong> を使用してください。
 </p>
+
 
 </BODY>
 </HTML>

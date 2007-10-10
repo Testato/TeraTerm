@@ -29,17 +29,26 @@ The file name of keyboard setup file to be loaded by Tera Term can be specified 
 The distribution package contains the following keyboard setup files:
 </p>
 
-<pre>
-<span class="syntax">IBMKEYB.CNF</span>     Sample file for the IBM-PC/AT 101-key keyboard
+<dl>
+  <dt>IBMKEYB.CNF</dt>
+  <dd>Sample file for the IBM-PC/AT 101-key keyboard</dd>
 
-<span class="syntax">PC98KEYB.CNF</span>    Sample file for the NEC PC 98 keyboard (Japanese Windows 95)
+  <dt>PC98KEYB.CNF</dt>
+  <dd>Sample file for the NEC PC 98 keyboard (Japanese Windows 95)</dd>
 
-<span class="syntax">NT98KEYB.CNF</span>    Sample file for the NEC PC 98 keyboard (Japanese Windows NT)
+  <dt>NT98KEYB.CNF</dt>
+  <dd>Sample file for the NEC PC 98 keyboard (Japanese Windows NT)</dd>
 
-<span class="syntax">FUNCTION.CNF</span>    IBMKEYB.CNF that F1-F10 keys are enabled.
+  <dt>FUNCTION.CNF</dt>
+  <dd>Sample file of customize. Based on IBMKEYB.CNF.<br>
+      <ul>
+        <li>enables F1-F10</li>
+        <li>special keys are send the key sequence of "mark."</li>
+      </ul></dd>
 
-<span class="syntax">KEYBOARD.CNF</span>    Default keyboard setup file (copy of IBMKEYB.CNF at the moment just after the installation)
-</pre>
+  <dt>KEYBOARD.CNF</dt>
+  <dd>Default keyboard setup file (copy of IBMKEYB.CNF at the moment just after the installation)</dd>
+</dl>
 
 <p>
 Installer copies <strong>IBMKEYB.CNF</strong> as <strong>KEYBOARD.CNF</strong>. If you want to use other settings, you have to copy other file to <strong>KEYBOARD.CNF</strong>.
