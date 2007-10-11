@@ -31,6 +31,7 @@
       <li>シリアル接続のCOM最大ポートを256まで拡張した。</li>
       <li>フォントの Bold style 設定のデフォルト値を On に変更した。</li>
       <li>getdir マクロコマンドでクラッシュする問題を修正した。</li>
+      <li>ログファイル名に strftime のフォーマットを指定したときに展開されない問題を修正した。</li>
       <li><a href="#ttssh_2.43">SSH2対応TTSSH(2.43)</a>へ差し替えた</li>
     </ul>
   </li>
@@ -887,7 +888,7 @@
       <li>New connection ダイアログの Host ドロップダウンで、Ctrl+d, Ctrl+k ショートカットキーをサポートした。それぞれ「一文字削除」「行末まで削除」に対応する。</li>
     </ul>
   </li>
-      
+
   <li class="history"><a name="ttssh_2.42">2007.9.30 (Ver 2.42)</a>
     <ul>
       <li>New connection ダイアログで使用中のシリアルポートを表示しないようにした。</li>

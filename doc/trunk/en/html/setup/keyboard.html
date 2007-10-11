@@ -1,13 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
+<html>
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>Keyboard setup file</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
+<title>Keyboard setup file</title>
+<meta http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../style.css" type="text/css">
-</HEAD>
-<BODY>
+</head>
+<body>
 
 <h1>Keyboard setup file</h1>
 
@@ -16,13 +16,14 @@ The keyboard setup file assigns keys on PC keyboard for various functions such a
 </p>
 
 <p>
-The default keyboard setup stored in the file KEYBOARD.CNF is almost compatible with VT terminal keyboard. You can modify key assignments by editing the file. See <A HREF="../reference/keycode.txt">KEYCODE.TXT</A> for the format of keyboard setup file.
-
-
+The default keyboard setup stored in the file KEYBOARD.CNF is almost compatible with VT terminal keyboard.
+You can modify key assignments by editing the file.
+See <A HREF="../reference/keycode.txt">KEYCODE.TXT</A> for the format of keyboard setup file.
 </p>
 
 <p>
-The file name of keyboard setup file to be loaded by Tera Term can be specified as a <A HREF="../commandline/teraterm.html">command line</A> parameter of Tera Term. If you omit the file name extension, the default extension ".CNF" is assumed. If you omit the file name, the default file  <strong>KEYBOARD.CNF</strong> is loaded.
+The file name of keyboard setup file to be loaded by Tera Term can be specified as a <A HREF="../commandline/teraterm.html">command line</A> parameter of Tera Term.
+If you omit the file name extension, the default extension ".CNF" is assumed. If you omit the file name, the default file  <strong>KEYBOARD.CNF</strong> is loaded.
 </p>
 
 <p>
@@ -40,10 +41,10 @@ The distribution package contains the following keyboard setup files:
   <dd>Sample file for the NEC PC 98 keyboard (Japanese Windows NT)</dd>
 
   <dt>FUNCTION.CNF</dt>
-  <dd>Sample file of customize. Based on IBMKEYB.CNF.<br>
+  <dd>A customize sample based on IBMKEYB.CNF<br>
       <ul>
-        <li>enables F1-F10</li>
-        <li>special keys are send the key sequence of "mark."</li>
+        <li>F1-F10 are modified</li>
+        <li>special keys(*1) will transmit the key sequence to display a symbol on key top.</li>
       </ul></dd>
 
   <dt>KEYBOARD.CNF</dt>
@@ -51,8 +52,20 @@ The distribution package contains the following keyboard setup files:
 </dl>
 
 <p>
-Installer copies <strong>IBMKEYB.CNF</strong> as <strong>KEYBOARD.CNF</strong>. If you want to use other settings, you have to copy other file to <strong>KEYBOARD.CNF</strong>.
+(*1) Special keys mentioned here are Ins, Del, Home, End, PageUp, PageDown and *, /, +, -, Ctrl+"+"  on Ten-key pad.<br>
+Note that VT220 employes the different maps of these keys. The original Keyboard Mapping file used by TeraTerm Pro uses VT220 key map and therefore will transmit VT220 key sequence.<br>
+However, by using <strong>FUNCTION.CNF</strong>, a key sequence to transmit will be same as its symbol on key top.
 </p>
 
-</BODY>
-</HTML>
+<p>
+The installer will copy <strong>IBMKEYB.CNF</strong> on <strong>KEYBOARD.CNF</strong>.
+If you want to use a different key map, copy an appropriate file on <strong>KEYBOARD.CNF</strong> to meet your need.
+</p>
+
+<p>
+If you want to use PC98 NX key map, use <strong>IBMKEYB.CNF</strong>.
+</p>
+
+
+</body>
+</html>

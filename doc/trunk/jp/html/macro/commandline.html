@@ -1,31 +1,45 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
+<html>
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>コマンドライン</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
+<title>コマンドライン</title>
+<meta http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../style.css" type="text/css">
-</HEAD>
-<BODY>
+</head>
+<body>
+
 
 <h1>コマンドライン</h1>
 
 <pre>
 <span class="syntax">TTPMACRO.EXE [/I] [/V] [&lt;macro file&gt; [&lt;second param&gt;] [&lt;third param&gt;]]</span>
-
-ここで:
-    <span class="syntax">/I</span>    起動時に MACRO をアイコン化
-    <span class="syntax">/V</span>    起動時に MACRO を隠す
-    <span class="syntax">&lt;macro file&gt;</span>      マクロファイル名
-    <span class="syntax">&lt;second param&gt;</span>    システム変数 param2 に格納される文字列
-    <span class="syntax">&lt;third param&gt;</span>     システム変数 param3 に格納される文字列
 </pre>
+
+
+<h2>オプション</h2>
+
+<dl>
+  <dt>/I</dt>
+  <dd>起動時に MACRO をアイコン化</dd>
+
+  <dt>/V</dt>
+  <dd>起動時に MACRO を隠す</dd>
+
+  <dt>&lt;macro file&gt;</dt>
+  <dd>マクロファイル名</dd>
+
+  <dt>&lt;second param&gt;</dt>
+  <dd>システム変数 param2 に格納される文字列</dd>
+
+  <dt>&lt;third param&gt;</dt>
+  <dd>システム変数 param3 に格納される文字列</dd>
+</dl>
 
 <p>
 システム変数 param2, param3 については<A HREF="./syntax/variables.html">"変数"</A> 参照。
 </p>
 
 
-</BODY>
-</HTML>
+</body>
+</html>

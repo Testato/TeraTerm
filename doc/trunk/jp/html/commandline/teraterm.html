@@ -1,13 +1,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
+<html>
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>Tera Term Pro コマンドライン</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
+<title>Tera Term Pro コマンドライン</title>
+<meta http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../style.css" type="text/css">
-</HEAD>
-<BODY>
+</head>
+<body>
+
 
 <h1>Tera Term Pro コマンドライン</h1>
 
@@ -29,131 +30,178 @@ Tera Term Pro を起動するときのコマンドライン(ショートカットのリンク先)の形式
          [;&lt;comment&gt;]</span>
 </pre>
 
+
+<h2>オプション</h2>
+
+<dl>
+  <dt>&lt;host&gt;</dt>
+  <dd>ホスト名または IP アドレス</dd>
+
+  <dt>&lt;host&gt;:&lt;TCP port#&gt;</dt>
+  <dd>TCP ポート番号つき &lt;host&gt;<br>
+      &lt;host&gt; と &lt;TCP port#&gt; の間に":"が置かれる。</dd>
+
+  <dt>&lt;host&gt; &lt;TCP port#&gt;</dt>
+  <dd>TCP ポート番号つき &lt;host&gt;<br>
+      &lt;host&gt; と &lt;TCP port#&gt; の間に1個以上の空白文字が置かれる。<br>
+      &lt;host&gt; のすぐ後にくる数字は TCP ポート番号とみなされる。</dd>
+
+  <dt>/B</dt>
+  <dd>Telnet バイナリオプション</dd>
+
+  <dt>/C=&lt;serial port#&gt;</dt>
+  <dd>シリアルポート
+      <ul>
+        <li><span class="syntax">/C=1</span> COM1</li>
+        <li><span class="syntax">/C=2</span> COM2</li>
+        <li><span class="syntax">/C=3</span> COM3</li>
+        <li>:</li>
+        <li><span class="syntax">/C=256</span> COM256</li>
+      </ul></dd>
+
+  <dt>/DUPLICATE</dt>
+  <dd>使用禁止（セッションの複製で内部で使われる）</dd>
+
+  <dt>/E</dt>
+  <dd>TCPLocalEcho/TCPCRSend の設定を無効にする</dd>
+
+  <dt>/F=&lt;setup file&gt;</dt>
+  <dd>設定ファイル<br>
+      <span class="syntax">/F=TERATERM.INI</span> (省略時)</dd>
+
+  <dt>/FD=&lt;file transfer directory&gt;</dt>
+  <dd>ファイル転送用ディレクトリ</dd>
+
+  <dt>/H</dt>
+  <dd>タイトルバーを隠す</dd>
+
+  <dt>/I</dt>
+  <dd>起動時にアイコン状態にする</dd>
+
+  <dt>/K=&lt;keyboard setup file&gt;</dt>
+  <dd>キーボード設定ファイル<br>
+      <span class="syntax">/K=KEYBOARD.CNF</span> (省略時)</dd>
+
+  <dt>/KR=&lt;kanji code (receive)&gt;</dt>
+  <dd>漢字コード (受信)
+      <ul>
+        <li><span class="syntax">/KR=SJIS</span></li>
+        <li><span class="syntax">/KR=EUC</span></li>
+        <li><span class="syntax">/KR=JIS</span></li>
+        <li><span class="syntax">/KR=UTF8</span> UTF-8(正規化形式 C: Windows, Linux)</li>
+        <li><span class="syntax">/KR=UTF8m</span> UTF-8(正規化形式 D: Mac OS X)</li>
+      </ul></dd>
+
+  <dt>/KT=&lt;kanji code (transmit)&gt;</dt>
+  <dd>漢字コード (送信)
+      <ul>
+        <li><span class="syntax">/KR=SJIS</span></li>
+        <li><span class="syntax">/KR=EUC</span></li>
+        <li><span class="syntax">/KR=JIS</span></li>
+        <li><span class="syntax">/KR=UTF8</span></li>
+      </ul></dd>
+
+  <dt>/L=&lt;log file&gt;</dt>
+  <dd>起動時にログを開始</dd>
+
+  <dt>/LA=&lt;language&gt;</dt>
+  <dd>言語モード
+      <ul>
+        <li><span class="syntax">/LA=E</span> 英語</li>
+        <li><span class="syntax">/LA=J</span> 日本語</li>
+        <li><span class="syntax">/LA=R</span> ロシア語</li>
+      </ul></dd>
+
+  <dt>/M=&lt;macro file&gt;</dt>
+  <dd>起動時にマクロを実行</dd>
+
+  <dt>/P=&lt;TCP port#&gt;</dt>
+  <dd>TCP ポート番号</dd>
+
+  <dt>/R=&lt;replay file&gt;</dt>
+  <dd>ファイルを再生</dd>
+
+  <dt>/T=&lt;telnet flag&gt;</dt>
+  <dd><ul>
+        <li><span class="syntax">/T=1</span> Telnet プロトコルを使用</li>
+        <li><span class="syntax">/T=0</span> Telnet プロトコルを不使用</li>
+      </ul></dd>
+
+  <dt>/V</dt>
+  <dd>ウィンドウが見えない状態で起動</dd>
+
+  <dt>/W="&lt;window title&gt;"</dt>
+  <dd>ウィンドウのタイトル</dd>
+
+  <dt>/X=&lt;window position (x)&gt;</dt>
+  <dd>ウィンドウの位置(水平)</dd>
+
+  <dt>/Y=&lt;window position (y)&gt;</dt>
+  <dd>ウィンドウの位置(垂直)</dd>
+
+  <dt>/TIMEOUT=&lt;connecting timeout value&gt;</dt>
+  <dd>接続中の処理をキャンセルするまでの時間（秒単位）</dd>
+
+  <dt>;&lt;comment&gt;</dt>
+  <dd>コメント。コマンドラインの最後に置く必要がある。</dd>
+</dl>
+
+
+<h2>例</h2>
+
 <pre>
-ここで:
-    <span class="syntax">&lt;host&gt;</span>    ホスト名または IP アドレス
-
-    <span class="syntax">&lt;host&gt;:&lt;TCP port#&gt;</span>    TCP ポート番号つき &lt;host&gt;
-            &lt;host&gt; と &lt;TCP port#&gt; の間に":"が置かれる。
-
-    <span class="syntax">&lt;host&gt; &lt;TCP port#&gt;</span>    TCP ポート番号つき &lt;host&gt;
-            &lt;host&gt; と &lt;TCP port#&gt; の間に1個以上の空白文字が置かれる。
-            &lt;host&gt; のすぐ後にくる数字は TCP ポート番号とみなされる。
-
-    <span class="syntax">/B</span>    Telnet バイナリオプション
-
-    <span class="syntax">/C=&lt;serial port#&gt;</span>    シリアルポート
-      <span class="syntax">/C=1</span>  COM1
-      <span class="syntax">/C=2</span>  COM2
-      <span class="syntax">/C=3</span>  COM3
-      <span class="syntax">/C=4</span>  COM4
-         :
-      <span class="syntax">/C=99</span> COM99
-
-    <span class="syntax">/DUPLICATE</span>    使用禁止（セッションの複製で内部で使われる）
-
-    <span class="syntax">/E</span>    TCPLocalEcho/TCPCRSend の設定を無効にする
-
-    <span class="syntax">/F=&lt;setup file&gt;</span>    設定ファイル
-      <span class="syntax">/F=TERATERM.INI</span> (省略時)
-
-    <span class="syntax">/FD=&lt;file transfer directory&gt;</span>    ファイル転送用ディレクトリ
-
-    <span class="syntax">/H</span>    タイトルバーを隠す
-
-    <span class="syntax">/I</span>    起動時にアイコン状態にする
-
-    <span class="syntax">/K=&lt;keyboard setup file&gt;</span>
-      <span class="syntax">/K=KEYBOARD.CNF</span> (省略時)
-
-    <span class="syntax">/KR=&lt;kanji code (receive)&gt;</span>    漢字コード (受信)
-      <span class="syntax">/KR=SJIS</span>
-      <span class="syntax">/KR=EUC</span>
-      <span class="syntax">/KR=JIS</span>
-      <span class="syntax">/KR=UTF8</span>    UTF-8(正規化形式 C: Windows, Linux)
-      <span class="syntax">/KR=UTF8m</span>   UTF-8(正規化形式 D: Mac OS X)
-
-    <span class="syntax">/KT=&lt;kanji code (transmit)&gt;</span>    漢字コード (送信)
-      <span class="syntax">/KT=SJIS</span>
-      <span class="syntax">/KT=EUC</span>
-      <span class="syntax">/KT=JIS</span>
-      <span class="syntax">/KR=UTF8</span>    UTF-8(正規化形式 C: Windows, Linux)
-
-    <span class="syntax">/L=&lt;log file&gt;</span>    起動時にログを開始
-
-    <span class="syntax">/LA=&lt;language&gt;</span>   言語モード
-      <span class="syntax">/LA=E</span>  英語
-      <span class="syntax">/LA=J</span>  日本語
-      <span class="syntax">/LA=R</span>  ロシア語
-
-    <span class="syntax">/M=&lt;macro file&gt;</span>    起動時にマクロを実行
-
-    <span class="syntax">/P=&lt;TCP port#&gt;</span>    TCP ポート番号
-
-    <span class="syntax">/R=&lt;replay file&gt;</span>    ファイルを再生
-
-    <span class="syntax">/T=&lt;telnet flag&gt;</span>
-      <span class="syntax">/T=1</span>  Telnet プロトコルを使用
-      <span class="syntax">/T=0</span>  Telnet プロトコルを不使用
-
-    <span class="syntax">/V</span>    ウィンドウが見えない状態で起動
-
-    <span class="syntax">/W="&lt;window title&gt;"</span>    ウィンドウのタイトル
-
-    <span class="syntax">/X=&lt;window position (x)&gt;</span>    ウィンドウの位置(水平)
-
-    <span class="syntax">/Y=&lt;window position (y)&gt;</span>    ウィンドウの位置(垂直)
-
-    <span class="syntax">/TIMEOUT=&lt;connecting timeout value&gt;</span>    接続中の処理をキャンセルするまでの時間（秒単位）
-
-    <span class="syntax">;&lt;comment&gt;</span>    コメント。コマンドラインの最後に置く必要がある。
-
+TTERMPRO
+TTERMPRO myhost.mydomain
+TTERMPRO myhost.mydomain:23
+TTERMPRO myhost.mydomain 23
+TTERMPRO 111.111.11.11
+TTERMPRO myhost.mydomain /T=0 /P=7
+TTERMPRO /C=1
+TTERMPRO /F=TELNET.INI
+TTERMPRO foohost.foodomain /F=FOOHOST.INI
+TTERMPRO /C=2 /F=MYSETUP.INI
+TTERMPRO /K=MYKEY.CNF /W="My host"
+TTERMPRO /R=README.TXT ; replay a file
+TTERMPRO myhost /B /X=100 /Y=50
 </pre>
 
-<pre>
-例:
-<span class="syntax">    TTERMPRO
-    TTERMPRO myhost.mydomain
-    TTERMPRO myhost.mydomain:23
-    TTERMPRO myhost.mydomain 23
-    TTERMPRO 111.111.11.11
-    TTERMPRO myhost.mydomain /T=0 /P=7
-    TTERMPRO /C=1
-    TTERMPRO /F=TELNET.INI
-    TTERMPRO foohost.foodomain /F=FOOHOST.INI
-    TTERMPRO /C=2 /F=MYSETUP.INI
-    TTERMPRO /K=MYKEY.CNF /W="My host"
-    TTERMPRO /R=README.TXT ; replay a file
-    TTERMPRO myhost /B /X=100 /Y=50</span>
-</pre>
 
-<pre>
-省略時の値:
-    以下の省略時の値は Tera Term 設定ファイルに保存されています。
-<span class="syntax">        &lt;TCP port#&gt;
-        /B
-        &lt;serial port#&gt;
-        &lt;file transfer directory&gt;
-        /H
-        &lt;kanji code (receive)&gt;
-        &lt;kanji code (transmit)&gt;
-        &lt;language&gt;
-        &lt;macro file&gt;
-        &lt;telnet flag&gt;
-        &lt;window title&gt;
-        &lt;window pos (x)&gt;
-        &lt;window pos (y)&gt;</span>
-</pre>
+<h2>省略時の値</h2>
 
 <p>
-注:<br>
+以下の省略時の値は Tera Term 設定ファイルに保存されています。
+</p>
+
+<pre>
+&lt;TCP port#&gt;
+/B
+&lt;serial port#&gt;
+&lt;file transfer directory&gt;
+/H
+&lt;kanji code (receive)&gt;
+&lt;kanji code (transmit)&gt;
+&lt;language&gt;
+&lt;macro file&gt;
+&lt;telnet flag&gt;
+&lt;window title&gt;
+&lt;window pos (x)&gt;
+&lt;window pos (y)&gt;
+</pre>
+
+
+<h2>注</h2>
+
+<p>
 &lt;telnet flag&gt; が 1 で、かつ &lt;TCP port#&gt; が 23 のときだけ、Tera Term から自発的に telnet の option negotiation を開始します。それ以外の場合でも Tera Term はホストから送られてきた telnet コマンドに応答することができます。
 </p>
 
+
+<h2>参照</h2>
+
 <p>
-参照:<br>
 <a href="../usage/tips/not_port23.html">Telnet 用ポート番号 / 非 telnet 接続用の端末設定</a>
 </p>
 
-</BODY>
-</HTML>
+
+</body>
+</html>

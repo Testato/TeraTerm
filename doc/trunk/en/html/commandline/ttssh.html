@@ -1,52 +1,108 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
+<html>
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>TTSSH command line</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
+<title>TTSSH command line</title>
+<meta http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../style.css" type="text/css">
-</HEAD>
-<BODY>
+</head>
+<body>
+
 
 <h1>TTSSH command line</h1>
 
+<p>
 You can use the following command line parameters on TTSSH.
+</p>
+
+
+<h2>Options</h2>
+
+<dl>
+  <dt>/f=&lt;file&gt;</dt>
+  <dd>read teraterm.ini(file)</dd>
+
+  <dt>/ssh-f=&lt;file&gt;</dt>
+  <dd>read teraterm.ini(file)</dd>
+
+  <dt>/ssh-consume=&lt;file&gt;</dt>
+  <dd>After teraterm.ini file is read, it is erased.</dd>
+
+  <dt>/t=&lt;value&gt;</dt>
+  <dd><ul>
+        <li><span class="syntax">value=2</span> SSH is enabled</li>
+        <li><span class="syntax">value=excluding 2</span> SSH is disable</li>
+      </ul></dd>
+
+  <dt>/nossh</dt>
+  <dd>disable SSH connection</dd>
+
+  <dt>/telnet</dt>
+  <dd>disable SSH connection</dd>
+
+  <dt>/1</dt>
+  <dd>connect to server with SSH1 protocol</dd>
+
+  <dt>/ssh1</dt>
+  <dd>connect to server with SSH1 protocol</dd>
+
+  <dt>/2</dt>
+  <dd>connect to server with SSH2 protocol</dd>
+
+  <dt>/ssh2</dt>
+  <dd>connect to server with SSH2 protocol</dd>
+
+  <dt>/ssh-autologin</dt>
+  <dd>try to autologin with empty password</dd>
+
+  <dt>/ssh-autologon</dt>
+  <dd>try to autologin with empty password</dd>
+
+  <dt>/auth=&lt;mode&gt;</dt>
+  <dd>try to autologin with the authentication method that is sepcified by &lt;mode&gt;.
+      <ul>
+        <li><span class="syntax">password</span> Password Authentication</li>
+        <li><span class="syntax">publickey</span> Public Key Authentication</li>
+        <li><span class="syntax">challenge</span> Challenge/Response(Keyboard-interactive) Authentication</li>
+      </ul></dd>
+
+  <dt>/user=&lt;username&gt;</dt>
+  <dd>your username is specified</dd>
+
+  <dt>/passwd=&lt;password&gt;</dt>
+  <dd>your password is specified</dd>
+
+  <dt>/keyfile=&lt;file&gt;</dt>
+  <dd>your private key file is specified</dd>
+
+  <dt>/ask4passwd</dt>
+  <dd>disable autologin and ask for password<br>
+      '/auth=&lt;mode&gt;' means only authentication method</dd>
+
+  <dt>/ssh-L&lt;port1&gt;:&lt;host&gt;:&lt;port2&gt;</dt>
+  <dd>port-fowarding from local port(&lt;port1&gt;) to remote side host(&lt;host&gt;) port(&lt;port2&gt;)</dd>
+
+  <dt>/ssh-R&lt;port1&gt;:&lt;host&gt;:&lt;port2&gt;</dt>
+  <dd>port-fowarding from remote port(&lt;port1&gt;) to local side host(&lt;host&gt;) port(&lt;port2&gt;)</dd>
+
+  <dt>/ssh-X</dt>
+  <dd>X11 port-fowarding</dd>
+
+  <dt>/ssh-v</dt>
+  <dd>setup the log level to VERBOSE mode</dd>
+</dl>
+
+
+<h2>Example</h2>
 
 <pre>
-  parameter                 description
-  ------------------------+-------------------------------------------------------
-  /ssh-Lport1:host:port2    port-fowarding from local port(port1) to remote port(port2)
-  /ssh-Rport1:host:port2    port-fowarding from remote port(port1) to local port(port2)
-  /ssh-X                    X11 port-fowarding
-  /ssh-f=file               read teraterm.ini(file)
-  /ssh-v                    setup the log level to VERBOSE mode
-  /ssh-autologin            try to autologin with empty password
-  /ssh-autologon            the same as the above
-  /ssh-consume=file         After teraterm.ini file is read, it is erased.
-  /t=value                  TTSSH is enabled(value=2), disable(value=excluding 2)
-  /f=file                   read teraterm.ini(file)
-  /1                        connect to server with SSH1 protocol
-  /ssh1                     connect to server with SSH1 protocol
-  /2                        connect to server with SSH2 protocol
-  /ssh2                     connect to server with SSH2 protocol
-  /nossh                    TTSSH is disabled
-  /telnet                   TTSSH is disabled
-  /auth=mode                try to autologin(mode=password, publickey, challenge)
-  /user=username            your username is specified
-  /passwd=password          your password is specified
-  /keyfile=file             your private key file is specified
-  /ask4passwd               disable autologin and ask for password
-                            '/auth=mode' means only authentication method
+ttermpro.exe server1:22 /ssh /ssh-L30025:smtpsrv1:25 /ssh-L30110:pop3srv1:110
+ttermpro.exe server2:22 /ssh /ssh-X
+ttermpro.exe server3:22 /ssh /2 /auth=password /user=guest /passwd=guest
+ttermpro.exe server4:22 /ssh /2 /auth=publickey /user=admin keyfile=pathofkeyfile /ask4passwd
 </pre>
 
-<pre>
-  Example:
-  ttermpro.exe server1:22 /ssh /ssh-L30025:smtpsrv1:25 /ssh-L30110:pop3srv1:110
-  ttermpro.exe server2:22 /ssh /ssh-X
-  ttermpro.exe server3:22 /ssh /2 /auth=password /user=guest /passwd=guest
-  ttermpro.exe server4:22 /ssh /2 /auth=publickey /user=admin keyfile=pathofkeyfile /ask4passwd
-</pre>
 
-</BODY>
-</HTML>
+</body>
+</html>

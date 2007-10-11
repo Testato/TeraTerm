@@ -1,13 +1,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
+<html>
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>TeraTerm command line</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
+<title>TeraTerm command line</title>
+<meta http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../style.css" type="text/css">
-</HEAD>
-<BODY>
+</head>
+<body>
+
 
 <h1>TeraTerm command line</h1>
 
@@ -25,130 +26,178 @@
          [;&lt;comment&gt;]</span>
 </pre>
 
+
+<h2>Options</h2>
+
+<dl>
+  <dt>&lt;host&gt;</dt>
+  <dd>Host name or IP address.</dd>
+
+  <dt>&lt;host&gt;:&lt;TCP port#&gt;</dt>
+  <dd>&lt;host&gt; with a TCP port number.<br>
+      ":" is placed between &lt;host&gt; and &lt;TCP port#&gt;.</dd>
+
+  <dt>&lt;host&gt; &lt;TCP port#&gt;</dt>
+  <dd>&lt;host&gt; with a TCP port number.<br>
+      Space character(s) between &lt;host&gt; and &lt;TCP port#&gt;.<br>
+      Number just after &lt;host&gt; is interpreted as a port number.</dd>
+
+  <dt>/B</dt>
+  <dd>Telnet binary option.</dd>
+
+  <dt>/C=&lt;serial port#&gt;</dt>
+  <dd>Serial port
+      <ul>
+        <li><span class="syntax">/C=1</span> COM1</li>
+        <li><span class="syntax">/C=2</span> COM2</li>
+        <li><span class="syntax">/C=3</span> COM3</li>
+        <li>:</li>
+        <li><span class="syntax">/C=256</span> COM256</li>
+      </ul></dd>
+
+  <dt>/DUPLICATE</dt>
+  <dd>Internal use(must not specify this option)</dd>
+
+  <dt>/E</dt>
+  <dd>Disable TCPLocalEcho and TCPCRSend option</dd>
+
+  <dt>/F=&lt;setup file&gt;</dt>
+  <dd>Setup file<br>
+      <span class="syntax">/F=TERATERM.INI</span> (default)</dd>
+
+  <dt>/FD=&lt;file transfer directory&gt;</dt>
+  <dd>File transfer directory</dd>
+
+  <dt>/H</dt>
+  <dd>Hide title bar.</dd>
+
+  <dt>/I</dt>
+  <dd>Start Tera Term in iconized state.</dd>
+
+  <dt>/K=&lt;keyboard setup file&gt;</dt>
+  <dd>Keyboard setup file<br>
+      <span class="syntax">/K=KEYBOARD.CNF</span> (default)</dd>
+
+  <dt>/KR=&lt;kanji code (receive)&gt;</dt>
+  <dd>Note: Japanese mode only
+      <ul>
+        <li><span class="syntax">/KR=SJIS</span></li>
+        <li><span class="syntax">/KR=EUC</span></li>
+        <li><span class="syntax">/KR=JIS</span></li>
+        <li><span class="syntax">/KR=UTF8</span> UTF-8(Normalization Form C: Windows, Linux)</li>
+        <li><span class="syntax">/KR=UTF8m</span> UTF-8(Normalization Form D: Mac OS X)</li>
+      </ul></dd>
+
+  <dt>/KT=&lt;kanji code (transmit)&gt;</dt>
+  <dd>Note: Japanese mode only
+      <ul>
+        <li><span class="syntax">/KR=SJIS</span></li>
+        <li><span class="syntax">/KR=EUC</span></li>
+        <li><span class="syntax">/KR=JIS</span></li>
+        <li><span class="syntax">/KR=UTF8</span></li>
+      </ul></dd>
+
+  <dt>/L=&lt;log file&gt;</dt>
+  <dd>Start Tera Term with logging.</dd>
+
+  <dt>/LA=&lt;language&gt;</dt>
+  <dd>Language mode.
+      <ul>
+        <li><span class="syntax">/LA=E</span> English</li>
+        <li><span class="syntax">/LA=J</span> Japanese</li>
+        <li><span class="syntax">/LA=R</span> Russian</li>
+      </ul></dd>
+
+  <dt>/M=&lt;macro file&gt;</dt>
+  <dd>Start Tera Term with macro.</dd>
+
+  <dt>/P=&lt;TCP port#&gt;</dt>
+  <dd>TCP port number</dd>
+
+  <dt>/R=&lt;replay file&gt;</dt>
+  <dd>Replay file</dd>
+
+  <dt>/T=&lt;telnet flag&gt;</dt>
+  <dd><ul>
+        <li><span class="syntax">/T=1</span> Enable telnet</li>
+        <li><span class="syntax">/T=0</span> Disable telnet</li>
+      </ul></dd>
+
+  <dt>/V</dt>
+  <dd>Start Tera Term in hidden (invisible) state.</dd>
+
+  <dt>/W="&lt;window title&gt;"</dt>
+  <dd>Window title</dd>
+
+  <dt>/X=&lt;window position (x)&gt;</dt>
+  <dd>Windows position (horizontal)</dd>
+
+  <dt>/Y=&lt;window position (y)&gt;</dt>
+  <dd>Windows position (vertical)</dd>
+
+  <dt>/TIMEOUT=&lt;connecting timeout value&gt;</dt>
+  <dd>Could be specified per seconds.</dd>
+
+  <dt>;&lt;comment&gt;</dt>
+  <dd>Comment. Should be last in the command line.</dd>
+</dl>
+
+
+<h2>Examples</h2>
+
 <pre>
-where:
-    <span class="syntax">&lt;host&gt;</span>    Host name or IP address.
-
-    <span class="syntax">&lt;host&gt;:&lt;TCP port#&gt;</span>    &lt;host&gt; with a TCP port number.
-           ":" is placed between &lt;host&gt; and &lt;TCP port#&gt;.
-
-    <span class="syntax">&lt;host&gt; &lt;TCP port#&gt;</span>    &lt;host&gt; with a TCP port number.
-           Space character(s) between &lt;host&gt; and &lt;TCP port#&gt;.
-           Number just after &lt;host&gt; is interpreted as a port number.
-
-    <span class="syntax">/B</span>    Telnet binary option.
-
-    <span class="syntax">/C=&lt;serial port#&gt;</span>
-      <span class="syntax">/C=1</span>  COM1
-      <span class="syntax">/C=2</span>  COM2
-      <span class="syntax">/C=3</span>  COM3
-      <span class="syntax">/C=4</span>  COM4
-         :
-      <span class="syntax">/C=99</span> COM99
-
-    <span class="syntax">/DUPLICATE</span>    Internal use(must not specify this option)
-
-    <span class="syntax">/E</span>    Disable TCPLocalEcho and TCPCRSend option
-
-    <span class="syntax">/F=&lt;setup file&gt;</span>
-      <span class="syntax">/F=TERATERM.INI</span> (default)
-
-    <span class="syntax">/FD=&lt;file transfer directory&gt;</span>
-
-    <span class="syntax">/H</span>    Hide title bar.
-
-    <span class="syntax">/I</span>    Start Tera Term in iconized state.
-
-    <span class="syntax">/K=&lt;keyboard setup file&gt;</span>
-      <span class="syntax">/K=KEYBOARD.CNF</span> (default)
-
-    <span class="syntax">/KR=&lt;kanji code (receive)&gt;</span>    Note: Japanese mode only
-      <span class="syntax">/KR=SJIS</span>
-      <span class="syntax">/KR=EUC</span>
-      <span class="syntax">/KR=JIS</span>
-      <span class="syntax">/KR=UTF8</span>    UTF-8(Normalization Form C: Windows, Linux)
-      <span class="syntax">/KR=UTF8m</span>   UTF-8(Normalization Form D: Mac OS X)
-
-    <span class="syntax">/KT=&lt;kanji code (transmit)&gt;</span>    Note: Japanese mode only
-      <span class="syntax">/KT=SJIS</span>
-      <span class="syntax">/KT=EUC</span>
-      <span class="syntax">/KT=JIS</span>
-      <span class="syntax">/KT=UTF8</span>    UTF-8(Normalization Form C: Windows, Linux)
-
-    <span class="syntax">/L=&lt;log file&gt;</span>    Start Tera Term with logging.
-
-    <span class="syntax">/LA=&lt;language&gt;</span>    Language mode.
-      <span class="syntax">/LA=E</span>  English
-      <span class="syntax">/LA=J</span>  Japanese
-      <span class="syntax">/LA=R</span>  Russian
-
-    <span class="syntax">/M=&lt;macro file&gt;</span>    Start Tera Term with macro.
-
-    <span class="syntax">/P=&lt;TCP port#&gt;</span>
-
-    <span class="syntax">/R=&lt;replay file&gt;</span>
-
-    <span class="syntax">/T=&lt;telnet flag&gt;</span>
-      <span class="syntax">/T=1</span>  Enable telnet
-      <span class="syntax">/T=0</span>  Disable telnet
-
-    <span class="syntax">/V</span>    Start Tera Term in hidden (invisible) state.
-
-    <span class="syntax">/W="&lt;window title&gt;"</span>
-
-    <span class="syntax">/X=&lt;window position (x)&gt;</span>
-
-    <span class="syntax">/Y=&lt;window position (y)&gt;</span>
-
-    <span class="syntax">/TIMEOUT=&lt;connecting timeout value&gt;</span>    Could be specified per seconds.
-
-    <span class="syntax">;&lt;comment&gt;</span>    Comment. Should be last in the command line.
+TTERMPRO
+TTERMPRO myhost.mydomain
+TTERMPRO myhost.mydomain:23
+TTERMPRO myhost.mydomain 23
+TTERMPRO 111.111.11.11
+TTERMPRO myhost.mydomain /T=0 /P=7
+TTERMPRO /C=1
+TTERMPRO /F=TELNET.INI
+TTERMPRO foohost.foodomain /F=FOOHOST.INI
+TTERMPRO /C=2 /F=MYSETUP.INI
+TTERMPRO /K=MYKEY.CNF /W="My host"
+TTERMPRO /R=README.TXT ; replay a file
+TTERMPRO myhost /B /X=100 /Y=50</span>
 </pre>
 
-<pre>
-Example:
-<span class="syntax">    TTERMPRO
-    TTERMPRO myhost.mydomain
-    TTERMPRO myhost.mydomain:23
-    TTERMPRO myhost.mydomain 23
-    TTERMPRO 111.111.11.11
-    TTERMPRO myhost.mydomain /T=0 /P=7
-    TTERMPRO /C=1
-    TTERMPRO /F=TELNET.INI
-    TTERMPRO foohost.foodomain /F=FOOHOST.INI
-    TTERMPRO /C=2 /F=MYSETUP.INI
-    TTERMPRO /K=MYKEY.CNF /W="My host"
-    TTERMPRO /R=README.TXT ; replay a file
-    TTERMPRO myhost /B /X=100 /Y=50</span>
-</pre>
 
-<pre>
-Default values
-    Following default values are stored in the Tera Term setup file:
-<span class="syntax">        &lt;TCP port#&gt;
-        /B
-        &lt;serial port#&gt;
-        &lt;file transfer directory&gt;
-        /H
-        &lt;kanji code (receive)&gt;
-        &lt;kanji code (transmit)&gt;
-        &lt;language&gt;
-        &lt;macro file&gt;
-        &lt;telnet flag&gt;
-        &lt;window title&gt;
-        &lt;window pos (x)&gt;
-        &lt;window pos (y)&gt;</span>
-</pre>
+<h2>Default values</h2>
 
 <p>
-Note:<br>
+Following default values are stored in the Tera Term setup file:
+</p>
+
+<pre>
+&lt;TCP port#&gt;
+/B
+&lt;serial port#&gt;
+&lt;file transfer directory&gt;
+/H
+&lt;kanji code (receive)&gt;
+&lt;kanji code (transmit)&gt;
+&lt;language&gt;
+&lt;macro file&gt;
+&lt;telnet flag&gt;
+&lt;window title&gt;
+&lt;window pos (x)&gt;
+&lt;window pos (y)&gt;
+</pre>
+
+
+<h2>Note</h2>
+
+<p>
 Only if &lt;telnet flag&gt; is 1 (on) and &lt;TCP port#&gt; is 23, Tera Term starts spontaneously sending telnet commands to the host for the option negotiation when the TCP/IP connection is established. In any cases, Tera Term can respond to telnet commands sent by the host.
 </p>
 
+
+<h2>See also</h2>
+
 <p>
-See also:<br>
-Telnet port number / Terminal setup for non-telnet connection
+<a href="../usage/tips/not_port23.html">Telnet port number / Terminal setup for non-telnet connection</a>
 </p>
 
-</BODY>
-</HTML>
+
+</body>
+</html>
