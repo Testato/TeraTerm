@@ -5,8 +5,7 @@
   Visual Studio 2005 SP1 Standard Edition (or higher edition)
 - Installer
   Inno Setup 5.2.0 (http://innosetup.org/isinfo.php)
-  ISTool 5.1.8 (http://innosetup.org/isdl.php#qsp)
-    It is included in QuickStart Pack 5.2.0.
+  ISTool 5.2.0.1 (http://www.istool.org/)
   Japanese-5-5.1.11.isl (http://innosetup.org/files/istrans/)
 - others
   ActivePerl 5.8 later version
@@ -15,7 +14,7 @@
 
 * Libraries
 - oniguruma 5.9.0 (http://www.geocities.jp/kosako3/oniguruma/)
-- openssl 0.9.8e (http://www.openssl.org/)
+- openssl 0.9.8f (http://www.openssl.org/)
 - zlib 1.2.3 (http://www.zlib.net/)
 
 
