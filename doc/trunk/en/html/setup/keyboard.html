@@ -44,7 +44,7 @@ The distribution package contains the following keyboard setup files:
   <dd>A customize sample based on IBMKEYB.CNF<br>
       <ul>
         <li>F1-F10 are modified</li>
-        <li>special keys(*1) will transmit the key sequence to display a symbol on key top.</li>
+        <li>Special keys(*1) are used to send a character sequence which displays a symbol on the key top of each VT200 terminal keyboard.</li>
       </ul></dd>
 
   <dt>KEYBOARD.CNF</dt>
@@ -52,9 +52,9 @@ The distribution package contains the following keyboard setup files:
 </dl>
 
 <p>
-(*1) Special keys mentioned here are Ins, Del, Home, End, PageUp, PageDown and *, /, +, -, Ctrl+"+"  on Ten-key pad.<br>
-Note that VT220 employes the different maps of these keys. The original Keyboard Mapping file used by TeraTerm Pro uses VT220 key map and therefore will transmit VT220 key sequence.<br>
-However, by using <strong>FUNCTION.CNF</strong>, a key sequence to transmit will be same as its symbol on key top.
+(*1) Special keys mentioned here are Ins, Del, Home, End, PageUp, PageDown and *, /, +, -, Ctrl+"+" on a Ten-Key pad.<br>
+The location of these keys on VT220 is different from a generic 101(106) keyboard. With a keyboard setup file other than FUNCTION.CNF, a character sequence to be sent is same as one of 101(106) keyboard. This is derived from the specification of original TeraTerm Pro.<br>
+On the other hand, FUNCTION.CNF defines a character sequence which displays a symbol of each key top "as-is". By using this, special keys will behave as each symbol of key top when an application which utilizes speical keys is run.
 </p>
 
 <p>
