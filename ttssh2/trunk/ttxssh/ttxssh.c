@@ -329,7 +329,7 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 
 	// 初回の認証ダイアログでサポートされているメソッドをチェックし、
 	// 無効なメソッドをグレイアウトする (2007.9.24 maya)
-	settings->CheckAuthListFirst = read_BOOL_option(fileName, "CheckAuthListFirst", TRUE);
+	settings->CheckAuthListFirst = read_BOOL_option(fileName, "CheckAuthListFirst", FALSE);
 
 	clear_local_settings(pvar);
 }
