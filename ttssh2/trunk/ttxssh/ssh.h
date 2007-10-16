@@ -52,51 +52,47 @@ See LICENSE.TXT for the license.
 /* Some of this code has been adapted from Ian Goldberg's Pilot SSH */
 
 typedef enum {
-    SSH_MSG_NONE, SSH_MSG_DISCONNECT, SSH_SMSG_PUBLIC_KEY, //2
-    SSH_CMSG_SESSION_KEY, SSH_CMSG_USER, SSH_CMSG_AUTH_RHOSTS, // 5
-    SSH_CMSG_AUTH_RSA, SSH_SMSG_AUTH_RSA_CHALLENGE,
-    SSH_CMSG_AUTH_RSA_RESPONSE, SSH_CMSG_AUTH_PASSWORD,
-    SSH_CMSG_REQUEST_PTY, // 10
+	SSH_MSG_NONE, SSH_MSG_DISCONNECT, SSH_SMSG_PUBLIC_KEY, //2
+	SSH_CMSG_SESSION_KEY, SSH_CMSG_USER, SSH_CMSG_AUTH_RHOSTS, // 5
+	SSH_CMSG_AUTH_RSA, SSH_SMSG_AUTH_RSA_CHALLENGE,
+	SSH_CMSG_AUTH_RSA_RESPONSE, SSH_CMSG_AUTH_PASSWORD,
+	SSH_CMSG_REQUEST_PTY, // 10
 	SSH_CMSG_WINDOW_SIZE, SSH_CMSG_EXEC_SHELL,
-    SSH_CMSG_EXEC_CMD, SSH_SMSG_SUCCESS, SSH_SMSG_FAILURE,
-    SSH_CMSG_STDIN_DATA, SSH_SMSG_STDOUT_DATA, SSH_SMSG_STDERR_DATA,
-    SSH_CMSG_EOF, SSH_SMSG_EXITSTATUS,
-    SSH_MSG_CHANNEL_OPEN_CONFIRMATION, SSH_MSG_CHANNEL_OPEN_FAILURE,
-    SSH_MSG_CHANNEL_DATA, SSH_MSG_CHANNEL_INPUT_EOF,
-    SSH_MSG_CHANNEL_OUTPUT_CLOSED, SSH_MSG_OBSOLETED0,
-    SSH_SMSG_X11_OPEN, SSH_CMSG_PORT_FORWARD_REQUEST, SSH_MSG_PORT_OPEN,
-    SSH_CMSG_AGENT_REQUEST_FORWARDING, SSH_SMSG_AGENT_OPEN,
-    SSH_MSG_IGNORE, SSH_CMSG_EXIT_CONFIRMATION,
-    SSH_CMSG_X11_REQUEST_FORWARDING, SSH_CMSG_AUTH_RHOSTS_RSA,
-    SSH_MSG_DEBUG, SSH_CMSG_REQUEST_COMPRESSION,
-    SSH_CMSG_MAX_PACKET_SIZE, SSH_CMSG_AUTH_TIS,
-    SSH_SMSG_AUTH_TIS_CHALLENGE, SSH_CMSG_AUTH_TIS_RESPONSE,
-    SSH_CMSG_AUTH_KERBEROS, SSH_SMSG_AUTH_KERBEROS_RESPONSE
+	SSH_CMSG_EXEC_CMD, SSH_SMSG_SUCCESS, SSH_SMSG_FAILURE,
+	SSH_CMSG_STDIN_DATA, SSH_SMSG_STDOUT_DATA, SSH_SMSG_STDERR_DATA,
+	SSH_CMSG_EOF, SSH_SMSG_EXITSTATUS,
+	SSH_MSG_CHANNEL_OPEN_CONFIRMATION, SSH_MSG_CHANNEL_OPEN_FAILURE,
+	SSH_MSG_CHANNEL_DATA, SSH_MSG_CHANNEL_INPUT_EOF,
+	SSH_MSG_CHANNEL_OUTPUT_CLOSED, SSH_MSG_OBSOLETED0,
+	SSH_SMSG_X11_OPEN, SSH_CMSG_PORT_FORWARD_REQUEST, SSH_MSG_PORT_OPEN,
+	SSH_CMSG_AGENT_REQUEST_FORWARDING, SSH_SMSG_AGENT_OPEN,
+	SSH_MSG_IGNORE, SSH_CMSG_EXIT_CONFIRMATION,
+	SSH_CMSG_X11_REQUEST_FORWARDING, SSH_CMSG_AUTH_RHOSTS_RSA,
+	SSH_MSG_DEBUG, SSH_CMSG_REQUEST_COMPRESSION,
+	SSH_CMSG_MAX_PACKET_SIZE, SSH_CMSG_AUTH_TIS,
+	SSH_SMSG_AUTH_TIS_CHALLENGE, SSH_CMSG_AUTH_TIS_RESPONSE,
+	SSH_CMSG_AUTH_KERBEROS, SSH_SMSG_AUTH_KERBEROS_RESPONSE
 } SSHMessage;
 
 typedef enum {
-    SSH_CIPHER_NONE, SSH_CIPHER_IDEA, SSH_CIPHER_DES, SSH_CIPHER_3DES,
-    SSH_CIPHER_TSS, SSH_CIPHER_RC4, SSH_CIPHER_BLOWFISH,
+	SSH_CIPHER_NONE, SSH_CIPHER_IDEA, SSH_CIPHER_DES, SSH_CIPHER_3DES,
+	SSH_CIPHER_TSS, SSH_CIPHER_RC4, SSH_CIPHER_BLOWFISH,
 	// for SSH2
-	SSH_CIPHER_3DES_CBC, SSH_CIPHER_AES128,
+	SSH_CIPHER_3DES_CBC, SSH_CIPHER_AES128,SSH_CIPHER_AES256,
 } SSHCipher;
 
-//#define SSH_CIPHER_MAX SSH_CIPHER_BLOWFISH
-#define SSH_CIPHER_MAX SSH_CIPHER_AES128
+#define SSH_CIPHER_MAX SSH_CIPHER_AES256
 
 typedef enum {
-    SSH_AUTH_NONE, SSH_AUTH_RHOSTS, SSH_AUTH_RSA, SSH_AUTH_PASSWORD,
-    SSH_AUTH_RHOSTS_RSA, SSH_AUTH_TIS, SSH_AUTH_KERBEROS,
-	// for SSH2
-	SSH_AUTH_DSA,
+	SSH_AUTH_NONE, SSH_AUTH_RHOSTS, SSH_AUTH_RSA, SSH_AUTH_PASSWORD,
+	SSH_AUTH_RHOSTS_RSA, SSH_AUTH_TIS, SSH_AUTH_KERBEROS,
 } SSHAuthMethod;
 
 /* we don't support Kerberos at this time */
-//#define SSH_AUTH_MAX SSH_AUTH_TIS
-#define SSH_AUTH_MAX SSH_AUTH_DSA
+#define SSH_AUTH_MAX SSH_AUTH_TIS
 
 typedef enum {
-    SSH_GENERIC_AUTHENTICATION, SSH_TIS_AUTHENTICATION
+	SSH_GENERIC_AUTHENTICATION, SSH_TIS_AUTHENTICATION
 } SSHAuthMode;
 
 #define SSH_PROTOFLAG_SCREEN_NUMBER 1
@@ -183,10 +179,10 @@ enum compression_algorithm {
 };
 
 enum kex_exchange {
-    KEX_DH_GRP1_SHA1,
-    KEX_DH_GRP14_SHA1,
-    KEX_DH_GEX_SHA1,
-    KEX_MAX
+	KEX_DH_GRP1_SHA1,
+	KEX_DH_GRP14_SHA1,
+	KEX_DH_GEX_SHA1,
+	KEX_MAX
 };
 
 enum hostkey_type {
@@ -203,24 +199,22 @@ enum hmac_type {
 	HMAC_UNKNOWN
 };
 
-#define KEX_DEFAULT_KEX     "diffie-hellman-group-exchange-sha1,diffie-hellman-group1-sha1"
-
-#define	KEX_DEFAULT_PK_ALG	"ssh-rsa,ssh-dss"
-#define	KEX_DEFAULT_ENCRYPT \
-	"aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,arcfour," \
-	"aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se," \
-	"aes128-ctr,aes192-ctr,aes256-ctr"
-#define	KEX_DEFAULT_MAC \
-	"hmac-md5,hmac-sha1,hmac-ripemd160," \
-	"hmac-ripemd160@openssh.com," \
-	"hmac-sha1-96,hmac-md5-96"
+#define KEX_DEFAULT_KEX     "diffie-hellman-group-exchange-sha1," \
+                            "diffie-hellman-group14-sha1," \
+                            "diffie-hellman-group1-sha1"
+#define KEX_DEFAULT_PK_ALG  "ssh-rsa,ssh-dss"
+#ifdef SSH2_BLOWFISH
+#define KEX_DEFAULT_ENCRYPT "aes128-cbc,3des-cbc,blowfish-cbc,aes192-cbc,aes256-cbc"
+#else
+#define KEX_DEFAULT_ENCRYPT "aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc"
+#endif
+#define KEX_DEFAULT_MAC     "hmac-sha1,hmac-md5"
 // support of "Compression delayed" (2006.6.23 maya)
-#define	KEX_DEFAULT_COMP	"none,zlib@openssh.com,zlib"
-#define	KEX_DEFAULT_LANG	""
+#define KEX_DEFAULT_COMP	"none,zlib@openssh.com,zlib"
+#define KEX_DEFAULT_LANG	""
 
 /* Minimum modulus size (n) for RSA keys. */
 #define SSH_RSA_MINIMUM_MODULUS_SIZE    768
-
 
 enum kex_init_proposals {
 	PROPOSAL_KEX_ALGS,
@@ -236,32 +230,107 @@ enum kex_init_proposals {
 	PROPOSAL_MAX
 };
 
+
+// クライアントからサーバへの提案事項
+#ifdef SSH2_DEBUG
+static char *myproposal[PROPOSAL_MAX] = {
+//	KEX_DEFAULT_KEX,
+	"diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1",
+	KEX_DEFAULT_PK_ALG,
+//	"ssh-dss,ssh-rsa",
+	KEX_DEFAULT_ENCRYPT,
+	KEX_DEFAULT_ENCRYPT,
+	"hmac-md5,hmac-sha1",
+	"hmac-md5,hmac-sha1",
+//	"hmac-sha1",
+//	"hmac-sha1",
+//	KEX_DEFAULT_MAC,
+//	KEX_DEFAULT_MAC,
+	KEX_DEFAULT_COMP,
+	KEX_DEFAULT_COMP,
+	KEX_DEFAULT_LANG,
+	KEX_DEFAULT_LANG,
+};
+#else
+static char *myproposal[PROPOSAL_MAX] = {
+	KEX_DEFAULT_KEX,
+	KEX_DEFAULT_PK_ALG,
+	KEX_DEFAULT_ENCRYPT,
+	KEX_DEFAULT_ENCRYPT,
+	KEX_DEFAULT_MAC,
+	KEX_DEFAULT_MAC,
+	KEX_DEFAULT_COMP,
+	KEX_DEFAULT_COMP,
+	KEX_DEFAULT_LANG,
+	KEX_DEFAULT_LANG,
+};
+#endif
+
+
+typedef struct ssh2_cipher {
+	SSHCipher cipher;
+	char *name;
+	int block_size;
+	int key_len;
+	const EVP_CIPHER *(*func)(void);
+} ssh2_cipher_t;
+
+static ssh2_cipher_t ssh2_ciphers[] = {
+	{SSH_CIPHER_3DES_CBC, "3des-cbc",      8, 24, EVP_des_ede3_cbc},
+	{SSH_CIPHER_AES128,   "aes128-cbc",   16, 16, EVP_aes_128_cbc},
+	{SSH_CIPHER_AES256,   "aes256-cbc",   16, 32, EVP_aes_256_cbc},
+#ifdef SSH2_BLOWFISH
+	{SSH_CIPHER_BLOWFISH, "blowfish-cbc",  8, 32, EVP_enc_null}, // func は使用されない
+#endif
+	{SSH_CIPHER_NONE, NULL, 0, 0, NULL},
+};
+
+
+typedef struct ssh2_mac {
+	char *name;
+	const EVP_MD *(*func)(void);
+	int truncatebits;
+} ssh2_mac_t;
+
+static ssh2_mac_t ssh2_macs[] = {
+	{"hmac-sha1", EVP_sha1, 0},
+	{"hmac-md5", EVP_md5, 0},
+	{NULL, NULL, 0},
+};
+
+static char *ssh_comp[] = {
+	"none",
+	"zlib",
+	"zlib@openssh.com",
+};
+
+
 struct Enc {
-	u_char	*key;
-	u_char	*iv;
-	unsigned int key_len;
-	unsigned int block_size;
+	u_char          *key;
+	u_char          *iv;
+	unsigned int    key_len;
+	unsigned int    block_size;
 };
 
 struct Mac {
-    char    *name; 
-    int enabled; 
-    const EVP_MD    *md;
-    int mac_len; 
-    u_char  *key;
-    int key_len;
+	char            *name; 
+	int             enabled; 
+	const EVP_MD    *md;
+	int             mac_len; 
+	u_char          *key;
+	int             key_len;
 };
 
 struct Comp {
-	int	type;
-	int	enabled;
-	char	*name;
+	int     type;
+	int     enabled;
+	char    *name;
 };
 
 typedef struct {
-	struct Enc	enc;
-	struct Mac	mac;
-	struct Comp	comp;
+	struct Enc  enc;
+	struct Mac  mac;
+	struct Comp comp;
 } Newkeys;
 
 #define roundup(x, y)   ((((x)+((y)-1))/(y))*(y))
@@ -294,59 +363,59 @@ typedef BOOL (* SSHPacketHandler)(PTInstVar pvar);
 
 typedef struct _SSHPacketHandlerItem SSHPacketHandlerItem;
 struct _SSHPacketHandlerItem {
-  SSHPacketHandler handler;
-  /* Circular list of handlers for given message */
-  SSHPacketHandlerItem FAR * next_for_message;
-  SSHPacketHandlerItem FAR * last_for_message;
-  /* Circular list of handlers in set */
-  SSHPacketHandlerItem FAR * next_in_set;
-  int active_for_message;
+	SSHPacketHandler handler;
+	/* Circular list of handlers for given message */
+	SSHPacketHandlerItem FAR * next_for_message;
+	SSHPacketHandlerItem FAR * last_for_message;
+	/* Circular list of handlers in set */
+	SSHPacketHandlerItem FAR * next_in_set;
+	int active_for_message;
 };
 
 typedef struct {
-  char FAR * hostname;
+	char FAR * hostname;
 
-  int server_protocol_flags;
-  char FAR * server_ID;
+	int server_protocol_flags;
+	char FAR * server_ID;
 
-  /* This buffer is used to hold the outgoing data, and encrypted in-place
-     here if necessary. */
-  unsigned char FAR * outbuf;
-  long outbuflen;
-  /* This buffer is used by the SSH protocol processing to store uncompressed
-     packet data for compression. User data is never streamed through here;
-     it is compressed directly from the user's buffer. */
-  unsigned char FAR * precompress_outbuf;
-  long precompress_outbuflen;
-  /* this is the length of the packet data, including the type header */
-  long outgoing_packet_len;
+	/* This buffer is used to hold the outgoing data, and encrypted in-place
+	   here if necessary. */
+	unsigned char FAR * outbuf;
+	long outbuflen;
+	/* This buffer is used by the SSH protocol processing to store uncompressed
+	   packet data for compression. User data is never streamed through here;
+	   it is compressed directly from the user's buffer. */
+	unsigned char FAR * precompress_outbuf;
+	long precompress_outbuflen;
+	/* this is the length of the packet data, including the type header */
+	long outgoing_packet_len;
 
-  /* This buffer is used by the SSH protocol processing to store decompressed
-     packet data. User data is never streamed through here; it is decompressed
-     directly to the user's buffer. */
-  unsigned char FAR * postdecompress_inbuf;
-  long postdecompress_inbuflen;
+	/* This buffer is used by the SSH protocol processing to store decompressed
+	   packet data. User data is never streamed through here; it is decompressed
+	   directly to the user's buffer. */
+	unsigned char FAR * postdecompress_inbuf;
+	long postdecompress_inbuflen;
 
-  unsigned char FAR * payload;
-  long payload_grabbed;
-  long payloadlen;
-  long payload_datastart;
-  long payload_datalen;
+	unsigned char FAR * payload;
+	long payload_grabbed;
+	long payloadlen;
+	long payload_datastart;
+	long payload_datalen;
 
-  uint32 receiver_sequence_number;
-  uint32 sender_sequence_number;
+	uint32 receiver_sequence_number;
+	uint32 sender_sequence_number;
 
-  z_stream compress_stream;
-  z_stream decompress_stream;
-  BOOL compressing;
-  BOOL decompressing;
-  int compression_level;
+	z_stream compress_stream;
+	z_stream decompress_stream;
+	BOOL compressing;
+	BOOL decompressing;
+	int compression_level;
 
-  SSHPacketHandlerItem FAR * packet_handlers[256];
-  int status_flags;
+	SSHPacketHandlerItem FAR * packet_handlers[256];
+	int status_flags;
 
-  int win_cols;
-  int win_rows;
+	int win_cols;
+	int win_rows;
 } SSHState;
 
 #define STATUS_DONT_SEND_USER_NAME            0x01
@@ -384,8 +453,8 @@ void SSH_get_compression_info(PTInstVar pvar, char FAR * dest, int len);
 
 /* len must be <= SSH_MAX_SEND_PACKET_SIZE */
 void SSH_channel_send(PTInstVar pvar, int channel_num,
-					  uint32 remote_channel_num,
-					  unsigned char FAR * buf, int len);
+                      uint32 remote_channel_num,
+                      unsigned char FAR * buf, int len);
 void SSH_fail_channel_open(PTInstVar pvar, uint32 remote_channel_num);
 void SSH_confirm_channel_open(PTInstVar pvar, uint32 remote_channel_num, uint32 local_channel_num);
 void SSH_channel_output_eof(PTInstVar pvar, uint32 remote_channel_num);
@@ -395,8 +464,8 @@ void SSH_request_forwarding(PTInstVar pvar, int from_server_port,
 void SSH_request_X11_forwarding(PTInstVar pvar,
   char FAR * auth_protocol, unsigned char FAR * auth_data, int auth_data_len, int screen_num);
 void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
-					  char FAR * to_remote_host, int to_remote_port,
-					  char FAR * originator, unsigned short originator_port);
+                      char FAR * to_remote_host, int to_remote_port,
+                      char FAR * originator, unsigned short originator_port);
 
 /* auxiliary SSH2 interfaces for pkt.c */
 int SSH_get_min_packet_size(PTInstVar pvar);
@@ -412,6 +481,9 @@ int SSH_get_clear_MAC_size(PTInstVar pvar);
 void SSH2_send_kexinit(PTInstVar pvar);
 BOOL do_SSH2_userauth(PTInstVar pvar);
 void debug_print(int no, char *msg, int len);
+int get_cipher_block_size(SSHCipher cipher);
+int get_cipher_key_len(SSHCipher cipher);
+const EVP_CIPHER * (*get_cipher_EVP_CIPHER(SSHCipher cipher))(void);
 void ssh_heartbeat_lock_initialize(void);
 void ssh_heartbeat_lock_finalize(void);
 void ssh_heartbeat_lock(void);

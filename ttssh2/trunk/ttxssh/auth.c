@@ -797,7 +797,6 @@ int AUTH_set_supported_auth_types(PTInstVar pvar, int types)
 		// 公開鍵認証を有効にする (2004.12.18 yutaka)
 		// TISを追加。SSH2ではkeyboard-interactiveとして扱う。(2005.3.12 yutaka)
 		types &= (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA)
-		       | (1 << SSH_AUTH_DSA)
 		       | (1 << SSH_AUTH_TIS);
 	}
 	pvar->auth_state.supported_types = types;

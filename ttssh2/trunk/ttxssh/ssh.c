@@ -3236,76 +3236,6 @@ void debug_print(int no, char *msg, int len)
 #endif
 }
 
-// クライアントからサーバへの提案事項
-#ifdef SSH2_DEBUG
-static char *myproposal[PROPOSAL_MAX] = {
-//	"diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1",
-	"diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1",
-	"ssh-rsa,ssh-dss",
-//	"ssh-dss,ssh-rsa",
-	"3des-cbc,aes128-cbc",
-	"3des-cbc,aes128-cbc",
-	"hmac-md5,hmac-sha1",
-	"hmac-md5,hmac-sha1",
-//	"hmac-sha1,hmac-md5",
-//	"hmac-sha1,hmac-md5",
-//	"hmac-sha1",
-//	"hmac-sha1",
-	KEX_DEFAULT_COMP,
-	KEX_DEFAULT_COMP,
-	"",
-	"",
-};
-#else
-static char *myproposal[PROPOSAL_MAX] = {
-	"diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1",
-	"ssh-rsa,ssh-dss",
-	"3des-cbc,aes128-cbc",
-	"3des-cbc,aes128-cbc",
-	"hmac-sha1,hmac-md5",
-	"hmac-sha1,hmac-md5",
-	KEX_DEFAULT_COMP,
-	KEX_DEFAULT_COMP,
-	"",
-	"",
-};
-#endif
-
-
-typedef struct ssh2_cipher {
-	SSHCipher cipher;
-	char *name;
-	int block_size;
-	int key_len;
-	const EVP_CIPHER *(*func)(void);
-} ssh2_cipher_t;
-
-ssh2_cipher_t ssh2_ciphers[] = {
-	{SSH_CIPHER_3DES_CBC, "3des-cbc", 8, 24, EVP_des_ede3_cbc},
-	{SSH_CIPHER_AES128, "aes128-cbc", 16, 16, EVP_aes_128_cbc},
-	{SSH_CIPHER_NONE, NULL, 0, 0, NULL},
-};
-
-
-typedef struct ssh2_mac {
-	char *name;
-	const EVP_MD *(*func)(void);
-	int truncatebits;
-} ssh2_mac_t;
-
-ssh2_mac_t ssh2_macs[] = {
-	{"hmac-sha1", EVP_sha1, 0},
-	{"hmac-md5", EVP_md5, 0},
-	{NULL, NULL, 0},
-};
-
-
-char *ssh_comp[] = {
-	"none",
-	"zlib",
-	"zlib@openssh.com",
-};
-
 static Newkeys current_keys[MODE_MAX];
 
 
@@ -3316,7 +3246,7 @@ static Newkeys current_keys[MODE_MAX];
 // general
 //
 
-static int get_cipher_block_size(SSHCipher cipher) 
+int get_cipher_block_size(SSHCipher cipher)
 {
 	ssh2_cipher_t *ptr = ssh2_ciphers;
 	int val = 0;
@@ -3331,7 +3261,7 @@ static int get_cipher_block_size(SSHCipher cipher)
 	return (val);
 }
 
-static int get_cipher_key_len(SSHCipher cipher) 
+int get_cipher_key_len(SSHCipher cipher)
 {
 	ssh2_cipher_t *ptr = ssh2_ciphers;
 	int val = 0;
@@ -3359,6 +3289,23 @@ static char * get_cipher_string(SSHCipher cipher)
 		ptr++;
 	}
 	return buf;
+}
+
+const EVP_CIPHER * (*get_cipher_EVP_CIPHER(SSHCipher cipher))(void)
+{
+	ssh2_cipher_t *ptr = ssh2_ciphers;
+	const EVP_CIPHER *(*type)(void);
+
+	type = EVP_enc_null;
+
+	while (ptr->name != NULL) {
+		if (cipher == ptr->cipher) {
+			type = ptr->func;
+			break;
+		}
+		ptr++;
+	}
+	return type;
 }
 
 #if 0
@@ -3429,9 +3376,17 @@ void SSH2_update_cipher_myproposal(PTInstVar pvar)
 		if (cipher == SSH_CIPHER_AES128) {
 			strncat_s(buf, sizeof(buf), "aes128-cbc,", _TRUNCATE);
 		}
-		if (cipher == SSH_CIPHER_3DES_CBC) {
+		else if (cipher == SSH_CIPHER_3DES_CBC) {
 			strncat_s(buf, sizeof(buf), "3des-cbc,", _TRUNCATE);
 		}
+		else if (cipher == SSH_CIPHER_AES256) {
+			strncat_s(buf, sizeof(buf), "aes256-cbc,", _TRUNCATE);
+		}
+#ifdef SSH2_BLOWFISH
+		else if (cipher == SSH_CIPHER_BLOWFISH) {
+			strncat_s(buf, sizeof(buf), "blowfish-cbc,", _TRUNCATE);
+		}
+#endif
 	}
 	if (buf[0] != '\0') {
 		len = strlen(buf);
@@ -3527,9 +3482,14 @@ static SSHCipher choose_SSH2_cipher_algorithm(char *server_proposal, char *my_pr
 	}
 	if (strstr(ptr, "3des-cbc")) {
 		cipher = SSH_CIPHER_3DES_CBC;
-
 	} else if (strstr(ptr, "aes128-cbc")) {
 		cipher = SSH_CIPHER_AES128;
+	} else if (strstr(ptr, "aes256-cbc")) {
+		cipher = SSH_CIPHER_AES256;
+#ifdef SSH2_BLOWFISH
+	} else if (strstr(ptr, "blowfish-cbc")) {
+		cipher = SSH_CIPHER_BLOWFISH;
+#endif
 	}
 
 	return (cipher);
@@ -3648,11 +3608,11 @@ static void choose_SSH2_key_maxlength(PTInstVar pvar)
 		else
 			ctos = 0;
 
-	 	val = current_keys[mode].enc.key_len;
+		val = current_keys[mode].enc.key_len;
 		if (need < val)
 			need = val;
 
-	 	val = current_keys[mode].enc.block_size;
+		val = current_keys[mode].enc.block_size;
 		if (need < val)
 			need = val;
 
@@ -5709,7 +5669,12 @@ static void do_SSH2_dispatch_setup_for_transfer(PTInstVar pvar)
 
 static BOOL handle_SSH2_newkeys(PTInstVar pvar)
 {
-	int supported_ciphers = (1 << SSH_CIPHER_3DES_CBC | 1 << SSH_CIPHER_AES128);
+	int supported_ciphers = (1 << SSH_CIPHER_3DES_CBC | 1 << SSH_CIPHER_AES128
+	                       | 1 << SSH_CIPHER_AES256
+#ifdef SSH2_BLOWFISH
+	                       | 1 << SSH_CIPHER_BLOWFISH
+#endif
+		);
 	int type = (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA) | (1 << SSH_AUTH_TIS);
 
 	notify_verbose_message(pvar, "SSH2_MSG_NEWKEYS is received(DH key generation is completed).", LOG_LEVEL_VERBOSE);

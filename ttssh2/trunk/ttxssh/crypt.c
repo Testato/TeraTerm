@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.12 2007-08-20 14:21:57 maya Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.13 2007-10-16 15:28:14 maya Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -214,6 +214,8 @@ static void no_encrypt(PTInstVar pvar, unsigned char FAR * buf, int bytes)
 
 
 // for SSH2(yutaka)
+// 事前に設定する鍵長が違うだけなので、AES256 でも
+// cAES128_encrypt/cAES128_decrypt を使用できる (2007.10.16 maya)
 static void cAES128_encrypt(PTInstVar pvar, unsigned char FAR * buf,
                             int bytes)
 {
@@ -653,8 +655,12 @@ BOOL CRYPT_set_supported_ciphers(PTInstVar pvar, int sender_ciphers,
 
 	} else { // for SSH2(yutaka)
 		// SSH2がサポートするデータ通信用アルゴリズム（公開鍵交換用とは別）
-		cipher_mask = (1 << SSH_CIPHER_3DES_CBC) | (1 << SSH_CIPHER_AES128);
-
+		cipher_mask = (1 << SSH_CIPHER_3DES_CBC)
+		            | (1 << SSH_CIPHER_AES128)
+#ifdef SSH2_BLOWFISH
+		            | (1 << SSH_CIPHER_BLOWFISH)
+#endif
+		            | (1 << SSH_CIPHER_AES256);
 	}
 
 	sender_ciphers &= cipher_mask;
@@ -1093,12 +1099,13 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 				enc = &pvar->ssh2_keys[MODE_OUT].enc;
 				cipher_init_SSH2(&pvar->evpcip[MODE_OUT],
-				                 enc->key, 24, enc->iv, 8,
+				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
+				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_ENCRYPT,
-				                 EVP_des_ede3_cbc);
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher));
 
-				//debug_print(10, enc->key, 24);
-				//debug_print(11, enc->iv, 24);
+				//debug_print(10, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
+				//debug_print(11, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
 
 				pvar->crypt_state.encrypt = c3DES_CBC_encrypt;
 				break;
@@ -1106,17 +1113,19 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 			// for SSH2(yutaka)
 		case SSH_CIPHER_AES128:
+		case SSH_CIPHER_AES256:
 			{
 				struct Enc *enc;
 
 				enc = &pvar->ssh2_keys[MODE_OUT].enc;
-				cipher_init_SSH2(&pvar->evpcip[MODE_OUT], 
-				                 enc->key, 16, enc->iv, 16, 
+				cipher_init_SSH2(&pvar->evpcip[MODE_OUT],
+				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
+				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_ENCRYPT,
-				                 EVP_aes_128_cbc);
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher));
 
-				//debug_print(10, enc->key, 24);
-				//debug_print(11, enc->iv, 24);
+				//debug_print(10, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
+				//debug_print(11, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
 
 				pvar->crypt_state.encrypt = cAES128_encrypt;
 				break;
@@ -1163,10 +1172,11 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				struct Enc *enc;
 
 				enc = &pvar->ssh2_keys[MODE_IN].enc;
-				cipher_init_SSH2(&pvar->evpcip[MODE_IN], 
-				                 enc->key, 24, enc->iv, 8, 
+				cipher_init_SSH2(&pvar->evpcip[MODE_IN],
+				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
+				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_DECRYPT,
-				                 EVP_des_ede3_cbc);
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher));
 
 				//debug_print(12, enc->key, 24);
 				//debug_print(13, enc->iv, 24);
@@ -1177,14 +1187,16 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 			// for SSH2(yutaka)
 		case SSH_CIPHER_AES128:
+		case SSH_CIPHER_AES256:
 			{
 				struct Enc *enc;
 
 				enc = &pvar->ssh2_keys[MODE_IN].enc;
-				cipher_init_SSH2(&pvar->evpcip[MODE_IN], 
-				                 enc->key, 16, enc->iv, 16, 
+				cipher_init_SSH2(&pvar->evpcip[MODE_IN],
+				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
+				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_DECRYPT,
-				                 EVP_aes_128_cbc);
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher));
 
 				//debug_print(12, enc->key, 24);
 				//debug_print(13, enc->iv, 24);
@@ -1272,6 +1284,8 @@ static char FAR *get_cipher_name(int cipher)
 		return "3DES-CBC";
 	case SSH_CIPHER_AES128:
 		return "AES128";
+	case SSH_CIPHER_AES256:
+		return "AES256";
 
 	default:
 		return "Unknown";
