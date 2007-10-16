@@ -21,6 +21,10 @@ copy /y ..\..\teraterm\cygterm\cygterm.exe %dst%
 copy /y ..\..\teraterm\cygterm\cygterm.cfg %dst%
 copy /y ..\..\teraterm\cygterm\cyglaunch.exe %dst%
 
+rem Debug file
+if "%1"=="debug" copy /y ..\..\ttssh2\ttxssh\Release\ttxssh.pdb %dst%
+if "%1"=="debug" copy /y ..\..\teraterm\visualc\bin\release\*.pdb %dst%
+
 copy /y ..\..\ttssh2\ttxssh\Release\ttxssh.dll %dst%
 copy /y ..\..\TTProxy\Release\TTXProxy.dll %dst%
 copy /y ..\..\teraterm\source\ttmenu\Release\ttpmenu.exe %dst%
