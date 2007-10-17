@@ -3379,6 +3379,9 @@ void SSH2_update_cipher_myproposal(PTInstVar pvar)
 		else if (cipher == SSH_CIPHER_3DES_CBC) {
 			strncat_s(buf, sizeof(buf), "3des-cbc,", _TRUNCATE);
 		}
+		else if (cipher == SSH_CIPHER_AES192) {
+			strncat_s(buf, sizeof(buf), "aes192-cbc,", _TRUNCATE);
+		}
 		else if (cipher == SSH_CIPHER_AES256) {
 			strncat_s(buf, sizeof(buf), "aes256-cbc,", _TRUNCATE);
 		}
@@ -3484,6 +3487,8 @@ static SSHCipher choose_SSH2_cipher_algorithm(char *server_proposal, char *my_pr
 		cipher = SSH_CIPHER_3DES_CBC;
 	} else if (strstr(ptr, "aes128-cbc")) {
 		cipher = SSH_CIPHER_AES128;
+	} else if (strstr(ptr, "aes192-cbc")) {
+		cipher = SSH_CIPHER_AES192;
 	} else if (strstr(ptr, "aes256-cbc")) {
 		cipher = SSH_CIPHER_AES256;
 #ifdef SSH2_BLOWFISH
@@ -5670,7 +5675,7 @@ static void do_SSH2_dispatch_setup_for_transfer(PTInstVar pvar)
 static BOOL handle_SSH2_newkeys(PTInstVar pvar)
 {
 	int supported_ciphers = (1 << SSH_CIPHER_3DES_CBC | 1 << SSH_CIPHER_AES128
-	                       | 1 << SSH_CIPHER_AES256
+	                       | 1 << SSH_CIPHER_AES192   | 1 << SSH_CIPHER_AES256
 #ifdef SSH2_BLOWFISH
 	                       | 1 << SSH_CIPHER_BLOWFISH
 #endif

@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.13 2007-10-16 15:28:14 maya Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.14 2007-10-17 04:03:41 maya Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -214,7 +214,7 @@ static void no_encrypt(PTInstVar pvar, unsigned char FAR * buf, int bytes)
 
 
 // for SSH2(yutaka)
-// 事前に設定する鍵長が違うだけなので、AES256 でも
+// 事前に設定する鍵長が違うだけなので、AES192, AES256 でも
 // cAES128_encrypt/cAES128_decrypt を使用できる (2007.10.16 maya)
 static void cAES128_encrypt(PTInstVar pvar, unsigned char FAR * buf,
                             int bytes)
@@ -660,6 +660,7 @@ BOOL CRYPT_set_supported_ciphers(PTInstVar pvar, int sender_ciphers,
 #ifdef SSH2_BLOWFISH
 		            | (1 << SSH_CIPHER_BLOWFISH)
 #endif
+		            | (1 << SSH_CIPHER_AES192)
 		            | (1 << SSH_CIPHER_AES256);
 	}
 
@@ -1113,6 +1114,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 			// for SSH2(yutaka)
 		case SSH_CIPHER_AES128:
+		case SSH_CIPHER_AES192:
 		case SSH_CIPHER_AES256:
 			{
 				struct Enc *enc;
@@ -1187,6 +1189,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 			// for SSH2(yutaka)
 		case SSH_CIPHER_AES128:
+		case SSH_CIPHER_AES192:
 		case SSH_CIPHER_AES256:
 			{
 				struct Enc *enc;
@@ -1284,6 +1287,8 @@ static char FAR *get_cipher_name(int cipher)
 		return "3DES-CBC";
 	case SSH_CIPHER_AES128:
 		return "AES128";
+	case SSH_CIPHER_AES192:
+		return "AES192";
 	case SSH_CIPHER_AES256:
 		return "AES256";
 
