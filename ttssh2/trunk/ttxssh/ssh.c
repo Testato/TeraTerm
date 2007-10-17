@@ -3937,6 +3937,7 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 
 error:;
 	buffer_free(pvar->peer_kex);
+	pvar->peer_kex = NULL;
 
 	notify_fatal_error(pvar, msg);
 
