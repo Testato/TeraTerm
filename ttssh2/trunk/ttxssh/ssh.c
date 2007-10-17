@@ -3483,6 +3483,13 @@ static SSHCipher choose_SSH2_cipher_algorithm(char *server_proposal, char *my_pr
 		}
 		ptr = strtok(NULL, ",");
 	}
+
+	// サーバの proposal に、クライアントの proposal がひとつも
+	// 含まれていない場合 (2007.10.17 maya)
+	if (ptr == NULL) {
+		return (cipher);
+	}
+
 	if (strstr(ptr, "3des-cbc")) {
 		cipher = SSH_CIPHER_3DES_CBC;
 	} else if (strstr(ptr, "aes128-cbc")) {
