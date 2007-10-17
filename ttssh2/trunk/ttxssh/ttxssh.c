@@ -186,6 +186,7 @@ static void normalize_cipher_order(char FAR * buf)
 	static char default_ciphers[] = {
 		SSH_CIPHER_AES128,
 		SSH_CIPHER_3DES_CBC,
+		SSH_CIPHER_AES192,
 		SSH_CIPHER_AES256,
 		SSH_CIPHER_3DES,
 		SSH_CIPHER_NONE,
@@ -1993,6 +1994,8 @@ static char FAR *get_cipher_name(int cipher)
 	// for SSH2(yutaka)
 	case SSH_CIPHER_AES128:
 		return "AES128(SSH2)";
+	case SSH_CIPHER_AES192:
+		return "AES192(SSH2)";
 	case SSH_CIPHER_AES256:
 		return "AES256(SSH2)";
 	case SSH_CIPHER_3DES_CBC:

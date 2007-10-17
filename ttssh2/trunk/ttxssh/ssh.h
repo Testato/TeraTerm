@@ -205,9 +205,9 @@ enum hmac_type {
                             "diffie-hellman-group1-sha1"
 #define KEX_DEFAULT_PK_ALG  "ssh-rsa,ssh-dss"
 #ifdef SSH2_BLOWFISH
-#define KEX_DEFAULT_ENCRYPT "aes128-cbc,3des-cbc,blowfish-cbc,aes256-cbc"
+#define KEX_DEFAULT_ENCRYPT "aes128-cbc,3des-cbc,blowfish-cbc,aes192-cbc,aes256-cbc"
 #else
-#define KEX_DEFAULT_ENCRYPT "aes128-cbc,3des-cbc,aes256-cbc"
+#define KEX_DEFAULT_ENCRYPT "aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc"
 #endif
 #define KEX_DEFAULT_MAC     "hmac-sha1,hmac-md5"
 // support of "Compression delayed" (2006.6.23 maya)
