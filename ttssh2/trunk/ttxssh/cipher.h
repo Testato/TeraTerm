@@ -93,11 +93,12 @@ int	 cipher_get_keycontext(const CipherContext *, u_char *);
 void	 cipher_set_keycontext(CipherContext *, u_char *);
 
 void cipher_init_SSH2(
-		EVP_CIPHER_CTX *evp, 
-		const u_char *key, u_int keylen, 
-		const u_char *iv, u_int ivlen,	
-		int encrypt,	
-		const EVP_CIPHER *(*func)(void)
+		EVP_CIPHER_CTX *evp,
+		const u_char *key, u_int keylen,
+		const u_char *iv, u_int ivlen,
+		int encrypt,
+		const EVP_CIPHER *(*func)(void),
+		PTInstVar pvar
 );
 
 #endif				/* CIPHER_H */

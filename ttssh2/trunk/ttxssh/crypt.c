@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.14 2007-10-17 04:03:41 maya Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.15 2007-10-17 15:58:15 maya Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -241,10 +241,10 @@ static void cAES128_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 	}
 
 	if (EVP_Cipher(&pvar->evpcip[MODE_OUT], newbuf, buf, bytes) == 0) {
-		// TODO: failure
 		UTIL_get_lang_msg("MSG_AES128_ENCRYPT_ERROR2", pvar,
-		                  "AES128 encrypt error(1): bytes %d (%d)");
+		                  "AES128 encrypt error(2)");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
+		goto error;
 
 	} else {
 		//memcpy(key, pvar->ssh2_keys[MODE_OUT].enc.key, AES128_KEYLEN);
@@ -287,31 +287,25 @@ static void cAES128_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 	}
 
 	if (EVP_Cipher(&pvar->evpcip[MODE_IN], newbuf, buf, bytes) == 0) {
-		// TODO:
 		UTIL_get_lang_msg("MSG_AES128_DECRYPT_ERROR2", pvar,
 		                  "AES128 decrypt error(2)");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
+		goto error;
 
 	} else {
-#if 0
-		memcpy(key, pvar->ssh2_keys[MODE_IN].enc.key, AES128_KEYLEN);
+		//memcpy(key, pvar->ssh2_keys[MODE_IN].enc.key, AES128_KEYLEN);
 		// IVはDES関数内で更新されるため、ローカルにコピーしてから使う。
-		memcpy(iv, pvar->ssh2_keys[MODE_IN].enc.iv, AES128_IVLEN);
+		//memcpy(iv, pvar->ssh2_keys[MODE_IN].enc.iv, AES128_IVLEN);
 		
-		{
-		static int no = 70;
-		debug_print(no, buf, bytes);
-		//debug_print(no, key, AES128_KEYLEN);
-		//debug_print(10*no, iv, AES128_IVLEN);
-		debug_print(30*no, newbuf, bytes);
-		no++;
-		}
-#endif
+		//debug_print(70, key, AES128_KEYLEN);
+		//debug_print(71, iv, AES128_IVLEN);
+		//debug_print(72, buf, bytes);
+		//debug_print(73, newbuf, bytes);
 
 		memcpy(buf, newbuf, bytes);
 	}
 
-error:;
+error:
 	free(newbuf);
 }
 
@@ -321,20 +315,22 @@ error:;
 static void c3DES_CBC_encrypt(PTInstVar pvar, unsigned char FAR * buf,
                               int bytes)
 {
-	unsigned char key[24], iv[8];
+//	unsigned char key[24], iv[8];
 	unsigned char *newbuf = malloc(bytes);
 
 	if (newbuf == NULL)
 		return;
 
-#if 1
-
 	if (EVP_Cipher(&pvar->evpcip[MODE_OUT], newbuf, buf, bytes) == 0) {
-		// TODO: failure
+		UTIL_get_lang_msg("MSG_3DESCBC_ENCRYPT_ERROR", pvar,
+		                  "3DES-CBC encrypt error");
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+		goto error;
+
 	} else {
-		memcpy(key, pvar->ssh2_keys[MODE_OUT].enc.key, 24);
+		//memcpy(key, pvar->ssh2_keys[MODE_OUT].enc.key, 24);
 		// IVはDES関数内で更新されるため、ローカルにコピーしてから使う。
-		memcpy(iv, pvar->ssh2_keys[MODE_OUT].enc.iv, 8);
+		//memcpy(iv, pvar->ssh2_keys[MODE_OUT].enc.iv, 8);
 		
 		//debug_print(50, key, 24);
 		//debug_print(51, iv, 8);
@@ -343,57 +339,30 @@ static void c3DES_CBC_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 
 		memcpy(buf, newbuf, bytes);
 	}
+
+error:
 	free(newbuf);
-#else
-
-	memcpy(key, pvar->ssh2_keys[MODE_OUT].enc.key, 24);
-	// IVはDES関数内で更新されるため、ローカルにコピーしてから使う。
-	memcpy(iv, pvar->ssh2_keys[MODE_OUT].enc.iv, 8);
-	
-	//debug_print(50, key, 24);
-	//debug_print(51, iv, 8);
-	//debug_print(52, buf, bytes);
-
-#if 0
-	DES_ede3_cbc_encrypt(            
-			buf, newbuf, bytes,
-            (DES_key_schedule *)&key[0],
-            (DES_key_schedule *)&key[8],
-            (DES_key_schedule *)&key[16],         
-			(DES_cblock *)iv,            
-			DES_ENCRYPT);
-#else
-	DES_ncbc_encrypt(buf, newbuf, bytes, (DES_key_schedule *)&key[0], (DES_cblock *)iv, DES_ENCRYPT);
-	DES_ncbc_encrypt(buf, newbuf, bytes, (DES_key_schedule *)&key[8], (DES_cblock *)iv, DES_DECRYPT);
-	DES_ncbc_encrypt(buf, newbuf, bytes, (DES_key_schedule *)&key[16], (DES_cblock *)iv, DES_ENCRYPT);
-
-#endif
-
-	//debug_print(53, newbuf, bytes);
-
-	memcpy(buf, newbuf, bytes);
-	free(newbuf);
-
-#endif
 }
 
 static void c3DES_CBC_decrypt(PTInstVar pvar, unsigned char FAR * buf,
                               int bytes)
 {
-	unsigned char key[24], iv[8];
+//	unsigned char key[24], iv[8];
 	unsigned char *newbuf = malloc(bytes);
 
 	if (newbuf == NULL)
 		return;
 
-#if 1
 	if (EVP_Cipher(&pvar->evpcip[MODE_IN], newbuf, buf, bytes) == 0) {
-		// TODO:
+		UTIL_get_lang_msg("MSG_3DESCBC_DECRYPT_ERROR", pvar,
+		                  "3DES-CBC decrypt error");
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+		goto error;
 
 	} else {
-		memcpy(key, pvar->ssh2_keys[MODE_IN].enc.key, 24);
+		//memcpy(key, pvar->ssh2_keys[MODE_IN].enc.key, 24);
 		// IVはDES関数内で更新されるため、ローカルにコピーしてから使う。
-		memcpy(iv, pvar->ssh2_keys[MODE_IN].enc.iv, 8);
+		//memcpy(iv, pvar->ssh2_keys[MODE_IN].enc.iv, 8);
 		
 		//debug_print(70, key, 24);
 		//debug_print(71, iv, 8);
@@ -402,36 +371,9 @@ static void c3DES_CBC_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 
 		memcpy(buf, newbuf, bytes);
 	}
+
+error:
 	free(newbuf);
-
-#else
-	unsigned char *key, iv[8];
-	unsigned char *newbuf = malloc(bytes);
-	if (newbuf == NULL)
-		return;
-
-	key = pvar->ssh2_keys[MODE_IN].enc.key;
-	// IVはDES関数内で更新されるため、ローカルにコピーしてから使う。
-	memcpy(iv, pvar->ssh2_keys[MODE_IN].enc.iv, 8);
-
-	//debug_print(60, key, 24);
-	//debug_print(61, iv, 8);
-	//debug_print(62, buf, bytes);
-	
-    DES_ede3_cbc_encrypt(            
-			buf, newbuf, bytes,
-            (DES_key_schedule *)&key[0],
-            (DES_key_schedule *)&key[8],
-            (DES_key_schedule *)&key[16],          
-			(DES_cblock *)iv,            
-			DES_DECRYPT);
-
-	//debug_print(63, newbuf, bytes);
-
-	memcpy(buf, newbuf, bytes);
-
-	free(newbuf);
-#endif
 }
 
 
@@ -1061,26 +1003,40 @@ void cipher_init_SSH2(EVP_CIPHER_CTX *evp,
                       const u_char *key, u_int keylen,
                       const u_char *iv, u_int ivlen,
                       int encrypt,
-                      const EVP_CIPHER *(*func)(void))
+                      const EVP_CIPHER *(*func)(void),
+                      PTInstVar pvar)
 {
 	EVP_CIPHER *type;
 	int klen;
+	char tmp[80];
 
 	type = (EVP_CIPHER *)func();
 
 	EVP_CIPHER_CTX_init(evp);
 	if (EVP_CipherInit(evp, type, NULL, (u_char *)iv, (encrypt == CIPHER_ENCRYPT)) == 0) {
-		// TODO:
+		UTIL_get_lang_msg("MSG_CIPHER_INIT_ERROR", pvar,
+		                  "Cipher initialize error(%d)");
+		_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, pvar->ts->UIMsg, 1);
+		notify_fatal_error(pvar, tmp);
+		return;
 	}
 
 	klen = EVP_CIPHER_CTX_key_length(evp);
 	if (klen > 0 && keylen != klen) {
 		if (EVP_CIPHER_CTX_set_key_length(evp, keylen) == 0) {
-			// TODO:
+			UTIL_get_lang_msg("MSG_CIPHER_INIT_ERROR", pvar,
+			                  "Cipher initialize error(%d)");
+			_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, pvar->ts->UIMsg, 2);
+			notify_fatal_error(pvar, tmp);
+			return;
 		}
 	}
 	if (EVP_CipherInit(evp, NULL, (u_char *)key, NULL, -1) == 0) {
-		// TODO:
+		UTIL_get_lang_msg("MSG_CIPHER_INIT_ERROR", pvar,
+		                  "Cipher initialize error(%d)");
+		_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, pvar->ts->UIMsg, 3);
+		notify_fatal_error(pvar, tmp);
+		return;
 	}
 }
 
@@ -1103,7 +1059,8 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
 				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_ENCRYPT,
-				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher));
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 pvar);
 
 				//debug_print(10, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
 				//debug_print(11, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
@@ -1124,7 +1081,8 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
 				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_ENCRYPT,
-				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher));
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 pvar);
 
 				//debug_print(10, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
 				//debug_print(11, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
@@ -1178,7 +1136,8 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
 				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_DECRYPT,
-				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher));
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 pvar);
 
 				//debug_print(12, enc->key, 24);
 				//debug_print(13, enc->iv, 24);
@@ -1199,7 +1158,8 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
 				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_DECRYPT,
-				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher));
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 pvar);
 
 				//debug_print(12, enc->key, 24);
 				//debug_print(13, enc->iv, 24);
