@@ -910,6 +910,9 @@ BOOL CALLBACK KeybDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 				SendDlgItemMessage(Dialog, IDC_KEYBKEYBTEXT, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_KEYBKEYB, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_KEYBMETA, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_KEYBDISABLE, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_KEYBAPPKEY, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_KEYBAPPCUR, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDOK, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDCANCEL, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_KEYBHELP, WM_SETFONT, (WPARAM)DlgKeybFont, MAKELPARAM(TRUE,0));
@@ -936,6 +939,15 @@ BOOL CALLBACK KeybDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			GetDlgItemText(Dialog, IDC_KEYBMETA, uimsg2, sizeof(uimsg2));
 			get_lang_msg("DLG_KEYB_META", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
 			SetDlgItemText(Dialog, IDC_KEYBMETA, uimsg);
+			GetDlgItemText(Dialog, IDC_KEYBDISABLE, uimsg2, sizeof(uimsg2));
+			get_lang_msg("DLG_KEYB_DISABLE", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
+			SetDlgItemText(Dialog, IDC_KEYBDISABLE, uimsg);
+			GetDlgItemText(Dialog, IDC_KEYBAPPKEY, uimsg2, sizeof(uimsg2));
+			get_lang_msg("DLG_KEYB_APPKEY", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
+			SetDlgItemText(Dialog, IDC_KEYBAPPKEY, uimsg);
+			GetDlgItemText(Dialog, IDC_KEYBAPPCUR, uimsg2, sizeof(uimsg2));
+			get_lang_msg("DLG_KEYB_APPCUR", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
+			SetDlgItemText(Dialog, IDC_KEYBAPPCUR, uimsg);
 			GetDlgItemText(Dialog, IDOK, uimsg2, sizeof(uimsg2));
 			get_lang_msg("BTN_OK", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
 			SetDlgItemText(Dialog, IDOK, uimsg);
@@ -949,6 +961,8 @@ BOOL CALLBACK KeybDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			SetRB(Dialog,ts->BSKey-1,IDC_KEYBBS,IDC_KEYBBS);
 			SetRB(Dialog,ts->DelKey,IDC_KEYBDEL,IDC_KEYBDEL);
 			SetRB(Dialog,ts->MetaKey,IDC_KEYBMETA,IDC_KEYBMETA);
+			SetRB(Dialog,ts->DisableAppKeypad,IDC_KEYBAPPKEY,IDC_KEYBAPPKEY);
+			SetRB(Dialog,ts->DisableAppCursor,IDC_KEYBAPPCUR,IDC_KEYBAPPCUR);
 			if (ts->Language==IdRussian)
 			{
 				ShowDlgItem(Dialog,IDC_KEYBKEYBTEXT,IDC_KEYBKEYB);
@@ -966,6 +980,8 @@ BOOL CALLBACK KeybDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 						ts->BSKey++;
 						GetRB(Dialog,&ts->DelKey,IDC_KEYBDEL,IDC_KEYBDEL);
 						GetRB(Dialog,&ts->MetaKey,IDC_KEYBMETA,IDC_KEYBMETA);
+						GetRB(Dialog,&ts->DisableAppKeypad,IDC_KEYBAPPKEY,IDC_KEYBAPPKEY);
+						GetRB(Dialog,&ts->DisableAppCursor,IDC_KEYBAPPCUR,IDC_KEYBAPPCUR);
 						if (ts->Language==IdRussian)
 							ts->RussKeyb = (WORD)GetCurSel(Dialog, IDC_KEYBKEYB);
 					}

@@ -229,6 +229,9 @@ DLG_KEYB_BS=&Backspace key
 DLG_KEYB_DEL=&Delete key
 DLG_KEYB_KEYB=&Keyboard:
 DLG_KEYB_META=&Meta key
+DLG_KEYB_DISABLE=Disabled mode:
+DLG_KEYB_APPKEY=&Application Keypad
+DLG_KEYB_APPCUR=Application &Cursor
 
 DLG_SERIAL_TITLE=Tera Term: Serial port setup
 DLG_SERIAL_PORT=&Port:

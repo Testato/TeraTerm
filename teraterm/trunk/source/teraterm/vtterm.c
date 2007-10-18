@@ -226,6 +226,12 @@ void ResetCharSet()
   cv.KanjiOut = ts.KanjiOut;
 }
 
+void ResetKeypadMode(BOOL DisabledModeOnly)
+{
+  if (!DisabledModeOnly || ts.DisableAppKeypad) AppliKeyMode = FALSE;
+  if (!DisabledModeOnly || ts.DisableAppCursor) AppliCursorMode = FALSE;
+}
+
 void MoveToMainScreen()
 {
   StatusX = CursorX;
@@ -999,7 +1005,10 @@ void ParseEscape(BYTE b) /* b is the final char */
       switch (b) {
 	case '7': SaveCursor(); break;
 	case '8': RestoreCursor(); break;
-	case '=': AppliKeyMode = TRUE; break;
+	case '=':
+	  if (!ts.DisableAppKeypad)
+	    AppliKeyMode = TRUE;
+	  break;
 	case '>': AppliKeyMode = FALSE; break;
 	case 'D': /* IND */
 	  LineFeed(0,TRUE);
@@ -1613,7 +1622,10 @@ void CSSetAttr()
 
       for (i = 1 ; i<=NParam ; i++)
 	switch (Param[i]) {
-	  case 1: AppliCursorMode = TRUE; break;
+	  case 1:
+	    if (!ts.DisableAppCursor)
+	      AppliCursorMode = TRUE;
+	    break;
 	  case 3:
 	    ChangeTerminalSize(132,NumOfLines-StatusLine);
 	    break;

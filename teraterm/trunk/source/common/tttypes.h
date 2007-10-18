@@ -357,6 +357,8 @@ struct tttset {
 	WORD VTCompatTab;
 	WORD TelKeepAliveInterval;
 	WORD MaxBroadcatHistory;
+	WORD DisableAppKeypad;
+	WORD DisableAppCursor;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -761,6 +763,10 @@ typedef TMap far *PMap;
  * Increment the number of this macro value
  * when you change TMap or member of TMap.
  *
+ * - At version 4.56, ttset_memfilemap was replaced with ttset_memfilemap_4.
+ *   added ttset.DisableAppKeypad.
+ *   added ttset.DisableAppCursor.
+ *
  * - At version 4.54, ttset_memfilemap was replaced with ttset_memfilemap_3.
  *   added tttset.TelKeepAliveInterval.
  *   added tttset.MaxBroadcatHistory.
@@ -770,4 +776,4 @@ typedef TMap far *PMap;
  *   added tttset.VTCompatTab.
  */
 
-#define TT_FILEMAPNAME "ttset_memfilemap_3"
+#define TT_FILEMAPNAME "ttset_memfilemap_4"

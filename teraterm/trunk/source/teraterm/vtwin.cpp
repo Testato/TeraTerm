@@ -4528,9 +4528,11 @@ void CVTWindow::OnSetupKeyboard()
 	Ok = (*SetupKeyboard)(HVTWin, &ts);
 	FreeTTDLG();
 
-	if (Ok &&
-	    (ts.Language==IdJapanese))
+	if (Ok) {
+	    ResetKeypadMode(TRUE);
+	    if (ts.Language==IdJapanese)
 		ResetIME();
+	}
 }
 
 void CVTWindow::OnSetupSerialPort()

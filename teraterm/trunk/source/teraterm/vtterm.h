@@ -10,6 +10,7 @@ extern "C" {
 /* prototypes */
 void ResetTerminal();
 void ResetCharSet();
+void ResetKeypadMode(BOOL DisabledModeOnly);
 void HideStatusLine();
 void ChangeTerminalSize(int Nx, int Ny);
 int VTParse();

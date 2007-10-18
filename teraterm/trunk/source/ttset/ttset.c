@@ -558,6 +558,12 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	/* Meta Key */
 	ts->MetaKey = GetOnOff(Section, "MetaKey", FName, FALSE);
 
+	/* Application Keypad */
+	ts->DisableAppKeypad = GetOnOff(Section, "DisableAppKeypad", FName, FALSE);
+
+	/* Application Cursor */
+	ts->DisableAppCursor = GetOnOff(Section, "DisableAppCursor", FName, FALSE);
+
 	/* Russian keyboard type */
 	GetPrivateProfileString(Section, "RussKeyb", "",
 	                        Temp, sizeof(Temp), FName);
@@ -1372,6 +1378,12 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 	/* Meta key */
 	WriteOnOff(Section, "MetaKey", FName, ts->MetaKey);
+
+	/* Application Keypad */
+	WriteOnOff(Section, "DisableAppKeypad", FName, ts->DisableAppKeypad);
+
+	/* Application Cursor */
+	WriteOnOff(Section, "DisableAppCursor", FName, ts->DisableAppCursor);
 
 	/* Russian keyboard type */
 	id2str(RussList2, ts->RussKeyb, IdWindows, Temp, sizeof(Temp));
