@@ -78,11 +78,12 @@ typedef enum {
 	SSH_CIPHER_NONE, SSH_CIPHER_IDEA, SSH_CIPHER_DES, SSH_CIPHER_3DES,
 	SSH_CIPHER_TSS, SSH_CIPHER_RC4, SSH_CIPHER_BLOWFISH,
 	// for SSH2
-	SSH_CIPHER_3DES_CBC, SSH_CIPHER_AES128,
-	SSH_CIPHER_AES192,SSH_CIPHER_AES256,
+	SSH2_CIPHER_3DES_CBC, SSH2_CIPHER_AES128,
+	SSH2_CIPHER_AES192,SSH2_CIPHER_AES256,
+	SSH2_CIPHER_BLOWFISH,
 } SSHCipher;
 
-#define SSH_CIPHER_MAX SSH_CIPHER_AES256
+#define SSH_CIPHER_MAX SSH2_CIPHER_BLOWFISH
 
 typedef enum {
 	SSH_AUTH_NONE, SSH_AUTH_RHOSTS, SSH_AUTH_RSA, SSH_AUTH_PASSWORD,
@@ -204,11 +205,7 @@ enum hmac_type {
                             "diffie-hellman-group14-sha1," \
                             "diffie-hellman-group1-sha1"
 #define KEX_DEFAULT_PK_ALG  "ssh-rsa,ssh-dss"
-#ifdef SSH2_BLOWFISH
 #define KEX_DEFAULT_ENCRYPT "aes128-cbc,3des-cbc,blowfish-cbc,aes192-cbc,aes256-cbc"
-#else
-#define KEX_DEFAULT_ENCRYPT "aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc"
-#endif
 #define KEX_DEFAULT_MAC     "hmac-sha1,hmac-md5"
 // support of "Compression delayed" (2006.6.23 maya)
 #define KEX_DEFAULT_COMP	"none,zlib@openssh.com,zlib"
@@ -277,13 +274,11 @@ typedef struct ssh2_cipher {
 } ssh2_cipher_t;
 
 static ssh2_cipher_t ssh2_ciphers[] = {
-	{SSH_CIPHER_3DES_CBC, "3des-cbc",      8, 24, EVP_des_ede3_cbc},
-	{SSH_CIPHER_AES128,   "aes128-cbc",   16, 16, EVP_aes_128_cbc},
-	{SSH_CIPHER_AES192,   "aes192-cbc",   16, 24, EVP_aes_192_cbc},
-	{SSH_CIPHER_AES256,   "aes256-cbc",   16, 32, EVP_aes_256_cbc},
-#ifdef SSH2_BLOWFISH
-	{SSH_CIPHER_BLOWFISH, "blowfish-cbc",  8, 32, EVP_enc_null}, // func ‚ÍŽg—p‚³‚ê‚È‚¢
-#endif
+	{SSH2_CIPHER_3DES_CBC, "3des-cbc",      8, 24, EVP_des_ede3_cbc},
+	{SSH2_CIPHER_AES128,   "aes128-cbc",   16, 16, EVP_aes_128_cbc},
+	{SSH2_CIPHER_AES192,   "aes192-cbc",   16, 24, EVP_aes_192_cbc},
+	{SSH2_CIPHER_AES256,   "aes256-cbc",   16, 32, EVP_aes_256_cbc},
+	{SSH2_CIPHER_BLOWFISH, "blowfish-cbc",  8, 32, EVP_bf_cbc},
 	{SSH_CIPHER_NONE, NULL, 0, 0, NULL},
 };
 

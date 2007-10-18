@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.15 2007-10-17 15:58:15 maya Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.16 2007-10-18 03:49:39 maya Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -219,7 +219,6 @@ static void no_encrypt(PTInstVar pvar, unsigned char FAR * buf, int bytes)
 static void cAES128_encrypt(PTInstVar pvar, unsigned char FAR * buf,
                             int bytes)
 {
-//	unsigned char key[AES128_KEYLEN], iv[AES128_IVLEN];
 	unsigned char *newbuf = malloc(bytes);
 	int block_size = pvar->ssh2_keys[MODE_OUT].enc.block_size;
 
@@ -247,16 +246,8 @@ static void cAES128_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 		goto error;
 
 	} else {
-		//memcpy(key, pvar->ssh2_keys[MODE_OUT].enc.key, AES128_KEYLEN);
-		// IVはDES関数内で更新されるため、ローカルにコピーしてから使う。
-		//memcpy(iv, pvar->ssh2_keys[MODE_OUT].enc.iv, AES128_IVLEN);
-		
-		//debug_print(50, key, 24);
-		//debug_print(51, iv, 8);
-		//debug_print(52, buf, bytes);
-		//debug_print(53, newbuf, bytes);
-
 		memcpy(buf, newbuf, bytes);
+
 	}
 
 error:
@@ -266,7 +257,6 @@ error:
 static void cAES128_decrypt(PTInstVar pvar, unsigned char FAR * buf,
                             int bytes)
 {
-//	unsigned char key[AES128_KEYLEN], iv[AES128_IVLEN];
 	unsigned char *newbuf = malloc(bytes);
 	int block_size = pvar->ssh2_keys[MODE_IN].enc.block_size;
 
@@ -293,16 +283,8 @@ static void cAES128_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 		goto error;
 
 	} else {
-		//memcpy(key, pvar->ssh2_keys[MODE_IN].enc.key, AES128_KEYLEN);
-		// IVはDES関数内で更新されるため、ローカルにコピーしてから使う。
-		//memcpy(iv, pvar->ssh2_keys[MODE_IN].enc.iv, AES128_IVLEN);
-		
-		//debug_print(70, key, AES128_KEYLEN);
-		//debug_print(71, iv, AES128_IVLEN);
-		//debug_print(72, buf, bytes);
-		//debug_print(73, newbuf, bytes);
-
 		memcpy(buf, newbuf, bytes);
+
 	}
 
 error:
@@ -315,7 +297,6 @@ error:
 static void c3DES_CBC_encrypt(PTInstVar pvar, unsigned char FAR * buf,
                               int bytes)
 {
-//	unsigned char key[24], iv[8];
 	unsigned char *newbuf = malloc(bytes);
 
 	if (newbuf == NULL)
@@ -328,6 +309,7 @@ static void c3DES_CBC_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 		goto error;
 
 	} else {
+		//unsigned char key[24], iv[8];
 		//memcpy(key, pvar->ssh2_keys[MODE_OUT].enc.key, 24);
 		// IVはDES関数内で更新されるため、ローカルにコピーしてから使う。
 		//memcpy(iv, pvar->ssh2_keys[MODE_OUT].enc.iv, 8);
@@ -347,7 +329,6 @@ error:
 static void c3DES_CBC_decrypt(PTInstVar pvar, unsigned char FAR * buf,
                               int bytes)
 {
-//	unsigned char key[24], iv[8];
 	unsigned char *newbuf = malloc(bytes);
 
 	if (newbuf == NULL)
@@ -360,6 +341,7 @@ static void c3DES_CBC_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 		goto error;
 
 	} else {
+		//unsigned char key[24], iv[8];
 		//memcpy(key, pvar->ssh2_keys[MODE_IN].enc.key, 24);
 		// IVはDES関数内で更新されるため、ローカルにコピーしてから使う。
 		//memcpy(iv, pvar->ssh2_keys[MODE_IN].enc.iv, 8);
@@ -375,6 +357,64 @@ static void c3DES_CBC_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 error:
 	free(newbuf);
 }
+
+
+static void cBlowfish_encrypt2(PTInstVar pvar, unsigned char FAR * buf,
+                               int bytes)
+{
+	unsigned char *newbuf = malloc(bytes);
+	int block_size = pvar->ssh2_keys[MODE_OUT].enc.block_size;
+
+	// 事前復号化により、全ペイロードが復号化されている場合は、0バイトになる。(2004.11.7 yutaka)
+	if (bytes == 0)
+		return;
+
+	if (newbuf == NULL)
+		return;
+
+	if (EVP_Cipher(&pvar->evpcip[MODE_OUT], newbuf, buf, bytes) == 0) {
+		UTIL_get_lang_msg("MSG_BLOWFISH_ENCRYPT_ERROR", pvar,
+		                  "Blowfish encrypt error");
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+		goto error;
+
+	} else {
+		memcpy(buf, newbuf, bytes);
+
+	}
+
+error:
+	free(newbuf);
+}
+
+static void cBlowfish_decrypt2(PTInstVar pvar, unsigned char FAR * buf,
+                               int bytes)
+{
+	unsigned char *newbuf = malloc(bytes);
+	int block_size = pvar->ssh2_keys[MODE_IN].enc.block_size;
+
+	// 事前復号化により、全ペイロードが復号化されている場合は、0バイトになる。(2004.11.7 yutaka)
+	if (bytes == 0)
+		return;
+
+	if (newbuf == NULL)
+		return;
+
+	if (EVP_Cipher(&pvar->evpcip[MODE_IN], newbuf, buf, bytes) == 0) {
+		UTIL_get_lang_msg("MSG_BLOWFISH_DECRYPT_ERROR", pvar,
+		                  "Blowfish decrypt error");
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+		goto error;
+
+	} else {
+		memcpy(buf, newbuf, bytes);
+
+	}
+
+error:
+	free(newbuf);
+}
+
 
 
 static void c3DES_encrypt(PTInstVar pvar, unsigned char FAR * buf,
@@ -597,13 +637,11 @@ BOOL CRYPT_set_supported_ciphers(PTInstVar pvar, int sender_ciphers,
 
 	} else { // for SSH2(yutaka)
 		// SSH2がサポートするデータ通信用アルゴリズム（公開鍵交換用とは別）
-		cipher_mask = (1 << SSH_CIPHER_3DES_CBC)
-		            | (1 << SSH_CIPHER_AES128)
-#ifdef SSH2_BLOWFISH
-		            | (1 << SSH_CIPHER_BLOWFISH)
-#endif
-		            | (1 << SSH_CIPHER_AES192)
-		            | (1 << SSH_CIPHER_AES256);
+		cipher_mask = (1 << SSH2_CIPHER_3DES_CBC)
+		            | (1 << SSH2_CIPHER_AES128)
+		            | (1 << SSH2_CIPHER_BLOWFISH)
+		            | (1 << SSH2_CIPHER_AES192)
+		            | (1 << SSH2_CIPHER_AES256);
 	}
 
 	sender_ciphers &= cipher_mask;
@@ -1050,7 +1088,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 	if (sender_flag) {
 		switch (pvar->crypt_state.sender_cipher) {
 			// for SSH2(yutaka)
-		case SSH_CIPHER_3DES_CBC:
+		case SSH2_CIPHER_3DES_CBC:
 			{
 				struct Enc *enc;
 
@@ -1070,9 +1108,9 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 			}
 
 			// for SSH2(yutaka)
-		case SSH_CIPHER_AES128:
-		case SSH_CIPHER_AES192:
-		case SSH_CIPHER_AES256:
+		case SSH2_CIPHER_AES128:
+		case SSH2_CIPHER_AES192:
+		case SSH2_CIPHER_AES256:
 			{
 				struct Enc *enc;
 
@@ -1088,6 +1126,25 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				//debug_print(11, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
 
 				pvar->crypt_state.encrypt = cAES128_encrypt;
+				break;
+			}
+
+		case SSH2_CIPHER_BLOWFISH:
+			{
+				struct Enc *enc;
+
+				enc = &pvar->ssh2_keys[MODE_OUT].enc;
+				cipher_init_SSH2(&pvar->evpcip[MODE_OUT],
+				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
+				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
+				                 CIPHER_ENCRYPT,
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 pvar);
+
+				//debug_print(10, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
+				//debug_print(11, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
+
+				pvar->crypt_state.encrypt = cBlowfish_encrypt2;
 				break;
 			}
 
@@ -1127,7 +1184,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 	if (receiver_flag) {
 		switch (pvar->crypt_state.receiver_cipher) {
 			// for SSH2(yutaka)
-		case SSH_CIPHER_3DES_CBC:
+		case SSH2_CIPHER_3DES_CBC:
 			{
 				struct Enc *enc;
 
@@ -1139,17 +1196,17 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
 				                 pvar);
 
-				//debug_print(12, enc->key, 24);
-				//debug_print(13, enc->iv, 24);
+				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
+				//debug_print(13, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
 
 				pvar->crypt_state.decrypt = c3DES_CBC_decrypt;
 				break;
 			}
 
 			// for SSH2(yutaka)
-		case SSH_CIPHER_AES128:
-		case SSH_CIPHER_AES192:
-		case SSH_CIPHER_AES256:
+		case SSH2_CIPHER_AES128:
+		case SSH2_CIPHER_AES192:
+		case SSH2_CIPHER_AES256:
 			{
 				struct Enc *enc;
 
@@ -1161,10 +1218,29 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
 				                 pvar);
 
-				//debug_print(12, enc->key, 24);
-				//debug_print(13, enc->iv, 24);
+				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
+				//debug_print(13, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
 
 				pvar->crypt_state.decrypt = cAES128_decrypt;
+				break;
+			}
+
+		case SSH2_CIPHER_BLOWFISH:
+			{
+				struct Enc *enc;
+
+				enc = &pvar->ssh2_keys[MODE_IN].enc;
+				cipher_init_SSH2(&pvar->evpcip[MODE_IN],
+				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
+				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
+				                 CIPHER_DECRYPT,
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 pvar);
+
+				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
+				//debug_print(13, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
+
+				pvar->crypt_state.decrypt = cBlowfish_decrypt2;
 				break;
 			}
 
@@ -1243,14 +1319,16 @@ static char FAR *get_cipher_name(int cipher)
 		return "Blowfish (256 key bits)";
 
 	// SSH2 
-	case SSH_CIPHER_3DES_CBC:
+	case SSH2_CIPHER_3DES_CBC:
 		return "3DES-CBC";
-	case SSH_CIPHER_AES128:
+	case SSH2_CIPHER_AES128:
 		return "AES128";
-	case SSH_CIPHER_AES192:
+	case SSH2_CIPHER_AES192:
 		return "AES192";
-	case SSH_CIPHER_AES256:
+	case SSH2_CIPHER_AES256:
 		return "AES256";
+	case SSH2_CIPHER_BLOWFISH:
+		return "Blowfish";
 
 	default:
 		return "Unknown";

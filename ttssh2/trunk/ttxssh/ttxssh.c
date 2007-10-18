@@ -184,10 +184,11 @@ static void normalize_cipher_order(char FAR * buf)
 #else
 	// for SSH2(yutaka)
 	static char default_ciphers[] = {
-		SSH_CIPHER_AES128,
-		SSH_CIPHER_3DES_CBC,
-		SSH_CIPHER_AES192,
-		SSH_CIPHER_AES256,
+		SSH2_CIPHER_AES128,
+		SSH2_CIPHER_3DES_CBC,
+		SSH2_CIPHER_BLOWFISH,
+		SSH2_CIPHER_AES192,
+		SSH2_CIPHER_AES256,
 		SSH_CIPHER_3DES,
 		SSH_CIPHER_NONE,
 		SSH_CIPHER_DES, SSH_CIPHER_BLOWFISH
@@ -1985,21 +1986,19 @@ static char FAR *get_cipher_name(int cipher)
 	case SSH_CIPHER_TSS:
 		return "TSS(SSH1)";
 	case SSH_CIPHER_BLOWFISH:
-#ifdef SSH2_BLOWFISH
-		return "Blowfish(SSH1,2)";
-#else
 		return "Blowfish(SSH1)";
-#endif
 
 	// for SSH2(yutaka)
-	case SSH_CIPHER_AES128:
+	case SSH2_CIPHER_AES128:
 		return "AES128(SSH2)";
-	case SSH_CIPHER_AES192:
+	case SSH2_CIPHER_AES192:
 		return "AES192(SSH2)";
-	case SSH_CIPHER_AES256:
+	case SSH2_CIPHER_AES256:
 		return "AES256(SSH2)";
-	case SSH_CIPHER_3DES_CBC:
+	case SSH2_CIPHER_3DES_CBC:
 		return "3DES-CBC(SSH2)";
+	case SSH2_CIPHER_BLOWFISH:
+		return "Blowfish(SSH2)";
 
 	default:
 		return NULL;
