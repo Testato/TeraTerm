@@ -359,6 +359,7 @@ struct tttset {
 	WORD MaxBroadcatHistory;
 	WORD DisableAppKeypad;
 	WORD DisableAppCursor;
+	WORD ClearComBuffOnOpen;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -764,8 +765,9 @@ typedef TMap far *PMap;
  * when you change TMap or member of TMap.
  *
  * - At version 4.56, ttset_memfilemap was replaced with ttset_memfilemap_4.
- *   added ttset.DisableAppKeypad.
- *   added ttset.DisableAppCursor.
+ *   added tttset.DisableAppKeypad.
+ *   added tttset.DisableAppCursor.
+ *   added tttset.ClearComBuffOnOpen.
  *
  * - At version 4.54, ttset_memfilemap was replaced with ttset_memfilemap_3.
  *   added tttset.TelKeepAliveInterval.

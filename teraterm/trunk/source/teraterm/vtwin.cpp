@@ -1267,8 +1267,8 @@ void CVTWindow::ResetSetup()
 		ts.PortType = cv.PortType;
 		if (cv.PortType==IdSerial) {
 			/* if serial port, change port parameters */
-		ts.ComPort = cv.ComPort;
-		CommResetSerial(&ts,&cv);
+			ts.ComPort = cv.ComPort;
+			CommResetSerial(&ts, &cv, TRUE);
 		}
 	}
 
@@ -4551,7 +4551,7 @@ void CVTWindow::OnSetupSerialPort()
 				CommOpen(HVTWin,&ts,&cv);
 			}
 			else
-				CommResetSerial(&ts,&cv);
+				CommResetSerial(&ts, &cv, ts.ClearComBuffOnOpen);
 		}
 		else
 			CommOpen(HVTWin,&ts,&cv);
@@ -4687,7 +4687,7 @@ void CVTWindow::OnControlSendBreak()
 
 void CVTWindow::OnControlResetPort()
 {
-	CommResetSerial(&ts,&cv);
+	CommResetSerial(&ts, &cv, TRUE);
 }
 
 void ApplyBoradCastCommandHisotry(HWND Dialog, char *historyfile)

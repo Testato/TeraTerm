@@ -126,7 +126,7 @@ void CommInit(PComVar cv)
 }
 
 /* reset a serial port which is already open */
-void CommResetSerial(PTTSet ts, PComVar cv)
+void CommResetSerial(PTTSet ts, PComVar cv, BOOL ClearBuff)
 {
   DCB dcb;
   DWORD DErr;
@@ -138,8 +138,9 @@ void CommResetSerial(PTTSet ts, PComVar cv)
   ClearCommError(cv->ComID,&DErr,NULL);
   SetupComm(cv->ComID,CommInQueSize,CommOutQueSize);
   /* flush input and output buffers */
-  PurgeComm(cv->ComID, PURGE_TXABORT | PURGE_RXABORT |
-    PURGE_TXCLEAR | PURGE_RXCLEAR);
+  if (ClearBuff)
+    PurgeComm(cv->ComID, PURGE_TXABORT | PURGE_RXABORT |
+      PURGE_TXCLEAR | PURGE_RXCLEAR);
 
   memset(&ctmo,0,sizeof(ctmo));
   ctmo.ReadIntervalTimeout = MAXDWORD;
@@ -507,7 +508,9 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
       else {
         cv->Open = TRUE;
         cv->ComPort = ts->ComPort;
-        CommResetSerial(ts,cv);
+        CommResetSerial(ts, cv, ts->ClearComBuffOnOpen);
+	if (!ts->ClearComBuffOnOpen)
+	  cv->RRQ = TRUE;
 
         /* notify to VT window that Comm Port is open */
         PostMessage(cv->HWin, WM_USER_COMMOPEN, 0, 0);

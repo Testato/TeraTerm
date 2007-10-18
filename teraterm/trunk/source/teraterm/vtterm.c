@@ -1070,7 +1070,7 @@ void ParseEscape(BYTE b) /* b is the final char */
 	  ClearUserKey();
 	  ClearBuffer();
 	  if (ts.PortType==IdSerial) // reset serial port
-	    CommResetSerial(&ts,&cv);
+	    CommResetSerial(&ts, &cv, TRUE);
 	  break;
 	case 'n': Glr[0] = 2; break; /* LS2 */
 	case 'o': Glr[0] = 3; break; /* LS3 */

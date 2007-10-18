@@ -747,6 +747,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	/* B-Plus log  -- special option */
 	ts->LogFlag |= LOG_BP * GetOnOff(Section, "BPLog", FName, FALSE);
 
+	/* Clear serial port buffer when port opening -- special option */
+	ts->ClearComBuffOnOpen = GetOnOff(Section, "ClearComBuffOnOpen", FName, TRUE);
+
 	/* Confirm disconnection -- special option */
 	ts->PortFlag |=
 		PF_CONFIRMDISCONN * GetOnOff(Section, "ConfirmDisconnect", FName,
@@ -1542,6 +1545,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 	/* B-Plus log  -- special option */
 	WriteOnOff(Section, "BPLog", FName, (WORD) (ts->LogFlag & LOG_BP));
+
+	/* Clear serial port buffer when port opening -- special option */
+	WriteOnOff(Section, "ClearComBuffOnOpen", FName, (WORD) (ts->ClearComBuffOnOpen));
 
 	/* Confirm disconnection -- special option */
 	WriteOnOff(Section, "ConfirmDisconnect", FName,
