@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.16 2007-10-18 03:49:39 maya Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.17 2007-10-18 07:56:33 maya Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -246,8 +246,17 @@ static void cAES128_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 		goto error;
 
 	} else {
-		memcpy(buf, newbuf, bytes);
+		//unsigned char key[AES128_KEYLEN], iv[AES128_IVLEN];
+		//memcpy(key, pvar->ssh2_keys[MODE_OUT].enc.key, AES128_KEYLEN);
+		// IVはDES関数内で更新されるため、ローカルにコピーしてから使う。
+		//memcpy(iv, pvar->ssh2_keys[MODE_OUT].enc.iv, AES128_IVLEN);
 
+		//debug_print(50, key, 24);
+		//debug_print(51, iv, 8);
+		//debug_print(52, buf, bytes);
+		//debug_print(53, newbuf, bytes);
+
+		memcpy(buf, newbuf, bytes);
 	}
 
 error:
@@ -283,8 +292,17 @@ static void cAES128_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 		goto error;
 
 	} else {
-		memcpy(buf, newbuf, bytes);
+		//unsigned char key[AES128_KEYLEN], iv[AES128_IVLEN];
+		//memcpy(key, pvar->ssh2_keys[MODE_IN].enc.key, AES128_KEYLEN);
+		// IVはDES関数内で更新されるため、ローカルにコピーしてから使う。
+		//memcpy(iv, pvar->ssh2_keys[MODE_IN].enc.iv, AES128_IVLEN);
 
+		//debug_print(70, key, AES128_KEYLEN);
+		//debug_print(71, iv, AES128_IVLEN);
+		//debug_print(72, buf, bytes);
+		//debug_print(73, newbuf, bytes);
+
+		memcpy(buf, newbuf, bytes);
 	}
 
 error:
@@ -298,13 +316,28 @@ static void c3DES_CBC_encrypt(PTInstVar pvar, unsigned char FAR * buf,
                               int bytes)
 {
 	unsigned char *newbuf = malloc(bytes);
+	int block_size = pvar->ssh2_keys[MODE_OUT].enc.block_size;
+
+	// 事前復号化により、全ペイロードが復号化されている場合は、0バイトになる。(2004.11.7 yutaka)
+	if (bytes == 0)
+		return;
 
 	if (newbuf == NULL)
 		return;
 
+	if (bytes % block_size) {
+		char tmp[80];
+		UTIL_get_lang_msg("MSG_3DESCBC_ENCRYPT_ERROR1", pvar,
+		                  "3DES-CBC encrypt error(1): bytes %d (%d)");
+		_snprintf_s(tmp, sizeof(tmp), _TRUNCATE,
+		            pvar->ts->UIMsg, bytes, block_size);
+		notify_fatal_error(pvar, tmp);
+		goto error;
+	}
+
 	if (EVP_Cipher(&pvar->evpcip[MODE_OUT], newbuf, buf, bytes) == 0) {
-		UTIL_get_lang_msg("MSG_3DESCBC_ENCRYPT_ERROR", pvar,
-		                  "3DES-CBC encrypt error");
+		UTIL_get_lang_msg("MSG_3DESCBC_ENCRYPT_ERROR2", pvar,
+		                  "3DES-CBC encrypt error(2)");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 		goto error;
 
@@ -330,13 +363,27 @@ static void c3DES_CBC_decrypt(PTInstVar pvar, unsigned char FAR * buf,
                               int bytes)
 {
 	unsigned char *newbuf = malloc(bytes);
+	int block_size = pvar->ssh2_keys[MODE_IN].enc.block_size;
+
+	// 事前復号化により、全ペイロードが復号化されている場合は、0バイトになる。(2004.11.7 yutaka)
+	if (bytes == 0)
+		return;
 
 	if (newbuf == NULL)
 		return;
 
+	if (bytes % block_size) {
+		char tmp[80];
+		UTIL_get_lang_msg("MSG_3DESCBC_DECRYPT_ERROR1", pvar,
+		                  "3DES-CBC decrypt error(1): bytes %d (%d)");
+		_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, pvar->ts->UIMsg, bytes, block_size);
+		notify_fatal_error(pvar, tmp);
+		goto error;
+	}
+
 	if (EVP_Cipher(&pvar->evpcip[MODE_IN], newbuf, buf, bytes) == 0) {
-		UTIL_get_lang_msg("MSG_3DESCBC_DECRYPT_ERROR", pvar,
-		                  "3DES-CBC decrypt error");
+		UTIL_get_lang_msg("MSG_3DESCBC_DECRYPT_ERROR2", pvar,
+		                  "3DES-CBC decrypt error(2)");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 		goto error;
 
@@ -372,9 +419,19 @@ static void cBlowfish_encrypt2(PTInstVar pvar, unsigned char FAR * buf,
 	if (newbuf == NULL)
 		return;
 
+	if (bytes % block_size) {
+		char tmp[80];
+		UTIL_get_lang_msg("MSG_BLOWFISH_ENCRYPT_ERROR1", pvar,
+		                  "Blowfish encrypt error(1): bytes %d (%d)");
+		_snprintf_s(tmp, sizeof(tmp), _TRUNCATE,
+		            pvar->ts->UIMsg, bytes, block_size);
+		notify_fatal_error(pvar, tmp);
+		goto error;
+	}
+
 	if (EVP_Cipher(&pvar->evpcip[MODE_OUT], newbuf, buf, bytes) == 0) {
-		UTIL_get_lang_msg("MSG_BLOWFISH_ENCRYPT_ERROR", pvar,
-		                  "Blowfish encrypt error");
+		UTIL_get_lang_msg("MSG_BLOWFISH_ENCRYPT_ERROR2", pvar,
+		                  "Blowfish encrypt error(2)");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 		goto error;
 
@@ -400,9 +457,18 @@ static void cBlowfish_decrypt2(PTInstVar pvar, unsigned char FAR * buf,
 	if (newbuf == NULL)
 		return;
 
+	if (bytes % block_size) {
+		char tmp[80];
+		UTIL_get_lang_msg("MSG_BLOWFISH_DECRYPT_ERROR1", pvar,
+		                  "Blowfish decrypt error(1): bytes %d (%d)");
+		_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, pvar->ts->UIMsg, bytes, block_size);
+		notify_fatal_error(pvar, tmp);
+		goto error;
+	}
+
 	if (EVP_Cipher(&pvar->evpcip[MODE_IN], newbuf, buf, bytes) == 0) {
-		UTIL_get_lang_msg("MSG_BLOWFISH_DECRYPT_ERROR", pvar,
-		                  "Blowfish decrypt error");
+		UTIL_get_lang_msg("MSG_BLOWFISH_DECRYPT_ERROR2", pvar,
+		                  "Blowfish decrypt error(2)");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 		goto error;
 
