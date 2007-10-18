@@ -29,6 +29,30 @@ MaxComPort=4
 </pre>
 
 
+<h1><a name="clearcom">シリアルポートのバッファをクリアしない</a></h1>
+
+<p>
+TeraTermの初期設定ではシリアルポートを開く時にシリアルポートのバッファの内容を消去します。
+</p>
+
+<p>
+設定ファイルの [Tera Term] セクションの ClearComBuffOnOpen 行を、
+</p>
+
+<pre>
+ClearComBuffOnOpen=off
+</pre>
+
+<p>
+のように変更すると、シリアルポートを開くときにバッファをクリアしません。
+</p>
+
+<pre>
+省略時:
+ClearComBuffOnOpen=on
+</pre>
+
+
 <h1><a name="confirm">TCP/IP 回線切断の確認をしない</a></h1>
 
 <p>

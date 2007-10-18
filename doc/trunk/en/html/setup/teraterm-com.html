@@ -29,6 +29,26 @@ MaxComPort=4
 </pre>
 
 
+<h1><a name="clearcom">Don't clear COM buffer when serial port opening.</a></h1>
+
+<p>
+In the default setup, TeraTerm cleaning COM buffer when serial port opening.
+</p>
+
+<p>
+To disable COM buffer cleaning, edit the ClearComBuffOnOpen line in the [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+ClearComBuffOnOpen=off
+</pre>
+
+<pre>
+Default:
+ClearComBuffOnOpen=on
+</pre>
+
+
 <h1><a name="confirm">Disabling the warning on TCP/IP disconnection</a></h1>
 
 <p>
