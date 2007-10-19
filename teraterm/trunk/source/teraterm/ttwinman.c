@@ -52,11 +52,12 @@ void VTActivate()
 // タイトルバーのCP932への変換を行う
 // 現在、SJIS、EUCのみに対応。
 // (2005.3.13 yutaka)
-void ConvertToCP932(char *str, int len)
+void ConvertToCP932(char *str, int destlen)
 {
 #define IS_SJIS(n) (ts.KanjiCode == IdSJIS && IsDBCSLeadByte(n))
 #define IS_EUC(n) (ts.KanjiCode == IdEUC && (n & 0x80))
 	extern WORD FAR PASCAL JIS2SJIS(WORD KCode);
+	int len = strlen(str);
 	char *cc = _alloca(len + 1);
 	char *c = cc;
 	int i;
@@ -105,7 +106,7 @@ void ConvertToCP932(char *str, int len)
 		}
 
 		*c = '\0';
-		strncpy_s(str, len, cc, _TRUNCATE);
+		strncpy_s(str, destlen, cc, _TRUNCATE);
 	}
 }
 

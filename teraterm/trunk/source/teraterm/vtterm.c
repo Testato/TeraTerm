@@ -2098,7 +2098,7 @@ void XSequence(BYTE b)
       {
 	ts.Title[NParam-2] = 0;
 	// (2006.6.15 maya) ƒ^ƒCƒgƒ‹‚É“n‚·•¶Žš—ñ‚ðSJIS‚É•ÏŠ·
-	ConvertToCP932(ts.Title, strlen(ts.Title));
+	ConvertToCP932(ts.Title, sizeof(ts.Title));
 	ChangeTitle();
       }
       ParseMode = ModeFirst;
