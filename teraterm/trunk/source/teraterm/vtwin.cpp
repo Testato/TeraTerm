@@ -273,13 +273,14 @@ static void SetWindowStyle(TTTSet *ts)
 	// 2006/03/16 by 337: BGUseAlphaBlendAPIがOnならばLayered属性とする
 	//if (ts->EtermLookfeel.BGUseAlphaBlendAPI) {
 	// アルファ値が255の場合、画面のちらつきを抑えるため何もしないこととする。(2006.4.1 yutaka)
-	if (ts->AlphaBlend < 255) {
+	// 呼び出し元で、値が変更されたときのみ設定を反映する。(2007.10.19 maya)
+	//if (ts->AlphaBlend < 255) {
 		lp = GetWindowLongPtr(HVTWin, GWL_EXSTYLE);
 		if (lp != 0) {
 			SetWindowLongPtr(HVTWin, GWL_EXSTYLE, lp | WS_EX_LAYERED);
 			MySetLayeredWindowAttributes(HVTWin, 0, ts->AlphaBlend, LWA_ALPHA);
 		}
-	}
+	//}
 }
 
 
@@ -4007,6 +4008,7 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					// (1)
 					hWnd = GetDlgItem(hDlgWnd, IDC_ALPHA_BLEND);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+					i = ts.AlphaBlend;
 					ts.AlphaBlend = atoi(buf);
 
 					// (2)
@@ -4034,7 +4036,10 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					if (ts.EtermLookfeel.BGUseAlphaBlendAPI) {
 						// 起動時に半透明レイヤにしていない場合でも、即座に半透明となるようにする。(2006.4.1 yutaka)
 						//MySetLayeredWindowAttributes(HVTWin, 0, (ts.AlphaBlend > 255) ? 255: ts.AlphaBlend, LWA_ALPHA);
-						SetWindowStyle(&ts);
+						// 値が変更されたときのみ設定を反映する。(2007.10.19 maya)
+						if (ts.AlphaBlend != i) {
+							SetWindowStyle(&ts);
+						}
 					}
 					break;
 
