@@ -1509,7 +1509,7 @@ LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
 {
 	HWND parent;
 	int  max, select, len;
-	char *str;
+	char *str, *orgstr;
 
 	switch (msg) {
 		// キーが押されたのを検知する
@@ -1550,10 +1550,11 @@ LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
 
 					case 0x44: // Ctrl+d
 					case 0x4b: // Ctrl+k
+					case 0x55: // Ctrl+u
 						SendMessage(dlg, EM_GETSEL, 0, (LPARAM)&select);
 						max = GetWindowTextLength(dlg);
 						max++; // '\0'
-						str = malloc(max);
+						orgstr = str = malloc(max);
 						if (str != NULL) {
 							len = GetWindowText(dlg, str, max);
 							if (select >= 0 && select < len) {
@@ -1563,12 +1564,22 @@ LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
 
 								} else if (wParam == 0x4b) { // カーソルから行末まで削除する
 									str[select] = '\0';
-								}
 
-								SetWindowText(dlg, str);
-								SendMessage(dlg, EM_SETSEL, select, select);
+								}
+							} 
+
+							if (wParam == 0x55) { // カーソルより左側をすべて消す
+								if (select >= len) {
+									str[0] = '\0';
+								} else {
+									str = &str[select];
+								}
+								select = 0;
 							}
-							free(str);
+
+							SetWindowText(dlg, str);
+							SendMessage(dlg, EM_SETSEL, select, select);
+							free(orgstr);
 							return 0;
 						}
 						break;
@@ -1587,6 +1598,7 @@ LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
 				case 0x0b:
 				case 0x0e:
 				case 0x10:
+				case 0x15:
 					return 0;
 			}
 	}
