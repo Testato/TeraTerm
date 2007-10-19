@@ -385,7 +385,7 @@ static char FAR *describe_socket_error(PTInstVar pvar, int code)
 	case WSANO_ADDRESS:
 	case WSAHOST_NOT_FOUND:
 		UTIL_get_lang_msg("MSG_FWD_ADDRNOTFOUTD_ERROR", pvar,
-		                  "No address was found for the machine.");
+		                  "No address was found for the machine");
 		return pvar->ts->UIMsg;
 	default:
 		UTIL_get_lang_msg("MSG_FWD_CONNECT_ERROR", pvar,
@@ -437,6 +437,7 @@ static void channel_opening_error(PTInstVar pvar, int channel_num, int err)
 	char uimsg[MAX_UIMSG];
 
 	SSH_fail_channel_open(pvar, channel->remote_num);
+	strncpy_s(uimsg, sizeof(uimsg), describe_socket_error(pvar, err), _TRUNCATE);
 	if (request->spec.type == FWD_REMOTE_X11_TO_LOCAL) {
 		UTIL_get_lang_msg("MSG_FWD_CHANNEL_OPEN_X_ERROR", pvar,
 		                  "The server attempted to forward a connection through this machine.\n"
@@ -447,7 +448,6 @@ static void channel_opening_error(PTInstVar pvar, int channel_num, int err)
 		            request->spec.to_host, request->spec.to_port - 6000,
 		            uimsg);
 	} else {
-		strncpy_s(uimsg, sizeof(uimsg), describe_socket_error(pvar, err), _TRUNCATE);
 		UTIL_get_lang_msg("MSG_FWD_CHANNEL_OPEN_ERROR", pvar,
 		                  "The server attempted to forward a connection through this machine.\n"
 		                  "It requested a connection to %s (port %s).\n" "%s.\n"
