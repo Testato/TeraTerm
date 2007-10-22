@@ -274,13 +274,21 @@ static void SetWindowStyle(TTTSet *ts)
 	//if (ts->EtermLookfeel.BGUseAlphaBlendAPI) {
 	// アルファ値が255の場合、画面のちらつきを抑えるため何もしないこととする。(2006.4.1 yutaka)
 	// 呼び出し元で、値が変更されたときのみ設定を反映する。(2007.10.19 maya)
-	//if (ts->AlphaBlend < 255) {
+	if (ts->AlphaBlend < 255) {
 		lp = GetWindowLongPtr(HVTWin, GWL_EXSTYLE);
 		if (lp != 0) {
 			SetWindowLongPtr(HVTWin, GWL_EXSTYLE, lp | WS_EX_LAYERED);
 			MySetLayeredWindowAttributes(HVTWin, 0, ts->AlphaBlend, LWA_ALPHA);
 		}
-	//}
+	}
+	// アルファ値が 255 の場合、透明化属性を削除して再描画する。(2007.10.22 maya)
+	else {
+		lp = GetWindowLongPtr(HVTWin, GWL_EXSTYLE);
+		if (lp != 0) {
+			SetWindowLongPtr(HVTWin, GWL_EXSTYLE, lp & ~WS_EX_LAYERED);
+			RedrawWindow(HVTWin, NULL, NULL, RDW_ERASE | RDW_INVALIDATE | RDW_FRAME);
+		}
+	}
 }
 
 
@@ -4010,6 +4018,8 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
 					i = ts.AlphaBlend;
 					ts.AlphaBlend = atoi(buf);
+					ts.AlphaBlend = max(0, ts.AlphaBlend);
+					ts.AlphaBlend = min(255, ts.AlphaBlend);
 
 					// (2)
 					// グローバル変数 BGEnable を直接書き換えると、プログラムが落ちることが
