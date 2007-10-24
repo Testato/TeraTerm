@@ -5673,6 +5673,8 @@ static void do_SSH2_dispatch_setup_for_transfer(PTInstVar pvar)
 	SSH2_dispatch_add_message(SSH2_MSG_KEXINIT);
 	// HP-UXでX11 forwardingが失敗した場合、下記のメッセージが送られてくる。(2006.4.7 yutaka)
 	SSH2_dispatch_add_message(SSH2_MSG_DEBUG);
+	// OpenSSH はデータ通信中に致命的なエラーがあると SSH2_MSG_DISCONNECT を送ってくる (2007.10.25 maya)
+	SSH2_dispatch_add_message(SSH2_MSG_DISCONNECT);
 }
 
 
