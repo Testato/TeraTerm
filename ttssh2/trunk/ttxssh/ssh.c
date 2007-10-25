@@ -2506,7 +2506,7 @@ void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, int buflen)
 	} else { // for SSH2(yutaka)
 		buffer_t *msg;
 		unsigned char *outmsg;
-		int len;
+		unsigned int len;
 		Channel_t *c;
 
 		// SSH2鍵交換中の場合、パケットを捨てる。(2005.6.19 yutaka)
@@ -2537,7 +2537,12 @@ void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, int buflen)
 		buffer_free(msg);
 
 		// remote window sizeの調整
-		c->remote_window -= len;
+		if (len <= c->remote_window) {
+			c->remote_window -= len;
+		}
+		else {
+			c->remote_window = 0;
+		}
 
 	}
 
@@ -2805,7 +2810,7 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 		// ポートフォワーディングにおいてクライアントからの送信要求を、SSH通信に乗せてサーバまで送り届ける。
 		buffer_t *msg;
 		unsigned char *outmsg;
-		int len;
+		unsigned int len;
 		Channel_t *c;
 
 		// SSH2鍵交換中の場合、パケットを捨てる。(2005.6.19 yutaka)
@@ -2836,7 +2841,12 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 		buffer_free(msg);
 
 		// remote window sizeの調整
-		c->remote_window -= len;
+		if (len <= c->remote_window) {
+			c->remote_window -= len;
+		}
+		else {
+			c->remote_window = 0;
+		}
 	}
 
 }
