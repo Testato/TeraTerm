@@ -1900,7 +1900,7 @@ BOOL ManageWMCommand_Config(HWND hWnd, WPARAM wParam)
 		UTIL_get_lang_msg("FILEDLG_MACRO_TITLE", title, sizeof(title),
 		                  "specifying macro file", UILanguageFile);
 		UTIL_get_lang_msg("FILEDLG_MACRO_FILTER", filter, sizeof(filter),
-		                  "macro file(*.ttl)\0*.ttl\0all files(*.*)\0*.*\0\0", UILanguageFile);
+		                  "macro file(*.ttl)\\0*.ttl\\0all files(*.*)\\0*.*\\0\\0", UILanguageFile);
 		OpenFileDlg(hWnd, EDIT_MACRO, title, filter, g_JobInfo.szMacroFile);
 		return TRUE;
 
@@ -1909,7 +1909,7 @@ BOOL ManageWMCommand_Config(HWND hWnd, WPARAM wParam)
 		UTIL_get_lang_msg("FILEDLG_KEY_TITLE", title, sizeof(title),
 		                  "specifying private key file", UILanguageFile);
 		UTIL_get_lang_msg("FILEDLG_KEY_FILTER", filter, sizeof(filter),
-		                  "identity(RSA1)\0identity\0id_rsa(SSH2)\0id_rsa\0id_dsa(SSH2)\0id_dsa\0all(*.*)\0*.*\0\0", UILanguageFile);
+		                  "identity(RSA1)\\0identity\\0id_rsa(SSH2)\\0id_rsa\\0id_dsa(SSH2)\\0id_dsa\\0all(*.*)\\0*.*\\0\\0", UILanguageFile);
 		OpenFileDlg(hWnd, IDC_KEYFILE_PATH, title, filter, g_JobInfo.PrivateKeyFile);
 		return TRUE;
 
@@ -1991,7 +1991,7 @@ BOOL ManageWMCommand_Etc(HWND hWnd, WPARAM wParam)
 		UTIL_get_lang_msg("FILEDLG_TERATERM_TITLE", title, sizeof(title),
 		                  "specifying TeraTerm", UILanguageFile);
 		UTIL_get_lang_msg("FILEDLG_TERATERM_FILTER", filter, sizeof(filter),
-		                  "execute file(*.exe)\0*.exe\0all files(*.*)\0*.*\0\0", UILanguageFile);
+		                  "execute file(*.exe)\\0*.exe\\0all files(*.*)\\0*.*\\0\\0", UILanguageFile);
 		OpenFileDlg(hWnd, EDIT_TTMPATH, title, filter, szPath);
 		return TRUE;
 	case BUTTON_INITFILE:
@@ -1999,7 +1999,7 @@ BOOL ManageWMCommand_Etc(HWND hWnd, WPARAM wParam)
 		UTIL_get_lang_msg("FILEDLG_INI_TITLE", title, sizeof(title),
 		                  "specifying config file", UILanguageFile);
 		UTIL_get_lang_msg("FILEDLG_INI_FILTER", filter, sizeof(filter),
-		                  "config file(*.ini)\0*.ini\0all files(*.*)\0*.*\0\0", UILanguageFile);
+		                  "config file(*.ini)\\0*.ini\\0all files(*.*)\\0*.*\\0\\0", UILanguageFile);
 		OpenFileDlg(hWnd, EDIT_INITFILE, title, filter, szPath);
 		return TRUE;
 	case BUTTON_LOG:
@@ -2007,7 +2007,7 @@ BOOL ManageWMCommand_Etc(HWND hWnd, WPARAM wParam)
 		UTIL_get_lang_msg("FILEDLG_LOG_TITLE", title, sizeof(title),
 		                  "specifying log file", UILanguageFile);
 		UTIL_get_lang_msg("FILEDLG_LOG_FILTER", filter, sizeof(filter),
-		                  "log file(*.log)\0*.log\0all files(*.*)\0*.*\0\0", UILanguageFile);
+		                  "log file(*.log)\\0*.log\\0all files(*.*)\\0*.*\\0\\0", UILanguageFile);
 		OpenFileDlg(hWnd, EDIT_LOG, title, filter, szPath);
 		return TRUE;
 	}
