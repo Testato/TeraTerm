@@ -1110,6 +1110,7 @@ BOOL ConnectHost(HWND hWnd, UINT idItem, char *szJobName)
 	char	*pHostName;
 	TCHAR	*pt;
 	JobInfo	jobInfo;
+	char	cur[MAX_PATH], modulePath[MAX_PATH], fullpath[MAX_PATH];
 
 	DWORD	dwErr;
 	char uimsg[MAX_UIMSG];
@@ -1203,6 +1204,14 @@ BOOL ConnectHost(HWND hWnd, UINT idItem, char *szJobName)
 		}
 	}
 
+	// ƒtƒ‹ƒpƒX‰»‚·‚é
+	GetCurrentDirectory(sizeof(cur), cur);
+	GetModuleFileName(NULL, modulePath, sizeof(modulePath));
+	ExtractDirName(modulePath, modulePath);
+	SetCurrentDirectory(modulePath);
+	_fullpath(fullpath, jobInfo.szTeraTerm, sizeof(fullpath));
+	::lstrcpy(jobInfo.szTeraTerm, fullpath);
+
 	::lstrcpy(szDirectory, jobInfo.szTeraTerm);
 	if ((::GetFileAttributes(jobInfo.szTeraTerm) & FILE_ATTRIBUTE_DIRECTORY) == 0)
 		if ((pt = _tcsrchr(szDirectory, '\\')) != NULL)
@@ -1234,6 +1243,8 @@ BOOL ConnectHost(HWND hWnd, UINT idItem, char *szJobName)
 		if (hLog != NULL)
 			ShowWindow(hLog, SW_HIDE);
 	}
+
+	SetCurrentDirectory(cur);
 
 	return TRUE;
 }
@@ -1569,6 +1580,7 @@ BOOL SaveLoginHostInformation(HWND hWnd)
 	char	szName[MAX_PATH];
 	DWORD	dwErr;
 	char	uimsg[MAX_UIMSG];
+	char	cur[MAX_PATH], modulePath[MAX_PATH];
 
 	if (::GetDlgItemText(hWnd, EDIT_ENTRY, g_JobInfo.szName, MAX_PATH) == 0) {
 		UTIL_get_lang_msg("MSG_ERROR_NOREGNAME", uimsg, sizeof(uimsg),
@@ -1621,12 +1633,17 @@ BOOL SaveLoginHostInformation(HWND hWnd)
 		::wsprintf(g_JobInfo.szTeraTerm, "%s\\%s", szTTermPath, g_JobInfo.bTtssh ? TTSSH : TERATERM);
 	}
 	
+	GetCurrentDirectory(sizeof(cur), cur);
+	GetModuleFileName(NULL, modulePath, sizeof(modulePath));
+	ExtractDirName(modulePath, modulePath);
+	SetCurrentDirectory(modulePath);
 	if (::GetFileAttributes(g_JobInfo.szTeraTerm) == 0xFFFFFFFF) {
 		dwErr = ::GetLastError();
 		if (dwErr == ERROR_FILE_NOT_FOUND || dwErr == ERROR_PATH_NOT_FOUND) {
 			UTIL_get_lang_msg("MSG_ERROR_CHECKFILE", uimsg, sizeof(uimsg),
 			                  "checking [%s] file was failure.\n", UILanguageFile);
 			ErrorMessage(hWnd, dwErr, uimsg, g_JobInfo.szTeraTerm);
+			SetCurrentDirectory(cur);
 			return FALSE;
 		}
 	}
@@ -1641,6 +1658,7 @@ BOOL SaveLoginHostInformation(HWND hWnd)
 		UTIL_get_lang_msg("MSG_ERROR_SAVEREG", uimsg, sizeof(uimsg),
 		                  "error: couldn't save to registory.\n", UILanguageFile);
 		ErrorMessage(hWnd, dwErr, uimsg);
+		SetCurrentDirectory(cur);
 		return FALSE;
 	}
 
@@ -1653,6 +1671,8 @@ BOOL SaveLoginHostInformation(HWND hWnd)
 		if (::lstrcmpi(g_JobInfo.szName, szName) == 0)
 			break;
 	}
+
+	SetCurrentDirectory(cur);
 
 	return TRUE;
 }
