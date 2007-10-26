@@ -2297,6 +2297,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 	WORD ParamTCP = 65535;
 	WORD ParamTel = 2;
 	WORD ParamBin = 2;
+	WORD ParamBaud = IdBaudNone;
 	BOOL HostNameFlag = FALSE;
 	BOOL JustAfterHost = FALSE;
 	WORD DisableTCPEchoCR = FALSE;
@@ -2320,7 +2321,11 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 			HostNameFlag = FALSE;
 		}
 
-		if (_strnicmp(Temp, "/B", 2) == 0) {	/* telnet binary */
+		if (_strnicmp(Temp, "/BAUD=", 6) == 0) {	/* Serial port baud rate */
+			ParamPort = IdSerial;
+			ParamBaud = str2id(BaudList, &Temp[6], ts->Baud);
+		}
+		else if (_strnicmp(Temp, "/B", 2) == 0) {	/* telnet binary */
 			ParamPort = IdTCPIP;
 			ParamBin = 1;
 		}
@@ -2533,6 +2538,8 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 			/* Don't display new connection dialog if COM port is specified explicitly (2006.9.15 maya) */
 			ts->ComAutoConnect = TRUE;
 		}
+		if (ParamBaud > IdBaudNone)
+			ts->Baud = ParamBaud;
 		break;
 	case IdFile:
 		ts->PortType = IdFile;

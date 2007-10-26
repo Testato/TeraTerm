@@ -419,6 +419,7 @@ typedef struct tttset TTTSet, *PTTSet;
 #define IdCOM3 3
 #define IdCOM4 4
   /* Baud rate ID */
+#define IdBaudNone   0
 #define IdBaud110    1
 #define IdBaud300    2
 #define IdBaud600    3
