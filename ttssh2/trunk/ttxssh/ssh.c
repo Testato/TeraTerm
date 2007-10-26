@@ -5750,7 +5750,11 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 	// すでにログイン処理を行っている場合は、SSH2_MSG_SERVICE_REQUESTの送信は
 	// しないことにする。OpenSSHでは支障ないが、Tru64 UNIXではサーバエラーとなってしまうため。
 	// (2005.3.10 yutaka)
-	if (pvar->userauth_retry_count > 0) {
+	// Cisco 12.4.11T でもこの現象が発生する模様。
+	// 認証メソッド none の時点で SSH2_MSG_SERVICE_REQUEST を送信している。
+	// (2007.10.26 maya)
+	if (pvar->userauth_retry_count > 0
+	 || pvar->tryed_ssh2_authlist == TRUE) {
 		return handle_SSH2_authrequest(pvar);
 		/* NOT REACHED */
 	}
