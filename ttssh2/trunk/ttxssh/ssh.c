@@ -845,8 +845,8 @@ static void finish_send_packet_special(PTInstVar pvar, int skip_compress)
 		CRYPT_encrypt(pvar, data + 4, data_length - 4);
 	} else { //for SSH2(yutaka)
 		int block_size = CRYPT_get_encryption_block_size(pvar);
-		int encryption_size;
-		int padding;
+		unsigned int encryption_size;
+		unsigned int padding;
 		BOOL ret;
 
 		/*
@@ -1224,7 +1224,7 @@ static BOOL handle_disconnect(PTInstVar pvar)
 
 	if (description != NULL) {
 		UTIL_get_lang_msg("MSG_SSH_SERVER_DISCON_ERROR", pvar,
-		                  "Server disconnected with message '%s'.%s");
+		                  "Server disconnected with message '%s'%s");
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE,
 		            pvar->ts->UIMsg, description,
 		            explanation);
@@ -2527,8 +2527,8 @@ void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, int buflen)
 			// TODO: error check
 			return;
 		}
-		buffer_put_int(msg, c->remote_id);  
-		buffer_put_string(msg, (char *)buf, buflen);  
+		buffer_put_int(msg, c->remote_id);
+		buffer_put_string(msg, (char *)buf, buflen);
 
 		len = buffer_len(msg);
 		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_DATA, len);
@@ -2538,7 +2538,7 @@ void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, int buflen)
 
 		// remote window sizeÇÃí≤êÆ
 		if (len <= c->remote_window) {
-			c->remote_window -= len;
+			c->remote_window -= buflen;
 		}
 		else {
 			c->remote_window = 0;
@@ -2831,8 +2831,8 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 			// TODO: error check
 			return;
 		}
-		buffer_put_int(msg, c->remote_id);  
-		buffer_put_string(msg, (char *)buf, buflen);  
+		buffer_put_int(msg, c->remote_id);
+		buffer_put_string(msg, (char *)buf, buflen);
 
 		len = buffer_len(msg);
 		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_DATA, len);
@@ -2842,7 +2842,7 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 
 		// remote window sizeÇÃí≤êÆ
 		if (len <= c->remote_window) {
-			c->remote_window -= len;
+			c->remote_window -= buflen;
 		}
 		else {
 			c->remote_window = 0;
