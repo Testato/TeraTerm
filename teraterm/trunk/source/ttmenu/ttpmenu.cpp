@@ -1909,7 +1909,7 @@ BOOL ManageWMCommand_Config(HWND hWnd, WPARAM wParam)
 		UTIL_get_lang_msg("FILEDLG_KEY_TITLE", title, sizeof(title),
 		                  "specifying private key file", UILanguageFile);
 		UTIL_get_lang_msg("FILEDLG_KEY_FILTER", filter, sizeof(filter),
-		                  "identity(RSA1)\\0identity\\0id_rsa(SSH2)\\0id_rsa\\0id_dsa(SSH2)\\0id_dsa\\0all(*.*)\\0*.*\\0\\0", UILanguageFile);
+		                  "identity files\\0identity;id_rsa;id_dsa\\0identity(RSA1)\\0identity\\0id_rsa(SSH2)\\0id_rsa\\0id_dsa(SSH2)\\0id_dsa\\0all(*.*)\\0*.*\\0\\0", UILanguageFile);
 		OpenFileDlg(hWnd, IDC_KEYFILE_PATH, title, filter, g_JobInfo.PrivateKeyFile);
 		return TRUE;
 
