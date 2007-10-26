@@ -37,7 +37,9 @@
         </ul></li>
       <li>added support Ctrl+u shortcut key in "Host" drop-down on "New connectin" dialog. The shortcut key is deleting backward from point to the beginning of the line.</li>
       <li>Bug fix: the transparency of window could not change to 255.</li>
-      <li>Bug fix: サーバからのタイトル文字列の末尾が削られる問題を修正した。</li>
+      <li>Bug fix: last 1 character of title string that is sent from server is deleted.</li>
+      <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.44">2.44</a></li>
+      <li>upgraded TeraTerm Menu to <a href="#ttmenu_1.07">1.07</a></li>
     </ul>
   </li>
 
@@ -897,7 +899,7 @@ SYNOPSIS:
     <ul>
       <li>added AES192, AES256 and Blowfish encryption algolithm for SSH2 protocol.</li>
       <li>changed the default value of "CheckAuthListFirst" to Off.</li>
-      <li>Bug fix: TTSSH crashes when the server supports encryption algorithm that is not supported by TTSSH.</li>
+      <li>Bug fix: TTSSH crashes when all server supports encryption algorithm that is not supported by TTSSH.</li>
     </ul>
   </li>
 
@@ -1520,6 +1522,13 @@ SYNOPSIS:
 
 <h2><a name="ttmenu">TeraTerm Menu</a></h2>
 <ul>
+  <li class="history"><a name="ttmenu_1.07">2007.10.26 (Ver 1.07 not released)</a>
+    <ul>
+      <li>Bug fix: extension filters on file dialog didn't work when a message file does not exist.</li>
+      <li>Bug fix: application could not start when the app is specified by relative path.</li>
+    </ul>
+  </li>
+
   <li class="history"><a name="ttmenu_1.06">2007.9.30 (Ver 1.06)</a>
     <ul>
       <li>added support for dynamic loading of user interface messages.</li>
