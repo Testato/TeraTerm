@@ -18,7 +18,7 @@ Tera Term Pro を起動するときのコマンドライン(ショートカットのリンク先)の形式
 
 <pre>
 <span class="syntax">TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
-         [/B] [/C=&lt;serial port#&gt;] [/E]
+         [/B] [/BR=&lt;baud rate&gt;] [/C=&lt;serial port#&gt;] [/E]
          [/F=&lt;setup file&gt;] [/FD=&lt;file transfer directory&gt;]
          [/H] [/I] [/K=&lt;keyboard setup file&gt;]
          [/KR=&lt;kanji code (receive)&gt;] [/KT=&lt;kanji code (transmit)&gt;]
@@ -48,6 +48,13 @@ Tera Term Pro を起動するときのコマンドライン(ショートカットのリンク先)の形式
 
   <dt>/B</dt>
   <dd>Telnet バイナリオプション</dd>
+
+  <dt>/BR=&lt;baud rate&gt;</dt>
+  <dd>
+    シリアルポートのボーレートを指定します。
+    TeraTermが対応していないボーレートが指定された場合、
+    このオプション自体が無視されます。
+  </dd>
 
   <dt>/C=&lt;serial port#&gt;</dt>
   <dd>シリアルポート
@@ -159,7 +166,7 @@ TTERMPRO myhost.mydomain /T=0 /P=7
 TTERMPRO /C=1
 TTERMPRO /F=TELNET.INI
 TTERMPRO foohost.foodomain /F=FOOHOST.INI
-TTERMPRO /C=2 /F=MYSETUP.INI
+TTERMPRO /C=2 /BR=9600 /F=MYSETUP.INI
 TTERMPRO /K=MYKEY.CNF /W="My host"
 TTERMPRO /R=README.TXT ; replay a file
 TTERMPRO myhost /B /X=100 /Y=50
@@ -175,6 +182,7 @@ TTERMPRO myhost /B /X=100 /Y=50
 <pre>
 &lt;TCP port#&gt;
 /B
+&lt;baud rate&gt;
 &lt;serial port#&gt;
 &lt;file transfer directory&gt;
 /H

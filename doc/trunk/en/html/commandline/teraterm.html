@@ -14,7 +14,7 @@
 
 <pre>
 <span class="syntax">TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
-         [/B] [/C=&lt;serial port#&gt;] [/E]
+         [/B] [/BR=&lt;baud rate&gt;] [/C=&lt;serial port#&gt;] [/E]
          [/F=&lt;setup file&gt;] [/FD=&lt;file transfer directory&gt;]
          [/H] [/I] [/K=&lt;keyboard setup file&gt;]
          [/KR=&lt;kanji code (receive)&gt;] [/KT=&lt;kanji code (transmit)&gt;]
@@ -44,6 +44,12 @@
 
   <dt>/B</dt>
   <dd>Telnet binary option.</dd>
+
+  <dt>/BR=&lt;baud rate&gt;</dt>
+  <dd>
+    baud rate of serial port.
+    If the baud rate not supported by TeraTerm is specified, this option is ignored.
+  </dd>
 
   <dt>/C=&lt;serial port#&gt;</dt>
   <dd>Serial port
@@ -155,7 +161,7 @@ TTERMPRO myhost.mydomain /T=0 /P=7
 TTERMPRO /C=1
 TTERMPRO /F=TELNET.INI
 TTERMPRO foohost.foodomain /F=FOOHOST.INI
-TTERMPRO /C=2 /F=MYSETUP.INI
+TTERMPRO /C=2 /BR=9600 /F=MYSETUP.INI
 TTERMPRO /K=MYKEY.CNF /W="My host"
 TTERMPRO /R=README.TXT ; replay a file
 TTERMPRO myhost /B /X=100 /Y=50</span>
@@ -171,6 +177,7 @@ Following default values are stored in the Tera Term setup file:
 <pre>
 &lt;TCP port#&gt;
 /B
+&lt;baud rate&gt;
 &lt;serial port#&gt;
 &lt;file transfer directory&gt;
 /H
