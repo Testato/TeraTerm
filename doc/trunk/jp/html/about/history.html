@@ -29,15 +29,16 @@
       <li>アプリケーションキーパッド/カーソルモードを無効にできるようにした。
         <ul>
           <li>teraterm.ini に DisableAppKeypad および DisableAppCursor エントリを追加した。</li>
-          <li>キーボード設定ダイアログにチェックボックスを追加した。</li>
+          <li><a href="../menu/setup-keyboard.html">キーボード設定ダイアログ</a>にチェックボックスを追加した。</li>
         </ul></li>
       <li>COMポートを開く時に、バッファをクリアするか制御できるようにした。
         <ul>
-          <li>teraterm.ini に ClearComBuffOnOpen エントリを追加した。
+          <li>teraterm.ini に <a href="../setup/teraterm-com.html#clearcom">ClearComBuffOnOpen</a> エントリを追加した。
         </ul></li>
       <li>New connection ダイアログの Host ドロップダウンで、Ctrl+u ショートカットキーをサポートした。「カーソルから左端までの文字列を削除」に対応する。</li>
       <li>ウインドウの透明度を 255 に変更できない問題を修正した。</li>
       <li>サーバから送信されるタイトル文字列の末尾 1 文字が削られる問題を修正した。</li>
+      <li>シリアルポートのボーレートを指定する<a href="../commandline/teraterm.html">コマンドラインオプション</a> /BAUD を追加した。</li>
       <li><a href="#ttssh_2.44">SSH2対応TTSSH(2.44)</a>へ差し替えた</li>
       <li><a href="#ttmenu_1.07">TeraTerm Menu(1.07)</a>へ差し替えた</li>
     </ul>
@@ -66,7 +67,7 @@
           <li>TCP/IP setupダイアログにキープアライブ設定用項目を追加した。</li>
         </ul></li>
       <li>接続断のアクセラレータキーとして Alt+I を追加した。</li>
-      <li>マクロの演算子にシフト演算子 >>, <<, >>> を追加した。</li>
+      <li>マクロの演算子にシフト演算子 &gt;&gt;, &lt;&lt;, &gt;&gt;&gt; を追加した。</li>
       <li>マクロの<a href="../macro/syntax/expressions.html">演算子の優先度</a>を変更した。
         <ul><pre>
 新:
