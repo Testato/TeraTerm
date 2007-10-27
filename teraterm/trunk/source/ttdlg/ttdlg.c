@@ -1900,9 +1900,9 @@ BOOL CALLBACK DirDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	RECT R;
 	HDC TmpDC;
 	SIZE s;
-	HWND HDir, HOk, HCancel, HHelp;
-	POINT D, B;
-	int WX, WY, WW, WH, CW, DW, DH, BW, BH;
+	HWND HDir, HSel, HOk, HCancel, HHelp;
+	POINT D, B, S;
+	int WX, WY, WW, WH, CW, DW, DH, BW, BH, SW, SH;
 	char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
 	LOGFONT logfont;
 	HFONT font;
@@ -1999,7 +1999,18 @@ BOOL CALLBACK DirDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			ScreenToClient(Dialog,&D);
 			DW = R.right-R.left;
 			if (DW<s.cx) DW = s.cx;
-				MoveWindow(HDir,D.x,D.y,DW,R.bottom-R.top,TRUE);
+			MoveWindow(HDir,D.x,D.y,DW,R.bottom-R.top,TRUE);
+			// select dir button
+			HSel = GetDlgItem(Dialog, IDC_SELECT_DIR);
+			GetWindowRect(HSel, &R);
+			SW = R.right-R.left;
+			SH = R.bottom-R.top;
+			S.x = R.bottom;
+			S.y = R.top;
+			ScreenToClient(Dialog, &S);
+			MoveWindow(HSel, D.x + DW + 8, S.y, SW, SH, TRUE);
+			WW = WW + SW;
+
 			// resize dialog
 			MoveWindow(Dialog,WX,WY,WW,WH,TRUE);
 
@@ -2031,11 +2042,20 @@ BOOL CALLBACK DirDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 					}
 					return TRUE;
 
-					case IDCANCEL:
-						EndDialog(Dialog, 0);
-						if (DlgDirFont != NULL) {
-							DeleteObject(DlgDirFont);
-						}
+				case IDCANCEL:
+					EndDialog(Dialog, 0);
+					if (DlgDirFont != NULL) {
+						DeleteObject(DlgDirFont);
+					}
+					return TRUE;
+
+				case IDC_SELECT_DIR:
+					get_lang_msg("DLG_SELECT_DIR_TITLE", uimsg, sizeof(uimsg),
+					             "Select new directory", UILanguageFile);
+					uimsg2[0] = '\0';
+					doSelectFolder(Dialog, uimsg2, sizeof(uimsg2),
+					               uimsg);
+					SetDlgItemText(Dialog, IDC_DIRNEW, uimsg2);
 					return TRUE;
 
 				case IDC_DIRHELP:

@@ -3229,65 +3229,6 @@ void CVTWindow::OnSelectScreenBuffer()
 // Additional settingsで使うタブコントロールの親ハンドル
 static HWND gTabControlParent;
 
-//
-// cf. http://homepage2.nifty.com/DSS/VCPP/API/SHBrowseForFolder.htm
-//
-static void doSelectFolder(HWND hWnd, char *path, int pathlen)
-{
-	BROWSEINFO      bi;
-	LPSTR           lpBuffer;
-	LPITEMIDLIST    pidlRoot;      // ブラウズのルートPIDL
-	LPITEMIDLIST    pidlBrowse;    // ユーザーが選択したPIDL
-	LPMALLOC        lpMalloc = NULL;
-
-	HRESULT hr = SHGetMalloc(&lpMalloc);
-	if (FAILED(hr)) 
-		return;
-
-	// ブラウズ情報受け取りバッファ領域の確保
-	if ((lpBuffer = (LPSTR) lpMalloc->Alloc(_MAX_PATH)) == NULL) {
-		return;
-	}
-	// ダイアログ表示時のルートフォルダのPIDLを取得
-	// ※以下はデスクトップをルートとしている。デスクトップをルートとする
-	//   場合は、単に bi.pidlRoot に０を設定するだけでもよい。その他の特
-	//   殊フォルダをルートとする事もできる。詳細はSHGetSpecialFolderLoca
-	//   tionのヘルプを参照の事。
-	if (!SUCCEEDED(SHGetSpecialFolderLocation(  hWnd,
-		CSIDL_DESKTOP,
-		&pidlRoot))) { 
-			lpMalloc->Free(lpBuffer);
-			return;
-	}
-
-	// BROWSEINFO構造体の初期値設定
-	// ※BROWSEINFO構造体の各メンバの詳細説明もヘルプを参照
-	bi.hwndOwner = hWnd;
-	bi.pidlRoot = pidlRoot;
-	bi.pszDisplayName = lpBuffer;
-	get_lang_msg("DIRDLG_CYGTERM_DIR_TITLE", ts.UIMsg, sizeof(ts.UIMsg),
-	             "select folder", ts.UILanguageFile);
-	bi.lpszTitle = ts.UIMsg;
-	bi.ulFlags = 0;
-	bi.lpfn = 0;
-	bi.lParam = 0;
-	// フォルダ選択ダイアログの表示 
-	pidlBrowse = SHBrowseForFolder(&bi);
-	if (pidlBrowse != NULL) {  
-		// PIDL形式の戻り値のファイルシステムのパスに変換
-		if (SHGetPathFromIDList(pidlBrowse, lpBuffer)) {
-			// 取得成功
-			strncpy_s(path, pathlen, lpBuffer, _TRUNCATE);
-		}
-		// SHBrowseForFolderの戻り値PIDLを解放
-		lpMalloc->Free(pidlBrowse);
-	}
-	// クリーンアップ処理
-	lpMalloc->Free(pidlRoot); 
-	lpMalloc->Free(lpBuffer);
-	lpMalloc->Release();
-}
-
 
 static void split_buffer(char *buffer, int delimiter, char **head, char **body)
 {
@@ -3479,7 +3420,10 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 			switch (wp) {
 				case IDC_SELECT_FILE | (BN_CLICKED << 16):
 					// Cygwin install ディレクトリの選択ダイアログ
-					doSelectFolder(hDlgWnd, ts.CygwinDirectory, sizeof(ts.CygwinDirectory));
+					get_lang_msg("DIRDLG_CYGTERM_DIR_TITLE", ts.UIMsg, sizeof(ts.UIMsg),
+					             "Select Cygwin directory", ts.UILanguageFile);
+					doSelectFolder(hDlgWnd, ts.CygwinDirectory, sizeof(ts.CygwinDirectory),
+					               ts.UIMsg);
 					// Cygwin install path
 					hWnd = GetDlgItem(hDlgWnd, IDC_CYGWIN_PATH);
 					SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.CygwinDirectory);
@@ -3762,7 +3706,10 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 
 				case IDC_DEFAULTPATH_PUSH | (BN_CLICKED << 16):
 					// ログディレクトリの選択ダイアログ
-					doSelectFolder(hDlgWnd, ts.LogDefaultPath, sizeof(ts.LogDefaultPath));
+					get_lang_msg("FILEDLG_SELECT_LOGDIR_TITLE", ts.UIMsg, sizeof(ts.UIMsg),
+					             "Select log folder", ts.UILanguageFile);
+					doSelectFolder(hDlgWnd, ts.LogDefaultPath, sizeof(ts.LogDefaultPath),
+					               ts.UIMsg);
 					hWnd = GetDlgItem(hDlgWnd, IDC_DEFAULTPATH_EDITOR);
 					SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.LogDefaultPath);
 

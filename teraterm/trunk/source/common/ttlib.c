@@ -616,3 +616,46 @@ int get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PCHAR iniF
 
 	return TRUE;
 }
+
+//
+// cf. http://homepage2.nifty.com/DSS/VCPP/API/SHBrowseForFolder.htm
+//
+void doSelectFolder(HWND hWnd, char *path, int pathlen, char *msg)
+{
+	BROWSEINFO      bi;
+	LPITEMIDLIST    pidlRoot;      // ブラウズのルートPIDL
+	LPITEMIDLIST    pidlBrowse;    // ユーザーが選択したPIDL
+	char buf[MAX_PATH];
+
+	// ダイアログ表示時のルートフォルダのPIDLを取得
+	// ※以下はデスクトップをルートとしている。デスクトップをルートとする
+	//   場合は、単に bi.pidlRoot に０を設定するだけでもよい。その他の特
+	//   殊フォルダをルートとする事もできる。詳細はSHGetSpecialFolderLoca
+	//   tionのヘルプを参照の事。
+	if (!SUCCEEDED(SHGetSpecialFolderLocation(hWnd, CSIDL_DESKTOP, &pidlRoot))) {
+			return;
+	}
+
+	// BROWSEINFO構造体の初期値設定
+	// ※BROWSEINFO構造体の各メンバの詳細説明もヘルプを参照
+	bi.hwndOwner = hWnd;
+	bi.pidlRoot = pidlRoot;
+	bi.pszDisplayName = buf;
+	bi.lpszTitle = msg;
+	bi.ulFlags = 0;
+	bi.lpfn = 0;
+	bi.lParam = 0;
+	// フォルダ選択ダイアログの表示 
+	pidlBrowse = SHBrowseForFolder(&bi);
+	if (pidlBrowse != NULL) {  
+		// PIDL形式の戻り値のファイルシステムのパスに変換
+		if (SHGetPathFromIDList(pidlBrowse, buf)) {
+			// 取得成功
+			strncpy_s(path, pathlen, buf, _TRUNCATE);
+		}
+		// SHBrowseForFolderの戻り値PIDLを解放
+		CoTaskMemFree(pidlBrowse);
+	}
+	// クリーンアップ処理
+	CoTaskMemFree(pidlRoot);
+}
