@@ -112,6 +112,11 @@ enum channel_type {
 	TYPE_SHELL, TYPE_PORTFWD,
 };
 
+typedef struct bufchain {
+	buffer_t *msg;
+	struct bufchain *next;
+} bufchain_t;
+
 typedef struct channel {
 	int used;
 	int self_id;
@@ -124,6 +129,8 @@ typedef struct channel {
 	unsigned int remote_maxpacket;
 	enum channel_type type;
 	int local_num;
+	bufchain_t *bufchain;
+	int chain_count;
 } Channel_t;
 
 static Channel_t channels[CHANNEL_MAX];
@@ -150,6 +157,7 @@ static Channel_t *ssh2_channel_new(unsigned int window, unsigned int maxpack,
 
 	// setup
 	c = &channels[found];
+	memset(c, 0, sizeof(Channel_t));
 	c->used = 1;
 	c->self_id = i;
 	c->remote_id = -1;
@@ -161,15 +169,79 @@ static Channel_t *ssh2_channel_new(unsigned int window, unsigned int maxpack,
 	c->remote_maxpacket = 0;
 	c->type = type;
 	c->local_num = local_num;  // alloc_channel()の返値を保存しておく
+	c->bufchain = NULL;
 
 	return (c);
 }
+
+
+static void ssh2_channel_add_bufchain(Channel_t *c, unsigned char *buf, unsigned int buflen)
+{
+	bufchain_t *ch;
+
+	ch = malloc(sizeof(bufchain_t));
+	if (ch == NULL)
+		return;
+	ch->msg = buffer_init();
+	if (ch == NULL) {
+		free(ch);
+		return;
+	}
+	buffer_put_string(ch->msg, buf, buflen);
+
+	ch->next = c->bufchain;
+	c->bufchain = ch;
+	c->chain_count++;
+}
+
+
+static void ssh2_channel_retry_send_bufchain(PTInstVar pvar, Channel_t *c)
+{
+	bufchain_t *ch, *ptr, *prev_ptr;
+	unsigned int size;
+
+	while (c->bufchain) {
+		// 末尾から先に送る
+		prev_ptr = NULL;
+		ptr = c->bufchain;
+		while (ptr->next) {
+			prev_ptr = ptr;
+			ptr = ptr->next;
+		}
+		ch = ptr;
+		size = buffer_len(ch->msg);
+		if (size >= c->remote_window)
+			break;
+
+		SSH_channel_send(pvar, c->local_num, 0, buffer_ptr(ch->msg), size);
+		c->chain_count--;
+
+		buffer_free(ch->msg);
+		free(ch);
+		if (prev_ptr) 
+			prev_ptr->next = NULL;
+		else
+			c->bufchain = NULL;
+	}
+}
+
 
 
 // channel close時にチャネル構造体をリストへ返却する
 // (2007.4.26 yutaka)
 static void ssh2_channel_delete(Channel_t *c)
 {
+	bufchain_t *ch, *ptr;
+
+	ch = c->bufchain;
+	while (ch) {
+		if (ch->msg)
+			buffer_free(ch->msg);
+		ptr = ch;
+		ch = ch->next;
+		free(ptr);
+	}
+
 	memset(c, 0, sizeof(Channel_t));
 	c->used = 0;
 }
@@ -183,7 +255,7 @@ void ssh2_channel_free(void)
 
 	for (i = 0 ; i < CHANNEL_MAX ; i++) {
 		c = &channels[i];
-		memset(c, 0, sizeof(Channel_t));
+		ssh2_channel_delete(c);
 	}
 
 }
@@ -899,12 +971,25 @@ static void finish_send_packet_special(PTInstVar pvar, int skip_compress)
 		if (block_size < 8) {
 			block_size = 8;
 		}
+#if 0
 		encryption_size = ((len + 8) / block_size + 1) * block_size;
 		data_length = encryption_size + CRYPT_get_sender_MAC_size(pvar);
 
 		set_uint32(data, encryption_size - 4);
 		padding = encryption_size - len - 5;
 		data[4] = (unsigned char) padding;
+#else
+		// でかいパケットを送ろうとすると、サーバ側で"Bad packet length"になってしまう問題への対処。
+		// (2007.10.29 yutaka)
+		encryption_size = 4 + 1 + len;
+		padding = block_size - (encryption_size % block_size);
+		if (padding < 4)
+			padding += block_size;
+		encryption_size += padding;
+		set_uint32(data, encryption_size - 4);
+		data[4] = (unsigned char) padding;
+		data_length = encryption_size + CRYPT_get_sender_MAC_size(pvar);
+#endif
 		CRYPT_set_random_data(pvar, data + 5 + len, padding);
 		ret = CRYPT_build_sender_MAC(pvar,
 		                             pvar->ssh_state.sender_sequence_number,
@@ -2826,26 +2911,43 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 		if (c == NULL)
 			return;
 
-		msg = buffer_init();
-		if (msg == NULL) {
-			// TODO: error check
+#if 0
+		if (c->bufchain) { // chainに残っている場合はそのままつなぐ
+ 			ssh2_channel_add_bufchain(c, buf, buflen);
 			return;
 		}
-		buffer_put_int(msg, c->remote_id);
-		buffer_put_string(msg, (char *)buf, buflen);
+#endif
 
-		len = buffer_len(msg);
-		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_DATA, len);
-		memcpy(outmsg, buffer_ptr(msg), len);
-		finish_send_packet(pvar);
-		buffer_free(msg);
+ 		if ((unsigned int)buflen > c->remote_window) {
+ 			unsigned int offset = c->remote_window;
+#ifdef TBD
+ 			// 送れないデータはいったん保存しておく
+ 			ssh2_channel_add_bufchain(c, buf + offset, buflen - offset);
+#endif
+ 			buflen = offset;
+ 		}
+ 		if (buflen > 0) {
+			msg = buffer_init();
+			if (msg == NULL) {
+				// TODO: error check
+				return;
+			}
+			buffer_put_int(msg, c->remote_id);
+			buffer_put_string(msg, (char *)buf, buflen);
 
-		// remote window sizeの調整
-		if (len <= c->remote_window) {
-			c->remote_window -= buflen;
-		}
-		else {
-			c->remote_window = 0;
+			len = buffer_len(msg);
+			outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_DATA, len);
+			memcpy(outmsg, buffer_ptr(msg), len);
+			finish_send_packet(pvar);
+			buffer_free(msg);
+
+			// remote window sizeの調整
+			if (len <= c->remote_window) {
+				c->remote_window -= buflen;
+			}
+			else {
+				c->remote_window = 0;
+			}
 		}
 	}
 
@@ -7200,6 +7302,11 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 	// window sizeの調整
 	c->remote_window += adjust;
+
+#ifdef TBD
+	// 送り残し
+	ssh2_channel_retry_send_bufchain(pvar, c);
+#endif
 
 	return TRUE;
 }
