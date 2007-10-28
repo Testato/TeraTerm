@@ -130,7 +130,6 @@ typedef struct channel {
 	enum channel_type type;
 	int local_num;
 	bufchain_t *bufchain;
-	int chain_count;
 } Channel_t;
 
 static Channel_t channels[CHANNEL_MAX];
@@ -174,54 +173,52 @@ static Channel_t *ssh2_channel_new(unsigned int window, unsigned int maxpack,
 	return (c);
 }
 
-
+// remote_windowの空きがない場合に、送れなかったバッファをリスト（入力順）へつないでおく。
 static void ssh2_channel_add_bufchain(Channel_t *c, unsigned char *buf, unsigned int buflen)
 {
-	bufchain_t *ch;
+	bufchain_t *p, *old;
 
-	ch = malloc(sizeof(bufchain_t));
-	if (ch == NULL)
+	// allocate new buffer
+	p = malloc(sizeof(bufchain_t));
+	if (p == NULL)
 		return;
-	ch->msg = buffer_init();
-	if (ch == NULL) {
-		free(ch);
+	p->msg = buffer_init();
+	if (p == NULL) {
+		free(p);
 		return;
 	}
-	buffer_put_string(ch->msg, buf, buflen);
+	buffer_put_string(p->msg, buf, buflen);
+	p->next = NULL;
 
-	ch->next = c->bufchain;
-	c->bufchain = ch;
-	c->chain_count++;
+	if (c->bufchain == NULL) {
+		c->bufchain = p;
+	} else {
+		old = c->bufchain;
+		while (old->next)
+			old = old->next;
+		old->next = p;
+	}
 }
 
 
 static void ssh2_channel_retry_send_bufchain(PTInstVar pvar, Channel_t *c)
 {
-	bufchain_t *ch, *ptr, *prev_ptr;
+	bufchain_t *ch;
 	unsigned int size;
 
 	while (c->bufchain) {
-		// 末尾から先に送る
-		prev_ptr = NULL;
-		ptr = c->bufchain;
-		while (ptr->next) {
-			prev_ptr = ptr;
-			ptr = ptr->next;
-		}
-		ch = ptr;
+		// 先頭から先に送る
+		ch = c->bufchain;
 		size = buffer_len(ch->msg);
 		if (size >= c->remote_window)
 			break;
 
 		SSH_channel_send(pvar, c->local_num, 0, buffer_ptr(ch->msg), size);
-		c->chain_count--;
+
+		c->bufchain = ch->next;
 
 		buffer_free(ch->msg);
 		free(ch);
-		if (prev_ptr) 
-			prev_ptr->next = NULL;
-		else
-			c->bufchain = NULL;
 	}
 }
 
@@ -2920,10 +2917,8 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 
  		if ((unsigned int)buflen > c->remote_window) {
  			unsigned int offset = c->remote_window;
-#ifdef TBD
  			// 送れないデータはいったん保存しておく
  			ssh2_channel_add_bufchain(c, buf + offset, buflen - offset);
-#endif
  			buflen = offset;
  		}
  		if (buflen > 0) {
@@ -7303,10 +7298,8 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 	// window sizeの調整
 	c->remote_window += adjust;
 
-#ifdef TBD
 	// 送り残し
 	ssh2_channel_retry_send_bufchain(pvar, c);
-#endif
 
 	return TRUE;
 }
