@@ -100,7 +100,20 @@ typedef enum {
 #define SSH_PROTOFLAG_SCREEN_NUMBER 1
 #define SSH_PROTOFLAG_HOST_IN_FWD_OPEN 2
 
+// for SSH1
 #define SSH_MAX_SEND_PACKET_SIZE   250000
+
+// for SSH2
+/* default window/packet sizes for tcp/x11-fwd-channel */
+// changed CHAN_SES_WINDOW_DEFAULT from 32KB to 128KB. (2007.10.29 maya)
+#define CHAN_SES_PACKET_DEFAULT (32*1024)
+#define CHAN_SES_WINDOW_DEFAULT (4*CHAN_SES_PACKET_DEFAULT)
+#define CHAN_TCP_PACKET_DEFAULT (32*1024)
+#define CHAN_TCP_WINDOW_DEFAULT (4*CHAN_TCP_PACKET_DEFAULT)
+#if 0 // unused
+#define CHAN_X11_PACKET_DEFAULT (16*1024)
+#define CHAN_X11_WINDOW_DEFAULT (4*CHAN_X11_PACKET_DEFAULT)
+#endif
 
 
 /* SSH2 constants */

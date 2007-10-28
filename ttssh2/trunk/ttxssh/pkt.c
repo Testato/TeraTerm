@@ -37,7 +37,9 @@ See LICENSE.TXT for the license.
 //#define READAMOUNT 60000
 // 60000 -> 65536 へ拡張。SSH2ではwindow制御を行うため、SSH2のwindow sizeと
 // 合わせておく必要がある。(2004.10.17 yutaka)
-#define READAMOUNT 65536
+//#define READAMOUNT 65536
+// 65536 -> 131072 へ拡張。(2007.10.29 maya)
+#define READAMOUNT CHAN_SES_WINDOW_DEFAULT
 
 void PKT_init(PTInstVar pvar)
 {
