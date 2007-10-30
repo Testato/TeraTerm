@@ -101,7 +101,8 @@ WORD PASCAL FAR GetKeyCode(PKeyMap KeyMap, WORD Scan)
 
 void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
                           BOOL AppliKeyMode, BOOL AppliCursorMode,
-                          PCHAR KeyStr, int destlen, LPINT Len, LPWORD Type)
+                          BOOL Send8BitMode, PCHAR KeyStr, int destlen,
+                          LPINT Len, LPWORD Type)
 {
 	MSG Msg;
 	char Temp[201];
@@ -109,41 +110,78 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
 	if (KeyMap==NULL)
 		KeyMap = &(pm->km);
 
-	*Type = IdText;  // key type
+	*Type = IdBinary;  // key type
 	*Len = 0;
 	switch (KeyCode) {
 		case IdUp:
-			*Len = 3;
-			if (AppliCursorMode)
-				strncpy_s(KeyStr,destlen,"\033OA",_TRUNCATE);
-			else
-				strncpy_s(KeyStr,destlen,"\033[A",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 2;
+				if (AppliCursorMode)
+					strncpy_s(KeyStr,destlen,"\217A",_TRUNCATE);
+				else
+					strncpy_s(KeyStr,destlen,"\233A",_TRUNCATE);
+			} else {
+				*Len = 3;
+				if (AppliCursorMode)
+					strncpy_s(KeyStr,destlen,"\033OA",_TRUNCATE);
+				else
+					strncpy_s(KeyStr,destlen,"\033[A",_TRUNCATE);
+			}
 			break;
 		case IdDown:
-			*Len = 3;
-			if (AppliCursorMode)
-				strncpy_s(KeyStr,destlen,"\033OB",_TRUNCATE);
-			else
-				strncpy_s(KeyStr,destlen,"\033[B",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 2;
+				if (AppliCursorMode)
+					strncpy_s(KeyStr,destlen,"\217B",_TRUNCATE);
+				else
+					strncpy_s(KeyStr,destlen,"\233B",_TRUNCATE);
+			} else {
+				*Len = 3;
+				if (AppliCursorMode)
+					strncpy_s(KeyStr,destlen,"\033OB",_TRUNCATE);
+				else
+					strncpy_s(KeyStr,destlen,"\033[B",_TRUNCATE);
+			}
 			break;
 		case IdRight:
-			*Len = 3;
-			if (AppliCursorMode)
-				strncpy_s(KeyStr,destlen,"\033OC",_TRUNCATE);
-			else
-				strncpy_s(KeyStr,destlen,"\033[C",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 2;
+				if (AppliCursorMode)
+					strncpy_s(KeyStr,destlen,"\217C",_TRUNCATE);
+				else
+					strncpy_s(KeyStr,destlen,"\233C",_TRUNCATE);
+			} else {
+				*Len = 3;
+				if (AppliCursorMode)
+					strncpy_s(KeyStr,destlen,"\033OC",_TRUNCATE);
+				else
+					strncpy_s(KeyStr,destlen,"\033[C",_TRUNCATE);
+			}
 			break;
 		case IdLeft:
-			*Len = 3;
-			if (AppliCursorMode)
-				strncpy_s(KeyStr,destlen,"\033OD",_TRUNCATE);
-			else
-				strncpy_s(KeyStr,destlen,"\033[D",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 2;
+				if (AppliCursorMode)
+					strncpy_s(KeyStr,destlen,"\217D",_TRUNCATE);
+				else
+					strncpy_s(KeyStr,destlen,"\233D",_TRUNCATE);
+			} else {
+				*Len = 3;
+				if (AppliCursorMode)
+					strncpy_s(KeyStr,destlen,"\033OD",_TRUNCATE);
+				else
+					strncpy_s(KeyStr,destlen,"\033[D",_TRUNCATE);
+			}
 			break;
 		case Id0:
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033Op",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217p",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033Op",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
@@ -152,8 +190,13 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
 			break;
 		case Id1:
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033Oq",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217q",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033Oq",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
@@ -162,8 +205,13 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
 			break;
 		case Id2:
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033Or",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217r",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033Or",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
@@ -172,8 +220,13 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
 			break;
 		case Id3:
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033Os",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217s",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033Os",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
@@ -182,8 +235,13 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
 			break;
 		case Id4:
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033Ot",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217t",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033Ot",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
@@ -192,8 +250,13 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
 			break;
 		case Id5:
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033Ou",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217u",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033Ou",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
@@ -202,8 +265,13 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
 			break;
 		case Id6:
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033Ov",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217v",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033Ov",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
@@ -212,8 +280,13 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
 			break;
 		case Id7:
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033Ow",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217w",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033Ow",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
@@ -222,8 +295,13 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
 			break;
 		case Id8:
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033Ox",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217x",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033Ox",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
@@ -232,78 +310,118 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
 			break;
 		case Id9:
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033Oy",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217y",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033Oy",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
 				KeyStr[0] = '9';
 			}
 			break;
-		case IdMinus: /* numaric pad - key (DEC) */
+		case IdMinus: /* numeric pad - key (DEC) */
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033Om",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217m",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033Om",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
 				KeyStr[0] = '-';
 			}
 			break;
-		case IdComma: /* numaric pad , key (DEC) */
+		case IdComma: /* numeric pad , key (DEC) */
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033Ol",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217l",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033Ol",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
 				KeyStr[0] = ',';
 			}
 			break;
-		case IdPeriod: /* numaric pad . key */
+		case IdPeriod: /* numeric pad . key */
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033On",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217n",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033On",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
 				KeyStr[0] = '.';
 			}
 			break;
-		case IdEnter: /* numaric pad enter key */
+		case IdEnter: /* numeric pad enter key */
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033OM",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217M",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033OM",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
 				KeyStr[0] = 0x0D;
 			}
 			break;
-		case IdSlash: /* numaric pad slash key */
+		case IdSlash: /* numeric pad slash key */
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033Oo",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217o",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033Oo",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
 				KeyStr[0] = '/';
 			}
 			break;
-		case IdAsterisk: /* numaric pad asterisk key */
+		case IdAsterisk: /* numeric pad asterisk key */
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033Oj",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217j",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033Oj",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
 				KeyStr[0] = '*';
 			}
 			break;
-		case IdPlus: /* numaric pad plus key */
+		case IdPlus: /* numeric pad plus key */
 			if (AppliKeyMode) {
-				*Len = 3;
-				strncpy_s(KeyStr,destlen,"\033Ok",_TRUNCATE);
+				if (Send8BitMode) {
+					*Len = 2;
+					strncpy_s(KeyStr,destlen,"\217k",_TRUNCATE);
+				} else {
+					*Len = 3;
+					strncpy_s(KeyStr,destlen,"\033Ok",_TRUNCATE);
+				}
 			}
 			else {
 				*Len = 1;
@@ -311,124 +429,274 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
 			}
 			break;
 		case IdPF1: /* DEC Key: PF1 */
-			*Len = 3;
-			strncpy_s(KeyStr,destlen,"\033OP",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 2;
+				strncpy_s(KeyStr,destlen,"\217P",_TRUNCATE);
+			} else {
+				*Len = 3;
+				strncpy_s(KeyStr,destlen,"\033OP",_TRUNCATE);
+			}
 			break;
 		case IdPF2: /* DEC Key: PF2 */
-			*Len = 3;
-			strncpy_s(KeyStr,destlen,"\033OQ",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 2;
+				strncpy_s(KeyStr,destlen,"\217Q",_TRUNCATE);
+			} else {
+				*Len = 3;
+				strncpy_s(KeyStr,destlen,"\033OQ",_TRUNCATE);
+			}
 			break;
 		case IdPF3: /* DEC Key: PF3 */
-			*Len = 3;
-			strncpy_s(KeyStr,destlen,"\033OR",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 2;
+				strncpy_s(KeyStr,destlen,"\217R",_TRUNCATE);
+			} else {
+				*Len = 3;
+				strncpy_s(KeyStr,destlen,"\033OR",_TRUNCATE);
+			}
 			break;
 		case IdPF4: /* DEC Key: PF4 */
-			*Len = 3;
-			strncpy_s(KeyStr,destlen,"\033OS",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 2;
+				strncpy_s(KeyStr,destlen,"\217S",_TRUNCATE);
+			} else {
+				*Len = 3;
+				strncpy_s(KeyStr,destlen,"\033OS",_TRUNCATE);
+			}
 			break;
 		case IdFind: /* DEC Key: Find */
-			*Len = 4;
-			strncpy_s(KeyStr,destlen,"\033[1~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 3;
+				strncpy_s(KeyStr,destlen,"\2331~",_TRUNCATE);
+			} else {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\033[1~",_TRUNCATE);
+			}
 			break;
 		case IdInsert: /* DEC Key: Insert Here */
-			*Len = 4;
-			strncpy_s(KeyStr,destlen,"\033[2~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 3;
+				strncpy_s(KeyStr,destlen,"\2332~",_TRUNCATE);
+			} else {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\033[2~",_TRUNCATE);
+			}
 			break;
 		case IdRemove: /* DEC Key: Remove */
-			*Len = 4;
-			strncpy_s(KeyStr,destlen,"\033[3~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 3;
+				strncpy_s(KeyStr,destlen,"\2333~",_TRUNCATE);
+			} else {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\033[3~",_TRUNCATE);
+			}
 			break;
 		case IdSelect: /* DEC Key: Select */
-			*Len = 4;
-			strncpy_s(KeyStr,destlen,"\033[4~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 3;
+				strncpy_s(KeyStr,destlen,"\2334~",_TRUNCATE);
+			} else {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\033[4~",_TRUNCATE);
+			}
 			break;
 		case IdPrev: /* DEC Key: Prev */
-			*Len = 4;
-			strncpy_s(KeyStr,destlen,"\033[5~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 3;
+				strncpy_s(KeyStr,destlen,"\2335~",_TRUNCATE);
+			} else {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\033[5~",_TRUNCATE);
+			}
 			break;
 		case IdNext: /* DEC Key: Next */
-			*Len = 4;
-			strncpy_s(KeyStr,destlen,"\033[6~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 3;
+				strncpy_s(KeyStr,destlen,"\2336~",_TRUNCATE);
+			} else {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\033[6~",_TRUNCATE);
+			}
 			break;
 		case IdF6: /* DEC Key: F6 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[17~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23317~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[17~",_TRUNCATE);
+			}
 			break;
 		case IdF7: /* DEC Key: F7 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[18~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23318~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[18~",_TRUNCATE);
+			}
 			break;
 		case IdF8: /* DEC Key: F8 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[19~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23319~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[19~",_TRUNCATE);
+			}
 			break;
 		case IdF9: /* DEC Key: F9 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[20~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23320~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[20~",_TRUNCATE);
+			}
 			break;
 		case IdF10: /* DEC Key: F10 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[21~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23321~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[21~",_TRUNCATE);
+			}
 			break;
 		case IdF11: /* DEC Key: F11 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[23~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23323~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[23~",_TRUNCATE);
+			}
 			break;
 		case IdF12: /* DEC Key: F12 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[24~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23324~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[24~",_TRUNCATE);
+			}
 			break;
 		case IdF13: /* DEC Key: F13 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[25~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23325~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[25~",_TRUNCATE);
+			}
 			break;
 		case IdF14: /* DEC Key: F14 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[26~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23326~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[26~",_TRUNCATE);
+			}
 			break;
 		case IdHelp: /* DEC Key: Help */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[28~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23328~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[28~",_TRUNCATE);
+			}
 			break;
 		case IdDo: /* DEC Key: Do */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[29~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23329~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[29~",_TRUNCATE);
+			}
 			break;
 		case IdF17: /* DEC Key: F17 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[31~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23331~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[31~",_TRUNCATE);
+			}
 			break;
 		case IdF18: /* DEC Key: F18 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[32~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23332~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[32~",_TRUNCATE);
+			}
 			break;
 		case IdF19: /* DEC Key: F19 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[33~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23333~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[33~",_TRUNCATE);
+			}
 			break;
 		case IdF20: /* DEC Key: F20 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[34~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23334~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[34~",_TRUNCATE);
+			}
 			break;
 		case IdXF1: /* XTERM F1 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[11~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23311~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[11~",_TRUNCATE);
+			}
 			break;
 		case IdXF2: /* XTERM F2 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[12~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23312~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[12~",_TRUNCATE);
+			}
 			break;
 		case IdXF3: /* XTERM F3 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[13~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23313~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[13~",_TRUNCATE);
+			}
 			break;
 		case IdXF4: /* XTERM F4 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[14~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23314~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[14~",_TRUNCATE);
+			}
 			break;
 		case IdXF5: /* XTERM F5 */
-			*Len = 5;
-			strncpy_s(KeyStr,destlen,"\033[15~",_TRUNCATE);
+			if (Send8BitMode) {
+				*Len = 4;
+				strncpy_s(KeyStr,destlen,"\23315~",_TRUNCATE);
+			} else {
+				*Len = 5;
+				strncpy_s(KeyStr,destlen,"\033[15~",_TRUNCATE);
+			}
 			break;
 		case IdHold:
 		case IdPrint:

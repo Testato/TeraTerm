@@ -872,6 +872,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	// Select on activate -- special option
 	ts->SelOnActive = GetOnOff(Section, "SelectOnActivate", FName, TRUE);
 
+	/* Send 8bit control sequence -- special option */
+	ts->Send8BitCtrl = GetOnOff(Section, "Send8BitCtrl", FName, FALSE);
+
 	/* Startup macro -- special option */
 	GetPrivateProfileString(Section, "StartupMacro", "",
 	                        ts->MacroFN, sizeof(ts->MacroFN), FName);
@@ -1547,7 +1550,7 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	WriteOnOff(Section, "BPLog", FName, (WORD) (ts->LogFlag & LOG_BP));
 
 	/* Clear serial port buffer when port opening -- special option */
-	WriteOnOff(Section, "ClearComBuffOnOpen", FName, (WORD) (ts->ClearComBuffOnOpen));
+	WriteOnOff(Section, "ClearComBuffOnOpen", FName, ts->ClearComBuffOnOpen);
 
 	/* Confirm disconnection -- special option */
 	WriteOnOff(Section, "ConfirmDisconnect", FName,
@@ -1642,6 +1645,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 	// Select on activate -- special option
 	WriteOnOff(Section, "SelectOnActivate", FName, ts->SelOnActive);
+
+	/* Send 8bit control sequence -- special option */
+	WriteOnOff(Section, "Send8BitCtrl", FName, ts->Send8BitCtrl);
 
 	/* Startup macro -- special option */
 	WritePrivateProfileString(Section, "StartupMacro", ts->MacroFN, FName);

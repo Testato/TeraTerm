@@ -360,6 +360,7 @@ struct tttset {
 	WORD DisableAppKeypad;
 	WORD DisableAppCursor;
 	WORD ClearComBuffOnOpen;
+	WORD Send8BitCtrl;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -465,7 +466,7 @@ typedef struct {
 #endif /* NO_INET6 */
 	WORD ComPort; // serial port #
 	WORD MaxComPort; // max serial port #
-}TGetHNRec;
+} TGetHNRec;
 typedef TGetHNRec far *PGetHNRec;
 
 /* Tera Term internal key codes */
@@ -486,20 +487,20 @@ typedef TGetHNRec far *PGetHNRec;
 #define IdMinus           15
 #define IdComma           16
 #define IdPeriod          17
-#define IdEnter           18
-#define IdPF1             19
-#define IdPF2             20
-#define IdPF3             21
-#define IdPF4             22
-#define IdFind            23
-#define IdInsert          24
-#define IdRemove          25
-#define IdSelect          26
-#define IdPrev            27
-#define IdNext            28
-#define IdHold            29
-#define IdPrint           30
-#define IdBreak           31
+#define IdSlash           18
+#define IdAsterisk        19
+#define IdPlus            20
+#define IdEnter           21
+#define IdPF1             22
+#define IdPF2             23
+#define IdPF3             24
+#define IdPF4             25
+#define IdFind            26
+#define IdInsert          27
+#define IdRemove          28
+#define IdSelect          29
+#define IdPrev            30
+#define IdNext            31
 #define IdF6              32
 #define IdF7              33
 #define IdF8              34
@@ -515,46 +516,47 @@ typedef TGetHNRec far *PGetHNRec;
 #define IdF18             44
 #define IdF19             45
 #define IdF20             46
-#define IdUDK6            47
-#define IdUDK7            48
-#define IdUDK8            49
-#define IdUDK9            50
-#define IdUDK10           51
-#define IdUDK11           52
-#define IdUDK12           53
-#define IdUDK13           54
-#define IdUDK14           55
-#define IdUDK15           56
-#define IdUDK16           57
-#define IdUDK17           58
-#define IdUDK18           59
-#define IdUDK19           60
-#define IdUDK20           61
-#define IdXF1             62
-#define IdXF2             63
-#define IdXF3             64
-#define IdXF4             65
-#define IdXF5             66
-#define IdCmdEditCopy     67
-#define IdCmdEditPaste    68
-#define IdCmdEditPasteCR  69
-#define IdCmdEditCLS      70
-#define IdCmdEditCLB      71
-#define IdCmdCtrlOpenTEK  72
-#define IdCmdCtrlCloseTEK 73
-#define IdCmdLineUp       74
-#define IdCmdLineDown     75
-#define IdCmdPageUp       76
-#define IdCmdPageDown     77
-#define IdCmdBuffTop      78
-#define IdCmdBuffBottom   79
-#define IdCmdNextWin      80
-#define IdCmdPrevWin      81
-#define IdCmdLocalEcho    82
-#define IdSlash           83
-#define IdAsterisk        84
-#define IdPlus            85
+#define IdXF1             47
+#define IdXF2             48
+#define IdXF3             49
+#define IdXF4             50
+#define IdXF5             51
+#define IdUDK6            52
+#define IdUDK7            53
+#define IdUDK8            54
+#define IdUDK9            55
+#define IdUDK10           56
+#define IdUDK11           57
+#define IdUDK12           58
+#define IdUDK13           59
+#define IdUDK14           60
+#define IdUDK15           61
+#define IdUDK16           62
+#define IdUDK17           63
+#define IdUDK18           64
+#define IdUDK19           65
+#define IdUDK20           66
+#define IdHold            67
+#define IdPrint           68
+#define IdBreak           69
+#define IdCmdEditCopy     70
+#define IdCmdEditPaste    71
+#define IdCmdEditPasteCR  72
+#define IdCmdEditCLS      73
+#define IdCmdEditCLB      74
+#define IdCmdCtrlOpenTEK  75
+#define IdCmdCtrlCloseTEK 76
+#define IdCmdLineUp       77
+#define IdCmdLineDown     78
+#define IdCmdPageUp       79
+#define IdCmdPageDown     80
+#define IdCmdBuffTop      81
+#define IdCmdBuffBottom   82
+#define IdCmdNextWin      83
+#define IdCmdPrevWin      84
+#define IdCmdLocalEcho    85
 #define IdUser1           86
+#define NumOfUDK          IdUDK20-IdUDK6+1
 #define NumOfUserKey      99
 #define IdKeyMax          IdUser1+NumOfUserKey-1
 
@@ -578,7 +580,7 @@ typedef struct {
 	BYTE UserKeyStr[KeyStrMax+1];
 	/* user key type */
 	BYTE UserKeyType[NumOfUserKey];
-}TKeyMap;
+} TKeyMap;
 typedef TKeyMap far *PKeyMap;
 
 /* Control Characters */
@@ -724,7 +726,7 @@ typedef struct {
 	int *ConnetingTimeout;
 
 	time_t LastSendTime;
-}TComVar;
+} TComVar;
 typedef TComVar far *PComVar;
 
 #define ID_FILE          0
@@ -769,6 +771,7 @@ typedef TMap far *PMap;
  *   added tttset.DisableAppKeypad.
  *   added tttset.DisableAppCursor.
  *   added tttset.ClearComBuffOnOpen.
+ *   added tttset.Send8BitCtrl.
  *
  * - At version 4.54, ttset_memfilemap was replaced with ttset_memfilemap_3.
  *   added tttset.TelKeepAliveInterval.

@@ -22,8 +22,8 @@ BOOL AutoRepeatMode;
 BOOL AppliKeyMode, AppliCursorMode;
 BOOL DebugFlag = FALSE;
 
-static char FuncKeyStr[IdUDK20-IdUDK6+1][FuncKeyStrMax];
-static int FuncKeyLen[IdUDK20-IdUDK6+1];
+static char FuncKeyStr[NumOfUDK][FuncKeyStrMax];
+static int FuncKeyLen[NumOfUDK];
 
   /*keyboard status*/
 static int PreviousKey;
@@ -76,11 +76,8 @@ void ClearUserKey()
   int i;
 
   i = 0;
-  while (i <= IdUDK20-IdUDK6)
-  {
-    FuncKeyLen[i] = 0;
-    i++;
-  }
+  while (i < NumOfUDK)
+    FuncKeyLen[i++] = 0;
 }
 
 void DefineUserKey(int NewKeyId, PCHAR NewKeyStr, int NewKeyLen)
@@ -248,7 +245,7 @@ BOOL KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan)
   }
   else
     GetKeyStr(HWin,KeyMap,Key,AppliKeyMode,AppliCursorMode,
-	      Code,sizeof(Code),&CodeLength,&CodeType);
+	      ts.Send8BitCtrl,Code,sizeof(Code),&CodeLength,&CodeType);
 
   if (CodeLength==0) return FALSE;
 
@@ -425,7 +422,7 @@ void KeyCodeSend(WORD KCode, WORD Count)
   }
   else
     GetKeyStr(HWin,KeyMap,Key,AppliKeyMode,AppliCursorMode,
-	      Code,sizeof(Code),&CodeLength,&CodeType);
+	      ts.Send8BitCtrl,Code,sizeof(Code),&CodeLength,&CodeType);
 
   if (CodeLength==0) return;
   if (TalkStatus==IdTalkKeyb)
