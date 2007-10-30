@@ -179,7 +179,7 @@ static void ssh2_channel_add_bufchain(Channel_t *c, unsigned char *buf, unsigned
 		free(p);
 		return;
 	}
-	buffer_put_string(p->msg, buf, buflen);
+	buffer_put_raw(p->msg, buf, buflen);
 	p->next = NULL;
 
 	if (c->bufchain == NULL) {
@@ -205,7 +205,7 @@ static void ssh2_channel_retry_send_bufchain(PTInstVar pvar, Channel_t *c)
 		if (size >= c->remote_window)
 			break;
 
-		SSH_channel_send(pvar, c->local_num, 0, buffer_ptr(ch->msg), size);
+		SSH_channel_send(pvar, c->local_num, -1, buffer_ptr(ch->msg), size);
 
 		c->bufchain = ch->next;
 
@@ -311,7 +311,7 @@ void ssh_heartbeat_unlock(void)
 //
 // (2005.3.7 yutaka)
 //
-#define MEMTAG_MAX 100
+#define MEMTAG_MAX 300
 #define LOGDUMP "ssh2dump.log"
 #define SENDTOME "Please send '"LOGDUMP"' file to TeraTerm developer team."
 
@@ -827,9 +827,12 @@ static int retry_send_packet(PTInstVar pvar, char FAR * data, int len)
 
 static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 {
-#if 0
+	// パケット送信後にバッファを使いまわすため、ブロッキングで送信してしまう必要がある。
+	// ノンブロッキングで送信してWSAEWOULDBLOCKが返ってきた場合、そのバッファは送信完了する
+	// まで保持しておかなくてはならない。(2007.10.30 yutaka)
 	u_long do_block = 0;
 
+#if 0
 	if ((pvar->PWSAAsyncSelect) (pvar->socket, pvar->NotificationWindow,
 	                             0, 0) == SOCKET_ERROR
 	 || ioctlsocket(pvar->socket, FIONBIO, &do_block) == SOCKET_ERROR
@@ -838,10 +841,6 @@ static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 	                             pvar->notification_msg,
 	                             pvar->notification_events) ==
 		SOCKET_ERROR) {
-#else
-	// ソケットをノンブロッキングのままでパケット送信を行う。(2007.9.26 yutaka)
-	if (retry_send_packet(pvar, data, len)) {
-#endif
 		UTIL_get_lang_msg("MSG_SSH_SEND_PKT_ERROR", pvar,
 		                  "A communications error occurred while sending an SSH packet.\n"
 		                  "The connection will close.");
@@ -850,23 +849,60 @@ static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 	} else {
 		return TRUE;
 	}
+#else
+	if ((pvar->PWSAAsyncSelect) (pvar->socket, pvar->NotificationWindow,
+	                             0, 0) == SOCKET_ERROR) {
+			code = WSAGetLastError();
+			kind = "WSAAsyncSelect1";
+			goto error;
+	}
+	if (ioctlsocket(pvar->socket, FIONBIO, &do_block) == SOCKET_ERROR) {
+			code = WSAGetLastError();
+			kind = "ioctlsocket";
+			goto error;
+	}
+	if (retry_send_packet(pvar, data, len) != 0) {
+			code = WSAGetLastError();
+			kind = "retry_send_packet";
+			goto error;
+	}
+	if ((pvar->PWSAAsyncSelect) (pvar->socket, pvar->NotificationWindow,
+	                             pvar->notification_msg,
+	                             pvar->notification_events) ==
+		SOCKET_ERROR) {
+			code = WSAGetLastError();
+			kind = "WSAAsyncSelect2";
+			goto error;
+	}
+
+	return TRUE;
+
+error:
+	UTIL_get_lang_msg("MSG_SSH_SEND_PKT_ERROR", pvar,
+	                  "A communications error occurred while sending an SSH packet.\n"
+	                  "The connection will close. (%s:%d)");
+	_snprintf_s(buf, sizeof(buf), _TRUNCATE, pvar->ts->UIMsg,
+	            kind, code);
+	notify_fatal_error(pvar, buf);
+	return FALSE;
+#endif
 }
 
 /* if skip_compress is true, then the data has already been compressed
    into outbuf + 12 */
 static void finish_send_packet_special(PTInstVar pvar, int skip_compress)
 {
-	int len = pvar->ssh_state.outgoing_packet_len;
-	char FAR *data;
-	int data_length;
+	unsigned int len = pvar->ssh_state.outgoing_packet_len;
+	unsigned char FAR *data;
+	unsigned int data_length;
 	buffer_t *msg = NULL; // for SSH2 packet compression
 
 	if (pvar->ssh_state.compressing) {
 		if (!skip_compress) {
 			buf_ensure_size(&pvar->ssh_state.outbuf,
 			                &pvar->ssh_state.outbuflen,
-			                len + (len >> 6) + 50 +
-			                CRYPT_get_sender_MAC_size(pvar));
+			                (int)(len + (len >> 6) + 50 +
+			                      CRYPT_get_sender_MAC_size(pvar)));
 			pvar->ssh_state.compress_stream.next_in =
 				pvar->ssh_state.precompress_outbuf;
 			pvar->ssh_state.compress_stream.avail_in = len;
@@ -979,6 +1015,7 @@ static void finish_send_packet_special(PTInstVar pvar, int skip_compress)
 		data[4] = (unsigned char) padding;
 		data_length = encryption_size + CRYPT_get_sender_MAC_size(pvar);
 #endif
+		//if (pvar->ssh_state.outbuflen <= 7 + data_length) *(int *)0 = 0;
 		CRYPT_set_random_data(pvar, data + 5 + len, padding);
 		ret = CRYPT_build_sender_MAC(pvar,
 		                             pvar->ssh_state.sender_sequence_number,
@@ -2522,7 +2559,7 @@ void SSH_notify_cred(PTInstVar pvar)
 	try_send_credentials(pvar);
 }
 
-void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, int buflen)
+void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, unsigned int buflen)
 {
 	if (SSHv1(pvar)) {
 		if (get_handler(pvar, SSH_SMSG_STDOUT_DATA) != handle_data) {
@@ -2596,28 +2633,32 @@ void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, int buflen)
 		if (c == NULL)
 			return;
 
-		msg = buffer_init();
-		if (msg == NULL) {
-			// TODO: error check
-			return;
+		if (buflen > c->remote_window) {
+			buflen = c->remote_window;
 		}
-		buffer_put_int(msg, c->remote_id);
-		buffer_put_string(msg, (char *)buf, buflen);
+		if (buflen > 0) {
+			msg = buffer_init();
+			if (msg == NULL) {
+				// TODO: error check
+				return;
+			}
+			buffer_put_int(msg, c->remote_id);
+			buffer_put_string(msg, (char *)buf, buflen);
 
-		len = buffer_len(msg);
-		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_DATA, len);
-		memcpy(outmsg, buffer_ptr(msg), len);
-		finish_send_packet(pvar);
-		buffer_free(msg);
+			len = buffer_len(msg);
+			outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_DATA, len);
+			memcpy(outmsg, buffer_ptr(msg), len);
+			finish_send_packet(pvar);
+			buffer_free(msg);
 
-		// remote window sizeの調整
-		if (len <= c->remote_window) {
-			c->remote_window -= buflen;
+			// remote window sizeの調整
+			if (buflen <= c->remote_window) {
+				c->remote_window -= buflen;
+			}
+			else {
+				c->remote_window = 0;
+			}
 		}
-		else {
-			c->remote_window = 0;
-		}
-
 	}
 
 }
@@ -2836,7 +2877,7 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
                       uint32 remote_channel_num,
                       unsigned char FAR * buf, int len)
 {
-	int buflen = len;
+	unsigned int buflen = len;
 
 	if (SSHv1(pvar)) {
 		unsigned char FAR *outmsg =
@@ -2900,20 +2941,13 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 		if (c == NULL)
 			return;
 
-#if 0
-		if (c->bufchain) { // chainに残っている場合はそのままつなぐ
- 			ssh2_channel_add_bufchain(c, buf, buflen);
-			return;
+		if ((unsigned int)buflen > c->remote_window) {
+			unsigned int offset = c->remote_window;
+			// 送れないデータはいったん保存しておく
+			ssh2_channel_add_bufchain(c, buf + offset, buflen - offset);
+			buflen = offset;
 		}
-#endif
-
- 		if ((unsigned int)buflen > c->remote_window) {
- 			unsigned int offset = c->remote_window;
- 			// 送れないデータはいったん保存しておく
- 			ssh2_channel_add_bufchain(c, buf + offset, buflen - offset);
- 			buflen = offset;
- 		}
- 		if (buflen > 0) {
+		if (buflen > 0) {
 			msg = buffer_init();
 			if (msg == NULL) {
 				// TODO: error check
@@ -2924,12 +2958,14 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 
 			len = buffer_len(msg);
 			outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_DATA, len);
+			//if (len + 12 >= pvar->ssh_state.outbuflen) *(int *)0 = 0;
 			memcpy(outmsg, buffer_ptr(msg), len);
 			finish_send_packet(pvar);
 			buffer_free(msg);
+			//debug_print(1, pvar->ssh_state.outbuf, 7 + 4 + 1 + 1 + len);
 
 			// remote window sizeの調整
-			if (len <= c->remote_window) {
+			if (buflen <= c->remote_window) {
 				c->remote_window -= buflen;
 			}
 			else {

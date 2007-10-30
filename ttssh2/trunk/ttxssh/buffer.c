@@ -105,6 +105,13 @@ int buffer_append_length(buffer_t * msg, char *ptr, int size)
 	return (ret);
 }
 
+void buffer_put_raw(buffer_t *msg, char *ptr, int size)
+{
+	int ret = -1;
+
+	ret = buffer_append(msg, ptr, size);
+}
+
 // getting string buffer.
 // NOTE: You should free the return pointer if it's unused.
 // (2005.6.26 yutaka)

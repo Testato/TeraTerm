@@ -452,7 +452,7 @@ void SSH_notify_win_size(PTInstVar pvar, int cols, int rows);
 void SSH_notify_user_name(PTInstVar pvar);
 void SSH_notify_cred(PTInstVar pvar);
 void SSH_notify_host_OK(PTInstVar pvar);
-void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, int buflen);
+void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, unsigned int buflen);
 /* SSH_extract_payload returns number of bytes extracted */
 int SSH_extract_payload(PTInstVar pvar, unsigned char FAR * dest, int len);
 void SSH_end(PTInstVar pvar);
