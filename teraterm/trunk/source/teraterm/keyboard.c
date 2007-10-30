@@ -244,8 +244,10 @@ BOOL KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan)
     CodeType = IdBinary;
   }
   else
-    GetKeyStr(HWin,KeyMap,Key,AppliKeyMode,AppliCursorMode,
-	      ts.Send8BitCtrl,Code,sizeof(Code),&CodeLength,&CodeType);
+    GetKeyStr(HWin,KeyMap,Key,
+              AppliKeyMode && ! ts.DisableAppKeypad,
+              AppliCursorMode && ! ts.DisableAppCursor,
+              ts.Send8BitCtrl,Code,sizeof(Code),&CodeLength,&CodeType);
 
   if (CodeLength==0) return FALSE;
 
@@ -421,8 +423,10 @@ void KeyCodeSend(WORD KCode, WORD Count)
     CodeType = IdBinary;
   }
   else
-    GetKeyStr(HWin,KeyMap,Key,AppliKeyMode,AppliCursorMode,
-	      ts.Send8BitCtrl,Code,sizeof(Code),&CodeLength,&CodeType);
+    GetKeyStr(HWin,KeyMap,Key,
+              AppliKeyMode && ! ts.DisableAppKeypad,
+              AppliCursorMode && ! ts.DisableAppCursor,
+              ts.Send8BitCtrl,Code,sizeof(Code),&CodeLength,&CodeType);
 
   if (CodeLength==0) return;
   if (TalkStatus==IdTalkKeyb)

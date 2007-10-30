@@ -4491,7 +4491,7 @@ void CVTWindow::OnSetupKeyboard()
 	FreeTTDLG();
 
 	if (Ok) {
-	    ResetKeypadMode(TRUE);
+//	    ResetKeypadMode(TRUE);
 	    if (ts.Language==IdJapanese)
 		ResetIME();
 	}
