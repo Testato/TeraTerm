@@ -698,7 +698,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	/* 8 bit control code flag  -- special option */
 	ts->TermFlag |=
 		TF_ACCEPT8BITCTRL *
-		GetOnOff(Section, "Accept8bitCtrl", FName, TRUE);
+		GetOnOff(Section, "Accept8BitCtrl", FName, TRUE);
 
 	/* Wrong sequence flag  -- special option */
 	ts->TermFlag |=
@@ -1514,7 +1514,7 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 /*------------------------------------------------------------------*/
 	/* 8 bit control code flag  -- special option */
-	WriteOnOff(Section, "Accept8bitCtrl", FName,
+	WriteOnOff(Section, "Accept8BitCtrl", FName,
 			   (WORD) (ts->TermFlag & TF_ACCEPT8BITCTRL));
 
 	/* Wrong sequence flag  -- special option */
