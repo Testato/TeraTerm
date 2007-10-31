@@ -56,6 +56,39 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define INTBLOB_LEN 20
 #define SIGBLOB_LEN (2*INTBLOB_LEN)
 
+//
+// SSH2 data structure
+//
+
+// channel data structure
+#define CHANNEL_MAX 100
+
+enum channel_type {
+	TYPE_SHELL, TYPE_PORTFWD,
+};
+
+typedef struct bufchain {
+	buffer_t *msg;
+	struct bufchain *next;
+} bufchain_t;
+
+typedef struct channel {
+	int used;
+	int self_id;
+	int remote_id;
+	unsigned int local_window;
+	unsigned int local_window_max;
+	unsigned int local_consumed;
+	unsigned int local_maxpacket;
+	unsigned int remote_window;
+	unsigned int remote_maxpacket;
+	enum channel_type type;
+	int local_num;
+	bufchain_t *bufchain;
+} Channel_t;
+
+static Channel_t channels[CHANNEL_MAX];
+
 static char ssh_ttymodes[] = "\x01\x03\x02\x1c\x03\x08\x04\x15\x05\x04";
 
 static void try_send_credentials(PTInstVar pvar);
@@ -91,40 +124,7 @@ void SSH2_dispatch_add_message(unsigned char message);
 void SSH2_dispatch_add_range_message(unsigned char begin, unsigned char end);
 int dh_pub_is_valid(DH *dh, BIGNUM *dh_pub);
 static void start_ssh_heartbeat_thread(PTInstVar pvar);
-
-
-//
-// SSH2 data structure
-//
-
-// channel data structure
-#define CHANNEL_MAX 100
-
-enum channel_type {
-	TYPE_SHELL, TYPE_PORTFWD,
-};
-
-typedef struct bufchain {
-	buffer_t *msg;
-	struct bufchain *next;
-} bufchain_t;
-
-typedef struct channel {
-	int used;
-	int self_id;
-	int remote_id;
-	unsigned int local_window;
-	unsigned int local_window_max;
-	unsigned int local_consumed;
-	unsigned int local_maxpacket;
-	unsigned int remote_window;
-	unsigned int remote_maxpacket;
-	enum channel_type type;
-	int local_num;
-	bufchain_t *bufchain;
-} Channel_t;
-
-static Channel_t channels[CHANNEL_MAX];
+static void SSH2_send_channel_data(PTInstVar pvar, Channel_t *c, unsigned char FAR * buf, unsigned int buflen);
 
 //
 // channel function
@@ -2617,50 +2617,8 @@ void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, unsigned int buflen
 		}
 
 	} else { // for SSH2(yutaka)
-		buffer_t *msg;
-		unsigned char *outmsg;
-		unsigned int len;
-		Channel_t *c;
-
-		// SSH2鍵交換中の場合、パケットを捨てる。(2005.6.19 yutaka)
-		if (pvar->rekeying) {
-			// TODO: 理想としてはパケット破棄ではなく、パケット読み取り遅延にしたいところだが、
-			// 将来直すことにする。
-			c = NULL;
-
-			return;
-		}
-
-		c = ssh2_channel_lookup(pvar->shell_id);
-		if (c == NULL)
-			return;
-
-		if (buflen > c->remote_window) {
-			buflen = c->remote_window;
-		}
-		if (buflen > 0) {
-			msg = buffer_init();
-			if (msg == NULL) {
-				// TODO: error check
-				return;
-			}
-			buffer_put_int(msg, c->remote_id);
-			buffer_put_string(msg, (char *)buf, buflen);
-
-			len = buffer_len(msg);
-			outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_DATA, len);
-			memcpy(outmsg, buffer_ptr(msg), len);
-			finish_send_packet(pvar);
-			buffer_free(msg);
-
-			// remote window sizeの調整
-			if (buflen <= c->remote_window) {
-				c->remote_window -= buflen;
-			}
-			else {
-				c->remote_window = 0;
-			}
-		}
+		Channel_t *c = ssh2_channel_lookup(pvar->shell_id);
+		SSH2_send_channel_data(pvar, c, (unsigned char *)buf, buflen);
 	}
 
 }
@@ -2874,13 +2832,62 @@ void SSH_end(PTInstVar pvar)
 
 }
 
+static void SSH2_send_channel_data(PTInstVar pvar, Channel_t *c, unsigned char FAR * buf, unsigned int buflen)
+{
+	buffer_t *msg;
+	unsigned char *outmsg;
+	unsigned int len;
+
+	// SSH2鍵交換中の場合、パケットを捨てる。(2005.6.19 yutaka)
+	if (pvar->rekeying) {
+		// TODO: 理想としてはパケット破棄ではなく、パケット読み取り遅延にしたいところだが、
+		// 将来直すことにする。
+		c = NULL;
+
+		return;
+	}
+
+	if (c == NULL)
+		return;
+
+	if ((unsigned int)buflen > c->remote_window) {
+		unsigned int offset = c->remote_window;
+		// 送れないデータはいったん保存しておく
+		ssh2_channel_add_bufchain(c, buf + offset, buflen - offset);
+		buflen = offset;
+	}
+	if (buflen > 0) {
+		msg = buffer_init();
+		if (msg == NULL) {
+			// TODO: error check
+			return;
+		}
+		buffer_put_int(msg, c->remote_id);
+		buffer_put_string(msg, (char *)buf, buflen);
+
+		len = buffer_len(msg);
+		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_DATA, len);
+		//if (len + 12 >= pvar->ssh_state.outbuflen) *(int *)0 = 0;
+		memcpy(outmsg, buffer_ptr(msg), len);
+		finish_send_packet(pvar);
+		buffer_free(msg);
+		//debug_print(1, pvar->ssh_state.outbuf, 7 + 4 + 1 + 1 + len);
+
+		// remote window sizeの調整
+		if (buflen <= c->remote_window) {
+			c->remote_window -= buflen;
+		}
+		else {
+			c->remote_window = 0;
+		}
+	}
+}
+
 /* support for port forwarding */
 void SSH_channel_send(PTInstVar pvar, int channel_num,
                       uint32 remote_channel_num,
                       unsigned char FAR * buf, int len)
 {
-	unsigned int buflen = len;
-
 	if (SSHv1(pvar)) {
 		unsigned char FAR *outmsg =
 			begin_send_packet(pvar, SSH_MSG_CHANNEL_DATA, 8 + len);
@@ -2925,55 +2932,8 @@ void SSH_channel_send(PTInstVar pvar, int channel_num,
 
 	} else {
 		// ポートフォワーディングにおいてクライアントからの送信要求を、SSH通信に乗せてサーバまで送り届ける。
-		buffer_t *msg;
-		unsigned char *outmsg;
-		unsigned int len;
-		Channel_t *c;
-
-		// SSH2鍵交換中の場合、パケットを捨てる。(2005.6.19 yutaka)
-		if (pvar->rekeying) {
-			// TODO: 理想としてはパケット破棄ではなく、パケット読み取り遅延にしたいところだが、
-			// 将来直すことにする。
-			c = NULL;
-
-			return;
-		}
-
-		c = ssh2_local_channel_lookup(channel_num);
-		if (c == NULL)
-			return;
-
-		if ((unsigned int)buflen > c->remote_window) {
-			unsigned int offset = c->remote_window;
-			// 送れないデータはいったん保存しておく
-			ssh2_channel_add_bufchain(c, buf + offset, buflen - offset);
-			buflen = offset;
-		}
-		if (buflen > 0) {
-			msg = buffer_init();
-			if (msg == NULL) {
-				// TODO: error check
-				return;
-			}
-			buffer_put_int(msg, c->remote_id);
-			buffer_put_string(msg, (char *)buf, buflen);
-
-			len = buffer_len(msg);
-			outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_DATA, len);
-			//if (len + 12 >= pvar->ssh_state.outbuflen) *(int *)0 = 0;
-			memcpy(outmsg, buffer_ptr(msg), len);
-			finish_send_packet(pvar);
-			buffer_free(msg);
-			//debug_print(1, pvar->ssh_state.outbuf, 7 + 4 + 1 + 1 + len);
-
-			// remote window sizeの調整
-			if (buflen <= c->remote_window) {
-				c->remote_window -= buflen;
-			}
-			else {
-				c->remote_window = 0;
-			}
-		}
+		Channel_t *c = ssh2_local_channel_lookup(channel_num);
+		SSH2_send_channel_data(pvar, c, buf, len);
 	}
 
 }

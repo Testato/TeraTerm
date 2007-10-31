@@ -46,7 +46,7 @@ See LICENSE.TXT for the license.
 #define WM_SOCK_IO     (WM_APP+9998)
 #define WM_SOCK_GOTNAME (WM_APP+9997)
 
-#define CHANNEL_READ_BUF_SIZE 4096
+#define CHANNEL_READ_BUF_SIZE 8192
 
 static LRESULT CALLBACK accept_wnd_proc(HWND wnd, UINT msg, WPARAM wParam,
                                         LPARAM lParam);
