@@ -831,6 +831,8 @@ static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 	// ノンブロッキングで送信してWSAEWOULDBLOCKが返ってきた場合、そのバッファは送信完了する
 	// まで保持しておかなくてはならない。(2007.10.30 yutaka)
 	u_long do_block = 0;
+	int code = 0;
+	char *kind = NULL, buf[256];
 
 #if 0
 	if ((pvar->PWSAAsyncSelect) (pvar->socket, pvar->NotificationWindow,
