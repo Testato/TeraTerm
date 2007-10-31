@@ -879,7 +879,8 @@ void BuffCBCopy(BOOL Table)
   BOOL Sp, FirstChar;
   BYTE b;
 #ifndef NO_COPYLINE_FIX
-  BOOL LineContinued;
+  BOOL LineContinued, PrevLineContinued;
+  LineContinued = FALSE;
 #endif /* NO_COPYLINE_FIX */
 
   if (TalkStatus==IdTalkCB) return;
@@ -927,6 +928,7 @@ void BuffCBCopy(BOOL Table)
     // exclude right-side space characters
     IEnd = LeftHalfOfDBCS(TmpPtr,IEnd);
 #ifndef NO_COPYLINE_FIX
+    PrevLineContinued = LineContinued;
     LineContinued = FALSE;
     if (ts.EnableContinuedLineCopy && j!=SelectEnd.y && !BoxSelect)
     {
@@ -960,7 +962,11 @@ void BuffCBCopy(BOOL Table)
 	  Sp = TRUE;
 	  b = 0x09;
 	}
+#ifndef NO_COPYLINE_FIX
+	if ((b!=0x09) || (! FirstChar) || PrevLineContinued)
+#else
 	if ((b!=0x09) || (! FirstChar))
+#endif
 	{
 	  FirstChar = FALSE;
 	  CBPtr[k] = b;
