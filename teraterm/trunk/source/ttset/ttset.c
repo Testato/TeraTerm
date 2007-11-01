@@ -1042,6 +1042,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	                        Temp, sizeof(Temp), FName);
 	{
 		char CurDir[MAX_PATH];
+
+		// フルパス化する前に読み込み時の設定を取っておく
+		strncpy_s(ts->UILanguageFile_ini, sizeof(ts->UILanguageFile_ini), Temp, _TRUNCATE);
+
 		GetCurrentDirectory(sizeof(CurDir), CurDir);
 		SetCurrentDirectory(ts->HomeDir);
 		_fullpath(ts->UILanguageFile, Temp, sizeof(ts->UILanguageFile));
@@ -1756,6 +1760,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// UseNormalBGColor
 	WriteOnOff(Section, "UseNormalBGColor", FName, ts->UseNormalBGColor);
 #endif
+
+	// UI language message file
+	WritePrivateProfileString(Section, "UILanguageFile",
+	                          ts->UILanguageFile_ini, FName);
 
 	// Broadcast Command History (2007.3.3 maya)
 	WriteOnOff(Section, "BroadcastCommandHistory", FName,

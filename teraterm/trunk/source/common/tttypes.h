@@ -773,6 +773,7 @@ typedef TMap far *PMap;
  *   added tttset.DisableAppCursor.
  *   added tttset.ClearComBuffOnOpen.
  *   added tttset.Send8BitCtrl.
+ *   added tttset.UILanguageFile_ini.
  *
  * - At version 4.54, ttset_memfilemap was replaced with ttset_memfilemap_3.
  *   added tttset.TelKeepAliveInterval.
