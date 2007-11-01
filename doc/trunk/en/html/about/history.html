@@ -36,9 +36,16 @@
           <li>added <a href="../setup/teraterm-com.html#clearcom">ClearComBuffOnOpen</a> entry to teraterm.ini.</li>
         </ul></li>
       <li>added support Ctrl+u shortcut key in "Host" drop-down on "New connectin" dialog. The shortcut key is deleting backward from point to the beginning of the line.</li>
+      <li>added /BAUD <a href="../commandline/teraterm.html">command line option</a> to specify baud rate of serial port.</li>
+      <li>added support sending C1 control characters as single 8-bit characters.
+	<ul>
+	  <li>added <a href="../setup/teraterm-term.html#C1send">Send8BitCtrl</a> entry to teraterm.ini.</li>
+	  <li>added support of S7C1T/S8C1T control sequence.</li>
+	</ul></li>
       <li>Bug fix: the transparency of window could not change to 255.</li>
       <li>Bug fix: last 1 character of title string that is sent from server is deleted.</li>
-      <li>added /BAUD <a href="../commandline/teraterm.html">command line option</a> to specify baud rate of serial port.</li>
+      <li>Bug fix: when <a href="../menu/setup-additional.html#continuedline">continued line copy</a> is enabled, <a href="../menu/edit.html#copytable">Copy Table</a> does not work correctly</li>
+      <li>Bug fix: when <a href="../menu/setup-keyboard.html#delkey">Transmit DEL by Delete key</a> is enabled and Num Lock status is off, Numeric Keypad "." is sending DEL.</li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.44">2.44</a></li>
       <li>upgraded TeraTerm Menu to <a href="#ttmenu_1.07">1.07</a></li>
     </ul>

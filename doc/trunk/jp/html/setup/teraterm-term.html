@@ -78,6 +78,31 @@ Accept8BitCtrl=off
 Accept8BitCtrl=on
 </pre>
 
+<h1><a name="C1send">C1 制御文字 ($80-9F) を送信に使用する</a></h1>
+<p>
+TeraTermではC1制御文字を送信する時、同等の意味を持つ7ビット文字の組み合わせを使います。
+</p>
+
+<p>
+もし C1 制御文字を単独の8ビット文字で送信したい場合は、設定ファイルの [Tera Term] セクションの Send8BitCtrl 行を、
+</p>
+
+<pre>
+Send8BitCtrl=on
+</pre>
+
+<p>
+のように変更してください。
+</p>
+
+<p>
+注: この設定は初期値としてのみ使われます。ホストは S7C1T / S8C1T 制御シーケンスによってこの設定を変更する事ができます。
+</p>
+
+<pre>
+省略時:
+Send8BitCtrl=off
+</pre>
 
 <h1><a name="kout">正しくない "kanji-out" を使用可能にする</a></h1>
 

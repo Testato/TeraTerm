@@ -60,6 +60,29 @@ Default:
 Accept8BitCtrl=on
 </pre>
 
+<h1><a name="C1send">Send C1 (ASCII $80-$9F) control characters</a></h1>
+
+<p>
+When sending C1 control characters, TeraTerm uses equivalent 7-bit sequences.
+<p>
+
+<p>
+To send C1 control characters as single 8-bit characters, edit the Send8BitCtrl line in the [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+Send8BitCtrl=on
+</pre>
+
+<p>
+Note: This setting is used only as default setting. Host can change this setting by S7C1T / S8C1T control sequence.
+</p>
+
+<pre>
+Default:
+Send8BitCtrl=off
+</pre>
+
 
 <h1><a name="displayall">Displaying all received characters</a></h1>
 
