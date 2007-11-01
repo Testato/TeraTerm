@@ -164,6 +164,7 @@ void ResetTerminal() /*reset variables but don't update screen */
   RelativeOrgMode = FALSE;
   ReverseColor = FALSE;
   AutoRepeatMode = TRUE;
+  Send8BitMode = ts.Send8BitCtrl;
 
   /* Character sets */
   ResetCharSet();
@@ -849,6 +850,14 @@ void AnswerTerminalType()
   CommBinaryOut(&cv,Tmp,strlen(Tmp)); /* Report terminal ID */
 }
 
+void ESCSpace(BYTE b)
+{
+  switch (b) {
+    case 'F': Send8BitMode = FALSE; break;	// S7C1T
+    case 'G': Send8BitMode = TRUE; break;	// S8C1T
+  }
+}
+
 void ESCSharp(BYTE b)
 {
   switch (b) {
@@ -1079,6 +1088,7 @@ void ParseEscape(BYTE b) /* b is the final char */
     /* one intermediate char */
     case 1:
       switch (IntChar[1]) {
+	case ' ': ESCSpace(b); break;
 	case '#': ESCSharp(b); break;
 	case '$': ESCDBCSSelect(b); break;
 	case '%': break;

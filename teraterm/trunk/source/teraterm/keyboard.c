@@ -20,6 +20,7 @@
 
 BOOL AutoRepeatMode;
 BOOL AppliKeyMode, AppliCursorMode;
+BOOL Send8BitMode;
 BOOL DebugFlag = FALSE;
 
 static char FuncKeyStr[NumOfUDK][FuncKeyStrMax];
@@ -247,7 +248,7 @@ BOOL KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan)
     GetKeyStr(HWin,KeyMap,Key,
               AppliKeyMode && ! ts.DisableAppKeypad,
               AppliCursorMode && ! ts.DisableAppCursor,
-              ts.Send8BitCtrl,Code,sizeof(Code),&CodeLength,&CodeType);
+              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
 
   if (CodeLength==0) return FALSE;
 
@@ -426,7 +427,7 @@ void KeyCodeSend(WORD KCode, WORD Count)
     GetKeyStr(HWin,KeyMap,Key,
               AppliKeyMode && ! ts.DisableAppKeypad,
               AppliCursorMode && ! ts.DisableAppCursor,
-              ts.Send8BitCtrl,Code,sizeof(Code),&CodeLength,&CodeType);
+              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
 
   if (CodeLength==0) return;
   if (TalkStatus==IdTalkKeyb)

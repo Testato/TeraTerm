@@ -23,6 +23,7 @@ void EndKeyboard();
 
 extern BOOL AutoRepeatMode;
 extern BOOL AppliKeyMode, AppliCursorMode;
+extern BOOL Send8BitMode;
 extern BOOL DebugFlag;
 
 #ifdef __cplusplus
