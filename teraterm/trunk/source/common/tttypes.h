@@ -361,6 +361,7 @@ struct tttset {
 	WORD DisableAppCursor;
 	WORD ClearComBuffOnOpen;
 	WORD Send8BitCtrl;
+	char UILanguageFile_ini[MAX_PATH];
 };
 
 typedef struct tttset TTTSet, *PTTSet;
