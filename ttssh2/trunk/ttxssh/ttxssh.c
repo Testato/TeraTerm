@@ -3457,6 +3457,8 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 	}
 
 	if (i < cmdlen) {
+		int ssh_enable = -1;
+
 		buf = malloc(cmdlen+1);
 		strncpy_s(buf, cmdlen, cmd + i, _TRUNCATE);
 		buf[cmdlen] = 0;
@@ -3469,7 +3471,19 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 
 		strncat_s(cmd, cmdlen, buf, _TRUNCATE);
 
-		if (pvar->hostdlg_Enabled) {
+		// コマンドラインでの指定をチェック
+		if (strstr(buf, " /ssh")) {
+			ssh_enable = 1;
+		}
+		else if (strstr(buf, " /nossh") ||
+		         strstr(buf, " /telnet")) {
+			ssh_enable = 0;
+		}
+
+		// ホスト名で /ssh /1, /ssh  /2, /ssh1, /ssh2, /nossh, /telnet が
+		// 指定されたときは、ラジオボタンの SSH および SSH プロトコルバージョンを
+		// 適用するのをやめる (2007.11.1 maya)
+		if (pvar->hostdlg_Enabled && ssh_enable == -1) {
 			strncat_s(cmd, cmdlen, " /ssh", _TRUNCATE);
 
 			// add option of SSH protcol version (2004.10.11 yutaka)
