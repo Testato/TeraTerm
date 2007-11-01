@@ -172,7 +172,8 @@ BOOL KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan)
   CodeLength = 0;
   CodeType = IdBinary;
 
-  if ((VKey!=VK_DELETE) || (ts.DelKey==0))
+  /* exclude numeric keypad "." (scan code:83) */
+  if ((VKey!=VK_DELETE) || (ts.DelKey==0) || (Scan==83))
     /* Windows keycode -> Tera Term keycode */
     Key = GetKeyCode(KeyMap,Scan);
   else
