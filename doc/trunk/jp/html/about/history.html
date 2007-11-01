@@ -24,7 +24,7 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.56">2007.10.19 (Ver 4.56 未リリース)</a>
+  <li class="history"><a name="teraterm_4.56">2007.11.1 (Ver 4.56 未リリース)</a>
     <ul>
       <li>アプリケーションキーパッド/カーソルモードを無効にできるようにした。
         <ul>
@@ -905,11 +905,13 @@
 
 <h2><a name="ttssh">TTSSH</a></h2>
 <ul>
-  <li class="history"><a name="ttssh_2.44">2007.10.14 (Ver 2.44 未リリース)</a>
+  <li class="history"><a name="ttssh_2.44">2007.11.1 (Ver 2.44 未リリース)</a>
     <ul>
       <li>SSH2 の暗号方式として AES192, AES256, Blowfish を追加した。</li>
       <li>"CheckAuthListFirst" のデフォルトを Off にした。</li>
+      <li>ポート転送(local-to-remote)において、remote_windowに空きがない場合に遅延送信を行うようにした。xtermやemacsがX11上で動かない現象が改善される。</li>
       <li>サーバがサポートする暗号方式をひとつもサポートしていない場合に落ちる問題を修正した。</li>
+      <li>SSH2パケットが"Bad packet length"になってしまう問題を修正した。TTSSH 2.42でのデグレード。</li>
     </ul>
   </li>
 
