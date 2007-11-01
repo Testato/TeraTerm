@@ -1430,7 +1430,10 @@ void CSScreenErase()
 
     switch (Param[1]) {
       case 5:
-	CommBinaryOut(&cv,"\033[0n",4); /* Device Status Report -> Ready */
+	if (Send8BitMode)
+	  CommBinaryOut(&cv,"\2330n",3); /* Device Status Report -> Ready */
+	else
+	  CommBinaryOut(&cv,"\033[0n",4); /* Device Status Report -> Ready */
 	break;
       case 6:
 	/* Cursor Position Report */
@@ -1438,7 +1441,10 @@ void CSScreenErase()
 	if ((StatusLine>0) &&
 	    (Y==NumOfLines))
 	  Y = 1;
-	_snprintf_s(Report,sizeof(Report),_TRUNCATE,"\033[%u;%uR",Y,CursorX+1);
+	if (Send8BitMode)
+	  _snprintf_s(Report,sizeof(Report),_TRUNCATE,"\233%u;%uR",Y,CursorX+1);
+	else
+	  _snprintf_s(Report,sizeof(Report),_TRUNCATE,"\033[%u;%uR",Y,CursorX+1);
 	CommBinaryOut(&cv,Report,strlen(Report));
 	break;
     }
@@ -1550,10 +1556,16 @@ void CSSetAttr()
 	break;
       case 14: /* get window size??? */
 	/* this is not actual window size */
-	CommBinaryOut(&cv,"\033[4;640;480t",12);
+	if (Send8BitMode)
+	  CommBinaryOut(&cv,"\2334;640;480t",11);
+	else
+	  CommBinaryOut(&cv,"\033[4;640;480t",12);
 	break;
       case 18: /* get terminal size */
-	_snprintf_s(Report,sizeof(Report),_TRUNCATE,"\033[8;%u;%u;t",NumOfLines-StatusLine,NumOfColumns);
+	if (Send8BitMode)
+	  _snprintf_s(Report,sizeof(Report),_TRUNCATE,"\2338;%u;%u;t",NumOfLines-StatusLine,NumOfColumns);
+	else
+	  _snprintf_s(Report,sizeof(Report),_TRUNCATE,"\033[8;%u;%u;t",NumOfLines-StatusLine,NumOfColumns);
 	CommBinaryOut(&cv,Report,strlen(Report));
 	break;
     }
@@ -1563,7 +1575,10 @@ void CSSetAttr()
   {
     switch (b) {
       case 'c': /* second terminal report */
-	CommBinaryOut(&cv,"\033[>32;10;2c",11); /* VT382 */
+	if (Send8BitMode)
+	  CommBinaryOut(&cv,"\233>32;10;2c",11); /* VT382 */
+	else
+	  CommBinaryOut(&cv,"\033[>32;10;2c",11); /* VT382 */
 	break;
       case 'J':
 	if (Param[1]==3) // IO-8256 terminal
