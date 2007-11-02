@@ -784,6 +784,7 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 
 	qsort(specs, num_specs, sizeof(FWDRequestSpec), FWD_compare_specs);
 
+	buf[0] = '\0';
 	for (i = 0; i < num_specs; i++) {
 		if (i < num_specs - 1
 			&& FWD_compare_specs(specs + i, specs + i + 1) == 0) {
@@ -814,49 +815,38 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 	}
 
 	if (num_unspecified_forwardings > 0) {
-		int buf_count;
-
 		if (num_unspecified_forwardings > 1) {
 			UTIL_get_lang_msg("MSG_UNSPECIFYIED_FWDS_ERROR1", pvar,
 			                  "The following forwardings were not specified when this SSH session began:\n\n");
-			strncpy_s(buf, sizeof(buf), pvar->ts->UIMsg, _TRUNCATE);
+			strncat_s(buf, sizeof(buf), pvar->ts->UIMsg, _TRUNCATE);
 		} else {
 			UTIL_get_lang_msg("MSG_UNSPECIFYIED_FWD_ERROR1", pvar,
 			                  "The following forwarding was not specified when this SSH session began:\n\n");
-			strncpy_s(buf, sizeof(buf), pvar->ts->UIMsg, _TRUNCATE);
+			strncat_s(buf, sizeof(buf), pvar->ts->UIMsg, _TRUNCATE);
 		}
-		buf_count = strlen(buf);
 
 		for (i = 0; i < num_specs; i++) {
-			if (specs[i].type != FWD_LOCAL_TO_REMOTE
-				&& !FWD_can_server_listen_for(pvar, specs + i)) {
+			if (specs[i].type != FWD_LOCAL_TO_REMOTE &&
+			    !FWD_can_server_listen_for(pvar, specs + i)) {
 				char buf2[1024];
 
 				get_spec_string(specs + i, buf2, sizeof(buf2), pvar);
 
-				if (buf_count < sizeof(buf)) {
-					strncpy_s(buf + buf_count, sizeof(buf) - buf_count, buf2, _TRUNCATE);
-					buf_count += strlen(buf + buf_count);
-				}
-				if (buf_count < sizeof(buf)) {
-					buf[buf_count] = '\n';
-					buf_count++;
-				}
+				strncat_s(buf, sizeof(buf), buf2, _TRUNCATE);
+				strncat_s(buf, sizeof(buf), "\n", _TRUNCATE);
 			}
 		}
 
-		if (buf_count < sizeof(buf)) {
-			if (num_unspecified_forwardings > 1) {
-				UTIL_get_lang_msg("MSG_UNSPECIFYIED_FWDS_ERROR2", pvar,
-				                  "\nDue to a limitation of the SSH protocol, these forwardings will not work in the current SSH session.\n"
-				                  "If you save these settings and start a new SSH session, the forwardings should work.");
-				strncat_s(buf, sizeof(buf), pvar->ts->UIMsg, _TRUNCATE);
-			} else {
-				UTIL_get_lang_msg("MSG_UNSPECIFYIED_FWD_ERROR2", pvar,
-				                  "\nDue to a limitation of the SSH protocol, this forwarding will not work in the current SSH session.\n"
-				                  "If you save these settings and start a new SSH session, the forwarding should work.");
-				strncat_s(buf, sizeof(buf), pvar->ts->UIMsg, _TRUNCATE);
-			}
+		if (num_unspecified_forwardings > 1) {
+			UTIL_get_lang_msg("MSG_UNSPECIFYIED_FWDS_ERROR2", pvar,
+			                  "\nDue to a limitation of the SSH protocol, these forwardings will not work in the current SSH session.\n"
+			                  "If you save these settings and start a new SSH session, the forwardings should work.");
+			strncat_s(buf, sizeof(buf), pvar->ts->UIMsg, _TRUNCATE);
+		} else {
+			UTIL_get_lang_msg("MSG_UNSPECIFYIED_FWD_ERROR2", pvar,
+			                  "\nDue to a limitation of the SSH protocol, this forwarding will not work in the current SSH session.\n"
+			                  "If you save these settings and start a new SSH session, the forwarding should work.");
+			strncat_s(buf, sizeof(buf), pvar->ts->UIMsg, _TRUNCATE);
 		}
 		notify_nonfatal_error(pvar, buf);
 	}
