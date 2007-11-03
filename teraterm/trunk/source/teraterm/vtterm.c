@@ -1372,6 +1372,7 @@ void CSScreenErase()
   void CS_h_Mode()
   {
     switch (Param[1]) {
+      case 2: KeybEnabled = FALSE; break;
       case 4: InsertMode = TRUE; break;
       case 12:
 	ts.LocalEcho = 0;
@@ -1409,6 +1410,7 @@ void CSScreenErase()
   void CS_l_Mode()
   {
     switch (Param[1]) {
+      case 2: KeybEnabled = TRUE; break;
       case 4: InsertMode = FALSE; break;
       case 12:
 	ts.LocalEcho = 1;
@@ -1686,6 +1688,7 @@ void CSSetAttr()
 		Glr[1] = 3;
 	    }
 	    break;
+	  case 66: AppliKeyMode = TRUE; break;
 	  case 67: ts.BSKey = IdBS; break;
       }
     }
@@ -1763,6 +1766,7 @@ void CSSetAttr()
 		Glr[1] = 3;
 	    }
 	    break;
+	  case 66: AppliKeyMode = FALSE; break;
 	  case 67: ts.BSKey = IdDEL; break;
 	}
     }
@@ -1799,6 +1803,8 @@ void CSSetAttr()
     CursorBottom = NumOfLines-1-StatusLine;
     ResetCharSet();
 
+    Send8BitMode = ts.Send8BitCtrl;
+
     /* Attribute */
     CharAttr = AttrDefault;
     CharAttr2 = AttrDefault2;
@@ -1824,6 +1830,20 @@ void CSSetAttr()
       case 'p':
 	/* Select terminal mode (software reset) */
 	SoftReset();
+	if (NParam > 0) {
+	  switch (Param[1]) {
+	    case 61: // VT100 Mode
+	      Send8BitMode = FALSE; break;
+	    case 62: // VT200 Mode
+	    case 63: // VT300 Mode
+	    case 64: // VT400 Mode
+	      if (NParam > 1 && Param[2] == 1)
+		Send8BitMode = FALSE;
+	      else
+		Send8BitMode = TRUE;
+	      break;
+	  }
+	}
 	break;
     }
   }
