@@ -391,12 +391,12 @@ void ClearWait()
 void SetWait(int Index, PCHAR Str)
 {
   int len;
-  len = strlen(Str)+1;
+  len = strlen(Str);
   if (PWaitStr[Index-1]!=NULL)
     free(PWaitStr[Index-1]);
-  PWaitStr[Index-1] = malloc(len);
-  strncpy_s(PWaitStr[Index-1],len,Str,_TRUNCATE);
-  WaitStrLen[Index-1] = strlen(Str);
+  PWaitStr[Index-1] = malloc(len+1);
+  strncpy_s(PWaitStr[Index-1],len+1,Str,_TRUNCATE);
+  WaitStrLen[Index-1] = len;
   WaitCount[Index-1] = 0;
 }
 
