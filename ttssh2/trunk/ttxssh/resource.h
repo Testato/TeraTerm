@@ -71,6 +71,7 @@
 #define IDC_CHECK1                      1055
 #define IDC_HISTORY                     1055
 #define IDC_REMEMBER_PASSWORD           1055
+#define IDC_CHECKAUTH                   1055
 #define IDC_TTSSH_VERSION               1056
 #define IDC_RSA1_TYPE                   1057
 #define IDC_RSA_TYPE                    1058

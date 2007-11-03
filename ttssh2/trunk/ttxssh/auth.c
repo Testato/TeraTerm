@@ -1103,6 +1103,9 @@ static void init_default_auth_dlg(PTInstVar pvar, HWND dlg)
 	GetDlgItemText(dlg, IDC_CHOOSEHOSTRSAFILE, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_AUTH_HOST_PRIVATEKEY", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_CHOOSEHOSTRSAFILE, pvar->ts->UIMsg);
+	GetDlgItemText(dlg, IDC_CHECKAUTH, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_AUTHSETUP_CHECKAUTH", pvar, uimsg);
+	SetDlgItemText(dlg, IDC_CHECKAUTH, pvar->ts->UIMsg);
 	GetDlgItemText(dlg, IDOK, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("BTN_OK", pvar, uimsg);
 	SetDlgItemText(dlg, IDOK, pvar->ts->UIMsg);
@@ -1137,6 +1140,10 @@ static void init_default_auth_dlg(PTInstVar pvar, HWND dlg)
 	               pvar->settings.DefaultRhostsHostPrivateKeyFile);
 	SetDlgItemText(dlg, IDC_LOCALUSERNAME,
 	               pvar->settings.DefaultRhostsLocalUserName);
+
+	if (pvar->settings.CheckAuthListFirst) {
+		CheckDlgButton(dlg, IDC_CHECKAUTH, TRUE);
+	}
 }
 
 static BOOL end_default_auth_dlg(PTInstVar pvar, HWND dlg)
@@ -1166,6 +1173,13 @@ static BOOL end_default_auth_dlg(PTInstVar pvar, HWND dlg)
 	GetDlgItemText(dlg, IDC_LOCALUSERNAME,
 	               pvar->settings.DefaultRhostsLocalUserName,
 	               sizeof(pvar->settings.DefaultRhostsLocalUserName));
+
+	if (IsDlgButtonChecked(dlg, IDC_CHECKAUTH)) {
+		pvar->settings.CheckAuthListFirst = TRUE;
+	}
+	else {
+		pvar->settings.CheckAuthListFirst = FALSE;
+	}
 
 	EndDialog(dlg, 1);
 	return TRUE;
@@ -1201,6 +1215,7 @@ static BOOL CALLBACK default_auth_dlg_proc(HWND dlg, UINT msg,
 			SendDlgItemMessage(dlg, IDC_CHOOSEHOSTRSAFILE, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_HOSTRSAFILENAME, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHUSETIS, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_CHECKAUTH, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDOK, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDCANCEL, WM_SETFONT, (WPARAM)DlgAuthSetupFont, MAKELPARAM(TRUE,0));
 		}
