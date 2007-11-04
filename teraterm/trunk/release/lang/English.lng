@@ -450,6 +450,7 @@ DLG_AUTHSETUP_METHOD_CHALLENGE=Use challenge/response to log in (SSH1:&TIS, SSH2
 DLG_AUTHSETUP_PRIVATEKEY=Private &key file:
 DLG_AUTHSETUP_LOCALUSER=Local &user name:
 DLG_AUTHSETUP_HOST_PRIVATEKEY=Host private key &file:
+DLG_AUTHSETUP_CHECKAUTH=&Check the enabled authentication methods before login (SSH2)
 
 FILEDLG_OPEN_PRIVATEKEY_TITLE=Choose a file with the RSA/DSA private key
 FILEDLG_OPEN_PRIVATEKEY_FILTER=identity files\0identity;id_rsa;id_dsa\0identity(RSA1)\0identity\0id_rsa(SSH2)\0id_rsa\0id_dsa(SSH2)\0id_dsa\0all(*.*)\0*.*\0\0
@@ -471,6 +472,7 @@ DLG_FWD_BANNER=Select direction for forwarded port:
 DLG_FWD_LOCAL_PORT=Forward &local port
 DLG_FWD_LOCAL_REMOTE=to remote &machine
 DLG_FWD_LOCAL_REMOTE_PORT=&port
+DLG_FWD_LOCAL_CHECKIDENTITY=Allo&w the connection from host other than localhost
 DLG_FWD_REMOTE_PORT=Forward &remote server port
 DLG_FWD_REMOTE_LOCAL=to local m&achine
 DLG_FWD_REMOTE_LOCAL_PORT=p&ort
@@ -489,6 +491,7 @@ DLG_FWDSETUP_LIST=&Port Forwarding
 DLG_FWDSETUP_ADD=&Add...
 DLG_FWDSETUP_EDIT=&Edit...
 DLG_FWDSETUP_REMOVE=&Remove
+DLG_FWDSETUP_CHECKIDENTITY=Allo&w the connection from host other than localhost in local forwarding
 DLD_FWDSETUP_X=X Forwarding
 DLG_FWDSETUP_XAPP=Display remote &X applications on local X server
 
