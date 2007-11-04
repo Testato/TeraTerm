@@ -483,6 +483,15 @@ static BOOL parse_request(FWDRequestSpec FAR * request, char FAR * str, PTInstVa
 		return FALSE;
 	}
 
+	if (*str == ':') {
+		str++;
+		request->check_identity = TRUE;
+		if (*str == '1') {
+			request->check_identity = FALSE;
+			str++;
+		}
+	}
+
 	if (*str != ';' && *str != 0) {
 		return FALSE;
 	}
@@ -518,9 +527,16 @@ static void FWDUI_save_settings(PTInstVar pvar)
 
 			switch (spec->type) {
 			case FWD_LOCAL_TO_REMOTE:
-				_snprintf_s(str, str_remaining, _TRUNCATE, "L%s:%s:%s",
-				            spec->from_port_name, spec->to_host,
-				            spec->to_port_name);
+				if (spec->check_identity == 0) {
+					_snprintf_s(str, str_remaining, _TRUNCATE, "L%s:%s:%s:1",
+					            spec->from_port_name, spec->to_host,
+					            spec->to_port_name);
+				}
+				else {
+					_snprintf_s(str, str_remaining, _TRUNCATE, "L%s:%s:%s",
+					            spec->from_port_name, spec->to_host,
+					            spec->to_port_name);
+				}
 				break;
 			case FWD_REMOTE_TO_LOCAL:
 				_snprintf_s(str, str_remaining, _TRUNCATE, "R%s:%s:%s",
@@ -707,6 +723,9 @@ static void init_fwd_dlg(PTInstVar pvar, HWND dlg)
 	GetDlgItemText(dlg, IDC_REMOVE, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_FWDSETUP_REMOVE", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_REMOVE, pvar->ts->UIMsg);
+	GetDlgItemText(dlg, IDC_CHECKIDENTITY, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_FWDSETUP_CHECKIDENTITY", pvar, uimsg);
+	SetDlgItemText(dlg, IDC_CHECKIDENTITY, pvar->ts->UIMsg);
 	GetDlgItemText(dlg, IDC_XFORWARD, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLD_FWDSETUP_X", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_XFORWARD, pvar->ts->UIMsg);
@@ -728,6 +747,10 @@ static void init_fwd_dlg(PTInstVar pvar, HWND dlg)
 		} else {
 			add_spec_to_listbox(dlg, requests + i, pvar);
 		}
+	}
+
+	if (!pvar->settings.LocalForwardingIdentityCheck) {
+		CheckDlgButton(dlg, IDC_CHECKIDENTITY, TRUE);
 	}
 
 	free(requests);
@@ -780,6 +803,13 @@ static BOOL end_fwd_dlg(PTInstVar pvar, HWND dlg)
 
 	if (X_enabled) {
 		make_X_forwarding_spec(specs, pvar);
+	}
+
+	if (IsDlgButtonChecked(dlg, IDC_CHECKIDENTITY)) {
+		pvar->settings.LocalForwardingIdentityCheck = FALSE;
+	}
+	else {
+		pvar->settings.LocalForwardingIdentityCheck = TRUE;
 	}
 
 	qsort(specs, num_specs, sizeof(FWDRequestSpec), FWD_compare_specs);
@@ -906,6 +936,15 @@ static void set_dir_options_status(HWND dlg)
 	shift_over_input(dlg, type, IDC_SSHRTLFROMPORT, IDC_SSHLTRFROMPORT);
 	shift_over_input(dlg, type, IDC_SSHRTLTOHOST, IDC_SSHLTRTOHOST);
 	shift_over_input(dlg, type, IDC_SSHRTLTOPORT, IDC_SSHLTRTOPORT);
+
+	if (IsDlgButtonChecked(GetParent(dlg),IDC_CHECKIDENTITY)) {
+		if (type == FWD_LOCAL_TO_REMOTE) {
+			EnableWindow(GetDlgItem(dlg, IDC_SSHFWDLOCALTOREMOTE_CHECKIDENTITY), TRUE);
+		}
+		else {
+			EnableWindow(GetDlgItem(dlg, IDC_SSHFWDLOCALTOREMOTE_CHECKIDENTITY), FALSE);
+		}
+	}
 }
 
 static void setup_edit_controls(HWND dlg, FWDRequestSpec FAR * spec,
@@ -942,6 +981,9 @@ static void init_fwd_edit_dlg(PTInstVar pvar, FWDRequestSpec FAR * spec, HWND dl
 	GetDlgItemText(dlg, IDC_SSHFWDLOCALTOREMOTE_PORT, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_FWD_LOCAL_REMOTE_PORT", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_SSHFWDLOCALTOREMOTE_PORT, pvar->ts->UIMsg);
+	GetDlgItemText(dlg, IDC_SSHFWDLOCALTOREMOTE_CHECKIDENTITY, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_FWD_LOCAL_CHECKIDENTITY", pvar, uimsg);
+	SetDlgItemText(dlg, IDC_SSHFWDLOCALTOREMOTE_CHECKIDENTITY, pvar->ts->UIMsg);
 	GetDlgItemText(dlg, IDC_SSHFWDREMOTETOLOCAL, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_FWD_REMOTE_PORT", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_SSHFWDREMOTETOLOCAL, pvar->ts->UIMsg);
@@ -968,7 +1010,15 @@ static void init_fwd_edit_dlg(PTInstVar pvar, FWDRequestSpec FAR * spec, HWND dl
 		setup_edit_controls(dlg, spec, IDC_SSHFWDLOCALTOREMOTE,
 		                    IDC_SSHLTRFROMPORT, IDC_SSHLTRTOHOST,
 		                    IDC_SSHLTRTOPORT);
+		if (!spec->check_identity) {
+			CheckDlgButton(dlg, IDC_SSHFWDLOCALTOREMOTE_CHECKIDENTITY, TRUE);
+		}
 		break;
+	}
+
+	if (!IsDlgButtonChecked(GetParent(dlg),IDC_CHECKIDENTITY)) {
+		CheckDlgButton(dlg, IDC_SSHFWDLOCALTOREMOTE_CHECKIDENTITY, FALSE);
+		EnableWindow(GetDlgItem(dlg, IDC_SSHFWDLOCALTOREMOTE_CHECKIDENTITY), FALSE);
 	}
 
 	fill_service_names(dlg, IDC_SSHRTLFROMPORT);
@@ -1028,6 +1078,13 @@ static BOOL end_fwd_edit_dlg(PTInstVar pvar, FWDRequestSpec FAR * spec,
 		return FALSE;
 	}
 
+	new_spec.check_identity = TRUE;
+	if (type == FWD_LOCAL_TO_REMOTE) {
+		if (IsDlgButtonChecked(dlg, IDC_SSHFWDLOCALTOREMOTE_CHECKIDENTITY)) {
+			new_spec.check_identity = FALSE;
+		}
+	}
+
 	*spec = new_spec;
 
 	EndDialog(dlg, 1);
@@ -1057,6 +1114,7 @@ static BOOL CALLBACK fwd_edit_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			SendDlgItemMessage(dlg, IDC_SSHFWDLOCALTOREMOTE, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHFWDLOCALTOREMOTE_HOST, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHFWDLOCALTOREMOTE_PORT, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_SSHFWDLOCALTOREMOTE_CHECKIDENTITY, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHFWDREMOTETOLOCAL, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHFWDREMOTETOLOCAL_HOST, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHFWDREMOTETOLOCAL_PORT, WM_SETFONT, (WPARAM)DlgFwdEditFont, MAKELPARAM(TRUE,0));
@@ -1119,6 +1177,7 @@ static void add_forwarding_entry(PTInstVar pvar, HWND dlg)
 	new_spec.from_port_name[0] = 0;
 	new_spec.to_host[0] = 0;
 	new_spec.to_port_name[0] = 0;
+	new_spec.check_identity = 1;
 
 	result = DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SSHFWDEDIT),
 	                        dlg, fwd_edit_dlg_proc, (LPARAM) & closure);
@@ -1207,6 +1266,7 @@ static BOOL CALLBACK fwd_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			SendDlgItemMessage(dlg, IDC_ADD, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_EDIT, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_REMOVE, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_CHECKIDENTITY, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_XFORWARD, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHFWDX11, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDOK, WM_SETFONT, (WPARAM)DlgFwdFont, MAKELPARAM(TRUE,0));

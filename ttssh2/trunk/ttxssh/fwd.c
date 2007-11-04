@@ -533,61 +533,57 @@ static BOOL validate_IP_number(PTInstVar pvar, uint32 addr)
 	int i;
 	struct sockaddr_storage zss;	/* all bytes are filled by zero */
 
-	if (pvar->settings.LocalForwardingIdentityCheck) {
-		/* Should we allow a wider range of loopback addresses here?
-		   i.e. 127.xx.xx.xx or ::1
-		   Wouldn't want to introduce a security hole if there's
-		   some OS bug that lets an intruder get packets from us
-		   to such an address */
+	/* Should we allow a wider range of loopback addresses here?
+	   i.e. 127.xx.xx.xx or ::1
+	   Wouldn't want to introduce a security hole if there's
+	   some OS bug that lets an intruder get packets from us
+	   to such an address */
+	switch (addr->sa_family) {
+	case AF_INET:
+		if (((struct sockaddr_in FAR *) addr)->sin_addr.s_addr ==
+			htonl(INADDR_LOOPBACK))
+			return TRUE;
+		break;
+	case AF_INET6:
+		if (IN6_IS_ADDR_LOOPBACK
+			(&(((struct sockaddr_in6 FAR *) addr)->sin6_addr)))
+			return TRUE;
+		break;
+	default:
+		/* NOT REACHED */
+		break;
+	}
+
+	if (pvar->fwd_state.local_host_IP_numbers == NULL) {
+		init_local_IP_numbers(pvar);
+	}
+
+	memset(&zss, 0, sizeof(zss));
+	for (i = 0;; i++) {
+		if (memcmp
+			(&pvar->fwd_state.local_host_IP_numbers[i], &zss,
+			 sizeof(struct sockaddr_storage)) == 0)
+			break;
+
 		switch (addr->sa_family) {
 		case AF_INET:
-			if (((struct sockaddr_in FAR *) addr)->sin_addr.s_addr ==
-				htonl(INADDR_LOOPBACK))
+			if (memcmp
+				(&pvar->fwd_state.local_host_IP_numbers[i], addr,
+				 sizeof(struct sockaddr_in)) == 0)
 				return TRUE;
 			break;
 		case AF_INET6:
-			if (IN6_IS_ADDR_LOOPBACK
-				(&(((struct sockaddr_in6 FAR *) addr)->sin6_addr)))
+			if (memcmp
+				(&pvar->fwd_state.local_host_IP_numbers[i], addr,
+				 sizeof(struct sockaddr_in6)) == 0)
 				return TRUE;
 			break;
 		default:
 			/* NOT REACHED */
 			break;
 		}
-
-		if (pvar->fwd_state.local_host_IP_numbers == NULL) {
-			init_local_IP_numbers(pvar);
-		}
-
-		memset(&zss, 0, sizeof(zss));
-		for (i = 0;; i++) {
-			if (memcmp
-				(&pvar->fwd_state.local_host_IP_numbers[i], &zss,
-				 sizeof(struct sockaddr_storage)) == 0)
-				break;
-
-			switch (addr->sa_family) {
-			case AF_INET:
-				if (memcmp
-					(&pvar->fwd_state.local_host_IP_numbers[i], addr,
-					 sizeof(struct sockaddr_in)) == 0)
-					return TRUE;
-				break;
-			case AF_INET6:
-				if (memcmp
-					(&pvar->fwd_state.local_host_IP_numbers[i], addr,
-					 sizeof(struct sockaddr_in6)) == 0)
-					return TRUE;
-				break;
-			default:
-				/* NOT REACHED */
-				break;
-			}
-		}
-		return FALSE;
-	} else {
-		return TRUE;
 	}
+	return FALSE;
 #else
 	int i;
 
@@ -783,6 +779,7 @@ static void accept_local_connection(PTInstVar pvar, int request_num)
 #endif							/* NO_INET6 */
 	FWDChannel FAR *channel;
 	FWDRequest FAR *request = &pvar->fwd_state.requests[request_num];
+	BOOL is_localhost = FALSE;
 
 #ifndef NO_INET6
 	s = accept(request->listening_sockets[listening_socket_num],
@@ -798,7 +795,9 @@ static void accept_local_connection(PTInstVar pvar, int request_num)
 #endif
 
 #ifndef NO_INET6
-	if (!validate_IP_number(pvar, (struct sockaddr FAR *) &addr)) {
+	is_localhost = validate_IP_number(pvar, (struct sockaddr FAR *) &addr);
+	if ((pvar->settings.LocalForwardingIdentityCheck && !is_localhost) ||
+	    (request->spec.check_identity && !is_localhost)) {
 		char hname[NI_MAXHOST];
 		if (getnameinfo((struct sockaddr FAR *) &addr, addrlen,
 		                hname, sizeof(hname), NULL, 0, NI_NUMERICHOST)) {
@@ -1264,7 +1263,8 @@ static BOOL are_specs_identical(FWDRequestSpec FAR * spec1,
 	return spec1->type == spec2->type
 	    && spec1->from_port == spec2->from_port
 	    && spec1->to_port == spec2->to_port
-	    && strcmp(spec1->to_host, spec2->to_host) == 0;
+	    && strcmp(spec1->to_host, spec2->to_host) == 0
+	    && spec1->check_identity == spec2->check_identity;
 }
 
 static BOOL interactive_init_request(PTInstVar pvar, int request_num,

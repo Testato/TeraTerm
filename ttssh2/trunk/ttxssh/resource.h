@@ -72,6 +72,7 @@
 #define IDC_HISTORY                     1055
 #define IDC_REMEMBER_PASSWORD           1055
 #define IDC_CHECKAUTH                   1055
+#define IDC_CHECKIDENTITY               1055
 #define IDC_TTSSH_VERSION               1056
 #define IDC_RSA1_TYPE                   1057
 #define IDC_RSA_TYPE                    1058
@@ -116,6 +117,7 @@
 #define IDC_INCLUDES                    1086
 #define IDC_CRYPTOGRAPHY                1087
 #define IDC_CREDIT                      1088
+#define IDC_SSHFWDLOCALTOREMOTE_CHECKIDENTITY 1089
 #define IDC_LOCALUSERNAMELABEL          1100
 #define IDC_LOCALUSERNAME               1101
 #define IDC_CHOOSEHOSTRSAFILE           1102
@@ -132,7 +134,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        105
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1089
+#define _APS_NEXT_CONTROL_VALUE         1090
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

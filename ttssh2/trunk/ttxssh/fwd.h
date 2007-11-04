@@ -86,6 +86,7 @@ typedef struct {
   int to_port;
   char to_port_name[32];
   char to_host[256];
+  BOOL check_identity;
 } FWDRequestSpec;
 
 #define FWD_DELETED                      0x01
