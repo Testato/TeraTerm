@@ -38,12 +38,13 @@
       <li>New connection ダイアログの Host ドロップダウンで、Ctrl+u ショートカットキーをサポートした。「カーソルから左端までの文字列を削除」に対応する。</li>
       <li>シリアルポートのボーレートを指定する<a href="../commandline/teraterm.html">コマンドラインオプション</a> /BAUD を追加した。</li>
       <li>C1制御文字を8ビット文字で送信できるようにした。
-	<ul>
-	  <li>teraterm.ini に <a href="../setup/teraterm-term.html#C1send">Send8BitCtrl</a> エントリを追加した。</li>
-	  <li>S7C1T/S8C1T制御シーケンスに対応した。</li>
-	  <li>DECSCL制御シーケンスによるC1制御モードの変更に対応した。</li>
-	</ul></li>
+        <ul>
+          <li>teraterm.ini に <a href="../setup/teraterm-term.html#C1send">Send8BitCtrl</a> エントリを追加した。</li>
+          <li>S7C1T/S8C1T制御シーケンスに対応した。</li>
+          <li>DECSCL制御シーケンスによるC1制御モードの変更に対応した。</li>
+        </ul></li>
       <li>KAM(キーボードロック), DECNKM(数値キーパッドモード変更)制御シーケンスに対応した。</li>
+	  <li>"Change directory" を、フォルダを選択するダイアログから行えるようにした。</li>
       <li>ウインドウの透明度を 255 に変更できない問題を修正した。</li>
       <li>サーバから送信されるタイトル文字列の末尾 1 文字が削られる問題を修正した。</li>
       <li><a href="../menu/setup-additional.html#continuedline">継続行連結コピー</a>を有効に設定している時、<a href="../menu/edit.html#copytable">テーブルをコピー</a>が正しく動作しない時があるのを修正した。</li>
@@ -911,8 +912,18 @@
   <li class="history"><a name="ttssh_2.44">2007.11.1 (Ver 2.44 未リリース)</a>
     <ul>
       <li>SSH2 の暗号方式として AES192, AES256, Blowfish を追加した。</li>
-      <li>"CheckAuthListFirst" のデフォルトを Off にした。</li>
       <li>ポート転送(local-to-remote)において、remote_windowに空きがない場合に遅延送信を行うようにした。xtermやemacsがX11上で動かない現象が改善される。</li>
+      <li>サポートされていない認証方式を無効にする機能を変更した。
+        <ul>
+          <li>"CheckAuthListFirst" のデフォルトを Off にした。</li>
+          <li>"SSH Authentication" ダイアログからチェックボックスで設定できるようにした。</li>
+        </ul></li>
+      <li>ローカルからの SSH forwarding 接続で、localhost 以外からの接続を許可する機能を変更した。
+        <ul>
+          <li>"SSH Forwarding" ダイアログからチェックボックスで設定できるようにした。</li>
+          <li>"SSH Forwarding" ダイアログから、各転送設定ごとに許可できるようにした。</li>
+        </ul></li>
+      <li>"New connection" ダイアログの Host で指定された文字列に " /ssh", " /nossh", " /telnet" があった場合、ラジオボタンによる SSH の有効/無効より優先するようにした。</li>
       <li>サーバがサポートする暗号方式をひとつもサポートしていない場合に落ちる問題を修正した。</li>
       <li>SSH2パケットが"Bad packet length"になってしまう問題を修正した。TTSSH 2.42でのデグレード。</li>
     </ul>
@@ -926,7 +937,6 @@
         </ul></li>
       <li>認証を試行する前に、サポートされていない認証方式を無効にする機能を追加した。
         <ul>
-          <li>このためにはユーザ名が確定している必要があるので、デフォルトユーザ名またはコマンドラインによるユーザ名がある場合はこれが使用される。また、ユーザ名を入力したあとフォーカスを失った場合は入力内容が使用され、その後ユーザ名の変更はできなくなる。これは SSH2 の仕様のため。</li>
           <li>teraterm.ini の TTSSH セクションに "CheckAuthListFirst" エントリを追加した。デフォルトは On。</li>
         </ul></li>
       <li>known_hostsファイルへ公開鍵を追記もしくは置換する際、known_hostsダイアログでのユーザの問い合わせを確認してから、サーバ通信を再開するようにした。これによりknown_hostsの確認を待たずに、サーバへユーザ情報を送ってしまう問題を回避する。</li>

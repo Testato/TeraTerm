@@ -279,6 +279,31 @@
 				<param name="ImageNumber" value="11">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Proxy">
+				<param name="Local" value="html\menu\setup-proxy.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="SSH">
+				<param name="Local" value="html\menu\setup-ssh.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="SSH Authentication">
+				<param name="Local" value="html\menu\setup-sshauth.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="SSH Forwarding">
+				<param name="Local" value="html\menu\setup-sshforward.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="SSH KeyGenerator">
+				<param name="Local" value="html\menu\setup-sshkeygenerator.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="TCP/IP">
 				<param name="Local" value="html\menu\setup-tcpip.html">
 				<param name="ImageNumber" value="11">

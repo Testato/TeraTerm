@@ -38,11 +38,11 @@
       <li>added support Ctrl+u shortcut key in "Host" drop-down on "New connectin" dialog. The shortcut key is deleting backward from point to the beginning of the line.</li>
       <li>added /BAUD <a href="../commandline/teraterm.html">command line option</a> to specify baud rate of serial port.</li>
       <li>added support sending C1 control characters as single 8-bit characters.
-	<ul>
-	  <li>added <a href="../setup/teraterm-term.html#C1send">Send8BitCtrl</a> entry to teraterm.ini.</li>
-	  <li>added support of S7C1T/S8C1T control sequences.</li>
-	  <li>added support of changing C1 control mode by DECSCL control sequence.</li>
-	</ul></li>
+        <ul>
+          <li>added <a href="../setup/teraterm-term.html#C1send">Send8BitCtrl</a> entry to teraterm.ini.</li>
+          <li>added support of S7C1T/S8C1T control sequences.</li>
+          <li>added support of changing C1 control mode by DECSCL control sequence.</li>
+        </ul></li>
       <li>added support of KAM(Keyboard Lock) and DECNKM(numeric keypad mode) control sequences.</li>
       <li>Bug fix: the transparency of window could not change to 255.</li>
       <li>Bug fix: last 1 character of title string that is sent from server is deleted.</li>
@@ -909,7 +909,6 @@ SYNOPSIS:
   <li class="history"><a name="ttssh_2.44">2007.11.1 (Ver 2.44 not released)</a>
     <ul>
       <li>added AES192, AES256 and Blowfish encryption algolithm for SSH2 protocol.</li>
-      <li>changed the default value of "CheckAuthListFirst" to Off.</li>
       <li>added support for SSH2 delay re-transmit packet when remote_window is not available by using port-forwarding(local-to-remote).</li>
       <li>Bug fix: TTSSH crashes when all server supports encryption algorithm that is not supported by TTSSH.</li>
       <li>Bug fix: SSH2 packet was ocurred as "Bad packet length". This bug is enbuged at TTSSH 2.42.</li>

@@ -11,7 +11,7 @@
   <body>
     <h1>SSH Forwarding ([Setup] menu)</h1>
 
-    <h2>"TTSSH: Forwarding " dialog box.</h2>
+    <h2>"TTSSH: Forwarding" dialog box</h2>
     <p>
       SSH port forwarding
     </p>
@@ -20,17 +20,22 @@
     <dl>
       <dt>Add...</dt>
       <dd>
-	Add a port forwarding entry.
+        Add a port forwarding entry.
       </dd>
 
       <dt>Edit...</dt>
       <dd>
-	Edit a selected entry.
+        Edit a selected entry.
       </dd>
 
       <dt>Remove</dt>
       <dd>
-	Remove a selected entry.
+        Remove a selected entry.
+      </dd>
+
+      <dt>Allo&w the connection from host other than localhost in local forwarding</dt>
+      <dd>
+        
       </dd>
     </dl>
 
@@ -38,8 +43,56 @@
     <dl>
       <dt>Display remote X application on local X server</dt>
       <dd>
-	Check this option if you want to redirect X11 connection over the secure channel.
+        Check this option if you want to redirect X11 connection over the secure channel.
       </dd>
     </dl>
+
+
+    <h2>"TTSSH: Forwarding Edit" dialog box</h2>
+    <p>
+      Edit each forward setting.
+    </p>
+
+    <h3>local forwarding</h3>
+    <dl>
+      <dt>Forward local port</dt>
+      <dd>
+        Source port to forward in local side.
+      </dd>
+
+      <dt>to remote machine</dt>
+      <dd>
+        Destination host name.
+      </dd>
+
+      <dt>port</dt>
+      <dd>
+        Destination port number.
+      <dd>
+      </dd>
+
+      <dt>Allo&w the connection from host other than localhost</dt>
+      <dd>
+      </dd>
+    </dl>
+
+    <h3>remote forwarding</h3>
+    <dl>
+      <dt>forward remote server port</dt>
+      <dd>
+        Source port to forward in remote side.
+      </dd>
+
+      <dt>to local machine</dt>
+      <dd>
+        Destination host name.
+      </dd>
+
+      <dt>port</dt>
+      <dd>
+        Destination port number.
+      </dd>
+    </dl>
+
   </body>
 </html>
