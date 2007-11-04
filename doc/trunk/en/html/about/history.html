@@ -909,7 +909,7 @@ SYNOPSIS:
   <li class="history"><a name="ttssh_2.44">2007.11.1 (Ver 2.44 not released)</a>
     <ul>
       <li>added AES192, AES256 and Blowfish encryption algolithm for SSH2 protocol.</li>
-      <li>added support for SSH2 delay re-transmit packet when remote_window is not available by using port-forwarding(local-to-remote).</li>
+      <li>added support for SSH2 delay re-transmit packet when remote_window is not available by using port-forwarding(local-to-remote). X11 applications such as emacs and xterm would not work fine by using Xming server.</li>
       <li>Bug fix: TTSSH crashes when all server supports encryption algorithm that is not supported by TTSSH.</li>
       <li>Bug fix: SSH2 packet was ocurred as "Bad packet length". This bug is enbuged at TTSSH 2.42.</li>
     </ul>
