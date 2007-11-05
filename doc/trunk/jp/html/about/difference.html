@@ -13,7 +13,7 @@
 <h1>TeraTerm2.3との差分</h1>
 
 <p>
-UTF-8 TeraTerm Pro with TTSSH2とTeraTerm 2.3との機能差分について以下に示します。
+UTF-8 TeraTerm Pro with TTSSH2(TeraTerm 4.56)とTeraTerm 2.3との機能差分について以下に示します。
 </p>
 
 <h2>機能差分一覧</h2>
@@ -58,7 +58,7 @@ UTF-8 TeraTerm Pro with TTSSH2とTeraTerm 2.3との機能差分について以下に示します。
 <tr>
 	<td>最大COMポート</td>
 	<td>16</td>
-	<td>200</td>
+	<td>256</td>
 </tr>
 
 <tr>
@@ -74,9 +74,39 @@ UTF-8 TeraTerm Pro with TTSSH2とTeraTerm 2.3との機能差分について以下に示します。
 </tr>
 
 <tr>
+	<td>リンクライブラリ</td>
+	<td>SSLeay, zlib</td>
+	<td>OpenSSL, zlib, Oniguruma</td>
+</tr>
+
+<tr>
 	<td>TTSSH</td>
 	<td>SSH 1.5</td>
 	<td>SSH 1.5 and 2</td>
+</tr>
+
+<tr>
+	<td>サポートSSHプロトコル</td>
+	<td>シェル、ポート転送、X11転送</td>
+	<td>シェル、ポート転送、X11転送</td>
+</tr>
+
+<tr>
+	<td>未サポートSSHプロトコル</td>
+	<td>SFTP, SCP</td>
+	<td>SFTP, SCP</td>
+</tr>
+
+<tr>
+	<td>SSH共通鍵暗号アルゴリズム</td>
+	<td>3DES, DES, Blowfish</td>
+	<td>3DES-CBC, Blowfish, AES128, AES192, AES256</td>
+</tr>
+
+<tr>
+	<td>SSHパケット圧縮</td>
+	<td>Yes</td>
+	<td>Yes。SSH2遅延パケット圧縮もサポート。</td>
 </tr>
 
 <tr>
@@ -192,6 +222,8 @@ UTF-8 TeraTerm Pro with TTSSH2とTeraTerm 2.3との機能差分について以下に示します。
   <li>&lt;ESC&gt;[Jによる画面クリア時にカレントバッファをスクロールアウト</li>
   <li>ログ再生メニューの追加</li>
   <li>改行コード LF のサポート</li>
+  <li>バッファの画面表示部分の選択</li>
+  <li>接続ダイアログのHostドロップダウンにbash styleショートカットキーを追加</li>
 </ul>
 
 
@@ -349,6 +381,16 @@ UTF-8 TeraTerm Pro with TTSSH2とTeraTerm 2.3との機能差分について以下に示します。
 <tr>
 	<td>rotateright</td>
 	<td>右方向にビットローテートする。</td>
+</tr>
+
+<tr>
+	<td>setenv</td>
+	<td>環境変数の設定および変更。</td>
+</tr>
+
+<tr>
+	<td>filenamebox</td>
+	<td>ファイル名を選択するダイアログボックスを開く。</td>
 </tr>
 
 </table>
@@ -509,6 +551,26 @@ UTF-8 TeraTerm Pro with TTSSH2とTeraTerm 2.3との機能差分について以下に示します。
 	<td>行末のタブ表示を VT 端末互換にする。 </td>
 </tr>
 
+<tr>
+	<td>MaxBroadcatHistory</td>
+	<td>ブロードキャストコマンドの履歴の保存数</td>
+</tr>
+
+<tr>
+	<td>DisableAppKeypad, DisableAppCursor</td>
+	<td>アプリケーションキーパッド/カーソルモードを無効にできるようにした。</td>
+</tr>
+
+<tr>
+	<td>ClearComBuffOnOpen</td>
+	<td>シリアルポートのバッファをクリアしない。</td>
+</tr>
+
+<tr>
+	<td>Send8BitCtrl</td>
+	<td>C1 制御文字 ($80-$9F) を送信に使用する。</td>
+</tr>
+
 </table>
 
 
@@ -525,7 +587,7 @@ UTF-8 TeraTerm Pro with TTSSH2とTeraTerm 2.3との機能差分について以下に示します。
 
 <tr>
 	<td>CipherOrder</td>
-	<td>3DES-CBCの"7"、AES128の"8"を追加。</td>
+	<td>3DES-CBCの"7"、AES128の"8"、AES192の"9"、AES256の":"、Blowfish(SSH2)の";"を追加。</td>
 </tr>
 
 <tr>
@@ -536,11 +598,6 @@ UTF-8 TeraTerm Pro with TTSSH2とTeraTerm 2.3との機能差分について以下に示します。
 <tr>
 	<td>HeartBeat</td>
 	<td>キープアライブ（ハートビート）間隔</td>
-</tr>
-
-<tr>
-	<td>KeyboardInteractive</td>
-	<td>パスワード認証の前にキーボードインタラクティブ認証を試みるかどうか。</td>
 </tr>
 
 <tr>

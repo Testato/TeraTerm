@@ -13,6 +13,7 @@
 <h1>Differences from 2.3</h1>
 
 <p>
+There are differences between UTF-8 TeraTerm Pro with TTSSH2(TeraTerm 4.56) and TeraTerm 2.3 in the following table: 
 </p>
 
 <h2>Feature Differences</h2>
@@ -57,7 +58,7 @@
 <tr>
 	<td>Maximum COM port</td>
 	<td>16</td>
-	<td>200</td>
+	<td>256</td>
 </tr>
 
 <tr>
@@ -73,9 +74,39 @@
 </tr>
 
 <tr>
+	<td>Linked library</td>
+	<td>SSLeay, zlib</td>
+	<td>OpenSSL, zlib, Oniguruma</td>
+</tr>
+
+<tr>
 	<td>TTSSH</td>
 	<td>SSH 1.5</td>
 	<td>SSH 1.5 and 2</td>
+</tr>
+
+<tr>
+	<td>support SSH protocl</td>
+	<td>shell, port-forwarding, X11 forwarding</td>
+	<td>shell, port-forwarding, X11 forwarding</td>
+</tr>
+
+<tr>
+	<td>unsupport SSH protocl</td>
+	<td>SFTP, SCP</td>
+	<td>SFTP, SCP</td>
+</tr>
+
+<tr>
+	<td>SSH Symmetric key cipher algorithm</td>
+	<td>3DES, DES, Blowfish</td>
+	<td>3DES-CBC, Blowfish, AES128, AES192, AES256</td>
+</tr>
+
+<tr>
+	<td>SSH packet compression</td>
+	<td>Yes</td>
+	<td>Yes, and also supports SSH2 delayed compression.</td>
 </tr>
 
 <tr>
@@ -191,6 +222,8 @@ Other new features are shown below.<br><br>
   <li>Add scroll through the screen buffer to the back page when &lt;ESC&gt;[J esacpe sequence is done.</li>
   <li>Add log reply menu.</li>
   <li>Add New-line to `LF' type.</li>
+  <li>Add support for selecting a current screen buffer.</li>
+  <li>Add support bash style shortcut key in "Host" drop-down on "New connectin" dialog. </li>
 </ul>
 
 <hr>
@@ -352,6 +385,16 @@ Other new features are shown below.<br><br>
 	<td>can rotate the 32bit value toward the right per bit.</td>
 </tr>
 
+<tr>
+	<td>setenv</td>
+	<td>can change an environment variable on TeraTerm process.</td>
+</tr>
+
+<tr>
+	<td>filenamebox</td>
+	<td>Displays a dialog box prompting user to input a string. </td>
+</tr>
+
 </table>
 
 
@@ -511,6 +554,26 @@ Other new features are shown below.<br><br>
 	<td>can enable that the tab display at the end of line is VT compatible terminal.</td>
 </tr>
 
+<tr>
+	<td>MaxBroadcatHistory</td>
+	<td>Number for the history of broadcast command</td>
+</tr>
+
+<tr>
+	<td>DisableAppKeypad, DisableAppCursor</td>
+	<td>can disable application keypad/cursor mode. </td>
+</tr>
+
+<tr>
+	<td>ClearComBuffOnOpen</td>
+	<td>Don't clear COM buffer when serial port opening.</td>
+</tr>
+
+<tr>
+	<td>Send8BitCtrl</td>
+	<td>Send C1 (ASCII $80-$9F) control characters.</td>
+</tr>
+
 </table>
 
 
@@ -527,7 +590,7 @@ Other new features are shown below.<br><br>
 
 <tr>
 	<td>CipherOrder</td>
-	<td>added "7" as 3DES-CBC, "8" as AES128.</td>
+	<td>added "7" as 3DES-CBC, "8" as AES128, "9" as AES192, ":" as AES256, ";" as BlowfishBlowfish(SSH2).</td>
 </tr>
 
 <tr>
@@ -538,11 +601,6 @@ Other new features are shown below.<br><br>
 <tr>
 	<td>HeartBeat</td>
 	<td>can be keep-alive(heart-beat) interval per second.</td>
-</tr>
-
-<tr>
-	<td>KeyboardInteractive</td>
-	<td>can configure whether TTSSH will try to do keyboard-interactive authentication before password authentication.</td>
 </tr>
 
 <tr>
