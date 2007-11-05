@@ -3447,6 +3447,7 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 	char tmpFile[MAX_PATH];
 	char tmpPath[1024];
 	char *buf;
+	char *p;
 	int i;
 	GET_VAR();
 
@@ -3472,8 +3473,14 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 		strncat_s(cmd, cmdlen, buf, _TRUNCATE);
 
 		// コマンドラインでの指定をチェック
-		if (strstr(buf, " /ssh")) {
-			ssh_enable = 1;
+		if (p = strstr(buf, " /ssh")) {
+			switch (*(p + 5)) {
+				case '\0':
+				case ' ':
+				case '1':
+				case '2':
+					ssh_enable = 1;
+			}
 		}
 		else if (strstr(buf, " /nossh") ||
 		         strstr(buf, " /telnet")) {
