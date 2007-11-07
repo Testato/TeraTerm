@@ -862,10 +862,13 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 					if (pos>0) pos--;
 					break;
 				case SB_PAGEDOWN:
-					pos = pos + 16;
+					pos += 16;
 					break;
 				case SB_PAGEUP:
-					pos = pos - 16;
+					if (pos < 16)
+						pos = 0;
+					else
+						pos -= 16;
 					break;
 				case SB_THUMBPOSITION:
 					pos = NewPos;
