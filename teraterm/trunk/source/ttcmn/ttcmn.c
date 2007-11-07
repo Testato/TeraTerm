@@ -1607,8 +1607,10 @@ static void ListupSerialPort(LPWORD ComPortTable, int comports, char **ComPortDe
 		goto cleanup;
 
 // Get class devices
+	// COMポート番号を強制付け替えした場合に、現在のものではなく、レジストリに残っている
+	// 古いFriendlyNameが表示されてしまう問題への対処。(2007.11.8 yutaka)
 	DeviceInfoSet =
-		SetupDiGetClassDevs(&ClassGuid[0], NULL, NULL, DIGCF_PROFILE);
+		SetupDiGetClassDevs(&ClassGuid[0], NULL, NULL, DIGCF_PRESENT | DIGCF_PROFILE);
 
 	if (DeviceInfoSet) {
 // Enumerate devices
