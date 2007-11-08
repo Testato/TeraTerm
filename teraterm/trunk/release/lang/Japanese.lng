@@ -471,7 +471,7 @@ DLG_FWD_BANNER=ポート転送を行う向きの選択:
 DLG_FWD_LOCAL_PORT=ローカルのポート(&L)
 DLG_FWD_LOCAL_REMOTE=リモート側ホスト(&M)
 DLG_FWD_LOCAL_REMOTE_PORT=ポート(&P)
-DLG_FWD_LOCAL_CHECKIDENTITY=localhost 以外からの接続も許可する(&W)
+DLG_FWD_LOCAL_CHECKIDENTITY=他のホストからの接続を受け入れる(&C)
 DLG_FWD_REMOTE_PORT=リモートサーバのポート(&R)
 DLG_FWD_REMOTE_LOCAL=ローカル側ホスト(&A)
 DLG_FWD_REMOTE_LOCAL_PORT=ポート(&O)
@@ -490,7 +490,7 @@ DLG_FWDSETUP_LIST=ポート転送(&P)
 DLG_FWDSETUP_ADD=追加(&A)...
 DLG_FWDSETUP_EDIT=編集(&E)...
 DLG_FWDSETUP_REMOVE=削除(&R)
-DLG_FWDSETUP_CHECKIDENTITY=ローカルからの転送で、localhost 以外からの接続も許可する(&W)
+DLG_FWDSETUP_CHECKIDENTITY=ローカルのポートは他のホストからの接続を受け入れる(&C)
 DLD_FWDSETUP_X=Xクライアントアプリケーションの転送
 DLG_FWDSETUP_XAPP=リモートの(&X)アプリケーションをローカルのXサーバに表示する
 
