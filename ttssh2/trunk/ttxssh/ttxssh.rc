@@ -228,7 +228,7 @@ BEGIN
     PUSHBUTTON      "&Add...",IDC_ADD,63,105,50,14,WS_GROUP
     PUSHBUTTON      "&Edit...",IDC_EDIT,129,105,50,14
     PUSHBUTTON      "&Remove",IDC_REMOVE,195,105,50,14
-    CONTROL         "Allo&w the connection from host other than localhost in local forwarding",IDC_CHECKIDENTITY,
+    CONTROL         "Local ports a&ccept connections from other hosts",IDC_CHECKIDENTITY,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,124,272,10
     CONTROL         "Display remote &X applications on local X server",IDC_SSHFWDX11,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,154,248,14
@@ -248,7 +248,7 @@ BEGIN
     EDITTEXT        IDC_SSHLTRTOHOST,98,48,80,13,ES_AUTOHSCROLL
     RTEXT           "&port",IDC_SSHFWDLOCALTOREMOTE_PORT,184,50,32,11,NOT WS_GROUP
     COMBOBOX        IDC_SSHLTRTOPORT,219,48,56,136,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Allo&w the connection from host other than localhost",IDC_SSHFWDLOCALTOREMOTE_CHECKIDENTITY,
+    CONTROL         "A&ccept connections from other hosts",IDC_SSHFWDLOCALTOREMOTE_CHECKIDENTITY,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,23,64,267,10
     COMBOBOX        IDC_SSHRTLFROMPORT,122,90,56,135,CBS_DROPDOWN | WS_VSCROLL | WS_GROUP | WS_TABSTOP
     LTEXT           "to local m&achine",IDC_SSHFWDREMOTETOLOCAL_HOST,23,108,73,15,NOT WS_GROUP
