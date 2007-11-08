@@ -80,8 +80,9 @@ TTSSHでは以下のコマンドラインオプションが使用できます。
   <dd>自動ログインをせず、パスワードを聞く<br>
       /auth=&lt;mode&gt; は、認証方式のみを意味するようになる</dd>
 
-  <dt>/ssh-L&lt;port1&gt;:&lt;host&gt;:&lt;port2&gt;</dt>
-  <dd>ローカルポート(&lt;port1&gt;)からリモート側ホスト(&lt;host&gt;)のポート(&lt;port2&gt;)へポートフォワーディングする</dd>
+  <dt>/ssh-L&lt;port1&gt;:&lt;host&gt;:&lt;port2&gt;[:1]</dt>
+  <dd>ローカルポート(&lt;port1&gt;)からリモート側ホスト(&lt;host&gt;)のポート(&lt;port2&gt;)へポートフォワーディングする<br>
+      リモート側のポート番号のあとに":1"がある場合、この転送設定において他のホストからの接続を受け入れる</dd>
 
   <dt>/ssh-R&lt;port1&gt;:&lt;host&gt;:&lt;port2&gt;</dt>
   <dd>リモートポート(&lt;port1&gt;)からローカル側ホスト(&lt;host&gt;)のポート(&lt;port2&gt;)へポートフォワーディングする</dd>

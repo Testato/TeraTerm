@@ -80,8 +80,9 @@ You can use the following command line parameters on TTSSH.
   <dd>disable autologin and ask for password<br>
       '/auth=&lt;mode&gt;' means only authentication method</dd>
 
-  <dt>/ssh-L&lt;port1&gt;:&lt;host&gt;:&lt;port2&gt;</dt>
-  <dd>port-fowarding from local port(&lt;port1&gt;) to remote side host(&lt;host&gt;) port(&lt;port2&gt;)</dd>
+  <dt>/ssh-L&lt;port1&gt;:&lt;host&gt;:&lt;port2&gt;[:1]</dt>
+  <dd>port-fowarding from local port(&lt;port1&gt;) to remote side host(&lt;host&gt;) port(&lt;port2&gt;)<br>
+      if ':1' exists after the port number of remote side, this setting accepts connection from other hosts.</dd>
 
   <dt>/ssh-R&lt;port1&gt;:&lt;host&gt;:&lt;port2&gt;</dt>
   <dd>port-fowarding from remote port(&lt;port1&gt;) to local side host(&lt;host&gt;) port(&lt;port2&gt;)</dd>
