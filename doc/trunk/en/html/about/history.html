@@ -24,7 +24,7 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.56">2007.11.1 (Ver 4.56 not released.)</a>
+  <li class="history"><a name="teraterm_4.56">2007.11.8 (Ver 4.56 not released)</a>
     <ul>
       <li>added new optional setting that can disable application keypad/cursor mode.
         <ul>
@@ -33,25 +33,26 @@
         </ul></li>
       <li>added new optional setting that can cleaning COM buffer when port opening.
         <ul>
-          <li>added <a href="../setup/teraterm-com.html#clearcom">ClearComBuffOnOpen</a> entry to teraterm.ini.</li>
+          <li>added <a href="../setup/teraterm-com.html#clearcom">ClearComBuffOnOpen</a> entry to teraterm.ini. On is clear buffer, or Off is not clear buffer. The default value is on.</li>
         </ul></li>
       <li>added support Ctrl+u shortcut key in "Host" drop-down on "New connectin" dialog. The shortcut key is deleting backward from point to the beginning of the line.</li>
       <li>added /BAUD <a href="../commandline/teraterm.html">command line option</a> to specify baud rate of serial port.</li>
       <li>added support sending C1 control characters as single 8-bit characters.
         <ul>
-          <li>added <a href="../setup/teraterm-term.html#C1send">Send8BitCtrl</a> entry to teraterm.ini.</li>
+          <li>added <a href="../setup/teraterm-term.html#C1send">Send8BitCtrl</a> entry to teraterm.ini. The default value is off.</li>
           <li>added support of S7C1T/S8C1T control sequences.</li>
           <li>added support of changing C1 control mode by DECSCL control sequence.</li>
         </ul></li>
-      <li>added support of KAM(Keyboard Lock) and DECNKM(numeric keypad mode) control sequences.</li>
-      <li>single COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK(U+3099) and COMBINING KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK(U+309A) are displayed as KATAKANA-HIRAGANA VOICED SOUND MARK(U+309B) and KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK(U+309C).</li>
+      <li>added support for KAM(Keyboard Lock) and DECNKM(numeric keypad mode) control sequences.</li>
+      <li>added an open dialog to select a folder at "Change directory" menu under file menu.</li>
+      <li>On UTF-8 encoding, single COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK(U+3099) and COMBINING KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK(U+309A) are displayed as KATAKANA-HIRAGANA VOICED SOUND MARK(U+309B) and KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK(U+309C).</li>
       <li>Bug fix: the transparency of window could not change to 255.</li>
       <li>Bug fix: last 1 character of title string that is sent from server is deleted.</li>
       <li>Bug fix: when <a href="../menu/setup-additional.html#continuedline">continued line copy</a> is enabled, <a href="../menu/edit.html#copytable">Copy Table</a> does not work correctly</li>
       <li>Bug fix: when <a href="../menu/setup-keyboard.html#delkey">Transmit DEL by Delete key</a> is enabled and Num Lock status is off, Numeric Keypad "." sends DEL.</li>
       <li>Bug fix: <a href="../macro/command/wait.html">Wait</a> command can't wait a long string. Enbuged at 4.54.</li>
       <li>Bug fix: The color value on <a href="../menu/setup-window.html">Window setup dialog</a> would become 255 when the value is less than 16 and the user pushes PageUP key.</li>
-      <li>Bug fix: COM port description would be wrong when COM port number is forced to switch another number.</li>
+      <li>Bug fix: COM port description would be wrong when COM port number is forced to switch another number. Special thanks to xoxo-san.</li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.44">2.44</a></li>
       <li>upgraded TeraTerm Menu to <a href="#ttmenu_1.07">1.07</a></li>
     </ul>
@@ -911,10 +912,16 @@ SYNOPSIS:
 <ul>
   <li class="history"><a name="ttssh_2.44">2007.11.1 (Ver 2.44 not released)</a>
     <ul>
-      <li>added AES192, AES256 and Blowfish encryption algolithm for SSH2 protocol.</li>
+      <li>added AES192, AES256 and Blowfish symmetric key cipher algorithm for SSH2 protocol.
+        <ul>
+          <li>added "8", "9" and ";" to CipherOrder entry in teraterm.ini file.</li>
+        </ul></li>
       <li>added support for SSH2 delay re-transmit packet when remote_window is not available by using port-forwarding(local-to-remote). X11 applications such as emacs and xterm would not work fine by using Xming server.</li>
       <li>Bug fix: TTSSH crashes when all server supports encryption algorithm that is not supported by TTSSH.</li>
-      <li>Bug fix: SSH2 packet was ocurred as "Bad packet length". This bug is enbuged at TTSSH 2.42.</li>
+      <li>Bug fix: SSH2 packet was ocurred as "Bad packet length". This bug is enbuged at TTSSH 2.42.
+        <ul>
+          <li><s>Bug fix: TCP disconnection was mis-detected in the packet sending.</s></li>
+        </ul></li>
     </ul>
   </li>
 

@@ -24,35 +24,37 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.56">2007.11.1 (Ver 4.56 未リリース)</a>
+  <li class="history"><a name="teraterm_4.56">2007.11.8 (Ver 4.56 未リリース)</a>
     <ul>
       <li>アプリケーションキーパッド/カーソルモードを無効にできるようにした。
         <ul>
           <li>teraterm.ini に DisableAppKeypad および DisableAppCursor エントリを追加した。</li>
           <li><a href="../menu/setup-keyboard.html">キーボード設定ダイアログ</a>にチェックボックスを追加した。</li>
-        </ul></li>
+        </ul>
+          アプリケーションキーパッドモードでは、NumLockも含めて、テンキーが特殊コントロールシーケンスを送信するようになる。アプリケーションカーソルモードでは、NumLockがonの場合は刻印されている数値が送信され、NumLockがoffの場合はカーソルキーやHome、Endキーなどが有効になる。
+        </li>
       <li>COMポートを開く時に、バッファをクリアするか制御できるようにした。
         <ul>
-          <li>teraterm.ini に <a href="../setup/teraterm-com.html#clearcom">ClearComBuffOnOpen</a> エントリを追加した。</li>
+          <li>teraterm.ini に <a href="../setup/teraterm-com.html#clearcom">ClearComBuffOnOpen</a> エントリを追加した。onでバッファクリア（TeraTerm2.3互換）、offでクリアしない。デフォルトはon。</li>
         </ul></li>
       <li>New connection ダイアログの Host ドロップダウンで、Ctrl+u ショートカットキーをサポートした。「カーソルから左端までの文字列を削除」に対応する。</li>
       <li>シリアルポートのボーレートを指定する<a href="../commandline/teraterm.html">コマンドラインオプション</a> /BAUD を追加した。</li>
       <li>C1制御文字を8ビット文字で送信できるようにした。
         <ul>
-          <li>teraterm.ini に <a href="../setup/teraterm-term.html#C1send">Send8BitCtrl</a> エントリを追加した。</li>
+          <li>teraterm.ini に <a href="../setup/teraterm-term.html#C1send">Send8BitCtrl</a> エントリを追加した。デフォルトはoff。</li>
           <li>S7C1T/S8C1T制御シーケンスに対応した。</li>
           <li>DECSCL制御シーケンスによるC1制御モードの変更に対応した。</li>
         </ul></li>
       <li>KAM(キーボードロック), DECNKM(数値キーパッドモード変更)制御シーケンスに対応した。</li>
-      <li>"Change directory" を、フォルダを選択するダイアログから行えるようにした。</li>
-      <li>単独の合成用濁点(U+3099)/合成用半濁点(U+309A)を、濁点(U+309B)/半濁点(U+309C)として表示するようにした。</li>
+      <li>Fileメニュー配下の"Change directory"において、"New dir"にフォルダを選択するダイアログから選択できるようにした。</li>
+      <li>UTF-8エンコーディングにおいて、単独の合成用濁点(U+3099)/合成用半濁点(U+309A)を、濁点(U+309B)/半濁点(U+309C)として表示するようにした。</li>
       <li>ウインドウの透明度を 255 に変更できない問題を修正した。</li>
       <li>サーバから送信されるタイトル文字列の末尾 1 文字が削られる問題を修正した。</li>
-      <li><a href="../menu/setup-additional.html#continuedline">継続行連結コピー</a>を有効に設定している時、<a href="../menu/edit.html#copytable">テーブルをコピー</a>が正しく動作しない時があるのを修正した。</li>
+      <li><a href="../menu/setup-additional.html#continuedline">継続行連結コピー</a>を有効に設定している時、<a href="../menu/edit.html#copytable">テーブルをコピー</a>が正しく動作しない場合がある問題を修正した。</li>
       <li><a href="../menu/setup-keyboard.html#delkey">DeleteキーでDELを送信する</a>設定で Num Lock の状態が Off の時、数値キーパッドの"."でDELが送信されていたのを修正した。</li>
-      <li>マクロの<a href="../macro/command/wait.html">wait</a>コマンドが長い文字列を待てなくなっていたのを修正した。4.54でエンバグしました。</li>
+      <li>マクロの<a href="../macro/command/wait.html">wait</a>コマンドが長い文字列を待てなくなっていたのを修正した。4.54でのエンバグ。</li>
       <li><a href="../menu/setup-window.html">ウィンドウの設定ダイアログ</a>のカラー設定で、値が15以下の時にPageUpキーを押すと255になるのを修正した。</li>
-      <li>COMポート番号を強制付け替えした場合に、レジストリに残っている古いFriendlyNameが表示されてしまう問題の修正。パッチ作成に感謝します＞xoxo氏</li>
+      <li>COMポート番号を強制付け替えした場合に、レジストリに残っている古いFriendlyNameが表示されてしまう問題を修正した。パッチ作成に感謝します＞xoxo氏</li>
       <li><a href="#ttssh_2.44">SSH2対応TTSSH(2.44)</a>へ差し替えた</li>
       <li><a href="#ttmenu_1.07">TeraTerm Menu(1.07)</a>へ差し替えた</li>
     </ul>
@@ -914,8 +916,11 @@
 <ul>
   <li class="history"><a name="ttssh_2.44">2007.11.1 (Ver 2.44 未リリース)</a>
     <ul>
-      <li>SSH2 の暗号方式として AES192, AES256, Blowfish を追加した。</li>
-      <li>ポート転送(local-to-remote)において、remote_windowに空きがない場合に遅延送信を行うようにした。xtermやemacsがXmingのX11上で動かない現象が改善される。</li>
+      <li>SSH2 の共通鍵暗号方式に AES192, AES256, Blowfish を追加した。
+        <ul>
+          <li>teraterm.ini の CipherOrder エントリに"8", "9", ";"を追加した。</li>
+        </ul></li>
+      <li>SSH2のポート転送(local-to-remote)において、サーバ側のウィンドウサイズ(remote_window)に余裕がない場合に、遅延送信を行うようにした。xtermやemacsがXmingのX11上で動かない現象が改善される。</li>
       <li>サポートされていない認証方式を無効にする機能を変更した。
         <ul>
           <li>"CheckAuthListFirst" のデフォルトを Off にした。</li>
@@ -928,7 +933,10 @@
         </ul></li>
       <li>"New connection" ダイアログの Host で指定された文字列に " /ssh", " /nossh", " /telnet" があった場合、ラジオボタンによる SSH の有効/無効より優先するようにした。</li>
       <li>サーバがサポートする暗号方式をひとつもサポートしていない場合に落ちる問題を修正した。</li>
-      <li>SSH2パケットが"Bad packet length"になってしまう問題を修正した。TTSSH 2.42でのデグレード。</li>
+      <li>SSH2パケットが"Bad packet length"になってしまう問題を修正した。TTSSH 2.42でのデグレード。
+        <ul>
+          <li><s>パケット送信処理にTCPコネクション切断の誤検出をしないようにした。</s></li>
+        </ul></li>
     </ul>
   </li>
 
