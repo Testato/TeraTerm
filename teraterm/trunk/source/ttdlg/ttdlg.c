@@ -646,6 +646,10 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 				/* end - ishizaki */
 				SendDlgItemMessage(Dialog, IDC_WINATTR, CB_SETCURSEL,
 				                   0,0);
+#ifdef USE_NORMAL_BGCOLOR
+				ShowDlgItem(Dialog,IDC_WINUSENORMALBG,IDC_WINUSENORMALBG);
+				SetRB(Dialog,ts->UseNormalBGColor,IDC_WINUSENORMALBG,IDC_WINUSENORMALBG);
+#endif
 			}
 			else {
 				for (i = 0 ; i <=1 ; i++) {
@@ -671,9 +675,6 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			HBlue = GetDlgItem(Dialog, IDC_WINBLUEBAR);
 			SetScrollRange(HBlue,SB_CTL,0,255,TRUE);
 
-#ifdef USE_NORMAL_BGCOLOR
-			SetRB(Dialog,ts->UseNormalBGColor,IDC_WINUSENORMALBG,IDC_WINUSENORMALBG);
-#endif
 			ChangeSB(Dialog,ts,IAttr,IOffset);
 
 			return TRUE;
@@ -725,6 +726,17 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 								ts->URLColor[i] = GetNearestColor(DC,ts->URLColor[i]);
 								/* end - ishizaki */
 							}
+#ifdef USE_NORMAL_BGCOLOR
+							GetRB(Dialog,&ts->UseNormalBGColor,
+							      IDC_WINUSENORMALBG,IDC_WINUSENORMALBG);
+							// 2006/03/11 by 337
+							if (ts->UseNormalBGColor) {
+								ts->VTBoldColor[1] =
+								ts->VTBlinkColor[1] =
+								ts->URLColor[1] =
+									ts->VTColor[1];
+							}
+#endif
 						}
 						else {
 							for (i = 0 ; i <= 1 ; i++) {
@@ -739,17 +751,6 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 						ReleaseDC(Dialog,DC);
 
 						GetRB(Dialog,&ts->CursorShape,IDC_WINBLOCK,IDC_WINHORZ);
-
-#ifdef USE_NORMAL_BGCOLOR
-						GetRB(Dialog,&ts->UseNormalBGColor,IDC_WINUSENORMALBG,IDC_WINUSENORMALBG);
-						// 2006/03/11 by 337
-						if (ts->UseNormalBGColor) {
-							ts->VTBoldColor[1] =
-							ts->VTBlinkColor[1] =
-							ts->URLColor[1] =
-								ts->VTColor[1];
-						}
-#endif
 					}
 					EndDialog(Dialog, 1);
 					if (DlgWinFont != NULL) {
