@@ -915,9 +915,21 @@ SYNOPSIS:
     <ul>
       <li>added AES192, AES256 and Blowfish symmetric key cipher algorithm for SSH2 protocol.
         <ul>
-          <li>added "8", "9" and ";" to CipherOrder entry in teraterm.ini file.</li>
+          <li>added "9", ":" and ";" to CipherOrder entry in teraterm.ini file.</li>
         </ul></li>
       <li>added support for SSH2 delay re-transmit packet when remote_window is not available by using port-forwarding(local-to-remote). X11 applications such as emacs and xterm would not work fine by using Xming server.</li>
+      <li>Modified the fature to invalidate unsupported authentication method.
+        <ul>
+          <li>The default value of "CheckAuthListFirst" is changed to Off.</li>
+          <li>Added the feature to configure "CheckAuthListFirst" from a checkbox in "SSH Authentication" dialog.</li>
+        </ul></li>
+      <li>Modified the feature in SSH forwarding connection from local to accept connection request from any host other than localhost.
+        <ul>
+          <li>Added the feature to configure it from a checkbox in "SSH Forwarding" dialog.</li>
+          <li>Added the feature to configure it as a command line option of "/ssh-acceptall".</li>
+          <li>Modified to enable it for each forwarding setup from "SSH Forwarding" dialog.</li>
+        </ul></li>
+      <li>Changed for " /ssh", " /nossh", " /telnet" specified as Host in "New connection" dialog to be given priority over "validate/invalidate" of SSH by radio button.</li>
       <li>Bug fix: TTSSH crashes when all server supports encryption algorithm that is not supported by TTSSH.</li>
       <li>Bug fix: SSH2 packet was ocurred as "Bad packet length". This bug is enbuged at TTSSH 2.42.
         <ul>
@@ -931,6 +943,10 @@ SYNOPSIS:
       <li>added challenge-response(keyboard-interactive) authentication method to autologin.
         <ul>
           <li>added "challenge" value to "/auth" command line switch.</li>
+        </ul></li>
+      <li>Added the feature to invalidate unsupported method prior to the trial of authentication methods.
+        <ul>
+          <li>Added "CheckAuthListFirst" entry in TTSSH section of teraterm.ini. The default value is On.</li>
         </ul></li>
       <li>Security fix: TeraTerm would temporarily halt server communication for the user confirmation when the server public key trys to add in known_hosts file.</li>
       <li>add support Ctrl+d, Ctrl+k shortcut key in "Host" drop-down on "New connectin" dialog. The former is deleting the character at point and the latter is killing the text from point to the end of the line.</li>
