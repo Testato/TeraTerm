@@ -2813,6 +2813,7 @@ void DispSetupFontDlg()
 {
   BOOL Ok;
 
+  ts.VTFlag = 1;
   if (! LoadTTDLG()) return;
   SetLogFont();
   Ok = ChooseFontDlg(HVTWin,&VTlf,&ts);

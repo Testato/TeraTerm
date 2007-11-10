@@ -2796,11 +2796,13 @@ BOOL CALLBACK TFontHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			get_lang_msg("BTN_HELP", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
 			SetDlgItemText(Dialog, IDC_FONTHELP, uimsg);
 
-			ShowDlgItem(Dialog,IDC_FONTBOLD,IDC_FONTBOLD);
-			SetRB(Dialog,ts->EnableBold,IDC_FONTBOLD,IDC_FONTBOLD);
-			if (ts->Language==IdRussian) {
-				ShowDlgItem(Dialog,IDC_FONTCHARSET1,IDC_FONTCHARSET2);
-				SetDropDownList(Dialog,IDC_FONTCHARSET2,RussList,ts->RussFont);
+			if (ts != NULL && ts->VTFlag) {
+				ShowDlgItem(Dialog,IDC_FONTBOLD,IDC_FONTBOLD);
+				SetRB(Dialog,ts->EnableBold,IDC_FONTBOLD,IDC_FONTBOLD);
+				if (ts->Language==IdRussian) {
+					ShowDlgItem(Dialog,IDC_FONTCHARSET1,IDC_FONTCHARSET2);
+					SetDropDownList(Dialog,IDC_FONTCHARSET2,RussList,ts->RussFont);
+				}
 			}
 			SetFocus(GetDlgItem(Dialog,1136));
 			break;
@@ -2809,7 +2811,7 @@ BOOL CALLBACK TFontHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			switch (LOWORD(wParam)) {
 				case IDOK:
 					ts = (PTTSet)GetWindowLong(Dialog,DWL_USER);
-					if (ts!=NULL) {
+					if (ts!=NULL && ts->VTFlag>0) {
 						GetRB(Dialog,&ts->EnableBold,IDC_FONTBOLD,IDC_FONTBOLD);
 						if (ts->Language==IdRussian)
 							ts->RussFont = (WORD)GetCurSel(Dialog, IDC_FONTCHARSET2);
