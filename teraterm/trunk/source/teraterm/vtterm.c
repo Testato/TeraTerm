@@ -1444,7 +1444,7 @@ void CSScreenErase()
 	    (Y==NumOfLines))
 	  Y = 1;
 	if (Send8BitMode)
-	  _snprintf_s(Report,sizeof(Report),_TRUNCATE,"\233%u;%uR",Y,CursorX+1);
+	  _snprintf_s(Report,sizeof(Report),_TRUNCATE,"%c%u;%uR", 0x9b, Y,CursorX+1);
 	else
 	  _snprintf_s(Report,sizeof(Report),_TRUNCATE,"\033[%u;%uR",Y,CursorX+1);
 	CommBinaryOut(&cv,Report,strlen(Report));
