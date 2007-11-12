@@ -19,8 +19,7 @@
 
 <p>
 <span class="qanda">Q.</span> Tera Term の最新版はどこで入手可能か?<br>
-<span class="qanda">A.</span> 以下のサイトから入手できます。<br>
-http://ttssh2.sourceforge.jp/<br>
+<span class="qanda">A.</span> <a href="http://ttssh2.souceforge.jp/">http://ttssh2.sourceforge.jp/</a>から入手できます。<br>
 (上記のサイト、ディレクトリは将来変更される可能性があります。)
 </p>
 
@@ -33,51 +32,53 @@ http://ttssh2.sourceforge.jp/<br>
 <span class="qanda">Q.</span> NIFTY-Serve や PC-VAN などの BBS に関する質問。</span><br>
 <span class="qanda">A.</span> <A HREF="../usage/tips/pc-communication.html">パソコン通信的接続法</A>, 
 <A HREF="../usage/tips/nifty-serve.html">NIFTY-Serve のヒント</A>, 
-<A HREF="../usage/tips/pc_van.html">PC-VAN のヒント</A>を読んでください。</dd>
+<A HREF="../usage/tips/pc_van.html">PC-VAN のヒント</A>を読んでください。
 </p>
 
 <p>
 <span class="qanda">Q.</span> ホストに接続できない。<br>
 <span class="qanda">A.</span> 以下のことを確認してみてください。
+</p>
 <ul>
  <li>コントロールパネルのネットワークの設定。</li>
  <li>他の TCP/IP アプリケーションは使えますか? (telnet, FTP, WWW ブラウザなど)</li>
  <li>ホスト名または IP アドレスはあってますか?</li>
  <li>他のマシンでそのホストに接続できますが?</li>
 </ul>
+<p>
 ネットワークに関する設定法について作者に質問しないでください。インターネット関係の入門書や雑誌を読むか、ネットワーク(プロバイダー)の管理者に聞いてください。
 </p>
 
 <p>
 <span class="qanda">Q.</span> ダイアルアップ TCP/IP (PPP) 接続で、Tera Term を使うにはどうしたらよいか? (電話回線で、いわゆる「インターネット」する人の場合)<br>
 <span class="qanda">A.</span> Tera Term を起動する前に、ダイアルアップ(PPP)接続を確立させてください。Windows 95 の場合は、「ダイアルアップ ネットワーク」を使用します。<br>
-ダイアルアップ(PPP)接続が確立したら Tera Term を起動し、[File] New connection ダイアログボックスで、ホスト名またはホストの IP アドレスを入力してホストに telnet 接続をします。ホスト名または IP アドレスがわからない場合は、ホストの管理者に聞いてください。<br>
+ダイアルアップ(PPP)接続が確立したら Tera Term を起動し、<a href="../menu/file-new.html">[File] New connection</a> ダイアログボックスで、ホスト名またはホストの IP アドレスを入力してホストに telnet 接続をします。ホスト名または IP アドレスがわからない場合は、ホストの管理者に聞いてください。<br>
 PPP 接続の場合、シリアルポートは Tera Term ではなく PPP 接続ソフトによって制御されます。 Tera Term のシリアルポート接続機能は、従来のパソコン通信的接続のためのもので、PPP 接続とは関係ありません。
 </p>
 
 <p>
 <span class="qanda">Q.</span> Telnet でホストに接続し、その後ログアウトしたときに Tera Term が勝手に終了してしまい困る。<br>
-<span class="qanda">A.</span> [Setup] TCP/IP の Auto window close を off にしてください。
+<span class="qanda">A.</span> <a href="../menu/setup-tcpip.html">[Setup] TCP/IP</a> の Auto window close を off にしてください。
 </p>
 
 <p>
 <span class="qanda">Q.</span> Telnet 接続をしたいのに、起動すると勝手にシリアルポートが開かれてしまう。<br>
-<span class="qanda">A.</span> [Setup] General で Default port を "TCP/IP" にしてください。
+<span class="qanda">A.</span> <a href="../menu/setup-general.html">[Setup] General</a> で Default port を "TCP/IP" にしてください。
 </p>
 
 <p>
 <span class="qanda">Q.</span> TERATERM.INI を変更したが、その変更が有効にならない。<br>
 <span class="qanda">A.</span> TERATERM.INI を変更したときに Tera Term セッションが走っている場合、その変更はすぐには有効にはなりません(変更がなされた後に開かれたセッションに対してさえも有効にはなりません)。<br>
 これは、TERATERM.INI の情報は最初の Tera Term セッションが開かれた時にメモリにロードされ、それ以降、少なくとも一つのセッションが開いている間はメモリに保持され続けるからです。<br>
-メモリに保持されている情報を更新するためには、[Setup] Restore setup コマンドを実行するか、すべての Tera Term セッションを閉じてください。ただし、TERATERM.INI 以外の設定ファイルに対しては、このようにする必要はありません。
+メモリに保持されている情報を更新するためには、<a href="../menu/setup-restore.html">[Setup] Restore setup</a> コマンドを実行するか、すべての Tera Term セッションを閉じてください。ただし、TERATERM.INI 以外の設定ファイルに対しては、このようにする必要はありません。
 </p>
 
 <h2>[日本語]</h2>
 <p>
 <span class="qanda">Q.</span> 日本語が入力/表示できない。<br>
-<span class="qanda">A.</span> まずは [Setup] General で Language が "Japanese" になっていることを確認してください。<br>
-次に [Setup] Terminal で Kanji (teceive) と Kanji (transmit) を "SJIS", "EUC", "JIS" の中から１つ選び両方とも同じものにしてください。<br>
-３つともためしてうまくいくものを探してください。より確実にはホストの管理者にどの日本語コードを指定すべきか聞いてください。<br>
+<span class="qanda">A.</span> まずは <a href="../menu/setup-general.html">[Setup] General</a> で Language が "Japanese" になっていることを確認してください。<br>
+次に <a href="../menu/setup-terminal.html">[Setup] Terminal</a> で Kanji (receive) と Kanji (transmit) を "SJIS", "EUC", "JIS", "UTF-8" の中から１つ選び両方とも同じものにしてください。<br>
+4つともためしてうまくいくものを探してください。より確実にはホストの管理者にどの日本語コードを指定すべきか聞いてください。<br>
 <span class="qanda">A.</span> ホストで使われている日本語コードが JIS 以外の場合で、日本語の入力ができない場合、ホストで 8 bit 文字の入力ができるように設定されていない<br>
 可能性があります。8 bit 文字を入力可能にするには、例えば以下のようなコマンドで設定してください。
 <pre>
@@ -100,8 +101,8 @@ set term /eight	(VMS の場合)
 <h2>[キーボード]</h2>
 <p>
 <span class="qanda">Q.</span> Backspace または Delete (DEL) キーを押してもカーソルの一つ左の文字が消せない。<br>
-<span class="qanda">A.</span> Backspace キーについては [Setup] Keyboard の Backspace key を on または off に変えてみてください。Delete キーについては、
-[Setup] Keyboard の Delete key を on にしてください。ただしホストによっては Delete キーが使えない場合があります。
+<span class="qanda">A.</span> Backspace キーについては <a href="../menu/setup-keyboard.html">[Setup] Keyboard</a> の Backspace key を on または off に変えてみてください。Delete キーについては、
+<a href="../menu/setup-keyboard.html">[Setup] Keyboard</a> の Delete key を on にしてください。ただしホストによっては Delete キーが使えない場合があります。
 
 <p>
 <span class="qanda">Q.</span> テンキー(数値キーパッド)でキーに書いてある文字が正しく入力できない。<br>
@@ -120,13 +121,13 @@ set term /eight	(VMS の場合)
 
 <p>
 <span class="qanda">Q.</span> 某社の unix に接続し、DEL キーを押して実行中のプログラムを中断しようとしたができない。<br>
-<span class="qanda">A.</span> [Setup] Keyboard の Delete key を on にしてください。
+<span class="qanda">A.</span> <a href="../menu/setup-keyboard.html">[Setup] Keyboard</a> の Delete key を on にしてください。
 </p>
 
 <p>
-<span class="qanda">Q.</span> [Edit] Paste (Copy) の ショートカットキーは Alt+V (Alt+C) になっているが、他のアプリケーションと同じ Ctrl+V (Ctrl+C) にしたい。<br>
+<span class="qanda">Q.</span> <a href="../menu/edit.html">[Edit] Paste (Copy)</a> の ショートカットキーは Alt+V (Alt+C) になっているが、他のアプリケーションと同じ Ctrl+V (Ctrl+C) にしたい。<br>
 <span class="qanda">A.</span> Ctrl+V は、ホストに ^V 文字を送出するために使うことがあるので、初期設定では、ショートカットキーになっていません。Ctrl+V を 
-[Edit] Paste のショートカットキーにする方法は、<A HREF="../usage/tips/user-shortcutkey.html">「ユーザー・ショートカット・キー」</A>と <A HREF="../reference/keycodej.txt">KEYCODEJ.TXT</A> 
+<a href="../menu/edit.html">[Edit] Paste</a> のショートカットキーにする方法は、<A HREF="../usage/tips/user-shortcutkey.html">「ユーザー・ショートカット・キー」</A>と <A HREF="../reference/keycodej.txt">KEYCODEJ.TXT</A> 
 を読んでください。
 </p>
 
@@ -139,8 +140,7 @@ set term /eight	(VMS の場合)
 
 <p>
 <span class="qanda">Q.</span> あるホストへログインし、そこから他のホストへログインした場合、終端ホストと Tera Term の間でのファイル転送がうまくいかない。<br>
-<span class="qanda">A.</span> 以下を参考にしてください。<br>
-<a href="../usage/tips/forwarding-files.html">中間ホストを経由してホストに接続した場合のファイル転送</a>
+<span class="qanda">A.</span> <a href="../usage/tips/forwarding-files.html">「中間ホストを経由してホストに接続した場合のファイル転送」</a> を参考にしてください。<br>
 </p>
 
 <h2>[その他]</h2>
@@ -160,14 +160,14 @@ set term /eight	(VMS の場合)
 </p>
 
 <p>
-<span class="qanda">Q.</span> [Setup] Font ダイアログボックスのリストに含まれるフォントの種類が少ないのはなぜ?
-<span class="qanda">Q.</span> [Setup] Font ダイアログボックスでなぜ "Times" フォントが選択できない?<br>
+<span class="qanda">Q.</span> <a href="../menu/setup-font.html">[Setup] Font</a> ダイアログボックスのリストに含まれるフォントの種類が少ないのはなぜ?<br>
+<span class="qanda">Q.</span> <a href="../menu/setup-font.html">[Setup] Font</a> ダイアログボックスでなぜ "Times" フォントが選択できない?<br>
 <span class="qanda">A.</span> Tera Term は"ＭＳ 明朝"や "Terminal" のような固定幅フォントしか使用しません。なぜなら VT 端末を正しくエミュレートするためには文字を等間隔で表示しなければならないからです。"Times" のような可変幅(プロポーショナル)フォントを等間隔に表示させるようにするにはプログラムが複雑になるためTera Term はそれらのフォントを使用していません。
 </p>
 
 <p>
 <span class="qanda">Q.</span> 文字が横倒しになって表示されてしまう。<br>
-<span class="qanda">A.</span> [Setup] Font ダイアログボックスでフォント名の先頭に "@" がついたフォントを選択すると文字が横倒しになって表示されます。"@" がつかないフォントを選択してください。
+<span class="qanda">A.</span> <a href="../menu/setup-font.html">[Setup] Font</a> ダイアログボックスでフォント名の先頭に "@" がついたフォントを選択すると文字が横倒しになって表示されます。"@" がつかないフォントを選択してください。
 </p>
 
 <p>
