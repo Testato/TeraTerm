@@ -1,3 +1,4 @@
+//保存先にiniファイルを使用したい場合は、0バイトのファイルでよいのでttpmenu.exeと同じフォルダにttpmenu.iniを用意する
 #define		STRICT
 static char *Registry_id = 
 	"@(#)Copyright (C) NTT-IT 1998  -- registry.cpp --  Ver1.00b1";
@@ -10,7 +11,43 @@ static char *Registry_id =
 	Reference			: 
    ======1=========2=========3=========4=========5=========6=========7======= */
 #include	"registry.h"
+#include	"tchar.h"
+#include	"stdio.h"
 
+BOOL bUseINI = FALSE;					// 保存先(TRUE=INI, FALSE=レジストリ)
+TCHAR szSectionName[MAX_PATH];			// INIのセクション名
+TCHAR szSectionNames[MAX_PATH*10]={0};	// INIのセクション名一覧
+TCHAR szApplicationName[MAX_PATH]={0};	// INIファイルのフルパス
+
+BOOL getSection(LPCTSTR str)
+{
+	szSectionNames[0] = 0;
+	LPCTSTR t = _tcsrchr(str, _T('\\'));
+	if(t){
+		t++;
+	}else{
+		t = str;
+	}
+	_tcscpy(szSectionName, t);
+	return TRUE;
+}
+
+LPCTSTR getModuleName()
+{
+	if(*szApplicationName == 0){
+		GetModuleFileName(NULL, szApplicationName, sizeof(TCHAR)*sizeof(szApplicationName));
+		LPTSTR t = szApplicationName + _tcslen(szApplicationName) - 3;
+		_tcscpy(t, _T("ini"));
+	}
+	return szApplicationName;
+}
+
+//exeと同じフォルダにiniファイルが存在すればiniを使用、その他の場合はレジストリを使用
+void checkIniFile()
+{
+	DWORD dwAttr = ::GetFileAttributes(getModuleName());
+	bUseINI = dwAttr != 0xFFFFFFFF;
+}
 
 /* ==========================================================================
 	Function Name	: (HKEY) RegCreate()
@@ -28,25 +65,30 @@ static char *Registry_id =
    ======1=========2=========3=========4=========5=========6=========7======= */
 HKEY RegCreate(HKEY hCurrentKey, LPCTSTR lpszKeyName)
 {
-	long	lError;
-	HKEY	hkResult;
-	DWORD	dwDisposition;
+	if(bUseINI){
+		getSection(lpszKeyName);
+		return ERROR_SUCCESS;
+	}else{
+		long	lError;
+		HKEY	hkResult;
+		DWORD	dwDisposition;
 
-	lError = ::RegCreateKeyEx(hCurrentKey,
-							lpszKeyName,
-							0,
-							NULL,
-							REG_OPTION_NON_VOLATILE,
-							KEY_ALL_ACCESS,
-							NULL,
-							&hkResult,
-							&dwDisposition);
-	if (lError != ERROR_SUCCESS) {
-		::SetLastError(lError);
-		return (HKEY) INVALID_HANDLE_VALUE;
+		lError = ::RegCreateKeyEx(hCurrentKey,
+								lpszKeyName,
+								0,
+								NULL,
+								REG_OPTION_NON_VOLATILE,
+								KEY_ALL_ACCESS,
+								NULL,
+								&hkResult,
+								&dwDisposition);
+		if (lError != ERROR_SUCCESS) {
+			::SetLastError(lError);
+			return (HKEY) INVALID_HANDLE_VALUE;
+		}
+
+		return hkResult;
 	}
-
-	return hkResult;
 }
 
 /* ==========================================================================
@@ -65,20 +107,25 @@ HKEY RegCreate(HKEY hCurrentKey, LPCTSTR lpszKeyName)
    ======1=========2=========3=========4=========5=========6=========7======= */
 HKEY RegOpen(HKEY hCurrentKey, LPCTSTR lpszKeyName)
 {
-	long	lError;
-	HKEY	hkResult;
+	if(bUseINI){
+		getSection(lpszKeyName);
+		return ERROR_SUCCESS;
+	}else{
+		long	lError;
+		HKEY	hkResult;
 
-	lError = ::RegOpenKeyEx(hCurrentKey,
-							lpszKeyName,
-							0,
-							KEY_ALL_ACCESS,
-							&hkResult);
-	if (lError != ERROR_SUCCESS) {
-		::SetLastError(lError);
-		return (HKEY) INVALID_HANDLE_VALUE;
+		lError = ::RegOpenKeyEx(hCurrentKey,
+								lpszKeyName,
+								0,
+								KEY_ALL_ACCESS,
+								&hkResult);
+		if (lError != ERROR_SUCCESS) {
+			::SetLastError(lError);
+			return (HKEY) INVALID_HANDLE_VALUE;
+		}
+
+		return hkResult;
 	}
-
-	return hkResult;
 }
 
 /* ==========================================================================
@@ -95,12 +142,16 @@ HKEY RegOpen(HKEY hCurrentKey, LPCTSTR lpszKeyName)
    ======1=========2=========3=========4=========5=========6=========7======= */
 BOOL RegClose(HKEY hKey)
 {
-	long	lError;
+	if(bUseINI){
+		
+	}else{
+		long	lError;
 
-	lError = ::RegCloseKey(hKey);
-	if (lError != ERROR_SUCCESS) {
-		::SetLastError(lError);
-		return FALSE;
+		lError = ::RegCloseKey(hKey);
+		if (lError != ERROR_SUCCESS) {
+			::SetLastError(lError);
+			return FALSE;
+		}
 	}
 
 	return TRUE;
@@ -122,17 +173,21 @@ BOOL RegClose(HKEY hKey)
    ======1=========2=========3=========4=========5=========6=========7======= */
 BOOL RegSetStr(HKEY hKey, LPCTSTR lpszValueName, TCHAR *buf)
 {
-	long	lError;
+	if(bUseINI){
+		return WritePrivateProfileString(szSectionName, lpszValueName, buf, getModuleName());
+	}else{
+		long	lError;
 
-	lError = ::RegSetValueEx(hKey,
-							lpszValueName,
-							0,
-							REG_SZ,
-							(CONST BYTE *) buf,
-							(::lstrlen(buf) + 1) * sizeof(TCHAR));
-	if (lError != ERROR_SUCCESS) {
-		::SetLastError(lError);
-		return FALSE;
+		lError = ::RegSetValueEx(hKey,
+								lpszValueName,
+								0,
+								REG_SZ,
+								(CONST BYTE *) buf,
+								(::lstrlen(buf) + 1) * sizeof(TCHAR));
+		if (lError != ERROR_SUCCESS) {
+			::SetLastError(lError);
+			return FALSE;
+		}
 	}
 
 	return TRUE;
@@ -157,19 +212,23 @@ BOOL RegSetStr(HKEY hKey, LPCTSTR lpszValueName, TCHAR *buf)
    ======1=========2=========3=========4=========5=========6=========7======= */
 BOOL RegGetStr(HKEY hKey, LPCTSTR lpszValueName, TCHAR *buf, DWORD dwSize)
 {
-	LONG	lError;
-	DWORD	dwWriteSize;
-	DWORD	dwType = REG_SZ;
+	if(bUseINI){
+		return GetPrivateProfileString(szSectionName, lpszValueName, _T(""), buf, dwSize, getModuleName());
+	}else{
+		LONG	lError;
+		DWORD	dwWriteSize;
+		DWORD	dwType = REG_SZ;
 
-	dwWriteSize = dwSize * sizeof(TCHAR);
+		dwWriteSize = dwSize * sizeof(TCHAR);
 
-	lError = ::RegQueryValueEx(hKey, lpszValueName, 0, &dwType, (LPBYTE) buf, &dwWriteSize);
-	if (lError != ERROR_SUCCESS) {
-		::SetLastError(lError);
-		return FALSE;
+		lError = ::RegQueryValueEx(hKey, lpszValueName, 0, &dwType, (LPBYTE) buf, &dwWriteSize);
+		if (lError != ERROR_SUCCESS) {
+			::SetLastError(lError);
+			return FALSE;
+		}
+
+		buf[dwSize - 1] = '\0';
 	}
-
-	buf[dwSize - 1] = '\0';
 
 	return TRUE;
 }
@@ -190,17 +249,23 @@ BOOL RegGetStr(HKEY hKey, LPCTSTR lpszValueName, TCHAR *buf, DWORD dwSize)
    ======1=========2=========3=========4=========5=========6=========7======= */
 BOOL RegSetDword(HKEY hKey, LPCTSTR lpszValueName, DWORD dwValue)
 {
-	long	lError;
+	if(bUseINI){
+		TCHAR t[64];
+		_stprintf(t, _T("%d"), dwValue);
+		return WritePrivateProfileString(szSectionName, lpszValueName, t, getModuleName());
+	}else{
+		long	lError;
 
-	lError = ::RegSetValueEx(hKey,
-							lpszValueName,
-							0,
-							REG_DWORD,
-							(CONST BYTE *) &dwValue,
-							sizeof(DWORD));
-	if (lError != ERROR_SUCCESS) {
-		::SetLastError(lError);
-		return FALSE;
+		lError = ::RegSetValueEx(hKey,
+								lpszValueName,
+								0,
+								REG_DWORD,
+								(CONST BYTE *) &dwValue,
+								sizeof(DWORD));
+		if (lError != ERROR_SUCCESS) {
+			::SetLastError(lError);
+			return FALSE;
+		}
 	}
 
 	return TRUE;
@@ -222,19 +287,24 @@ BOOL RegSetDword(HKEY hKey, LPCTSTR lpszValueName, DWORD dwValue)
    ======1=========2=========3=========4=========5=========6=========7======= */
 BOOL RegGetDword(HKEY hKey, LPCTSTR lpszValueName, DWORD *dwValue)
 {
-	long	lError;
-	DWORD	dwType = REG_DWORD;
-	DWORD	dwSize = sizeof(DWORD);
+	if(bUseINI){
+		*dwValue = GetPrivateProfileInt(szSectionName, lpszValueName, 0, getModuleName());
+		return TRUE;
+	}else{
+		long	lError;
+		DWORD	dwType = REG_DWORD;
+		DWORD	dwSize = sizeof(DWORD);
 
-	lError = ::RegQueryValueEx(hKey,
-								lpszValueName,
-								0,
-								&dwType,
-								(LPBYTE) dwValue,
-								&dwSize);
-	if (lError != ERROR_SUCCESS) {
-		::SetLastError(lError);
-		return FALSE;
+		lError = ::RegQueryValueEx(hKey,
+									lpszValueName,
+									0,
+									&dwType,
+									(LPBYTE) dwValue,
+									&dwSize);
+		if (lError != ERROR_SUCCESS) {
+			::SetLastError(lError);
+			return FALSE;
+		}
 	}
 
 	return TRUE;
@@ -256,19 +326,31 @@ BOOL RegGetDword(HKEY hKey, LPCTSTR lpszValueName, DWORD *dwValue)
    ======1=========2=========3=========4=========5=========6=========7======= */
 BOOL RegSetBinary(HKEY hKey, LPCTSTR lpszValueName, void *buf, DWORD dwSize)
 {
-	long	lError;
-	DWORD	dwWriteSize;
+	if(bUseINI){
+		TCHAR t[1024] = {0};
+		LPBYTE s = (LPBYTE)buf;
+		for(DWORD i=0; i<dwSize; i++){
+			TCHAR c[4];
+			_stprintf(c, _T("%02X "), s[i]);
+			_tcscat(t, c);
+		}
+		BOOL ret =  WritePrivateProfileString(szSectionName, lpszValueName, t, getModuleName());
+		return ret;
+	}else{
+		long	lError;
+		DWORD	dwWriteSize;
 
-	dwWriteSize = dwSize * sizeof(TCHAR);
+		dwWriteSize = dwSize * sizeof(TCHAR);
 
-	if ((lError = ::RegSetValueEx(hKey,
-								lpszValueName,
-								0,
-								REG_BINARY,
-								(CONST BYTE *) buf,
-								dwWriteSize)) != ERROR_SUCCESS) {
-		::SetLastError(lError);
-		return FALSE;
+		if ((lError = ::RegSetValueEx(hKey,
+									lpszValueName,
+									0,
+									REG_BINARY,
+									(CONST BYTE *) buf,
+									dwWriteSize)) != ERROR_SUCCESS) {
+			::SetLastError(lError);
+			return FALSE;
+		}
 	}
 
 	return TRUE;
@@ -291,21 +373,79 @@ BOOL RegSetBinary(HKEY hKey, LPCTSTR lpszValueName, void *buf, DWORD dwSize)
 // 関数の返値の型を追加 (2006.2.18 yutaka)
 int RegGetBinary(HKEY hKey, LPCTSTR lpszValueName, void *buf, LPDWORD lpdwSize)
 {
-	long	lError;
-	DWORD	dwType = REG_BINARY;
-	DWORD	dwWriteSize;
+	if(bUseINI){
+		TCHAR t[1024] = {0};
+		BOOL ret = GetPrivateProfileString(szSectionName, lpszValueName, _T(""), t, sizeof(t), getModuleName());
+		if(ret){
+			int size = _tcslen(t);
+			while(t[size-1] == ' '){
+				size--;
+				t[size] = 0;
+			}
+			LPCTSTR s = t;
+			LPBYTE p = (LPBYTE)buf;
+			DWORD cnt = 0;
+			*p = 0;
+			for(int i=0; i<(size+1)/3; i++){
+				*p++ = (BYTE)_tcstol(s, NULL, 16);
+				s += 3;
+				cnt ++;
+			}
+			*lpdwSize = cnt;
+		}
+		return ret;
+	}else{
+		long	lError;
+		DWORD	dwType = REG_BINARY;
+		DWORD	dwWriteSize;
 
-	dwWriteSize = *lpdwSize * sizeof(TCHAR);
+		dwWriteSize = *lpdwSize * sizeof(TCHAR);
 
-	if ((lError = ::RegQueryValueEx(hKey,
-									lpszValueName,
-									NULL,
-									&dwType,
-									(LPBYTE) buf,
-									&dwWriteSize)) != ERROR_SUCCESS) {
-		::SetLastError(lError);
-		return FALSE;
+		if ((lError = ::RegQueryValueEx(hKey,
+										lpszValueName,
+										NULL,
+										&dwType,
+										(LPBYTE) buf,
+										&dwWriteSize)) != ERROR_SUCCESS) {
+			::SetLastError(lError);
+			return FALSE;
+		}
 	}
 
 	return TRUE;
+}
+
+
+LONG RegEnumEx(HKEY hKey, DWORD dwIndex, LPTSTR lpName, LPDWORD lpcName, LPDWORD lpReserved, LPTSTR lpClass, LPDWORD lpcClass, PFILETIME lpftLastWriteTime)
+{
+	static LPCTSTR ptr = szSectionNames;
+	if(bUseINI){
+		if(*szSectionNames == 0){
+			GetPrivateProfileSectionNames(szSectionNames, sizeof(szSectionNames), getModuleName());
+			ptr = szSectionNames;
+		}
+		if(_tcscmp(ptr, _T("TTermMenu")) == 0){
+			//skip
+			while(*ptr++);
+//			ptr++;
+		}
+		if(*ptr == 0){
+			return ERROR_NO_MORE_ITEMS;
+		}
+		_tcscpy(lpName, ptr);
+		while(*ptr++);
+//		ptr++;
+		return ERROR_SUCCESS;
+	}else{
+		return ::RegEnumKeyEx(hKey, dwIndex, lpName, lpcName, lpReserved, lpClass, lpcClass, lpftLastWriteTime);
+	}
+}
+
+LONG RegDelete(HKEY hKey, LPCTSTR lpSubKey)
+{
+	if(bUseINI){
+		return WritePrivateProfileString(szSectionName, NULL, NULL, getModuleName()) ? ERROR_SUCCESS : ERROR_ACCESS_DENIED;
+	}else{
+		return ::RegDeleteKey(hKey, lpSubKey);
+	}
 }

@@ -21,4 +21,9 @@ BOOL	RegGetDword(HKEY hKey, LPCTSTR lpszValueName, DWORD *dwValue);
 BOOL	RegSetBinary(HKEY hKey, LPCTSTR lpszValueName, void *buf, DWORD dwSize);
 BOOL	RegGetBinary(HKEY hKey, LPCTSTR lpszValueName, void *buf, LPDWORD lpdwSize);
 
+LONG RegEnumEx(HKEY hKey, DWORD dwIndex, LPTSTR lpName, LPDWORD lpcName, LPDWORD lpReserved, LPTSTR lpClass, LPDWORD lpcClass, PFILETIME lpftLastWriteTime);
+LONG RegDelete(HKEY hKey, LPCTSTR lpSubKey);
+
+void checkIniFile();
+
 #endif

@@ -123,12 +123,12 @@ BOOL ExecStartup(HWND hWnd)
 	DWORD	dwSize = MAX_PATH;
 
 	if ((hKey = RegOpen(HKEY_CURRENT_USER, TTERM_KEY)) != INVALID_HANDLE_VALUE) {
-		while (::RegEnumKeyEx(hKey, dwIndex, szEntryName, &dwSize, NULL, NULL, NULL, NULL) == ERROR_SUCCESS) {
+		while (RegEnumEx(hKey, dwIndex, szEntryName, &dwSize, NULL, NULL, NULL, NULL) == ERROR_SUCCESS) {
 			::lstrcpy(szJobName[dwIndex++], szEntryName);
 			dwSize = MAX_PATH;
 		}
 		::lstrcpy(szJobName[dwIndex], "");
-		::RegCloseKey(hKey);
+		RegClose(hKey);
 
 		for (dwCnt = 0; dwCnt < dwIndex; dwCnt++)
 			ConnectHost(hWnd, 0, szJobName[dwCnt]);
@@ -1345,12 +1345,12 @@ BOOL InitListMenu(HWND hWnd)
 	}
 
 	if ((hKey = RegOpen(HKEY_CURRENT_USER, TTERM_KEY)) != INVALID_HANDLE_VALUE) {
-		while (::RegEnumKeyEx(hKey, dwIndex, szEntryName, &dwSize, NULL, NULL, NULL, NULL) == ERROR_SUCCESS) {
+		while (RegEnumEx(hKey, dwIndex, szEntryName, &dwSize, NULL, NULL, NULL, NULL) == ERROR_SUCCESS) {
 			::lstrcpy(g_MenuData.szName[dwIndex++], szEntryName);
 			dwSize = MAX_PATH;
 		}
 		::lstrcpy(g_MenuData.szName[dwIndex], "");
-		::RegCloseKey(hKey);
+		RegClose(hKey);
 
 		for (dwCnt = 0; dwCnt < dwIndex; dwCnt++)
 			if (GetApplicationFilename(g_MenuData.szName[dwCnt], szPath) == TRUE)
@@ -1814,7 +1814,7 @@ BOOL DeleteLoginHostInformation(HWND hWnd)
 	}
 
 	::wsprintf(szSubKey, "%s\\%s", TTERM_KEY, szEntryName);
-	if (::RegDeleteKey(HKEY_CURRENT_USER, szSubKey) != ERROR_SUCCESS) {
+	if (RegDelete(HKEY_CURRENT_USER, szSubKey) != ERROR_SUCCESS) {
 		dwErr = ::GetLastError();
 		UTIL_get_lang_msg("MSG_ERROR_DELETEREG", uimsg, sizeof(uimsg),
 		                  "Couldn't delete the registory.\n", UILanguageFile);
@@ -2444,6 +2444,8 @@ int WINAPI WinMain(HINSTANCE hI, HINSTANCE, LPSTR nCmdLine, int nCmdShow)
 	// 2重起動防止のためではないので、特に返り値は見ない
 	HANDLE hMutex;
 	hMutex = CreateMutex(NULL, TRUE, "TeraTermMenuAppMutex");
+
+	checkIniFile();		//INIファイル/レジストリ切替
 
 	GetUILanguageFile(UILanguageFile, sizeof(UILanguageFile));
 
