@@ -69,6 +69,7 @@
 #define LBL_HOST                        1055
 #define LBL_ENTRY                       1056
 #define GRP_PROMPT                      1057
+#define IDC_CHALLENGE_CHECK             1058
 #define ID_MENUITEM40013                40013
 #define ID_MENUITEM40014                40014
 #define ID_MENUITEM40015                40015
@@ -94,7 +95,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        116
 #define _APS_NEXT_COMMAND_VALUE         40043
-#define _APS_NEXT_CONTROL_VALUE         1058
+#define _APS_NEXT_CONTROL_VALUE         1059
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

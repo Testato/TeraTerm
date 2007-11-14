@@ -287,9 +287,17 @@ BOOL RegSetDword(HKEY hKey, LPCTSTR lpszValueName, DWORD dwValue)
    ======1=========2=========3=========4=========5=========6=========7======= */
 BOOL RegGetDword(HKEY hKey, LPCTSTR lpszValueName, DWORD *dwValue)
 {
+	int defmark = 0xdeadbeef;
+
 	if(bUseINI){
-		*dwValue = GetPrivateProfileInt(szSectionName, lpszValueName, 0, getModuleName());
-		return TRUE;
+		// ì«Ç›çûÇ›Ç…é∏îsÇµÇΩèÍçáÇÕ false Çï‘Ç∑ (2007.11.14 yutaka)
+		*dwValue = GetPrivateProfileInt(szSectionName, lpszValueName, defmark, getModuleName());
+		if (*dwValue == defmark) {
+			*dwValue = 0;
+			return FALSE;
+		} else {
+			return TRUE;
+		}
 	}else{
 		long	lError;
 		DWORD	dwType = REG_DWORD;

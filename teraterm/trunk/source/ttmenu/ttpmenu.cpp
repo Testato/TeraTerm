@@ -1170,6 +1170,7 @@ BOOL ConnectHost(HWND hWnd, UINT idItem, char *szJobName)
 	// TTSSHが有効の場合は、自動ログインのためのコマンドラインを付加する。(2004.12.3 yutaka)
 	// ユーザのパラメータを指定できるようにする (2005.1.25 yutaka)
 	// 公開鍵認証をサポート (2005.1.27 yutaka)
+	// /challengeをサポート (2007.11.14 yutaka)
 	if (jobInfo.dwMode == MODE_AUTOLOGIN) {
 		if (jobInfo.bTtssh == TRUE) {
 			char tmp[MAX_PATH];
@@ -1179,7 +1180,15 @@ BOOL ConnectHost(HWND hWnd, UINT idItem, char *szJobName)
 			replace_blank_to_mark(jobInfo.szPassword, passwd, sizeof(passwd));
 			replace_blank_to_mark(jobInfo.PrivateKeyFile, keyfile, sizeof(keyfile));
 
-			if (jobInfo.PrivateKeyFile[0] == NULL) { // password authentication
+			if (jobInfo.bChallenge) { // keyboard-interactive
+				_snprintf(szArgment, sizeof(szArgment), "%s:22 /ssh /auth=challenge /user=%s /passwd=%s %s", 
+					jobInfo.szHostName,
+					jobInfo.szUsername,
+					passwd,
+					tmp
+					);
+
+			} else if (jobInfo.PrivateKeyFile[0] == NULL) { // password authentication
 				_snprintf(szArgment, sizeof(szArgment), "%s:22 /ssh /auth=password /user=%s /passwd=%s %s", 
 					jobInfo.szHostName,
 					jobInfo.szUsername,
@@ -1470,6 +1479,7 @@ BOOL RegSaveLoginHostInformation(JobInfo *jobInfo)
 
 	// SSH2
 	RegSetStr(hKey, KEY_KEYFILE, jobInfo->PrivateKeyFile);
+	RegSetDword(hKey, KEY_CHALLENGE, (DWORD) jobInfo->bChallenge);
 
 	RegClose(hKey);
 
@@ -1529,6 +1539,7 @@ BOOL RegLoadLoginHostInformation(char *szName, JobInfo *job_Info)
 	// SSH2
 	ZeroMemory(jobInfo.PrivateKeyFile, sizeof(jobInfo.PrivateKeyFile));
 	RegGetStr(hKey, KEY_KEYFILE, jobInfo.PrivateKeyFile, MAX_PATH);
+	RegGetDword(hKey, KEY_CHALLENGE, (LPDWORD) &(jobInfo.bChallenge));
 
 	RegClose(hKey);
 
@@ -1652,6 +1663,9 @@ BOOL SaveLoginHostInformation(HWND hWnd)
 	if (::GetDlgItemText(hWnd, IDC_KEYFILE_PATH, g_JobInfo.PrivateKeyFile, MAX_PATH) == 0) {
 		ZeroMemory(g_JobInfo.PrivateKeyFile, sizeof(g_JobInfo.PrivateKeyFile));
 	}
+	if (g_JobInfo.bTtssh) {
+		g_JobInfo.bChallenge	= (BOOL) ::IsDlgButtonChecked(hWnd, IDC_CHALLENGE_CHECK);
+	}
 
 	if (RegSaveLoginHostInformation(&g_JobInfo) == FALSE) {
 		dwErr = ::GetLastError();
@@ -1759,12 +1773,21 @@ BOOL LoadLoginHostInformation(HWND hWnd)
 	// 秘密鍵ファイルの追加 (2005.1.28 yutaka)
 	::SetDlgItemText(hWnd, IDC_KEYFILE_PATH, g_JobInfo.PrivateKeyFile);
 	if (g_JobInfo.bTtssh == TRUE) {
-		EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), TRUE);
-		EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), TRUE);
+		EnableWindow(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), TRUE);
+		if (g_JobInfo.bChallenge) {
+			SendMessage(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), BM_SETCHECK, BST_CHECKED, 0);
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), FALSE);
+		} else {
+			SendMessage(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), BM_SETCHECK, BST_UNCHECKED, 0);
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), TRUE);
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), TRUE);
+		}
 
 	} else {
 		EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), FALSE);
 		EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), FALSE);
+		EnableWindow(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), FALSE);
 
 	}
 
@@ -1853,10 +1876,28 @@ BOOL ManageWMCommand_Config(HWND hWnd, WPARAM wParam)
 		if (ret & BST_CHECKED) {
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), TRUE);
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), TRUE);
+			EnableWindow(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), TRUE);
 
 		} else {
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), FALSE);
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), FALSE);
+
+		}
+		return TRUE;
+
+	case IDC_CHALLENGE_CHECK | (BN_CLICKED << 16) :  
+		// "use Challenge"をチェックした場合は鍵ファイルをdisabledにする。(2007.11.14 yutaka)
+		ret = SendMessage(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), BM_GETCHECK, 0, 0);
+		if (ret & BST_CHECKED) {
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), FALSE);
+			//EnableWindow(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), TRUE);
+
+		} else {
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), TRUE);
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), TRUE);
+			//EnableWindow(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), FALSE);
 
 		}
 		return TRUE;
