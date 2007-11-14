@@ -112,6 +112,8 @@ static BOOL DirectPrn = FALSE;
 static BYTE NewKeyStr[FuncKeyStrMax];
 static int NewKeyId, NewKeyLen;
 
+static _locale_t CLocale;
+
 void ResetSBuffers()
 {
   SBuff1.CursorX = 0;
@@ -165,6 +167,8 @@ void ResetTerminal() /*reset variables but don't update screen */
   ReverseColor = FALSE;
   AutoRepeatMode = TRUE;
   Send8BitMode = ts.Send8BitCtrl;
+
+  CLocale = _create_locale(LC_ALL, "C");
 
   /* Character sets */
   ResetCharSet();
@@ -1444,9 +1448,9 @@ void CSScreenErase()
 	    (Y==NumOfLines))
 	  Y = 1;
 	if (Send8BitMode)
-	  _snprintf_s(Report,sizeof(Report),_TRUNCATE,"%c%u;%uR", 0x9b, Y,CursorX+1);
+	  _snprintf_s_l(Report, sizeof(Report), _TRUNCATE, "\233%u;%uR", CLocale, Y, CursorX+1);
 	else
-	  _snprintf_s(Report,sizeof(Report),_TRUNCATE,"\033[%u;%uR",Y,CursorX+1);
+	  _snprintf_s_l(Report, sizeof(Report), _TRUNCATE, "\033[%u;%uR", CLocale, Y, CursorX+1);
 	CommBinaryOut(&cv,Report,strlen(Report));
 	break;
     }
@@ -1565,9 +1569,9 @@ void CSSetAttr()
 	break;
       case 18: /* get terminal size */
 	if (Send8BitMode)
-	  _snprintf_s(Report,sizeof(Report),_TRUNCATE,"\2338;%u;%u;t",NumOfLines-StatusLine,NumOfColumns);
+	  _snprintf_s_l(Report, sizeof(Report), _TRUNCATE, "\2338;%u;%u;t", CLocale, NumOfLines-StatusLine, NumOfColumns);
 	else
-	  _snprintf_s(Report,sizeof(Report),_TRUNCATE,"\033[8;%u;%u;t",NumOfLines-StatusLine,NumOfColumns);
+	  _snprintf_s_l(Report, sizeof(Report), _TRUNCATE, "\033[8;%u;%u;t", CLocale, NumOfLines-StatusLine, NumOfColumns);
 	CommBinaryOut(&cv,Report,strlen(Report));
 	break;
     }
