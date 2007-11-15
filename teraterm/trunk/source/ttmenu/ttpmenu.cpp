@@ -737,6 +737,9 @@ BOOL InitConfigDlg(HWND hWnd)
 	GetDlgItemText(hWnd, IDC_KEYFILE_LABEL, uitmp, sizeof(uitmp));
 	UTIL_get_lang_msg("DLG_CONFIG_KEYFILE", uimsg, sizeof(uimsg), uitmp, UILanguageFile);
 	SetDlgItemText(hWnd, IDC_KEYFILE_LABEL, uimsg);
+	GetDlgItemText(hWnd, IDC_CHALLENGE_CHECK, uitmp, sizeof(uitmp));
+	UTIL_get_lang_msg("DLG_CONFIG_CHALLENGE", uimsg, sizeof(uimsg), uitmp, UILanguageFile);
+	SetDlgItemText(hWnd, IDC_CHALLENGE_CHECK, uimsg);
 	GetDlgItemText(hWnd, BUTTON_ETC, uitmp, sizeof(uitmp));
 	UTIL_get_lang_msg("DLG_CONFIG_DETAIL", uimsg, sizeof(uimsg), uitmp, UILanguageFile);
 	SetDlgItemText(hWnd, BUTTON_ETC, uimsg);
