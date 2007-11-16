@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <errno.h>
 #include "ttmdlg.h"
 #include "ttmbuff.h"
 #include "ttmparse.h"
@@ -273,27 +274,70 @@ WORD TTLClipb2Var()
 	HANDLE hText;
 	PTSTR clipbText;
 	char buf[MaxStrLen];
+	int Num;
+	char *newbuff;
+	static char *cbbuff;
+	static int cbbuffsize, cblen;
 
 	Err = 0;
 	GetStrVar(&VarId,&Err);
 	if (Err!=0) return Err;
 
-	if (OpenClipboard(NULL) == 0) {
-		SetResult(0);
-		return Err;
+	GetIntVal(&Num, &Err);
+	if (Err == ErrSyntax) {
+		// missing 2nd arg is not an error
+		Err = 0;
+		Num = 0;
 	}
-	hText = GetClipboardData(CF_TEXT);
-	if (hText != NULL) {
-		clipbText = GlobalLock(hText);
-		strncpy_s(buf,sizeof(buf),clipbText,_TRUNCATE);
-		GlobalUnlock(hText);
+
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	if (Num == 0) {
+		if (OpenClipboard(NULL) == 0) {
+			cblen = 0;
+			SetResult(0);
+			return Err;
+		}
+		hText = GetClipboardData(CF_TEXT);
+		if (hText != NULL) {
+			clipbText = GlobalLock(hText);
+			cblen = strlen(clipbText);
+			if (cbbuffsize <= cblen) {
+				if ((newbuff = realloc(cbbuff, cblen + 1)) == NULL) {
+					// realloc failed. fall back to old mode.
+					cblen = 0;
+					strncpy_s(buf,sizeof(buf),clipbText,_TRUNCATE);
+					GlobalUnlock(hText);
+					CloseClipboard();
+					SetStrVal(VarId,buf);
+					SetResult(3);
+					return Err;
+				}
+				cbbuff = newbuff;
+				cbbuffsize = cblen + 1;
+			}
+			strncpy_s(cbbuff, cbbuffsize, clipbText, _TRUNCATE);
+			GlobalUnlock(hText);
+		}
+		else {
+			cblen = 0;
+		}
+		CloseClipboard();
+	}
+
+	if (cbbuff != NULL && Num >= 0 && Num * (MaxStrLen - 1) < cblen) {
+		if (strncpy_s(buf ,sizeof(buf), cbbuff + Num * (MaxStrLen-1), _TRUNCATE) == STRUNCATE)
+			SetResult(2); // Copied string is truncated.
+		else {
+			SetResult(1);
+		}
 		SetStrVal(VarId,buf);
-		SetResult(1);
 	}
 	else {
 		SetResult(0);
 	}
-	CloseClipboard();
 
 	return Err;
 }
@@ -1561,7 +1605,7 @@ WORD TTLInputBox(BOOL Paswd)
 	// get 4th(3rd) arg(optional)
 	GetIntVal(&sp, &Err);
 	if (Err == ErrSyntax) {
-		// missing 4rd(3rd) arg is not an error
+		// missing 4th(3rd) arg is not an error
 		Err = 0;
 	}
 
