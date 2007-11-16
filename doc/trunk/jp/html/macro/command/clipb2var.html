@@ -18,13 +18,18 @@
 </p>
 
 <pre class="macro-syntax">
-clipb2var &lt;strvar&gt;
+clipb2var &lt;strvar&gt; [&lt;offset&gt;(オプション)]
 </pre>
 
 <h2>解説</h2>
 
 <p>
 クリップボードのテキストデータを &lt;strvar&gt; へ代入する。<br>
+文字変数の最大長の制限を受けるため、クリップボードのテキストデータが長すぎた場合は256バイト目以降は切り捨てられる。<br>
+&lt;offset&gt;を指定すると、offset*255+1文字目以降の内容が代入される。
+</p>
+
+<p>
 このコマンドの実行結果はシステム変数 result に格納される。変数 result の値の意味は以下のとおり。
 </p>
 
@@ -35,11 +40,21 @@ clipb2var &lt;strvar&gt;
  </tr>
  <tr>
   <td>0</td>
-  <td>クリップボードを開けなかった。またはテキストデータではなかった。</td>
+  <td>クリップボードを開けなかった。またはテキストデータではなかった。またはoffsetの値が適切ではなかった。</td>
  </tr>
  <tr>
   <td>1</td>
   <td>&lt;strvar&gt; への代入に成功した。</td>
+</tr>
+
+<tr>
+  <td>2</td>
+  <td>&lt;strvar&gt; への代入は行われたが、入りきらなかった部分は切り捨てられた。offsetの値を増やして再度clipb2varコマンドを実行する事で、切り捨てられた部分にアクセスできる。</td>
+</tr>
+
+<tr>
+  <td>3</td>
+  <td>クリップボードの内容を記憶しておくためのメモリの確保に失敗した。この場合でも先頭から最大255バイトは変数に代入されるが、offsetを増やして再度clipb2varコマンドを実行しても切り捨てられた部分にはアクセスできない。</td>
  </tr>
 </table>
 
@@ -48,6 +63,10 @@ clipb2var &lt;strvar&gt;
 <pre class="macro-example">
 <code>clipb2var data
 messagebox data 'clipboard data'
+</code></pre>
+
+<pre class="macro-example">
+<code>
 </code></pre>
 
 </body>
