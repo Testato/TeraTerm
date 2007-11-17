@@ -211,6 +211,7 @@ void DispErr(WORD Err);
 void LockVar();
 void UnlockVar();
 BYTE GetFirstChar();
+BOOL CheckParameterGiven();
 BOOL GetIdentifier(PCHAR Name);
 BOOL GetReservedWord(LPWORD WordId);
 BOOL GetLabelName(PCHAR Name);

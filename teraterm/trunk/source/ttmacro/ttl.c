@@ -283,11 +283,9 @@ WORD TTLClipb2Var()
 	GetStrVar(&VarId,&Err);
 	if (Err!=0) return Err;
 
-	GetIntVal(&Num, &Err);
-	if (Err == ErrSyntax) {
-		// missing 2nd arg is not an error
-		Err = 0;
-		Num = 0;
+	// get 2nd arg(optional) if given
+	if (CheckParameterGiven()) {
+		GetIntVal(&Num, &Err);
 	}
 
 	if ((Err==0) && (GetFirstChar()!=0))
@@ -1580,7 +1578,7 @@ WORD TTLInclude()
 WORD TTLInputBox(BOOL Paswd)
 {
 	TStrVal Str1, Str2, Str3;
-	WORD Err, ValType, VarId;
+	WORD Err, ValType, VarId, P;
 	int sp = 1;
 	BOOL SPECIAL;
 
@@ -1589,12 +1587,13 @@ WORD TTLInputBox(BOOL Paswd)
 	GetStrVal(Str2,&Err);
 	if (Err!=0) return Err;
 
-	if (!Paswd) {
+	if (!Paswd && CheckParameterGiven()) {
 		// get 3rd arg(optional)
+		P = LinePtr;
 		GetStrVal(Str3,&Err);
-		if (Err == ErrSyntax) {
-			// missing 3rd arg is not an error
+		if (Err == ErrTypeMismatch) {
 			strncpy_s(Str3,sizeof(Str3),"",_TRUNCATE);
+			LinePtr = P;
 			Err = 0;
 		}
 	}
@@ -1602,11 +1601,9 @@ WORD TTLInputBox(BOOL Paswd)
 		strncpy_s(Str3,sizeof(Str3),"",_TRUNCATE);
 	}
 
-	// get 4th(3rd) arg(optional)
-	GetIntVal(&sp, &Err);
-	if (Err == ErrSyntax) {
-		// missing 4th(3rd) arg is not an error
-		Err = 0;
+	// get 4th(3rd) arg(optional) if given
+	if (CheckParameterGiven()) {
+		GetIntVal(&sp, &Err);
 	}
 
 	if ((Err==0) && (GetFirstChar()!=0))
@@ -1700,11 +1697,9 @@ int MessageCommand(int BoxId, LPWORD Err)
 	GetStrVal2(Str2, Err, TRUE);
 	if (*Err!=0) return 0;
 
-	// get 3th arg(optional)
-	GetIntVal(&sp, Err);
-	if (*Err == ErrSyntax) {
-		// missing 3rd arg is not an error
-		*Err = 0;
+	// get 3rd arg(optional) if given
+	if (CheckParameterGiven()) {
+		GetIntVal(&sp, Err);
 	}
 
 	if ((*Err==0) && (GetFirstChar()!=0))

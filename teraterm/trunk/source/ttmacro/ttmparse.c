@@ -279,6 +279,22 @@ BYTE GetFirstChar()
 	return 0;
 }
 
+BOOL CheckParameterGiven()
+{
+	WORD P;
+
+	P = LinePtr;
+
+	if (GetFirstChar()) {
+		LinePtr = P;
+		return TRUE;
+	}
+	else {
+		LinePtr = P;
+		return FALSE;
+	}
+}
+
 BOOL GetIdentifier(PCHAR Name)
 {
 	int i;
