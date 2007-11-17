@@ -66,7 +66,19 @@ messagebox data 'clipboard data'
 </code></pre>
 
 <pre class="macro-example">
-<code>
+<code>; クリップボードの内容をファイル(clipboard.txt)に書き出す
+fileopen fp 'clipboard.txt' 0
+if result end
+
+offset = 0
+result = 2
+
+while result = 2
+	clipb2var buff offset
+	if result filewrite fp buff
+	offset = offset + 1
+endwhile
+fileclose fp
 </code></pre>
 
 </body>
