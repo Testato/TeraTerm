@@ -2521,10 +2521,25 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 				TelEnableHisOpt(BINARY);
 			}
 
+			// Window を閉じていないと直前の接続の設定が残っているので、
+			// Telnet のときには TCPLocalEcho/TCPCRSend を明示的に
+			// 無効にする (2007.11.18 maya)
+			ts.CRSend = 0;
+			cv.CRSend = 0;
+			ts.LocalEcho = 0;
+
 			TelStartKeepAliveThread();
 		}
-		// TCPLocalEcho/TCPCRSend を無効にする (maya 2007.4.25)
-		else if (!ts.DisableTCPEchoCR) {
+		// Telnet ではないときにTCPLocalEcho/TCPCRSend を無効にする(2007.4.25 maya)
+		// SSH, Cygwin などで接続するときに利用される
+		else if (ts.DisableTCPEchoCR) {
+			// Window を閉じていないと直前の接続の設定が残っているので、
+			// 明示的に無効にする (2007.11.18 maya)
+			ts.CRSend = 0;
+			cv.CRSend = 0;
+			ts.LocalEcho = 0;
+		}
+		else {
 			if (ts.TCPCRSend>0) {
 				ts.CRSend = ts.TCPCRSend;
 				cv.CRSend = ts.TCPCRSend;
