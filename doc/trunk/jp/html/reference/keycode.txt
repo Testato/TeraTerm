@@ -331,43 +331,43 @@ A. ユーザーキーを使えば、好きな文字列を送出することができます。
 例えば、"A" の ASCII コードは $41。
 
 ------------------------------------------------------------
- Char	 Code | Char	Code | Char    Code | Char    Code |
+ Char    Code | Char    Code | Char    Code | Char    Code |
 ------------------------------------------------------------
- NUL (^@) $00 | DLE (^P) $10 | SPACE	$20 | 0        $30 |
- SOH (^A) $01 | DC1 (^Q) $11 | !	$21 | 1        $31 |
- STX (^B) $02 | DC2 (^R) $12 | "	$22 | 2        $32 |
- ETX (^C) $03 | DC3 (^S) $13 | #	$23 | 3        $33 |
- EOT (^D) $04 | DC4 (^T) $14 | $	$24 | 4        $34 |
- ENQ (^E) $05 | NAK (^U) $15 | %	$25 | 5        $35 |
- ACK (^F) $06 | SYN (^V) $16 | &	$26 | 6        $36 |
- BEL (^G) $07 | ETB (^W) $17 | '	$27 | 7        $37 |
- BS  (^H) $08 | CAN (^X) $18 | (	$28 | 8        $38 |
- HT  (^I) $09 | EM  (^Y) $19 | )	$29 | 9        $39 |
- LF  (^J) $0A | SUB (^Z) $1A | *	$2A | :        $3A |
- VT  (^K) $0B | ESC (^[) $1B | +	$2B | ;        $3B |
- FF  (^L) $0C | FS  (^\) $1C | ,	$2C | <        $3C |
- CR  (^M) $0D | GS  (^]) $1D | -	$2D | =        $3D |
- SO  (^N) $0E | RS  (^^) $1E | .	$2E | >        $3E |
- SI  (^O) $0F | US  (^_) $1F | /	$2F | ?        $3F |
+ NUL (^@) $00 | DLE (^P) $10 | SPACE    $20 | 0        $30 |
+ SOH (^A) $01 | DC1 (^Q) $11 | !        $21 | 1        $31 |
+ STX (^B) $02 | DC2 (^R) $12 | "        $22 | 2        $32 |
+ ETX (^C) $03 | DC3 (^S) $13 | #        $23 | 3        $33 |
+ EOT (^D) $04 | DC4 (^T) $14 | $        $24 | 4        $34 |
+ ENQ (^E) $05 | NAK (^U) $15 | %        $25 | 5        $35 |
+ ACK (^F) $06 | SYN (^V) $16 | &        $26 | 6        $36 |
+ BEL (^G) $07 | ETB (^W) $17 | '        $27 | 7        $37 |
+ BS  (^H) $08 | CAN (^X) $18 | (        $28 | 8        $38 |
+ HT  (^I) $09 | EM  (^Y) $19 | )        $29 | 9        $39 |
+ LF  (^J) $0A | SUB (^Z) $1A | *        $2A | :        $3A |
+ VT  (^K) $0B | ESC (^[) $1B | +        $2B | ;        $3B |
+ FF  (^L) $0C | FS  (^\) $1C | ,        $2C | <        $3C |
+ CR  (^M) $0D | GS  (^]) $1D | -        $2D | =        $3D |
+ SO  (^N) $0E | RS  (^^) $1E | .        $2E | >        $3E |
+ SI  (^O) $0F | US  (^_) $1F | /        $2F | ?        $3F |
 ------------------------------------------------------------
- Char	 Code | Char	Code | Char    Code | Char    Code |
+ Char    Code | Char    Code | Char    Code | Char    Code |
 ------------------------------------------------------------
- @	  $40 | P	 $50 | `	$60 | p        $70 |
- A	  $41 | Q	 $51 | a	$61 | q        $71 |
- B	  $42 | R	 $52 | b	$62 | r        $72 |
- C	  $43 | S	 $53 | c	$63 | s        $73 |
- D	  $44 | T	 $54 | d	$64 | t        $74 |
- E	  $45 | U	 $55 | e	$65 | u        $75 |
- F	  $46 | V	 $56 | f	$66 | v        $76 |
- G	  $47 | W	 $57 | g	$67 | w        $77 |
- H	  $48 | X	 $58 | h	$68 | x        $78 |
- I	  $49 | Y	 $59 | I	$69 | y        $79 |
- J	  $4A | Z	 $5A | j	$6A | z        $7A |
- K	  $4B | [	 $5B | k	$6B | {        $7B |
- L	  $4C | \	 $5C | l	$6C | |        $7C |
- M	  $4D | ]	 $5D | m	$6D | }        $7D |
- N	  $4E | ^	 $5E | n	$6E | ~        $7E |
- O	  $4F | _	 $5F | o	$6F | DEL      $7F |
+ @        $40 | P        $50 | `        $60 | p        $70 |
+ A        $41 | Q        $51 | a        $61 | q        $71 |
+ B        $42 | R        $52 | b        $62 | r        $72 |
+ C        $43 | S        $53 | c        $63 | s        $73 |
+ D        $44 | T        $54 | d        $64 | t        $74 |
+ E        $45 | U        $55 | e        $65 | u        $75 |
+ F        $46 | V        $56 | f        $66 | v        $76 |
+ G        $47 | W        $57 | g        $67 | w        $77 |
+ H        $48 | X        $58 | h        $68 | x        $78 |
+ I        $49 | Y        $59 | I        $69 | y        $79 |
+ J        $4A | Z        $5A | j        $6A | z        $7A |
+ K        $4B | [        $5B | k        $6B | {        $7B |
+ L        $4C | \        $5C | l        $6C | |        $7C |
+ M        $4D | ]        $5D | m        $6D | }        $7D |
+ N        $4E | ^        $5E | n        $6E | ~        $7E |
+ O        $4F | _        $5F | o        $6F | DEL      $7F |
 ------------------------------------------------------------
 
 ...............................................................................
@@ -378,70 +378,93 @@ A. ユーザーキーを使えば、好きな文字列を送出することができます。
 
 1) VT window
 
-メニューコマンド		ID
--------------------------------------
-[File] New connection		50110
-[File] Log			50120
-[File] Send file		50130
-[File] Transfer/Kermit/Receive	50141
-[File] Transfer/Kermit/Get	50142
-[File] Transfer/Kermit/Send	50143
-[File] Transfer/Kermit/Finish	50144
-[File] Transfer/XMODEM/Receive	50145
-[File] Transfer/XMODEM/Send	50146
-[File] Transfer/ZMODEM/Receive	50151
-[File] Transfer/ZMODEM/Send	50152
-[File] Transfer/B-Plus/Receive	50153
-[File] Transfer/B-Plus/Send	50154
-[File] Transfer/Quick-VAN/Receive 50155
-[File] Transfer/Quick-VAN/Send	50156
-[File] Change dir		50170
-[File] Print			50180
-[File] Disconnect		50190
-[File] Exit			50199
-[Edit] Copy			50210
-[Edit] Copy table		50220
-[Edit] Paste			50230
-[Edit] PasteCR			50240
-[Edit] Clear screen		50250
-[Edit] Clear buffer		50260
-[Setup] Terminal		50310
-[Setup] Window			50320
-[Setup] Font			50330
-[Setup] Keyboard		50340
-[Setup] Serial port		50350
-[Setup] TCPIP			50360
-[Setup] General 		50370
-[Setup] Save setup		50380
-[Setup] Restore setup		50390
-[Setup] Load key map		50395
-[Control] Reset terminal	50410
-[Control] Are you there 	50420
-[Control] Send break		50430
-[Control] Reset port		50440
-[Control] Open TEK		50450
-[Control] Close TEK		50460
-[Control] Macro 		50470
-[Window] Window 		50810
-[Help] Index			50910
-[Help] Using			50920
-[Help] About			50990
+メニューコマンド                    ID
+-----------------------------------------
+[File] New connection               50110
+[File] Duplicate session            52013
+[File] Cygwin connection            52001
+[File] Log                          50120
+[File] Comment to Log               52004
+[File] View Log                     52018
+[File] Send file                    50130
+[File] Transfer/Kermit/Receive      50141
+[File] Transfer/Kermit/Get          50142
+[File] Transfer/Kermit/Send         50143
+[File] Transfer/Kermit/Finish       50144
+[File] Transfer/XMODEM/Receive      50145
+[File] Transfer/XMODEM/Send         50146
+[File] Transfer/ZMODEM/Receive      50151
+[File] Transfer/ZMODEM/Send         50152
+[File] Transfer/B-Plus/Receive      50153
+[File] Transfer/B-Plus/Send         50154
+[File] Transfer/Quick-VAN/Receive   50155
+[File] Transfer/Quick-VAN/Send      50156
+[File] Change dir                   50170
+[File] Replay Log                   52019
+[File] LogMeTT                      52010
+[File] Print                        50180
+[File] Disconnect                   50190
+[File] Exit                         50199
+[Edit] Copy                         50210
+[Edit] Copy table                   50220
+[Edit] Paste                        50230
+[Edit] PasteCR                      50240
+[Edit] Clear screen                 50250
+[Edit] Clear buffer                 50260
+[Edit] Select screen                52020
+[Edit] Select all                   52000
+[Setup] Terminal                    50310
+[Setup] Window                      50320
+[Setup] Font                        50330
+[Setup] Keyboard                    50340
+[Setup] Serial port                 50350
+[Setup] Proxy                       63002
+[Setup] SSH                         62503
+[Setup] SSH Authentication          62506
+[Setup] SSH Forwarding              62508
+[Setup] SSH KeyGenerator            62509
+[Setup] TCPIP                       50360
+[Setup] General                     50370
+[Setup] Save setup                  50380
+[Setup] Restore setup               50390
+[Setup] Load key map                50395
+[Control] Reset terminal            50410
+[Control] Are you there             50420
+[Control] Send break                50430
+[Control] Reset port                50440
+[Control] Broadcast command         52017
+[Control] Open TEK                  50450
+[Control] Close TEK                 50460
+[Control] Macro                     50470
+[Window] Window                     50810
+[KanjiCode] Recv: Shift_JIS         8449
+[KanjiCode] Recv: EUC-JP            8450
+[KanjiCode] Recv: JIS               8451
+[KanjiCode] Recv: UTF-8             8452
+[KanjiCode] Rect: UTF-8m            8453
+[KanjiCode] Send: Shift_JIS         8705
+[KanjiCode] Send: EUC-JP            8706
+[KanjiCode] Send: JIS               8707
+[KanjiCode] Send: UTF-8             8708
+[Help] Index                        50910
+[Help] About TTProxy                63001
+[Help] About TTSSH                  62501
+[Help] About Tera Term              50990
 
 2) TEK window
 
-メニューコマンド		ID
+メニューコマンド        ID
 -------------------------------------
-[File] Print			51110
-[File] Exit			51190
-[Edit] Copy			51210
-[Edit] Copy screen		51220
-[Edit] Paste			51230
-[Edit] PasteCR			51240
-[Edit] Clear Screen		51250
-[Setup] Window			51310
-[Setup] Font			51320
-[VTWin] 			51410
-[Window] Window 		50810
-[HELP] Index			51910
-[HELP] Using			51920
-[HELP] About			51990
+[File] Print            51110
+[File] Exit             51190
+[Edit] Copy             51210
+[Edit] Copy screen      51220
+[Edit] Paste            51230
+[Edit] PasteCR          51240
+[Edit] Clear Screen     51250
+[Setup] Window          51310
+[Setup] Font            51320
+[VTWin]                 51410
+[Window] Window         50810
+[HELP] Index            51910
+[HELP] About Tera Term  51990
