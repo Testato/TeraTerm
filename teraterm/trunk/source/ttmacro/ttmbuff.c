@@ -433,7 +433,7 @@ void EndWhileLoop()
   EndWhileFlag = 1;
 }
 
-int BackToWhile()
+int BackToWhile(BOOL flag)
 {
   if ((SP<1) || (TypeStack[SP-1]!=CtlWhile))
     return ErrInvalidCtl;
@@ -444,7 +444,7 @@ int BackToWhile()
     INest = LevelStack[SP];
     CloseBuff(INest+1);
   }
-  BuffPtr[INest] = PtrStack[SP];
+  if (flag) BuffPtr[INest] = PtrStack[SP];
   return 0;
 }
 

@@ -274,7 +274,7 @@ WORD TTLClipb2Var()
 	HANDLE hText;
 	PTSTR clipbText;
 	char buf[MaxStrLen];
-	int Num;
+	int Num = 0;
 	char *newbuff;
 	static char *cbbuff;
 	static int cbbuffsize, cblen;

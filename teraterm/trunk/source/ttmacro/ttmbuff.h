@@ -27,7 +27,7 @@ int NextLoop();
 // while ... endwhile
 int SetWhileLoop();
 void EndWhileLoop();
-int BackToWhile();
+int BackToWhile(BOOL flag);
 void InitLineNo(void);
 int GetLineNo(void);
 char *GetLineBuffer(void);
