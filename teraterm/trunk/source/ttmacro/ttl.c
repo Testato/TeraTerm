@@ -568,9 +568,19 @@ WORD TTLEndIf()
 
 WORD TTLEndWhile()
 {
-	if (GetFirstChar()!=0)
-		return ErrSyntax;
-	return BackToWhile();
+	WORD Err;
+	int Val = 1;
+
+	Err = 0;
+	if (CheckParameterGiven()) {
+		GetIntVal(&Val,&Err);
+	}
+
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	return BackToWhile(Val!=0);
 }
 
 WORD TTLExec()
@@ -2778,10 +2788,13 @@ WORD TTLWaitRecv()
 WORD TTLWhile()
 {
 	WORD Err;
-	int Val;
+	int Val = 1;
 
 	Err = 0;
-	GetIntVal(&Val,&Err);
+	if (CheckParameterGiven()) {
+		GetIntVal(&Val,&Err);
+	}
+
 	if ((Err==0) && (GetFirstChar()!=0))
 		Err = ErrSyntax;
 	if (Err!=0) return Err;
