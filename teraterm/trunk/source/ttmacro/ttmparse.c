@@ -123,6 +123,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 	else if (_stricmp(Str,"bplussend")==0) *WordId = RsvBPlusSend;
 	else if (_stricmp(Str,"break")==0) *WordId = RsvBreak;
 	else if (_stricmp(Str,"call")==0) *WordId = RsvCall;
+	else if (_stricmp(Str,"callmenu")==0) *WordId = RsvCallMenu;
 	else if (_stricmp(Str,"changedir")==0) *WordId = RsvChangeDir;
 	else if (_stricmp(Str,"clearscreen")==0) *WordId = RsvClearScreen;
 	else if (_stricmp(Str,"clipb2var")==0) *WordId = RsvClipb2Var;	// add 'clipb2var' (2006.9.17 maya)

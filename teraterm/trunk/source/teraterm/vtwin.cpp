@@ -1244,7 +1244,7 @@ void CVTWindow::InitMenuPopup(HMENU SubMenu)
 	}
 	else if (SubMenu == WinMenu)
 	{
-		SetWinMenu(WinMenu, ts.UIMsg, ts.UILanguageFile);
+		SetWinMenu(WinMenu, ts.UIMsg, sizeof(ts.UIMsg), ts.UILanguageFile, 0);
 	}
 
 	TTXModifyPopupMenu(SubMenu); /* TTPLUG */

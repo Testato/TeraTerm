@@ -207,7 +207,7 @@ void CTEKWindow::InitMenuPopup(HMENU SubMenu)
   }
   else if ( SubMenu == WinMenu )
   {
-    SetWinMenu(WinMenu, ts.UIMsg, ts.UILanguageFile);
+    SetWinMenu(WinMenu, ts.UIMsg, sizeof(ts.UIMsg), ts.UILanguageFile, 0);
   }
 }
 
@@ -250,7 +250,7 @@ BEGIN_MESSAGE_MAP(CTEKWindow, CFrameWnd)
 	ON_COMMAND(ID_TEKSETUP_WINDOW, OnSetupWindow)
 	ON_COMMAND(ID_TEKSETUP_FONT, OnSetupFont)
 	ON_COMMAND(ID_TEKVTWIN, OnVTWin)
-	ON_COMMAND(ID_WINDOW_WINDOW, OnWindowWindow)
+	ON_COMMAND(ID_TEKWINDOW_WINDOW, OnWindowWindow)
 	ON_COMMAND(ID_TEKHELP_INDEX, OnHelpIndex)
 	ON_COMMAND(ID_TEKHELP_ABOUT, OnHelpAbout)
 	ON_WM_TIMER()

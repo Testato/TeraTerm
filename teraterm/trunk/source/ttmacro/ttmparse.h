@@ -162,6 +162,7 @@
 #define RsvRotateL      122   // add 'rotateleft' (2007.8.19 maya)
 #define RsvSetEnv       123   // reactivate 'setenv' (2007.8.31 maya)
 #define RsvFilenameBox  124   // add 'filenamebox' (2007.9.13 maya)
+#define RsvCallMenu     125   // add 'callmenu' (2007.11.18 maya)
 
 #define RsvOperator   150
 #define RsvBNot       151

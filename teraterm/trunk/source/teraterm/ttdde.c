@@ -274,46 +274,47 @@ WORD HexStr2Word(PCHAR Str)
   return w;
 }
 
-#define CmdSetHWnd	' '
-#define CmdSetFile	'!'
-#define CmdSetBinary	'"'
-#define CmdSetAppend	'#'
+#define CmdSetHWnd      ' '
+#define CmdSetFile      '!'
+#define CmdSetBinary    '"'
+#define CmdSetAppend    '#'
 #define CmdSetXmodemOpt '$'
-#define CmdSetSync	'%'
+#define CmdSetSync      '%'
 
-#define CmdBPlusRecv	'&'
-#define CmdBPlusSend	'\''
-#define CmdChangeDir	'('
-#define CmdClearScreen	')'
-#define CmdCloseWin	'*'
-#define CmdConnect	'+'
-#define CmdDisconnect	','
-#define CmdEnableKeyb	'-'
-#define CmdGetTitle	'.'
-#define CmdInit 	'/'
-#define CmdKmtFinish	'0'
-#define CmdKmtGet	'1'
-#define CmdKmtRecv	'2'
-#define CmdKmtSend	'3'
-#define CmdLoadKeyMap	'4'
-#define CmdLogClose	'5'
-#define CmdLogOpen	'6'
-#define CmdLogPause	'7'
-#define CmdLogStart	'8'
-#define CmdLogWrite	'9'
-#define CmdQVRecv	':'
-#define CmdQVSend	';'
-#define CmdRestoreSetup	'<'
-#define CmdSendBreak	'='
-#define CmdSendFile	'>'
-#define CmdSendKCode	'?'
-#define CmdSetEcho	'@'
-#define CmdSetTitle	'A'
-#define CmdShowTT	'B'
-#define CmdXmodemSend	'C'
-#define CmdXmodemRecv	'D'
-#define CmdZmodemSend	'E'
-#define CmdZmodemRecv	'F'
+#define CmdBPlusRecv    '&'
+#define CmdBPlusSend    '\''
+#define CmdChangeDir    '('
+#define CmdClearScreen  ')'
+#define CmdCloseWin     '*'
+#define CmdConnect      '+'
+#define CmdDisconnect   ','
+#define CmdEnableKeyb   '-'
+#define CmdGetTitle     '.'
+#define CmdInit         '/'
+#define CmdKmtFinish    '0'
+#define CmdKmtGet       '1'
+#define CmdKmtRecv      '2'
+#define CmdKmtSend      '3'
+#define CmdLoadKeyMap   '4'
+#define CmdLogClose     '5'
+#define CmdLogOpen      '6'
+#define CmdLogPause     '7'
+#define CmdLogStart     '8'
+#define CmdLogWrite     '9'
+#define CmdQVRecv       ':'
+#define CmdQVSend       ';'
+#define CmdRestoreSetup '<'
+#define CmdSendBreak    '='
+#define CmdSendFile     '>'
+#define CmdSendKCode    '?'
+#define CmdSetEcho      '@'
+#define CmdSetTitle     'A'
+#define CmdShowTT       'B'
+#define CmdXmodemSend   'C'
+#define CmdXmodemRecv   'D'
+#define CmdZmodemSend   'E'
+#define CmdZmodemRecv   'F'
+#define CmdCallMenu     'G'
 
 HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 {
@@ -626,6 +627,16 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
       }
       else
 	return DDE_FNOTPROCESSED;
+      break;
+    // add 'callmenu' (2007.11.18 maya)
+    case CmdCallMenu:
+      i = atoi(Command + 1);
+      if (i >= 51110 && i <= 51990) {
+	PostMessage(HTEKWin,WM_COMMAND,MAKELONG(i,0),0);
+      }
+      else {
+	PostMessage(HVTWin,WM_COMMAND,MAKELONG(i,0),0);
+      }
       break;
     default:
       return DDE_FNOTPROCESSED;

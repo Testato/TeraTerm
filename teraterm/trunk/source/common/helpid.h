@@ -164,6 +164,7 @@
 #define HlpMacroCommandBplussend        92003
 #define HlpMacroCommandBreak            92120
 #define HlpMacroCommandCall             92004
+#define HlpMacroCommandCallmenu         92125
 #define HlpMacroCommandChangedir        92005
 #define HlpMacroCommandClearscreen      92006
 #define HlpMacroCommandClipb2var        92113

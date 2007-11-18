@@ -797,7 +797,7 @@ void FAR PASCAL UnregWin(HWND HWin)
 		pm->NWin--;
 }
 
-void FAR PASCAL SetWinMenu(HMENU menu, PCHAR buf, PCHAR langFile)
+void FAR PASCAL SetWinMenu(HMENU menu, PCHAR buf, int buflen, PCHAR langFile, int VTFlag)
 {
 	int i;
 	char Temp[MAXPATHLEN];
@@ -829,10 +829,13 @@ void FAR PASCAL SetWinMenu(HMENU menu, PCHAR buf, PCHAR langFile)
 		else
 			UnregWin(Hw);
 	}
-	// buf が ts.UIMsg のポインタであることを期待してサイズを固定
-	// (2007.6.23 maya)
-	get_lang_msg("MENU_WINDOW_WINDOW", buf, MAX_UIMSG, "&Window", langFile);
-	AppendMenu(menu,MF_ENABLED | MF_STRING,ID_WINDOW_1+9, buf);
+	get_lang_msg("MENU_WINDOW_WINDOW", buf, buflen, "&Window", langFile);
+	if (VTFlag == 1) {
+		AppendMenu(menu,MF_ENABLED | MF_STRING,ID_WINDOW_WINDOW, buf);
+	}
+	else {
+		AppendMenu(menu,MF_ENABLED | MF_STRING,ID_TEKWINDOW_WINDOW, buf);
+	}
 }
 
 void FAR PASCAL SetWinList(HWND HWin, HWND HDlg, int IList)

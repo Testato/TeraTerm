@@ -735,8 +735,10 @@ typedef TComVar far *PComVar;
 #define ID_SETUP         2
 #define ID_CONTROL       3
 #define ID_HELPMENU      4
-#define ID_WINDOW_1      50801
-#define ID_WINDOW_WINDOW 50810
+
+#define ID_WINDOW_1          50801
+#define ID_WINDOW_WINDOW     50810
+#define ID_TEKWINDOW_WINDOW  51810
 
 #define ID_TRANSFER      4
 #define ID_SHOWMENUBAR   995
