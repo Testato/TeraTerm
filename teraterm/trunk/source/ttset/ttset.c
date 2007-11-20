@@ -995,6 +995,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->ConfirmPasteMouseRButton =
 		GetOnOff(Section, "ConfirmPasteMouseRButton", FName, FALSE);
 
+	// added SelectOnlyByLButton (2007.11.20 maya)
+	ts->SelectOnlyByLButton =
+		GetOnOff(Section, "SelectOnlyByLButton", FName, TRUE);
+
 	// added DisableAcceleratorSendBreak (2007.3.17 maya)
 	ts->DisableAcceleratorSendBreak =
 		GetOnOff(Section, "DisableAcceleratorSendBreak", FName, FALSE);
@@ -1216,6 +1220,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// added ConfirmPasteMouseRButton (2007.3.17 maya)
 	WriteOnOff(Section, "ConfirmPasteMouseRButton", FName,
 	           ts->ConfirmPasteMouseRButton);
+	// added SelectOnlyByLButton (2007.11.20 maya)
+	WriteOnOff(Section, "SelectOnlyByLButton", FName,
+	           ts->SelectOnlyByLButton);
 	// added DisableAcceleratorSendBreak (2007.3.17 maya)
 	WriteOnOff(Section, "DisableAcceleratorSendBreak", FName,
 	           ts->DisableAcceleratorSendBreak);

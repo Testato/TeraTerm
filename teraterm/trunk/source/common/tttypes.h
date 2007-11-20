@@ -362,6 +362,7 @@ struct tttset {
 	WORD ClearComBuffOnOpen;
 	WORD Send8BitCtrl;
 	char UILanguageFile_ini[MAX_PATH];
+	WORD SelectOnlyByLButton;
 };
 
 typedef struct tttset TTTSet, *PTTSet;

@@ -53,6 +53,7 @@
 #define IDC_TERM_TYPE                   1035
 #define IDC_DISABLE_SENDBREAK           1035
 #define IDC_PORT_START                  1036
+#define IDC_SELECT_LBUTTON              1036
 #define IDC_PORT_RANGE                  1037
 #define IDC_SHELL                       1038
 #define IDC_TERM_EDIT                   1039

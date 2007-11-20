@@ -737,6 +737,7 @@ void CVTWindow::ButtonUp(BOOL Paste)
 	CaretOn();
 
 	BuffEndSelect();
+
 	// added ConfirmPasteMouseRButton (2007.3.17 maya)
 	if (Paste && !ts.ConfirmPasteMouseRButton)
 		CBStartPaste(HVTWin,FALSE,0,NULL,0);
@@ -748,7 +749,6 @@ void CVTWindow::ButtonDown(POINT p, int LMR)
 
 	if ((LMR==IdLeftButton) && ControlKey() && (MainMenu==NULL) &&
 	    ((ts.MenuFlag & MF_NOPOPUP)==0)) {
-		/* TTPLUG BEGIN*/
 		int i, numItems;
 		char itemText[256];
 
@@ -774,29 +774,8 @@ void CVTWindow::ButtonDown(POINT p, int LMR)
 				           submenu != NULL ? (UINT)submenu : GetMenuItemID(PopupMenu, i),
 				           itemText);
 			}
-		} /* TTPLUG END */
+		}
 
-		//    InitMenu(&PopupMenu);
-		//    InitMenuPopup(FileMenu);
-		//    InitMenuPopup(EditMenu);
-		//    InitMenuPopup(SetupMenu);
-		//    InitMenuPopup(ControlMenu);
-		//    if (WinMenu!=NULL)
-		//      InitMenuPopup(WinMenu);
-		//    PopupBase = CreatePopupMenu();
-		//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-		//	       (UINT)FileMenu, "&File");
-		//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-		//	       (UINT)EditMenu, "&Edit");
-		//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-		//	       (UINT)SetupMenu, "&Setup");
-		//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-		//	       (UINT)ControlMenu, "C&ontrol");
-		//    if (WinMenu!=NULL)
-		//      AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-		//		 (UINT)WinMenu, "&Window");
-		//    AppendMenu(PopupBase, MF_STRING | MF_ENABLED | MF_POPUP,
-		//	       (UINT)HelpMenu, "&Help");
 		::ClientToScreen(HVTWin, &p);
 		TrackPopupMenu(PopupBase,TPM_LEFTALIGN | TPM_LEFTBUTTON,
 		               p.x,p.y,0,HVTWin,NULL);
@@ -878,20 +857,27 @@ void CVTWindow::ButtonDown(POINT p, int LMR)
 					box = TRUE;
 				}
 
-				BuffStartSelect(p.x,p.y, box);
-				TplClk = FALSE;
-				/* for AutoScrolling */
-				::SetCapture(HVTWin);
-				::SetTimer(HVTWin, IdScrollTimer, 100, NULL);
+				// Starting the selection only by a left button.(2007.11.20 maya)
+				if (!ts.SelectOnlyByLButton ||
+				    (ts.SelectOnlyByLButton && LMR == IdLeftButton) ) {
+					BuffStartSelect(p.x,p.y, box);
+					TplClk = FALSE;
+
+					/* for AutoScrolling */
+					::SetCapture(HVTWin);
+					::SetTimer(HVTWin, IdScrollTimer, 100, NULL);
+				}
 			}
 		}
 
 		switch (LMR) {
 			case IdRightButton:
-				RButton = TRUE;
+				if (!ts.SelectOnlyByLButton)
+					RButton = TRUE;
 				break;
 			case IdMiddleButton:
-				MButton = TRUE;
+				if (!ts.SelectOnlyByLButton)
+					MButton = TRUE;
 				break;
 			case IdLeftButton:
 				LButton = TRUE;
@@ -4084,6 +4070,7 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 				SendDlgItemMessage(hDlgWnd, IDC_LINECOPY, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_DISABLE_PASTE_RBUTTON, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_CONFIRM_PASTE_RBUTTON, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_SELECT_LBUTTON, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_DISABLE_SENDBREAK, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_CLICKABLE_URL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_DELIMITER, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
@@ -4105,6 +4092,9 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			GetDlgItemText(hDlgWnd, IDC_CONFIRM_PASTE_RBUTTON, uimsg, sizeof(uimsg));
 			get_lang_msg("DLG_TAB_GENERAL_CONFIRMPASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_CONFIRM_PASTE_RBUTTON, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_SELECT_LBUTTON, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_GENERAL_SELECTLBUTTON", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_SELECT_LBUTTON, ts.UIMsg);
 			GetDlgItemText(hDlgWnd, IDC_DISABLE_SENDBREAK, uimsg, sizeof(uimsg));
 			get_lang_msg("DLG_TAB_GENERAL_DISABLESENDBREAK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_DISABLE_SENDBREAK, ts.UIMsg);
@@ -4150,7 +4140,16 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 				SendMessage(hWnd2, BM_SETCHECK, BST_UNCHECKED, 0);
 			}
 
-			// (4)DisableAcceleratorSendBreak
+			// (4)SelectOnlyByLButton
+			hWnd  = GetDlgItem(hDlgWnd, IDC_SELECT_LBUTTON);
+			if (ts.SelectOnlyByLButton == TRUE) {
+				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
+			}
+			else {
+				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
+			}
+
+			// (5)DisableAcceleratorSendBreak
 			hWnd = GetDlgItem(hDlgWnd, IDC_DISABLE_SENDBREAK);
 			if (ts.DisableAcceleratorSendBreak == TRUE) {
 				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
@@ -4158,7 +4157,7 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
 			}
 
-			// (5)EnableClickableUrl
+			// (6)EnableClickableUrl
 			hWnd = GetDlgItem(hDlgWnd, IDC_CLICKABLE_URL);
 			if (ts.EnableClickableUrl == TRUE) {
 				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
@@ -4166,11 +4165,11 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
 			}
 
-			// (6)delimiter characters
+			// (7)delimiter characters
 			hWnd = GetDlgItem(hDlgWnd, IDC_DELIM_LIST);
 			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)ts.DelimList);
 
-			// (7)AcceptBroadcast 337: 2007/03/20
+			// (8)AcceptBroadcast 337: 2007/03/20
 			hWnd = GetDlgItem(hDlgWnd, IDC_ACCEPT_BROADCAST);
 			if (ts.AcceptBroadcast == TRUE) {
 				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
@@ -4226,6 +4225,14 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 					}
 
 					// (4)
+					hWnd = GetDlgItem(hDlgWnd, IDC_SELECT_LBUTTON);
+					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
+						ts.SelectOnlyByLButton = TRUE;
+					} else {
+						ts.SelectOnlyByLButton = FALSE;
+					}
+
+					// (5)
 					hWnd = GetDlgItem(hDlgWnd, IDC_DISABLE_SENDBREAK);
 					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
 						ts.DisableAcceleratorSendBreak = TRUE;
@@ -4233,7 +4240,7 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 						ts.DisableAcceleratorSendBreak = FALSE;
 					}
 
-					// (5)
+					// (6)
 					hWnd = GetDlgItem(hDlgWnd, IDC_CLICKABLE_URL);
 					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
 						ts.EnableClickableUrl = TRUE;
@@ -4241,11 +4248,11 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 						ts.EnableClickableUrl = FALSE;
 					}
 
-					// (6)
+					// (7)
 					hWnd = GetDlgItem(hDlgWnd, IDC_DELIM_LIST);
 					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.DelimList), (LPARAM)ts.DelimList);
 
-					// (7) 337: 2007/03/20  
+					// (8) 337: 2007/03/20  
 					hWnd = GetDlgItem(hDlgWnd, IDC_ACCEPT_BROADCAST);
 					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
 						ts.AcceptBroadcast = TRUE;
