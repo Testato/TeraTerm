@@ -1,0 +1,34 @@
+; sample macro of UTF-8 & SSH2 TeraTerm Pro
+;
+; File: screencapture.ttl
+; Description: capture screen contents and write to file
+; Environment: generic
+; Update: 2007/11/20
+; Author: IWAMOTO Kouichi (doda)
+
+fileopen fp 'screencapture.txt' 1
+if result end
+
+getdate date
+gettime time
+
+callmenu 52020
+
+mpause 500
+
+filewrite fp #13#10"======== "
+filewrite fp date
+filewrite fp " "
+filewrite fp time
+filewrite fp " ==========================================="#13#10#13#10
+
+offset = 0
+
+while
+	clipb2var buff offset
+	if result filewrite fp buff
+	offset = offset + 1
+endwhile result = 2
+
+fileclose fp
+end
