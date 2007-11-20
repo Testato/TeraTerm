@@ -51,6 +51,7 @@ Source: ..\release\dialup.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\login.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\mpause.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\random.ttl; DestDir: {app}; Components: TeraTerm
+Source: ..\release\screencapture.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\ssh2login.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\wait_regex.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\lang\Japanese.lng; DestDir: {app}\lang; Components: TeraTerm; Attribs: readonly; Flags: uninsremovereadonly overwritereadonly
