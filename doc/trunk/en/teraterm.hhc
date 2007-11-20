@@ -577,6 +577,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="callmenu">
+					<param name="Local" value="html\macro\command\callmenu.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="changedir">
 					<param name="Local" value="html\macro\command\changedir.html">
 					<param name="ImageNumber" value="11">

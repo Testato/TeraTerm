@@ -145,8 +145,8 @@ HlpSetupTeratermMisc=html\setup\teraterm-misc.html
 HlpSetupKbd=html\setup\keyboard.html
 HlpSetupSshknownhosts=html\setup\knownfiles.html
 HlpSetupCygterm=html\setup\cygterm.html
-HlpRefKeycode=html\reference\keycodej.txt
-HlpRefRe=html\reference\RE-ja.txt
+HlpRefKeycode=html\reference\keycode.txt
+HlpRefRe=html\reference\RE.txt
 HlpRefOpenssl=html\reference\OpenSSL-LICENSE.txt
 HlpRefOpenssh=html\reference\OpenSSH-LICENSE.txt
 HlpRefDev=html\reference\develop.txt
@@ -166,6 +166,7 @@ HlpMacroCommandBeep=html\macro\command\beep.html
 HlpMacroCommandBplusrecv=html\macro\command\bplusrecv.html
 HlpMacroCommandBplussend=html\macro\command\bplussend.html
 HlpMacroCommandCall=html\macro\command\call.html
+HlpMacroCommandCallmenu=html\macro\command\callmenu.html
 HlpMacroCommandChangedir=html\macro\command\changedir.html
 HlpMacroCommandClearscreen=html\macro\command\clearscreen.html
 HlpMacroCommandClipb2var=html\macro\command\clipb2var.html
@@ -281,7 +282,7 @@ HlpMacroAppendixesError=html\macro\appendixes\errormessages.html
 HlpMacroAppendixesNewline=html\macro\appendixes\newline.html
 HlpMacroAppendixesNegative=html\macro\appendixes\negative.html
 HlpMacroAppendixesAscii=html\macro\appendixes\ascii.html
-HlpMacroAppendixesRegex=html\reference\RE-ja.txt
+HlpMacroAppendixesRegex=html\reference\RE.txt
 HlpUninstall=html\uninstall.html
 
 

@@ -476,12 +476,12 @@
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Keycode">
-			<param name="Local" value="html\reference\keycodej.txt">
+			<param name="Local" value="html\reference\keycode.txt">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="RE.ja">
-			<param name="Local" value="html\reference\RE-ja.txt">
+			<param name="Name" value="RE">
+			<param name="Local" value="html\reference\RE.txt">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
@@ -583,6 +583,11 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="bplussend">
 					<param name="Local" value="html\macro\command\bplussend.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="callmenu">
+					<param name="Local" value="html\macro\command\callmenu.html">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
@@ -1214,7 +1219,7 @@
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="‹SŽÔ³‹K•\Œ»">
-				<param name="Local" value="html\reference\RE-ja.txt">
+				<param name="Local" value="html\reference\RE.txt">
 				<param name="ImageNumber" value="11">
 				</OBJECT>
 		</UL>

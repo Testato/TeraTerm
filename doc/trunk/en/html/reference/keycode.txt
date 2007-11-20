@@ -410,6 +410,7 @@ Menu command                        ID
 [Setup] SSH KeyGenerator            62509
 [Setup] TCPIP                       50360
 [Setup] General                     50370
+[Setup] Additional settings         52016
 [Setup] Save setup                  50380
 [Setup] Restore setup               50390
 [Setup] Load key map                50395
@@ -438,18 +439,18 @@ Menu command                        ID
 
 2) TEK window
 
-Menu command            ID
--------------------------------------
-[File] Print            51110
-[File] Exit             51190
-[Edit] Copy             51210
-[Edit] Copy screen      51220
-[Edit] Paste            51230
-[Edit] PasteCR          51240
-[Edit] Clear Screen     51250
-[Setup] Window          51310
-[Setup] Font            51320
-[VTWin]                 51410
-[Window] Window         50810
-[HELP] Index            51910
-[HELP] About Tera Term  51990
+Menu command                        ID
+-----------------------------------------
+[File] Print                        51110
+[File] Exit                         51190
+[Edit] Copy                         51210
+[Edit] Copy screen                  51220
+[Edit] Paste                        51230
+[Edit] PasteCR                      51240
+[Edit] Clear Screen                 51250
+[Setup] Window                      51310
+[Setup] Font                        51320
+[VTWin]                             51410
+[Window] Window                     51810
+[HELP] Index                        51910
+[HELP] About Tera Term              51990
