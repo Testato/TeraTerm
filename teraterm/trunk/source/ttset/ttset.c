@@ -883,6 +883,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->GINMouseCode =
 		GetPrivateProfileInt(Section, "TEKGINMouseCode", 32, FName);
 
+	/* Telnet Auto Detect -- special option */
+	ts->TelAutoDetect = GetOnOff(Section, "TelAutoDetect", FName, TRUE);
+
 	/* Telnet binary flag -- special option */
 	ts->TelBin = GetOnOff(Section, "TelBin", FName, FALSE);
 
@@ -1665,6 +1668,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 	/* TEK GIN Mouse keycode -- special option */
 	WriteInt(Section, "TEKGINMouseCode", FName, ts->GINMouseCode);
+
+	/* Telnet Auto Detect -- special option */
+	WriteOnOff(Section, "TelAutoDetect", FName, ts->TelAutoDetect);
 
 	/* Telnet binary flag -- special option */
 	WriteOnOff(Section, "TelBin", FName, ts->TelBin);

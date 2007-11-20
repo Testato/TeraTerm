@@ -363,6 +363,7 @@ struct tttset {
 	WORD Send8BitCtrl;
 	char UILanguageFile_ini[MAX_PATH];
 	WORD SelectOnlyByLButton;
+	WORD TelAutoDetect;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -777,6 +778,7 @@ typedef TMap far *PMap;
  *   added tttset.ClearComBuffOnOpen.
  *   added tttset.Send8BitCtrl.
  *   added tttset.UILanguageFile_ini.
+ *   added tttset.TelAutoDetect.
  *
  * - At version 4.54, ttset_memfilemap was replaced with ttset_memfilemap_3.
  *   added tttset.TelKeepAliveInterval.
