@@ -64,7 +64,7 @@
 #define RsvFileCopy     24
 #define RsvFileCreate   25
 #define RsvFileDelete   26
-#define RsvFileMarkPtr 27
+#define RsvFileMarkPtr  27
 #define RsvFileOpen     28
 #define RsvFileReadln   29
 #define RsvFileRename   30
@@ -163,6 +163,10 @@
 #define RsvSetEnv       123   // reactivate 'setenv' (2007.8.31 maya)
 #define RsvFilenameBox  124   // add 'filenamebox' (2007.9.13 maya)
 #define RsvCallMenu     125   // add 'callmenu' (2007.11.18 maya)
+#define RsvDo           126   // add 'do' (2007.11.20 doda)
+#define RsvLoop         127   // add 'loop' (2007.11.20 doda)
+#define RsvUntil        128   // add 'until' (2007.11.20 doda)
+#define RsvEndUntil     129   // add 'enduntil' (2007.11.20 doda)
 
 #define RsvOperator   150
 #define RsvBNot       151

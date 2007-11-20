@@ -517,6 +517,42 @@ WORD TTLDelPassword()
 	return Err;
 }
 
+WORD TTLDo()
+{
+	WORD WId, Err;
+	int Val = 1;
+
+	Err = 0;
+	if (CheckParameterGiven()) {
+		if (GetReservedWord(&WId)) {
+			switch (WId) {
+				case RsvWhile:
+					GetIntVal(&Val,&Err);
+					break;
+				case RsvUntil:
+					GetIntVal(&Val,&Err);
+					Val = Val == 0;
+					break;
+				default:
+					Err = ErrSyntax;
+			}
+			if ((Err==0) && (GetFirstChar()!=0))
+				Err = ErrSyntax;
+		}
+		else {
+			Err = ErrSyntax;
+		}
+	}
+
+	if (Err!=0) return Err;
+
+	if (Val!=0)
+		return SetWhileLoop();
+	else
+		EndWhileLoop();
+	return Err;
+}
+
 WORD TTLElse()
 {
 	if (GetFirstChar()!=0)
@@ -586,10 +622,10 @@ WORD TTLEndIf()
 	return 0;
 }
 
-WORD TTLEndWhile()
+WORD TTLEndWhile(BOOL mode)
 {
 	WORD Err;
-	int Val = 1;
+	int Val = mode;
 
 	Err = 0;
 	if (CheckParameterGiven()) {
@@ -600,7 +636,7 @@ WORD TTLEndWhile()
 		Err = ErrSyntax;
 	if (Err!=0) return Err;
 
-	return BackToWhile(Val!=0);
+	return BackToWhile((Val!=0) == mode);
 }
 
 WORD TTLExec()
@@ -1688,6 +1724,38 @@ WORD TTLLogOpen()
 	SetBinary(BinFlag);
 	SetAppend(AppendFlag);
 	return SendCmnd(CmdLogOpen,0);
+}
+
+WORD TTLLoop()
+{
+	WORD WId, Err;
+	int Val = 1;
+
+	Err = 0;
+	if (CheckParameterGiven()) {
+		if (GetReservedWord(&WId)) {
+			switch (WId) {
+				case RsvWhile:
+					GetIntVal(&Val,&Err);
+					break;
+				case RsvUntil:
+					GetIntVal(&Val,&Err);
+					Val = Val == 0;
+					break;
+				default:
+					Err = ErrSyntax;
+			}
+			if ((Err==0) && (GetFirstChar()!=0))
+				Err = ErrSyntax;
+		}
+		else {
+			Err = ErrSyntax;
+		}
+	}
+
+	if (Err!=0) return Err;
+
+	return BackToWhile(Val!=0);
 }
 
 WORD TTLMakePath()
@@ -2805,10 +2873,10 @@ WORD TTLWaitRecv()
 	return Err;
 }
 
-WORD TTLWhile()
+WORD TTLWhile(BOOL mode)
 {
 	WORD Err;
-	int Val = 1;
+	int Val = mode;
 
 	Err = 0;
 	if (CheckParameterGiven()) {
@@ -2819,7 +2887,7 @@ WORD TTLWhile()
 		Err = ErrSyntax;
 	if (Err!=0) return Err;
 
-	if (Val!=0)
+	if ((Val!=0) == mode)
 		return SetWhileLoop();
 	else
 		EndWhileLoop();
@@ -2914,32 +2982,53 @@ int ExecCmnd()
 
 	if (EndWhileFlag>0)
 	{
-		if (! GetReservedWord(&WId))
-			;
-		else if (WId==RsvWhile)
-			EndWhileFlag++;
-		else if (WId==RsvEndWhile)
-			EndWhileFlag--;
+		if (GetReservedWord(&WId))
+		{
+			switch (WId) {
+			case RsvWhile:
+			case RsvUntil:
+			case RsvDo:
+				EndWhileFlag++; break;
+
+			case RsvEndWhile:
+			case RsvEndUntil:
+			case RsvLoop:
+				EndWhileFlag--; break;
+			}
+		}
 		return 0;
 	}
 
 	if (BreakFlag>0)
 	{
-		if (! GetReservedWord(&WId))
-			;
-		else if ((WId==RsvIf) && (CheckThen(&Err)))
-			IfNest++;
-		else if (WId==RsvEndIf)
+		if (GetReservedWord(&WId))
 		{
-			if (IfNest<1)
-				Err = ErrInvalidCtl;
-			else
-				IfNest--;
+			switch (WId) {
+			case RsvIf:
+				if (CheckThen(&Err))
+					IfNest++;
+				break;
+
+			case RsvEndIf:
+				if (IfNest<1)
+					Err = ErrInvalidCtl;
+				else
+					IfNest--;
+				break;
+
+			case RsvFor:
+			case RsvWhile:
+			case RsvUntil:
+			case RsvDo:
+				BreakFlag++; break;
+
+			case RsvNext:
+			case RsvEndWhile:
+			case RsvEndUntil:
+			case RsvLoop:
+				BreakFlag--; break;
+			}
 		}
-		else if (WId==RsvFor || WId==RsvWhile)
-			BreakFlag++;
-		else if (WId==RsvNext || WId==RsvEndWhile)
-			BreakFlag--;
 		return Err;
 	}
 
@@ -3008,6 +3097,8 @@ int ExecCmnd()
 			Err = TTLDelPassword(); break;
 		case RsvDisconnect:
 			Err = TTLCommCmd(CmdDisconnect,0); break;
+		case RsvDo:
+			Err = TTLDo(); break;
 		case RsvElse:
 			Err = TTLElse(); break;
 		case RsvElseIf:
@@ -3018,8 +3109,10 @@ int ExecCmnd()
 			Err = TTLEnd(); break;
 		case RsvEndIf:
 			Err = TTLEndIf(); break;
+		case RsvEndUntil:
+			Err = TTLEndWhile(FALSE); break;
 		case RsvEndWhile:
-			Err = TTLEndWhile(); break;
+			Err = TTLEndWhile(TRUE); break;
 		case RsvExec:
 			Err = TTLExec(); break;
 		case RsvExecCmnd:
@@ -3116,6 +3209,8 @@ int ExecCmnd()
 			Err = TTLCommCmd(CmdLogStart,0); break;
 		case RsvLogWrite:
 			Err = TTLCommCmdFile(CmdLogWrite,0); break;
+		case RsvLoop:
+			Err = TTLLoop(); break;
 		case RsvMakePath:
 			Err = TTLMakePath(); break;
 		case RsvMessageBox:
@@ -3202,6 +3297,8 @@ int ExecCmnd()
 			Err = TTLToUpper(); break;    // add 'toupper' (2007.7.12 maya)
 		case RsvUnlink:
 			Err = TTLUnlink(); break;
+		case RsvUntil:
+			Err = TTLWhile(FALSE); break;
 		case RsvVar2Clipb:
 			Err = TTLVar2Clipb(); break;    // add 'var2clipb' (2006.9.17 maya)
 		case RsvWaitRegex:
@@ -3215,7 +3312,7 @@ int ExecCmnd()
 		case RsvWaitRecv:
 			Err = TTLWaitRecv(); break;
 		case RsvWhile:
-			Err = TTLWhile(); break;
+			Err = TTLWhile(TRUE); break;
 		case RsvXmodemRecv:
 			Err = TTLXmodemRecv(); break;
 		case RsvXmodemSend:

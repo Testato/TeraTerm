@@ -133,11 +133,13 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 	else if (_stricmp(Str,"connect")==0) *WordId = RsvConnect;
 	else if (_stricmp(Str,"delpassword")==0) *WordId = RsvDelPassword;
 	else if (_stricmp(Str,"disconnect")==0) *WordId = RsvDisconnect;
+	else if (_stricmp(Str,"do")==0) *WordId = RsvDo;
 	else if (_stricmp(Str,"else")==0) *WordId = RsvElse;
 	else if (_stricmp(Str,"elseif")==0) *WordId = RsvElseIf;
 	else if (_stricmp(Str,"enablekeyb")==0) *WordId = RsvEnableKeyb;
 	else if (_stricmp(Str,"end")==0) *WordId = RsvEnd;
 	else if (_stricmp(Str,"endif")==0) *WordId = RsvEndIf;
+	else if (_stricmp(Str,"enduntil")==0) *WordId = RsvEndUntil;
 	else if (_stricmp(Str,"endwhile")==0) *WordId = RsvEndWhile;
 	else if (_stricmp(Str,"exec")==0) *WordId = RsvExec;
 	else if (_stricmp(Str,"execcmnd")==0) *WordId = RsvExecCmnd;
@@ -187,6 +189,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 	else if (_stricmp(Str,"logpause")==0) *WordId = RsvLogPause;
 	else if (_stricmp(Str,"logstart")==0) *WordId = RsvLogStart;
 	else if (_stricmp(Str,"logwrite")==0) *WordId = RsvLogWrite;
+	else if (_stricmp(Str,"loop")==0) *WordId = RsvLoop;
 	else if (_stricmp(Str,"makepath")==0) *WordId = RsvMakePath;
 	else if (_stricmp(Str,"messagebox")==0) *WordId = RsvMessageBox;
 	else if (_stricmp(Str,"next")==0) *WordId = RsvNext;
@@ -231,6 +234,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 	else if (_stricmp(Str,"tolower")==0) *WordId = RsvToLower;	// add 'tolower' (2007.7.12 maya)
 	else if (_stricmp(Str,"toupper")==0) *WordId = RsvToUpper;	// add 'toupper' (2007.7.12 maya)
 	else if (_stricmp(Str,"unlink")==0) *WordId = RsvUnlink;
+	else if (_stricmp(Str,"until")==0) *WordId = RsvUntil;
 	else if (_stricmp(Str,"var2clipb")==0) *WordId = RsvVar2Clipb;	// add 'var2clipb' (2006.9.17 maya)
 	else if (_stricmp(Str,"waitregex")==0) *WordId = RsvWaitRegex;	// add 'waitregex' (2005.10.5 yutaka)
 	else if (_stricmp(Str,"wait")==0) *WordId = RsvWait;
