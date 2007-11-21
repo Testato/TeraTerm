@@ -26,13 +26,19 @@ changedir &lt;path&gt;
 <p>
 Changes the current directory for Tera Term to &lt;path&gt;.<br>
 <strong>Note:</strong> the <a href="setdir.html">setdir</a> command changes the current directory for MACRO. File names specified for the communication commands (e.g. kmtsend) are based on the current directory for Tera Term. File names specified for other commands (e.g. fileopen) are based on the current directory for MACRO.
+<br><br>
+
+<strong>Complement:</strong> You must specify a fullpath name to the communication commands (e.g. sendfile, kmtsend) because these commands are not affected by `changedir' command.
+
 </p>
 
 <h2>Example</h2>
 
 <pre class="macro-example">
 <code>changedir 'c:\'
-</code></pre>
+sendfile 'd:\source\code.dat' 1
+</code>
+</pre>
 
 </body>
 </html>
