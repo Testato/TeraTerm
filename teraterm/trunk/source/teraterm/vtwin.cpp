@@ -872,12 +872,10 @@ void CVTWindow::ButtonDown(POINT p, int LMR)
 
 		switch (LMR) {
 			case IdRightButton:
-				if (!ts.SelectOnlyByLButton)
-					RButton = TRUE;
+				RButton = TRUE;
 				break;
 			case IdMiddleButton:
-				if (!ts.SelectOnlyByLButton)
-					MButton = TRUE;
+				MButton = TRUE;
 				break;
 			case IdLeftButton:
 				LButton = TRUE;
@@ -1809,7 +1807,12 @@ void CVTWindow::OnMouseMove(UINT nFlags, CPoint point)
 		i = 3;
 	else
 		i = 1;
-	BuffChangeSelect(point.x, point.y,i);
+
+	if (!ts.SelectOnlyByLButton ||
+		(ts.SelectOnlyByLButton && LButton) ) {
+		// SelectOnlyByLButton == TRUE のときは、左ボタンダウン時のみ選択する (2007.11.21 maya)
+		BuffChangeSelect(point.x, point.y,i);
+	}
 }
 
 void CVTWindow::OnMove(int x, int y)
