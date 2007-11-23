@@ -6,29 +6,30 @@
 ; Update: 2007/11/20
 ; Author: IWAMOTO Kouichi (doda)
 
-fileopen fp 'screencapture.txt' 1
-if result end
-
 getdate date
 gettime time
 
+fileopen fp 'screencapture.txt' 1
+if result <> 0 end
+
+;select screen
 callmenu 52020
 
 mpause 500
 
-filewrite fp #13#10"======== "
-filewrite fp date
-filewrite fp " "
-filewrite fp time
-filewrite fp " ==========================================="#13#10#13#10
+sprintf #13#10"======== %s %s ==========================================="#13#10#13#10 date time
+filewrite fp inputstr
 
 offset = 0
-
-while
+do
 	clipb2var buff offset
-	if result filewrite fp buff
+	if result>0 filewrite fp buff
 	offset = offset + 1
-endwhile result = 2
+loop while result = 2
 
 fileclose fp
+
+;reset selection
+callmenu 52021
+
 end
