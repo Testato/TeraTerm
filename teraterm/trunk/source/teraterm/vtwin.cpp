@@ -184,8 +184,9 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_COMMAND(ID_EDIT_PASTECR, OnEditPasteCR)
 	ON_COMMAND(ID_EDIT_CLEARSCREEN, OnEditClearScreen)
 	ON_COMMAND(ID_EDIT_CLEARBUFFER, OnEditClearBuffer)
-	ON_COMMAND(ID_EDIT_SELECTALL, OnSelectAllBuffer)
-	ON_COMMAND(ID_EDIT_SELECTSCREEN, OnSelectScreenBuffer)
+	ON_COMMAND(ID_EDIT_RESETSELECT, OnEditResetSelection)
+	ON_COMMAND(ID_EDIT_SELECTALL, OnEditSelectAllBuffer)
+	ON_COMMAND(ID_EDIT_SELECTSCREEN, OnEditSelectScreenBuffer)
 	ON_COMMAND(ID_SETUP_ADDITIONALSETTINGS, OnExternalSetup)
 	ON_COMMAND(ID_SETUP_TERMINAL, OnSetupTerminal)
 	ON_COMMAND(ID_SETUP_WINDOW, OnSetupWindow)
@@ -1006,6 +1007,9 @@ void CVTWindow::InitMenu(HMENU *Menu)
 	GetMenuString(EditMenu, ID_EDIT_CLEARBUFFER, uimsg, sizeof(uimsg), MF_BYCOMMAND);
 	get_lang_msg("MENU_EDIT_CLBUFFER", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	ModifyMenu(EditMenu, ID_EDIT_CLEARBUFFER, MF_BYCOMMAND, ID_EDIT_CLEARBUFFER, ts.UIMsg);
+	GetMenuString(EditMenu, ID_EDIT_RESETSELECT, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+	get_lang_msg("MENU_EDIT_RESETSELECT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	ModifyMenu(EditMenu, ID_EDIT_RESETSELECT, MF_BYCOMMAND, ID_EDIT_RESETSELECT, ts.UIMsg);
 	GetMenuString(EditMenu, ID_EDIT_SELECTSCREEN, uimsg, sizeof(uimsg), MF_BYCOMMAND);
 	get_lang_msg("MENU_EDIT_SELECTSCREEN", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	ModifyMenu(EditMenu, ID_EDIT_SELECTSCREEN, MF_BYCOMMAND, ID_EDIT_SELECTSCREEN, ts.UIMsg);
@@ -3207,26 +3211,19 @@ void CVTWindow::OnEditClearBuffer()
 	UnlockBuffer();
 }
 
-void CVTWindow::OnSelectAllBuffer()
+void CVTWindow::OnEditSelectAllBuffer()
 {
-	// Select all of buffer
-	POINT p = {0, 0};
-
-	ButtonDown(p, IdLeftButton);
 	BuffAllSelect();
-	ButtonUp(FALSE);
-	ChangeSelectRegion();
 }
 
-void CVTWindow::OnSelectScreenBuffer()
+void CVTWindow::OnEditSelectScreenBuffer()
 {
-	// Select screen buffer
-	POINT p = {0, 0};
-
-	ButtonDown(p, IdLeftButton);
 	BuffScreenSelect();
-	ButtonUp(FALSE);
-	ChangeSelectRegion();
+}
+
+void CVTWindow::OnEditResetSelection()
+{
+	BuffResetSelection();
 }
 
 

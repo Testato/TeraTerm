@@ -184,6 +184,7 @@
 #define ID_FILE_VIEWLOG                 52018
 #define ID_FILE_REPLAYLOG               52019
 #define ID_EDIT_SELECTSCREEN            52020
+#define ID_EDIT_RESETSELECT             52021
 
 // Next default values for new objects
 // 

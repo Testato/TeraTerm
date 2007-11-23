@@ -323,6 +323,9 @@ void BuffAllSelect()
 	SelectEnd.y = BuffEnd;
 //	SelectEnd.x = NumOfColumns;
 //	SelectEnd.y = BuffEnd - 1;
+
+	BuffEndSelect();
+	ChangeSelectRegion();
 }
 
 void BuffScreenSelect()
@@ -335,6 +338,20 @@ void BuffScreenSelect()
 	SelectEnd.y = SelectStart.y + NumOfLines;
 //	SelectEnd.x = X + NumOfColumns;
 //	SelectEnd.y = Y + PageStart + NumOfLines - 1;
+
+	BuffEndSelect();
+	ChangeSelectRegion();
+}
+
+void BuffResetSelection()
+{
+	SelectStart.x = 0;
+	SelectStart.y = 0;
+	SelectEnd.x = 0;
+	SelectEnd.y = 0;
+
+	BuffEndSelect();
+	ChangeSelectRegion();
 }
 
 void BuffReset()
