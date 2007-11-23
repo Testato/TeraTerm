@@ -46,6 +46,18 @@
       <li>added support for KAM(Keyboard Lock) and DECNKM(numeric keypad mode) control sequences.</li>
       <li>added an open dialog to select a folder at "Change directory" menu under file menu.</li>
       <li>On UTF-8 encoding, single COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK(U+3099) and COMBINING KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK(U+309A) are displayed as KATAKANA-HIRAGANA VOICED SOUND MARK(U+309B) and KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK(U+309C).</li>
+      <li>add support of handling large text data in clipboard to macro command <a href="../macro/command/clipb2var.html">clipb2var</a>.
+        <ul>
+          <li>added new argument to macro command clipb2var. It controls start position of copying.</li>
+          <li>if clipboard content is too long and copied string was truncated, clipb2var returns 2 in system variable "<a href="../macro/syntax/variables.html">result</a>".</li>
+        </ul></li>
+      <li>added '<a href="../macro/command/doloop.html">do</a>', '<a href="../macro/command/doloop.html">loop</a>' macro command.</li>
+      <li>added '<a href="../macro/command/until.html">until</a>', '<a href="../macro/command/until.html">enduntil</a>' macro command.</li>
+      <li>added new optional setting that can disable telnet command detection.
+        <ul>
+          <li>added <a href="../setup/teraterm-com.html#detecttelnet">TelAutoDetect</a> entry to teraterm.ini. default is on.</li>
+        </ul></li>
+      <li>added 'reset selection' new menu under <a href="../menu/edit.html">edit menu</a>.</li>
       <li>Bug fix: the transparency of window could not change to 255.</li>
       <li>Bug fix: last 1 character of title string that is sent from server is deleted.</li>
       <li>Bug fix: when <a href="../menu/setup-additional.html#continuedline">continued line copy</a> is enabled, <a href="../menu/edit.html#copytable">Copy Table</a> does not work correctly</li>

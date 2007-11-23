@@ -26,13 +26,11 @@
 <ul>
   <li class="history"><a name="teraterm_4.56">2007.11.13 (Ver 4.56 未リリース)</a>
     <ul>
-      <li>アプリケーションキーパッド/カーソルモードを無効にできるようにした。
+      <li>アプリケーションキーパッド/カーソルモードを無効にできるようにした。アプリケーションキーパッド/カーソルモードについては、「<a href="../usage/tips/appkeypad.html">キーパッドモードについて</a>」を参照してください。
         <ul>
           <li>teraterm.ini に DisableAppKeypad および DisableAppCursor エントリを追加した。</li>
           <li><a href="../menu/setup-keyboard.html">キーボード設定ダイアログ</a>にチェックボックスを追加した。</li>
-        </ul>
-          アプリケーションキーパッドモードでは、NumLockも含めて、テンキーが特殊コントロールシーケンスを送信するようになる。アプリケーションカーソルモードでは、NumLockがonの場合は刻印されている数値が送信され、NumLockがoffの場合はカーソルキーやHome、Endキーなどが有効になる。
-        </li>
+        </ul></li>
       <li>COMポートを開く時に、バッファをクリアするか制御できるようにした。
         <ul>
           <li>teraterm.ini に <a href="../setup/teraterm-com.html#clearcom">ClearComBuffOnOpen</a> エントリを追加した。onでバッファクリア（TeraTerm2.3互換）、offでクリアしない。デフォルトはon。</li>
@@ -54,6 +52,18 @@
           <li><a href="../menu/setup-additional.html">キーボード設定ダイアログ</a>にチェックボックスを追加した。</li>
         </ul></li>
       <li>UTF-8エンコーディングにおいて、単独の合成用濁点(U+3099)/合成用半濁点(U+309A)を、濁点(U+309B)/半濁点(U+309C)として表示するようにした。</li>
+      <li>マクロコマンド <a href="../macro/command/clipb2var.html">clipb2var</a>で、クリップボードのテキストデータの256バイト目以降を取得出来るようにした。
+        <ul>
+          <li>クリップボードのデータのコピー開始位置をコマンドの引数で指定できるようにした。</li>
+          <li>クリップボードのデータが長くてコピーしたデータが途中で切り捨てられた場合は、<a href="../macro/syntax/variables.html">result</a>に2をセットするようにした。</li>
+        </ul></li>
+      <li>マクロコマンド <a href="../macro/command/doloop.html">do - loop</a> を新規追加した。</li>
+      <li>マクロコマンド <a href="../macro/command/until.html">until - enduntil</a> を新規追加した。</li>
+      <li>Telnetコマンドの自動検出を無効化できるようにした。
+        <ul>
+          <li>teraterm.ini に <a href="../setup/teraterm-com.html#detecttelnet">TelAutoDetect</a>エントリを追加した。デフォルトはon。</li>
+        </ul></li>
+      <li>メニューから選択領域を解除できるようにした。<a href="../menu/edit.html">編集メニュー</a>配下に「選択を解除」を追加した。主にマクロから呼ばれて使われる事を想定しています。</li>
       <li>ウインドウの透明度を 255 に変更できない問題を修正した。</li>
       <li>サーバから送信されるタイトル文字列の末尾 1 文字が削られる問題を修正した。</li>
       <li><a href="../menu/setup-additional.html#continuedline">継続行連結コピー</a>を有効に設定している時、<a href="../menu/edit.html#copytable">テーブルをコピー</a>が正しく動作しない場合がある問題を修正した。</li>

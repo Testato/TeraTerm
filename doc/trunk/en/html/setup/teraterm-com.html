@@ -151,7 +151,7 @@ TelPort=23
 </pre>
 
 <p>
-Whatever &lt;TCP port#&gt; is and whatever &lt;telnet flag&gt; is, Tera Term can respond to telnet commands sent by the host.
+Whatever &lt;TCP port#&gt; is and whatever &lt;telnet flag&gt; is, Tera Term can respond to telnet commands sent by the host. (except <a href="#detecttelnet">TelAutoDetect</a> setting is off.)
 </p>
 
 <h2><a name="nontelnet">Terminal setup for non-telnet TCP/IP connection</a></h2>
@@ -175,6 +175,28 @@ TCPLocalEcho=off    (This option is disabled and the "local echo" option in the 
 TCPCRSend=          (This option is disabled and the "new-line (transmit)" option in the [Setup] Terminal dialog box is always used.)
 </pre>
 
+<h2><a name="detecttelnet">Disable Telnet command auto detection.</a></h2>
+
+<p>
+	<!-- Fix me -->
+</p>
+
+<p>
+If you edit the TelAutDetect line in the [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+TelAutoDetect=off
+</pre>
+
+<p>
+TeraTerm do not respond telnet commands sent by the host.
+</p>
+
+<pre>
+Default:
+TelAutoDetect=on
+</pre>
 
 </BODY>
 </HTML>

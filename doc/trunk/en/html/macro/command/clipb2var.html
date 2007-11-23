@@ -14,7 +14,7 @@
 <h1>clipb2var</h1>
 
 <p>
-Copys the text data of clipboard.
+Copies the text data of clipboard.
 </p>
 
 <pre class="macro-syntax">
@@ -24,7 +24,12 @@ clipb2var &lt;strvar&gt;
 <h2>Remarks</h2>
 
 <p>
-Copys the text data in clipboard to &lt;strvar&gt;.<br>
+Copies the text data in clipboard to &lt;strvar&gt;.<br>
+If clipboad content is too long, copied data was truncated. (cf. <a href="../syntax/types.html#String">maximum length of a string</a>)</br>
+If offset is specified, copied string starts offset*255-1 bytes.
+</p>
+
+<p>
 The "clipb2var" command returns one of the following values in the system variable "result":
 </p>
 
@@ -35,11 +40,19 @@ The "clipb2var" command returns one of the following values in the system variab
  </tr>
  <tr>
   <td>0</td>
-  <td>Could not open the clipboard. Or the clipboard content was not a text data.</td>
+  <td>Could not open the clipboard. Or the clipboard content was not a text data. Or the offset value was invalid.</td>
  </tr>
  <tr>
   <td>1</td>
   <td>Copying to &lt;strvar&gt; is successful.</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>Copied string was truncated. If you want to read a truncated data, increment a offset value and execute a clipb2var comannd again.</td>
+ </tr>
+ <tr>
+  <td>3</td>
+  <td>Could not allocate a memory to copy a clipboard content.</td>
  </tr>
 </table>
 
@@ -48,6 +61,22 @@ The "clipb2var" command returns one of the following values in the system variab
 <pre class="macro-example">
 <code>clipb2var data
 messagebox data 'clipboard data'
+</code></pre>
+
+<pre class="macro-example">
+<code>; read a clipboard content and write it to a file.
+fileopen fp 'clipboard.txt' 0
+if result end
+
+offset = 0
+result = 2
+
+while result = 2
+	clipb2var buff offset
+	if result filewrite fp buff
+	offset = offset + 1
+endwhile
+fileclose fp
 </code></pre>
 
 </body>

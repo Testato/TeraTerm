@@ -25,7 +25,7 @@ clipb2var &lt;strvar&gt; [&lt;offset&gt;(オプション)]
 
 <p>
 クリップボードのテキストデータを &lt;strvar&gt; へ代入する。<br>
-<a href="../syntax/types.html#String">文字変数の最大長の制限</a>を受けるため、クリップボードのテキストデータが長すぎた場合は256バイト目以降は切り捨てられる。<br>
+<a href="../syntax/types.html#String">文字列変数の最大長の制限</a>を受けるため、クリップボードのテキストデータが長すぎた場合は256バイト目以降が切り捨てられる。<br>
 &lt;offset&gt;を指定すると、offset*255+1文字目以降の内容が代入される。
 </p>
 
@@ -68,16 +68,15 @@ messagebox data 'clipboard data'
 <pre class="macro-example">
 <code>; クリップボードの内容をファイル(clipboard.txt)に書き出す
 fileopen fp 'clipboard.txt' 0
-if result end
+if result <> 0 end
 
 offset = 0
-result = 2
-
-while result = 2
+do
 	clipb2var buff offset
-	if result filewrite fp buff
+	if result > 0 filewrite fp buff
 	offset = offset + 1
-endwhile
+loop while result = 2
+
 fileclose fp
 </code></pre>
 
