@@ -118,8 +118,8 @@
 #define ID_FILE_DUPLICATESESSION        50111
 #define ID_FILE_CYGWINCONNECTION        50112
 #define ID_FILE_LOG                     50120
-#define ID_FILE_VIEWLOG                 50121
-#define ID_FILE_COMMENTTOLOG            50122
+#define ID_FILE_COMMENTTOLOG            50121
+#define ID_FILE_VIEWLOG                 50122
 #define ID_FILE_SENDFILE                50130
 #define ID_FILE_KERMITRCV               50141
 #define ID_FILE_KERMITGET               50142

@@ -56,9 +56,9 @@ static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
 	pvar->cv = cv;
 }
 
-#define ID_MI_KANJIMASK 0xFF00
-#define ID_MI_KANJIRECV 0x2100
-#define ID_MI_KANJISEND 0x2200
+// #define ID_MI_KANJIMASK 0xFF00
+#define ID_MI_KANJIRECV 54009
+#define ID_MI_KANJISEND 54109
 /*
  * This function is called when Teraterm creates a new menu.
  */

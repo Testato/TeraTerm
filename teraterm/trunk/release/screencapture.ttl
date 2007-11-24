@@ -13,7 +13,7 @@ fileopen fp 'screencapture.txt' 1
 if result <> 0 end
 
 ;select screen
-callmenu 52020
+callmenu 50280
 
 mpause 500
 
@@ -30,6 +30,6 @@ loop while result = 2
 fileclose fp
 
 ;reset selection
-callmenu 52021
+callmenu 50270
 
 end
