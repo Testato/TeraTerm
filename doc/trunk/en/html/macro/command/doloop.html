@@ -38,7 +38,7 @@ If 'until' specified, repeats while &lt;int&gt; is zero.
 <code>; Repeat ten times.
 i = 10
 do while i&gt;0
-  i = i - 1
+    i = i - 1
 loop
 </code></pre>
 
@@ -46,9 +46,9 @@ loop
 <code>; Send clipboard content.
 offset = 0
 do
-	clipb2var buff offset
-	if buff > 0 send buff
-	offset = offset + 1
+    clipb2var buff offset
+    if buff > 0 send buff
+    offset = offset + 1
 loop while result = 2
 </code></pre>
 
