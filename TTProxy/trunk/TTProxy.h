@@ -12,9 +12,9 @@ char UILanguageFile[MAX_PATH];
 
 class TTProxy : public DynamicLinkLibrary<TTProxy> {
 	enum {
-		ID_ABOUTMENU = 63001,
-		ID_PROXYSETUPMENU,
-		ID_ASYNCMESSAGEBOX,
+		ID_ABOUTMENU       = 53910,
+		ID_PROXYSETUPMENU  = 53310,
+		ID_ASYNCMESSAGEBOX = 63001,
 	};
 public:
 	TTProxy():initialized(false), showing_error_message(false) {
