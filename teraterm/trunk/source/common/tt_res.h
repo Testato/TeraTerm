@@ -115,7 +115,11 @@
 #define ID_ACC_PASTE                    50008
 #define ID_ACC_DISCONNECT               50009
 #define ID_FILE_NEWCONNECTION           50110
+#define ID_FILE_DUPLICATESESSION        50111
+#define ID_FILE_CYGWINCONNECTION        50112
 #define ID_FILE_LOG                     50120
+#define ID_FILE_VIEWLOG                 50121
+#define ID_FILE_COMMENTTOLOG            50122
 #define ID_FILE_SENDFILE                50130
 #define ID_FILE_KERMITRCV               50141
 #define ID_FILE_KERMITGET               50142
@@ -130,6 +134,8 @@
 #define ID_FILE_QVRCV                   50155
 #define ID_FILE_QVSEND                  50156
 #define ID_FILE_CHANGEDIR               50170
+#define ID_FILE_REPLAYLOG               50171
+#define ID_FILE_LOGMEIN                 50172
 #define ID_FILE_PRINT2                  50180
 #define ID_FILE_DISCONNECT              50190
 #define ID_FILE_EXIT                    50199
@@ -139,6 +145,9 @@
 #define ID_EDIT_PASTECR                 50240
 #define ID_EDIT_CLEARSCREEN             50250
 #define ID_EDIT_CLEARBUFFER             50260
+#define ID_EDIT_RESETSELECT             50270
+#define ID_EDIT_SELECTSCREEN            50280
+#define ID_EDIT_SELECTALL               50290
 #define ID_SETUP_TERMINAL               50310
 #define ID_SETUP_WINDOW                 50320
 #define ID_SETUP_FONT                   50330
@@ -146,6 +155,7 @@
 #define ID_SETUP_SERIALPORT             50350
 #define ID_SETUP_TCPIP                  50360
 #define ID_SETUP_GENERAL                50370
+#define ID_SETUP_ADDITIONALSETTINGS     50375
 #define ID_SETUP_SAVE                   50380
 #define ID_SETUP_RESTORE                50390
 #define ID_SETUP_LOADKEYMAP             50395
@@ -153,6 +163,7 @@
 #define ID_CONTROL_AREYOUTHERE          50420
 #define ID_CONTROL_SENDBREAK            50430
 #define ID_CONTROL_RESETPORT            50440
+#define ID_CONTROL_BROADCASTCOMMAND     50445
 #define ID_CONTROL_OPENTEK              50450
 #define ID_CONTROL_CLOSETEK             50460
 #define ID_CONTROL_MACRO                50470
@@ -172,19 +183,8 @@
 #define ID_TEKHELP_INDEX                51910
 #define ID_TEKHELP_USING                51920
 #define ID_TEKHELP_ABOUT                51990
-#define ID_EDIT_SELECTALL               52000
-#define ID_FILE_CYGWINCONNECTION        52001
-#define ID_FILE_COMMENTTOLOG            52004
 #define ID_EDIT_EXTERNALSETUP           52005
 #define ID_FILE_TERATERMMENU            52006
-#define ID_FILE_LOGMEIN                 52010
-#define ID_FILE_DUPLICATESESSION        52013
-#define ID_SETUP_ADDITIONALSETTINGS     52016
-#define ID_CONTROL_BROADCASTCOMMAND     52017
-#define ID_FILE_VIEWLOG                 52018
-#define ID_FILE_REPLAYLOG               52019
-#define ID_EDIT_SELECTSCREEN            52020
-#define ID_EDIT_RESETSELECT             52021
 
 // Next default values for new objects
 // 
