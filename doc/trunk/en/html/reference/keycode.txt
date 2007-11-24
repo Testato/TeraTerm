@@ -249,16 +249,21 @@ Tera Term and Windows, they don't have PC key codes and can't be specified
 in the keyboard setup file.
 
 [NOTE]
-You can specify `Alt+key' combination when Alt key uses meta key. Check `Meta key' under Keyboard of Setup menu. The key code can be obtained by KEYCODE.EXE, unfortunately the key code of `Alt+key' combination can not be obtained. Also, you obtain the key code and add 2048 on the value.
+You can specify `Alt+key' combination when Alt key uses meta key. Check
+`Meta key' under Keyboard of Setup menu. The key code can be obtained by
+KEYCODE.EXE, unfortunately the key code of `Alt+key' combination can not
+be obtained. Also, you obtain the key code and add 2048 on the value.
 
 For example, the `V' key code is 47, also `Alt+V' key code is 2095.
 
 ; Shift + Insert
 EditPaste=850
 
-If you change above entry to `EditPaste=2095', you can paste by using `Alt+V' on condition that Meta key is pass through.
+If you change above entry to `EditPaste=2095', you can paste by using
+`Alt+V' on condition that Meta key is pass through.
 
-You add in the following entry to [User keys] section in KEYBOARD.CNF if you wan to paster by using `Alt+V' remaining `Shift+Insert' function.
+You add in the following entry to [User keys] section in KEYBOARD.CNF if
+you wan to paster by using `Alt+V' remaining `Shift+Insert' function.
 
 User1=2095,3,50230
 
@@ -396,7 +401,7 @@ Menu command                        ID
 [Edit] PasteCR                      50240
 [Edit] Clear screen                 50250
 [Edit] Clear buffer                 50260
-[Edit] Reset Selection              50270
+[Edit] Reset selection              50270
 [Edit] Select screen                50280
 [Edit] Select all                   50290
 [Setup] Terminal                    50310
@@ -437,15 +442,15 @@ TTProxy Menu command                ID
 
 TTXKanjiMenu Menu command           ID
 -----------------------------------------
-[KanjiCode] Recv: Shift_JIS         8449
-[KanjiCode] Recv: EUC-JP            8450
-[KanjiCode] Recv: JIS               8451
-[KanjiCode] Recv: UTF-8             8452
-[KanjiCode] Rect: UTF-8m            8453
-[KanjiCode] Send: Shift_JIS         8705
-[KanjiCode] Send: EUC-JP            8706
-[KanjiCode] Send: JIS               8707
-[KanjiCode] Send: UTF-8             8708
+[KanjiCode] Recv: Shift_JIS         54010
+[KanjiCode] Recv: EUC-JP            54011
+[KanjiCode] Recv: JIS               54012
+[KanjiCode] Recv: UTF-8             54013
+[KanjiCode] Recv: UTF-8m            54014
+[KanjiCode] Send: Shift_JIS         54110
+[KanjiCode] Send: EUC-JP            54111
+[KanjiCode] Send: JIS               54112
+[KanjiCode] Send: UTF-8             54113
 
 2) TEK window
 
@@ -457,7 +462,7 @@ Menu command                        ID
 [Edit] Copy screen                  51220
 [Edit] Paste                        51230
 [Edit] PasteCR                      51240
-[Edit] Clear Screen                 51250
+[Edit] Clear screen                 51250
 [Setup] Window                      51310
 [Setup] Font                        51320
 [VTWin]                             51410

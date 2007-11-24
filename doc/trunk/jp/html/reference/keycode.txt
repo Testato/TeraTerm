@@ -411,7 +411,7 @@ A. ユーザーキーを使えば、好きな文字列を送出することができます。
 [Edit] PasteCR                      50240
 [Edit] Clear screen                 50250
 [Edit] Clear buffer                 50260
-[Edit] Reset Selection              50270
+[Edit] Reset selection              50270
 [Edit] Select screen                50280
 [Edit] Select all                   50290
 [Setup] Terminal                    50310
@@ -456,7 +456,7 @@ TTXKanjiMenu メニューコマンド       ID
 [KanjiCode] Recv: EUC-JP            54011
 [KanjiCode] Recv: JIS               54012
 [KanjiCode] Recv: UTF-8             54013
-[KanjiCode] Rect: UTF-8m            54014
+[KanjiCode] Recv: UTF-8m            54014
 [KanjiCode] Send: Shift_JIS         54110
 [KanjiCode] Send: EUC-JP            54111
 [KanjiCode] Send: JIS               54112
@@ -472,7 +472,7 @@ TTXKanjiMenu メニューコマンド       ID
 [Edit] Copy screen                  51220
 [Edit] Paste                        51230
 [Edit] PasteCR                      51240
-[Edit] Clear Screen                 51250
+[Edit] Clear screen                 51250
 [Setup] Window                      51310
 [Setup] Font                        51320
 [VTWin]                             51410
