@@ -3,7 +3,7 @@
 ; File: screencapture.ttl
 ; Description: capture screen contents and write to file
 ; Environment: generic
-; Update: 2007/11/20
+; Update: 2007/11/25
 ; Author: IWAMOTO Kouichi (doda)
 
 getdate date
