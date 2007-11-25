@@ -29,5 +29,3 @@ while 1
 	pause 3
 
 endwhile
-
-

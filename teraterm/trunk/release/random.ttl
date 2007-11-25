@@ -25,4 +25,3 @@ exit
 int2str s val
 statusbox s 'random value'
 return
-

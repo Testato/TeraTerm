@@ -22,4 +22,3 @@ strconcat msg ' /passwd='
 strconcat msg inputstr
 
 connect msg
-
