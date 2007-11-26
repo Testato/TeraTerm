@@ -808,6 +808,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="do, loop">
+					<param name="Local" value="html\macro\command\doloop.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="end">
 					<param name="Local" value="html\macro\command\end.html">
 					<param name="ImageNumber" value="11">
@@ -850,6 +855,11 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="pause">
 					<param name="Local" value="html\macro\command\pause.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="until, enduntil">
+					<param name="Local" value="html\macro\command\until.html">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
