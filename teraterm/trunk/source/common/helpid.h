@@ -174,8 +174,10 @@
 #define HlpMacroCommandConnect          92010
 #define HlpMacroCommandDelpassword      92011
 #define HlpMacroCommandDisconnect       92012
+#define HlpMacroCommandDo               92126
 #define HlpMacroCommandEnablekeyb       92015
 #define HlpMacroCommandEnd              92016
+#define HlpMacroCommandEndUntil         92129
 #define HlpMacroCommandExec             92019
 #define HlpMacroCommandExeccmnd         92020
 #define HlpMacroCommandExit             92021
@@ -222,6 +224,7 @@
 #define HlpMacroCommandLogpause         92061
 #define HlpMacroCommandLogstart         92062
 #define HlpMacroCommandLogwrite         92063
+#define HlpMacroCommandLoop             92127
 #define HlpMacroCommandMakepath         92064
 #define HlpMacroCommandMessagebox       92065
 #define HlpMacroCommandMpause           92111
@@ -264,6 +267,7 @@
 #define HlpMacroCommandTolower          92118
 #define HlpMacroCommandToupper          92119
 #define HlpMacroCommandUnlink           92099
+#define HlpMacroCommandUntil            92128
 #define HlpMacroCommandVar2clipb        92114
 #define HlpMacroCommandWait             92100
 #define HlpMacroCommandWaitevent        92101
