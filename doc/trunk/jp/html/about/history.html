@@ -44,8 +44,7 @@
           <li>DECSCL制御シーケンスによるC1制御モードの変更に対応した。</li>
         </ul></li>
       <li>KAM(キーボードロック), DECNKM(数値キーパッドモード変更)制御シーケンスに対応した。</li>
-      <li>Fileメニュー配下の"Change directory"において、"New dir"にフォルダを選択するダイアログから選択できるようにした。</li>
-      <li>Telnet のとき、または DisableTCPEchoCR が TRUE のときに、明示的に TCPLocalEcho/TCPCRSend を無効にするようにした。ウィンドウを閉じずに再接続したとき、直前の設定が残ってしまうため。</li>
+      <li>Fileメニュー配下の"<a href="../menu/file-chdir.html">Change directory</a>"において、"New dir"にフォルダを選択するダイアログから選択できるようにした。</li>
       <li>マウスドラッグによる選択を、左ボタンでのみ有効にする機能を追加した。
         <ul>
           <li>teraterm.ini に SelectOnlyByLButton エントリを追加した。デフォルトは on。</li>
@@ -59,7 +58,7 @@
         </ul></li>
       <li>マクロコマンド <a href="../macro/command/doloop.html">do - loop</a> を新規追加した。</li>
       <li>マクロコマンド <a href="../macro/command/until.html">until - enduntil</a> を新規追加した。</li>
-      <li>マクロコマンド callmenu を新規追加した。</li>
+      <li>マクロコマンド <a href="../macro/command/callmenu.html">callmenu</a> を新規追加した。</li>
       <li>Telnetコマンドの自動検出を無効化できるようにした。
         <ul>
           <li>teraterm.ini に <a href="../setup/teraterm-com.html#detecttelnet">TelAutoDetect</a>エントリを追加した。デフォルトはon。</li>
@@ -67,9 +66,10 @@
       <li>メニューから選択領域を解除できるようにした。<a href="../menu/edit.html">編集メニュー</a>配下に「選択を解除」を追加した。主にマクロから呼ばれて使われる事を想定しています。</li>
       <li>ウインドウの透明度を 255 に変更できない問題を修正した。</li>
       <li>サーバから送信されるタイトル文字列の末尾 1 文字が削られる問題を修正した。</li>
+      <li>New connection ダイアログから Telnet 接続を開始したとき、TCPLocalEcho/TCPCRSend の設定が使用されてしまうことがある問題を修正した。</li>
       <li><a href="../menu/setup-additional.html#continuedline">継続行連結コピー</a>を有効に設定している時、<a href="../menu/edit.html#copytable">テーブルをコピー</a>が正しく動作しない場合がある問題を修正した。</li>
       <li><a href="../menu/setup-keyboard.html#delkey">DeleteキーでDELを送信する</a>設定で Num Lock の状態が Off の時、数値キーパッドの"."でDELが送信されていたのを修正した。</li>
-      <li>マクロの<a href="../macro/command/wait.html">wait</a>コマンドが長い文字列を待てなくなっていたのを修正した。4.54でのエンバグ。</li>
+      <li>マクロの <a href="../macro/command/wait.html">wait</a> コマンドが長い文字列を待てなくなっていたのを修正した。4.54でのエンバグ。</li>
       <li><a href="../menu/setup-window.html">ウィンドウの設定ダイアログ</a>のカラー設定で、値が15以下の時にPageUpキーを押すと255になるのを修正した。</li>
       <li>COMポート番号を強制付け替えした場合に、レジストリに残っている古いFriendlyNameが表示されてしまう問題を修正した。パッチ作成に感謝します＞xoxo氏</li>
       <li>TEKウィンドウの<a href="../menutek/setup-window.html">ウィンドウの設定ダイアログ</a>で、“常に標準の背景色を使う”チェックボックスを表示しないようにした。</li>
@@ -957,6 +957,7 @@
         <ul>
           <li><s>パケット送信処理にTCPコネクション切断の誤検出をしないようにした。</s></li>
         </ul></li>
+      <li>OpenSSL 0.9.8gへ差し替えた</li>
     </ul>
   </li>
 

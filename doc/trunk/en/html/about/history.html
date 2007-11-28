@@ -44,7 +44,7 @@
           <li>added support of changing C1 control mode by DECSCL control sequence.</li>
         </ul></li>
       <li>added support for KAM(Keyboard Lock) and DECNKM(numeric keypad mode) control sequences.</li>
-      <li>added an open dialog to select a folder at "Change directory" menu under file menu.</li>
+      <li>added an open dialog to select a folder at "<a href="../menu/file-chdir.html">Change directory</a>" menu under file menu.</li>
       <li>On UTF-8 encoding, single COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK(U+3099) and COMBINING KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK(U+309A) are displayed as KATAKANA-HIRAGANA VOICED SOUND MARK(U+309B) and KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK(U+309C).</li>
       <li>add support of handling large text data in clipboard to macro command <a href="../macro/command/clipb2var.html">clipb2var</a>.
         <ul>
@@ -53,7 +53,7 @@
         </ul></li>
       <li>added '<a href="../macro/command/doloop.html">do</a>', '<a href="../macro/command/doloop.html">loop</a>' macro command.</li>
       <li>added '<a href="../macro/command/until.html">until</a>', '<a href="../macro/command/until.html">enduntil</a>' macro command.</li>
-      <li>added 'callmenu' macro command.</li>
+      <li>added '<a href="../macro/command/callmenu.html">callmenu</a>' macro command.</li>
       <li>added new optional setting that can disable telnet command detection.
         <ul>
           <li>added <a href="../setup/teraterm-com.html#detecttelnet">TelAutoDetect</a> entry to teraterm.ini. default is on.</li>
@@ -63,7 +63,7 @@
       <li>Bug fix: last 1 character of title string that is sent from server is deleted.</li>
       <li>Bug fix: when <a href="../menu/setup-additional.html#continuedline">continued line copy</a> is enabled, <a href="../menu/edit.html#copytable">Copy Table</a> does not work correctly</li>
       <li>Bug fix: when <a href="../menu/setup-keyboard.html#delkey">Transmit DEL by Delete key</a> is enabled and Num Lock status is off, Numeric Keypad "." sends DEL.</li>
-      <li>Bug fix: <a href="../macro/command/wait.html">Wait</a> command can't wait a long string. Enbuged at 4.54.</li>
+      <li>Bug fix: '<a href="../macro/command/wait.html">wait</a>' macro command can't wait a long string. Enbuged at 4.54.</li>
       <li>Bug fix: The color value on <a href="../menu/setup-window.html">Window setup dialog</a> would become 255 when the value is less than 16 and the user pushes PageUP key.</li>
       <li>Bug fix: COM port description would be wrong when COM port number is forced to switch another number. Special thanks to xoxo-san.</li>
       <li>Bug fix: On TEK Window's <a href="../menutek/setup-window.html">Setup Window dialog</a>, "Always use Normal text's BG" checkbox is displayed.</a>
@@ -949,6 +949,7 @@ SYNOPSIS:
         <ul>
           <li><s>Bug fix: TCP disconnection was mis-detected in the packet sending.</s></li>
         </ul></li>
+      <li>upgraded OpenSSL to 0.9.8g</li>
     </ul>
   </li>
 
