@@ -24,7 +24,7 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.56">2007.11.26 (Ver 4.56 未リリース)</a>
+  <li class="history"><a name="teraterm_4.56">2007.11.29 (Ver 4.56 未リリース)</a>
     <ul>
       <li>アプリケーションキーパッド/カーソルモードを無効にできるようにした。アプリケーションキーパッド/カーソルモードについては、「<a href="../usage/tips/appkeypad.html">キーパッドモードについて</a>」を参照してください。
         <ul>
@@ -957,6 +957,7 @@
         <ul>
           <li><s>パケット送信処理にTCPコネクション切断の誤検出をしないようにした。</s></li>
         </ul></li>
+      <li>SSH2ポート転送(local-to-remote)において、大きなサイズのパケットをサーバから受信した場合に、ローカルクライアントへの送信が失敗する問題を修正した。TTSSHオリジナルバグ。</li>
       <li>OpenSSL 0.9.8gへ差し替えた</li>
     </ul>
   </li>
