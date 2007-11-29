@@ -79,6 +79,7 @@ BOOL UTIL_sock_buffered_write(PTInstVar pvar, UTILSockWriteBuf FAR * buf,
 
 	/* Fast path case: buffer is empty, try nonblocking write */
 	if (buf->datalen == 0) {
+#if 0
 		int sent_amount = send_until_block(pvar, socket, data, len);
 
 		if (sent_amount < 0) {
@@ -86,6 +87,17 @@ BOOL UTIL_sock_buffered_write(PTInstVar pvar, UTILSockWriteBuf FAR * buf,
 		}
 		data += sent_amount;
 		len -= sent_amount;
+#else
+		// ノンブロッキングモードで送れなかった場合、以降の処理へ続くが、バグがあるため、
+		// まともに動かない。ゆえに、初回でブロッキングモードを使い、確実に送信してしまう。
+		// ポート転送(local-to-remote)において、でかいパケットを受信できない問題への対処。
+		// (2007.11.29 yutaka)
+		if (!blocking_write(pvar, socket, data, len)) {
+			return FALSE;
+		} else {
+			len = 0;
+		}
+#endif
 	}
 
 	if (len == 0) {

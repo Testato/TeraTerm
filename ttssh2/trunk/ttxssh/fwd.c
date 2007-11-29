@@ -1894,6 +1894,7 @@ static BOOL blocking_write(PTInstVar pvar, SOCKET s, const char FAR * data,
 {
 	u_long do_block = 0;
 
+#if 0
 	return (pvar->PWSAAsyncSelect) (s, make_accept_wnd(pvar), 0,
 	                                0) == SOCKET_ERROR
 	    || ioctlsocket(s, FIONBIO, &do_block) == SOCKET_ERROR
@@ -1901,6 +1902,30 @@ static BOOL blocking_write(PTInstVar pvar, SOCKET s, const char FAR * data,
 	    || (pvar->PWSAAsyncSelect) (s, pvar->fwd_state.accept_wnd,
 	                                WM_SOCK_ACCEPT,
 	                                FD_READ | FD_CLOSE | FD_WRITE) == SOCKET_ERROR;
+#else
+	if ( (pvar->PWSAAsyncSelect) (s, make_accept_wnd(pvar), 0, 0) == SOCKET_ERROR ) {
+			goto error;
+	}
+
+	if ( ioctlsocket(s, FIONBIO, &do_block) == SOCKET_ERROR ) {
+			goto error;
+	}
+
+	if ( (pvar->Psend) (s, data, length, 0) != length ) {
+			goto error;
+	}
+
+	if ( (pvar->PWSAAsyncSelect) (s, pvar->fwd_state.accept_wnd,
+	                                WM_SOCK_ACCEPT,
+									FD_READ | FD_CLOSE | FD_WRITE) == SOCKET_ERROR ) {
+			goto error;
+	}
+
+	return (TRUE);
+
+error:
+	return (FALSE);
+#endif
 }
 
 void FWD_received_data(PTInstVar pvar, uint32 local_channel_num,
