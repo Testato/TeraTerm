@@ -171,27 +171,28 @@ the "local echo" option is turned on and the "new-line (transmit)" option is set
 
 <pre>
 Default:
-TCPLocalEcho=off    (This option is disabled and the "local echo" option in the [Setup] Terminal dialog box is always used.)
-TCPCRSend=          (This option is disabled and the "new-line (transmit)" option in the [Setup] Terminal dialog box is always used.)
+TCPLocalEcho=off
+; (This option is disabled and the "local echo" option
+; in the [Setup] Terminal dialog box is always used.)
+TCPCRSend=
+; (This option is disabled and the "new-line (transmit)" option
+; in the [Setup] Terminal dialog box is always used.)
 </pre>
 
-<h2><a name="detecttelnet">Disable Telnet command auto detection.</a></h2>
+<h2><a name="detecttelnet">Disable Auto-Detect mode of Telnet command</a></h2>
 
 <p>
-	<!-- Fix me -->
+TeraTerm will detect a command of Telnet sent from host even a connection is in non-Telnet mode.Once it detects a command, a connection is treated as if in Telnet mode.<br>
+However, there is a possible problem that a connection is forced to Telnet mode when a character of '0xFF' is sent from TeraTerm, it will be echoed back and is recognized as Telnet command.
 </p>
 
 <p>
-If you edit the TelAutDetect line in the [Tera Term] section of the setup file like the following:
+This problem can be avoided by changing TelAutoDetect in [Tera Term] section of configuration file as follows,
 </p>
 
 <pre>
 TelAutoDetect=off
 </pre>
-
-<p>
-TeraTerm do not respond telnet commands sent by the host.
-</p>
 
 <pre>
 Default:
