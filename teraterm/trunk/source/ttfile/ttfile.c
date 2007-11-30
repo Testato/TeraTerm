@@ -325,8 +325,15 @@ BOOL FAR PASCAL GetTransFname
 	ofn.lpstrFile = fv->FullName;
 	ofn.nMaxFile = sizeof(fv->FullName);
 	if (FuncId == GTF_LOG) {
+		DWORD logdir = GetFileAttributes(fv->LogDefaultPath);
 		// ログ保存の場合は初期フォルダを決め打ちしないようにする。(2007.8.24 yutaka)
-		ofn.lpstrInitialDir = NULL;
+		if (logdir != -1 && logdir & FILE_ATTRIBUTE_DIRECTORY) {
+			// LogDefaultPathが存在するなら、そこを初期フォルダにする。(2007.11.30 maya)
+			ofn.lpstrInitialDir = fv->LogDefaultPath;
+		}
+		else {
+			ofn.lpstrInitialDir = NULL;
+		}
 	} else {
 		ofn.lpstrInitialDir = CurDir;
 	}

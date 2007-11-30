@@ -83,6 +83,8 @@ typedef struct {
 
   BOOL Success;
   BOOL NoMsg;
+
+  char LogDefaultPath[MAX_PATH];
 } TFileVar;
 typedef TFileVar far *PFileVar;
 

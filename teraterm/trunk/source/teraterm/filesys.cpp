@@ -322,6 +322,7 @@ void LogStart()
 		// &h をホスト名に置換 (2007.5.14)
 		ConvertLogname(LogVar->FullName, sizeof(LogVar->FullName));
 
+		strncpy_s(LogVar->LogDefaultPath, sizeof(LogVar->LogDefaultPath), ts.LogDefaultPath, _TRUNCATE);
 		if (! (*GetTransFname)(LogVar, logdir, GTF_LOG, &Option))
 		{
 			FreeFileVar(&LogVar);
