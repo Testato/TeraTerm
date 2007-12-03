@@ -343,9 +343,6 @@ void BuffCancelSelection()
 	SelectStart.y = 0;
 	SelectEnd.x = 0;
 	SelectEnd.y = 0;
-
-	BuffEndSelect();
-	ChangeSelectRegion();
 }
 
 void BuffReset()

@@ -3235,7 +3235,13 @@ void CVTWindow::OnEditSelectScreenBuffer()
 
 void CVTWindow::OnEditCancelSelection()
 {
+	// Cancel selected buffer
+	POINT p = {0, 0};
+
+	ButtonDown(p, IdLeftButton);
 	BuffCancelSelection();
+	ButtonUp(FALSE);
+	ChangeSelectRegion();
 }
 
 
