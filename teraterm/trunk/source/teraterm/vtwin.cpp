@@ -3213,12 +3213,24 @@ void CVTWindow::OnEditClearBuffer()
 
 void CVTWindow::OnEditSelectAllBuffer()
 {
+	// Select all of buffer
+	POINT p = {0, 0};
+
+	ButtonDown(p, IdLeftButton);
 	BuffAllSelect();
+	ButtonUp(FALSE);
+	ChangeSelectRegion();
 }
 
 void CVTWindow::OnEditSelectScreenBuffer()
 {
+	// Select screen buffer
+	POINT p = {0, 0};
+
+	ButtonDown(p, IdLeftButton);
 	BuffScreenSelect();
+	ButtonUp(FALSE);
+	ChangeSelectRegion();
 }
 
 void CVTWindow::OnEditResetSelection()
