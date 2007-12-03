@@ -145,7 +145,7 @@
 #define ID_EDIT_PASTECR                 50240
 #define ID_EDIT_CLEARSCREEN             50250
 #define ID_EDIT_CLEARBUFFER             50260
-#define ID_EDIT_RESETSELECT             50270
+#define ID_EDIT_CANCELSELECT            50270
 #define ID_EDIT_SELECTSCREEN            50280
 #define ID_EDIT_SELECTALL               50290
 #define ID_SETUP_TERMINAL               50310

@@ -417,7 +417,7 @@ BEGIN
         MENUITEM "Clear &screen",               ID_EDIT_CLEARSCREEN
         MENUITEM "Clear &buffer",               ID_EDIT_CLEARBUFFER
         MENUITEM SEPARATOR
-        MENUITEM "Reset se&lection",            ID_EDIT_RESETSELECT
+        MENUITEM "Cancel se&lection",           ID_EDIT_CANCELSELECT
         MENUITEM SEPARATOR
         MENUITEM "S&elect screen",              ID_EDIT_SELECTSCREEN
         MENUITEM "Select &all",                 ID_EDIT_SELECTALL

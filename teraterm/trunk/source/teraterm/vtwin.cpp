@@ -184,7 +184,7 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_COMMAND(ID_EDIT_PASTECR, OnEditPasteCR)
 	ON_COMMAND(ID_EDIT_CLEARSCREEN, OnEditClearScreen)
 	ON_COMMAND(ID_EDIT_CLEARBUFFER, OnEditClearBuffer)
-	ON_COMMAND(ID_EDIT_RESETSELECT, OnEditResetSelection)
+	ON_COMMAND(ID_EDIT_CANCELSELECT, OnEditResetSelection)
 	ON_COMMAND(ID_EDIT_SELECTALL, OnEditSelectAllBuffer)
 	ON_COMMAND(ID_EDIT_SELECTSCREEN, OnEditSelectScreenBuffer)
 	ON_COMMAND(ID_SETUP_ADDITIONALSETTINGS, OnExternalSetup)
@@ -1007,9 +1007,9 @@ void CVTWindow::InitMenu(HMENU *Menu)
 	GetMenuString(EditMenu, ID_EDIT_CLEARBUFFER, uimsg, sizeof(uimsg), MF_BYCOMMAND);
 	get_lang_msg("MENU_EDIT_CLBUFFER", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	ModifyMenu(EditMenu, ID_EDIT_CLEARBUFFER, MF_BYCOMMAND, ID_EDIT_CLEARBUFFER, ts.UIMsg);
-	GetMenuString(EditMenu, ID_EDIT_RESETSELECT, uimsg, sizeof(uimsg), MF_BYCOMMAND);
-	get_lang_msg("MENU_EDIT_RESETSELECT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	ModifyMenu(EditMenu, ID_EDIT_RESETSELECT, MF_BYCOMMAND, ID_EDIT_RESETSELECT, ts.UIMsg);
+	GetMenuString(EditMenu, ID_EDIT_CANCELSELECT, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+	get_lang_msg("MENU_EDIT_CANCELSELECT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	ModifyMenu(EditMenu, ID_EDIT_CANCELSELECT, MF_BYCOMMAND, ID_EDIT_CANCELSELECT, ts.UIMsg);
 	GetMenuString(EditMenu, ID_EDIT_SELECTSCREEN, uimsg, sizeof(uimsg), MF_BYCOMMAND);
 	get_lang_msg("MENU_EDIT_SELECTSCREEN", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	ModifyMenu(EditMenu, ID_EDIT_SELECTSCREEN, MF_BYCOMMAND, ID_EDIT_SELECTSCREEN, ts.UIMsg);
