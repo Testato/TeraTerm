@@ -411,7 +411,7 @@ A. ユーザーキーを使えば、好きな文字列を送出することができます。
 [Edit] PasteCR                      50240
 [Edit] Clear screen                 50250
 [Edit] Clear buffer                 50260
-[Edit] Reset selection              50270
+[Edit] Cancel selection             50270
 [Edit] Select screen                50280
 [Edit] Select all                   50290
 [Setup] Terminal                    50310
