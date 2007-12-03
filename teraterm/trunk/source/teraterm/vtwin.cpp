@@ -184,7 +184,7 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_COMMAND(ID_EDIT_PASTECR, OnEditPasteCR)
 	ON_COMMAND(ID_EDIT_CLEARSCREEN, OnEditClearScreen)
 	ON_COMMAND(ID_EDIT_CLEARBUFFER, OnEditClearBuffer)
-	ON_COMMAND(ID_EDIT_CANCELSELECT, OnEditResetSelection)
+	ON_COMMAND(ID_EDIT_CANCELSELECT, OnEditCancelSelection)
 	ON_COMMAND(ID_EDIT_SELECTALL, OnEditSelectAllBuffer)
 	ON_COMMAND(ID_EDIT_SELECTSCREEN, OnEditSelectScreenBuffer)
 	ON_COMMAND(ID_SETUP_ADDITIONALSETTINGS, OnExternalSetup)
@@ -3233,9 +3233,9 @@ void CVTWindow::OnEditSelectScreenBuffer()
 	ChangeSelectRegion();
 }
 
-void CVTWindow::OnEditResetSelection()
+void CVTWindow::OnEditCancelSelection()
 {
-	BuffResetSelection();
+	BuffCancelSelection();
 }
 
 

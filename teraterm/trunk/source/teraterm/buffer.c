@@ -337,7 +337,7 @@ void BuffScreenSelect()
 //	SelectEnd.y = Y + PageStart + NumOfLines - 1;
 }
 
-void BuffResetSelection()
+void BuffCancelSelection()
 {
 	SelectStart.x = 0;
 	SelectStart.y = 0;

@@ -15,7 +15,7 @@ void FreeBuffer();
 void BuffReset();
 void BuffAllSelect();
 void BuffScreenSelect();
-void BuffResetSelection();
+void BuffCancelSelection();
 void ChangeSelectRegion();
 void BuffScroll(int Count, int Bottom);
 void BuffInsertSpace(int Count);
