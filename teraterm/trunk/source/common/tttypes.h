@@ -778,6 +778,7 @@ typedef TMap far *PMap;
  *   added tttset.ClearComBuffOnOpen.
  *   added tttset.Send8BitCtrl.
  *   added tttset.UILanguageFile_ini.
+ *   added tttset.SelectOnlyByLButton.
  *   added tttset.TelAutoDetect.
  *
  * - At version 4.54, ttset_memfilemap was replaced with ttset_memfilemap_3.
