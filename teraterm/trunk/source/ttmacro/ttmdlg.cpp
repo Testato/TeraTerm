@@ -26,6 +26,12 @@ char TopicName[11];
 char ShortName[MAXPATHLEN];
 char Param2[MAXPATHLEN];
 char Param3[MAXPATHLEN];
+char Param4[MAXPATHLEN];
+char Param5[MAXPATHLEN];
+char Param6[MAXPATHLEN];
+char Param7[MAXPATHLEN];
+char Param8[MAXPATHLEN];
+char Param9[MAXPATHLEN];
 BOOL SleepFlag;
 }
 
@@ -90,6 +96,12 @@ void ParseParam(PBOOL IOption, PBOOL VOption)
   TopicName[0] = 0;
   Param2[0] = 0;
   Param3[0] = 0;
+  Param4[0] = 0;
+  Param5[0] = 0;
+  Param6[0] = 0;
+  Param7[0] = 0;
+  Param8[0] = 0;
+  Param9[0] = 0;
   SleepFlag = FALSE;
   *IOption = FALSE;
   *VOption = FALSE;
@@ -119,6 +131,18 @@ void ParseParam(PBOOL IOption, PBOOL VOption)
 	strncpy_s(Param2, sizeof(Param2),Temp, _TRUNCATE);
       else if (j==3)
 	strncpy_s(Param3, sizeof(Param3),Temp, _TRUNCATE);
+      else if (j==4)
+	strncpy_s(Param4, sizeof(Param4),Temp, _TRUNCATE);
+      else if (j==5)
+	strncpy_s(Param5, sizeof(Param5),Temp, _TRUNCATE);
+      else if (j==6)
+	strncpy_s(Param6, sizeof(Param6),Temp, _TRUNCATE);
+      else if (j==7)
+	strncpy_s(Param7, sizeof(Param7),Temp, _TRUNCATE);
+      else if (j==8)
+	strncpy_s(Param8, sizeof(Param8),Temp, _TRUNCATE);
+      else if (j==9)
+	strncpy_s(Param9, sizeof(Param9),Temp, _TRUNCATE);
     }
   }
 

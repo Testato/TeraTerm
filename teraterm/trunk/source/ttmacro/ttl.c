@@ -87,6 +87,12 @@ BOOL InitTTL(HWND HWin)
 
 	NewStrVar("param2",Param2);
 	NewStrVar("param3",Param3);
+	NewStrVar("param4",Param4);
+	NewStrVar("param5",Param5);
+	NewStrVar("param6",Param6);
+	NewStrVar("param7",Param7);
+	NewStrVar("param8",Param8);
+	NewStrVar("param9",Param9);
 
 	ParseAgain = FALSE;
 	IfNest = 0;

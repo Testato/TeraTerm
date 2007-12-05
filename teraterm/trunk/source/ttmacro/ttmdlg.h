@@ -24,6 +24,12 @@ extern char TopicName[11];
 extern char ShortName[MAXPATHLEN];
 extern char Param2[MAXPATHLEN];
 extern char Param3[MAXPATHLEN];
+extern char Param4[MAXPATHLEN];
+extern char Param5[MAXPATHLEN];
+extern char Param6[MAXPATHLEN];
+extern char Param7[MAXPATHLEN];
+extern char Param8[MAXPATHLEN];
+extern char Param9[MAXPATHLEN];
 extern BOOL SleepFlag;
 
 #ifdef __cplusplus
