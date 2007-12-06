@@ -35,15 +35,18 @@
 
 
 * マクロコマンド追加時の作業リスト
-- コーディング
--- コマンドの内部 ID を採番する
+  TeraTermマクロを新設するときの作業手順について、以下に示します。
+  
+１．ソースコードの修正
+-- コマンドの内部 ID を採番する（「内部 ID」は"helpid.h"にも使用される）
    ... teraterm/source/ttmacro/ttmparse.h
 -- コマンド名を走査して内部 ID に変換する
    ... CheckReservedWord@teraterm/source/ttmacro/ttmparse.c
 -- コマンドの内部 ID から実際に処理をする関数を呼ぶ
    ... ExecCmnd@teraterm/source/ttmacro/ttl.c
 -- 処理する関数を作る
-- ヘルプ(言語ごと)
+
+２． ヘルプ(言語ごと)
 -- コマンドのヘルプを作る
    ... doc/LANG/html/macro/command/hogefunc.html
 -- コマンド一覧ページに追加する
@@ -84,7 +87,8 @@
        (8) nmake clean
        (9) nmake
 
-  3. teraterm\visualc\ttermpro.sln をVisual Studioで開く
+  3. teraterm\visualc\ttermpro.sln をVisual Studioで開く。
+     .slnファイルの改行コードが"LF"になっていると、Visual Studioが起動しないので注意願います。
   4. ソリューションをビルドする
   5. ビルドに成功するとteraterm\visualc\bin ディレクトリに実行プログラムが生成される
 
@@ -106,6 +110,8 @@
 * TTSSHのビルド方法
   TTSSHのビルド方法について以下に示します。
   ビルドにはVisual Studio 2005(VC++8.0)、ActivePerlが必要です。
+  
+  ※TTSSH単体のビルドは VS2005 Express Edition でも可能です。ttpcmn.libをリンクするため、TeraTermのビルドを事前に行っておく必要があります。VS2005 Express EditionではTeraTermのビルドはできませんが、ttpcmn.libは作成することができます。
 
   1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする。
 
@@ -204,7 +210,7 @@
          ISTool で teraterm\installer\teraterm.iss を開き、[Project]-[Compile Setup]で作成される
        インストールおよび実行をテストする
 
-  4. cvs のタグをつける
+  4. cvs のタグをつける。タグ名は「Rバージョン_RTM」。たとえば、v4.56ならば"R456_RTM"。
 
   5. SourceForge.jp を更新する
        [リリースファイル]-[リリースファイル/変更]-[新規作成]
