@@ -39,7 +39,7 @@ There are differences between UTF-8 TeraTerm Pro with TTSSH2(TeraTerm 4.56) and 
 
 <tr>
 	<td>License</td>
-	<td>Author original[*2]</td>
+	<td>Proprietary[*2]</td>
 	<td>BSD license[*3]</td>
 </tr>
 
@@ -223,7 +223,7 @@ Other new features are shown below.<br><br>
   <li>Add log reply menu.</li>
   <li>Add New-line to `LF' type.</li>
   <li>Add support for selecting a current screen buffer.</li>
-  <li>Add support bash style shortcut key in "Host" drop-down on "New connectin" dialog. </li>
+  <li>Add support bash style shortcut key(C-u, C-d, C-k, C-p, C-n, C-b, C-f, C-a, C-a) in "Host" drop-down on "New connectin" dialog. </li>
 </ul>
 
 <hr>
@@ -393,6 +393,21 @@ Other new features are shown below.<br><br>
 <tr>
 	<td>filenamebox</td>
 	<td>Displays a dialog box prompting user to input a string. </td>
+</tr>
+
+<tr>
+	<td>do - loop</td>
+	<td>Loop control</td>
+</tr>
+
+<tr>
+	<td>until - enduntil</td>
+	<td>Loop control</td>
+</tr>
+
+<tr>
+	<td>callmenu</td>
+	<td>can call TeraTerm window menu.</td>
 </tr>
 
 </table>
@@ -574,6 +589,16 @@ Other new features are shown below.<br><br>
 	<td>Send C1 (ASCII $80-$9F) control characters.</td>
 </tr>
 
+<tr>
+	<td>SelectOnlyByLButton</td>
+	<td>enables only mouse left-click to select the text by dragging.</td>
+</tr>
+
+<tr>
+	<td>TelAutoDetect</td>
+	<td>controls telnet command detection.</td>
+</tr>
+
 </table>
 
 
@@ -607,6 +632,12 @@ Other new features are shown below.<br><br>
 	<td>RememberPassword</td>
 	<td>can configure whether the password string which the user input will preserve on memory.</td>
 </tr>
+
+<tr>
+	<td>CheckAuthListFirst</td>
+	<td>disables SSH2 unsupported authentication method before tyring user authentication.</td>
+</tr>
+
 
 </table>
 
