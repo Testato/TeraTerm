@@ -1466,8 +1466,10 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 
 			// /ssh1 と /ssh2 オプションの新規追加 (2006.9.16 maya)
 			} else if (MATCH_STR(option + 4, "1") == 0) {
+				pvar->settings.Enabled = 1;
 				pvar->settings.ssh_protocol_version = 1;
 			} else if (MATCH_STR(option + 4, "2") == 0) {
+				pvar->settings.Enabled = 1;
 				pvar->settings.ssh_protocol_version = 2;
 
 			} else {
