@@ -245,8 +245,6 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 	} else if (pvar->session_settings.DefaultUserName[0] != 0) {
 		SetDlgItemText(dlg, IDC_SSHUSERNAME,
 		               pvar->session_settings.DefaultUserName);
-	} else {
-		SetFocus(GetDlgItem(dlg, IDC_SSHUSERNAME));
 	}
 
 	SetDlgItemText(dlg, IDC_RSAFILENAME,
@@ -311,7 +309,11 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 
 		}
 
-		if (pvar->ask4passwd == 1) {
+		GetDlgItemText(dlg, IDC_SSHUSERNAME, uimsg, sizeof(uimsg));
+		if (uimsg[0] == 0) {
+			SetFocus(GetDlgItem(dlg, IDC_SSHUSERNAME));
+		}
+		else if (pvar->ask4passwd == 1) {
 			SetFocus(GetDlgItem(dlg, IDC_SSHPASSWORD));
 		}
 #if 0
@@ -629,6 +631,9 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			    GetWindowTextLength(GetDlgItem(dlg, IDC_SSHUSERNAME)) > 0) {
 				SetTimer(dlg, IDC_TIMER2, autologin_timeout, 0);
 			}
+			// /auth=challenge が指定されていてユーザ名が確定していない
+			// ということはないと思われるので、OK ボタンを押して
+			// TIS auth ダイアログを出す
 			else {
 				SetTimer(dlg, IDC_TIMER3, autologin_timeout, 0);
 			}
@@ -682,10 +687,13 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		}
 		else if (wParam == IDC_TIMER3) {
 			if (SSHv2(pvar) || SSHv1(pvar)) {
-				KillTimer(dlg, IDC_TIMER3);
 				// TIS 用に OK を押すタイマーを仕掛ける
 				if (pvar->ssh2_authmethod == SSH_AUTH_TIS) {
-					SendMessage(dlg, WM_COMMAND, IDOK, 0);
+					if (!(pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME) &&
+					    (pvar->ssh_state.status_flags & STATUS_HOST_OK)) {
+						KillTimer(dlg, IDC_TIMER3);
+						SendMessage(dlg, WM_COMMAND, IDOK, 0);
+					}
 				}
 			}
 			// プロトコルバージョン確定前は何もしない

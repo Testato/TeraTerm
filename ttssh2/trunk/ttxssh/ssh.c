@@ -6407,7 +6407,7 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 		pvar->ssh2_authlist = cstring; // 不要になったらフリーすること
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE, "method list from server: %s", cstring);
 		notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
-
+#if 0
 		if (!pvar->session_settings.CheckAuthListFirst ||
 		    pvar->ssh2_autologin == 1) {
 			// まず none で試行して返ってきたところなので、実際のログイン処理へ
@@ -6420,6 +6420,17 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 				SendMessage(pvar->auth_state.auth_dialog, WM_COMMAND, IDOK, 0);
 			}
 		}
+#else
+		// ひとまず none で試行して返ってきたところなので、実際のログイン処理へ
+		if (pvar->ssh2_authmethod == SSH_AUTH_TIS &&
+		    (pvar->ask4passwd || pvar->ssh2_autologin) &&
+		    pvar->auth_state.auth_dialog != NULL) {
+			SendMessage(pvar->auth_state.auth_dialog, WM_COMMAND, IDOK, 0);
+		}
+		else {
+			handle_SSH2_authrequest(pvar);
+		}
+#endif
 		return TRUE;
 	}
 
