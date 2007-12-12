@@ -4455,6 +4455,15 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 			}
 			return TRUE;
 
+		case WM_COMMAND:
+			switch (LOWORD(wp)) {
+				case IDCANCEL:
+					PostMessage(hDlgWnd, WM_CLOSE, 0, 0);
+				return TRUE;
+
+			}
+			return FALSE;
+
 		default:
 			return FALSE;
 	}
