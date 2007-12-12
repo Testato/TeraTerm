@@ -726,9 +726,16 @@ int CVTWindow::Parse()
 
 void CVTWindow::ButtonUp(BOOL Paste)
 {
+	BOOL disableBuffEndSelect = false;
+
 	/* disable autoscrolling */
 	::KillTimer(HVTWin,IdScrollTimer);
 	ReleaseCapture();
+
+	if (ts.SelectOnlyByLButton &&
+	    (MButton || RButton)) {
+		disableBuffEndSelect = true;
+	}
 
 	LButton = FALSE;
 	MButton = FALSE;
@@ -737,7 +744,12 @@ void CVTWindow::ButtonUp(BOOL Paste)
 	TplClk = FALSE;
 	CaretOn();
 
-	BuffEndSelect();
+	// SelectOnlyByLButton が on で 中・右クリックしたときに
+	// バッファが選択状態だったら、選択内容がクリップボードに
+	// コピーされてしまう問題を修正 (2007.12.6 maya)
+	if (!disableBuffEndSelect) {
+		BuffEndSelect();
+	}
 
 	// added ConfirmPasteMouseRButton (2007.3.17 maya)
 	if (Paste && !ts.ConfirmPasteMouseRButton)
