@@ -4459,8 +4459,13 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 			switch (LOWORD(wp)) {
 				case IDCANCEL:
 					PostMessage(hDlgWnd, WM_CLOSE, 0, 0);
-				return TRUE;
-
+					return TRUE;
+				case IDOK:
+					{
+						int n = TabCtrl_GetCurSel(hTabCtrl);
+						PostMessage(hTabSheet[n], WM_COMMAND, IDOK, 0);
+					}
+					return TRUE;
 			}
 			return FALSE;
 
