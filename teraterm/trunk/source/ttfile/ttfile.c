@@ -290,7 +290,7 @@ BOOL FAR PASCAL GetTransFname
 			get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, sizeof(uimsg), "User define", UILanguageFile);
 			_snprintf_s(FNFilter, sizeof(FNFilter), _TRUNCATE, "%s(%s)", uimsg, FileSendFilter);
 			pf = pf + strlen(FNFilter) + 1;
-			strncat_s(FNFilter, sizeof(FNFilter) ,FileSendFilter, _TRUNCATE);
+			strncpy_s(pf, sizeof(FNFilter)-(pf - FNFilter) ,FileSendFilter, _TRUNCATE);
 			pf = pf + strlen(pf) + 1;
 		}
 		break;
@@ -305,7 +305,7 @@ BOOL FAR PASCAL GetTransFname
 			get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, sizeof(uimsg), "User define", UILanguageFile);
 			_snprintf_s(FNFilter, sizeof(FNFilter), _TRUNCATE, "%s(%s)", uimsg, FileSendFilter);
 			pf = pf + strlen(FNFilter) + 1;
-			strncat_s(FNFilter, sizeof(FNFilter) ,FileSendFilter, _TRUNCATE);
+			strncpy_s(pf, sizeof(FNFilter)-(pf - FNFilter) ,FileSendFilter, _TRUNCATE);
 			pf = pf + strlen(pf) + 1;
 		}
 		break;
@@ -489,7 +489,7 @@ BOOL FAR PASCAL GetMultiFname
     get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, sizeof(uimsg), "User define", UILanguageFile);
     _snprintf_s(FNFilter, sizeof(FNFilter), _TRUNCATE, "%s(%s)", uimsg, FileSendFilter);
     pf = pf + strlen(FNFilter) + 1;
-    strncat_s(FNFilter, sizeof(FNFilter) ,FileSendFilter, _TRUNCATE);
+    strncpy_s(pf, sizeof(FNFilter)-(pf - FNFilter) ,FileSendFilter, _TRUNCATE);
     pf = pf + strlen(pf) + 1;
   }
 
@@ -871,7 +871,7 @@ BOOL FAR PASCAL GetXFname
       get_lang_msg("FILEDLG_USER_FILTER_NAME", uimsg, sizeof(uimsg), "User define", UILanguageFile);
       _snprintf_s(FNFilter, sizeof(FNFilter), _TRUNCATE, "%s(%s)", uimsg, FileSendFilter);
       pf = pf + strlen(FNFilter) + 1;
-      strncat_s(FNFilter, sizeof(FNFilter) ,FileSendFilter, _TRUNCATE);
+      strncpy_s(pf, sizeof(FNFilter)-(pf - FNFilter) ,FileSendFilter, _TRUNCATE);
       pf = pf + strlen(pf) + 1;
     }
   }
