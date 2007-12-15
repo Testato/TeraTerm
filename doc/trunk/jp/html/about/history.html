@@ -27,10 +27,11 @@
   <li class="history"><a name="teraterm_4.57">2007.12.12 (Ver 4.57 未リリース)</a>
     <ul>
       <li><a href="../macro/commandline.html">マクロのコマンドラインパラメータ</a>に param4 から param9 を追加した。</li>
-      <li>Additional settingsダイアログをESCキーでキャンセルできるようにした。</li>
-      <li>Additional settingsダイアログをEnterキーで確定できるようにした。</li>
+      <li>Additional settings ダイアログを ESC キーでキャンセルできるようにした。</li>
+      <li>Additional settings ダイアログを Enter キーで確定できるようにした。</li>
       <li>SelectOnlyByLButton が on で、中・右クリックしたときにバッファが選択状態だった場合に、選択内容がクリップボードにコピーされてしまう問題を修正した。</li>
       <li>FileSendFilter が設定されていると、ファイルダイアログの拡張子フィルタが正しく動作しない問題を修正した。</li>
+      <li><a href="#ttssh_2.45">SSH2対応TTSSH(2.45)</a>へ差し替えた</li>
     </ul>
   </li>
 
@@ -950,8 +951,8 @@
   <li class="history"><a name="ttssh_2.45">2007.12.8 (Ver 2.45 未リリース)</a>
     <ul>
       <li>New Connection ダイアログのホスト名に /ssh1, /ssh2 が含まれている場合、SSH 接続が無効になる問題を修正した。</li>
-      <li>デフォルトユーザ名を指定しておらず、認証方式を challenge にしており、/ask4passwd を指定している場合、SSH2_MSG_SERVICE_REQUESTを2回送信してしまう問題を修正した。</li>
-      <li>認証方式を challenge にしており、CheckAuthListFirst が off で、/ask4passwd を指定している場合、TIS 認証ダイアログが自動的に出現しない問題を修正した。</li>
+      <li>デフォルトユーザ名を指定しておらず、認証方式を challenge にしており、/ask4passwd を指定している場合、SSH2_MSG_SERVICE_REQUEST を2回送信してしまう問題を修正した。</li>
+      <li>CheckAuthListFirst が off で、認証方式を challenge にしており、/ask4passwd を指定している場合、TIS 認証ダイアログが自動的に出現しない問題を修正した。</li>
       <li>CheckAuthListFirst が on で、ユーザ名を送信できる状態になる前にユーザ名を入力してフォーカスを外した場合、OKボタンを押したあとに認証が行われない問題を修正した。</li>
     </ul>
   </li>
