@@ -32,6 +32,7 @@
 #include "ttl.h"
 
 #define TTERMCOMMAND "TTERMPRO /D="
+#define CYGTERMCOMMAND "cyglaunch -o /D="
 
 // for 'ExecCmnd' command
 static BOOL ParseAgain;
@@ -450,18 +451,19 @@ WORD TTLCode2Str()
 	return Err;
 }
 
-WORD TTLConnect()
+WORD TTLConnect(WORD mode)
 {
 	TStrVal Cmnd, Str;
 	WORD Err;
 	WORD w;
 
 	Str[0] = 0;
-
 	Err = 0;
-	GetStrVal(Str,&Err);
 
-	if (Err!=0) return Err;
+	if (mode == IdConnTeraTerm || CheckParameterGiven()) {
+		GetStrVal(Str,&Err);
+		if (Err!=0) return Err;
+	}
 
 	if (GetFirstChar()!=0)
 		return ErrSyntax;
@@ -473,20 +475,33 @@ WORD TTLConnect()
 			SetResult(2);
 			return Err;
 		}
-		// new connection
-		SetFile(Str);
-		SendCmnd(CmdConnect,0);
 
-		WakeupCondition = IdWakeupInit;
-		TTLStatus = IdTTLSleep;
-		return Err;
+		if (mode == IdConnTeraTerm) {
+			// new connection
+			SetFile(Str);
+			SendCmnd(CmdConnect,0);
+
+			WakeupCondition = IdWakeupInit;
+			TTLStatus = IdTTLSleep;
+			return Err;
+		}
+		else {	// cygwin connection
+			TTLCloseTT();
+		}
 	}
 
 	SetResult(0);
 	// link to Tera Term
 	if (strlen(TopicName)==0)
 	{
-		strncpy_s(Cmnd, sizeof(Cmnd),TTERMCOMMAND, _TRUNCATE);
+		switch (mode) {
+		case IdConnTeraTerm:
+			strncpy_s(Cmnd, sizeof(Cmnd),TTERMCOMMAND, _TRUNCATE);
+			break;
+		case IdConnCygTerm:
+			strncpy_s(Cmnd, sizeof(Cmnd),CYGTERMCOMMAND, _TRUNCATE);
+			break;
+		}
 		w = HIWORD(HMainWin);
 		Word2HexStr(w,TopicName);
 		w = LOWORD(HMainWin);
@@ -3098,7 +3113,9 @@ int ExecCmnd()
 		case RsvCode2Str:
 			Err = TTLCode2Str(); break;
 		case RsvConnect:
-			Err = TTLConnect(); break;
+			Err = TTLConnect(IdConnTeraTerm); break;
+		case RsvCygConnect:
+			Err = TTLConnect(IdConnCygTerm); break;
 		case RsvDelPassword:
 			Err = TTLDelPassword(); break;
 		case RsvDisconnect:

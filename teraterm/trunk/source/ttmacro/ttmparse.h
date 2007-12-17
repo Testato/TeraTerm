@@ -32,6 +32,9 @@
 #define ErrTypeMismatch     14
 #define ErrVarNotInit       15
 
+#define IdConnTeraTerm 0
+#define IdConnCygTerm  1
+
 #define TypUnknown  0
 #define TypInteger  1
 #define TypLogical  2
@@ -167,30 +170,31 @@
 #define RsvLoop         127   // add 'loop' (2007.11.20 doda)
 #define RsvUntil        128   // add 'until' (2007.11.20 doda)
 #define RsvEndUntil     129   // add 'enduntil' (2007.11.20 doda)
+#define RsvCygConnect   130   // add 'cygconnect' (2007.12.17 doda)
 
-#define RsvOperator   150
-#define RsvBNot       151
-#define RsvBAnd       152
-#define RsvBOr        153
-#define RsvBXor       154
-#define RsvMul        155
-#define RsvPlus       156
-#define RsvMinus      157
-#define RsvDiv        158
-#define RsvMod        159
-#define RsvLT         160
-#define RsvEQ         161
-#define RsvGT         162
-#define RsvLE         163
-#define RsvNE         164
-#define RsvGE         165
-#define RsvLNot       166
-#define RsvLAnd       167
-#define RsvLOr        168
-#define RsvLXor       169
-#define RsvARShift    170 // arithmetic right shift
-#define RsvALShift    171 // arithmetic left shift
-#define RsvLRShift    172 // logical right shift
+#define RsvOperator     150
+#define RsvBNot         151
+#define RsvBAnd         152
+#define RsvBOr          153
+#define RsvBXor         154
+#define RsvMul          155
+#define RsvPlus         156
+#define RsvMinus        157
+#define RsvDiv          158
+#define RsvMod          159
+#define RsvLT           160
+#define RsvEQ           161
+#define RsvGT           162
+#define RsvLE           163
+#define RsvNE           164
+#define RsvGE           165
+#define RsvLNot         166
+#define RsvLAnd         167
+#define RsvLOr          168
+#define RsvLXor         169
+#define RsvARShift      170 // arithmetic right shift
+#define RsvALShift      171 // arithmetic left shift
+#define RsvLRShift      172 // logical right shift
 
 // integer type for buffer pointer
 typedef DWORD BINT;

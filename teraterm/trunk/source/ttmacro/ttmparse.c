@@ -131,6 +131,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 	else if (_stricmp(Str,"closett")==0) *WordId = RsvCloseTT;
 	else if (_stricmp(Str,"code2str")==0) *WordId = RsvCode2Str;
 	else if (_stricmp(Str,"connect")==0) *WordId = RsvConnect;
+	else if (_stricmp(Str,"cygconnect")==0) *WordId = RsvCygConnect;
 	else if (_stricmp(Str,"delpassword")==0) *WordId = RsvDelPassword;
 	else if (_stricmp(Str,"disconnect")==0) *WordId = RsvDisconnect;
 	else if (_stricmp(Str,"do")==0) *WordId = RsvDo;

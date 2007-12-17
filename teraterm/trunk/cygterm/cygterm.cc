@@ -79,9 +79,13 @@
 // patch level 13 - added '-d' option that is specifies the start directory
 //   Written by NAGATA Shinya. (maya.negeta@gmail.com)
 //
+/////////////////////////////////////////////////////////////////////////////
+// patch level 14 - added '-o' option that is specifies additional option for terminal emulator
+//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
+//
 
 static char Program[] = "CygTerm+";
-static char Version[] = "version 1.07_13 (2007/08/03)";
+static char Version[] = "version 1.07_14 (2007/12/17)";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -113,6 +117,7 @@ int port_range = 40;     // default number of ports
 // command lines of a terminal-emulator and a shell
 //-------------------------------------------------
 char cmd_term[256] = "";
+char cmd_termopt[256] = "";
 char cmd_shell[128] = "";
 
 // TCP port for connection to another terminal application
@@ -363,6 +368,8 @@ void load_cfg()
 //-----------------------//
 void get_args(int argc, char** argv)
 {
+    char tmp[sizeof(cmd_termopt)];
+
     for (++argv; *argv != NULL; ++argv) {
         if (!strcmp(*argv, "-t")) {             // -t <terminal emulator>
             if (*++argv == NULL)
@@ -418,6 +425,19 @@ void get_args(int argc, char** argv)
             if (*++argv == NULL)
                 break;
             chdir(*argv);
+        }
+        else if (!strcmp(*argv, "-o")) {        // -o <additional option for terminal>
+            if (*++argv == NULL)
+                break;
+            if (cmd_termopt[0] == '\0') {
+                strncpy(cmd_termopt, *argv, sizeof(cmd_termopt)-1);
+                cmd_termopt[sizeof(cmd_termopt)-1] = '\0';
+	    }
+	    else {
+                snprintf(tmp, sizeof(tmp), "%s %s", cmd_termopt, *argv);
+		strncpy(cmd_termopt, tmp, sizeof(cmd_termopt)-1);
+                cmd_termopt[sizeof(cmd_termopt)-1] = '\0';
+	    }
         }
     }
 }
@@ -967,8 +987,7 @@ int main(int argc, char** argv)
         addr.s_addr = htonl(INADDR_LOOPBACK);
         char tmp[256];
         snprintf(tmp, sizeof(tmp), cmd_term, inet_ntoa(addr), (int)ntohs(listen_port));
-        strncpy(cmd_term, tmp, sizeof(cmd_term)-1);
-        cmd_term[sizeof(cmd_term)-1] = 0;
+        snprintf(cmd_term, sizeof(cmd_term), "%s %s", tmp, cmd_termopt);
 
         // execute a terminal emulator
         if ((hTerm = exec_term()) == NULL) {
