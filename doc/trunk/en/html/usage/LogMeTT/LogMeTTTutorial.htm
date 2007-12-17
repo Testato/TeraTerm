@@ -49,17 +49,16 @@ The log format is `TeraTerm installation directory\Logs\LogMeTT<i>menu name</i>_
 <div class="img"><img width="652" height="529" src="setting_logon.jpg" alt="logon"></div>
 
 
-<!--
 
-<p>4. メニューバーの“Connection”から”Add Child”を選ぶと、エントリが一つ追加される。画面左のThis computerを右クリックしても”Add Child”が選択できる。</p>
+<p>4. When the user selects "Add Child" under "Connection" menubar, a entry will be added. And, the user also can select "Add Child" by right-click "This computer" on screen left.</p>
 
-<p>5. “This computer”の下に”Unnamed connection #1”というアイコンが追加されるので、そのアイコンを選択し”F2”キーを押して名前をつける。</p>
+<p>5. Next, "Unnamed connection #1" icon will add under "This computer", select the icon and rename by F2 key.</p>
+
 
 <div class="img"><img width="654" height="530" src="setting_add.jpg" alt="add"></div>
 
-<p>6. "Macro"タブを選び、リモートホストへログインするためのマクロを記述する。たとえば、ユーザ名を固定とし、パスワードはダイアログボックスで入力させたい場合は、次のようなマクロを書く。もちろん、パスワードをマクロ内に記述してもよいが、マクロの取り扱いには注意すること。※セキュリティに配慮したマクロ(パスワードの暗号化等)については5.セキュリティに配慮したマクロを参照</p>
-
-<p>＝注意＝<br>この記述はTeraTerm Macroなのでシングルクォート’ダブルクォート” に気をつけること。下記をコピーして貼り付けると安全</p>
+<p>6. Select "Macro" tab, and then describe the macro script to login to the remote host. If you want to fix the user name and to make the user input the user's password on dialog box, refer to in the following macro script. Alternative, you can directly write the user's password in the macro file, take care of it.<br>*NOTICE* Refer to 5. section about the security conscious macro.
+</p>
 
 <pre class="code">
 username = 'nike'
@@ -82,7 +81,10 @@ connect msg
 
 <div class="img"><img width="654" height="558" src="macro.jpg" alt="macro"></div>
 
-<p>7. F9キーを押して、マクロが正常に動作するか検証する。 問題なければ、右上にあるApplyボタンを押して設定内容を保存する。</p>
+<p>7. Push F9 key, verify to work your macro script. If it is all right, save the macro script to the file by pushing Apply button at upper right direction.
+</p>
+
+<!--
 
 <p>8. 登録したリモートホストはタスクトレイの右クリックメニューから選択することができる。</p>
 
