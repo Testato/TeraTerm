@@ -607,6 +607,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="cygconnect">
+					<param name="Local" value="html\macro\command\cygconnect.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="disconnect">
 					<param name="Local" value="html\macro\command\disconnect.html">
 					<param name="ImageNumber" value="11">

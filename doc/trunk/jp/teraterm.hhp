@@ -174,6 +174,7 @@ HlpMacroCommandClosesbox=html\macro\command\closesbox.html
 HlpMacroCommandClosett=html\macro\command\closett.html
 HlpMacroCommandCode2str=html\macro\command\code2str.html
 HlpMacroCommandConnect=html\macro\command\connect.html
+HlpMacroCommandCygConnect=html\macro\command\cygconnect.html
 HlpMacroCommandDelpassword=html\macro\command\delpassword.html
 HlpMacroCommandDisconnect=html\macro\command\disconnect.html
 HlpMacroCommandDo=html\macro\command\doloop.html
