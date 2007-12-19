@@ -112,6 +112,16 @@
   ビルドにはVisual Studio 2005(VC++8.0)、ActivePerlが必要です。
   
   ※TTSSH単体のビルドは VS2005 Express Edition でも可能です。ttpcmn.libをリンクするため、TeraTermのビルドを事前に行っておく必要があります。VS2005 Express EditionではTeraTermのビルドはできませんが、ttpcmn.libは作成することができます。
+  
+  ※VS2008 Express Editionでビルドすると、.rcファイルで下記のエラーが発生します。
+      .\ttxssh.rc(10) : fatal error RC1015: cannot open include file 'afxres.h'.
+    
+    本現象を回避するには、.rcファイルをテキストエディタで開き、afxres.hのincludeを削除し、新規に2行を追加します。
+    
+      - #include "afxres.h"
+      + #include <windows.h>
+      + #define IDC_STATIC -1
+  
 
   1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする。
 
