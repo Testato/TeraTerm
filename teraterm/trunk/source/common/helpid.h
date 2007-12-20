@@ -172,6 +172,7 @@
 #define HlpMacroCommandClosett          92008
 #define HlpMacroCommandCode2str         92009
 #define HlpMacroCommandConnect          92010
+#define HlpMacroCommandCygConnect       92120
 #define HlpMacroCommandDelpassword      92011
 #define HlpMacroCommandDisconnect       92012
 #define HlpMacroCommandDo               92126
