@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>cygconnect</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>cygconnect</h1>
+
+<p>
+Connects to Cygwin.
+</p>
+
+<pre class="macro-syntax">
+cygconnect
+</pre>
+
+<h2>Remarks</h2>
+
+<p>
+This command enables TeraTerm to connect to Cygwin -a Linux-like environment for Windows.
+</p>
+
+<p>
+The "cyglaunch.exe" application automatically searchs Cygwin installation directory, and calls CygTerm after configuring PATH environment variable added cygwin1.dll.
+</p>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+<code>
+prompt = '$'
+
+cygconnect
+wait prompt
+
+sendln 'pwd'
+wait prompt
+
+sendln 'uptime'
+wait prompt
+</code></pre>
+
+
+<h2>See also</h2>
+
+<ul>
+ <li>"<a href="closett.html">closett</a>"</li>
+ <li>"<a href="disconnect.html">disconnect</a>"</li>
+ <li>"<a href="testlink.html">testlink</a>"</li>
+ <li>"<a href="unlink.html">unlink</a>"</li>
+ <li><a href="http://www.cygwin.com/">Cygwin Information and Installation</a></li>
+</ul>
+
+</body>
+</html>
