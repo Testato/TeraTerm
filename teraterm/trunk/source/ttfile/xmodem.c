@@ -6,6 +6,7 @@
 #include "teraterm.h"
 #include "tttypes.h"
 #include "ttftypes.h"
+#include <stdio.h>
 
 #include "tt_res.h"
 #include "ttcommon.h"
@@ -162,6 +163,8 @@ BOOL XCheckPacket(PXVar xv)
 void XInit
   (PFileVar fv, PXVar xv, PComVar cv, PTTSet ts)
 {
+  char inistr[MAXPATHLEN + 10];
+
   fv->LogFlag = ((ts->LogFlag & LOG_X)!=0);
   if (fv->LogFlag)
     fv->LogFile = _lcreat("XMODEM.LOG",0);
@@ -208,6 +211,11 @@ void XInit
   switch (xv->XMode) {
     case IdXSend:
       xv->TextFlag = 0;
+
+	  // ファイル送信開始前に、"rx ファイル名"を自動的に呼び出す。(2007.12.20 yutaka)
+	  _snprintf_s(inistr, sizeof(inistr), _TRUNCATE, "rx %s\015", &(fv->FullName[fv->DirLen]));
+	  XWrite(fv,xv,cv, inistr , strlen(inistr));
+
       FTSetTimeOut(fv,TimeOutVeryLong);
       break;
     case IdXReceive:
