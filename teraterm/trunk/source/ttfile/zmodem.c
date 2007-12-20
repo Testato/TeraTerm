@@ -8,6 +8,9 @@
 #include "ttftypes.h"
 #include <stdio.h>
 
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #include "tt_res.h"
 
 #include "dlglib.h"
@@ -354,6 +357,7 @@ void ZSendFileHdr(PZVar zv)
 void ZSendFileDat(PFileVar fv, PZVar zv)
 {
   int i, j;
+  struct _stat st;
 
   if (! fv->FileOpen)
   {
@@ -375,9 +379,13 @@ void ZSendFileDat(PFileVar fv, PZVar zv)
   /* file size */
   fv->FileSize = GetFSize(fv->FullName);
 
+  /* timestamp */
+  _stat(fv->FullName, &st);
+
+  // ファイルのタイムスタンプとパーミッションも送るようにした。(2007.12.20 maya, yutaka)
   _snprintf_s(&(zv->PktOut[zv->PktOutCount]),
 	  sizeof(zv->PktOut) - zv->PktOutCount, _TRUNCATE,
-	  "%u", fv->FileSize);
+	  "%lu %lo %o", fv->FileSize, (long)st.st_mtime, 0644|_S_IFREG);
   j = strlen(&(zv->PktOut[zv->PktOutCount]))-1;
   for (i = 0 ; i <= j ; i++)
   {
