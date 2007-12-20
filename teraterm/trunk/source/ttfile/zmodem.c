@@ -713,11 +713,15 @@ void ZParseHdr(PFileVar fv, PZVar zv, PComVar cv)
       }
       break;
     case ZSKIP:
-      if (fv->FileOpen)
-	_lclose(fv->FileHandle);
+		if (fv->FileOpen) {
+			_lclose(fv->FileHandle);
+			// サーバ側に存在するファイルを送信しようとすると、ZParseRInit()で二重closeになるため、
+			// ここでフラグを落としておく。 (2007.12.20 yutaka)
+			fv->FileOpen = FALSE;    
+		}
       ZStoHdr(zv,0);
       if (zv->CtlEsc)
-	zv->RxHdr[ZF0] = ESCCTL;
+		zv->RxHdr[ZF0] = ESCCTL;
       zv->ZState = Z_SendInit;
       ZParseRInit(fv,zv);
       break;
