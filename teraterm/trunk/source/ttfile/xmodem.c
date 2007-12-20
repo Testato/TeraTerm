@@ -214,6 +214,7 @@ void XInit
 
 	  // ファイル送信開始前に、"rx ファイル名"を自動的に呼び出す。(2007.12.20 yutaka)
 	  _snprintf_s(inistr, sizeof(inistr), _TRUNCATE, "rx %s\015", &(fv->FullName[fv->DirLen]));
+	  FTConvFName(inistr+3);
 	  XWrite(fv,xv,cv, inistr , strlen(inistr));
 
       FTSetTimeOut(fv,TimeOutVeryLong);
