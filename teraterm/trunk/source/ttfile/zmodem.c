@@ -261,7 +261,6 @@ void ZSendRInit(PFileVar fv, PZVar zv)
 
 void ZSendRQInit(PFileVar fv, PZVar zv, PComVar cv)
 {
-  ZWrite(fv,zv,cv,"rz\015",3);
   ZStoHdr(zv,0);
   ZShHdr(zv,ZRQINIT);
 }
@@ -562,6 +561,13 @@ void ZInit
       break;
     case IdZSend:
       zv->ZState = Z_SendInit;
+
+	  // ファイル送信開始前に、"rz"を自動的に呼び出す。(2007.12.21 yutaka)
+	  if (ts->ZModemRcvCommand[0] != '\0') {
+		ZWrite(fv,zv,cv, ts->ZModemRcvCommand, strlen(ts->ZModemRcvCommand));
+		ZWrite(fv,zv,cv,"\015", 1);
+	  }
+
       ZSendRQInit(fv,zv,cv);
       break;
   }

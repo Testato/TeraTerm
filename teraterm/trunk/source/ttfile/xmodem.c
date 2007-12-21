@@ -213,9 +213,13 @@ void XInit
       xv->TextFlag = 0;
 
 	  // ファイル送信開始前に、"rx ファイル名"を自動的に呼び出す。(2007.12.20 yutaka)
-	  _snprintf_s(inistr, sizeof(inistr), _TRUNCATE, "rx %s\015", &(fv->FullName[fv->DirLen]));
-	  FTConvFName(inistr+3);
-	  XWrite(fv,xv,cv, inistr , strlen(inistr));
+	  if (ts->XModemRcvCommand[0] != '\0') {
+		  _snprintf_s(inistr, sizeof(inistr), _TRUNCATE, "%s %s\015", 
+			  ts->XModemRcvCommand,
+			  &(fv->FullName[fv->DirLen]));
+		  FTConvFName(inistr + strlen(ts->XModemRcvCommand) + 1);
+		  XWrite(fv,xv,cv, inistr , strlen(inistr));
+	  }
 
       FTSetTimeOut(fv,TimeOutVeryLong);
       break;

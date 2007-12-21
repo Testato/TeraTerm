@@ -364,6 +364,8 @@ struct tttset {
 	char UILanguageFile_ini[MAX_PATH];
 	WORD SelectOnlyByLButton;
 	WORD TelAutoDetect;
+	char XModemRcvCommand[MAX_PATH];
+	char ZModemRcvCommand[MAX_PATH];
 };
 
 typedef struct tttset TTTSet, *PTTSet;

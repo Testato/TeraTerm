@@ -677,6 +677,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	/* XMODEM binary file */
 	ts->XmodemBin = GetOnOff(Section, "XmodemBin", FName, TRUE);
 
+	/* XMODEM 受信コマンド (2007.12.21 yutaka) */
+	GetPrivateProfileString(Section, "XModemRcvCommand", "rx",
+	                        ts->XModemRcvCommand, sizeof(ts->XModemRcvCommand), FName);
+
 	/* Default directory for file transfer */
 	GetPrivateProfileString(Section, "FileDir", "",
 	                        ts->FileDir, sizeof(ts->FileDir), FName);
@@ -984,6 +988,11 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 
 	/* ZMODEM log  -- special option */
 	ts->LogFlag |= LOG_Z * GetOnOff(Section, "ZmodemLog", FName, FALSE);
+
+	/* ZMODEM 受信コマンド (2007.12.21 yutaka) */
+	GetPrivateProfileString(Section, "ZModemRcvCommand", "rz",
+	                        ts->ZModemRcvCommand, sizeof(ts->ZModemRcvCommand), FName);
+
 #ifndef NO_COPYLINE_FIX
 
 	/* Enable continued-line copy  -- special option */
@@ -1519,6 +1528,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	/* XMODEM binary flag */
 	WriteOnOff(Section, "XmodemBin", FName, ts->XmodemBin);
 
+	/* XMODEM 受信コマンド (2007.12.21 yutaka) */
+	WritePrivateProfileString(Section, "XmodemRcvCommand", ts->XModemRcvCommand, FName);
+
 	/* Default directory for file transfer */
 	WritePrivateProfileString(Section, "FileDir", ts->FileDir, FName);
 
@@ -1748,6 +1760,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 	/* ZMODEM log  -- special option */
 	WriteOnOff(Section, "ZmodemLog", FName, (WORD) (ts->LogFlag & LOG_Z));
+
+	/* ZMODEM 受信コマンド (2007.12.21 yutaka) */
+	WritePrivateProfileString(Section, "ZmodemRcvCommand", ts->ZModemRcvCommand, FName);
 
 	/* update file */
 	WritePrivateProfileString(NULL, NULL, NULL, FName);
