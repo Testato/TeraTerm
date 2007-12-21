@@ -29,8 +29,14 @@
       <li><a href="../macro/commandline.html">マクロのコマンドラインパラメータ</a>に param4 から param9 を追加した。</li>
       <li>Additional settings ダイアログを ESC キーでキャンセルできるようにした。</li>
       <li>Additional settings ダイアログを Enter キーで確定できるようにした。</li>
-      <li>ZMODEMのファイル送信時に、タイムスタンプとパーミッション（0644）もいっしょに送るようにした。</li>
-      <li>XMODEMのファイル送信前に、「rx ファイル名」コマンドを送るようにした。</li>
+      <li>ZMODEMのファイル送信時に、タイムスタンプとパーミッション（0644）もいっしょに送るようにした。
+        <ul>
+          <li>ZMODEM受信コマンドを teraterm.ini の ZmodemRcvCommand で指定できるようにした。デフォルトは"rz"。
+        </ul></li>
+      <li>XMODEMのファイル送信前に、「rx ファイル名」コマンドを送るようにした。
+        <ul>
+          <li>XMODEM受信コマンドを teraterm.ini の XmodemRcvCommand で指定できるようにした。デフォルトは"rx"。
+        </ul></li>
       <li>マクロコマンド '<a href="../macro/command/cygconnect.html">cygconnect</a>' を追加した。</li>
       <li>SelectOnlyByLButtonが on の状態で、別のアプリケーションでクリップボードのコピーしたデータを、TeraTerm側でペーストしようとした場合、TeraTermに選択状態のバッファがあると、そのバッファの内容がペーストされてしまう問題を修正した。</li>
       <li>FileSendFilter が設定されていると、ファイルダイアログの拡張子フィルタが正しく動作しない問題を修正した。</li>

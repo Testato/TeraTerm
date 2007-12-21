@@ -29,8 +29,14 @@
       <li>added param4 to param9 <a href="../macro/commandline.html">macro commandline parameters</a>.</li>
       <li>added ESC key binding on Additiona settings dialog.</li>
       <li>added Enter key binding on Additiona settings dialog.</li>
-      <li>added support for ZMODEM sending file with the timestamp and permission(0644) of the file.</li>
-      <li>added support for sending "rx filename" command sequence to the connected host before sending the local file with XMODEM protocol.</li>
+      <li>added support for ZMODEM sending file with the timestamp and permission(0644) of the file.
+        <ul>
+          <li>added ZmodemRcvCommand entry in teraterm.ini which is ZMODEM receive program. The default is "rz".
+        </ul></li>
+      <li>added support for sending "rx filename" command sequence to the connected host before sending the local file with XMODEM protocol.
+        <ul>
+          <li>added XmodemRcvCommand entry in teraterm.ini which is XMODEM receive program. The default is "rx".
+        </ul></li>
       <li>added '<a href="../macro/command/cygconnect.html">cygconnect</a>' macro command.</li>
       <li>Bug fix: TeraTerm would overwrite the selected buffer to the Clipboard when SelectOnlyByLButton entry is on.</li>
       <li>Bug fix: extension filters on file dialog didn't work when the FileSendFilter is specified.</li>
