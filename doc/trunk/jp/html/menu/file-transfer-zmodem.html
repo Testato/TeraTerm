@@ -23,13 +23,20 @@
 
       <dt><a href="file-transfer-zmodem-send.html">Send...</a></dt>
       <dd>
-	ファイルを送信します。
-	その前にホスト側の ZMODEM の受信コマンドを起動してください。
+	ファイルを送信します。<br>
+	TeraTermは、ZRQINIT送信する前に、ZMODEM の受信コマンド"rz"を呼び出します。
+	rzコマンドへのパスが通っている必要があります。
       </dd>
     </dl>
 
     <p>
       <a href="../usage/tips/zmodem.html">ZMODEMのヒント</a>
     </p>
+    
+    <p><b>
+      ZMODEMによるファイル送信は、Red Hat系Linux(Fedora, CentOS)上で lrzsz パッケージに
+      対して正常に動作します。zmtx-zmrx パッケージに対しては動かないことがあります。
+    </b></p>
+    
   </body>
 </html>

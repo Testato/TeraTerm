@@ -23,8 +23,9 @@
 
       <dt><a href="file-transfer-xmodem-send.html">Send...</a></dt>
       <dd>
-	ファイルを送信します。
-	その前にホスト側の XMODEM の受信コマンドを実行してください。
+	ファイルを送信します。<br>
+	TeraTermは、NAK待ちの前に、XMODEM の受信コマンド"rx ファイル名"を呼び出します。
+	rxコマンドへのパスが通っている必要があります。
       </dd>
     </dl>
 
