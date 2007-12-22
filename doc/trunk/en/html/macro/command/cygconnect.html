@@ -18,39 +18,70 @@ Connects to Cygwin.
 </p>
 
 <pre class="macro-syntax">
-cygconnect
+cygconnect [&lt;command line parameters&gt;]
 </pre>
 
 <h2>Remarks</h2>
 
 <p>
-This command enables TeraTerm to connect to Cygwin -a Linux-like environment for Windows.
+If MACRO is not linked to Tera Term, this command runs Tera Term that is connected to cygwin, and links it to MACRO.
+&lt;command line parameters&gt; is passed to CygTerm. See "<a href="../../commandline/cygterm.html">CygTerm command line</a>" for the format of &lt;command line parameters&gt;.
 </p>
 
 <p>
-The "cyglaunch.exe" application automatically searchs Cygwin installation directory, and calls CygTerm after configuring PATH environment variable added cygwin1.dll.
+MACRO has already been linked to Tera Term and Tera Term is not connected to the host, this command close Tera Term and runs new Tera Term that is connected to cygwin, and links it to MACRO.
 </p>
 
-<h2>Example</h2>
+<p>
+If MACRO has already been linked to Tera Term and Tera Term has already been connected to the host, this command is ignored.
+</p>
+
+<p>
+As a result of this command, the system variable "result" is set to one of the following values depending on the link and connection status:
+</p>
+
+<table>
+ <tr>
+  <th>Value</th>
+  <th>Status</th>
+ </tr>
+ <tr>
+  <td>0</td>
+  <td>Link to Tera Term has not been made.</td>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>Connection to the host has not been made, but link to Tera Term has been made.</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>Both connection and link have been made.</td>
+ </tr>
+</table>
+
+<p>
+To test the current link and connect status before executing the "cygconnect" command, use the "<a href="testlink.html">testlink</a>" command.
+</p>
+
+<p>
+Communication commands except "<a href="connect.html">connect</a>", "cygconnect" and "<a href="testlink.html">testlink</a>" can not be executed before the link is established.
+</p>
+
+<h2>Examples</h2>
 
 <pre class="macro-example">
-<code>
-prompt = '$'
-
+<code>; connects to cygwin.
 cygconnect
-wait prompt
 
-sendln 'pwd'
-wait prompt
-
-sendln 'uptime'
-wait prompt
+; change directory to C:\ and runs Tera Term that is connected to cygwin.
+cygconnect '-d C:\ -nocd -nols'
 </code></pre>
 
 
 <h2>See also</h2>
 
 <ul>
+ <li>"<a href="connect.html">connect</a>"</li>
  <li>"<a href="closett.html">closett</a>"</li>
  <li>"<a href="disconnect.html">disconnect</a>"</li>
  <li>"<a href="testlink.html">testlink</a>"</li>
