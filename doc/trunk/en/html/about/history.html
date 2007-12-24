@@ -35,7 +35,7 @@
         </ul></li>
       <li>added support for sending "rx filename" command sequence to the connected host before sending the local file with XMODEM protocol.
         <ul>
-          <li>added XmodemRcvCommand entry in teraterm.ini which is XMODEM receive program. The default is "rx".
+          <li>added XmodemRcvCommand entry in teraterm.ini which is XMODEM receive program. The default is "".
         </ul></li>
       <li>added '<a href="../macro/command/cygconnect.html">cygconnect</a>' macro command.</li>
       <li>Bug fix: TeraTerm would overwrite the selected buffer to the Clipboard when SelectOnlyByLButton entry is on.</li>
@@ -958,6 +958,7 @@ SYNOPSIS:
 <ul>
   <li class="history"><a name="ttssh_2.45">2007.12.8 (Ver 2.45 not released)</a>
     <ul>
+      <li>added support for sending a local file with SSH2 SCP protocol.</li>
       <li>Bug fix: SSH is disabled when "/ssh1" or "/ssh2" is included in hostname on New Connection dialog.</li>
       <li>Bug fix: デフォルトユーザ名を指定しておらず、認証方式を challenge にしており、/ask4passwd を指定している場合、SSH2_MSG_SERVICE_REQUEST を2回送信してしまう問題を修正した。</li>
       <li>Bug fix: CheckAuthListFirst が off で、認証方式を challenge にしており、/ask4passwd を指定している場合、TIS 認証ダイアログが自動的に出現しない問題を修正した。</li>
