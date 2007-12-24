@@ -477,6 +477,8 @@ void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
                       char FAR * to_remote_host, int to_remote_port,
                       char FAR * originator, unsigned short originator_port);
 
+int SSH_start_scp(PTInstVar pvar, char *sendfile);
+
 /* auxiliary SSH2 interfaces for pkt.c */
 int SSH_get_min_packet_size(PTInstVar pvar);
 /* data is guaranteed to be at least SSH_get_min_packet_size bytes long

@@ -47,6 +47,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "crypt.h"
 #include "fwd.h"
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <assert.h>
+
 // SSH2 macro
 #ifdef _DEBUG
 #define SSH2_DEBUG
@@ -64,13 +68,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define CHANNEL_MAX 100
 
 enum channel_type {
-	TYPE_SHELL, TYPE_PORTFWD,
+	TYPE_SHELL, TYPE_PORTFWD, TYPE_SCP,
+};
+
+enum scp_state {
+	SCP_INIT, SCP_TIMESTAMP, SCP_FILEINFO, SCP_DATA, SCP_CLOSING,
 };
 
 typedef struct bufchain {
 	buffer_t *msg;
 	struct bufchain *next;
 } bufchain_t;
+
+typedef struct scp {
+	enum scp_state state;      // SCP state 
+	char sendfile[MAX_PATH];       // sending filename
+	char sendfilefull[MAX_PATH];   // sending filename fullpath
+	FILE *sendfp;                  // file pointer
+	struct _stat filestat;         // file status information
+	HANDLE thread;                 // sending thread handle
+} scp_t;
 
 typedef struct channel {
 	int used;
@@ -85,6 +102,7 @@ typedef struct channel {
 	enum channel_type type;
 	int local_num;
 	bufchain_t *bufchain;
+	scp_t scp;
 } Channel_t;
 
 static Channel_t channels[CHANNEL_MAX];
@@ -161,6 +179,10 @@ static Channel_t *ssh2_channel_new(unsigned int window, unsigned int maxpack,
 	c->type = type;
 	c->local_num = local_num;  // alloc_channel()の返値を保存しておく
 	c->bufchain = NULL;
+	if (type == TYPE_SCP) {
+		c->scp.state = SCP_INIT;
+		c->scp.thread = (HANDLE)-1L;
+	}
 
 	return (c);
 }
@@ -231,6 +253,16 @@ static void ssh2_channel_delete(Channel_t *c)
 		free(ptr);
 	}
 
+	if (c->type == TYPE_SCP) {
+		c->scp.state = SCP_CLOSING;
+		// SCPスレッドが動いていたら終わるまで待つ
+		if (c->scp.thread != (HANDLE)-1L) {
+			WaitForSingleObject(c->scp.thread, INFINITE);
+			CloseHandle(c->scp.thread);
+			c->scp.thread = (HANDLE)-1L;
+		}
+	}
+
 	memset(c, 0, sizeof(Channel_t));
 	c->used = 0;
 }
@@ -283,16 +315,19 @@ static Channel_t *ssh2_local_channel_lookup(int local_num)
 //
 // SSH heartbeat mutex
 //
-static CRITICAL_SECTION g_ssh_heartbeat_lock;   /* ロック用変数 */
+static CRITICAL_SECTION g_ssh_heartbeat_lock;   /* 送受信用ロック */
+static CRITICAL_SECTION g_ssh_blocking_send_lock;   /* send_packet_blocking()用ロック */
 
 void ssh_heartbeat_lock_initialize(void)
 {
 	InitializeCriticalSection(&g_ssh_heartbeat_lock);
+	InitializeCriticalSection(&g_ssh_blocking_send_lock);
 }
 
 void ssh_heartbeat_lock_finalize(void)
 {
 	DeleteCriticalSection(&g_ssh_heartbeat_lock);
+	DeleteCriticalSection(&g_ssh_blocking_send_lock);
 }
 
 void ssh_heartbeat_lock(void)
@@ -303,6 +338,16 @@ void ssh_heartbeat_lock(void)
 void ssh_heartbeat_unlock(void)
 {
 	LeaveCriticalSection(&g_ssh_heartbeat_lock);
+}
+
+static void ssh_blocking_send_lock(void)
+{
+	EnterCriticalSection(&g_ssh_blocking_send_lock);
+}
+
+static void ssh_blocking_send_unlock(void)
+{
+	LeaveCriticalSection(&g_ssh_blocking_send_lock);
 }
 
 
@@ -830,6 +875,8 @@ static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 	// パケット送信後にバッファを使いまわすため、ブロッキングで送信してしまう必要がある。
 	// ノンブロッキングで送信してWSAEWOULDBLOCKが返ってきた場合、そのバッファは送信完了する
 	// まで保持しておかなくてはならない。(2007.10.30 yutaka)
+	// 以下の処理は thread-safe ではないため、失敗することがある。ゆえに、全体をロックする
+	// 必要がある。(2007.12.24 yutaka)
 	u_long do_block = 0;
 	int code = 0;
 	char *kind = NULL, buf[256];
@@ -852,6 +899,8 @@ static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 		return TRUE;
 	}
 #else
+	ssh_blocking_send_lock();
+
 	if ((pvar->PWSAAsyncSelect) (pvar->socket, pvar->NotificationWindow,
 	                             0, 0) == SOCKET_ERROR) {
 			code = WSAGetLastError();
@@ -876,10 +925,13 @@ static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 			kind = "WSAAsyncSelect2";
 			goto error;
 	}
+	ssh_blocking_send_unlock();
 
 	return TRUE;
 
 error:
+	ssh_blocking_send_unlock();
+
 	UTIL_get_lang_msg("MSG_SSH_SEND_PKT_ERROR", pvar,
 	                  "A communications error occurred while sending an SSH packet.\n"
 	                  "The connection will close. (%s:%d)");
@@ -3307,6 +3359,79 @@ void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
 		enque_handlers(pvar, 2, msgs, handlers);
 	}
 
+}
+
+
+//
+// SCP support
+//
+// (2007.12.21 yutaka)
+//
+int SSH_start_scp(PTInstVar pvar, char *sendfile)
+{
+	buffer_t *msg;
+	char *s;
+	unsigned char *outmsg;
+	int len;
+	Channel_t *c = NULL;
+	FILE *fp = NULL;
+	struct _stat st;
+
+	// ソケットがクローズされている場合は何もしない。
+	if (pvar->socket == INVALID_SOCKET)
+		goto error;
+
+	if (SSHv1(pvar))      // SSH1サポートはTBD
+		goto error;
+
+	fp = fopen(sendfile, "rb");
+	if (fp == NULL)
+		goto error;
+
+	// チャネル設定
+	c = ssh2_channel_new(CHAN_SES_WINDOW_DEFAULT, CHAN_SES_PACKET_DEFAULT, TYPE_SCP, -1);
+	if (c == NULL) {
+		UTIL_get_lang_msg("MSG_SSH_NO_FREE_CHANNEL", pvar,
+		                  "Could not open new channel. TTSSH is already opening too many channels.");
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+		goto error;
+	}
+	// setup SCP data
+	c->scp.state = SCP_INIT;
+	strncpy_s(c->scp.sendfilefull, sizeof(c->scp.sendfilefull), sendfile, _TRUNCATE);  // full path
+	ExtractFileName(sendfile, c->scp.sendfile, sizeof(c->scp.sendfile));   // file name only
+	c->scp.sendfp = fp;     // file pointer
+	if (_stat(c->scp.sendfilefull, &st) == 0) {
+		c->scp.filestat = st;
+	} else {
+		goto error;
+	}
+
+	// session open
+	msg = buffer_init();
+	if (msg == NULL) {
+		goto error;
+	}
+	s = "session";
+	buffer_put_string(msg, s, strlen(s));  // ctype
+	buffer_put_int(msg, c->self_id);  // self(channel number)
+	buffer_put_int(msg, c->local_window);  // local_window
+	buffer_put_int(msg, c->local_maxpacket);  // local_maxpacket
+	len = buffer_len(msg);
+	outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN, len);
+	memcpy(outmsg, buffer_ptr (msg), len);
+	finish_send_packet(pvar);
+	buffer_free(msg);
+
+	return TRUE;
+
+error:
+	if (c != NULL)
+		ssh2_channel_delete(c);
+	if (fp != NULL)
+		fclose(fp);
+
+	return FALSE;
 }
 
 
@@ -6627,10 +6752,12 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 		return TRUE;
 	}
 
-	// ポートフォワーディングの準備 (2005.2.26, 2005.6.21 yutaka)
-	// シェルオープンしたあとに X11 の要求を出さなくてはならない。(2005.7.3 yutaka)
-	FWD_prep_forwarding(pvar);
-	FWD_enter_interactive_mode(pvar);
+	if (c->type == TYPE_SHELL) {
+		// ポートフォワーディングの準備 (2005.2.26, 2005.6.21 yutaka)
+		// シェルオープンしたあとに X11 の要求を出さなくてはならない。(2005.7.3 yutaka)
+		FWD_prep_forwarding(pvar);
+		FWD_enter_interactive_mode(pvar);
+	}
 
 	//debug_print(100, data, len);
 
@@ -6648,9 +6775,21 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	}
 
 	buffer_put_int(msg, remote_id);
-	s = "pty-req";  // pseudo terminalのリクエスト
+	if (c->type == TYPE_SCP) {
+		s = "exec";
+	} else {
+		s = "pty-req";  // pseudo terminalのリクエスト
+	}
 	buffer_put_string(msg, s, strlen(s));
 	buffer_put_char(msg, wantconfirm);  // wantconfirm (disableに変更 2005/3/28 yutaka)
+
+	if (c->type == TYPE_SCP) {
+		char sbuf[MAX_PATH + 30];
+		_snprintf_s(sbuf, sizeof(sbuf), _TRUNCATE, "scp -t %s", c->scp.sendfile);
+		buffer_put_string(msg, sbuf, strlen(sbuf));
+		goto done;
+	}
+
 	s = pvar->ts->TermType; // TERM
 	buffer_put_string(msg, s, strlen(s));
 	buffer_put_int(msg, pvar->ssh_state.win_cols);  // columns
@@ -6681,6 +6820,7 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	buffer_put_string(msg, buffer_ptr(ttymsg), buffer_len(ttymsg));
 #endif
 
+done:
 	len = buffer_len(msg);
 	outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_REQUEST, len);
 	memcpy(outmsg, buffer_ptr(msg), len);
@@ -6877,12 +7017,68 @@ static void do_SSH2_adjust_window_size(PTInstVar pvar, Channel_t *c)
 
 }
 
+
+typedef struct scp_thread_parm {
+	PTInstVar pvar;
+	Channel_t *c;
+} scp_thread_parm_t;
+
+static unsigned __stdcall ssh_scp_thread(void FAR * p)
+{
+	scp_thread_parm_t *parm = (scp_thread_parm_t *)p;
+	PTInstVar pvar = parm->pvar;
+	Channel_t *c = parm->c;
+	char buf[8192];
+	size_t ret;
+	long long total_size = 0;
+
+	do {
+		// ファイルから読み込んだデータはかならずサーバへ送信する。
+		ret = fread(buf, 1, sizeof(buf), c->scp.sendfp);
+		if (ret == 0)
+			break;
+
+		do {
+			// socket or channelがクローズされたらスレッドを終わる
+			if (pvar->socket == INVALID_SOCKET || c->scp.state == SCP_CLOSING || c->used == 0)
+				goto done;
+
+			// サーバのウィンドウに余裕がない場合は、送信しない。SSH2_send_channel_data()で遅延送信処理が
+			// あるが、SCPスレッドとメインスレッドは別コンテキストであるため、SCPスレッドから遅延送信処理を
+			// 行おうとしてもうまく動かない。
+			if (ret > c->remote_window) {
+				Sleep(100); // yield
+			}
+		} while (ret > c->remote_window);
+
+		// 別コンテキストで、SSHのシーケンスへ割り込まないようにロックを取る。
+		ssh_heartbeat_lock();
+		SSH2_send_channel_data(pvar, c, buf, ret);
+		ssh_heartbeat_unlock();
+
+		total_size += ret;
+
+	} while (ret >= sizeof(buf));
+
+	// EOF
+	SSH2_send_channel_data(pvar, c, "\0", 1);
+	c->scp.state = SCP_DATA;
+
+	assert(total_size == c->scp.filestat.st_size);
+
+done:
+	free(p);
+
+	return 0;
+}
+
+
 static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 {	
 	int len;
 	char *data;
 	int id;
-	unsigned int strlen;
+	unsigned int str_len;
 	Channel_t *c;
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
@@ -6903,14 +7099,14 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 	}
 
 	// string length
-	strlen = get_uint32_MSBfirst(data);
+	str_len = get_uint32_MSBfirst(data);
 	data += 4;
 
 	// バッファサイズのチェック
-	if (strlen > c->local_maxpacket) {
+	if (str_len > c->local_maxpacket) {
 		// TODO: logging
 	}
-	if (strlen > c->local_window) {
+	if (str_len > c->local_window) {
 		// TODO: logging
 		// local window sizeより大きなパケットは捨てる
 		return FALSE;
@@ -6918,19 +7114,77 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 
 	// ペイロードとしてクライアント(TeraTerm)へ渡す
 	if (c->type == TYPE_SHELL) {
-		pvar->ssh_state.payload_datalen = strlen;
+		pvar->ssh_state.payload_datalen = str_len;
 		pvar->ssh_state.payload_datastart = 8; // id + strlen
 
-	} else {
+	} else if (c->type == TYPE_PORTFWD) {
 		//debug_print(0, data, strlen);
-		FWD_received_data(pvar, c->local_num, data, strlen);
+		FWD_received_data(pvar, c->local_num, data, str_len);
 
+	} else if (c->type == TYPE_SCP) {  // SCP
+		if (str_len == 1 && data[0] == '\0') {  // OK
+
+			if (c->scp.state == SCP_INIT) {
+				char buf[128];
+
+				_snprintf_s(buf, sizeof(buf), _TRUNCATE, "T%lu 0 %lu 0\n", 
+					(unsigned long)c->scp.filestat.st_mtime,  (unsigned long)c->scp.filestat.st_atime);
+
+				c->scp.state = SCP_TIMESTAMP;
+				SSH2_send_channel_data(pvar, c, buf, strlen(buf));
+
+			} else if (c->scp.state == SCP_TIMESTAMP) {
+				char buf[128];
+
+				_snprintf_s(buf, sizeof(buf), _TRUNCATE, "C0644 %lld %s\n", 
+					(long long)c->scp.filestat.st_size, c->scp.sendfile);
+
+				c->scp.state = SCP_FILEINFO;
+				SSH2_send_channel_data(pvar, c, buf, strlen(buf));
+
+			} else if (c->scp.state == SCP_FILEINFO) {
+				HANDLE thread;
+				unsigned tid;
+				scp_thread_parm_t *parm = malloc(sizeof(scp_thread_parm_t));
+
+				if (parm == NULL) {
+					// TODO:
+				}
+				parm->pvar = pvar;
+				parm->c = c;
+
+				thread = (HANDLE)_beginthreadex(NULL, 0, ssh_scp_thread, parm, 0, &tid);
+				if (thread == (HANDLE)-1) {
+					// TODO:
+				}
+				c->scp.thread = thread;
+
+			} else if (c->scp.state == SCP_DATA) {
+				// 送信完了
+				ssh2_channel_delete(c);  // free channel
+
+				MessageBox(NULL, "SCP sending done.", "TTSSH", MB_OK);
+			}
+
+		} else {  // error
+			char msg[2048];
+			unsigned int i;
+
+			for (i = 0 ; i < str_len ; i++) {
+				msg[i] = data[i];
+			}
+			msg[i] = '\0';
+
+			ssh2_channel_delete(c);  // free channel
+
+			MessageBox(NULL, msg, "TTSSH: SCP error", MB_OK | MB_ICONEXCLAMATION);
+		}
 	}
 
 	//debug_print(200, data, strlen);
 
 	// ウィンドウサイズの調整
-	c->local_window -= strlen;
+	c->local_window -= str_len;
 
 	do_SSH2_adjust_window_size(pvar, c);
 

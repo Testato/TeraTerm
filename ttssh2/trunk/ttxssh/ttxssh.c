@@ -1738,6 +1738,10 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu)
 	insertMenuBeforeItem(menu, 50360, MF_ENABLED, ID_SSHFWDSETUPMENU, pvar->ts->UIMsg);
 	UTIL_get_lang_msg("MENU_SSH_KEYGEN", pvar, "SSH KeyGe&nerator...");
 	insertMenuBeforeItem(menu, 50360, MF_ENABLED, ID_SSHKEYGENMENU, pvar->ts->UIMsg);
+
+	/* inserts before ID_FILE_CHANGEDIR */
+	UTIL_get_lang_msg("MENU_SSH_SCP", pvar, "SSH SCP...");
+	insertMenuBeforeItem(menu, 50170, MF_ENABLED, ID_SSHSCPMENU, pvar->ts->UIMsg);
 }
 
 static void append_about_text(HWND dlg, char FAR * prefix, char FAR * msg)
@@ -2836,6 +2840,108 @@ int uuencode(unsigned char *src, int srclen, unsigned char *target, int targsize
 	return (datalength); // success
 }
 
+//
+// SCP dialog
+//
+static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
+                                     LPARAM lParam)
+{
+	static char sendfile[MAX_PATH] = "";
+	HWND hWnd;
+	HDROP hDrop;
+	UINT uFileNo;
+	char szFileName[256];
+	int i;
+
+	switch (msg) {
+	case WM_INITDIALOG:
+		DragAcceptFiles(dlg, TRUE);
+
+		return TRUE;
+
+	case WM_DROPFILES:
+		{
+		hDrop = (HDROP)wParam;
+		uFileNo = DragQueryFile((HDROP)wParam, 0xFFFFFFFF, NULL, 0);
+		for(i = 0; i < (int)uFileNo; i++) {
+			DragQueryFile(hDrop, i, szFileName, sizeof(szFileName));
+
+			// update edit box
+			hWnd = GetDlgItem(dlg, IDC_SENDFILE_EDIT);
+			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)szFileName);
+		}
+		DragFinish(hDrop);
+		}
+		return TRUE;
+
+	case WM_COMMAND:
+		switch (wParam) {
+		case IDC_SENDFILE_SELECT | (BN_CLICKED << 16):
+			{
+			OPENFILENAME ofn;
+			OSVERSIONINFO osvi;
+
+			ZeroMemory(&ofn, sizeof(ofn));
+			osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+			GetVersionEx(&osvi);
+			if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT &&
+				osvi.dwMajorVersion >= 5) {
+				ofn.lStructSize = sizeof(OPENFILENAME);
+			}
+			else {
+				// OPENFILENAME_SIZE_VERSION_400‚ª–¢’è‹`‚Æ“{‚ç‚ê‚é (why?)
+#if 0
+				ofn.lStructSize = OPENFILENAME_SIZE_VERSION_400;
+#endif
+			}
+			ofn.hwndOwner = dlg;
+#if 0
+			get_lang_msg("FILEDLG_SELECT_LOGVIEW_APP_FILTER", ts.UIMsg, sizeof(ts.UIMsg),
+			             "exe(*.exe)\\0*.exe\\0all(*.*)\\0*.*\\0\\0", ts.UILanguageFile);
+#endif
+			ofn.lpstrFilter = "all(*.*)\0*.*\0\0";
+			ofn.lpstrFile = sendfile;
+			ofn.nMaxFile = sizeof(sendfile);
+#if 0
+			get_lang_msg("FILEDLG_SELECT_LOGVIEW_APP_TITLE", uimsg, sizeof(uimsg),
+			             "Choose a executing file with launching logging file", ts.UILanguageFile);
+#endif
+			ofn.lpstrTitle = "Choose a sending file with SCP";
+
+				// OFN_FORCESHOWHIDDEN‚ª–¢’è‹`‚Æ“{‚ç‚ê‚é (why?)
+#if 0
+			ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_FORCESHOWHIDDEN | OFN_HIDEREADONLY;
+#else
+			ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
+#endif
+			if (GetOpenFileName(&ofn) != 0) {
+				hWnd = GetDlgItem(dlg, IDC_SENDFILE_EDIT);
+				SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)sendfile);
+			}
+			}
+			return TRUE;
+		}
+
+		switch (LOWORD(wParam)) {
+		case IDOK:
+			hWnd = GetDlgItem(dlg, IDC_SENDFILE_EDIT);
+			SendMessage(hWnd, WM_GETTEXT , sizeof(sendfile), (LPARAM)sendfile);
+			if (sendfile[0] != '\0') {
+				SSH_start_scp(pvar, sendfile);
+				PostMessage(dlg, WM_CLOSE, 0, 0);
+				return TRUE;
+			}
+			return FALSE;
+
+		case IDCANCEL:			
+			EndDialog(dlg, 0); // dialog close
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
 static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
                                      LPARAM lParam)
 {
@@ -3329,6 +3435,17 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 	}
 
 	switch (cmd) {
+	case ID_SSHSCPMENU: 
+		if (DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SSHSCP), hWin, TTXScpDialog,
+			(LPARAM) pvar) == -1) {
+			UTIL_get_lang_msg("MSG_CREATEWINDOW_SCP_ERROR", pvar,
+			                  "Unable to display SCP dialog box.");
+			strncpy_s(uimsg, sizeof(uimsg), pvar->ts->UIMsg, _TRUNCATE);
+			UTIL_get_lang_msg("MSG_TTSSH_ERROR", pvar, "TTSSH Error");
+			MessageBox(hWin, uimsg, pvar->ts->UIMsg, MB_OK | MB_ICONEXCLAMATION);
+		}
+		return 1;
+
 	case ID_SSHKEYGENMENU: 
 		if (DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SSHKEYGEN), hWin, TTXKeyGenerator,
 			(LPARAM) pvar) == -1) {

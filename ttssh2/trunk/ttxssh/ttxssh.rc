@@ -295,6 +295,18 @@ BEGIN
     PUSHBUTTON      "Save &private key",IDC_SAVE_PRIVATE_KEY,133,96,68,14
 END
 
+IDD_SSHSCP DIALOGEX 0, 0, 251, 114
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "TTSSH: Secure File Copy"
+FONT 8, "Tahoma", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "Send",IDOK,194,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,194,24,50,14
+    EDITTEXT        IDC_SENDFILE_EDIT,7,7,156,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_SENDFILE_SELECT,168,7,14,14
+    LTEXT           "You can drag the file to this window.",IDC_FILE_PROGRESS,23,29,128,11
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -386,6 +398,14 @@ BEGIN
         RIGHTMARGIN, 249
         TOPMARGIN, 7
         BOTTOMMARGIN, 117
+    END
+
+    IDD_SSHSCP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 244
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 107
     END
 END
 #endif    // APSTUDIO_INVOKED
