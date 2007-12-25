@@ -29,6 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "ttxssh.h"
 #include "util.h"
+#include "resource.h"
 
 #include <openssl/bn.h>
 #include <openssl/evp.h>
@@ -50,6 +51,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <assert.h>
+
 
 // SSH2 macro
 #ifdef _DEBUG
@@ -86,7 +88,7 @@ typedef struct scp {
 	char sendfilefull[MAX_PATH];   // sending filename fullpath
 	FILE *sendfp;                  // file pointer
 	struct _stat filestat;         // file status information
-	HANDLE thread;                 // sending thread handle
+	HWND progress;
 } scp_t;
 
 typedef struct channel {
@@ -181,7 +183,7 @@ static Channel_t *ssh2_channel_new(unsigned int window, unsigned int maxpack,
 	c->bufchain = NULL;
 	if (type == TYPE_SCP) {
 		c->scp.state = SCP_INIT;
-		c->scp.thread = (HANDLE)-1L;
+		c->scp.progress = NULL;
 	}
 
 	return (c);
@@ -255,12 +257,12 @@ static void ssh2_channel_delete(Channel_t *c)
 
 	if (c->type == TYPE_SCP) {
 		c->scp.state = SCP_CLOSING;
-		// SCPスレッドが動いていたら終わるまで待つ
-		if (c->scp.thread != (HANDLE)-1L) {
-			WaitForSingleObject(c->scp.thread, INFINITE);
-			CloseHandle(c->scp.thread);
-			c->scp.thread = (HANDLE)-1L;
+		if (c->scp.progress != NULL) {
+			//SendMessage(c->scp.progress, WM_CLOSE, 0, 0);
+			DestroyWindow(c->scp.progress);
+			c->scp.progress = NULL;
 		}
+		fclose(c->scp.sendfp);
 	}
 
 	memset(c, 0, sizeof(Channel_t));
@@ -332,22 +334,22 @@ void ssh_heartbeat_lock_finalize(void)
 
 void ssh_heartbeat_lock(void)
 {
-	EnterCriticalSection(&g_ssh_heartbeat_lock);
+	//EnterCriticalSection(&g_ssh_heartbeat_lock);
 }
 
 void ssh_heartbeat_unlock(void)
 {
-	LeaveCriticalSection(&g_ssh_heartbeat_lock);
+	//LeaveCriticalSection(&g_ssh_heartbeat_lock);
 }
 
 static void ssh_blocking_send_lock(void)
 {
-	EnterCriticalSection(&g_ssh_blocking_send_lock);
+	//EnterCriticalSection(&g_ssh_blocking_send_lock);
 }
 
 static void ssh_blocking_send_unlock(void)
 {
-	LeaveCriticalSection(&g_ssh_blocking_send_lock);
+	//LeaveCriticalSection(&g_ssh_blocking_send_lock);
 }
 
 
@@ -6412,10 +6414,13 @@ static unsigned __stdcall ssh_heartbeat_thread(void FAR * p)
 
 static void start_ssh_heartbeat_thread(PTInstVar pvar)
 {
-	HANDLE thread;
-	unsigned tid;
+	HANDLE thread = (HANDLE)-1;
+	//unsigned tid;
 
+	// TTSSHは thread-safe ではないのでスレッドは禁止 (yutaka)
+#if 0
 	thread = (HANDLE)_beginthreadex(NULL, 0, ssh_heartbeat_thread, pvar, 0, &tid);
+#endif
 	if (thread == (HANDLE)-1) {
 		// TODO:
 	}
@@ -7018,58 +7023,146 @@ static void do_SSH2_adjust_window_size(PTInstVar pvar, Channel_t *c)
 }
 
 
+void ssh2_channel_remote_close(PTInstVar pvar, Channel_t *c)
+{
+	if (SSHv2(pvar)) {
+		buffer_t *msg;
+		unsigned char *outmsg;
+		int len;
+
+		// SSH2 serverにchannel closeを伝える
+		msg = buffer_init();
+		if (msg == NULL) {
+			// TODO: error check
+			return;
+		}
+		buffer_put_int(msg, c->remote_id);
+
+		len = buffer_len(msg);
+		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_CLOSE, len);
+		memcpy(outmsg, buffer_ptr(msg), len);
+		finish_send_packet(pvar);
+		buffer_free(msg);
+	}
+}
+
+#define WM_START_SENDING_FILE (WM_USER + 1)
+
 typedef struct scp_thread_parm {
 	PTInstVar pvar;
 	Channel_t *c;
 } scp_thread_parm_t;
 
-static unsigned __stdcall ssh_scp_thread(void FAR * p)
+static LRESULT CALLBACK ssh_scp_dlg_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-	scp_thread_parm_t *parm = (scp_thread_parm_t *)p;
-	PTInstVar pvar = parm->pvar;
-	Channel_t *c = parm->c;
+	const int RWIN_TIMEOUT = 100;  // 100 msec
+	const int SEND_TIMEOUT = 1;    // 1 msec
+	const int IDC_TIMER = 1;
+	static int instance = 0;
+	static PTInstVar pvar = NULL;
+	static Channel_t *c = NULL;
+	static long long total_size = 0;
 	char buf[8192];
 	size_t ret;
-	long long total_size = 0;
+	scp_thread_parm_t *parm;
 
-	do {
-		// ファイルから読み込んだデータはかならずサーバへ送信する。
-		ret = fread(buf, 1, sizeof(buf), c->scp.sendfp);
-		if (ret == 0)
-			break;
+	switch (msg) {
+		case WM_INITDIALOG:
+			if (instance > 0) {
+				EndDialog(hWnd, 0);
+			} else {
+				instance++;
+			}
+			return FALSE;
 
-		do {
+		case WM_TIMER:
+			{
+			char s[80];
+
 			// socket or channelがクローズされたらスレッドを終わる
 			if (pvar->socket == INVALID_SOCKET || c->scp.state == SCP_CLOSING || c->used == 0)
-				goto done;
+				goto end;
 
-			// サーバのウィンドウに余裕がない場合は、送信しない。SSH2_send_channel_data()で遅延送信処理が
-			// あるが、SCPスレッドとメインスレッドは別コンテキストであるため、SCPスレッドから遅延送信処理を
-			// 行おうとしてもうまく動かない。
-			if (ret > c->remote_window) {
-				Sleep(100); // yield
+			if (sizeof(buf) > c->remote_window) {
+				SetTimer(hWnd, 1, RWIN_TIMEOUT, 0);
+				return TRUE;
 			}
-		} while (ret > c->remote_window);
 
-		// 別コンテキストで、SSHのシーケンスへ割り込まないようにロックを取る。
-		ssh_heartbeat_lock();
-		SSH2_send_channel_data(pvar, c, buf, ret);
-		ssh_heartbeat_unlock();
+			// ファイルから読み込んだデータはかならずサーバへ送信する。
+			ret = fread(buf, 1, sizeof(buf), c->scp.sendfp);
+			if (ret == 0)
+				goto eof;
+			SSH2_send_channel_data(pvar, c, buf, ret);
+			total_size += ret;
 
-		total_size += ret;
+			_snprintf_s(s, sizeof(s), _TRUNCATE, "%lld / %lld (%d%%)", total_size, (long long)c->scp.filestat.st_size, 
+				(100 * total_size / c->scp.filestat.st_size)%100 );
+			SendMessage(GetDlgItem(hWnd, IDC_PROGRESS), WM_SETTEXT, 0, (LPARAM)s);
+			goto retry;
 
-	} while (ret >= sizeof(buf));
+eof:
+			SSH2_send_channel_data(pvar, c, "\0", 1);
+			c->scp.state = SCP_DATA;
+			assert(total_size == c->scp.filestat.st_size);
+end:
+			c->scp.state = SCP_DATA;
+			PostMessage(hWnd, WM_CLOSE, 0, 0);
+			return TRUE;
 
-	// EOF
-	SSH2_send_channel_data(pvar, c, "\0", 1);
-	c->scp.state = SCP_DATA;
+retry:
+			SetTimer(hWnd, IDC_TIMER, SEND_TIMEOUT, 0);
+			}
+			return TRUE;
+			break;
 
-	assert(total_size == c->scp.filestat.st_size);
+		case WM_START_SENDING_FILE:
+			{
+			parm = (scp_thread_parm_t *)wp;
+			pvar = parm->pvar;
+			c = parm->c;
+			free(parm);   // free!
+			total_size = 0;
 
-done:
-	free(p);
+			SendMessage(GetDlgItem(hWnd, IDC_FILENAME), WM_SETTEXT, 0, (LPARAM)c->scp.sendfile);
 
-	return 0;
+			SetTimer(hWnd, 1, 100, 0);
+			}
+			return TRUE;
+			break;
+
+		case WM_COMMAND:
+			switch (wp) {
+			}
+
+			switch (LOWORD(wp)) {
+				case IDOK:
+					{
+					return TRUE;
+					}
+
+				case IDCANCEL:
+					ssh2_channel_remote_close(pvar, c);
+					PostMessage(hWnd, WM_CLOSE, 0, 0);
+					//EndDialog(hWnd, 0);
+					return TRUE;
+				default:
+					return FALSE;
+			}
+			break;
+
+		case WM_CLOSE:
+			KillTimer(hWnd, IDC_TIMER);
+			EndDialog(hWnd, 0);
+			return TRUE;
+
+		case WM_DESTROY:
+			instance--;
+			return TRUE;
+
+		default:
+			return FALSE;
+	}
+	return TRUE;
 }
 
 
@@ -7143,9 +7236,8 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 				SSH2_send_channel_data(pvar, c, buf, strlen(buf));
 
 			} else if (c->scp.state == SCP_FILEINFO) {
-				HANDLE thread;
-				unsigned tid;
 				scp_thread_parm_t *parm = malloc(sizeof(scp_thread_parm_t));
+				HWND hDlgWnd;
 
 				if (parm == NULL) {
 					// TODO:
@@ -7153,28 +7245,35 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 				parm->pvar = pvar;
 				parm->c = c;
 
-				thread = (HANDLE)_beginthreadex(NULL, 0, ssh_scp_thread, parm, 0, &tid);
-				if (thread == (HANDLE)-1) {
-					// TODO:
+				hDlgWnd = CreateDialog(hInst, MAKEINTRESOURCE(IDD_SSHSCP_PROGRESS),
+	                       pvar->cv->HWin, (DLGPROC)ssh_scp_dlg_proc);
+				if (hDlgWnd != NULL) {
+					c->scp.progress = hDlgWnd;
+					ShowWindow(hDlgWnd, SW_SHOW);
+					SendMessage(hDlgWnd, WM_START_SENDING_FILE, (WPARAM)parm, 0);
 				}
-				c->scp.thread = thread;
 
 			} else if (c->scp.state == SCP_DATA) {
 				// 送信完了
 				ssh2_channel_delete(c);  // free channel
 
-				MessageBox(NULL, "SCP sending done.", "TTSSH", MB_OK);
+				//MessageBox(NULL, "SCP sending done.", "TTSSH", MB_OK);
 			}
 
 		} else {  // error
 			char msg[2048];
-			unsigned int i;
+			unsigned int i, max;
 
-			for (i = 0 ; i < str_len ; i++) {
+			if (str_len > sizeof(msg))
+				max = sizeof(msg);
+			else
+				max = str_len;
+			for (i = 0 ; i < max ; i++) {
 				msg[i] = data[i];
 			}
 			msg[i] = '\0';
 
+			ssh2_channel_remote_close(pvar, c);
 			ssh2_channel_delete(c);  // free channel
 
 			MessageBox(NULL, msg, "TTSSH: SCP error", MB_OK | MB_ICONEXCLAMATION);

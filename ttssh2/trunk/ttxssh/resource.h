@@ -12,6 +12,7 @@
 #define IDD_SSHKEYGEN                   104
 #define IDD_SSHSCP                      105
 #define IDD_SSHAUTH                     106
+#define IDD_SSHSCP_PROGRESS             107
 #define IDD_HOSTDLG                     600
 #define IDC_HOSTTCPIP                   601
 #define IDD_SSHDIFFERENTHOST            601
@@ -122,6 +123,8 @@
 #define IDC_SSHFWDLOCALTOREMOTE_CHECKIDENTITY 1089
 #define IDC_SENDFILE_SELECT             1090
 #define IDC_FILE_PROGRESS               1092
+#define IDC_FILENAME                    1093
+#define IDC_PROGRESS                    1094
 #define IDC_LOCALUSERNAMELABEL          1100
 #define IDC_LOCALUSERNAME               1101
 #define IDC_CHOOSEHOSTRSAFILE           1102
@@ -136,9 +139,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        106
+#define _APS_NEXT_RESOURCE_VALUE        108
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1093
+#define _APS_NEXT_CONTROL_VALUE         1095
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

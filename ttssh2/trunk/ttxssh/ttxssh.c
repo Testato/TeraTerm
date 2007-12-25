@@ -2928,7 +2928,7 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 			SendMessage(hWnd, WM_GETTEXT , sizeof(sendfile), (LPARAM)sendfile);
 			if (sendfile[0] != '\0') {
 				SSH_start_scp(pvar, sendfile);
-				PostMessage(dlg, WM_CLOSE, 0, 0);
+				EndDialog(dlg, 1); // dialog close
 				return TRUE;
 			}
 			return FALSE;
