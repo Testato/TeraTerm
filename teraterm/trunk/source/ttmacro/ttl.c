@@ -1486,6 +1486,11 @@ WORD TTLGetPassword()
 	return Err;
 }
 
+void ignoreInvalidParam(const wchar_t *exp, const wchar_t *func, const wchar_t *file, unsigned int line, uintptr_t pReserved)
+{
+	return;
+}
+
 WORD TTLGetTime(WORD mode)
 {
 	WORD VarId, Err;
@@ -1500,6 +1505,12 @@ WORD TTLGetTime(WORD mode)
 	if (CheckParameterGiven()) {
 		GetStrVal(Str1, &Err);
 		format = Str1;
+
+		if (isInvalidStrftimeChar(Str1)) {
+			SetResult(2);
+			return 0;
+//			return ErrSyntax;
+		}
 	}
 	else {
 		switch (mode) {
