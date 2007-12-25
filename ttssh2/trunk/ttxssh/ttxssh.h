@@ -79,11 +79,11 @@ typedef struct _TInstVar FAR * PTInstVar;
 
 HANDLE hInst; /* Instance handle of TTXSSH.DLL */
 
+#define ID_SSHSCPMENU       52110
 #define ID_SSHSETUPMENU     52310
 #define ID_SSHAUTHSETUPMENU 52320
 #define ID_SSHFWDSETUPMENU  52330
 #define ID_SSHKEYGENMENU    52340
-#define ID_SSHSCPMENU      52350
 #define ID_ABOUTMENU        52910
 
 #define ID_SSHAUTH            62501
