@@ -18,20 +18,64 @@
 </p>
 
 <pre class="macro-syntax">
-gettime &lt;strvar&gt;
+gettime &lt;strvar&gt; [&lt;format&gt;]
 </pre>
 
 <h2>解説</h2>
 
 <p>
-現在の時刻を文字列変数 &lt;strvar&gt; に格納する。 形式は"HH:MM:SS"。
+現在の時刻を文字列変数 &lt;strvar&gt; に &lt;format&gt; に従った形式で格納する。書式は <a href="http://msdn2.microsoft.com/ja-jp/library/fe06s4ak(VS.80).aspx">strftime</a> と同じ物が使える。<br>
+formatが省略された場合、格納される形式は"HH:MM:SS"となる。(&lt;format&gt; に %H:%M:%S を指定したのと同じ)<br>
 </p>
+
+<p>
+formatが指定されたgettimeは、同じformatが指定されたgetdateと動作が等しくなる。
+</p>
+
+<p>
+このコマンドの実行結果はシステム変数 result に格納される。変数 result の値の意味は以下のとおり。
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>値</th>
+      <th>意味</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>
+	正常に値が &lt;strvar&gt; に格納された。
+      </td>
+    </tr>
+
+    <tr>
+      <td>1</td>
+      <td>
+	生成された文字列の長さが上限(255文字)を超えた等の理由で、&lt;strvar&gt; への値の格納が正常に行われなかった。
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 <h2>例</h2>
 
 <pre class="macro-example">
-<code>gettime timestr
+<code>;現在の日付をtimestrに格納。形式はHH:MM:SS。
+gettime timestr
+
+;現在の日時を元にしてログファイル名を生成し、変数logfileに格納。形式はlog-YYYYMMDD-HHMMSS.txt
+gettime logfile "log-%Y%m%d-%H%M%S.txt"
 </code></pre>
+
+<h2>参照</h2>
+<ul>
+  <li><a href="getdate.html">getdate</a></li>
+  <li><a href="http://msdn2.microsoft.com/ja-jp/library/fe06s4ak(VS.80).aspx">strftime (MSDNライブラリ)</a></li>
+</ul>
 
 </body>
 </html>
