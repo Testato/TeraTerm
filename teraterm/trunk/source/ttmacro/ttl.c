@@ -460,7 +460,7 @@ WORD TTLConnect(WORD mode)
 	Str[0] = 0;
 	Err = 0;
 
-	if (mode == IdConnTeraTerm || CheckParameterGiven()) {
+	if (mode == RsvConnect || CheckParameterGiven()) {
 		GetStrVal(Str,&Err);
 		if (Err!=0) return Err;
 	}
@@ -476,7 +476,7 @@ WORD TTLConnect(WORD mode)
 			return Err;
 		}
 
-		if (mode == IdConnTeraTerm) {
+		if (mode == RsvConnect) {
 			// new connection
 			SetFile(Str);
 			SendCmnd(CmdConnect,0);
@@ -495,10 +495,10 @@ WORD TTLConnect(WORD mode)
 	if (strlen(TopicName)==0)
 	{
 		switch (mode) {
-		case IdConnTeraTerm:
+		case RsvConnect:
 			strncpy_s(Cmnd, sizeof(Cmnd),TTERMCOMMAND, _TRUNCATE);
 			break;
-		case IdConnCygTerm:
+		case RsvCygConnect:
 			strncpy_s(Cmnd, sizeof(Cmnd),CYGTERMCOMMAND, _TRUNCATE);
 			break;
 		}
@@ -1413,29 +1413,6 @@ WORD TTLFor()
 	return Err;
 }
 
-WORD TTLGetDate()
-{
-	WORD VarId, Err;
-	TStrVal Str2;
-	time_t time1;
-	struct tm *ptm;
-
-	Err = 0;
-	GetStrVar(&VarId,&Err);
-	if ((Err==0) && (GetFirstChar()!=0))
-		Err = ErrSyntax;
-	if (Err!=0) return Err;
-	// get current date & time
-	time1 = time(NULL);
-	ptm = localtime(&time1);
-	_snprintf_s(Str2,sizeof(Str2),_TRUNCATE,"%4.4d-%2.2d-%2.2d",
-	            ptm->tm_year+1900,
-	            ptm->tm_mon+1,
-	            ptm->tm_mday);
-	SetStrVal(VarId,Str2);
-	return Err;
-}
-
 WORD TTLGetDir()
 {
 	WORD VarId, Err;
@@ -1509,15 +1486,32 @@ WORD TTLGetPassword()
 	return Err;
 }
 
-WORD TTLGetTime()
+WORD TTLGetTime(WORD mode)
 {
 	WORD VarId, Err;
-	TStrVal Str2;
+	TStrVal Str1, Str2;
 	time_t time1;
 	struct tm *ptm;
+	char *format;
 
 	Err = 0;
 	GetStrVar(&VarId,&Err);
+
+	if (CheckParameterGiven()) {
+		GetStrVal(Str1, &Err);
+		format = Str1;
+	}
+	else {
+		switch (mode) {
+		case RsvGetDate:
+			format = "%Y-%m-%d";
+			break;
+		case RsvGetTime:
+			format = "%H:%M:%S";
+			break;
+		}
+	}
+
 	if ((Err==0) && (GetFirstChar()!=0))
 		Err = ErrSyntax;
 	if (Err!=0) return Err;
@@ -1526,12 +1520,14 @@ WORD TTLGetTime()
 	time1 = time(NULL);
 	ptm = localtime(&time1);
 
-	_snprintf_s(Str2,sizeof(Str2),_TRUNCATE,"%2.2d:%2.2d:%2.2d",
-	            ptm->tm_hour,
-	            ptm->tm_min,
-	            ptm->tm_sec);
+	if (strftime(Str2, sizeof(Str2), format, ptm)) {
+		SetStrVal(VarId,Str2);
+		SetResult(0);
+	}
+	else {
+		SetResult(1);
+	}
 
-	SetStrVal(VarId,Str2);
 	return Err;
 }
 
@@ -3113,9 +3109,8 @@ int ExecCmnd()
 		case RsvCode2Str:
 			Err = TTLCode2Str(); break;
 		case RsvConnect:
-			Err = TTLConnect(IdConnTeraTerm); break;
 		case RsvCygConnect:
-			Err = TTLConnect(IdConnCygTerm); break;
+			Err = TTLConnect(WId); break;
 		case RsvDelPassword:
 			Err = TTLDelPassword(); break;
 		case RsvDisconnect:
@@ -3189,15 +3184,14 @@ int ExecCmnd()
 		case RsvFor:
 			Err = TTLFor(); break;
 		case RsvGetDate:
-			Err = TTLGetDate(); break;
+		case RsvGetTime:
+			Err = TTLGetTime(WId); break;
 		case RsvGetDir:
 			Err = TTLGetDir(); break;
 		case RsvGetEnv:
 			Err = TTLGetEnv(); break;
 		case RsvGetPassword:
 			Err = TTLGetPassword(); break;
-		case RsvGetTime:
-			Err = TTLGetTime(); break;
 		case RsvGetTitle:
 			Err = TTLGetTitle(); break;
 		case RsvGoto:

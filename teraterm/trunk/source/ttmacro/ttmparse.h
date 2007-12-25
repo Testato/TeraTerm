@@ -32,9 +32,6 @@
 #define ErrTypeMismatch     14
 #define ErrVarNotInit       15
 
-#define IdConnTeraTerm 0
-#define IdConnCygTerm  1
-
 #define TypUnknown  0
 #define TypInteger  1
 #define TypLogical  2
