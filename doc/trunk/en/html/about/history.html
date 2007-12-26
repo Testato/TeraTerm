@@ -24,7 +24,7 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.57">2007.12.20 (Ver 4.57 not released)</a>
+  <li class="history"><a name="teraterm_4.57">2007.12.26 (Ver 4.57 not released)</a>
     <ul>
       <li>added param4 to param9 <a href="../macro/commandline.html">macro commandline parameters</a>.</li>
       <li>added ESC key binding on Additiona settings dialog.</li>
@@ -42,6 +42,7 @@
       <li>Bug fix: TeraTerm would overwrite the selected buffer to the Clipboard when SelectOnlyByLButton entry is on.</li>
       <li>Bug fix: extension filters on file dialog didn't work when the FileSendFilter is specified.</li>
       <li>Bug fix: double close a local file handle when same file already exists on the remote host by sending the local file with ZMODEM protocol.</li>
+      <li>Bug fix: Telnet keep-alive mechanism could not been thread-safe.</li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.45">2.45</a></li>
     </ul>
   </li>
