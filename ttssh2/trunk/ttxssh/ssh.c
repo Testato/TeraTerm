@@ -7202,6 +7202,8 @@ static unsigned __stdcall ssh_scp_thread(void FAR * p)
 	parm.pvar = pvar;
 	SendMessage(hWnd, WM_SENDING_FILE, (WPARAM)&parm, 0);
 
+	ShowWindow(hWnd, SW_HIDE);
+
 	c->scp.state = SCP_DATA;
 	return 0;
 
@@ -7309,7 +7311,8 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 
 			} else if (c->scp.state == SCP_DATA) {
 				// ‘—MŠ®—¹
-				ssh2_channel_delete(c);  // free channel
+				ssh2_channel_send_close(pvar, c);
+				//ssh2_channel_delete(c);  // free channel
 
 				//MessageBox(NULL, "SCP sending done.", "TTSSH", MB_OK);
 			}
