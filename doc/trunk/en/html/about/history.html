@@ -959,7 +959,8 @@ SYNOPSIS:
 <ul>
   <li class="history"><a name="ttssh_2.45">2007.12.8 (Ver 2.45 not released)</a>
     <ul>
-      <li>added support for sending a local file with SSH2 SCP protocol.</li>
+      <li>added support for sending a local file with SSH2 SCP protocol. Also, added SSH SCP menu under file menu.</li>
+      <li>Bug fix: TCP disconnection was mis-detected in the packet sending. This bug is regression in TTSSH 1.01 because SSH heartbeat thread is not thread-safe.</li>
       <li>Bug fix: SSH is disabled when "/ssh1" or "/ssh2" is included in hostname on New Connection dialog.</li>
       <li>Bug fix: デフォルトユーザ名を指定しておらず、認証方式を challenge にしており、/ask4passwd を指定している場合、SSH2_MSG_SERVICE_REQUEST を2回送信してしまう問題を修正した。</li>
       <li>Bug fix: CheckAuthListFirst が off で、認証方式を challenge にしており、/ask4passwd を指定している場合、TIS 認証ダイアログが自動的に出現しない問題を修正した。</li>

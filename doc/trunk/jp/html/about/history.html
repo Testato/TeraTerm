@@ -33,7 +33,7 @@
         <ul>
           <li>ZMODEM受信コマンドを teraterm.ini の ZmodemRcvCommand で指定できるようにした。デフォルトは"rz"。
         </ul></li>
-      <li>XMODEMのファイル送信前に、「rx ファイル名」コマンドを送るようにした。
+      <li>XMODEMのファイル送信前に、「rx ファイル名」コマンドを送れるようにした。
         <ul>
           <li>XMODEM受信コマンドを teraterm.ini の XmodemRcvCommand で指定できるようにした。デフォルトは""。
         </ul></li>
@@ -962,6 +962,7 @@
   <li class="history"><a name="ttssh_2.45">2007.12.8 (Ver 2.45 未リリース)</a>
     <ul>
       <li>SCP(SSH2)によるファイル送信機能を実装した。Fileメニュー配下に"SSH SCP"を追加。</li>
+      <li>パケット送信処理にTCPコネクション切断の誤検出をする問題を修正した。TTSSH 1.01で搭載したハートビートスレッドが thread-safe ではなかったのが原因。</li>
       <li>New Connection ダイアログのホスト名に /ssh1, /ssh2 が含まれている場合、SSH 接続が無効になる問題を修正した。</li>
       <li>デフォルトユーザ名を指定しておらず、認証方式を challenge にしており、/ask4passwd を指定している場合、SSH2_MSG_SERVICE_REQUEST を2回送信してしまう問題を修正した。</li>
       <li>CheckAuthListFirst が off で、認証方式を challenge にしており、/ask4passwd を指定している場合、TIS 認証ダイアログが自動的に出現しない問題を修正した。</li>
