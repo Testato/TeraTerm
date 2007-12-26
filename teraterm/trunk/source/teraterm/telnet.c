@@ -15,6 +15,7 @@
 #include <process.h>
 
 #include "telnet.h"
+#include "tt_res.h"
 
 int TelStatus;
 
@@ -43,6 +44,7 @@ typedef TelRec *PTelRec;
 static TelRec tr;
 
 static HANDLE keepalive_thread = (HANDLE)-1L;
+static HWND keepalive_dialog = NULL; 
 int nop_interval = 0;
 
 void DefaultTelRec()
@@ -745,6 +747,52 @@ void TelSendNOP()
     TelWriteLog(Str,2);
 }
 
+#define WM_SEND_HEARTBEAT (WM_USER + 1)
+
+static LRESULT CALLBACK telnet_heartbeat_dlg_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
+{
+
+	switch (msg) {
+		case WM_INITDIALOG:
+			return FALSE;
+
+		case WM_SEND_HEARTBEAT:
+			TelSendNOP();
+			return TRUE;
+			break;
+
+		case WM_COMMAND:
+			switch (wp) {
+			}
+
+			switch (LOWORD(wp)) {
+				case IDOK:
+					{
+					return TRUE;
+					}
+
+				case IDCANCEL:
+					EndDialog(hWnd, 0);
+					return TRUE;
+				default:
+					return FALSE;
+			}
+			break;
+
+		case WM_CLOSE:
+			// closeボタンが押下されても window が閉じないようにする。
+			return TRUE;
+
+		case WM_DESTROY:
+			return TRUE;
+
+		default:
+			return FALSE;
+	}
+	return TRUE;
+}
+
+
 static unsigned _stdcall TelKeepAliveThread(void *dummy) {
   static int instance = 0;
 
@@ -754,7 +802,7 @@ static unsigned _stdcall TelKeepAliveThread(void *dummy) {
 
   while (cv.Open && nop_interval > 0) {
     if (time(NULL) >= cv.LastSendTime + nop_interval) {
-      TelSendNOP();
+		SendMessage(keepalive_dialog, WM_SEND_HEARTBEAT, 0, 0);
     }
 
     Sleep(100);
@@ -769,6 +817,10 @@ void TelStartKeepAliveThread() {
   if (ts.TelKeepAliveInterval > 0) {
     nop_interval = ts.TelKeepAliveInterval;
 
+	// モードレスダイアログを追加 (2007.12.26 yutaka)
+	keepalive_dialog = CreateDialog(hInst, MAKEINTRESOURCE(IDD_BROADCAST_DIALOG),
+               HVTWin, (DLGPROC)telnet_heartbeat_dlg_proc);
+
     keepalive_thread = (HANDLE)_beginthreadex(NULL, 0, TelKeepAliveThread, NULL, 0, &tid);
     if (keepalive_thread == (HANDLE)-1) {
       nop_interval = 0;
@@ -782,6 +834,8 @@ void TelStopKeepAliveThread() {
     WaitForSingleObject(keepalive_thread, INFINITE);
     CloseHandle(keepalive_thread);
     keepalive_thread = (HANDLE)-1L;
+
+	DestroyWindow(keepalive_dialog);
   }
 }
 
