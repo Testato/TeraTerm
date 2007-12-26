@@ -7321,14 +7321,14 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 			if (str_len > sizeof(msg))
 				max = sizeof(msg);
 			else
-				max = str_len;
+				max = str_len - 1;
 			for (i = 0 ; i < max ; i++) {
-				msg[i] = data[i];
+				msg[i] = data[i + 1];
 			}
 			msg[i] = '\0';
 
 			ssh2_channel_send_close(pvar, c);
-			ssh2_channel_delete(c);  // free channel
+			//ssh2_channel_delete(c);  // free channel
 
 			MessageBox(NULL, msg, "TTSSH: SCP error", MB_OK | MB_ICONEXCLAMATION);
 		}
