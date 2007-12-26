@@ -89,6 +89,8 @@ typedef struct scp {
 	FILE *sendfp;                  // file pointer
 	struct _stat filestat;         // file status information
 	HWND progress;
+	HANDLE thread;
+	PTInstVar pvar;
 } scp_t;
 
 typedef struct channel {
@@ -257,8 +259,12 @@ static void ssh2_channel_delete(Channel_t *c)
 
 	if (c->type == TYPE_SCP) {
 		c->scp.state = SCP_CLOSING;
+		if (c->scp.thread != (HANDLE)-1L) {
+			WaitForSingleObject(c->scp.thread, INFINITE);
+			CloseHandle(c->scp.thread);
+			c->scp.thread = (HANDLE)-1L;
+		}
 		if (c->scp.progress != NULL) {
-			//SendMessage(c->scp.progress, WM_CLOSE, 0, 0);
 			DestroyWindow(c->scp.progress);
 			c->scp.progress = NULL;
 		}
@@ -7023,7 +7029,7 @@ static void do_SSH2_adjust_window_size(PTInstVar pvar, Channel_t *c)
 }
 
 
-void ssh2_channel_remote_close(PTInstVar pvar, Channel_t *c)
+void ssh2_channel_send_close(PTInstVar pvar, Channel_t *c)
 {
 	if (SSHv2(pvar)) {
 		buffer_t *msg;
@@ -7046,86 +7052,27 @@ void ssh2_channel_remote_close(PTInstVar pvar, Channel_t *c)
 	}
 }
 
-#define WM_START_SENDING_FILE (WM_USER + 1)
+#define WM_SENDING_FILE (WM_USER + 1)
 
-typedef struct scp_thread_parm {
-	PTInstVar pvar;
+typedef struct scp_dlg_parm {
 	Channel_t *c;
-} scp_thread_parm_t;
+	PTInstVar pvar;
+	char *buf;
+	size_t buflen;
+} scp_dlg_parm_t;
 
 static LRESULT CALLBACK ssh_scp_dlg_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-	const int RWIN_TIMEOUT = 100;  // 100 msec
-	const int SEND_TIMEOUT = 1;    // 1 msec
-	const int IDC_TIMER = 1;
-	static int instance = 0;
-	static PTInstVar pvar = NULL;
-	static Channel_t *c = NULL;
-	static long long total_size = 0;
-	char buf[8192];
-	size_t ret;
-	scp_thread_parm_t *parm;
 
 	switch (msg) {
 		case WM_INITDIALOG:
-			if (instance > 0) {
-				EndDialog(hWnd, 0);
-			} else {
-				instance++;
-			}
 			return FALSE;
 
-		case WM_TIMER:
+		case WM_SENDING_FILE:
 			{
-			char s[80];
+			scp_dlg_parm_t *parm = (scp_dlg_parm_t *)wp;
 
-			// socket or channelがクローズされたらスレッドを終わる
-			if (pvar->socket == INVALID_SOCKET || c->scp.state == SCP_CLOSING || c->used == 0)
-				goto end;
-
-			if (sizeof(buf) > c->remote_window) {
-				SetTimer(hWnd, 1, RWIN_TIMEOUT, 0);
-				return TRUE;
-			}
-
-			// ファイルから読み込んだデータはかならずサーバへ送信する。
-			ret = fread(buf, 1, sizeof(buf), c->scp.sendfp);
-			if (ret == 0)
-				goto eof;
-			SSH2_send_channel_data(pvar, c, buf, ret);
-			total_size += ret;
-
-			_snprintf_s(s, sizeof(s), _TRUNCATE, "%lld / %lld (%d%%)", total_size, (long long)c->scp.filestat.st_size, 
-				(100 * total_size / c->scp.filestat.st_size)%100 );
-			SendMessage(GetDlgItem(hWnd, IDC_PROGRESS), WM_SETTEXT, 0, (LPARAM)s);
-			goto retry;
-
-eof:
-			SSH2_send_channel_data(pvar, c, "\0", 1);
-			c->scp.state = SCP_DATA;
-			assert(total_size == c->scp.filestat.st_size);
-end:
-			c->scp.state = SCP_DATA;
-			PostMessage(hWnd, WM_CLOSE, 0, 0);
-			return TRUE;
-
-retry:
-			SetTimer(hWnd, IDC_TIMER, SEND_TIMEOUT, 0);
-			}
-			return TRUE;
-			break;
-
-		case WM_START_SENDING_FILE:
-			{
-			parm = (scp_thread_parm_t *)wp;
-			pvar = parm->pvar;
-			c = parm->c;
-			free(parm);   // free!
-			total_size = 0;
-
-			SendMessage(GetDlgItem(hWnd, IDC_FILENAME), WM_SETTEXT, 0, (LPARAM)c->scp.sendfile);
-
-			SetTimer(hWnd, 1, 100, 0);
+			SSH2_send_channel_data(parm->pvar, parm->c, parm->buf, parm->buflen);
 			}
 			return TRUE;
 			break;
@@ -7141,9 +7088,7 @@ retry:
 					}
 
 				case IDCANCEL:
-					ssh2_channel_remote_close(pvar, c);
-					PostMessage(hWnd, WM_CLOSE, 0, 0);
-					//EndDialog(hWnd, 0);
+					EndDialog(hWnd, 0);
 					return TRUE;
 				default:
 					return FALSE;
@@ -7151,12 +7096,10 @@ retry:
 			break;
 
 		case WM_CLOSE:
-			KillTimer(hWnd, IDC_TIMER);
-			EndDialog(hWnd, 0);
+			// closeボタンが押下されても window が閉じないようにする。
 			return TRUE;
 
 		case WM_DESTROY:
-			instance--;
 			return TRUE;
 
 		default:
@@ -7165,6 +7108,77 @@ retry:
 	return TRUE;
 }
 
+static unsigned __stdcall ssh_scp_thread(void FAR * p)
+{
+	Channel_t *c = (Channel_t *)p;
+	PTInstVar pvar = c->scp.pvar;
+	long long total_size = 0;
+	char buf[8192];
+	char s[80];
+	size_t ret;
+	HWND hWnd = c->scp.progress;
+	scp_dlg_parm_t parm;
+
+	SendMessage(GetDlgItem(hWnd, IDC_FILENAME), WM_SETTEXT, 0, (LPARAM)c->scp.sendfile);
+
+	do {
+		// Cancelボタンが押下されたらウィンドウが消える。
+		if (IsWindowVisible(hWnd) == 0)
+			goto abort;
+
+		// ファイルから読み込んだデータはかならずサーバへ送信する。
+		ret = fread(buf, 1, sizeof(buf), c->scp.sendfp);
+		if (ret == 0)
+			break;
+
+		do {
+			// socket or channelがクローズされたらスレッドを終わる
+			if (pvar->socket == INVALID_SOCKET || c->scp.state == SCP_CLOSING || c->used == 0)
+				goto abort;
+
+			if (ret > c->remote_window) {
+				Sleep(100);
+			}
+
+		} while (ret > c->remote_window);
+
+		// sending data
+		parm.buf = buf;
+		parm.buflen = ret;
+		parm.c = c;
+		parm.pvar = pvar;
+		SendMessage(hWnd, WM_SENDING_FILE, (WPARAM)&parm, 0);
+
+		total_size += ret;
+
+		_snprintf_s(s, sizeof(s), _TRUNCATE, "%lld / %lld (%d%%)", total_size, (long long)c->scp.filestat.st_size, 
+			(100 * total_size / c->scp.filestat.st_size)%100 );
+		SendMessage(GetDlgItem(hWnd, IDC_PROGRESS), WM_SETTEXT, 0, (LPARAM)s);
+
+	} while (ret <= sizeof(buf));
+
+	// eof
+	buf[0] = '\0';
+	parm.buf = buf;
+	parm.buflen = 1;
+	parm.c = c;
+	parm.pvar = pvar;
+	SendMessage(hWnd, WM_SENDING_FILE, (WPARAM)&parm, 0);
+
+	c->scp.state = SCP_DATA;
+	return 0;
+
+abort:
+	ssh2_channel_send_close(pvar, c);
+
+#if 0
+	// デッドロック回避のため、自分でハンドルをクローズする。
+	CloseHandle(c->scp.thread);
+	c->scp.thread = (HANDLE)-1L;
+	//ssh2_channel_delete(c);  // free channel
+#endif
+	return 0;
+}
 
 static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 {	
@@ -7236,22 +7250,25 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 				SSH2_send_channel_data(pvar, c, buf, strlen(buf));
 
 			} else if (c->scp.state == SCP_FILEINFO) {
-				scp_thread_parm_t *parm = malloc(sizeof(scp_thread_parm_t));
 				HWND hDlgWnd;
+				HANDLE thread;
+				unsigned int tid;
 
-				if (parm == NULL) {
-					// TODO:
-				}
-				parm->pvar = pvar;
-				parm->c = c;
+				c->scp.pvar = pvar;
 
 				hDlgWnd = CreateDialog(hInst, MAKEINTRESOURCE(IDD_SSHSCP_PROGRESS),
 	                       pvar->cv->HWin, (DLGPROC)ssh_scp_dlg_proc);
 				if (hDlgWnd != NULL) {
 					c->scp.progress = hDlgWnd;
 					ShowWindow(hDlgWnd, SW_SHOW);
-					SendMessage(hDlgWnd, WM_START_SENDING_FILE, (WPARAM)parm, 0);
 				}
+
+				thread = (HANDLE)_beginthreadex(NULL, 0, ssh_scp_thread, c, 0, &tid);
+				if (thread == (HANDLE)-1) {
+					// TODO:
+				}
+				c->scp.thread = thread;
+
 
 			} else if (c->scp.state == SCP_DATA) {
 				// 送信完了
@@ -7273,7 +7290,7 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 			}
 			msg[i] = '\0';
 
-			ssh2_channel_remote_close(pvar, c);
+			ssh2_channel_send_close(pvar, c);
 			ssh2_channel_delete(c);  // free channel
 
 			MessageBox(NULL, msg, "TTSSH: SCP error", MB_OK | MB_ICONEXCLAMATION);
@@ -7546,7 +7563,11 @@ static BOOL handle_SSH2_channel_close(PTInstVar pvar)
 		// チャネルの解放漏れを修正 (2007.4.26 yutaka)
 		ssh2_channel_delete(c);
 
+	} else if (c->type == TYPE_SCP) {
+		ssh2_channel_delete(c);
+
 	} else {
+		ssh2_channel_delete(c);
 
 	}
 
@@ -7647,8 +7668,11 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 	data += 4;
 
 	c = ssh2_channel_lookup(id);
-	if (c == NULL)
-		return FALSE;
+	if (c == NULL) {
+		// channel close後にadjust messageが遅れてやってくるケースもあるため、
+		// FALSEでは返さないようにする。(2007.12.26 yutaka)
+		return TRUE;
+	}
 
 	adjust = get_uint32_MSBfirst(data);
 	data += 4;
