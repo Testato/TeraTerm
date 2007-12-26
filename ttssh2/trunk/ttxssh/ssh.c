@@ -323,19 +323,20 @@ static Channel_t *ssh2_local_channel_lookup(int local_num)
 //
 // SSH heartbeat mutex
 //
+// TTSSHは thread-safe ではないため、マルチスレッドからのパケット送信はできない。
+// シングルスレッドではコンテキストスイッチが発生することはないため、
+// ロックを取る必要もないため、削除する。(2007.12.26 yutaka)
+//
 static CRITICAL_SECTION g_ssh_heartbeat_lock;   /* 送受信用ロック */
-static CRITICAL_SECTION g_ssh_blocking_send_lock;   /* send_packet_blocking()用ロック */
 
 void ssh_heartbeat_lock_initialize(void)
 {
-	InitializeCriticalSection(&g_ssh_heartbeat_lock);
-	InitializeCriticalSection(&g_ssh_blocking_send_lock);
+	//InitializeCriticalSection(&g_ssh_heartbeat_lock);
 }
 
 void ssh_heartbeat_lock_finalize(void)
 {
-	DeleteCriticalSection(&g_ssh_heartbeat_lock);
-	DeleteCriticalSection(&g_ssh_blocking_send_lock);
+	//DeleteCriticalSection(&g_ssh_heartbeat_lock);
 }
 
 void ssh_heartbeat_lock(void)
@@ -346,16 +347,6 @@ void ssh_heartbeat_lock(void)
 void ssh_heartbeat_unlock(void)
 {
 	//LeaveCriticalSection(&g_ssh_heartbeat_lock);
-}
-
-static void ssh_blocking_send_lock(void)
-{
-	//EnterCriticalSection(&g_ssh_blocking_send_lock);
-}
-
-static void ssh_blocking_send_unlock(void)
-{
-	//LeaveCriticalSection(&g_ssh_blocking_send_lock);
 }
 
 
@@ -883,8 +874,6 @@ static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 	// パケット送信後にバッファを使いまわすため、ブロッキングで送信してしまう必要がある。
 	// ノンブロッキングで送信してWSAEWOULDBLOCKが返ってきた場合、そのバッファは送信完了する
 	// まで保持しておかなくてはならない。(2007.10.30 yutaka)
-	// 以下の処理は thread-safe ではないため、失敗することがある。ゆえに、全体をロックする
-	// 必要がある。(2007.12.24 yutaka)
 	u_long do_block = 0;
 	int code = 0;
 	char *kind = NULL, buf[256];
@@ -907,8 +896,6 @@ static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 		return TRUE;
 	}
 #else
-	ssh_blocking_send_lock();
-
 	if ((pvar->PWSAAsyncSelect) (pvar->socket, pvar->NotificationWindow,
 	                             0, 0) == SOCKET_ERROR) {
 			code = WSAGetLastError();
@@ -933,13 +920,9 @@ static BOOL send_packet_blocking(PTInstVar pvar, char FAR * data, int len)
 			kind = "WSAAsyncSelect2";
 			goto error;
 	}
-	ssh_blocking_send_unlock();
-
 	return TRUE;
 
 error:
-	ssh_blocking_send_unlock();
-
 	UTIL_get_lang_msg("MSG_SSH_SEND_PKT_ERROR", pvar,
 	                  "A communications error occurred while sending an SSH packet.\n"
 	                  "The connection will close. (%s:%d)");
@@ -6361,6 +6344,77 @@ error:
 // 切れてしまうことがある。定期的に、クライアントからダミーパケットを
 // 送信することで対処する。(2004.12.10 yutaka)
 //
+// モードレスダイアログからパケット送信するように変更。(2007.12.26 yutaka)
+//
+#define WM_SEND_HEARTBEAT (WM_USER + 1)
+
+static LRESULT CALLBACK ssh_heartbeat_dlg_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
+{
+
+	switch (msg) {
+		case WM_INITDIALOG:
+			return FALSE;
+
+		case WM_SEND_HEARTBEAT:
+			{
+			PTInstVar pvar = (PTInstVar)wp;
+			buffer_t *msg;
+			char *s;
+			unsigned char *outmsg;
+			int len;
+
+			msg = buffer_init();
+			if (msg == NULL) {
+				// TODO: error check
+				return FALSE;
+			}
+			s = "ssh-heartbeat";
+			buffer_put_string(msg, s, strlen(s));
+			len = buffer_len(msg);
+			if (SSHv1(pvar)) {
+				outmsg = begin_send_packet(pvar, SSH_MSG_IGNORE, len);
+			} else {
+				outmsg = begin_send_packet(pvar, SSH2_MSG_IGNORE, len);
+			}
+			memcpy(outmsg, buffer_ptr(msg), len);
+			finish_send_packet(pvar);
+			buffer_free(msg);
+			}
+			return TRUE;
+			break;
+
+		case WM_COMMAND:
+			switch (wp) {
+			}
+
+			switch (LOWORD(wp)) {
+				case IDOK:
+					{
+					return TRUE;
+					}
+
+				case IDCANCEL:
+					EndDialog(hWnd, 0);
+					return TRUE;
+				default:
+					return FALSE;
+			}
+			break;
+
+		case WM_CLOSE:
+			// closeボタンが押下されても window が閉じないようにする。
+			return TRUE;
+
+		case WM_DESTROY:
+			return TRUE;
+
+		default:
+			return FALSE;
+	}
+	return TRUE;
+}
+
+
 static unsigned __stdcall ssh_heartbeat_thread(void FAR * p)
 {
 	static int instance = 0;
@@ -6382,32 +6436,8 @@ static unsigned __stdcall ssh_heartbeat_thread(void FAR * p)
 		tick = time(NULL) - pvar->ssh_heartbeat_tick;
 		if (pvar->session_settings.ssh_heartbeat_overtime > 0 &&
 			tick > pvar->session_settings.ssh_heartbeat_overtime) {
-			buffer_t *msg;
-			char *s;
-			unsigned char *outmsg;
-			int len;
 
-			// 別コンテキストで、SSHのシーケンスへ割り込まないようにロックを取る。
-			ssh_heartbeat_lock();
-
-			msg = buffer_init();
-			if (msg == NULL) {
-				// TODO: error check
-				continue;
-			}
-			s = "ssh-heartbeat";
-			buffer_put_string(msg, s, strlen(s));
-			len = buffer_len(msg);
-			if (SSHv1(pvar)) {
-				outmsg = begin_send_packet(pvar, SSH_MSG_IGNORE, len);
-			} else {
-				outmsg = begin_send_packet(pvar, SSH2_MSG_IGNORE, len);
-			}
-			memcpy(outmsg, buffer_ptr(msg), len);
-			finish_send_packet(pvar);
-			buffer_free(msg);
-
-			ssh_heartbeat_unlock();
+			SendMessage(pvar->ssh_hearbeat_dialog, WM_SEND_HEARTBEAT, (WPARAM)pvar, 0);
 		}
 
 		Sleep(100); // yield
@@ -6421,12 +6451,17 @@ static unsigned __stdcall ssh_heartbeat_thread(void FAR * p)
 static void start_ssh_heartbeat_thread(PTInstVar pvar)
 {
 	HANDLE thread = (HANDLE)-1;
-	//unsigned tid;
+	unsigned tid;
+	HWND hDlgWnd;
 
-	// TTSSHは thread-safe ではないのでスレッドは禁止 (yutaka)
-#if 0
+	// モードレスダイアログを作成。ハートビート用なのでダイアログは非表示のままと
+	// するので、リソースIDはなんでもよい。
+	hDlgWnd = CreateDialog(hInst, MAKEINTRESOURCE(IDD_SSHSCP_PROGRESS),
+               pvar->cv->HWin, (DLGPROC)ssh_heartbeat_dlg_proc);
+	pvar->ssh_hearbeat_dialog = hDlgWnd;
+
+	// TTSSHは thread-safe ではないのでスレッド内からのパケット送信は不可。(2007.12.26 yutaka)
 	thread = (HANDLE)_beginthreadex(NULL, 0, ssh_heartbeat_thread, pvar, 0, &tid);
-#endif
 	if (thread == (HANDLE)-1) {
 		// TODO:
 	}
@@ -6440,6 +6475,8 @@ void halt_ssh_heartbeat_thread(PTInstVar pvar)
 		WaitForSingleObject(pvar->ssh_heartbeat_thread, INFINITE);
 		CloseHandle(pvar->ssh_heartbeat_thread);
 		pvar->ssh_heartbeat_thread = (HANDLE)-1L;
+
+		DestroyWindow(pvar->ssh_hearbeat_dialog);
 	}
 }
 

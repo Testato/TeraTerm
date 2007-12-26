@@ -232,6 +232,7 @@ typedef struct _TInstVar {
 	buffer_t *decomp_buffer;
 	char *ssh2_authlist;
 	BOOL tryed_ssh2_authlist;
+	HWND ssh_hearbeat_dialog;
 } TInstVar;
 
 #define LOG_LEVEL_FATAL      5
