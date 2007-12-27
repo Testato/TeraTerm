@@ -236,7 +236,11 @@ static void ssh2_channel_retry_send_bufchain(PTInstVar pvar, Channel_t *c)
 		if (size >= c->remote_window)
 			break;
 
-		SSH_channel_send(pvar, c->local_num, -1, buffer_ptr(ch->msg), size);
+		if (c->local_num == -1) { // shell or SCP
+			SSH2_send_channel_data(pvar, c, buffer_ptr(ch->msg), size);
+		} else { // port-forwarding
+			SSH_channel_send(pvar, c->local_num, -1, buffer_ptr(ch->msg), size);
+		}
 
 		c->bufchain = ch->next;
 
@@ -3410,6 +3414,7 @@ static int SSH_scp_transaction(PTInstVar pvar, char *sendfile, enum scp_dir dire
 
 		strncpy_s(c->scp.sendfilefull, sizeof(c->scp.sendfilefull), sendfile, _TRUNCATE); 
 		strncpy_s(c->scp.sendfile, sizeof(c->scp.sendfile), sendfile, _TRUNCATE); 
+		c->scp.sendfp = fp;     // file pointer
 	}
 
 	// setup SCP data
@@ -3446,6 +3451,7 @@ error:
 int SSH_start_scp(PTInstVar pvar, char *sendfile)
 {
 	return SSH_scp_transaction(pvar, sendfile, TOLOCAL);
+	//return SSH_scp_transaction(pvar, "remote5.bin", FROMREMOTE);
 }
 
 
@@ -6907,8 +6913,19 @@ done:
 
 	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_REQUEST was sent at handle_SSH2_open_confirm().", LOG_LEVEL_VERBOSE);
 
-	if (wantconfirm == 0) {
-		handle_SSH2_channel_success(pvar);
+	if (c->type == TYPE_SHELL) {
+		if (wantconfirm == 0) {
+			handle_SSH2_channel_success(pvar);
+		}
+
+	} else if (c->type == TYPE_SCP) {
+		// SCPで remote-to-local の場合は、サーバからのファイル送信要求を出す。
+		// この時点では remote window size が"0"なので、すぐには送られないが、遅延送信処理で送られる。
+		// (2007.12.27 yutaka)
+		if (c->scp.dir == FROMREMOTE) {
+			char ch = '\0';
+			SSH2_send_channel_data(pvar, c, &ch, 1);
+		}
 	}
 
 	return TRUE;
@@ -7118,6 +7135,7 @@ void ssh2_channel_send_close(PTInstVar pvar, Channel_t *c)
 	}
 }
 
+
 #define WM_SENDING_FILE (WM_USER + 1)
 
 typedef struct scp_dlg_parm {
@@ -7295,16 +7313,28 @@ static void SSH2_scp_tolocal(PTInstVar pvar, Channel_t *c, unsigned char *data, 
 	}
 }
 
+static void SSH2_scp_fromremote(PTInstVar pvar, Channel_t *c, unsigned char *data, unsigned int buflen)
+{
+
+}
+
+
 static void SSH2_scp_response(PTInstVar pvar, Channel_t *c, unsigned char *data, unsigned int buflen)
 {
-	if (buflen == 1 && data[0] == '\0') {  // OK
-		if (c->scp.dir == TOLOCAL) {
+	if (c->scp.dir == FROMREMOTE) {
+		SSH2_scp_fromremote(pvar, c, data, buflen);
+
+	} else	if (c->scp.dir == TOLOCAL) {
+		if (buflen == 1 && data[0] == '\0') {  // OK
 			SSH2_scp_tolocal(pvar, c, data, buflen);
 		} else {
-			//SSH2_scp_fromremote(pvar, c, data, buflen);
+			goto error;
 		}
+	}
+	return;
 
-	} else {  // error
+error:
+	{  // error
 		char msg[2048];
 		unsigned int i, max;
 
@@ -7480,7 +7510,7 @@ static BOOL handle_SSH2_channel_eof(PTInstVar pvar)
 		// TODO:
 		return FALSE;
 	}
-	if (c->type != TYPE_SHELL) {
+	if (c->type == TYPE_PORTFWD) {
 		FWD_channel_input_eof(pvar, c->local_num);
 	}
 
