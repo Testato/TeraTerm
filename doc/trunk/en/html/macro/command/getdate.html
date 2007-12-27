@@ -24,19 +24,67 @@ getdate &lt;strvar&gt; [&lt;format&gt;]
 <h2>Remarks</h2>
 
 <p>
-Returns the current date in the string variable &lt;strvar&gt;, with the format "YYYY-MM-DD".
+Returns the current date in the string variable &lt;strvar&gt;, with the default format "YYYY-MM-DD".
+The user can specify the format same as strftime. And also, the default format equals "%Y-%m-%d" at the &lt;format&gt; argument.
 </p>
+
+<p>
+formatが指定されたgetdateは、同じformatが指定されたgettimeと動作が等しくなる。 
+</p>
+
+<p>
+このコマンドの実行結果はシステム変数 result に格納される。変数 result の値の意味は以下のとおり。 
+</p>
+
+
+<table>
+  <thead>
+    <tr>
+      <td>値</td>
+      <td>意味</td>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>
+	正常に値が &lt;strvar&gt; に格納された。
+      </td>
+    </tr>
+
+    <tr>
+      <td>1</td>
+      <td>
+	生成された文字列の長さが上限(255文字)を超えた等の理由で、&lt;strvar&gt; への値の格納が正常に行われなかった。
+      </td>
+    </tr>
+
+    <tr>
+      <td>2</td>
+      <td>
+	&lt;format&gt; の指定が不正である。
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 
 <h2>Example</h2>
 
 <pre class="macro-example">
-<code>getdate datestr
+<code>
+;現在の日付をdatestrに格納。形式はYYYY-MM-DD。
+getdate datestr
+
+;現在の日時を元にしてログファイル名を生成し、変数logfileに格納。形式はlog-YYYYMMDD-HHMMSS.txt
+getdate logfile "log-%Y%m%d-%H%M%S.txt"
 </code></pre>
 
 <h2>See also</h2>
 <ul>
   <li><a href="gettime.html">gettime</a></li>
-  <li><a href="http://msdn2.microsoft.com/en-us/library/fe06s4ak(VS.80).aspx">strftime (MSDN Library)</a><li>
+  <li><a href="http://msdn2.microsoft.com/en-us/library/fe06s4ak(VS.80).aspx">strftime (MSDN Library)</a></li>
 </ul>
 
 </body>

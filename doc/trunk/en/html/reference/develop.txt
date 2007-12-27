@@ -30,6 +30,30 @@
 - Should not have opened checkout file.
   CVS commit procedure may be failure while checkout file will have been opened.
 
+
+* Naming rule to add menu ID
+
+The first digit is 5.
+The second digit is:
+  TeraTerm VT window          0
+  TeraTerm TEK window         1
+  TTSSH                       2
+  TTProxy                     3
+  TTXKanjiMenu                4
+The third digit is:
+  [File] menu                 1
+  [Edit] menu                 2
+  [Setup] menu                3
+  [Control] menu              4
+  [Window] menu               8
+  [Help] menu                 9
+
+Example: adding a TTSSH menu under File menu
+
+#define ID_SSHSCPMENU       52110  
+
+
+
 * What to do when new macro command is added?
 - Coding
 -- get a new number of command internal ID.
