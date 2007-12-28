@@ -96,6 +96,10 @@ typedef struct scp {
 	HWND progress;
 	HANDLE thread;
 	PTInstVar pvar;
+
+	// receiving file
+	long long filetotalsize;
+	long long filercvsize;
 } scp_t;
 
 typedef struct channel {
@@ -191,6 +195,7 @@ static Channel_t *ssh2_channel_new(unsigned int window, unsigned int maxpack,
 	if (type == TYPE_SCP) {
 		c->scp.state = SCP_INIT;
 		c->scp.progress = NULL;
+		c->scp.thread = (HANDLE)-1;
 	}
 
 	return (c);
@@ -3451,7 +3456,8 @@ error:
 int SSH_start_scp(PTInstVar pvar, char *sendfile)
 {
 	return SSH_scp_transaction(pvar, sendfile, TOLOCAL);
-	//return SSH_scp_transaction(pvar, "remote5.bin", FROMREMOTE);
+
+	//return SSH_scp_transaction(pvar, "bigfile100.dat", FROMREMOTE);
 }
 
 
@@ -7313,16 +7319,114 @@ static void SSH2_scp_tolocal(PTInstVar pvar, Channel_t *c, unsigned char *data, 
 	}
 }
 
-static void SSH2_scp_fromremote(PTInstVar pvar, Channel_t *c, unsigned char *data, unsigned int buflen)
+static BOOL SSH2_scp_fromremote(PTInstVar pvar, Channel_t *c, unsigned char *data, unsigned int buflen)
 {
+	int permission;
+	long long size;
+	char filename[MAX_PATH];
+	char s[80];
+	char ch;
+	HWND hDlgWnd;
+	MSG msg;
+	int i;
 
+	if (buflen == 0)
+		return FALSE;
+
+	if (c->scp.state == SCP_INIT) {
+		if (data[0] == '\01' || data[1] == '\02') {  // error
+			return FALSE;
+		}
+
+		if (data[0] == 'T') {  // Tmtime.sec mtime.usec atime.sec atime.usec
+			// TODO: 
+
+			// リプライを返す
+			goto reply;
+
+		} else if (data[0] == 'C') {  // C0666 size file
+			sscanf_s(data, "C%o %lld %s", &permission, &size, filename, sizeof(filename));
+
+			// Windowsなのでパーミッションは無視。サイズのみ記録。
+			c->scp.filetotalsize = size;
+			c->scp.filercvsize = 0;
+
+			c->scp.state = SCP_DATA;
+
+			// 進捗ウィンドウ
+			c->scp.pvar = pvar;
+			hDlgWnd = CreateDialog(hInst, MAKEINTRESOURCE(IDD_SSHSCP_PROGRESS),
+					   pvar->cv->HWin, (DLGPROC)ssh_scp_dlg_proc);
+			if (hDlgWnd != NULL) {
+				c->scp.progress = hDlgWnd;
+				SetWindowText(hDlgWnd, "TTSSH: SCP receiving file");
+				SendMessage(GetDlgItem(hDlgWnd, IDC_FILENAME), WM_SETTEXT, 0, (LPARAM)c->scp.sendfile);
+				ShowWindow(hDlgWnd, SW_SHOW);
+			}
+
+			c->scp.thread = (HANDLE)-1;
+
+			goto reply;
+
+		} else {
+			// TODO: 
+
+		}
+
+	} else if (c->scp.state == SCP_DATA) {  // payloadの受信
+		// Cancelボタンが押下されたらウィンドウが消える。
+		if (IsWindowVisible(c->scp.progress) == 0)
+			goto cancel_abort;
+
+		c->scp.filercvsize += buflen;
+
+		if (fwrite(data, 1, buflen, c->scp.sendfp) < buflen) { // error
+			// TODO:
+		}
+
+		if (c->scp.filercvsize >= c->scp.filetotalsize) { // EOF
+			c->scp.state = SCP_CLOSING;
+		}
+
+		_snprintf_s(s, sizeof(s), _TRUNCATE, "%lld / %lld (%d%%)", c->scp.filercvsize, c->scp.filetotalsize, 
+			(100 * c->scp.filercvsize / c->scp.filetotalsize)%100 );
+		SendMessage(GetDlgItem(c->scp.progress, IDC_PROGRESS), WM_SETTEXT, 0, (LPARAM)s);
+
+		// 以下の workaround がないと、モードレスダイアログの操作すらできない。
+		// この処置でもTeraTermウィンドウの操作ができない。要検討。
+#if 1
+		for (i = 0 ; i < 10 ; i++) {
+			if (PeekMessage(&msg, c->scp.progress, 0, 0, PM_REMOVE)) {
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
+			Sleep(0);
+		}
+#endif
+
+	} else if (c->scp.state == SCP_CLOSING) {  // EOFの受信
+		ssh2_channel_send_close(pvar, c);
+
+	}
+	return TRUE;
+
+reply:
+	ch = '\0';
+	SSH2_send_channel_data(pvar, c, &ch, 1);
+	return TRUE;
+
+cancel_abort:
+	ssh2_channel_send_close(pvar, c);
+
+	return TRUE;
 }
 
 
 static void SSH2_scp_response(PTInstVar pvar, Channel_t *c, unsigned char *data, unsigned int buflen)
 {
 	if (c->scp.dir == FROMREMOTE) {
-		SSH2_scp_fromremote(pvar, c, data, buflen);
+		if (SSH2_scp_fromremote(pvar, c, data, buflen) == FALSE)
+			goto error;
 
 	} else	if (c->scp.dir == TOLOCAL) {
 		if (buflen == 1 && data[0] == '\0') {  // OK
