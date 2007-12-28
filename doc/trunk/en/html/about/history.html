@@ -967,9 +967,9 @@ SYNOPSIS:
       <li>added support for sending a local file with SSH2 SCP(Secure Copy Protocol). Also, added SSH SCP menu under file menu.</li>
       <li>Bug fix: TCP disconnection was mis-detected in the packet sending. This bug is regression in TTSSH 1.01 because SSH heartbeat thread is not thread-safe.</li>
       <li>Bug fix: SSH is disabled when "/ssh1" or "/ssh2" is included in hostname on New Connection dialog.</li>
-      <li>Bug fix: デフォルトユーザ名を指定しておらず、認証方式を challenge にしており、/ask4passwd を指定している場合、SSH2_MSG_SERVICE_REQUEST を2回送信してしまう問題を修正した。</li>
-      <li>Bug fix: CheckAuthListFirst が off で、認証方式を challenge にしており、/ask4passwd を指定している場合、TIS 認証ダイアログが自動的に出現しない問題を修正した。</li>
-      <li>Bug fix: CheckAuthListFirst が on で、ユーザ名を送信できる状態になる前にユーザ名を入力してフォーカスを外した場合、OKボタンを押したあとに認証が行われない問題を修正した。</li>
+      <li>Bug fix: Twice sending SSH2_MSG_SERVICE_REQUEST packet when the user default is not specified and the user authentication method is challenge, /ask4passwd is specified at commad line parameter.</li>
+      <li>Bug fix: TIS authentication dialog would not appear when CheckAuthListFirst entry is off and the user authentication method is challenge, /ask4passwd is specified at commad line parameter.</li>
+      <li>Bug fix: The user authentication would not work after OK button is pushed when CheckAuthListFirst entry is on and the user input box does not focus.</li>
     </ul>
   </li>
 
