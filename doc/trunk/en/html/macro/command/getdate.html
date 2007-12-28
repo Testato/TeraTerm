@@ -29,19 +29,20 @@ The user can specify the format same as strftime. And also, the default format e
 </p>
 
 <p>
-formatが指定されたgetdateは、同じformatが指定されたgettimeと動作が等しくなる。 
+The behavior of the getdate command specified with the format equals the gettime command specified with the same format.
 </p>
 
 <p>
-このコマンドの実行結果はシステム変数 result に格納される。変数 result の値の意味は以下のとおり。 
+This command returns one of the following values in the system variable "result":
+
 </p>
 
 
 <table>
   <thead>
     <tr>
-      <td>値</td>
-      <td>意味</td>
+      <td>Value</td>
+      <td>Meaning</td>
     </tr>
   </thead>
 
@@ -49,21 +50,21 @@ formatが指定されたgetdateは、同じformatが指定されたgettimeと動作が等しくなる。
     <tr>
       <td>0</td>
       <td>
-	正常に値が &lt;strvar&gt; に格納された。
+	 Normal success. &lt;strvar&gt; is stored.
       </td>
     </tr>
 
     <tr>
       <td>1</td>
       <td>
-	生成された文字列の長さが上限(255文字)を超えた等の理由で、&lt;strvar&gt; への値の格納が正常に行われなかった。
+	Error. &lt;strvar&gt; is not stored because a length of the generated string will be over the upper limit -255 characters-.
       </td>
     </tr>
 
     <tr>
       <td>2</td>
       <td>
-	&lt;format&gt; の指定が不正である。
+	Error. &lt;format&gt; is invalid parameter.
       </td>
     </tr>
   </tbody>
@@ -74,10 +75,11 @@ formatが指定されたgetdateは、同じformatが指定されたgettimeと動作が等しくなる。
 
 <pre class="macro-example">
 <code>
-;現在の日付をdatestrに格納。形式はYYYY-MM-DD。
+;Stores the current date to "datestr" variable with YYYY-MM-DD format.
 getdate datestr
 
-;現在の日時を元にしてログファイル名を生成し、変数logfileに格納。形式はlog-YYYYMMDD-HHMMSS.txt
+;Stores the current date with the user format to "logfile" variable. 
+;The format is log-YYYYMMDD-HHMMSS.txt.
 getdate logfile "log-%Y%m%d-%H%M%S.txt"
 </code></pre>
 
