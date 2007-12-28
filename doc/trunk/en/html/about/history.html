@@ -24,7 +24,7 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.57">2007.12.26 (Ver 4.57 not released)</a>
+  <li class="history"><a name="teraterm_4.57">2007.12.28 (Ver 4.57 not released)</a>
     <ul>
       <li>added param4 to param9 <a href="../macro/commandline.html">macro commandline parameters</a>.</li>
       <li>added ESC key binding on Additiona settings dialog.</li>
@@ -39,6 +39,10 @@
         </ul></li>
       <li>added '<a href="../macro/command/cygconnect.html">cygconnect</a>' macro command.</li>
       <li>added new argument to <a href="../macro/command/getdate.html">getdate</a> and <a href="../macro/command/gettime.html">gettime</a> macro command. It specifies date and time format.</li>
+      <li>added the user confirmation when a file drags to TeraTerm window.
+        <ul>
+          <li>added ConfirmFileDragAndDrop entry in teraterm.ini file. The default value is on.</li>
+        </ul></li>
       <li>Bug fix: TeraTerm would overwrite the selected buffer to the Clipboard when SelectOnlyByLButton entry is on.</li>
       <li>Bug fix: extension filters on file dialog didn't work when the FileSendFilter is specified.</li>
       <li>Bug fix: double close a local file handle when same file already exists on the remote host by sending the local file with ZMODEM protocol.</li>
