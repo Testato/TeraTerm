@@ -366,6 +366,7 @@ struct tttset {
 	WORD TelAutoDetect;
 	char XModemRcvCommand[MAX_PATH];
 	char ZModemRcvCommand[MAX_PATH];
+	WORD ConfirmFileDragAndDrop;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -774,6 +775,11 @@ typedef TMap far *PMap;
  * Increment the number of this macro value
  * when you change TMap or member of TMap.
  *
+ * - At version 4.57, ttset_memfilemap was replaced with ttset_memfilemap_5.
+ *   added tttset.XModemRcvCommand.
+ *   added tttset.ZModemRcvCommand.
+ *   added tttset.ConfirmFileDragAndDrop.
+ *
  * - At version 4.56, ttset_memfilemap was replaced with ttset_memfilemap_4.
  *   added tttset.DisableAppKeypad.
  *   added tttset.DisableAppCursor.
@@ -792,4 +798,4 @@ typedef TMap far *PMap;
  *   added tttset.VTCompatTab.
  */
 
-#define TT_FILEMAPNAME "ttset_memfilemap_4"
+#define TT_FILEMAPNAME "ttset_memfilemap_5"

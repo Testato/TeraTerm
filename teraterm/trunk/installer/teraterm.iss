@@ -120,6 +120,12 @@ Name: {userstartup}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app
 Name: {userstartup}\Collector; Filename: {app}\collector\collector.exe; WorkingDir: {app}\Collector; IconFilename: {app}\collector\collector.exe; Components: Collector; Tasks: startupcollectoricon; IconIndex: 0; Flags: createonlyiffileexists
 
 [INI]
+Filename: {app}\teraterm.ini; Section: Tera Term; Key: ConfirmFileDragAndDrop; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: ConfirmFileDragAndDrop; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {app}\teraterm.ini; Section: Tera Term; Key: ZmodemRcvCommand; String: rz; Flags: createkeyifdoesntexist; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: ZmodemRcvCommand; String: rz; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {app}\teraterm.ini; Section: Tera Term; Key: XmodemRcvCommand; String: ; Flags: createkeyifdoesntexist; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: XmodemRcvCommand; String: ; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: TelAutoDetect; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: TelAutoDetect; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: SelectOnlyByLButton; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm

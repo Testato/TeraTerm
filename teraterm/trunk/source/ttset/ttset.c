@@ -1076,6 +1076,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->AcceptBroadcast =
 		GetOnOff(Section, "AcceptBroadcast", FName, TRUE);
 
+	// Confirm send a file when drag and drop (2007.12.28 maya)
+	ts->ConfirmFileDragAndDrop =
+		GetOnOff(Section, "ConfirmFileDragAndDrop", FName, TRUE);
+
 #ifdef USE_NORMAL_BGCOLOR
 	// UseNormalBGColor
 	ts->UseNormalBGColor =
@@ -1799,6 +1803,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 	// 337: 2007/03/20 Accept Broadcast
 	WriteOnOff(Section, "AcceptBroadcast", FName, ts->AcceptBroadcast);
+
+	// Confirm send a file when drag and drop (2007.12.28 maya)
+	WriteOnOff(Section, "ConfirmFileDragAndDrop", FName,
+	           ts->ConfirmFileDragAndDrop);
 }
 
 #define VTEditor "VT editor keypad"

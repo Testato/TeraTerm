@@ -1626,13 +1626,15 @@ void CVTWindow::OnDropFiles(HDROP hDropInfo)
 				FreeFileVar(&SendVar); // 解放を忘れずに
 
 			} else {
-				// いきなりファイルの内容を送り込む前に、ユーザに問い合わせを行う。(2006.1.21 yutaka)
-				char uimsg[MAX_UIMSG];
-				get_lang_msg("MSG_DANDD_CONF_TITLE", uimsg, sizeof(uimsg),
-				             "Tera Term: File Drag and Drop", ts.UILanguageFile);
-				get_lang_msg("MSG_DANDD_CONF", ts.UIMsg, sizeof(ts.UIMsg),
-				             "Are you sure that you want to send the file content?", ts.UILanguageFile);
-				if (MessageBox(ts.UIMsg, uimsg, MB_YESNO | MB_DEFBUTTON2) == IDYES) {
+				// Confirm send a file when drag and drop (2007.12.28 maya)
+				if (ts.ConfirmFileDragAndDrop) {
+					// いきなりファイルの内容を送り込む前に、ユーザに問い合わせを行う。(2006.1.21 yutaka)
+					char uimsg[MAX_UIMSG];
+					get_lang_msg("MSG_DANDD_CONF_TITLE", uimsg, sizeof(uimsg),
+								 "Tera Term: File Drag and Drop", ts.UILanguageFile);
+					get_lang_msg("MSG_DANDD_CONF", ts.UIMsg, sizeof(ts.UIMsg),
+								 "Are you sure that you want to send the file content?", ts.UILanguageFile);
+					if (MessageBox(ts.UIMsg, uimsg, MB_YESNO | MB_DEFBUTTON2) == IDYES) {
 						SendVar->DirLen = 0;
 						ts.TransBin = 0;
 						FileSendStart();
@@ -1641,6 +1643,13 @@ void CVTWindow::OnDropFiles(HDROP hDropInfo)
 						FreeFileVar(&SendVar);
 
 					}
+				}
+				else {
+					SendVar->DirLen = 0;
+					ts.TransBin = 0;
+					FileSendStart();
+
+				}
 			}
 		}
 		else
