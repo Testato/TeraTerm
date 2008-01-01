@@ -2942,6 +2942,13 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 	return FALSE;
 }
 
+// マクロコマンド"scpsend"から呼び出すために、DLL外へエクスポートする。"ttxssh.def"ファイルに記載。
+// (2008.1.1 yutaka)
+int CALLBACK TTXScpSendfile(char *filename)
+{
+	return SSH_start_scp(pvar, filename);
+}
+
 static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
                                      LPARAM lParam)
 {

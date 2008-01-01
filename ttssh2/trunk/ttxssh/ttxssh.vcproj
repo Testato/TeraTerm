@@ -82,6 +82,7 @@
 				OutputFile=".\Debug/ttxssh.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
+				ModuleDefinitionFile="ttxssh.def"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/ttxssh.pdb"
 				GenerateMapFile="true"
@@ -184,6 +185,7 @@
 				OutputFile=".\Release/ttxssh.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				ModuleDefinitionFile="ttxssh.def"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Release/ttxssh.pdb"
 				SubSystem="2"
@@ -270,6 +272,10 @@
 		</File>
 		<File
 			RelativePath="ttxssh.c"
+			>
+		</File>
+		<File
+			RelativePath=".\ttxssh.def"
 			>
 		</File>
 		<File
