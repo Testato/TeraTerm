@@ -336,7 +336,7 @@ BEGIN
             VALUE "FileDescription", "Tera Term Pro"
             VALUE "FileVersion", "4, 56, 0, 0"
             VALUE "InternalName", "TTERMPRO"
-            VALUE "LegalCopyright", "(C)TeraTerm Project 2004-2007, (C)T. Teranishi 1994-1998"
+            VALUE "LegalCopyright", "(C)TeraTerm Project 2004-2008, (C)T. Teranishi 1994-1998"
             VALUE "OriginalFilename", "TTERMPRO.EXE"
             VALUE "ProductName", "Tera Term Pro"
             VALUE "ProductVersion", "4, 56, 0, 0"
