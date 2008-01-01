@@ -172,7 +172,7 @@
 #define HlpMacroCommandClosett          92008
 #define HlpMacroCommandCode2str         92009
 #define HlpMacroCommandConnect          92010
-#define HlpMacroCommandCygConnect       92120
+#define HlpMacroCommandCygConnect       92130
 #define HlpMacroCommandDelpassword      92011
 #define HlpMacroCommandDisconnect       92012
 #define HlpMacroCommandDo               92126
@@ -239,6 +239,8 @@
 #define HlpMacroCommandReturn           92073
 #define HlpMacroCommandRotateleft       92122
 #define HlpMacroCommandRorateright      92121
+#define HlpMacroCommandScprecv          92131
+#define HlpMacroCommandScpsend          92132
 #define HlpMacroCommandSend             92074
 #define HlpMacroCommandSendbreak        92075
 #define HlpMacroCommandSendfile         92076
