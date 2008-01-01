@@ -702,6 +702,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="scpsend">
+					<param name="Local" value="html\macro\command\scpsend.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="send">
 					<param name="Local" value="html\macro\command\send.html">
 					<param name="ImageNumber" value="11">
