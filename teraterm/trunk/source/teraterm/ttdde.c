@@ -643,7 +643,7 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 
 	case CmdScpSend:  // add 'scpsend' (2008.1.1 yutaka)
 		{
-		typedef int (*PSSH_start_scp)(char *);
+		typedef int (CALLBACK *PSSH_start_scp)(char *);
 		static PSSH_start_scp func = NULL;
 		static HMODULE h = NULL, h2 = NULL;
 		char msg[128];
