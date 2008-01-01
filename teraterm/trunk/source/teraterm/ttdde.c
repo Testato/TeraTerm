@@ -315,333 +315,373 @@ WORD HexStr2Word(PCHAR Str)
 #define CmdZmodemSend   'E'
 #define CmdZmodemRecv   'F'
 #define CmdCallMenu     'G'
+#define CmdScpSend      'H'
+#define CmdScpRcv       'I'
 
 HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 {
-  char Command[260];
-  char Temp[MAXPATHLEN];
-  int i;
-  WORD w, c;
+	char Command[260];
+	char Temp[MAXPATHLEN];
+	int i;
+	WORD w, c;
 
-  if ((ConvH==0) ||
-      (DdeCmpStringHandles(TopicHSz, Topic) != 0) ||
-      (DdeGetData(Data,Command,sizeof(Command),0) == 0))
-    return DDE_FNOTPROCESSED;
+	if ((ConvH==0) ||
+		(DdeCmpStringHandles(TopicHSz, Topic) != 0) ||
+		(DdeGetData(Data,Command,sizeof(Command),0) == 0))
+		return DDE_FNOTPROCESSED;
 
-  switch (Command[0]) {
-    case CmdSetHWnd:
-      GetClientHWnd(&Command[1]);
-      if (cv.Ready)
-	SetDdeComReady(1);
-      break;
-    case CmdSetFile:
-      strncpy_s(ParamFileName, sizeof(ParamFileName),&(Command[1]), _TRUNCATE);
-      break;
-    case CmdSetBinary:
-      ParamBinaryFlag = Command[1] & 1;
-      break;
-    case CmdSetAppend:
-      ParamAppendFlag = Command[1] & 1;
-      break;
-    case CmdSetXmodemOpt:
-      ParamXmodemOpt = Command[1] & 3;
-      if (ParamXmodemOpt==0) ParamXmodemOpt = 1;
-      break;
-    case CmdSetSync:
-      if (sscanf(&(Command[1]),"%u",&SyncFreeSpace)!=1)
-	SyncFreeSpace = 0;
-      SyncMode = (SyncFreeSpace>0);
-      SyncRecv = TRUE;
-      break;
-    case CmdBPlusRecv:
-      if ((FileVar==NULL) && NewFileVar(&FileVar))
-      {
-	FileVar->NoMsg = TRUE;
-	DdeCmnd = TRUE;
-	BPStart(IdBPReceive);
-      }
-      else
-	return DDE_FNOTPROCESSED;
-      break;
-    case CmdBPlusSend:
-      if ((FileVar==NULL) && NewFileVar(&FileVar))
-      {
-	FileVar->DirLen = 0;
-	strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
-	FileVar->NumFname = 1;
-	FileVar->NoMsg = TRUE;
-	DdeCmnd = TRUE;
-	BPStart(IdBPSend);
-      }
-      else
-	return DDE_FNOTPROCESSED;
-      break;
-    case CmdChangeDir:
-      strncpy_s(ts.FileDir, sizeof(ts.FileDir),ParamFileName, _TRUNCATE);
-      break;
-    case CmdClearScreen:
-      switch (ParamFileName[0]) {
-        case '0':
-          PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdEditCLS,0);
-	  break;
-        case '1':
-          PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdEditCLB,0);
-	  break;
-        case '2':
-          PostMessage(HTEKWin,WM_USER_ACCELCOMMAND,IdCmdEditCLS,0);
-	  break;
-      }
-      break;
-    case CmdCloseWin:
-      CloseTT = TRUE;
-      break;
-    case CmdConnect:
-      if (cv.Open) {
-	if (cv.Ready)
-	  SetDdeComReady(1);
-	break;
-      }
-      strncpy_s(Temp, sizeof(Temp),"a ", _TRUNCATE); // dummy exe name
-      strncat_s(Temp,sizeof(Temp),ParamFileName,_TRUNCATE);
-      if (LoadTTSET())
-	(*ParseParam)(Temp, &ts, NULL);
-      FreeTTSET();
-      cv.NoMsg = 1; /* suppress error messages */
-      PostMessage(HVTWin,WM_USER_COMMSTART,0,0);
-      break;
-    case CmdDisconnect:
-      PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdDisconnect,0);
-      break;
-    case CmdEnableKeyb:
-      KeybEnabled = (ParamBinaryFlag!=0);
-      break;
-    case CmdGetTitle:
-      // title is transfered later by XTYP_REQUEST
-      strncpy_s(ParamFileName, sizeof(ParamFileName),ts.Title, _TRUNCATE);
-      break;
-    case CmdInit: // initialization signal from TTMACRO
-      if (StartupFlag) // in case of startup macro
-      { // TTMACRO is waiting for connecting to the host
-	// シリアル接続で自動接続が無効の場合は、接続ダイアログを出さない (2006.9.15 maya)
-	if (!((ts.PortType==IdSerial) && (ts.ComAutoConnect == FALSE)) &&
-	    ((ts.PortType==IdSerial) || (ts.HostName[0]!=0)))
-	{
-	  cv.NoMsg = 1;
-	  // start connecting
-	  PostMessage(HVTWin,WM_USER_COMMSTART,0,0);
+	switch (Command[0]) {
+	case CmdSetHWnd:
+		GetClientHWnd(&Command[1]);
+		if (cv.Ready)
+			SetDdeComReady(1);
+		break;
+	case CmdSetFile:
+		strncpy_s(ParamFileName, sizeof(ParamFileName),&(Command[1]), _TRUNCATE);
+		break;
+	case CmdSetBinary:
+		ParamBinaryFlag = Command[1] & 1;
+		break;
+	case CmdSetAppend:
+		ParamAppendFlag = Command[1] & 1;
+		break;
+	case CmdSetXmodemOpt:
+		ParamXmodemOpt = Command[1] & 3;
+		if (ParamXmodemOpt==0) ParamXmodemOpt = 1;
+		break;
+	case CmdSetSync:
+		if (sscanf(&(Command[1]),"%u",&SyncFreeSpace)!=1)
+			SyncFreeSpace = 0;
+		SyncMode = (SyncFreeSpace>0);
+		SyncRecv = TRUE;
+		break;
+	case CmdBPlusRecv:
+		if ((FileVar==NULL) && NewFileVar(&FileVar))
+		{
+			FileVar->NoMsg = TRUE;
+			DdeCmnd = TRUE;
+			BPStart(IdBPReceive);
+		}
+		else
+			return DDE_FNOTPROCESSED;
+		break;
+	case CmdBPlusSend:
+		if ((FileVar==NULL) && NewFileVar(&FileVar))
+		{
+			FileVar->DirLen = 0;
+			strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
+			FileVar->NumFname = 1;
+			FileVar->NoMsg = TRUE;
+			DdeCmnd = TRUE;
+			BPStart(IdBPSend);
+		}
+		else
+			return DDE_FNOTPROCESSED;
+		break;
+	case CmdChangeDir:
+		strncpy_s(ts.FileDir, sizeof(ts.FileDir),ParamFileName, _TRUNCATE);
+		break;
+	case CmdClearScreen:
+		switch (ParamFileName[0]) {
+	case '0':
+		PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdEditCLS,0);
+		break;
+	case '1':
+		PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdEditCLB,0);
+		break;
+	case '2':
+		PostMessage(HTEKWin,WM_USER_ACCELCOMMAND,IdCmdEditCLS,0);
+		break;
+		}
+		break;
+	case CmdCloseWin:
+		CloseTT = TRUE;
+		break;
+	case CmdConnect:
+		if (cv.Open) {
+			if (cv.Ready)
+				SetDdeComReady(1);
+			break;
+		}
+		strncpy_s(Temp, sizeof(Temp),"a ", _TRUNCATE); // dummy exe name
+		strncat_s(Temp,sizeof(Temp),ParamFileName,_TRUNCATE);
+		if (LoadTTSET())
+			(*ParseParam)(Temp, &ts, NULL);
+		FreeTTSET();
+		cv.NoMsg = 1; /* suppress error messages */
+		PostMessage(HVTWin,WM_USER_COMMSTART,0,0);
+		break;
+	case CmdDisconnect:
+		PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdDisconnect,0);
+		break;
+	case CmdEnableKeyb:
+		KeybEnabled = (ParamBinaryFlag!=0);
+		break;
+	case CmdGetTitle:
+		// title is transfered later by XTYP_REQUEST
+		strncpy_s(ParamFileName, sizeof(ParamFileName),ts.Title, _TRUNCATE);
+		break;
+	case CmdInit: // initialization signal from TTMACRO
+		if (StartupFlag) // in case of startup macro
+		{ // TTMACRO is waiting for connecting to the host
+			// シリアル接続で自動接続が無効の場合は、接続ダイアログを出さない (2006.9.15 maya)
+			if (!((ts.PortType==IdSerial) && (ts.ComAutoConnect == FALSE)) &&
+				((ts.PortType==IdSerial) || (ts.HostName[0]!=0)))
+			{
+				cv.NoMsg = 1;
+				// start connecting
+				PostMessage(HVTWin,WM_USER_COMMSTART,0,0);
+			}
+			else  // notify TTMACRO that I can not connect
+				SetDdeComReady(0);
+			StartupFlag = FALSE;
+		}
+		break;
+	case CmdKmtFinish:
+	case CmdKmtRecv:
+		if ((FileVar==NULL) && NewFileVar(&FileVar))
+		{
+			FileVar->NoMsg = TRUE;
+			DdeCmnd = TRUE;
+			if (Command[0]==CmdKmtFinish)
+				i = IdKmtFinish;
+			else
+				i = IdKmtReceive;
+			KermitStart(i);
+		}
+		else
+			return DDE_FNOTPROCESSED;
+		break;
+	case CmdKmtGet:
+	case CmdKmtSend:
+		if ((FileVar==NULL) && NewFileVar(&FileVar))
+		{
+			FileVar->DirLen = 0;
+			strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
+			FileVar->NumFname = 1;
+			FileVar->NoMsg = TRUE;
+			DdeCmnd = TRUE;
+			if (Command[0]==CmdKmtGet)
+				i = IdKmtGet;
+			else
+				i = IdKmtSend;
+			KermitStart(i);
+		}
+		else
+			return DDE_FNOTPROCESSED;
+		break;
+	case CmdLoadKeyMap:
+		strncpy_s(ts.KeyCnfFN, sizeof(ts.KeyCnfFN),ParamFileName, _TRUNCATE);
+		PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdLoadKeyMap,0);
+		break;
+	case CmdLogClose:
+		if (LogVar != NULL) FileTransEnd(OpLog);
+		break;
+	case CmdLogOpen:
+		if ((LogVar==NULL) && NewFileVar(&LogVar))
+		{
+			LogVar->DirLen = 0;
+			LogVar->NoMsg = TRUE;
+			strncpy_s(LogVar->FullName, sizeof(LogVar->FullName),ParamFileName, _TRUNCATE);
+			ParseStrftimeFileName(LogVar->FullName, sizeof(LogVar->FullName));
+			ts.TransBin = ParamBinaryFlag;
+			ts.Append = ParamAppendFlag;
+			LogStart();
+		}
+		else
+			return DDE_FNOTPROCESSED;
+		break;
+	case CmdLogPause:
+		FLogChangeButton(TRUE);
+		break;
+	case CmdLogStart:
+		FLogChangeButton(FALSE);
+		break;
+	case CmdLogWrite:
+		if (LogVar != NULL)
+		{
+			_lwrite(LogVar->FileHandle,
+				ParamFileName,strlen(ParamFileName));
+			LogVar->ByteCount =
+				LogVar->ByteCount + strlen(ParamFileName);
+			FLogRefreshNum();
+		}
+		break;
+	case CmdQVRecv:
+		if ((FileVar==NULL) && NewFileVar(&FileVar))
+		{
+			FileVar->NoMsg = TRUE;
+			DdeCmnd = TRUE;
+			QVStart(IdQVReceive);
+		}
+		else
+			return DDE_FNOTPROCESSED;
+		break;
+	case CmdQVSend:
+		if ((FileVar==NULL) && NewFileVar(&FileVar))
+		{
+			FileVar->DirLen = 0;
+			strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
+			FileVar->NumFname = 1;
+			FileVar->NoMsg = TRUE;
+			DdeCmnd = TRUE;
+			QVStart(IdQVSend);
+		}
+		else
+			return DDE_FNOTPROCESSED;
+		break;
+	case CmdRestoreSetup:
+		strncpy_s(ts.SetupFName, sizeof(ts.SetupFName),ParamFileName, _TRUNCATE);
+		PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdRestoreSetup,0);
+		break;
+	case CmdSendBreak:
+		PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdBreak,0);
+		break;
+	case CmdSendFile:
+		if ((SendVar==NULL) && NewFileVar(&SendVar))
+		{
+			SendVar->DirLen = 0;
+			strncpy_s(SendVar->FullName, sizeof(SendVar->FullName),ParamFileName, _TRUNCATE);
+			ts.TransBin = ParamBinaryFlag;
+			SendVar->NoMsg = TRUE;
+			DdeCmnd = TRUE;
+			FileSendStart();
+		}
+		else
+			return DDE_FNOTPROCESSED;
+		break;
+	case CmdSendKCode:
+		w = HexStr2Word(ParamFileName);
+		c = HexStr2Word(&ParamFileName[4]);
+		PostMessage(HVTWin,WM_USER_KEYCODE,w,(LPARAM)c);
+		break;
+	case CmdSetEcho:
+		ts.LocalEcho = ParamBinaryFlag;
+		if (cv.Ready && cv.TelFlag && (ts.TelEcho>0))
+			TelChangeEcho();
+		break;
+	case CmdSetTitle:
+		strncpy_s(ts.Title, sizeof(ts.Title),ParamFileName, _TRUNCATE);
+		ChangeTitle();
+		break;
+	case CmdShowTT:
+		switch (ParamFileName[0]) {
+	case '-': ShowWindow(HVTWin,SW_HIDE); break;
+	case '0': ShowWindow(HVTWin,SW_MINIMIZE); break;
+	case '1': ShowWindow(HVTWin,SW_RESTORE); break;
+	case '2': ShowWindow(HTEKWin,SW_HIDE); break;
+	case '3': ShowWindow(HTEKWin,SW_MINIMIZE); break;
+	case '4':
+		PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdCtrlOpenTEK,0);
+		break;
+	case '5':
+		PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdCtrlCloseTEK,0);
+		break;
+		}
+		break;
+	case CmdXmodemRecv:
+		if ((FileVar==NULL) && NewFileVar(&FileVar))
+		{
+			FileVar->DirLen = 0;
+			strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
+			ts.XmodemOpt = ParamXmodemOpt;
+			ts.XmodemBin = ParamBinaryFlag;
+			FileVar->NoMsg = TRUE;
+			DdeCmnd = TRUE;
+			XMODEMStart(IdXReceive);
+		}
+		else
+			return DDE_FNOTPROCESSED;
+		break;
+	case CmdXmodemSend:
+		if ((FileVar==NULL) && NewFileVar(&FileVar))
+		{
+			FileVar->DirLen = 0;
+			strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
+			ts.XmodemOpt = ParamXmodemOpt;
+			FileVar->NoMsg = TRUE;
+			DdeCmnd = TRUE;
+			XMODEMStart(IdXSend);
+		}
+		else
+			return DDE_FNOTPROCESSED;
+		break;
+	case CmdZmodemRecv:
+		if ((FileVar==NULL) && NewFileVar(&FileVar))
+		{
+			FileVar->NoMsg = TRUE;
+			DdeCmnd = TRUE;
+			ZMODEMStart(IdZReceive);
+		}
+		else
+			return DDE_FNOTPROCESSED;
+		break;
+	case CmdZmodemSend:
+		if ((FileVar==NULL) && NewFileVar(&FileVar))
+		{
+			FileVar->DirLen = 0;
+			strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
+			FileVar->NumFname = 1;
+			ts.XmodemBin = ParamBinaryFlag;
+			FileVar->NoMsg = TRUE;
+			DdeCmnd = TRUE;
+			ZMODEMStart(IdZSend);
+		}
+		else
+			return DDE_FNOTPROCESSED;
+		break;
+		// add 'callmenu' (2007.11.18 maya)
+	case CmdCallMenu:
+		i = atoi(Command + 1);
+		if (i >= 51110 && i <= 51990) {
+			PostMessage(HTEKWin,WM_COMMAND,MAKELONG(i,0),0);
+		}
+		else {
+			PostMessage(HVTWin,WM_COMMAND,MAKELONG(i,0),0);
+		}
+		break;
+
+	case CmdScpSend:  // add 'scpsend' (2008.1.1 yutaka)
+		{
+		typedef int (*PSSH_start_scp)(char *);
+		static PSSH_start_scp func = NULL;
+		static HMODULE h = NULL, h2 = NULL;
+		char msg[128];
+
+		//MessageBox(NULL, "hoge", "foo", MB_OK);
+
+		if (func == NULL) {
+			h2 = LoadLibrary("ttxssh.dll");
+			if ( ((h = GetModuleHandle("ttxssh.dll")) == NULL) ) {
+				_snprintf_s(msg, sizeof(msg), _TRUNCATE, "GetModuleHandle(\"ttxssh.dll\")) %d", GetLastError());
+				goto scp_send_error;
+			}
+			func = (PSSH_start_scp)GetProcAddress(h, "TTXScpSendfile");
+			if (func == NULL) {
+				_snprintf_s(msg, sizeof(msg), _TRUNCATE, "GetProcAddress(\"TTXScpSendfile\")) %d", GetLastError());
+				goto scp_send_error;
+			}
+		}
+
+		if (func != NULL) {
+			//MessageBox(NULL, ParamFileName, "foo2", MB_OK);
+			DdeCmnd = TRUE;
+			func(ParamFileName);
+			EndDdeCmnd(1);     // マクロ実行を終了させる。本来なら、SCP転送が完了してから呼び出したほうが望ましい。
+			break;
+		} 
+
+scp_send_error:
+		MessageBox(NULL, msg, "Tera Term: scpsend command error", MB_OK | MB_ICONERROR);
+		FreeLibrary(h2);
+		return DDE_FNOTPROCESSED;
+		}
+		break;
+
+	default:
+		return DDE_FNOTPROCESSED;
 	}
-	else  // notify TTMACRO that I can not connect
-	  SetDdeComReady(0);
-	StartupFlag = FALSE;
-      }
-      break;
-    case CmdKmtFinish:
-    case CmdKmtRecv:
-      if ((FileVar==NULL) && NewFileVar(&FileVar))
-      {
-	FileVar->NoMsg = TRUE;
-	DdeCmnd = TRUE;
-	if (Command[0]==CmdKmtFinish)
-	  i = IdKmtFinish;
-	else
-	  i = IdKmtReceive;
-	KermitStart(i);
-      }
-      else
-	return DDE_FNOTPROCESSED;
-      break;
-    case CmdKmtGet:
-    case CmdKmtSend:
-      if ((FileVar==NULL) && NewFileVar(&FileVar))
-      {
-	FileVar->DirLen = 0;
-	strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
-	FileVar->NumFname = 1;
-	FileVar->NoMsg = TRUE;
-	DdeCmnd = TRUE;
-	if (Command[0]==CmdKmtGet)
-	  i = IdKmtGet;
-	else
-	  i = IdKmtSend;
-	KermitStart(i);
-      }
-      else
-	return DDE_FNOTPROCESSED;
-      break;
-    case CmdLoadKeyMap:
-      strncpy_s(ts.KeyCnfFN, sizeof(ts.KeyCnfFN),ParamFileName, _TRUNCATE);
-      PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdLoadKeyMap,0);
-      break;
-    case CmdLogClose:
-      if (LogVar != NULL) FileTransEnd(OpLog);
-      break;
-    case CmdLogOpen:
-      if ((LogVar==NULL) && NewFileVar(&LogVar))
-      {
-	LogVar->DirLen = 0;
-	LogVar->NoMsg = TRUE;
-	strncpy_s(LogVar->FullName, sizeof(LogVar->FullName),ParamFileName, _TRUNCATE);
-	ParseStrftimeFileName(LogVar->FullName, sizeof(LogVar->FullName));
-	ts.TransBin = ParamBinaryFlag;
-	ts.Append = ParamAppendFlag;
-	LogStart();
-      }
-      else
-	return DDE_FNOTPROCESSED;
-      break;
-    case CmdLogPause:
-      FLogChangeButton(TRUE);
-      break;
-    case CmdLogStart:
-      FLogChangeButton(FALSE);
-      break;
-    case CmdLogWrite:
-      if (LogVar != NULL)
-      {
-	_lwrite(LogVar->FileHandle,
-	ParamFileName,strlen(ParamFileName));
-	LogVar->ByteCount =
-	  LogVar->ByteCount + strlen(ParamFileName);
-	FLogRefreshNum();
-      }
-      break;
-    case CmdQVRecv:
-      if ((FileVar==NULL) && NewFileVar(&FileVar))
-      {
-	FileVar->NoMsg = TRUE;
-	DdeCmnd = TRUE;
-	QVStart(IdQVReceive);
-      }
-      else
-	return DDE_FNOTPROCESSED;
-      break;
-    case CmdQVSend:
-      if ((FileVar==NULL) && NewFileVar(&FileVar))
-      {
-	FileVar->DirLen = 0;
-	strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
-	FileVar->NumFname = 1;
-	FileVar->NoMsg = TRUE;
-	DdeCmnd = TRUE;
-	QVStart(IdQVSend);
-      }
-      else
-	return DDE_FNOTPROCESSED;
-      break;
-    case CmdRestoreSetup:
-      strncpy_s(ts.SetupFName, sizeof(ts.SetupFName),ParamFileName, _TRUNCATE);
-      PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdRestoreSetup,0);
-      break;
-    case CmdSendBreak:
-      PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdBreak,0);
-      break;
-    case CmdSendFile:
-      if ((SendVar==NULL) && NewFileVar(&SendVar))
-      {
-	SendVar->DirLen = 0;
-	strncpy_s(SendVar->FullName, sizeof(SendVar->FullName),ParamFileName, _TRUNCATE);
-	ts.TransBin = ParamBinaryFlag;
-	SendVar->NoMsg = TRUE;
-	DdeCmnd = TRUE;
-	FileSendStart();
-      }
-      else
-	return DDE_FNOTPROCESSED;
-      break;
-    case CmdSendKCode:
-      w = HexStr2Word(ParamFileName);
-      c = HexStr2Word(&ParamFileName[4]);
-      PostMessage(HVTWin,WM_USER_KEYCODE,w,(LPARAM)c);
-      break;
-    case CmdSetEcho:
-      ts.LocalEcho = ParamBinaryFlag;
-      if (cv.Ready && cv.TelFlag && (ts.TelEcho>0))
-	TelChangeEcho();
-      break;
-    case CmdSetTitle:
-      strncpy_s(ts.Title, sizeof(ts.Title),ParamFileName, _TRUNCATE);
-      ChangeTitle();
-      break;
-    case CmdShowTT:
-      switch (ParamFileName[0]) {
-        case '-': ShowWindow(HVTWin,SW_HIDE); break;
-        case '0': ShowWindow(HVTWin,SW_MINIMIZE); break;
-        case '1': ShowWindow(HVTWin,SW_RESTORE); break;
-        case '2': ShowWindow(HTEKWin,SW_HIDE); break;
-        case '3': ShowWindow(HTEKWin,SW_MINIMIZE); break;
-        case '4':
-	  PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdCtrlOpenTEK,0);
-	  break;
-        case '5':
-	  PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdCtrlCloseTEK,0);
-	  break;
-      }
-      break;
-    case CmdXmodemRecv:
-      if ((FileVar==NULL) && NewFileVar(&FileVar))
-      {
-	FileVar->DirLen = 0;
-	strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
-	ts.XmodemOpt = ParamXmodemOpt;
-	ts.XmodemBin = ParamBinaryFlag;
-	FileVar->NoMsg = TRUE;
-	DdeCmnd = TRUE;
-	XMODEMStart(IdXReceive);
-      }
-      else
-	return DDE_FNOTPROCESSED;
-      break;
-    case CmdXmodemSend:
-      if ((FileVar==NULL) && NewFileVar(&FileVar))
-      {
-	FileVar->DirLen = 0;
-	strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
-	ts.XmodemOpt = ParamXmodemOpt;
-	FileVar->NoMsg = TRUE;
-	DdeCmnd = TRUE;
-	XMODEMStart(IdXSend);
-      }
-      else
-	return DDE_FNOTPROCESSED;
-      break;
-    case CmdZmodemRecv:
-      if ((FileVar==NULL) && NewFileVar(&FileVar))
-      {
-	FileVar->NoMsg = TRUE;
-	DdeCmnd = TRUE;
-	ZMODEMStart(IdZReceive);
-      }
-      else
-	return DDE_FNOTPROCESSED;
-      break;
-    case CmdZmodemSend:
-      if ((FileVar==NULL) && NewFileVar(&FileVar))
-      {
-	FileVar->DirLen = 0;
-	strncpy_s(FileVar->FullName, sizeof(FileVar->FullName),ParamFileName, _TRUNCATE);
-	FileVar->NumFname = 1;
-	ts.XmodemBin = ParamBinaryFlag;
-	FileVar->NoMsg = TRUE;
-	DdeCmnd = TRUE;
-	ZMODEMStart(IdZSend);
-      }
-      else
-	return DDE_FNOTPROCESSED;
-      break;
-    // add 'callmenu' (2007.11.18 maya)
-    case CmdCallMenu:
-      i = atoi(Command + 1);
-      if (i >= 51110 && i <= 51990) {
-	PostMessage(HTEKWin,WM_COMMAND,MAKELONG(i,0),0);
-      }
-      else {
-	PostMessage(HVTWin,WM_COMMAND,MAKELONG(i,0),0);
-      }
-      break;
-    default:
-      return DDE_FNOTPROCESSED;
-  }
-  return (HDDEDATA)DDE_FACK;
+	return (HDDEDATA)DDE_FACK;
 }
 
 HDDEDATA CALLBACK DdeCallbackProc(UINT CallType, UINT Fmt, HCONV Conv,

@@ -45,6 +45,8 @@
 #define CmdZmodemSend   'E'
 #define CmdZmodemRecv   'F'
 #define CmdCallMenu     'G'
+#define CmdScpSend      'H'
+#define CmdScpRcv       'I'
 
 #ifdef __cplusplus
 extern "C" {

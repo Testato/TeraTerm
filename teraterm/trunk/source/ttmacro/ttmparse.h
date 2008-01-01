@@ -168,6 +168,8 @@
 #define RsvUntil        128   // add 'until' (2007.11.20 doda)
 #define RsvEndUntil     129   // add 'enduntil' (2007.11.20 doda)
 #define RsvCygConnect   130   // add 'cygconnect' (2007.12.17 doda)
+#define RsvScpRecv      131   // add 'scprecv' (2008.1.1 yutaka)
+#define RsvScpSend      132   // add 'scpsend' (2008.1.1 yutaka)
 
 #define RsvOperator     150
 #define RsvBNot         151

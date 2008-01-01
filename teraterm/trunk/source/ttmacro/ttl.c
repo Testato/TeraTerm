@@ -2992,6 +2992,26 @@ WORD TTLZmodemSend()
 	return SendCmnd(CmdZmodemSend,IdTTLWaitCmndResult);
 }
 
+WORD TTLScpSend()
+{
+	TStrVal Str;
+	WORD Err;
+	int BinFlag;
+
+	Err = 0;
+	GetStrVal(Str,&Err);
+	BinFlag = 1;       // ALWAYS binary mode
+//	GetIntVal(&BinFlag,&Err);
+	if ((Err==0) &&
+	    ((strlen(Str)==0) || (GetFirstChar()!=0)))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	SetFile(Str);
+	SetBinary(BinFlag);
+	return SendCmnd(CmdScpSend,IdTTLWaitCmndEnd);
+}
+
 int ExecCmnd()
 {
 	WORD WId, Err;
@@ -3262,6 +3282,12 @@ int ExecCmnd()
 			Err = TTLRotateLeft(); break;   // add 'rotateleft' (2007.8.19 maya)
 		case RsvRotateR:
 			Err = TTLRotateRight(); break;  // add 'rotateright' (2007.8.19 maya)
+		case RsvScpSend:
+			Err = TTLScpSend(); break;      // add 'scpsend' (2008.1.1 yutaka)
+#if 0
+		case RsvScpRecv:
+			Err = TTLScpRecv(); break;  // TBD
+#endif
 		case RsvSend:
 			Err = TTLSend(); break;
 		case RsvSendBreak:

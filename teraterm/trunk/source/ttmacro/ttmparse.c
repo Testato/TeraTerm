@@ -205,6 +205,8 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 	else if (_stricmp(Str,"return")==0) *WordId = RsvReturn;
 	else if (_stricmp(Str,"rotateleft")==0) *WordId = RsvRotateL;	// add 'rotateleft' (2007.8.19 maya)
 	else if (_stricmp(Str,"rotateright")==0) *WordId = RsvRotateR;	// add 'rotateright' (2007.8.19 maya)
+	else if (_stricmp(Str,"scprecv")==0) *WordId = RsvScpRecv;      // add 'scprecv' (2008.1.1 yutaka)
+	else if (_stricmp(Str,"scpsend")==0) *WordId = RsvScpSend;      // add 'scpsend' (2008.1.1 yutaka)
 	else if (_stricmp(Str,"send")==0) *WordId = RsvSend;
 	else if (_stricmp(Str,"sendbreak")==0) *WordId = RsvSendBreak;
 	else if (_stricmp(Str,"sendfile")==0) *WordId = RsvSendFile;
