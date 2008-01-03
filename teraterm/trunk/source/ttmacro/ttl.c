@@ -2992,23 +2992,35 @@ WORD TTLZmodemSend()
 	return SendCmnd(CmdZmodemSend,IdTTLWaitCmndResult);
 }
 
+// SYNOPSIS: 
+//   scpsend "c:\usr\sample.chm" "doc/sample.chm"
+//   scpsend "c:\usr\sample.chm"
 WORD TTLScpSend()
 {
 	TStrVal Str;
+	TStrVal Str2;
 	WORD Err;
-	int BinFlag;
 
 	Err = 0;
 	GetStrVal(Str,&Err);
-	BinFlag = 1;       // ALWAYS binary mode
-//	GetIntVal(&BinFlag,&Err);
+
 	if ((Err==0) &&
-	    ((strlen(Str)==0) || (GetFirstChar()!=0)))
+	    ((strlen(Str)==0)))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	GetStrVal(Str2,&Err);
+	if (Err) {
+		Str2[0] = '\0';
+		Err = 0;
+	}
+
+	if (GetFirstChar() != 0)
 		Err = ErrSyntax;
 	if (Err!=0) return Err;
 
 	SetFile(Str);
-	SetBinary(BinFlag);
+	SetSecondFile(Str2);
 	return SendCmnd(CmdScpSend,IdTTLWaitCmndEnd);
 }
 

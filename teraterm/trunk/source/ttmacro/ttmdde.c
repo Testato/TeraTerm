@@ -647,6 +647,24 @@ void SetFile(PCHAR FN)
   DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
 }
 
+// add (2008.1.3 yutaka)
+void SetSecondFile(PCHAR FN)
+{
+  char Cmd[256];
+
+#if 1
+  memset(Cmd, 0, sizeof(Cmd));
+  if (FN[0] != '\0') 
+	_snprintf_s(Cmd, sizeof(Cmd), _TRUNCATE, "%c%s", CmdSetSecondFile, FN);
+  else
+	  Cmd[0] = CmdSetSecondFile;
+#else
+  Cmd[0] = CmdSetFile;
+  strcpy(&(Cmd[1]),FN);
+#endif
+  DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
+}
+
 void SetBinary(int BinFlag)
 {
   char Cmd[3];

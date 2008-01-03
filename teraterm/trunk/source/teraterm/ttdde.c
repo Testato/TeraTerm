@@ -47,6 +47,7 @@ static char ParamFileName[256];
 static WORD ParamBinaryFlag;
 static WORD ParamAppendFlag;
 static WORD ParamXmodemOpt;
+static char ParamSecondFileName[256];
 
 #define CBBufSize 300
 
@@ -317,6 +318,7 @@ WORD HexStr2Word(PCHAR Str)
 #define CmdCallMenu     'G'
 #define CmdScpSend      'H'
 #define CmdScpRcv       'I'
+#define CmdSetSecondFile 'J'
 
 HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 {
@@ -324,6 +326,8 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 	char Temp[MAXPATHLEN];
 	int i;
 	WORD w, c;
+
+	memset(Command, 0, sizeof(Command));
 
 	if ((ConvH==0) ||
 		(DdeCmpStringHandles(TopicHSz, Topic) != 0) ||
@@ -641,9 +645,14 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 		}
 		break;
 
+	case CmdSetSecondFile:  // add 'scpsend' (2008.1.3 yutaka)
+		memset(ParamSecondFileName, 0, sizeof(ParamSecondFileName));
+		strncpy_s(ParamSecondFileName, sizeof(ParamSecondFileName),&(Command[1]), _TRUNCATE);
+		break;
+
 	case CmdScpSend:  // add 'scpsend' (2008.1.1 yutaka)
 		{
-		typedef int (CALLBACK *PSSH_start_scp)(char *);
+		typedef int (CALLBACK *PSSH_start_scp)(char *, char *);
 		static PSSH_start_scp func = NULL;
 		static HMODULE h = NULL, h2 = NULL;
 		char msg[128];
@@ -665,8 +674,9 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 
 		if (func != NULL) {
 			//MessageBox(NULL, ParamFileName, "foo2", MB_OK);
+			//MessageBox(NULL, ParamSecondFileName, "foo3", MB_OK);
 			DdeCmnd = TRUE;
-			func(ParamFileName);
+			func(ParamFileName, ParamSecondFileName);
 			EndDdeCmnd(1);     // マクロ実行を終了させる。本来なら、SCP転送が完了してから呼び出したほうが望ましい。
 			break;
 		} 

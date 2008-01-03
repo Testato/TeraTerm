@@ -47,6 +47,7 @@
 #define CmdCallMenu     'G'
 #define CmdScpSend      'H'
 #define CmdScpRcv       'I'
+#define CmdSetSecondFile 'J'
 
 #ifdef __cplusplus
 extern "C" {
@@ -67,6 +68,7 @@ void SetWait2(PCHAR Str, int Len, int Pos);
 int Wait();
 BOOL Wait2();
 void SetFile(PCHAR FN);
+void SetSecondFile(PCHAR FN);
 void SetBinary(int BinFlag);
 void SetAppend(int AppendFlag);
 void SetXOption(int XOption);
