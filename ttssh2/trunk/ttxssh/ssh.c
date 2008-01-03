@@ -91,6 +91,7 @@ typedef struct scp {
 	enum scp_state state;          // SCP state 
 	char sendfile[MAX_PATH];       // sending filename
 	char sendfilefull[MAX_PATH];   // sending filename fullpath
+	char dstfile[MAX_PATH];       // sending filename
 	FILE *sendfp;                  // file pointer
 	struct _stat filestat;         // file status information
 	HWND progress;
@@ -3375,7 +3376,7 @@ void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
 //
 // (2007.12.21 yutaka)
 //
-static int SSH_scp_transaction(PTInstVar pvar, char *sendfile, enum scp_dir direction)
+static int SSH_scp_transaction(PTInstVar pvar, char *sendfile, char *dstfile, enum scp_dir direction)
 {
 	buffer_t *msg;
 	char *s;
@@ -3408,6 +3409,11 @@ static int SSH_scp_transaction(PTInstVar pvar, char *sendfile, enum scp_dir dire
 
 		strncpy_s(c->scp.sendfilefull, sizeof(c->scp.sendfilefull), sendfile, _TRUNCATE);  // full path
 		ExtractFileName(sendfile, c->scp.sendfile, sizeof(c->scp.sendfile));   // file name only
+		if (dstfile == NULL || dstfile[0] == '\0') { // remote file path
+			strncpy_s(c->scp.dstfile, sizeof(c->scp.dstfile), c->scp.sendfile, _TRUNCATE);  // full path
+		} else {
+			strncpy_s(c->scp.dstfile, sizeof(c->scp.dstfile), dstfile, _TRUNCATE);  // full path
+		}
 		c->scp.sendfp = fp;     // file pointer
 
 		if (_stat(c->scp.sendfilefull, &st) == 0) {
@@ -3458,9 +3464,9 @@ error:
 	return FALSE;
 }
 
-int SSH_start_scp(PTInstVar pvar, char *sendfile)
+int SSH_start_scp(PTInstVar pvar, char *sendfile, char *dstfile)
 {
-	return SSH_scp_transaction(pvar, sendfile, TOLOCAL);
+	return SSH_scp_transaction(pvar, sendfile, dstfile, TOLOCAL);
 
 #if 0
 	//return SSH_scp_transaction(pvar, "bigfile30.dat", FROMREMOTE);
@@ -6876,10 +6882,10 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	if (c->type == TYPE_SCP) {
 		char sbuf[MAX_PATH + 30];
 		if (c->scp.dir == TOLOCAL) {
-			_snprintf_s(sbuf, sizeof(sbuf), _TRUNCATE, "scp -t %s", c->scp.sendfile);
+			_snprintf_s(sbuf, sizeof(sbuf), _TRUNCATE, "scp -t %s", c->scp.dstfile);
 
 		} else {		
-			_snprintf_s(sbuf, sizeof(sbuf), _TRUNCATE, "scp -f %s", c->scp.sendfile);
+			_snprintf_s(sbuf, sizeof(sbuf), _TRUNCATE, "scp -f %s", c->scp.dstfile);
 
 		}
 		buffer_put_string(msg, sbuf, strlen(sbuf));

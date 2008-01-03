@@ -2927,7 +2927,8 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 			hWnd = GetDlgItem(dlg, IDC_SENDFILE_EDIT);
 			SendMessage(hWnd, WM_GETTEXT , sizeof(sendfile), (LPARAM)sendfile);
 			if (sendfile[0] != '\0') {
-				SSH_start_scp(pvar, sendfile);
+				SSH_start_scp(pvar, sendfile, NULL);
+				//SSH_start_scp(pvar, sendfile, "tmp/foo.chm");
 				EndDialog(dlg, 1); // dialog close
 				return TRUE;
 			}
@@ -2944,9 +2945,9 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 
 // マクロコマンド"scpsend"から呼び出すために、DLL外へエクスポートする。"ttxssh.def"ファイルに記載。
 // (2008.1.1 yutaka)
-__declspec(dllexport) int CALLBACK TTXScpSendfile(char *filename)
+__declspec(dllexport) int CALLBACK TTXScpSendfile(char *filename, char *dstfile)
 {
-	return SSH_start_scp(pvar, filename);
+	return SSH_start_scp(pvar, filename, dstfile);
 }
 
 static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
