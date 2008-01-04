@@ -89,17 +89,16 @@ typedef struct bufchain {
 typedef struct scp {
 	enum scp_dir dir;              // transfer direction
 	enum scp_state state;          // SCP state 
-	char sendfile[MAX_PATH];       // sending filename
-	char sendfilefull[MAX_PATH];   // sending filename fullpath
-	char dstfile[MAX_PATH];       // sending filename
-	FILE *sendfp;                  // file pointer
+	char localfile[MAX_PATH];      // local filename
+	char localfilefull[MAX_PATH];  // local filename fullpath
+	char remotefile[MAX_PATH];     // remote filename
+	FILE *localfp;                 // file pointer for local file
 	struct _stat filestat;         // file status information
-	HWND progress;
+	HWND progress_window;
 	HANDLE thread;
-	unsigned int tid;
+	unsigned int thread_id;
 	PTInstVar pvar;
-
-	// receiving file
+	// for receiving file
 	long long filetotalsize;
 	long long filercvsize;
 } scp_t;
@@ -196,9 +195,9 @@ static Channel_t *ssh2_channel_new(unsigned int window, unsigned int maxpack,
 	c->bufchain = NULL;
 	if (type == TYPE_SCP) {
 		c->scp.state = SCP_INIT;
-		c->scp.progress = NULL;
+		c->scp.progress_window = NULL;
 		c->scp.thread = (HANDLE)-1;
-		c->scp.sendfp = NULL;
+		c->scp.localfp = NULL;
 	}
 
 	return (c);
@@ -276,11 +275,11 @@ static void ssh2_channel_delete(Channel_t *c)
 
 	if (c->type == TYPE_SCP) {
 		c->scp.state = SCP_CLOSING;
-		if (c->scp.sendfp != NULL)
-			fclose(c->scp.sendfp);
-		if (c->scp.progress != NULL) {
-			DestroyWindow(c->scp.progress);
-			c->scp.progress = NULL;
+		if (c->scp.localfp != NULL)
+			fclose(c->scp.localfp);
+		if (c->scp.progress_window != NULL) {
+			DestroyWindow(c->scp.progress_window);
+			c->scp.progress_window = NULL;
 		}
 		if (c->scp.thread != (HANDLE)-1L) {
 			WaitForSingleObject(c->scp.thread, INFINITE);
@@ -3404,33 +3403,37 @@ static int SSH_scp_transaction(PTInstVar pvar, char *sendfile, char *dstfile, en
 
 	if (direction == TOLOCAL) {  // copy local to remote
 		fp = fopen(sendfile, "rb");
-		if (fp == NULL)
+		if (fp == NULL) {
+			char buf[80];
+			_snprintf_s(buf, sizeof(buf), _TRUNCATE, "fopen: %d", GetLastError());
+			MessageBox(NULL, buf, "TTSSH: file open error", MB_OK | MB_ICONERROR);
 			goto error;
-
-		strncpy_s(c->scp.sendfilefull, sizeof(c->scp.sendfilefull), sendfile, _TRUNCATE);  // full path
-		ExtractFileName(sendfile, c->scp.sendfile, sizeof(c->scp.sendfile));   // file name only
-		if (dstfile == NULL || dstfile[0] == '\0') { // remote file path
-			strncpy_s(c->scp.dstfile, sizeof(c->scp.dstfile), c->scp.sendfile, _TRUNCATE);  // full path
-		} else {
-			strncpy_s(c->scp.dstfile, sizeof(c->scp.dstfile), dstfile, _TRUNCATE);  // full path
 		}
-		c->scp.sendfp = fp;     // file pointer
 
-		if (_stat(c->scp.sendfilefull, &st) == 0) {
+		strncpy_s(c->scp.localfilefull, sizeof(c->scp.localfilefull), sendfile, _TRUNCATE);  // full path
+		ExtractFileName(sendfile, c->scp.localfile, sizeof(c->scp.localfile));   // file name only
+		if (dstfile == NULL || dstfile[0] == '\0') { // remote file path
+			strncpy_s(c->scp.remotefile, sizeof(c->scp.remotefile), c->scp.localfile, _TRUNCATE);  // full path
+		} else {
+			strncpy_s(c->scp.remotefile, sizeof(c->scp.remotefile), dstfile, _TRUNCATE);  // full path
+		}
+		c->scp.localfp = fp;     // file pointer
+
+		if (_stat(c->scp.localfilefull, &st) == 0) {
 			c->scp.filestat = st;
 		} else {
 			goto error;
 		}
 	} else { // copy remote to local
 		// ローカルファイルの保存先はまだ決め打ち (yutaka)
-		_snprintf_s(c->scp.sendfilefull, sizeof(c->scp.sendfilefull), _TRUNCATE, "d:\\%s", sendfile);
-		strncpy_s(c->scp.sendfile, sizeof(c->scp.sendfile), sendfile, _TRUNCATE);  // full path
+		_snprintf_s(c->scp.localfilefull, sizeof(c->scp.localfilefull), _TRUNCATE, "d:\\%s", sendfile);
+		strncpy_s(c->scp.localfile, sizeof(c->scp.localfile), sendfile, _TRUNCATE);  // full path
 
-		fp = fopen(c->scp.sendfilefull, "wb");
+		fp = fopen(c->scp.localfilefull, "wb");
 		if (fp == NULL)
 			goto error;
 
-		c->scp.sendfp = fp;     // file pointer
+		c->scp.localfp = fp;     // file pointer
 	}
 
 	// setup SCP data
@@ -6882,10 +6885,10 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	if (c->type == TYPE_SCP) {
 		char sbuf[MAX_PATH + 30];
 		if (c->scp.dir == TOLOCAL) {
-			_snprintf_s(sbuf, sizeof(sbuf), _TRUNCATE, "scp -t %s", c->scp.dstfile);
+			_snprintf_s(sbuf, sizeof(sbuf), _TRUNCATE, "scp -t %s", c->scp.remotefile);
 
 		} else {		
-			_snprintf_s(sbuf, sizeof(sbuf), _TRUNCATE, "scp -f %s", c->scp.dstfile);
+			_snprintf_s(sbuf, sizeof(sbuf), _TRUNCATE, "scp -f %s", c->scp.remotefile);
 
 		}
 		buffer_put_string(msg, sbuf, strlen(sbuf));
@@ -7219,11 +7222,11 @@ static unsigned __stdcall ssh_scp_thread(void FAR * p)
 	char buf[8192];
 	char s[80];
 	size_t ret;
-	HWND hWnd = c->scp.progress;
+	HWND hWnd = c->scp.progress_window;
 	scp_dlg_parm_t parm;
 
-	//SendMessage(GetDlgItem(hWnd, IDC_FILENAME), WM_SETTEXT, 0, (LPARAM)c->scp.sendfile);
-	SendMessage(GetDlgItem(hWnd, IDC_FILENAME), WM_SETTEXT, 0, (LPARAM)c->scp.sendfilefull);
+	//SendMessage(GetDlgItem(hWnd, IDC_FILENAME), WM_SETTEXT, 0, (LPARAM)c->scp.localfile);
+	SendMessage(GetDlgItem(hWnd, IDC_FILENAME), WM_SETTEXT, 0, (LPARAM)c->scp.localfilefull);
 
 	do {
 		// Cancelボタンが押下されたらウィンドウが消える。
@@ -7231,7 +7234,7 @@ static unsigned __stdcall ssh_scp_thread(void FAR * p)
 			goto cancel_abort;
 
 		// ファイルから読み込んだデータはかならずサーバへ送信する。
-		ret = fread(buf, 1, sizeof(buf), c->scp.sendfp);
+		ret = fread(buf, 1, sizeof(buf), c->scp.localfp);
 		if (ret == 0)
 			break;
 
@@ -7298,7 +7301,7 @@ static void SSH2_scp_tolocal(PTInstVar pvar, Channel_t *c, unsigned char *data, 
 		char buf[128];
 
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE, "C0644 %lld %s\n", 
-			(long long)c->scp.filestat.st_size, c->scp.sendfile);
+			(long long)c->scp.filestat.st_size, c->scp.localfile);
 
 		c->scp.state = SCP_FILEINFO;
 		SSH2_send_channel_data(pvar, c, buf, strlen(buf));
@@ -7313,7 +7316,7 @@ static void SSH2_scp_tolocal(PTInstVar pvar, Channel_t *c, unsigned char *data, 
 		hDlgWnd = CreateDialog(hInst, MAKEINTRESOURCE(IDD_SSHSCP_PROGRESS),
 				   pvar->cv->HWin, (DLGPROC)ssh_scp_dlg_proc);
 		if (hDlgWnd != NULL) {
-			c->scp.progress = hDlgWnd;
+			c->scp.progress_window = hDlgWnd;
 			ShowWindow(hDlgWnd, SW_SHOW);
 		}
 
@@ -7342,7 +7345,7 @@ static unsigned __stdcall ssh_scp_receive_thread(void FAR * p)
 	PTInstVar pvar = c->scp.pvar;
 	long long total_size = 0;
 	char s[80];
-	HWND hWnd = c->scp.progress;
+	HWND hWnd = c->scp.progress_window;
 	MSG msg;
 	unsigned char *data;
 	unsigned int buflen;
@@ -7360,7 +7363,7 @@ static unsigned __stdcall ssh_scp_receive_thread(void FAR * p)
 
 				c->scp.filercvsize += buflen;
 
-				if (fwrite(data, 1, buflen, c->scp.sendfp) < buflen) { // error
+				if (fwrite(data, 1, buflen, c->scp.localfp) < buflen) { // error
 					// TODO:
 				}
 
@@ -7368,11 +7371,11 @@ static unsigned __stdcall ssh_scp_receive_thread(void FAR * p)
 
 				_snprintf_s(s, sizeof(s), _TRUNCATE, "%lld / %lld (%d%%)", c->scp.filercvsize, c->scp.filetotalsize, 
 					(100 * c->scp.filercvsize / c->scp.filetotalsize)%100 );
-				SendMessage(GetDlgItem(c->scp.progress, IDC_PROGRESS), WM_SETTEXT, 0, (LPARAM)s);
+				SendMessage(GetDlgItem(c->scp.progress_window, IDC_PROGRESS), WM_SETTEXT, 0, (LPARAM)s);
 
 				if (c->scp.filercvsize >= c->scp.filetotalsize) { // EOF
 					c->scp.state = SCP_CLOSING;
-					ShowWindow(c->scp.progress, SW_HIDE);
+					ShowWindow(c->scp.progress_window, SW_HIDE);
 					goto done;
 				}
 
@@ -7429,9 +7432,9 @@ static BOOL SSH2_scp_fromremote(PTInstVar pvar, Channel_t *c, unsigned char *dat
 			hDlgWnd = CreateDialog(hInst, MAKEINTRESOURCE(IDD_SSHSCP_PROGRESS),
 					   pvar->cv->HWin, (DLGPROC)ssh_scp_dlg_proc);
 			if (hDlgWnd != NULL) {
-				c->scp.progress = hDlgWnd;
+				c->scp.progress_window = hDlgWnd;
 				SetWindowText(hDlgWnd, "TTSSH: SCP receiving file");
-				SendMessage(GetDlgItem(hDlgWnd, IDC_FILENAME), WM_SETTEXT, 0, (LPARAM)c->scp.sendfilefull);
+				SendMessage(GetDlgItem(hDlgWnd, IDC_FILENAME), WM_SETTEXT, 0, (LPARAM)c->scp.localfilefull);
 				ShowWindow(hDlgWnd, SW_SHOW);
 			}
 
@@ -7440,7 +7443,7 @@ static BOOL SSH2_scp_fromremote(PTInstVar pvar, Channel_t *c, unsigned char *dat
 				// TODO:
 			}
 			c->scp.thread = thread;
-			c->scp.tid = tid;
+			c->scp.thread_id = tid;
 
 			goto reply;
 
@@ -7453,7 +7456,7 @@ static BOOL SSH2_scp_fromremote(PTInstVar pvar, Channel_t *c, unsigned char *dat
 		unsigned char *newdata = malloc(buflen);
 		if (newdata != NULL) {
 			memcpy(newdata, data, buflen);
-			PostThreadMessage(c->scp.tid, WM_RECEIVING_FILE, (WPARAM)newdata, (LPARAM)buflen);
+			PostThreadMessage(c->scp.thread_id, WM_RECEIVING_FILE, (WPARAM)newdata, (LPARAM)buflen);
 		}
 
 	} else if (c->scp.state == SCP_CLOSING) {  // EOFの受信
