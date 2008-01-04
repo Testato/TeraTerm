@@ -3024,6 +3024,38 @@ WORD TTLScpSend()
 	return SendCmnd(CmdScpSend,IdTTLWaitCmndEnd);
 }
 
+// SYNOPSIS: 
+//   scprecv "foo.txt"
+//   scprecv "src/foo.txt" "c:\foo.txt"
+WORD TTLScpRecv()
+{
+	TStrVal Str;
+	TStrVal Str2;
+	WORD Err;
+
+	Err = 0;
+	GetStrVal(Str,&Err);
+
+	if ((Err==0) &&
+	    ((strlen(Str)==0)))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	GetStrVal(Str2,&Err);
+	if (Err) {
+		Str2[0] = '\0';
+		Err = 0;
+	}
+
+	if (GetFirstChar() != 0)
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	SetFile(Str);
+	SetSecondFile(Str2);
+	return SendCmnd(CmdScpRcv,IdTTLWaitCmndEnd);
+}
+
 int ExecCmnd()
 {
 	WORD WId, Err;
@@ -3296,10 +3328,8 @@ int ExecCmnd()
 			Err = TTLRotateRight(); break;  // add 'rotateright' (2007.8.19 maya)
 		case RsvScpSend:
 			Err = TTLScpSend(); break;      // add 'scpsend' (2008.1.1 yutaka)
-#if 0
 		case RsvScpRecv:
-			Err = TTLScpRecv(); break;  // TBD
-#endif
+			Err = TTLScpRecv(); break;      // add 'scprecv' (2008.1.4 yutaka)
 		case RsvSend:
 			Err = TTLSend(); break;
 		case RsvSendBreak:

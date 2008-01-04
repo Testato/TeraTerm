@@ -688,6 +688,44 @@ scp_send_error:
 		}
 		break;
 
+	case CmdScpRcv:
+		{
+		typedef int (CALLBACK *PSSH_start_scp)(char *, char *);
+		static PSSH_start_scp func = NULL;
+		static HMODULE h = NULL, h2 = NULL;
+		char msg[128];
+
+		//MessageBox(NULL, "hoge", "foo", MB_OK);
+
+		if (func == NULL) {
+			h2 = LoadLibrary("ttxssh.dll");
+			if ( ((h = GetModuleHandle("ttxssh.dll")) == NULL) ) {
+				_snprintf_s(msg, sizeof(msg), _TRUNCATE, "GetModuleHandle(\"ttxssh.dll\")) %d", GetLastError());
+				goto scp_rcv_error;
+			}
+			func = (PSSH_start_scp)GetProcAddress(h, "TTXScpReceivefile");
+			if (func == NULL) {
+				_snprintf_s(msg, sizeof(msg), _TRUNCATE, "GetProcAddress(\"TTXScpReceivefile\")) %d", GetLastError());
+				goto scp_rcv_error;
+			}
+		}
+
+		if (func != NULL) {
+			//MessageBox(NULL, ParamFileName, "foo2", MB_OK);
+			//MessageBox(NULL, ParamSecondFileName, "foo3", MB_OK);
+			DdeCmnd = TRUE;
+			func(ParamFileName, ParamSecondFileName);
+			EndDdeCmnd(1);     // マクロ実行を終了させる。本来なら、SCP転送が完了してから呼び出したほうが望ましい。
+			break;
+		} 
+
+scp_rcv_error:
+		MessageBox(NULL, msg, "Tera Term: scpsend command error", MB_OK | MB_ICONERROR);
+		FreeLibrary(h2);
+		return DDE_FNOTPROCESSED;
+		}
+		break;
+
 	default:
 		return DDE_FNOTPROCESSED;
 	}
