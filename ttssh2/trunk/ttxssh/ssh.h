@@ -366,6 +366,9 @@ typedef struct Key {
 	unsigned char *mod;
 } Key;
 
+enum scp_dir {
+	TOLOCAL, FROMREMOTE,
+};
 
 /* The packet handler returns TRUE to keep the handler in place,
    FALSE to remove the handler. */
@@ -478,6 +481,7 @@ void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
                       char FAR * originator, unsigned short originator_port);
 
 int SSH_start_scp(PTInstVar pvar, char *sendfile, char *dstfile);
+int SSH_scp_transaction(PTInstVar pvar, char *sendfile, char *dstfile, enum scp_dir direction);
 
 /* auxiliary SSH2 interfaces for pkt.c */
 int SSH_get_min_packet_size(PTInstVar pvar);

@@ -2928,7 +2928,7 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 			SendMessage(hWnd, WM_GETTEXT , sizeof(sendfile), (LPARAM)sendfile);
 			if (sendfile[0] != '\0') {
 				SSH_start_scp(pvar, sendfile, NULL);
-				//SSH_start_scp(pvar, sendfile, "tmp/foo.chm");
+				//SSH_scp_transaction(pvar, "bigfile30.bin", "", FROMREMOTE);
 				EndDialog(dlg, 1); // dialog close
 				return TRUE;
 			}
@@ -2949,6 +2949,12 @@ __declspec(dllexport) int CALLBACK TTXScpSendfile(char *filename, char *dstfile)
 {
 	return SSH_start_scp(pvar, filename, dstfile);
 }
+
+__declspec(dllexport) int CALLBACK TTXScpReceivefile(char *remotefile, char *localfile)
+{
+	return SSH_scp_transaction(pvar, remotefile, localfile, FROMREMOTE);
+}
+
 
 static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
                                      LPARAM lParam)
