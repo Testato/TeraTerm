@@ -968,10 +968,10 @@ SYNOPSIS:
     <ul>
       <li>added support for sending a local file with SSH2 SCP(Secure Copy Protocol). Also, added SSH SCP menu under file menu.
        <ul>
-         <li>ファイル送信先はホームディレクトリに固定</li>
-         <li>ファイル受信は未サポート</li>
-         <li>SSH2に対応。SSH1は未サポート</li>
-         <li>SFTP(SSH File Transfer Protocol)は未サポート</li>
+         <li>The destination address is fixed in the home directory.</li>
+         <li>Not supporting for receive a file.</li>
+         <li>Only support for SSH2 protocol.</li>
+         <li>Not supporting for SFTP(SSH File Transfer Protocol).</li>
        </ul></li>
       <li>Bug fix: TCP disconnection was mis-detected in the packet sending. This bug is regression in TTSSH 1.01 because SSH heartbeat thread is not thread-safe.</li>
       <li>Bug fix: SSH is disabled when "/ssh1" or "/ssh2" is included in hostname on New Connection dialog.</li>
