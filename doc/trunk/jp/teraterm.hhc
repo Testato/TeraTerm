@@ -706,6 +706,10 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="scprecv">
+					<param name="Local" value="html\macro\command\scprecv.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="scpsend">
 					<param name="Local" value="html\macro\command\scpsend.html">
 					</OBJECT>
