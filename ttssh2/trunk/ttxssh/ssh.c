@@ -52,6 +52,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <sys/stat.h>
 #include <assert.h>
 
+#include <direct.h>
 
 // SSH2 macro
 #ifdef _DEBUG
@@ -3433,6 +3434,8 @@ int SSH_scp_transaction(PTInstVar pvar, char *sendfile, char *dstfile, enum scp_
 
 			_snprintf_s(c->scp.localfilefull, sizeof(c->scp.localfilefull), _TRUNCATE, "%s\\%s", cwd, fn ? fn : sendfile);
 			ExtractFileName(c->scp.localfilefull, c->scp.localfile, sizeof(c->scp.localfile));   // file name only
+
+			free(cwd);  // free!!
 		} else {
 			_snprintf_s(c->scp.localfilefull, sizeof(c->scp.localfilefull), _TRUNCATE, "%s", dstfile);
 			ExtractFileName(dstfile, c->scp.localfile, sizeof(c->scp.localfile));   // file name only
