@@ -219,13 +219,12 @@ FileSendFilter=
 </pre>
 
 
-<h1><a name="draganddrop">ドラッグ&ドロップによるファイル送信の確認</a></h1>
+<h1><a name="draganddrop">Confirm a drag-and-drop operation sending a file before it is carried out</a></h1>
 
 <p>
-TeraTerm は、デフォルトではファイルをウインドウにドラッグ&ドロップしたときに、ファイルを転送するかどうか確認のメッセージボックスを表示します。<br>
+TeraTerm displays a warning message that requires the user to confirm an action sending a file before it is carried out when the user drags a file to TeraTerm window.<br>
 
-設定ファイルの [Tera Term] セクションの ConfirmFileDragAndDrop 行を下記のように変更すると、確認をせずにファイルの転送を開始します。
-</p>
+If the user changes ConfirmFileDragAndDrop entry at [Tera Term] section in teraterm.ini file as follows, TeraTerm starts to send a file without confirmation.</p>
 
 <pre>
 ConfirmFileDragAndDrop=off
