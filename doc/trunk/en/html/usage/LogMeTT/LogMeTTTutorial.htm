@@ -100,29 +100,36 @@ connect msg
 
 <div class="img"><img width="653" height="506" src="color.jpg" alt="color"></div>
 
-<p>11. Scheduleタブでは、設定したマクロを自動実行させることができる。 上手くマクロを組めば、下記のような事が可能になる。</p>
+<p>11. On "Schedule" tab, the user can automatically do the macro script. If so, the user can do as follows.
+</p>
 
 <ul>
-  <li>定期的に電源をon/off</li>
-  <li>“Settings”タブの”User Data”タブ項目と組み合わせ、障害発生時にe-mailや電話させるなどの自動処理</li>
-  <li>定時バックアップ、ステータスチェック</li>
+  <li>Power cycle</li>
+  <li>Send e-mail or call when some trouble occur by combination "Settings" tab and "User Data" tab.
+</li>
+  <li>Periodically backup or status check</li>
 </ul>
 
-<p class="warning">※注意:メニューの階層は親から順番に実行されてしまうため、子をスケジュールに入れておくとその直系親ツリーがすべて実行される。単一タスクとして行いたい場合は独立させること（This computer直下)。また、ホストとLogMeTTを実行するPCの時刻差異に注意すること。</p>
+<p class="warning">
+NOTICE: If the user schedules a child tree, a parent tree all scheduling work. If the user want to work a single task, a child tree should move under "This computer" top tree. And also, please be careful of the difference timestamp between remote host and local host.
+</p>
 
-<p class="notice">Scheduleを実行する場合は、後述の自動ログをONにすることを推奨する。(後で何が起きたかわからなくなってしまわないように)</p>
+<p class="notice">
+RECOMMENDATION: If the user uses scheduling feature, turn on auto-logging mode.
+</p>
 
 
 
-<h2>セキュリティに配慮したマクロについて</h2>
+<h2>5. Security-conscious macro script</h2>
 
-<p>この項目は、TeraTerm Macroに関するTopicです。</p>
+<p>This section is the topic about TeraTerm macro.</p>
 
 <p>”4. 設定”で紹介したマクロではマクロ内にユーザ名が記述されており、セキュリティ上あまり良くないと思われます。パスワードは毎回入力するタイプです。これを、ユーザ名、パスワードを暗号化したファイルに保存する方式を紹介します。</p>
 
-<h3>1. パスワードを暗号化して記憶（ローカル保存）するマクロ＝自動ログイン</h3>
+<h3>1. sample macro for auto-login with encrypting the user's password.</h3>
 
-<p>※ユーザ名を <span class="variable">scott</span> ホスト名を <span class="variable">remote.host</span> パスワードファイルの保存先を <span class="variable">C:\mydata\filename.dat</span> とした場合のマクロ例です。</p>
+<p>The user name is <span class="variable">scott</span>, the host name is <span class="variable">remote.host</span>, and the destination of the password file is specified on <span class="variable">C:\mydata\filename.dat</span>.
+</p>
 
 <pre class="code">
 ; setting
@@ -139,7 +146,7 @@ strconcat msg inputstr
 connect msg
 </pre>
 
-<p>※getpassword 'filepath\filename' '識別子' $格納変数</p>
+<p>getpassword 'filepath\filename' 'IDENTIFICATION' $stored variable</p>
 
 <p>同一格納ファイルに複数の識別子でパスワードを暗号化保存できます。</p>
 
@@ -170,7 +177,7 @@ connect msg
 <p>このマクロではユーザIDも識別子usridとして格納しています。最初のログイン時にはユーザIDとパスワードの両方を入力しなければなりませんが、2回目以降は同様にLogMeTTメニューからの選択だけで自動ログインが可能になります。同じように、getpasswordを利用することでホスト名を暗号化してしまうことも可能ですが、TeraTermのヒストリに過去接続したホストが残る場合もありますのでセキュリティを考慮する場合は様々な注意が必要です。ホスト名、そのホストに登録されているID、パスワード等のすべてを暗号化して隠すことができるマクロです。</p>
 
 
-<h3>3. telnetを利用する場合</h3>
+<h3>3. Using telnet protocol</h3>
 
 <p>telnet(ポート23)を利用して接続する場合は接続マクロが一部違いますので注意してください。<br>
 これは、telnetが接続セッション確立後に認証を行うためです。</p>
