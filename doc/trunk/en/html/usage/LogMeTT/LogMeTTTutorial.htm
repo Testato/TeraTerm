@@ -124,7 +124,8 @@ RECOMMENDATION: If the user uses scheduling feature, turn on auto-logging mode.
 
 <p>This section is the topic about TeraTerm macro.</p>
 
-<p>”4. 設定”で紹介したマクロではマクロ内にユーザ名が記述されており、セキュリティ上あまり良くないと思われます。パスワードは毎回入力するタイプです。これを、ユーザ名、パスワードを暗号化したファイルに保存する方式を紹介します。</p>
+<p>The user name is directly described in the macro script introduced in section 4, this is not appropriate for security policy. And so, a new procedure for encrypting the user name and the password is described below.
+</p>
 
 <h3>1. sample macro for auto-login with encrypting the user's password.</h3>
 
@@ -148,9 +149,11 @@ connect msg
 
 <p>getpassword 'filepath\filename' 'IDENTIFICATION' $stored variable</p>
 
-<p>同一格納ファイルに複数の識別子でパスワードを暗号化保存できます。</p>
+<p>The user can save the encrypted password with multiple identifications in a sample file.
+</p>
 
-<p>このマクロは、最初の一度だけパスワードを聞かれますが、その後はC:\mydata\filename.datに保存された暗号化パスワードが利用されるためLogMeTTメニューからの選択だけで自動ログインが可能になります。</p>
+<p>
+このマクロは、最初の一度だけパスワードを聞かれますが、その後はC:\mydata\filename.datに保存された暗号化パスワードが利用されるためLogMeTTメニューからの選択だけで自動ログインが可能になります。</p>
 
 
 <h3>2. ユーザIDとパスワードを両方暗号化して記憶（ローカル保存）するマクロ＝自動ログイン</h3>
