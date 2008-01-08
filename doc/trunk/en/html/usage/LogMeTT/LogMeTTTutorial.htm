@@ -152,13 +152,14 @@ connect msg
 <p>The user can save the encrypted password with multiple identifications in a sample file.
 </p>
 
-<p>
-このマクロは、最初の一度だけパスワードを聞かれますが、その後はC:\mydata\filename.datに保存された暗号化パスワードが利用されるためLogMeTTメニューからの選択だけで自動ログインが可能になります。</p>
+<p>This macro script confirms the user password for the first time. After this,  the encryped password in "C:\mydata\filename.dat" is used to auto-login.
+</p>
 
 
-<h3>2. ユーザIDとパスワードを両方暗号化して記憶（ローカル保存）するマクロ＝自動ログイン</h3>
+<h3>2. Sample macro script of auto-login saving the encrypted user name and the password
+</h3>
 
-<p>ホスト名を <span class="variable">remote.host</span> ユーザIDとパスワードファイルの保存先を <span class="variable">C:\mydata\filename.dat</span> とした場合のマクロ例です。</p>
+<p>The host name is <span class="variable">remote.host</span>, and the destination of the user name and the password file are specified on <span class="variable">C:\mydata\filename.dat</span>. </p>
 
 <pre class="code">
 ; setting
@@ -175,22 +176,24 @@ strconcat msg inputstr
 connect msg
 </pre>
 
-<p>※getpassword 'filepath\filename' '識別子' $格納変数</p>
+<p>getpassword 'filepath\filename' 'IDENTIFICATION' $stored variable</p>
 
-<p>このマクロではユーザIDも識別子usridとして格納しています。最初のログイン時にはユーザIDとパスワードの両方を入力しなければなりませんが、2回目以降は同様にLogMeTTメニューからの選択だけで自動ログインが可能になります。同じように、getpasswordを利用することでホスト名を暗号化してしまうことも可能ですが、TeraTermのヒストリに過去接続したホストが残る場合もありますのでセキュリティを考慮する場合は様々な注意が必要です。ホスト名、そのホストに登録されているID、パスワード等のすべてを暗号化して隠すことができるマクロです。</p>
+<p>The user name also are stored as "usrid" identification in this macro script. A user must input both the user name and password for the first time, however a user would need not input these information for the second time or later. Just the same, a user can encrypt the host name, however a user is careful of adding the host name to TeraTerm history buffer for security policy. 
+</p>
 
 
 <h3>3. Using telnet protocol</h3>
 
-<p>telnet(ポート23)を利用して接続する場合は接続マクロが一部違いますので注意してください。<br>
-これは、telnetが接続セッション確立後に認証を行うためです。</p>
+<p>Be careful of the difference macro script by using telnet -port23- protocol. <br>
+The reason is that telnet protocol authenticates the user after connection established.
+</p>
 
 <pre class="code">
 ; setting
 hostname = 'remote.host'
 getpassword 'C:\mydata\filename.dat' 'usrid' username
 getpassword 'C:\mydata\filename.dat' 'usrpass' inputstr
-;; login session ※
+;; login session [*]
 UsernamePrompt = 'Please login:'
 PasswordPrompt = 'Please Enter password:'
 
@@ -207,17 +210,19 @@ wait   PasswordPrompt
 sendln inputstr
 </pre>
 
-<p>※telnetではログインするホストの応答内容にあわせて記述を変更する必要があります。(ログインプロンプト)</p>
+<p>[*] A user may change these prompt strings for the corresponding remote host.
+</p>
 
 
-<h3>暗号化して記憶（ローカル保存）したファイルの取り扱いについて</h3>
+<h3>Caution of the file saving encryption data</h3>
 
-<p>保存されたパスワードファイルを安全に保管することで、たとえばrootユーザで接続する場合はそのファイルが必要になるような運用を行うことができます。管理者は最初に一度だけ複雑で長いパスワードを設定し、ファイル保存後は破棄してしまってかまわないのです。</p>
+<p>A user can maintenance the remote host connection to store the password file in security. For instance, an administrator configure a long password string for the first time, the administrator can delete the file after savine the password file.
+</p>
 
-<p>
-上記のマクロ例のようにローカル保存する場合は、セキュリティの観点からスタートアップにパスワード格納ファイルの削除バッチファイルを入れておくと、ログイン後最初の一度だけパスワード認証が必要になり、セキュリティと利便性の両立などを図ることができます。</p>
+<p>As above stated, when the password is saved in the local file, it is convenient that the user only needs to authenticate for the first time to add a batch file deleting the password file on LogMeTT startup.
+</p>
 
-<p>完全なセキュリティはありませんが、機密性を強化するのに役立ててください。</p>
+<p>There are not the complete security in this world, these topics help you to tighten the security.</p>
 
 
 <h2>6. Latest download</h2>
