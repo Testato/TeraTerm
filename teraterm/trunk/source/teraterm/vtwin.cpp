@@ -20,7 +20,7 @@
 #include "ttime.h"
 #include "commlib.h"
 #include "clipboar.h"
-#include "ttftypes.h"
+#include "ttftypes.h"		
 #include "filesys.h"
 #include "telnet.h"
 #include "tektypes.h"
@@ -2513,6 +2513,7 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 		MessageBeep(0);
 
 	if (cv.PortType==IdTCPIP) {
+		TTTSet shared_ts;
 		InitTelnet();
 
 		if ((cv.TelFlag) && (ts.TCPPort==ts.TelPort)) {
@@ -2535,23 +2536,24 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 				TelEnableHisOpt(BINARY);
 			}
 
-			// Window を閉じていないと直前の接続の設定が残っているので、
-			// Telnet のときには TCPLocalEcho/TCPCRSend を明示的に
-			// 無効にする (2007.11.18 maya)
-			ts.CRSend = 0;
-			cv.CRSend = 0;
-			ts.LocalEcho = 0;
+			// 直前の接続が非Telnet接続だった場合、Window を閉じていないと設定が残っている
+			// (LocalEcho, CRSend が TCPLocalEcho, TCPCRSend の値で上書きされている)
+			// Telnet のときには LocalEcho/CRSend を元の値に戻すために、
+			// 共有メモリから持ってくる (2008.1.10 maya)
+			CopyShmemToTTSet(&shared_ts);
+			ts.CRSend = shared_ts.CRSend;
+			cv.CRSend = ts.CRSend;
+			ts.LocalEcho = shared_ts.LocalEcho;
 
 			TelStartKeepAliveThread();
 		}
-		// Telnet ではないときにTCPLocalEcho/TCPCRSend を無効にする(2007.4.25 maya)
 		// SSH, Cygwin などで接続するときに利用される
 		else if (ts.DisableTCPEchoCR) {
-			// Window を閉じていないと直前の接続の設定が残っているので、
-			// 明示的に無効にする (2007.11.18 maya)
-			ts.CRSend = 0;
-			cv.CRSend = 0;
-			ts.LocalEcho = 0;
+			// 上と同じ理由で、共有メモリから持ってくる (2008.1.10 maya)
+			CopyShmemToTTSet(&shared_ts);
+			ts.CRSend = shared_ts.CRSend;
+			cv.CRSend = ts.CRSend;
+			ts.LocalEcho = shared_ts.LocalEcho;
 		}
 		else {
 			if (ts.TCPCRSend>0) {
