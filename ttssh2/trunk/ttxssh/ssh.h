@@ -499,7 +499,7 @@ BOOL do_SSH2_userauth(PTInstVar pvar);
 void debug_print(int no, char *msg, int len);
 int get_cipher_block_size(SSHCipher cipher);
 int get_cipher_key_len(SSHCipher cipher);
-const EVP_CIPHER * (*get_cipher_EVP_CIPHER(SSHCipher cipher))(void);
+const EVP_CIPHER* get_cipher_EVP_CIPHER(SSHCipher cipher);
 void ssh_heartbeat_lock_initialize(void);
 void ssh_heartbeat_lock_finalize(void);
 void ssh_heartbeat_lock(void);

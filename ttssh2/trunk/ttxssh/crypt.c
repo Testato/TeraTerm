@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.17 2007-10-18 07:56:33 maya Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.18 2008-01-10 16:34:08 maya Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -1107,14 +1107,11 @@ void cipher_init_SSH2(EVP_CIPHER_CTX *evp,
                       const u_char *key, u_int keylen,
                       const u_char *iv, u_int ivlen,
                       int encrypt,
-                      const EVP_CIPHER *(*func)(void),
+                      const EVP_CIPHER *type,
                       PTInstVar pvar)
 {
-	EVP_CIPHER *type;
 	int klen;
 	char tmp[80];
-
-	type = (EVP_CIPHER *)func();
 
 	EVP_CIPHER_CTX_init(evp);
 	if (EVP_CipherInit(evp, type, NULL, (u_char *)iv, (encrypt == CIPHER_ENCRYPT)) == 0) {

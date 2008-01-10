@@ -3572,16 +3572,16 @@ static char * get_cipher_string(SSHCipher cipher)
 	return buf;
 }
 
-const EVP_CIPHER * (*get_cipher_EVP_CIPHER(SSHCipher cipher))(void)
+const EVP_CIPHER* get_cipher_EVP_CIPHER(SSHCipher cipher)
 {
 	ssh2_cipher_t *ptr = ssh2_ciphers;
-	const EVP_CIPHER *(*type)(void);
+	const EVP_CIPHER *type;
 
-	type = EVP_enc_null;
+	type = EVP_enc_null();
 
 	while (ptr->name != NULL) {
 		if (cipher == ptr->cipher) {
-			type = ptr->func;
+			type = ptr->func();
 			break;
 		}
 		ptr++;
