@@ -222,6 +222,38 @@ BOOL KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan)
 	  Code[0] = 0x7f;
 	}
 	break;
+      case VK_UP:
+	if (Single) {
+	  GetKeyStr(HWin, KeyMap, IdUp,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_DOWN:
+	if (Single) {
+	  GetKeyStr(HWin, KeyMap, IdDown,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_RIGHT:
+	if (Single) {
+	  GetKeyStr(HWin, KeyMap, IdRight,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_LEFT:
+	if (Single) {
+	  GetKeyStr(HWin, KeyMap, IdLeft,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
       default:
 	if ((VKey==VKBackslash) && Control)
 	{ // Ctrl-\ support for NEC-PC98
