@@ -31,11 +31,11 @@
       <li>added Enter key binding on Additiona settings dialog.</li>
       <li>added support for ZMODEM sending file with the timestamp and permission(0644) of the file.
         <ul>
-          <li>added ZmodemRcvCommand entry in teraterm.ini which is ZMODEM receive program. The default is "rz".
+          <li>added <a href="../setup/teraterm-trans.html#zmodemrecv">ZmodemRcvCommand</a> entry in teraterm.ini which is ZMODEM receive program. The default is "rz".
         </ul></li>
       <li>added support for sending "rx filename" command sequence to the connected host before sending the local file with XMODEM protocol.
         <ul>
-          <li>added XmodemRcvCommand entry in teraterm.ini which is XMODEM receive program. The default is "".
+          <li>added <a href="../setup/teraterm-trans.html#xmodemrecv">XmodemRcvCommand</a> entry in teraterm.ini which is XMODEM receive program. The default is "".
         </ul></li>
       <li>added '<a href="../macro/command/cygconnect.html">cygconnect</a>' macro command.</li>
       <li>added new argument to <a href="../macro/command/getdate.html">getdate</a> and <a href="../macro/command/gettime.html">gettime</a> macro command. It specifies date and time format.</li>
@@ -45,11 +45,11 @@
         <ul>
           <li>added <a href="../setup/teraterm-trans.html#draganddrop">ConfirmFileDragAndDrop</a> entry in teraterm.ini file. The default value is on.</li>
         </ul></li>
-      <li>Bug fix: TeraTerm would overwrite the selected buffer to the Clipboard when SelectOnlyByLButton entry is on.</li>
-      <li>Bug fix: extension filters on file dialog didn't work when the FileSendFilter is specified.</li>
+      <li>Bug fix: TeraTerm would overwrite the selected buffer to the Clipboard when <a href="../setup/teraterm-trans.html#draganddrop">SelectOnlyByLButton</a> entry is on.</li>
+      <li>Bug fix: extension filters on file dialog didn't work when the <a href="../setup/teraterm-trans.html#filter">FileSendFilter</a> is specified.</li>
       <li>Bug fix: double close a local file handle when same file already exists on the remote host by sending the local file with ZMODEM protocol.</li>
       <li>Bug fix: Telnet keep-alive mechanism could not been thread-safe.</li>
-      <li>Bug fix: New-line (transmit) of Terminal Setup would be empty when a user connects.</li>
+      <li>Bug fix: New-line (transmit) of <a href="../menu/setup-terminal.html">Terminal Setup</a> would be empty when a user connects.</li>
       <li>Bug fix: Up and Down key could not work with DELL USB keyboard. Added the workaround. Special thanks to chuckf.<br> cf. <a href="http://www.neocom.ca/forum/viewtopic.php?p=2565">http://www.neocom.ca/forum/viewtopic.php?p=2565</a></li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.45">2.45</a></li>
       <li>upgraded Oniguruma to 5.9.1</li>

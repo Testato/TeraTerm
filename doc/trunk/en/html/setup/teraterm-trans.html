@@ -137,6 +137,26 @@ ZmodemAuto=off
 </pre>
 
 
+<h1><a name="xmodemrecv">XMODEM の受信コマンド</a></h1>
+
+<p>
+XMODEM でファイル送信を開始する直前に、ホストに 「XMODEM を受信するコマンド」を送信し、自動的に受信を開始させることができます。このときに TeraTerm から送信する「XMODEM を受信するコマンド」を指定します。
+</p>
+
+<pre>
+XmodemRcvCommand=rx
+</pre>
+
+<p>
+コマンドを指定しない場合は、「受信コマンド」を送信しません。
+</p>
+
+<pre>
+省略時:
+XmodemRcvCommand=
+</pre>
+
+
 <h1><a name="zmparam">Parameters for ZMODEM sending</a></h1>
 
 <p>
@@ -200,6 +220,26 @@ ZmodemLog=on
 <pre>
 Default:
 ZmodemLog=off
+</pre>
+
+
+<h1><a name="zmodemrecv">ZMODEM の受信コマンド</a></h1>
+
+<p>
+ZMODEM でファイル送信を開始する直前に、ホストに「ZMODEM を受信するコマンド」を送信し、自動的に受信を開始させることができます。このときに TeraTerm から送信する「ZMODEM を受信するコマンド」を指定します。
+</p>
+
+<p>
+コマンドを指定しない場合は、「受信コマンド」を送信しません。
+</p>
+
+<pre>
+ZmodemRcvCommand=
+</pre>
+
+<pre>
+default:
+ZmodemRcvCommand=rz
 </pre>
 
 

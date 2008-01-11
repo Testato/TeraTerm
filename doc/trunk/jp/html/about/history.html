@@ -31,11 +31,11 @@
       <li>Additional settings ダイアログを Enter キーで確定できるようにした。</li>
       <li>ZMODEMのファイル送信時に、タイムスタンプとパーミッション（0644）もいっしょに送るようにした。
         <ul>
-          <li>ZMODEM受信コマンドを teraterm.ini の ZmodemRcvCommand で指定できるようにした。デフォルトは"rz"。
+          <li>ZMODEM受信コマンドを teraterm.ini の <a href="../setup/teraterm-trans.html#zmodemrecv">ZmodemRcvCommand</a> で指定できるようにした。デフォルトは"rz"。
         </ul></li>
       <li>XMODEMのファイル送信前に、「rx ファイル名」コマンドを送れるようにした。
         <ul>
-          <li>XMODEM受信コマンドを teraterm.ini の XmodemRcvCommand で指定できるようにした。デフォルトは""。
+          <li>XMODEM受信コマンドを teraterm.ini の <a href="../setup/teraterm-trans.html#xmodemrecv">XmodemRcvCommand</a> で指定できるようにした。デフォルトは""。
         </ul></li>
       <li>マクロコマンド '<a href="../macro/command/cygconnect.html">cygconnect</a>' を追加した。</li>
       <li>マクロコマンド '<a href="../macro/command/getdate.html">getdate</a>, <a href="../macro/command/gettime.html">gettime</a> で、書式を指定できるようにした。</li>
@@ -45,11 +45,11 @@
         <ul>
           <li>teraterm.ini に <a href="../setup/teraterm-trans.html#draganddrop">ConfirmFileDragAndDrop</a> を追加した。デフォルトはon。</li>
         </ul></li>
-      <li>SelectOnlyByLButtonが on の状態で、別のアプリケーションでクリップボードのコピーしたデータを、TeraTerm側でペーストしようとした場合、TeraTermに選択状態のバッファがあると、そのバッファの内容がペーストされてしまう問題を修正した。</li>
-      <li>FileSendFilter が設定されていると、ファイルダイアログの拡張子フィルタが正しく動作しない問題を修正した。</li>
+      <li><a href="../setup/teraterm-trans.html#draganddrop">SelectOnlyByLButton</a> が on の状態で、別のアプリケーションでクリップボードのコピーしたデータを、TeraTerm側でペーストしようとした場合、TeraTermに選択状態のバッファがあると、そのバッファの内容がペーストされてしまう問題を修正した。</li>
+      <li><a href="../setup/teraterm-trans.html#filter">FileSendFilter</a> が設定されていると、ファイルダイアログの拡張子フィルタが正しく動作しない問題を修正した。</li>
       <li>ZMODEMによるファイル送信時に、すでにサーバ側に同一ファイルが存在した場合、ファイルハンドルの二重クローズをしていたバグを修正した。</li>
-      <li>telnetキープアライブ処理が thread-safe になっていなかった問題を修正した。</li>
-      <li>Terminal Setup の New-line (transmit) が空欄になる問題を修正した。</li>
+      <li>telnet キープアライブ処理が thread-safe になっていなかった問題を修正した。</li>
+      <li><a href="../menu/setup-terminal.html">Terminal Setup</a> の New-line (transmit) が空欄になる問題を修正した。</li>
       <li>Dell の USB キーボードで矢印キーが効かないことがある問題に対応した。<br> cf. <a href="http://www.neocom.ca/forum/viewtopic.php?p=2565">http://www.neocom.ca/forum/viewtopic.php?p=2565</a></li>
       <li><a href="#ttssh_2.45">SSH2対応TTSSH(2.45)</a>へ差し替えた</li>
       <li>Oniguruma 5.9.1へ差し替えた</li>
