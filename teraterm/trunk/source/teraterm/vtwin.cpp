@@ -2357,21 +2357,24 @@ LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
 
 // TTXKanjiMenu のために、メニューが表示されていても
 // 再描画するようにした。 (2007.7.14 maya)
+	if (Show != (MainMenu!=NULL))
+		AdjustSize = TRUE;
+
+	if (MainMenu!=NULL) {
+		DestroyMenu(MainMenu);
+		MainMenu = NULL;
+	}
+
 	if (! Show) {
 		if (WinMenu!=NULL)
 			DestroyMenu(WinMenu);
 		WinMenu = NULL;
-		DestroyMenu(MainMenu);
-		MainMenu = NULL;
 	}
 	else
 		InitMenu(&MainMenu);
 
-		::SetMenu(HVTWin, MainMenu);
-		::DrawMenuBar(HVTWin);
-
-	if (Show != (MainMenu!=NULL))
-		AdjustSize = TRUE;
+	::SetMenu(HVTWin, MainMenu);
+	::DrawMenuBar(HVTWin);
 
 	B1 = ((ts.MenuFlag & MF_SHOWWINMENU)!=0);
 	B2 = (WinMenu!=NULL);
