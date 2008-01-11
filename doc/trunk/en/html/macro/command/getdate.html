@@ -25,7 +25,7 @@ getdate &lt;strvar&gt; [&lt;format&gt;]
 
 <p>
 Returns the current date in the string variable &lt;strvar&gt;, with the default format "YYYY-MM-DD".
-The user can specify the format same as strftime. And also, the default format equals "%Y-%m-%d" at the &lt;format&gt; argument.
+The user can specify the format same as <a href="http://msdn2.microsoft.com/en-us/library/fe06s4ak(VS.80).aspx">strftime</a>. And also, the default format equals "%Y-%m-%d" at the &lt;format&gt; argument.
 </p>
 
 <p>
@@ -34,15 +34,13 @@ The behavior of the getdate command specified with the format equals the gettime
 
 <p>
 This command returns one of the following values in the system variable "result":
-
 </p>
-
 
 <table>
   <thead>
     <tr>
-      <td>Value</td>
-      <td>Meaning</td>
+      <th>Value</th>
+      <th>Meaning</th>
     </tr>
   </thead>
 
@@ -70,12 +68,10 @@ This command returns one of the following values in the system variable "result"
   </tbody>
 </table>
 
-
 <h2>Example</h2>
 
 <pre class="macro-example">
-<code>
-;Stores the current date to "datestr" variable with YYYY-MM-DD format.
+<code>;Stores the current date to "datestr" variable with YYYY-MM-DD format.
 getdate datestr
 
 ;Stores the current date with the user format to "logfile" variable. 
