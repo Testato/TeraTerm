@@ -1,4 +1,4 @@
-■* 開発環境
+■ 開発環境
 - OS
   Windows XP Professional
 - コンパイラ
@@ -12,13 +12,13 @@
     OpenSSL のコンパイル、ドキュメントファイルの文字コード・改行コード変換に必要です。
 
 
-■* ライブラリ
+■ ライブラリ
 - oniguruma 5.9.0 (http://www.geocities.jp/kosako3/oniguruma/)
 - openssl 0.9.8g (http://www.openssl.org/)
 - zlib 1.2.3 (http://www.zlib.net/)
 
 
-■* CVSに関する注意点
+■ CVSに関する注意点
 - リポジトリの改行コードはLFです。
   WinCVSで改行コードの設定を間違えると、リポジトリの改行コードが壊れます。
     WinCVSでは、「Checkout text file with the Unix LF (0xa)」のチェックを外しておきます。
@@ -34,7 +34,7 @@
   cvsの処理が失敗することがあるので、ファイルをエディタ等で開いたままで行わないでください。
 
 
-■* メニューID追加時の命名規則
+■ メニューID追加時の命名規則
 
 1桁目は 5
 2桁目は
@@ -58,7 +58,7 @@
 
 
 
-■* マクロコマンド追加時の作業リスト
+■ マクロコマンド追加時の作業リスト
   TeraTermマクロを新設するときの作業手順について、以下に示します。
   
 １．ソースコードの修正
@@ -84,7 +84,7 @@
    ... doc/LANG/teraterm.hhp
 
 
-■* TeraTermのビルド方法
+■ TeraTermのビルド方法
   TeraTermのビルド方法について以下に示します。
   ビルドにはVisual Studio 2005 Standard Edition以上が必要です（Visual Studio 2005 Express Editionは不可）。
 
@@ -117,11 +117,11 @@
   5. ビルドに成功するとteraterm\visualc\bin ディレクトリに実行プログラムが生成される
 
 
-■* TeraTerm Menuのビルド方法
+■ TeraTerm Menuのビルド方法
   TeraTerm Menu は ttermpro.sln に含まれている。「ソリューションのビルド」を
   すれば teraterm\source\ttmenu ディレクトリに実行プログラムが生成される。
 
-■* TTProxyのビルド方法
+■ TTProxyのビルド方法
   TTProxyのビルド方法について以下に示します。
   ビルドにはVisual Studio 2005(VC++8.0)が必要です。
 
@@ -131,7 +131,7 @@
   4. ビルドに成功すると TTProxy ディレクトリにDLLが生成される
 
 
-■* TTSSHのビルド方法
+■ TTSSHのビルド方法
   TTSSHのビルド方法について以下に示します。
   ビルドにはVisual Studio 2005(VC++8.0)、ActivePerlが必要です。
   
@@ -182,7 +182,7 @@
   6. ビルドに成功するとttssh2\ttxssh ディレクトリにDLLが生成される
 
 
-■* CygTermのビルド方法
+■ CygTermのビルド方法
   CygTermのビルド方法について以下に示します。
 
    1. Cygwin(http://www.cygwin.com/)をインストールする
@@ -192,7 +192,7 @@
       # make
 
 
-■* ヘルプファイルのビルド方法
+■ ヘルプファイルのビルド方法
   ヘルプファイルのビルド方法について以下に示します。
 
   1. HTML Help Workshopを以下のサイトから入手しインストールする。
@@ -207,7 +207,7 @@
   4. FileのCompileでヘルプファイルをコンパイルする
 
 
-■* リリースの方法
+■ リリースの方法
   リリースの方法について以下に示します。
 
   1. 依存ライブラリ、ツール、インポート元の最新版をチェックする。
