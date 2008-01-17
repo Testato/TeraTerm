@@ -1,41 +1,36 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
+<html>
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>負の整数定数についての注意</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
+<title>負の整数定数についての注意</title>
+<meta http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../../style.css" type="text/css">
-</HEAD>
-<BODY>
+</head>
+<body>
 
 <h1>負の整数定数についての注意</h1>
-
 <p>
 コマンドのパラメータに負の整数定数を使用する場合、以下のような問題が発生する場合がある。例えば、
 </p>
 
-<pre>
-for i -10 0
-</pre>
+<pre><code>for i -10 0</code></pre>
 
 <p>
-このコマンドは文法エラーを発生する。なぜなら、2番めのパラメータは "i" ではなくて、"i-10" とみなされるから。
-この問題を防ぐには以下のいずれかの方法をとる。
+このコマンドは文法エラーを発生する。なぜなら、2番めのパラメータは "i" ではなくて、"i-10" とみなされるからである。この問題を防ぐには以下のいずれかの方法をとる。
 </p>
 
-1) "-" の前に "0" をつける。
+<ol>
+  <li>"-" の前に "0" をつける。
+<pre><code>for i 0-10 0</code></pre>
+  </li>
 
-<pre>
-for i 0-10 0
-</pre>
-
-2) 負の整数定数を変数に代入してから使用する。
-
-<pre>
-A = -10
+  <li>負の整数定数を変数に代入してから使用する。
+<pre><code>A = -10
 for i A 0
-</pre>
+</code></pre>
+  </li>
+</ol>
 
-</BODY>
-</HTML>
+</body>
+</html>

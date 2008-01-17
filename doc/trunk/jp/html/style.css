@@ -1,41 +1,42 @@
-body{ 
+body { 
 	margin: 5ex;
 	background: rgb(255, 255, 240);
 	font-family: "MS US Gothic";
 }
 
-h1{
+h1 {
 	font-size: x-large;
 }
 
-h2{
+h2 {
 	font-size: large;
 }
 
-h3{
+h3 {
 	font-size: midium;
 }
 
-.center{
+.center {
 	text-align: center;
 }
 
-div.topic{
+div.topic {
 	font-weight: bold;
 	font-size: large;
 	margin-top: 2ex;
 	margin-bottom: 2pt;
 }
 
-.qanda{
+.qanda {
 	font-weight: bold;
 }
 
-.syntax{
+.syntax {
 	font-weight: bold;
+	white-space: nowrap;
 }
 
-font.new{
+font.new {
 	font-weight: bold;
 	font-size: smaller;
 	color: teal;
@@ -62,11 +63,11 @@ li.history {
 	margin-bottom: 1em;
 }
 
-.no-marker{
+.no-marker {
 	list-style-type: none;
 }
 
-.indent1{
+.indent1 {
     margin-left: 2em;
 }
 
@@ -76,28 +77,28 @@ pre {
 	padding: .5ex;
 }
 
-.warning{
+.warning {
 	color: #ff0000;
 }
 
-.notice{
+.notice {
 	color: #0000ff;
 }
 
-img{
+img {
 	boarder: 0px;
 }
 
-.img{
+.img {
 	margin: 1ex;
 }
 
-.code{
+.code {
 	font-family: Courier;
 	color: #0000ff;
 }
 
-.variable{
+.variable {
 	font-weight: 900;
 	color: #0000ff;
 }
@@ -109,4 +110,18 @@ pre.macro-syntax {
 
 pre.macro-example {
 	margin-left: 1em;
+}
+
+th {
+	text-align: left;
+}
+
+/*
+td code.syntax {
+	margin-right: 2em;
+}
+*/
+
+th + th, th + td, td + td {
+	padding-left: 2em;
 }
