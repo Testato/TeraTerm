@@ -1080,6 +1080,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->ConfirmFileDragAndDrop =
 		GetOnOff(Section, "ConfirmFileDragAndDrop", FName, TRUE);
 
+	// Translate mouse wheel to cursor key when application cursor mode
+	ts->TranslateWheelToCursor =
+		GetOnOff(Section, "TranslateWheelToCursor", FName, TRUE);
+
 #ifdef USE_NORMAL_BGCOLOR
 	// UseNormalBGColor
 	ts->UseNormalBGColor =
@@ -1807,6 +1811,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// Confirm send a file when drag and drop (2007.12.28 maya)
 	WriteOnOff(Section, "ConfirmFileDragAndDrop", FName,
 	           ts->ConfirmFileDragAndDrop);
+
+	// Translate mouse wheel to cursor key when application cursor mode
+	WriteOnOff(Section, "TranslateWheelToCursor", FName,
+	           ts->TranslateWheelToCursor);
 }
 
 #define VTEditor "VT editor keypad"

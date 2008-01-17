@@ -1852,33 +1852,28 @@ BOOL CVTWindow::OnMouseWheel(
 	CPoint pt      // カーソル位置
 )
 {
-#if 0
-	int line, i, backward;
-	short delta;
+	int line, i;
 
-	if (zDelta < 0) { // マイナスならユーザに向かって回転
-		backward = 1;
-	} else {
-		backward = 0;
-	}
-	delta = abs(zDelta);
-	line = delta / WHEEL_DELTA; // ライン数
-	for (i = 0 ; i < line ; i++) {
-		if (backward == 1) {
-			OnVScroll(SB_LINEDOWN, 0, NULL);
+	line = abs(zDelta) / WHEEL_DELTA; // ライン数
+	if (line < 1) line = 1;
+
+	if (ts.TranslateWheelToCursor && AppliCursorMode) {
+		if (zDelta < 0) {
+			KeyDown(HVTWin, VK_DOWN, line, MapVirtualKey(VK_DOWN, 0) | 0x100);
+			KeyUp(VK_DOWN);
 		} else {
-			OnVScroll(SB_LINEUP, 0, NULL);
+			KeyDown(HVTWin, VK_UP, line, MapVirtualKey(VK_UP, 0) | 0x100);
+			KeyUp(VK_UP);
+		}
+	} else {
+		for (i = 0 ; i < line ; i++) {
+			if (zDelta < 0) {
+				OnVScroll(SB_LINEDOWN, 0, NULL);
+			} else {
+				OnVScroll(SB_LINEUP, 0, NULL);
+			}
 		}
 	}
-#else
-	// 上記のコードはVistaでは動かないため、正負のみでスクロールさせる。
-	// (2007.8.22 yutaka)
-	if (zDelta < 0) {
-		OnVScroll(SB_LINEDOWN, 0, NULL);
-	} else {
-		OnVScroll(SB_LINEUP, 0, NULL);
-	}
-#endif
 
 	return (TRUE);
 }
