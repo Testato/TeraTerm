@@ -101,5 +101,25 @@ MaxBroadcatHistory=99
 </pre>
 
 
+<h1><a name="mousewheel">アプリケーションカーソルモード時のマウスホイールの動作</a></h1>
+
+<p>
+マウスのホイールを回転させた時は通常はスクロールバーが上下しますが、アプリケーションカーソルモード(viやless等を起動すると通常はこのモードになります)時にはスクロールバーは動かさず、かわりに上または下カーソルキーのシーケンスを送信します。
+</p>
+
+<p>
+アプリケーションカーソルモードでもマウスホイールの回転でスクロールバーを動かしたい場合は、設定ファイルの [Tera Term] セクションの TranslateWheelToCursor 行を以下のように変更してください。
+</p>
+
+<pre>
+TranslateWheelToCursor=off
+</pre>
+
+<pre>
+省略時:
+TranslateWheelToCursor=on
+</pre>
+
+
 </BODY>
 </HTML>

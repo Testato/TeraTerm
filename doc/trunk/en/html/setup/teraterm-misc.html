@@ -74,5 +74,31 @@ MaxBroadcatHistory=99
 </pre>
 
 
+<h1><a name="mousewheel">Mouse wheel action in application cursor mode</a></h1>
+
+<p>
+	ToDo: Translate from Japanese version document.
+<!--
+マウスのホイールを回転させた時は通常はスクロールバーが上下しますが、アプリケーションカーソルモード(viやless等を起動すると通常はこのモードになります)時にはスクロールバーは動かさず、かわりに上または下カーソルキーのシーケンスを送信します。
+-->
+</p>
+
+<p>
+<!--
+アプリケーションカーソルモードでもマウスホイールの回転でスクロールバーを動かしたい場合は、設定ファイルの [Tera Term] セクションの TranslateWheelToCursor 行を以下のように変更してください。
+-->
+To disable this feature, edit the TranslateWheelToCursor line in the [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+TranslateWheelToCursor=off
+</pre>
+
+<pre>
+Default:
+TranslateWheelToCursor=on
+</pre>
+
+
 </BODY>
 </HTML>
