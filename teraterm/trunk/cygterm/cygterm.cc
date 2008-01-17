@@ -432,12 +432,12 @@ void get_args(int argc, char** argv)
             if (cmd_termopt[0] == '\0') {
                 strncpy(cmd_termopt, *argv, sizeof(cmd_termopt)-1);
                 cmd_termopt[sizeof(cmd_termopt)-1] = '\0';
-	    }
-	    else {
+            }
+            else {
                 snprintf(tmp, sizeof(tmp), "%s %s", cmd_termopt, *argv);
-		strncpy(cmd_termopt, tmp, sizeof(cmd_termopt)-1);
+                strncpy(cmd_termopt, tmp, sizeof(cmd_termopt)-1);
                 cmd_termopt[sizeof(cmd_termopt)-1] = '\0';
-	    }
+            }
         }
     }
 }
