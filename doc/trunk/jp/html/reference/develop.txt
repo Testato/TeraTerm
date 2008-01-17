@@ -228,15 +228,21 @@
       http://www.neocom.ca/forum/viewtopic.php?t=567
 
   2. バージョンを上げ、日付を変更する
-       ttermpro.rc
-       ttxssh.rc
-       ttmacro.rc // 変更時のみ
-       ttpmenu.rc // 変更時のみ
-       TTProxy.rc // 変更時のみ
-       ttxkanjimenu.rc // 変更時のみ
-       teraterm.iss
-       html/about/hisotry.html
-       ※バージョン番号が同じだとインストーラが上書きしないので、リリースまではバージョン番号を上げないこと。
+     リリース作業時に、バージョンを一つインクリメントする。
+     リリースされる前にバージョン番号が上がったファイルが出回るのを避けるため。
+     バグレポートなどで混乱の元になりそうなので、リリースまではバージョン番号を上げないこと。
+     - ttermpro.rc
+     - ttxssh.rc
+     - ttmacro.rc // 変更時のみ
+     - ttpmenu.rc // 変更時のみ
+     - TTProxy.rc // 変更時のみ
+     - ttxkanjimenu.rc // 変更時のみ
+     - teraterm.iss
+     - html/about/hisotry.html
+
+     CygTerm+ は例外で、リリースとは関係なくバージョンが上がる。
+     パッチがコミットされると即リリース扱いになり、リリース日はその日付となる。
+     これは、バージョンの末尾が patchlevel であり、コンパイラの入手が容易なため。
 
   3. 動作確認をする
        プログラムをコンパイルし直す
