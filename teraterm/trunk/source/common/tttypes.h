@@ -368,6 +368,7 @@ struct tttset {
 	char ZModemRcvCommand[MAX_PATH];
 	WORD ConfirmFileDragAndDrop;
 	WORD TranslateWheelToCursor;
+	WORD HostDialogOnStartup;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -778,6 +779,7 @@ typedef TMap far *PMap;
  *
  * - At version 4.58, ttset_memfilemap was replaced with ttset_memfilemap_6.
  *   added tttset.TranslateWheelToCursor.
+ *   added tttset.HostDialogOnStartup.
  *
  * - At version 4.57, ttset_memfilemap was replaced with ttset_memfilemap_5.
  *   added tttset.XModemRcvCommand.

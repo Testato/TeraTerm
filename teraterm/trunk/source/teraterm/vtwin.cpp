@@ -2587,7 +2587,9 @@ LONG CVTWindow::OnCommStart(UINT wParam, LONG lParam)
 	// 自動接続が無効のときも接続ダイアログを出すようにした (2006.9.15 maya)
 	if (((ts.PortType!=IdSerial) && (ts.HostName[0]==0)) ||
 	    ((ts.PortType==IdSerial) && (ts.ComAutoConnect == FALSE))) {
-		OnFileNewConnection();
+		if (ts.HostDialogOnStartup) {
+			OnFileNewConnection();
+		}
 	}
 	else {
 		Connecting = TRUE;

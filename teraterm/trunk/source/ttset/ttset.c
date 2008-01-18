@@ -1084,6 +1084,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->TranslateWheelToCursor =
 		GetOnOff(Section, "TranslateWheelToCursor", FName, TRUE);
 
+	// Display "New Connection" dialog on startup (2008.1.18 maya)
+	ts->HostDialogOnStartup =
+		GetOnOff(Section, "HostDialogOnStartup", FName, TRUE);
+
 #ifdef USE_NORMAL_BGCOLOR
 	// UseNormalBGColor
 	ts->UseNormalBGColor =
@@ -1815,6 +1819,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// Translate mouse wheel to cursor key when application cursor mode
 	WriteOnOff(Section, "TranslateWheelToCursor", FName,
 	           ts->TranslateWheelToCursor);
+
+	// Display "New Connection" dialog on startup (2008.1.18 maya)
+	WriteOnOff(Section, "HostDialogOnStartup", FName,
+	           ts->HostDialogOnStartup);
 }
 
 #define VTEditor "VT editor keypad"
