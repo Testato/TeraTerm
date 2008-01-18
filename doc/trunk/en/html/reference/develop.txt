@@ -213,7 +213,10 @@ Example: adding a TTSSH menu under File menu
        ttxkanjimenu.rc // only modifying
        teraterm.iss
        html/about/hisotry.html
+       
        Note: Don't update the version number until the release, because the installer does not overwrite file when versions are same.
+       
+       Note: By way of exception, CygTerm+ always upgrades not regarding TeraTerm release process when the patch is committed. The release date is the day committed by a developer. The suffix of CygTerm+ version is patchlevel, and then a user can get gcc compiler for free.
 
   3. Evaluate executable program file.
        - Rebuild TeraTerm program
