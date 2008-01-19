@@ -194,7 +194,8 @@ VTCompatTab=off
 
 <h1><a name="mousetrack">Mouse tracking mode</a></h1>
 <p>
-<!-- ホスト側のアプリケーションによって、VT window がマウストラッキングモードに変更された場合、TeraTerm はマウス操作をホストへ報告するようになります。--> <br>
+TeraTerm would send the escape sequence of the mouse operation when VT window is changed to the mouse tracking mode by the host application. However, TERM environment variable should be "xterm" type.<br>
+
 To disable mouse event tracking, edit the MouseEventTracking line in the [Tera Term] section of the setup file like the following:
 </p>
 
