@@ -47,6 +47,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ssh.h"
 #include "crypt.h"
 #include "fwd.h"
+#include "sftp.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -71,7 +72,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define CHANNEL_MAX 100
 
 enum channel_type {
-	TYPE_SHELL, TYPE_PORTFWD, TYPE_SCP,
+	TYPE_SHELL, TYPE_PORTFWD, TYPE_SCP, TYPE_SFTP,
 };
 
 enum scp_state {
@@ -3493,6 +3494,58 @@ int SSH_start_scp(PTInstVar pvar, char *sendfile, char *dstfile)
 }
 
 
+int SSH_sftp_transaction(PTInstVar pvar)
+{
+	buffer_t *msg;
+	char *s;
+	unsigned char *outmsg;
+	int len;
+	Channel_t *c = NULL;
+//	FILE *fp = NULL;
+//	struct _stat st;
+
+	// ソケットがクローズされている場合は何もしない。
+	if (pvar->socket == INVALID_SOCKET)
+		goto error;
+
+	if (SSHv1(pvar))      // SSH1サポートはTBD
+		goto error;
+
+	// チャネル設定
+	c = ssh2_channel_new(CHAN_SES_WINDOW_DEFAULT, CHAN_SES_PACKET_DEFAULT, TYPE_SFTP, -1);
+	if (c == NULL) {
+		UTIL_get_lang_msg("MSG_SSH_NO_FREE_CHANNEL", pvar,
+		                  "Could not open new channel. TTSSH is already opening too many channels.");
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+		goto error;
+	}
+
+	// session open
+	msg = buffer_init();
+	if (msg == NULL) {
+		goto error;
+	}
+	s = "session";
+	buffer_put_string(msg, s, strlen(s));  // ctype
+	buffer_put_int(msg, c->self_id);  // self(channel number)
+	buffer_put_int(msg, c->local_window);  // local_window
+	buffer_put_int(msg, c->local_maxpacket);  // local_maxpacket
+	len = buffer_len(msg);
+	outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN, len);
+	memcpy(outmsg, buffer_ptr (msg), len);
+	finish_send_packet(pvar);
+	buffer_free(msg);
+
+	return TRUE;
+
+error:
+	if (c != NULL)
+		ssh2_channel_delete(c);
+
+	return FALSE;
+}
+
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // SSH2 protocol procedure in the following code:
@@ -6892,8 +6945,12 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	buffer_put_int(msg, remote_id);
 	if (c->type == TYPE_SCP) {
 		s = "exec";
-	} else {
+	} else if (c->type == TYPE_SFTP) {
+		s = "subsystem";
+	} else if (c->type == TYPE_SHELL) {
 		s = "pty-req";  // pseudo terminalのリクエスト
+	} else {
+		s = "";  // NOT REACHED
 	}
 	buffer_put_string(msg, s, strlen(s));
 	buffer_put_char(msg, wantconfirm);  // wantconfirm (disableに変更 2005/3/28 yutaka)
@@ -6907,6 +6964,12 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 			_snprintf_s(sbuf, sizeof(sbuf), _TRUNCATE, "scp -f %s", c->scp.remotefile);
 
 		}
+		buffer_put_string(msg, sbuf, strlen(sbuf));
+		goto done;
+	}
+
+	if (c->type == TYPE_SFTP) {
+		char *sbuf = "sftp";
 		buffer_put_string(msg, sbuf, strlen(sbuf));
 		goto done;
 	}
@@ -7586,6 +7649,10 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 
 	} else if (c->type == TYPE_SCP) {  // SCP
 		SSH2_scp_response(pvar, c, data, str_len);
+
+	} else if (c->type == TYPE_SFTP) {  // SFTP
+
+
 	}
 
 	//debug_print(200, data, strlen);

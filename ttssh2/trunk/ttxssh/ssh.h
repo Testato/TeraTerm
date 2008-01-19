@@ -482,6 +482,7 @@ void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
 
 int SSH_start_scp(PTInstVar pvar, char *sendfile, char *dstfile);
 int SSH_scp_transaction(PTInstVar pvar, char *sendfile, char *dstfile, enum scp_dir direction);
+int SSH_sftp_transaction(PTInstVar pvar);
 
 /* auxiliary SSH2 interfaces for pkt.c */
 int SSH_get_min_packet_size(PTInstVar pvar);

@@ -2924,6 +2924,9 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 
 		switch (LOWORD(wParam)) {
 		case IDOK:
+#if 0  // SFTP debug (2008.1.19 yutaka)
+			SSH_sftp_transaction(pvar);
+#else
 			hWnd = GetDlgItem(dlg, IDC_SENDFILE_EDIT);
 			SendMessage(hWnd, WM_GETTEXT , sizeof(sendfile), (LPARAM)sendfile);
 			if (sendfile[0] != '\0') {
@@ -2932,6 +2935,7 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 				EndDialog(dlg, 1); // dialog close
 				return TRUE;
 			}
+#endif
 			return FALSE;
 
 		case IDCANCEL:			

@@ -263,6 +263,10 @@
 			>
 		</File>
 		<File
+			RelativePath=".\sftp.c"
+			>
+		</File>
+		<File
 			RelativePath="ssh.c"
 			>
 		</File>
