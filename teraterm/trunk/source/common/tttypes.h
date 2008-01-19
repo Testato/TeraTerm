@@ -369,6 +369,7 @@ struct tttset {
 	WORD ConfirmFileDragAndDrop;
 	WORD TranslateWheelToCursor;
 	WORD HostDialogOnStartup;
+	WORD MouseEventTracking;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -421,6 +422,21 @@ typedef struct tttset TTTSet, *PTTSet;
 
 #define IdBS  1
 #define IdDEL 2
+
+  /* Mouse tracking mode */
+#define IdMouseTrackNone     0
+#define IdMouseTrackDECELR   1  // not supported
+#define IdMouseTrackX10      2
+#define IdMouseTrackVT200    3
+#define IdMouseTrackVT200Hl  4  // not supported
+#define IdMouseTrackBtnEvent 5  // limited support -- same as VT200 mode
+#define IdMouseTrackAllEvent 6  // limited support -- same as VT200 mode
+
+  /* Mouse event */
+#define IdMouseEventBtnDown  1
+#define IdMouseEventBtnUp    2
+#define IdMouseEventMove     3  // not supported yet
+#define IdMouseEventWheel    4
 
   /* Serial port ID */
 #define IdCOM1 1

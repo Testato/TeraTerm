@@ -48,6 +48,8 @@ static BOOL ReverseColor;
 static BOOL InsertMode;
 static BOOL LFMode;
 static BOOL AutoWrapMode;
+static BOOL FocusReportMode;
+int MouseReportMode;
 
 // save/restore cursor
 typedef struct {
@@ -167,6 +169,8 @@ void ResetTerminal() /*reset variables but don't update screen */
   ReverseColor = FALSE;
   AutoRepeatMode = TRUE;
   Send8BitMode = ts.Send8BitCtrl;
+  FocusReportMode = FALSE;
+  MouseReportMode = IdMouseTrackNone;
 
   CLocale = _create_locale(LC_ALL, "C");
 
@@ -1504,11 +1508,6 @@ void CSSetAttr()
 			CharAttr = CharAttr & ~ AttrReverse;
 			break;
 		default:
-			// ESC[39mが前景色のリセットでESC[49mが背景色であるtermcap xtermの
-			// エスケープシーケンスを追加（岩本氏パッチ）。 
-			// これによりscreen上でw3mを使用した場合、色が戻らない現象が改善される。
-			// (2005/4/7 yutaka)
-
 			/* Text color */
 			if ((P>=30) && (P<=37))
 				CharAttr2 = CharAttr2 & (Attr2Back | Attr2BackMask)
@@ -1671,6 +1670,10 @@ void CSSetAttr()
 	    break;
 	  case 7: AutoWrapMode = TRUE; break;
 	  case 8: AutoRepeatMode = TRUE; break;
+	  case 9:
+	    if (ts.MouseEventTracking)
+	      MouseReportMode = IdMouseTrackX10;
+	    break;
 	  case 19: PrintEX = TRUE; break;
 	  case 25: DispEnableCaret(TRUE); break; // cursor on
 	  case 38:
@@ -1694,6 +1697,26 @@ void CSSetAttr()
 	    break;
 	  case 66: AppliKeyMode = TRUE; break;
 	  case 67: ts.BSKey = IdBS; break;
+	  case 1000:
+	    if (ts.MouseEventTracking)
+	      MouseReportMode = IdMouseTrackVT200;
+	    break;
+	  case 1001:
+	    if (ts.MouseEventTracking)
+	      MouseReportMode = IdMouseTrackVT200Hl;
+	    break;
+	  case 1002:
+	    if (ts.MouseEventTracking)
+	      MouseReportMode = IdMouseTrackBtnEvent;
+	    break;
+	  case 1003:
+	    if (ts.MouseEventTracking)
+	      MouseReportMode = IdMouseTrackAllEvent;
+	    break;
+	  case 1004:
+	    if (ts.MouseEventTracking)
+	      FocusReportMode = TRUE;
+	    break;
       }
     }
 
@@ -1753,6 +1776,7 @@ void CSSetAttr()
 	    break;
 	  case 7: AutoWrapMode = FALSE; break;
 	  case 8: AutoRepeatMode = FALSE; break;
+	  case 9: MouseReportMode = IdMouseTrackNone; break;
 	  case 19: PrintEX = FALSE; break;
 	  case 25: DispEnableCaret(FALSE); break; // cursor off
 	  case 59:
@@ -1772,6 +1796,11 @@ void CSSetAttr()
 	    break;
 	  case 66: AppliKeyMode = FALSE; break;
 	  case 67: ts.BSKey = IdDEL; break;
+	  case 1000:
+	  case 1001:
+	  case 1002:
+	  case 1003: MouseReportMode = IdMouseTrackNone; break;
+	  case 1004: FocusReportMode = FALSE; break;
 	}
     }
 
@@ -2229,7 +2258,7 @@ BOOL ParseFirstJP(BYTE b)
     }
     else if ((ts.TermFlag & TF_CTRLINKANJI)==0)
       KanjiIn = FALSE;
-    else if ((b==CR) && Wrap) { // iwamoto patch (http://www.freeml.com/message/teraterm@freeml.com/0000142)
+    else if ((b==CR) && Wrap) {
       CarriageReturn(FALSE);
       LineFeed(LF,FALSE);
       Wrap = FALSE;
@@ -2708,4 +2737,129 @@ int VTParse()
 
   if (ChangeEmu > 0) ParseMode = ModeFirst;
   return ChangeEmu;
+}
+
+int MakeMouseReportStr(char *buff, size_t buffsize, int mb, int x, int y) {
+  if (Send8BitMode)
+    return _snprintf_s_l(buff, buffsize, _TRUNCATE, "\233M%c%c%c", CLocale, mb+32, x+32, y+32);
+  else
+    return _snprintf_s_l(buff, buffsize, _TRUNCATE, "\033[M%c%c%c", CLocale, mb+32, x+32, y+32);
+}
+
+BOOL MouseReport(int Event, int Button, int Xpos, int Ypos) {
+  char Report[10];
+  int x, y, len, modifier;
+
+  len = 0;
+
+  if (MouseReportMode == IdMouseTrackNone)
+    return FALSE;
+
+  DispConvWinToScreen(Xpos, Ypos, &x, &y, NULL);
+  x++; y++;
+
+  if (ShiftKey())
+    modifier = 4;
+  else
+    modifier = 0;
+
+  if (ControlKey())
+    modifier |= 8;
+
+  if (AltKey())
+    modifier |= 16;
+
+  modifier = (ShiftKey()?4:0) | (ControlKey()?8:0) | (AltKey()?16:0);
+
+  switch (Event) {
+    case IdMouseEventBtnDown:
+      switch (MouseReportMode) {
+	case IdMouseTrackX10:
+	  len = MakeMouseReportStr(Report, sizeof Report, Button, x, y);
+	  break;
+
+	case IdMouseTrackVT200:
+	case IdMouseTrackBtnEvent:
+	case IdMouseTrackAllEvent:
+	  len = MakeMouseReportStr(Report, sizeof Report, Button | modifier, x, y);
+	  break;
+
+	case IdMouseTrackDECELR: /* not supported yet */
+	case IdMouseTrackVT200Hl: /* not supported yet */
+	default:
+	  return FALSE;
+      }
+      break;
+
+    case IdMouseEventBtnUp:
+      switch (MouseReportMode) {
+	case IdMouseTrackVT200:
+	case IdMouseTrackBtnEvent:
+	case IdMouseTrackAllEvent:
+	  len = MakeMouseReportStr(Report, sizeof Report, 3 | modifier, x, y);
+	  break;
+
+	case IdMouseTrackX10: /* nothing to do */
+	case IdMouseTrackDECELR: /* not supported yet */
+	case IdMouseTrackVT200Hl: /* not supported yet */
+	default:
+	  return FALSE;
+      }
+      break;
+
+    case IdMouseEventMove:
+      switch (MouseReportMode) {
+	case IdMouseTrackBtnEvent: /* not supported yet */
+	case IdMouseTrackAllEvent: /* not supported yet */
+	case IdMouseTrackDECELR: /* not supported yet */
+	case IdMouseTrackVT200Hl: /* not supported yet */
+	case IdMouseTrackX10: /* nothing to do */
+	case IdMouseTrackVT200: /* nothing to do */
+	default:
+	  return FALSE;
+      }
+      break;
+
+    case IdMouseEventWheel:
+      switch (MouseReportMode) {
+	case IdMouseTrackVT200:
+	case IdMouseTrackBtnEvent:
+	case IdMouseTrackAllEvent:
+	  len = MakeMouseReportStr(Report, sizeof Report, Button | modifier | 64, x, y);
+	  break;
+
+	case IdMouseTrackX10: /* nothing to do */
+	case IdMouseTrackDECELR: /* not supported yet */
+	case IdMouseTrackVT200Hl: /* not supported yet */
+	  return FALSE;
+      }
+      break;
+  }
+
+  if (len == 0)
+    return FALSE;
+
+  CommBinaryOut(&cv, Report, len);
+  return TRUE;
+}
+
+void FocusReport(BOOL focus) {
+  if (!FocusReportMode)
+    return;
+
+  if (focus) {
+    // Focus In
+    if (Send8BitMode) {
+      CommBinaryOut(&cv,"\233I",2);
+    } else {
+      CommBinaryOut(&cv,"\033[I",3);
+    }
+  } else {
+    // Focus Out
+    if (Send8BitMode) {
+      CommBinaryOut(&cv,"\233O",2);
+    } else {
+      CommBinaryOut(&cv,"\033[O",3);
+    }
+  }
 }

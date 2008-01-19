@@ -1088,6 +1088,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->HostDialogOnStartup =
 		GetOnOff(Section, "HostDialogOnStartup", FName, TRUE);
 
+	// Mouse event tracking
+	ts->MouseEventTracking =
+		GetOnOff(Section, "MouseEventTracking", FName, TRUE);
+
 #ifdef USE_NORMAL_BGCOLOR
 	// UseNormalBGColor
 	ts->UseNormalBGColor =
@@ -1823,6 +1827,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// Display "New Connection" dialog on startup (2008.1.18 maya)
 	WriteOnOff(Section, "HostDialogOnStartup", FName,
 	           ts->HostDialogOnStartup);
+
+	// Mouse event tracking
+	WriteOnOff(Section, "MouseEventTracking", FName,
+	           ts->MouseEventTracking);
 }
 
 #define VTEditor "VT editor keypad"

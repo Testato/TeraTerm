@@ -759,6 +759,7 @@ void CVTWindow::ButtonUp(BOOL Paste)
 void CVTWindow::ButtonDown(POINT p, int LMR)
 {
 	HMENU PopupMenu, PopupBase;
+	BOOL mousereport;
 
 	if ((LMR==IdLeftButton) && ControlKey() && (MainMenu==NULL) &&
 	    ((ts.MenuFlag & MF_NOPOPUP)==0)) {
@@ -802,11 +803,14 @@ void CVTWindow::ButtonDown(POINT p, int LMR)
 		return;
 	}
 
+	mousereport = MouseReport(IdMouseEventBtnDown, LMR, p.x, p.y);
+
 	// added ConfirmPasteMouseRButton (2007.3.17 maya)
 	if ((LMR == IdRightButton) &&
 		!ts.DisablePasteMouseRButton &&
 		ts.ConfirmPasteMouseRButton &&
 		cv.Ready &&
+		!mousereport &&
 		(SendVar==NULL) && (FileVar==NULL) &&
 		(cv.PortType!=IdFile) &&
 		(IsClipboardFormatAvailable(CF_TEXT) ||
@@ -1751,6 +1755,7 @@ void CVTWindow::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CVTWindow::OnKillFocus(CWnd* pNewWnd)
 {
 	DispDestroyCaret();
+	FocusReport(FALSE);
 	CFrameWnd::OnKillFocus(pNewWnd);
 }
 
@@ -1761,6 +1766,9 @@ void CVTWindow::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 	DblClkX = point.x;
 	DblClkY = point.y;
+
+	if (MouseReport(IdMouseEventBtnDown, IdLeftButton, DblClkX, DblClkY))
+		return;
 
 	if (BuffDblClk(DblClkX, DblClkY)) // ブラウザ呼び出しの場合は何もしない。 (2005.4.3 yutaka)
 		return;
@@ -1786,8 +1794,11 @@ void CVTWindow::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CVTWindow::OnLButtonUp(UINT nFlags, CPoint point)
 {
+	MouseReport(IdMouseEventBtnUp, IdLeftButton, point.x, point.y);
+
 	if (! LButton)
 		return;
+
 	ButtonUp(FALSE);
 }
 
@@ -1802,6 +1813,10 @@ void CVTWindow::OnMButtonDown(UINT nFlags, CPoint point)
 
 void CVTWindow::OnMButtonUp(UINT nFlags, CPoint point)
 {
+	BOOL mousereport;
+
+	mousereport = MouseReport(IdMouseEventBtnUp, IdMiddleButton, point.x, point.y);
+
 	if (! MButton)
 		return;
 	ButtonUp(TRUE);
@@ -1854,8 +1869,13 @@ BOOL CVTWindow::OnMouseWheel(
 {
 	int line, i;
 
+	::ScreenToClient(HVTWin, &pt);
+
 	line = abs(zDelta) / WHEEL_DELTA; // ライン数
 	if (line < 1) line = 1;
+
+	if (MouseReport(IdMouseEventWheel, zDelta<0, pt.x, pt.y))
+		return TRUE;
 
 	if (ts.TranslateWheelToCursor && AppliCursorMode) {
 		if (zDelta < 0) {
@@ -1940,10 +1960,14 @@ void CVTWindow::OnRButtonDown(UINT nFlags, CPoint point)
 
 void CVTWindow::OnRButtonUp(UINT nFlags, CPoint point)
 {
+	BOOL mousereport;
+
+	mousereport = MouseReport(IdMouseEventBtnUp, IdRightButton, point.x, point.y);
+
 	if (! RButton) return;
 
 	// 右ボタン押下でのペーストを禁止する (2005.3.16 yutaka)
-	if (ts.DisablePasteMouseRButton) {
+	if (ts.DisablePasteMouseRButton || mousereport) {
 		ButtonUp(FALSE);
 	} else {
 		ButtonUp(TRUE);
@@ -1953,6 +1977,7 @@ void CVTWindow::OnRButtonUp(UINT nFlags, CPoint point)
 void CVTWindow::OnSetFocus(CWnd* pOldWnd)
 {
 	ChangeCaret();
+	FocusReport(TRUE);
 	CFrameWnd::OnSetFocus(pOldWnd);
 }
 
