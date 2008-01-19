@@ -2889,9 +2889,11 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 				ofn.lStructSize = sizeof(OPENFILENAME);
 			}
 			else {
-				// OPENFILENAME_SIZE_VERSION_400が未定義と怒られる (why?)
-#if 0
+				// OpenSSL内で"NT4.0"でバージョン定義されているための対処(2008.1.20 yutaka)
+#ifdef OPENFILENAME_SIZE_VERSION_400
 				ofn.lStructSize = OPENFILENAME_SIZE_VERSION_400;
+#else
+				ofn.lStructSize = sizeof(OPENFILENAME);
 #endif
 			}
 			ofn.hwndOwner = dlg;
@@ -2908,8 +2910,8 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 #endif
 			ofn.lpstrTitle = "Choose a sending file with SCP";
 
-				// OFN_FORCESHOWHIDDENが未定義と怒られる (why?)
-#if 0
+			// OpenSSL内で"NT4.0"でバージョン定義されているための対処(2008.1.20 yutaka)
+#ifdef OFN_FORCESHOWHIDDEN
 			ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_FORCESHOWHIDDEN | OFN_HIDEREADONLY;
 #else
 			ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
