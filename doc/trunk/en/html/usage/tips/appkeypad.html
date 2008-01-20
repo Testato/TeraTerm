@@ -27,12 +27,8 @@ There are the numeric keypad mode and the application keypad mode at VT100 numer
 
   <dt>Application keypad mode</dt>
   <dd>
-    キーに対応する特殊なシーケンスを送信します。例えば1キーを押したならば
-    &lt;ESC&gt;Oqというシーケンスを出力します。
-    このモードは、フルキーの数字キーとテンキーを区別したい場合に使われます。
-    例えば、テンキーのキーに特殊な機能を持たせたい時などに使われます。
-    通常このモードは、必要な時にアプリケーション側から切り替えられる事に
-    よって使われます。
+    In application mode, all the keypad keys send special control sequences, _including_ Num Lock. Num Lock stops behaving like Num Lock and becomes another function key. For example, if a user pushes 1 key, TeraTerm will send &lt;ESC&gt;Oq sequence.<br>
+    A user can use this mode to distinguish between full key numeric key and numeric keypad. Basically, an application will change to application keypad mode.
   </dd>
 </dl>
 
