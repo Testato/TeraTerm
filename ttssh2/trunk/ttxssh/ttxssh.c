@@ -2879,23 +2879,9 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 		case IDC_SENDFILE_SELECT | (BN_CLICKED << 16):
 			{
 			OPENFILENAME ofn;
-			OSVERSIONINFO osvi;
 
 			ZeroMemory(&ofn, sizeof(ofn));
-			osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-			GetVersionEx(&osvi);
-			if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT &&
-				osvi.dwMajorVersion >= 5) {
-				ofn.lStructSize = sizeof(OPENFILENAME);
-			}
-			else {
-				// OpenSSL内で"NT4.0"でバージョン定義されているための対処(2008.1.20 yutaka)
-#ifdef OPENFILENAME_SIZE_VERSION_400
-				ofn.lStructSize = OPENFILENAME_SIZE_VERSION_400;
-#else
-				ofn.lStructSize = sizeof(OPENFILENAME);
-#endif
-			}
+			ofn.lStructSize = sizeof(OPENFILENAME);
 			ofn.hwndOwner = dlg;
 #if 0
 			get_lang_msg("FILEDLG_SELECT_LOGVIEW_APP_FILTER", ts.UIMsg, sizeof(ts.UIMsg),
@@ -2910,12 +2896,12 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 #endif
 			ofn.lpstrTitle = "Choose a sending file with SCP";
 
-			// OpenSSL内で"NT4.0"でバージョン定義されているための対処(2008.1.20 yutaka)
-#ifdef OFN_FORCESHOWHIDDEN
-			ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_FORCESHOWHIDDEN | OFN_HIDEREADONLY;
-#else
-			ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
+// WINVER がセットされないためにマクロが定義されないので、ここで定義する(2008.1.21 maya)
+#ifndef OFN_FORCESHOWHIDDEN
+/* from commdlg.h */
+#define OFN_FORCESHOWHIDDEN          0x10000000
 #endif
+			ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_FORCESHOWHIDDEN | OFN_HIDEREADONLY;
 			if (GetOpenFileName(&ofn) != 0) {
 				hWnd = GetDlgItem(dlg, IDC_SENDFILE_EDIT);
 				SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)sendfile);
