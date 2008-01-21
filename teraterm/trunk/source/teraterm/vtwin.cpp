@@ -4779,6 +4779,56 @@ void ApplyBoradCastCommandHisotry(HWND Dialog, char *historyfile)
 	SendDlgItemMessage(Dialog, IDC_COMMAND_EDIT, CB_SETCURSEL,0,0);
 }
 
+
+
+
+// ドロップダウンの中のエディットコントロールを
+// サブクラス化するためのウインドウプロシージャ
+static WNDPROC OrigHostnameEditProc; // Original window procedure
+static LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
+                                         WPARAM wParam, LPARAM lParam)
+{
+	switch (msg) {
+		case WM_CREATE:
+			break;
+
+		case WM_DESTROY:
+			break;
+
+		case WM_LBUTTONDOWN:
+		case WM_LBUTTONUP:
+		case WM_RBUTTONDOWN:
+		case WM_RBUTTONUP:
+			SetFocus(dlg);
+			break;
+
+		case WM_KEYDOWN:
+		case WM_KEYUP:
+		case WM_SYSKEYDOWN:
+		case WM_SYSKEYUP:
+			{
+				int i;
+				HWND hd;
+
+				for (i = 0 ; i < 50 ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
+					hd = GetNthWin(i);
+					if (hd == NULL)
+						break;
+
+					PostMessage(hd, msg, wParam, lParam);
+					//PostMessage(hd, WM_SETFOCUS, NULL, 0);
+				}
+			}
+			break;
+
+		default:
+			return CallWindowProc(OrigHostnameEditProc, dlg, msg, wParam, lParam);
+	}
+
+	return FALSE;
+}
+
+
 //
 // すべてのターミナルへ同一コマンドを送信するモードレスダイアログの表示
 // (2005.1.22 yutaka)
@@ -4793,6 +4843,8 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 	HFONT font;
 	char uimsg[MAX_UIMSG];
 	char historyfile[MAX_PATH];
+	static HWND hwndHostname     = NULL; // HOSTNAME dropdown
+	static HWND hwndHostnameEdit = NULL; // Edit control on HOSTNAME dropdown
 
 	switch (msg) {
 		case WM_INITDIALOG:
@@ -4809,6 +4861,13 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 
 			// エディットコントロールにフォーカスをあてる
 			SetFocus(GetDlgItem(hWnd, IDC_COMMAND_EDIT));
+
+			// サブクラス化させてリアルタイムモードにする (2008.1.21 yutaka)
+			hwndHostname = GetDlgItem(hWnd, IDC_COMMAND_EDIT);
+			hwndHostnameEdit = GetWindow(hwndHostname, GW_CHILD);
+			OrigHostnameEditProc = (WNDPROC)GetWindowLong(hwndHostnameEdit, GWL_WNDPROC);
+			SetWindowLong(hwndHostnameEdit, GWL_WNDPROC, (LONG)HostnameEditProc);
+			SendMessage(GetDlgItem(hWnd, IDC_REALTIME_CHECK), BM_SETCHECK, BST_CHECKED, 0);  // default on
 
 			font = (HFONT)SendMessage(hWnd, WM_GETFONT, 0, 0);
 			GetObject(font, sizeof(LOGFONT), &logfont);
@@ -4845,7 +4904,8 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			get_lang_msg("BTN_CLOSE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hWnd, IDCANCEL, ts.UIMsg);
 
-			return FALSE;
+//			return FALSE;
+			return TRUE;
 
 		case WM_COMMAND:
 			switch (wp) {
@@ -4861,6 +4921,18 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_CRLF), FALSE);
 					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_CR), FALSE);
 					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_LF), FALSE);
+				}
+				return TRUE;
+
+			case IDC_REALTIME_CHECK | (BN_CLICKED << 16):
+				checked = SendMessage(GetDlgItem(hWnd, IDC_REALTIME_CHECK), BM_GETCHECK, 0, 0);
+				if (checked & BST_CHECKED) { // checkあり
+					hwndHostname = GetDlgItem(hWnd, IDC_COMMAND_EDIT);
+					hwndHostnameEdit = GetWindow(hwndHostname, GW_CHILD);
+					OrigHostnameEditProc = (WNDPROC)GetWindowLong(hwndHostnameEdit, GWL_WNDPROC);
+					SetWindowLong(hwndHostnameEdit, GWL_WNDPROC, (LONG)HostnameEditProc);
+				} else {
+					SetWindowLong(hwndHostnameEdit, GWL_WNDPROC, (LONG)OrigHostnameEditProc);
 				}
 				return TRUE;
 			}
@@ -4938,6 +5010,12 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 					}
 
 					}
+
+					// モードレスダイアログは一度生成されると、アプリケーションが終了するまで
+					// 破棄されないので、以下の「ウィンドウプロシージャ戻し」は不要と思われる。(yutaka)
+#if 0
+					SetWindowLong(hwndHostnameEdit, GWL_WNDPROC, (LONG)OrigHostnameEditProc);
+#endif
 
 					//EndDialog(hDlgWnd, IDOK);
 					return TRUE;

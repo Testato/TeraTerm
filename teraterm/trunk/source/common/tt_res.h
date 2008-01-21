@@ -105,6 +105,8 @@
 #define IDC_TRANS_FILENAME              2505
 #define IDC_TRANS_TRANS                 2506
 #define IDC_AUTOSTART                   2507
+#define IDC_CHECK1                      2508
+#define IDC_REALTIME_CHECK              2508
 #define ID_ACC_SENDBREAK                50001
 #define ID_ACC_COPY                     50002
 #define ID_ACC_NEWCONNECTION            50003
@@ -193,7 +195,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        120
 #define _APS_NEXT_COMMAND_VALUE         52022
-#define _APS_NEXT_CONTROL_VALUE         2508
+#define _APS_NEXT_CONTROL_VALUE         2509
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
