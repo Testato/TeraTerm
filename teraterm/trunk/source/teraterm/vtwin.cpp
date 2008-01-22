@@ -4810,6 +4810,11 @@ static LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
 				int i;
 				HWND hd;
 
+				if (wParam == 0x0d) {  // Enter key
+					SetWindowText(dlg, "");
+					SendMessage(dlg, EM_SETSEL, 0, 0);
+				}
+
 				for (i = 0 ; i < 50 ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
 					hd = GetNthWin(i);
 					if (hd == NULL)
@@ -4867,7 +4872,14 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			hwndHostnameEdit = GetWindow(hwndHostname, GW_CHILD);
 			OrigHostnameEditProc = (WNDPROC)GetWindowLong(hwndHostnameEdit, GWL_WNDPROC);
 			SetWindowLong(hwndHostnameEdit, GWL_WNDPROC, (LONG)HostnameEditProc);
+			// デフォルトはon。残りはdisable。
 			SendMessage(GetDlgItem(hWnd, IDC_REALTIME_CHECK), BM_SETCHECK, BST_CHECKED, 0);  // default on
+			EnableWindow(GetDlgItem(hWnd, IDC_HISTORY_CHECK), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_RADIO_CRLF), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_RADIO_CR), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_RADIO_LF), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_ENTERKEY_CHECK), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_PARENT_ONLY), FALSE);
 
 			font = (HFONT)SendMessage(hWnd, WM_GETFONT, 0, 0);
 			GetObject(font, sizeof(LOGFONT), &logfont);
@@ -4904,8 +4916,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			get_lang_msg("BTN_CLOSE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hWnd, IDCANCEL, ts.UIMsg);
 
-//			return FALSE;
-			return TRUE;
+			return FALSE;
 
 		case WM_COMMAND:
 			switch (wp) {
@@ -4927,12 +4938,28 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			case IDC_REALTIME_CHECK | (BN_CLICKED << 16):
 				checked = SendMessage(GetDlgItem(hWnd, IDC_REALTIME_CHECK), BM_GETCHECK, 0, 0);
 				if (checked & BST_CHECKED) { // checkあり
+					// new handler
 					hwndHostname = GetDlgItem(hWnd, IDC_COMMAND_EDIT);
 					hwndHostnameEdit = GetWindow(hwndHostname, GW_CHILD);
 					OrigHostnameEditProc = (WNDPROC)GetWindowLong(hwndHostnameEdit, GWL_WNDPROC);
 					SetWindowLong(hwndHostnameEdit, GWL_WNDPROC, (LONG)HostnameEditProc);
+
+					EnableWindow(GetDlgItem(hWnd, IDC_HISTORY_CHECK), FALSE);
+					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_CRLF), FALSE);
+					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_CR), FALSE);
+					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_LF), FALSE);
+					EnableWindow(GetDlgItem(hWnd, IDC_ENTERKEY_CHECK), FALSE);
+					EnableWindow(GetDlgItem(hWnd, IDC_PARENT_ONLY), FALSE);
 				} else {
+					// restore old handler
 					SetWindowLong(hwndHostnameEdit, GWL_WNDPROC, (LONG)OrigHostnameEditProc);
+
+					EnableWindow(GetDlgItem(hWnd, IDC_HISTORY_CHECK), TRUE);
+					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_CRLF), TRUE);
+					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_CR), TRUE);
+					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_LF), TRUE);
+					EnableWindow(GetDlgItem(hWnd, IDC_ENTERKEY_CHECK), TRUE);
+					EnableWindow(GetDlgItem(hWnd, IDC_PARENT_ONLY), TRUE);
 				}
 				return TRUE;
 			}
