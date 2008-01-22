@@ -1623,8 +1623,8 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
 	LOGFONT logfont;
 	HFONT font;
-	HWND hwndHostname     = NULL; // HOSTNAME dropdown
-	HWND hwndHostnameEdit = NULL; // Edit control on HOSTNAME dropdown
+	static HWND hwndHostname     = NULL; // HOSTNAME dropdown
+	static HWND hwndHostnameEdit = NULL; // Edit control on HOSTNAME dropdown
 
 	switch (Message) {
 		case WM_INITDIALOG:
