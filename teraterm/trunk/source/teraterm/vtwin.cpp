@@ -5004,6 +5004,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_LF), FALSE);
 					EnableWindow(GetDlgItem(hWnd, IDC_ENTERKEY_CHECK), FALSE);
 					EnableWindow(GetDlgItem(hWnd, IDC_PARENT_ONLY), FALSE);
+					EnableWindow(GetDlgItem(hWnd, IDC_LIST), TRUE);  // true
 				} else {
 					// restore old handler
 					SetWindowLong(hwndHostnameEdit, GWL_WNDPROC, (LONG)OrigHostnameEditProc);
@@ -5014,6 +5015,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_LF), TRUE);
 					EnableWindow(GetDlgItem(hWnd, IDC_ENTERKEY_CHECK), TRUE);
 					EnableWindow(GetDlgItem(hWnd, IDC_PARENT_ONLY), TRUE);
+					EnableWindow(GetDlgItem(hWnd, IDC_LIST), FALSE);  // false
 				}
 				return TRUE;
 			}
