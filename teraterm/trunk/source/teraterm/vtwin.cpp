@@ -4785,6 +4785,7 @@ void ApplyBoradCastCommandHisotry(HWND Dialog, char *historyfile)
 // ドロップダウンの中のエディットコントロールを
 // サブクラス化するためのウインドウプロシージャ
 static WNDPROC OrigHostnameEditProc; // Original window procedure
+static HWND BroadcastWindowList;
 static LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
                                          WPARAM wParam, LPARAM lParam)
 {
@@ -4809,12 +4810,13 @@ static LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
 			{
 				int i;
 				HWND hd;
+				int count;
 
 				if (wParam == 0x0d) {  // Enter key
 					SetWindowText(dlg, "");
 					SendMessage(dlg, EM_SETSEL, 0, 0);
 				}
-
+#if 0
 				for (i = 0 ; i < 50 ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
 					hd = GetNthWin(i);
 					if (hd == NULL)
@@ -4823,6 +4825,17 @@ static LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
 					PostMessage(hd, msg, wParam, lParam);
 					//PostMessage(hd, WM_SETFOCUS, NULL, 0);
 				}
+#else
+				count = SendMessage(BroadcastWindowList, LB_GETCOUNT, 0, 0);
+				for (i = 0 ; i < count ; i++) {
+					if (SendMessage(BroadcastWindowList, LB_GETSEL, i, 0)) {
+						hd = GetNthWin(i);
+						if (hd) {
+							PostMessage(hd, msg, wParam, lParam);
+						}
+					}
+				}
+#endif
 			}
 			break;
 
@@ -4831,6 +4844,31 @@ static LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
 	}
 
 	return FALSE;
+}
+
+
+static void UpdateBroadcastWindowList(HWND hWnd)
+{
+	int i;
+	HWND hd;
+    TCHAR szWindowText[256];
+
+	SendMessage(hWnd, LB_RESETCONTENT, 0, 0);
+
+	for (i = 0 ; i < 50 ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
+		hd = GetNthWin(i);
+		if (hd == NULL)
+			break;
+
+        GetWindowText(hd, szWindowText, 256);
+		SendMessage(hWnd, LB_INSERTSTRING, -1, (LPARAM)szWindowText);
+	}
+
+#if 0
+	for (i = 0 ; i < SendMessage(BroadcastWindowList, LB_GETCOUNT, 0, 0) ; i++) {
+		SendMessage(hWnd, LB_SETSEL, TRUE, i);
+	}
+#endif
 }
 
 
@@ -4852,6 +4890,18 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 	static HWND hwndHostnameEdit = NULL; // Edit control on HOSTNAME dropdown
 
 	switch (msg) {
+		case WM_ACTIVATE:
+			UpdateBroadcastWindowList(GetDlgItem(hWnd, IDC_LIST));
+			return TRUE;
+
+		case WM_SHOWWINDOW:
+			if (wp) {  // show
+				// TeraTerm window list
+				UpdateBroadcastWindowList(GetDlgItem(hWnd, IDC_LIST));
+				return TRUE;
+			}
+			break;
+
 		case WM_INITDIALOG:
 			// ラジオボタンのデフォルトは CR にする。
 			SendMessage(GetDlgItem(hWnd, IDC_RADIO_CR), BM_SETCHECK, BST_CHECKED, 0);
@@ -4880,6 +4930,10 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			EnableWindow(GetDlgItem(hWnd, IDC_RADIO_LF), FALSE);
 			EnableWindow(GetDlgItem(hWnd, IDC_ENTERKEY_CHECK), FALSE);
 			EnableWindow(GetDlgItem(hWnd, IDC_PARENT_ONLY), FALSE);
+
+			// TeraTerm window list
+			BroadcastWindowList = GetDlgItem(hWnd, IDC_LIST);
+			UpdateBroadcastWindowList(BroadcastWindowList);
 
 			font = (HFONT)SendMessage(hWnd, WM_GETFONT, 0, 0);
 			GetObject(font, sizeof(LOGFONT), &logfont);
