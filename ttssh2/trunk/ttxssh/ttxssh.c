@@ -929,8 +929,8 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 	LOGFONT logfont;
 	HFONT font;
 	char uimsg[MAX_UIMSG];
-	HWND hwndHostname     = NULL; // HOSTNAME dropdown
-	HWND hwndHostnameEdit = NULL; // Edit control on HOSTNAME dropdown
+	static HWND hwndHostname     = NULL; // HOSTNAME dropdown
+	static HWND hwndHostnameEdit = NULL; // Edit control on HOSTNAME dropdown
 
 	GET_VAR();
 
