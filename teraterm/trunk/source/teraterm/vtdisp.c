@@ -1692,12 +1692,56 @@ void ChangeCaret()
   }
 }
 
+// WM_KILLFOCUSÇ≥ÇÍÇΩÇ∆Ç´ÇÃÉJÅ[É\ÉãÇé©ï™Ç≈ï`Ç≠
+void CaretKillFocus(BOOL show)
+{
+  int CaretX, CaretY;
+  POINT p[5];
+  HPEN oldpen;
+  HDC hdc;
+
+  /* Get Device Context */
+  DispInitDC();
+  hdc = VTDC;
+
+  CaretX = (CursorX-WinOrgX)*FontWidth;
+  CaretY = (CursorY-WinOrgY)*FontHeight;
+
+  p[0].x = CaretX;
+  p[0].y = CaretY;
+  p[1].x = CaretX;
+  p[1].y = CaretY + FontHeight - 1;
+  p[2].x = CaretX + FontWidth - 1;
+  p[2].y = CaretY + FontHeight - 1;
+  p[3].x = CaretX + FontWidth - 1;
+  p[3].y = CaretY;
+  p[4].x = CaretX;
+  p[4].y = CaretY;
+
+  if (show) {
+	  oldpen = SelectObject(hdc, CreatePen(PS_SOLID, 0, ts.VTColor[0]));
+  } else {
+	  oldpen = SelectObject(hdc, CreatePen(PS_SOLID, 0, ts.VTColor[1]));
+  }
+  Polyline(VTDC, p, 5);
+  oldpen = SelectObject(hdc, oldpen);
+  DeleteObject(oldpen);
+
+  /* release device context */
+  DispReleaseDC();
+}
+
 void CaretOn()
 // Turn on the cursor
 {
   int CaretX, CaretY, H;
 
-  if (! Active) return;
+  if (! Active) {
+	  CaretKillFocus(TRUE);
+	  return;
+  } else {
+	  CaretKillFocus(FALSE);
+  }
 
   CaretX = (CursorX-WinOrgX)*FontWidth;
   CaretY = (CursorY-WinOrgY)*FontHeight;
@@ -1738,7 +1782,11 @@ void CaretOn()
 
 void CaretOff()
 {
-  if (! Active) return;
+	if (! Active) {
+		CaretKillFocus(FALSE);
+		return;
+	} 
+
   if (CaretStatus == 0)
   {
     HideCaret(HVTWin);

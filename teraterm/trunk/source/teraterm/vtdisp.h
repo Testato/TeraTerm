@@ -30,6 +30,7 @@ void SetLogFont();
 void ChangeFont();
 void ResetIME();
 void ChangeCaret();
+void CaretKillFocus(BOOL show);
 void CaretOn();
 void CaretOff();
 void DispDestroyCaret();

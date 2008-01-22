@@ -1757,6 +1757,8 @@ void CVTWindow::OnKillFocus(CWnd* pNewWnd)
 	DispDestroyCaret();
 	FocusReport(FALSE);
 	CFrameWnd::OnKillFocus(pNewWnd);
+
+	CaretKillFocus(TRUE);
 }
 
 void CVTWindow::OnLButtonDblClk(UINT nFlags, CPoint point)
