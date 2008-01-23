@@ -1808,7 +1808,9 @@ void DispDestroyCaret()
 BOOL IsCaretOn()
 // check if caret is on
 {
-  return (Active && (CaretStatus==0));
+	// 非アクティブ（フォーカス無効）の場合においても、カーソル描画を行いたいため、
+	// 2つめの条件を追加する。(2008.1.24 yutaka)
+  return ((Active && (CaretStatus==0)) || !Active);
 }
 
 void DispEnableCaret(BOOL On)
