@@ -1700,6 +1700,10 @@ void CaretKillFocus(BOOL show)
   HPEN oldpen;
   HDC hdc;
 
+  // Eterm lookfeel‚Ìê‡‚Í‰½‚à‚µ‚È‚¢
+  if (BGEnable)
+	  return;
+
   /* Get Device Context */
   DispInitDC();
   hdc = VTDC;
