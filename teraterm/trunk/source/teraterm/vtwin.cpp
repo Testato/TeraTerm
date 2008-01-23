@@ -4892,10 +4892,6 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 	static HWND hwndHostnameEdit = NULL; // Edit control on HOSTNAME dropdown
 
 	switch (msg) {
-		case WM_ACTIVATE:
-			UpdateBroadcastWindowList(GetDlgItem(hWnd, IDC_LIST));
-			return TRUE;
-
 		case WM_SHOWWINDOW:
 			if (wp) {  // show
 				// TeraTerm window list
