@@ -1640,6 +1640,7 @@ void CSSetAttr()
       ColorRef = ts.VTColor[0];
       ts.VTColor[0] = ts.VTColor[1];
       ts.VTColor[1] = ColorRef;
+      BGInitialize();
       DispChangeBackground();
     }
 
