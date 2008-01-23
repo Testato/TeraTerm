@@ -47,6 +47,8 @@
 #include <errno.h>
 #include <imagehlp.h>
 
+#include <windowsx.h>
+
 #include "tt_res.h"
 #include "vtwin.h"
 
@@ -5111,6 +5113,30 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 					if (HIWORD(wp) == CBN_DROPDOWN) {
 						GetDefaultFName(ts.HomeDir, "broadcast.log", historyfile, sizeof(historyfile));
 						ApplyBoradCastCommandHisotry(hWnd, historyfile);
+					}
+					return FALSE;
+
+				case IDC_LIST:
+					// リストボックスをダブルクリックされたら、全選択か全選択解除を行う。
+					if (HIWORD(wp) == LBN_DBLCLK) {
+						int i, n, max;
+						BOOL flag;
+
+						max = ListBox_GetCount(BroadcastWindowList);
+						n = 0;
+						for (i = 0 ; i < max ; i++) {
+							if (ListBox_GetSel(BroadcastWindowList, i))
+								n++;
+						}
+
+						if (n >= max - 1) // all select
+							flag = FALSE;
+						else
+							flag = TRUE;
+
+						for (i = 0 ; i < max ; i++) {
+							ListBox_SetSel(BroadcastWindowList, flag, i);
+						}
 					}
 					return FALSE;
 
