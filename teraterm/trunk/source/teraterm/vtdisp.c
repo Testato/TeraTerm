@@ -1700,6 +1700,9 @@ void CaretKillFocus(BOOL show)
   HPEN oldpen;
   HDC hdc;
 
+  if (ts.KillFocusCursor == 0)
+	  return;
+
   // Eterm lookfeelの場合は何もしない
   if (BGEnable)
 	  return;
@@ -1740,45 +1743,47 @@ void CaretOn()
 {
   int CaretX, CaretY, H;
 
-  if (! Active) {
-	  CaretKillFocus(TRUE);
+  if (ts.KillFocusCursor == 0 && !Active)
 	  return;
-  } else {
-	  CaretKillFocus(FALSE);
-  }
 
   CaretX = (CursorX-WinOrgX)*FontWidth;
   CaretY = (CursorY-WinOrgY)*FontHeight;
 
   if ((ts.Language==IdJapanese) &&
-      CanUseIME() && (ts.IMEInline>0))
-    /* set IME conversion window pos. & font */
-    SetConversionWindow(HVTWin,CaretX,CaretY);
+	  CanUseIME() && (ts.IMEInline>0))
+	/* set IME conversion window pos. & font */
+	SetConversionWindow(HVTWin,CaretX,CaretY);
 
   if (! CaretEnabled) return;
 
-  if (ts.CursorShape!=IdVCur)
-  {
-    if (ts.CursorShape==IdHCur)
-    {
-     CaretY = CaretY+FontHeight-CurWidth;
-     H = CurWidth;
-    }
-    else H = FontHeight;
+  if (Active) {
+	  if (ts.CursorShape!=IdVCur)
+	  {
+		if (ts.CursorShape==IdHCur)
+		{
+		 CaretY = CaretY+FontHeight-CurWidth;
+		 H = CurWidth;
+		}
+		else H = FontHeight;
 
-    DestroyCaret();
-    if (CursorOnDBCS)
-      CreateCaret(HVTWin, 0, FontWidth*2, H); /* double width caret */
-    else
-      CreateCaret(HVTWin, 0, FontWidth, H); /* single width caret */
-    CaretStatus = 1;
+		DestroyCaret();
+		if (CursorOnDBCS)
+		  CreateCaret(HVTWin, 0, FontWidth*2, H); /* double width caret */
+		else
+		  CreateCaret(HVTWin, 0, FontWidth, H); /* single width caret */
+		CaretStatus = 1;
+	  }
+
+	  SetCaretPos(CaretX,CaretY);
   }
-
-  SetCaretPos(CaretX,CaretY);
 
   while (CaretStatus > 0)
   {
-    ShowCaret(HVTWin);
+	  if (! Active) {
+		  CaretKillFocus(TRUE);
+	  } else {
+	      ShowCaret(HVTWin);
+	  }
     CaretStatus--;
   }
 
@@ -1786,14 +1791,16 @@ void CaretOn()
 
 void CaretOff()
 {
-	if (! Active) {
-		CaretKillFocus(FALSE);
-		return;
-	} 
+  if (ts.KillFocusCursor == 0 && !Active)
+	  return;
 
   if (CaretStatus == 0)
   {
-    HideCaret(HVTWin);
+	  if (! Active) {
+		CaretKillFocus(FALSE);
+	  } else {
+	    HideCaret(HVTWin);
+	  }
     CaretStatus++;
   }
 }
@@ -1810,7 +1817,10 @@ BOOL IsCaretOn()
 {
 	// 非アクティブ（フォーカス無効）の場合においても、カーソル描画を行いたいため、
 	// 2つめの条件を追加する。(2008.1.24 yutaka)
-  return ((Active && (CaretStatus==0)) || !Active);
+  if (ts.KillFocusCursor == 0)
+	return (( Active && (CaretStatus==0)) );
+  else
+	return ((Active && (CaretStatus==0)) || (!Active && (CaretStatus==0)));
 }
 
 void DispEnableCaret(BOOL On)
@@ -2939,6 +2949,9 @@ void DispSetActive(BOOL ActiveFlag)
   Active = ActiveFlag;
   if (Active)
   {
+	if (IsCaretOn()) 
+		CaretKillFocus(FALSE);
+
     SetFocus(HVTWin);
     ActiveWin = IdVT;
   }

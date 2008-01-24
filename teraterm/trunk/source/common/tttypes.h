@@ -370,6 +370,7 @@ struct tttset {
 	WORD TranslateWheelToCursor;
 	WORD HostDialogOnStartup;
 	WORD MouseEventTracking;
+	WORD KillFocusCursor;
 };
 
 typedef struct tttset TTTSet, *PTTSet;

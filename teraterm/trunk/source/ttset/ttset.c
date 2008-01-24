@@ -825,6 +825,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->NonblinkingCursor =
 		GetOnOff(Section, "NonblinkingCursor", FName, FALSE);
 
+	// フォーカス無効時のポリゴンカーソル (2008.1.24 yutaka)
+	ts->KillFocusCursor =
+		GetOnOff(Section, "KillFocusCursor", FName, TRUE);
+
 	/* Delay for pass-thru printing activation */
 	/*   -- special option */
 	ts->PassThruDelay =
@@ -1652,6 +1656,8 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 	/* Non-blinking cursor -- special option */
 	WriteOnOff(Section, "NonblinkingCursor", FName, ts->NonblinkingCursor);
+
+	WriteOnOff(Section, "KillFocusCursor", FName, ts->KillFocusCursor);
 
 	/* Delay for pass-thru printing activation */
 	/*   -- special option */
