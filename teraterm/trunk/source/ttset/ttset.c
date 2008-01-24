@@ -625,7 +625,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->Telnet = GetOnOff(Section, "Telnet", FName, TRUE);
 
 	/* Telnet terminal type */
-	GetPrivateProfileString(Section, "TermType", "vt100", ts->TermType,
+	GetPrivateProfileString(Section, "TermType", "xterm", ts->TermType,
 							sizeof(ts->TermType), FName);
 
 	/* TCP port num */
