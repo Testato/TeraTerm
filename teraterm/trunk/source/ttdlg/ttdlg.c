@@ -2755,7 +2755,9 @@ BOOL CALLBACK TFontHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			GetObject(font, sizeof(LOGFONT), &logfont);
 			if (get_lang_font("DLG_SYSTEM_FONT", Dialog, &logfont, &DlgFontFont, UILanguageFile)) {
 				SendDlgItemMessage(Dialog, IDC_FONTLABEL, WM_SETFONT, (WPARAM)DlgFontFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_FONT, WM_SETFONT, (WPARAM)DlgFontFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_SIZELABEL, WM_SETFONT, (WPARAM)DlgFontFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_FONTSIZE, WM_SETFONT, (WPARAM)DlgFontFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_FONTBOLD, WM_SETFONT, (WPARAM)DlgFontFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_FONTCHARSET1, WM_SETFONT, (WPARAM)DlgFontFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_FONTCHARSET2, WM_SETFONT, (WPARAM)DlgFontFont, MAKELPARAM(TRUE,0));
