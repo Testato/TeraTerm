@@ -2693,6 +2693,7 @@ int VTParse()
   if (c==0) return 0;
 
   CaretOff();
+  UpdateCaretKillFocus();
 
   ChangeEmu = 0;
 

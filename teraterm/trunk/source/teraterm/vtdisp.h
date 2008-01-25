@@ -31,6 +31,7 @@ void ChangeFont();
 void ResetIME();
 void ChangeCaret();
 void CaretKillFocus(BOOL show);
+void UpdateCaretKillFocus(void);
 void CaretOn();
 void CaretOff();
 void DispDestroyCaret();

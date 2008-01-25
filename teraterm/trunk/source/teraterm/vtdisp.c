@@ -1718,14 +1718,20 @@ void CaretKillFocus(BOOL show)
   p[0].y = CaretY;
   p[1].x = CaretX;
   p[1].y = CaretY + FontHeight - 1;
-  p[2].x = CaretX + FontWidth - 1;
+  if (CursorOnDBCS)
+	p[2].x = CaretX + FontWidth*2 - 1;
+  else
+	p[2].x = CaretX + FontWidth - 1;
   p[2].y = CaretY + FontHeight - 1;
-  p[3].x = CaretX + FontWidth - 1;
+  if (CursorOnDBCS)
+	p[3].x = CaretX + FontWidth*2 - 1;
+  else
+	p[3].x = CaretX + FontWidth - 1;
   p[3].y = CaretY;
   p[4].x = CaretX;
   p[4].y = CaretY;
 
-  if (show) {
+  if (show) {  // ポリゴンカーソルを表示（非フォーカス時）
 	  oldpen = SelectObject(hdc, CreatePen(PS_SOLID, 0, ts.VTColor[0]));
   } else {
 	  oldpen = SelectObject(hdc, CreatePen(PS_SOLID, 0, ts.VTColor[1]));
@@ -1736,6 +1742,37 @@ void CaretKillFocus(BOOL show)
 
   /* release device context */
   DispReleaseDC();
+}
+
+// ポリゴンカーソルを消したあとに、その部分の文字を再描画する。
+//
+// CaretOff()の直後に呼ぶこと。CaretOff()内から呼ぶと、無限再帰呼び出しとなり、
+// stack overflowになる。
+void UpdateCaretKillFocus(void)
+{
+  int CaretX, CaretY;
+  RECT rc;
+
+  CaretX = (CursorX-WinOrgX)*FontWidth;
+  CaretY = (CursorY-WinOrgY)*FontHeight;
+
+  if (ts.KillFocusCursor == 0)
+	  return;
+
+  // Eterm lookfeelの場合は何もしない
+  if (BGEnable)
+	  return;
+
+  if (! Active) {
+	  rc.left = CaretX;
+	  rc.top = CaretY;
+	  if (CursorOnDBCS)
+		rc.right = CaretX + FontWidth*2 - 1;
+	  else
+		rc.right = CaretX + FontWidth - 1;
+	  rc.bottom = CaretY + FontHeight - 1;
+	  InvalidateRect(HVTWin, &rc, FALSE);
+  }
 }
 
 void CaretOn()
