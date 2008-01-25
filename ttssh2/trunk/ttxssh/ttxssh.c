@@ -743,6 +743,9 @@ static void PASCAL FAR TTXOpenTCP(TTXSockHooks FAR * hooks)
 
 		// TCPLocalEcho/TCPCRSend を無効にする (maya 2007.4.25)
 		pvar->ts->DisableTCPEchoCR = TRUE;
+		// SSH 接続であることを teraterm 側にセットする
+		// SCP コマンドのため (2008.1.25 maya)
+		pvar->ts->isSSH = TRUE;
 
 		pvar->session_settings = pvar->settings;
 
