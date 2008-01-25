@@ -5223,6 +5223,8 @@ void CVTWindow::OnControlBroadcastCommand(void)
 	// TODO: モードレスダイアログのハンドルは、親プロセスが DestroyWindow() APIで破棄する
 	// 必要があるが、ここはOS任せとする。
 	static HWND hDlgWnd = NULL;
+	RECT prc, rc;
+	LONG x, y;
 
 	if (hDlgWnd != NULL)
 		goto activate;
@@ -5232,6 +5234,15 @@ void CVTWindow::OnControlBroadcastCommand(void)
 
 	if (hDlgWnd == NULL)
 		return;
+
+	// ダイアログをウィンドウの真上に配置する (2008.1.25 yutaka)
+	GetWindowRect(&prc);
+	::GetWindowRect(hDlgWnd, &rc);
+	x = prc.left;
+	y = prc.top - (rc.bottom - rc.top);
+	if (y < 0)
+		y = 0;
+	::SetWindowPos(hDlgWnd, NULL, x, y,  0, 0, SWP_NOSIZE | SWP_NOZORDER);
 
 activate:;
 	::ShowWindow(hDlgWnd, SW_SHOW);
