@@ -371,6 +371,7 @@ struct tttset {
 	WORD HostDialogOnStartup;
 	WORD MouseEventTracking;
 	WORD KillFocusCursor;
+	WORD isSSH;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -797,6 +798,9 @@ typedef TMap far *PMap;
  * - At version 4.58, ttset_memfilemap was replaced with ttset_memfilemap_6.
  *   added tttset.TranslateWheelToCursor.
  *   added tttset.HostDialogOnStartup.
+ *   added tttset.MouseEventTracking.
+ *   added tttset.KillFocusCursor.
+ *   added tttset.isSSH.
  *
  * - At version 4.57, ttset_memfilemap was replaced with ttset_memfilemap_5.
  *   added tttset.XModemRcvCommand.

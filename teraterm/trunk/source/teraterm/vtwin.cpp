@@ -572,6 +572,9 @@ CVTWindow::CVTWindow()
 	InitKeyboard();
 	SetKeyMap();
 
+	// コマンドラインでも設定ファイルでも変更しないのでここで初期化 (2008.1.25 maya)
+	ts.isSSH = FALSE;
+
 	/* window status */
 	AdjustSize = TRUE;
 	Minimized = FALSE;
@@ -1584,13 +1587,12 @@ void CVTWindow::OnDestroy()
 static LRESULT CALLBACK MsgBoxHootProc( INT hc, WPARAM wParam, LPARAM lParam )
 {
 	if ( hc == HCBT_ACTIVATE ) {
-		SetDlgItemText( (HWND)wParam, IDOK, "OK" );
-		SetDlgItemText( (HWND)wParam, IDCANCEL, "Cancel" );
-		SetDlgItemText( (HWND)wParam, IDABORT, "Sendfile" );
-		SetDlgItemText( (HWND)wParam, IDRETRY, "SCP" );
-		SetDlgItemText( (HWND)wParam, IDIGNORE, "Cancel" );
-		SetDlgItemText( (HWND)wParam, IDYES, "YES" );
-		SetDlgItemText( (HWND)wParam, IDNO, "NO" );
+		// &Send file や S&CP のようなアクセラレータキーは設けない
+		get_lang_msg("FILEDLG_TRANS_TITLE_SENDFILE", ts.UIMsg, sizeof(ts.UIMsg),
+		             "Send file", ts.UILanguageFile);
+		SetDlgItemText( (HWND)wParam, IDOK, ts.UIMsg );
+		SetDlgItemText( (HWND)wParam, IDYES, ts.UIMsg );
+		SetDlgItemText( (HWND)wParam, IDNO, "SCP" );
 
 		return FALSE;
 	}
@@ -1655,25 +1657,31 @@ void CVTWindow::OnDropFiles(HDROP hDropInfo)
 					// いきなりファイルの内容を送り込む前に、ユーザに問い合わせを行う。(2006.1.21 yutaka)
 					// MessageBoxでSCPも選択できるようにする。(2008.1.25 yutaka)
 					char uimsg[MAX_UIMSG];
-					HHOOK	hook		= NULL;
-					DWORD	dwThreadID	= GetCurrentThreadId();
-					int		ret;	
+					HHOOK hook = NULL;
+					DWORD dwThreadID = GetCurrentThreadId();
+					int ret;
 
 					get_lang_msg("MSG_DANDD_CONF_TITLE", uimsg, sizeof(uimsg),
-								 "Tera Term: File Drag and Drop", ts.UILanguageFile);
+					             "Tera Term: File Drag and Drop", ts.UILanguageFile);
 					get_lang_msg("MSG_DANDD_CONF", ts.UIMsg, sizeof(ts.UIMsg),
-								 "Are you sure that you want to send the file content?", ts.UILanguageFile);
+					             "Are you sure that you want to send the file content?", ts.UILanguageFile);
 
 					hook = SetWindowsHookEx( WH_CBT, MsgBoxHootProc, NULL, dwThreadID );
-					ret = MessageBox(ts.UIMsg, uimsg, MB_ABORTRETRYIGNORE | MB_ICONINFORMATION | MB_DEFBUTTON3);
+					if (ts.isSSH) {
+						ret = MessageBox(ts.UIMsg, uimsg, MB_YESNOCANCEL | MB_ICONINFORMATION | MB_DEFBUTTON3);
+					}
+					else {
+						// SSH 接続ではない場合には "SCP" を出さない (2008.1.25 maya)
+						ret = MessageBox(ts.UIMsg, uimsg, MB_OKCANCEL | MB_ICONINFORMATION | MB_DEFBUTTON2);
+					}
 					UnhookWindowsHookEx( hook );
 
-					if (ret == IDABORT) {   // sendfile
+					if (ret == IDOK || ret == IDYES) {   // sendfile
 						SendVar->DirLen = 0;
 						ts.TransBin = 0;
 						FileSendStart();
 
-					} else if (ret == IDRETRY) {   // SCP
+					} else if (ret == IDNO) {   // SCP
 						typedef int (CALLBACK *PSSH_start_scp)(char *, char *);
 						static PSSH_start_scp func = NULL;
 						static HMODULE h = NULL, h2 = NULL;
@@ -1700,7 +1708,7 @@ void CVTWindow::OnDropFiles(HDROP hDropInfo)
 scp_send_error:
 						::MessageBox(NULL, msg, "Tera Term: scpsend command error", MB_OK | MB_ICONERROR);
 						FreeLibrary(h2);
-send_success:;
+send_success:
 						FreeFileVar(&SendVar);  // 解放を忘れずに
 
 					} else {
