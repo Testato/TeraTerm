@@ -42,6 +42,8 @@
       <li>added the "Realtime mode" feature on Broadcast Command. This feature can send all user's key sequence to TeraTerm window, and then a user can use vi editor on all window. This feature takes after "TeraTerm Pro assistant" freeware in lots of ways.
         <ul>
           <li>added "Realtime mode" checkbox in Broadcast Command dialog. The default is on.</li>
+          <li>TeraTermウィンドウを選択可能なリストボックスを追加した。ダブルクリックでアイテムの全選択および全解除が可能（トグル）。</li>
+          <li>Broadcast CommandダイアログをTeraTermの真上へ配置するようにした。</li>
         </ul></li>
 
       <li>displayed the cursor bitmap when TeraTerm window loses the keyboard focus.
@@ -51,9 +53,13 @@
       
       <li>changed the default value of TermType from 'vt100' to 'xterm'</li>
       
-      <li>added a selection button on the confirmation dialog when a user drags a file to TeraTerm window.</li>
+      <li>added the "SCP" button on the confirmation dialog when a user drags a file to TeraTerm window.</li>
       
       <li>Bug fix: Reverse video control sequence (DECSCNM) doesn't work correctly.</li>
+      
+      <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.46">2.46</a></li>
+      <li>upgraded TTProxy to <a href="#ttproxy_1.0.0.15">1.0.0.15</a></li>
+      
     </ul>
   </li>
 
@@ -1001,6 +1007,12 @@ SYNOPSIS:
 
 <h2><a name="ttssh">TTSSH</a></h2>
 <ul>
+  <li class="history"><a name="ttssh_2.46">2008.1.26 (Ver 2.46 not released)</a>
+    <ul>
+      <li>不正なProtocol Version Exchangeをスキップする処理を追加した（RFC4253対応）。</li>
+    </ul>
+  </li>
+  
   <li class="history"><a name="ttssh_2.45">2008.1.15 (Ver 2.45)</a>
     <ul>
       <li>added support for sending a local file with SSH2 SCP(Secure Copy Protocol). Also, added SSH SCP menu under file menu.
