@@ -42,8 +42,8 @@
       <li>added the "Realtime mode" feature on Broadcast Command. This feature can send all user's key sequence to TeraTerm window, and then a user can use vi editor on all window. This feature takes after "TeraTerm Pro assistant" freeware in lots of ways.
         <ul>
           <li>added "Realtime mode" checkbox in Broadcast Command dialog. The default is on.</li>
-          <li>TeraTermウィンドウを選択可能なリストボックスを追加した。ダブルクリックでアイテムの全選択および全解除が可能（トグル）。</li>
-          <li>Broadcast CommandダイアログをTeraTermの真上へ配置するようにした。</li>
+          <li>added a TeraTerm window list. Also, a user can select all item or cancel all item by double-click(toggle). </li>
+          <li>Broadcast Command dialog is moved to the upper of TeraTerm window.</li>
         </ul></li>
 
       <li>displayed the cursor bitmap when TeraTerm window loses the keyboard focus.
@@ -1639,6 +1639,12 @@ SYNOPSIS:
 
 <h2><a name="ttproxy">TTProxy</a></h2>
 <ul>
+  <li class="history"><a name="ttproxy_1.0.0.15">2008.1.27 (Ver 1.0.0.15)</a>
+    <ul>
+      <li><s>32767を超えるポート番号が扱えなかったバグを修正。</s> コミットしたらタグを消します</li>
+    </ul>
+  </li>
+  
   <li class="history"><a name="ttproxy_1.0.0.14">2007.9.30 (Ver 1.0.0.14)</a>
     <ul>
       <li>added support for dynamic loading of user interface messages.</li>
