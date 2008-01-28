@@ -2842,7 +2842,7 @@ BOOL FAR PASCAL ChooseFontDlg(HWND WndParent, LPLOGFONT LogFont, PTTSet ts)
 	cf.hwndOwner = WndParent;
 	cf.lpLogFont = LogFont;
 	cf.Flags = CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT |
-	           CF_FIXEDPITCHONLY | CF_SHOWHELP | CF_ENABLETEMPLATE;
+	           CF_FIXEDPITCHONLY | CF_SHOWHELP | CF_ENABLETEMPLATE | CF_NOSCRIPTSEL;
 	if (ts!=NULL) {
 		cf.Flags = cf.Flags | CF_ENABLEHOOK;
 		cf.lpfnHook = (LPCFHOOKPROC)(&TFontHook);
