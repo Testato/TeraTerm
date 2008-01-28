@@ -2693,7 +2693,7 @@ int VTParse()
   if (c==0) return 0;
 
   CaretOff();
-  UpdateCaretKillFocus();
+  UpdateCaretKillFocus(FALSE);  // 非アクティブの場合のみ再描画する
 
   ChangeEmu = 0;
 

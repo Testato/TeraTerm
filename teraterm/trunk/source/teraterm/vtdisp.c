@@ -1748,7 +1748,7 @@ void CaretKillFocus(BOOL show)
 //
 // CaretOff()の直後に呼ぶこと。CaretOff()内から呼ぶと、無限再帰呼び出しとなり、
 // stack overflowになる。
-void UpdateCaretKillFocus(void)
+void UpdateCaretKillFocus(BOOL enforce)
 {
   int CaretX, CaretY;
   RECT rc;
@@ -1763,7 +1763,7 @@ void UpdateCaretKillFocus(void)
   if (BGEnable)
 	  return;
 
-  if (! Active) {
+  if (enforce == TRUE || !Active) {
 	  rc.left = CaretX;
 	  rc.top = CaretY;
 	  if (CursorOnDBCS)
@@ -2986,8 +2986,10 @@ void DispSetActive(BOOL ActiveFlag)
   Active = ActiveFlag;
   if (Active)
   {
-	if (IsCaretOn()) 
+	  if (IsCaretOn()) {
 		CaretKillFocus(FALSE);
+		UpdateCaretKillFocus(TRUE);  // アクティブ時は無条件に再描画する
+	  }
 
     SetFocus(HVTWin);
     ActiveWin = IdVT;
