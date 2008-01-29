@@ -85,6 +85,7 @@ typedef struct {
   BOOL NoMsg;
 
   char LogDefaultPath[MAX_PATH];
+  BOOL HideDialog;
 } TFileVar;
 typedef TFileVar far *PFileVar;
 
