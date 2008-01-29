@@ -1767,10 +1767,12 @@ void UpdateCaretKillFocus(BOOL enforce)
 	  rc.left = CaretX;
 	  rc.top = CaretY;
 	  if (CursorOnDBCS)
-		rc.right = CaretX + FontWidth*2 - 1;
+		rc.right = CaretX + FontWidth*2;
 	  else
-		rc.right = CaretX + FontWidth - 1;
-	  rc.bottom = CaretY + FontHeight - 1;
+		rc.right = CaretX + FontWidth;
+	  rc.bottom = CaretY + FontHeight;
+	  // 指定よりも1ピクセル小さい範囲が再描画されるため
+	  // rc の right, bottom は1ピクセル大きくしている。
 	  InvalidateRect(HVTWin, &rc, FALSE);
   }
 }
