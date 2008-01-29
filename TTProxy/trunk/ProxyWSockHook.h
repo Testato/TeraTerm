@@ -357,7 +357,7 @@ private:
         }
         ~ProxyInfo() {
         }
-        short getPort() {
+        unsigned short getPort() {
             if (port == 0) {
                 switch (type) {
                 case TYPE_SOCKS4:
@@ -377,7 +377,7 @@ private:
         }
         Type type;
         String host;
-        short port;
+        unsigned short port;
         String user;
         String pass;
     };
@@ -385,7 +385,7 @@ private:
     struct ConnectionInfo {
         ProxyInfo proxy;
         String realhost;
-        short  realport;
+        unsigned short  realport;
         in_addr addr;
         char* buffer;
         DWORD time;
@@ -1179,7 +1179,7 @@ private:
         }
     }
 
-    int begin_relay_http(ProxyInfo& proxy, String realhost, short realport, SOCKET s) {
+    int begin_relay_http(ProxyInfo& proxy, String realhost, unsigned short realport, SOCKET s) {
         static const char base64_table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
         char buf[1024];
         int status_code;
@@ -1278,7 +1278,7 @@ private:
         SOCKS5_AUTH_EAP         = 0x05,    /* Extensible Authentication Proto. */
         SOCKS5_AUTH_MAF         = 0x08,    /* Multi-Authentication Framework */
     };
-    int begin_relay_socks5(ProxyInfo& proxy, String realhost, short realport, SOCKET s) {
+    int begin_relay_socks5(ProxyInfo& proxy, String realhost, unsigned short realport, SOCKET s) {
         int len;
         unsigned char auth_method;
         int auth_result;
@@ -1433,7 +1433,7 @@ private:
         SOCKS4_REP_USERID       = 93,      /* user id not matched */
     };
 
-    int begin_relay_socks4(ProxyInfo& proxy, String realhost, short realport, SOCKET s) {
+    int begin_relay_socks4(ProxyInfo& proxy, String realhost, unsigned short realport, SOCKET s) {
         unsigned char buf[256], *ptr;
 
         /* make connect request packet 
@@ -1513,7 +1513,7 @@ private:
         return 0;
     }
 
-    int begin_relay_telnet(ProxyInfo& proxy, String realhost, short realport, SOCKET s) {
+    int begin_relay_telnet(ProxyInfo& proxy, String realhost, unsigned short realport, SOCKET s) {
         int err = 0;
         char uimsg[MAX_UIMSG];
 
@@ -1941,7 +1941,7 @@ private:                                                   \
                 if (defaultProxy.host == NULL || defaultProxy.type == ProxyInfo::TYPE_NONE_FORCE) {
                     defaultProxy.type = ProxyInfo::TYPE_NONE;
                 }else{
-                    defaultProxy.port = (short) ini.getInteger("ProxyPort");
+                    defaultProxy.port = (unsigned short) ini.getInteger("ProxyPort");
                     defaultProxy.user = ini.getString("ProxyUser");
                     if (defaultProxy.user != NULL)
                         defaultProxy.pass = ini.getString("ProxyPass");
