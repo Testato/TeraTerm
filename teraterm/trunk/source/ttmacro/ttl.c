@@ -1493,6 +1493,7 @@ WORD TTLGetTime(WORD mode)
 	time_t time1;
 	struct tm *ptm;
 	char *format;
+	BOOL set_result;
 
 	Err = 0;
 	GetStrVar(&VarId,&Err);
@@ -1506,6 +1507,7 @@ WORD TTLGetTime(WORD mode)
 			return 0;
 //			return ErrSyntax;
 		}
+		set_result = TRUE;
 	}
 	else {
 		switch (mode) {
@@ -1516,6 +1518,7 @@ WORD TTLGetTime(WORD mode)
 			format = "%H:%M:%S";
 			break;
 		}
+		set_result = FALSE;
 	}
 
 	if ((Err==0) && (GetFirstChar()!=0))
@@ -1528,10 +1531,10 @@ WORD TTLGetTime(WORD mode)
 
 	if (strftime(Str2, sizeof(Str2), format, ptm)) {
 		SetStrVal(VarId,Str2);
-		SetResult(0);
+		if (set_result) SetResult(0);
 	}
 	else {
-		SetResult(1);
+		if (set_result) SetResult(1);
 	}
 
 	return Err;
