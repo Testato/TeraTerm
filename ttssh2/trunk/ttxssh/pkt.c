@@ -184,6 +184,10 @@ int PKT_recv(PTInstVar pvar, char FAR * buf, int buflen)
 					SSH2_send_kexinit(pvar);
 				}
 
+ 			} else {
+ 				// reset flag to re-read server ID (2008.1.24 yutaka)
+ 				pvar->pkt_state.seen_newline = 0;
+
 			}
 
 			pvar->pkt_state.datastart += i;
