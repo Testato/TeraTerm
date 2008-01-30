@@ -1704,8 +1704,10 @@ void CaretKillFocus(BOOL show)
 	  return;
 
   // Eterm lookfeelÇÃèÍçáÇÕâΩÇ‡ÇµÇ»Ç¢
+#ifdef ALPHABLEND_TYPE2
   if (BGEnable)
 	  return;
+#endif	// ALPHABLEND_TYPE2
 
   /* Get Device Context */
   DispInitDC();
@@ -1760,8 +1762,10 @@ void UpdateCaretKillFocus(BOOL enforce)
 	  return;
 
   // Eterm lookfeelÇÃèÍçáÇÕâΩÇ‡ÇµÇ»Ç¢
+#ifdef ALPHABLEND_TYPE2
   if (BGEnable)
 	  return;
+#endif	// ALPHABLEND_TYPE2
 
   if (enforce == TRUE || !Active) {
 	  rc.left = CaretX;
