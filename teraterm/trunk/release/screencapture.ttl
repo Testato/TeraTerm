@@ -3,7 +3,7 @@
 ; File: screencapture.ttl
 ; Description: capture screen contents and write to file
 ; Environment: generic
-; Update: 2007/11/25, 12/5
+; Update: 2007/11/25, 12/5, 2008/01/30
 ; Author: IWAMOTO Kouichi (doda), Yutaka Hirata
 ; Tips:
 ;   It is recommended that you will add in the following entry 
@@ -21,11 +21,11 @@ appendmode = 1        ; 0 or 1
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-getdate date
-gettime time
+getdate header #13#10"======== %Y-%m-%d %H:%M:%S ==========================================="#13#10#13#10
 
 if appendmode=0 then
-	call makefilename
+;	call makefilename
+	getdate filename "screencapture_%Y%m%d-%H%M%S.txt"
 	fileopen fp filename 0
 else
 	fileopen fp 'screencapture.txt' 1
@@ -38,8 +38,7 @@ callmenu 50280
 
 mpause 500
 
-sprintf #13#10"======== %s %s ==========================================="#13#10#13#10 date time
-filewrite fp inputstr
+filewrite fp header
 
 offset = 0
 do
@@ -74,4 +73,3 @@ strcopy StrTime 7 2 TimeS  ;      SS
 sprintf "screencapture_%s%s%s-%s%s%s.txt" DateY DateM DateD TimeH TimeM TimeS
 filename = inputstr
 return
-
