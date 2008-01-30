@@ -373,6 +373,8 @@ struct tttset {
 	WORD KillFocusCursor;
 	WORD isSSH;
 	WORD LogHideDialog;
+	int TerminalOldWidth;
+	int TerminalOldHeight;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -803,6 +805,8 @@ typedef TMap far *PMap;
  *   added tttset.KillFocusCursor.
  *   added tttset.isSSH.
  *   added tttset.LogHideDialog.
+ *   added tttset.TerminalOldWidth
+ *   added tttset.TerminalOldHeight
  *
  * - At version 4.57, ttset_memfilemap was replaced with ttset_memfilemap_5.
  *   added tttset.XModemRcvCommand.

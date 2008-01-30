@@ -2072,6 +2072,11 @@ void CVTWindow::OnSize(UINT nType, int cx, int cy)
 	}
 	if (Minimized || DontChangeSize) return;
 
+	if (nType == SIZE_MAXIMIZED) {
+		ts.TerminalOldWidth = ts.TerminalWidth;
+		ts.TerminalOldHeight = ts.TerminalHeight;
+	}
+
 	::GetWindowRect(HVTWin,&R);
 	w = R.right - R.left;
 	h = R.bottom - R.top;
@@ -4748,11 +4753,25 @@ void CVTWindow::OnSetupSave()
 
 	if (LoadTTSET())
 	{
+		int w, h;
+
+		if (IsZoomed()) {
+			w = ts.TerminalWidth;
+			h = ts.TerminalHeight;
+			ts.TerminalWidth = ts.TerminalOldWidth;
+			ts.TerminalHeight = ts.TerminalOldHeight;
+		}
+
 		/* write current setup values to file */
 		(*WriteIniFile)(ts.SetupFName,&ts);
 		/* copy host list */
 		(*CopyHostList)(TmpSetupFN,ts.SetupFName);
 		FreeTTSET();
+
+		if (IsZoomed()) {
+			ts.TerminalWidth = w;
+			ts.TerminalHeight = h;
+		}
 	}
 
 	ChangeDefaultSet(&ts,NULL);
