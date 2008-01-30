@@ -2085,10 +2085,6 @@ void CVTWindow::OnSize(UINT nType, int cx, int cy)
 	else {
 		w = cx / FontWidth;
 		h = cy / FontHeight;
-		if (IsZoomed()) {  // 最大化したときは一回りサイズを小さくすることで、文字欠けを回避する。(2008.1.30 yutaka)
-			w--;
-			h--;	
-		}
 		HideStatusLine();
 		BuffChangeWinSize(w,h);
 	}

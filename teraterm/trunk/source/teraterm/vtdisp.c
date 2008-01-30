@@ -1916,14 +1916,8 @@ void DispChangeWinSize(int Nx, int Ny)
   
   if ((dW!=0) || (dH!=0))
   {
-	  if (IsZoomed(HVTWin)) { // ウィンドウを最大化すると、始点が(-4,-4)になるので、(0,0)へ移動させる。
-		AdjustSize = TRUE;
-		SetWindowPos(HVTWin,HWND_TOP,0,0,W+dW,H+dH,SWP_NOSIZE);
-
-	  } else {
-		AdjustSize = TRUE;
-		SetWindowPos(HVTWin,HWND_TOP,0,0,W+dW,H+dH,SWP_NOMOVE);
-	  }
+	AdjustSize = TRUE;
+	SetWindowPos(HVTWin,HWND_TOP,0,0,W+dW,H+dH,SWP_NOMOVE);
   }
   else
     InvalidateRect(HVTWin,NULL,FALSE);
