@@ -38,7 +38,6 @@
         <ul>
           <li>added <a href="../setup/teraterm-term.html#mousetrack">MouseEventTracking</a> entry in teraterm.ini file. The default value is on.</li>
         </ul></li>
-
       <li>added the "Realtime mode" feature on Broadcast Command. This feature can send all user's key sequence to TeraTerm window, and then a user can use vi editor on all window. This feature takes after "TeraTerm Pro assistant" freeware in lots of ways.
         <ul>
           <li>added "Realtime mode" checkbox in Broadcast Command dialog. The default is on.</li>
@@ -50,20 +49,14 @@
         <ul>
           <li>added KillFocusCursor entry in teraterm.ini file. The default value is on.</li>
         </ul></li>
-      
       <li>changed the default value of TermType from 'vt100' to 'xterm'</li>
-      
       <li>added the "SCP" button on the confirmation dialog when a user drags a file to TeraTerm window.</li>
-      
       <li>added Font linking fixed patch. TeraTerm can use Consolas font. Special thanks to naoh.</li>
-      
+      <li>if getdate and gettime command have no date and time format, system variable "<a href="../macro/syntax/variables.html">result</a>" is not changed. (for compatibility with version 4.56 or earlier)</li>
       <li>Bug fix: Reverse video control sequence (DECSCNM) doesn't work correctly.</li>
-      
       <li>Bug fix: ウィンドウの最大化で文字欠けになる現象への暫定処置を追加した。</li>
-      
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.46">2.46</a></li>
       <li>upgraded TTProxy to <a href="#ttproxy_1.0.0.15">1.0.0.15</a></li>
-      
     </ul>
   </li>
 
@@ -198,7 +191,7 @@ Priority Operator
 9       = == &lt;&gt; !=
 10      &amp;&amp;
 11      ||
-        
+
 Old:
 Priority Operator
 1       not ~ ! +(unary) -(unary)
@@ -1016,7 +1009,7 @@ SYNOPSIS:
       <li>不正なProtocol Version Exchangeをスキップする処理を追加した（RFC4253対応）。</li>
     </ul>
   </li>
-  
+
   <li class="history"><a name="ttssh_2.45">2008.1.15 (Ver 2.45)</a>
     <ul>
       <li>added support for sending a local file with SSH2 SCP(Secure Copy Protocol). Also, added SSH SCP menu under file menu.

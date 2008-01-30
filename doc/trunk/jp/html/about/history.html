@@ -38,32 +38,24 @@
         <ul>
           <li>teraterm.ini に <a href="../setup/teraterm-term.html#mousetrack">MouseEventTracking</a> を追加した。デフォルトはon。</li>
         </ul></li>
-
       <li>Broadcast Commandにリアルタイムモードを追加した。TeraTermウィンドウにすべてのキー入力を送ることができるため、vi操作などが可能となる。TeraTerm Proアシスタントに近い機能。
         <ul>
           <li>Broadcast Commandダイアログに"Realtime mode"チェックボックスを追加。デフォルトはon。</li>
           <li>TeraTermウィンドウを選択可能なリストボックスを追加した。ダブルクリックでアイテムの全選択および全解除が可能（トグル）。</li>
           <li>Broadcast CommandダイアログをTeraTermの真上へ配置するようにした。</li>
         </ul></li>
-
       <li>フォーカスが外れたときにもカーソルを描画するようにした。
         <ul>
           <li>teraterm.ini に KillFocusCursor を追加した。デフォルトはon。</li>
         </ul></li>
-        
       <li>TermType のデフォルト値を "vt100" から "xterm" に変更した。</li>
-      
       <li>ウィンドウへのドラッグ＆ドロップによるファイル送信において、SCP(Secure Copy Protocol)を選択できるようにした。</li>
-      
       <li>Font linking 誤動作のパッチを追加した。Consolasフォントが使用可能となる。naoh氏に感謝します。</li>
-      
+      <li>getdate, gettimeコマンドで、書式を指定しなかった場合は<a href="../macro/syntax/variables.html">result</a>に値をセットしないようにした。(バージョン4.56以前との互換性のため)</li>
       <li>リバースビデオ制御シーケンス(DECSCNM)が正しく働かないのを修正した。</li>
-      
       <li>ウィンドウの最大化で文字欠けになる現象への暫定処置を追加した。</li>
-      
       <li><a href="#ttssh_2.46">SSH2対応TTSSH(2.46)</a>へ差し替えた</li>
       <li><a href="#ttproxy_1.0.0.15">TTProxy(1.0.0.15)</a>へ差し替えた</li>
-      
     </ul>
   </li>
 
@@ -198,7 +190,7 @@
 9       = == &lt;&gt; !=
 10      &amp;&amp;
 11      ||
-        
+
 旧:
 優先度  演算子
 1       not ~ ! +(単項) -(単項)
@@ -343,7 +335,7 @@
       <li>ダブルクリックされた単語が行を越えていた場合、EnableContinuedLineCopy が有効なら続けて選択されるようにした。</li>
       <li>Broadcast Command の履歴を保存できるようにした。</li>
       <li>New ConnectionおよびSerial port setupのダイアログで、使用可能なシリアルポートのみを表示するようにした</li>
-      
+
       <li>ユーザインターフェイスのメッセージを読み込めるようにした。
         <ul>
           <li>日本語メッセージファイルを同梱した。</li>
@@ -1018,7 +1010,7 @@
       <li><s>不正なProtocol Version Exchangeをスキップする処理を追加した（RFC4253対応）。</s> コミットしたらタグを解除願います。</li>
     </ul>
   </li>
-    
+
   <li class="history"><a name="ttssh_2.45">2008.1.15 (Ver 2.45)</a>
     <ul>
       <li>SCP(Secure Copy Protocol)によるファイル送信機能を実装した。Fileメニュー配下に"SSH SCP"を追加。
