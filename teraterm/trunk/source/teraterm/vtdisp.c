@@ -1297,10 +1297,19 @@ void BGFillRect(HDC hdc,RECT *R,HBRUSH brush)
 
 void BGScrollWindow(HWND hwnd,int xa,int ya,RECT *Rect,RECT *ClipRect)
 {
-  if(!BGEnable)
-    ScrollWindow(hwnd,xa,ya,Rect,ClipRect);
-  else
-    InvalidateRect(HVTWin,ClipRect,FALSE);
+	if (ts.MaximizedBugTweak) {
+		// Eterm lookfeelが有効、もしくは最大化ウィンドウの場合はスクロールは使わない。
+		// これにより、最大化ウィンドウで文字欠けとなる現象が改善される。(2008.2.1 doda, yutaka)
+	  if(BGEnable || IsZoomed(hwnd))
+		InvalidateRect(HVTWin,ClipRect,FALSE);
+	  else
+		ScrollWindow(hwnd,xa,ya,Rect,ClipRect);
+	} else {
+	  if(!BGEnable)
+		ScrollWindow(hwnd,xa,ya,Rect,ClipRect);
+	  else
+		InvalidateRect(HVTWin,ClipRect,FALSE);
+	}
 }
 
 void BGOnEnterSizeMove(void)

@@ -1054,6 +1054,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->MouseEventTracking =
 		GetOnOff(Section, "MouseEventTracking", FName, TRUE);
 
+	// Maximized bug tweak
+	ts->MaximizedBugTweak =
+		GetOnOff(Section, "MaximizedBugTweak", FName, FALSE);
+
 #ifdef USE_NORMAL_BGCOLOR
 	// UseNormalBGColor
 	ts->UseNormalBGColor =
@@ -1795,6 +1799,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// Mouse event tracking
 	WriteOnOff(Section, "MouseEventTracking", FName,
 	           ts->MouseEventTracking);
+
+	// Maximized bug tweak
+	WriteOnOff(Section, "MaximizedBugTweak", FName,
+	           ts->MaximizedBugTweak);
 }
 
 #define VTEditor "VT editor keypad"
