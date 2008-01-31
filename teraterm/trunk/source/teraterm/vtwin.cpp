@@ -2102,6 +2102,7 @@ void CVTWindow::OnSysChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 	char Code;
 	unsigned int i;
 
+#ifdef WINDOW_MAXMIMUM_ENABLED
 	// ALT + xを押下すると WM_SYSCHAR が飛んでくる。
 	// ALT + Enterでウィンドウの最大化 (2005.4.24 yutaka)
 	if (AltKey() && nChar == 13) {
@@ -2111,6 +2112,7 @@ void CVTWindow::OnSysChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 			ShowWindow(SW_MAXIMIZE);
 		}
 	}
+#endif
 
 	if (ts.MetaKey>0)
 	{
@@ -4751,12 +4753,14 @@ void CVTWindow::OnSetupSave()
 	{
 		int w, h;
 
+#ifdef WINDOW_MAXMIMUM_ENABLED
 		if (IsZoomed()) {
 			w = ts.TerminalWidth;
 			h = ts.TerminalHeight;
 			ts.TerminalWidth = ts.TerminalOldWidth;
 			ts.TerminalHeight = ts.TerminalOldHeight;
 		}
+#endif
 
 		/* write current setup values to file */
 		(*WriteIniFile)(ts.SetupFName,&ts);
@@ -4764,10 +4768,12 @@ void CVTWindow::OnSetupSave()
 		(*CopyHostList)(TmpSetupFN,ts.SetupFName);
 		FreeTTSET();
 
+#ifdef WINDOW_MAXMIMUM_ENABLED
 		if (IsZoomed()) {
 			ts.TerminalWidth = w;
 			ts.TerminalHeight = h;
 		}
+#endif
 	}
 
 	ChangeDefaultSet(&ts,NULL);
