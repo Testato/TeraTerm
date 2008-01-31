@@ -413,48 +413,6 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		ts->TEKColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
 		                      (BYTE) ts->TmpColor[0][i * 3 + 1],
 		                      (BYTE) ts->TmpColor[0][i * 3 + 2]);
-#ifndef NO_ANSI_COLOR_EXTENSION
-	/* ANSI color definition (in the case FullColor=on)  -- special option
-	   o UseTextColor should be off, or the background and foreground color of
-	   VTColor are assigned to color-number 0 and 7 respectively, even if
-	   they are specified in ANSIColor.
-	   o ANSIColor is a set of 4 values that are color-number(0--15),
-	   red-value(0--255), green-value(0--255) and blue-value(0--255). */
-	GetPrivateProfileString(Section, "ANSIColor",
-	                        " 0,  0,  0,  0,"
-	                        " 1,255,  0,  0,"
-	                        " 2,  0,255,  0,"
-	                        " 3,255,255,  0,"
-	                        " 4,  0,  0,255,"
-	                        " 5,255,  0,255,"
-	                        " 6,  0,255,255,"
-	                        " 7,255,255,255,"
-	                        " 8,128,128,128,"
-	                        " 9,128,  0,  0,"
-	                        "10,  0,128,  0,"
-	                        "11,128,128,  0,"
-	                        "12,  0,  0,128,"
-	                        "13,128,  0,128,"
-	                        "14,  0,128,128,"
-	                        "15,192,192,192,", Temp, sizeof(Temp), FName);
-	{
-		char *t;
-		int n = 1;
-		for (t = Temp; *t; t++)
-			if (*t == ',')
-				n++;
-		n /= 4;
-		for (i = 0; i <= n; i++) {
-			int colorid, r, g, b;
-			GetNthNum(Temp, i * 4 + 1, (int far *) &colorid);
-			GetNthNum(Temp, i * 4 + 2, (int far *) &r);
-			GetNthNum(Temp, i * 4 + 3, (int far *) &g);
-			GetNthNum(Temp, i * 4 + 4, (int far *) &b);
-			ts->ANSIColor[colorid & 15] =
-				RGB((BYTE) r, (BYTE) g, (BYTE) b);
-		}
-	}
-#endif							/* NO_ANSI_COLOR_EXTENSION */
 
 #ifndef NO_ANSI_COLOR_EXTENSION
 	/* ANSI color definition (in the case FullColor=on)  -- special option
