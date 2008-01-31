@@ -24,7 +24,7 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.58">2008.1.30 (Ver 4.58 not released)</a>
+  <li class="history"><a name="teraterm_4.58">2008.2.1 (Ver 4.58 not released)</a>
     <ul>
       <li>Rotating the mouse wheel would supersede the cursor key when the application cursor mode is enabled.
         <ul>
@@ -54,8 +54,13 @@
       <li>added Font linking fixed patch. TeraTerm can use Consolas font. Special thanks to naoh.</li>
       <li>if getdate and gettime command have no date and time format, system variable "<a href="../macro/syntax/variables.html">result</a>" is not changed. (for compatibility with version 4.56 or earlier)</li>
       <li>Bug fix: Reverse video control sequence (DECSCNM) doesn't work correctly.</li>
-      <li>Bug fix: ウィンドウの最大化で文字欠けになる現象への暫定処置を追加した。</li>
-      <li>Bug fix: ウィンドウを最大化した状態で、teraterm.iniへ保存を行うと、最大化時のTerminalSizeが保存されていたバグを修正した。</li>
+      
+      <li>added the workaround for corrupting the character line on the Maximize window.
+        <ul>
+          <li>added MaximizedBugTweak entry in teraterm.ini file. The default value is on.</li>
+        </ul></li>
+        
+      <li>Bug fix: When TeraTerm is the Maximize window, TerminalSize entry in relation to the window would be recorded in teraterm.ini file.</li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.46">2.46</a></li>
       <li>upgraded TTProxy to <a href="#ttproxy_1.0.0.15">1.0.0.15</a></li>
     </ul>
@@ -64,8 +69,8 @@
   <li class="history"><a name="teraterm_4.57">2008.1.15 (Ver 4.57)</a>
     <ul>
       <li>added param4 to param9 <a href="../macro/commandline.html">macro commandline parameters</a>.</li>
-      <li>added ESC key binding on Additiona settings dialog.</li>
-      <li>added Enter key binding on Additiona settings dialog.</li>
+      <li>added ESC key binding on Additional settings dialog.</li>
+      <li>added Enter key binding on Additional settings dialog.</li>
       <li>added support for ZMODEM sending file with the timestamp and permission(0644) of the file.
         <ul>
           <li>added <a href="../setup/teraterm-trans.html#zmodemrecv">ZmodemRcvCommand</a> entry in teraterm.ini which is ZMODEM receive program. The default is "rz".
@@ -1007,7 +1012,7 @@ SYNOPSIS:
 <ul>
   <li class="history"><a name="ttssh_2.46">2008.1.26 (Ver 2.46 not released)</a>
     <ul>
-      <li>不正なProtocol Version Exchangeをスキップする処理を追加した（RFC4253対応）。</li>
+      <li>added silently ignoring the invalid Protocol Version Exchange before sending the version string. (RFC4253 compliance)</li>
     </ul>
   </li>
 
@@ -1639,7 +1644,7 @@ SYNOPSIS:
 <ul>
   <li class="history"><a name="ttproxy_1.0.0.15">2008.1.27 (Ver 1.0.0.15)</a>
     <ul>
-      <li><!--32767を超えるポート番号が扱えなかったバグを修正した。--></li>
+      <li>Bug fix: The port number over 32767 could not be available for proxy connection.</li>
     </ul>
   </li>
 
