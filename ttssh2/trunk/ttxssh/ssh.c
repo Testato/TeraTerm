@@ -54,6 +54,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <assert.h>
 
 #include <direct.h>
+#include <io.h>
 
 // SSH2 macro
 #ifdef _DEBUG
@@ -3442,6 +3443,13 @@ int SSH_scp_transaction(PTInstVar pvar, char *sendfile, char *dstfile, enum scp_
 			ExtractFileName(dstfile, c->scp.localfile, sizeof(c->scp.localfile));   // file name only
 		}
 
+		if (_access(c->scp.localfilefull, 0x00) == 0) {
+			char buf[80];
+			_snprintf_s(buf, sizeof(buf), _TRUNCATE, "`%s' file exists. (%d)", c->scp.localfilefull, GetLastError());
+			MessageBox(NULL, buf, "TTSSH: file error", MB_OK | MB_ICONERROR);
+			goto error;
+		}
+
 		fp = fopen(c->scp.localfilefull, "wb");
 		if (fp == NULL) {
 			char buf[80];
@@ -3487,10 +3495,11 @@ error:
 int SSH_start_scp(PTInstVar pvar, char *sendfile, char *dstfile)
 {
 	return SSH_scp_transaction(pvar, sendfile, dstfile, TOLOCAL);
+}
 
-#if 0
-	//return SSH_scp_transaction(pvar, "bigfile30.dat", FROMREMOTE);
-#endif
+int SSH_start_scp_receive(PTInstVar pvar, char *filename)
+{
+	return SSH_scp_transaction(pvar, filename, NULL, FROMREMOTE);
 }
 
 

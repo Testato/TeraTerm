@@ -2932,6 +2932,16 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 		case IDCANCEL:			
 			EndDialog(dlg, 0); // dialog close
 			return TRUE;
+
+		case IDC_RECV:  // ファイル受信
+			hWnd = GetDlgItem(dlg, IDC_RECVFILE);
+			SendMessage(hWnd, WM_GETTEXT , sizeof(szFileName), (LPARAM)szFileName);
+			if (szFileName[0] != '\0') {
+				SSH_start_scp_receive(pvar, szFileName);
+				EndDialog(dlg, 1); // dialog close
+				return TRUE;
+			}
+			return FALSE;
 		}
 	}
 
