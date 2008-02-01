@@ -1056,7 +1056,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 
 	// Maximized bug tweak
 	ts->MaximizedBugTweak =
-		GetOnOff(Section, "MaximizedBugTweak", FName, FALSE);
+		GetOnOff(Section, "MaximizedBugTweak", FName, TRUE);
 
 #ifdef USE_NORMAL_BGCOLOR
 	// UseNormalBGColor
