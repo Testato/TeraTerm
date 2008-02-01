@@ -18,7 +18,20 @@ UTF-8化を行うには、TeraTerm Proの「Setup」メニューから「General」を選び、Languag
 </p>
 
 <p>
-日本語以外の言語を表示できるようにするためには、teraterm.iniファイルにロケールおよびコードページの設定が必要となります。下記にサンプルを示します。
+現状のTeraTermは内部設計がUnicode対応になっておらず、以下に示すように文字コードは二段変換になっています。
+
+<pre>
+UTF-8 <-----> Unicode(UTF-16LE) <-----> MBCS
+        (1)                       (2)
+</pre>
+
+(1)において、UTF-8は3バイトまでしか変換していないため、サロゲートペア(surrogate pair)や結合文字(combining character)、合成済み文字(decomposed form)などには対応していません。<br>
+(2)において、UnicodeとMBCS(Multiple Byte Character Set)の相互変換を行うために、コードページの指定が必要です。コードページはMicrosoftが拡張した文字セットを表す数値のことで、国ごとにより付いている番号のことです。<br>
+ゆえに、ローカライズされたWindows上では、ローカライズされた言語しか扱うことができません。たとえば、日本語版Windowsでは日本語以外の言語は文字化けします。同様に、英語版Windowsでは日本語は扱えません。
+</p>
+
+<p>
+Unicodeによるローカライズ言語を扱えるようにするためには、teraterm.iniファイルにロケールおよびコードページの設定が必要となります。下記にサンプルを示します。
 </p>
 
 <pre>

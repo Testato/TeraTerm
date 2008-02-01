@@ -17,7 +17,19 @@ When "UTF8" is specified with '/KT' or '/KR' option in the command line, UTF-8 e
 </p>
 
 <p>
-To enable character sets other than Japanese, you have to set properly the locale and codepage parameters in the 'teraterm.ini' file. See example of these values below.
+Actually, TeraTerm does not support completely Unicode language because the internal design is based on MBCS(Multiple Byte Character Set). So, the Unicode characters are two-step conversion as follows.
+
+<pre>
+UTF-8 <-----> Unicode(UTF-16LE) <-----> MBCS
+        (1)                       (2)
+</pre>
+
+(1): TeraTerm can not support the surrogate pair, the combining character and the decomposed form because the application does not convert UTF-8 byte sequence over three bytes. <br>
+(2): A user must specify the codepage to convert the characters between Unicode and MBCS. The codepage is the enhanced character set by Microsoft, the number differs from one country to another.<br>
+Also, a user can only use the localazied language on the localized Windows. As an example, a language other than Japanese will be indecipherable characters on Japanese-language version of Windows. Likewise, Japanese language can not been shown on English-language version of Windows.</p>
+
+<p>
+To enable Unicode character sets with the localized language, you have to set properly the locale and codepage parameters in the 'teraterm.ini' file. See example of these values below.
 </p>
 
 <pre>
