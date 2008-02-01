@@ -5220,11 +5220,17 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 							if (ListBox_GetSel(BroadcastWindowList, i))
 								n++;
 						}
-
-						if (n >= max - 1) // all select
-							flag = FALSE;
-						else
+						
+						if (max == 2) {  // エントリが2個の場合は常に全選択とする。
 							flag = TRUE;
+
+						} else {
+							if (n >= max - 1) // all select
+								flag = FALSE;
+							else
+								flag = TRUE;
+
+						}
 
 						for (i = 0 ; i < max ; i++) {
 							ListBox_SetSel(BroadcastWindowList, flag, i);
