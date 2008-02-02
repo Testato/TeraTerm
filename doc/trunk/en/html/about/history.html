@@ -44,12 +44,15 @@
           <li>added a TeraTerm window list. Also, a user can select all item or cancel all item by double-click(toggle). </li>
           <li>Broadcast Command dialog is moved to the upper of TeraTerm window.</li>
         </ul></li>
-
       <li>displayed the cursor bitmap when TeraTerm window loses the keyboard focus.
         <ul>
           <li>added KillFocusCursor entry in teraterm.ini file. The default value is on.</li>
         </ul></li>
-      <li>changed the default value of TermType from 'vt100' to 'xterm'</li>
+      <li>added the configuration entry to whether "Log" dialog is shown on start logging.
+        <ul>
+          <li>added LogHideDialog entry in teraterm.ini file. The default value is off.</li>
+        </ul></li>
+        <li>changed the default value of TermType from 'vt100' to 'xterm'</li>
       <li>added the "SCP" button on the confirmation dialog when a user drags a file to TeraTerm window.</li>
       <li>added Font linking fixed patch. TeraTerm can use Consolas font. Special thanks to naoh.</li>
       <li>if getdate and gettime command have no date and time format, system variable "<a href="../macro/syntax/variables.html">result</a>" is not changed. (for compatibility with version 4.56 or earlier)</li>
