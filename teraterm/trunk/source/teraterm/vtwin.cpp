@@ -20,7 +20,7 @@
 #include "ttime.h"
 #include "commlib.h"
 #include "clipboar.h"
-#include "ttftypes.h"		
+#include "ttftypes.h"
 #include "filesys.h"
 #include "telnet.h"
 #include "tektypes.h"
@@ -162,6 +162,7 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_COMMAND(ID_FILE_LOG, OnFileLog)
 	ON_COMMAND(ID_FILE_COMMENTTOLOG, OnCommentToLog)
 	ON_COMMAND(ID_FILE_VIEWLOG, OnViewLog)
+	ON_COMMAND(ID_FILE_SHOWLOGDIALOG, OnShowLogDialog)
 	ON_COMMAND(ID_FILE_REPLAYLOG, OnReplayLog)
 	ON_COMMAND(ID_FILE_SENDFILE, OnFileSend)
 	ON_COMMAND(ID_FILE_KERMITRCV, OnFileKermitRcv)
@@ -940,6 +941,9 @@ void CVTWindow::InitMenu(HMENU *Menu)
 	GetMenuString(FileMenu, ID_FILE_VIEWLOG, uimsg, sizeof(uimsg), MF_BYCOMMAND);
 	get_lang_msg("MENU_FILE_VIEWLOG", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	ModifyMenu(FileMenu, ID_FILE_VIEWLOG, MF_BYCOMMAND, ID_FILE_VIEWLOG, ts.UIMsg);
+	GetMenuString(FileMenu, ID_FILE_SHOWLOGDIALOG, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+	get_lang_msg("MENU_FILE_SHOWLOGDIALOG", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	ModifyMenu(FileMenu, ID_FILE_SHOWLOGDIALOG, MF_BYCOMMAND, ID_FILE_SHOWLOGDIALOG, ts.UIMsg);
 	GetMenuString(FileMenu, ID_FILE_SENDFILE, uimsg, sizeof(uimsg), MF_BYCOMMAND);
 	get_lang_msg("MENU_FILE_SENDFILE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	ModifyMenu(FileMenu, ID_FILE_SENDFILE, MF_BYCOMMAND, ID_FILE_SENDFILE, ts.UIMsg);
@@ -1161,10 +1165,17 @@ void CVTWindow::InitMenuPopup(HMENU SubMenu)
 			EnableMenuItem(FileMenu,ID_FILE_LOG,MF_BYCOMMAND | MF_GRAYED);
 			EnableMenuItem(FileMenu,ID_FILE_COMMENTTOLOG, MF_BYCOMMAND | MF_ENABLED);
 			EnableMenuItem(FileMenu,ID_FILE_VIEWLOG, MF_BYCOMMAND | MF_ENABLED);
+			if (ts.LogHideDialog) {
+				EnableMenuItem(FileMenu,ID_FILE_SHOWLOGDIALOG, MF_BYCOMMAND | MF_ENABLED);
+			}
+			else {
+				EnableMenuItem(FileMenu,ID_FILE_SHOWLOGDIALOG, MF_BYCOMMAND | MF_GRAYED);
+			}
 		} else {
 			EnableMenuItem(FileMenu,ID_FILE_LOG,MF_BYCOMMAND | MF_ENABLED);
 			EnableMenuItem(FileMenu,ID_FILE_COMMENTTOLOG, MF_BYCOMMAND | MF_GRAYED);
 			EnableMenuItem(FileMenu,ID_FILE_VIEWLOG, MF_BYCOMMAND | MF_GRAYED);
+			EnableMenuItem(FileMenu,ID_FILE_SHOWLOGDIALOG, MF_BYCOMMAND | MF_GRAYED);
 		}
 
 	}
@@ -3126,6 +3137,13 @@ void CVTWindow::OnViewLog()
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
 	}
+}
+
+
+// 隠しているログダイアログを表示する (2008.2.3 maya)
+void CVTWindow::OnShowLogDialog()
+{
+	ShowFTDlg(OpLog);
 }
 
 

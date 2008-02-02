@@ -217,6 +217,20 @@ BOOL OpenFTDlg(PFileVar fv)
 	return (FTDlg!=NULL);
 }
 
+void ShowFTDlg(WORD OpId)
+{
+	if (OpId == OpLog) {
+		if (FLogDlg != NULL) {
+			FLogDlg->ShowWindow(SW_SHOWNORMAL);
+		}
+	}
+	else {
+		if (SendDlg != NULL) {
+			SendDlg->ShowWindow(SW_SHOWNORMAL);
+		}
+	}
+}
+
 BOOL NewFileVar(PFileVar *fv)
 {
 	if ((*fv)==NULL)

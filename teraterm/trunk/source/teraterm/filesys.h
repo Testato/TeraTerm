@@ -39,6 +39,7 @@ extern PProtoCancel ProtoCancel;
 
 BOOL LoadTTFILE();
 BOOL FreeTTFILE();
+void ShowFTDlg(WORD OpId);
 BOOL NewFileVar(PFileVar *FV);
 void FreeFileVar(PFileVar *FV);
 

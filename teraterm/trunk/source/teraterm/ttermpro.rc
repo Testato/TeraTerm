@@ -366,7 +366,8 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Log...",                     ID_FILE_LOG
         MENUITEM "C&omment to Log...",          ID_FILE_COMMENTTOLOG
-        MENUITEM "View Log",                    ID_FILE_VIEWLOG
+        MENUITEM "&View Log",                   ID_FILE_VIEWLOG
+        MENUITEM "Sho&w Log dialog...",         ID_FILE_SHOWLOGDIALOG
         MENUITEM "&Send file...",               ID_FILE_SENDFILE
         POPUP "&Transfer"
         BEGIN
