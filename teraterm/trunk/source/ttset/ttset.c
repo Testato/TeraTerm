@@ -609,6 +609,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	/* Log with timestamp (2006.7.23 maya) */
 	ts->LogTimestamp = GetOnOff(Section, "LogTimestamp", FName, FALSE);
 
+	/* Log without transfer dialog */
+	ts->LogHideDialog = GetOnOff(Section, "LogHideDialog", FName, FALSE);
+
 	/* Default Log file name (2006.8.28 maya) */
 	GetPrivateProfileString(Section, "LogDefaultName", "teraterm.log",
 	                        ts->LogDefaultName, sizeof(ts->LogDefaultName),
@@ -1482,6 +1485,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 	/* Log with timestamp (2006.7.23 maya) */
 	WriteOnOff(Section, "LogTimestamp", FName, ts->LogTimestamp);
+
+	/* Log without transfer dialog */
+	WriteOnOff(Section, "LogHideDialog", FName, ts->LogHideDialog);
 
 	/* Default Log file name (2006.8.28 maya) */
 	WritePrivateProfileString(Section, "LogDefaultName",
