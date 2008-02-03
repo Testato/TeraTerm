@@ -15,6 +15,7 @@ void CBStartPaste(HWND HWin, BOOL AddCR,
 		  int BuffSize, PCHAR DataPtr, int DataSize);
 void CBSend();
 void CBEndPaste();
+int CBStartPasteConfirmChange(HWND HWin);
 
 #ifdef __cplusplus
 }

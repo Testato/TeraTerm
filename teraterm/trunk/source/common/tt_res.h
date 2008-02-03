@@ -19,6 +19,7 @@
 #define IDD_TABSHEET_CYGWIN             118
 #define IDR_MENU1                       119
 #define IDR_PASTEMENU                   119
+#define IDD_CLIPBOARD_DIALOG            120
 #define IDR_TEKMENU                     1000
 #define IDC_EDIT_COMMENT                1000
 #define IDC_EDIT_FULLPATH               1001
@@ -108,6 +109,8 @@
 #define IDC_REALTIME_CHECK              2508
 #define IDC_LIST1                       2509
 #define IDC_LIST                        2509
+#define IDC_EDIT1                       2510
+#define IDC_EDIT                        2510
 #define ID_ACC_SENDBREAK                50001
 #define ID_ACC_COPY                     50002
 #define ID_ACC_NEWCONNECTION            50003
@@ -195,9 +198,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        120
+#define _APS_NEXT_RESOURCE_VALUE        121
 #define _APS_NEXT_COMMAND_VALUE         52022
-#define _APS_NEXT_CONTROL_VALUE         2510
+#define _APS_NEXT_CONTROL_VALUE         2511
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

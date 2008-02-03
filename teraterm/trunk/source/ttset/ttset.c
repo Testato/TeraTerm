@@ -972,6 +972,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->ConfirmPasteMouseRButton =
 		GetOnOff(Section, "ConfirmPasteMouseRButton", FName, FALSE);
 
+	// added ConfirmChangePaste (2008.2.3 yutaka)
+	ts->ConfirmChangePaste =
+		GetOnOff(Section, "ConfirmChangePaste", FName, TRUE);
+
 	// added SelectOnlyByLButton (2007.11.20 maya)
 	ts->SelectOnlyByLButton =
 		GetOnOff(Section, "SelectOnlyByLButton", FName, TRUE);
@@ -1217,6 +1221,11 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// added ConfirmPasteMouseRButton (2007.3.17 maya)
 	WriteOnOff(Section, "ConfirmPasteMouseRButton", FName,
 	           ts->ConfirmPasteMouseRButton);
+
+	// added ConfirmChangePaste
+	WriteOnOff(Section, "ConfirmChangePaste", FName,
+		ts->ConfirmChangePaste);
+
 	// added SelectOnlyByLButton (2007.11.20 maya)
 	WriteOnOff(Section, "SelectOnlyByLButton", FName,
 	           ts->SelectOnlyByLButton);

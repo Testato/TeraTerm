@@ -758,8 +758,10 @@ void CVTWindow::ButtonUp(BOOL Paste)
 	}
 
 	// added ConfirmPasteMouseRButton (2007.3.17 maya)
-	if (Paste && !ts.ConfirmPasteMouseRButton)
-		CBStartPaste(HVTWin,FALSE,0,NULL,0);
+	if (Paste && !ts.ConfirmPasteMouseRButton) {
+		if (CBStartPasteConfirmChange(HVTWin))
+			CBStartPaste(HVTWin,FALSE,0,NULL,0);
+	}
 }
 
 void CVTWindow::ButtonDown(POINT p, int LMR)

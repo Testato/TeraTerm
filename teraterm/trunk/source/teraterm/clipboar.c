@@ -6,11 +6,14 @@
 #include "teraterm.h"
 #include "tttypes.h"
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "ttwinman.h"
 #include "ttcommon.h"
 
 #include "clipboar.h"
+#include "tt_res.h"
 
 // for clipboard copy
 static HGLOBAL CBCopyHandle = NULL;
@@ -230,4 +233,136 @@ void CBEndPaste()
   CBMemPtr = NULL;
   CBMemPtr2 = 0;
   CBAddCR = FALSE;
+}
+
+
+static char *ClipboardPtr = NULL;
+static int PasteCanceled = 0;
+
+static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
+{
+	POINT pt;
+	//char *p;
+
+	switch (msg) {
+		case WM_INITDIALOG:
+#if 0
+			for (p = ClipboardPtr; *p ; p++) {
+				char buf[20];
+				_snprintf_s(buf, sizeof(buf), _TRUNCATE, "%02x ", *p);
+				OutputDebugString(buf);
+			}
+#endif
+
+			SendMessage(GetDlgItem(hDlgWnd, IDC_EDIT), WM_SETTEXT, 0, (LPARAM)ClipboardPtr);
+			
+			GetCursorPos(&pt);
+			SetWindowPos(hDlgWnd, NULL, pt.x, pt.y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+			return TRUE;
+
+		case WM_COMMAND:
+			switch (LOWORD(wp)) {
+				case IDOK:
+				{
+					int len = SendMessage(GetDlgItem(hDlgWnd, IDC_EDIT), WM_GETTEXTLENGTH, 0, 0);
+					HGLOBAL hMem;
+					char *buf;
+
+					hMem = GlobalAlloc(GMEM_MOVEABLE, len + 1);
+					buf = GlobalLock(hMem);
+					SendMessage(GetDlgItem(hDlgWnd, IDC_EDIT), WM_GETTEXT, len, (LPARAM)buf);
+					GlobalUnlock(hMem);
+
+					EmptyClipboard();
+					SetClipboardData(CF_TEXT, hMem);
+
+					// hMemはクリップボードが保持しているので、破棄してはいけない。
+
+					EndDialog(hDlgWnd, IDOK);
+				}
+					break;
+
+				case IDCANCEL:
+					PasteCanceled = 1;
+					EndDialog(hDlgWnd, IDCANCEL);
+					break;
+
+				default:
+					return FALSE;
+			}
+		case WM_CLOSE:
+			EndDialog(hDlgWnd, 0);
+			return TRUE;
+
+		default:
+			return FALSE;
+	}
+	return TRUE;
+}
+
+//
+// クリップボードに改行コードが含まれていたら、確認ダイアログを表示する。
+// クリップボードの変更も可能。
+//
+// return 0: Cancel
+//        1: Paste OK
+//
+// (2008.2.3 yutaka)
+//
+int CBStartPasteConfirmChange(HWND HWin)
+{
+	UINT Cf;
+	HANDLE hText;
+	char *pText;
+	int pos;
+	int ret = 0;
+
+	if (ts.ConfirmChangePaste == 0)
+		return 1;
+
+	if (! cv.Ready) 
+		goto error;
+	if (TalkStatus!=IdTalkKeyb)
+		goto error;
+
+	if (IsClipboardFormatAvailable(CF_TEXT))
+		Cf = CF_TEXT;
+	else if (IsClipboardFormatAvailable(CF_OEMTEXT))
+		Cf = CF_OEMTEXT;
+	else 
+		goto error;
+
+	if (!OpenClipboard(HWin)) 
+		goto error;
+
+	hText = GetClipboardData(Cf);
+
+	if (hText != NULL) {
+		pText = (char *)GlobalLock(hText);
+		pos = strcspn(pText, "\r\n");  // 改行が含まれていたら
+		if (pText[pos] != '\0') {
+			ClipboardPtr = pText;
+			PasteCanceled = 0;
+			ret = DialogBox(hInst, MAKEINTRESOURCE(IDD_CLIPBOARD_DIALOG),
+							HVTWin, (DLGPROC)OnClipboardDlgProc);
+			if (ret == 0 || ret == -1) {
+				ret = GetLastError();
+			} 
+
+			if (PasteCanceled) {
+				ret = 0;
+				goto error;
+			}
+
+		} 
+
+		ret = 1;
+
+		GlobalUnlock(hText);
+	}
+
+	CloseClipboard();
+
+error:
+	return (ret);
 }
