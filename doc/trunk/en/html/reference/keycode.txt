@@ -376,6 +376,7 @@ Menu command                        ID
 [File] Log                          50120
 [File] Comment to Log               50121
 [File] View Log                     50122
+[File] Show Log dialog              50123
 [File] Send file                    50130
 [File] Transfer/Kermit/Receive      50141
 [File] Transfer/Kermit/Get          50142
