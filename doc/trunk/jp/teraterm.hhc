@@ -337,8 +337,15 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="[Control] メニュー">
 			<param name="Local" value="html\menu\control.html">
-			<param name="ImageNumber" value="11">
+			<param name="ImageNumber" value="1">
 			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Broadcast command">
+				<param name="Local" value="html\menu\control-broadcast.html">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+		</UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="[Window] メニュー">
 			<param name="Local" value="html\menu\window.html">
