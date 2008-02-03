@@ -970,7 +970,7 @@ void CVTWindow::InitMenu(HMENU *Menu)
 
 	GetMenuString(FileMenu, 9, uimsg, sizeof(uimsg), MF_BYPOSITION);
 	get_lang_msg("MENU_TRANS", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	ModifyMenu(FileMenu, 9, MF_BYPOSITION, 8, ts.UIMsg);
+	ModifyMenu(FileMenu, 9, MF_BYPOSITION, 9, ts.UIMsg);
 
 	GetMenuString(FileMenu, ID_FILE_KERMITRCV, uimsg, sizeof(uimsg), MF_BYCOMMAND);
 	get_lang_msg("MENU_TRANS_KERMIT_RCV", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
