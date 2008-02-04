@@ -1555,7 +1555,7 @@ static BOOL parse_protocol_ID(PTInstVar pvar, char FAR * ID)
 
 	// SSH バージョンを teraterm 側にセットする
 	// SCP コマンドのため (2008.2.3 maya)
-	pvar->ts->isSSH = pvar->protocol_major;
+	pvar->cv->isSSH = pvar->protocol_major;
 
 	for (str = str + 1; *str >= '0' && *str <= '9'; str++) {
 	}
