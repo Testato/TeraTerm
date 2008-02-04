@@ -452,11 +452,11 @@ BGThemeFile = theme\*.ini
 </table>
 
 
-<!--h1><a name="maximize">ウィンドウ最大化時の画面スクロール方法</a></h1>
+<h1><a name="maximize">How to scroll the screen when the window size is maximized</a></h1>
 <p>
-ウィンドウ最大化時の画面スクロール方法を指定します。<br>
-ウィンドウ最大化時に通常のウィンドウ表示時と同じ方法でスクロールを行うと、環境によっては表示が乱れる事があるため、初期値ではウィンドウ最大化時には別の方法でスクロールを行います。ただし、通常のウィンドウ表示に比べて表示がちらついたり、スクロールが遅くなる場合があります。<br>
-設定ファイルの [Tera Term] セクションの MaximizedBugTweak 行を以下のように変更すると、ウィンドウ最大化時にも通常のウィンドウ表示時と同じ方法でスクロールを行うようになるので、画面のちらつきやスクロール速度が改善されます。ただし、前述したように表示が一部乱れる事があります。
+You can specify how to scroll the screen when the window size is maximized.<br>
+If the screen is scrolled with the maximized window size, the screen image may be disrupted in some case. Therefore, the screen of maximized window size will be scrolled by using a different method  than a usual way by default. However, there may be a minor side effect such as flickering or being slowed down.<br>
+If a line of MaximizedBugTweak in [Tera Term] section of a setup file is modified as follows, a usual method will be used even the window size is maximized to avoid such side effects. However, as described above, the screen image may be disrupted.
 </p>
 
 <pre>
@@ -464,15 +464,15 @@ MaximizedBugTweak=off
 </pre>
 
 <pre>
-省略時:
+Default:
 MaximizedBugTweak=on
 </pre>
 
 
-<h1><a name="killfocus">フォーカスが外れた時にもカーソルを表示する</a></h1>
+<h1><a name="killfocus">Display the cursor even if the window comes out of focus</a></h1>
 <p>
-TeraTerm は、ウィンドウのフォーカスが外れた時にもカーソルを表示します。<br>
-この機能を無効にするには、設定ファイルの [Tera Term] セクションの KillFocusCursor 行を以下のように変更してください。
+TeraTerm will display the cursor even if the window comes out of focus.<br>
+If you want to disable this option, modify a line of KillFocusCursor in [Tera Term] section of setup file as follows.
 </p>
 
 <pre>
@@ -480,9 +480,9 @@ KillFocusCursor=off
 </pre>
 
 <pre>
-省略時:
+Default:
 KillFocusCursor=on
-</pre-->
+</pre>
 
 
 </BODY>
