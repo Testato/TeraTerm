@@ -424,7 +424,7 @@ void CTEKWindow::OnLButtonUp(UINT nFlags, CPoint point)
 
 void CTEKWindow::OnMButtonUp(UINT nFlags, CPoint point)
 {
-  OnRButtonUp(nFlags,point);
+  //OnRButtonUp(nFlags,point);
 }
 
 int CTEKWindow::OnMouseActivate(CWnd* pDesktopWnd, UINT nHitTest, UINT message)

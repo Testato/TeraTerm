@@ -1903,7 +1903,7 @@ void CVTWindow::OnMButtonUp(UINT nFlags, CPoint point)
 
 	if (! MButton)
 		return;
-	ButtonUp(TRUE);
+	ButtonUp(FALSE);
 }
 
 int CVTWindow::OnMouseActivate(CWnd* pDesktopWnd, UINT nHitTest, UINT message)
