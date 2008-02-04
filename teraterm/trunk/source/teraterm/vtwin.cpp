@@ -3329,7 +3329,9 @@ void CVTWindow::OnEditCopyTable()
 
 void CVTWindow::OnEditPaste()
 {
-	CBStartPaste(HVTWin,FALSE,0,NULL,0);
+	// add confirm (2008.2.4 yutaka)
+	if (CBStartPasteConfirmChange(HVTWin))
+		CBStartPaste(HVTWin,FALSE,0,NULL,0);
 }
 
 void CVTWindow::OnEditPasteCR()
