@@ -371,7 +371,6 @@ struct tttset {
 	WORD HostDialogOnStartup;
 	WORD MouseEventTracking;
 	WORD KillFocusCursor;
-	WORD isSSH;
 	WORD LogHideDialog;
 	int TerminalOldWidth;
 	int TerminalOldHeight;
@@ -757,6 +756,7 @@ typedef struct {
 	int *ConnetingTimeout;
 
 	time_t LastSendTime;
+	WORD isSSH;
 } TComVar;
 typedef TComVar far *PComVar;
 
@@ -805,7 +805,6 @@ typedef TMap far *PMap;
  *   added tttset.HostDialogOnStartup.
  *   added tttset.MouseEventTracking.
  *   added tttset.KillFocusCursor.
- *   added tttset.isSSH.
  *   added tttset.LogHideDialog.
  *   added tttset.TerminalOldWidth
  *   added tttset.TerminalOldHeight

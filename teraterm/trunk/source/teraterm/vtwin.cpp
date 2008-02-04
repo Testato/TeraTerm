@@ -574,7 +574,7 @@ CVTWindow::CVTWindow()
 	SetKeyMap();
 
 	// コマンドラインでも設定ファイルでも変更しないのでここで初期化 (2008.1.25 maya)
-	ts.isSSH = 0;
+	cv.isSSH = 0;
 
 	/* window status */
 	AdjustSize = TRUE;
@@ -1680,7 +1680,7 @@ void CVTWindow::OnDropFiles(HDROP hDropInfo)
 					             "Are you sure that you want to send the file content?", ts.UILanguageFile);
 
 					hook = SetWindowsHookEx( WH_CBT, MsgBoxHootProc, NULL, dwThreadID );
-					if (ts.isSSH == 2) {
+					if (cv.isSSH == 2) {
 						ret = MessageBox(ts.UIMsg, uimsg, MB_YESNOCANCEL | MB_ICONINFORMATION | MB_DEFBUTTON3);
 					}
 					else {
