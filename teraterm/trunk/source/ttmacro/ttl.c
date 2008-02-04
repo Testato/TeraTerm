@@ -1559,6 +1559,122 @@ WORD TTLGetTitle()
 	return Err;
 }
 
+// 実行ファイルからバージョン情報を得る (2005.2.28 yutaka)
+static void get_file_version(char *exefile, int *major, int *minor, int *release, int *build)
+{
+	typedef struct {
+		WORD wLanguage;
+		WORD wCodePage;
+	} LANGANDCODEPAGE, *LPLANGANDCODEPAGE;
+	LPLANGANDCODEPAGE lplgcode;
+	UINT unLen;
+	DWORD size;
+	char *buf = NULL;
+	BOOL ret;
+	int i;
+	char fmt[80];
+	char *pbuf;
+
+	size = GetFileVersionInfoSize(exefile, NULL);
+	if (size == 0) {
+		goto error;
+	}
+	buf = malloc(size);
+	ZeroMemory(buf, size);
+
+	if (GetFileVersionInfo(exefile, 0, size, buf) == FALSE) {
+		goto error;
+	}
+
+	ret = VerQueryValue(buf,
+			"\\VarFileInfo\\Translation", 
+			(LPVOID *)&lplgcode, &unLen);
+	if (ret == FALSE)
+		goto error;
+
+	for (i = 0 ; i < (int)(unLen / sizeof(LANGANDCODEPAGE)) ; i++) {
+		_snprintf_s(fmt, sizeof(fmt), _TRUNCATE, "\\StringFileInfo\\%04x%04x\\FileVersion", 
+			lplgcode[i].wLanguage, lplgcode[i].wCodePage);
+		VerQueryValue(buf, fmt, &pbuf, &unLen);
+		if (unLen > 0) { // get success
+			int n, a, b, c, d;
+
+			n = sscanf(pbuf, "%d, %d, %d, %d", &a, &b, &c, &d);
+			if (n == 4) { // convert success
+				*major = a;
+				*minor = b;
+				*release = c;
+				*build = d;
+				break;
+			}
+		}
+	}
+
+	free(buf);
+	return;
+
+error:
+	free(buf);
+	*major = *minor = *release = *build = 0;
+}
+
+//
+// TeraTermのversionを取得する
+//
+// (2008.2.4 yutaka)
+//
+WORD TTLGetVer()
+{
+	WORD VarId, Err;
+	TStrVal Str1, Str2;
+	int a, b, c, d;
+	int compare = 0;
+	int major, minor, ret;
+	int curver, ver;
+
+	Err = 0;
+	GetStrVar(&VarId,&Err);
+
+	if (CheckParameterGiven()) {
+		GetStrVal(Str1, &Err);
+
+		ret = sscanf_s(Str1, "%d.%d", &major, &minor);
+		if (ret != 2)
+			Err = ErrSyntax;
+		compare = 1;
+
+	} else {
+		compare = 0;
+
+	}
+
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	get_file_version("ttermpro.exe", &a, &b, &c, &d);
+	_snprintf_s(Str2, sizeof(Str2), _TRUNCATE, "%d.%d", a, b);
+	SetStrVal(VarId,Str2);
+
+	if (compare == 0) {  // 比較なし
+		SetResult(0);
+
+	} else {
+		curver = a * 100 + b;
+		ver = major * 100 + minor;
+
+		if (curver < ver) {
+			SetResult(1);
+		} else if (curver == ver) {
+			SetResult(2);
+		} else {
+			SetResult(3);
+		}
+	}
+
+	return Err;
+}
+
 WORD TTLGoto()
 {
 	TName LabName;
@@ -3267,6 +3383,8 @@ int ExecCmnd()
 			Err = TTLGetPassword(); break;
 		case RsvGetTitle:
 			Err = TTLGetTitle(); break;
+		case RsvGetVer:
+			Err = TTLGetVer(); break;
 		case RsvGoto:
 			Err = TTLGoto(); break;
 		case RsvIfDefined:

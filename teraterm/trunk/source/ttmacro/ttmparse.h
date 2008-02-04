@@ -170,6 +170,7 @@
 #define RsvCygConnect   130   // add 'cygconnect' (2007.12.17 doda)
 #define RsvScpRecv      131   // add 'scprecv' (2008.1.1 yutaka)
 #define RsvScpSend      132   // add 'scpsend' (2008.1.1 yutaka)
+#define RsvGetVer       133   // add 'getver'  (2008.2.4 yutaka)
 
 #define RsvOperator     150
 #define RsvBNot         151

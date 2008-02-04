@@ -79,7 +79,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="onig_s.lib"
+				AdditionalDependencies="onig_s.lib Version.lib"
 				OutputFile=".\..\bin\Release/ttpmacro.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -175,7 +175,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="onig_s.lib"
+				AdditionalDependencies="onig_s.lib Version.lib"
 				OutputFile=".\..\bin\Debug/ttpmacro.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
