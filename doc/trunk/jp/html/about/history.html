@@ -52,22 +52,20 @@
         <ul>
           <li>teraterm.ini に LogHideDialog を追加した。デフォルトはoff。</li>
         </ul></li>
-      <li>TermType のデフォルト値を "vt100" から "xterm" に変更した。</li>
       <li>ウィンドウへのドラッグ＆ドロップによるファイル送信において、SCP(Secure Copy Protocol)を選択できるようにした。</li>
       <li>Font linking 誤動作のパッチを追加した。Consolasフォントが使用可能となる。naoh氏に感謝します。</li>
       <li>getdate, gettimeコマンドで、書式を指定しなかった場合は<a href="../macro/syntax/variables.html">result</a>に値をセットしないようにした。(バージョン4.56以前との互換性のため)</li>
-      
       <li>マウスの右クリックおよびAlt+Vでクリップボードの内容を貼り付けるときに、改行コードが含まれていたら、確認ダイアログを出現させるようにした。誤操作により、端末へ予期せぬコマンド投入を防ぐことができる。
         <ul>
           <li>teraterm.ini に ConfirmChangePaste を追加した。デフォルトはon。</li>
         </ul></li>
-      
-      <li>リバースビデオ制御シーケンス(DECSCNM)が正しく働かないのを修正した。</li>
       <li>ウィンドウの最大化で文字欠けになる現象への暫定処置を追加した。
         <ul>
           <li>teraterm.ini に <a href="../setup/teraterm-win.html#maximize">MaximizedBugTweak</a> を追加した。デフォルトはon。</li>
         </ul></li>
-        
+      <li>TermType のデフォルト値を "vt100" から "xterm" に変更した。</li>
+      <li>マウスの中ボタンのクリックによる貼り付けを無効にした。</li>
+      <li>リバースビデオ制御シーケンス(DECSCNM)が正しく働かないのを修正した。</li>
       <li>ウィンドウを最大化した状態で、teraterm.iniへ保存を行うと、最大化時のTerminalSizeが保存されていたバグを修正した。</li>
       <li><a href="#ttssh_2.46">SSH2対応TTSSH(2.46)</a>へ差し替えた</li>
       <li><a href="#ttproxy_1.0.0.15">TTProxy(1.0.0.15)</a>へ差し替えた</li>
