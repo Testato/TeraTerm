@@ -347,14 +347,16 @@ int CBStartPasteConfirmChange(HWND HWin)
 							HVTWin, (DLGPROC)OnClipboardDlgProc);
 			if (ret == 0 || ret == -1) {
 				ret = GetLastError();
-			} 
+			}
 
 			if (PasteCanceled) {
 				ret = 0;
+				GlobalUnlock(hText);
+				CloseClipboard();
 				goto error;
 			}
 
-		} 
+		}
 
 		ret = 1;
 
