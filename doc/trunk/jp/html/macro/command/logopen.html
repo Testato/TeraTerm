@@ -18,7 +18,7 @@ Tera Term のログを開始する。
 </p>
 
 <pre class="macro-syntax">
-logopen &lt;filename&gt; &lt;binary flag&gt; &lt;append flag&gt;
+logopen &lt;filename&gt; &lt;binary flag&gt; &lt;append flag&gt; [&lt;plain text flag&gt; [&lt;timestamp flag&gt; [&lt;hide dialog flag&gt;]]]
 </pre>
 
 <h2>解説</h2>
@@ -33,11 +33,20 @@ logopen &lt;filename&gt; &lt;binary flag&gt; &lt;append flag&gt;
 </p>
 
 <p>
-&lt;append flag&gt; の値が0以外で、ファイル &lt;filename&gt; がすでに存在する場合、そのファイルに追加して書き込む。
+&lt;append flag&gt; の値が0以外で、ファイル &lt;filename&gt; がすでに存在する場合、そのファイルに追加して書き込む。<br>
+&lt;append flag&gt; の値が0で、ファイル &lt;filename&gt; がすでに存在する場合、そのファイルは上書きされる。
 </p>
 
 <p>
-&lt;append flag&gt; の値が0で、ファイル &lt;filename&gt; がすでに存在する場合、そのファイルは上書きされる。
+&lt;plain text flag&gt; が 0 以外の場合、ASCII 非表示文字をログに書き込まない。
+</p>
+
+<p>
+&lt;timestamp flag&gt; が 0 以外の場合、ログの行頭に時刻を追加する。
+</p>
+
+<p>
+&lt;hide dialog flag&gt; が 0 以外の場合、ログ転送のダイアログを表示しない。
 </p>
 
 <h2>例</h2>
