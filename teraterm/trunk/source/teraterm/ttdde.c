@@ -347,7 +347,10 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 		ParamBinaryFlag = Command[1] & 1;
 		break;
 	case CmdSetAppend:
-		ParamAppendFlag = Command[1] & 1;
+		ParamAppendFlag     = Command[1] & 1;
+		ts.LogTypePlainText = Command[13] & 1;
+		ts.LogTimestamp     = Command[14] & 1;
+		ts.LogHideDialog    = Command[15] & 1;
 		break;
 	case CmdSetXmodemOpt:
 		ParamXmodemOpt = Command[1] & 3;

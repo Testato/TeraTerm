@@ -677,11 +677,26 @@ void SetBinary(int BinFlag)
 
 void SetAppend(int AppendFlag)
 {
-  char Cmd[3];
+  char Cmd[18];
 
   Cmd[0] = CmdSetAppend;
   Cmd[1] = 0x30 + (AppendFlag & 1);
-  Cmd[2] = 0;
+  Cmd[2] = 0x30;
+  Cmd[3] = 0x30;
+  Cmd[4] = 0x30;
+  Cmd[5] = 0x30;
+  Cmd[6] = 0x30;
+  Cmd[7] = 0x30;
+  Cmd[8] = 0x30;
+  Cmd[9] = 0x30;
+  Cmd[10] = 0x30;
+  Cmd[11] = 0x30;
+  Cmd[12] = 0x30;
+  Cmd[13] = 0x30 + ((AppendFlag & 0x1000) != 0);
+  Cmd[14] = 0x30 + ((AppendFlag & 0x2000) != 0);
+  Cmd[15] = 0x30 + ((AppendFlag & 0x4000) != 0);
+  Cmd[16] = 0x30;
+  Cmd[17] = 0;
   DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
 }
 
