@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>getver</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>getver</h1>
+
+<p>
+Get the version of TeraTerm.
+</p>
+
+<pre class="macro-syntax">
+getver &lt;strvar&gt; [&lt;version&gt;]
+</pre>
+
+<h2>Remarks</h2>
+
+<p>
+Returns the version of Teraterm in the string variable &lt;strvar&gt;.
+</p>
+
+<!--p>
+&lt;version&gt; ‚ªŽw’è‚³‚ê‚½ê‡A&lt;version&gt; ‚ÆŽÀs’†‚Ì TeraTerm ‚Ìƒo[ƒWƒ‡ƒ“‚ð”äŠr‚µAŒ‹‰Ê‚ðƒVƒXƒeƒ€•Ï” result ‚ÉŠi”[‚·‚éB&lt;version&gt; ‚ªŽw’è‚³‚ê‚È‚©‚Á‚½ê‡‚ÍA•Ï” result ‚Ì’l‚Í•ÏX‚³‚ê‚È‚¢B•Ï” result ‚Ì’l‚ÌˆÓ–¡‚ÍˆÈ‰º‚Ì‚Æ‚¨‚èB
+</p-->
+
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Meaning</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>-2</td>
+      <td>
+	Error. &lt;version&gt; is invalid.
+      </td>
+    </tr>
+    
+    <!--tr>
+      <td>-1</td>
+      <td>
+	TeraTerm‚Ìƒo[ƒWƒ‡ƒ“‚ª &lt;version&gt; ‚æ‚èŒÃ‚¢B
+      </td>
+    </tr>
+    
+    <tr>
+      <td>0</td>
+      <td>
+	TeraTerm‚Ìƒo[ƒWƒ‡ƒ“‚ª &lt;version&gt; ‚Æ“¯‚¶B
+      </td>
+    </tr>
+    
+    <tr>
+      <td>1</td>
+      <td>
+	TeraTerm‚Ìƒo[ƒWƒ‡ƒ“‚ª &lt;version&gt; ‚æ‚èV‚µ‚¢B
+      </td>
+    </tr-->
+    
+  </tbody>
+</table>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+<code>
+getver version
+
+getver version '4.56'
+if result >= 0 then
+  callmenu 50280
+  callmenu 50210
+endif
+</code></pre>
+
+</body>
+</html>
