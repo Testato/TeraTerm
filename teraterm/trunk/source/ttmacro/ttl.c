@@ -1639,8 +1639,11 @@ WORD TTLGetVer()
 		GetStrVal(Str1, &Err);
 
 		ret = sscanf_s(Str1, "%d.%d", &major, &minor);
-		if (ret != 2)
-			Err = ErrSyntax;
+		if (ret != 2) {
+			SetResult(-2);
+			return 0;
+			//Err = ErrSyntax;
+		}
 		compare = 1;
 
 	} else {
@@ -1656,19 +1659,16 @@ WORD TTLGetVer()
 	_snprintf_s(Str2, sizeof(Str2), _TRUNCATE, "%d.%d", a, b);
 	SetStrVal(VarId,Str2);
 
-	if (compare == 0) {  // ”äŠr‚È‚µ
-		SetResult(0);
-
-	} else {
+	if (compare == 1) {
 		curver = a * 100 + b;
 		ver = major * 100 + minor;
 
 		if (curver < ver) {
-			SetResult(1);
+			SetResult(-1);
 		} else if (curver == ver) {
-			SetResult(2);
+			SetResult(0);
 		} else {
-			SetResult(3);
+			SetResult(1);
 		}
 	}
 

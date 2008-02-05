@@ -209,6 +209,7 @@
 #define HlpMacroCommandGetpassword      92046
 #define HlpMacroCommandGettime          92047
 #define HlpMacroCommandGettitle         92048
+#define HlpMacroCommandGetver           92133
 #define HlpMacroCommandGoto             92049
 #define HlpMacroCommandIfdefined        92115
 #define HlpMacroCommandIfthenelseif     92050
