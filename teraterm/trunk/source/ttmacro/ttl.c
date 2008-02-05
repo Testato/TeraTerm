@@ -1851,11 +1851,34 @@ WORD TTLLogOpen()
 	TStrVal Str;
 	WORD Err;
 	int BinFlag, AppendFlag;
+	int TmpFlag, TmpOpt;
 
 	Err = 0;
 	GetStrVal(Str,&Err);
 	GetIntVal(&BinFlag,&Err);
 	GetIntVal(&AppendFlag,&Err);
+
+	if (CheckParameterGiven()) { // plain text
+		GetIntVal(&TmpFlag, &Err);
+		if (Err!=0) return Err;
+		TmpOpt = (TmpFlag == 0) ? 0 : 1;
+		AppendFlag |= TmpOpt * 0x1000;
+
+		if (CheckParameterGiven()) { // timestamp
+			GetIntVal(&TmpFlag, &Err);
+			if (Err!=0) return Err;
+			TmpOpt = (TmpFlag == 0) ? 0 : 1;
+			AppendFlag |= TmpOpt * 0x2000;
+
+			if (CheckParameterGiven()) { // hide file transfer dialog
+				GetIntVal(&TmpFlag, &Err);
+				if (Err!=0) return Err;
+				TmpOpt = (TmpFlag == 0) ? 0 : 1;
+				AppendFlag |= TmpOpt * 0x4000;
+			}
+		}
+	}
+
 	if ((Err==0) &&
 	    ((strlen(Str)==0) || (GetFirstChar()!=0)))
 		Err = ErrSyntax;
