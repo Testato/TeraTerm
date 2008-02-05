@@ -270,7 +270,7 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 
 					hMem = GlobalAlloc(GMEM_MOVEABLE, len + 1);
 					buf = GlobalLock(hMem);
-					SendMessage(GetDlgItem(hDlgWnd, IDC_EDIT), WM_GETTEXT, len, (LPARAM)buf);
+					SendMessage(GetDlgItem(hDlgWnd, IDC_EDIT), WM_GETTEXT, len + 1, (LPARAM)buf);
 					GlobalUnlock(hMem);
 
 					EmptyClipboard();
