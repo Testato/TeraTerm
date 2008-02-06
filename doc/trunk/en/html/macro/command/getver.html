@@ -27,9 +27,9 @@ getver &lt;strvar&gt; [&lt;version&gt;]
 Returns the version of Teraterm in the string variable &lt;strvar&gt;.
 </p>
 
-<!--p>
-&lt;version&gt; が指定された場合、&lt;version&gt; と実行中の TeraTerm のバージョンを比較し、結果をシステム変数 result に格納する。&lt;version&gt; が指定されなかった場合は、変数 result の値は変更されない。変数 result の値の意味は以下のとおり。
-</p-->
+<p>
+If &lt;version&gt; is specified, &lt;version&gt; is compared with the version of running TeraTerm and the result is stored in the system variable "result". If &lt;version&gt; is not specified, the system variable "result" is not changed. The meaning of "result" is as follows.
+</p>
 
 <table>
   <thead>
@@ -47,26 +47,26 @@ Returns the version of Teraterm in the string variable &lt;strvar&gt;.
       </td>
     </tr>
     
-    <!--tr>
+    <tr>
       <td>-1</td>
       <td>
-	TeraTermのバージョンが &lt;version&gt; より古い。
+	TeraTerm version is older than &lt;version&gt;.
       </td>
     </tr>
     
     <tr>
       <td>0</td>
       <td>
-	TeraTermのバージョンが &lt;version&gt; と同じ。
+	TeraTerm version is equal to &lt;version&gt;.
       </td>
     </tr>
     
     <tr>
       <td>1</td>
       <td>
-	TeraTermのバージョンが &lt;version&gt; より新しい。
+	TeraTerm version is newer than &lt;version&gt;.
       </td>
-    </tr-->
+    </tr>
     
   </tbody>
 </table>
@@ -81,6 +81,7 @@ getver version '4.56'
 if result >= 0 then
   callmenu 50280
   callmenu 50210
+  callmenu 50270
 endif
 </code></pre>
 
