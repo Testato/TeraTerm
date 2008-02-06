@@ -11,6 +11,9 @@
 #include "tttypes.h"
 #include <shlobj.h>
 
+// for _ismbblead
+#include <mbctype.h>
+
 BOOL GetFileNamePos(PCHAR PathName, int far *DirLen, int far *FNPos)
 {
 	BYTE b;
@@ -251,16 +254,26 @@ void QuoteFName(PCHAR FName)
 // ファイル名に使用できない文字が含まれているか確かめる (2006.8.28 maya)
 int isInvalidFileNameChar(PCHAR FName)
 {
-	if (strchr(FName, '\\') != NULL ||
-	    strchr(FName, '/')  != NULL ||
-	    strchr(FName, ':')  != NULL ||
-	    strchr(FName, '*')  != NULL ||
-	    strchr(FName, '?')  != NULL ||
-	    strchr(FName, '"')  != NULL ||
-	    strchr(FName, '<')  != NULL ||
-	    strchr(FName, '<')  != NULL ||
-	    strchr(FName, '|')  != NULL) {
-		return 1;
+	int i, len;
+
+	len = strlen(FName);
+	for (i=0; i<len; i++) {
+		if (_ismbblead(FName[i])) {
+			i++;
+			continue;
+		}
+		switch (FName[i]) {
+			case '\\':
+			case '/':
+			case ':':
+			case '*':
+			case '?':
+			case '"':
+			case '<':
+			case '>':
+			case '|':
+				return 1;
+		}
 	}
 	return 0;
 }
@@ -272,6 +285,11 @@ void deleteInvalidFileNameChar(PCHAR FName)
 
 	len = strlen(FName);
 	for (i=0; i<len; i++) {
+		if (_ismbblead(FName[i])) {
+			FName[j++] = FName[i];
+			FName[j++] = FName[++i];
+			continue;
+		}
 		switch (FName[i]) {
 			case '\\':
 			case '/':
