@@ -659,3 +659,11 @@ void doSelectFolder(HWND hWnd, char *path, int pathlen, char *msg)
 	// クリーンアップ処理
 	CoTaskMemFree(pidlRoot);
 }
+
+void OutputDebugPrintf(char *fmt, ...) {
+	char tmp[1024];
+	va_list arg;
+	va_start(arg, fmt);
+	_vsnprintf(tmp, sizeof(tmp), fmt, arg);
+	OutputDebugString(tmp);
+}
