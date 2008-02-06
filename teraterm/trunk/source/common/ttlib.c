@@ -620,6 +620,14 @@ int get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PCHAR iniF
 //
 // cf. http://homepage2.nifty.com/DSS/VCPP/API/SHBrowseForFolder.htm
 //
+int CALLBACK setDefaultFolder(HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData)
+{
+	if(uMsg == BFFM_INITIALIZED) {
+		SendMessage(hwnd, BFFM_SETSELECTION, (WPARAM)TRUE, lpData);
+	}
+	return 0;
+}
+
 void doSelectFolder(HWND hWnd, char *path, int pathlen, char *msg)
 {
 	BROWSEINFO      bi;
@@ -643,8 +651,8 @@ void doSelectFolder(HWND hWnd, char *path, int pathlen, char *msg)
 	bi.pszDisplayName = buf;
 	bi.lpszTitle = msg;
 	bi.ulFlags = 0;
-	bi.lpfn = 0;
-	bi.lParam = 0;
+	bi.lpfn = setDefaultFolder;
+	bi.lParam = (LPARAM)path;
 	// フォルダ選択ダイアログの表示 
 	pidlBrowse = SHBrowseForFolder(&bi);
 	if (pidlBrowse != NULL) {  

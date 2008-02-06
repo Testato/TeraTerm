@@ -2056,9 +2056,8 @@ BOOL CALLBACK DirDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 				case IDC_SELECT_DIR:
 					get_lang_msg("DLG_SELECT_DIR_TITLE", uimsg, sizeof(uimsg),
 					             "Select new directory", UILanguageFile);
-					uimsg2[0] = '\0';
-					doSelectFolder(Dialog, uimsg2, sizeof(uimsg2),
-					               uimsg);
+					GetDlgItemText(Dialog, IDC_DIRCURRENT, uimsg2, sizeof(uimsg2));
+					doSelectFolder(Dialog, uimsg2, sizeof(uimsg2), uimsg);
 					SetDlgItemText(Dialog, IDC_DIRNEW, uimsg2);
 					return TRUE;
 
