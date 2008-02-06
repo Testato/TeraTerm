@@ -3436,12 +3436,13 @@ int SSH_scp_transaction(PTInstVar pvar, char *sendfile, char *dstfile, enum scp_
 			fn = strrchr(sendfile, '/');
 			if (fn && fn[1] == '\0')
 				goto error;
-			cwd = _getcwd(NULL, 0);
+			cwd = pvar->ts->FileDir;
+			//cwd = _getcwd(NULL, 0);
 
 			_snprintf_s(c->scp.localfilefull, sizeof(c->scp.localfilefull), _TRUNCATE, "%s\\%s", cwd, fn ? fn : sendfile);
 			ExtractFileName(c->scp.localfilefull, c->scp.localfile, sizeof(c->scp.localfile));   // file name only
 
-			free(cwd);  // free!!
+			//free(cwd);  // free!!
 		} else {
 			_snprintf_s(c->scp.localfilefull, sizeof(c->scp.localfilefull), _TRUNCATE, "%s", dstfile);
 			ExtractFileName(dstfile, c->scp.localfile, sizeof(c->scp.localfile));   // file name only
