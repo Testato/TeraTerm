@@ -62,6 +62,7 @@
       <li>マクロコマンド '<a href="../macro/command/getver.html">getver</a>' を追加した。</li>
       <li>TermType のデフォルト値を "vt100" から "xterm" に変更した。</li>
       <li>マウスの中ボタンのクリックによる貼り付けを無効にした。</li>
+      <li>フォルダ選択ダイアログで、既存の設定値が初期ディレクトリになるようにした。</li>
       <li>'<a href="../macro/command/getdate.html">getdate</a>', '<a href="../macro/command/gettime.html">gettime</a>' マクロコマンドで、書式を指定しなかった場合は <a href="../macro/syntax/variables.html">result</a> に値をセットしないようにした。(バージョン4.56以前との互換性のため)</li>
       <li>'<a href="../macro/command/logopen.html">logopen</a>' マクロコマンドに、&lt;plain text flag&gt;, &lt;timestamp flag&gt;, &lt;hide dialog flag&gt; オプションを追加した。</li>
       <li>リバースビデオ制御シーケンス(DECSCNM)が正しく働かないのを修正した。</li>
@@ -1023,7 +1024,7 @@
       
       <li>SSH SCPダイアログにおいて、ファイル受信用ユーザインターフェイスを追加した。
        <ul>
-         <li>ファイル受信先はTeraTermインストールディレクトリに固定</li>
+         <li>ファイル受信先は "ファイル転送のためのディレクトリ" に固定</li>
          <li>受信ファイル名は直接入力</li>
        </ul></li>
       
