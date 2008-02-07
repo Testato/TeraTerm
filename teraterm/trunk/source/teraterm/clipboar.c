@@ -290,9 +290,13 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 				default:
 					return FALSE;
 			}
+
+#if 0
 		case WM_CLOSE:
+			PasteCanceled = 1;
 			EndDialog(hDlgWnd, 0);
 			return TRUE;
+#endif
 
 		default:
 			return FALSE;
