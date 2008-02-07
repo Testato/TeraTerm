@@ -37,3 +37,5 @@ EXPORTS
   
   GetI18nStr @40
   GetI18nLogfont @41
+  
+  OutputDebugPrintf @49
