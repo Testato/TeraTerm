@@ -29,6 +29,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __SFTP_H
 #define __SFTP_H
 
-
+// for debug mode
+#ifdef _DEBUG
+#define SFTP_DEBUG
 #endif
 
+
+#endif

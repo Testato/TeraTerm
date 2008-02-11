@@ -75,6 +75,7 @@ static char FAR *ProtocolFamilyList[] = { "UNSPEC", "IPv6", "IPv4", NULL };
 #include "buffer.h"
 #include "cipher.h"
 
+#include "sftp.h"
 
 #define MATCH_STR(s, o) strncmp((s), (o), NUM_ELEM(o) - 1)
 #define MATCH_STR_I(s, o) _strnicmp((s), (o), NUM_ELEM(o) - 1)
@@ -2857,6 +2858,10 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 	case WM_INITDIALOG:
 		DragAcceptFiles(dlg, TRUE);
 
+#ifdef SFTP_DEBUG
+		ShowWindow(GetDlgItem(dlg, IDC_SFTP_TEST), SW_SHOW);
+#endif
+
 		return TRUE;
 
 	case WM_DROPFILES:
@@ -2912,9 +2917,6 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 
 		switch (LOWORD(wParam)) {
 		case IDOK:
-#if 0  // SFTP debug (2008.1.19 yutaka)
-			SSH_sftp_transaction(pvar);
-#else
 			hWnd = GetDlgItem(dlg, IDC_SENDFILE_EDIT);
 			SendMessage(hWnd, WM_GETTEXT , sizeof(sendfile), (LPARAM)sendfile);
 			if (sendfile[0] != '\0') {
@@ -2923,7 +2925,6 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 				EndDialog(dlg, 1); // dialog close
 				return TRUE;
 			}
-#endif
 			return FALSE;
 
 		case IDCANCEL:			
@@ -2939,6 +2940,10 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 				return TRUE;
 			}
 			return FALSE;
+
+		case IDC_SFTP_TEST:
+			SSH_sftp_transaction(pvar);
+			return TRUE;
 		}
 	}
 
