@@ -20,16 +20,11 @@ extern int agent_query(void *in, int inlen, void **out, int *outlen,
  */
 int putty_get_ssh2_keylist(unsigned char **keylist)
 {
-	int keylistlen, count;
+	int keylistlen;
 
 	*keylist = get_keylist2(&keylistlen);
 	if (*keylist == NULL){
 		// æ“¾‚É¸”s
-		return 0;
-	}
-	count = GET_32BIT(*keylist);
-	if (count == 0) {
-		// 0 Œ
 		return 0;
 	}
 	return keylistlen;
@@ -87,16 +82,11 @@ void *putty_sign_ssh2_key(unsigned char *pubkey,
  */
 int putty_get_ssh1_keylist(unsigned char **keylist)
 {
-	int keylistlen, count;
+	int keylistlen;
 
 	*keylist = get_keylist1(&keylistlen);
 	if (*keylist == NULL){
 		// æ“¾‚É¸”s
-		return 0;
-	}
-	count = GET_32BIT(*keylist);
-	if (count == 0) {
-		// 0 Œ
 		return 0;
 	}
 	return keylistlen;

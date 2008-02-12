@@ -233,6 +233,14 @@ typedef struct _TInstVar {
 	char *ssh2_authlist;
 	BOOL tryed_ssh2_authlist;
 	HWND ssh_hearbeat_dialog;
+
+	/* Pageant ‚Æ‚Ì’ÊM—p */
+	unsigned char *pageant_key;
+	unsigned char *pageant_curkey;
+	int pageant_keylistlen;
+	int pageant_keycount;
+	int pageant_keycurrent;
+	BOOL pageant_keyfinal;// SSH2 PK_OK ‚ª—ˆ‚½‚Æ‚«‚É TRUE ‚É‚·‚é
 } TInstVar;
 
 #define LOG_LEVEL_FATAL      5

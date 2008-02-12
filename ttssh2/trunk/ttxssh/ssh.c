@@ -30,6 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ttxssh.h"
 #include "util.h"
 #include "resource.h"
+#include "libputty.h"
 
 #include <openssl/bn.h>
 #include <openssl/evp.h>
@@ -1458,6 +1459,7 @@ static BOOL handle_server_public_key(PTInstVar pvar)
 	int supported_ciphers;
 	char FAR *inmsg;
 	Key hostkey;
+	int supported_types;
 
 	if (!grab_payload(pvar, 14))
 		return FALSE;
@@ -1509,8 +1511,15 @@ static BOOL handle_server_public_key(PTInstVar pvar)
 	                                 supported_ciphers,
 	                                 supported_ciphers))
 		return FALSE;
+
+	// SSH1 サーバは、サポートされている認証方式を送ってくる
+	// RSA が有効なら PAGEANT を有効にする
+	supported_types = get_uint32(inmsg + protocol_flags_pos + 8);
+	if ((supported_types & (1 << SSH_AUTH_RSA)) > 0) {
+		supported_types |= (1 << SSH_AUTH_PAGEANT);
+	}
 	if (!AUTH_set_supported_auth_types(pvar,
-	                                   get_uint32(inmsg + protocol_flags_pos + 8)))
+	                                   supported_types))
 		return FALSE;
 
 	/* this must be the LAST THING in this function, since it can cause
@@ -2177,23 +2186,38 @@ static BOOL handle_rsa_challenge(PTInstVar pvar)
 		unsigned char FAR *outmsg =
 			begin_send_packet(pvar, SSH_CMSG_AUTH_RSA_RESPONSE, 16);
 
-		if (CRYPT_generate_RSA_challenge_response
-			(pvar, pvar->ssh_state.payload + 2, challenge_bytes, outmsg)) {
+		if (pvar->auth_state.cur_cred.method == SSH_AUTH_RSA) {
+			if (CRYPT_generate_RSA_challenge_response
+				(pvar, pvar->ssh_state.payload + 2, challenge_bytes, outmsg)) {
 
-			// セッション複製時にパスワードを使い回したいので、ここでのリソース解放はやめる。
-			// socket close時にもこの関数は呼ばれているので、たぶん問題ない。(2005.4.8 yutaka)
+				// セッション複製時にパスワードを使い回したいので、ここでのリソース解放はやめる。
+				// socket close時にもこの関数は呼ばれているので、たぶん問題ない。(2005.4.8 yutaka)
 #if 0
-			//AUTH_destroy_cur_cred(pvar);
+				//AUTH_destroy_cur_cred(pvar);
 #endif
 
-			finish_send_packet(pvar);
+				finish_send_packet(pvar);
 
-			enque_simple_auth_handlers(pvar);
-		} else {
-			UTIL_get_lang_msg("MSG_SSH_DECRYPT_RSA_ERROR", pvar,
-			                  "An error occurred while decrypting the RSA challenge.\n"
-			                  "Perhaps the key file is corrupted.");
-			notify_fatal_error(pvar, pvar->ts->UIMsg);
+				enque_simple_auth_handlers(pvar);
+			} else {
+				UTIL_get_lang_msg("MSG_SSH_DECRYPT_RSA_ERROR", pvar,
+								  "An error occurred while decrypting the RSA challenge.\n"
+								  "Perhaps the key file is corrupted.");
+				notify_fatal_error(pvar, pvar->ts->UIMsg);
+			}
+		}
+		else if (pvar->auth_state.cur_cred.method == SSH_AUTH_PAGEANT) {
+			unsigned char *hash;
+			int pubkeylen, hashlen;
+
+			/* Pageant にハッシュを計算してもらう */
+			pubkeylen = putty_get_ssh1_keylen(pvar->pageant_curkey,
+			                                  pvar->pageant_keylistlen);
+			hash = putty_hash_ssh1_challenge(pvar->pageant_curkey,
+			                                 pubkeylen,
+			                                 pvar->ssh_state.payload,
+			                                 challenge_bytes + 2,
+			                                 &hashlen);
 		}
 	}
 
@@ -2306,6 +2330,30 @@ static void try_send_credentials(PTInstVar pvar)
 
 				set_ushort16_MSBfirst(outmsg + index, 8 * mod_len);
 				BN_bn2bin(cred->key_pair->RSA_key->n, outmsg + index + 2);
+				/* don't destroy the current credentials yet */
+				enque_handlers(pvar, 2, RSA_msgs, RSA_handlers);
+				break;
+			}
+		case SSH_AUTH_PAGEANT:{
+				unsigned char FAR *outmsg;
+				unsigned char *pubkey;
+				int len, bn_bytes;
+
+				pubkey = pvar->pageant_curkey + 4;
+				len = get_ushort16_MSBfirst(pubkey);
+				bn_bytes = (len + 7) / 8;
+				pubkey += 2 + bn_bytes;
+				len = get_ushort16_MSBfirst(pubkey);
+				bn_bytes = (len + 7) / 8;
+				pubkey += 2;
+				outmsg = begin_send_packet(pvar, SSH_CMSG_AUTH_RSA, 2 + bn_bytes);
+
+				notify_verbose_message(pvar,
+				                       "Trying RSA authentication...",
+				                       LOG_LEVEL_VERBOSE);
+
+				set_ushort16_MSBfirst(outmsg, bn_bytes * 8);
+				memcpy(outmsg + 2, pubkey, bn_bytes);
 				/* don't destroy the current credentials yet */
 				enque_handlers(pvar, 2, RSA_msgs, RSA_handlers);
 				break;
@@ -6032,7 +6080,8 @@ static BOOL handle_SSH2_newkeys(PTInstVar pvar)
 	                       | 1 << SSH2_CIPHER_AES192   | 1 << SSH2_CIPHER_AES256
 	                       | 1 << SSH2_CIPHER_BLOWFISH
 		);
-	int type = (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA) | (1 << SSH_AUTH_TIS);
+	int type = (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA) |
+	           (1 << SSH_AUTH_TIS) | (1 << SSH_AUTH_PAGEANT);
 
 	notify_verbose_message(pvar, "SSH2_MSG_NEWKEYS is received(DH key generation is completed).", LOG_LEVEL_VERBOSE);
 
@@ -6316,7 +6365,7 @@ static BOOL get_SSH2_publickey_blob(PTInstVar pvar, buffer_t **blobptr, int *blo
 static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 {
 	buffer_t *msg = NULL;
-	char *s;
+	char *s, *username;
 	unsigned char *outmsg;
 	int len;
 	char *connect_id = "ssh-connection";
@@ -6331,11 +6380,11 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 
 	// ペイロードの構築
 	if (pvar->ssh2_autologin == 1) { // SSH2自動ログイン
-		s = pvar->ssh2_username;
+		username = pvar->ssh2_username;
 	} else {
-		s = pvar->auth_state.user;  // ユーザ名
+		username = pvar->auth_state.user;  // ユーザ名
 	}
-	buffer_put_string(msg, s, strlen(s));
+	buffer_put_string(msg, username, strlen(username));
 
 	if (!pvar->tryed_ssh2_authlist) { // "none"メソッドの送信
 		// 認証リストをサーバから取得する。
@@ -6393,7 +6442,7 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 		// セッションID
 		buffer_append_length(signbuf, pvar->session_id, pvar->session_id_len);
 		buffer_put_char(signbuf, SSH2_MSG_USERAUTH_REQUEST);
-		s = pvar->auth_state.user;  // ユーザ名
+		s = username;  // ユーザ名
 		buffer_put_string(signbuf, s, strlen(s));
 		s = connect_id;
 		buffer_put_string(signbuf, s, strlen(s));
@@ -6429,6 +6478,38 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 		buffer_free(signbuf);
 		free(signature);
 
+	} else if (pvar->auth_state.cur_cred.method == SSH_AUTH_PAGEANT) { // Pageant
+		unsigned char *puttykey;
+
+		s = connect_id;
+		buffer_put_string(msg, s, strlen(s));
+		s = "publickey";
+		buffer_put_string(msg, s, strlen(s));
+		buffer_put_char(msg, 0); // false
+
+		if (pvar->pageant_keycurrent != 0) {
+			// 直前の鍵をスキップ
+			len = get_uint32_MSBfirst(pvar->pageant_curkey);
+			pvar->pageant_curkey += 4 + len;
+			// 直前の鍵のコメントをスキップ
+			len = get_uint32_MSBfirst(pvar->pageant_curkey);
+			pvar->pageant_curkey += 4 + len;
+			// 次の鍵へ来る
+		}
+		puttykey = pvar->pageant_curkey;
+
+		// アルゴリズムをコピーする
+		len = get_uint32_MSBfirst(puttykey+4);
+		buffer_put_string(msg, puttykey+8, len);
+
+		// 鍵をコピーする
+		len = get_uint32_MSBfirst(puttykey);
+		puttykey += 4;
+		buffer_put_string(msg, puttykey, len);
+		puttykey += len;
+
+		pvar->pageant_keycurrent++;
+
 	} else {
 		goto error;
 
@@ -6448,13 +6529,17 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 		// keyboard-interactive method
 		SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_INFO_REQUEST);
 	}
+	else if (pvar->auth_state.cur_cred.method == SSH_AUTH_PAGEANT) {
+		// Pageant
+		SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_PK_OK);
+	}
 	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_SUCCESS);
 	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_FAILURE);
 	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_BANNER);
 	SSH2_dispatch_add_message(SSH2_MSG_DEBUG);  // support for authorized_keys command (2006.2.23 yutaka)
 
 	{
-	char buf[128];
+		char buf[128];
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE,
 		            "SSH2_MSG_USERAUTH_REQUEST was sent(method %d)",
 		            pvar->auth_state.cur_cred.method);
@@ -6704,6 +6789,7 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 		}
 		if (strstr(cstring, "publickey")) {
 			type |= (1 << SSH_AUTH_RSA);
+			type |= (1 << SSH_AUTH_PAGEANT);
 		}
 		if (strstr(cstring, "keyboard-interactive")) {
 			type |= (1 << SSH_AUTH_TIS);
@@ -6745,7 +6831,23 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 	//notify_closed_connection(pvar);
 
 	// retry countの追加 (2005.3.10 yutaka)
-	pvar->userauth_retry_count++;
+	if (pvar->auth_state.cur_cred.method != SSH_AUTH_PAGEANT) {
+		pvar->userauth_retry_count++;
+	}
+	else {
+		if (pvar->pageant_keycount <= pvar->pageant_keycurrent ||
+		    pvar->pageant_keyfinal) {
+			// 全ての鍵を試し終わった
+			// または、TRUE でのログインに失敗してここに来た
+			safefree(pvar->pageant_key);
+			pvar->userauth_retry_count++;
+		}
+		else {
+			// まだ鍵がある
+			handle_SSH2_authrequest(pvar);
+			return TRUE;
+		}
+	}
 
 	if (pvar->ssh2_autologin == 1) {
 		char uimsg[MAX_UIMSG];
@@ -6785,6 +6887,11 @@ static BOOL handle_SSH2_userauth_banner(PTInstVar pvar)
 
 
 // SSH2 keyboard-interactive methodの SSH2_MSG_USERAUTH_INFO_REQUEST 処理関数
+// 
+// 現状の実装では同じメッセージ番号が存在できないので、
+// SSH2 publickey で Pageant を使っているときの
+// SSH2_MSG_USERAUTH_PK_OK もこの関数で処理する。(2007.2.12 maya)
+// 
 //
 // ※メモ：OpenSSHでPAMを有効にする方法
 //・ビルド
@@ -6800,86 +6907,195 @@ static BOOL handle_SSH2_userauth_banner(PTInstVar pvar)
 // (2005.1.23 yutaka)
 BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar)
 {
-	int len;
-	char *data;
-	int slen = 0, num, echo;
-	char *s, *prompt = NULL;
-	buffer_t *msg;
-	unsigned char *outmsg;
-	int i;
+	if (pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
+		// SSH2_MSG_USERAUTH_INFO_REQUEST
+		int len;
+		char *data;
+		int slen = 0, num, echo;
+		char *s, *prompt = NULL;
+		buffer_t *msg;
+		unsigned char *outmsg;
+		int i;
 
-	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
-	data = pvar->ssh_state.payload;
-	// パケットサイズ - (パディングサイズ+1)；真のパケットサイズ
-	len = pvar->ssh_state.payloadlen;
+		notify_verbose_message(pvar, "SSH2_MSG_USERAUTH_INFO_REQUEST is received.", LOG_LEVEL_VERBOSE);
 
-	//debug_print(10, data, len);
+		// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
+		data = pvar->ssh_state.payload;
+		// パケットサイズ - (パディングサイズ+1)；真のパケットサイズ
+		len = pvar->ssh_state.payloadlen;
 
-	///////// step1
-	// get string
-	slen = get_uint32_MSBfirst(data);
-	data += 4;
-	s = data;  // name
-	data += slen;
+		//debug_print(10, data, len);
 
-	// get string
-	slen = get_uint32_MSBfirst(data);
-	data += 4;
-	s = data;  // instruction
-	data += slen;
-
-	// get string
-	slen = get_uint32_MSBfirst(data);
-	data += 4;
-	s = data;  // language tag
-	data += slen;
-
-	// num-prompts
-	num = get_uint32_MSBfirst(data);
-	data += 4;
-
-	///////// step2
-	// サーバへパスフレーズを送る
-	msg = buffer_init();
-	if (msg == NULL) {
-		// TODO: error check
-		return FALSE;
-	}
-	buffer_put_int(msg, num);
-
-	// プロンプトの数だけ prompt & echo が繰り返される。
-	for (i = 0 ; i < num ; i++) {
+		///////// step1
 		// get string
 		slen = get_uint32_MSBfirst(data);
 		data += 4;
-		prompt = data;  // prompt
+		s = data;  // name
 		data += slen;
 
-		// get boolean
-		echo = data[0];
-		data += 1;
+		// get string
+		slen = get_uint32_MSBfirst(data);
+		data += 4;
+		s = data;  // instruction
+		data += slen;
 
-		// keyboard-interactive method (2005.3.12 yutaka)
-		if (pvar->keyboard_interactive_password_input == 0 &&
-		    pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
-			AUTH_set_TIS_mode(pvar, prompt, slen);
-			AUTH_advance_to_next_cred(pvar);
-			pvar->ssh_state.status_flags &= ~STATUS_DONT_SEND_CREDENTIALS;
-			//try_send_credentials(pvar);
-			buffer_free(msg);
-			return TRUE;
+		// get string
+		slen = get_uint32_MSBfirst(data);
+		data += 4;
+		s = data;  // language tag
+		data += slen;
+
+		// num-prompts
+		num = get_uint32_MSBfirst(data);
+		data += 4;
+
+		///////// step2
+		// サーバへパスフレーズを送る
+		msg = buffer_init();
+		if (msg == NULL) {
+			// TODO: error check
+			return FALSE;
+		}
+		buffer_put_int(msg, num);
+
+		// プロンプトの数だけ prompt & echo が繰り返される。
+		for (i = 0 ; i < num ; i++) {
+			// get string
+			slen = get_uint32_MSBfirst(data);
+			data += 4;
+			prompt = data;  // prompt
+			data += slen;
+
+			// get boolean
+			echo = data[0];
+			data += 1;
+
+			// keyboard-interactive method (2005.3.12 yutaka)
+			if (pvar->keyboard_interactive_password_input == 0 &&
+				pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
+				AUTH_set_TIS_mode(pvar, prompt, slen);
+				AUTH_advance_to_next_cred(pvar);
+				pvar->ssh_state.status_flags &= ~STATUS_DONT_SEND_CREDENTIALS;
+				//try_send_credentials(pvar);
+				buffer_free(msg);
+				return TRUE;
+			}
+
+			// TODO: ここでプロンプトを表示してユーザから入力させるのが正解。
+			s = pvar->auth_state.cur_cred.password;
+			buffer_put_string(msg, s, strlen(s));
 		}
 
-		// TODO: ここでプロンプトを表示してユーザから入力させるのが正解。
-		s = pvar->auth_state.cur_cred.password;
-		buffer_put_string(msg, s, strlen(s));
+		len = buffer_len(msg);
+		outmsg = begin_send_packet(pvar, SSH2_MSG_USERAUTH_INFO_RESPONSE, len);
+		memcpy(outmsg, buffer_ptr(msg), len);
+		finish_send_packet(pvar);
+		buffer_free(msg);
 	}
+	else { // SSH_AUTH_PAGEANT
+		// SSH2_MSG_USERAUTH_PK_OK
+		buffer_t *msg = NULL;
+		char *s, *username;
+		unsigned char *outmsg;
+		int len;
+		char *connect_id = "ssh-connection";
 
-	len = buffer_len(msg);
-	outmsg = begin_send_packet(pvar, SSH2_MSG_USERAUTH_INFO_RESPONSE, len);
-	memcpy(outmsg, buffer_ptr(msg), len);
-	finish_send_packet(pvar);
-	buffer_free(msg);
+		unsigned char *puttykey;
+		buffer_t *signbuf;
+		unsigned char *signmsg;
+		unsigned char *signedmsg;
+		int signedlen;
+
+		notify_verbose_message(pvar, "SSH2_MSG_USERAUTH_PK_OK is received.", LOG_LEVEL_VERBOSE);
+
+		if (pvar->ssh2_autologin == 1) { // SSH2自動ログイン
+			username = pvar->ssh2_username;
+		} else {
+			username = pvar->auth_state.user;  // ユーザ名
+		}
+
+		// 署名するデータを作成
+		signbuf = buffer_init();
+		if (signbuf == NULL) {
+			safefree(pvar->pageant_key);
+			return FALSE;
+		}
+		buffer_append_length(signbuf, pvar->session_id, pvar->session_id_len);
+		buffer_put_char(signbuf, SSH2_MSG_USERAUTH_REQUEST);
+		s = username;  // ユーザ名
+		buffer_put_string(signbuf, s, strlen(s));
+		s = connect_id;
+		buffer_put_string(signbuf, s, strlen(s));
+		s = "publickey";
+		buffer_put_string(signbuf, s, strlen(s));
+		buffer_put_char(signbuf, 1); // true
+
+		puttykey = pvar->pageant_curkey;
+
+		// アルゴリズムをコピーする
+		len = get_uint32_MSBfirst(puttykey+4);
+		buffer_put_string(signbuf, puttykey+8, len);
+
+		// 鍵をコピーする
+		len = get_uint32_MSBfirst(puttykey);
+		puttykey += 4;
+		buffer_put_string(signbuf, puttykey, len);
+		puttykey += len;
+
+		// Pageant に署名してもらう
+		signmsg = (unsigned char *)malloc(signbuf->len + 4);
+		set_uint32_MSBfirst(signmsg, signbuf->len);
+		memcpy(signmsg + 4, signbuf->buf, signbuf->len);
+		signedmsg = putty_sign_ssh2_key(pvar->pageant_curkey,
+		                                signmsg, &signedlen);
+		buffer_free(signbuf);
+		if (signedmsg == NULL) {
+			safefree(pvar->pageant_key);
+			return FALSE;
+		}
+
+
+		// ペイロードの構築
+		msg = buffer_init();
+		if (msg == NULL) {
+			safefree(pvar->pageant_key);
+			safefree(signedmsg);
+			return FALSE;
+		}
+		s = username;  // ユーザ名
+		buffer_put_string(msg, s, strlen(s));
+		s = connect_id;
+		buffer_put_string(msg, s, strlen(s));
+		s = "publickey";
+		buffer_put_string(msg, s, strlen(s));
+		buffer_put_char(msg, 1); // true
+
+		puttykey = pvar->pageant_curkey;
+
+		// アルゴリズムをコピーする
+		len = get_uint32_MSBfirst(puttykey+4);
+		buffer_put_string(msg, puttykey+8, len);
+
+		// 鍵をコピーする
+		len = get_uint32_MSBfirst(puttykey);
+		puttykey += 4;
+		buffer_put_string(msg, puttykey, len);
+		puttykey += len;
+
+		// 署名されたデータ
+		len  = get_uint32_MSBfirst(signedmsg);
+		buffer_put_string(msg, signedmsg + 4, len);
+		free(signedmsg);
+
+		// パケット送信
+		len = buffer_len(msg);
+		outmsg = begin_send_packet(pvar, SSH2_MSG_USERAUTH_REQUEST, len);
+		memcpy(outmsg, buffer_ptr(msg), len);
+		finish_send_packet(pvar);
+		buffer_free(msg);
+
+		pvar->pageant_keyfinal = TRUE;
+	}
 
 	return TRUE;
 }

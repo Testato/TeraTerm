@@ -296,7 +296,8 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 	if (settings->DefaultAuthMethod != SSH_AUTH_PASSWORD
 	 && settings->DefaultAuthMethod != SSH_AUTH_RSA
 	 && settings->DefaultAuthMethod != SSH_AUTH_TIS  // add (2005.3.12 yutaka)
-	 && settings->DefaultAuthMethod != SSH_AUTH_RHOSTS) {
+	 && settings->DefaultAuthMethod != SSH_AUTH_RHOSTS
+	 && settings->DefaultAuthMethod != SSH_AUTH_PAGEANT) {
 		/* this default can never be SSH_AUTH_RHOSTS_RSA because that is not a
 		   selection in the dialog box; SSH_AUTH_RHOSTS_RSA is automatically chosen
 		   when the dialog box has rhosts selected and an host private key file
@@ -1544,6 +1545,10 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 			} else if (MATCH_STR(option + 5, "=publickey") == 0) { // 公開鍵認証
 				//pvar->auth_state.cur_cred.method = SSH_AUTH_RSA;
 				pvar->ssh2_authmethod = SSH_AUTH_RSA;
+
+			} else if (MATCH_STR(option + 5, "=pageant") == 0) { // 公開鍵認証 by Pageant
+				//pvar->auth_state.cur_cred.method = SSH_AUTH_RSA;
+				pvar->ssh2_authmethod = SSH_AUTH_PAGEANT;
 
 			} else {
 				// TODO:
@@ -3681,6 +3686,11 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 				replace_blank_to_mark(pvar->auth_state.cur_cred.password, mark, sizeof(mark));
 				_snprintf_s(tmp, sizeof(tmp), _TRUNCATE,
 				            " /auth=challenge /user=%s /passwd=%s", pvar->auth_state.user, mark);
+				strncat_s(cmd, cmdlen, tmp, _TRUNCATE);
+
+			} else if (pvar->auth_state.cur_cred.method == SSH_AUTH_PAGEANT) {
+				_snprintf_s(tmp, sizeof(tmp), _TRUNCATE,
+				            " /auth=pageant /user=%s", pvar->auth_state.user);
 				strncat_s(cmd, cmdlen, tmp, _TRUNCATE);
 
 			} else {

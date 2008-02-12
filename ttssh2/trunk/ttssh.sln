@@ -6,6 +6,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ttssh", "ttssh\ttssh.vcproj
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ttxssh", "ttxssh\ttxssh.vcproj", "{5638BB89-44E3-4D55-BA98-A01142B4223E}"
 	ProjectSection(ProjectDependencies) = postProject
+		{98CA1284-8F6C-4791-BF57-7E5FAD33744E} = {98CA1284-8F6C-4791-BF57-7E5FAD33744E}
 		{8514EAB3-989A-4A81-81C7-04A26834C615} = {8514EAB3-989A-4A81-81C7-04A26834C615}
 	EndProjectSection
 EndProject

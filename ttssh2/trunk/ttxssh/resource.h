@@ -139,6 +139,8 @@
 #define IDC_SSHFWDREMOTETOLOCAL         1202
 #define IDC_SSHUSERHOSTS                1203
 #define IDC_SSHUSETIS                   1204
+#define IDC_SSHUSEPAGEANT               1205
+#define IDC_SSHUSETIS2                  1206
 
 // Next default values for new objects
 // 

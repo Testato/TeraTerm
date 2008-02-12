@@ -37,10 +37,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "resource.h"
 #include "keyfiles.h"
+#include "libputty.h"
 
 #define AUTH_START_USER_AUTH_ON_ERROR_END 1
 
-#define MAX_AUTH_CONTROL IDC_SSHUSETIS
+#define MAX_AUTH_CONTROL IDC_SSHUSEPAGEANT
 
 static HFONT DlgAuthFont;
 static HFONT DlgTisFont;
@@ -57,7 +58,8 @@ void destroy_malloced_string(char FAR * FAR * str)
 
 static int auth_types_to_control_IDs[] = {
 	-1, IDC_SSHUSERHOSTS, IDC_SSHUSERSA, IDC_SSHUSEPASSWORD,
-	IDC_SSHUSERHOSTS, IDC_SSHUSETIS, -1
+	IDC_SSHUSERHOSTS, IDC_SSHUSETIS, -1,
+	-1, -1, -1, -1, -1, -1, -1, -1, -1, IDC_SSHUSEPAGEANT, -1
 };
 
 static LRESULT CALLBACK password_wnd_proc(HWND control, UINT msg,
@@ -94,12 +96,13 @@ static void set_auth_options_status(HWND dlg, int controlID)
 	BOOL RSA_enabled = controlID == IDC_SSHUSERSA;
 	BOOL rhosts_enabled = controlID == IDC_SSHUSERHOSTS;
 	BOOL TIS_enabled = controlID == IDC_SSHUSETIS;
+	BOOL PAGEANT_enabled = controlID == IDC_SSHUSEPAGEANT;
 	int i;
 
 	CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL, controlID);
 
-	EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORDCAPTION), !TIS_enabled);
-	EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORD), !TIS_enabled);
+	EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORDCAPTION), (!TIS_enabled && !PAGEANT_enabled));
+	EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORD), (!TIS_enabled && !PAGEANT_enabled));
 
 	for (i = IDC_CHOOSERSAFILE; i <= IDC_RSAFILENAME; i++) {
 		EnableWindow(GetDlgItem(dlg, i), RSA_enabled);
@@ -304,6 +307,12 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 			EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORD), FALSE);
 			SetDlgItemText(dlg, IDC_SSHPASSWORD, "");
 
+		// /auth=pageant を追加
+		} else if (pvar->ssh2_authmethod == SSH_AUTH_PAGEANT) {
+			CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL, IDC_SSHUSEPAGEANT);
+			EnableWindow(GetDlgItem(dlg, IDC_SSHPASSWORD), FALSE);
+			SetDlgItemText(dlg, IDC_SSHPASSWORD, "");
+
 		} else {
 			// TODO
 
@@ -426,6 +435,8 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 		}
 	} else if (IsDlgButtonChecked(dlg, IDC_SSHUSETIS)) {
 		method = SSH_AUTH_TIS;
+	} else if (IsDlgButtonChecked(dlg, IDC_SSHUSEPAGEANT)) {
+		method = SSH_AUTH_PAGEANT;
 	}
 
 	if (method == SSH_AUTH_RSA || method == SSH_AUTH_RHOSTS_RSA) {
@@ -499,6 +510,41 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 
 		}
 
+	}
+	else if (method == SSH_AUTH_PAGEANT) {
+		pvar->pageant_key = NULL;
+		pvar->pageant_curkey = NULL;
+		pvar->pageant_keylistlen = 0;
+		pvar->pageant_keycount = 0;
+		pvar->pageant_keycurrent = 0;
+		pvar->pageant_keyfinal=FALSE;
+
+		// Pageant と通信
+		if (SSHv1(pvar)) {
+			pvar->pageant_keylistlen = putty_get_ssh1_keylist(&pvar->pageant_key);
+		}
+		else {
+			pvar->pageant_keylistlen = putty_get_ssh2_keylist(&pvar->pageant_key);
+		}
+		if (pvar->pageant_keylistlen == 0) {
+			UTIL_get_lang_msg("MSG_PAGEANT_NOTFOUND", pvar,
+			                  "Can't find Pageant.");
+			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+
+			return FALSE;
+		}
+		pvar->pageant_curkey = pvar->pageant_key;
+
+		// 鍵の数
+		pvar->pageant_keycount = get_uint32_MSBfirst(pvar->pageant_curkey);
+		if (pvar->pageant_keycount == 0) {
+			UTIL_get_lang_msg("MSG_PAGEANT_NOKEY", pvar,
+			                  "Pageant has no valid key.");
+			notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+
+			return FALSE;
+		}
+		pvar->pageant_curkey += 4;
 	}
 
 	/* from here on, we cannot fail, so just munge cur_cred in place */
@@ -760,6 +806,7 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 		case IDC_SSHUSERSA:
 		case IDC_SSHUSERHOSTS:
 		case IDC_SSHUSETIS:
+		case IDC_SSHUSEPAGEANT:
 			set_auth_options_status(dlg, LOWORD(wParam));
 			return TRUE;
 
@@ -798,14 +845,14 @@ int AUTH_set_supported_auth_types(PTInstVar pvar, int types)
 	if (SSHv1(pvar)) {
 		types &= (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA)
 		       | (1 << SSH_AUTH_RHOSTS_RSA) | (1 << SSH_AUTH_RHOSTS)
-		       | (1 << SSH_AUTH_TIS);
+		       | (1 << SSH_AUTH_TIS) | (1 << SSH_AUTH_PAGEANT);
 	} else {
 		// for SSH2(yutaka)
 //		types &= (1 << SSH_AUTH_PASSWORD);
 		// 公開鍵認証を有効にする (2004.12.18 yutaka)
 		// TISを追加。SSH2ではkeyboard-interactiveとして扱う。(2005.3.12 yutaka)
 		types &= (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA)
-		       | (1 << SSH_AUTH_TIS);
+		       | (1 << SSH_AUTH_TIS) | (1 << SSH_AUTH_PAGEANT);
 	}
 	pvar->auth_state.supported_types = types;
 
@@ -880,6 +927,10 @@ static void try_default_auth(PTInstVar pvar)
 
 			pvar->auth_state.cur_cred.rhosts_client_user =
 				_strdup(pvar->session_settings.DefaultRhostsLocalUserName);
+			break;
+
+		case SSH_AUTH_PAGEANT:
+			pvar->auth_state.cur_cred.method = SSH_AUTH_PAGEANT;
 			break;
 
 		case SSH_AUTH_PASSWORD:
@@ -1135,6 +1186,10 @@ static void init_default_auth_dlg(PTInstVar pvar, HWND dlg)
 		CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL,
 		                 IDC_SSHUSETIS);
 		break;
+	case SSH_AUTH_PAGEANT:
+		CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL,
+		                 IDC_SSHUSEPAGEANT);
+		break;
 	case SSH_AUTH_PASSWORD:
 	default:
 		CheckRadioButton(dlg, IDC_SSHUSEPASSWORD, MAX_AUTH_CONTROL,
@@ -1166,6 +1221,8 @@ static BOOL end_default_auth_dlg(PTInstVar pvar, HWND dlg)
 		}
 	} else if (IsDlgButtonChecked(dlg, IDC_SSHUSETIS)) {
 		pvar->settings.DefaultAuthMethod = SSH_AUTH_TIS;
+	} else if (IsDlgButtonChecked(dlg, IDC_SSHUSEPAGEANT)) {
+		pvar->settings.DefaultAuthMethod = SSH_AUTH_PAGEANT;
 	} else {
 		pvar->settings.DefaultAuthMethod = SSH_AUTH_PASSWORD;
 	}
@@ -1337,6 +1394,8 @@ static char FAR *get_auth_method_name(SSHAuthMethod auth)
 		return "password";
 	case SSH_AUTH_RSA:
 		return "RSA";
+	case SSH_AUTH_PAGEANT:
+		return "RSA (with Pageant)";
 	case SSH_AUTH_RHOSTS:
 		return "rhosts";
 	case SSH_AUTH_RHOSTS_RSA:
@@ -1376,10 +1435,27 @@ void AUTH_get_auth_info(PTInstVar pvar, char FAR * dest, int len)
 				            pvar->ts->UIMsg, pvar->auth_state.user, method);
 
 			} else {
-				if (pvar->auth_state.cur_cred.key_pair->RSA_key != NULL) {
-					method = "RSA";
-				} else if (pvar->auth_state.cur_cred.key_pair->DSA_key != NULL) {
-					method = "DSA";
+				if (pvar->auth_state.cur_cred.method == SSH_AUTH_RSA) {
+					if (pvar->auth_state.cur_cred.key_pair->RSA_key != NULL) {
+						method = "RSA";
+					} else if (pvar->auth_state.cur_cred.key_pair->DSA_key != NULL) {
+						method = "DSA";
+					}
+				}
+				else if (pvar->auth_state.cur_cred.method == SSH_AUTH_PAGEANT) {
+					int len = get_uint32_MSBfirst(pvar->pageant_curkey + 4);
+					char *s = (char *)malloc(len+1);
+					enum hostkey_type keytype;
+
+					memcpy(s, pvar->pageant_curkey+4+4, len);
+					s[len] = '\0';
+					keytype = get_keytype_from_name(s);
+					if (keytype == KEY_RSA) {
+						method = "RSA with Pageant";
+					} else if (keytype == KEY_DSA) {
+						method = "DSA with Pageant";
+					}
+					free(s);
 				}
 				UTIL_get_lang_msg("DLG_ABOUT_AUTH_INFO", pvar, "User '%s', using %s");
 				_snprintf_s(dest, len, _TRUNCATE,
