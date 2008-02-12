@@ -441,6 +441,8 @@ DLG_AUTH_METHOD_CHALLENGE2=チャレンジレスポンス認証を使う(キーボードインタラクテ
 DLG_AUTH_PRIVATEKEY=秘密鍵(&K):
 DLG_AUTH_LOCALUSER=ローカルのユーザ名(&U):
 DLG_AUTH_HOST_PRIVATEKEY=ホスト鍵(&F):
+MSG_PAGEANT_NOTFOUND=Pageant が見つかりません.
+MSG_PAGEANT_NOKEY=Pageant に有効な鍵が登録されていません.
 
 ; dlg auth setup
 DLG_AUTHSETUP_TITLE=TTSSH: 認証設定
