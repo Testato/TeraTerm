@@ -247,6 +247,7 @@
 #define HlpMacroCommandSendfile         92076
 #define HlpMacroCommandSendkcode        92077
 #define HlpMacroCommandSendln           92078
+#define HlpMacroCommandSetbaud          92134
 #define HlpMacroCommandSetdate          92079
 #define HlpMacroCommandSetdir           92080
 #define HlpMacroCommandSetdlgpos        92081
