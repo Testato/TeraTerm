@@ -38,6 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <openssl/engine.h>
 #include <openssl/rsa.h>
 #include <openssl/dsa.h>
+#include <openssl/md5.h>
 #include <limits.h>
 #include <malloc.h>
 #include <string.h>
@@ -1257,6 +1258,18 @@ static BOOL handle_auth_failure(PTInstVar pvar)
 
 static BOOL handle_rsa_auth_refused(PTInstVar pvar)
 {
+	if (pvar->auth_state.cur_cred.method == SSH_AUTH_PAGEANT) {
+		if (pvar->pageant_keycount <= pvar->pageant_keycurrent) {
+			// 全ての鍵を試し終わった
+			safefree(pvar->pageant_key);
+		}
+		else {
+			// まだ鍵がある
+			pvar->ssh_state.status_flags &= ~STATUS_DONT_SEND_CREDENTIALS;
+			try_send_credentials(pvar);
+			return TRUE;
+		}
+	}
 	AUTH_destroy_cur_cred(pvar);
 	return handle_auth_failure(pvar);
 }
@@ -2207,17 +2220,43 @@ static BOOL handle_rsa_challenge(PTInstVar pvar)
 			}
 		}
 		else if (pvar->auth_state.cur_cred.method == SSH_AUTH_PAGEANT) {
+			int server_key_bits = BN_num_bits(pvar->crypt_state.server_key.RSA_key->n);
+			int host_key_bits = BN_num_bits(pvar->crypt_state.host_key.RSA_key->n);
+			int server_key_bytes = (server_key_bits + 7) / 8;
+			int host_key_bytes = (host_key_bits + 7) / 8;
+			int session_buf_len = server_key_bytes + host_key_bytes + 8;
+			char FAR *session_buf = (char FAR *) malloc(session_buf_len);
+			unsigned char session_id[16];
+
 			unsigned char *hash;
 			int pubkeylen, hashlen;
 
 			/* Pageant にハッシュを計算してもらう */
+			// 公開鍵の長さ
 			pubkeylen = putty_get_ssh1_keylen(pvar->pageant_curkey,
 			                                  pvar->pageant_keylistlen);
+			// セッションIDを作成
+			BN_bn2bin(pvar->crypt_state.host_key.RSA_key->n, session_buf);
+			BN_bn2bin(pvar->crypt_state.server_key.RSA_key->n,
+			          session_buf + host_key_bytes);
+			memcpy(session_buf + server_key_bytes + host_key_bytes,
+			       pvar->crypt_state.server_cookie, 8);
+			MD5(session_buf, session_buf_len, session_id);
+			// ハッシュを受け取る
 			hash = putty_hash_ssh1_challenge(pvar->pageant_curkey,
 			                                 pubkeylen,
 			                                 pvar->ssh_state.payload,
 			                                 challenge_bytes + 2,
+			                                 session_id,
 			                                 &hashlen);
+
+			// ハッシュを送信
+			memcpy(outmsg, hash, 16);
+			free(hash);
+
+			finish_send_packet(pvar);
+
+			enque_simple_auth_handlers(pvar);
 		}
 	}
 
@@ -2339,6 +2378,20 @@ static void try_send_credentials(PTInstVar pvar)
 				unsigned char *pubkey;
 				int len, bn_bytes;
 
+				if (pvar->pageant_keycurrent != 0) {
+					// 直前の鍵をスキップ
+					pvar->pageant_curkey += 4;
+					len = get_ushort16_MSBfirst(pvar->pageant_curkey);
+					bn_bytes = (len + 7) / 8;
+					pvar->pageant_curkey += 2 + bn_bytes;
+					len = get_ushort16_MSBfirst(pvar->pageant_curkey);
+					bn_bytes = (len + 7) / 8;
+					pvar->pageant_curkey += 2 + bn_bytes;
+					// 直前の鍵のコメントをスキップ
+					len = get_uint32_MSBfirst(pvar->pageant_curkey);
+					pvar->pageant_curkey += 4 + len;
+					// 次の鍵の位置へ来る
+				}
 				pubkey = pvar->pageant_curkey + 4;
 				len = get_ushort16_MSBfirst(pubkey);
 				bn_bytes = (len + 7) / 8;
@@ -2355,6 +2408,9 @@ static void try_send_credentials(PTInstVar pvar)
 				set_ushort16_MSBfirst(outmsg, bn_bytes * 8);
 				memcpy(outmsg + 2, pubkey, bn_bytes);
 				/* don't destroy the current credentials yet */
+
+				pvar->pageant_keycurrent++;
+
 				enque_handlers(pvar, 2, RSA_msgs, RSA_handlers);
 				break;
 			}
@@ -6494,7 +6550,7 @@ static BOOL handle_SSH2_authrequest(PTInstVar pvar)
 			// 直前の鍵のコメントをスキップ
 			len = get_uint32_MSBfirst(pvar->pageant_curkey);
 			pvar->pageant_curkey += 4 + len;
-			// 次の鍵へ来る
+			// 次の鍵の位置へ来る
 		}
 		puttykey = pvar->pageant_curkey;
 
