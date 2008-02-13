@@ -586,6 +586,24 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 	case '5':
 		PostMessage(HVTWin,WM_USER_ACCELCOMMAND,IdCmdCtrlCloseTEK,0);
 		break;
+	case '6': //steven add 
+		if (HWndLog == NULL) 
+			break; 
+		else 
+			ShowWindow(HWndLog, SW_HIDE); 
+		break; 
+	case '7': //steven add 
+		if (HWndLog == NULL) 
+			break; 
+		else 
+			ShowWindow(HWndLog, SW_MINIMIZE); 
+		break; 
+	case '8': //steven add 
+		if (HWndLog == NULL) 
+			break; 
+		else 
+			ShowWindow(HWndLog, SW_RESTORE); 
+		break; 
 		}
 		break;
 	case CmdXmodemRecv:

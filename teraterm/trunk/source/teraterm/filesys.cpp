@@ -34,6 +34,8 @@ static BYTE FileByte;
 
 static BOOL FSend = FALSE;
 
+HWND HWndLog = NULL; //steven add 
+
 static HMODULE HTTFILE = NULL;
 static int TTFILECount = 0;
 
@@ -184,8 +186,10 @@ BOOL OpenFTDlg(PFileVar fv)
 		FTDlg->RefreshNum();
 		if (fv->HideDialog)
 			FTDlg->ShowWindow(SW_HIDE);
-		else if (fv->OpId == OpLog)
+		else if (fv->OpId == OpLog) {
 			FTDlg->ShowWindow(SW_MINIMIZE);
+			HWndLog = FTDlg->m_hWnd; // steven add 
+		}
 	}
 
 	if (fv->OpId==OpLog)
@@ -785,6 +789,7 @@ void FileTransEnd(WORD OpId)
 		{
 			FLogDlg->DestroyWindow();
 			FLogDlg = NULL;
+			HWndLog = NULL; // steven add 
 		}
 		FreeFileVar(&LogVar);
 		FreeLogBuf();
