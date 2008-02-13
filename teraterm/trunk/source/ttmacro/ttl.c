@@ -17,6 +17,7 @@
 #include "ttmlib.h"
 #include "ttlib.h"
 #include "ttmenc.h"
+#include "tttypes.h"
 
 // Oniguruma: Regular expression library
 #define ONIG_EXTERN extern
@@ -2251,6 +2252,26 @@ WORD TTLSendLn()
 	return Err;
 }
 
+WORD TTLSetBaud()
+{
+	TStrVal Str;
+	WORD Err;
+
+	Err = 0;
+	GetStrVal(Str,&Err);
+	if ((Err==0) &&
+	    ((strlen(Str)==0)))
+		Err = ErrSyntax;
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if ((Err==0) && (! Linked))
+		Err = ErrLinkFirst;
+	if (Err!=0) return Err;
+
+	SetFile(Str);
+	return SendCmnd(CmdSetBaud,IdTTLWaitCmndEnd);
+}
+
 WORD TTLSetDate()
 {
 	WORD Err;
@@ -3484,6 +3505,8 @@ int ExecCmnd()
 			Err = TTLSendKCode(); break;
 		case RsvSendLn:
 			Err = TTLSendLn(); break;
+		case RsvSetBaud:
+			Err = TTLSetBaud(); break;
 		case RsvSetDate:
 			Err = TTLSetDate(); break;
 		case RsvSetDir:

@@ -17,6 +17,7 @@
 #include "ttlib.h"
 
 #include "ttdde.h"
+#include "commlib.h"
 
 #define ServiceName "TERATERM"
 #define ItemName "DATA"
@@ -319,6 +320,7 @@ WORD HexStr2Word(PCHAR Str)
 #define CmdScpSend      'H'
 #define CmdScpRcv       'I'
 #define CmdSetSecondFile 'J'
+#define CmdSetBaud      'K'
 
 HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 {
@@ -726,6 +728,29 @@ scp_rcv_error:
 		MessageBox(NULL, msg, "Tera Term: scpsend command error", MB_OK | MB_ICONERROR);
 		FreeLibrary(h2);
 		return DDE_FNOTPROCESSED;
+		}
+		break;
+
+	case CmdSetBaud:  // add 'setbaud' (2008.2.13 steven patch)
+		{
+		int val, ret;
+
+		//OutputDebugPrintf("CmdSetBaud entered\n");
+
+		if (!cv.Open) 
+			break;
+
+		val = atoi(ParamFileName);
+		ret = GetCommSerialBaudRate(val);
+		//OutputDebugPrintf("CmdSetBaud: %d %d (%d)\n", val, ret, ts.Baud);
+		if (ret > 0) {
+			ts.Baud = val;
+			CommResetSerial(&ts,&cv,FALSE);   // reset serial port
+			PostMessage(HVTWin,WM_USER_CHANGETITLE,0,0); // refresh title bar
+		}
+
+		DdeCmnd = TRUE;
+		EndDdeCmnd(1);     // マクロ実行を終了させる。
 		}
 		break;
 

@@ -213,6 +213,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 	else if (_stricmp(Str,"sendfile")==0) *WordId = RsvSendFile;
 	else if (_stricmp(Str,"sendkcode")==0) *WordId = RsvSendKCode;
 	else if (_stricmp(Str,"sendln")==0) *WordId = RsvSendLn;
+	else if (_stricmp(Str,"setbaud")==0) *WordId = RsvSetBaud;
 	else if (_stricmp(Str,"setdate")==0) *WordId = RsvSetDate;
 	else if (_stricmp(Str,"setdir")==0) *WordId = RsvSetDir;
 	else if (_stricmp(Str,"setdlgpos")==0) *WordId = RsvSetDlgPos;
