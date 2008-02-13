@@ -744,6 +744,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="setbaud">
+					<param name="Local" value="html\macro\command\setbaud.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="setecho">
 					<param name="Local" value="html\macro\command\setecho.html">
 					<param name="ImageNumber" value="11">
