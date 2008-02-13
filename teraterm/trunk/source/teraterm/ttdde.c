@@ -748,9 +748,6 @@ scp_rcv_error:
 			CommResetSerial(&ts,&cv,FALSE);   // reset serial port
 			PostMessage(HVTWin,WM_USER_CHANGETITLE,0,0); // refresh title bar
 		}
-
-		DdeCmnd = TRUE;
-		EndDdeCmnd(1);     // マクロ実行を終了させる。
 		}
 		break;
 
