@@ -30,7 +30,10 @@ Restores the VT window Tera Term if &lt;show flag&gt; is 1.<br>
 Hides the TEK window of Tera Term if &lt;show flag&gt; is 2.<br>
 Minimizes the TEK window of Tera Term if &lt;show flag&gt; 3.<br>
 Open/restores the TEK window of Tera Term if &lt;show flag&gt; is 4.<br>
-Closes the TEK window of Tera Term if &lt;show flag&gt; is 5.
+Closes the TEK window of Tera Term if &lt;show flag&gt; is 5.<br>
+Hides the log window if &lt;show flag&gt; is 6.<br>
+Minimizes the log window if &lt;show flag&gt; is 7.<br>
+Restores the log window if &lt;show flag&gt; is 8.<br>
 </p>
 
 <h2>Example</h2>
@@ -44,6 +47,10 @@ showtt 1
 
 ; Hide Tera Term.
 showtt -1
+
+showtt 7    ;Minimize log window 
+showtt 8    ;Restore log window 
+showtt 6    ;Hide log window
 </code></pre>
 
 </body>
