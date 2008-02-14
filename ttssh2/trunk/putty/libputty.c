@@ -101,31 +101,42 @@ void *putty_hash_ssh1_challenge(unsigned char *pubkey,
                                 int pubkeylen,
                                 unsigned char *data,
                                 int datalen,
+                                unsigned char *session_id,
                                 int *outlen)
 {
 	void *ret;
 
-	unsigned char *request, *response;
+	unsigned char *request, *response, *p;
 	void *vresponse;
 	int resplen, retval;
 	int reqlen;
 
-	reqlen = 4 + 1 + pubkeylen + datalen;
+	reqlen = 4 + 1 + pubkeylen + datalen + 16 + 4;
 	request = (unsigned char *)malloc(reqlen);
+	p = request;
 
 	// request length
 	PUT_32BIT(request, reqlen);
 	// request type
 	request[4] = SSH1_AGENTC_RSA_CHALLENGE;
+	p += 5;
+
 	// public key
-	memcpy(request + 5, pubkey, pubkeylen);
+	memcpy(p, pubkey, pubkeylen);
+	p += pubkeylen;
 	// challange from server
-	memcpy(request + 5 + pubkeylen, data, datalen);
+	memcpy(p, data, datalen);
+	p += datalen;
+	// session_id
+	memcpy(p, session_id, 16);
+	p += 16;
+	// terminator?
+	PUT_32BIT(p, 1);
 
 	retval = agent_query(request, reqlen, &vresponse, &resplen, NULL, NULL);
 	assert(retval == 1);
 	response = vresponse;
-	if (resplen < 5 || response[4] != SSH2_AGENT_SIGN_RESPONSE)
+	if (resplen < 5 || response[4] != SSH1_AGENT_RSA_RESPONSE)
 		return NULL;
 
 	ret = snewn(resplen-5, unsigned char);

@@ -12,6 +12,7 @@ void *putty_hash_ssh1_challenge(unsigned char *pubkey,
                                 int pubkeylen,
                                 unsigned char *data,
                                 int datalen,
+                                unsigned char *session_id,
                                 int *outlen);
 int putty_get_ssh1_keylen(unsigned char *key,
                           int maxlen);
