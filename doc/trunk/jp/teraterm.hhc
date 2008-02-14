@@ -502,6 +502,11 @@
 			<param name="ImageNumber" value="11">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="PuTTY ライセンス">
+			<param name="Local" value="html\reference\PuTTY-LICENSE.txt">
+			<param name="ImageNumber" value="11">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="開発者向け">
 			<param name="Local" value="html\reference\develop.txt">
 			<param name="ImageNumber" value="11">
@@ -715,10 +720,12 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="scprecv">
 					<param name="Local" value="html\macro\command\scprecv.html">
+					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="scpsend">
 					<param name="Local" value="html\macro\command\scpsend.html">
+					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="send">
@@ -748,6 +755,7 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="setbaud">
 					<param name="Local" value="html\macro\command\setbaud.html">
+					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="setecho">
@@ -843,6 +851,7 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="do, loop">
 					<param name="Local" value="html\macro\command\doloop.html">
+					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="end">
@@ -892,6 +901,7 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="until, enduntil">
 					<param name="Local" value="html\macro\command\until.html">
+					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="return">
@@ -922,6 +932,7 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="sprintf">
 					<param name="Local" value="html\macro\command\sprintf.html">
+					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="str2code">

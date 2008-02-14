@@ -16,6 +16,7 @@
 - oniguruma 5.9.1 (http://www.geocities.jp/kosako3/oniguruma/)
 - openssl 0.9.8g (http://www.openssl.org/)
 - zlib 1.2.3 (http://www.zlib.net/)
+- PuTTY 0.60 (http://www.chiark.greenend.org.uk/~sgtatham/putty/)
 
 
 ■ CVSに関する注意点
@@ -51,16 +52,14 @@
   [Window] メニューなら  8
   [Help] メニューなら    9
 
-
 例：File配下にTTSSHのメニューを追加する
 
 #define ID_SSHSCPMENU       52110
 
 
-
 ■ マクロコマンド追加時の作業リスト
   TeraTermマクロを新設するときの作業手順について、以下に示します。
-  
+
 １．ソースコードの修正
 -- コマンドの内部 ID を採番する（「内部 ID」は"helpid.h"にも使用される）
    ... teraterm/source/ttmacro/ttmparse.h
@@ -177,9 +176,10 @@
           (ttssh2フォルダに戻ります。)
         詳細については、OpenSSLのドキュメントを参照してください。
 
-  4. ttssh2\ttssh.sln をVisual Studioで開く
-  5. ソリューションをビルドする
-  6. ビルドに成功するとttssh2\ttxssh ディレクトリにDLLが生成される
+  4. PuTTYのソースコード(http://www.chiark.greenend.org.uk/~sgtatham/putty/)を ttssh2\putty ディレクトリに展開する。
+  5. ttssh2\ttssh.sln をVisual Studioで開く
+  6. ソリューションをビルドする
+  7. ビルドに成功するとttssh2\ttxssh ディレクトリにDLLが生成される
 
 
 ■ CygTermのビルド方法
@@ -222,6 +222,8 @@
       http://www.openssl.org/
     zlib
       http://www.zlib.net/
+    PuTTY
+      http://www.chiark.greenend.org.uk/~sgtatham/putty/
     CygTerm
       http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/
     LogMeTT

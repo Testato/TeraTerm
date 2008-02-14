@@ -1023,14 +1023,17 @@
 <ul>
   <li class="history"><a name="ttssh_2.46">2008.1.26 (Ver 2.46 not released)</a>
     <ul>
-      <li>不正なProtocol Version Exchangeをスキップする処理を追加した（RFC4253対応）。</li>
+      <li>バージョンを含まない Protocol Version Exchange 行をスキップする処理を追加した（RFC4253対応）。</li>
       
       <li>SSH SCPダイアログにおいて、ファイル受信用ユーザインターフェイスを追加した。
        <ul>
          <li>ファイル受信先は "ファイル転送のためのディレクトリ" に固定</li>
          <li>受信ファイル名は直接入力</li>
        </ul></li>
-      
+      <li>Pageant を使用した公開鍵認証に対応した。
+        <ul>
+          <li>コマンドラインオプションの /auth に pageant を追加した。</li>
+        </ul></li>
     </ul>
   </li>
 

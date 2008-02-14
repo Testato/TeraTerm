@@ -1021,14 +1021,17 @@ SYNOPSIS:
 <ul>
   <li class="history"><a name="ttssh_2.46">2008.1.26 (Ver 2.46 not released)</a>
     <ul>
-      <li>added silently ignoring the invalid Protocol Version Exchange before sending the version string. (RFC4253 compliance)</li>
+      <li>added silently ignoring the Protocol Version Exchange line before sending the version string. (RFC4253 compliance)</li>
       
       <li>added the user interface for receiving a file on SSH SCP dialog.
        <ul>
          <li>The source address is fixed in the 'current directory for file transfers'.</li>
          <li>Directly input the receiving file name</li>
        </ul></li>
-      
+      <li>added support of public key authentication with Pageant.</li>
+        <ul>
+          <li>added "pageant" value to "/auth" command line switch.</li>
+        </ul></li>
     </ul>
   </li>
 
