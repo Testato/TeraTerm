@@ -756,6 +756,9 @@ void ParseControl(BYTE b)
       ParseMode = ModeCSI;
       break;
     case OSC:
+      Param[1] = 0;
+      ParseMode = ModeXS;
+      break;
     case PM:
     case APC:
       SavedMode = ParseMode;
@@ -2155,37 +2158,80 @@ void IgnoreString(BYTE b)
 	 else ESCFlag = FALSE;
 }
 
+#define ModeXsFirst     1
+#define ModeXsString    2
+#define ModeXsColorNum  3
+#define ModeXsColorSpec 4
+#define ModeXsEsc       5
 void XSequence(BYTE b)
 {
-  if (NParam==1)
-  {
-    if ((b>=0x30) && (b<=0x39))
-    {
-      if (Param[1]<1000)
-	Param[1] = Param[1]*10 + b - 0x30;
-    }
-    else
-      NParam = 2;
-  }
-  else {
-    if (b<US) {
-      if (Param[1]<=2)
-      {
-	ts.Title[NParam-2] = 0;
-	// (2006.6.15 maya) タイトルに渡す文字列をSJISに変換
-	ConvertToCP932(ts.Title, sizeof(ts.Title));
-	ChangeTitle();
+  static BYTE XsParseMode = ModeXsFirst, PrevMode;
+  static char StrBuff[sizeof(ts.Title)];
+  static int ColorNumber, StrLen;
+
+  switch (XsParseMode) {
+    case ModeXsFirst:
+      if (isdigit(b)) {
+        if (Param[1] < 1000) {
+	  Param[1] = Param[1]*10 + b - '0';
+	}
       }
-      ParseMode = ModeFirst;
-    }
-    else {
-      if ((Param[1]<=2) &&
-	  (NParam-2<sizeof(ts.Title)-1))
-      {
-	ts.Title[NParam-2] = b;
-	NParam++;
+      else if (b == ';') {
+        StrBuff[0] = '\0';
+	StrLen = 0;
+	ColorNumber = 0;
+	XsParseMode = ModeXsString;
       }
-    }
+      else {
+        ParseMode = ModeFirst;
+      }
+      break;
+    case ModeXsString:
+      if (b == ST || b == '\a') { /* String Terminator */
+        StrBuff[StrLen] = '\0';
+        switch (Param[1]) {
+	  case 0: /* Change window title and icon name */
+	  case 1: /* Change icon name */
+	  case 2: /* Change window title */
+	    strncpy_s(ts.Title, sizeof(ts.Title), StrBuff, _TRUNCATE);
+	    // (2006.6.15 maya) タイトルに渡す文字列をSJISに変換
+	    ConvertToCP932(ts.Title, sizeof(ts.Title));
+	    ChangeTitle();
+	    break;
+	  default:
+	    /* nothing to do */;
+	}
+	ParseMode = ModeFirst;
+	XsParseMode = ModeXsFirst;
+      }
+      else if (b == ESC) { /* Escape */
+	PrevMode = ModeXsString;
+	XsParseMode = ModeXsEsc;
+      }
+      else if (b <= US) { /* Other control character -- invalid sequence */
+        ParseMode = ModeFirst;
+        XsParseMode = ModeXsFirst;
+      }
+      else {
+        if (StrLen < sizeof(StrBuff) - 1) {
+	  StrBuff[StrLen++] = b;
+	}
+      }
+      break;
+    case ModeXsColorNum:
+    case ModeXsColorSpec:
+      /* not implemented */
+      break;
+    case ModeXsEsc:
+      if (b == '\\') { /* String Terminator */
+        XsParseMode = PrevMode;
+        XSequence(ST);
+      }
+      else { /* Other character -- invalid sequence */
+        ParseMode = ModeFirst;
+        XsParseMode = ModeXsFirst;
+      }
+      break;
   }
 }
 
