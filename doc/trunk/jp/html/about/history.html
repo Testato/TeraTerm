@@ -38,7 +38,7 @@
         <ul>
           <li>teraterm.ini に <a href="../setup/teraterm-term.html#mousetrack">MouseEventTracking</a> を追加した。デフォルトはon。</li>
         </ul></li>
-      <li>Broadcast Commandにリアルタイムモードを追加した。TeraTermウィンドウにすべてのキー入力を送ることができるため、vi操作などが可能となる。TeraTerm Proアシスタントに近い機能。
+      <li>Broadcast Commandにリアルタイムモードを追加した。TeraTermウィンドウにすべてのキー入力を送ることができるため、vi操作などが可能となる。<a href="http://www.vector.co.jp/soft/win95/net/se276622.html">TeraTerm Proアシスタント</a>に近い機能。
         <ul>
           <li>Broadcast Commandダイアログに"Realtime mode"チェックボックスを追加。デフォルトはon。</li>
           <li>TeraTermウィンドウを選択可能なリストボックスを追加した。ダブルクリックでアイテムの全選択および全解除が可能（トグル）。</li>
@@ -62,7 +62,11 @@
       <li>マクロコマンド '<a href="../macro/command/getver.html">getver</a>' を追加した。</li>
       <li>マクロコマンド '<a href="../macro/command/setbaud.html">setbaud</a>' を追加した。</li>
       <li>マクロコマンド '<a href="../macro/command/showtt.html">showtt</a>' に3つのパラメータ(6, 7, 8)を追加した。Steven Yang氏に感謝します。</li>
-      <li>TermType のデフォルト値を "vt100" から "xterm" に変更した。</li>
+      <li>TermType のデフォルト値を "vt100" から "xterm" に変更した。
+        <ul>
+          <li>TELNET/SSHで通知されるTERM環境変数が"xterm"になる。</li>
+          <li>従来のVT100を利用したい場合は、シェルの設定でTERM環境変数をセットすること。</li>
+        </ul></li>
       <li>マウスの中ボタンのクリックによる貼り付けを無効にした。</li>
       <li>フォルダ選択ダイアログで、既存の設定値が初期ディレクトリになるようにした。</li>
       <li>'<a href="../macro/command/getdate.html">getdate</a>', '<a href="../macro/command/gettime.html">gettime</a>' マクロコマンドで、書式を指定しなかった場合は <a href="../macro/syntax/variables.html">result</a> に値をセットしないようにした。(バージョン4.56以前との互換性のため)</li>
@@ -1030,10 +1034,12 @@
          <li>ファイル受信先は "ファイル転送のためのディレクトリ" に固定</li>
          <li>受信ファイル名は直接入力</li>
        </ul></li>
-      <li>Pageant を使用した公開鍵認証に対応した。
+      
+      <li><a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">Pageant</a>(an SSH authentication agent for PuTTY, PSCP and Plink) を使用した公開鍵認証に対応した。
         <ul>
           <li>コマンドラインオプションの /auth に pageant を追加した。</li>
         </ul></li>
+        
     </ul>
   </li>
 

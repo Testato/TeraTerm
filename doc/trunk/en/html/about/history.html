@@ -38,7 +38,7 @@
         <ul>
           <li>added <a href="../setup/teraterm-term.html#mousetrack">MouseEventTracking</a> entry in teraterm.ini file. The default value is on.</li>
         </ul></li>
-      <li>added the "Realtime mode" feature on Broadcast Command. This feature can send all user's key sequence to TeraTerm window, and then a user can use vi editor on all window. This feature takes after "TeraTerm Pro assistant" freeware in lots of ways.
+      <li>added the "Realtime mode" feature on Broadcast Command. This feature can send all user's key sequence to TeraTerm window, and then a user can use vi editor on all window. This feature takes after "<a href="http://www.vector.co.jp/soft/win95/net/se276622.html">TeraTerm Pro assistant</a>" freeware in lots of ways.
         <ul>
           <li>added "Realtime mode" checkbox in Broadcast Command dialog. The default is on.</li>
           <li>added a TeraTerm window list. Also, a user can select all item or cancel all item by double-click(toggle). </li>
@@ -62,7 +62,11 @@
       <li>added '<a href="../macro/command/getver.html">getver</a>' macro command.</li>
       <li>added '<a href="../macro/command/setbaud.html">setbaud</a>' macro command.</li>
       <li>added three parameters from 6 to 8 in '<a href="../macro/command/showtt.html">showtt</a>' macro command. Special thanks to Steven Yang.</li>
-      <li>changed the default value of TermType from 'vt100' to 'xterm'</li>
+      <li>changed the default value of TermType from 'vt100' to 'xterm'
+        <ul>
+          <li>TERM environment variable is reported as "xterm" to the host by using TELNET and SSH protocol.</li>
+          <li>If a user want to use VT100 type, please set TERM environment variable by the shell configuration.</li>
+        </ul></li>
       <li>disabled pasting with clicking the middle button of mouse.</li>
       <li>changed default folder of the dialog to select a folder. The current path of configuration is selected.</li>
       <li>if '<a href="../macro/command/getdate.html">getdate</a>' and '<a href="../macro/command/gettime.html">gettime</a>' macro command have no date and time format, system variable "<a href="../macro/syntax/variables.html">result</a>" is not changed. (for compatibility with version 4.56 or earlier)</li>
@@ -1028,10 +1032,12 @@ SYNOPSIS:
          <li>The source address is fixed in the 'current directory for file transfers'.</li>
          <li>Directly input the receiving file name</li>
        </ul></li>
-      <li>added support of public key authentication with Pageant.</li>
+      
+      <li>added support for the public key authentication with <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">Pageant</a>(an SSH authentication agent for PuTTY, PSCP and Plink).</li>
         <ul>
           <li>added "pageant" value to "/auth" command line switch.</li>
         </ul></li>
+        
     </ul>
   </li>
 
