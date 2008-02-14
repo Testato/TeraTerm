@@ -41,11 +41,11 @@
 				Optimization="0"
 				AdditionalIncludeDirectories=".\windows;.\"
 				PreprocessorDefinitions="_WINDOWS"
-				MinimalRebuild="true"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -82,7 +82,7 @@
 			IntermediateDirectory=".\Release"
 			ConfigurationType="4"
 			CharacterSet="0"
-			WholeProgramOptimization="1"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -105,7 +105,7 @@
 				PreprocessorDefinitions="_WINDOWS"
 				RuntimeLibrary="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool
