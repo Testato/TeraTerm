@@ -176,6 +176,7 @@ DLG_BROADCAST_HISTORY=History
 DLG_BROADCAST_PARENTONLY=Send to this process only
 DLG_BROADCAST_ENTER=Enter key
 DLG_BROADCAST_SUBMIT=Submit
+DLG_BROADCAT_REALTIME=Realtime mode
 
 DLG_PRNABORT_PRINTING=Printing
 
@@ -359,6 +360,10 @@ FILEDLG_TRANS_TITLE_BPRCV=B-Plus Receive
 FILEDLG_TRANS_TITLE_BPSEND=B-Plus Send
 FILEDLG_TRANS_TITLE_QVRCV=Quick-VAN Receive
 FILEDLG_TRANS_TITLE_QVSEND=Quick-VAN Send
+
+; dlg clipboard
+DLG_CLIPBOARD_TITLE=Tera Term: Clipboard confirmation
+DLG_CLIPBOARD_INFO=Currently, Clipboard has been locked.
 
 ; ttptek
 ; tttek.c

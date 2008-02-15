@@ -111,6 +111,7 @@
 #define IDC_LIST                        2509
 #define IDC_EDIT1                       2510
 #define IDC_EDIT                        2510
+#define IDC_CLIPBOARD_INFO              2511
 #define ID_ACC_SENDBREAK                50001
 #define ID_ACC_COPY                     50002
 #define ID_ACC_NEWCONNECTION            50003
@@ -200,7 +201,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        121
 #define _APS_NEXT_COMMAND_VALUE         52022
-#define _APS_NEXT_CONTROL_VALUE         2511
+#define _APS_NEXT_CONTROL_VALUE         2512
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

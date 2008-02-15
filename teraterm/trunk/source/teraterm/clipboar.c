@@ -30,6 +30,8 @@ static BOOL CBRetryEcho;
 static BOOL CBSendCR;
 static BOOL CBDDE;
 
+static HFONT DlgClipboardFont;
+
 PCHAR CBOpen(LONG MemSize)
 {
   if (MemSize==0) return (NULL);
@@ -243,6 +245,9 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 {
 	POINT pt;
 	//char *p;
+	LOGFONT logfont;
+	HFONT font;
+	char uimsg[MAX_UIMSG];
 
 	switch (msg) {
 		case WM_INITDIALOG:
@@ -253,6 +258,31 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 				OutputDebugString(buf);
 			}
 #endif
+
+			font = (HFONT)SendMessage(hDlgWnd, WM_GETFONT, 0, 0);
+			GetObject(font, sizeof(LOGFONT), &logfont);
+			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgClipboardFont, ts.UILanguageFile)) {
+				SendDlgItemMessage(hDlgWnd, IDC_EDIT, WM_SETFONT, (WPARAM)DlgClipboardFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_CLIPBOARD_INFO, WM_SETFONT, (WPARAM)DlgClipboardFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgClipboardFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgClipboardFont, MAKELPARAM(TRUE,0));
+			}
+			else {
+				DlgClipboardFont = NULL;
+			}
+
+			GetWindowText(hDlgWnd, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_CLIPBOARD_TITLE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+			SetWindowText(hDlgWnd, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDC_CLIPBOARD_INFO, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_CLIPBOARD_INFO", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_CLIPBOARD_INFO, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDCANCEL, uimsg, sizeof(uimsg));
+			get_lang_msg("BTN_CANCEL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDOK, uimsg, sizeof(uimsg));
+			get_lang_msg("BTN_OK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
 
 			SendMessage(GetDlgItem(hDlgWnd, IDC_EDIT), WM_SETTEXT, 0, (LPARAM)ClipboardPtr);
 			
@@ -278,12 +308,21 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 
 					// hMemはクリップボードが保持しているので、破棄してはいけない。
 
+					if (DlgClipboardFont != NULL) {
+						DeleteObject(DlgClipboardFont);
+					}
+
 					EndDialog(hDlgWnd, IDOK);
 				}
 					break;
 
 				case IDCANCEL:
 					PasteCanceled = 1;
+
+					if (DlgClipboardFont != NULL) {
+						DeleteObject(DlgClipboardFont);
+					}
+
 					EndDialog(hDlgWnd, IDCANCEL);
 					break;
 
