@@ -13,7 +13,7 @@
 <h1>Differences from 2.3</h1>
 
 <p>
-There are differences between UTF-8 TeraTerm Pro with TTSSH2(TeraTerm 4.56) and TeraTerm 2.3 in the following table: 
+There are differences between UTF-8 TeraTerm Pro with TTSSH2(TeraTerm 4.58) and TeraTerm 2.3 in the following table: 
 </p>
 
 <h2>Feature Differences</h2>
@@ -40,7 +40,7 @@ There are differences between UTF-8 TeraTerm Pro with TTSSH2(TeraTerm 4.56) and 
 <tr>
 	<td>License</td>
 	<td>Proprietary[*2]</td>
-	<td>BSD license[*3]</td>
+	<td>Modified BSD license[*3]</td>
 </tr>
 
 <tr>
@@ -76,7 +76,7 @@ There are differences between UTF-8 TeraTerm Pro with TTSSH2(TeraTerm 4.56) and 
 <tr>
 	<td>Linked library</td>
 	<td>SSLeay, zlib</td>
-	<td>OpenSSL, zlib, Oniguruma</td>
+	<td>OpenSSL, zlib, Oniguruma, PuTTY</td>
 </tr>
 
 <tr>
@@ -88,13 +88,13 @@ There are differences between UTF-8 TeraTerm Pro with TTSSH2(TeraTerm 4.56) and 
 <tr>
 	<td>support SSH protocl</td>
 	<td>shell, port-forwarding, X11 forwarding</td>
-	<td>shell, port-forwarding, X11 forwarding</td>
+	<td>shell, port-forwarding, X11 forwarding, SCP</td>
 </tr>
 
 <tr>
 	<td>unsupport SSH protocl</td>
 	<td>SFTP, SCP</td>
-	<td>SFTP, SCP</td>
+	<td>SFTP</td>
 </tr>
 
 <tr>
@@ -110,6 +110,12 @@ There are differences between UTF-8 TeraTerm Pro with TTSSH2(TeraTerm 4.56) and 
 </tr>
 
 <tr>
+	<td>Pageant[*5] collaboration</td>
+	<td>No</td>
+	<td>Yes</td>
+</tr>
+
+<tr>
 	<td>Japanese character code</td>
 	<td>EUC-JP/Shift_JIS/JIS</td>
 	<td>EUC-JP/Shift_JIS/JIS/UTF-8/UTF-8 MAC</td>
@@ -118,7 +124,7 @@ There are differences between UTF-8 TeraTerm Pro with TTSSH2(TeraTerm 4.56) and 
 <tr>
 	<td>Unicode</td>
 	<td>Not supported</td>
-	<td>Support single language[*5]</td>
+	<td>Support single language[*6]</td>
 </tr>
 
 <tr>
@@ -134,7 +140,7 @@ There are differences between UTF-8 TeraTerm Pro with TTSSH2(TeraTerm 4.56) and 
 </tr>
 
 <tr>
-	<td>Heart beat[*6]</td>
+	<td>Heart beat[*7]</td>
 	<td>No</td>
 	<td>telnet, SSH1 and 2</td>
 </tr>
@@ -178,7 +184,7 @@ There are differences between UTF-8 TeraTerm Pro with TTSSH2(TeraTerm 4.56) and 
 <tr>
 	<td>I18N</td>
 	<td>No</td>
-	<td>Yes[*7]</td>
+	<td>Yes[*8]</td>
 </tr>
 
 </table>
@@ -186,13 +192,14 @@ There are differences between UTF-8 TeraTerm Pro with TTSSH2(TeraTerm 4.56) and 
 <p></p>
 
 <ul>
-  <li>[*1] You can not use Visual Studio 2005 Express Edition because the partial code of souce code is MFC(C++).
-  <li>[*2] Without written permission by the author (Takashi Teranishi), you may not distribute modified versions of this package, and may not distribute this package for profit.
-  <li>[*3] TeraTerm is distributed under <a href="http://www.opensource.org/licenses/bsd-license.php">Modified BSD License</a>.
-  <li>[*4] Icon designer is Tatsuhiko Sakamoto.
-  <li>[*5] TeraTerm can not simultaneously display multi languages because it has not completely implemented as Unicode API. Now TeraTerm mutually converts between Unicode(UCS-2) and MBCS. Also, Chinese version Windows can display Chinese characters when you configure the locale for Unicode.
-  <li>[*6] If there is no communication for a long time in NAT network, SSH session may disconnect because the router will clear NAT table.
-  <li>[*7] You can switch the messeage language by using the language file(lang\*.lng). You need to re-startup TeraTerm to active new messeage language.
+  <li>[*1] You can not use Visual Studio 2005 Express Edition because the partial code of souce code is MFC(C++).</li>
+  <li>[*2] Without written permission by the author (Takashi Teranishi), you may not distribute modified versions of this package, and may not distribute this package for profit.</li>
+  <li>[*3] TeraTerm is distributed under <a href="http://www.opensource.org/licenses/bsd-license.php">Modified BSD License</a>.</li>
+  <li>[*4] Icon designer is Tatsuhiko Sakamoto.</li>
+  <li>[*5] <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">An SSH authentication agent</a> for PuTTY and WinSCP.</li>
+  <li>[*6] TeraTerm can not simultaneously display multi languages because it has not completely implemented as Unicode API. Now TeraTerm mutually converts between Unicode(UCS-2) and MBCS. Also, Chinese version Windows can display Chinese characters when you configure the locale for Unicode.</li>
+  <li>[*7] If there is no communication for a long time in NAT network, SSH session may disconnect because the router will clear NAT table.</li>
+  <li>[*8] You can switch the messeage language by using the language file(lang\*.lng). You need to re-startup TeraTerm to active new messeage language.</li>
 </ul>
 
 <p></p>
@@ -410,6 +417,31 @@ Other new features are shown below.<br><br>
 	<td>can call TeraTerm window menu.</td>
 </tr>
 
+<tr>
+	<td>cygconnect</td>
+	<td>Connects to Cygwin. </td>
+</tr>
+
+<tr>
+	<td>scpsend</td>
+	<td>Sends a file from the host with the SCP protocol. </td>
+</tr>
+
+<tr>
+	<td>scprecv</td>
+	<td>Receives a file from the remote host with the SCP protocol. </td>
+</tr>
+
+<tr>
+	<td>getver</td>
+	<td>Get the version of TeraTerm. </td>
+</tr>
+
+<tr>
+	<td>setbaud</td>
+	<td>Causes Tera Term to change baud rate. </td>
+</tr>
+
 </table>
 
 
@@ -597,6 +629,51 @@ Other new features are shown below.<br><br>
 <tr>
 	<td>TelAutoDetect</td>
 	<td>controls telnet command detection.</td>
+</tr>
+
+<tr>
+	<td>ZmodemRcvCommand</td>
+	<td>Receive command for ZMODEM</td>
+</tr>
+
+<tr>
+	<td>XmodemRcvCommand</td>
+	<td>Receive command for XMODEM</td>
+</tr>
+
+<tr>
+	<td>ConfirmFileDragAndDrop</td>
+	<td>Confirmation of File Transfer by Drag & Drop</td>
+</tr>
+
+<tr>
+	<td>TranslateWheelToCursor</td>
+	<td>Mouse wheel action in application cursor mode</td>
+</tr>
+
+<tr>
+	<td>HostDialogOnStartup</td>
+	<td>Showing "New Connection" dialog on startup</td>
+</tr>
+
+<tr>
+	<td>MouseEventTracking</td>
+	<td>Mouse tracking mode</td>
+</tr>
+
+<tr>
+	<td>KillFocusCursor</td>
+	<td>Display the cursor even if the window comes out of focus</td>
+</tr>
+
+<tr>
+	<td>ConfirmChangePaste</td>
+	<td>Show the confirmation dialog when the Clipboard includes CR/LF by pasting</td>
+</tr>
+
+<tr>
+	<td>MaximizedBugTweak</td>
+	<td>How to scroll the screen when the window size is maximized</td>
 </tr>
 
 </table>
