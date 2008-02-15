@@ -43,7 +43,7 @@ static BOOL PrintAbortFlag = FALSE;
 /* pass-thru printing */
 static char PrnFName[MAXPATHLEN];
 static int HPrnFile = 0;
-static char PrnBuff[300];
+static char PrnBuff[TermWidthMax];
 static int PrnBuffCount = 0;
 
 static CPrnAbortDlg *PrnAbortDlg;

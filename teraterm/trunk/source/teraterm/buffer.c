@@ -20,7 +20,7 @@
 // URLを強調する（石崎氏パッチ 2005/4/2）
 #define URL_EMPHASIS 1
 
-#define BuffXMax 300
+#define BuffXMax TermWidthMax
 //#define BuffYMax 100000
 //#define BuffSizeMax 8000000
 // スクロールバッファの最大長を拡張 (2004.11.28 yutaka)

@@ -5332,7 +5332,7 @@ LONG CVTWindow::OnReceiveIpcMessage(UINT wParam, LONG lParam)
 	if (cds->dwData == IPC_BROADCAST_COMMAND) {
 		// 端末へ文字列を送り込む
 		// DDE通信に使う関数に変更。(2006.2.7 yutaka)
-		CBStartPaste(HVTWin, FALSE, 300/*CBBufSize*/, buf, len);
+		CBStartPaste(HVTWin, FALSE, TermWidthMax/*CBBufSize*/, buf, len);
 	}
 
 	return 0;
