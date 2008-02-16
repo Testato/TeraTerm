@@ -240,6 +240,9 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 		/* we disabled the password control, so fix the focus */
 		SetFocus(GetDlgItem(dlg, IDC_SSHUSETIS));
 	}
+	else if (default_method == SSH_AUTH_PAGEANT) {
+		SetFocus(GetDlgItem(dlg, IDC_SSHUSEPAGEANT));
+	}
 
 	if (pvar->auth_state.user != NULL) {
 		SetDlgItemText(dlg, IDC_SSHUSERNAME, pvar->auth_state.user);
