@@ -170,7 +170,7 @@ MessageBox <message> <title>::command \column{}\style{+B}MessageBox \style{-B}<m
 MessageBox <message> <title>::command \column{}\style{+B}MessageBox \style{-B}<message> <title> [<special>]
 Random <integer variable> <max value>::command \column{}\style{+B}Random \style{-B}<integer variable> <max value>
 RotateLeft <intvar> <intval> <count>::command \column{}\style{+B}RotateLeft \style{-B}<intvar> <intval> <count>
-RotateRight <intvar> <intval> <count>::command \column{}\style{+B}RotateLeft \style{-B}<intvar> <intval> <count>
+RotateRight <intvar> <intval> <count>::command \column{}\style{+B}RotateRight \style{-B}<intvar> <intval> <count>
 SetDate <date>::command \column{}\style{+B}SetDate \style{-B}<date>
 SetDlgPos <x> <y>::command \column{}\style{+B}SetDlgPos \style{-B}<x> <y>
 SetEnv <envname> <strvar>::command \column{}\style{+B}SetEnv \style{-B}<envname> <strvar>
