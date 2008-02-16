@@ -239,7 +239,7 @@
 #define HlpMacroCommandRestoresetup     92072
 #define HlpMacroCommandReturn           92073
 #define HlpMacroCommandRotateleft       92122
-#define HlpMacroCommandRorateright      92121
+#define HlpMacroCommandRotateright      92121
 #define HlpMacroCommandScprecv          92131
 #define HlpMacroCommandScpsend          92132
 #define HlpMacroCommandSend             92074
