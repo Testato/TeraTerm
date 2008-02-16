@@ -199,6 +199,11 @@ connect '<em>myserver</em> /ssh /1 /auth=publickey/user=<em>username</em> /passw
 ; Tera Term を起動する。SSH2 セッションを開き、ユーザ名とパスワードと秘密鍵ファイルのプロンプトは表示されない。
 connect '<em>myserver</em> /ssh /2 /auth=publickey /user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
 
+
+; Pageantを利用して、公開鍵認証で接続する。ユーザ名とパスワードと秘密鍵ファイルのプロンプトは表示されない。
+connect '<em>myserver</em> /ssh /auth=pageant /user=<em>username</em>'
+
+
 ; Tera Term を起動し、シリアルポート接続を開く。ポート番号は 1 から 256 の範囲内
 connect '/C=x'
 

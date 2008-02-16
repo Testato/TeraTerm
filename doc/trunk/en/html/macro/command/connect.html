@@ -199,6 +199,9 @@ connect '<em>myserver</em> /ssh /1 /auth=publickey/user=<em>username</em> /passw
 ; Run Tera Term, open SSH2 session and, not prompt for user name and password and use private key file
 connect '<em>myserver</em> /ssh /2 /auth=publickey /user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
 
+; TeraTerm automatically connects the remote host with the public key authentication, and not prompt for user name and password and use private key file.
+connect '<em>myserver</em> /ssh /auth=pageant /user=<em>username</em>'
+
 ; RunTera Term and open serial port connection. Port number is x=1..256
 connect '/C=x'
 
