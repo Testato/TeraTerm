@@ -3530,7 +3530,7 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 
 			pvar->showing_err = TRUE;
 			pvar->err_msg = NULL;
-#if 1
+#if 0
 			// XXX: "SECURITY WARINIG" dialogで ESC キーを押下すると、
 			// なぜかアプリケーションエラーとなるため、下記APIは削除。(2004.12.16 yutaka)
 			if (!SSHv1(pvar)) {
@@ -3538,6 +3538,8 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 						MB_TASKMODAL | MB_ICONEXCLAMATION);
 			}
 #else
+			// 問題なさそうなので SSH1 でもメッセージを
+			// 表示するように戻した。(2008.2.16 maya)
 			MessageBox(NULL, msg, "TTSSH",
 					   MB_TASKMODAL | MB_ICONEXCLAMATION);
 #endif
