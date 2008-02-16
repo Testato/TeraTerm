@@ -50,7 +50,7 @@ static WORD ParamAppendFlag;
 static WORD ParamXmodemOpt;
 static char ParamSecondFileName[256];
 
-#define CBBufSize 500
+#define CBBufSize TermWidthMax
 
 void GetClientHWnd(PCHAR HWndStr)
 {
