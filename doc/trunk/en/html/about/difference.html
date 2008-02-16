@@ -187,6 +187,12 @@ There are differences between UTF-8 TeraTerm Pro with TTSSH2(TeraTerm 4.58) and 
 	<td>Yes[*8]</td>
 </tr>
 
+<tr>
+	<td>Proxy</td>
+	<td>No</td>
+	<td>Yes[*9](HTTP, TELNET, SOCKS4, SOCKS5, SSL, HTTP+SSL, TELNET+SSL, SOCKS4+SSL, SOCKS5+SSL)</td>
+</tr>
+
 </table>
 
 <p></p>
@@ -200,6 +206,7 @@ There are differences between UTF-8 TeraTerm Pro with TTSSH2(TeraTerm 4.58) and 
   <li>[*6] TeraTerm can not simultaneously display multi languages because it has not completely implemented as Unicode API. Now TeraTerm mutually converts between Unicode(UCS-2) and MBCS. Also, Chinese version Windows can display Chinese characters when you configure the locale for Unicode.</li>
   <li>[*7] If there is no communication for a long time in NAT network, SSH session may disconnect because the router will clear NAT table.</li>
   <li>[*8] You can switch the messeage language by using the language file(lang\*.lng). You need to re-startup TeraTerm to active new messeage language.</li>
+  <li>[*9] Using <a href="http://yebisuya.dip.jp/Software/TTProxy/en/">TTProxy</a>.</li>
 </ul>
 
 <p></p>
@@ -221,7 +228,6 @@ Other new features are shown below.<br><br>
   <li>Support for VisualStyle(WindowsXP).</li>
   <li>Add new title format.</li>
   <li>Add new type of log collection.</li>
-  <li>Support for TELNET/HTTP/SOCKS proxy.</li>
   <li>Support for a default log file name(You can use strftime format).</li>
   <li>Add the wizard generating SSH authentication key.</li>
   <li>Add CygTerm configuration dialog.</li>
