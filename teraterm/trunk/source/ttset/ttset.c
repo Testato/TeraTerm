@@ -2365,6 +2365,9 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 
 	ts->HostName[0] = 0;
 	ts->KeyCnfFN[0] = 0;
+	/* Set AutoConnect true as default (2008.2.16 by steven)*/
+	ts->ComAutoConnect = TRUE;
+
 #ifndef NO_INET6
 	/* user specifies the protocol connecting to the host */
 	/* ts->ProtocolFamily = AF_UNSPEC; */
@@ -2596,8 +2599,6 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 		ts->PortType = IdSerial;
 		if (ParamCom > 0) {
 			ts->ComPort = ParamCom;
-			/* Don't display new connection dialog if COM port is specified explicitly (2006.9.15 maya) */
-			ts->ComAutoConnect = TRUE;
 		}
 		if (ParamBaud != IdBaudNone)
 			ts->Baud = ParamBaud;
