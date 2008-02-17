@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<TITLE>TeraTermソースコード解説</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<h1 class="center">TeraTermソースコード解説</h1>
+
+<hr width=80% align=center>
+
+<h2>はじめに</h2>
+　本文書では、TeraTermのソースコードについて解説をします。解説対象とするソースコードはバージョン"4.58"（2008年2月現在）のものをベースとしています。
+<hr>
+
+
+<h2>必要スキル</h2>
+　TeraTermのパッケージに含まれるほとんどのプログラムは、C言語で記述されています。一部のコードはC++言語で、MFC(Microsoft Foundation Class)が利用されています。Windows特有の処理を行うために、Win32 APIが多用されているため、APIの知識が必要となってきます。<br>
+　ソースコードをビルドするためには、Microsoft Visual Studio 2005 Standard Edition以上が必要です。Express EditionではMFCが利用できないため、ビルドができません。また、C++BuilderやTurbo C++ Explorer、gccなどのコンパイラにおいても、ビルドすることはできません。<br>
+　Windowsプログラミングに関する情報の源は、Microsoftが提供する「MSDNライブラリ」にあります。開発を行う際は、MSDNライブラリを頻繁に参照することになります。<br>
+　
+<ul>
+  <li><a href="http://msdn2.microsoft.com/en-us/library/default.aspx">MSDNライブラリ</a></li>
+  <li><a href="http://msdn2.microsoft.com/ja-jp/library/default.aspx">MSDNライブラリ（日本語版）</a></li>
+</ul>
+
+<p>
+　ただし、CygTermのみはCygwinのgccでコンパイルをします。ゆえに、CygTermはgccの機能を使った実装になっています。言語はC++です。
+</p>
+
+　TeraTermのメインエンジンはC++で実装されていますが、C言語的なコーディングがなされているため、TeraTermのソースコードを読み解くには、C言語に関する基礎知識があれば問題ないと言えます。ただし、Microsoft Visual C++(VC++)はANSI C準拠(C89)とはいえ、C99には未対応であるために、本来のC99相当の機能が独自に拡張されている部分もあります。そうした独自拡張された関数には、頭文字にアンダースコア(_)が付いているために、区別が付けやすくなっています（たとえば、_snprintf()など）。<br>
+　
+<hr>
+
+
+<h2>モジュール構成</h2>
+　TeraTermパッケージに含まれる実行モジュール（.exeと.dll）の関連図を以下に示します。実行ファイルの拡張子は".exe"になっており、必要に応じてDLLが動的リンクされます。いずれも32ビットプログラム(x86)であるために、x86-64やIA-64といった64ビット環境ではそのまま動作するかどうかは評価されていません。
+　
+<div align="center">
+<img src="image/module_relation.png" width=720 height=540>
+</div>
+
+　通常、ユーザがデスクトップやスタートメニューからアプリケーションを起動するときに、呼び出される実行ファイルは"ttermpro.exe"になります。
+
+
+<hr>
+
+
+<h2>古いバージョンのWindowsとの互換性維持</h2>
+
+<hr>
+
+
+</BODY>
+</HTML>
