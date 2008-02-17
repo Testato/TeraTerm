@@ -511,6 +511,10 @@
 			<param name="Local" value="html\reference\develop.txt">
 			<param name="ImageNumber" value="11">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="ソースコード解説">
+			<param name="Local" value="html\reference\sourcecode.html">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="MACRO ヘルプ">
