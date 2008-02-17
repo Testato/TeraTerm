@@ -663,19 +663,32 @@ WORD TTLEndWhile(BOOL mode)
 
 WORD TTLExec()
 {
-	TStrVal Str;
+	TStrVal Str,Str2;
 	WORD Err;
 
 	Err = 0;
 	GetStrVal(Str,&Err);
-
-	if ((Err==0) &&
-	    ((strlen(Str)==0) || (GetFirstChar()!=0)))
-		Err = ErrSyntax;
-
 	if (Err!=0) return Err;
 
-	WinExec(Str,SW_SHOW);
+	GetStrVal(Str2,&Err);
+	if (GetFirstChar()!=0)
+		return Err = ErrSyntax;
+
+	/*Expand the Exec macro command.(2008.2.16 by steven)*/
+	if (!strcmp(Str2,"hide"))
+		WinExec(Str,SW_HIDE);
+	else if(!strcmp(Str2,"minimize"))
+		WinExec(Str,SW_MINIMIZE);
+	else if(!strcmp(Str2,"maximize"))
+		WinExec(Str,SW_MAXIMIZE);
+	else if(Err!=0 || !strcmp(Str2,"show")) //when without command set to SW_SHOW
+	{
+		WinExec(Str,SW_SHOW);
+		Err = 0; //Here just no str2 command. Not syntax error.
+	}
+	else
+		return Err = ErrSyntax;
+
 	return Err;
 }
 
