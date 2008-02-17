@@ -24,7 +24,7 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.58">2008.2.16 (Ver 4.58 未リリース)</a>
+  <li class="history"><a name="teraterm_4.58">2008.2.17 (Ver 4.58 未リリース)</a>
     <ul>
       <li>アプリケーションカーソルモード時、マウスホイールの回転をカーソルキーとして送信できるようにした。
         <ul>
@@ -60,7 +60,7 @@
           <li>teraterm.ini に <a href="../setup/teraterm-win.html#maximize">MaximizedBugTweak</a> を追加した。デフォルトはon。</li>
         </ul></li>
       <li>マクロコマンド '<a href="../macro/command/getver.html">getver</a>' を追加した。</li>
-      <li>マクロコマンド '<a href="../macro/command/setbaud.html">setbaud</a>' を追加した。</li>
+      <li>マクロコマンド '<a href="../macro/command/setbaud.html">setbaud</a>' を追加した。Steven Yang氏に感謝します。</li>
       <li>マクロコマンド '<a href="../macro/command/showtt.html">showtt</a>' に3つのパラメータ(6, 7, 8)を追加した。Steven Yang氏に感謝します。</li>
       <li>TermType のデフォルト値を "vt100" から "xterm" に変更した。
         <ul>
@@ -74,6 +74,7 @@
       <li>リバースビデオ制御シーケンス(DECSCNM)が正しく働かないのを修正した。</li>
       <li>ウィンドウを最大化した状態で、teraterm.iniへ保存を行うと、最大化時のTerminalSizeが保存されていたバグを修正した。</li>
       <li>ファイル名をチェックするルーチンで、0x5C や 0x7C などを含むマルチバイト文字を不正な文字と判定する問題を修正した。</li>
+      <li>ポートタイプが"serial"の場合、TeraTermの起動時に自動接続しないバグを修正した。Steven Yang氏に感謝します。cf. <a href="http://www.neocom.ca/forum/viewtopic.php?t=748">TeraTerm com auto connect bug</a></li>
       <li><a href="#ttssh_2.46">SSH2対応TTSSH(2.46)</a>へ差し替えた</li>
       <li><a href="#ttproxy_1.0.0.15">TTProxy(1.0.0.15)</a>へ差し替えた</li>
     </ul>
