@@ -18,7 +18,7 @@
 </p>
 
 <pre class="macro-syntax">
-exec &lt;command line&gt;
+exec &lt;command line&gt; [&lt;show&gt;]
 </pre>
 
 <h2>解説</h2>
@@ -27,11 +27,22 @@ exec &lt;command line&gt;
 コマンドライン文字列 &lt;command line&gt; に従い、アプリケーションを起動する。
 </p>
 
+showパラメータには以下の文字列を指定することができる。
+<pre>
+hide
+minimize
+maximize
+show ;default parameters when no show command specified. 
+</pre>
+
 <h2>例</h2>
 
 <pre class="macro-example">
 <code>; 「メモ帳」を起動
 exec 'notepad readme.txt'
+
+; 「メモ帳」を最大化表示で起動
+exec 'notepad readme.txt' 'maximize'
 </code></pre>
 
 </body>
