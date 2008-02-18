@@ -3994,7 +3994,6 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 	int i;
 	char buf[MAXPATHLEN];
 	LRESULT ret;
-	static HDC label_hdc = NULL;
 	LOGFONT logfont;
 	HFONT font;
 	char uimsg[MAX_UIMSG];
@@ -4078,6 +4077,11 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 				SendMessage(hWnd, LB_INSERTSTRING, i, (LPARAM)buf);
 			}
 			SetupRGBbox(hDlgWnd, 0);
+#if 0
+			SendMessage(hDlgWnd, WM_CTLCOLORSTATIC,
+			            (WPARAM)label_hdc,
+			            (LPARAM)GetDlgItem(hDlgWnd, IDC_SAMPLE_COLOR));
+#endif
 
 			// ダイアログにフォーカスを当てる 
 			SetFocus(GetDlgItem(hDlgWnd, IDC_ALPHA_BLEND));
@@ -4091,7 +4095,11 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					ret = SendMessage(hWnd, LB_GETCURSEL, 0, 0);
 					if (ret != -1) {
 						SetupRGBbox(hDlgWnd, ret);
-						SendMessage(hDlgWnd, WM_CTLCOLORSTATIC, (WPARAM)label_hdc, (LPARAM)hWnd);
+#if 0
+						SendMessage(hDlgWnd, WM_CTLCOLORSTATIC,
+						            (WPARAM)label_hdc,
+						            (LPARAM)GetDlgItem(hDlgWnd, IDC_SAMPLE_COLOR));
+#endif
 					}
 					return TRUE;
 
@@ -4099,27 +4107,35 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 				case IDC_COLOR_GREEN | (EN_KILLFOCUS << 16):
 				case IDC_COLOR_BLUE | (EN_KILLFOCUS << 16):
 					{
-					BYTE r, g, b;
+						BYTE r, g, b;
 
-					hWnd = GetDlgItem(hDlgWnd, IDC_ANSI_COLOR);
-					ret = SendMessage(hWnd, LB_GETCURSEL, 0, 0);
-					if (ret < 0 && ret > sizeof(ts.ANSIColor)-1) {
-						return TRUE;
-					}
+						hWnd = GetDlgItem(hDlgWnd, IDC_ANSI_COLOR);
+						ret = SendMessage(hWnd, LB_GETCURSEL, 0, 0);
+						if (ret < 0 && ret > sizeof(ts.ANSIColor)-1) {
+							return TRUE;
+						}
 
-					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_RED);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
-					r = atoi(buf);
+						hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_RED);
+						SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+						r = atoi(buf);
 
-					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_GREEN);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
-					g = atoi(buf);
+						hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_GREEN);
+						SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+						g = atoi(buf);
 
-					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_BLUE);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
-					b = atoi(buf);
+						hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_BLUE);
+						SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+						b = atoi(buf);
 
-					ts.ANSIColor[ret] = RGB(r, g, b);
+						ts.ANSIColor[ret] = RGB(r, g, b);
+
+						// 255を超えたRGB値は補正されるので、それをEditに表示する (2007.2.18 maya)
+						SetupRGBbox(hDlgWnd, ret);
+#if 0
+						SendMessage(hDlgWnd, WM_CTLCOLORSTATIC,
+						            (WPARAM)label_hdc,
+						            (LPARAM)GetDlgItem(hDlgWnd, IDC_SAMPLE_COLOR));
+#endif
 					}
 
 					return TRUE;
@@ -4184,31 +4200,40 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 			return TRUE;
 
 #if 0
-		case WM_CTLCOLORSTATIC :
+		case WM_CTLCOLORSTATIC:
 			{
-				HDC		hDC = (HDC)wp;
-				HWND		hWnd = (HWND)lp;
-				LOGBRUSH	lb;
+				HDC hDC = (HDC)wp;
+				HWND hWnd = (HWND)lp;
 
-				if (label_hdc == NULL) {
-					label_hdc = hDC;
-				}
+				//if (label_hdc == NULL) {
+					hDC = GetWindowDC(GetDlgItem(hDlgWnd, IDC_SAMPLE_COLOR));
+				//	label_hdc = hDC;
+				//}
 
 				if ( hWnd == GetDlgItem(hDlgWnd, IDC_SAMPLE_COLOR) ) {
-					lr = SendMessage(hWnd, LB_GETCURSEL, 0, 0);
-					if (lr != -1) {
-						SetTextColor( hDC, ts.ANSIColor[lr]);
-					}
-					SetDlgItemText( hDlgWnd, IDC_SAMPLE_COLOR, "SAMPLE TEXT" ) ;
+					BYTE r, g, b;
 
-					lb.lbStyle = BS_SOLID;
-					lb.lbColor = RGB(0,0,0);
+					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_RED);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+					r = atoi(buf);
 
-					//hBrush = CreateBrushIndirect(&lb);
-					//return (BOOL)hBrush;
-					return (BOOL)(HBRUSH)GetStockObject(NULL_BRUSH) ;
+					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_GREEN);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+					g = atoi(buf);
 
+					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_BLUE);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+					b = atoi(buf);
+
+					OutputDebugPrintf("%06x\n", RGB(r, g, b));
+
+					SetBkMode(hDC, TRANSPARENT);
+					SetTextColor(hDC, RGB(r, g, b) );
+					ReleaseDC(hDlgWnd, hDC);
+
+					return (BOOL)(HBRUSH)GetStockObject(NULL_BRUSH);
 				}
+				return FALSE;
 			}
 			break ;
 #endif
