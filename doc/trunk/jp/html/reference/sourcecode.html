@@ -11,12 +11,6 @@
 
 <h1 class="center">TeraTermソースコード解説</h1>
 
-<ul>
-  <li><a href="#foreword">はじめに</a></li>
-  <li><a href="#skillset">必要スキル</a></li>
-  <li><a href="#module">モジュール構成</a></li>
-</ul>
-
 <hr width=80% align=center>
 
 <h2><a name="foreword">はじめに</a></h2>
@@ -50,8 +44,19 @@
 <img src="image/module_relation.png" width=720 height=540>
 </div>
 
-　通常、ユーザがデスクトップやスタートメニューからアプリケーションを起動するときに、呼び出される実行ファイルは"ttermpro.exe"になります。
-
+　通常、ユーザがデスクトップやスタートメニューからアプリケーションを起動するときに、呼び出される実行ファイルは"ttermpro.exe"になります。実行ファイルはさらに5つのDLLとダイナミックリンクしています。静的リンクを行い、単一のEXEファイルにしていないのは、1つのプロセスのメモリ占有率を抑えるためです。TeraTermでは多数の起動が行われることが想定されるため、初期設計段階からDLLに分割されています。一度読み込まれたDLLは、複数のプロセス間で共有することができます。<br>
+　<br>
+　
+　マクロスクリプトを実行する際は、"ttpmacro.exe"というまったく別のプロセスが呼び出されます。"ttermpro.exe"とプロセス単位で分けられているのは、マクロを単体で実行できるようにするためです。両プロセス間で、データのやりとりを行うためには、プロセス間通信が必要です。TeraTermでは、DDE(Dynamic Data Exchange)と呼ばれる現在ではレガシーとなってしまったしくみが採用されています。将来のWindowsではDDEがサポートされなくなる可能性があり、その場合TeraTerm上でマクロを実行することは一切できなくなります。<br>
+　<br>
+　
+　TTSSHやTTProxy、TTXKanjiMenuといったプラグイン形式のDLLは、TeraTermの起動時に明示的に LoadLibrary() を使ってダイナミックロードされます。ロード対象となるDLLのファイル名は、TTXInit()#ttplug.c において、"TTX*.DLL"というパターンにマッチしたものとなります。<br>
+　<br>
+　
+　"keycode.exe"と"ttpmenu.exe"、"LogMeTT.exe"は単体アプリケーションです。<br>
+　<br>
+　
+　Cygwin接続のしくみについては、別の節で説明します。
 
 <hr>
 
@@ -76,11 +81,33 @@
 <hr>
 
 
+<h2>プラグインサポート</h2>
+
+<hr>
+
+
 
 <h2>レジストリ</h2>
 　Windowsではアプリケーションのデータ保存のために、レジストリが伝統的に利用されていますが、TeraTermではその誕生がWindows 3.1までに遡るために、.iniファイルによるローカルディレクトリへの保存方法が標準となっています。<br>
 　パッケージに同梱されるCollectorやLogMeTT、CygTermに関してもローカルディレクトリへデータが保存されます。<br>
-　例外として、TeraTerm Menuはデフォルトでレジストリへ保存をします。カレントディレクトリに"ttpmenu.ini"（0バイトで可）を設置することで、レジストリの代わりに.iniファイルを使うようにすることもできます。
+　例外として、TeraTerm Menuはデフォルトでレジストリへ保存をします。カレントディレクトリに"ttpmenu.ini"（0バイトで可）を設置することで、レジストリの代わりに.iniファイルを使うようにすることもできます。<br>
+　<br>
+　
+　teraterm.iniファイルにエントリを追加した場合は、ReadIniFile()#ttset.cに設定を読み込みするようにします。
+
+<pre class=code>
+	ts->ConfirmChangePaste =
+		GetOnOff(Section, "ConfirmChangePaste", FName, TRUE);
+</pre>
+
+　WriteIniFile()#ttset.c に設定を書き込みするようにします。
+
+<pre class=code>
+	WriteOnOff(Section, "ConfirmChangePaste", FName,
+		ts->ConfirmChangePaste);
+</pre>
+
+　エントリに文字列を設定する場合は、Win32APIのGetPrivateProfileString()とWritePrivateProfileString()を使います。数値を扱いたい場合は、GetPrivateProfileInt()とWriteInt()を使います。
 
 <hr>
 
@@ -95,6 +122,16 @@
 
 
 <h2>古いバージョンのWindowsとの互換性維持</h2>
+
+<hr>
+
+
+<h2>DDEによるプロセス間通信</h2>
+
+<ul>
+  <li><a href="http://msdn2.microsoft.com/en-us/library/ms648711(VS.85).aspx">Dynamic Data Exchange（MSDNライブラリ）</a></li>
+</ul>
+
 
 <hr>
 
