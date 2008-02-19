@@ -183,13 +183,48 @@
 
 　DDEは、TCPによるネットワーク通信と似ており、サーバとクライアント間を一対一で接続し、通信を行います。アプリケーションがDDEによる通信を行うために、DDEML(Dynamic Data Exchange Management Library)と呼ばれるライブラリをWin32 APIとして提供されています。<br>
 　DDE通信を行うために、一方がサーバとなり、他方がクライアントになる必要があります。また、通信のセッションをシステム全体でユニークとするために、識別情報が必要です。TCP通信ではIPアドレスとポート番号が使われますが、DDE通信では「サービス名」と「トピック名」の組み合わせが使われます。TeraTermではサービス名は"TERATERM"という文字列が使われ、トピック名はTeraTerm本体のウィンドウハンドル(HVTWin)の16進数値を文字列化したものが使われています。<br>
-　このようなしくみになっているために、マクロスクリプトからまったく別のTeraTermへコマンドを送ることはできません。
+　このようなしくみになっているために、マクロスクリプトからまったく別のTeraTermへコマンドを送ることはできません。<br>
 
 <div align="center">
 <img src="image/dde.png" width=720 height=540>
 </div>
 
-　上図に示すように、TeraTerm本体("ttermpro.exe")がDDEサーバとなり、マクロプログラム("ttpmacro.exe")がDDEクライアントとなります。
+　上図に示すように、TeraTerm本体("ttermpro.exe")がDDEサーバとなり、マクロプログラム("ttpmacro.exe")がDDEクライアントとなります。DDEでは、やりとりするデータの塊のことを「トランザクション」と呼びます。トランザクションには以下に示すような何種類かがあります。タイプは"ddeml.h"でマクロ定義されています。<br>
+
+<p>
+<table border=1 align=center>
+<tr>
+  <th>タイプ</th>
+  <th>意味</th>
+</tr>
+
+<tr>
+  <td>XTYP_ADVREQ</td>
+  <td>DDEサーバがクライアントへデータを送るために、DDEサーバが自分自身に送るメッセージ。</td>
+</tr>
+
+<tr>
+  <td>XTYP_POKE</td>
+  <td>DDEクライアントからサーバへデータを送る。</td>
+</tr>
+
+<tr>
+  <td>XTYP_ADVSTART</td>
+  <td>DDEサーバに対してアドバイスループの開始を指示する。</td>
+</tr>
+
+<tr>
+  <td>XTYP_ADVDATA</td>
+  <td>DDEクライアントにデータを定期的に送る。</td>
+</tr>
+
+<tr>
+  <td>XTYP_EXECUTE</td>
+  <td>DDEサーバに文字列を送り、何らかの処理をサーバに指示する。</td>
+</tr>
+
+</table>
+</p>
 
 
   <h3>ライブラリ</h3>
