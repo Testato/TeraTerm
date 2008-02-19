@@ -664,31 +664,35 @@ WORD TTLEndWhile(BOOL mode)
 WORD TTLExec()
 {
 	TStrVal Str,Str2;
+	int mode = SW_SHOW;
 	WORD Err;
 
 	Err = 0;
 	GetStrVal(Str,&Err);
+
+	if (CheckParameterGiven()) {
+		GetStrVal(Str2, &Err);
+		if (Err!=0) return Err;
+
+		if (_stricmp(Str2, "hide") == 0)
+			mode = SW_HIDE;
+		else if (_stricmp(Str2, "minimize") == 0)
+			mode = SW_MINIMIZE;
+		else if (_stricmp(Str2, "maximize") == 0)
+			mode = SW_MAXIMIZE;
+		else if (_stricmp(Str2, "show") == 0)
+			mode = SW_SHOW;
+		else
+			Err = ErrSyntax;
+	}
+
+	if ((Err==0) &&
+	    ((strlen(Str)==0) || (GetFirstChar()!=0)))
+		Err = ErrSyntax;
+
 	if (Err!=0) return Err;
 
-	GetStrVal(Str2,&Err);
-	if (GetFirstChar()!=0)
-		return Err = ErrSyntax;
-
-	/*Expand the Exec macro command.(2008.2.16 by steven)*/
-	if (!strcmp(Str2,"hide"))
-		WinExec(Str,SW_HIDE);
-	else if(!strcmp(Str2,"minimize"))
-		WinExec(Str,SW_MINIMIZE);
-	else if(!strcmp(Str2,"maximize"))
-		WinExec(Str,SW_MAXIMIZE);
-	else if(Err!=0 || !strcmp(Str2,"show")) //when without command set to SW_SHOW
-	{
-		WinExec(Str,SW_SHOW);
-		Err = 0; //Here just no str2 command. Not syntax error.
-	}
-	else
-		return Err = ErrSyntax;
-
+	WinExec(Str, mode);
 	return Err;
 }
 
