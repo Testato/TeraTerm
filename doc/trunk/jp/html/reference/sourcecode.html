@@ -163,19 +163,42 @@
 <hr>
 
 
-<h2>DDEによるプロセス間通信</h2>
-　
+<h2>デバッグ手法</h2>
 
+<hr>
+
+
+<h2>DDEによるプロセス間通信</h2>
+  <h3>概要</h3>
+　DDE(Dynamic Data Exchange)の誕生は、1987年のWindows 2.0までに遡ります。DDEはプロセス間通信を行うためのしくみですが、現在ではレガシーな方式であり、ほとんどのアプリケーションでは利用されていません。Windowsにおけるプロセス間通信といえば、メールスロットや名前付きパイプ、OLEなどが定番です。<br>
+　かつては、DDEによるプロセス間の通信データをキャプチャすることができる「DDEスパイ」(DDESPY.EXE)というツールがVisual Studioに付属していましたが、現在のVisual Studioにはもはや含まれていません。<br>
+　DDEに関するリファレンスはMSDNライブラリから参照することができます。<br>
+
+<p>
 <ul>
   <li><a href="http://msdn2.microsoft.com/en-us/library/ms648711(VS.85).aspx">Dynamic Data Exchange（MSDNライブラリ）</a></li>
   <li><a href="http://msdn2.microsoft.com/en-us/library/ms648712(VS.85).aspx">Dynamic Data Exchange Management Library（MSDNライブラリ）</a></li>
 </ul>
+</p>
 
+　DDEは、TCPによるネットワーク通信と似ており、サーバとクライアント間を一対一で接続し、通信を行います。アプリケーションがDDEによる通信を行うために、DDEML(Dynamic Data Exchange Management Library)と呼ばれるライブラリをWin32 APIとして提供されています。<br>
+　DDE通信を行うために、一方がサーバとなり、他方がクライアントになる必要があります。また、通信のセッションをシステム全体でユニークとするために、識別情報が必要です。TCP通信ではIPアドレスとポート番号が使われますが、DDE通信では「サービス名」と「トピック名」の組み合わせが使われます。TeraTermではサービス名は"TERATERM"という文字列が使われ、トピック名はTeraTerm本体のウィンドウハンドル(HVTWin)の16進数値を文字列化したものが使われています。<br>
+　このようなしくみになっているために、マクロスクリプトからまったく別のTeraTermへコマンドを送ることはできません。
 
 <div align="center">
 <img src="image/dde.png" width=720 height=540>
 </div>
 
+　上図に示すように、TeraTerm本体("ttermpro.exe")がDDEサーバとなり、マクロプログラム("ttpmacro.exe")がDDEクライアントとなります。
+
+
+  <h3>ライブラリ</h3>
+
+
+  <h3>設計と実装</h3>
+
+
+  <h3>バッファの管理</h3>
 
 
 <hr>
