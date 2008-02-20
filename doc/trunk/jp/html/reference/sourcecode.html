@@ -168,7 +168,135 @@
 <hr>
 
 
-<h2>DDEによるプロセス間通信</h2>
+<h2>マルチスレッド</h2>
+　Windowsのアプリケーションはマルチスレッドで設計されることがほとんどですが、Windows 3.1から95の時代ではあまり一般的ではありませんでした。そのため、元々TeraTermはマルチスレッド化されていません。ソースコードを見ると分かるように、グローバル変数が多用されているため、ほとんどの処理がスレッドセーフではありません。<br>
+　ただし、一部の処理においては _beginthreadex() API を使ってスレッドが生成されています。以下にスレッド生成箇所を示します。
+
+<p>
+<div align=center><b>TeraTerm</b></div>
+<table border=1 align=center>
+<tr>
+  <th>生成箇所</th>
+  <th>ソースファイル</th>
+</tr>
+
+<tr>
+  <td>シリアル接続</td>
+  <td>CommStart()#commlib.c</td>
+</tr>
+
+<tr>
+  <td>TELNETキープアライブ</td>
+  <td>TelStartKeepAliveThread()#telnet.c</td>
+</tr>
+
+<tr>
+  <td>IPv4/v6ソケットの生成</td>
+  <td>WSAAsyncGetAddrInfo()#WSAAsyncGetAddrInfo.c</td>
+</tr>
+</table>
+
+<br>
+
+<div align=center><b>TTSSH</b></div>
+<table border=1 align=center>
+<tr>
+  <th>生成箇所</th>
+  <th>ソースファイル</th>
+</tr>
+
+<tr>
+  <td>SSHキープアライブ</td>
+  <td>start_ssh_heartbeat_thread()#ssh.c</td>
+</tr>
+
+<tr>
+  <td>SCP送信処理</td>
+  <td>SSH2_scp_tolocal()#ssh.c</td>
+</tr>
+
+<tr>
+  <td>SCP受信処理</td>
+  <td>SSH2_scp_fromremote()#ssh.c</td>
+</tr>
+</table>
+</p>
+
+　すでに説明したとおり、TeraTerm（TTSSH含む）の内部処理はスレッドセーフではないため、シンプルにスレッドを生成し、スレッド内から送受信処理等を行おうとすると、不具合が発生してしまいます。<br>
+　TELNETやSSHのキープアライブ（ハートビート）処理を実現するためには、定期的にパケットの送信処理を行う必要があります。また、SCPによるファイル送受信を行う際においても、ファイルの送信処理中に、ユーザの端末操作のレスポンスを落とさないために、スレッドの使用が不可欠です。<br>
+　そこで、マルチスレッドを使う場合は、モードレスダイアログを非表示で作成したあとに、_beginthreadex() APIでスレッドを生成し、実際の処理はモードレスダイアログに行わせるという手段を使用しています。このしくみにより、マルチスレッドを使いながら、スレッドセーフを保つことができます。以下に、コード例を示します。<br>
+
+<pre class=code>
+#define WM_SEND_HEARTBEAT (WM_USER + 1)
+
+static LRESULT CALLBACK telnet_heartbeat_dlg_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
+{
+
+	switch (msg) {
+		case WM_INITDIALOG:
+			return FALSE;
+
+		case WM_SEND_HEARTBEAT:
+			TelSendNOP();
+			return TRUE;
+			break;
+
+		case WM_COMMAND:
+			break;
+
+		case WM_CLOSE:
+			return TRUE;
+
+		case WM_DESTROY:
+			return TRUE;
+
+		default:
+			return FALSE;
+	}
+	return TRUE;
+}
+
+static unsigned _stdcall TelKeepAliveThread(void *dummy) {
+  static int instance = 0;
+
+  if (instance > 0)
+    return 0;
+  instance++;
+
+  while (cv.Open && nop_interval > 0) {
+    if (time(NULL) >= cv.LastSendTime + nop_interval) {
+		SendMessage(keepalive_dialog, WM_SEND_HEARTBEAT, 0, 0);
+    }
+
+    Sleep(100);
+  }
+  instance--;
+  return 0;
+}
+
+void TelStartKeepAliveThread() {
+  unsigned tid;
+
+  if (ts.TelKeepAliveInterval > 0) {
+    nop_interval = ts.TelKeepAliveInterval;
+
+	keepalive_dialog = CreateDialog(hInst, MAKEINTRESOURCE(IDD_BROADCAST_DIALOG),
+               HVTWin, (DLGPROC)telnet_heartbeat_dlg_proc);
+
+    keepalive_thread = (HANDLE)_beginthreadex(NULL, 0, TelKeepAliveThread, NULL, 0, &tid);
+    if (keepalive_thread == (HANDLE)-1) {
+      nop_interval = 0;
+    }
+  }
+}
+</pre>
+
+
+
+<hr>
+
+
+<h2><a name="dde">DDEによるプロセス間通信</a></h2>
   <h3>概要</h3>
 　DDE(Dynamic Data Exchange)の誕生は、1987年のWindows 2.0までに遡ります。DDEはプロセス間通信を行うためのしくみですが、現在ではレガシーな方式であり、ほとんどのアプリケーションでは利用されていません。Windowsにおけるプロセス間通信といえば、メールスロットや名前付きパイプ、OLEなどが定番です。<br>
 　かつては、DDEによるプロセス間の通信データをキャプチャすることができる「DDEスパイ」(DDESPY.EXE)というツールがVisual Studioに付属していましたが、現在のVisual Studioにはもはや含まれていません。<br>
