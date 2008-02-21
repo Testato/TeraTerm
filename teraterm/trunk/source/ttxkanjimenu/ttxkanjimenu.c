@@ -137,7 +137,7 @@ static void PASCAL FAR TTXModifyPopupMenu(HMENU menu) {
 static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
 	WORD val;
 
-	if( (cmd > ID_MI_KANJIRECV) && (cmd <= ID_MI_KANJIRECV+IdUTF8)) {
+	if( (cmd > ID_MI_KANJIRECV) && (cmd <= ID_MI_KANJIRECV+IdUTF8m)) {
 		// 範囲チェックを追加 
 		// TTProxyのバージョンダイアログを開くと、当該ハンドラが呼ばれ、誤動作していたのを修正。
 		// (2007.7.13 yutaka)
