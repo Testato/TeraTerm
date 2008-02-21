@@ -699,7 +699,6 @@ BTN_CONTINUE=&Continue
 [TTProxy]
 DLG_TAHOMA_FONT=Tahoma,8,0
 
-LCID=1033 ; 0x0409
 NEMU_SETUP=&Proxy...
 MENU_ABOUT=About TT&Proxy...
 
