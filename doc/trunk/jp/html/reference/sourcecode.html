@@ -383,8 +383,23 @@ void TelStartKeepAliveThread() {
 </tr>
 
 <tr>
-  <td></td>
-  <td></td>
+  <td>DdeCmpStringHandles</td>
+  <td>2つの文字列ハンドルを比較する。</td>
+</tr>
+
+<tr>
+  <td>DdeClientTransaction</td>
+  <td>クライアントからサーバへトランザクションを送ることができる。トランザクションタイプとして、XTYP_REQUEST・XTYP_EXECUTE・XTYP_ADVSTART・XTYP_POKEなどが指定できる。サーバからのACKを待つまでのタイムアウト時間を指定することができ、TeraTermではほとんど"1000ミリ秒（1秒）"が指定されている。ただし、ACKを確認するケースにおいては"5000ミリ秒（5秒）"が指定されている。</td>
+</tr>
+
+<tr>
+  <td>DdeAccessData</td>
+  <td>DDEハンドルから実際のデータへのポインタを取得する。データの取り出しが終わったら、DdeUnaccessData()を呼び出すこと。</td>
+</tr>
+
+<tr>
+  <td>DdeCreateDataHandle</td>
+  <td>DDEオブジェクトを作成し、ハンドルを返す。DDEサーバのアドバイズループや、XTYP_REQUESTトランザクション受信時に、DDEクライアントへデータを送るために使われている。</td>
 </tr>
 
 <tr>
