@@ -2,10 +2,15 @@
 # マクロコマンドのドキュメント類のチェックを行う
 #
 # [実行方法]
+#   __END__以降のマクロ列を検証する
 #   >perl macrotemplate.pl
+#
+#   指定したマクロを検証する
+#   >perl macrotemplate.pl scpsend
 #
 # [改版履歴]
 # 1.0 (2008.02.16 Yutaka Hirata)
+# 1.1 (2008.02.23 Yutaka Hirata)
 #
 
 $macroidfile = '..\source\ttmacro\ttmparse.h';
@@ -18,12 +23,18 @@ $enhhpfile = '..\..\doc\en\teraterm.hhp';
 $jphhpfile = '..\..\doc\jp\teraterm.hhp';
 $keyfile = '..\release\keyfile.ini';
 
-while (<DATA>) {
-	chomp;
-	if (/(.+)=.*/) {
-		$key = lc($1);
-		print "==== $key マクロを検証中...\n";
-		do_main($key);
+if ($#ARGV != -1) {
+	print "$ARGV[0]\n";
+	do_main(lc($ARGV[0]));
+
+} else {
+	while (<DATA>) {
+		chomp;
+		if (/(.+)=.*/) {
+			$key = lc($1);
+			print "==== $key マクロを検証中...\n";
+			do_main($key);
+		}
 	}
 }
 exit(0);
