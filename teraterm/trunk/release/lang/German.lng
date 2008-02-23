@@ -2,7 +2,7 @@
 DLG_SYSTEM_FONT=System,14,0
 DLG_TAHOMA_FONT=Tahoma,8,0
 
-MENU_FILE=&Datei
+MENU_FILE=Datei(&F)
 MENU_FILE_NEW=&Neue Verbindung...\tAlt+N
 MENU_FILE_DUPLICATE=&Verbindung duplizieren\tAlt+D
 MENU_FILE_GYGWIN=&Cygwin Verbindung\tAlt+G
