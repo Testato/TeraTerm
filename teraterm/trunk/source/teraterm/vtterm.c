@@ -162,6 +162,7 @@ void ResetTerminal() /*reset variables but don't update screen */
   CharAttr.Fore = AttrDefaultFG;
   CharAttr.Back = AttrDefaultBG;
   Special = FALSE;
+  BuffSetCurCharAttr(CharAttr);
 
   /* Various modes */
   InsertMode = FALSE;
@@ -1472,50 +1473,60 @@ void CSSetAttr()
 			CharAttr.Attr2 = AttrDefault;
 			CharAttr.Fore = AttrDefaultFG;
 			CharAttr.Back = AttrDefaultBG;
+			BuffSetCurCharAttr(CharAttr);
 			break;
 
 		case   1:	/* Bold */
 			CharAttr.Attr |= AttrBold;
+			BuffSetCurCharAttr(CharAttr);
 			break;
 
 		case   4:	/* Under line */
 			CharAttr.Attr |= AttrUnder;
+			BuffSetCurCharAttr(CharAttr);
 			break;
 
 		case   5:	/* Blink */
 			CharAttr.Attr |= AttrBlink;
+			BuffSetCurCharAttr(CharAttr);
 			break;
 
 		case   7:	/* Reverse */
 			CharAttr.Attr |= AttrReverse;
+			BuffSetCurCharAttr(CharAttr);
 			break;
 
 		case  22:	/* Bold off */
 			CharAttr.Attr &= ~ AttrBold;
+			BuffSetCurCharAttr(CharAttr);
 			break;
 
 		case  24:	/* Under line off */
 			CharAttr.Attr &= ~ AttrUnder;
+			BuffSetCurCharAttr(CharAttr);
 			break;
 
 		case  25:	/* Blink off */
 			CharAttr.Attr &= ~ AttrBlink;
+			BuffSetCurCharAttr(CharAttr);
 			break;
 
 		case  27:	/* Reverse off */
 			CharAttr.Attr &= ~ AttrReverse;
+			BuffSetCurCharAttr(CharAttr);
 			break;
 
-		case  30:	/* text color */
+		case  30:
 		case  31:
 		case  32:
 		case  33:
 		case  34:
 		case  35:
 		case  36:
-		case  37:
+		case  37:	/* text color */
 			CharAttr.Attr2 |= Attr2Fore;
 			CharAttr.Fore = P - 30;
+			BuffSetCurCharAttr(CharAttr);
 			break;
 
 		case  38:	/* text color (256color mode) */
@@ -1528,6 +1539,7 @@ void CSSetAttr()
 					}
 					CharAttr.Attr2 |= Attr2Fore;
 					CharAttr.Fore = P;
+					BuffSetCurCharAttr(CharAttr);
 				}
 			}
 			break;
@@ -1535,18 +1547,20 @@ void CSSetAttr()
 		case  39:	/* Reset text color */
 			CharAttr.Attr2 &= ~ Attr2Fore;
 			CharAttr.Fore = AttrDefaultFG;
+			BuffSetCurCharAttr(CharAttr);
 			break;
 
-		case  40:	/* Back color */
+		case  40:
 		case  41:
 		case  42:
 		case  43:
 		case  44:
 		case  45:
 		case  46:
-		case  47:
+		case  47:	/* Back color */
 			CharAttr.Attr2 |= Attr2Back;
 			CharAttr.Back = P - 40;
+			BuffSetCurCharAttr(CharAttr);
 			break;
 
 		case  48:	/* Back color (256color mode) */
@@ -1559,6 +1573,7 @@ void CSSetAttr()
 					}
 					CharAttr.Attr2 |= Attr2Back;
 					CharAttr.Back = P;
+					BuffSetCurCharAttr(CharAttr);
 				}
 			}
 			break;
@@ -1566,12 +1581,14 @@ void CSSetAttr()
 		case  49:	/* Reset back color */
 			CharAttr.Attr2 &= ~ Attr2Back;
 			CharAttr.Back = AttrDefaultBG;
+			BuffSetCurCharAttr(CharAttr);
 			break;
 
 		case 100:	/* Reset text and back color */
 			CharAttr.Attr2 &= ~ (Attr2Fore | Attr2Back);
 			CharAttr.Fore = AttrDefaultFG;
 			CharAttr.Back = AttrDefaultBG;
+			BuffSetCurCharAttr(CharAttr);
 			break;
 
 //		default:
@@ -1673,6 +1690,7 @@ void CSSetAttr()
 		  default: CharAttr.Fore = Param[3]; break;
 		}
 		CharAttr.Attr2 |= Attr2Fore;
+		BuffSetCurCharAttr(CharAttr);
 	      }
 	      break;
 	  }
@@ -1903,6 +1921,7 @@ void CSSetAttr()
     CharAttr.Fore = AttrDefaultFG;
     CharAttr.Back = AttrDefaultBG;
     Special = FALSE;
+    BuffSetCurCharAttr(CharAttr);
 
     // status buffers
     ResetSBuffers();

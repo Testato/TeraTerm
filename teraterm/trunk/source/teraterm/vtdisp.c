@@ -53,6 +53,7 @@ static BOOL CaretEnabled = TRUE;
 // ---- device context and status flags
 static HDC VTDC = NULL; /* Device context for VT window */
 static TCharAttr DCAttr;
+static TCharAttr CurCharAttr;
 static BOOL DCReverse;
 static HFONT DCPrevFont;
 
@@ -2290,12 +2291,20 @@ void DispChangeBackground()
 {
   DispReleaseDC();
   if (Background != NULL) DeleteObject(Background);
-#ifdef ALPHABLEND_TYPE2
-  Background = CreateSolidBrush(BGVTColor[1]);
-#else
-  Background = CreateSolidBrush(ts.VTColor[1]);
-#endif  // ALPHABLEND_TYPE2
 
+  if ((CurCharAttr.Attr2 & Attr2Back) != 0) {
+    if ((CurCharAttr.Back<16) && ((CurCharAttr.Attr&AttrBlink)!=0) == ((CurCharAttr.Back&7)==0))
+      Background = CreateSolidBrush(ANSIColor[CurCharAttr.Back ^ 8]);
+    else
+      Background = CreateSolidBrush(ANSIColor[CurCharAttr.Back]);
+  }
+  else {
+#ifdef ALPHABLEND_TYPE2
+    Background = CreateSolidBrush(BGVTColor[1]);
+#else
+    Background = CreateSolidBrush(ts.VTColor[1]);
+#endif  // ALPHABLEND_TYPE2
+  }
 
   InvalidateRect(HVTWin,NULL,TRUE);
 }
@@ -3245,4 +3254,23 @@ COLORREF DispGetANSIColor(int num)
 	return ANSIColor[0];
 
   return ANSIColor[num];
+}
+
+void DispSetCurCharAttr(TCharAttr Attr) {
+  CurCharAttr = Attr;
+  if (Background != NULL) DeleteObject(Background);
+
+  if ((CurCharAttr.Attr2 & Attr2Back) != 0) {
+    if ((CurCharAttr.Back<16) && ((CurCharAttr.Attr&AttrBlink)!=0) == ((CurCharAttr.Back&7)==0))
+      Background = CreateSolidBrush(ANSIColor[CurCharAttr.Back ^ 8]);
+    else
+      Background = CreateSolidBrush(ANSIColor[CurCharAttr.Back]);
+  }
+  else {
+#ifdef ALPHABLEND_TYPE2
+    Background = CreateSolidBrush(BGVTColor[1]);
+#else
+    Background = CreateSolidBrush(ts.VTColor[1]);
+#endif  // ALPHABLEND_TYPE2
+  }
 }

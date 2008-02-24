@@ -76,6 +76,7 @@ void DispSetNearestColors(int start, int end, HDC DispCtx);
 int TCharAttrCmp(TCharAttr a, TCharAttr b);
 void DispSetANSIColor(int num, COLORREF color);
 COLORREF DispGetANSIColor(int num);
+void DispSetCurCharAttr(TCharAttr Attr);
 
 extern int WinWidth, WinHeight;
 extern HFONT VTFont[AttrFontMask+1];

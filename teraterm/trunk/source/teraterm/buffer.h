@@ -61,6 +61,7 @@ void ShowStatusLine(int Show);
 #ifndef NO_COPYLINE_FIX
 void SetLineContinued();
 #endif /* NO_COPYLINE_FIX */
+void BuffSetCurCharAttr(TCharAttr Attr);
 
 extern int StatusLine;
 extern int CursorTop, CursorBottom;
