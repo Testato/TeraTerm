@@ -120,10 +120,7 @@ void ResetSBuffers()
 {
   SBuff1.CursorX = 0;
   SBuff1.CursorY = 0;
-  SBuff1.Attr.Attr = AttrDefault;
-  SBuff1.Attr.Attr2 = AttrDefault;
-  SBuff1.Attr.Fore = AttrDefaultFG;
-  SBuff1.Attr.Back = AttrDefaultBG;
+  SBuff1.Attr = DefCharAttr;
   if (ts.Language==IdJapanese)
   {
     SBuff1.Gn[0] = IdASCII;
@@ -157,10 +154,7 @@ void ResetTerminal() /*reset variables but don't update screen */
   BuffReset();
 
   /* Attribute */
-  CharAttr.Attr = AttrDefault;
-  CharAttr.Attr2 = AttrDefault;
-  CharAttr.Fore = AttrDefaultFG;
-  CharAttr.Back = AttrDefaultBG;
+  CharAttr = DefCharAttr;
   Special = FALSE;
   BuffSetCurCharAttr(CharAttr);
 
@@ -1469,10 +1463,7 @@ void CSSetAttr()
 		if (P<0) P = 0;
 		switch (P) {
 		case   0:	/* Clear all */
-			CharAttr.Attr = AttrDefault;
-			CharAttr.Attr2 = AttrDefault;
-			CharAttr.Fore = AttrDefaultFG;
-			CharAttr.Back = AttrDefaultBG;
+			CharAttr = DefCharAttr;
 			BuffSetCurCharAttr(CharAttr);
 			break;
 
@@ -1584,15 +1575,41 @@ void CSSetAttr()
 			BuffSetCurCharAttr(CharAttr);
 			break;
 
-		case 100:	/* Reset text and back color */
-			CharAttr.Attr2 &= ~ (Attr2Fore | Attr2Back);
-			CharAttr.Fore = AttrDefaultFG;
-			CharAttr.Back = AttrDefaultBG;
+		case 90:
+		case 91:
+		case 92:
+		case 93:
+		case 94:
+		case 95:
+		case 96:
+		case 97:	/* aixterm style text color */
+			CharAttr.Attr2 |= Attr2Fore;
+			CharAttr.Fore = P - 90 + 8;
 			BuffSetCurCharAttr(CharAttr);
 			break;
 
-//		default:
-//			;
+		case 100:
+			if ((ts.ColorFlag & CF_FULLCOLOR) == 0) {
+				/* Reset text and back color */
+				CharAttr.Attr2 &= ~ (Attr2Fore | Attr2Back);
+				CharAttr.Fore = AttrDefaultFG;
+				CharAttr.Back = AttrDefaultBG;
+				BuffSetCurCharAttr(CharAttr);
+				break;
+			}
+			/* fall through to aixterm style back color */
+
+		case 101:
+		case 102:
+		case 103:
+		case 104:
+		case 105:
+		case 106:
+		case 107:	/* aixterm style back color */
+			CharAttr.Attr2 |= Attr2Back;
+			CharAttr.Back = P - 100 + 8;
+			BuffSetCurCharAttr(CharAttr);
+			break;
 		}
 	}
 }
@@ -1916,10 +1933,7 @@ void CSSetAttr()
     Send8BitMode = ts.Send8BitCtrl;
 
     /* Attribute */
-    CharAttr.Attr = AttrDefault;
-    CharAttr.Attr2 = AttrDefault;
-    CharAttr.Fore = AttrDefaultFG;
-    CharAttr.Back = AttrDefaultBG;
+    CharAttr = DefCharAttr;
     Special = FALSE;
     BuffSetCurCharAttr(CharAttr);
 
