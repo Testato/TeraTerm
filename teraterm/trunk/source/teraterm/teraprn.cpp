@@ -35,7 +35,7 @@ static RECT Margin;
 static COLORREF White, Black;
 static int PrnX, PrnY;
 static int PrnDx[256];
-static BYTE PrnAttr, PrnAttr2;
+static TCharAttr PrnAttr;
 
 static BOOL Printing = FALSE;
 static BOOL PrintAbortFlag = FALSE;
@@ -178,6 +178,12 @@ int VTPrintInit(int PrnFlag)
   POINT PPI, PPI2;
   HDC DC;
   int i;
+  TCharAttr TempAttr = {
+    AttrDefault,
+    AttrDefault,
+    AttrDefaultFG,
+    AttrDefaultBG
+  };
 
   Sel = (PrnFlag & IdPrnSelectedText)!=0;
   if (PrnBox(HVTWin,&Sel)==NULL) return (IdPrnCancel);
@@ -295,7 +301,7 @@ int VTPrintInit(int PrnFlag)
   White = RGB(255,255,255);
   for (i = 0 ; i <= 255 ; i++)
     PrnDx[i] = PrnFW;
-  PrnSetAttr(AttrDefault,AttrDefault2);
+  PrnSetAttr(TempAttr);
 
   PrnY = Margin.top;
   PrnX = Margin.left;
@@ -310,15 +316,14 @@ int VTPrintInit(int PrnFlag)
 }
 }
 extern "C" {
-void PrnSetAttr(BYTE Attr, BYTE Attr2)
+void PrnSetAttr(TCharAttr Attr)
 //  Set text attribute of printing
 //
 {
   PrnAttr = Attr;
-  PrnAttr2 = Attr2;
-  SelectObject(PrintDC, PrnFont[Attr & AttrFontMask]);
+  SelectObject(PrintDC, PrnFont[Attr.Attr & AttrFontMask]);
 
-  if ((Attr & AttrReverse) != 0)
+  if ((Attr.Attr & AttrReverse) != 0)
   {
     SetTextColor(PrintDC,White);
     SetBkColor(  PrintDC,Black);
@@ -367,7 +372,7 @@ void PrnOutText(PCHAR Buff, int Count)
       /* next page */
       EndPage(PrintDC);
       StartPage(PrintDC);
-      PrnSetAttr(PrnAttr,PrnAttr2);
+      PrnSetAttr(PrnAttr);
       PrnY = Margin.top;
     }
 

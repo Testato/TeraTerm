@@ -43,7 +43,7 @@ static LOGFONT VTlf;
 static BOOL SaveWinSize = FALSE;
 static int WinWidthOld, WinHeightOld;
 static HBRUSH Background;
-static COLORREF ANSIColor[16];
+static COLORREF ANSIColor[256];
 static int Dx[256];
 
 // caret variables
@@ -52,9 +52,16 @@ static BOOL CaretEnabled = TRUE;
 
 // ---- device context and status flags
 static HDC VTDC = NULL; /* Device context for VT window */
-static BYTE DCAttr, DCAttr2;
+static TCharAttr DCAttr;
 static BOOL DCReverse;
 static HFONT DCPrevFont;
+
+TCharAttr DefCharAttr = {
+  AttrDefault,
+  AttrDefault,
+  AttrDefaultFG,
+  AttrDefaultBG
+};
 
 // scrolling
 static int ScrollCount = 0;
@@ -1127,7 +1134,6 @@ void BGDestruct(void)
 void BGInitialize(void)
 {
   char path[MAX_PATH],config_file[MAX_PATH],tempPath[MAX_PATH];
-  int i;
 
   // VTColor Çì«Ç›çûÇ›
   BGVTColor[0] = ts.VTColor[0];
@@ -1152,31 +1158,7 @@ void BGInitialize(void)
 #endif
 
   // ANSI colorê›íËÇÃÇŸÇ§ÇóDêÊÇ≥ÇπÇÈ (2005.2.3 yutaka)
-#ifndef NO_ANSI_COLOR_EXTENSION
-  for (i = IdBack ; i <= IdFore+8 ; i++)
-    ANSIColor[i] = ts.ANSIColor[i];
-  if ((ts.ColorFlag & CF_USETEXTCOLOR)!=0) // use background color for "Black"
-    ANSIColor[IdBack ]   = ts.VTColor[1];
-  if ((ts.ColorFlag & CF_USETEXTCOLOR)!=0) // use text color for "white"
-    ANSIColor[IdFore ]   = ts.VTColor[0];
-#else /* NO_ANSI_COLOR_EXTENSION */
-  ANSIColor[IdBack ]     = RGB(  0,  0,  0);
-  ANSIColor[IdRed  ]     = RGB(255,  0,  0);
-  ANSIColor[IdGreen]     = RGB(  0,255,  0);
-  ANSIColor[IdYellow]    = RGB(255,255,  0);
-  ANSIColor[IdBlue]      = RGB(  0,  0,255);
-  ANSIColor[IdMagenta]   = RGB(255,  0,255);
-  ANSIColor[IdCyan]      = RGB(  0,255,255);
-  ANSIColor[IdFore ]     = RGB(255,255,255);
-  ANSIColor[IdBack+8]    = RGB(128,128,128);
-  ANSIColor[IdRed+8]     = RGB(128,  0,  0);
-  ANSIColor[IdGreen+8]   = RGB(  0,128,  0);
-  ANSIColor[IdYellow+8]	 = RGB(128,128,  0);
-  ANSIColor[IdBlue+8]    = RGB(  0,  0,128);
-  ANSIColor[IdMagenta+8] = RGB(128,  0,128);
-  ANSIColor[IdCyan+8]    = RGB(  0,128,128);
-  ANSIColor[IdFore+8]    = RGB(192,192,192);
-#endif
+  InitColorTable();
 
   //ÉäÉ\Å[ÉXâï˙
   BGDestruct();
@@ -1375,37 +1357,36 @@ void BGOnSettingChange(void)
 //-->
 #endif  // ALPHABLEND_TYPE2
 
-void InitDisp()
-{
-  HDC TmpDC;
+void DispApplyANSIColor() {
   int i;
-  BOOL bMultiDisplaySupport = FALSE;
 
-  TmpDC = GetDC(NULL);
-
-#ifndef NO_ANSI_COLOR_EXTENSION
   for (i = IdBack ; i <= IdFore+8 ; i++)
     ANSIColor[i] = ts.ANSIColor[i];
-  if ((ts.ColorFlag & CF_USETEXTCOLOR)!=0) // use background color for "Black"
-    ANSIColor[IdBack ]   = ts.VTColor[1];
-  if ((ts.ColorFlag & CF_USETEXTCOLOR)!=0) // use text color for "white"
-    ANSIColor[IdFore ]   = ts.VTColor[0];
+
+  if ((ts.ColorFlag & CF_USETEXTCOLOR)!=0) {
+#ifdef ALPHABLEND_TYPE2
+    ANSIColor[IdBack ] = BGVTColor[1]; // use background color for "Black"
+    ANSIColor[IdFore ] = BGVTColor[0]; // use text color for "white"
+#else
+    ANSIColor[IdBack ] = ts.VTColor[1]; // use background color for "Black"
+    ANSIColor[IdFore ] = ts.VTColor[0]; // use text color for "white"
+#endif
+  }
+}
+
+void InitColorTable()
+{
+#ifndef NO_ANSI_COLOR_EXTENSION
+  DispApplyANSIColor();
 #else /* NO_ANSI_COLOR_EXTENSION */
-  if ((ts.ColorFlag & CF_USETEXTCOLOR)==0)
-    ANSIColor[IdBack ]   = RGB(  0,  0,  0);
-  else // use background color for "Black"
-    ANSIColor[IdBack ]   = ts.VTColor[1];
+  ANSIColor[IdBack ]     = RGB(  0,  0,  0);
   ANSIColor[IdRed  ]     = RGB(255,  0,  0);
   ANSIColor[IdGreen]     = RGB(  0,255,  0);
   ANSIColor[IdYellow]    = RGB(255,255,  0);
   ANSIColor[IdBlue]      = RGB(  0,  0,255);
   ANSIColor[IdMagenta]   = RGB(255,  0,255);
   ANSIColor[IdCyan]      = RGB(  0,255,255);
-  if ((ts.ColorFlag & CF_USETEXTCOLOR)==0)
-    ANSIColor[IdFore ]   = RGB(255,255,255);
-  else // use text color for "white"
-    ANSIColor[IdFore ]   = ts.VTColor[0];
-
+  ANSIColor[IdFore ]     = RGB(255,255,255);
   ANSIColor[IdBack+8]    = RGB(128,128,128);
   ANSIColor[IdRed+8]     = RGB(128,  0,  0);
   ANSIColor[IdGreen+8]   = RGB(  0,128,  0);
@@ -1415,22 +1396,294 @@ void InitDisp()
   ANSIColor[IdCyan+8]    = RGB(  0,128,128);
   ANSIColor[IdFore+8]    = RGB(192,192,192);
 #endif /* NO_ANSI_COLOR_EXTENSION */
+  ANSIColor[16] = RGB(0,0,0);
+  ANSIColor[17] = RGB(0,0,95);
+  ANSIColor[18] = RGB(0,0,135);
+  ANSIColor[19] = RGB(0,0,175);
+  ANSIColor[20] = RGB(0,0,215);
+  ANSIColor[21] = RGB(0,0,255);
+  ANSIColor[22] = RGB(0,95,0);
+  ANSIColor[23] = RGB(0,95,95);
+  ANSIColor[24] = RGB(0,95,135);
+  ANSIColor[25] = RGB(0,95,175);
+  ANSIColor[26] = RGB(0,95,215);
+  ANSIColor[27] = RGB(0,95,255);
+  ANSIColor[28] = RGB(0,135,0);
+  ANSIColor[29] = RGB(0,135,95);
+  ANSIColor[30] = RGB(0,135,135);
+  ANSIColor[31] = RGB(0,135,175);
+  ANSIColor[32] = RGB(0,135,215);
+  ANSIColor[33] = RGB(0,135,255);
+  ANSIColor[34] = RGB(0,175,0);
+  ANSIColor[35] = RGB(0,175,95);
+  ANSIColor[36] = RGB(0,175,135);
+  ANSIColor[37] = RGB(0,175,175);
+  ANSIColor[38] = RGB(0,175,215);
+  ANSIColor[39] = RGB(0,175,255);
+  ANSIColor[40] = RGB(0,215,0);
+  ANSIColor[41] = RGB(0,215,95);
+  ANSIColor[42] = RGB(0,215,135);
+  ANSIColor[43] = RGB(0,215,175);
+  ANSIColor[44] = RGB(0,215,215);
+  ANSIColor[45] = RGB(0,215,255);
+  ANSIColor[46] = RGB(0,255,0);
+  ANSIColor[47] = RGB(0,255,95);
+  ANSIColor[48] = RGB(0,255,135);
+  ANSIColor[49] = RGB(0,255,175);
+  ANSIColor[50] = RGB(0,255,215);
+  ANSIColor[51] = RGB(0,255,255);
+  ANSIColor[52] = RGB(95,0,0);
+  ANSIColor[53] = RGB(95,0,95);
+  ANSIColor[54] = RGB(95,0,135);
+  ANSIColor[55] = RGB(95,0,175);
+  ANSIColor[56] = RGB(95,0,215);
+  ANSIColor[57] = RGB(95,0,255);
+  ANSIColor[58] = RGB(95,95,0);
+  ANSIColor[59] = RGB(95,95,95);
+  ANSIColor[60] = RGB(95,95,135);
+  ANSIColor[61] = RGB(95,95,175);
+  ANSIColor[62] = RGB(95,95,215);
+  ANSIColor[63] = RGB(95,95,255);
+  ANSIColor[64] = RGB(95,135,0);
+  ANSIColor[65] = RGB(95,135,95);
+  ANSIColor[66] = RGB(95,135,135);
+  ANSIColor[67] = RGB(95,135,175);
+  ANSIColor[68] = RGB(95,135,215);
+  ANSIColor[69] = RGB(95,135,255);
+  ANSIColor[70] = RGB(95,175,0);
+  ANSIColor[71] = RGB(95,175,95);
+  ANSIColor[72] = RGB(95,175,135);
+  ANSIColor[73] = RGB(95,175,175);
+  ANSIColor[74] = RGB(95,175,215);
+  ANSIColor[75] = RGB(95,175,255);
+  ANSIColor[76] = RGB(95,215,0);
+  ANSIColor[77] = RGB(95,215,95);
+  ANSIColor[78] = RGB(95,215,135);
+  ANSIColor[79] = RGB(95,215,175);
+  ANSIColor[80] = RGB(95,215,215);
+  ANSIColor[81] = RGB(95,215,255);
+  ANSIColor[82] = RGB(95,255,0);
+  ANSIColor[83] = RGB(95,255,95);
+  ANSIColor[84] = RGB(95,255,135);
+  ANSIColor[85] = RGB(95,255,175);
+  ANSIColor[86] = RGB(95,255,215);
+  ANSIColor[87] = RGB(95,255,255);
+  ANSIColor[88] = RGB(135,0,0);
+  ANSIColor[89] = RGB(135,0,95);
+  ANSIColor[90] = RGB(135,0,135);
+  ANSIColor[91] = RGB(135,0,175);
+  ANSIColor[92] = RGB(135,0,215);
+  ANSIColor[93] = RGB(135,0,255);
+  ANSIColor[94] = RGB(135,95,0);
+  ANSIColor[95] = RGB(135,95,95);
+  ANSIColor[96] = RGB(135,95,135);
+  ANSIColor[97] = RGB(135,95,175);
+  ANSIColor[98] = RGB(135,95,215);
+  ANSIColor[99] = RGB(135,95,255);
+  ANSIColor[100] = RGB(135,135,0);
+  ANSIColor[101] = RGB(135,135,95);
+  ANSIColor[102] = RGB(135,135,135);
+  ANSIColor[103] = RGB(135,135,175);
+  ANSIColor[104] = RGB(135,135,215);
+  ANSIColor[105] = RGB(135,135,255);
+  ANSIColor[106] = RGB(135,175,0);
+  ANSIColor[107] = RGB(135,175,95);
+  ANSIColor[108] = RGB(135,175,135);
+  ANSIColor[109] = RGB(135,175,175);
+  ANSIColor[110] = RGB(135,175,215);
+  ANSIColor[111] = RGB(135,175,255);
+  ANSIColor[112] = RGB(135,215,0);
+  ANSIColor[113] = RGB(135,215,95);
+  ANSIColor[114] = RGB(135,215,135);
+  ANSIColor[115] = RGB(135,215,175);
+  ANSIColor[116] = RGB(135,215,215);
+  ANSIColor[117] = RGB(135,215,255);
+  ANSIColor[118] = RGB(135,255,0);
+  ANSIColor[119] = RGB(135,255,95);
+  ANSIColor[120] = RGB(135,255,135);
+  ANSIColor[121] = RGB(135,255,175);
+  ANSIColor[122] = RGB(135,255,215);
+  ANSIColor[123] = RGB(135,255,255);
+  ANSIColor[124] = RGB(175,0,0);
+  ANSIColor[125] = RGB(175,0,95);
+  ANSIColor[126] = RGB(175,0,135);
+  ANSIColor[127] = RGB(175,0,175);
+  ANSIColor[128] = RGB(175,0,215);
+  ANSIColor[129] = RGB(175,0,255);
+  ANSIColor[130] = RGB(175,95,0);
+  ANSIColor[131] = RGB(175,95,95);
+  ANSIColor[132] = RGB(175,95,135);
+  ANSIColor[133] = RGB(175,95,175);
+  ANSIColor[134] = RGB(175,95,215);
+  ANSIColor[135] = RGB(175,95,255);
+  ANSIColor[136] = RGB(175,135,0);
+  ANSIColor[137] = RGB(175,135,95);
+  ANSIColor[138] = RGB(175,135,135);
+  ANSIColor[139] = RGB(175,135,175);
+  ANSIColor[140] = RGB(175,135,215);
+  ANSIColor[141] = RGB(175,135,255);
+  ANSIColor[142] = RGB(175,175,0);
+  ANSIColor[143] = RGB(175,175,95);
+  ANSIColor[144] = RGB(175,175,135);
+  ANSIColor[145] = RGB(175,175,175);
+  ANSIColor[146] = RGB(175,175,215);
+  ANSIColor[147] = RGB(175,175,255);
+  ANSIColor[148] = RGB(175,215,0);
+  ANSIColor[149] = RGB(175,215,95);
+  ANSIColor[150] = RGB(175,215,135);
+  ANSIColor[151] = RGB(175,215,175);
+  ANSIColor[152] = RGB(175,215,215);
+  ANSIColor[153] = RGB(175,215,255);
+  ANSIColor[154] = RGB(175,255,0);
+  ANSIColor[155] = RGB(175,255,95);
+  ANSIColor[156] = RGB(175,255,135);
+  ANSIColor[157] = RGB(175,255,175);
+  ANSIColor[158] = RGB(175,255,215);
+  ANSIColor[159] = RGB(175,255,255);
+  ANSIColor[160] = RGB(215,0,0);
+  ANSIColor[161] = RGB(215,0,95);
+  ANSIColor[162] = RGB(215,0,135);
+  ANSIColor[163] = RGB(215,0,175);
+  ANSIColor[164] = RGB(215,0,215);
+  ANSIColor[165] = RGB(215,0,255);
+  ANSIColor[166] = RGB(215,95,0);
+  ANSIColor[167] = RGB(215,95,95);
+  ANSIColor[168] = RGB(215,95,135);
+  ANSIColor[169] = RGB(215,95,175);
+  ANSIColor[170] = RGB(215,95,215);
+  ANSIColor[171] = RGB(215,95,255);
+  ANSIColor[172] = RGB(215,135,0);
+  ANSIColor[173] = RGB(215,135,95);
+  ANSIColor[174] = RGB(215,135,135);
+  ANSIColor[175] = RGB(215,135,175);
+  ANSIColor[176] = RGB(215,135,215);
+  ANSIColor[177] = RGB(215,135,255);
+  ANSIColor[178] = RGB(215,175,0);
+  ANSIColor[179] = RGB(215,175,95);
+  ANSIColor[180] = RGB(215,175,135);
+  ANSIColor[181] = RGB(215,175,175);
+  ANSIColor[182] = RGB(215,175,215);
+  ANSIColor[183] = RGB(215,175,255);
+  ANSIColor[184] = RGB(215,215,0);
+  ANSIColor[185] = RGB(215,215,95);
+  ANSIColor[186] = RGB(215,215,135);
+  ANSIColor[187] = RGB(215,215,175);
+  ANSIColor[188] = RGB(215,215,215);
+  ANSIColor[189] = RGB(215,215,255);
+  ANSIColor[190] = RGB(215,255,0);
+  ANSIColor[191] = RGB(215,255,95);
+  ANSIColor[192] = RGB(215,255,135);
+  ANSIColor[193] = RGB(215,255,175);
+  ANSIColor[194] = RGB(215,255,215);
+  ANSIColor[195] = RGB(215,255,255);
+  ANSIColor[196] = RGB(255,0,0);
+  ANSIColor[197] = RGB(255,0,95);
+  ANSIColor[198] = RGB(255,0,135);
+  ANSIColor[199] = RGB(255,0,175);
+  ANSIColor[200] = RGB(255,0,215);
+  ANSIColor[201] = RGB(255,0,255);
+  ANSIColor[202] = RGB(255,95,0);
+  ANSIColor[203] = RGB(255,95,95);
+  ANSIColor[204] = RGB(255,95,135);
+  ANSIColor[205] = RGB(255,95,175);
+  ANSIColor[206] = RGB(255,95,215);
+  ANSIColor[207] = RGB(255,95,255);
+  ANSIColor[208] = RGB(255,135,0);
+  ANSIColor[209] = RGB(255,135,95);
+  ANSIColor[210] = RGB(255,135,135);
+  ANSIColor[211] = RGB(255,135,175);
+  ANSIColor[212] = RGB(255,135,215);
+  ANSIColor[213] = RGB(255,135,255);
+  ANSIColor[214] = RGB(255,175,0);
+  ANSIColor[215] = RGB(255,175,95);
+  ANSIColor[216] = RGB(255,175,135);
+  ANSIColor[217] = RGB(255,175,175);
+  ANSIColor[218] = RGB(255,175,215);
+  ANSIColor[219] = RGB(255,175,255);
+  ANSIColor[220] = RGB(255,215,0);
+  ANSIColor[221] = RGB(255,215,95);
+  ANSIColor[222] = RGB(255,215,135);
+  ANSIColor[223] = RGB(255,215,175);
+  ANSIColor[224] = RGB(255,215,215);
+  ANSIColor[225] = RGB(255,215,255);
+  ANSIColor[226] = RGB(255,255,0);
+  ANSIColor[227] = RGB(255,255,95);
+  ANSIColor[228] = RGB(255,255,135);
+  ANSIColor[229] = RGB(255,255,175);
+  ANSIColor[230] = RGB(255,255,215);
+  ANSIColor[231] = RGB(255,255,255);
+  ANSIColor[232] = RGB(8,8,8);
+  ANSIColor[233] = RGB(18,18,18);
+  ANSIColor[234] = RGB(28,28,28);
+  ANSIColor[235] = RGB(38,38,38);
+  ANSIColor[236] = RGB(48,48,48);
+  ANSIColor[237] = RGB(58,58,58);
+  ANSIColor[238] = RGB(68,68,68);
+  ANSIColor[239] = RGB(78,78,78);
+  ANSIColor[240] = RGB(88,88,88);
+  ANSIColor[241] = RGB(98,98,98);
+  ANSIColor[242] = RGB(108,108,108);
+  ANSIColor[243] = RGB(118,118,118);
+  ANSIColor[244] = RGB(128,128,128);
+  ANSIColor[245] = RGB(138,138,138);
+  ANSIColor[246] = RGB(148,148,148);
+  ANSIColor[247] = RGB(158,158,158);
+  ANSIColor[248] = RGB(168,168,168);
+  ANSIColor[249] = RGB(178,178,178);
+  ANSIColor[250] = RGB(188,188,188);
+  ANSIColor[251] = RGB(198,198,198);
+  ANSIColor[252] = RGB(208,208,208);
+  ANSIColor[253] = RGB(218,218,218);
+  ANSIColor[254] = RGB(228,228,228);
+  ANSIColor[255] = RGB(238,238,238);
+
+  if ((ts.ColorFlag & CF_USETEXTCOLOR)!=0) {
+#ifdef ALPHABLEND_TYPE2
+    ANSIColor[IdBack ] = BGVTColor[1]; // use background color for "Black"
+    ANSIColor[IdFore ] = BGVTColor[0]; // use text color for "white"
+#else
+    ANSIColor[IdBack ] = ts.VTColor[1]; // use background color for "Black"
+    ANSIColor[IdFore ] = ts.VTColor[0]; // use text color for "white"
+#endif
+  }
+}
+
+void DispSetNearestColors(int start, int end, HDC DispCtx) {
+  HDC TmpDC;
+  int i;
+
+  if (DispCtx) {
+	TmpDC = DispCtx;
+  }
+  else {
+	TmpDC = GetDC(NULL);
+  }
+
+  for (i = start ; i <= end; i++)
+    ANSIColor[i] = GetNearestColor(TmpDC, ANSIColor[i]);
+
+  if (!DispCtx) {
+	ReleaseDC(NULL, TmpDC);
+  }
+}
+
+void InitDisp()
+{
+  HDC TmpDC;
+  BOOL bMultiDisplaySupport = FALSE;
+
+  TmpDC = GetDC(NULL);
 
 #ifdef ALPHABLEND_TYPE2
   CRTWidth  = GetSystemMetrics(SM_CXSCREEN);
   CRTHeight = GetSystemMetrics(SM_CYSCREEN);
 
   BGInitialize();
-
-  if ((ts.ColorFlag & CF_USETEXTCOLOR)!=0)
-  {
-    ANSIColor[IdBack ]   = BGVTColor[1];
-    ANSIColor[IdFore ]   = BGVTColor[0];
-  }
+#else
+  InitColorTable();
 #endif  // ALPHABLEND_TYPE2
 
-  for (i = IdBack ; i <= IdFore+8 ; i++)
-    ANSIColor[i] = GetNearestColor(TmpDC, ANSIColor[i]);
+  DispSetNearestColors(IdBack, 255, TmpDC);
 
   /* background paintbrush */
   Background = CreateSolidBrush(ts.VTColor[1]);
@@ -2087,6 +2340,7 @@ void DispChangeWin()
 
 void DispInitDC()
 {
+
   if (VTDC==NULL)
   {
     VTDC = GetDC(HVTWin);
@@ -2104,8 +2358,7 @@ void DispInitDC()
 #endif  // ALPHABLEND_TYPE2
 
   SetBkMode(VTDC,OPAQUE);
-  DCAttr = AttrDefault;
-  DCAttr2 = AttrDefault2;
+  DCAttr = DefCharAttr;
   DCReverse = FALSE;
 
 #ifdef ALPHABLEND_TYPE2
@@ -2123,189 +2376,133 @@ void DispReleaseDC()
   VTDC = NULL;
 }
 
-void DispSetupDC(BYTE Attr, BYTE Attr2, BOOL Reverse)
+void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 // Setup device context
-//   Attr, Attr2: character attribute 1 & 2
+//   Attr: character attributes
 //   Reverse: true if text is selected (reversed) by mouse
 {
   COLORREF TextColor, BackColor;
-  int i, j;
 
   if (VTDC==NULL)  DispInitDC();
 
-  if ((DCAttr==Attr) && (DCAttr2==Attr2) &&
-      (DCReverse==Reverse)) return;
+  if (TCharAttrCmp(DCAttr, Attr) == 0 && DCReverse == Reverse) {
+    return;
+  }
   DCAttr = Attr;
-  DCAttr2 = Attr2;
   DCReverse = Reverse;
      
-  SelectObject(VTDC, VTFont[Attr & AttrFontMask]);
+  SelectObject(VTDC, VTFont[Attr.Attr & AttrFontMask]);
 
-  if ((ts.ColorFlag & CF_FULLCOLOR) == 0)
-  {
-	if ((Attr & AttrBlink) != 0)
-	{
-
-#ifdef ALPHABLEND_TYPE2
-//<!--by AKASI
-//  TextColor = ts.VTBlinkColor[0];
-//  BackColor = ts.VTBlinkColor[1];
+  if ((ts.ColorFlag & CF_FULLCOLOR) == 0) {
+	if ((Attr.Attr & AttrBlink) != 0) {
+#ifdef ALPHABLEND_TYPE2 // AKASI
 	  TextColor = BGVTBlinkColor[0];
 	  BackColor = BGVTBlinkColor[1];
-//-->
 #else
-  TextColor = ts.VTBlinkColor[0];
-  BackColor = ts.VTBlinkColor[1];
+	  TextColor = ts.VTBlinkColor[0];
+	  BackColor = ts.VTBlinkColor[1];
 #endif
 	}
-	else if ((Attr & AttrBold) != 0)
-	{
-#ifdef ALPHABLEND_TYPE2
-//<!--by AKASI
-//  TextColor = ts.VTBoldColor[0];
-//  BackColor = ts.VTBoldColor[1];
+	else if ((Attr.Attr & AttrBold) != 0) {
+#ifdef ALPHABLEND_TYPE2 // AKASI
 	  TextColor = BGVTBoldColor[0];
 	  BackColor = BGVTBoldColor[1];
-//-->
 #else
-  TextColor = ts.VTBoldColor[0];
-  BackColor = ts.VTBoldColor[1];
+	  TextColor = ts.VTBoldColor[0];
+	  BackColor = ts.VTBoldColor[1];
 #endif
 	}
     /* begin - ishizaki */
-	else if ((Attr & AttrURL) != 0)
-	{
-#ifdef ALPHABLEND_TYPE2
-//<!--by AKASI
-//  TextColor = ts.VTBoldColor[0];
-//  BackColor = ts.VTBoldColor[1];
+	else if ((Attr.Attr & AttrURL) != 0) {
+#ifdef ALPHABLEND_TYPE2 // AKASI
 	  TextColor = BGURLColor[0];
 	  BackColor = BGURLColor[1];
 //-->
 #else
-  TextColor = ts.URLColor[0];
-  BackColor = ts.URLColor[1];
+	  TextColor = ts.URLColor[0];
+	  BackColor = ts.URLColor[1];
 #endif
 	}
     /* end - ishizaki */
 	else {
-	  if ((Attr2 & Attr2Fore) != 0)
-	  {
-		j = Attr2 & Attr2ForeMask;
-		TextColor = ANSIColor[j];
+	  if ((Attr.Attr2 & Attr2Fore) != 0) {
+		TextColor = ANSIColor[Attr.Fore];
 	  }
 	  else
-#ifdef ALPHABLEND_TYPE2
-//<!--by AKASI
-//  TextColor = ts.VTColor[0];
-    TextColor = BGVTColor[0];
-//-->
+#ifdef ALPHABLEND_TYPE2 // AKASI
+		TextColor = BGVTColor[0];
 #else
-  TextColor = ts.VTColor[0];
+		TextColor = ts.VTColor[0];
 #endif
 
-	  if ((Attr2 & Attr2Back) != 0)
-	  {
-		j = (Attr2 & Attr2BackMask) >> SftAttrBack;
-		BackColor = ANSIColor[j];
+	  if ((Attr.Attr2 & Attr2Back) != 0) {
+		BackColor = ANSIColor[Attr.Back];
 	  }
 	  else
-#ifdef ALPHABLEND_TYPE2
-//<!--by AKASI
-//  BackColor = ts.VTColor[1];
-    BackColor = BGVTColor[1];
-//-->
+#ifdef ALPHABLEND_TYPE2 // AKASI
+		BackColor = BGVTColor[1];
 #else
-  BackColor = ts.VTColor[1];
+		BackColor = ts.VTColor[1];
 #endif
 	}
   }
   else { // full color
-	if ((Attr2 & Attr2Fore) != 0)
-	{
-	  if ((Attr & AttrBold) != 0)
-		i = 0;
+	if ((Attr.Attr2 & Attr2Fore) != 0) {
+	  if ((Attr.Fore<16) && ((Attr.Attr&AttrBold)!=0) == ((Attr.Fore&7)==0))
+	    TextColor = ANSIColor[Attr.Fore ^ 8];
 	  else
-		i = 8;
-	  j = Attr2 & Attr2ForeMask;
-	  if (j==0)
-		j = 8 - i + j;
-	  else
-		j = i + j;
-	  TextColor = ANSIColor[j];
+	    TextColor = ANSIColor[Attr.Fore];
 	}
-	else if ((Attr & AttrBlink) != 0)
-#ifdef ALPHABLEND_TYPE2
-//<!--by AKASI
-//  TextColor = ts.VTBlinkColor[0];
-    TextColor = BGVTBlinkColor[0];
-//-->
-	else if ((Attr & AttrBold) != 0)
-//<!--by AKASI
-//  TextColor = ts.VTBoldColor[0];
-    TextColor = BGVTBoldColor[0];
-//-->
+	else if ((Attr.Attr & AttrBlink) != 0)
+#ifdef ALPHABLEND_TYPE2 // AKASI
+	  TextColor = BGVTBlinkColor[0];
+	else if ((Attr.Attr & AttrBold) != 0)
+	  TextColor = BGVTBoldColor[0];
     /* begin - ishizaki */
-	else if ((Attr & AttrURL) != 0)
-    TextColor = BGURLColor[0];
+	else if ((Attr.Attr & AttrURL) != 0)
+	  TextColor = BGURLColor[0];
     /* end - ishizaki */
-  else
-//<!--by AKASI
-//  TextColor = ts.VTColor[0];
-    TextColor = BGVTColor[0];
-//-->
+	else
+	  TextColor = BGVTColor[0];
 #else
-  TextColor = ts.VTBlinkColor[0];
-	else if ((Attr & AttrBold) != 0)
-  TextColor = ts.VTBoldColor[0];
+	  TextColor = ts.VTBlinkColor[0];
+	else if ((Attr.Attr & AttrBold) != 0)
+	  TextColor = ts.VTBoldColor[0];
     /* begin - ishizaki */
-	else if ((Attr & AttrURL) != 0)
-  TextColor = ts.URLColor[0];
+	else if ((Attr.Attr & AttrURL) != 0)
+	  TextColor = ts.URLColor[0];
     /* end - ishizaki */
-  else
-  TextColor = ts.VTColor[0];
+	else
+	  TextColor = ts.VTColor[0];
 #endif
 
-	if ((Attr2 & Attr2Back) != 0)
-	{
-	  if ((Attr & AttrBlink) != 0)
-		i = 0;
+	if ((Attr.Attr2 & Attr2Back) != 0) {
+	  if ((Attr.Back<16) && ((Attr.Attr&AttrBlink)!=0) == ((Attr.Back&7)==0))
+	    BackColor = ANSIColor[Attr.Back ^ 8];
 	  else
-		i = 8;
-	  j = (Attr2 & Attr2BackMask) >> SftAttrBack;
-	  if (j==0)
-		j = 8 - i + j;
-	  else
-		j = i + j;
-	  BackColor = ANSIColor[j];
+	    BackColor = ANSIColor[Attr.Back];
 	}
-	else if ((Attr & AttrBlink) != 0)
-#ifdef ALPHABLEND_TYPE2
-//<!--by AKASI
-//  BackColor = ts.VTBlinkColor[1];
-    BackColor = BGVTBlinkColor[1];
-//-->
-	else if ((Attr & AttrBold) != 0)
-//<!--by AKASI
-//  BackColor = ts.VTBoldColor[1];
-    BackColor = BGVTBoldColor[1];
-//-->
+	else if ((Attr.Attr & AttrBlink) != 0)
+#ifdef ALPHABLEND_TYPE2 // AKASI
+	  BackColor = BGVTBlinkColor[1];
+	else if ((Attr.Attr & AttrBold) != 0)
+	  BackColor = BGVTBoldColor[1];
     /* begin - ishizaki */
-	else if ((Attr & AttrURL) != 0)
-    BackColor = BGURLColor[1];
+	else if ((Attr.Attr & AttrURL) != 0)
+	  BackColor = BGURLColor[1];
     /* end - ishizaki */
-  else
-  BackColor = ts.VTColor[1]; // BGVTColor[1] dewa naika?
+	else
+	  BackColor = ts.VTColor[1]; // BGVTColor[1] dewa naika?
 #else
-  BackColor = ts.VTBlinkColor[1];
-	else if ((Attr & AttrBold) != 0)
-  BackColor = ts.VTBoldColor[1];
+	  BackColor = ts.VTBlinkColor[1];
+	else if ((Attr.Attr & AttrBold) != 0)
+	  BackColor = ts.VTBoldColor[1];
     /* begin - ishizaki */
-	else if ((Attr & AttrURL) != 0)
-  BackColor = ts.URLColor[1];
+	else if ((Attr.Attr & AttrURL) != 0)
+	  BackColor = ts.URLColor[1];
     /* end - ishizaki */
-  else
-  BackColor = ts.VTColor[1];
+	else
+	  BackColor = ts.VTColor[1];
 #endif
   }
 #ifdef USE_NORMAL_BGCOLOR_REJECT
@@ -2318,7 +2515,7 @@ void DispSetupDC(BYTE Attr, BYTE Attr2, BOOL Reverse)
   }
 #endif
 
-  if (Reverse != ((Attr & AttrReverse) != 0))
+  if (Reverse != ((Attr.Attr & AttrReverse) != 0))
   {
 #ifdef ALPHABLEND_TYPE2
 //<!--by AKASI
@@ -3015,4 +3212,37 @@ void DispSetActive(BOOL ActiveFlag)
       /* position & font of conv. window -> default */
       SetConversionWindow(HVTWin,-1,0);
   }
+}
+
+int TCharAttrCmp(TCharAttr a, TCharAttr b)
+{
+  if (a.Attr == b.Attr &&
+      a.Attr2 == b.Attr2 &&
+      a.Fore == b.Fore &&
+      a.Back == b.Back)
+  {
+    return 0;
+  }
+  else {
+    return 1;
+  }
+}
+
+void DispSetANSIColor(int num, COLORREF color)
+{
+  if (num < 0 || num > 255)
+	return;
+
+  ANSIColor[num] = color;
+  DispSetNearestColors(num, num, NULL);
+  InvalidateRect(HVTWin,NULL,FALSE);
+//  ChangeWin();
+}
+
+COLORREF DispGetANSIColor(int num)
+{
+  if (num < 0 || num > 255)
+	return ANSIColor[0];
+
+  return ANSIColor[num];
 }

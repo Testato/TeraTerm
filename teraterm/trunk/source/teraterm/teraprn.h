@@ -20,7 +20,7 @@ void PrnStop();
 #define IdPrnFile 8
 
 int VTPrintInit(int PrnFlag);
-void PrnSetAttr(BYTE Attr, BYTE Attr2);
+void PrnSetAttr(TCharAttr Attr);
 void PrnOutText(PCHAR Buff, int Count);
 void PrnNewLine();
 void VTPrintEnd();

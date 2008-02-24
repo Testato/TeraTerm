@@ -33,7 +33,8 @@
 
   /* Character attribute bit masks */
 #define AttrDefault       0x00
-#define AttrDefault2      0x00
+#define AttrDefaultFG     0x00
+#define AttrDefaultBG     0x00
 #define AttrBold          0x01
 #define AttrUnder         0x02
 #define AttrSpecial       0x04
@@ -48,11 +49,17 @@
 /* end - ishizaki */
 #define AttrKanji         0x80
   /* Color attribute bit masks */
-#define Attr2Fore         0x08
-#define Attr2ForeMask     0x07
-#define Attr2Back         0x80
-#define Attr2BackMask     0x70
-#define SftAttrBack       4
+#define Attr2Fore         0x01
+#define Attr2Back         0x02
+
+typedef struct {
+	BYTE Attr;
+	BYTE Attr2;
+	BYTE Fore;
+	BYTE Back;
+} TCharAttr;
+
+typedef TCharAttr *PCharAttr;
 
   /* Color codes */
 #define IdBack    0

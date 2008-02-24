@@ -49,7 +49,7 @@ void DispChangeBackground();
 void DispChangeWin();
 void DispInitDC();
 void DispReleaseDC();
-void DispSetupDC(BYTE Attr, BYTE Attr2, BOOL Reverse);
+void DispSetupDC(TCharAttr Attr, BOOL Reverse);
 void DispStr(PCHAR Buff, int Count, int Y, int* X);
 void DispEraseCurToEnd(int YEnd);
 void DispEraseHomeToCur(int YHome);
@@ -70,6 +70,12 @@ void DispSetupFontDlg();
 void DispRestoreWinSize();
 void DispSetWinPos();
 void DispSetActive(BOOL ActiveFlag);
+void InitColorTable();
+void DispApplyANSIColor();
+void DispSetNearestColors(int start, int end, HDC DispCtx);
+int TCharAttrCmp(TCharAttr a, TCharAttr b);
+void DispSetANSIColor(int num, COLORREF color);
+COLORREF DispGetANSIColor(int num);
 
 extern int WinWidth, WinHeight;
 extern HFONT VTFont[AttrFontMask+1];
@@ -79,6 +85,7 @@ extern int CursorX, CursorY;
 extern int WinOrgX, WinOrgY, NewOrgX, NewOrgY;
 extern int NumOfLines, NumOfColumns;
 extern int PageStart, BuffEnd;
+extern TCharAttr DefCharAttr;
 
 #define SCROLL_BOTTOM	1
 #define SCROLL_LINEDOWN	2

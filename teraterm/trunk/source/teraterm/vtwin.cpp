@@ -4650,6 +4650,13 @@ void CVTWindow::OnExternalSetup()
 	                HVTWin, (DLGPROC)OnAdditionalSetupDlgProc);
 	if (ret == 0 || ret == -1) {
 		ret = GetLastError();
+#ifdef ALPHABLEND_TYPE2
+		BGInitialize();
+#else
+		DispApplyANSIColor();
+#endif
+		DispSetNearestColors(IdBack, IdFore+8, NULL);
+		ChangeWin();
 	}
 }
 

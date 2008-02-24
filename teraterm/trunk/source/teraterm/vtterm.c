@@ -40,7 +40,7 @@
 #define IntCharMax 5
 
 /* character attribute */
-static BYTE CharAttr, CharAttr2;
+static TCharAttr CharAttr;
 
 /* various modes of VT emulation */
 static BOOL RelativeOrgMode;
@@ -54,7 +54,7 @@ int MouseReportMode;
 // save/restore cursor
 typedef struct {
   int CursorX, CursorY;
-  BYTE Attr, Attr2;
+  TCharAttr Attr;
   int Glr[2], Gn[4]; // G0-G3, GL & GR
   BOOL AutoWrapMode;
   BOOL RelativeOrgMode;
@@ -120,8 +120,10 @@ void ResetSBuffers()
 {
   SBuff1.CursorX = 0;
   SBuff1.CursorY = 0;
-  SBuff1.Attr = AttrDefault;
-  SBuff1.Attr2 = AttrDefault2;
+  SBuff1.Attr.Attr = AttrDefault;
+  SBuff1.Attr.Attr2 = AttrDefault;
+  SBuff1.Attr.Fore = AttrDefaultFG;
+  SBuff1.Attr.Back = AttrDefaultBG;
   if (ts.Language==IdJapanese)
   {
     SBuff1.Gn[0] = IdASCII;
@@ -155,8 +157,10 @@ void ResetTerminal() /*reset variables but don't update screen */
   BuffReset();
 
   /* Attribute */
-  CharAttr = AttrDefault;
-  CharAttr2 = AttrDefault2;
+  CharAttr.Attr = AttrDefault;
+  CharAttr.Attr2 = AttrDefault;
+  CharAttr.Fore = AttrDefaultFG;
+  CharAttr.Back = AttrDefaultBG;
   Special = FALSE;
 
   /* Various modes */
@@ -364,7 +368,9 @@ void Tab()
 void PutChar(BYTE b)
 {
   BOOL SpecialNew;
-  BYTE CharAttrTmp;
+  TCharAttr CharAttrTmp;
+
+  CharAttrTmp = CharAttr;
 
   if (PrinterMode) { // printer mode
     WriteToPrnFile(b,TRUE);
@@ -376,11 +382,7 @@ void PutChar(BYTE b)
     CarriageReturn(FALSE);
     LineFeed(LF,FALSE);
 #ifndef NO_COPYLINE_FIX
-    CharAttrTmp = ts.EnableContinuedLineCopy ? AttrLineContinued : 0;
-  }
-  else
-  {
-    CharAttrTmp = 0;
+    CharAttrTmp.Attr |= ts.EnableContinuedLineCopy ? AttrLineContinued : 0;
 #endif /* NO_COPYLINE_FIX */
   }
 
@@ -423,20 +425,12 @@ void PutChar(BYTE b)
   if (Special)
   {
     b = b & 0x7F;
-#ifndef NO_COPYLINE_FIX
-    CharAttrTmp |= CharAttr | AttrSpecial;
-#else
-    CharAttrTmp = CharAttr | AttrSpecial;
-#endif /* NO_COPYLINE_FIX */
+    CharAttrTmp.Attr |= AttrSpecial;
   }
   else
-#ifndef NO_COPYLINE_FIX
-    CharAttrTmp |= CharAttr;
-#else
-    CharAttrTmp = CharAttr;
-#endif /* NO_COPYLINE_FIX */
+    CharAttrTmp.Attr |= CharAttr.Attr;
 
-  BuffPutChar(b,CharAttrTmp,CharAttr2,InsertMode);
+  BuffPutChar(b, CharAttrTmp, InsertMode);
 
   if (CursorX < NumOfColumns-1)
     MoveRight();
@@ -450,7 +444,9 @@ void PutChar(BYTE b)
 void PutKanji(BYTE b)
 {
 #ifndef NO_COPYLINE_FIX
-  BYTE CharAttrTmp = 0;
+  TCharAttr CharAttrTmp;
+
+  CharAttrTmp = CharAttr;
 #endif /* NO_COPYLINE_FIX */
   Kanji = Kanji + b;
 
@@ -476,7 +472,7 @@ void PutKanji(BYTE b)
     LineFeed(LF,FALSE);
 #ifndef NO_COPYLINE_FIX
     if (ts.EnableContinuedLineCopy)
-      CharAttrTmp = AttrLineContinued;
+      CharAttrTmp.Attr |= AttrLineContinued;
 #endif /* NO_COPYLINE_FIX */
   }
   else if (CursorX > NumOfColumns-2)
@@ -485,9 +481,9 @@ void PutKanji(BYTE b)
 #ifndef NO_COPYLINE_FIX
       if (ts.EnableContinuedLineCopy)
       {
+      CharAttrTmp.Attr |= AttrLineContinued;
       if (CursorX == NumOfColumns-1)
-	BuffPutChar(0x20,(BYTE)(CharAttr|AttrLineContinued),CharAttr2,FALSE);
-      CharAttrTmp = AttrLineContinued;
+	BuffPutChar(0x20, CharAttr, FALSE);
       }
 #endif /* NO_COPYLINE_FIX */
       CarriageReturn(FALSE);
@@ -510,9 +506,9 @@ void PutKanji(BYTE b)
   }
   
 #ifndef NO_COPYLINE_FIX
-  BuffPutKanji(Kanji,(BYTE)(CharAttr|CharAttrTmp),CharAttr2,InsertMode);
+  BuffPutKanji(Kanji, CharAttrTmp, InsertMode);
 #else
-  BuffPutKanji(Kanji,CharAttr,CharAttr2,InsertMode);
+  BuffPutKanji(Kanji, CharAttr, InsertMode);
 #endif /* NO_COPYLINE_FIX */
 
   if (CursorX < NumOfColumns-2)
@@ -534,7 +530,7 @@ void PutDebugChar(BYTE b)
   if ((b & 0x80) == 0x80)
   {
     UpdateStr();
-    CharAttr = AttrReverse;
+    CharAttr.Attr = AttrReverse;
     b = b & 0x7f;
   }
 
@@ -554,10 +550,10 @@ void PutDebugChar(BYTE b)
   else
     PutChar(b);
 
-  if (CharAttr != AttrDefault)
+  if (CharAttr.Attr != AttrDefault)
   {
     UpdateStr();
-    CharAttr = AttrDefault;
+    CharAttr.Attr = AttrDefault;
   }
 }
 
@@ -782,7 +778,6 @@ void SaveCursor()
   Buff->CursorX = CursorX;
   Buff->CursorY = CursorY;
   Buff->Attr = CharAttr;
-  Buff->Attr2 = CharAttr2;
   Buff->Glr[0] = Glr[0];
   Buff->Glr[1] = Glr[1];
   for (i=0 ; i<=3; i++)
@@ -809,7 +804,6 @@ void  RestoreCursor()
     Buff->CursorY = NumOfLines-1-StatusLine;
   MoveCursor(Buff->CursorX,Buff->CursorY);
   CharAttr = Buff->Attr;
-  CharAttr2 = Buff->Attr2;
   Glr[0] = Buff->Glr[0];
   Glr[1] = Buff->Glr[1];
   for (i=0 ; i<=3; i++)
@@ -1473,57 +1467,115 @@ void CSSetAttr()
 		P = Param[i];
 		if (P<0) P = 0;
 		switch (P) {
-			/* Clear */
-		case 0:
-			CharAttr = AttrDefault;
-			CharAttr2 = AttrDefault2;
+		case   0:	/* Clear all */
+			CharAttr.Attr = AttrDefault;
+			CharAttr.Attr2 = AttrDefault;
+			CharAttr.Fore = AttrDefaultFG;
+			CharAttr.Back = AttrDefaultBG;
 			break;
-			/* Bold */
-		case 1:
-			CharAttr = CharAttr | AttrBold;
+
+		case   1:	/* Bold */
+			CharAttr.Attr |= AttrBold;
 			break;
-			/* Under line */
-		case 4:
-			CharAttr = CharAttr | AttrUnder;
+
+		case   4:	/* Under line */
+			CharAttr.Attr |= AttrUnder;
 			break;
-			/* Blink */
-		case 5:
-			CharAttr = CharAttr | AttrBlink;
+
+		case   5:	/* Blink */
+			CharAttr.Attr |= AttrBlink;
 			break;
-			/* Reverse */
-		case 7:
-			CharAttr = CharAttr | AttrReverse;
+
+		case   7:	/* Reverse */
+			CharAttr.Attr |= AttrReverse;
 			break;
-			/* Bold off */
-		case 22:
-			CharAttr = CharAttr & ~ AttrBold;
+
+		case  22:	/* Bold off */
+			CharAttr.Attr &= ~ AttrBold;
 			break;
-			/* Under line off */
-		case 24:
-			CharAttr = CharAttr & ~ AttrUnder;
+
+		case  24:	/* Under line off */
+			CharAttr.Attr &= ~ AttrUnder;
 			break;
-			/* Blink off */
-		case 25:
-			CharAttr = CharAttr & ~ AttrBlink;
+
+		case  25:	/* Blink off */
+			CharAttr.Attr &= ~ AttrBlink;
 			break;
-			/* Reverse off */
-		case 27:
-			CharAttr = CharAttr & ~ AttrReverse;
+
+		case  27:	/* Reverse off */
+			CharAttr.Attr &= ~ AttrReverse;
 			break;
-		default:
-			/* Text color */
-			if ((P>=30) && (P<=37))
-				CharAttr2 = CharAttr2 & (Attr2Back | Attr2BackMask)
-				| (P-30) | Attr2Fore;
-			else if ((P>=40) && (P<=47)) /* Back color */
-				CharAttr2 = CharAttr2 & (Attr2Fore | Attr2ForeMask)
-				| ((P-40) << SftAttrBack) | Attr2Back;
-			else if (P==39) /* Reset foreground color */
-				CharAttr2 = CharAttr2 & (Attr2Back | Attr2BackMask);
-			else if (P==49) /* Reset background color */
-				CharAttr2 = CharAttr2 & (Attr2Fore | Attr2ForeMask);
-			else if (P==100) /* Reset color attributes */
-				CharAttr2 = AttrDefault2;
+
+		case  30:	/* text color */
+		case  31:
+		case  32:
+		case  33:
+		case  34:
+		case  35:
+		case  36:
+		case  37:
+			CharAttr.Attr2 |= Attr2Fore;
+			CharAttr.Fore = P - 30;
+			break;
+
+		case  38:	/* text color (256color mode) */
+			if (i < NParam && Param[i+1] == 5) {
+				i++;
+				if (i < NParam) {
+					P = Param[++i];
+					if (P<0) {
+						P = 0;
+					}
+					CharAttr.Attr2 |= Attr2Fore;
+					CharAttr.Fore = P;
+				}
+			}
+			break;
+
+		case  39:	/* Reset text color */
+			CharAttr.Attr2 &= ~ Attr2Fore;
+			CharAttr.Fore = AttrDefaultFG;
+			break;
+
+		case  40:	/* Back color */
+		case  41:
+		case  42:
+		case  43:
+		case  44:
+		case  45:
+		case  46:
+		case  47:
+			CharAttr.Attr2 |= Attr2Back;
+			CharAttr.Back = P - 40;
+			break;
+
+		case  48:	/* Back color (256color mode) */
+			if (i < NParam && Param[i+1] == 5) {
+				i++;
+				if (i < NParam) {
+					P = Param[++i];
+					if (P<0) {
+						P = 0;
+					}
+					CharAttr.Attr2 |= Attr2Back;
+					CharAttr.Back = P;
+				}
+			}
+			break;
+
+		case  49:	/* Reset back color */
+			CharAttr.Attr2 &= ~ Attr2Back;
+			CharAttr.Back = AttrDefaultBG;
+			break;
+
+		case 100:	/* Reset text and back color */
+			CharAttr.Attr2 &= ~ (Attr2Fore | Attr2Back);
+			CharAttr.Fore = AttrDefaultFG;
+			CharAttr.Back = AttrDefaultBG;
+			break;
+
+//		default:
+//			;
 		}
 	}
 }
@@ -1607,19 +1659,20 @@ void CSSetAttr()
 	    case 4:
 	    case 5:
 	    case 6:
-	      BuffDrawLine(CharAttr,CharAttr2,
-			   Param[2],Param[3]);
+	      BuffDrawLine(CharAttr, Param[2], Param[3]);
 	      break;
 	    case 12:
 	      /* Text color */
 	      if ((Param[3]>=0) && (Param[3]<=7))
 	      {
-		if (Param[3]==3) Param[3]=IdBlue;
-		else if (Param[3]==4) Param[3]=IdCyan;
-		else if (Param[3]==5) Param[3]=IdYellow;
-		else if (Param[3]==6) Param[3]=IdMagenta;
-		CharAttr2 = CharAttr2 & (Attr2Back | Attr2BackMask)
-		  | Param[3] | Attr2Fore;
+		switch (Param[3]) {
+		  case 3: CharAttr.Fore = IdBlue; break;
+		  case 4: CharAttr.Fore = IdCyan; break;
+		  case 5: CharAttr.Fore = IdYellow; break;
+		  case 6: CharAttr.Fore = IdMagenta; break;
+		  default: CharAttr.Fore = Param[3]; break;
+		}
+		CharAttr.Attr2 |= Attr2Fore;
 	      }
 	      break;
 	  }
@@ -1845,8 +1898,10 @@ void CSSetAttr()
     Send8BitMode = ts.Send8BitCtrl;
 
     /* Attribute */
-    CharAttr = AttrDefault;
-    CharAttr2 = AttrDefault2;
+    CharAttr.Attr = AttrDefault;
+    CharAttr.Attr2 = AttrDefault;
+    CharAttr.Fore = AttrDefaultFG;
+    CharAttr.Back = AttrDefaultBG;
     Special = FALSE;
 
     // status buffers
@@ -2158,6 +2213,89 @@ void IgnoreString(BYTE b)
 	 else ESCFlag = FALSE;
 }
 
+BOOL XsParseColor(char *colspec, COLORREF *color)
+{
+  int r, g, b;
+//  double dr, dg, db;
+
+  r = g = b = 255;
+
+  if (colspec == NULL || color == NULL) {
+    return FALSE;
+  }
+
+  if (_strnicmp(colspec, "rgb:", 4) == 0) {
+    switch (strlen(colspec)) {
+      case  9:	// rgb:R/G/B
+        if (sscanf(colspec, "rgb:%1x/%1x/%1x", &r, &g, &b) != 3) {
+	  return FALSE;
+	}
+	r *= 17; g *= 17; b *= 17;
+        break;
+      case 12:	// rgb:RR/GG/BB
+        if (sscanf(colspec, "rgb:%2x/%2x/%2x", &r, &g, &b) != 3) {
+	  return FALSE;
+	}
+        break;
+      case 15:	// rgb:RRR/GGG/BBB
+        if (sscanf(colspec, "rgb:%3x/%3x/%3x", &r, &g, &b) != 3) {
+	  return FALSE;
+	}
+	r >>= 4; g >>= 4; b >>= 4;
+        break;
+      case 18:	// rgb:RRRR/GGGG/BBBB
+        if (sscanf(colspec, "rgb:%4x/%4x/%4x", &r, &g, &b) != 3) {
+	  return FALSE;
+	}
+	r >>= 8; g >>= 8; b >>= 8;
+        break;
+      default:
+        return FALSE;
+    }
+  }
+//else if (_strnicmp(colspec, "rgbi:", 5) == 0) {
+//}
+  else if (colspec[0] == '#') {
+    switch (strlen(colspec)) {
+      case  4:	// #RGB
+        if (sscanf(colspec, "#%1x%1x%1x", &r, &g, &b) != 3) {
+	  return FALSE;
+	}
+	r <<= 4; g <<= 4; b <<= 4;
+        break;
+      case  7:	// #RGB
+        if (sscanf(colspec, "#%2x%2x%2x", &r, &g, &b) != 3) {
+	  return FALSE;
+	}
+        break;
+      case 10:	// #RGB
+        if (sscanf(colspec, "#%3x%3x%3x", &r, &g, &b) != 3) {
+	  return FALSE;
+	}
+	r >>= 4; g >>= 4; b >>= 4;
+        break;
+      case 13:	// #RGB
+        if (sscanf(colspec, "#%4x%4x%4x", &r, &g, &b) != 3) {
+	  return FALSE;
+	}
+	r >>= 8; g >>= 8; b >>= 8;
+        break;
+      default:
+        return FALSE;
+    }
+  }
+  else {
+    return FALSE;
+  }
+
+  if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
+    return FALSE;
+  }
+
+  *color = RGB(r, g, b);
+  return TRUE;
+}
+
 #define ModeXsFirst     1
 #define ModeXsString    2
 #define ModeXsColorNum  3
@@ -2168,6 +2306,7 @@ void XSequence(BYTE b)
   static BYTE XsParseMode = ModeXsFirst, PrevMode;
   static char StrBuff[sizeof(ts.Title)];
   static int ColorNumber, StrLen;
+  COLORREF color;
 
   switch (XsParseMode) {
     case ModeXsFirst:
@@ -2179,8 +2318,13 @@ void XSequence(BYTE b)
       else if (b == ';') {
         StrBuff[0] = '\0';
 	StrLen = 0;
-	ColorNumber = 0;
-	XsParseMode = ModeXsString;
+	if (Param[1] == 4) {
+	  ColorNumber = 0;
+	  XsParseMode = ModeXsColorNum;
+	}
+	else {
+	  XsParseMode = ModeXsString;
+	}
       }
       else {
         ParseMode = ModeFirst;
@@ -2212,15 +2356,89 @@ void XSequence(BYTE b)
         ParseMode = ModeFirst;
         XsParseMode = ModeXsFirst;
       }
-      else {
-        if (StrLen < sizeof(StrBuff) - 1) {
-	  StrBuff[StrLen++] = b;
-	}
+      else if (StrLen < sizeof(StrBuff) - 1) {
+	StrBuff[StrLen++] = b;
       }
       break;
     case ModeXsColorNum:
+      if (isdigit(b)) {
+        ColorNumber = ColorNumber*10 + b - '0';
+      }
+      else if (b == ';') {
+        XsParseMode = ModeXsColorSpec;
+	StrBuff[0] = '\0';
+	StrLen = 0;
+      }
+      else {
+        ParseMode = ModeFirst;
+	XsParseMode = ModeXsFirst;
+      }
+      break;
     case ModeXsColorSpec:
-      /* not implemented */
+      if (b == ST || b == '\a') { /* String Terminator */
+        StrBuff[StrLen] = '\0';
+	if (ColorNumber >= 0 && ColorNumber <= 255) {
+	  if (strcmp(StrBuff, "?") == 0) {
+	    color = DispGetANSIColor(ColorNumber);
+	    if (Send8BitMode) {
+	      _snprintf_s_l(StrBuff, sizeof(StrBuff), _TRUNCATE,
+	                    "\2354;%d;rgb:%02x/%02x/%02x\234", CLocale,
+			    ColorNumber, GetRValue(color), GetGValue(color), GetBValue(color));
+	    }
+	    else {
+	      _snprintf_s_l(StrBuff, sizeof(StrBuff), _TRUNCATE,
+	                    "\033]4;%d;rgb:%02x/%02x/%02x\033\\", CLocale,
+			    ColorNumber, GetRValue(color), GetGValue(color), GetBValue(color));
+	    }
+            ParseMode = ModeFirst;
+	    XsParseMode = ModeXsFirst;
+	    CommBinaryOut(&cv, StrBuff, strlen(StrBuff));
+	    break;
+	  }
+	  else if (XsParseColor(StrBuff, &color)) {
+	    DispSetANSIColor(ColorNumber, color);
+	  }
+	}
+        ParseMode = ModeFirst;
+	XsParseMode = ModeXsFirst;
+      }
+      else if (b == ESC) {
+        PrevMode = ModeXsColorSpec;
+	XsParseMode = ModeXsEsc;
+      }
+      else if (b <= US) { /* Other control character -- invalid sequence */
+        ParseMode = ModeFirst;
+        XsParseMode = ModeXsFirst;
+      }
+      else if (b == ';') {
+        if (ColorNumber >= 0 && ColorNumber <= 255) {
+	  if (strcmp(StrBuff, "?") == 0) {
+	    color = DispGetANSIColor(ColorNumber);
+	    if (Send8BitMode) {
+	      _snprintf_s_l(StrBuff, sizeof(StrBuff), _TRUNCATE,
+	                    "\2354;%d;rgb:%02x/%02x/%02x\234", CLocale,
+			    ColorNumber, GetRValue(color), GetGValue(color), GetBValue(color));
+	    }
+	    else {
+	      _snprintf_s_l(StrBuff, sizeof(StrBuff), _TRUNCATE,
+	                    "\033]4;%d;rgb:%02x/%02x/%02x\033\\", CLocale,
+			    ColorNumber, GetRValue(color), GetGValue(color), GetBValue(color));
+	    }
+	    XsParseMode = ModeXsColorNum;
+	    CommBinaryOut(&cv, StrBuff, strlen(StrBuff));
+	  }
+	  else if (XsParseColor(StrBuff, &color)) {
+	    DispSetANSIColor(ColorNumber, color);
+	  }
+	}
+	ColorNumber = 0;
+	StrBuff[0] = '\0';
+	StrLen = 0;
+	XsParseMode = ModeXsColorNum;
+      }
+      else if (StrLen < sizeof(StrBuff) - 1) {
+	StrBuff[StrLen++] = b;
+      }
       break;
     case ModeXsEsc:
       if (b == '\\') { /* String Terminator */
@@ -2232,6 +2450,9 @@ void XSequence(BYTE b)
         XsParseMode = ModeXsFirst;
       }
       break;
+//    default:
+//      ParseMode = ModeFirst;
+//      XsParseMode = ModeXsFirst;
   }
 }
 
