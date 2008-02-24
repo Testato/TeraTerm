@@ -31,13 +31,15 @@ sub do_main {
 	
 #	print @lines;
 
+	print "使用禁止ショートカットを検索中\n";
 	do {
 		$section = read_section();
 		print "$section セクション\n";
 		read_entry();
 	} while ($pos < @lines);
 	
-#	check_conflict();
+	print "ショートカットの重複を検索中\n";
+	check_conflict();
 
 }
 
@@ -117,23 +119,42 @@ sub check_invalid_key {
 }
 
 sub check_conflict {
-	my($key, $val);
-	my(@pat) = qw(MENU_FILE MENU_TRANS_KERMIT MENU_TRANS_X MENU_TRANS_Z MENU_TRANS_BP MENU_TRANS_QV MENU_EDIT MENU_SETUP MENU_CONTROL MENU_WINDOW MENU_HELP TEKMENU_FILE TEKMENU_EDIT TEKMENU_SETUP TEKMENU_HELP MENU_SSH DLG_ABOUT DLG_AUTH DLG_AUTHSETUP );
-	my($p);
-	my(%char);
+	my($line, @lines2);
+	my($section, $key, $val);
+	my($line2, $shortcut, $samelevel);
+	my($key2, $val2);
 	
-	foreach $p (@pat) {
-		print "$p のショートカットキーの重複を調べています。\n";
-		%char = ();
-		foreach $key (keys %hash) {
-			if ($key =~ /^$p/) {
-				$val = $hash{$key};
-#				print "$key ($val)\n";
-				if ($val =~ /&(\w)/) {
-					if (exists($char{$1})) {  # conflict
-						print "$key の $val が他と重複しています\n";
-					} else {
-						$char{$1} = 1;
+	@lines2 = @lines;
+	foreach $line (@lines) {
+		if ($line =~ /^\[(.+)\]$/) {
+			$section = $1;
+			next;
+		}
+		elsif ($line =~ /^(.+)=(.+)$/) {
+			$key = $1;
+			$val = $2;
+			if ($val =~ /&(\w)/) {
+				$shortcut = $1;
+				$samelevel = $key;
+				$samelevel =~ s/(\w+)_[a-zA-Z0-9]+/\1/;
+				# print "$key $samelevel $shortcut\n";
+				foreach $line2 (@lines2) {
+					if ($line2 =~ /^\[(.+)\]$/) {
+						$section2 = $1;
+						next;
+					}
+					if ($section ne $section2) {
+						next;
+					}
+					elsif ($line2 =~ /^(${samelevel}_[a-zA-Z0-9]+)=(.+)$/) {
+						$key2 = $1;
+						$val2 = $2;
+						if ($key2 eq $key) {
+							next;
+						}
+						if ($val2 =~ /&$shortcut/i) {
+							print "[$key=$val] and [$key2=$val2] conflict [&$shortcut]\n";
+						}
 					}
 				}
 			}
@@ -141,5 +162,3 @@ sub check_conflict {
 	}
 
 }
-
-
