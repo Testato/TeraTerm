@@ -2457,10 +2457,20 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
   }
   else { // full color
 	if ((Attr.Attr2 & Attr2Fore) != 0) {
-	  if ((Attr.Fore<16) && ((Attr.Attr&AttrBold)!=0) == ((Attr.Fore&7)==0))
+	  if (Attr.Fore<8 && (ts.ColorFlag&CF_PCBOLD16)) {
+	    if (((Attr.Attr&AttrBold)!=0) == (Attr.Fore!=0)) {
+	      TextColor = ANSIColor[Attr.Fore];
+	    }
+	    else {
+	      TextColor = ANSIColor[Attr.Fore ^ 8];
+	    }
+	  }
+	  else if (Attr.Fore < 16 && (Attr.Fore&7) != 0) {
 	    TextColor = ANSIColor[Attr.Fore ^ 8];
-	  else
+	  }
+	  else {
 	    TextColor = ANSIColor[Attr.Fore];
+	  }
 	}
 	else if ((Attr.Attr & AttrBlink) != 0)
 #ifdef ALPHABLEND_TYPE2 // AKASI
@@ -2484,12 +2494,21 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 	else
 	  TextColor = ts.VTColor[0];
 #endif
-
 	if ((Attr.Attr2 & Attr2Back) != 0) {
-	  if ((Attr.Back<16) && ((Attr.Attr&AttrBlink)!=0) == ((Attr.Back&7)==0))
+	  if (Attr.Back<8 && (ts.ColorFlag&CF_PCBOLD16)) {
+	    if (((Attr.Attr&AttrBlink)!=0) == (Attr.Back!=0)) {
+	      BackColor = ANSIColor[Attr.Back];
+	    }
+	    else {
+	      BackColor = ANSIColor[Attr.Back ^ 8];
+	    }
+	  }
+	  else if (Attr.Back < 16 && (Attr.Back&7) != 0) {
 	    BackColor = ANSIColor[Attr.Back ^ 8];
-	  else
+	  }
+	  else {
 	    BackColor = ANSIColor[Attr.Back];
+	  }
 	}
 	else if ((Attr.Attr & AttrBlink) != 0)
 #ifdef ALPHABLEND_TYPE2 // AKASI

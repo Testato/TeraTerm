@@ -347,9 +347,17 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	/* Popup menu */
 	ts->PopupMenu = GetOnOff(Section, "PopupMenu", FName, FALSE);
 
-	/* Full color */
+	/* PC-Style bold color mapping */
 	ts->ColorFlag |=
-		CF_FULLCOLOR * GetOnOff(Section, "FullColor", FName, FALSE);
+		CF_PCBOLD16 * GetOnOff(Section, "PcBoldColor", FName, FALSE);
+
+	/* aixterm style 16 colors mode */
+	ts->ColorFlag |=
+		CF_AIXTERM16 * GetOnOff(Section, "Aixterm16Color", FName, FALSE);
+
+	/* xterm style 256 colors mode */
+	ts->ColorFlag |=
+		CF_XTERM256 * GetOnOff(Section, "Xterm256Color", FName, TRUE);
 
 	/* Enable scroll buffer */
 	ts->EnableScrollBuff =
@@ -1304,9 +1312,17 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	/* Popup menu */
 	WriteOnOff(Section, "PopupMenu", FName, ts->PopupMenu);
 
-	/* ANSI full color */
-	WriteOnOff(Section, "FullColor", FName,
-	           (WORD) (ts->ColorFlag & CF_FULLCOLOR));
+	/* PC-Style bold color mapping */
+	WriteOnOff(Section, "PcBoldColor", FName,
+	           (WORD) (ts->ColorFlag & CF_PCBOLD16));
+
+	/* aixterm 16 colors mode */
+	WriteOnOff(Section, "Aixterm16Color", FName,
+	           (WORD) (ts->ColorFlag & CF_AIXTERM16));
+
+	/* xterm 256 colors mode */
+	WriteOnOff(Section, "Xterm256Color", FName,
+	           (WORD) (ts->ColorFlag & CF_XTERM256));
 
 	/* Enable scroll buffer */
 	WriteOnOff(Section, "EnableScrollBuff", FName, ts->EnableScrollBuff);

@@ -1521,7 +1521,7 @@ void CSSetAttr()
 			break;
 
 		case  38:	/* text color (256color mode) */
-			if (i < NParam && Param[i+1] == 5) {
+			if ((ts.ColorFlag & CF_XTERM256) && i < NParam && Param[i+1] == 5) {
 				i++;
 				if (i < NParam) {
 					P = Param[++i];
@@ -1555,7 +1555,7 @@ void CSSetAttr()
 			break;
 
 		case  48:	/* Back color (256color mode) */
-			if (i < NParam && Param[i+1] == 5) {
+			if ((ts.ColorFlag & CF_XTERM256) && i < NParam && Param[i+1] == 5) {
 				i++;
 				if (i < NParam) {
 					P = Param[++i];
@@ -1583,13 +1583,15 @@ void CSSetAttr()
 		case 95:
 		case 96:
 		case 97:	/* aixterm style text color */
-			CharAttr.Attr2 |= Attr2Fore;
-			CharAttr.Fore = P - 90 + 8;
-			BuffSetCurCharAttr(CharAttr);
+			if (ts.ColorFlag & CF_AIXTERM16) {
+				CharAttr.Attr2 |= Attr2Fore;
+				CharAttr.Fore = P - 90 + 8;
+				BuffSetCurCharAttr(CharAttr);
+			}
 			break;
 
 		case 100:
-			if ((ts.ColorFlag & CF_FULLCOLOR) == 0) {
+			if (! (ts.ColorFlag & CF_AIXTERM16)) {
 				/* Reset text and back color */
 				CharAttr.Attr2 &= ~ (Attr2Fore | Attr2Back);
 				CharAttr.Fore = AttrDefaultFG;
@@ -1606,9 +1608,11 @@ void CSSetAttr()
 		case 105:
 		case 106:
 		case 107:	/* aixterm style back color */
-			CharAttr.Attr2 |= Attr2Back;
-			CharAttr.Back = P - 100 + 8;
-			BuffSetCurCharAttr(CharAttr);
+			if (ts.ColorFlag & CF_AIXTERM16) {
+				CharAttr.Attr2 |= Attr2Back;
+				CharAttr.Back = P - 100 + 8;
+				BuffSetCurCharAttr(CharAttr);
+			}
 			break;
 		}
 	}
@@ -2410,7 +2414,7 @@ void XSequence(BYTE b)
     case ModeXsColorSpec:
       if (b == ST || b == '\a') { /* String Terminator */
         StrBuff[StrLen] = '\0';
-	if (ColorNumber >= 0 && ColorNumber <= 255) {
+	if ((ts.ColorFlag & CF_XTERM256) && ColorNumber >= 0 && ColorNumber <= 255) {
 	  if (strcmp(StrBuff, "?") == 0) {
 	    color = DispGetANSIColor(ColorNumber);
 	    if (Send8BitMode) {
@@ -2444,7 +2448,7 @@ void XSequence(BYTE b)
         XsParseMode = ModeXsFirst;
       }
       else if (b == ';') {
-        if (ColorNumber >= 0 && ColorNumber <= 255) {
+	if ((ts.ColorFlag & CF_XTERM256) && ColorNumber >= 0 && ColorNumber <= 255) {
 	  if (strcmp(StrBuff, "?") == 0) {
 	    color = DispGetANSIColor(ColorNumber);
 	    if (Send8BitMode) {

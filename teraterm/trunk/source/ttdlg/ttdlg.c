@@ -494,6 +494,8 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 				SendDlgItemMessage(Dialog, IDC_WINHIDETITLE, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_WINHIDEMENU, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_WINCOLOREMU, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_WINAIXTERM16, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(Dialog, IDC_WINXTERM256, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_WINSCROLL1, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_WINSCROLL3, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(Dialog, IDC_WINSCROLL2, WM_SETFONT, (WPARAM)DlgWinFont, MAKELPARAM(TRUE,0));
@@ -545,6 +547,12 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			GetDlgItemText(Dialog, IDC_WINCOLOREMU, uimsg2, sizeof(uimsg2));
 			get_lang_msg("DLG_WIN_COLOREMU", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
 			SetDlgItemText(Dialog, IDC_WINCOLOREMU, uimsg);
+			GetDlgItemText(Dialog, IDC_WINAIXTERM16, uimsg2, sizeof(uimsg2));
+			get_lang_msg("DLG_WIN_AIXTERM16", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
+			SetDlgItemText(Dialog, IDC_WINAIXTERM16, uimsg);
+			GetDlgItemText(Dialog, IDC_WINXTERM256, uimsg2, sizeof(uimsg2));
+			get_lang_msg("DLG_WIN_XTERM256", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
+			SetDlgItemText(Dialog, IDC_WINXTERM256, uimsg);
 			GetDlgItemText(Dialog, IDC_WINSCROLL1, uimsg2, sizeof(uimsg2));
 			get_lang_msg("DLG_WIN_SCROLL1", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
 			SetDlgItemText(Dialog, IDC_WINSCROLL1, uimsg);
@@ -598,13 +606,24 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 				DisableDlgItem(Dialog,IDC_WINHIDEMENU,IDC_WINHIDEMENU);
 
 			if (ts->VTFlag>0) {
-				get_lang_msg("DLG_WIN_FULLCOLOR", uimsg, sizeof(uimsg), "Full &color", UILanguageFile);
+				get_lang_msg("DLG_WIN_PCBOLD16", uimsg, sizeof(uimsg), "&16 Colors (PC style)", UILanguageFile);
 				SetDlgItemText(Dialog, IDC_WINCOLOREMU,uimsg);
-				if ((ts->ColorFlag & CF_FULLCOLOR)!=0)
+				if ((ts->ColorFlag & CF_PCBOLD16)!=0)
 					i = 1;
 				else
 					i = 0;
 				SetRB(Dialog,i,IDC_WINCOLOREMU,IDC_WINCOLOREMU);
+				if ((ts->ColorFlag & CF_AIXTERM16)!=0)
+					i = 1;
+				else
+					i = 0;
+				SetRB(Dialog,i,IDC_WINAIXTERM16,IDC_WINAIXTERM16);
+				if ((ts->ColorFlag & CF_XTERM256)!=0)
+					i = 1;
+				else
+					i = 0;
+				SetRB(Dialog,i,IDC_WINXTERM256,IDC_WINXTERM256);
+				ShowDlgItem(Dialog,IDC_WINAIXTERM16,IDC_WINXTERM256);
 				ShowDlgItem(Dialog,IDC_WINSCROLL1,IDC_WINSCROLL3);
 				SetRB(Dialog,ts->EnableScrollBuff,IDC_WINSCROLL1,IDC_WINSCROLL1);
 				SetDlgItemInt(Dialog,IDC_WINSCROLL2,ts->ScrollBuffSize,FALSE);
@@ -692,9 +711,19 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 						if (ts->VTFlag>0) {
 							GetRB(Dialog,&i,IDC_WINCOLOREMU,IDC_WINCOLOREMU);
 							if (i!=0)
-								ts->ColorFlag |= CF_FULLCOLOR;
+								ts->ColorFlag |= CF_PCBOLD16;
 							else
-								ts->ColorFlag &= ~(WORD)CF_FULLCOLOR;
+								ts->ColorFlag &= ~(WORD)CF_PCBOLD16;
+							GetRB(Dialog,&i,IDC_WINAIXTERM16,IDC_WINAIXTERM16);
+							if (i!=0)
+								ts->ColorFlag |= CF_AIXTERM16;
+							else
+								ts->ColorFlag &= ~(WORD)CF_AIXTERM16;
+							GetRB(Dialog,&i,IDC_WINXTERM256,IDC_WINXTERM256);
+							if (i!=0)
+								ts->ColorFlag |= CF_XTERM256;
+							else
+								ts->ColorFlag &= ~(WORD)CF_XTERM256;
 							GetRB(Dialog,&ts->EnableScrollBuff,IDC_WINSCROLL1,IDC_WINSCROLL1);
 							if ( ts->EnableScrollBuff>0 ) {
 								ts->ScrollBuffSize =

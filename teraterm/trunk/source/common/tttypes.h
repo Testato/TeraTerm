@@ -168,8 +168,11 @@ typedef TCharAttr *PCharAttr;
 #define TF_BACKWRAP           128
 
 // ANSI color flags (used in ts.ColorFlag)
-#define CF_FULLCOLOR    1
-#define CF_USETEXTCOLOR 2
+#define CF_PCBOLD16     1
+#define CF_AIXTERM16    2
+#define CF_XTERM256     4
+#define CF_FULLCOLOR    7
+#define CF_USETEXTCOLOR 8
 
 // port flags (used in ts.PortFlag)
 #define PF_CONFIRMDISCONN 1
