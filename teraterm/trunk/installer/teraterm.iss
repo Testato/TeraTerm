@@ -1,5 +1,5 @@
 #define AppName "UTF-8 TeraTerm Pro with TTSSH2"
-#define AppVer "4.57"
+#define AppVer "4.58-RC1"
 
 [Setup]
 AppCopyright=TeraTerm Project
@@ -55,6 +55,7 @@ Source: ..\release\screencapture.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\ssh2login.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\wait_regex.ttl; DestDir: {app}; Components: TeraTerm
 Source: ..\release\lang\Japanese.lng; DestDir: {app}\lang; Components: TeraTerm; Attribs: readonly; Flags: uninsremovereadonly overwritereadonly
+Source: ..\release\lang\German.lng; DestDir: {app}\lang; Components: TeraTerm; Attribs: readonly; Flags: uninsremovereadonly overwritereadonly
 Source: ..\..\ttssh2\ttxssh\Release\ttxssh.dll; DestDir: {app}; Components: TTSSH; Flags: ignoreversion
 Source: ..\release\ssh_known_hosts; DestDir: {app}; Components: TTSSH; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\cygterm\cygterm.exe; DestDir: {app}; Components: cygterm
@@ -126,10 +127,14 @@ Filename: {app}\teraterm.ini; Section: Tera Term; Key: Aixterm16Color; String: o
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: Aixterm16Color; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: PcBoldColor; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: PcBoldColor; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {app}\teraterm.ini; Section: Tera Term; Key: ConfirmChangePaste; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: ConfirmChangePaste; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: LogHideDialog; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: LogHideDialog; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: MaximizedBugTweak; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: MaximizedBugTweak; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {app}\teraterm.ini; Section: Tera Term; Key: KillFocusCursor; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: KillFocusCursor; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: MouseEventTracking; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: MouseEventTracking; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: HostDialogOnStartup; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
@@ -264,11 +269,13 @@ en.msg_language_description=Which language shoud be used?
 en.msg_language_subcaption=Select the language of application's menu and dialog, then click Next.
 en.msg_language_none=&English
 en.msg_language_japanese=&Japanese
+en.msg_language_german=&German
 ja.msg_language_caption=言語の選択
 ja.msg_language_description=ユーザーインターフェースの言語を選択してください。
 ja.msg_language_subcaption=アプリケーションのメニューやダイアログ等の表示言語を選択して、「次へ」をクリックしてください。
 ja.msg_language_none=英語(&E)
 ja.msg_language_japanese=日本語(&J)
+ja.msg_language_german=ドイツ語(&G)
 
 [Code]
 var
@@ -431,6 +438,8 @@ begin
   case UILangFilePage.SelectedValueIndex of
     1:
       SetIniString('Tera Term', 'UILanguageFile', 'lang\Japanese.lng', iniFile);
+    2:
+      SetIniString('Tera Term', 'UILanguageFile', 'lang\German.lng', iniFile);
     else
       SetIniString('Tera Term', 'UILanguageFile', '', iniFile);
   end;
@@ -444,18 +453,21 @@ var
   UILangFilePageSubCaption  : String;
   UILangFilePageNone        : String;
   UILangFilePageJapanese    : String;
+  UILangFilePageGerman      : String;
 begin
   UILangFilePageCaption     := CustomMessage('msg_language_caption');
   UILangFilePageDescription := CustomMessage('msg_language_description');
   UILangFilePageSubCaption  := CustomMessage('msg_language_subcaption');
   UILangFilePageNone        := CustomMessage('msg_language_none');
   UILangFilePageJapanese    := CustomMessage('msg_language_japanese');
+  UILangFilePageGerman      := CustomMessage('msg_language_german');
 
   UILangFilePage := CreateInputOptionPage(wpSelectComponents,
     UILangFilePageCaption, UILangFilePageDescription,
     UILangFilePageSubCaption, True, False);
   UILangFilePage.Add(UILangFilePageNone);
   UILangFilePage.Add(UILangFilePageJapanese);
+  UILangFilePage.Add(UILangFilePageGerman);
   case ActiveLanguage of
     'ja':
       UILangFilePage.SelectedValueIndex := 1;
@@ -477,12 +489,16 @@ begin
           iniFile := GetIniString('Tera Term', 'UILanguageFile', '', GetUserIniFilename());
           if iniFile = 'lang\Japanese.lng' then
             UILangFilePage.SelectedValueIndex := 1
+          else if iniFile = 'lang\German.lng' then
+            UILangFilePage.SelectedValueIndex := 2
           else
             UILangFilePage.SelectedValueIndex := 0;
-        end else if isGetDefaultIniExists() then begin
+        end if isGetDefaultIniExists() then begin
           iniFile := GetIniString('Tera Term', 'UILanguageFile', '', GetDefaultIniFilename());
           if iniFile = 'lang\Japanese.lng' then
             UILangFilePage.SelectedValueIndex := 1
+          else if iniFile = 'lang\German.lng' then
+            UILangFilePage.SelectedValueIndex := 2
           else
             UILangFilePage.SelectedValueIndex := 0;
         end;
