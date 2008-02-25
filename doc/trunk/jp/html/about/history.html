@@ -72,10 +72,18 @@
       <li>ウィンドウの最大幅を300字から500字に拡張した。</li>
       <li>'<a href="../macro/command/getdate.html">getdate</a>', '<a href="../macro/command/gettime.html">gettime</a>' マクロコマンドで、書式を指定しなかった場合は <a href="../macro/syntax/variables.html">result</a> に値をセットしないようにした。(バージョン4.56以前との互換性のため)</li>
       <li>'<a href="../macro/command/logopen.html">logopen</a>' マクロコマンドに、&lt;plain text flag&gt;, &lt;timestamp flag&gt;, &lt;hide dialog flag&gt; オプションを追加した。</li>
+      <li>xterm形式の256色モードおよびaixterm形式の16色モードに対応した。
+        <ul>
+          <li>teraterm.ini に Xterm256Color および Aixterm16Color エントリを追加した。</li>
+	  <li>teraterm.ini の FullColor エントリを PcBoldColor エントリに名称変更した。</li>
+          <li><a href="../menu/setup-window.html">ウィンドウ設定ダイアログ</a>にチェックボックスを追加した。</li>
+        </ul></li>
+      <li>行削除/画面削除された領域や、スクロール等で新しく表示された行の背景色を、標準の背景色から現在の背景色に変更した。</li>
       <li>リバースビデオ制御シーケンス(DECSCNM)が正しく働かないのを修正した。</li>
       <li>ウィンドウを最大化した状態で、teraterm.iniへ保存を行うと、最大化時のTerminalSizeが保存されていたバグを修正した。</li>
       <li>ファイル名をチェックするルーチンで、0x5C や 0x7C などを含むマルチバイト文字を不正な文字と判定する問題を修正した。</li>
       <li>ポートタイプが"serial"の場合、TeraTermの起動時に自動接続しないバグを修正した。Steven Yang氏に感謝します。cf. <a href="http://www.neocom.ca/forum/viewtopic.php?t=748">TeraTerm com auto connect bug</a></li>
+      <li>ANSI Color 設定の変更が即座に反映されないのを修正した。</li>
       <li><a href="#ttssh_2.46">SSH2対応TTSSH(2.46)</a>へ差し替えた</li>
       <li><a href="#ttproxy_1.0.0.15">TTProxy(1.0.0.15)</a>へ差し替えた</li>
       <li><a href="#kanjimenu_0.1.4">TTX KanjiMenu Plugin(0.1.4)</a>へ差し替えた。</li>
