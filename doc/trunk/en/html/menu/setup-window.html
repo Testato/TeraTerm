@@ -40,10 +40,43 @@
 
       <dt>Full color</dt>
       <dd>
-	Enables the full color emulation. In this mode, the bold (blink)
+	Enables the full color emulation.
+      </dd>
+
+      <dt>16 Colors (PC style)</dt>
+      <dd>
+	Enables the PC style mapping of bold color.  In this mode, the bold (blink)
 	attribute is used as a color attribute bit for text (background).
 	This option increases the number of colors for text and
 	background specified by escape sequences twice, from 8 to 16.
+      </dd>
+
+      <dt>16 Colors (aixterm style)</dt>
+      <dd>
+	Enables aixterm style 16 colors mode.
+	This option increases the number of colors for text and
+	background specified by escape sequences twice, from 8 to 16.
+      <!-- ToDo: translate
+	aixterm形式の16色モードに対応します。このモードでは、
+	エスケープシーケンスにより指定可能な文字/背景色が8色から16色に増えます。<br>
+	注:このモードの背景色を色番号9に変更するシーケンス(&lt;CSI&gt;100m)は、
+	rxvt形式の文字/背景色のリセットのシーケンスと衝突しています。そのため、
+	このモードを有効にすると、&lt;CSI&gt;100mの動作が今までと違うものになります。
+	&lt;CSI&gt;100mが今まで通り文字/背景色のリセットとして動作して欲しい場合は、
+	このモードをOffにしてください。
+      -->
+      </dd>
+
+      <dt>256 Colors (xterm style)</dt>
+      <dd>
+	Enables xterm style 256 colors mode.
+	This option increases the number of colors for text and
+	background specified by escape sequences twice, from 8 to 256.
+      <!-- ToDo: translate
+	xterm形式の256色モードに対応します。このモードでは、
+	エスケープシーケンスにより指定可能な文字/背景色が8色から256色に増えます。
+	また、エスケープシーケンスによる色テーブルの変更が行えるようになります。
+      -->
       </dd>
 
       <dt>Scroll buffer</dt>
@@ -78,6 +111,21 @@
 	  <dt>Reverse</dt>
 	  <dd>
 	    Exchanges the text color and background color.
+	  </dd>
+
+	  <dt>R, G, B</dt>
+	  <dd>
+	<!-- ToDo: translate
+	    指定した文字属性の色のRGB値を指定します。
+	-->
+	  </dd>
+
+	  <dt>Always use Normal text's BG</td>
+	  <dd>
+	<!-- ToDo: translate
+	    Onにすると、Bold, Blink, URL属性の背景色の設定は無視され、
+	    Normalの背景色が使われるようになります。
+	-->
 	  </dd>
 	</dl>
       </dd>
