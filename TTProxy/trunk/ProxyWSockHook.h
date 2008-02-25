@@ -839,7 +839,7 @@ private:
             type.addString("SOCKS5+SSL");
             type.setCurSel(proxy.type);
 
-            if (proxy.type != ProxyInfo::TYPE_NONE || proxy.type != ProxyInfo::TYPE_SSL) {
+            if (proxy.type != ProxyInfo::TYPE_NONE && proxy.type != ProxyInfo::TYPE_SSL) {
                 if (proxy.host != NULL) {
                     host.SetWindowText(proxy.host);
                     if (proxy.port != 0) {
@@ -861,7 +861,7 @@ private:
         }
         virtual void onOK() {
             char uimsg[MAX_UIMSG];
-            if (proxy.type != ProxyInfo::TYPE_NONE || proxy.type != ProxyInfo::TYPE_SSL) {
+            if (proxy.type != ProxyInfo::TYPE_NONE && proxy.type != ProxyInfo::TYPE_SSL) {
                 if (proxy.host == NULL) {
                     UTIL_get_lang_msg("MSG_EMPTY_HOSTNAME", uimsg, sizeof(uimsg),
                                       "Hostname is empty!");
@@ -935,7 +935,7 @@ private:
             if (id == 0 || id == IDC_TYPE || id == IDC_HOSTNAME || id == IDC_USERNAME) {
                 int enabled = 0;
                 int typeN = type.getCurSel();
-                if (typeN != ProxyInfo::TYPE_NONE || typeN != ProxyInfo::TYPE_SSL) {
+                if (typeN != ProxyInfo::TYPE_NONE && typeN != ProxyInfo::TYPE_SSL) {
                     enabled |= 1;
                     if (::GetWindowTextLength(GetDlgItem(IDC_HOSTNAME)) > 0) {
                         enabled |= 2;
@@ -952,7 +952,7 @@ private:
 
             if (id != 0) {
                 proxy.type = (ProxyInfo::Type) type.getCurSel();
-                if (proxy.type != ProxyInfo::TYPE_NONE || proxy.type != ProxyInfo::TYPE_SSL) {
+                if (proxy.type != ProxyInfo::TYPE_NONE && proxy.type != ProxyInfo::TYPE_SSL) {
                     proxy.host = host.GetWindowText();
                     if (host.GetWindowTextLength() == 0) {
                         proxy.host = NULL;
