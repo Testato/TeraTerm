@@ -55,28 +55,18 @@
       <dd>
 	Enables aixterm style 16 colors mode.
 	This option increases the number of colors for text and
-	background specified by escape sequences twice, from 8 to 16.
-      <!-- ToDo: translate
-	aixterm形式の16色モードに対応します。このモードでは、
-	エスケープシーケンスにより指定可能な文字/背景色が8色から16色に増えます。<br>
-	注:このモードの背景色を色番号9に変更するシーケンス(&lt;CSI&gt;100m)は、
-	rxvt形式の文字/背景色のリセットのシーケンスと衝突しています。そのため、
-	このモードを有効にすると、&lt;CSI&gt;100mの動作が今までと違うものになります。
-	&lt;CSI&gt;100mが今まで通り文字/背景色のリセットとして動作して欲しい場合は、
-	このモードをOffにしてください。
-      -->
+	background specified by escape sequences twice, from 8 to 16.<br>
+	
+	<b>NOTE</b>: The escape sequence(&lt;CSI&gt;100m) which changes the background color to the color number nine would conflict the escape sequence of the resetting rxvt-style characters and background color. So, if a user enables this mode, the behavior of &lt;CSI&gt;100m escape sequence will work never before.<br>
+	If a user does not like this behavior, turn off this option.
       </dd>
 
       <dt>256 Colors (xterm style)</dt>
       <dd>
 	Enables xterm style 256 colors mode.
 	This option increases the number of colors for text and
-	background specified by escape sequences twice, from 8 to 256.
-      <!-- ToDo: translate
-	xterm形式の256色モードに対応します。このモードでは、
-	エスケープシーケンスにより指定可能な文字/背景色が8色から256色に増えます。
-	また、エスケープシーケンスによる色テーブルの変更が行えるようになります。
-      -->
+	background specified by escape sequences twice, from 8 to 256.<br>
+	Also, a user can change the color table by the escape sequence.
       </dd>
 
       <dt>Scroll buffer</dt>
@@ -115,17 +105,12 @@
 
 	  <dt>R, G, B</dt>
 	  <dd>
-	<!-- ToDo: translate
-	    指定した文字属性の色のRGB値を指定します。
-	-->
+	    Specifies the RGB value of the character color.
 	  </dd>
 
 	  <dt>Always use Normal text's BG</td>
 	  <dd>
-	<!-- ToDo: translate
-	    Onにすると、Bold, Blink, URL属性の背景色の設定は無視され、
-	    Normalの背景色が使われるようになります。
-	-->
+	    If this option is ON, TeraTerm uses Normal background color instead of URL's background color.
 	  </dd>
 	</dl>
       </dd>
