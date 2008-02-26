@@ -403,16 +403,59 @@ void TelStartKeepAliveThread() {
 </tr>
 
 <tr>
-  <td></td>
-  <td></td>
+  <td>DdeGetData</td>
+  <td>DDEオブジェクトからバッファへコピーする。</td>
+</tr>
+
+<tr>
+  <td>DdeDisconnect</td>
+  <td>DDE通信を終了する</td>
+</tr>
+
+<tr>
+  <td>DdePostAdvise</td>
+  <td>DDEサーバ側で使われる関数で、自分自身に XTYP_ADVREQ トランザクションを送る。</td>
 </tr>
 
 </table>
 </p>
+
+
+
+  <h3>実装</h3>
+　DDEサーバ側の実装について見ていきます。TeraTerm本体("ttermpro.exe")がDDEサーバとなり、かならずDDEサーバから起動されます。マクロプログラム("ttpmacro.exe")から直接マクロスクリプトが実行されるケースにおいても、"connect"マクロによりDDE接続をしないと、通信が開始できません。<br>
+　TeraTermのControlメニューからMacroを呼び出した場合、RunMacro()#ttdde.c がコールされます。<br>
+　HVTWinウィンドウハンドルからトピック名（8バイト）を作成し、DDEの初期化とサーバの登録を行います。また、このタイミングでDDEバッファ（1KB）を作成しています。その後、"ttpmacro.exe"を /D= オプションでトピック名を渡しつつ、起動をします。<br>
 　
+<pre class=code>
+	SetTopic();
+	if (! InitDDE()) return;
+	strncpy_s(Cmnd, sizeof(Cmnd),"TTPMACRO /D=", _TRUNCATE);
+	strncat_s(Cmnd,sizeof(Cmnd),TopicName,_TRUNCATE);
+</pre>
 
+　DDEサーバに、DDEクライアントからトランザクションが送られてきたときは、DdeCallbackProcコールバック関数が呼び出されます。コールバック関数は、DdeInitialize()でDDEの初期化を行うときに登録されます。<br><br>
+　
+　次に、DDEクライアントについて見てみましょう。マクロプログラムの起動時、InitDDE()#ttmdde.c が呼び出され、DDEクライアントとして初期化が行われます。DDEの初期化は、DdeInitialize()で行われ、同時にDdeCallbackProcコールバック関数が登録されます。DDEサーバから届いたトランザクションは、コールバック関数で処理されます。<br>
+　DDE通信を始めるためには、DdeConnect()を呼び出し、サーバと接続する必要があります。次に、"ttpmacro.exe"のウィンドウハンドル(HWin)をサーバへ通知するために、XTYP_EXECUTEトランザクションで送ります。最後に、XTYP_ADVSTARTトランザクションをサーバへ送り、アドバイズループを開始します。<br>
 
-  <h3>設計と実装</h3>
+<pre class=code>
+  ConvH = DdeConnect(Inst, Service, Topic, NULL);
+  if (ConvH == 0) return FALSE;
+  Linked = TRUE;
+
+  Cmd[0] = CmdSetHWnd;
+  w = HIWORD(HWin);
+  Word2HexStr(w,&(Cmd[1]));
+  w = LOWORD(HWin);
+  Word2HexStr(w,&(Cmd[5]));
+
+  DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,
+    CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
+
+  DdeClientTransaction(NULL,0,ConvH,Item,
+    CF_OEMTEXT,XTYP_ADVSTART,1000,NULL);
+</pre>
 
 
   <h3>バッファの管理</h3>
