@@ -129,8 +129,8 @@ Filename: {app}\teraterm.ini; Section: Tera Term; Key: Aixterm16Color; String: o
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: Aixterm16Color; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: PcBoldColor; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: PcBoldColor; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: ConfirmChangePaste; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: ConfirmChangePaste; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {app}\teraterm.ini; Section: Tera Term; Key: ConfirmChangePaste; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: ConfirmChangePaste; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: LogHideDialog; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: LogHideDialog; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: MaximizedBugTweak; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
