@@ -386,6 +386,7 @@ struct tttset {
 	int TerminalOldHeight;
 	WORD MaximizedBugTweak;
 	WORD ConfirmChangePaste;
+	WORD SaveVTWinPos;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -821,6 +822,7 @@ typedef TMap far *PMap;
  *   added tttset.TerminalOldHeight
  *   added tttset.MaximizeBugTweak.
  *   added tttset.ConfirmChangePaste.
+ *   added tttset.SaveVTWinPos.
  *
  * - At version 4.57, ttset_memfilemap was replaced with ttset_memfilemap_5.
  *   added tttset.XModemRcvCommand.

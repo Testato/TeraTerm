@@ -204,6 +204,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	GetNthNum(Temp, 1, (int far *) &(ts->TEKPos.x));
 	GetNthNum(Temp, 2, (int far *) &(ts->TEKPos.y));
 
+	/* Save VT Window position */
+	ts->SaveVTWinPos = GetOnOff(Section, "SaveVTWinPos", FName, FALSE);
+
 	/* VT terminal size  */
 	GetPrivateProfileString(Section, "TerminalSize", "80,24",
 	                        Temp, sizeof(Temp), FName);
@@ -1110,6 +1113,12 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 		strncpy_s(Temp, sizeof(Temp), "tcpip", _TRUNCATE);
 
 	WritePrivateProfileString(Section, "Port", Temp, FName);
+
+	/* Save win position */
+	if (ts->SaveVTWinPos) {
+		/* VT win position */
+		WriteInt2(Section, "VTPos", FName, ts->VTPos.x, ts->VTPos.y);
+	}
 
 	/* VT terminal size  */
 	WriteInt2(Section, "TerminalSize", FName,
