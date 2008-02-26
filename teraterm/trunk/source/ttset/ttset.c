@@ -985,7 +985,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 
 	// added ConfirmChangePaste (2008.2.3 yutaka)
 	ts->ConfirmChangePaste =
-		GetOnOff(Section, "ConfirmChangePaste", FName, TRUE);
+		GetOnOff(Section, "ConfirmChangePaste", FName, FALSE);
 
 	// added SelectOnlyByLButton (2007.11.20 maya)
 	ts->SelectOnlyByLButton =
