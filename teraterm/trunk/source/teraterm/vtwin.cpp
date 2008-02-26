@@ -503,10 +503,8 @@ CVTWindow::CVTWindow()
 	int CmdShow;
 	PKeyMap tempkm;
 
-#if 0
-  #include <crtdbg.h>
-  #define _CRTDBG_MAP_ALLOC
-  _CrtSetBreakAlloc(52);
+#ifdef _DEBUG
+  ::_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
   	// 例外ハンドラのフック (2007.9.30 yutaka)
