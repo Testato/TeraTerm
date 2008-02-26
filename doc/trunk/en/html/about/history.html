@@ -90,10 +90,8 @@
       <li>Bug fix: The problem that a multi-byte character string which includes 0x5C and/or 0x7C is recognized as invalid is now fixed. This problem existed in a routine to check a file name.</li>
       <li>Bug fix: TeraTerm COM auto connect problem.  Special thanks to Steven Yang. cf. <a href="http://www.neocom.ca/forum/viewtopic.php?t=748">TeraTerm com auto connect bug</a></li>
 
-    <!-- ToDo: translate
-      <li>ANSI Color 設定の変更が即座に反映されないのを修正した。</li>
-      <li>エスケープシーケンスによるタイトル文字列変更後、余計な'\'が表示される場合があるのを修正した。</li>
-    -->
+      <li>Bug fix: ANSI Color settings is not immediately reflected.</li>
+      <li>Bug fix: Too many '\' characters could be shown after changing the title string by the escape sequence.</li>
 
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.46">2.46</a></li>
       <li>upgraded TTProxy to <a href="#ttproxy_1.0.0.15">1.0.0.15</a></li>
@@ -120,7 +118,7 @@
       <li>added '<a href="../macro/command/scprecv.html">scprecv</a>' macro command.</li>
       <li>added the user confirmation when a file drags to TeraTerm window.
         <ul>
-          <li>added <a href="../setup/teraterm-trans.html#draganddrop">ConfirmFileDragAndDrop</a> entry in teraterm.ini file. The default value is on.</li>
+          <li>added <a href="../setup/teraterm-trans.html#draganddrop">ConfirmFileDragAndDrop</a> entry in teraterm.ini file. The default value is off.</li>
         </ul></li>
       <li>Bug fix: TeraTerm would overwrite the selected buffer to the Clipboard when <a href="../setup/teraterm-trans.html#draganddrop">SelectOnlyByLButton</a> entry is on.</li>
       <li>Bug fix: extension filters on file dialog didn't work when the <a href="../setup/teraterm-trans.html#filter">FileSendFilter</a> is specified.</li>
