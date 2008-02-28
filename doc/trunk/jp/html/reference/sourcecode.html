@@ -164,6 +164,19 @@
 
 
 <h2><a name="debug">デバッグ手法</a></h2>
+　Windowsアプリケーションでは printf() が使えません。標準出力がどこにも割り当てられていないからです。AllocConsole()とfreopen()を使えば、Windowsアプリケーションにおいても printf() を利用することができます。<br>
+　OutputDebugString()というAPIがあります。これは Visual Studio のデバッグコンソールにメッセージ出力することができる関数です。当該APIは、"Debug build"および"Release build"に関係なく、デバッガが存在すれば、メッセージを送信します。ゆえに、 Visual Studioがなくとも、<a href="http://www.vector.co.jp/soft/win95/prog/se046776.html">DBCon</a>のようなツールを使えば、アプリケーションの単体起動においても、OutputDebugString()によるメッセージを拾うことができます。<br>
+　TeraTermでは、可変長引数を扱えるようにラッパー関数を用意しています。
+　
+<pre class=code>
+void OutputDebugPrintf(char *fmt, ...) {
+	char tmp[1024];
+	va_list arg;
+	va_start(arg, fmt);
+	_vsnprintf(tmp, sizeof(tmp), fmt, arg);
+	OutputDebugString(tmp);
+}
+</pre>
 
 <hr>
 
