@@ -42,6 +42,7 @@ The second digit is:
   TTSSH                       2
   TTProxy                     3
   TTXKanjiMenu                4
+
 The third digit is:
   [File] menu                 1
   [Edit] menu                 2
@@ -49,6 +50,7 @@ The third digit is:
   [Control] menu              4
   [Window] menu               8
   [Help] menu                 9
+
 
 Example: adding a TTSSH menu under File menu
 

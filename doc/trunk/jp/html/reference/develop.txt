@@ -38,12 +38,14 @@
 ■ メニューID追加時の命名規則
 
 1桁目は 5
+
 2桁目は
   TeraTerm VT ウィンドウなら  0
   TeraTerm TEK ウィンドウなら 1
   TTSSH なら                  2
   TTProxy なら                3
   TTXKanjiMenu なら           4
+
 3桁目は
   [File] メニューなら    1
   [Edit] メニューなら    2
@@ -52,9 +54,11 @@
   [Window] メニューなら  8
   [Help] メニューなら    9
 
+
 例：File配下にTTSSHのメニューを追加する
 
 #define ID_SSHSCPMENU       52110
+
 
 
 ■ マクロコマンド追加時の作業リスト
@@ -141,9 +145,13 @@
     
     本現象を回避するには、.rcファイルをテキストエディタで開き、afxres.hのincludeを削除し、新規に2行を追加します。
     
+
       - #include "afxres.h"
+
       + #include <windows.h>
+
       + #define IDC_STATIC -1
+
   
 
   1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする。
