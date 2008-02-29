@@ -24,7 +24,7 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.58">2008.2.29 (Ver 4.58 not released)</a>
+  <li class="history"><a name="teraterm_4.58">2008.2.29 (Ver 4.58)</a>
     <ul>
       <li>Rotating the mouse wheel would supersede the cursor key when the application cursor mode is enabled.
         <ul>
@@ -72,7 +72,6 @@
       <li>increased max width of window from 300 chars to 500 chars.</li>
       <li>if '<a href="../macro/command/getdate.html">getdate</a>' and '<a href="../macro/command/gettime.html">gettime</a>' macro command have no date and time format, system variable "<a href="../macro/syntax/variables.html">result</a>" is not changed. (for compatibility with version 4.56 or earlier)</li>
       <li>added new argments &lt;plain text flag&gt;, &lt;timestamp flag&gt;, &lt;hide dialog flag&gt; to '<a href="../macro/command/logopen.html">logopen</a>' macro command.</li>
-      
       <li>added support for 256 xterm color and 16 aixterm color mode.
         <ul>
           <li>added Xterm256Color and Aixterm16Color entry in teraterm.ini file.</li>
@@ -80,17 +79,13 @@
           <li>added a new checkbox on <a href="../menu/setup-window.html">setup window dialog</a>.</li>
         </ul></li>
       <li>changed from the standard background color to the current background color on the line and the screen deleted area, the new displayed line by scrolling.</li>
-      
       <li>added the German.lng language file. Special thanks to Alexander Wiechert.</li>
-      
       <li>Bug fix: Reverse video control sequence (DECSCNM) doesn't work correctly.</li>
       <li>Bug fix: When TeraTerm is the Maximize window, TerminalSize entry in relation to the window would be recorded in teraterm.ini file.</li>
       <li>Bug fix: The problem that a multi-byte character string which includes 0x5C and/or 0x7C is recognized as invalid is now fixed. This problem existed in a routine to check a file name.</li>
       <li>Bug fix: TeraTerm COM auto connect problem.  Special thanks to Steven Yang. cf. <a href="http://www.neocom.ca/forum/viewtopic.php?t=748">TeraTerm com auto connect bug</a></li>
-
       <li>Bug fix: ANSI Color settings is not immediately reflected.</li>
       <li>Bug fix: Too many '\' characters could be shown after changing the title string by the escape sequence.</li>
-
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.46">2.46</a></li>
       <li>upgraded TTProxy to <a href="#ttproxy_1.0.0.15">1.0.0.15</a></li>
       <li>upgraded TTX KanjiMenu Plugin to <a href="#kanjimenu_0.1.4">0.1.4</a>.</li>
@@ -1041,10 +1036,9 @@ SYNOPSIS:
 
 <h2><a name="ttssh">TTSSH</a></h2>
 <ul>
-  <li class="history"><a name="ttssh_2.46">2008.2.29 (Ver 2.46 not released)</a>
+  <li class="history"><a name="ttssh_2.46">2008.2.29 (Ver 2.46)</a>
     <ul>
       <li>added silently ignoring the Protocol Version Exchange line before sending the version string. (RFC4253 compliance)</li>
-      
       <li>added the user interface for receiving a file on SSH SCP dialog.
        <ul>
          <li>The source address is fixed in the 'current directory for file transfers'.</li>
@@ -1800,7 +1794,7 @@ SYNOPSIS:
 
 <h2><a name="kanjimenu">TTX KanjiMenu</a></h2>
 <ul>
-  <li class="history"><a name="kanjimenu_0.1.4">2008.2.29 (Ver 0.1.4 not released)</a>
+  <li class="history"><a name="kanjimenu_0.1.4">2008.2.29 (Ver 0.1.4)</a>
     <ul>
       <li>Big fix: couldn't select "Recv: UTF-8m"</li>
     </ul>
