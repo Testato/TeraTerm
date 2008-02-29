@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.18 2008-01-10 16:34:08 maya Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.19 2008-02-29 15:56:41 yutakapon Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -224,7 +224,7 @@ static void cAES128_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 
 	// 事前復号化により、全ペイロードが復号化されている場合は、0バイトになる。(2004.11.7 yutaka)
 	if (bytes == 0)
-		return;
+		goto error;
 
 	if (newbuf == NULL)
 		return;
@@ -271,7 +271,7 @@ static void cAES128_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 
 	// 事前復号化により、全ペイロードが復号化されている場合は、0バイトになる。(2004.11.7 yutaka)
 	if (bytes == 0)
-		return;
+		goto error;
 
 	if (newbuf == NULL)
 		return;
@@ -320,7 +320,7 @@ static void c3DES_CBC_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 
 	// 事前復号化により、全ペイロードが復号化されている場合は、0バイトになる。(2004.11.7 yutaka)
 	if (bytes == 0)
-		return;
+		goto error;
 
 	if (newbuf == NULL)
 		return;
@@ -367,7 +367,7 @@ static void c3DES_CBC_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 
 	// 事前復号化により、全ペイロードが復号化されている場合は、0バイトになる。(2004.11.7 yutaka)
 	if (bytes == 0)
-		return;
+		goto error;
 
 	if (newbuf == NULL)
 		return;
@@ -414,7 +414,7 @@ static void cBlowfish_encrypt2(PTInstVar pvar, unsigned char FAR * buf,
 
 	// 事前復号化により、全ペイロードが復号化されている場合は、0バイトになる。(2004.11.7 yutaka)
 	if (bytes == 0)
-		return;
+		goto error;
 
 	if (newbuf == NULL)
 		return;
@@ -452,7 +452,7 @@ static void cBlowfish_decrypt2(PTInstVar pvar, unsigned char FAR * buf,
 
 	// 事前復号化により、全ペイロードが復号化されている場合は、0バイトになる。(2004.11.7 yutaka)
 	if (bytes == 0)
-		return;
+		goto error;
 
 	if (newbuf == NULL)
 		return;
