@@ -3,27 +3,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>TELNET ƒvƒƒgƒRƒ‹‚ÉŠÖ˜A•t‚¯‚é</title>
+<title>Associate with TELNET protocol</title>
 <meta http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../../style.css" type="text/css">
 </head>
 <body>
 
-<h1>TELNET ƒvƒƒgƒRƒ‹‚ÉŠÖ˜A•t‚¯‚é</h1>
+<h1>Associate with TELNET protocol</h1>
 
-<p>ŽÀs‚·‚éƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ðA‰º‹L‚Ì‚æ‚¤‚ÉŽw’è‚µ‚Ü‚·B</p>
+<p>Specify Application like follows.</p>
 
 <pre class="syntax">
-"C:\Program Files\teraterm\ttermpro.exe" /T=1 /nossh %1
+"C:\Program Files\teraterm\ttermpro.exe" /nossh /T=1 %1
 </pre>
 
 <p>
-ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ƒIƒvƒVƒ‡ƒ“‚É "/T=1" ‚ðŽw’è‚·‚é‚±‚Æ‚ÅAÚ‘±‚ª TELNET ‚Å‚ ‚é‚±‚Æ‚ð–¾Ž¦“I‚É ttermpro.exe ‚É’Ê’m‚µ‚Ü‚·B
+If TTSSH is installed and SSH is enabled in TERATERM.ini, TeraTerm starts SSH connection to the remote host.<br>
+Use TTSSH command line option "/nossh". It specify the connection protocol does not SSH.
 </p>
 
 <p>
-TTSSH ‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚Ä TERATERM.INI ‚Å SSH ‚ª—LŒø‚¾‚ÆATeraTerm ‚Í SSH Ú‘±‚ðŠJŽn‚µ‚Ä‚µ‚Ü‚¢‚Ü‚·B<br>
-ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ƒIƒvƒVƒ‡ƒ“‚É "/nossh" ‚ðŽw’è‚·‚é‚±‚Æ‚ÅATTSSH ‚É "SSH‚ð–³Œø‚É‚·‚é" ‚±‚Æ‚ð’Ê’m‚µ‚Ü‚·B
+Use ttermpro.exe command line option "/T=1". It explicitly specify the connection protocol is TELNET.
 </p>
 
 </body>

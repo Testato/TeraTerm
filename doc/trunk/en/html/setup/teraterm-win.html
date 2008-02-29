@@ -378,8 +378,8 @@ To specify the detailed settings for Eterm lookfeel window, edit the [Tera Term]
   <tr>
     <th>BGThemeFile</th>
     <td>file name</td>
-    <td>You can specify the theme file. TeraTerm will randomly select one of files 
-        when the theme file is specify with wildcard.</td>
+    <td>You can specify the theme file.<br>
+        TeraTerm will randomly select one of files when the theme file is specify with wildcard.</td>
   </tr>
 </table>
 
@@ -421,7 +421,7 @@ BGThemeFile = theme\*.ini
         AutoFit</td>
     <td>You can specify the painting method of the image file.<br>
         Both FitWidth and FitHeight can expand or recude  the image while the aspect ratio of the image preserves.<br>
-        AutoFit can exchange FitWidth for FitHeight not to generate the space between the window and the image.<br>
+        AutoFit can exchange FitWidth for FitHeight not to generate the space between the window and the image.
     </td>
   </tr>
   <tr>
@@ -485,14 +485,14 @@ KillFocusCursor=on
 </pre>
 
 
-<!--h1><a name="savevtwinpos">ウィンドウ位置を保存する</a></h1>
+<h1><a name="savevtwinpos">Save the window position</a></h1>
 <p>
-TeraTerm は、"Save setup" を実行したときにはウィンドウの位置を保存しません。<br>
-この設定が on になっていると、設定ファイルの保存時にウィンドウの位置を保存します。
+TeraTerm does not save the window position when "Save setup" was called.<br>
+If you enable this position, current window position is saved to a specified setup file.
 </p>
 
 <p>
-また、この設定が on になっていると、VTウィンドウを閉じたときにもウィンドウの位置と端末のサイズを保存します。
+Also if this option is enabled, current window position and terminal size are saved to the current setup file when VT window was closed.
 </p>
 
 <pre>
@@ -502,7 +502,7 @@ SaveVTWinPos=on
 <pre>
 Default:
 SaveVTWinPos=off
-</pre-->
+</pre>
 
 
 </BODY>

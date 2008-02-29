@@ -55,14 +55,10 @@
         <ul>
           <li>added <a href="../setup/teraterm-misc.html#ConfirmChangePaste">ConfirmChangePaste</a> entry in teraterm.ini file. The default value is on.</li>
         </ul></li>
-      <li>added the workaround for corrupting the character line on the Maximize window.
+      <li>added the configuration entry to save the window position.
         <ul>
-          <li>added <a href="../setup/teraterm-win.html#maximize">MaximizedBugTweak</a> entry in teraterm.ini file. The default value is on.</li>
+          <li>added <a href="../setup/teraterm-win.html#savevtwinpos">SaveVTWinPos</a> entry in teraterm.ini file. The default value is off.</li>
         </ul></li>
-      <li>added '<a href="../macro/command/getver.html">getver</a>' macro command.</li>
-      <li>added '<a href="../macro/command/setbaud.html">setbaud</a>' macro command. Special thanks to Steven Yang.</li>
-      <li>added three parameters from 6 to 8 in '<a href="../macro/command/showtt.html">showtt</a>' macro command. Special thanks to Steven Yang.</li>
-      <li>added the second parameter in '<a href="../macro/command/exec.html">exec</a>' macro command. Special thanks to Steven Yang.</li>
       <li>changed the default value of TermType from 'vt100' to 'xterm'
         <ul>
           <li>TERM environment variable is reported as "xterm" to the host by using TELNET and SSH protocol.</li>
@@ -70,22 +66,30 @@
       <li>disabled pasting with clicking the middle button of mouse.</li>
       <li>changed default folder of the dialog to select a folder. The current path of configuration is selected.</li>
       <li>increased max width of window from 300 chars to 500 chars.</li>
-      <li>if '<a href="../macro/command/getdate.html">getdate</a>' and '<a href="../macro/command/gettime.html">gettime</a>' macro command have no date and time format, system variable "<a href="../macro/syntax/variables.html">result</a>" is not changed. (for compatibility with version 4.56 or earlier)</li>
-      <li>added new argments &lt;plain text flag&gt;, &lt;timestamp flag&gt;, &lt;hide dialog flag&gt; to '<a href="../macro/command/logopen.html">logopen</a>' macro command.</li>
       <li>added support for 256 xterm color and 16 aixterm color mode.
         <ul>
           <li>added Xterm256Color and Aixterm16Color entry in teraterm.ini file.</li>
 	      <li>changed from FullColor entry to PcBoldColor entry.</li>
-          <li>added a new checkbox on <a href="../menu/setup-window.html">setup window dialog</a>.</li>
+          <li>added new checkboxes on <a href="../menu/setup-window.html">setup window dialog</a>.</li>
         </ul></li>
       <li>changed from the standard background color to the current background color on the line and the screen deleted area, the new displayed line by scrolling.</li>
       <li>added the German.lng language file. Special thanks to Alexander Wiechert.</li>
+      <li>added the workaround for corrupting the character line on the Maximize window.
+        <ul>
+          <li>added <a href="../setup/teraterm-win.html#maximize">MaximizedBugTweak</a> entry in teraterm.ini file. The default value is on.</li>
+        </ul></li>
       <li>Bug fix: Reverse video control sequence (DECSCNM) doesn't work correctly.</li>
       <li>Bug fix: When TeraTerm is the Maximize window, TerminalSize entry in relation to the window would be recorded in teraterm.ini file.</li>
       <li>Bug fix: The problem that a multi-byte character string which includes 0x5C and/or 0x7C is recognized as invalid is now fixed. This problem existed in a routine to check a file name.</li>
       <li>Bug fix: TeraTerm COM auto connect problem.  Special thanks to Steven Yang. cf. <a href="http://www.neocom.ca/forum/viewtopic.php?t=748">TeraTerm com auto connect bug</a></li>
       <li>Bug fix: ANSI Color settings is not immediately reflected.</li>
       <li>Bug fix: Too many '\' characters could be shown after changing the title string by the escape sequence.</li>
+      <li>added '<a href="../macro/command/getver.html">getver</a>' macro command.</li>
+      <li>added '<a href="../macro/command/setbaud.html">setbaud</a>' macro command. Special thanks to Steven Yang.</li>
+      <li>added three parameters from 6 to 8 in '<a href="../macro/command/showtt.html">showtt</a>' macro command. Special thanks to Steven Yang.</li>
+      <li>added the second parameter in '<a href="../macro/command/exec.html">exec</a>' macro command. Special thanks to Steven Yang.</li>
+      <li>added new argments &lt;plain text flag&gt;, &lt;timestamp flag&gt;, &lt;hide dialog flag&gt; to '<a href="../macro/command/logopen.html">logopen</a>' macro command.</li>
+      <li>if '<a href="../macro/command/getdate.html">getdate</a>' and '<a href="../macro/command/gettime.html">gettime</a>' macro command have no date and time format, system variable "<a href="../macro/syntax/variables.html">result</a>" is not changed. (for compatibility with version 4.56 or earlier)</li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.46">2.46</a></li>
       <li>upgraded TTProxy to <a href="#ttproxy_1.0.0.15">1.0.0.15</a></li>
       <li>upgraded TTX KanjiMenu Plugin to <a href="#kanjimenu_0.1.4">0.1.4</a>.</li>
