@@ -979,6 +979,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->DisablePasteMouseRButton =
 		GetOnOff(Section, "DisablePasteMouseRButton", FName, FALSE);
 
+	// added DisablePasteMouseMButton (2008.3.2 maya)
+	ts->DisablePasteMouseMButton =
+		GetOnOff(Section, "DisablePasteMouseMButton", FName, TRUE);
+
 	// added ConfirmPasteMouseRButton (2007.3.17 maya)
 	ts->ConfirmPasteMouseRButton =
 		GetOnOff(Section, "ConfirmPasteMouseRButton", FName, FALSE);
@@ -1233,8 +1237,14 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 	// new configuration
 	WriteInt(Section, "ConnectingTimeout", FName, ts->ConnectingTimeout);
+
 	WriteOnOff(Section, "DisablePasteMouseRButton", FName,
 	           ts->DisablePasteMouseRButton);
+
+	// added DisablePasteMouseMButton (2008.3.2 maya)
+	WriteOnOff(Section, "DisablePasteMouseMButton", FName,
+	           ts->DisablePasteMouseMButton);
+
 	// added ConfirmPasteMouseRButton (2007.3.17 maya)
 	WriteOnOff(Section, "ConfirmPasteMouseRButton", FName,
 	           ts->ConfirmPasteMouseRButton);

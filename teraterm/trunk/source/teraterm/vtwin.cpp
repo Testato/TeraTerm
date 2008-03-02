@@ -731,6 +731,8 @@ int CVTWindow::Parse()
 void CVTWindow::ButtonUp(BOOL Paste)
 {
 	BOOL disableBuffEndSelect = false;
+	BOOL pasteRButton = RButton && Paste;
+	BOOL pasteMButton = MButton && Paste;
 
 	/* disable autoscrolling */
 	::KillTimer(HVTWin,IdScrollTimer);
@@ -756,7 +758,11 @@ void CVTWindow::ButtonUp(BOOL Paste)
 	}
 
 	// added ConfirmPasteMouseRButton (2007.3.17 maya)
-	if (Paste && !ts.ConfirmPasteMouseRButton) {
+	if (pasteRButton && !ts.ConfirmPasteMouseRButton) {
+		if (CBStartPasteConfirmChange(HVTWin))
+			CBStartPaste(HVTWin,FALSE,0,NULL,0);
+	}
+	else if (pasteMButton) {
 		if (CBStartPasteConfirmChange(HVTWin))
 			CBStartPaste(HVTWin,FALSE,0,NULL,0);
 	}
@@ -1923,7 +1929,12 @@ void CVTWindow::OnMButtonUp(UINT nFlags, CPoint point)
 
 	if (! MButton)
 		return;
-	ButtonUp(FALSE);
+
+	// added DisablePasteMouseMButton (2008.3.2 maya)
+	if (ts.DisablePasteMouseMButton)
+		ButtonUp(FALSE);
+	else
+		ButtonUp(TRUE);
 }
 
 int CVTWindow::OnMouseActivate(CWnd* pDesktopWnd, UINT nHitTest, UINT message)

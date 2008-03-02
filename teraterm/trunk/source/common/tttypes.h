@@ -387,6 +387,7 @@ struct tttset {
 	WORD MaximizedBugTweak;
 	WORD ConfirmChangePaste;
 	WORD SaveVTWinPos;
+	WORD DisablePasteMouseMButton;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
