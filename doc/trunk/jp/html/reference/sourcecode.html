@@ -159,6 +159,34 @@
 
 
 <h2><a name="compatibility">古いバージョンのWindowsとの互換性維持</a></h2>
+　Windowsのアプリケーションプログラムは、単一のバイナリファイルを変更することなく、新旧のバージョンのWindows上で起動できるようにするためには、アプリケーションプログラム側での工夫が必要です。<br>
+　たとえば、Windows2000で導入された SetLayeredWindowAttributes() APIを直接呼び出すと、WindowsNT4.0や98などではアプリケーションの起動に失敗するようになります。そのため、新しいAPIを呼び出すときは、LoadLibrary()を使って動的ロードするようにします。<br>
+
+<pre class=code>
+static BOOL MySetLayeredWindowAttributes(HWND hwnd, COLORREF crKey, BYTE bAlpha, DWORD dwFlags)
+{
+	typedef BOOL (WINAPI *func)(HWND,COLORREF,BYTE,DWORD);
+	static HMODULE g_hmodUser32 = NULL;
+	static func g_pSetLayeredWindowAttributes = NULL;
+
+	if (g_hmodUser32 == NULL) {
+		g_hmodUser32 = LoadLibrary("user32.dll");
+		if (g_hmodUser32 == NULL)
+			return FALSE;
+
+		g_pSetLayeredWindowAttributes =
+			(func)GetProcAddress(g_hmodUser32, "SetLayeredWindowAttributes");
+	}
+
+	if (g_pSetLayeredWindowAttributes == NULL)
+		return FALSE;
+
+	return g_pSetLayeredWindowAttributes(hwnd, crKey, 
+	                                     bAlpha, dwFlags);
+}
+</pre>
+
+　いちいち、手で関数プロトタイプを書いていくのは面倒である場合は、「DLLの遅延読み込み」というしくみを利用すると、上記のような手順は不要です。いきなり、関数を呼び出すことができます。ダイレクトに呼び出したい関数がある場合、それが古いWindowsではサポートされていないものであるならば、Visual Studioのプロジェクト設定で、「DLLの遅延読み込み」に該当するDLLを指定しておきます。
 
 <hr>
 
