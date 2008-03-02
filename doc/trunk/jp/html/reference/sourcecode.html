@@ -164,6 +164,7 @@
 
 
 <h2><a name="debug">デバッグ手法</a></h2>
+<h3>debug printf</h3>
 　Windowsアプリケーションでは printf() が使えません。標準出力がどこにも割り当てられていないからです。AllocConsole()とfreopen()を使えば、Windowsアプリケーションにおいても printf() を利用することができます。<br>
 　OutputDebugString()というAPIがあります。これは Visual Studio のデバッグコンソールにメッセージ出力することができる関数です。当該APIは、"Debug build"および"Release build"に関係なく、デバッガが存在すれば、メッセージを送信します。ゆえに、 Visual Studioがなくとも、<a href="http://www.vector.co.jp/soft/win95/prog/se046776.html">DBCon</a>のようなツールを使えば、アプリケーションの単体起動においても、OutputDebugString()によるメッセージを拾うことができます。<br>
 　TeraTermでは、可変長引数を扱えるようにラッパー関数を用意しています。
@@ -177,6 +178,17 @@ void OutputDebugPrintf(char *fmt, ...) {
 	OutputDebugString(tmp);
 }
 </pre>
+
+<h3>memory leak</h3>
+　malloc()等による確保したヒープメモリの解放し忘れによる「メモリリーク」を、自動で検出するしくみが Visual Studio には用意されています。プログラムの起動時に、以下のコードを挿入するだけです。プログラムの終了時に、解放していないヒープメモリがあれば、 Visual Studio の「出力」ウィンドウにリストアップされます。
+
+<pre class=code>
+#ifdef _DEBUG
+  _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+</pre>
+
+　なお、Windowsのように仮想記憶で動くアプリケーションプログラムに関しては、プログラムの終了時に解放されていないメモリが存在した場合、OSが面倒を見て、メモリが解放されるようになっています。
 
 <hr>
 
