@@ -2904,6 +2904,7 @@ void SSH_get_protocol_version_info(PTInstVar pvar, char FAR * dest,
 void SSH_end(PTInstVar pvar)
 {
 	int i;
+	int mode;
 
 	for (i = 0; i < 256; i++) {
 		SSHPacketHandlerItem FAR *first_item =
@@ -2994,6 +2995,22 @@ void SSH_end(PTInstVar pvar)
 		}
 
 		pvar->tryed_ssh2_authlist = FALSE;
+
+		// add (2008.3.2 yutaka)
+		for (mode = 0 ; mode < MODE_MAX ; mode++) {
+			if (pvar->ssh2_keys[mode].enc.iv != NULL) {
+				free(pvar->ssh2_keys[mode].enc.iv);
+				pvar->ssh2_keys[mode].enc.iv = NULL;
+			}
+			if (pvar->ssh2_keys[mode].enc.key != NULL) {
+				free(pvar->ssh2_keys[mode].enc.key);
+				pvar->ssh2_keys[mode].enc.key = NULL;
+			}
+			if (pvar->ssh2_keys[mode].mac.key != NULL) {
+				free(pvar->ssh2_keys[mode].mac.key);
+				pvar->ssh2_keys[mode].mac.key = NULL;
+			}
+		}
 	}
 #endif
 
