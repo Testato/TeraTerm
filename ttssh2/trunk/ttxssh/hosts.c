@@ -611,6 +611,9 @@ static int check_host_key(PTInstVar pvar, char FAR * hostname,
 
 			index += eat_base64(data + index);
 			index += eat_spaces(data + index);
+
+			// Key\‘¢‘Ì©g‚ğ‰ğ•ú‚·‚é (2008.3.2 yutaka)
+			free(key);
 		}
 
 		return index + eat_to_end_of_line(data + index);
