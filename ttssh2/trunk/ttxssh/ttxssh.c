@@ -3788,6 +3788,9 @@ BOOL WINAPI DllMain(HANDLE hInstance,
 		/* do process initialization */
 #ifdef _DEBUG
   _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+  // リーク時のブロック番号を元にブレークを仕掛けるには、以下のようにする。
+  // cf. http://www.microsoft.com/japan/msdn/vs_previous/visualc/techmat/feature/MemLeaks/
+  //_CrtSetBreakAlloc(3566);
 #endif
 		DisableThreadLibraryCalls(hInstance);
 		hInst = hInstance;
