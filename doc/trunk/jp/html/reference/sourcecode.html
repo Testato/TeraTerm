@@ -82,6 +82,70 @@
 
 
 <h2><a name="plugin">プラグインサポート</a></h2>
+　TeraTermでは、DLLという形式でプラグインのしくみをサポートしています。プラグイン形式のDLLファイルを、TeraTermがインストールされているディレクトリへ設置するだけで、TeraTermのソースコードを修正することなく、機能追加を行うことができます。代表的なプラグインとして、TTSSHがあります。<br>
+　プラグインを作成するためのサンプルコードとして、teraterm\source\ttxtest\ttxtest.c というソースファイルが用意されています。プラグインを開発するときは、このソースファイルをひな形とするとよいでしょう。実践的なプラグインとして、"TTX KanjiMenu"のソースコード（teraterm\source\ttxkanjimenu\配下）がシンプルで分かりやすいです。<br><br>
+
+　プラグインは、TeraTerm("ttermpro.exe")の起動時に読み込まれます。TTXInit()#ttplug.c が読み込みを行う関数で、カレントディレクトリから"TTX*.DLL"というワイルドカードに合致するDLLファイルが読み込み対象となります。<br>
+　複数のDLLが存在する場合は、TeraTerm本体からチェインするような形で、各DLLのエクスポート関数が連結されます。連結される順番は、それぞれのDLLが定義するオーダー値（TTXExports構造体のloadOrderメンバ）で決定され、現状下記の通りとなっています。　
+<p>
+<table border=1 align=center>
+<tr>
+  <th>モジュール</th>
+  <th>オーダー</th>
+</tr>
+
+<tr>
+  <td>TTProxy</td>
+  <td>0</td>
+</tr>
+
+<tr>
+  <td>TTSSH</td>
+  <td>2500</td>
+</tr>
+
+<tr>
+  <td>TTX Kanji Menu</td>
+  <td>5000</td>
+</tr>
+</table>
+ </p>
+
+オーダー値が小さいほど、TeraTerm本体側に近くなります。たとえば、TeraTerm本体からTTXOpenTCP()が呼び出された場合、
+　
+　<ul>
+　 <li>TTXModifyMenu()#ttplug.c → TTProxyのTTXModifyMenu()  → TTSSHのTTXModifyMenu()  → TTX Kanji MenuのTTXModifyMenu()</li>
+　</ul><br>
+　
+という順番で、各DLLの関数が呼び出されていくことになります。
+　<br>
+
+　各DLLが、TeraTerm本体側から呼び出してもらうためにエクスポートする関数群は、TTXExports構造体で定義し、TTXBind()で渡します。たとえば、TTX Kanji Menuのエクスポート関数は以下のとおりです。不要な関数は NULL で定義してあります。
+
+<pre class=code>
+static TTXExports Exports = {
+/* This must contain the size of the structure. See below for its usage. */
+	sizeof(TTXExports),
+
+/* This is the load order number of this DLL. */
+	ORDER,
+
+/* Now we just list the functions that we've implemented. */
+	TTXInit,
+	NULL, /* TTXGetUIHooks */
+	NULL, /* TTXGetSetupHooks */
+	NULL, /* TTXOpenTCP */
+	NULL, /* TTXCloseTCP */
+	NULL, /* TTXSetWinSize */
+	TTXModifyMenu,
+	TTXModifyPopupMenu,
+	TTXProcessCommand,
+	NULL, /* TTXEnd */
+	NULL  /* TTXSetCommandLine */
+};
+</pre>
+
+　原則、プラグインのエクスポート関数は、他のプラグインと干渉しないように設計をするべきです。また、TeraTerm本体側からの呼び出しが、自分宛てであるかどうかを判断する必要がある場合もあります。
 
 <hr>
 
