@@ -913,11 +913,23 @@ void CVTWindow::ButtonDown(POINT p, int LMR)
 	}
 }
 
+// LogMeIn.exe -> LogMeTT.exe へリネーム (2005.2.21 yutaka)
+char *LogMeTTexename = "LogMeTT.exe";
+static char LogMeTTMenuString[] = "Log&MeTT";
+static BOOL isLogMeTTExist()
+{
+	if (_access(LogMeTTexename, 0) == -1) {
+		return FALSE;
+	}
+	return TRUE;
+}
+
 void CVTWindow::InitMenu(HMENU *Menu)
 {
 	*Menu = LoadMenu(AfxGetInstanceHandle(),
 	                 MAKEINTRESOURCE(IDR_MENU));
 	char uimsg[MAX_UIMSG];
+	int ret;
 
 	FileMenu = GetSubMenu(*Menu,ID_FILE);
 	TransMenu = GetSubMenu(FileMenu,ID_TRANSFER);
@@ -925,6 +937,14 @@ void CVTWindow::InitMenu(HMENU *Menu)
 	SetupMenu = GetSubMenu(*Menu,ID_SETUP);
 	ControlMenu = GetSubMenu(*Menu,ID_CONTROL);
 	HelpMenu = GetSubMenu(*Menu,ID_HELPMENU);
+
+	/* LogMeTT の存在を確認してメニューを追加する */
+	if (isLogMeTTExist()) {
+		::InsertMenu(FileMenu, ID_FILE_PRINT2, MF_STRING | MF_ENABLED | MF_BYCOMMAND,
+		             ID_FILE_LOGMEIN, LogMeTTMenuString);
+		::InsertMenu(FileMenu, ID_FILE_PRINT2, MF_SEPARATOR, NULL, NULL);
+		DrawMenuBar();
+	}
 
 	GetMenuString(*Menu, ID_FILE, uimsg, sizeof(uimsg), MF_BYPOSITION);
 	get_lang_msg("MENU_FILE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
@@ -959,9 +979,11 @@ void CVTWindow::InitMenu(HMENU *Menu)
 	GetMenuString(FileMenu, ID_FILE_CHANGEDIR, uimsg, sizeof(uimsg), MF_BYCOMMAND);
 	get_lang_msg("MENU_FILE_CHANGEDIR", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	ModifyMenu(FileMenu, ID_FILE_CHANGEDIR, MF_BYCOMMAND, ID_FILE_CHANGEDIR, ts.UIMsg);
-	GetMenuString(FileMenu, ID_FILE_LOGMEIN, uimsg, sizeof(uimsg), MF_BYCOMMAND);
-	get_lang_msg("MENU_FILE_LOGMETT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	ModifyMenu(FileMenu, ID_FILE_LOGMEIN, MF_BYCOMMAND, ID_FILE_LOGMEIN, ts.UIMsg);
+	ret = GetMenuString(FileMenu, ID_FILE_LOGMEIN, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+	if (ret != 0) {
+		get_lang_msg("MENU_FILE_LOGMETT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+		ModifyMenu(FileMenu, ID_FILE_LOGMEIN, MF_BYCOMMAND, ID_FILE_LOGMEIN, ts.UIMsg);
+	}
 	GetMenuString(FileMenu, ID_FILE_PRINT2, uimsg, sizeof(uimsg), MF_BYCOMMAND);
 	get_lang_msg("MENU_FILE_PRINT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	ModifyMenu(FileMenu, ID_FILE_PRINT2, MF_BYCOMMAND, ID_FILE_PRINT2, ts.UIMsg);
@@ -3031,22 +3053,22 @@ void CVTWindow::OnTTMenuLaunch()
 
 
 //
-// LogMeInの起動
-//
-// URL: http://www.neocom.ca/freeware/LogMeIn/
+// LogMeTTの起動
 //
 void CVTWindow::OnLogMeInLaunch()
 {
-	// LogMeIn.exe -> LogMeTT.exe へリネーム (2005.2.21 yutaka)
-	char *exename = "LogMeTT.exe";
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
+
+	if (!isLogMeTTExist()) {
+		return;
+	}
 
 	memset(&si, 0, sizeof(si));
 	GetStartupInfo(&si);
 	memset(&pi, 0, sizeof(pi));
 
-	if (CreateProcess(NULL, exename, NULL, NULL, FALSE, 0,
+	if (CreateProcess(NULL, LogMeTTexename, NULL, NULL, FALSE, 0,
 	                  NULL, NULL, &si, &pi) == 0) {
 		char buf[80];
 		char uimsg[MAX_UIMSG];

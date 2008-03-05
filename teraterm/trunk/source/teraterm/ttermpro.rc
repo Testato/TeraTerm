@@ -421,8 +421,6 @@ BEGIN
         MENUITEM "&Change directory...",        ID_FILE_CHANGEDIR
         MENUITEM "&Replay Log...",              ID_FILE_REPLAYLOG
         MENUITEM SEPARATOR
-        MENUITEM "Log&MeTT",                    ID_FILE_LOGMEIN
-        MENUITEM SEPARATOR
         MENUITEM "&Print...\tAlt+P",            ID_FILE_PRINT2
         MENUITEM SEPARATOR
         MENUITEM "&Disconnect\tAlt+I",          ID_FILE_DISCONNECT
