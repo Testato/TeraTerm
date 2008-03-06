@@ -111,7 +111,7 @@
 </table>
  </p>
 
-オーダー値が小さいほど、TeraTerm本体側に近くなります。たとえば、TeraTerm本体からTTXOpenTCP()が呼び出された場合、
+オーダー値が小さいほど、TeraTerm本体側に近くなります。たとえば、TeraTerm本体からTTXModifyMenu()が呼び出された場合、
 　
 　<ul>
 　 <li>TTXModifyMenu()#ttplug.c → TTProxyのTTXModifyMenu()  → TTSSHのTTXModifyMenu()  → TTX Kanji MenuのTTXModifyMenu()</li>
@@ -145,7 +145,99 @@ static TTXExports Exports = {
 };
 </pre>
 
-　原則、プラグインのエクスポート関数は、他のプラグインと干渉しないように設計をするべきです。また、TeraTerm本体側からの呼び出しが、自分宛てであるかどうかを判断する必要がある場合もあります。
+　原則、プラグインのエクスポート関数は、他のプラグインと干渉しないように設計をするべきです。また、TeraTerm本体側からの呼び出しが、自分宛てであるかどうかを判断する必要がある場合もあります。<br>
+　プラグインがエクスポートする関数について、以下に示します。
+　
+<p>
+<table border=1 align=center>
+<tr>
+  <th>関数</th>
+  <th>意味</th>
+</tr>
+
+<tr>
+  <td>TTXBind</td>
+  <td>一番始めに呼び出される関数であり、エクスポート関数のテーブルを渡す。</td>
+</tr>
+
+<tr>
+  <td>TTXInit</td>
+  <td>TTXBind()の呼び出し後にすぐに実行される関数で、TeraTerm本体のグローバル変数(ts, cv)を受け取り、プラグインの初期化を行う。</td>
+</tr>
+
+<tr>
+  <td>TTXGetUIHooks</td>
+  <td>ダイアログのハンドルをフックするための関数。TeraTerm本体のダイアログインターフェイスを変更したい場合に使う。フック対象の関数は以下のとおり。<br>
+      &SetupTerminal, &SetupWin, &SetupKeyboard, &SetupSerialPort, 
+      &SetupTCPIP, &GetHostName, &ChangeDirectory, &AboutDialog,   
+      &ChooseFontDlg, &SetupGeneral, &WindowWindow                 
+  </td>
+</tr>
+
+<tr>
+  <td>TTXGetSetupHooks</td>
+  <td>セットアップルーチンをフックするための関数。フックした側は、元の関数も責任を持って呼び出す必要がある。複数のプラグインが存在する場合、関数がチェインされていく。フック対象の関数は以下のとおり。<br>
+      &ReadIniFile, &WriteIniFile, &ReadKeyboardCnf, &CopyHostList,   
+      &AddHostToList, &ParseParam                                     
+  </td>
+</tr>
+
+<tr>
+  <td>TTXOpenTCP</td>
+  <td>TCP接続を行うときに呼び出される関数。シリアル接続のときは呼び出されない。また、以下のソケットインターフェイスをフックすることもできる。<br>
+      &Pclosesocket, &Pconnect, &Phtonl, &Phtons, &Pinet_addr,   
+      &Pioctlsocket, &Precv, &Pselect, &Psend, &Psetsockopt,     
+      &Psocket, &PWSAAsyncSelect, &PWSAAsyncGetHostByName,       
+      &PWSACancelAsyncRequest, &PWSAGetLastError                 
+  </td>
+</tr>
+
+<tr>
+  <td>TTXCloseTCP</td>
+  <td>TCPコネクションが切断されるときに呼び出される関数。シリアル接続のときは呼び出されない。下記のうちフックしたインターフェイスがあるならば、元に戻す必要がある。<br>
+      &Pclosesocket, &Pconnect, &Phtonl, &Phtons, &Pinet_addr,   
+      &Pioctlsocket, &Precv, &Pselect, &Psend, &Psetsockopt,     
+      &Psocket, &PWSAAsyncSelect, &PWSAAsyncGetHostByName,       
+      &PWSACancelAsyncRequest, &PWSAGetLastError                 
+  </td>
+</tr>
+
+<tr>
+  <td>TTXSetWinSize</td>
+  <td>TeraTermウィンドウの画面サイズが変更されたときに呼び出される関数。</td>
+</tr>
+
+<tr>
+  <td>TTXModifyMenu</td>
+  <td>TeraTermのメニューが初期化されるときに呼び出される関数。プラグイン用のメニューを挿入したい場合に使われる。
+  </td>
+</tr>
+
+<tr>
+  <td>TTXModifyPopupMenu</td>
+  <td>TeraTermのポップアップメニューが初期化されるときに呼び出される関数。プラグイン用のポップアップメニューを挿入したい場合に使われる。</td>
+</tr>
+
+<tr>
+  <td>TTXProcessCommand</td>
+  <td>メニューが呼び出されたときに実行される関数。プラグイン用のメニューを処理したいときに使われる。
+  </td>
+</tr>
+
+<tr>
+  <td>TTXEnd</td>
+  <td>TeraTerm本体が終了するときに呼び出される関数。</td>
+</tr>
+
+<tr>
+  <td>TTXSetCommandLine</td>
+  <td>新規接続やセッションの複製を行うときに、コマンドラインパラメータの処理を行うときに呼び出される関数。プラグイン独自のオプションを追加したときは、ここで処理される。
+  </td>
+</tr>
+
+</table>
+ </p>
+　
 
 <hr>
 
