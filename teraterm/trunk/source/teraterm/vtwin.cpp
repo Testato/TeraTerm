@@ -4320,6 +4320,7 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 				SendDlgItemMessage(hDlgWnd, IDC_DELIMITER, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_DELIM_LIST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_ACCEPT_BROADCAST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0)); // 337: 2007/03/20
+				SendDlgItemMessage(hDlgWnd, IDC_CONFIRM_CHANGE_PASTE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 			}
@@ -4351,6 +4352,11 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			GetDlgItemText(hDlgWnd, IDC_ACCEPT_BROADCAST, uimsg, sizeof(uimsg));
 			get_lang_msg("DLG_TAB_GENERAL_ACCEPTBROADCAST", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_ACCEPT_BROADCAST, ts.UIMsg);
+
+			GetDlgItemText(hDlgWnd, IDC_CONFIRM_CHANGE_PASTE, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_GENERAL_IDC_CONFIRM_CHANGE_PASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_CONFIRM_CHANGE_PASTE, ts.UIMsg);
+
 			GetDlgItemText(hDlgWnd, IDOK, uimsg, sizeof(uimsg));
 			get_lang_msg("BTN_OK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
@@ -4416,6 +4422,14 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			// (8)AcceptBroadcast 337: 2007/03/20
 			hWnd = GetDlgItem(hDlgWnd, IDC_ACCEPT_BROADCAST);
 			if (ts.AcceptBroadcast == TRUE) {
+				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
+			} else {
+				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
+			}
+
+			// (9)IDC_CONFIRM_CHANGE_PASTE 
+			hWnd = GetDlgItem(hDlgWnd, IDC_CONFIRM_CHANGE_PASTE);
+			if (ts.ConfirmChangePaste == TRUE) {
 				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
 			} else {
 				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
@@ -4502,6 +4516,14 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 						ts.AcceptBroadcast = TRUE;
 					} else {
 						ts.AcceptBroadcast = FALSE;
+					}
+
+					// (9)IDC_CONFIRM_CHANGE_PASTE 
+					hWnd = GetDlgItem(hDlgWnd, IDC_CONFIRM_CHANGE_PASTE);
+					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
+						ts.ConfirmChangePaste = TRUE;
+					} else {
+						ts.ConfirmChangePaste = FALSE;
 					}
 
 					EndDialog(hDlgWnd, IDOK);
