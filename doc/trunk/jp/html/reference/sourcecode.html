@@ -685,7 +685,23 @@ void TelStartKeepAliveThread() {
 　アドバイズループによりDDEサーバよりデータが送られてくると、DDEクライアントであるマクロプログラムにおいては、XTYP_ADVDATAトランザクションがDDEコールバック関数 DdeCallbackProc()#ttmdde.c により処理されます。<br>
 　
 　なお、TeraTerm本体において、DDE通信用のバッファと、ログ採取用のバッファは cv.LogBuf[] で共有されています。バッファの先頭とデータサイズを表すインデックスは、DDE通信の場合は"DStart"と"Dcount"、ログ採取の場合は"LStart"と"Lcount"と区別されています。実際には、1つのバッファを共有しているわけなので、それぞれのインデックスが食い違うと、誤動作する原因となるため、常に同期を取っておくことになります。<br>
-　
+<hr>
+
+
+<h2><a name="ttssh">TTSSHによるSSHの設計と実装</a></h2>
+  <h3>概要</h3>
+　オリジナルのTTSSHは<a href="http://www.cs.cmu.edu/People/roc/">Robert O'Callahan</a>氏（現在は<a href="http://weblogs.mozillazine.org/roc/">Mozilla hacker</a>として活躍）により開発されたプラグインです。SSH1へ対応しており、ポートフォワーディングやzlibによるパケット圧縮もサポートしていました。TTSSHは、TeraTermをセキュア通信に対応させるためのプラグインであったために、SCPやSFTP等には未対応でした。オリジナルTeraTermが1998年に開発凍結後も、2001年ごろまでメンテナンスが続けられていました。<br>
+　TTSSHのSSH2対応を実現するために、TeraTerm Projectにより2004年から設計と実装が始められました。3年の歳月をかけて、ほぼSSH2プロトコルのフルサポートを実現しました。現在ではSCPへも対応しています。将来的にはSFTPへも対応されるかもしれません。<br>
+　原則、TTSSHの実装は<a href="http://www.openssh.com/">OpenSSH</a>を参考にしています。一部、コードをそのまま流用しているところもあります。ただし、OpenSSHはUNIXのコマンドライン向けに設計されているため、TeraTermのようなWindowsアプリケーションにはそのまま適合しない箇所も多く、フレームワークとしてはOpenSSHと大きく異なったものとなっています。<br>
+
+
+  <h3>接続処理</h3>
+　TTSSHは、TeraTermの一部のコードでもあるため、ネットワーク接続処理はTeraTermとTTSSHの間を行き来することになり、処理の流れが複雑になっています。また、SSHプロトコルそのもののフローを熟知していないと、TTSSHのシーケンスを追っていくのが難しくなっています。以下に、リモートホストへの接続を行うまでのフローを示します。<br>
+
+<div align="center">
+<img src="image/ssh.png" width=720 height=540>
+</div>
+
 
 <hr>
 
