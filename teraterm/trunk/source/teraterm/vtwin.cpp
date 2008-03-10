@@ -3760,7 +3760,7 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 						}
 						fclose(tmp_fp);
 
-						if (remove(cfgfile) != 0) {
+						if (remove(cfgfile) != 0 && errno != ENOENT) {
 							get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
 							get_lang_msg("MSG_CYGTERM_CONF_REMOVEFILE_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
 							             "Can't remove old CygTerm configuration file (%d).", ts.UILanguageFile);
