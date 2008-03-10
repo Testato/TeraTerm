@@ -4631,6 +4631,7 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 			}
 		
 			ShowWindow(hTabSheet[0], SW_SHOW);
+			SetFocus(GetDlgItem(hDlgWnd, IDC_SETUP_TAB));
 
 			return FALSE;
 
