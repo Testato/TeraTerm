@@ -3528,8 +3528,6 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 				SendDlgItemMessage(hDlgWnd, IDC_ENV2, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_LOGIN_SHELL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_HOME_CHDIR, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
 			}
 			else {
 				DlgCygwinFont = NULL;
@@ -3538,12 +3536,6 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 			GetDlgItemText(hDlgWnd, IDC_CYGWIN_PATH_LABEL, uimsg, sizeof(uimsg));
 			get_lang_msg("DLG_TAB_CYGWIN_PATH", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_CYGWIN_PATH_LABEL, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDOK, uimsg, sizeof(uimsg));
-			get_lang_msg("BTN_OK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDCANCEL, uimsg, sizeof(uimsg));
-			get_lang_msg("BTN_CANCEL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
 
 			// try to read CygTerm config file
 			memset(&settings, 0, sizeof(settings));
@@ -3789,12 +3781,10 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					SendMessage(hWnd, WM_GETTEXT , sizeof(ts.CygwinDirectory), (LPARAM)ts.CygwinDirectory);
 
 					EndDialog(hDlgWnd, IDOK);
-					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
 					break;
 
 				case IDCANCEL:
 					EndDialog(hDlgWnd, IDCANCEL);
-					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
 					break;
 
 				default:
@@ -3838,8 +3828,6 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 				SendDlgItemMessage(hDlgWnd, IDC_DEFAULTPATH_EDITOR, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_DEFAULTPATH_PUSH, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_AUTOSTART, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgLogFont, MAKELPARAM(TRUE,0));
 			}
 			else {
 				DlgVisualFont = NULL;
@@ -3857,12 +3845,6 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 			GetDlgItemText(hDlgWnd, IDC_AUTOSTART, uimsg, sizeof(uimsg));
 			get_lang_msg("DLG_TAB_LOG_AUTOSTART", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_AUTOSTART, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDOK, uimsg, sizeof(uimsg));
-			get_lang_msg("BTN_OK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDCANCEL, uimsg, sizeof(uimsg));
-			get_lang_msg("BTN_CANCEL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
 
 			// (7)Viewlog Editor path (2005.1.29 yutaka)
 			hWnd = GetDlgItem(hDlgWnd, IDC_VIEWLOG_EDITOR);
@@ -3993,12 +3975,10 @@ static LRESULT CALLBACK OnTabSheetLogProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPA
 					}
 
 					EndDialog(hDlgWnd, IDOK);
-					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
 					break;
 
 				case IDCANCEL:
 					EndDialog(hDlgWnd, IDCANCEL);
-					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
 					break;
 
 				default:
@@ -4071,8 +4051,6 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 				SendDlgItemMessage(hDlgWnd, IDC_BLUE, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_COLOR_BLUE, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_SAMPLE_COLOR, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
 			}
 			else {
 				DlgVisualFont = NULL;
@@ -4096,12 +4074,6 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 			GetDlgItemText(hDlgWnd, IDC_BLUE, uimsg, sizeof(uimsg));
 			get_lang_msg("DLG_TAB_VISUAL_BLUE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_BLUE, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDOK, uimsg, sizeof(uimsg));
-			get_lang_msg("BTN_OK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDCANCEL, uimsg, sizeof(uimsg));
-			get_lang_msg("BTN_CANCEL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
 
 			// (1)AlphaBlend 
 			hWnd = GetDlgItem(hDlgWnd, IDC_ALPHA_BLEND);
@@ -4223,7 +4195,6 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					}
 
 					EndDialog(hDlgWnd, IDOK);
-					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
 					// 2006/03/11 by 337 : Alpha値も即時変更
 					// Layered窓になっていない場合は効果が無い
 					if (ts.EtermLookfeel.BGUseAlphaBlendAPI) {
@@ -4238,7 +4209,6 @@ static LRESULT CALLBACK OnTabSheetVisualProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 
 				case IDCANCEL:
 					EndDialog(hDlgWnd, IDCANCEL);
-					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
 					break;
 
 				default:
@@ -4321,8 +4291,6 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 				SendDlgItemMessage(hDlgWnd, IDC_DELIM_LIST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_ACCEPT_BROADCAST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0)); // 337: 2007/03/20
 				SendDlgItemMessage(hDlgWnd, IDC_CONFIRM_CHANGE_PASTE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 			}
 			else {
 				DlgGeneralFont = NULL;
@@ -4356,13 +4324,6 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			GetDlgItemText(hDlgWnd, IDC_CONFIRM_CHANGE_PASTE, uimsg, sizeof(uimsg));
 			get_lang_msg("DLG_TAB_GENERAL_IDC_CONFIRM_CHANGE_PASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_CONFIRM_CHANGE_PASTE, ts.UIMsg);
-
-			GetDlgItemText(hDlgWnd, IDOK, uimsg, sizeof(uimsg));
-			get_lang_msg("BTN_OK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
-			GetDlgItemText(hDlgWnd, IDCANCEL, uimsg, sizeof(uimsg));
-			get_lang_msg("BTN_CANCEL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
 
 			// (1)Enable continued-line copy
 			hWnd = GetDlgItem(hDlgWnd, IDC_LINECOPY);
@@ -4527,12 +4488,10 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 					}
 
 					EndDialog(hDlgWnd, IDOK);
-					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
 					break;
 
 				case IDCANCEL:
 					EndDialog(hDlgWnd, IDCANCEL);
-					SendMessage(gTabControlParent, WM_CLOSE, 0, 0);
 					break;
 
 				default:
@@ -4577,8 +4536,19 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 			GetObject(font, sizeof(LOGFONT), &logfont);
 			if (get_lang_font("DLG_TAHOMA_FONT", hDlgWnd, &logfont, &DlgAdditionalFont, ts.UILanguageFile)) {
 				SendDlgItemMessage(hDlgWnd, IDC_SETUP_TAB, WM_SETFONT, (WPARAM)DlgAdditionalFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDCANCEL, WM_SETFONT, (WPARAM)DlgAdditionalFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDOK, WM_SETFONT, (WPARAM)DlgAdditionalFont, MAKELPARAM(TRUE,0));
 			}
-			gTabControlParent = hDlgWnd;
+			else {
+				DlgAdditionalFont = NULL;
+			}
+
+			GetDlgItemText(hDlgWnd, IDOK, uimsg, sizeof(uimsg));
+			get_lang_msg("BTN_OK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
+			GetDlgItemText(hDlgWnd, IDCANCEL, uimsg, sizeof(uimsg));
+			get_lang_msg("BTN_CANCEL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDCANCEL, ts.UIMsg);
 
 			// コモンコントロールの初期化
 			InitCommonControls();
@@ -4695,12 +4665,13 @@ static LRESULT CALLBACK OnAdditionalSetupDlgProc(HWND hDlgWnd, UINT msg, WPARAM 
 			switch (LOWORD(wp)) {
 				case IDCANCEL:
 					PostMessage(hDlgWnd, WM_CLOSE, 0, 0);
+					EndDialog(hDlgWnd, IDCANCEL);
 					return TRUE;
 				case IDOK:
-					{
-						int n = TabCtrl_GetCurSel(hTabCtrl);
-						PostMessage(hTabSheet[n], WM_COMMAND, IDOK, 0);
+					for (i = 0 ; i < MAX_TABSHEET ; i++) {
+						SendMessage(hTabSheet[i], WM_COMMAND, IDOK, 0);
 					}
+					EndDialog(hDlgWnd, IDOK);
 					return TRUE;
 			}
 			return FALSE;
