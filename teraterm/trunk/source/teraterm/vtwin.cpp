@@ -3389,7 +3389,9 @@ void CVTWindow::OnEditPaste()
 
 void CVTWindow::OnEditPasteCR()
 {
-	CBStartPaste(HVTWin,TRUE,0,NULL,0);
+	// add confirm (2008.3.11 maya)
+	if (CBStartPasteConfirmChange(HVTWin))
+		CBStartPaste(HVTWin,TRUE,0,NULL,0);
 }
 
 void CVTWindow::OnEditClearScreen()
