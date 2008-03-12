@@ -130,7 +130,9 @@
 #define IDC_RECV                        1097
 #define IDC_BUTTON1                     1098
 #define IDC_SFTP_TEST                   1098
+#define IDC_DUMMY_LINE                  1099
 #define IDC_LOCALUSERNAMELABEL          1100
+#define IDC_RECV_TO_DIRECTORY           1100
 #define IDC_LOCALUSERNAME               1101
 #define IDC_CHOOSEHOSTRSAFILE           1102
 #define IDC_HOSTRSAFILENAME             1103
@@ -148,7 +150,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        108
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1099
+#define _APS_NEXT_CONTROL_VALUE         1101
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

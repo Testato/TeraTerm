@@ -2863,6 +2863,10 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 	case WM_INITDIALOG:
 		DragAcceptFiles(dlg, TRUE);
 
+		// SCPファイル受信先を表示する
+		_snprintf_s(szFileName, sizeof(szFileName), _TRUNCATE, "To:     %s", pvar->ts->FileDir);
+		SendMessage(GetDlgItem(dlg, IDC_RECV_TO_DIRECTORY), WM_SETTEXT, 0, (LPARAM)szFileName);
+
 #ifdef SFTP_DEBUG
 		ShowWindow(GetDlgItem(dlg, IDC_SFTP_TEST), SW_SHOW);
 #endif
