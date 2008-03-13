@@ -13,6 +13,23 @@
 
 <hr width=80% align=center>
 
+<ol>
+  <li><a href="#foreword">はじめに</a></li>
+  <li><a href="#skillset">必要スキル</a></li>
+  <li><a href="#module">モジュール構成</a></li>
+  <li><a href="#library">ライブラリ構成</a></li>
+  <li><a href="#plugin">プラグインサポート</a></li>
+  <li><a href="#configuration">設定ファイルの読み書き</a></li>
+  <li><a href="#secure">セキュアプログラミング</a></li>
+  <li><a href="#compatibility">古いバージョンのWindowsとの互換性維持</a></li>
+  <li><a href="#debug">デバッグ手法</a></li>
+  <li><a href="#thread">マルチスレッド</a></li>
+  <li><a href="#dde">DDEによるプロセス間通信</a></li>
+  <li><a href="#ttssh">TTSSHによるSSHの設計と実装</a></li>
+</ol>
+
+<hr width=80% align=center>
+
 <h2><a name="foreword">はじめに</a></h2>
 　本文書では、TeraTermのソースコードについて解説をします。解説対象とするソースコードはバージョン"4.58"（2008年2月現在）のものをベースとしています。
 <hr>
@@ -61,7 +78,7 @@
 <hr>
 
 
-<h2><a name="module">ライブラリ構成</a></h2>
+<h2><a name="library">ライブラリ構成</a></h2>
 　高度な機能を実現するために、フルスクラッチで実装することは効率がいいとは言えません。TeraTermでは開発効率化を図るために、オープンソースのライブラリを積極的に利用しています。ただし、オープンソース製品のライセンスによる競合には注意を払う必要があります（特にGPL）。<br>
 　下図に、オープンソースのライブラリをリンクしているモジュールと、そのリンク状況を示します。TeraTermマクロプログラムにおいて、"waitregex"や"sprintf"コマンドにおいて正規表現を利用するために、Onigurumaと呼ばれる正規表現ライブラリをリンクしています。TeraTerm本体では、バージョンダイアログにOnigurumaのバージョンを表示するためだけにリンクをしています。
 　
