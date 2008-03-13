@@ -29,13 +29,13 @@ static HANDLE HMap = NULL;
 
 void PASCAL CopyShmemToTTSet(PTTSet ts)
 {
-	// 現在の設定を共有メモリへコピーしておく
+	// 現在の設定を共有メモリからコピーする
 	memcpy(ts, &pm->ts, sizeof(TTTSet));
 }
 
 void PASCAL CopyTTSetToShmem(PTTSet ts)
 {
-	// 現在の設定を共有メモリへコピーしておく
+	// 現在の設定を共有メモリへコピーする
 	memcpy(&pm->ts, ts, sizeof(TTTSet));
 }
 
@@ -47,11 +47,6 @@ BOOL PASCAL FAR StartTeraTerm(PTTSet ts)
 	if (FirstInstance) {
 		// init window list
 		pm->NWin = 0;
-		/* Get home directory */
-		GetModuleFileName(hInst,Temp,sizeof(Temp));
-		ExtractDirName(Temp, pm->ts.HomeDir);
-		_chdir(pm->ts.HomeDir);
-		GetDefaultSetupFName(pm->ts.HomeDir, pm->ts.SetupFName, sizeof(pm->ts.SetupFName));
 	}
 	else {
 		/* only the first instance uses saved position */
@@ -62,6 +57,14 @@ BOOL PASCAL FAR StartTeraTerm(PTTSet ts)
 	}
 
 	memcpy(ts,&(pm->ts),sizeof(TTTSet));
+
+	// if (FirstInstance) { の部分から移動 (2008.3.13 maya)
+	// 起動時には、共有メモリの HomeDir と SetupFName は空になる
+	/* Get home directory */
+	GetModuleFileName(hInst,Temp,sizeof(Temp));
+	ExtractDirName(Temp, ts->HomeDir);
+	_chdir(ts->HomeDir);
+	GetDefaultSetupFName(ts->HomeDir, ts->SetupFName, sizeof(ts->SetupFName));
 
 	if (FirstInstance) {
 		FirstInstance = FALSE;
