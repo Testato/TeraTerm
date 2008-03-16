@@ -740,13 +740,43 @@ void TelStartKeepAliveThread() {
 
 
   <h3>パケット処理</h3>
-　パケットを送信するときのフォーマットについて、以下に示します。
+  SSH2プロトコルに載せて、パケットをサーバへ送るときのコードは以下のような書き方となります。begin_send_packet()の呼び出しで、「pvar->ssh_state.outbuf + 12」が返り値となり、それがペイロードを表します。ペイロードは純粋にサーバへ送りたいデータのことで、サイズやパディング等を含みません。<br>
+  
+<pre class=code>
+	buffer_t *msg;
+	int len;
+	char *s;
+	unsigned char *outmsg;
+	
+	msg = buffer_init();
+	if (msg != NULL) {
+		buffer_put_int(msg, SSH2_DISCONNECT_PROTOCOL_ERROR);
+		s = "disconnected by server request";
+		buffer_put_string(msg, s, strlen(s));
+		s = "";
+		buffer_put_string(msg, s, strlen(s));
+
+		len = buffer_len(msg);
+		outmsg = begin_send_packet(pvar, SSH2_MSG_DISCONNECT, len);
+		memcpy(outmsg, buffer_ptr(msg), len);
+		finish_send_packet(pvar);
+		buffer_free(msg);
+	}
+</pre>
+
+　SSH通信に載せられて、実際にパケットが送出されるのは、finish_send_packet()から呼び出される finish_send_packet_special() です。パケットを送信するときのフォーマットについて、以下に示します。共通鍵暗号でパケットデータを暗号化する前に、ヘッダとフッタを付ける必要があります。<br>
+　パケットサイズはHMACを除く長さです。パケットサイズそのものはビッグエンディアン形式で、4バイト分格納しますが、その"4"バイトは含まれません。ペイロードの直後にパディングを埋めるのは、共通鍵暗号で暗号化するときに「ブロックサイズ単位」になっていなければ、アルゴリズム的に暗号化できないからです。ブロックサイズは暗号アルゴリズムにより異なり、たとえば3DES-CBCならば24バイト、AES128ならば16バイトです。<br>
+　HMAC(Keyed-Hashing for Message Authentication)は、暗号化本文に対するハッシュです。ハッシュのアルゴリズムは選択可能であり、"MD5"や"SHA-1"がよく使われています。HMACを付加することにより、「第三者によるデータの改ざん」を検出することができます。HMACは、暗号化対象となる本文を秘密鍵とシーケンス番号を加え、ハッシュ値を計算します。秘密鍵とシーケンス番号を加えることにより、第三者がデータをまるごと差し替えたとしても、送信者が生成したハッシュ値を復元することは理論上できません。<br>
+　
 
 <div align="center">
 <img src="image/ssh_packet_format1.png" width=720 height=540>
 </div>
 
-　zlibによるパケット圧縮を行う場合における、パケットを送信するときのフォーマットについて、以下に示します。
+　zlibによるパケット圧縮を行う場合における、パケットを送信するときのフォーマットについて、以下に示します。パケット圧縮を行うのは、「ペイロード」の部分のみで、残りは通常の送信パケットとフォーマットは同じです。なお、パケットを圧縮したとしても、かならずしも元のサイズよりも小さくなるとは限らないので、そのことを考慮したバッファ管理が必要です。<br>
+　パケット圧縮送信で難しいのは、圧縮を開始するタイミングです。ローカルホストからリモートホストへのSSH接続を開始すると、実にたくさんのネゴシエーションが行われますが、パケットを圧縮してよいのは決められたタイミングであり、このタイミングを間違えると、サーバとまったく通信ができなくなります。<br>
+　通常のパケット圧縮の場合は、"SSH2_MSG_KEXINIT"を受信したタイミングです。遅延パケット圧縮の場合は、ユーザ認証が成功したタイミング（"SSH2_MSG_USERAUTH_SUCCESS"を受信した時）です。遅延パケット圧縮というのは、それまで"SSH2_MSG_KEXINIT"を受信したタイミングで圧縮を開始していたのを、ユーザ認証が完了するまで延長する方式です。遅延パケット圧縮は、zlibライブラリのセキュリティホールにより、不正なSSHサーバへ接続しただけで、クライアント側に影響が出るのを回避するためのしくみです。
+
 
 <div align="center">
 <img src="image/ssh_packet_format2.png" width=720 height=540>
