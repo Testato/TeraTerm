@@ -5407,6 +5407,16 @@ LONG CVTWindow::OnReceiveIpcMessage(UINT wParam, LONG lParam)
 	if (!ts.AcceptBroadcast)	// 337: 2007/03/20
 		return 0;
 
+	// 未送信データがある場合は先に送信する
+	// データ量が多い場合は送信しきれない可能性がある
+	if (TalkStatus == IdTalkCB) {
+		CBSend();
+	}
+	// 送信可能な状態でなければエラー
+	if (TalkStatus != IdTalkKeyb) {
+		return 0;
+	}
+
 	cds = (COPYDATASTRUCT *)lParam;
 	len = cds->cbData;
 	buf = (char *)cds->lpData;
@@ -5414,9 +5424,13 @@ LONG CVTWindow::OnReceiveIpcMessage(UINT wParam, LONG lParam)
 		// 端末へ文字列を送り込む
 		// DDE通信に使う関数に変更。(2006.2.7 yutaka)
 		CBStartPaste(HVTWin, FALSE, TermWidthMax/*CBBufSize*/, buf, len);
+		// 送信データがある場合は送信する
+		if (TalkStatus == IdTalkCB) {
+			CBSend();
+		}
 	}
 
-	return 0;
+	return 1; // 送信できた場合は1を返す
 }
 
 
