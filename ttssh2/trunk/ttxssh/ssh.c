@@ -7647,6 +7647,8 @@ static unsigned __stdcall ssh_scp_thread(void FAR * p)
 	} while (ret <= sizeof(buf));
 
 	// eof
+	c->scp.state = SCP_DATA;
+
 	buf[0] = '\0';
 	parm.buf = buf;
 	parm.buflen = 1;
@@ -7656,7 +7658,6 @@ static unsigned __stdcall ssh_scp_thread(void FAR * p)
 
 	ShowWindow(hWnd, SW_HIDE);
 
-	c->scp.state = SCP_DATA;
 	return 0;
 
 cancel_abort:
