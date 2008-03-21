@@ -42,6 +42,8 @@ extern PChooseFontDlg ChooseFontDlg;
 extern PSetupGeneral SetupGeneral;
 extern PWindowWindow WindowWindow;
 
+extern void FAR PASCAL TTDLGSetUILanguageFile(char *file);
+
 /* proto types */
 BOOL LoadTTDLG();
 BOOL FreeTTDLG();

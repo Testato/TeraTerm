@@ -18,6 +18,7 @@
 #include "helpid.h"
 
 #include "filesys.h"
+#include "ftlib.h"
 
 PFileVar LogVar = NULL;
 PFileVar SendVar = NULL;
@@ -89,6 +90,9 @@ BOOL LoadTTFILE()
 	HTTFILE = LoadLibrary("TTPFILE.DLL");
 	if (HTTFILE == NULL)
 		return FALSE;
+
+	TTFILESetUILanguageFile(ts.UILanguageFile);
+	TTFILESetFileSendFilter(ts.FileSendFilter);
 
 	Err = FALSE;
 	GetSetupFname = (PGetSetupFname)GetProcAddress(HTTFILE,

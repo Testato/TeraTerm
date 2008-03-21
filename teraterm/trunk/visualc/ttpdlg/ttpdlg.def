@@ -10,3 +10,5 @@ EXPORTS
   ChooseFontDlg @9
   SetupGeneral @10
   WindowWindow @11
+
+  TTDLGSetUILanguageFile @12

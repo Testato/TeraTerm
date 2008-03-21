@@ -11,3 +11,5 @@ EXPORTS
   ProtoTimeOutProc @9
   ProtoCancel @10
 
+  TTFILESetUILanguageFile @11
+  TTFILESetFileSendFilter @12

@@ -8,6 +8,7 @@
 #include "ttplug.h" /* TTPLUG */
 
 #include "ttdialog.h"
+#include "ttwinman.h"
 
 static HMODULE HTTDLG = NULL;
 static TTDLGUseCount = 0;
@@ -46,6 +47,8 @@ BOOL LoadTTDLG()
 
     HTTDLG = LoadLibrary("TTPDLG.DLL");
     if (HTTDLG==NULL) return FALSE;
+
+    TTDLGSetUILanguageFile(ts.UILanguageFile);
 
     Err = FALSE;
     SetupTerminal = (PSetupTerminal)GetProcAddress(HTTDLG,
