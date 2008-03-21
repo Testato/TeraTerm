@@ -918,7 +918,13 @@ char *LogMeTTexename = "LogMeTT.exe";
 static char LogMeTTMenuString[] = "Log&MeTT";
 static BOOL isLogMeTTExist()
 {
-	if (_access(LogMeTTexename, 0) == -1) {
+	char LogMeTT[MAX_PATH];
+	
+	strncpy_s(LogMeTT, sizeof(LogMeTT), ts.HomeDir, _TRUNCATE);
+	AppendSlash(LogMeTT, sizeof(LogMeTT));
+	strncat_s(LogMeTT, sizeof(LogMeTT), LogMeTTexename, _TRUNCATE);
+
+	if (_access(LogMeTT, 0) == -1) {
 		return FALSE;
 	}
 	return TRUE;
@@ -2980,6 +2986,7 @@ void CVTWindow::OnCygwinConnection()
 	char file[MAX_PATH], buf[1024];
 	char c, *envptr;
 	char *exename = "cygterm.exe";
+	char cygterm[MAX_PATH];
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 	char uimsg[MAX_UIMSG];
@@ -3016,7 +3023,11 @@ found_path:;
 	GetStartupInfo(&si);
 	memset(&pi, 0, sizeof(pi));
 
-	if (CreateProcess(NULL, exename, NULL, NULL, FALSE, 0,
+	strncpy_s(cygterm, sizeof(cygterm), ts.HomeDir, _TRUNCATE);
+	AppendSlash(cygterm, sizeof(cygterm));
+	strncat_s(cygterm, sizeof(cygterm), exename, _TRUNCATE);
+
+	if (CreateProcess(NULL, cygterm, NULL, NULL, FALSE, 0,
 	                  NULL, NULL, &si, &pi) == 0) {
 		get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
 		get_lang_msg("MSG_EXEC_CYGTERM_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
@@ -3059,6 +3070,7 @@ void CVTWindow::OnLogMeInLaunch()
 {
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
+	char LogMeTT[MAX_PATH];
 
 	if (!isLogMeTTExist()) {
 		return;
@@ -3068,7 +3080,11 @@ void CVTWindow::OnLogMeInLaunch()
 	GetStartupInfo(&si);
 	memset(&pi, 0, sizeof(pi));
 
-	if (CreateProcess(NULL, LogMeTTexename, NULL, NULL, FALSE, 0,
+	strncpy_s(LogMeTT, sizeof(LogMeTT), ts.HomeDir, _TRUNCATE);
+	AppendSlash(LogMeTT, sizeof(LogMeTT));
+	strncat_s(LogMeTT, sizeof(LogMeTT), LogMeTTexename, _TRUNCATE);
+
+	if (CreateProcess(NULL, LogMeTT, NULL, NULL, FALSE, 0,
 	                  NULL, NULL, &si, &pi) == 0) {
 		char buf[80];
 		char uimsg[MAX_UIMSG];
@@ -3486,6 +3502,8 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 	HWND hWnd;
 	char *cfgfile = "cygterm.cfg"; // CygTerm configuration file
 	char *tmpfile = "cygterm.tmp";
+	char cfg[MAX_PATH];
+	char tmp[MAX_PATH];
 	FILE *fp, *tmp_fp;
 	typedef struct cygterm {
 		char term[128];
@@ -3551,7 +3569,11 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 			settings.login_shell = FALSE;
 			settings.home_chdir = FALSE;
 
-			fp = fopen(cfgfile, "r");
+			strncpy_s(cfg, sizeof(cfg), ts.HomeDir, _TRUNCATE);
+			AppendSlash(cfg, sizeof(cfg));
+			strncat_s(cfg, sizeof(cfg), cfgfile, _TRUNCATE);
+
+			fp = fopen(cfg, "r");
 			if (fp != NULL) { 
 				while (fgets(buf, sizeof(buf), fp) != NULL) {
 					int len = strlen(buf);
@@ -3600,7 +3622,7 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 					}
 				}
 				fclose(fp);
-			} 
+			}
 			SendMessage(GetDlgItem(hDlgWnd, IDC_TERM_EDIT), WM_SETTEXT , 0, (LPARAM)settings.term);
 			SendMessage(GetDlgItem(hDlgWnd, IDC_TERM_TYPE), WM_SETTEXT , 0, (LPARAM)settings.term_type);
 			SendMessage(GetDlgItem(hDlgWnd, IDC_PORT_START), WM_SETTEXT , 0, (LPARAM)settings.port_start);
@@ -3667,8 +3689,16 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 						settings.home_chdir = FALSE;
 					}
 
-					fp = fopen(cfgfile, "r");
-					tmp_fp = fopen(tmpfile, "w");
+					strncpy_s(cfg, sizeof(cfg), ts.HomeDir, _TRUNCATE);
+					AppendSlash(cfg, sizeof(cfg));
+					strncat_s(cfg, sizeof(cfg), cfgfile, _TRUNCATE);
+
+					strncpy_s(tmp, sizeof(tmp), ts.HomeDir, _TRUNCATE);
+					AppendSlash(tmp, sizeof(tmp));
+					strncat_s(tmp, sizeof(tmp), tmpfile, _TRUNCATE);
+
+					fp = fopen(cfg, "r");
+					tmp_fp = fopen(tmp, "w");
 					if (tmp_fp == NULL) { 
 						get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
 						get_lang_msg("MSG_CYGTERM_CONF_WRITEFILE_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
@@ -3762,14 +3792,14 @@ static LRESULT CALLBACK OnTabSheetCygwinProc(HWND hDlgWnd, UINT msg, WPARAM wp, 
 						}
 						fclose(tmp_fp);
 
-						if (remove(cfgfile) != 0 && errno != ENOENT) {
+						if (remove(cfg) != 0 && errno != ENOENT) {
 							get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
 							get_lang_msg("MSG_CYGTERM_CONF_REMOVEFILE_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
 							             "Can't remove old CygTerm configuration file (%d).", ts.UILanguageFile);
 							_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 							MessageBox(hDlgWnd, buf, uimsg, MB_ICONEXCLAMATION);
 						}
-						else if (rename(tmpfile, cfgfile) != 0) {
+						else if (rename(tmp, cfg) != 0) {
 							get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
 							get_lang_msg("MSG_CYGTERM_CONF_RENAMEFILE_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
 							             "Can't rename CygTerm configuration file (%d).", ts.UILanguageFile);
