@@ -49,6 +49,8 @@
 #define CmdScpRcv       'I'
 #define CmdSetSecondFile 'J'
 #define CmdSetBaud      'K'
+#define CmdSetRts       'L'
+#define CmdSetDtr       'M'
 
 #ifdef __cplusplus
 extern "C" {

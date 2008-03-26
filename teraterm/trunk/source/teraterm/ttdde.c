@@ -321,6 +321,8 @@ WORD HexStr2Word(PCHAR Str)
 #define CmdScpRcv       'I'
 #define CmdSetSecondFile 'J'
 #define CmdSetBaud      'K'
+#define CmdSetRts       'L'
+#define CmdSetDtr       'M'
 
 HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 {
@@ -755,8 +757,8 @@ scp_rcv_error:
 
 		//OutputDebugPrintf("CmdSetBaud entered\n");
 
-		if (!cv.Open) 
-			break;
+		if (!cv.Open || cv.PortType != IdSerial)
+			return DDE_FNOTPROCESSED;
 
 		val = atoi(ParamFileName);
 		ret = GetCommSerialBaudRate(val);
@@ -765,6 +767,40 @@ scp_rcv_error:
 			ts.Baud = val;
 			CommResetSerial(&ts,&cv,FALSE);   // reset serial port
 			PostMessage(HVTWin,WM_USER_CHANGETITLE,0,0); // refresh title bar
+		}
+		}
+		break;
+
+	case CmdSetRts:  // add 'setrts' (2008.3.12 maya)
+		{
+		int val, ret;
+
+		if (!cv.Open || cv.PortType != IdSerial || ts.Flow != IdFlowNone)
+			return DDE_FNOTPROCESSED;
+
+		val = atoi(ParamFileName);
+		if (val == 0) {
+			ret = EscapeCommFunction(cv.ComID, CLRRTS);
+		}
+		else {
+			ret = EscapeCommFunction(cv.ComID, SETRTS);
+		}
+		}
+		break;
+
+	case CmdSetDtr:  // add 'setdtr' (2008.3.12 maya)
+		{
+		int val, ret;
+
+		if (!cv.Open || cv.PortType != IdSerial || ts.Flow != IdFlowNone)
+			return DDE_FNOTPROCESSED;
+
+		val = atoi(ParamFileName);
+		if (val == 0) {
+			ret = EscapeCommFunction(cv.ComID, CLRDTR);
+		}
+		else {
+			ret = EscapeCommFunction(cv.ComID, SETDTR);
 		}
 		}
 		break;

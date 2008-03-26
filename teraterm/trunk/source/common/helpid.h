@@ -251,9 +251,11 @@
 #define HlpMacroCommandSetdate          92079
 #define HlpMacroCommandSetdir           92080
 #define HlpMacroCommandSetdlgpos        92081
+#define HlpMacroCommandSetdtr           92137
 #define HlpMacroCommandSetenv           92123
 #define HlpMacroCommandSetecho          92082
 #define HlpMacroCommandSetexitcode      92083
+#define HlpMacroCommandSetrts           92136
 #define HlpMacroCommandSetsync          92084
 #define HlpMacroCommandSettime          92085
 #define HlpMacroCommandSettitle         92086

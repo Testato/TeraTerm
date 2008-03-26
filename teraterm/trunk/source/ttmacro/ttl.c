@@ -3543,12 +3543,16 @@ int ExecCmnd()
 			Err = TTLSetDir(); break;
 		case RsvSetDlgPos:
 			Err = TTLSetDlgPos(); break;
+		case RsvSetDtr:
+			Err = TTLCommCmdInt(CmdSetDtr,0); break;
 		case RsvSetEcho:
 			Err = TTLCommCmdBin(CmdSetEcho,0); break;
 		case RsvSetEnv:
 			Err = TTLSetEnv(); break;
 		case RsvSetExitCode:
 			Err = TTLSetExitCode(); break;
+		case RsvSetRts:
+			Err = TTLCommCmdInt(CmdSetRts,0); break;
 		case RsvSetSync:
 			Err = TTLSetSync(); break;
 		case RsvSetTime:
