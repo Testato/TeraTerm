@@ -969,6 +969,10 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="strmatch">
+					<param name="Local" value="html\macro\command\strmatch.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="strscan">
 					<param name="Local" value="html\macro\command\strscan.html">
 					<param name="ImageNumber" value="11">

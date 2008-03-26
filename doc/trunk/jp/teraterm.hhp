@@ -270,6 +270,7 @@ HlpMacroCommandStrcompare=html\macro\command\strcompare.html
 HlpMacroCommandStrconcat=html\macro\command\strconcat.html
 HlpMacroCommandStrcopy=html\macro\command\strcopy.html
 HlpMacroCommandStrlen=html\macro\command\strlen.html
+HlpMacroCommandStrmatch=html\macro\command\strmatch.html
 HlpMacroCommandStrscan=html\macro\command\strscan.html
 HlpMacroCommandTestlink=html\macro\command\testlink.html
 HlpMacroCommandTolower=html\macro\command\tolower.html
