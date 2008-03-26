@@ -172,6 +172,7 @@
 #define RsvScpSend      132   // add 'scpsend' (2008.1.1 yutaka)
 #define RsvGetVer       133   // add 'getver'  (2008.2.4 yutaka)
 #define RsvSetBaud      134   // add 'setbaud' (2008.2.13 yutaka)
+#define RsvStrMatch     135   // add 'strmatch' (2008.3.26 yutaka)
 
 #define RsvOperator     150
 #define RsvBNot         151

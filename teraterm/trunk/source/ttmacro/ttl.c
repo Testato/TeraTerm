@@ -2778,6 +2778,39 @@ WORD TTLStrLen()
 	return Err;
 }
 
+/*
+  書式: strmatch <文字列> <正規表現>
+  <文字列>に<正規表現>がマッチするか調べるコマンド(awkのmatch関数相当)。
+  resultには、マッチした位置をセット(マッチしない場合は0)。
+  マッチした場合は、waitregexと同様にmatchstr,groupmatchstr0-9をセット。
+ */
+WORD TTLStrMatch()
+{
+	WORD Err;
+	TStrVal Str1, Str2;
+	int ret, result;
+
+	Err = 0;
+	GetStrVal(Str1,&Err);   // target string
+	GetStrVal(Str2,&Err);   // regex pattern
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	ret = FindRegexStringOne(Str2, strlen(Str2), Str1, strlen(Str1));
+	if (ret > 0) { // matched
+		result = 1;  // TODO: マッチした位置をセットする
+	} else {
+		result = 0;
+	}
+
+	LockVar();
+	SetResult(result);
+	UnlockVar();
+
+	return Err;
+}
+
 WORD TTLStrScan()
 {
 	WORD Err;
@@ -3542,6 +3575,8 @@ int ExecCmnd()
 			Err = TTLStrCopy(); break;
 		case RsvStrLen:
 			Err = TTLStrLen(); break;
+		case RsvStrMatch:
+			Err = TTLStrMatch(); break;
 		case RsvStrScan:
 			Err = TTLStrScan(); break;
 		case RsvTestLink:
