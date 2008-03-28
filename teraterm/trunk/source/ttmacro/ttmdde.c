@@ -469,6 +469,10 @@ int FindRegexStringOne(char *regex, int regex_len, char *target, int target_len)
 	if (r >= 0) {
 		int i;
 
+		// ‘O‰ñ‚ÌŒ‹‰Ê‚ğƒNƒŠƒA‚·‚é (2008.3.28 maya)
+		for (i = 1; i <= 9; i++)
+			SetGroupMatchStr(i, "");
+
 		for (i = 0; i < region->num_regs; i++) {
 			mstart = region->beg[i];
 			mend = region->end[i];

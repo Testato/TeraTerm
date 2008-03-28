@@ -2782,7 +2782,7 @@ WORD TTLStrLen()
   書式: strmatch <文字列> <正規表現>
   <文字列>に<正規表現>がマッチするか調べるコマンド(awkのmatch関数相当)。
   resultには、マッチした位置をセット(マッチしない場合は0)。
-  マッチした場合は、waitregexと同様にmatchstr,groupmatchstr0-9をセット。
+  マッチした場合は、waitregexと同様にmatchstr,groupmatchstr1-9をセット。
  */
 WORD TTLStrMatch()
 {
