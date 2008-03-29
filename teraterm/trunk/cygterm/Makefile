@@ -25,8 +25,8 @@ $(EXE) : $(SRC) $(RES)
   endif
 	strip $(EXE)
 
-$(LAUNCH) : cyglaunch.c
-	cc -mno-cygwin -mwindows -o cyglaunch cyglaunch.c
+$(LAUNCH) : cyglaunch.c $(RES)
+	cc -mno-cygwin -mwindows -o cyglaunch cyglaunch.c $(RES)
 	strip $(LAUNCH)
 
 $(RC):
