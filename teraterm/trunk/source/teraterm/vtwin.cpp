@@ -4727,15 +4727,23 @@ void CVTWindow::OnExternalSetup()
 	// 設定ダイアログ (2004.9.5 yutaka)
 	ret = DialogBox(hInst, MAKEINTRESOURCE(IDD_ADDITIONAL_SETUPTAB),
 	                HVTWin, (DLGPROC)OnAdditionalSetupDlgProc);
-	if (ret == 0 || ret == -1) {
-		ret = GetLastError();
+	switch (ret) {
+		case 0:
+		case -1:
+			ret = GetLastError();
+			break;
+		case IDOK:
 #ifdef ALPHABLEND_TYPE2
-		BGInitialize();
+			BGInitialize();
 #else
-		DispApplyANSIColor();
+			DispApplyANSIColor();
 #endif
-		DispSetNearestColors(IdBack, IdFore+8, NULL);
-		ChangeWin();
+			DispSetNearestColors(IdBack, IdFore+8, NULL);
+			ChangeWin();
+			break;
+		default:
+			/* nothing to do */
+			break;
 	}
 }
 

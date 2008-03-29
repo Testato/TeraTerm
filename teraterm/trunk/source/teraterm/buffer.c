@@ -1752,6 +1752,89 @@ void BuffScrollNLines(int n)
   }
 }
 
+void BuffRegionScrollNLines(int n) {
+  int i;
+  LONG SrcPtr, DestPtr;
+
+  if (n<1) return;
+  UpdateStr();
+
+  if (n > 0) {
+    if ((CursorTop == 0) && (CursorBottom == NumOfLines-1)) {
+      WinOrgY = WinOrgY-n;
+      BuffScroll(n,CursorBottom);
+      DispCountScroll(n);
+    }
+    else if (CursorTop==0) {
+      BuffScroll(n,CursorBottom);
+      DispScrollNLines(WinOrgY,CursorBottom,n);
+    }
+    else {
+      DestPtr = GetLinePtr(PageStart+CursorTop);
+      if (n<CursorBottom-CursorTop+1) {
+	SrcPtr = GetLinePtr(PageStart+CursorTop+n);
+	for (i = CursorTop+n ; i<=CursorBottom ; i++) {
+	  memmove(&(CodeBuff[DestPtr]),&(CodeBuff[SrcPtr]),NumOfColumns);
+	  memmove(&(AttrBuff[DestPtr]),&(AttrBuff[SrcPtr]),NumOfColumns);
+	  memmove(&(AttrBuff2[DestPtr]),&(AttrBuff2[SrcPtr]),NumOfColumns);
+	  memmove(&(AttrBuffFG[DestPtr]),&(AttrBuffFG[SrcPtr]),NumOfColumns);
+	  memmove(&(AttrBuffBG[DestPtr]),&(AttrBuffBG[SrcPtr]),NumOfColumns);
+	  SrcPtr = NextLinePtr(SrcPtr);
+	  DestPtr = NextLinePtr(DestPtr);
+	}
+      }
+      else
+	n = CursorBottom-CursorTop+1;
+      for (i = CursorBottom+1-n ; i<=CursorBottom; i++) {
+	memset(&(CodeBuff[DestPtr]),0x20,NumOfColumns);
+	memset(&(AttrBuff[DestPtr]),CurCharAttr.Attr,NumOfColumns);
+	memset(&(AttrBuff2[DestPtr]),CurCharAttr.Attr2,NumOfColumns);
+	memset(&(AttrBuffFG[DestPtr]),CurCharAttr.Fore,NumOfColumns);
+	memset(&(AttrBuffBG[DestPtr]),CurCharAttr.Back,NumOfColumns);
+	DestPtr = NextLinePtr(DestPtr);
+      }
+      DispScrollNLines(CursorTop,CursorBottom,n);
+    }
+  }
+}
+
+void BuffRegionScrollUpNLines(int n) {
+  int i;
+  LONG SrcPtr, DestPtr;
+
+  if (n<1) {
+    return;
+  }
+  UpdateStr();
+
+  DestPtr = GetLinePtr(PageStart+CursorBottom);
+  if (n < CursorBottom-CursorTop+1) {
+    SrcPtr = GetLinePtr(PageStart+CursorBottom-n);
+    for (i=CursorBottom-n ; i<=CursorTop ; i--) {
+      memmove(&(CodeBuff[DestPtr]),&(CodeBuff[SrcPtr]),NumOfColumns);
+      memmove(&(AttrBuff[DestPtr]),&(AttrBuff[SrcPtr]),NumOfColumns);
+      memmove(&(AttrBuff2[DestPtr]),&(AttrBuff2[SrcPtr]),NumOfColumns);
+      memmove(&(AttrBuffFG[DestPtr]),&(AttrBuffFG[SrcPtr]),NumOfColumns);
+      memmove(&(AttrBuffBG[DestPtr]),&(AttrBuffBG[SrcPtr]),NumOfColumns);
+      SrcPtr = PrevLinePtr(SrcPtr);
+      DestPtr = PrevLinePtr(DestPtr);
+    }
+  }
+  else {
+    n = CursorBottom - CursorTop + 1;
+  }
+  for (i = CursorTop+n-1; i<=CursorTop; i--) {
+    memset(&(CodeBuff[DestPtr]),0x20,NumOfColumns);
+    memset(&(AttrBuff[DestPtr]),CurCharAttr.Attr,NumOfColumns);
+    memset(&(AttrBuff2[DestPtr]),CurCharAttr.Attr2,NumOfColumns);
+    memset(&(AttrBuffFG[DestPtr]),CurCharAttr.Fore,NumOfColumns);
+    memset(&(AttrBuffBG[DestPtr]),CurCharAttr.Back,NumOfColumns);
+    DestPtr = PrevLinePtr(DestPtr);
+  }
+
+  DispScrollNLines(CursorTop,CursorBottom,-1);
+}
+
 void BuffClearScreen()
 { // clear screen
   if ((StatusLine>0) && (CursorY==NumOfLines-1))
