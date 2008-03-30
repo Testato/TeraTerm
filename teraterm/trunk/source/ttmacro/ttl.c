@@ -2799,7 +2799,7 @@ WORD TTLStrMatch()
 
 	ret = FindRegexStringOne(Str2, strlen(Str2), Str1, strlen(Str1));
 	if (ret > 0) { // matched
-		result = 1;  // TODO: マッチした位置をセットする
+		result = ret; 
 	} else {
 		result = 0;
 	}

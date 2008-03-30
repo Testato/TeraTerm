@@ -437,6 +437,9 @@ void SetWait2(PCHAR Str, int Len, int Pos)
 
 
 // 正規表現によるパターンマッチを行う（Oniguruma使用）
+//
+// return 正: マッチした位置（1オリジン）
+//         0: マッチしなかった
 int FindRegexStringOne(char *regex, int regex_len, char *target, int target_len)
 {
 	int r;
@@ -470,8 +473,11 @@ int FindRegexStringOne(char *regex, int regex_len, char *target, int target_len)
 		int i;
 
 		// 前回の結果をクリアする (2008.3.28 maya)
-		for (i = 1; i <= 9; i++)
+		for (i = 1; i <= 9; i++) {
+			LockVar();
 			SetGroupMatchStr(i, "");
+			UnlockVar();
+		}
 
 		for (i = 0; i < region->num_regs; i++) {
 			mstart = region->beg[i];
@@ -498,7 +504,7 @@ int FindRegexStringOne(char *regex, int regex_len, char *target, int target_len)
 
 		}
 
-		matched = 1;
+		matched = (r + 1);
 	}
 	else if (r == ONIG_MISMATCH) {
 		fprintf(stderr, "search fail\n");
