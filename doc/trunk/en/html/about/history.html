@@ -30,12 +30,18 @@
         <ul>
           <li>added <a href="../setup/teraterm-misc.html#DisablePasteMouseMButton">DisablePasteMouseMButton</a> entry in teraterm.ini file. The default value is on.</li>
          </ul></li>
-      <li>added <a href="../menu/setup-additional.html">ConfirmChangePaste</a> option on Additional settings dialog.</li>
+      <li>changed Additional settings dialog.
+        <ul>
+          <li>added <a href="../menu/setup-additional.html">ConfirmChangePaste</a> option.</li>
+          <!--li>Bug fix: 開いているタブの内容しか保存されない問題を修正した。</li-->
+          <!--li>cygterm.cfg がない状態で保存するとファイルが新規作成されず、エラーメッセージが表示される問題を修正した。</li-->
+        </ul></li>
       <li>added support for display confirmation dialog when 'Paste&lt;CR&gt;' menu was selected.</li>
       <li>added '<a href="../macro/command/strmatch.html">strmatch</a>' macro command.</li>
       <li>added '<a href="../macro/command/setrts.html">setrts</a>' and '<a href="../macro/command/setdtr.html">setdtr</a>' macro command.</li>
       <li>added support for WM_COPYDATA message continuous transmission by using the Broadcast Command. Special thanks to Salarm.</li>
       <li>Bug fix: "Window list" dialog was not appeared in VT window.</li>
+      <!--li>Bug fix: 内部で LogMeTT.exe, cygterm.exe, cygterm.cfg をフルパスで指定していなかったため、ファイル選択により ttermpro.exe のカレントディレクトリが変更されたときに正しく動かなくなる問題を修正した。</li-->
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.47">2.47</a></li>
     </ul>
   </li>
