@@ -2029,6 +2029,11 @@ BOOL CVTWindow::OnMouseWheel(
 			KeyUp(VK_UP);
 		}
 	} else {
+		if (ControlKey())  // CTRLキー押しながらだと3倍速
+			line *= 3;
+		if (ShiftKey())  // SHIFTキー押下でページ単位
+			line = NumOfLines;
+
 		for (i = 0 ; i < line ; i++) {
 			if (zDelta < 0) {
 				OnVScroll(SB_LINEDOWN, 0, NULL);
