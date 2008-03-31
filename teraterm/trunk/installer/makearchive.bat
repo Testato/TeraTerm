@@ -16,6 +16,9 @@ mkdir %dst%
 
 copy /y ..\..\teraterm\visualc\bin\release\*.exe %dst%
 copy /y ..\..\teraterm\visualc\bin\release\*.dll %dst%
+pushd %dst%
+if exist TTXFixedWinSize.dll ren TTXFixedWinSize.dll _TTXFixedWinSize.dll
+popd
 
 copy /y ..\..\teraterm\cygterm\cygterm.exe %dst%
 copy /y ..\..\teraterm\cygterm\cygterm.cfg %dst%
