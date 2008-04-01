@@ -111,6 +111,7 @@ Name: TTXKanjiMenu; Description: TTXKanjiMenu; Types: full
 [Icons]
 Name: {group}\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; IconIndex: 0; Components: TeraTerm; Flags: createonlyiffileexists
 Name: {group}\{cm:UninstallProgram,{#AppName}}; Filename: {uninstallexe}; Components: TeraTerm; Flags: createonlyiffileexists
+Name: {group}\cyglaunch; Filename: {app}\cyglaunch.exe; WorkingDir: {app}; IconFilename: {app}\cyglaunch.exe; IconIndex: 0; Components: cygterm; Flags: createonlyiffileexists
 Name: {group}\LogMeTT; Filename: {app}\LogMeTT.exe; WorkingDir: {app}; IconFilename: {app}\logMeTT.exe; IconIndex: 0; Components: LogMeTT; Flags: createonlyiffileexists
 Name: {group}\TTLEdit; Filename: {app}\TTLEdit.exe; WorkingDir: {app}; IconFilename: {app}\TTLEdit.exe; IconIndex: 0; Components: LogMeTT; Flags: createonlyiffileexists
 Name: {group}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; IconIndex: 0; Components: TeraTerm_Menu; Flags: createonlyiffileexists
@@ -119,6 +120,7 @@ Name: {userdesktop}\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: quicklaunchicon; IconIndex: 0; Flags: createonlyiffileexists
 Name: {userstartup}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; Components: TeraTerm_Menu; IconIndex: 0; Tasks: startupttmenuicon; Flags: createonlyiffileexists
 Name: {userstartup}\Collector; Filename: {app}\collector\collector.exe; WorkingDir: {app}\Collector; IconFilename: {app}\collector\collector.exe; Components: Collector; Tasks: startupcollectoricon; IconIndex: 0; Flags: createonlyiffileexists
+Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\cyglaunch; Filename: {app}\cyglaunch.exe; WorkingDir: {app}; IconFilename: {app}\cyglaunch.exe; Components: cygterm; Tasks: quickcyglaunch; IconIndex: 0; Flags: createonlyiffileexists
 
 [INI]
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: DisablePasteMouseMButton; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
@@ -223,10 +225,25 @@ Filename: {app}\teraterm.ini; Section: TTSSH; Key: KeyboardInteractive; String: 
 Filename: {userdocs}\teraterm.ini; Section: TTSSH; Key: KeyboardInteractive; String: 0; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TTSSH
 
 [Registry]
+; Cygterm Here
 Root: HKCU; Subkey: Software\Classes\Folder\shell\cygterm; ValueType: string; ValueData: Cy&gterm Here; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: cygterm; Tasks: cygtermhere
 Root: HKCU; Subkey: Software\Classes\Folder\shell\cygterm\command; ValueType: string; ValueData: """{app}\cyglaunch.exe"" -nocd -nols -d \""%L\"""; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: cygterm; Tasks: cygtermhere
 Root: HKCR; Subkey: Folder\shell\cygterm; ValueType: string; ValueData: Cy&gterm Here; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: cygterm; Tasks: cygtermhere
 Root: HKCR; Subkey: Folder\shell\cygterm\command; ValueType: string; ValueData: """{app}\cyglaunch.exe"" -nocd -nols -d \""%L\"""; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: cygterm; Tasks: cygtermhere
+; Associate with .TTL
+Root: HKCU; Subkey: Software\Classes\.ttl; ValueType: string; ValueData: TeraTerm.MacroFile; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
+Root: HKCU; Subkey: Software\Classes\TeraTerm.MacroFile; ValueType: string; ValueData: TeraTerm Macro File; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
+Root: HKCU; Subkey: Software\Classes\TeraTerm.MacroFile\DefaultIcon; ValueType: string; ValueData: {app}\ttpmacro.exe,0; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
+Root: HKCU; Subkey: Software\Classes\TeraTerm.MacroFile\shell\open\command; ValueType: string; ValueData: """{app}\ttpmacro.exe"" ""%1"""; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
+Root: HKCR; Subkey: .ttl; ValueType: string; ValueData: TeraTerm.MacroFile; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
+Root: HKCR; Subkey: TeraTerm.MacroFile; ValueType: string; ValueData: TeraTerm Macro File; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
+Root: HKCR; Subkey: TeraTerm.MacroFile\DefaultIcon; ValueType: string; ValueData: {app}\ttpmacro.exe,0; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
+Root: HKCR; Subkey: TeraTerm.MacroFile\shell\open\command; ValueType: string; ValueData: """{app}\ttpmacro.exe"" ""%1"""; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
+; Associate with telnet://
+Root: HKCU; Subkey: Software\Classes\telnet\shell; ValueType: string; ValueData: Open with TeraTerm; Flags: uninsclearvalue; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
+Root: HKCU; Subkey: Software\Classes\telnet\shell\Open with TeraTerm\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" /T=1 /nossh %1"; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
+Root: HKCR; Subkey: telnet\shell; ValueType: string; ValueData: Open with TeraTerm; Flags: uninsclearvalue; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
+Root: HKCR; Subkey: telnet\shell\Open with TeraTerm\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" /T=1 /nossh %1"; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
 
 [Tasks]
 Name: desktopicon; Description: {cm:task_desktopicon}; Components: TeraTerm
@@ -234,6 +251,9 @@ Name: quicklaunchicon; Description: {cm:task_quicklaunchicon}; Components: TeraT
 Name: startupttmenuicon; Description: {cm:task_startupttmenuicon}; Components: TeraTerm_Menu
 Name: startupcollectoricon; Description: {cm:task_startupcollectoricon}; Components: Collector
 Name: cygtermhere; Description: {cm:task_cygtermhere}; Components: cygterm; Flags: unchecked
+Name: quickcyglaunch; Description: {cm:task_quickcyglaunch}; Components: cygterm; Flags: unchecked
+Name: macroassoc; Description: {cm:task_macroassoc}; Components: TeraTerm; Flags: unchecked
+Name: telnetassoc; Description: {cm:task_telnetassoc}; Components: TeraTerm; Flags: unchecked
 
 [Run]
 Filename: {app}\ttermpro.exe; Flags: nowait postinstall skipifsilent unchecked; Description: {cm:launch_teraterm}; Components: TeraTerm
@@ -247,11 +267,17 @@ en.task_quicklaunchicon=Create TeraTerm shortcut to &Quick Launch
 en.task_startupttmenuicon=Create TeraTerm &Menu shortcut to Startup
 en.task_startupcollectoricon=Create &Collector shortcut to Startup
 en.task_cygtermhere=Add "Cy&gterm Here" to Context menu
+en.task_quickcyglaunch=Create cyg&launch shortcut to Quick Launch
+en.task_macroassoc=Associate .&ttl file to ttmpacro.exe
+en.task_telnetassoc=Associate t&elnet protocol to ttermpro.exe
 ja.task_desktopicon=デスクトップに TeraTerm のショートカットを作る(&D)
 ja.task_quicklaunchicon=クイック起動に TeraTerm のショートカットを作る(&Q)
 ja.task_startupttmenuicon=スタートアップに TeraTerm &Menu のショートカットを作る
 ja.task_startupcollectoricon=スタートアップに &Collector のショートカットを作る
 ja.task_cygtermhere=コンテキストメニューに "Cy&gterm Here" を追加する
+ja.task_quickcyglaunch=クイック起動に cyg&launch のショートカットを作る
+ja.task_macroassoc=.&ttl ファイルを ttmpacro.exe に関連付ける
+ja.task_telnetassoc=t&elnet プロトコルを ttermpro.exe に関連付ける
 en.type_standard=Standard installation
 en.type_full=Full installation
 en.type_compact=Compact installation
@@ -361,6 +387,7 @@ var
   CodePage : integer;
   VTFont   : String;
   TEKFont  : String;
+  FileDir  : String;
 
 begin
   Language := GetIniString('Tera Term', 'Language', '', iniFile);
@@ -368,6 +395,7 @@ begin
   CodePage := GetIniInt('Tera Term', 'CodePage', 0, 0, 0, iniFile);
   VTFont   := GetIniString('Tera Term', 'VTFont', '', iniFile);
   TEKFont  := GetIniString('Tera Term', 'TEKFont', '', iniFile);
+  FileDir  := GetIniString('Tera Term', 'FileDir', '', iniFile);
 
   case GetUILanguage and $3FF of
   $04: // Chinese
@@ -446,6 +474,11 @@ begin
       SetIniString('Tera Term', 'UILanguageFile', 'lang\German.lng', iniFile);
     else
       SetIniString('Tera Term', 'UILanguageFile', '', iniFile);
+  end;
+
+  if Length(FileDir) = 0 then begin
+    FileDir := ExpandConstant('{app}');
+    SetIniString('Tera Term', 'FileDir', FileDir, iniFile);
   end;
 
 end;
@@ -533,6 +566,22 @@ begin
           RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm');
         end;
 
+        if not IsTaskSelected('macroassoc') then
+        begin;
+          RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, 'Software\Classes\.ttl');
+          RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, 'Software\Classes\TeraTerm.MacroFile');
+          RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, '.ttl');
+          RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'TeraTerm.MacroFile');
+        end;
+
+        if not IsTaskSelected('telnetassoc') then
+        begin;
+          RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, 'Software\Classes\telnet\shell\Open with TeraTerm');
+          RegDeleteValue(HKEY_CURRENT_USER, 'Software\Classes\telnet\shell', '');
+          RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'telnet\shell\Open with TeraTerm');
+          RegDeleteValue(HKEY_CLASSES_ROOT, 'telnet\shell', '');
+        end;
+
       end; // ssDone
    end; // case CurStep of
 end; // CurStepChanged
@@ -545,7 +594,7 @@ var
   confmsg : String;
   app     : String;
   userdoc : String;
-  i, j, res : integer;
+  i, res : integer;
 begin
   case CurUninstallStep of
     usPostUninstall:
