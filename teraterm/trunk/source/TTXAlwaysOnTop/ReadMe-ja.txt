@@ -8,7 +8,8 @@ TTXAlwaysOnTop -- TeraTermのウィンドウを常に最前面に表示する。
 
 解説:
   TeraTermのウィンドウに対して、SetWindowPos()でHWND_TOPMOSTを指定している
-  だけです。TeraTermの内部的な部分はまったくさわっていません。
+  だけです。TeraTermの内部的な処理は一切変更していません。
 
 バグ:
   TEKウィンドウには対応していません。
+

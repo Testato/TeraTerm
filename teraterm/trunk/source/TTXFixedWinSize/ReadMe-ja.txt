@@ -32,8 +32,8 @@ TTXFixedWinSize -- TeraTermのVTウィンドウのサイズを80x24に固定する
   意見の人には、TTXResizeWin/TTXResizeMenuの使用をお勧めします。
 
   *1:
-  元々、TTXResizeWin/TTXResizeMenuを作った後に冗談で思いついたプラグイン
-  なので実際に使う人がいるとは思えない(^^;のですが、万一このプラグインを
-  常用するという人がいたら私(http://sourceforge.jp/users/doda/)まで連絡を
-  ください。MLや2ch等での報告でもいいです。
-  報告してもらっても何も差し上げられませんが(^^;
+  元々、TTXResizeWin/TTXResizeMenuを作った後に、冗談で思いついたプラグイン
+  です。このプラグインに関するフィードバックは 
+  http://sourceforge.jp/users/doda/ まで連絡をお願いします。
+  
+
