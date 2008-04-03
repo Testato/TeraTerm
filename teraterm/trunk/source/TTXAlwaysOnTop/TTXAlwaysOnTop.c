@@ -8,7 +8,11 @@
 #include <Windows.h>
 
 #define ORDER 5800
-#define ID_MENUITEM 35000
+#define ID_MENU_BASE      35000
+#define ID_MENU_TOP       ID_MENU_BASE + 1
+#define ID_MENU_BOTTOM    ID_MENU_BASE + 2
+#define ID_MENU_TOPMOST   ID_MENU_BASE + 3
+#define ID_MENU_NOTOPMOST ID_MENU_BASE + 4
 
 static HANDLE hInst; /* Instance handle of TTX*.DLL */
 
@@ -32,26 +36,45 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
     flag |= MF_CHECKED;
   }
   InsertMenu(pvar->ControlMenu, ID_CONTROL_MACRO,
-		flag, ID_MENUITEM, "&Always on top");
+		flag, ID_MENU_BASE, "&Always on top");
   InsertMenu(pvar->ControlMenu, ID_CONTROL_MACRO,
 		MF_BYCOMMAND | MF_SEPARATOR, 0, NULL);
 }
 
 static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
-  if (cmd == ID_MENUITEM) {
-    if (pvar->ontop) {
-      pvar->ontop = FALSE;
-      CheckMenuItem(pvar->ControlMenu, ID_MENUITEM, MF_BYCOMMAND | MF_UNCHECKED);
-      SetWindowPos(hWin, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-    }
-    else {
+  switch (cmd) {
+    case ID_MENU_BASE:
+      if (pvar->ontop) {
+        pvar->ontop = FALSE;
+        CheckMenuItem(pvar->ControlMenu, ID_MENU_BASE, MF_BYCOMMAND | MF_UNCHECKED);
+        SetWindowPos(hWin, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+      }
+      else {
+        pvar->ontop = TRUE;
+        CheckMenuItem(pvar->ControlMenu, ID_MENU_BASE, MF_BYCOMMAND | MF_CHECKED);
+        SetWindowPos(hWin, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+      }
+      break;
+    case ID_MENU_TOP:
+      SetWindowPos(hWin, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+      break;
+    case ID_MENU_BOTTOM:
+      SetWindowPos(hWin, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+      break;
+    case ID_MENU_TOPMOST:
       pvar->ontop = TRUE;
-      CheckMenuItem(pvar->ControlMenu, ID_MENUITEM, MF_BYCOMMAND | MF_CHECKED);
+      CheckMenuItem(pvar->ControlMenu, ID_MENU_BASE, MF_BYCOMMAND | MF_CHECKED);
       SetWindowPos(hWin, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-    }
-    return 1;
+      break;
+    case ID_MENU_NOTOPMOST:
+      pvar->ontop = FALSE;
+      CheckMenuItem(pvar->ControlMenu, ID_MENU_BASE, MF_BYCOMMAND | MF_UNCHECKED);
+      SetWindowPos(hWin, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+      break;
+    default:
+      return 0;
   }
-  return 0;
+  return 1;
 }
 
 static TTXExports Exports = {
