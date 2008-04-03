@@ -3,6 +3,7 @@
 int gettimeofday(struct timeval *tv, struct timezone *tz) {
 	FILETIME ft;
 	__int64 t;
+	int tzsec, dst;
 
 	if (tv) {
 		GetSystemTimeAsFileTime(&ft);
@@ -12,8 +13,13 @@ int gettimeofday(struct timeval *tv, struct timezone *tz) {
 	}
 
 	if (tz) {
-		// timezone is not supported.
-		return -1;
+		if (_get_timezone(&tzsec) == 0 && _get_daylight(&dst) == 0) {
+			tz->tz_minuteswest = tzsec / 60;
+			tz->tz_dsttime = dst;
+		}
+		else {
+			return -1;
+		}
 	}
 
 	return 0;
