@@ -1752,7 +1752,7 @@ void BuffScrollNLines(int n)
   }
 }
 
-void BuffRegionScrollNLines(int n) {
+void BuffRegionScrollUpNLines(int n) {
   int i;
   LONG SrcPtr, DestPtr;
 
@@ -1798,7 +1798,7 @@ void BuffRegionScrollNLines(int n) {
   }
 }
 
-void BuffRegionScrollUpNLines(int n) {
+void BuffRegionScrollDownNLines(int n) {
   int i;
   LONG SrcPtr, DestPtr;
 
@@ -1810,7 +1810,7 @@ void BuffRegionScrollUpNLines(int n) {
   DestPtr = GetLinePtr(PageStart+CursorBottom);
   if (n < CursorBottom-CursorTop+1) {
     SrcPtr = GetLinePtr(PageStart+CursorBottom-n);
-    for (i=CursorBottom-n ; i<=CursorTop ; i--) {
+    for (i=CursorBottom-n ; i>=CursorTop ; i--) {
       memmove(&(CodeBuff[DestPtr]),&(CodeBuff[SrcPtr]),NumOfColumns);
       memmove(&(AttrBuff[DestPtr]),&(AttrBuff[SrcPtr]),NumOfColumns);
       memmove(&(AttrBuff2[DestPtr]),&(AttrBuff2[SrcPtr]),NumOfColumns);
@@ -1823,7 +1823,7 @@ void BuffRegionScrollUpNLines(int n) {
   else {
     n = CursorBottom - CursorTop + 1;
   }
-  for (i = CursorTop+n-1; i<=CursorTop; i--) {
+  for (i = CursorTop+n-1; i>=CursorTop; i--) {
     memset(&(CodeBuff[DestPtr]),0x20,NumOfColumns);
     memset(&(AttrBuff[DestPtr]),CurCharAttr.Attr,NumOfColumns);
     memset(&(AttrBuff2[DestPtr]),CurCharAttr.Attr2,NumOfColumns);
@@ -1832,7 +1832,7 @@ void BuffRegionScrollUpNLines(int n) {
     DestPtr = PrevLinePtr(DestPtr);
   }
 
-  DispScrollNLines(CursorTop,CursorBottom,-1);
+  DispScrollNLines(CursorTop,CursorBottom,-n);
 }
 
 void BuffClearScreen()

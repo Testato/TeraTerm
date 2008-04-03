@@ -1298,14 +1298,14 @@ void CSScreenErase()
   {
     if (Param[1]<1) Param[1] = 1;
     BuffUpdateScroll();
-    BuffRegionScrollNLines(Param[1]);
+    BuffRegionScrollUpNLines(Param[1]);
   }
 
   void CSScrollDown()
   {
     if (Param[1]<1) Param[1] = 1;
     BuffUpdateScroll();
-    BuffRegionScrollUpNLines(Param[1]);
+    BuffRegionScrollDownNLines(Param[1]);
   }
 
   void CSMoveToColumnN()
@@ -2074,8 +2074,8 @@ void ParseCS(BYTE b) /* b is the final char */
 	    case 'L': CSInsertLine(); break;
 	    case 'M': CSDeleteNLines(); break;
 	    case 'P': CSDeleteCharacter(); break;
-//	    case 'S': CSScrollUP(); break;
-//	    case 'T': CSScrollDown(); break;
+	    case 'S': CSScrollUP(); break;		// SU
+	    case 'T': CSScrollDown(); break;		// SD
 	    case 'X': CSEraseCharacter(); break;
 	    case '`': CSMoveToColumnN(); break;
 	    case 'a': CSCursorRight(); break;

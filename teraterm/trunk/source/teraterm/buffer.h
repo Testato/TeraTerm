@@ -61,8 +61,8 @@ void ShowStatusLine(int Show);
 #ifndef NO_COPYLINE_FIX
 void SetLineContinued();
 #endif /* NO_COPYLINE_FIX */
-void BuffRegionScrollNLines(int n);
 void BuffRegionScrollUpNLines(int n);
+void BuffRegionScrollDownNLines(int n);
 void BuffSetCurCharAttr(TCharAttr Attr);
 
 extern int StatusLine;
