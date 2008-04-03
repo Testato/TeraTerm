@@ -42,8 +42,6 @@
       <li>マクロコマンド '<a href="../macro/command/strmatch.html">strmatch</a>' を追加した。</li>
       <li>マクロコマンド '<a href="../macro/command/setrts.html">setrts</a>','<a href="../macro/command/setdtr.html">setdtr</a>' を追加した。</li>
       <li>ブロードキャストコマンドにおいて、連続送信される WM_COPYDATA を正しく処理できるようにした。Salarm氏に感謝します。</li>
-      <li>VT ウィンドウで、Window list ダイアログが出ない問題を修正した。</li>
-      <li>内部で LogMeTT.exe, cygterm.exe, cygterm.cfg をフルパスで指定していなかったため、ファイル選択などにより ttermpro.exe のカレントディレクトリが変更されたときに正しく動かなくなる問題を修正した。</li>
       <li>インストーラを修正した。
         <ul>
           <li>cyglaunch のショートカットをスタートメニューに追加するようにした。</li>
@@ -54,12 +52,15 @@
         </ul></li>
       <li>サンプルプラグインのソースコードを追加した。
         <ul>
-          <li>TTXAlwaysOnTop</li>
-          <li>TTXFixedWinSize</li>
-          <li>TTXResizeMenu</li>
-          <li>TTXResizeWin</li>
-          <li>TTXttyrec</li>
+          <li><a href="http://cvs.sourceforge.jp/cgi-bin/viewcvs.cgi/ttssh2/teraterm/source/TTXAlwaysOnTop/">TTXAlwaysOnTop</a>  -- TeraTermのウィンドウを常に最前面に表示する</li>
+          <li><a href="http://cvs.sourceforge.jp/cgi-bin/viewcvs.cgi/ttssh2/teraterm/source/TTXFixedWinSize/">TTXFixedWinSize</a> -- TeraTermのVTウィンドウのサイズを80x24に固定する</li>
+          <li><a href="http://cvs.sourceforge.jp/cgi-bin/viewcvs.cgi/ttssh2/teraterm/source/TTXResizeMenu/">TTXResizeMenu</a>   -- TeraTermのVTウィンドウのサイズを変更するメニューを表示する
+</li>
+          <li><a href="http://cvs.sourceforge.jp/cgi-bin/viewcvs.cgi/ttssh2/teraterm/source/TTXResizeWin/">TTXResizeWin</a>    -- TeraTermのVTウィンドウのサイズを80x24に変更する</li>
+          <li><a href="http://cvs.sourceforge.jp/cgi-bin/viewcvs.cgi/ttssh2/teraterm/source/TTXttyrec/">TTXttyrec</a>  -- 端末画面レコーダー</li>
         </ul></li>
+      <li>VT ウィンドウで、Window list ダイアログが出ない問題を修正した。</li>
+      <li>内部で LogMeTT.exe, cygterm.exe, cygterm.cfg をフルパスで指定していなかったため、ファイル選択などにより ttermpro.exe のカレントディレクトリが変更されたときに正しく動かなくなる問題を修正した。</li>
       <li><a href="#ttssh_2.47">SSH2対応TTSSH(2.47)</a>へ差し替えた</li>
     </ul>
   </li>
