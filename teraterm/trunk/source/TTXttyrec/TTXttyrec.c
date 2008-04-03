@@ -1,7 +1,7 @@
 #include "teraterm.h"
 #include "tttypes.h"
 #include "ttplugin.h"
-
+#include "tt_res.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -66,12 +66,16 @@ static void PASCAL FAR TTXOpenTCP(TTXSockHooks FAR * hooks) {
 }
 
 static void PASCAL FAR TTXModifyMenu(HMENU menu) {
-  UINT flag = MF_ENABLED;
+  UINT flag = MF_BYCOMMAND | MF_STRING | MF_ENABLED;
 
   pvar->ControlMenu = GetSubMenu(menu, 3);
-  AppendMenu(pvar->ControlMenu, MF_SEPARATOR, 0, NULL);
-  if (pvar->record) flag |= MF_CHECKED;
-  AppendMenu(pvar->ControlMenu, flag, ID_MENUITEM, "R&ecord");
+  if (pvar->record) {
+    flag |= MF_CHECKED;
+  }
+  InsertMenu(pvar->ControlMenu, ID_CONTROL_MACRO,
+		flag, ID_MENUITEM, "TT&Y Record");
+  InsertMenu(pvar->ControlMenu, ID_CONTROL_MACRO,
+		MF_BYCOMMAND | MF_SEPARATOR, 0, NULL);
 }
 
 static void PASCAL FAR TTXModifyPopupMenu(HMENU menu) {

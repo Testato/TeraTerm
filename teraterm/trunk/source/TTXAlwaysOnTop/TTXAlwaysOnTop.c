@@ -1,7 +1,7 @@
 #include "teraterm.h"
 #include "tttypes.h"
 #include "ttplugin.h"
-
+#include "tt_res.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -25,14 +25,16 @@ static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
 }
 
 static void PASCAL FAR TTXModifyMenu(HMENU menu) {
-  UINT flag = MF_ENABLED;
+  UINT flag = MF_BYCOMMAND | MF_STRING | MF_ENABLED;
 
   pvar->ControlMenu = GetSubMenu(menu, 3);
-  AppendMenu(pvar->ControlMenu, MF_SEPARATOR, 0, NULL);
   if (pvar->ontop) {
     flag |= MF_CHECKED;
   }
-  AppendMenu(pvar->ControlMenu, flag, ID_MENUITEM, "&Always on top");
+  InsertMenu(pvar->ControlMenu, ID_CONTROL_MACRO,
+		flag, ID_MENUITEM, "&Always on top");
+  InsertMenu(pvar->ControlMenu, ID_CONTROL_MACRO,
+		MF_BYCOMMAND | MF_SEPARATOR, 0, NULL);
 }
 
 static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
