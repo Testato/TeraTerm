@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by d:\work\teraterm\teraterm\source\teraterm\ttermpro.rc
+// Used by c:\usr\cvs\teraterm\source\teraterm\ttermpro.rc
 //
 #define IDI_TTERM                       100
 #define IDR_ACC                         100
@@ -111,9 +111,11 @@
 #define IDC_LIST                        2509
 #define IDC_EDIT1                       2510
 #define IDC_EDIT                        2510
+#define IDC_SCROLL_LINE                 2510
 #define IDC_CLIPBOARD_INFO              2511
 #define IDC_CHECK1                      2512
 #define IDC_CONFIRM_CHANGE_PASTE        2512
+#define IDC_MOUSEWHEEL_SCROLL_LINE      2513
 #define ID_ACC_SENDBREAK                50001
 #define ID_ACC_COPY                     50002
 #define ID_ACC_NEWCONNECTION            50003
@@ -203,7 +205,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        121
 #define _APS_NEXT_COMMAND_VALUE         52022
-#define _APS_NEXT_CONTROL_VALUE         2513
+#define _APS_NEXT_CONTROL_VALUE         2514
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

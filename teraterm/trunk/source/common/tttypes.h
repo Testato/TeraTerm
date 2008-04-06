@@ -388,6 +388,7 @@ struct tttset {
 	WORD ConfirmChangePaste;
 	WORD SaveVTWinPos;
 	WORD DisablePasteMouseMButton;
+	int MouseWheelScrollLine;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -813,6 +814,10 @@ typedef TMap far *PMap;
  * Increment the number of this macro value
  * when you change TMap or member of TMap.
  *
+ * - At version 4.59, ttset_memfilemap was replaced with ttset_memfilemap_7.
+ *   added tttset.DisablePasteMouseMButton.
+ *   added tttset.MouseWheelScrollLine.
+ *
  * - At version 4.58, ttset_memfilemap was replaced with ttset_memfilemap_6.
  *   added tttset.TranslateWheelToCursor.
  *   added tttset.HostDialogOnStartup.
@@ -848,4 +853,4 @@ typedef TMap far *PMap;
  *   added tttset.VTCompatTab.
  */
 
-#define TT_FILEMAPNAME "ttset_memfilemap_6"
+#define TT_FILEMAPNAME "ttset_memfilemap_7"

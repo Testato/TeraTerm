@@ -1,4 +1,4 @@
-TTXFixedWinSize -- TeraTerm VT window changing fixed 80x24
+TTXFixedWinSize -- TeraTerm VT window changing fixed 80x24.
 
 Feature:
   TTXFixedWinSize plugin makes TeraTerm VT window sizing lock up. The fixed size is 80x24.

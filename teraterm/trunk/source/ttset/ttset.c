@@ -849,6 +849,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->ScrollThreshold =
 		GetPrivateProfileInt(Section, "ScrollThreshold", 12, FName);
 
+	ts->MouseWheelScrollLine =
+		GetPrivateProfileInt(Section, "MouseWheelScrollLine", 3, FName);
+
 	// Select on activate -- special option
 	ts->SelOnActive = GetOnOff(Section, "SelectOnActivate", FName, TRUE);
 
@@ -1702,6 +1705,8 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 	/* Scroll threshold -- special option */
 	WriteInt(Section, "ScrollThreshold", FName, ts->ScrollThreshold);
+
+	WriteInt(Section, "MouseWheelScrollLine", FName, ts->MouseWheelScrollLine);
 
 	// Select on activate -- special option
 	WriteOnOff(Section, "SelectOnActivate", FName, ts->SelOnActive);

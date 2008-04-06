@@ -2017,6 +2017,10 @@ BOOL CVTWindow::OnMouseWheel(
 	line = abs(zDelta) / WHEEL_DELTA; // ライン数
 	if (line < 1) line = 1;
 
+	// 一スクロールあたりの行数に変換する (2008.4.6 yutaka)
+	if (line == 1 && ts.MouseWheelScrollLine > 0)
+		line *= ts.MouseWheelScrollLine;
+
 	if (MouseReport(IdMouseEventWheel, zDelta<0, pt.x, pt.y))
 		return TRUE;
 
@@ -2029,11 +2033,6 @@ BOOL CVTWindow::OnMouseWheel(
 			KeyUp(VK_UP);
 		}
 	} else {
-		if (ControlKey())  // CTRLキー押しながらだと3倍速
-			line *= 3;
-		if (ShiftKey())  // SHIFTキー押下でページ単位
-			line = NumOfLines;
-
 		for (i = 0 ; i < line ; i++) {
 			if (zDelta < 0) {
 				OnVScroll(SB_LINEDOWN, 0, NULL);
@@ -4311,6 +4310,8 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 	LOGFONT logfont;
 	HFONT font;
 	char uimsg[MAX_UIMSG];
+	char buf[64];
+	int val;
 
 	switch (msg) {
 		case WM_INITDIALOG:
@@ -4328,6 +4329,7 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 				SendDlgItemMessage(hDlgWnd, IDC_DELIM_LIST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_ACCEPT_BROADCAST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0)); // 337: 2007/03/20
 				SendDlgItemMessage(hDlgWnd, IDC_CONFIRM_CHANGE_PASTE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_MOUSEWHEEL_SCROLL_LINE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 			}
 			else {
 				DlgGeneralFont = NULL;
@@ -4361,6 +4363,10 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			GetDlgItemText(hDlgWnd, IDC_CONFIRM_CHANGE_PASTE, uimsg, sizeof(uimsg));
 			get_lang_msg("DLG_TAB_GENERAL_IDC_CONFIRM_CHANGE_PASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_CONFIRM_CHANGE_PASTE, ts.UIMsg);
+
+			GetDlgItemText(hDlgWnd, IDC_MOUSEWHEEL_SCROLL_LINE, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_GENERAL_IDC_MOUSEWHEEL_SCROLL_LINE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_MOUSEWHEEL_SCROLL_LINE, ts.UIMsg);
 
 			// (1)Enable continued-line copy
 			hWnd = GetDlgItem(hDlgWnd, IDC_LINECOPY);
@@ -4432,6 +4438,11 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			} else {
 				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
 			}
+
+			// (10)IDC_MOUSEWHEEL_SCROLL_LINE
+			hWnd = GetDlgItem(hDlgWnd, IDC_SCROLL_LINE);
+			_snprintf_s(buf, sizeof(buf), "%d", ts.MouseWheelScrollLine);
+			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
 
 			// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
 			SetFocus(GetDlgItem(hDlgWnd, IDC_LINECOPY));
@@ -4523,6 +4534,13 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 					} else {
 						ts.ConfirmChangePaste = FALSE;
 					}
+
+					// (10)IDC_MOUSEWHEEL_SCROLL_LINE
+					hWnd = GetDlgItem(hDlgWnd, IDC_SCROLL_LINE);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+					val = atoi(buf);
+					if (val > 0) 
+						ts.MouseWheelScrollLine = val;
 
 					EndDialog(hDlgWnd, IDOK);
 					break;
