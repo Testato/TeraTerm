@@ -24,7 +24,7 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.59">2008.4.1 (Ver 4.59 not-released)</a>
+  <li class="history"><a name="teraterm_4.59">2008.4.6 (Ver 4.59 not-released)</a>
     <ul>
       <li>前回のリリースでマウスの中ボタンのクリックによる貼り付けを削除したが、元に戻した。
         <ul>
@@ -38,7 +38,10 @@
           <li>cygterm.cfg がない状態で保存するとファイルが新規作成されず、エラーメッセージが表示される問題を修正した。</li>
         </ul></li>
       <li>'Paste&lt;CR&gt;' メニューが選択されたときにも確認ダイアログを表示するようにした。</li>
-      <li>マウスホイールによるスクロール処理において、Ctrlキーを押下していれば3倍速、Shiftキー押下ならばページ単位でスクロールできるようにした。</li>
+      <li>マウスホイールによるスクロール行数を設定できるようにした。
+        <ul>
+          <li>teraterm.ini に <a href="../menu/setup-additional.html">MouseWheelScrollLine</a> を追加した。デフォルトは3。</li>
+        </ul></li>
       <li>マクロコマンド '<a href="../macro/command/strmatch.html">strmatch</a>' を追加した。</li>
       <li>マクロコマンド '<a href="../macro/command/setrts.html">setrts</a>','<a href="../macro/command/setdtr.html">setdtr</a>' を追加した。</li>
       <li>ブロードキャストコマンドにおいて、連続送信される WM_COPYDATA を正しく処理できるようにした。Salarm氏に感謝します。</li>
@@ -49,15 +52,6 @@
           <li>.ttl ファイルを ttpmacro.exe に関連付けできるようにした。</li>
           <li>telnet プロトコルを ttermpro.exe に関連付けできるようにした。</li>
           <li>TERATERM.INI の FileDir がインストール先になるようにした。</li>
-        </ul></li>
-      <li>サンプルプラグインのソースコードを追加した。
-        <ul>
-          <li><a href="http://cvs.sourceforge.jp/cgi-bin/viewcvs.cgi/ttssh2/teraterm/source/TTXAlwaysOnTop/">TTXAlwaysOnTop</a>  -- TeraTermのウィンドウを常に最前面に表示する</li>
-          <li><a href="http://cvs.sourceforge.jp/cgi-bin/viewcvs.cgi/ttssh2/teraterm/source/TTXFixedWinSize/">TTXFixedWinSize</a> -- TeraTermのVTウィンドウのサイズを80x24に固定する</li>
-          <li><a href="http://cvs.sourceforge.jp/cgi-bin/viewcvs.cgi/ttssh2/teraterm/source/TTXResizeMenu/">TTXResizeMenu</a>   -- TeraTermのVTウィンドウのサイズを変更するメニューを表示する
-</li>
-          <li><a href="http://cvs.sourceforge.jp/cgi-bin/viewcvs.cgi/ttssh2/teraterm/source/TTXResizeWin/">TTXResizeWin</a>    -- TeraTermのVTウィンドウのサイズを80x24に変更する</li>
-          <li><a href="http://cvs.sourceforge.jp/cgi-bin/viewcvs.cgi/ttssh2/teraterm/source/TTXttyrec/">TTXttyrec</a>  -- 端末画面レコーダー</li>
         </ul></li>
       <li>VT ウィンドウで、Window list ダイアログが出ない問題を修正した。</li>
       <li>内部で LogMeTT.exe, cygterm.exe, cygterm.cfg をフルパスで指定していなかったため、ファイル選択などにより ttermpro.exe のカレントディレクトリが変更されたときに正しく動かなくなる問題を修正した。</li>
