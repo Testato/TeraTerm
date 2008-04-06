@@ -197,7 +197,11 @@ BOOL GetFileName(HWND HWin)
   FNameRec.nFilterIndex  = 1;
   FNameRec.lpstrFile  = FileName;
   FNameRec.nMaxFile  = sizeof(FileName);
+  // 以前読み込んだ .ttl ファイルのパスを記憶できるように、初期ディレクトリを固定にしない。
+  // (2008.4.7 yutaka)
+#if 0
   FNameRec.lpstrInitialDir = HomeDir;
+#endif
   FNameRec.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
   FNameRec.lpstrDefExt = "TTL";
   get_lang_msg("FILEDLG_OPEN_MACRO_TITLE", uimsg2, sizeof(uimsg2), "MACRO: Open macro", UILanguageFile);
