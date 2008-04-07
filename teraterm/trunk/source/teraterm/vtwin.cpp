@@ -1870,6 +1870,7 @@ void CVTWindow::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		// ScrollLockキーが点灯している場合は、マウスをクリックしっぱなし状態であると
 		// 見なす。すなわち、パージング処理が一時停止する。
 		// 当該キーを消灯させると、処理が再開される。(2006.11.14 yutaka)
+#if 0
 		GetKeyboardState((PBYTE)KeyState);
 		if (KeyState[VK_SCROLL] == 0x81) { // on : scroll locked
 			ScrollLock = TRUE;
@@ -1878,6 +1879,7 @@ void CVTWindow::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		} else {
 			// do nothing
 		}
+#endif
 	}
 
 }
@@ -2444,6 +2446,10 @@ skip:
 LONG CVTWindow::OnAccelCommand(UINT wParam, LONG lParam)
 {
 	switch (wParam) {
+		case IdScrollLock:
+			ScrollLock = ! ScrollLock;
+			break;
+
 		case IdHold:
 			if (TalkStatus==IdTalkKeyb) {
 				Hold = ! Hold;

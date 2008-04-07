@@ -599,7 +599,8 @@ typedef TGetHNRec far *PGetHNRec;
 #define IdCmdNextWin      83
 #define IdCmdPrevWin      84
 #define IdCmdLocalEcho    85
-#define IdUser1           86
+#define IdScrollLock      86
+#define IdUser1           87
 #define NumOfUDK          IdUDK20-IdUDK6+1
 #define NumOfUserKey      99
 #define IdKeyMax          IdUser1+NumOfUserKey-1

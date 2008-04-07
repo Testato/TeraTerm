@@ -62,6 +62,7 @@ PF3=55
 PF4=74
 
 [VT function keys]
+ScrollLock=70
 Hold=off
 Print=off
 Break=off

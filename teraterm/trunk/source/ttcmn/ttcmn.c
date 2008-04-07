@@ -720,6 +720,7 @@ void PASCAL FAR GetKeyStr(HWND HWin, PKeyMap KeyMap, WORD KeyCode,
 		case IdCmdNextWin:
 		case IdCmdPrevWin:
 		case IdCmdLocalEcho:
+		case IdScrollLock:
 			PostMessage(HWin,WM_USER_ACCELCOMMAND,KeyCode,0);
 			break;
 		default:
