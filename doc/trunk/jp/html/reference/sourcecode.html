@@ -881,8 +881,32 @@ static BINT BuffPtr[MAXNESTLEVEL];        /* ƒoƒbƒtƒ@‚ÌƒIƒtƒZƒbƒgi“Ç‚Ýž‚ÝˆÊ’u
  </p>
 
 
-<hr>
+  <h3>ƒCƒ“ƒ^[ƒvƒŠƒ^ˆ—</h3>
+@ƒAƒCƒhƒ‹ƒ‹[ƒv‚©‚ç Exec()#ttl.c ‚ª’èŠú“I‚ÉŒÄ‚Ño‚³‚ê‚é“x‚ÉAƒ}ƒNƒƒtƒ@ƒCƒ‹‚ªˆês‚¸‚Âˆ—‚³‚ê‚Ä‚ä‚«‚Ü‚·BGetNewLine() ‚Å‚ÍAƒoƒbƒtƒ@‚©‚çˆês•ª‚ðŽæ‚èo‚µALineBuff[]#ttmparse.c ‚ÖŠi”[‚µ‚Ü‚·Bs‚ÌI‚í‚è‚©‚Ç‚¤‚©‚ÍAuASCIIƒR[ƒh‚ª0x20–¢–ž‚ÅA‚©‚Âƒ^ƒu(0x09)ˆÈŠOv‚ÌƒR[ƒh‚ªoŒ»‚µ‚½ƒ^ƒCƒ~ƒ“ƒO‚Å”»’è‚µ‚Ä‚¢‚Ü‚·Bæ“ª‚Ì‹ó”’‚âƒ^ƒu‚Í–³Ž‹‚³‚ê‚Ü‚·BƒZƒ~ƒRƒƒ“(;)‚ªoŒ»‚·‚é‚ÆAˆÈ~‚Ìˆ—‚ðƒXƒLƒbƒv‚·‚é‚½‚ßAƒRƒƒ“ƒg‚Ís‚Ì“r’†‚Å‚à•t‚¯‚ç‚ê‚é‚±‚Æ‚É‚È‚è‚Ü‚·B<br>
 
+<pre class=code>
+char LineBuff[MaxLineLen];      /* 1‚Â‚Ìs‚Í500ƒoƒCƒg‚Ü‚ÅŠi”[‰Â”\ */
+WORD LinePtr;       /* ƒoƒbƒtƒ@ƒIƒtƒZƒbƒg */
+WORD LineLen;       /* ƒoƒbƒtƒ@ƒTƒCƒY */
+</pre>
+
+@Exec()‚©‚çŒÄ‚Î‚ê‚é ExecCmnd() ‚ÅAŽš‹å‰ðÍ‚ðs‚¢‚Ü‚·BŽš‹å‰ðÍ‚Í’Pƒ‚È•¶Žš—ñŒŸõ‚Å‚ ‚èALineBuff[]‚ð1ƒoƒCƒg‚¸‚ÂŽQÆ‚µ‚Ä‚¢‚«‚Ü‚·B‘å‚Ü‚©‚Èˆ—‚Ì—¬‚ê‚ÍˆÈ‰º‚Ì‚Æ‚¨‚è‚Å‚·B
+
+<p><ol>
+  <li>endwhile‚Ì”»’è</li>
+  <li>breakˆ—</li>
+  <li>endif‚Ì”»’è</li>
+  <li>else‚Ì”»’è</li>
+  <li>ƒ}ƒNƒƒRƒ}ƒ“ƒh‚ÌŽÀs</li>
+  <li>Ž¯•ÊŽq‚Ì”»’è</li>
+  <li>•¶–@ƒGƒ‰[iã‹L‚Ì‚¢‚¸‚ê‚Å‚à‚È‚¢ê‡j</li>
+</ol></p>
+
+@ƒ}ƒNƒƒRƒ}ƒ“ƒh‚©‚Ç‚¤‚©‚ÍAGetReservedWord()‚Å”»•Ê‚µ‚Ä‚¢‚Ü‚·B_stricmp()‚Å”äŠr‚µ‚Ä‚¢‚é‚Ì‚ÅAƒAƒ‹ƒtƒ@ƒxƒbƒg‚Ì‘å•¶ŽšE¬•¶Žš‚Í‹æ•Ê‚³‚ê‚Ü‚¹‚ñ(case-insensitive)Bƒ}ƒNƒƒRƒ}ƒ“ƒh‚Ìê‡‚ÍATTLxxx() ‚ÌŠÖ”‚ðŒÄ‚Ño‚µ‚Ü‚·B<br>
+@Ž¯•ÊŽq‚Ì”»’è‚ÍAGetIdentifier() ‚Ås‚¢‚Ü‚·BƒAƒ‹ƒtƒ@ƒxƒbƒg(a-z, A-Z)‚¨‚æ‚Ñ”’l(0-9)AƒAƒ“ƒ_[ƒXƒRƒA(_)‚©‚ç\¬‚³‚ê‚éƒg[ƒNƒ“‚ðØ‚èo‚µ‚Ü‚·Bƒg[ƒNƒ“‚Í32•¶Žš‚Ü‚Å‚Å‚·Bƒg[ƒNƒ“‚Íu•Ï”v‚Æ‚µ‚Äˆµ‚í‚ê‚Ü‚·B¶•Ó’l‚É•Ï”‚ª—ˆ‚éê‡‚ÍAu•Ï”‚Ö‚Ì‘ã“üv‚µ‚©‚ ‚è‚¦‚È‚¢‚Ì‚ÅA‚»‚Ì’¼Œã‚ÉuƒCƒR[ƒ‹(=)v‚ª‚ ‚é‚©‚Ç‚¤‚©‚ð’²‚×‚Ü‚·B
+
+
+<hr>
 
 
 </BODY>
