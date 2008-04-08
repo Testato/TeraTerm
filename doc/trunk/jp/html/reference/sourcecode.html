@@ -26,6 +26,7 @@
   <li><a href="#thread">マルチスレッド</a></li>
   <li><a href="#dde">DDEによるプロセス間通信</a></li>
   <li><a href="#ttssh">TTSSHによるSSHの設計と実装</a></li>
+  <li><a href="#macro">マクロ言語の設計と実装</a></li>
 </ol>
 
 <hr width=80% align=center>
@@ -804,8 +805,84 @@ void TelStartKeepAliveThread() {
 <img src="image/ssh2_sequence3.png" width=720 height=540>
 </div>
 
+<hr>
+
+
+<h2><a name="macro">マクロ言語の設計と実装</a></h2>
+  <h3>概要</h3>
+　TeraTermのマクロスクリプトは、BASIC風の言語仕様となっています。BisonやFlexといったしくみは利用しておらず、力業的な独自の構文解析（再帰的下降法）により実装されています。そのため、本格的なスクリプト言語としての記述はできない側面があります。<br>
+　
+  <h3>ファイルの読み込み</h3>
+　ttpmacro.exeの起動時に、マクロファイル(.ttl)が一括してバッファへ読み込まれます。
+　
+<p><ul>
+  <li>OnInitDialog()#ttmmain.cpp -> InitTTL() -> InitBuff() -> LoadMacroFile()</li>
+</ul></p>
+
+　初めて読み込まれるマクロファイルの全内容は Buff[0] # ttmbuff.c に格納されます。この時点で、ファイルの内容は一括して読み込まれるため、マクロ実行中はファイルを削除してしまっても問題はありません。ただし、"include"で別のファイルを読み込む場合は、includeを実行する時点で、include対象となるファイルの読み込みが発生します。
+　
+<pre class=code>
+#define MAXNESTLEVEL 10     /* 扱えるファイル数（includeは9つまで）*/
+
+static int INest;     /* 現在のネスト位置 */
+static HANDLE BuffHandle[MAXNESTLEVEL];   /* GlobalAlloc()によるバッファ */
+static PCHAR Buff[MAXNESTLEVEL];          /* バッファ領域 */
+static BINT BuffLen[MAXNESTLEVEL];        /* ファイルサイズ（バッファサイズ） */
+static BINT BuffPtr[MAXNESTLEVEL];        /* バッファのオフセット（読み込み位置）*/
+</pre>
+
+
+  <h3>マクロエンジン</h3>
+　マクロ処理はアイドルループ OnIdle()#ttmmain.cpp で行われます。アイドルループでは TTLStatus 変数により、マクロエンジンの動作を変えています。通常の実行状態は IdTTLRun がセットされています。以下に、動作一覧を示します。
+
+<p>
+<table border=1 align=center>
+<tr>
+  <th>条件</th>
+  <th>処理</th>
+</tr>
+
+<tr>
+  <td>TTLStatus==IdTTLEnd</td>
+  <td>マクロプログラムを終了する</td>
+</tr>
+
+<tr>
+  <td>送信データがある場合（OutLen > 0）</td>
+  <td>TeraTerm本体へデータを送る</td>
+</tr>
+
+<tr>
+  <td>TTLStatus==IdTTLRun</td>
+  <td>一行ずつマクロを実行する</td>
+</tr>
+
+<tr>
+  <td>TTLStatus==IdTTLWait</td>
+  <td>ウェイトする（'wait'コマンド）</td>
+</tr>
+
+<tr>
+  <td>TTLStatus==IdTTLWaitLn</td>
+  <td>ウェイトする（'waitln'コマンド）</td>
+</tr>
+
+<tr>
+  <td>TTLStatus==IdTTLWaitNL</td>
+  <td>一行受信する（'recvln'コマンド）</td>
+</tr>
+
+<tr>
+  <td>TTLStatus==IdTTLWait2</td>
+  <td>文字列を待つ（'waitrecv'コマンド）</td>
+</tr>
+
+</table>
+ </p>
+
 
 <hr>
+
 
 
 </BODY>
