@@ -49,7 +49,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="../teraterm/source/teraterm,../teraterm/source/common,YCL/include,../ttssh2/openssl/inc32"
+				AdditionalIncludeDirectories="../teraterm/teraterm,../teraterm/common,YCL/include,../ttssh2/openssl/inc32"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;TTX_EXPORTS"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -81,7 +81,7 @@
 				OutputFile="Release/TTXProxy.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\teraterm\visualc\bin\release"
+				AdditionalLibraryDirectories="..\teraterm\release"
 				ModuleDefinitionFile=".\TTX.def"
 				ProgramDatabaseFile=".\./TTXProxy.pdb"
 				GenerateMapFile="true"
@@ -150,7 +150,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../teraterm/source/teraterm,../teraterm/source/common,YCL/include,../ttssh2/openssl/inc32"
+				AdditionalIncludeDirectories="../teraterm/teraterm,../teraterm/common,YCL/include,../ttssh2/openssl/inc32"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TTX_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -183,7 +183,7 @@
 				OutputFile="Debug/TTXProxy.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\teraterm\visualc\bin\debug"
+				AdditionalLibraryDirectories="..\teraterm\debug"
 				ModuleDefinitionFile=".\TTX.def"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/TTXProxy.pdb"
@@ -442,34 +442,6 @@
 			</File>
 			<File
 				RelativePath="YCL\include\YCL\Window.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="TeraTermPro"
-			>
-			<File
-				RelativePath="..\ttsrcp23\source\common\teraterm.h"
-				>
-			</File>
-			<File
-				RelativePath="..\ttsrcp23\source\teraterm\ttdialog.h"
-				>
-			</File>
-			<File
-				RelativePath="..\ttsrcp23\source\common\ttplugin.h"
-				>
-			</File>
-			<File
-				RelativePath="..\ttsrcp23\source\teraterm\ttsetup.h"
-				>
-			</File>
-			<File
-				RelativePath="..\ttsrcp23\source\common\tttypes.h"
-				>
-			</File>
-			<File
-				RelativePath="..\ttsrcp23\source\teraterm\ttwsk.h"
 				>
 			</File>
 		</Filter>
