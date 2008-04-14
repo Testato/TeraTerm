@@ -1,0 +1,43 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TTXAlwaysOnTop", "TTXAlwaysOnTop\TTXAlwaysOnTop.vcproj", "{E86DDB2C-CC00-43D1-8A1A-4B042EC983D6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TTXResizeWin", "TTXResizeWin\TTXResizeWin.vcproj", "{11EF5960-4922-49DC-9E64-B0845FC7C88C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TTXResizeMenu", "TTXResizeMenu\TTXResizeMenu.vcproj", "{4EA6AEB6-9CCD-4E6D-9531-3F92184EBE67}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TTXFixedWinSize", "TTXFixedWinSize\TTXFixedWinSize.vcproj", "{3C12BA78-2F6A-4655-B6FF-E1BFF2A191D8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TTXttyrec", "TTXttyrec\TTXttyrec.vcproj", "{5798E37E-0428-457E-A652-EE0A75130327}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E86DDB2C-CC00-43D1-8A1A-4B042EC983D6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E86DDB2C-CC00-43D1-8A1A-4B042EC983D6}.Debug|Win32.Build.0 = Debug|Win32
+		{E86DDB2C-CC00-43D1-8A1A-4B042EC983D6}.Release|Win32.ActiveCfg = Release|Win32
+		{E86DDB2C-CC00-43D1-8A1A-4B042EC983D6}.Release|Win32.Build.0 = Release|Win32
+		{11EF5960-4922-49DC-9E64-B0845FC7C88C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{11EF5960-4922-49DC-9E64-B0845FC7C88C}.Debug|Win32.Build.0 = Debug|Win32
+		{11EF5960-4922-49DC-9E64-B0845FC7C88C}.Release|Win32.ActiveCfg = Release|Win32
+		{11EF5960-4922-49DC-9E64-B0845FC7C88C}.Release|Win32.Build.0 = Release|Win32
+		{4EA6AEB6-9CCD-4E6D-9531-3F92184EBE67}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4EA6AEB6-9CCD-4E6D-9531-3F92184EBE67}.Debug|Win32.Build.0 = Debug|Win32
+		{4EA6AEB6-9CCD-4E6D-9531-3F92184EBE67}.Release|Win32.ActiveCfg = Release|Win32
+		{4EA6AEB6-9CCD-4E6D-9531-3F92184EBE67}.Release|Win32.Build.0 = Release|Win32
+		{3C12BA78-2F6A-4655-B6FF-E1BFF2A191D8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3C12BA78-2F6A-4655-B6FF-E1BFF2A191D8}.Debug|Win32.Build.0 = Debug|Win32
+		{3C12BA78-2F6A-4655-B6FF-E1BFF2A191D8}.Release|Win32.ActiveCfg = Release|Win32
+		{3C12BA78-2F6A-4655-B6FF-E1BFF2A191D8}.Release|Win32.Build.0 = Release|Win32
+		{5798E37E-0428-457E-A652-EE0A75130327}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5798E37E-0428-457E-A652-EE0A75130327}.Debug|Win32.Build.0 = Debug|Win32
+		{5798E37E-0428-457E-A652-EE0A75130327}.Release|Win32.ActiveCfg = Release|Win32
+		{5798E37E-0428-457E-A652-EE0A75130327}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
