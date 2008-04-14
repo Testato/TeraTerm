@@ -48,7 +48,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/D&quot;_CRT_SECURE_NO_DEPRECATE&quot;&#x0D;&#x0A;"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\Teraterm\source\common;..\openssl\inc32;..\..\Teraterm\source\teraterm;..\zlib;..\matcher;..\putty"
+				AdditionalIncludeDirectories="..\..\teraterm\common;..\openssl\inc32;..\..\teraterm\teraterm;..\zlib;..\matcher;..\putty"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRTDBG_MAP_ALLOC"
 				RuntimeLibrary="1"
 				EnableFunctionLevelLinking="true"
@@ -78,7 +78,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="Version.lib &#x0D;&#x0A;&#x0D;&#x0A;"
-				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib ..\openssl\out32.dbg\libeay32.lib ..\zlib\projects\visualc6\Win32_LIB_Debug\zlibd.lib ..\..\teraterm\visualc\bin\Debug\ttpcmn.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib ..\openssl\out32.dbg\libeay32.lib ..\zlib\projects\visualc6\Win32_LIB_Debug\zlibd.lib ..\..\teraterm\Debug\ttpcmn.lib"
 				OutputFile=".\Debug/ttxssh.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -151,7 +151,7 @@
 				AdditionalOptions="/D&quot;_CRT_SECURE_NO_DEPRECATE&quot; &#x0D;&#x0A;"
 				Optimization="2"
 				InlineFunctionExpansion="2"
-				AdditionalIncludeDirectories="..\..\Teraterm\source\common;..\openssl\inc32;..\..\Teraterm\source\teraterm;..\zlib;..\matcher;..\putty"
+				AdditionalIncludeDirectories="..\..\teraterm\common;..\openssl\inc32;..\..\teraterm\teraterm;..\zlib;..\matcher;..\putty"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -181,7 +181,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="Version.lib &#x0D;&#x0A;"
-				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib ..\openssl\out32\libeay32.lib ..\zlib\projects\visualc6\Win32_LIB_Release\zlib.lib ..\..\teraterm\visualc\bin\Release\ttpcmn.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib ws2_32.lib ..\openssl\out32\libeay32.lib ..\zlib\projects\visualc6\Win32_LIB_Release\zlib.lib ..\..\teraterm\Release\ttpcmn.lib"
 				OutputFile=".\Release/ttxssh.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -227,7 +227,7 @@
 			>
 		</File>
 		<File
-			RelativePath=".\buffer.c"
+			RelativePath="buffer.c"
 			>
 		</File>
 		<File
@@ -259,11 +259,11 @@
 			>
 		</File>
 		<File
-			RelativePath=".\resource.h"
+			RelativePath="resource.h"
 			>
 		</File>
 		<File
-			RelativePath=".\sftp.c"
+			RelativePath="sftp.c"
 			>
 		</File>
 		<File
@@ -279,11 +279,11 @@
 			>
 		</File>
 		<File
-			RelativePath=".\ttxssh.def"
+			RelativePath="ttxssh.def"
 			>
 		</File>
 		<File
-			RelativePath=".\ttxssh.h"
+			RelativePath="ttxssh.h"
 			>
 		</File>
 		<File
@@ -295,7 +295,7 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\teraterm\source\teraterm\WSAAsyncGetAddrInfo.c"
+			RelativePath="..\..\teraterm\teraterm\WSAAsyncGetAddrInfo.c"
 			>
 		</File>
 		<File
