@@ -1,7 +1,4 @@
-pushd ..\doc
 CALL makechm.bat
-popd
-
 CALL build.bat %1
 
 rem  for XP or later

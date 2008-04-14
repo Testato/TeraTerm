@@ -5,7 +5,7 @@
 AppCopyright=TeraTerm Project
 AppName={#AppName}
 AppVerName={#AppName} {#AppVer}
-LicenseFile=..\release\license.txt
+LicenseFile=release\license.txt
 DefaultDirName={pf}\teraterm
 DefaultGroupName={#AppName}
 ShowLanguageDialog=yes
@@ -28,69 +28,69 @@ Name: {app}\plugin; Components: TeraTerm
 Name: {app}\lang; Components: TeraTerm
 
 [Files]
-Source: ..\visualc\bin\release\ttermpro.exe; DestDir: {app}; Components: TeraTerm; Flags: ignoreversion
-Source: ..\visualc\bin\release\ttpcmn.dll; DestDir: {app}; Components: TeraTerm
-Source: ..\visualc\bin\release\ttpdlg.dll; DestDir: {app}; Components: TeraTerm
-Source: ..\visualc\bin\release\ttpfile.dll; DestDir: {app}; Components: TeraTerm
-Source: ..\visualc\bin\release\ttpset.dll; DestDir: {app}; Components: TeraTerm
-Source: ..\visualc\bin\release\ttptek.dll; DestDir: {app}; Components: TeraTerm
-Source: ..\release\TERATERM.INI; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
-Source: ..\release\TSPECIAL1.TTF; DestDir: {fonts}; Components: TeraTerm; Attribs: readonly; Flags: overwritereadonly uninsneveruninstall; FontInstall: Tera Special; Check: isPowerUsersMore
-Source: ..\..\doc\en\teraterm.chm; DestDir: {app}; Components: TeraTerm
-Source: ..\..\doc\jp\teratermj.chm; DestDir: {app}; Components: TeraTerm
-Source: ..\release\license.txt; DestDir: {app}; Components: TeraTerm
-Source: ..\release\FUNCTION.CNF; DestDir: {app}; Components: TeraTerm
-Source: ..\release\IBMKEYB.CNF; DestDir: {app}; Components: TeraTerm
-Source: ..\release\KEYBOARD.CNF; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
-Source: ..\release\NT98KEYB.CNF; DestDir: {app}; Components: TeraTerm
-Source: ..\release\PC98KEYB.CNF; DestDir: {app}; Components: TeraTerm
-Source: ..\visualc\bin\release\keycode.exe; DestDir: {app}; Components: TeraTerm
-Source: ..\visualc\bin\release\ttpmacro.exe; DestDir: {app}; Components: TeraTerm; Flags: ignoreversion
-Source: ..\release\delpassw.ttl; DestDir: {app}; Components: TeraTerm
-Source: ..\release\dialup.ttl; DestDir: {app}; Components: TeraTerm
-Source: ..\release\login.ttl; DestDir: {app}; Components: TeraTerm
-Source: ..\release\mpause.ttl; DestDir: {app}; Components: TeraTerm
-Source: ..\release\random.ttl; DestDir: {app}; Components: TeraTerm
-Source: ..\release\screencapture.ttl; DestDir: {app}; Components: TeraTerm
-Source: ..\release\ssh2login.ttl; DestDir: {app}; Components: TeraTerm
-Source: ..\release\wait_regex.ttl; DestDir: {app}; Components: TeraTerm
-Source: ..\release\lang\Japanese.lng; DestDir: {app}\lang; Components: TeraTerm; Attribs: readonly; Flags: uninsremovereadonly overwritereadonly
-Source: ..\release\lang\German.lng; DestDir: {app}\lang; Components: TeraTerm; Attribs: readonly; Flags: uninsremovereadonly overwritereadonly
-Source: ..\..\ttssh2\ttxssh\Release\ttxssh.dll; DestDir: {app}; Components: TTSSH; Flags: ignoreversion
-Source: ..\release\ssh_known_hosts; DestDir: {app}; Components: TTSSH; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
+Source: ..\teraterm\release\ttermpro.exe; DestDir: {app}; Components: TeraTerm; Flags: ignoreversion
+Source: ..\teraterm\release\ttpcmn.dll; DestDir: {app}; Components: TeraTerm
+Source: ..\teraterm\release\ttpdlg.dll; DestDir: {app}; Components: TeraTerm
+Source: ..\teraterm\release\ttpfile.dll; DestDir: {app}; Components: TeraTerm
+Source: ..\teraterm\release\ttpset.dll; DestDir: {app}; Components: TeraTerm
+Source: ..\teraterm\release\ttptek.dll; DestDir: {app}; Components: TeraTerm
+Source: release\TERATERM.INI; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
+Source: release\TSPECIAL1.TTF; DestDir: {fonts}; Components: TeraTerm; Attribs: readonly; Flags: overwritereadonly uninsneveruninstall; FontInstall: Tera Special; Check: isPowerUsersMore
+Source: ..\doc\en\teraterm.chm; DestDir: {app}; Components: TeraTerm
+Source: ..\doc\jp\teratermj.chm; DestDir: {app}; Components: TeraTerm
+Source: release\license.txt; DestDir: {app}; Components: TeraTerm
+Source: release\FUNCTION.CNF; DestDir: {app}; Components: TeraTerm
+Source: release\IBMKEYB.CNF; DestDir: {app}; Components: TeraTerm
+Source: release\KEYBOARD.CNF; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
+Source: release\NT98KEYB.CNF; DestDir: {app}; Components: TeraTerm
+Source: release\PC98KEYB.CNF; DestDir: {app}; Components: TeraTerm
+Source: ..\teraterm\release\keycode.exe; DestDir: {app}; Components: TeraTerm
+Source: ..\teraterm\release\ttpmacro.exe; DestDir: {app}; Components: TeraTerm; Flags: ignoreversion
+Source: release\delpassw.ttl; DestDir: {app}; Components: TeraTerm
+Source: release\dialup.ttl; DestDir: {app}; Components: TeraTerm
+Source: release\login.ttl; DestDir: {app}; Components: TeraTerm
+Source: release\mpause.ttl; DestDir: {app}; Components: TeraTerm
+Source: release\random.ttl; DestDir: {app}; Components: TeraTerm
+Source: release\screencapture.ttl; DestDir: {app}; Components: TeraTerm
+Source: release\ssh2login.ttl; DestDir: {app}; Components: TeraTerm
+Source: release\wait_regex.ttl; DestDir: {app}; Components: TeraTerm
+Source: release\lang\Japanese.lng; DestDir: {app}\lang; Components: TeraTerm; Attribs: readonly; Flags: uninsremovereadonly overwritereadonly
+Source: release\lang\German.lng; DestDir: {app}\lang; Components: TeraTerm; Attribs: readonly; Flags: uninsremovereadonly overwritereadonly
+Source: ..\ttssh2\ttxssh\Release\ttxssh.dll; DestDir: {app}; Components: TTSSH; Flags: ignoreversion
+Source: release\ssh_known_hosts; DestDir: {app}; Components: TTSSH; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\cygterm\cygterm.exe; DestDir: {app}; Components: cygterm
 Source: ..\cygterm\cygterm.cfg; DestDir: {app}; Components: cygterm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\cygterm\cyglaunch.exe; DestDir: {app}; Components: cygterm
-Source: ..\release\LogMeTT_license.txt; DestDir: {app}; Components: LogMeTT
-Source: ..\release\LogMeTT_README.txt; DestDir: {app}; Components: LogMeTT
-Source: ..\release\LogMeTTc.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
-Source: ..\release\LogMeTT.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
-Source: ..\release\logmett.chm; DestDir: {app}; Components: LogMeTT
-Source: ..\release\runltt.exe; DestDir: {app}; Components: LogMeTT
-Source: ..\release\KeyFile.ini; DestDir: {app}; Components: LogMeTT
-Source: ..\release\TTLEdit.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
-Source: ..\release\SynComp.pro; DestDir: {app}; Components: LogMeTT
-Source: ..\release\ttmacro.tpl; DestDir: {app}; Components: LogMeTT
-Source: ..\source\ttmenu\Release\ttpmenu.exe; DestDir: {app}; Components: TeraTerm_Menu; Flags: ignoreversion
-Source: ..\release\ttmenu_readme-j.txt; DestDir: {app}; Components: TeraTerm_Menu
-Source: ..\..\TTProxy\Release\TTXProxy.dll; DestDir: {app}; Components: TTProxy; Flags: ignoreversion
-Source: ..\release\theme\Advanced.sample; DestDir: {app}\theme\; Components: TeraTerm
-Source: ..\release\theme\Scale.INI; DestDir: {app}\theme\; Components: TeraTerm
-Source: ..\release\theme\Tile.INI; DestDir: {app}\theme\; Components: TeraTerm
-Source: ..\release\theme\scale\23.jpg; DestDir: {app}\theme\scale; Components: TeraTerm
-Source: ..\release\theme\scale\43.jpg; DestDir: {app}\theme\scale; Components: TeraTerm
-Source: ..\release\theme\tile\03.jpg; DestDir: {app}\theme\tile; Components: TeraTerm
-Source: ..\release\theme\tile\44.jpg; DestDir: {app}\theme\tile; Components: TeraTerm
-Source: ..\release\plugin\ttAKJpeg.dll; DestDir: {app}\plugin\; Components: TeraTerm
-Source: ..\release\plugin\ttAKJpeg.txt; DestDir: {app}\plugin\; Components: TeraTerm
-Source: ..\release\Collector\Collector.exe; DestDir: {app}\Collector\; Components: Collector
-Source: ..\release\Collector\collector.ini; DestDir: {app}\Collector\; Components: Collector
-Source: ..\release\Collector\Collector_org.exe; DestDir: {app}\Collector\; Components: Collector
-Source: ..\release\Collector\hthook.dll; DestDir: {app}\Collector\; Components: Collector
-Source: ..\release\Collector\mfc70.dll; DestDir: {app}\Collector\; Components: Collector
-Source: ..\release\Collector\msvcr70.dll; DestDir: {app}\Collector\; Components: Collector
-Source: ..\release\Collector\readme.txt; DestDir: {app}\Collector\; Components: Collector
-Source: ..\visualc\bin\release\ttxkanjimenu.dll; DestDir: {app}\; Components: TTXKanjiMenu; Flags: ignoreversion
+Source: release\LogMeTT_license.txt; DestDir: {app}; Components: LogMeTT
+Source: release\LogMeTT_README.txt; DestDir: {app}; Components: LogMeTT
+Source: release\LogMeTTc.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
+Source: release\LogMeTT.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
+Source: release\logmett.chm; DestDir: {app}; Components: LogMeTT
+Source: release\runltt.exe; DestDir: {app}; Components: LogMeTT
+Source: release\KeyFile.ini; DestDir: {app}; Components: LogMeTT
+Source: release\TTLEdit.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
+Source: release\SynComp.pro; DestDir: {app}; Components: LogMeTT
+Source: release\ttmacro.tpl; DestDir: {app}; Components: LogMeTT
+Source: ..\ttpmenu\Release\ttpmenu.exe; DestDir: {app}; Components: TeraTerm_Menu; Flags: ignoreversion
+Source: release\ttmenu_readme-j.txt; DestDir: {app}; Components: TeraTerm_Menu
+Source: ..\TTProxy\Release\TTXProxy.dll; DestDir: {app}; Components: TTProxy; Flags: ignoreversion
+Source: release\theme\Advanced.sample; DestDir: {app}\theme\; Components: TeraTerm
+Source: release\theme\Scale.INI; DestDir: {app}\theme\; Components: TeraTerm
+Source: release\theme\Tile.INI; DestDir: {app}\theme\; Components: TeraTerm
+Source: release\theme\scale\23.jpg; DestDir: {app}\theme\scale; Components: TeraTerm
+Source: release\theme\scale\43.jpg; DestDir: {app}\theme\scale; Components: TeraTerm
+Source: release\theme\tile\03.jpg; DestDir: {app}\theme\tile; Components: TeraTerm
+Source: release\theme\tile\44.jpg; DestDir: {app}\theme\tile; Components: TeraTerm
+Source: release\plugin\ttAKJpeg.dll; DestDir: {app}\plugin\; Components: TeraTerm
+Source: release\plugin\ttAKJpeg.txt; DestDir: {app}\plugin\; Components: TeraTerm
+Source: release\Collector\Collector.exe; DestDir: {app}\Collector\; Components: Collector
+Source: release\Collector\collector.ini; DestDir: {app}\Collector\; Components: Collector
+Source: release\Collector\Collector_org.exe; DestDir: {app}\Collector\; Components: Collector
+Source: release\Collector\hthook.dll; DestDir: {app}\Collector\; Components: Collector
+Source: release\Collector\mfc70.dll; DestDir: {app}\Collector\; Components: Collector
+Source: release\Collector\msvcr70.dll; DestDir: {app}\Collector\; Components: Collector
+Source: release\Collector\readme.txt; DestDir: {app}\Collector\; Components: Collector
+Source: ..\TTXKanjiMenu\release\ttxkanjimenu.dll; DestDir: {app}\; Components: TTXKanjiMenu; Flags: ignoreversion
 
 [Types]
 Name: standard; Description: {cm:type_standard}
@@ -676,6 +676,5 @@ Name: {app}\copyfont.pif; Type: files
 Name: {app}\libeay.txt; Type: files
 
 [_ISToolPreCompile]
-Name: convtext.bat
 Name: makechm.bat
 Name: build.bat; Parameters: rebuild
