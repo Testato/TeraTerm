@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\bin\$(ConfigurationName)"
+			OutputDirectory="..\$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="0"
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\source\common;..\..\source\teraterm"
+				AdditionalIncludeDirectories="..\..\teraterm\common;..\..\teraterm\teraterm"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -93,7 +93,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\bin\$(ConfigurationName)"
+			OutputDirectory="..\$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="0"
@@ -116,7 +116,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\source\common;..\..\source\teraterm"
+				AdditionalIncludeDirectories="..\..\teraterm\common;..\..\teraterm\teraterm"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
@@ -177,7 +177,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\source\TTXFixedWinSize\TTXFixedWinSize.c"
+				RelativePath="TTXFixedWinSize.c"
 				>
 			</File>
 		</Filter>
@@ -185,11 +185,11 @@
 			Name="ReadMe"
 			>
 			<File
-				RelativePath="..\..\source\TTXFixedWinSize\ReadMe-ja.txt"
+				RelativePath="ReadMe-ja.txt"
 				>
 			</File>
 			<File
-				RelativePath="..\..\source\TTXFixedWinSize\ReadMe.txt"
+				RelativePath="ReadMe.txt"
 				>
 			</File>
 		</Filter>
