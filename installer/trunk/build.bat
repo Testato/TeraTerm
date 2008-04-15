@@ -7,4 +7,4 @@ devenv /%BUILD% release ..\TTProxy\TTProxy.sln
 devenv /%BUILD% release ..\TTXKanjiMenu\ttxkanjimenu.sln
 devenv /%BUILD% release ..\ttpmenu\ttpmenu.sln
 
-if "%1"=="plugins" devenv /%BUILD% release ..\visualc\TTXSamples.sln
+if "%1"=="plugins" devenv /%BUILD% release ..\TTXSamples\TTXSamples.sln
