@@ -66,11 +66,11 @@
 
 １．ソースコードの修正
 -- コマンドの内部 ID を採番する（「内部 ID」は"helpid.h"にも使用される）
-   ... teraterm/source/ttmacro/ttmparse.h
+   ... teraterm/ttmacro/ttmparse.h
 -- コマンド名を走査して内部 ID に変換する
-   ... CheckReservedWord@teraterm/source/ttmacro/ttmparse.c
+   ... CheckReservedWord@teraterm/ttmacro/ttmparse.c
 -- コマンドの内部 ID から実際に処理をする関数を呼ぶ
-   ... ExecCmnd@teraterm/source/ttmacro/ttl.c
+   ... ExecCmnd@teraterm/ttmacro/ttl.c
 -- 処理する関数を作る
 
 ２． ヘルプ(言語ごと)
@@ -82,7 +82,7 @@
    ... doc/LANG/teraterm.hhc
 -- ヘルプページのコンテキスト ID を採番する
    値は コマンドの内部 ID + 92000
-   ... teraterm/source/common/helpid.h
+   ... teraterm/common/helpid.h
 -- コンテキスト ID と呼び出すファイルのエイリアスを作成する
    ... doc/LANG/teraterm.hhp
 
@@ -117,12 +117,20 @@
   3. teraterm\visualc\ttermpro.sln をVisual Studioで開く。
      .slnファイルの改行コードが"LF"になっていると、Visual Studioが起動しないので注意願います。
   4. ソリューションをビルドする
-  5. ビルドに成功するとteraterm\visualc\bin ディレクトリに実行プログラムが生成される
+  5. ビルドに成功するとteraterm ディレクトリに実行プログラムが生成される
 
 
 ■ TeraTerm Menuのビルド方法
-  TeraTerm Menu は ttermpro.sln に含まれている。「ソリューションのビルド」を
-  すれば teraterm\source\ttmenu ディレクトリに実行プログラムが生成される。
+  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
+  2. ttpmenu\ttpmenu.sln をVisual Studioで開く
+  3. ソリューションをビルドする
+  4. ビルドに成功すると ttpmenu ディレクトリに ttpmenu.exe が生成される
+
+■ TTXKanjiMenuのビルド方法
+  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
+  2. TTXKanjiMenu\ttxkanjimenu.sln をVisual Studioで開く
+  3. ソリューションをビルドする
+  4. ビルドに成功すると TTXKanjiMenu ディレクトリに ttxkanjimenu.dll が生成される
 
 ■ TTProxyのビルド方法
   TTProxyのビルド方法について以下に示します。
@@ -137,22 +145,17 @@
 ■ TTSSHのビルド方法
   TTSSHのビルド方法について以下に示します。
   ビルドにはVisual Studio 2005(VC++8.0)、ActivePerlが必要です。
-  
+
   * TTSSH単体のビルドは VS2005 Express Edition でも可能です。ttpcmn.libをリンクするため、TeraTermのビルドを事前に行っておく必要があります。VS2005 Express EditionではTeraTermのビルドはできませんが、ttpcmn.libは作成することができます。
   
   * VS2008 Express Editionでビルドすると、.rcファイルで下記のエラーが発生します。
       .\ttxssh.rc(10) : fatal error RC1015: cannot open include file 'afxres.h'.
-    
+
     本現象を回避するには、.rcファイルをテキストエディタで開き、afxres.hのincludeを削除し、新規に2行を追加します。
-    
 
       - #include "afxres.h"
-
       + #include <windows.h>
-
       + #define IDC_STATIC -1
-
-  
 
   1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする。
 
@@ -164,12 +167,12 @@
      Release では openssl\out32\libeay32.lib が、Debug では openssl\out32.dbg\libeay32.lib がリンクされることになる。
 
       - 自動で行う場合
-      +スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
-      +コマンドプロンプト上から ttssh2 ディレクトリに移動する。
-      +buildopenssl.bat を実行する。
+      + スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
+      + コマンドプロンプト上から ttssh2 ディレクトリに移動する。
+      + buildopenssl.bat を実行する。
 
       - 手動で行う場合
-        スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
+      + スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
       + cd openssl
       + perl Configure VC-WIN32
           (そうです、OpenSSLをビルドするにはperlが必要です!)
@@ -194,8 +197,8 @@
   CygTermのビルド方法について以下に示します。
 
    1. Cygwin(http://www.cygwin.com/)をインストールする
-   2. Cygwinのシェルを起動し、teraterm\cygterm ディレクトリへ移動する。
-      # cd teraterm/cygterm
+   2. Cygwinのシェルを起動し、cygterm ディレクトリへ移動する。
+      # cd cygterm
    3. CygTermをコンパイルする
       # make
 

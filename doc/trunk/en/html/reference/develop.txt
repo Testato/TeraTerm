@@ -62,11 +62,11 @@ Example: adding a TTSSH menu under File menu
 
 - Coding
 -- get a new number of command internal ID.
-   ... teraterm/source/ttmacro/ttmparse.h
+   ... teraterm/ttmacro/ttmparse.h
 -- add a if statement to below function.
-   ... CheckReservedWord@teraterm/source/ttmacro/ttmparse.c
+   ... CheckReservedWord@teraterm/ttmacro/ttmparse.c
 -- add a caller doing the macro command.
-   ... ExecCmnd@teraterm/source/ttmacro/ttl.c
+   ... ExecCmnd@teraterm/ttmacro/ttl.c
 -- make a function code for the macro command.
 
 - Help topic
@@ -76,7 +76,7 @@ Example: adding a TTSSH menu under File menu
    ... doc/LANG/teraterm.hhc
 -- get a new number of context ID in help page.
    The value is internal ID + 92000.
-   ... teraterm/source/common/helpid.h
+   ... teraterm/common/helpid.h
 -- make the alias between context ID and calling file.
    ... doc/LANG/teraterm.hhp
 
@@ -109,13 +109,22 @@ Example: adding a TTSSH menu under File menu
        (9) nmake
 
   3. Open teraterm\visualc\ttermpro.sln with Visual Studio.
+     The linefeed code of .sln file must be "CR+LF".
   4. Build TeraTerm solution.
   5. TeraTerm execution program will be generated in teraterm\visualc\bin directory if the building is successful.
 
 
 * How to build TeraTerm Menu
-  TeraTerm Menu is included in ttermpro.sln. Do "Build solution",
-  TeraTerm Menu execution program will be generated in teraterm\source\ttmenu directory
+  1. Checkout TeraTerm Menu source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
+  2. Open ttpmenu\ttpmenu.sln with Visual Studio.
+  3. Build ttpmenu solution.
+  4. ttpmenu.exe will be generated in Release directory if the building is successful.
+
+* How to build TTXKanjiMenu
+  1. Checkout TTXKanjiMenu source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
+  2. Open TTXKanjiMenu\ttxkanjimenu.sln with Visual Studio.
+  3. Build ttpmenu solution.
+  4. ttxkanjimenu.dll will be generated in TTXKanjiMenu directory if the building is successful.
 
 * How to build TTProxy
   To build TTProxy source code is shown in the following step:
@@ -131,13 +140,25 @@ Example: adding a TTSSH menu under File menu
   To build TTSSH source code is shown in the following step:
   And you need Visual Studio 2005(VC++8.0) and ActivePerl to build.
 
+  * VS2005 Express Edition is able to build TTSSH. TTSSH links to ttpcmn.lib and it must be created beforehand. VS2005 Express Edition cannot build TeraTerm, but it can create ttpcmn.lib
+
+  * On VS2008 Express Edition, following error occurs:
+      .\ttxssh.rc(10) : fatal error RC1015: cannot open include file 'afxres.h'.
+
+    To avoid this error, edit ttxssh.rc file. Delete the line of "afxres.h", and add 2 lines.
+
+      - #include "afxres.h"
+      + #include <windows.h>
+      + #define IDC_STATIC -1
+
   1. Checkout TTSSH source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
 
   2. Extract zlib source code(http://www.zlib.net/) to ttssh2\zlib directory.
      The build target is 'Release' and TTSSH links to zlib\projects\visualc6\Win32_LIB_Release\zlib.lib (compile option /MT must be specified).
      The build target is 'Debug' and TTSSH links to  zlib\projects\visualc6\Win32_LIB_Release\zlibd.lib (compile option /MTd must be specified).
 
-  3. Extract OpenSSL source code(http://www.openssl.org/) to ttssh2\openssl directory. Build OpenSSL in the following step(Release:TTSSH links to openssl\out32\libeay32.lib, Debug:openssl\out32.dbg\libeay32.lib):
+  3. Extract OpenSSL source code(http://www.openssl.org/) to ttssh2\openssl directory.
+      Build OpenSSL in the following step(Release:TTSSH links to openssl\out32\libeay32.lib, Debug:openssl\out32.dbg\libeay32.lib):
 
       - Build OpenSSL automatically.
       + Launch 'Visual Studio 2005 Command Prompt' batch file from start menu.
@@ -145,6 +166,7 @@ Example: adding a TTSSH menu under File menu
       + Run buildopenssl.bat.
 
       - Build OpenSSL manually.
+      + Launch 'Visual Studio 2005 Command Prompt' batch file from start menu.
       + cd openssl
       + perl Configure VC-WIN32
           (Yes, you need perl to build OpenSSL!)
@@ -159,7 +181,7 @@ Example: adding a TTSSH menu under File menu
           (Now you are back in ttssh2 folder.)
         See the instruction in the OpenSSL documentation for details.
 
-  5. Extract PuTTY source code(http://www.chiark.greenend.org.uk/~sgtatham/putty/) to ttssh2\zlib directory.
+  5. Extract PuTTY source code(http://www.chiark.greenend.org.uk/~sgtatham/putty/) to ttssh2\putty directory.
   5. Open ttssh2\ttssh.sln with Visual Studio.
   6. Build TTSSH solution.
   7. TTSSH DLL will be generated in ttssh2\ttxssh directory if the building is successful.
@@ -169,8 +191,8 @@ Example: adding a TTSSH menu under File menu
   To build CygTerm source code is shown in the following step:
 
    1. Install Cygwin(http://www.cygwin.com/) to your PC.
-   2. Launch Cygwin shell and go to teraterm\cygterm directory.
-      # cd teraterm/cygterm
+   2. Launch Cygwin shell and go to cygterm directory.
+      # cd cygterm
    3. Compile Cygterm.
       # make
 
