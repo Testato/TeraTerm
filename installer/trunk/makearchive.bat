@@ -34,6 +34,7 @@ if "%1"=="debug" copy /y ..\TTXSamples\Release\*.pdb %dst%
 
 pushd %dst%
 if exist TTXFixedWinSize.dll ren TTXFixedWinSize.dll _TTXFixedWinSize.dll
+if exist TTXResizeWin.dll ren TTXResizeWin.dll _TTXResizeWin.dll
 popd
 
 copy /y ..\doc\jp\teratermj.chm %dst%
