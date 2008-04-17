@@ -24,7 +24,7 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.59">2008.4.7 (Ver 4.59 not-released)</a>
+  <li class="history"><a name="teraterm_4.59">2008.4.18 (Ver 4.59 not-released)</a>
     <ul>
       <li>Pasting by clicking the middle button of mouse has been deleted in last release, but put it back.
         <ul>
@@ -43,7 +43,7 @@
           <li>added <a href="../menu/setup-additional.html">MouseWheelScrollLine</a> entry in teraterm.ini file. The default value is 3.</li>
         </ul></li>
       <li>added support for memorying previous .ttl file directory.</li>
-      <!--li>LogMeTT.exe が存在しない場合、[File] メニューに [LogMeTT] を表示しないようにした。</li-->
+      <li>added supoprt for hiding [LogMeTT] under [File] menu when LogMeTT.exe does not exist.</li>
       <li>added support for configurating the ScrollLock key in KEYBOARD.CNF file.
         <ul>
           <li>added ScrollLock entry in KEYBOARD.CNF file. The default value is 70.</li>
@@ -61,6 +61,7 @@
         </ul></li>
       <li>Bug fix: "Window list" dialog was not appeared in VT window.</li>
       <li>Bug fix: Some application like as LogMeTT.exe and cygterm.exe, or cygterm.cfg file would not work well when TeraTerm current directory is changed because the fullpath does not be specified.</li>
+      <li>Bug fix: XModemRcvCommand entry in teraterm.ini file could not be empty.</li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.47">2.47</a></li>
     </ul>
   </li>
