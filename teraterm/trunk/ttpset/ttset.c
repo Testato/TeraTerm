@@ -650,7 +650,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->XmodemBin = GetOnOff(Section, "XmodemBin", FName, TRUE);
 
 	/* XMODEM 受信コマンド (2007.12.21 yutaka) */
-	GetPrivateProfileString(Section, "XModemRcvCommand", "rx",
+	GetPrivateProfileString(Section, "XModemRcvCommand", "",
 	                        ts->XModemRcvCommand, sizeof(ts->XModemRcvCommand), FName);
 
 	/* Default directory for file transfer */
