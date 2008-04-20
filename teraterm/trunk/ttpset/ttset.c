@@ -1962,8 +1962,6 @@ void FAR PASCAL ReadKeyboardCnf
 	GetInt(KeyMap, IdPF4, VTNumeric, "PF4", FName);
 
 	// VT function keys
-	GetInt(KeyMap, IdScrollLock, VTFunction, "ScrollLock", FName);
-
 	GetInt(KeyMap, IdHold, VTFunction, "Hold", FName);
 
 	GetInt(KeyMap, IdPrint, VTFunction, "Print", FName);
@@ -2074,6 +2072,8 @@ void FAR PASCAL ReadKeyboardCnf
 	GetInt(KeyMap, IdCmdPrevWin, ShortCut, "PrevWin", FName);
 
 	GetInt(KeyMap, IdCmdLocalEcho, ShortCut, "LocalEcho", FName);
+
+	GetInt(KeyMap, IdScrollLock, ShortCut, "ScrollLock", FName);
 
 	/* user keys */
 
