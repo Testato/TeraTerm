@@ -1,3 +1,9 @@
+SET debug=no
+SET plugins=no
+
+if "%1"=="debug" SET debug=yes
+if "%1"=="plugins" SET plugins=yes
+
 CALL makechm.bat
 CALL build.bat %1
 
@@ -22,20 +28,22 @@ copy /y ..\cygterm\cyglaunch.exe %dst%
 copy /y ..\ttpmenu\Release\ttpmenu.exe %dst%
 copy /y ..\TTProxy\Release\TTXProxy.dll %dst%
 copy /y ..\TTXKanjiMenu\Release\ttxkanjimenu.dll %dst%
-copy /y ..\TTXSamples\Release\*.dll %dst%
+if "%plugins%"=="yes" copy /y ..\TTXSamples\Release\*.dll %dst%
 
 rem Debug file
-if "%1"=="debug" copy /y ..\teraterm\release\*.pdb %dst%
-if "%1"=="debug" copy /y ..\ttssh2\ttxssh\Release\ttxssh.pdb %dst%
-if "%1"=="debug" copy /y ..\ttpmenu\Release\ttxssh.pdb %dst%
-if "%1"=="debug" copy /y ..\TTProxy\Release\TTXProxy.pdb %dst%
-if "%1"=="debug" copy /y ..\TTXKanjiMenu\Release\ttxkanjimenu.pdb %dst%
-if "%1"=="debug" copy /y ..\TTXSamples\Release\*.pdb %dst%
+if "%debug%"=="yes" copy /y ..\teraterm\release\*.pdb %dst%
+if "%debug%"=="yes" copy /y ..\ttssh2\ttxssh\Release\ttxssh.pdb %dst%
+if "%debug%"=="yes" copy /y ..\ttpmenu\Release\ttxssh.pdb %dst%
+if "%debug%"=="yes" copy /y ..\TTProxy\Release\TTXProxy.pdb %dst%
+if "%debug%"=="yes" copy /y ..\TTXKanjiMenu\Release\ttxkanjimenu.pdb %dst%
+if "%debug%"=="yes" if "%plugins%"=="yes" copy /y ..\TTXSamples\Release\*.pdb %dst%
 
+if "%plugins%"=="yes" (
 pushd %dst%
 if exist TTXFixedWinSize.dll ren TTXFixedWinSize.dll _TTXFixedWinSize.dll
 if exist TTXResizeWin.dll ren TTXResizeWin.dll _TTXResizeWin.dll
 popd
+)
 
 copy /y ..\doc\jp\teratermj.chm %dst%
 copy /y ..\doc\en\teraterm.chm %dst%
@@ -45,11 +53,6 @@ xcopy /s /e /y /i release\theme %dst%\theme
 xcopy /s /e /y /i release\plugin %dst%\plugin
 xcopy /s /e /y /i release\Collector %dst%\Collector
 xcopy /s /e /y /i release\lang %dst%\lang
-rmdir /s /q %dst%\plugin\CVS
-rmdir /s /q %dst%\theme\CVS
-rmdir /s /q %dst%\theme\scale\CVS
-rmdir /s /q %dst%\theme\tile\CVS
-rmdir /s /q %dst%\lang\CVS
 del /f %dst%\lang\English.lng
 
 perl setini.pl release\TERATERM.INI > %dst%\TERATERM.INI
