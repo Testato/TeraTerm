@@ -83,6 +83,7 @@
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\teraterm\release"
 				ModuleDefinitionFile=".\TTX.def"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\./TTXProxy.pdb"
 				GenerateMapFile="true"
 				MapFileName=".\Release/TTXProxy.map"
