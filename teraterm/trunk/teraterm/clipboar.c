@@ -243,7 +243,6 @@ static int PasteCanceled = 0;
 
 static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-	POINT pt;
 	RECT rc, rc_p;
 	//char *p;
 	LOGFONT logfont;
