@@ -531,7 +531,11 @@ CVTWindow::CVTWindow()
 			}
 			FreeTTSET();
 			/* store default sets in TTCMN */
+#if 0
 			ChangeDefaultSet(&ts,tempkm);
+#else
+			ChangeDefaultSet(NULL,tempkm);
+#endif
 			if (tempkm!=NULL) free(tempkm);
 		}
 
@@ -1381,7 +1385,9 @@ void CVTWindow::RestoreSetup()
 	}
 #endif
 
+#if 0
 	ChangeDefaultSet(&ts,NULL);
+#endif
 
 	ResetSetup();
 }
@@ -2722,21 +2728,19 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 			// 直前の接続が非Telnet接続だった場合、Window を閉じていないと設定が残っている
 			// (LocalEcho, CRSend が TCPLocalEcho, TCPCRSend の値で上書きされている)
 			// Telnet のときには LocalEcho/CRSend を元の値に戻すために、
-			// 共有メモリから持ってくる (2008.1.10 maya)
-			CopyShmemToTTSet(&shared_ts);
-			ts.CRSend = shared_ts.CRSend;
-			cv.CRSend = ts.CRSend;
-			ts.LocalEcho = shared_ts.LocalEcho;
+			// 読み込み時の設定を持ってくる (2008.4.22 maya)
+			ts.CRSend = ts.CRSend_ini;
+			cv.CRSend = ts.CRSend_ini;
+			ts.LocalEcho = ts.LocalEcho_ini;
 
 			TelStartKeepAliveThread();
 		}
 		// SSH, Cygwin などで接続するときに利用される
 		else if (ts.DisableTCPEchoCR) {
-			// 上と同じ理由で、共有メモリから持ってくる (2008.1.10 maya)
-			CopyShmemToTTSet(&shared_ts);
-			ts.CRSend = shared_ts.CRSend;
-			cv.CRSend = ts.CRSend;
-			ts.LocalEcho = shared_ts.LocalEcho;
+			// 上と同じ理由で、読み込み時の設定を持ってくる (2008.4.22 maya)
+			ts.CRSend = ts.CRSend_ini;
+			cv.CRSend = ts.CRSend_ini;
+			ts.LocalEcho = ts.LocalEcho_ini;
 		}
 		else {
 			if (ts.TCPCRSend>0) {
@@ -4946,7 +4950,9 @@ void CVTWindow::OnSetupSave()
 #endif
 	}
 
+#if 0
 	ChangeDefaultSet(&ts,NULL);
+#endif
 }
 
 void CVTWindow::OnSetupRestore()

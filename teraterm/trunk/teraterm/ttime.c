@@ -48,7 +48,9 @@ static LOGFONT lfIME;
 BOOL LoadIME()
 {
   BOOL Err;
+#if 0
   PTTSet tempts;
+#endif
   char uimsg[MAX_UIMSG];
 
   if (HIMEDLL != NULL) return TRUE;
@@ -60,6 +62,7 @@ BOOL LoadIME()
     MessageBox(0,ts.UIMsg,uimsg,MB_ICONEXCLAMATION);
     WritePrivateProfileString("Tera Term","IME","off",ts.SetupFName);
     ts.UseIME = 0;
+#if 0
     tempts = (PTTSet)malloc(sizeof(TTTSet));
     if (tempts!=NULL)
     {
@@ -68,6 +71,7 @@ BOOL LoadIME()
       ChangeDefaultSet(tempts,NULL);
       free(tempts);
     }
+#endif
     return FALSE;
   }
 

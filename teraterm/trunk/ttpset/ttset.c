@@ -242,9 +242,11 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		ts->CRSend = IdCRLF;
 	else
 		ts->CRSend = IdCR;
+	ts->CRSend_ini = ts->CRSend;
 
 	/* Local echo */
 	ts->LocalEcho = GetOnOff(Section, "LocalEcho", FName, FALSE);
+	ts->LocalEcho_ini = ts->LocalEcho;
 
 	/* Answerback */
 	GetPrivateProfileString(Section, "Answerback", "", Temp,

@@ -389,6 +389,8 @@ struct tttset {
 	WORD SaveVTWinPos;
 	WORD DisablePasteMouseMButton;
 	int MouseWheelScrollLine;
+	WORD CRSend_ini;
+	WORD LocalEcho_ini;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
