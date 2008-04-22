@@ -499,7 +499,7 @@ void PutKanji(BYTE b)
     UpdateStr();
     Special = FALSE;
   }
-  
+
 #ifndef NO_COPYLINE_FIX
   BuffPutKanji(Kanji, CharAttrTmp, InsertMode);
 #else
@@ -900,7 +900,7 @@ void ESCDBCSSelect(BYTE b)
       }
       break;
   }
-}  
+}
 
 void ESCSelectCode(BYTE b)
 {
@@ -1063,7 +1063,7 @@ void ParseEscape(BYTE b) /* b is the final char */
 	  NParam = 1;
 	  Param[1] = 0;
 	  ParseMode = ModeXS;
-	  return;  
+	  return;
 	case '^':
 	case '_': /* PM, APC */
 	  SavedMode = ParseMode;
@@ -1640,7 +1640,7 @@ void CSSetAttr()
       MoveCursor(0,CursorY);
       return;
     }
-    if (Param[1]<1) Param[1] =1;    
+    if (Param[1]<1) Param[1] =1;
     if ((NParam < 2) | (Param[2]<1))
       Param[2] = NumOfLines-StatusLine;
     Param[1]--;
@@ -1923,7 +1923,7 @@ void CSSetAttr()
   void CSQuest(BYTE b)
   {
     switch (b) {
-      case 'K': CSLineErase(); break; 
+      case 'K': CSLineErase(); break;
       case 'h': CSQ_h_Mode(); break;
       case 'i': CSQ_i_Mode(); break;
       case 'l': CSQ_l_Mode(); break;
@@ -2135,7 +2135,7 @@ void ControlSequence(BYTE b)
     else if ((b>=0x30) && (b<=0x39))
     {
       if (Param[NParam] < 0)
-	Param[NParam] = 0; 
+	Param[NParam] = 0;
       if (Param[NParam]<1000)
        Param[NParam] = Param[NParam]*10 + b - 0x30;
     }
@@ -2175,7 +2175,7 @@ void DeviceControl(BYTE b)
     ParseControl(b);
   else if ((b>=0x30) && (b<=0x39))
   {
-    if (Param[NParam] < 0) Param[NParam] = 0; 
+    if (Param[NParam] < 0) Param[NParam] = 0;
     if (Param[NParam]<1000)
       Param[NParam] = Param[NParam]*10 + b - 0x30;
   }
@@ -2268,85 +2268,86 @@ void IgnoreString(BYTE b)
 
 BOOL XsParseColor(char *colspec, COLORREF *color)
 {
-  int r, g, b;
-//  double dr, dg, db;
+	int r, g, b;
+//	double dr, dg, db;
 
-  r = g = b = 255;
+	r = g = b = 255;
 
-  if (colspec == NULL || color == NULL) {
-    return FALSE;
-  }
+	if (colspec == NULL || color == NULL) {
+		return FALSE;
+	}
 
-  if (_strnicmp(colspec, "rgb:", 4) == 0) {
-    switch (strlen(colspec)) {
-      case  9:	// rgb:R/G/B
-        if (sscanf(colspec, "rgb:%1x/%1x/%1x", &r, &g, &b) != 3) {
-	  return FALSE;
+	if (_strnicmp(colspec, "rgb:", 4) == 0) {
+		switch (strlen(colspec)) {
+		  case  9:	// rgb:R/G/B
+			if (sscanf(colspec, "rgb:%1x/%1x/%1x", &r, &g, &b) != 3) {
+				return FALSE;
+			}
+			r *= 17; g *= 17; b *= 17;
+			break;
+		  case 12:	// rgb:RR/GG/BB
+			if (sscanf(colspec, "rgb:%2x/%2x/%2x", &r, &g, &b) != 3) {
+				return FALSE;
+			}
+			break;
+		  case 15:	// rgb:RRR/GGG/BBB
+			if (sscanf(colspec, "rgb:%3x/%3x/%3x", &r, &g, &b) != 3) {
+				return FALSE;
+			}
+			r >>= 4; g >>= 4; b >>= 4;
+			break;
+		  case 18:	// rgb:RRRR/GGGG/BBBB
+			if (sscanf(colspec, "rgb:%4x/%4x/%4x", &r, &g, &b) != 3) {
+				return FALSE;
+			}
+			r >>= 8; g >>= 8; b >>= 8;
+			break;
+		  default:
+			return FALSE;
+		}
 	}
-	r *= 17; g *= 17; b *= 17;
-        break;
-      case 12:	// rgb:RR/GG/BB
-        if (sscanf(colspec, "rgb:%2x/%2x/%2x", &r, &g, &b) != 3) {
-	  return FALSE;
+//	else if (_strnicmp(colspec, "rgbi:", 5) == 0) {
+//		; /* nothing to do */
+//	}
+	else if (colspec[0] == '#') {
+		switch (strlen(colspec)) {
+		  case  4:	// #RGB
+			if (sscanf(colspec, "#%1x%1x%1x", &r, &g, &b) != 3) {
+				return FALSE;
+			}
+			r <<= 4; g <<= 4; b <<= 4;
+			break;
+		  case  7:	// #RRGGBB
+			if (sscanf(colspec, "#%2x%2x%2x", &r, &g, &b) != 3) {
+				return FALSE;
+			}
+			break;
+		  case 10:	// #RRRGGGBBB
+			if (sscanf(colspec, "#%3x%3x%3x", &r, &g, &b) != 3) {
+				return FALSE;
+			}
+			r >>= 4; g >>= 4; b >>= 4;
+			break;
+		  case 13:	// #RRRRGGGGBBBB
+			if (sscanf(colspec, "#%4x%4x%4x", &r, &g, &b) != 3) {
+				return FALSE;
+			}
+			r >>= 8; g >>= 8; b >>= 8;
+			break;
+		  default:
+			return FALSE;
+		}
 	}
-        break;
-      case 15:	// rgb:RRR/GGG/BBB
-        if (sscanf(colspec, "rgb:%3x/%3x/%3x", &r, &g, &b) != 3) {
-	  return FALSE;
+	else {
+		return FALSE;
 	}
-	r >>= 4; g >>= 4; b >>= 4;
-        break;
-      case 18:	// rgb:RRRR/GGGG/BBBB
-        if (sscanf(colspec, "rgb:%4x/%4x/%4x", &r, &g, &b) != 3) {
-	  return FALSE;
-	}
-	r >>= 8; g >>= 8; b >>= 8;
-        break;
-      default:
-        return FALSE;
-    }
-  }
-//else if (_strnicmp(colspec, "rgbi:", 5) == 0) {
-//}
-  else if (colspec[0] == '#') {
-    switch (strlen(colspec)) {
-      case  4:	// #RGB
-        if (sscanf(colspec, "#%1x%1x%1x", &r, &g, &b) != 3) {
-	  return FALSE;
-	}
-	r <<= 4; g <<= 4; b <<= 4;
-        break;
-      case  7:	// #RGB
-        if (sscanf(colspec, "#%2x%2x%2x", &r, &g, &b) != 3) {
-	  return FALSE;
-	}
-        break;
-      case 10:	// #RGB
-        if (sscanf(colspec, "#%3x%3x%3x", &r, &g, &b) != 3) {
-	  return FALSE;
-	}
-	r >>= 4; g >>= 4; b >>= 4;
-        break;
-      case 13:	// #RGB
-        if (sscanf(colspec, "#%4x%4x%4x", &r, &g, &b) != 3) {
-	  return FALSE;
-	}
-	r >>= 8; g >>= 8; b >>= 8;
-        break;
-      default:
-        return FALSE;
-    }
-  }
-  else {
-    return FALSE;
-  }
 
-  if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
-    return FALSE;
-  }
+	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
+		return FALSE;
+	}
 
-  *color = RGB(r, g, b);
-  return TRUE;
+	*color = RGB(r, g, b);
+	return TRUE;
 }
 
 #define ModeXsFirst     1
@@ -2356,157 +2357,157 @@ BOOL XsParseColor(char *colspec, COLORREF *color)
 #define ModeXsEsc       5
 void XSequence(BYTE b)
 {
-  static BYTE XsParseMode = ModeXsFirst, PrevMode;
-  static char StrBuff[sizeof(ts.Title)];
-  static int ColorNumber, StrLen;
-  COLORREF color;
+	static BYTE XsParseMode = ModeXsFirst, PrevMode;
+	static char StrBuff[sizeof(ts.Title)];
+	static int ColorNumber, StrLen;
+	COLORREF color;
 
-  switch (XsParseMode) {
-    case ModeXsFirst:
-      if (isdigit(b)) {
-        if (Param[1] < 1000) {
-	  Param[1] = Param[1]*10 + b - '0';
+	switch (XsParseMode) {
+	  case ModeXsFirst:
+		if (isdigit(b)) {
+			if (Param[1] < 1000) {
+				Param[1] = Param[1]*10 + b - '0';
+			}
+		}
+		else if (b == ';') {
+			StrBuff[0] = '\0';
+			StrLen = 0;
+			if (Param[1] == 4) {
+				ColorNumber = 0;
+				XsParseMode = ModeXsColorNum;
+			}
+			else {
+				XsParseMode = ModeXsString;
+			}
+		}
+		else {
+			ParseMode = ModeFirst;
+		}
+		break;
+	  case ModeXsString:
+		if (b == ST || b == '\a') { /* String Terminator */
+			StrBuff[StrLen] = '\0';
+			switch (Param[1]) {
+			  case 0: /* Change window title and icon name */
+			  case 1: /* Change icon name */
+			  case 2: /* Change window title */
+				strncpy_s(ts.Title, sizeof(ts.Title), StrBuff, _TRUNCATE);
+				// (2006.6.15 maya) タイトルに渡す文字列をSJISに変換
+				ConvertToCP932(ts.Title, sizeof(ts.Title));
+				ChangeTitle();
+				break;
+			  default:
+				/* nothing to do */;
+			}
+			ParseMode = ModeFirst;
+			XsParseMode = ModeXsFirst;
+		}
+		else if (b == ESC) { /* Escape */
+			PrevMode = ModeXsString;
+			XsParseMode = ModeXsEsc;
+		}
+		else if (b <= US) { /* Other control character -- invalid sequence */
+			ParseMode = ModeFirst;
+			XsParseMode = ModeXsFirst;
+		}
+		else if (StrLen < sizeof(StrBuff) - 1) {
+			StrBuff[StrLen++] = b;
+		}
+		break;
+	  case ModeXsColorNum:
+		if (isdigit(b)) {
+			ColorNumber = ColorNumber*10 + b - '0';
+		}
+		else if (b == ';') {
+			XsParseMode = ModeXsColorSpec;
+			StrBuff[0] = '\0';
+			StrLen = 0;
+		}
+		else {
+			ParseMode = ModeFirst;
+			XsParseMode = ModeXsFirst;
+		}
+		break;
+	  case ModeXsColorSpec:
+		if (b == ST || b == '\a') { /* String Terminator */
+			StrBuff[StrLen] = '\0';
+			if ((ts.ColorFlag & CF_XTERM256) && ColorNumber >= 0 && ColorNumber <= 255) {
+				if (strcmp(StrBuff, "?") == 0) {
+					color = DispGetANSIColor(ColorNumber);
+					if (Send8BitMode) {
+						_snprintf_s_l(StrBuff, sizeof(StrBuff), _TRUNCATE,
+							"\2354;%d;rgb:%02x/%02x/%02x\234", CLocale, ColorNumber,
+							GetRValue(color), GetGValue(color), GetBValue(color));
+					}
+					else {
+						_snprintf_s_l(StrBuff, sizeof(StrBuff), _TRUNCATE,
+							"\033]4;%d;rgb:%02x/%02x/%02x\033\\", CLocale, ColorNumber,
+							GetRValue(color), GetGValue(color), GetBValue(color));
+					}
+					ParseMode = ModeFirst;
+					XsParseMode = ModeXsFirst;
+					CommBinaryOut(&cv, StrBuff, strlen(StrBuff));
+					break;
+				}
+				else if (XsParseColor(StrBuff, &color)) {
+					DispSetANSIColor(ColorNumber, color);
+				}
+			}
+			ParseMode = ModeFirst;
+			XsParseMode = ModeXsFirst;
+		}
+		else if (b == ESC) {
+			PrevMode = ModeXsColorSpec;
+			XsParseMode = ModeXsEsc;
+		}
+		else if (b <= US) { /* Other control character -- invalid sequence */
+			ParseMode = ModeFirst;
+			XsParseMode = ModeXsFirst;
+		}
+		else if (b == ';') {
+			if ((ts.ColorFlag & CF_XTERM256) && ColorNumber >= 0 && ColorNumber <= 255) {
+				if (strcmp(StrBuff, "?") == 0) {
+					color = DispGetANSIColor(ColorNumber);
+					if (Send8BitMode) {
+						_snprintf_s_l(StrBuff, sizeof(StrBuff), _TRUNCATE,
+							"\2354;%d;rgb:%02x/%02x/%02x\234", CLocale, ColorNumber,
+							GetRValue(color), GetGValue(color), GetBValue(color));
+					}
+					else {
+						_snprintf_s_l(StrBuff, sizeof(StrBuff), _TRUNCATE,
+							"\033]4;%d;rgb:%02x/%02x/%02x\033\\", CLocale, ColorNumber,
+							GetRValue(color), GetGValue(color), GetBValue(color));
+					}
+					XsParseMode = ModeXsColorNum;
+					CommBinaryOut(&cv, StrBuff, strlen(StrBuff));
+				}
+				else if (XsParseColor(StrBuff, &color)) {
+					DispSetANSIColor(ColorNumber, color);
+				}
+			}
+			ColorNumber = 0;
+			StrBuff[0] = '\0';
+			StrLen = 0;
+			XsParseMode = ModeXsColorNum;
+		}
+		else if (StrLen < sizeof(StrBuff) - 1) {
+			StrBuff[StrLen++] = b;
+		}
+		break;
+	  case ModeXsEsc:
+		if (b == '\\') { /* String Terminator */
+			XsParseMode = PrevMode;
+			XSequence(ST);
+		}
+		else { /* Other character -- invalid sequence */
+			ParseMode = ModeFirst;
+			XsParseMode = ModeXsFirst;
+		}
+		break;
+//	  default:
+//		ParseMode = ModeFirst;
+//		XsParseMode = ModeXsFirst;
 	}
-      }
-      else if (b == ';') {
-        StrBuff[0] = '\0';
-	StrLen = 0;
-	if (Param[1] == 4) {
-	  ColorNumber = 0;
-	  XsParseMode = ModeXsColorNum;
-	}
-	else {
-	  XsParseMode = ModeXsString;
-	}
-      }
-      else {
-        ParseMode = ModeFirst;
-      }
-      break;
-    case ModeXsString:
-      if (b == ST || b == '\a') { /* String Terminator */
-        StrBuff[StrLen] = '\0';
-        switch (Param[1]) {
-	  case 0: /* Change window title and icon name */
-	  case 1: /* Change icon name */
-	  case 2: /* Change window title */
-	    strncpy_s(ts.Title, sizeof(ts.Title), StrBuff, _TRUNCATE);
-	    // (2006.6.15 maya) タイトルに渡す文字列をSJISに変換
-	    ConvertToCP932(ts.Title, sizeof(ts.Title));
-	    ChangeTitle();
-	    break;
-	  default:
-	    /* nothing to do */;
-	}
-	ParseMode = ModeFirst;
-	XsParseMode = ModeXsFirst;
-      }
-      else if (b == ESC) { /* Escape */
-	PrevMode = ModeXsString;
-	XsParseMode = ModeXsEsc;
-      }
-      else if (b <= US) { /* Other control character -- invalid sequence */
-        ParseMode = ModeFirst;
-        XsParseMode = ModeXsFirst;
-      }
-      else if (StrLen < sizeof(StrBuff) - 1) {
-	StrBuff[StrLen++] = b;
-      }
-      break;
-    case ModeXsColorNum:
-      if (isdigit(b)) {
-        ColorNumber = ColorNumber*10 + b - '0';
-      }
-      else if (b == ';') {
-        XsParseMode = ModeXsColorSpec;
-	StrBuff[0] = '\0';
-	StrLen = 0;
-      }
-      else {
-        ParseMode = ModeFirst;
-	XsParseMode = ModeXsFirst;
-      }
-      break;
-    case ModeXsColorSpec:
-      if (b == ST || b == '\a') { /* String Terminator */
-        StrBuff[StrLen] = '\0';
-	if ((ts.ColorFlag & CF_XTERM256) && ColorNumber >= 0 && ColorNumber <= 255) {
-	  if (strcmp(StrBuff, "?") == 0) {
-	    color = DispGetANSIColor(ColorNumber);
-	    if (Send8BitMode) {
-	      _snprintf_s_l(StrBuff, sizeof(StrBuff), _TRUNCATE,
-	                    "\2354;%d;rgb:%02x/%02x/%02x\234", CLocale,
-			    ColorNumber, GetRValue(color), GetGValue(color), GetBValue(color));
-	    }
-	    else {
-	      _snprintf_s_l(StrBuff, sizeof(StrBuff), _TRUNCATE,
-	                    "\033]4;%d;rgb:%02x/%02x/%02x\033\\", CLocale,
-			    ColorNumber, GetRValue(color), GetGValue(color), GetBValue(color));
-	    }
-            ParseMode = ModeFirst;
-	    XsParseMode = ModeXsFirst;
-	    CommBinaryOut(&cv, StrBuff, strlen(StrBuff));
-	    break;
-	  }
-	  else if (XsParseColor(StrBuff, &color)) {
-	    DispSetANSIColor(ColorNumber, color);
-	  }
-	}
-        ParseMode = ModeFirst;
-	XsParseMode = ModeXsFirst;
-      }
-      else if (b == ESC) {
-        PrevMode = ModeXsColorSpec;
-	XsParseMode = ModeXsEsc;
-      }
-      else if (b <= US) { /* Other control character -- invalid sequence */
-        ParseMode = ModeFirst;
-        XsParseMode = ModeXsFirst;
-      }
-      else if (b == ';') {
-	if ((ts.ColorFlag & CF_XTERM256) && ColorNumber >= 0 && ColorNumber <= 255) {
-	  if (strcmp(StrBuff, "?") == 0) {
-	    color = DispGetANSIColor(ColorNumber);
-	    if (Send8BitMode) {
-	      _snprintf_s_l(StrBuff, sizeof(StrBuff), _TRUNCATE,
-	                    "\2354;%d;rgb:%02x/%02x/%02x\234", CLocale,
-			    ColorNumber, GetRValue(color), GetGValue(color), GetBValue(color));
-	    }
-	    else {
-	      _snprintf_s_l(StrBuff, sizeof(StrBuff), _TRUNCATE,
-	                    "\033]4;%d;rgb:%02x/%02x/%02x\033\\", CLocale,
-			    ColorNumber, GetRValue(color), GetGValue(color), GetBValue(color));
-	    }
-	    XsParseMode = ModeXsColorNum;
-	    CommBinaryOut(&cv, StrBuff, strlen(StrBuff));
-	  }
-	  else if (XsParseColor(StrBuff, &color)) {
-	    DispSetANSIColor(ColorNumber, color);
-	  }
-	}
-	ColorNumber = 0;
-	StrBuff[0] = '\0';
-	StrLen = 0;
-	XsParseMode = ModeXsColorNum;
-      }
-      else if (StrLen < sizeof(StrBuff) - 1) {
-	StrBuff[StrLen++] = b;
-      }
-      break;
-    case ModeXsEsc:
-      if (b == '\\') { /* String Terminator */
-        XsParseMode = PrevMode;
-        XSequence(ST);
-      }
-      else { /* Other character -- invalid sequence */
-        ParseMode = ModeFirst;
-        XsParseMode = ModeXsFirst;
-      }
-      break;
-//    default:
-//      ParseMode = ModeFirst;
-//      XsParseMode = ModeXsFirst;
-  }
 }
 
 void DLESeen(BYTE b)
@@ -2587,7 +2588,7 @@ BOOL ParseFirstJP(BYTE b)
       Wrap = FALSE;
     }
   }
-	
+
   if (SSflag)
   {
     if (Gn[GLtmp] == IdKanji)
@@ -2673,7 +2674,7 @@ BOOL ParseFirstJP(BYTE b)
 	((ts.TermFlag & TF_FIXEDJIS)!=0))
       PutChar(b);  // katakana
     else {
-      if (Gn[Glr[1]] == IdASCII)	  
+      if (Gn[Glr[1]] == IdASCII)
 	b = b & 0x7f;
       PutChar(b);
     }
@@ -2715,7 +2716,7 @@ extern unsigned short ConvertUnicode(unsigned short code, codemap_t *table, int 
 //
 #include "hfs_plus.map"
 
-unsigned short GetIllegalUnicode(int start_index, unsigned short first_code, unsigned short code, 
+unsigned short GetIllegalUnicode(int start_index, unsigned short first_code, unsigned short code,
 								 hfsplus_codemap_t *table, int tmax)
 {
 	unsigned short result = 0;
@@ -2799,7 +2800,7 @@ static void UnicodeToCP932(unsigned int code, int byte)
 			if (cset != 0) {
 				Kanji = cset & 0xff00;
 				PutKanji(cset & 0x00ff);
-			} 
+			}
 		}
 
 		if (cset == 0) {
@@ -2861,7 +2862,7 @@ BOOL ParseFirstUTF8(BYTE b, int hfsplus_mode)
 	memset(mbchar, 0, sizeof(mbchar));
 
 	// 2バイトコードの場合
-	if ((buf[0] & 0xe0) == 0xc0 && 
+	if ((buf[0] & 0xe0) == 0xc0 &&
 		(buf[1] & 0xc0) == 0x80) {
 
 		if (hfsplus_mode == 1 && maybe_hfsplus == 1) {
@@ -2886,12 +2887,12 @@ BOOL ParseFirstUTF8(BYTE b, int hfsplus_mode)
 		}
 
 		return TRUE;
-	} 
+	}
 
 	buf[count++] = b;
-		
-	if ((buf[0] & 0xe0) == 0xe0 && 
-		(buf[1] & 0xc0) == 0x80 && 
+
+	if ((buf[0] & 0xe0) == 0xe0 &&
+		(buf[1] & 0xc0) == 0x80 &&
 		(buf[2] & 0xc0) == 0x80) { // 3バイトコードの場合
 
 		// UTF-8 BOM(Byte Order Mark)
@@ -2977,17 +2978,14 @@ void ParseFirst(BYTE b)
 	if ((ts.Language==IdJapanese && ts.KanjiCode == IdUTF8) &&
 		ParseFirstUTF8(b, 0)) {
 			return;
-
 	} else 	if ((ts.Language==IdJapanese && ts.KanjiCode == IdUTF8m) &&
 		ParseFirstUTF8(b, 1)) {
 			return;
-	
-
 	} else if ((ts.Language==IdJapanese) &&
     ParseFirstJP(b)) return;
   else if ((ts.Language==IdRussian) &&
     ParseFirstRus(b)) return;
-	
+
   if (SSflag)
   {
     PutChar(b);
