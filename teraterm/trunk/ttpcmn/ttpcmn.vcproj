@@ -83,6 +83,7 @@
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\ttpcmn.def"
 				DelayLoadDLLs="setupapi.dll"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile="..\Release/ttpcmn.pdb"
 				SubSystem="2"
 				ImportLibrary="..\Release/ttpcmn.lib"

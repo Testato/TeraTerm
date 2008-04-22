@@ -83,6 +83,7 @@
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\oniguruma;..\release"
 				ModuleDefinitionFile=".\ttpdlg.def"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile="..\Release/ttpdlg.pdb"
 				SubSystem="2"
 				ImportLibrary="..\Release/ttpdlg.lib"

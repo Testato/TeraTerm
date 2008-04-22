@@ -83,6 +83,7 @@
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\release"
 				ModuleDefinitionFile=".\ttpfile.def"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile="..\Release/ttpfile.pdb"
 				SubSystem="2"
 				ImportLibrary="..\Release/ttpfile.lib"

@@ -84,6 +84,7 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\oniguruma;..\release"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile="..\Release/ttpmacro.pdb"
 				SubSystem="2"
 				TargetMachine="1"

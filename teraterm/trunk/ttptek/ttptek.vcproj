@@ -181,6 +181,7 @@
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\release"
 				ModuleDefinitionFile=".\ttptek.def"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile="..\Release/ttptek.pdb"
 				SubSystem="2"
 				ImportLibrary="..\Release/ttptek.lib"
