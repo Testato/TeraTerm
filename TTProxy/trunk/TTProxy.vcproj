@@ -84,7 +84,7 @@
 				AdditionalLibraryDirectories="..\teraterm\release"
 				ModuleDefinitionFile=".\TTX.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\./TTXProxy.pdb"
+				ProgramDatabaseFile=".\Release/TTXProxy.pdb"
 				GenerateMapFile="true"
 				MapFileName=".\Release/TTXProxy.map"
 				ImportLibrary="Release/TTXProxy.lib"
