@@ -244,6 +244,7 @@ static int PasteCanceled = 0;
 static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
 	POINT pt;
+	RECT rc, rc_p;
 	//char *p;
 	LOGFONT logfont;
 	HFONT font;
@@ -285,9 +286,17 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 			SetDlgItemText(hDlgWnd, IDOK, ts.UIMsg);
 
 			SendMessage(GetDlgItem(hDlgWnd, IDC_EDIT), WM_SETTEXT, 0, (LPARAM)ClipboardPtr);
-			
-			GetCursorPos(&pt);
-			SetWindowPos(hDlgWnd, NULL, pt.x, pt.y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
+			// マウスカーソルが画面下端か右端にあるときに、キーボードで
+			// 貼り付けをすると確認ウインドウが見えるところに表示されないため、
+			// VTウィンドウの中央位置に表示するように変更 (2008.4.22 maya)
+			GetWindowRect(GetParent(hDlgWnd), &rc_p);
+			GetWindowRect(hDlgWnd, &rc);
+			SetWindowPos(hDlgWnd, NULL,
+			             rc_p.left + ((rc_p.right-rc_p.left) - (rc.right-rc.left)) / 2,
+			             rc_p.top + ((rc_p.bottom-rc_p.top) - (rc.bottom-rc.top)) / 2,
+			             0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
 			return TRUE;
 
 		case WM_COMMAND:
