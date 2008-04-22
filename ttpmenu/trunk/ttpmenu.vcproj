@@ -79,6 +79,7 @@
 				OutputFile=".\Release/ttpmenu.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Release/ttpmenu.pdb"
 				SubSystem="2"
 				TargetMachine="1"
