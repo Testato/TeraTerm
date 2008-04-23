@@ -2171,7 +2171,7 @@ void DeviceControl(BYTE b)
   }
   else ESCFlag = FALSE;
 
-  if (b<US)
+  if (b<=US)
     ParseControl(b);
   else if ((b>=0x30) && (b<=0x39))
   {
