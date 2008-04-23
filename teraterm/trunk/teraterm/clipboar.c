@@ -244,12 +244,14 @@ static int PasteCanceled = 0;
 
 static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-	RECT rc, rc_p;
-	POINT p;
-	//char *p;
 	LOGFONT logfont;
 	HFONT font;
 	char uimsg[MAX_UIMSG];
+	//char *p;
+	POINT p;
+	RECT rc_dsk, rc_dlg;
+	int dlg_height, dlg_width;
+	OSVERSIONINFO osvi;
 
 	switch (msg) {
 		case WM_INITDIALOG:
@@ -288,22 +290,49 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 
 			SendMessage(GetDlgItem(hDlgWnd, IDC_EDIT), WM_SETTEXT, 0, (LPARAM)ClipboardPtr);
 
-#if 0
-			// マウスカーソルが画面下端か右端にあるときに、キーボードで
-			// 貼り付けをすると確認ウインドウが見えるところに表示されないため、
-			// VTウィンドウの中央位置に表示するように変更 (2008.4.22 maya)
-			GetWindowRect(GetParent(hDlgWnd), &rc_p);
-			GetWindowRect(hDlgWnd, &rc);
-			SetWindowPos(hDlgWnd, NULL,
-			             rc_p.left + ((rc_p.right-rc_p.left) - (rc.right-rc.left)) / 2,
-			             rc_p.top + ((rc_p.bottom-rc_p.top) - (rc.bottom-rc.top)) / 2,
-			             0, 0, SWP_NOSIZE | SWP_NOZORDER);
-#else
 			DispConvScreenToWin(CursorX, CursorY, &p.x, &p.y);
 			ClientToScreen(HVTWin, &p);
+
+			// キャレットが画面からはみ出しているときに貼り付けをすると
+			// 確認ウインドウが見えるところに表示されないことがある。
+			// ウインドウからはみ出した場合に調節する (2008.4.24 mya)
+			osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+			GetVersionEx(&osvi);
+			if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT && osvi.dwMajorVersion == 4) {
+				// NT4.0 はマルチモニタAPIに非対応
+				SystemParametersInfo(SPI_GETWORKAREA, 0, &rc_dsk, 0);
+			}
+			else {
+				HMONITOR hm;
+				POINT pt;
+				MONITORINFO mi;
+
+				pt.x = p.x;
+				pt.y = p.y;
+				hm = MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST);
+
+				mi.cbSize = sizeof(MONITORINFO);
+				GetMonitorInfo(hm, &mi);
+				rc_dsk = mi.rcWork;
+			}
+			GetWindowRect(hDlgWnd, &rc_dlg);
+			dlg_height = rc_dlg.bottom-rc_dlg.top;
+			dlg_width  = rc_dlg.right-rc_dlg.left;
+			if (p.y < rc_dsk.top) {
+				p.y = rc_dsk.top;
+			}
+			else if (p.y + dlg_height > rc_dsk.bottom) {
+				p.y = rc_dsk.bottom - dlg_height;
+			}
+			if (p.x < rc_dsk.left) {
+				p.x = rc_dsk.left;
+			}
+			else if (p.x + dlg_width > rc_dsk.right) {
+				p.x = rc_dsk.right - dlg_width;
+			}
+
 			SetWindowPos(hDlgWnd, NULL, p.x, p.y,
 			             0, 0, SWP_NOSIZE | SWP_NOZORDER);
-#endif
 
 			return TRUE;
 
