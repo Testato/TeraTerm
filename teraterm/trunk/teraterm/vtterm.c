@@ -2268,7 +2268,7 @@ void IgnoreString(BYTE b)
 
 BOOL XsParseColor(char *colspec, COLORREF *color)
 {
-	int r, g, b;
+	unsigned int r, g, b;
 //	double dr, dg, db;
 
 	r = g = b = 255;
@@ -2342,7 +2342,7 @@ BOOL XsParseColor(char *colspec, COLORREF *color)
 		return FALSE;
 	}
 
-	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
+	if (r > 255 || g > 255 || b > 255) {
 		return FALSE;
 	}
 
@@ -2359,7 +2359,7 @@ void XSequence(BYTE b)
 {
 	static BYTE XsParseMode = ModeXsFirst, PrevMode;
 	static char StrBuff[sizeof(ts.Title)];
-	static int ColorNumber, StrLen;
+	static unsigned int ColorNumber, StrLen;
 	COLORREF color;
 
 	switch (XsParseMode) {
@@ -2431,7 +2431,7 @@ void XSequence(BYTE b)
 	  case ModeXsColorSpec:
 		if (b == ST || b == '\a') { /* String Terminator */
 			StrBuff[StrLen] = '\0';
-			if ((ts.ColorFlag & CF_XTERM256) && ColorNumber >= 0 && ColorNumber <= 255) {
+			if ((ts.ColorFlag & CF_XTERM256) && ColorNumber <= 255) {
 				if (strcmp(StrBuff, "?") == 0) {
 					color = DispGetANSIColor(ColorNumber);
 					if (Send8BitMode) {
@@ -2465,7 +2465,7 @@ void XSequence(BYTE b)
 			XsParseMode = ModeXsFirst;
 		}
 		else if (b == ';') {
-			if ((ts.ColorFlag & CF_XTERM256) && ColorNumber >= 0 && ColorNumber <= 255) {
+			if ((ts.ColorFlag & CF_XTERM256) && ColorNumber <= 255) {
 				if (strcmp(StrBuff, "?") == 0) {
 					color = DispGetANSIColor(ColorNumber);
 					if (Send8BitMode) {
