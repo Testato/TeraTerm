@@ -5,6 +5,7 @@
 /* TERATERM.EXE, Clipboard routines */
 #include "teraterm.h"
 #include "tttypes.h"
+#include "vtdisp.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -244,6 +245,7 @@ static int PasteCanceled = 0;
 static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
 	RECT rc, rc_p;
+	POINT p;
 	//char *p;
 	LOGFONT logfont;
 	HFONT font;
@@ -286,6 +288,7 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 
 			SendMessage(GetDlgItem(hDlgWnd, IDC_EDIT), WM_SETTEXT, 0, (LPARAM)ClipboardPtr);
 
+#if 0
 			// マウスカーソルが画面下端か右端にあるときに、キーボードで
 			// 貼り付けをすると確認ウインドウが見えるところに表示されないため、
 			// VTウィンドウの中央位置に表示するように変更 (2008.4.22 maya)
@@ -295,6 +298,12 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 			             rc_p.left + ((rc_p.right-rc_p.left) - (rc.right-rc.left)) / 2,
 			             rc_p.top + ((rc_p.bottom-rc_p.top) - (rc.bottom-rc.top)) / 2,
 			             0, 0, SWP_NOSIZE | SWP_NOZORDER);
+#else
+			DispConvScreenToWin(CursorX, CursorY, &p.x, &p.y);
+			ClientToScreen(HVTWin, &p);
+			SetWindowPos(hDlgWnd, NULL, p.x, p.y,
+			             0, 0, SWP_NOSIZE | SWP_NOZORDER);
+#endif
 
 			return TRUE;
 

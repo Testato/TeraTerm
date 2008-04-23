@@ -1814,6 +1814,20 @@ void DispConvWinToScreen
     *Right = (Xw - (*Xs-WinOrgX)*FontWidth) >= FontWidth/2;
 }
 
+void DispConvScreenToWin
+  (int Xs, int Ys, int *Xw, int *Yw)
+// Converts screen coordinate to window cordinate
+//   Xs: horizontal position in screen coordinate (pixels)
+//   Ys: vertical
+//  Output
+//      Xw, Yw: window coordinate
+{
+  if (Xw!=NULL)
+       *Xw = (Xs - WinOrgX) * FontWidth;
+  if (Yw!=NULL)
+       *Yw = (Ys - WinOrgY) * FontHeight;
+}
+
 void SetLogFont()
 {
   memset(&VTlf, 0, sizeof(LOGFONT));

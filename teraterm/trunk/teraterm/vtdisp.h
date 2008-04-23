@@ -26,6 +26,8 @@ void EndDisp();
 void DispReset();
 void DispConvWinToScreen
   (int Xw, int Yw, int *Xs, int *Ys, PBOOL Right);
+void DispConvScreenToWin
+  (int Xs, int Ys, int *Xw, int *Yw);
 void SetLogFont();
 void ChangeFont();
 void ResetIME();
