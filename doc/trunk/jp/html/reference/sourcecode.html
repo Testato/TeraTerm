@@ -27,6 +27,7 @@
   <li><a href="#dde">DDEによるプロセス間通信</a></li>
   <li><a href="#ttssh">TTSSHによるSSHの設計と実装</a></li>
   <li><a href="#macro">マクロ言語の設計と実装</a></li>
+  <li><a href="#caret">キャレット制御</a></li>
 </ol>
 
 <hr width=80% align=center>
@@ -917,6 +918,51 @@ WORD LineLen;       /* バッファサイズ */
 　
 
 <hr>
+
+
+
+<h2><a name="caret">キャレット制御</a></h2>
+  <h3>概要</h3>
+　ユーザが端末上でキーボード入力を行うと、カーソルが移動しますが、サーバからのエスケープシーケンスにより、キーボード入力なしにカーソルを移動させる必要があります。また、ウィンドウが非アクティブ状態の場合においても、カーソルを表示させることにより、ブロードキャストモードにおいて、複数端末の同時操作性を向上させています。
+<br>
+
+  <h3>システムキャレット</h3>
+　TeraTermにおけるカーソル描画には、システムキャレットを利用しています。TeraTermで使用されているシステムキャレットを制御するAPIを以下に示します。
+
+<p><ul>
+  <li>CreateCaret</li>
+  <li>DestroyCaret</li>
+  <li>GetCaretBlinkTime</li>
+  <li>HideCaret</li>
+  <li>SetCaretBlinkTime</li>
+  <li>SetCaretPos</li>
+  <li>ShowCaret</li>
+</ul></p>
+
+　<a href="http://msdn.microsoft.com/library/ja/default.asp?url=/library/ja/jpwinui/html/_win32_createcaret.asp">CreateCaretのドキュメント</a>によると、
+
+<pre>
+システムは 1 つのキューにつき 1 つのキャレットを提供します。ウィンドウが
+キーボードフォーカスを備えているとき、またはアクティブな状態のときにだけ、
+キャレットを作成するべきです。また、キーボードフォーカスを失ったり非アク
+ティブになる前に、キャレットを破棄するべきです。
+</pre>
+
+とあるため、ウィンドウがアクティブになったタイミングで CreateCaret() を呼び出し、フォーカスが外れ、非アクティブになるタイミングで DestroyCaret() を呼び出す必要があることを意味しています。<br>
+　キャレットの表示は CaretOn()#vtdisp.c で、消去は CaretOff()#vtdisp.c で実装されています。CaretOn()やCaretOff()が呼び出されるタイミングは、エスケープシーケンス処理 VTParse() の箇所以外にも、マウスボタンを押したときやウィンドウのリサイズを行っているときなどがあります。<br>
+
+
+
+  <h3>非アクティブ時のカーソル表示</h3>
+
+
+
+
+<br>
+
+
+<hr>
+
 
 
 </BODY>
