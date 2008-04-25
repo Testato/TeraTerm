@@ -435,6 +435,51 @@ void PutChar(BYTE b)
   }
 }
 
+void PutDecSp(BYTE b)
+{
+  TCharAttr CharAttrTmp;
+
+  CharAttrTmp = CharAttr;
+
+  if (PrinterMode) { // printer mode
+    WriteToPrnFile(b, TRUE);
+    return;
+  }
+
+  if (Wrap) {
+    CarriageReturn(FALSE);
+    LineFeed(LF, FALSE);
+#ifndef NO_COPYLINE_FIX
+    CharAttrTmp.Attr |= ts.EnableContinuedLineCopy ? AttrLineContinued : 0;
+#endif /* NO_COPYLINE_FIX */
+  }
+
+  if (cv.HLogBuf!=0) Log1Byte(b);
+/*
+  if (ts.LogTypePlainText && __isascii(b) && !isprint(b)) {
+    // ASCII文字で、非表示な文字はログ採取しない。
+  } else {
+    if (cv.HLogBuf!=0) Log1Byte(b);
+  }
+ */
+
+  Wrap = FALSE;
+
+  if (!Special) {
+    UpdateStr();
+    Special = TRUE;
+  }
+
+  CharAttrTmp.Attr |= AttrSpecial;
+  BuffPutChar(b, CharAttrTmp, InsertMode);
+
+  if (CursorX < NumOfColumns-1)
+    MoveRight();
+  else {
+    UpdateStr();
+    Wrap = AutoWrapMode;
+  }
+}
 
 void PutKanji(BYTE b)
 {
@@ -2708,6 +2753,7 @@ static void ParseASCII(BYTE b)
 // UTF-8
 //
 #include "uni2sjis.map"
+#include "unisym2decsp.map"
 extern unsigned short ConvertUnicode(unsigned short code, codemap_t *table, int tmax);
 
 
@@ -2767,7 +2813,6 @@ int GetIndexOfHFSPlusFirstCode(unsigned short code, hfsplus_codemap_t *table, in
 
 static void UnicodeToCP932(unsigned int code, int byte)
 {
-	static BYTE buf[3];
 	int ret;
 	char mbchar[32];
 	unsigned char wchar[32];
@@ -2783,32 +2828,38 @@ static void UnicodeToCP932(unsigned int code, int byte)
 	wchar[0] = code & 0xff;
 	wchar[1] = (code >> 8) & 0xff;
 
-	// Unicode -> CP932
-	ret = wctomb(mbchar, ((wchar_t *)wchar)[0]);
-	if (ret != -1) {
-		if (ret == 1) {
+	cset = ConvertUnicode(code, mapUnicodeSymbolToDecSp, sizeof(mapUnicodeSymbolToDecSp)/sizeof(mapUnicodeSymbolToDecSp[0]));
+	if (cset != 0) {
+		PutDecSp(cset & 0xff);
+	}
+	else {
+		// Unicode -> CP932
+		ret = wctomb(mbchar, ((wchar_t *)wchar)[0]);
+		switch (ret) {
+		  case -1:
+			if (_stricmp(ts.Locale, DEFAULT_LOCALE) == 0) {
+				// U+301Cなどは変換できない。Unicode -> Shift_JISへ変換してみる。
+				cset = ConvertUnicode(code, mapUnicodeToSJIS, sizeof(mapUnicodeToSJIS)/sizeof(mapUnicodeToSJIS[0]));
+				if (cset != 0) {
+					Kanji = cset & 0xff00;
+					PutKanji(cset & 0x00ff);
+				}
+			}
+
+			if (cset == 0) {
+				//for (i = 0 ; i < byte ; i++) {
+				for (i = 0 ; i < 2 ; i++) {
+					ParseASCII('?');
+				}
+			}
+			break;
+		  case 1:
 			ParseASCII(mbchar[0]);
-		} else {
+			break;
+		  default:
 			Kanji = mbchar[0] << 8;
 			PutKanji(mbchar[1]);
-		}
-	} else {
-		cset = 0;
-		if (_stricmp(ts.Locale, DEFAULT_LOCALE) == 0) {
-			// U+301Cなどは変換できない。Unicode -> Shift_JISへ変換してみる。
-			cset = ConvertUnicode(code, mapUnicodeToSJIS, sizeof(mapUnicodeToSJIS)/sizeof(mapUnicodeToSJIS[0]));
-			if (cset != 0) {
-				Kanji = cset & 0xff00;
-				PutKanji(cset & 0x00ff);
-			}
-		}
-
-		if (cset == 0) {
-			//for (i = 0 ; i < byte ; i++) {
-			for (i = 0 ; i < 2 ; i++) {
-				buf[i] = '?';
-				ParseASCII(buf[i]);
-			}
+			break;
 		}
 	}
 #endif

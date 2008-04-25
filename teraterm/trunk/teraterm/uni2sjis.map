@@ -1,7 +1,4 @@
-typedef struct codemap {
-	unsigned short from_code;
-	unsigned short to_code;
-} codemap_t;
+#include "codemap.h"
 
 /*
  * cf. ftp://ftp.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/JIS/SHIFTJIS.TXT 
@@ -7048,4 +7045,3 @@ static codemap_t mapUnicodeToSJIS[] = {
 	{ 0xFFE3, 0x8150 },
 	{ 0xFFE5, 0x818F },
 };
-
