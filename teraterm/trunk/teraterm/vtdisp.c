@@ -1817,7 +1817,7 @@ void DispConvWinToScreen
 void DispConvScreenToWin
   (int Xs, int Ys, int *Xw, int *Yw)
 // Converts screen coordinate to window cordinate
-//   Xs: horizontal position in screen coordinate (pixels)
+//   Xs: horizontal position in screen coordinate (characters)
 //   Ys: vertical
 //  Output
 //      Xw, Yw: window coordinate
