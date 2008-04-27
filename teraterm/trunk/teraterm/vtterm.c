@@ -3131,6 +3131,14 @@ BOOL MouseReport(int Event, int Button, int Xpos, int Ypos) {
   DispConvWinToScreen(Xpos, Ypos, &x, &y, NULL);
   x++; y++;
 
+  if (x < 1) x = 1;
+  if (y < 1) y = 1;
+
+  if (MouseReportMode != IdMouseTrackDECELR) {
+    if (x > 0xff - 32) x = 0xff - 32;
+    if (x > 0xff - 32) y = 0xff - 32;
+  }
+
   if (ShiftKey())
     modifier = 4;
   else
