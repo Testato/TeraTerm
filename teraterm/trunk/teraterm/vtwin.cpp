@@ -2702,7 +2702,6 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 		MessageBeep(0);
 
 	if (cv.PortType==IdTCPIP) {
-		TTTSet shared_ts;
 		InitTelnet();
 
 		if ((cv.TelFlag) && (ts.TCPPort==ts.TelPort)) {
