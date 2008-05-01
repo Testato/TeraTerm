@@ -954,12 +954,73 @@ WORD LineLen;       /* バッファサイズ */
 
 
   <h3>非アクティブ時のカーソル表示</h3>
+　ウィンドウが非アクティブの場合は、カーソルが消滅します。Windowsの上ではユーザが操作できうるウィンドウは1つであるため、システムキャレットも1つのみ用意されています。通常のオペレーションにおいては、この動作で問題がありません。<br>
+　しかし、ブロードキャストモードを利用する場合、非アクティブのTeraTermウィンドウに対して、コマンドを投入することになります。特に、viなどで複数の端末を同時操作するときは、カーソルが消えていると不都合があります。<br>
+　そこで、ウィンドウが非アクティブの場合においても、カーソルを描画するようにしています。ただし、システムキャレットは使えないので、自前でカーソルを描画する必要があります。TeraTermのウィンドウが非アクティブの場合においても、リモートホストから送られてくるエスケープシーケンスを処理するためにメインエンジンは動いており、常にカーソル位置は更新されています。現在のカーソル位置は、CursorXとCursorYに設定されています。<br>
+　非アクティブ時のカーソル表示は CaretKillFocus() で行っています。このときに表示されるカーソルを「ポリゴンカーソル」と呼んでいます。ts.VTColor[0] は Text color です。非アクティブ状態でカーソル位置が更新されるときは、以前に描いたカーソルを消す必要があるので、そのときは ts.VTColor[1] で表される Background color で再描画することで、以前のカーソルを消去しています。<br>
+　Background colorでポリゴンカーソルを描画すると、ちょうどそのとき背景にあった文字の一部が欠けることがあります。そのため、その文字の再描画を行う必要があり、UpdateCaretKillFocus() で実現しています。当該関数では InvalidateRect() で WM_PAINT を送ることにより、文字の再描画を促しています。<br>
+
+<pre class=code>
+void CaretKillFocus(BOOL show)
+{
+  int CaretX, CaretY;
+  POINT p[5];
+  HPEN oldpen;
+  HDC hdc;
+
+  DispInitDC();
+  hdc = VTDC;
+
+  CaretX = (CursorX-WinOrgX)*FontWidth;
+  CaretY = (CursorY-WinOrgY)*FontHeight;
+
+  p[0].x = CaretX;
+  p[0].y = CaretY;
+  p[1].x = CaretX;
+  p[1].y = CaretY + FontHeight - 1;
+  if (CursorOnDBCS)
+	p[2].x = CaretX + FontWidth*2 - 1;
+  else
+	p[2].x = CaretX + FontWidth - 1;
+  p[2].y = CaretY + FontHeight - 1;
+  if (CursorOnDBCS)
+	p[3].x = CaretX + FontWidth*2 - 1;
+  else
+	p[3].x = CaretX + FontWidth - 1;
+  p[3].y = CaretY;
+  p[4].x = CaretX;
+  p[4].y = CaretY;
+
+  if (show) {  // ポリゴンカーソルを表示（非フォーカス時）
+	  oldpen = SelectObject(hdc, CreatePen(PS_SOLID, 0, ts.VTColor[0]));
+  } else {
+	  oldpen = SelectObject(hdc, CreatePen(PS_SOLID, 0, ts.VTColor[1]));
+  }
+  Polyline(VTDC, p, 5);
+  oldpen = SelectObject(hdc, oldpen);
+  DeleteObject(oldpen);
+
+  DispReleaseDC();
+}
+</pre>
 
 
+  <h3>非アクティブ時のカーソル表示タイミング</h3>
+　非アクティブ時のカーソル表示のタイミングは、いくつかのパターンがあるため、漏れなく対処しておく必要があります。表示タイミングとしては以下のとおりです。
 
+<p>
+<ul>
+  <li>ウィンドウがアクティブ(Active == TRUE)の場合は、ポリゴンキャレット描画関数(CaretKillFocus)を一切呼ばないようにする。</li>
+  <li>CaretOn()では、非アクティブ(Active == FALSE)の場合、ShowCaret()を呼ぶタイミングで、ポリゴンキャレット描画関数(true)を呼ぶ。</li>
+  <li>CaretOff()では、非アクティブ(Active == FALSE)の場合、HideCaret()を呼ぶタイミングで、ポリゴンキャレット描画関数(false)を呼ぶ。</li>
+  <li>IsCaretOn()の判定論理に、(!Active && (CaretStatus==0)) のORを追加する。</li>
+  <li>ChangeCaret()は何もしない</li>
+  <li>WM_KILLFOCUSされるタイミングでは、IsCaretOn()が真であれば、ポリゴンキャレット描画関数(true)を呼ぶ。</li>
+  <li>WM_ACTIVEされるタイミングでは、IsCaretOn()が真であれば、ポリゴンキャレット描画関数(false)を呼ぶ。</li>
+</ul>
+</p>
 
 <br>
-
 
 <hr>
 
