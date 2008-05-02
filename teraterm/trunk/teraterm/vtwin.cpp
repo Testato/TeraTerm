@@ -621,7 +621,7 @@ CVTWindow::CVTWindow()
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = AfxGetInstanceHandle();
-	wc.hIcon = LoadIcon(wc.hInstance, MAKEINTRESOURCE(IDI_VT));
+	wc.hIcon = LoadIcon(wc.hInstance, MAKEINTRESOURCE((ts.VTIcon!=IdIconDefault)?ts.VTIcon:IDI_VT));
 	//wc.hCursor = LoadCursor(NULL,IDC_IBEAM);
 	wc.hCursor = NULL; // マウスカーソルは動的に変更する (2005.4.2 yutaka)
 	wc.hbrBackground = NULL;
@@ -666,7 +666,7 @@ CVTWindow::CVTWindow()
 	// set the small icon
 	::PostMessage(HVTWin,WM_SETICON,0,
 	              (LPARAM)LoadImage(AfxGetInstanceHandle(),
-	              MAKEINTRESOURCE(IDI_VT),
+	              MAKEINTRESOURCE((ts.VTIcon!=IdIconDefault)?ts.VTIcon:IDI_VT),
 	              IMAGE_ICON,16,16,0));
 	MainMenu = NULL;
 	WinMenu = NULL;

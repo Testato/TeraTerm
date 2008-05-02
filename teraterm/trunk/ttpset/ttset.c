@@ -14,6 +14,7 @@
 #include <string.h>
 #include <direct.h>
 #include "ttlib.h"
+#include "tt_res.h"
 
 #define Section "Tera Term"
 
@@ -59,6 +60,60 @@ void id2str(PCHAR far * List, WORD Id, WORD DefId, PCHAR str, int destlen)
 			i = DefId - 1;
 	}
 	strncpy_s(str, destlen, List[i], _TRUNCATE);
+}
+
+int IconName2IconId(const char *name) {
+	int id;
+
+	if (_stricmp(name, "tterm") == 0) {
+		id = IDI_TTERM;
+	}
+	else if (_stricmp(name, "vt") == 0) {
+		id = IDI_VT;
+	}
+	else if (_stricmp(name, "tek") == 0) {
+		id = IDI_TEK;
+	}
+	else if (_stricmp(name, "tterm_classic") == 0) {
+		id = IDI_TTERM_CLASSIC;
+	}
+	else if (_stricmp(name, "vt_classic") == 0) {
+		id = IDI_VT_CLASSIC;
+	}
+	else if (_stricmp(name, "cygterm") == 0) {
+		id = IDI_CYGTERM;
+	}
+	else {
+		id = IdIconDefault;
+	}
+	return id;
+}
+
+void IconId2IconName(char *name, int len, int id) {
+	char *icon;
+	switch (id) {
+		case IDI_TTERM:
+			icon = "tterm";
+			break;
+		case IDI_VT:
+			icon = "vt";
+			break;
+		case IDI_TEK:
+			icon = "tek";
+			break;
+		case IDI_TTERM_CLASSIC:
+			icon = "tterm_classic";
+			break;
+		case IDI_VT_CLASSIC:
+			icon = "vt_classic";
+			break;
+		case IDI_CYGTERM:
+			icon = "cygterm";
+			break;
+		default:
+			icon = "Default";
+	}
+	strncpy_s(name, len, icon, _TRUNCATE);
 }
 
 WORD GetOnOff(PCHAR Sect, PCHAR Key, PCHAR FName, BOOL Default)
@@ -1093,6 +1148,16 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->UTF8BoxDrawing =
 		GetOnOff(Section, "UTF8BoxDrawing", FName, TRUE);
 
+	// VT Window Icon
+	GetPrivateProfileString(Section, "VTIcon", "Default",
+	                        Temp, sizeof(Temp), FName);
+	ts->VTIcon = IconName2IconId(Temp);
+
+	// Tek Window Icon
+	GetPrivateProfileString(Section, "TekIcon", "Default",
+	                        Temp, sizeof(Temp), FName);
+	ts->TekIcon = IconName2IconId(Temp);
+
 #ifdef USE_NORMAL_BGCOLOR
 	// UseNormalBGColor
 	ts->UseNormalBGColor =
@@ -1871,6 +1936,14 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 	// Convert UTF-8 BoxDrawing to DEC Special characters
 	WriteOnOff(Section, "UTF8BoxDrawing", FName, ts->UTF8BoxDrawing);
+
+	// VT Window Icon
+	IconId2IconName(Temp, sizeof(Temp), ts->VTIcon);
+	WritePrivateProfileString(Section, "VTIcon", Temp, FName);
+
+	// Tek Window Icon
+	IconId2IconName(Temp, sizeof(Temp), ts->TekIcon);
+	WritePrivateProfileString(Section, "TekIcon", Temp, FName);
 }
 
 #define VTEditor "VT editor keypad"
@@ -2563,7 +2636,13 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 			ParamPort = IdTCPIP;
 			ParamTel = 1;
 		}
-		else if (_strnicmp(Temp, "/V=", 2) == 0) {	/* invisible */
+		else if (_strnicmp(Temp, "/TEKICON=", 9) == 0) { /* Tek window icon */
+			ts->TekIcon = IconName2IconId(&Temp[9]);
+		}
+		else if (_strnicmp(Temp, "/VTICON=", 8) == 0) {	/* VT window icon */
+			ts->VTIcon = IconName2IconId(&Temp[8]);
+		}
+		else if (_strnicmp(Temp, "/V", 2) == 0) {	/* invisible */
 			ts->HideWindow = 1;
 		}
 		else if (_strnicmp(Temp, "/W=", 3) == 0) {	/* Window title */

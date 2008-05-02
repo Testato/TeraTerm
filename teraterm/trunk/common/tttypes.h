@@ -178,6 +178,9 @@ typedef TCharAttr *PCharAttr;
 #define PF_CONFIRMDISCONN 1
 #define PF_BEEPONCONNECT  2
 
+// iconf flags (used in ts.VTIcon and ts.TekIcon)
+#define IdIconDefault 0
+
 // Eterm lookfeel alphablend structure
 typedef struct {
 	int BGEnable;
@@ -392,6 +395,8 @@ struct tttset {
 	WORD CRSend_ini;
 	WORD LocalEcho_ini;
 	WORD UTF8BoxDrawing;
+	WORD VTIcon;
+	WORD TekIcon;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -821,7 +826,9 @@ typedef TMap far *PMap;
  * - At version 4.59, ttset_memfilemap was replaced with ttset_memfilemap_7.
  *   added tttset.DisablePasteMouseMButton.
  *   added tttset.MouseWheelScrollLine.
- *   added tttset.UTF8BoxDrawing
+ *   added tttset.UTF8BoxDrawing.
+ *   added tttset.VTIcon.
+ *   added tttset.TekIcon.
  *
  * - At version 4.58, ttset_memfilemap was replaced with ttset_memfilemap_6.
  *   added tttset.TranslateWheelToCursor.
@@ -829,8 +836,8 @@ typedef TMap far *PMap;
  *   added tttset.MouseEventTracking.
  *   added tttset.KillFocusCursor.
  *   added tttset.LogHideDialog.
- *   added tttset.TerminalOldWidth
- *   added tttset.TerminalOldHeight
+ *   added tttset.TerminalOldWidth.
+ *   added tttset.TerminalOldHeight.
  *   added tttset.MaximizeBugTweak.
  *   added tttset.ConfirmChangePaste.
  *   added tttset.SaveVTWinPos.
