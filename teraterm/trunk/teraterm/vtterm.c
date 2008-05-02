@@ -2304,7 +2304,7 @@ void DCUserKey(BYTE b)
 
 void IgnoreString(BYTE b)
 {
-  if (ESCFlag && (b=='\\') || (b<=US) || (b==ST))
+  if (ESCFlag && (b=='\\') || (b!=ESC && b<=US) || (b==ST))
     ParseMode = SavedMode;
 
   if (b==ESC) ESCFlag = TRUE;
