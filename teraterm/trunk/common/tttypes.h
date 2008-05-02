@@ -391,6 +391,7 @@ struct tttset {
 	int MouseWheelScrollLine;
 	WORD CRSend_ini;
 	WORD LocalEcho_ini;
+	WORD UTF8BoxDrawing;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -820,6 +821,7 @@ typedef TMap far *PMap;
  * - At version 4.59, ttset_memfilemap was replaced with ttset_memfilemap_7.
  *   added tttset.DisablePasteMouseMButton.
  *   added tttset.MouseWheelScrollLine.
+ *   added tttset.UTF8BoxDrawing
  *
  * - At version 4.58, ttset_memfilemap was replaced with ttset_memfilemap_6.
  *   added tttset.TranslateWheelToCursor.

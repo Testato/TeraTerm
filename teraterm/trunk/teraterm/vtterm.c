@@ -2816,7 +2816,7 @@ static void UnicodeToCP932(unsigned int code, int byte)
 	int ret;
 	char mbchar[32];
 	unsigned char wchar[32];
-	unsigned short cset;
+	unsigned short cset = 0;
 	int i;
 
 #if 0
@@ -2828,7 +2828,9 @@ static void UnicodeToCP932(unsigned int code, int byte)
 	wchar[0] = code & 0xff;
 	wchar[1] = (code >> 8) & 0xff;
 
-	cset = ConvertUnicode(code, mapUnicodeSymbolToDecSp, sizeof(mapUnicodeSymbolToDecSp)/sizeof(mapUnicodeSymbolToDecSp[0]));
+	if (ts.UTF8BoxDrawing) {
+		cset = ConvertUnicode(code, mapUnicodeSymbolToDecSp, sizeof(mapUnicodeSymbolToDecSp)/sizeof(mapUnicodeSymbolToDecSp[0]));
+	}
 	if (cset != 0) {
 		PutDecSp(cset & 0xff);
 	}
