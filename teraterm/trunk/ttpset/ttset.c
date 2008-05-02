@@ -468,7 +468,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 				RGB((BYTE) r, (BYTE) g, (BYTE) b);
 		}
 	}
-#endif							/* NO_ANSI_COLOR_EXTENSION */
+#endif						/* NO_ANSI_COLOR_EXTENSION */
 
 	TmpDC = GetDC(0);			/* Get screen device context */
 	for (i = 0; i <= 1; i++)
@@ -486,7 +486,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 #ifndef NO_ANSI_COLOR_EXTENSION
 	for (i = 0; i < 16; i++)
 		ts->ANSIColor[i] = GetNearestColor(TmpDC, ts->ANSIColor[i]);
-#endif							/* NO_ANSI_COLOR_EXTENSION */
+#endif						/* NO_ANSI_COLOR_EXTENSION */
 	ReleaseDC(0, TmpDC);
 
 	/* TEK color emulation */
@@ -530,10 +530,12 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->MetaKey = GetOnOff(Section, "MetaKey", FName, FALSE);
 
 	/* Application Keypad */
-	ts->DisableAppKeypad = GetOnOff(Section, "DisableAppKeypad", FName, FALSE);
+	ts->DisableAppKeypad =
+		GetOnOff(Section, "DisableAppKeypad", FName, FALSE);
 
 	/* Application Cursor */
-	ts->DisableAppCursor = GetOnOff(Section, "DisableAppCursor", FName, FALSE);
+	ts->DisableAppCursor =
+		GetOnOff(Section, "DisableAppCursor", FName, FALSE);
 
 	/* Russian keyboard type */
 	GetPrivateProfileString(Section, "RussKeyb", "",
@@ -597,7 +599,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 
 	/* Telnet terminal type */
 	GetPrivateProfileString(Section, "TermType", "xterm", ts->TermType,
-							sizeof(ts->TermType), FName);
+	                        sizeof(ts->TermType), FName);
 
 	/* TCP port num */
 	ts->TCPPort =
@@ -653,7 +655,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 
 	/* XMODEM 受信コマンド (2007.12.21 yutaka) */
 	GetPrivateProfileString(Section, "XModemRcvCommand", "",
-	                        ts->XModemRcvCommand, sizeof(ts->XModemRcvCommand), FName);
+	                        ts->XModemRcvCommand,
+	                        sizeof(ts->XModemRcvCommand), FName);
 
 	/* Default directory for file transfer */
 	GetPrivateProfileString(Section, "FileDir", "",
@@ -708,7 +711,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	/* Beep on connection & disconnection -- special option */
 	ts->PortFlag |=
 		PF_BEEPONCONNECT * GetOnOff(Section, "BeepOnConnect", FName,
-									FALSE);
+		                            FALSE);
 
 	/* Auto B-Plus activation -- special option */
 	ts->FTFlag |= FT_BPAUTO * GetOnOff(Section, "BPAuto", FName, FALSE);
@@ -726,12 +729,13 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->LogFlag |= LOG_BP * GetOnOff(Section, "BPLog", FName, FALSE);
 
 	/* Clear serial port buffer when port opening -- special option */
-	ts->ClearComBuffOnOpen = GetOnOff(Section, "ClearComBuffOnOpen", FName, TRUE);
+	ts->ClearComBuffOnOpen =
+		GetOnOff(Section, "ClearComBuffOnOpen", FName, TRUE);
 
 	/* Confirm disconnection -- special option */
 	ts->PortFlag |=
-		PF_CONFIRMDISCONN * GetOnOff(Section, "ConfirmDisconnect", FName,
-		                             TRUE);
+		PF_CONFIRMDISCONN * GetOnOff(Section, "ConfirmDisconnect",
+		                             FName, TRUE);
 
 	/* Ctrl code in Kanji -- special option */
 	ts->TermFlag |=
@@ -811,7 +815,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	/* Printer port for pass-thru printing */
 	/*   -- special option */
 	GetPrivateProfileString(Section, "PassThruPort", "",
-							ts->PrnDev, sizeof(ts->PrnDev), FName);
+	                        ts->PrnDev, sizeof(ts->PrnDev), FName);
 
 	/* Printer Font --- special option */
 	GetPrivateProfileString(Section, "PrnFont", "",
@@ -1024,13 +1028,13 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	GetPrivateProfileString(Section, "CygwinDirectory ", "c:\\cygwin",
 	                        Temp, sizeof(Temp), FName);
 	strncpy_s(ts->CygwinDirectory, sizeof(ts->CygwinDirectory), Temp,
-			  _TRUNCATE);
+	          _TRUNCATE);
 
 	// Viewlog Editor path
 	GetPrivateProfileString(Section, "ViewlogEditor ", "notepad.exe",
 	                        Temp, sizeof(Temp), FName);
 	strncpy_s(ts->ViewlogEditor, sizeof(ts->ViewlogEditor), Temp,
-			  _TRUNCATE);
+	          _TRUNCATE);
 
 	// Locale for UTF-8
 	GetPrivateProfileString(Section, "Locale ", DEFAULT_LOCALE,
@@ -1084,6 +1088,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	// Maximized bug tweak
 	ts->MaximizedBugTweak =
 		GetOnOff(Section, "MaximizedBugTweak", FName, TRUE);
+
+	// Convert UTF-8 BoxDrawing to DEC Special characters
+	ts->UTF8BoxDrawing =
+		GetOnOff(Section, "UTF8BoxDrawing", FName, TRUE);
 
 #ifdef USE_NORMAL_BGCOLOR
 	// UseNormalBGColor
@@ -1256,7 +1264,7 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 	// added ConfirmChangePaste
 	WriteOnOff(Section, "ConfirmChangePaste", FName,
-		ts->ConfirmChangePaste);
+	           ts->ConfirmChangePaste);
 
 	// added SelectOnlyByLButton (2007.11.20 maya)
 	WriteOnOff(Section, "SelectOnlyByLButton", FName,
@@ -1361,8 +1369,8 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 		ts->TmpColor[0][i * 3 + 2] = GetBValue(ts->VTColor[i]);
 	}
 	WriteInt6(Section, "VTColor", FName,
-			  ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
-			  ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
+	          ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
+	          ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
 
 	/* VT bold color */
 	for (i = 0; i <= 1; i++) {
@@ -1371,8 +1379,8 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 		ts->TmpColor[0][i * 3 + 2] = GetBValue(ts->VTBoldColor[i]);
 	}
 	WriteInt6(Section, "VTBoldColor", FName,
-			  ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
-			  ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
+	          ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
+	          ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
 
 	/* VT blink color */
 	for (i = 0; i <= 1; i++) {
@@ -1381,12 +1389,12 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 		ts->TmpColor[0][i * 3 + 2] = GetBValue(ts->VTBlinkColor[i]);
 	}
 	WriteInt6(Section, "VTBlinkColor", FName,
-			  ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
-			  ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
+	          ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
+	          ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
 
 	/* start - ishizaki */
 	WriteOnOff(Section, "EnableClickableUrl", FName,
-			   ts->EnableClickableUrl);
+	           ts->EnableClickableUrl);
 
 	/* URL color */
 	for (i = 0; i <= 1; i++) {
@@ -1395,8 +1403,8 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 		ts->TmpColor[0][i * 3 + 2] = GetBValue(ts->URLColor[i]);
 	}
 	WriteInt6(Section, "URLColor", FName,
-			  ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
-			  ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
+	          ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
+	          ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
 	/* end - ishizaki */
 
 	/* TEK Color */
@@ -1407,7 +1415,7 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	}
 	WriteInt6(Section, "TEKColor", FName,
 	          ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
-              ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
+	          ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
 
 	/* TEK color emulation */
 	WriteOnOff(Section, "TEKColorEmulation", FName, ts->TEKColorEmu);
@@ -1540,11 +1548,11 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 	/* Default Log file name (2006.8.28 maya) */
 	WritePrivateProfileString(Section, "LogDefaultName",
-							  ts->LogDefaultName, FName);
+	                          ts->LogDefaultName, FName);
 
 	/* Default Log file path (2007.5.30 maya) */
 	WritePrivateProfileString(Section, "LogDefaultPath",
-							  ts->LogDefaultPath, FName);
+	                          ts->LogDefaultPath, FName);
 
 	/* Auto start logging (2007.5.31 maya) */
 	WriteOnOff(Section, "LogAutoStart", FName, ts->LogAutoStart);
@@ -1566,27 +1574,28 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	WriteOnOff(Section, "XmodemBin", FName, ts->XmodemBin);
 
 	/* XMODEM 受信コマンド (2007.12.21 yutaka) */
-	WritePrivateProfileString(Section, "XmodemRcvCommand", ts->XModemRcvCommand, FName);
+	WritePrivateProfileString(Section, "XmodemRcvCommand",
+	                          ts->XModemRcvCommand, FName);
 
 	/* Default directory for file transfer */
 	WritePrivateProfileString(Section, "FileDir", ts->FileDir, FName);
 
 	/* filter on file send (2007.6.5 maya) */
 	WritePrivateProfileString(Section, "FileSendFilter",
-							  ts->FileSendFilter, FName);
+	                          ts->FileSendFilter, FName);
 
 /*------------------------------------------------------------------*/
 	/* 8 bit control code flag  -- special option */
 	WriteOnOff(Section, "Accept8BitCtrl", FName,
-			   (WORD) (ts->TermFlag & TF_ACCEPT8BITCTRL));
+	           (WORD) (ts->TermFlag & TF_ACCEPT8BITCTRL));
 
 	/* Wrong sequence flag  -- special option */
 	WriteOnOff(Section, "AllowWrongSequence", FName,
-			   (WORD) (ts->TermFlag & TF_ALLOWWRONGSEQUENCE));
+	           (WORD) (ts->TermFlag & TF_ALLOWWRONGSEQUENCE));
 
 	/* Auto file renaming --- special option */
 	WriteOnOff(Section, "AutoFileRename", FName,
-			   (WORD) (ts->FTFlag & FT_RENAME));
+	           (WORD) (ts->FTFlag & FT_RENAME));
 
 	/* Auto text copy --- special option */
 	WriteOnOff(Section, "AutoTextCopy", FName, ts->AutoTextCopy);
@@ -1858,8 +1867,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	           ts->MouseEventTracking);
 
 	// Maximized bug tweak
-	WriteOnOff(Section, "MaximizedBugTweak", FName,
-	           ts->MaximizedBugTweak);
+	WriteOnOff(Section, "MaximizedBugTweak", FName, ts->MaximizedBugTweak);
+
+	// Convert UTF-8 BoxDrawing to DEC Special characters
+	WriteOnOff(Section, "UTF8BoxDrawing", FName, ts->UTF8BoxDrawing);
 }
 
 #define VTEditor "VT editor keypad"
