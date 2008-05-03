@@ -1055,6 +1055,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->ConfirmChangePaste =
 		GetOnOff(Section, "ConfirmChangePaste", FName, FALSE);
 
+	// added ScrollWindowClearScreen (2008.5.3 yutaka)
+	ts->ScrollWindowClearScreen =
+		GetOnOff(Section, "ScrollWindowClearScreen", FName, TRUE);
+
 	// added SelectOnlyByLButton (2007.11.20 maya)
 	ts->SelectOnlyByLButton =
 		GetOnOff(Section, "SelectOnlyByLButton", FName, TRUE);
@@ -1330,6 +1334,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// added ConfirmChangePaste
 	WriteOnOff(Section, "ConfirmChangePaste", FName,
 	           ts->ConfirmChangePaste);
+
+	// added ScrollWindowClearScreen
+	WriteOnOff(Section, "ScrollWindowClearScreen", FName,
+		ts->ScrollWindowClearScreen);
 
 	// added SelectOnlyByLButton (2007.11.20 maya)
 	WriteOnOff(Section, "SelectOnlyByLButton", FName,

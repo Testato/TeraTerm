@@ -1246,7 +1246,9 @@ void CSScreenErase()
 		// <ESC>[H(Cursor in left upper corner)によりカーソルが左上隅を指している場合、
 		// <ESC>[Jは<ESC>[2Jと同じことなので、処理を分け、現行バッファをスクロールアウト
 		// させるようにする。(2005.5.29 yutaka)
-		if (CursorX == 0 && CursorY == 0) {
+		// コンフィグレーションで切り替えられるようにした。(2008.5.3 yutaka)
+		if (ts.ScrollWindowClearScreen && 
+			(CursorX == 0 && CursorY == 0)) {
 			//	Erase screen (scroll out)
 			BuffClearScreen();
 			UpdateWindow(HVTWin);
