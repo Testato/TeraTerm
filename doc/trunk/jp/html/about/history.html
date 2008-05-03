@@ -24,7 +24,7 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.59">2008.4.28 (Ver 4.59 not-released)</a>
+  <li class="history"><a name="teraterm_4.59">2008.5.3 (Ver 4.59 not-released)</a>
     <ul>
       <li>前回のリリースでマウスの中ボタンのクリックによる貼り付けを削除したが、元に戻した。
         <ul>
@@ -48,6 +48,12 @@
         <ul>
           <li>KEYBOARD.CNF に ScrollLock エントリを追加した。デフォルトは70。</li>
         </ul></li>
+        
+      <li>&lt;ESC&gt;[Jによる画面クリア時にカレントバッファをスクロールアウトさせるようにするかどうかを、コンフィグレーションできるようにした。
+        <ul>
+          <li>teraterm.ini に ScrollWindowClearScreen を追加した。デフォルトはon。</li>
+        </ul></li>
+        
       <li>マクロコマンド '<a href="../macro/command/strmatch.html">strmatch</a>' を追加した。</li>
       <li>マクロコマンド '<a href="../macro/command/setrts.html">setrts</a>','<a href="../macro/command/setdtr.html">setdtr</a>' を追加した。</li>
       <li>ブロードキャストコマンドにおいて、連続送信される WM_COPYDATA を正しく処理できるようにした。Salarm氏に感謝します。</li>
