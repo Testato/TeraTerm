@@ -24,7 +24,7 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.59">2008.5.3 (Ver 4.59 not-released)</a>
+  <li class="history"><a name="teraterm_4.59">2008.5.6 (Ver 4.59 not-released)</a>
     <ul>
       <li>前回のリリースでマウスの中ボタンのクリックによる貼り付けを削除したが、元に戻した。
         <ul>
@@ -52,6 +52,11 @@
       <li>&lt;ESC&gt;[Jによる画面クリア時にカレントバッファをスクロールアウトさせるようにするかどうかを、コンフィグレーションできるようにした。
         <ul>
           <li>teraterm.ini に ScrollWindowClearScreen を追加した。デフォルトはon。</li>
+        </ul></li>
+
+      <li>最下行でだけ自動スクロールさせるようにした（何か表示されるときにスクロールバックをリセットしない）。Salarm氏に感謝します。
+        <ul>
+          <li>teraterm.ini に <a href="../menu/setup-additional.html">AutoScrollOnlyInBottomLine</a> を追加した。デフォルトはon。</li>
         </ul></li>
         
       <li>マクロコマンド '<a href="../macro/command/strmatch.html">strmatch</a>' を追加した。</li>
