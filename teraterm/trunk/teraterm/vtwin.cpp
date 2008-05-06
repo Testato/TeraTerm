@@ -1858,6 +1858,12 @@ void CVTWindow::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	BYTE KeyState[256];
 	MSG M;
 
+	/* 最下行でだけ自動スクロールする設定の場合は
+	   キー入力でスクロールさせる */
+	if (ts.AutoScrollOnlyInBottomLine != 0 && WinOrgY != 0) {
+		DispVScroll(SCROLL_BOTTOM, 0);
+	}
+
 	if (KeyDown(HVTWin,nChar,nRepCnt,nFlags & 0x1ff))
 		return;
 
@@ -4339,6 +4345,7 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 				SendDlgItemMessage(hDlgWnd, IDC_ACCEPT_BROADCAST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0)); // 337: 2007/03/20
 				SendDlgItemMessage(hDlgWnd, IDC_CONFIRM_CHANGE_PASTE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 				SendDlgItemMessage(hDlgWnd, IDC_MOUSEWHEEL_SCROLL_LINE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+				SendDlgItemMessage(hDlgWnd, IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 			}
 			else {
 				DlgGeneralFont = NULL;
@@ -4376,6 +4383,10 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			GetDlgItemText(hDlgWnd, IDC_MOUSEWHEEL_SCROLL_LINE, uimsg, sizeof(uimsg));
 			get_lang_msg("DLG_TAB_GENERAL_IDC_MOUSEWHEEL_SCROLL_LINE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 			SetDlgItemText(hDlgWnd, IDC_MOUSEWHEEL_SCROLL_LINE, ts.UIMsg);
+
+			GetDlgItemText(hDlgWnd, IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE, uimsg, sizeof(uimsg));
+			get_lang_msg("DLG_TAB_GENERAL_AUTOSCROLL_ONLY_IN_BOTTOM_LINE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+			SetDlgItemText(hDlgWnd, IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE, ts.UIMsg);
 
 			// (1)Enable continued-line copy
 			hWnd = GetDlgItem(hDlgWnd, IDC_LINECOPY);
@@ -4452,6 +4463,14 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 			hWnd = GetDlgItem(hDlgWnd, IDC_SCROLL_LINE);
 			_snprintf_s(buf, sizeof(buf), "%d", ts.MouseWheelScrollLine);
 			SendMessage(hWnd, WM_SETTEXT , 0, (LPARAM)buf);
+
+			// (11)IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE
+			hWnd = GetDlgItem(hDlgWnd, IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE);
+			if (ts.AutoScrollOnlyInBottomLine == TRUE) {
+				SendMessage(hWnd, BM_SETCHECK, BST_CHECKED, 0);
+			} else {
+				SendMessage(hWnd, BM_SETCHECK, BST_UNCHECKED, 0);
+			}
 
 			// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
 			SetFocus(GetDlgItem(hDlgWnd, IDC_LINECOPY));
@@ -4550,6 +4569,14 @@ static LRESULT CALLBACK OnTabSheetGeneralProc(HWND hDlgWnd, UINT msg, WPARAM wp,
 					val = atoi(buf);
 					if (val > 0) 
 						ts.MouseWheelScrollLine = val;
+
+					// (11)IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE 
+					hWnd = GetDlgItem(hDlgWnd, IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE);
+					if (SendMessage(hWnd, BM_GETCHECK, 0, 0) == BST_CHECKED) {
+						ts.AutoScrollOnlyInBottomLine = TRUE;
+					} else {
+						ts.AutoScrollOnlyInBottomLine = FALSE;
+					}
 
 					EndDialog(hDlgWnd, IDOK);
 					break;

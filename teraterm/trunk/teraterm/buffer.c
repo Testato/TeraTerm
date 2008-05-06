@@ -1651,7 +1651,10 @@ void MoveCursor(int Xnew, int Ynew)
   CursorY = Ynew;
   Wrap = FALSE;
 
-  DispScrollToCursor(CursorX, CursorY);
+  /* 最下行でだけ自動スクロールする*/
+  if (ts.AutoScrollOnlyInBottomLine == 0 || WinOrgY == 0) {
+    DispScrollToCursor(CursorX, CursorY);
+  }
 }
 
 void MoveRight()
@@ -1659,7 +1662,10 @@ void MoveRight()
   this procedure must be called from DispChar&DispKanji only */
 {
   CursorX++;
-  DispScrollToCursor(CursorX, CursorY);
+  /* 最下行でだけ自動スクロールする */
+  if (ts.AutoScrollOnlyInBottomLine == 0 || WinOrgY == 0) {
+    DispScrollToCursor(CursorX, CursorY);
+  }
 }
 
 void BuffSetCaretWidth()
@@ -1712,6 +1718,10 @@ void BuffScrollNLines(int n)
   if ((CursorTop == 0) && (CursorBottom == NumOfLines-1))
   {
     WinOrgY = WinOrgY-n;
+    /* 最下行でだけ自動スクロールする */
+	if (ts.AutoScrollOnlyInBottomLine != 0 && NewOrgY != 0) {
+		NewOrgY = WinOrgY;
+	}
     BuffScroll(n,CursorBottom);
     DispCountScroll(n);
   }

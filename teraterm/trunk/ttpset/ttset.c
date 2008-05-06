@@ -1172,6 +1172,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 			ts->VTBlinkColor[1] = ts->URLColor[1] = ts->VTColor[1];
 	}
 #endif
+
+	// AutoScrollOnlyInBottomLine
+	ts->AutoScrollOnlyInBottomLine =
+		GetOnOff(Section, "AutoScrollOnlyInBottomLine", FName, FALSE);
 }
 
 void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
@@ -1952,6 +1956,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// Tek Window Icon
 	IconId2IconName(Temp, sizeof(Temp), ts->TekIcon);
 	WritePrivateProfileString(Section, "TekIcon", Temp, FName);
+
+	// AutoScrollOnlyInBottomLine
+	WriteOnOff(Section, "AutoScrollOnlyInBottomLine", FName,
+		ts->AutoScrollOnlyInBottomLine);
 }
 
 #define VTEditor "VT editor keypad"

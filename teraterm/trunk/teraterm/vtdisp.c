@@ -3045,6 +3045,18 @@ void DispUpdateScroll()
   if (NewOrgY>BuffEnd-WinHeight-PageStart)
     NewOrgY = BuffEnd-WinHeight-PageStart;
 
+  /* 最下行でだけ自動スクロールする設定の場合
+     NewOrgYが変化していなくてもバッファ行数が変化するので更新する */
+  if (ts.AutoScrollOnlyInBottomLine != 0)
+  {
+    if ((BuffEnd==WinHeight) &&
+        (ts.EnableScrollBuff>0))
+      SetScrollRange(HVTWin,SB_VERT,0,1,TRUE);
+    else
+      SetScrollRange(HVTWin,SB_VERT,0,BuffEnd-WinHeight,FALSE);
+    SetScrollPos(HVTWin,SB_VERT,NewOrgY+PageStart,TRUE);
+  }
+
   if ((NewOrgX==WinOrgX) &&
       (NewOrgY==WinOrgY)) return;
 
@@ -3079,7 +3091,7 @@ void DispUpdateScroll()
   if (NewOrgX!=WinOrgX)
     SetScrollPos(HVTWin,SB_HORZ,NewOrgX,TRUE);
 
-  if (NewOrgY!=WinOrgY)
+  if (ts.AutoScrollOnlyInBottomLine == 0 && NewOrgY!=WinOrgY)
   {
     if ((BuffEnd==WinHeight) &&
         (ts.EnableScrollBuff>0))

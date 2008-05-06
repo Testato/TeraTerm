@@ -398,6 +398,7 @@ struct tttset {
 	WORD VTIcon;
 	WORD TekIcon;
 	WORD ScrollWindowClearScreen;
+	WORD AutoScrollOnlyInBottomLine;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -831,6 +832,7 @@ typedef TMap far *PMap;
  *   added tttset.VTIcon.
  *   added tttset.TekIcon.
  *   added tttset.ScrollWindowClearScreen.
+ *   added tttset.AutoScrollOnlyInBottomLine.
  *
  * - At version 4.58, ttset_memfilemap was replaced with ttset_memfilemap_6.
  *   added tttset.TranslateWheelToCursor.

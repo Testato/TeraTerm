@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by c:\usr\cvs\teraterm\source\teraterm\ttermpro.rc
+// Used by d:\MyProjects\teraterm\teraterm\ttermpro.rc
 //
 #define IDI_TTERM                       100
 #define IDR_ACC                         100
@@ -86,6 +86,7 @@
 #define IDC_DEFAULTPATH_PUSH            1061
 #define IDC_DEFAULTPATH_EDITOR          1062
 #define IDC_DEFAULTPATH_LABEL           1063
+#define IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE 1064
 #define IDD_PRNABORTDLG                 2100
 #define IDD_FILETRANSDLG                2200
 #define IDC_TRANSFNAME                  2201
