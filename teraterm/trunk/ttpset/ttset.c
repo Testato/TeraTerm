@@ -2749,6 +2749,8 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 		ts->PortType = IdSerial;
 		if (ParamCom > 0) {
 			ts->ComPort = ParamCom;
+ 		    /* Don't display new connection dialog if COM port is specified explicitly (2006.9.15 maya) */ 
+			ts->ComAutoConnect = TRUE; 
 		}
 		if (ParamBaud != IdBaudNone)
 			ts->Baud = ParamBaud;
