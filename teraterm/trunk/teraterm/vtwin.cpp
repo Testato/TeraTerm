@@ -1858,12 +1858,6 @@ void CVTWindow::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	BYTE KeyState[256];
 	MSG M;
 
-	/* 最下行でだけ自動スクロールする設定の場合は
-	   キー入力でスクロールさせる */
-	if (ts.AutoScrollOnlyInBottomLine != 0 && WinOrgY != 0) {
-		DispVScroll(SCROLL_BOTTOM, 0);
-	}
-
 	if (KeyDown(HVTWin,nChar,nRepCnt,nFlags & 0x1ff))
 		return;
 
