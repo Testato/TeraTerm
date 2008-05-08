@@ -40,7 +40,8 @@
       <li>'Paste&lt;CR&gt;' メニューが選択されたときにも確認ダイアログを表示するようにした。</li>
       <li>マウスホイールによるスクロール行数を設定できるようにした。
         <ul>
-          <li>teraterm.ini に <a href="../menu/setup-additional.html">MouseWheelScrollLine</a> を追加した。デフォルトは3。</li>
+          <li>teraterm.ini に MouseWheelScrollLine エントリを追加した。デフォルトは3。</li>
+          <li><a href="../menu/setup-additional.html">Additional settings ダイアログ</a>にエディットコントロールを追加した。</li>
         </ul></li>
       <li>以前読み込んだ .ttl ファイルのディレクトリを記憶するようにした。</li>
       <li>LogMeTT.exe が存在しない場合、[File] メニューに [LogMeTT] を表示しないようにした。</li>
@@ -48,17 +49,15 @@
         <ul>
           <li>KEYBOARD.CNF に ScrollLock エントリを追加した。デフォルトは70。</li>
         </ul></li>
-        
-      <li>&lt;ESC&gt;[Jによる画面クリア時にカレントバッファをスクロールアウトさせるようにするかどうかを、コンフィグレーションできるようにした。
+      <li>&lt;ESC&gt;[Jによる画面クリア時にカレントバッファをスクロールアウトさせるようにするかどうかを、設定できるようにした。
         <ul>
           <li>teraterm.ini に ScrollWindowClearScreen を追加した。デフォルトはon。</li>
         </ul></li>
-
       <li>最下行でだけ自動スクロールさせるようにした（何か表示されるときにスクロールバックをリセットしない）。Salarm氏に感謝します。
         <ul>
-          <li>teraterm.ini に <a href="../menu/setup-additional.html">AutoScrollOnlyInBottomLine</a> を追加した。デフォルトはon。</li>
+          <li>teraterm.ini に AutoScrollOnlyInBottomLine エントリを追加した。デフォルトはon。</li>
+          <li><a href="../menu/setup-additional.html">Additional settings ダイアログ</a>にチェックボックスを追加した。</li>
         </ul></li>
-        
       <li>マクロコマンド '<a href="../macro/command/strmatch.html">strmatch</a>' を追加した。</li>
       <li>マクロコマンド '<a href="../macro/command/setrts.html">setrts</a>','<a href="../macro/command/setdtr.html">setdtr</a>' を追加した。</li>
       <li>ブロードキャストコマンドにおいて、連続送信される WM_COPYDATA を正しく処理できるようにした。Salarm氏に感謝します。</li>
@@ -209,7 +208,7 @@
       <li>マウスドラッグによる選択を、左ボタンでのみ有効にする機能を追加した。
         <ul>
           <li>teraterm.ini に SelectOnlyByLButton エントリを追加した。デフォルトは on。</li>
-          <li><a href="../menu/setup-additional.html">キーボード設定ダイアログ</a>にチェックボックスを追加した。</li>
+          <li><a href="../menu/setup-additional.html">Additional settings ダイアログ</a>にチェックボックスを追加した。</li>
         </ul></li>
       <li>UTF-8エンコーディングにおいて、単独の合成用濁点(U+3099)/合成用半濁点(U+309A)を、濁点(U+309B)/半濁点(U+309C)として表示するようにした。</li>
       <li>マクロコマンド <a href="../macro/command/clipb2var.html">clipb2var</a>で、クリップボードのテキストデータの256バイト目以降を取得出来るようにした。
