@@ -433,7 +433,7 @@ BEGIN
         MENUITEM "S&erial port...",             ID_SETUP_SERIALPORT
         MENUITEM "T&CP/IP...",                  ID_SETUP_TCPIP
         MENUITEM "&General...",                 ID_SETUP_GENERAL
-        MENUITEM "A&dditional settings",        ID_SETUP_ADDITIONALSETTINGS
+        MENUITEM "A&dditional settings...",     ID_SETUP_ADDITIONALSETTINGS
         MENUITEM SEPARATOR
         MENUITEM "&Save setup...",              ID_SETUP_SAVE
         MENUITEM "&Restore setup...",           ID_SETUP_RESTORE
