@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by d:\MyProjects\teraterm\teraterm\ttermpro.rc
+// Used by c:\usr\cvs\teraterm\teraterm\ttermpro.rc
 //
 #define IDI_TTERM                       100
 #define IDR_ACC                         100
@@ -14,7 +14,6 @@
 #define IDD_EXTERNAL_SETUP              111
 #define IDD_TABSHEET_GENERAL            111
 #define IDD_BROADCAST_DIALOG            112
-#define IDD_ADDITIONAL_SETUPTAB         114
 #define IDD_TABSHEET_VISUAL             116
 #define IDD_TABSHEET_LOG                117
 #define IDD_TABSHEET_CYGWIN             118
@@ -47,7 +46,6 @@
 #define IDC_VIEWLOG_PATH                1025
 #define IDC_DEFAULTNAME_LABEL           1026
 #define IDC_DEFAULTNAME_EDITOR          1027
-#define IDC_SETUP_TAB                   1028
 #define IDC_ETERM_LOOKFEEL              1030
 #define IDC_DISABLE_PASTE_RBUTTON       1032
 #define IDC_CLICKABLE_URL               1033

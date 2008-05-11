@@ -223,6 +223,10 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
+				RelativePath=".\addsetting.cpp"
+				>
+			</File>
+			<File
 				RelativePath="filesys.cpp"
 				>
 			</File>
@@ -263,6 +267,10 @@
 			Name="Resource Files"
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe"
 			>
+			<File
+				RelativePath="..\..\cygterm\cygterm.ico"
+				>
+			</File>
 			<File
 				RelativePath="..\common\tek.ico"
 				>
@@ -372,6 +380,10 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl"
 			>
+			<File
+				RelativePath=".\addsetting.h"
+				>
+			</File>
 			<File
 				RelativePath="..\common\tt_res.h"
 				>
