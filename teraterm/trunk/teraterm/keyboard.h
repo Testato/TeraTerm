@@ -7,10 +7,15 @@
 extern "C" {
 #endif
 
+/* KeyDown return type */
+#define KEYDOWN_COMMOUT	1	/* リモートに送信（BS Enter Spaceなど） */
+#define KEYDOWN_CONTROL	2	/* Ctrl,Shiftなど */
+#define KEYDOWN_OTHER	0	/* その他 */
+
 void SetKeyMap();
 void ClearUserKey();
 void DefineUserKey(int NewKeyId, PCHAR NewKeyStr, int NewKeyLen);
-BOOL KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan);
+int KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan);
 void KeyCodeSend(WORD KCode, WORD Count);
 void KeyUp(WORD VKey);
 BOOL ShiftKey();

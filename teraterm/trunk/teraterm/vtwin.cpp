@@ -1574,6 +1574,12 @@ void CVTWindow::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 		if (ts.LocalEcho>0)
 			CommTextEcho(&cv,&Code,1);
 	}
+
+	/* 最下行でだけ自動スクロールする設定の場合
+	   リモートへのキー入力送信でスクロールさせる */
+	if (ts.AutoScrollOnlyInBottomLine != 0 && WinOrgY != 0) {
+		DispVScroll(SCROLL_BOTTOM, 0);
+	}
 }
 
 /* copy from ttset.c*/
@@ -1858,8 +1864,20 @@ void CVTWindow::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	BYTE KeyState[256];
 	MSG M;
 
-	if (KeyDown(HVTWin,nChar,nRepCnt,nFlags & 0x1ff))
+	switch (KeyDown(HVTWin,nChar,nRepCnt,nFlags & 0x1ff)) {
+	case KEYDOWN_OTHER:
+		break;
+	case KEYDOWN_CONTROL:
 		return;
+	case KEYDOWN_COMMOUT:
+		/* 最下行でだけ自動スクロールする設定の場合
+		   リモートへのキー入力送信でスクロールさせる */
+		if (ts.AutoScrollOnlyInBottomLine != 0 && WinOrgY != 0) {
+			DispVScroll(SCROLL_BOTTOM, 0);
+		}
+		return;
+	}
+
 
 	if ((ts.MetaKey>0) && ((nFlags & 0x2000) != 0)) {
 		/* for Ctrl+Alt+Key combination */

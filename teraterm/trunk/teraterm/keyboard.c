@@ -100,7 +100,7 @@ void DefineUserKey(int NewKeyId, PCHAR NewKeyStr, int NewKeyLen)
   FuncKeyLen[NewKeyId] = NewKeyLen;
 }
 
-BOOL KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan)
+int KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan)
 {
   WORD Key;
   MSG M;
@@ -113,11 +113,11 @@ BOOL KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan)
   WORD CodeType;
   WORD wId;
 
-  if (VKey==VK_PROCESSKEY) return TRUE;
+  if (VKey==VK_PROCESSKEY) return KEYDOWN_CONTROL;
 
   if ((VKey==VK_SHIFT) ||
       (VKey==VK_CONTROL) ||
-      (VKey==VK_MENU)) return TRUE;
+      (VKey==VK_MENU)) return KEYDOWN_CONTROL;
 
   /* debug mode */
   if ((ts.Debug>0) && (VKey == VK_ESCAPE) &&
@@ -127,13 +127,13 @@ BOOL KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan)
     DebugFlag = ! DebugFlag;
     CodeCount = 0;
     PeekMessage((LPMSG)&M,HWin,WM_CHAR,WM_CHAR,PM_REMOVE);
-    return TRUE;
+    return KEYDOWN_CONTROL;
   }
 
   if (! AutoRepeatMode && (PreviousKey==VKey))
   {
     PeekMessage((LPMSG)&M,HWin,WM_CHAR,WM_CHAR,PM_REMOVE);
-    return TRUE;
+    return KEYDOWN_CONTROL;
   }
 
   PreviousKey = VKey;
@@ -283,7 +283,7 @@ BOOL KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan)
               AppliCursorMode && ! ts.DisableAppCursor,
               Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
 
-  if (CodeLength==0) return FALSE;
+  if (CodeLength==0) return KEYDOWN_OTHER;
 
   if (VKey==VK_NUMLOCK)
   {
@@ -331,7 +331,7 @@ BOOL KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan)
 	break;
     }
   }
-  return TRUE;
+  return (CodeType == IdBinary || CodeType == IdText)? KEYDOWN_COMMOUT: KEYDOWN_CONTROL;
 }
 
 void KeyCodeSend(WORD KCode, WORD Count)
