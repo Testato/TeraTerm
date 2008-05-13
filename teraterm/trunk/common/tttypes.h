@@ -178,7 +178,7 @@ typedef TCharAttr *PCharAttr;
 #define PF_CONFIRMDISCONN 1
 #define PF_BEEPONCONNECT  2
 
-// iconf flags (used in ts.VTIcon and ts.TekIcon)
+// iconf flags (used in ts.VTIcon and ts.TEKIcon)
 #define IdIconDefault 0
 
 // Eterm lookfeel alphablend structure
@@ -396,7 +396,7 @@ struct tttset {
 	WORD LocalEcho_ini;
 	WORD UTF8BoxDrawing;
 	WORD VTIcon;
-	WORD TekIcon;
+	WORD TEKIcon;
 	WORD ScrollWindowClearScreen;
 	WORD AutoScrollOnlyInBottomLine;
 };
@@ -830,7 +830,7 @@ typedef TMap far *PMap;
  *   added tttset.MouseWheelScrollLine.
  *   added tttset.UTF8BoxDrawing.
  *   added tttset.VTIcon.
- *   added tttset.TekIcon.
+ *   added tttset.TEKIcon.
  *   added tttset.ScrollWindowClearScreen.
  *   added tttset.AutoScrollOnlyInBottomLine.
  *

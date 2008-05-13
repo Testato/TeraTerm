@@ -50,7 +50,7 @@ CTEKWindow::CTEKWindow()
   wc.cbClsExtra = 0;
   wc.cbWndExtra = 0;
   wc.hInstance = AfxGetInstanceHandle();
-  wc.hIcon = LoadIcon(wc.hInstance, MAKEINTRESOURCE((ts.TekIcon!=IdIconDefault)?ts.TekIcon:IDI_TEK));
+  wc.hIcon = LoadIcon(wc.hInstance, MAKEINTRESOURCE((ts.TEKIcon!=IdIconDefault)?ts.TEKIcon:IDI_TEK));
   wc.hCursor = LoadCursor(NULL,IDC_ARROW);
   wc.hbrBackground = NULL;
   wc.lpszMenuName = NULL;
@@ -77,7 +77,7 @@ CTEKWindow::CTEKWindow()
   // set the small icon
   ::PostMessage(HTEKWin,WM_SETICON,0,
     (LPARAM)LoadImage(AfxGetInstanceHandle(),
-      MAKEINTRESOURCE((ts.TekIcon!=IdIconDefault)?ts.TekIcon:IDI_TEK),
+      MAKEINTRESOURCE((ts.TEKIcon!=IdIconDefault)?ts.TEKIcon:IDI_TEK),
       IMAGE_ICON,16,16,0));
   MainMenu = NULL;
   WinMenu = NULL;

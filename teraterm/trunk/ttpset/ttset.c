@@ -1158,9 +1158,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->VTIcon = IconName2IconId(Temp);
 
 	// Tek Window Icon
-	GetPrivateProfileString(Section, "TekIcon", "Default",
+	GetPrivateProfileString(Section, "TEKIcon", "Default",
 	                        Temp, sizeof(Temp), FName);
-	ts->TekIcon = IconName2IconId(Temp);
+	ts->TEKIcon = IconName2IconId(Temp);
 
 #ifdef USE_NORMAL_BGCOLOR
 	// UseNormalBGColor
@@ -1954,8 +1954,8 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	WritePrivateProfileString(Section, "VTIcon", Temp, FName);
 
 	// Tek Window Icon
-	IconId2IconName(Temp, sizeof(Temp), ts->TekIcon);
-	WritePrivateProfileString(Section, "TekIcon", Temp, FName);
+	IconId2IconName(Temp, sizeof(Temp), ts->TEKIcon);
+	WritePrivateProfileString(Section, "TEKIcon", Temp, FName);
 
 	// AutoScrollOnlyInBottomLine
 	WriteOnOff(Section, "AutoScrollOnlyInBottomLine", FName,
@@ -2653,7 +2653,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 			ParamTel = 1;
 		}
 		else if (_strnicmp(Temp, "/TEKICON=", 9) == 0) { /* Tek window icon */
-			ts->TekIcon = IconName2IconId(&Temp[9]);
+			ts->TEKIcon = IconName2IconId(&Temp[9]);
 		}
 		else if (_strnicmp(Temp, "/VTICON=", 8) == 0) {	/* VT window icon */
 			ts->VTIcon = IconName2IconId(&Temp[8]);
