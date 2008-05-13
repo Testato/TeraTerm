@@ -123,6 +123,10 @@ Name: {userstartup}\Collector; Filename: {app}\collector\collector.exe; WorkingD
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\cyglaunch; Filename: {app}\cyglaunch.exe; WorkingDir: {app}; IconFilename: {app}\cyglaunch.exe; Components: cygterm; Tasks: quickcyglaunch; IconIndex: 0; Flags: createonlyiffileexists
 
 [INI]
+Filename: {app}\teraterm.ini; Section: Tera Term; Key: VTIcon; String: Default; Flags: createkeyifdoesntexist; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: VTIcon; String: Default; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {app}\teraterm.ini; Section: Tera Term; Key: TEKIcon; String: Default; Flags: createkeyifdoesntexist; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: TEKIcon; String: Default; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: DisablePasteMouseMButton; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: DisablePasteMouseMButton; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: SaveVTWinPos; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
