@@ -739,7 +739,7 @@ void CLogPropPageDlg::OnOK()
 	time(&time_local);
 	tm_local = localtime(&time_local);
 	// éûçèï∂éöóÒÇ…ïœä∑
-	if (strftime(buf2, sizeof(buf2), buf, tm_local) == 0) {
+	if (strlen(buf) != 0 && strftime(buf2, sizeof(buf2), buf, tm_local) == 0) {
 		get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
 		get_lang_msg("MSG_LOGFILE_TOOLONG_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
 		             "The log file name is too long.", ts.UILanguageFile);
