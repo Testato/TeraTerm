@@ -20,9 +20,9 @@
          [/KR=&lt;kanji code (receive)&gt;] [/KT=&lt;kanji code (transmit)&gt;]
          [/L=&lt;log file&gt;] [/LA=&lt;language&gt;] [/M=&lt;macro file&gt;]
          [/P=&lt;TCP port#&gt;] [/R=&lt;replay file&gt;] [/T=&lt;telnet flag&gt;]
-         [/V] [/W="&lt;window title&gt;"]
+         [/TEKICON=&lt;icon name&gt;] [/TIMEOUT=&lt;connecting timeout value&gt;]
+         [/V] [/VTICON=&lt;icon name&gt;] [/W="&lt;window title&gt;"]
          [/X=&lt;window pos (x)] [/Y=&lt;window pos (y)]
-         [/TIMEOUT=&lt;connecting timeout value&gt;]
          [;&lt;comment&gt;]</span>
 </pre>
 
@@ -129,8 +129,17 @@
         <li><span class="syntax">/T=0</span> Disable telnet</li>
       </ul></dd>
 
+  <dt><a name="tekicon">/TEKICON=&lt;icon name&gt;</a></dt>
+  <dd>TEK window icon. <!--TEKウインドウのウインドウアイコンを指定する。icon nameには、設定ファイルの<a href="../setup/teraterm-win.html#WindowIcon">TEKIcon設定</a>と同じ物が使用できる。--></dd>
+
+  <dt>/TIMEOUT=&lt;connecting timeout value&gt;</dt>
+  <dd>Could be specified per seconds.</dd>
+
   <dt>/V</dt>
   <dd>Start Tera Term in hidden (invisible) state.</dd>
+
+  <dt><a name="vticon">/VTICON=&lt;icon name&gt;</a></dt>
+  <dd>VT window icon. <!--VTウインドウのウインドウアイコンを指定する。icon nameには、設定ファイルの<a href="../setup/teraterm-win.html#WindowIcon">VTIcon設定</a>と同じ物が使用できる。--></dd>
 
   <dt>/W="&lt;window title&gt;"</dt>
   <dd>Window title</dd>
@@ -140,9 +149,6 @@
 
   <dt>/Y=&lt;window position (y)&gt;</dt>
   <dd>Windows position (vertical)</dd>
-
-  <dt>/TIMEOUT=&lt;connecting timeout value&gt;</dt>
-  <dd>Could be specified per seconds.</dd>
 
   <dt>;&lt;comment&gt;</dt>
   <dd>Comment. Should be last in the command line.</dd>
@@ -164,7 +170,7 @@ TTERMPRO foohost.foodomain /F=FOOHOST.INI
 TTERMPRO /C=2 /BAUD=9600 /F=MYSETUP.INI
 TTERMPRO /K=MYKEY.CNF /W="My host"
 TTERMPRO /R=README.TXT ; replay a file
-TTERMPRO myhost /B /X=100 /Y=50</span>
+TTERMPRO myhost /B /X=100 /Y=50
 </pre>
 
 
@@ -186,6 +192,7 @@ Following default values are stored in the Tera Term setup file:
 &lt;language&gt;
 &lt;macro file&gt;
 &lt;telnet flag&gt;
+&lt;icon name&gt;
 &lt;window title&gt;
 &lt;window pos (x)&gt;
 &lt;window pos (y)&gt;

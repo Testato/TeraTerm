@@ -61,6 +61,11 @@
       <li>マクロコマンド '<a href="../macro/command/strmatch.html">strmatch</a>' を追加した。</li>
       <li>マクロコマンド '<a href="../macro/command/setrts.html">setrts</a>','<a href="../macro/command/setdtr.html">setdtr</a>' を追加した。</li>
       <li>ブロードキャストコマンドにおいて、連続送信される WM_COPYDATA を正しく処理できるようにした。Salarm氏に感謝します。</li>
+      <li>VTウィンドウおよびTEKウィンドウのウィンドウアイコンを変更出来るようにした。
+        <ul>
+          <li>TERATERM.INI に <a href="../setup/teraterm-win.html#WindowIcon">VTIcon</a>, <a href="../setup/teraterm-win.html#WindowIcon">TEKIcon</a> を追加した。デフォルトは"Default"。</li>
+          <li><a href="../commandline/teraterm.html#vticon">/VTICON</a>, <a href="../commandline/teraterm.html#tekicon">/TEKICON</a>コマンドラインオプションを追加した。</li>
+        </ul></li>
       <li>インストーラを修正した。
         <ul>
           <li>cyglaunch のショートカットをスタートメニューに追加するようにした。</li>
@@ -123,7 +128,7 @@
       <li>xterm形式の256色モードおよびaixterm形式の16色モードに対応した。
         <ul>
           <li>teraterm.ini に Xterm256Color および Aixterm16Color エントリを追加した。</li>
-	      <li>teraterm.ini の FullColor エントリを PcBoldColor エントリに名称変更した。</li>
+          <li>teraterm.ini の FullColor エントリを PcBoldColor エントリに名称変更した。</li>
           <li><a href="../menu/setup-window.html">ウィンドウ設定ダイアログ</a>にチェックボックスを追加した。</li>
         </ul></li>
       <li>行削除/画面削除された領域や、スクロール等で新しく表示された行の背景色を、標準の背景色から現在の背景色に変更した。</li>

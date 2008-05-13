@@ -24,9 +24,9 @@ Tera Term Pro を起動するときのコマンドライン(ショートカットのリンク先)の形式
          [/KR=&lt;kanji code (receive)&gt;] [/KT=&lt;kanji code (transmit)&gt;]
          [/L=&lt;log file&gt;] [/LA=&lt;language&gt;] [/M=&lt;macro file&gt;]
          [/P=&lt;TCP port#&gt;] [/R=&lt;replay file&gt;] [/T=&lt;telnet flag&gt;]
-         [/V] [/W="&lt;window title&gt;"]
+         [/TEKICON=&lt;icon name&gt;] [/TIMEOUT=&lt;connecting timeout value&gt;]
+         [/V] [/VTICON=&lt;icon name&gt;] [/W="&lt;window title&gt;"]
          [/X=&lt;window pos (x)] [/Y=&lt;window pos (y)]
-         [/TIMEOUT=&lt;connecting timeout value&gt;]
          [;&lt;comment&gt;]</span>
 </pre>
 
@@ -134,8 +134,17 @@ Tera Term Pro を起動するときのコマンドライン(ショートカットのリンク先)の形式
         <li><span class="syntax">/T=0</span> Telnet プロトコルを不使用</li>
       </ul></dd>
 
+  <dt><a name="tekicon">/TEKICON=&lt;icon name&gt;</a></dt>
+  <dd>TEKウインドウのウインドウアイコンを指定する。icon nameには、設定ファイルの<a href="../setup/teraterm-win.html#WindowIcon">TEKIcon設定</a>と同じ物が使用できる。</dd>
+
+  <dt>/TIMEOUT=&lt;connecting timeout value&gt;</dt>
+  <dd>接続中の処理をキャンセルするまでの時間（秒単位）</dd>
+
   <dt>/V</dt>
   <dd>ウィンドウが見えない状態で起動</dd>
+
+  <dt><a name="vticon">/VTICON=&lt;icon name&gt;</a></dt>
+  <dd>VTウインドウのウインドウアイコンを指定する。icon nameには、設定ファイルの<a href="../setup/teraterm-win.html#WindowIcon">VTIcon設定</a>と同じ物が使用できる。</dd>
 
   <dt>/W="&lt;window title&gt;"</dt>
   <dd>ウィンドウのタイトル</dd>
@@ -145,9 +154,6 @@ Tera Term Pro を起動するときのコマンドライン(ショートカットのリンク先)の形式
 
   <dt>/Y=&lt;window position (y)&gt;</dt>
   <dd>ウィンドウの位置(垂直)</dd>
-
-  <dt>/TIMEOUT=&lt;connecting timeout value&gt;</dt>
-  <dd>接続中の処理をキャンセルするまでの時間（秒単位）</dd>
 
   <dt>;&lt;comment&gt;</dt>
   <dd>コメント。コマンドラインの最後に置く必要がある。</dd>
@@ -191,6 +197,7 @@ TTERMPRO myhost /B /X=100 /Y=50
 &lt;language&gt;
 &lt;macro file&gt;
 &lt;telnet flag&gt;
+&lt;icon name&gt;
 &lt;window title&gt;
 &lt;window pos (x)&gt;
 &lt;window pos (y)&gt;
