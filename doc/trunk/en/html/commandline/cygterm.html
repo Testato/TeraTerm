@@ -1,64 +1,75 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
+<html>
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<TITLE>CygTerm+ Command Line Options</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
+<title>CygTerm+ Command Line Options</title>
+<meta http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../style.css" type="text/css">
-</HEAD>
-<BODY>
+</head>
+<body>
 
 <h1>CygTerm+ Command Line Options</h1>
 
-<pre>
-<span class="syntax">cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
-            [-s 'shell'] [-v 'env-var' ...]</span>
-
-<span class="syntax">-t 'terminal-emulator'</span>
-        Specify the command line of a terminal emulator to execute.
-        This format is the same as TERM in the configuration file.
-        The command line should be enclosed in quotes to include spaces.
-
-<span class="syntax">-p port-number</span>
-        Instead of executing a terminal emulator, try connection to this
-        port number of localhost.  It is considered another program uses
-        `-p' option to use Cygwin via cygterm.exe
-
-<span class="syntax">-dumb</span>
-        Suppress the TELNET options negotiation.  And ignore any TELNET
-        commands sent from terminal side.  The environment variable
-        TERM is set to `dumb' on the shell side.
-
-<span class="syntax">-s 'shell'</span>
-        Specify the command line of a shell on Cygwin to execute.
-        This format is the same as SHELL in the configuration file.
-        The command line should be enclosed in quotes to include spaces.
-        Any command can be spedicied even if a non-shell command.
-
-<span class="syntax">-ls</span>
-        Execute a shell as a login shell.
-
-<span class="syntax">-nols</span>
-        Execute a shell as a normal (not login) shell.
-
-<span class="syntax">-cd</span>
-        The current directory is moved to the user home directory and
-        the shell is invoked.
-
-<span class="syntax">-nocd</span>
-        The shell is invoked without changing the current directory.
-
-<span class="syntax">-v 'env-var'</span>
-        Specify the environment variable to be set when starting the shell.
-        This format is the same as ENV_X in the configuration file.
-        The expression should be enclosed in quotes to include spaces.
-        One or more `-v' options are available.
-
-<span class="syntax">-d 'directory'</span>
-        The current directory is moved to the specified directory and
-        the shell is invoked.
+<pre class="syntax">
+cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
+            [-s 'shell'] [-ls | -nols] [-cd | -nocd]
+            [-v 'env-var' ...] [-d 'directory']
 </pre>
+
+<dl>
+  <dt>-t 'terminal-emulator'</dt>
+  <dd>
+    Specify the command line of a terminal emulator to execute.
+    This format is the same as TERM in the configuration file.
+    The command line should be enclosed in quotes to include spaces.
+  </dd>
+
+  <dt>-p port-number</dt>
+  <dd>
+    Instead of executing a terminal emulator, try connection to this
+    port number of localhost.  It is considered another program uses
+    `-p' option to use Cygwin via cygterm.exe
+  </dd>
+
+  <dt>-dumb</dt>
+  <dd>
+    Suppress the TELNET options negotiation.  And ignore any TELNET
+    commands sent from terminal side.  The environment variable
+    TERM is set to `dumb' on the shell side.
+  </dd>
+
+  <dt>-s 'shell'</dt>
+  <dd>
+    Specify the command line of a shell on Cygwin to execute.
+    This format is the same as SHELL in the configuration file.
+    The command line should be enclosed in quotes to include spaces.
+    Any command can be spedicied even if a non-shell command.
+  </dd>
+
+  <dt>-ls</dt>
+  <dd>Execute a shell as a login shell.</dd>
+
+  <dt>-nols</dt>
+  <dd>Execute a shell as a normal (not login) shell.</dd>
+
+  <dt>-cd</dt>
+  <dd>The current directory is moved to the user home directory and the shell is invoked.</dd>
+
+  <dt>-nocd</dt>
+  <dd>The shell is invoked without changing the current directory.</dd>
+
+  <dt>-v 'env-var'</dt>
+  <dd>
+    Specify the environment variable to be set when starting the shell.
+    This format is the same as ENV_X in the configuration file.
+    The expression should be enclosed in quotes to include spaces.
+    One or more `-v' options are available.
+  </dd>
+
+  <dt>-d 'directory'</dt>
+  <dd>The current directory is moved to the specified directory and the shell is invoked.</dd>
+</dl>
 
 <p>
 The terminal emulator or connection port number, and the shell on Cygwin, these need to be specified at least.  If these are given on the command line, cygterm.exe can be run without configuration file cygterm.cfg.
@@ -72,5 +83,5 @@ cygterm.exe is an Win32 application which uses cygwin1.dll.  It can be run from 
 * It is necessary the Windows environment variable PATH includes a directory path of cygwin1.dll (normally Cygwin-root\bin) to be run from Windows.
 </p>
 
-</BODY>
-</HTML>
+</body>
+</html>

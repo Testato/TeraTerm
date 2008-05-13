@@ -109,16 +109,19 @@ ttermpro.exe server4:22 /ssh /2 /auth=publickey /user=admin /keyfile=pathofkeyfi
 </pre>
 
 
-
 <h2>例: Pageantとの連携</h2>
 
+<p>
 <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">Pageant</a>をスタートアップフォルダへ設置させます。
+</p>
 
 <pre>
 C:\usr\pageant.exe c:\usr\Identify.ppk
 </pre>
 
+<p>
 TeraTermからPageantを利用して、公開鍵認証による接続をするには以下のようにします。
+</p>
 
 <pre>
 ttermpro.exe shell.sourceforge.jp:22 /ssh /auth=pageant /user=yutaka

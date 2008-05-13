@@ -1,65 +1,76 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
-<HTML>
-<HEAD>
+<html>
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>CygTerm+ コマンドライン</TITLE>
-<META http-equiv="Content-Style-Type" content="text/css">
+<title>CygTerm+ コマンドライン</title>
+<meta http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../style.css" type="text/css">
-</HEAD>
-<BODY>
+</head>
+<body>
 
 <h1>CygTerm+ コマンドライン</h1>
 
-<pre>
-<span class="syntax">cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
-            [-s 'shell'] [-v 'env-var' ...]</span>
-
-<span class="syntax">-t 'terminal-emulator'</span>
-        ターミナル・エミュレータを指定します。
-        指定形式は設定ファイルの TERM と同じです。
-        空白文字を含む場合は必ずクォートで囲みます。
-
-<span class="syntax">-p port-number</span>
-        ターミナル・エミュレータを起動するのではなく、
-        ローカルホストのこのポート番号への接続を試みます。
-        他のアプリケーション・プログラムが -p オプションを使って、
-        cygterm.exe 経由で Cygwinを利用する、等が考えられます。
-
-<span class="syntax">-dumb</span>
-        TELNETオプション・ネゴシエーションを行いません。
-        さらに TELNETコマンドが送信されてきても無視します。
-        シェル側の環境変数 TERM は 'dumb' となります。
-
-<span class="syntax">-s 'shell'</span>
-        Cygwin上のシェルを指定します。
-        指定形式は設定ファイルの SHELL と同じです。
-        空白文字を含む場合は必ずクォートで囲みます。
-        必ずしもシェルコマンドである必要はありません。
-
-<span class="syntax">-ls</span>
-        シェルをログインシェルとして起動します。
-
-<span class="syntax">-nols</span>
-        シェルを(ログインシェルではなく)通常のシェルとして起動します。
-
-<span class="syntax">-cd</span>
-        カレントディレクトリをホームディレクトリに移動してから
-        シェルを起動します。
-
-<span class="syntax">-nocd</span>
-        カレントディレクトリを移動せずにシェルを起動します。
-
-<span class="syntax">-v 'env-var'</span>
-        シェル起動時に設定しておきたい環境変数を指定します。
-        指定形式は設定ファイルの ENV_X と同じです。
-        空白文字を含む場合は必ずクォートで囲みます。
-        -v オプションはいくつでも指定できます。
-
-<span class="syntax">-d 'directory'</span>
-        カレントディレクトリを指定されたディレクトリに移動してから
-        シェルを起動します。
+<pre class="syntax">
+cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
+            [-s 'shell'] [-ls | -nols] [-cd | -nocd]
+            [-v 'env-var' ...] [-d 'directory']
 </pre>
+
+<dl>
+  <dt>-t 'terminal-emulator'</dt>
+  <dd>
+    ターミナル・エミュレータを指定します。
+    指定形式は設定ファイルの TERM と同じです。
+    空白文字を含む場合は必ずクォートで囲みます。
+  </dd>
+
+  <dt>-p port-number</dt>
+  <dd>
+    ターミナル・エミュレータを起動するのではなく、
+    ローカルホストのこのポート番号への接続を試みます。
+    他のアプリケーション・プログラムが -p オプションを使って、
+    cygterm.exe 経由で Cygwinを利用する、等が考えられます。
+  </dd>
+
+  <dt>-dumb</dt>
+  <dd>
+    TELNETオプション・ネゴシエーションを行いません。
+    さらに TELNETコマンドが送信されてきても無視します。
+    シェル側の環境変数 TERM は 'dumb' となります。
+  </dd>
+
+  <dt>-s 'shell'</dt>
+  <dd>
+    Cygwin上のシェルを指定します。
+    指定形式は設定ファイルの SHELL と同じです。
+    空白文字を含む場合は必ずクォートで囲みます。
+    必ずしもシェルコマンドである必要はありません。
+  </dd>
+
+  <dt>-ls</dt>
+  <dd>シェルをログインシェルとして起動します。</dd>
+
+  <dt>-nols</dt>
+  <dd>シェルを(ログインシェルではなく)通常のシェルとして起動します。</dd>
+
+  <dt>-cd</dt>
+  <dd>カレントディレクトリをホームディレクトリに移動してからシェルを起動します。</dd>
+
+  <dt>-nocd</dt>
+  <dd>カレントディレクトリを移動せずにシェルを起動します。</dd>
+
+  <dt>-v 'env-var'</dt>
+  <dd>
+    シェル起動時に設定しておきたい環境変数を指定します。
+    指定形式は設定ファイルの ENV_X と同じです。
+    空白文字を含む場合は必ずクォートで囲みます。
+    -v オプションはいくつでも指定できます。
+  </dd>
+
+  <dt>-d 'directory'</dt>
+  <dd>カレントディレクトリを指定されたディレクトリに移動してからシェルを起動します。</dd>
+</dl>
 
 <p>
 ターミナル・エミュレータもしくは接続先ポート番号、と Cygwin側シェルの指定が最低必要となります。 これらがコマンドライン・オプションによって与えられるならば、設定ファイル cygterm.cfg が無くても実行できます。
@@ -73,5 +84,5 @@ cygterm.exe は cygwin1.dll を利用する Win32アプリケーションです。Cygwin上から実�
 ※ Windows上から実行するには cygwin1.dll のディレクトリパスがWindows環境変数 PATH に追加されている必要があります。(通常 Cygwinルートディレクトリ\bin)
 </p>
 
-</BODY>
-</HTML>
+</body>
+</html>

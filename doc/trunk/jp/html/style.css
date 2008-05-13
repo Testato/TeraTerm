@@ -36,6 +36,11 @@ div.topic {
 	white-space: nowrap;
 }
 
+pre.syntax {
+	font-weight: bold;
+	white-space: pre;
+}
+
 font.new {
 	font-weight: bold;
 	font-size: smaller;
