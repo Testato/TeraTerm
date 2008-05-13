@@ -253,6 +253,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ymodem.c"
+				>
+			</File>
+			<File
 				RelativePath="zmodem.c"
 				>
 			</File>

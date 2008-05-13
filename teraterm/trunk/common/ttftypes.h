@@ -156,6 +156,37 @@ typedef TXVar far *PXVar;
 #define XnakNAK 1
 #define XnakC 2
 
+
+/* YMODEM */
+typedef struct {
+  BYTE PktIn[1030], PktOut[1030];
+  int PktBufCount, PktBufPtr;
+  BYTE PktNum, PktNumSent;
+  int PktNumOffset;
+  int PktReadMode;
+  WORD YMode, YOpt, TextFlag;
+  WORD NAKMode;
+  int NAKCount;
+  WORD DataLen, CheckLen;
+  BOOL CRRecv;
+  int TOutShort;
+  int TOutLong;
+  int SendFileInfo;
+} TYVar;
+typedef TYVar far *PYVar;
+
+  /* YMODEM states */
+#define YpktSOH 0x01
+#define YpktSTX 0x02
+#define YpktEOT 0x04
+#define YpktACK 0x06
+#define YpktNAK 0x15
+#define YpktCAN 0x18
+
+#define YnakC 1
+#define YnakG 2
+
+
 /* ZMODEM */
 typedef struct {
   BYTE RxHdr[4], TxHdr[4];

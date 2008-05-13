@@ -81,6 +81,10 @@ typedef TCharAttr *PCharAttr;
 #define IdXReceive 1
 #define IdXSend    2
 
+  /* YMODEM function id */
+#define IdYReceive 1
+#define IdYSend    2
+
   /* ZMODEM function id */
 #define IdZReceive 1
 #define IdZSend    2
@@ -132,6 +136,11 @@ typedef TCharAttr *PCharAttr;
 #define XoptCRC   2
 #define Xopt1K    3
 
+  /* YMODEM option */
+#define Yopt1K 1
+#define YoptG   2
+#define YoptSingle    3
+
   /* Language */
 #define IdEnglish  1
 #define IdJapanese 2
@@ -144,6 +153,7 @@ typedef TCharAttr *PCharAttr;
 #define LOG_Z   8
 #define LOG_BP  16
 #define LOG_QV  32
+#define LOG_Y   64
 
 // file transfer flags (used in ts.FTFlag)
 #define FT_ZESCCTL  1
