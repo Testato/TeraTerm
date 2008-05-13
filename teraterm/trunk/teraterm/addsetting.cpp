@@ -101,63 +101,169 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 {
 	char uimsg[MAX_UIMSG];
 	char buf[64];
-	CButton *btn, *btn2;
+	CButton *btn;
 
 	CPropertyPage::OnInitDialog();
 
 	font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
 	GetObject(font, sizeof(LOGFONT), &logfont);
 	if (get_lang_font("DLG_TAHOMA_FONT", GetSafeHwnd(), &logfont, &DlgGeneralFont, ts.UILanguageFile)) {
-		SendDlgItemMessage(IDC_LINECOPY, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-		SendDlgItemMessage(IDC_DISABLE_PASTE_RBUTTON, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-		SendDlgItemMessage(IDC_CONFIRM_PASTE_RBUTTON, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-		SendDlgItemMessage(IDC_SELECT_LBUTTON, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-		SendDlgItemMessage(IDC_DISABLE_SENDBREAK, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_CLICKABLE_URL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_DELIMITER, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_DELIM_LIST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_DISABLE_SENDBREAK, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_ACCEPT_BROADCAST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0)); // 337: 2007/03/20
-		SendDlgItemMessage(IDC_CONFIRM_CHANGE_PASTE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_MOUSEWHEEL_SCROLL_LINE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_SCROLL_LINE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 	}
 	else {
 		DlgGeneralFont = NULL;
 	}
 
-	GetDlgItemText(IDC_LINECOPY, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_CONTINUE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_LINECOPY, ts.UIMsg);
-	GetDlgItemText(IDC_DISABLE_PASTE_RBUTTON, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_MOUSEPASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_DISABLE_PASTE_RBUTTON, ts.UIMsg);
-	GetDlgItemText(IDC_CONFIRM_PASTE_RBUTTON, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_CONFIRMPASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_CONFIRM_PASTE_RBUTTON, ts.UIMsg);
-	GetDlgItemText(IDC_SELECT_LBUTTON, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_SELECTLBUTTON", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_SELECT_LBUTTON, ts.UIMsg);
-	GetDlgItemText(IDC_DISABLE_SENDBREAK, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_DISABLESENDBREAK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_DISABLE_SENDBREAK, ts.UIMsg);
 	GetDlgItemText(IDC_CLICKABLE_URL, uimsg, sizeof(uimsg));
 	get_lang_msg("DLG_TAB_GENERAL_CLICKURL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_CLICKABLE_URL, ts.UIMsg);
 	GetDlgItemText(IDC_DELIMITER, uimsg, sizeof(uimsg));
 	get_lang_msg("DLG_TAB_GENERAL_DEMILITER", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_DELIMITER, ts.UIMsg);
+	GetDlgItemText(IDC_DISABLE_SENDBREAK, uimsg, sizeof(uimsg));
+	get_lang_msg("DLG_TAB_GENERAL_DISABLESENDBREAK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	SetDlgItemText(IDC_DISABLE_SENDBREAK, ts.UIMsg);
 	GetDlgItemText(IDC_ACCEPT_BROADCAST, uimsg, sizeof(uimsg));
 	get_lang_msg("DLG_TAB_GENERAL_ACCEPTBROADCAST", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_ACCEPT_BROADCAST, ts.UIMsg);
-	GetDlgItemText(IDC_CONFIRM_CHANGE_PASTE, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_IDC_CONFIRM_CHANGE_PASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_CONFIRM_CHANGE_PASTE, ts.UIMsg);
 	GetDlgItemText(IDC_MOUSEWHEEL_SCROLL_LINE, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_IDC_MOUSEWHEEL_SCROLL_LINE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	get_lang_msg("DLG_TAB_GENERAL_MOUSEWHEEL_SCROLL_LINE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_MOUSEWHEEL_SCROLL_LINE, ts.UIMsg);
 	GetDlgItemText(IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE, uimsg, sizeof(uimsg));
 	get_lang_msg("DLG_TAB_GENERAL_AUTOSCROLL_ONLY_IN_BOTTOM_LINE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE, ts.UIMsg);
+
+	// (1)DisableAcceleratorSendBreak
+	btn = (CButton *)GetDlgItem(IDC_DISABLE_SENDBREAK);
+	btn->SetCheck(ts.DisableAcceleratorSendBreak);
+
+	// (2)EnableClickableUrl
+	btn = (CButton *)GetDlgItem(IDC_CLICKABLE_URL);
+	btn->SetCheck(ts.EnableClickableUrl);
+
+	// (3)delimiter characters
+	SetDlgItemText(IDC_DELIM_LIST, ts.DelimList);
+
+	// (4)AcceptBroadcast 337: 2007/03/20
+	btn = (CButton *)GetDlgItem(IDC_ACCEPT_BROADCAST);
+	btn->SetCheck(ts.AcceptBroadcast);
+
+	// (5)IDC_MOUSEWHEEL_SCROLL_LINE
+	_snprintf_s(buf, sizeof(buf), "%d", ts.MouseWheelScrollLine);
+	SetDlgItemText(IDC_SCROLL_LINE, buf);
+
+	// (6)IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE
+	btn = (CButton *)GetDlgItem(IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE);
+	btn->SetCheck(ts.AutoScrollOnlyInBottomLine);
+
+	// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
+	::SetFocus(::GetDlgItem(GetSafeHwnd(), IDC_CLICKABLE_URL));
+
+	return FALSE;
+}
+
+BOOL CGeneralPropPageDlg::OnCommand(WPARAM wParam, LPARAM lParam)
+{
+	return CPropertyPage::OnCommand(wParam, lParam);
+}
+
+void CGeneralPropPageDlg::OnOK()
+{
+	CButton *btn;
+	char buf[64];
+	int val;
+
+	// (1)
+	btn = (CButton *)GetDlgItem(IDC_DISABLE_SENDBREAK);
+	ts.DisableAcceleratorSendBreak = btn->GetCheck();
+
+	// (2)
+	btn = (CButton *)GetDlgItem(IDC_CLICKABLE_URL);
+	ts.EnableClickableUrl = btn->GetCheck();
+
+	// (3)
+	GetDlgItemText(IDC_DELIM_LIST, ts.DelimList, sizeof(ts.DelimList));
+
+	// (4) 337: 2007/03/20
+	btn = (CButton *)GetDlgItem(IDC_ACCEPT_BROADCAST);
+	ts.AcceptBroadcast = btn->GetCheck();
+
+	// (5)IDC_MOUSEWHEEL_SCROLL_LINE
+	GetDlgItemText(IDC_SCROLL_LINE, buf, sizeof(buf));
+	val = atoi(buf);
+	if (val > 0) 
+		ts.MouseWheelScrollLine = val;
+
+	// (6)IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE 
+	btn = (CButton *)GetDlgItem(IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE);
+	ts.AutoScrollOnlyInBottomLine = btn->GetCheck();
+}
+
+
+
+// CCopypastePropPageDlg ダイアログ
+
+IMPLEMENT_DYNAMIC(CCopypastePropPageDlg, CPropertyPage)
+
+CCopypastePropPageDlg::CCopypastePropPageDlg()
+	: CPropertyPage(CCopypastePropPageDlg::IDD)
+{
+}
+
+CCopypastePropPageDlg::~CCopypastePropPageDlg()
+{
+	if (DlgCopypasteFont != NULL) {
+		DeleteObject(DlgCopypasteFont);
+	}
+}
+
+BEGIN_MESSAGE_MAP(CCopypastePropPageDlg, CPropertyPage)
+END_MESSAGE_MAP()
+
+// CCopypastePropPageDlg メッセージ ハンドラ
+
+BOOL CCopypastePropPageDlg::OnInitDialog()
+{
+	char uimsg[MAX_UIMSG];
+	CButton *btn, *btn2;
+
+	CPropertyPage::OnInitDialog();
+
+	font = (HFONT)SendMessage(WM_GETFONT, 0, 0);
+	GetObject(font, sizeof(LOGFONT), &logfont);
+	if (get_lang_font("DLG_TAHOMA_FONT", GetSafeHwnd(), &logfont, &DlgCopypasteFont, ts.UILanguageFile)) {
+		SendDlgItemMessage(IDC_LINECOPY, WM_SETFONT, (WPARAM)DlgCopypasteFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_DISABLE_PASTE_RBUTTON, WM_SETFONT, (WPARAM)DlgCopypasteFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_CONFIRM_PASTE_RBUTTON, WM_SETFONT, (WPARAM)DlgCopypasteFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_SELECT_LBUTTON, WM_SETFONT, (WPARAM)DlgCopypasteFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_CONFIRM_CHANGE_PASTE, WM_SETFONT, (WPARAM)DlgCopypasteFont, MAKELPARAM(TRUE,0));
+	}
+	else {
+		DlgCopypasteFont = NULL;
+	}
+
+	GetDlgItemText(IDC_LINECOPY, uimsg, sizeof(uimsg));
+	get_lang_msg("DLG_TAB_COPYPASTE_CONTINUE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	SetDlgItemText(IDC_LINECOPY, ts.UIMsg);
+	GetDlgItemText(IDC_DISABLE_PASTE_RBUTTON, uimsg, sizeof(uimsg));
+	get_lang_msg("DLG_TAB_COPYPASTE_MOUSEPASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	SetDlgItemText(IDC_DISABLE_PASTE_RBUTTON, ts.UIMsg);
+	GetDlgItemText(IDC_CONFIRM_PASTE_RBUTTON, uimsg, sizeof(uimsg));
+	get_lang_msg("DLG_TAB_COPYPASTE_CONFIRMPASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	SetDlgItemText(IDC_CONFIRM_PASTE_RBUTTON, ts.UIMsg);
+	GetDlgItemText(IDC_SELECT_LBUTTON, uimsg, sizeof(uimsg));
+	get_lang_msg("DLG_TAB_COPYPASTE_SELECTLBUTTON", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	SetDlgItemText(IDC_SELECT_LBUTTON, ts.UIMsg);
+	GetDlgItemText(IDC_CONFIRM_CHANGE_PASTE, uimsg, sizeof(uimsg));
+	get_lang_msg("DLG_TAB_COPYPASTE_CONFIRM_CHANGE_PASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	SetDlgItemText(IDC_CONFIRM_CHANGE_PASTE, ts.UIMsg);
 
 	// (1)Enable continued-line copy
 	btn = (CButton *)GetDlgItem(IDC_LINECOPY);
@@ -180,40 +286,17 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 	btn = (CButton *)GetDlgItem(IDC_SELECT_LBUTTON);
 	btn->SetCheck(ts.SelectOnlyByLButton);
 
-	// (5)DisableAcceleratorSendBreak
-	btn = (CButton *)GetDlgItem(IDC_DISABLE_SENDBREAK);
-	btn->SetCheck(ts.DisableAcceleratorSendBreak);
-
-	// (6)EnableClickableUrl
-	btn = (CButton *)GetDlgItem(IDC_CLICKABLE_URL);
-	btn->SetCheck(ts.EnableClickableUrl);
-
-	// (7)delimiter characters
-	SetDlgItemText(IDC_DELIM_LIST, ts.DelimList);
-
-	// (8)AcceptBroadcast 337: 2007/03/20
-	btn = (CButton *)GetDlgItem(IDC_ACCEPT_BROADCAST);
-	btn->SetCheck(ts.AcceptBroadcast);
-
-	// (9)IDC_CONFIRM_CHANGE_PASTE 
+	// (5)ConfirmChangePaste 
 	btn = (CButton *)GetDlgItem(IDC_CONFIRM_CHANGE_PASTE);
 	btn->SetCheck(ts.ConfirmChangePaste);
 
-	// (10)IDC_MOUSEWHEEL_SCROLL_LINE
-	_snprintf_s(buf, sizeof(buf), "%d", ts.MouseWheelScrollLine);
-	SetDlgItemText(IDC_SCROLL_LINE, buf);
-
-	// (11)IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE
-	btn = (CButton *)GetDlgItem(IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE);
-	btn->SetCheck(ts.AutoScrollOnlyInBottomLine);
-
-	// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
+	// ダイアログにフォーカスを当てる
 	::SetFocus(::GetDlgItem(GetSafeHwnd(), IDC_LINECOPY));
 
 	return FALSE;
 }
 
-BOOL CGeneralPropPageDlg::OnCommand(WPARAM wParam, LPARAM lParam)
+BOOL CCopypastePropPageDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 {
 	CButton *btn, *btn2;
 
@@ -227,54 +310,14 @@ BOOL CGeneralPropPageDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 				btn2->EnableWindow(TRUE);
 			}
 			return TRUE;
-#if 0
-		case WM_CTLCOLORSTATIC:
-			{
-				HDC hDC = (HDC)wp;
-				HWND hWnd = (HWND)lp;
-
-				//if (label_hdc == NULL) {
-					hDC = GetWindowDC(GetDlgItem(hDlgWnd, IDC_SAMPLE_COLOR));
-				//	label_hdc = hDC;
-				//}
-
-				if ( hWnd == GetDlgItem(hDlgWnd, IDC_SAMPLE_COLOR) ) {
-					BYTE r, g, b;
-
-					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_RED);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
-					r = atoi(buf);
-
-					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_GREEN);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
-					g = atoi(buf);
-
-					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_BLUE);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
-					b = atoi(buf);
-
-					OutputDebugPrintf("%06x\n", RGB(r, g, b));
-
-					SetBkMode(hDC, TRANSPARENT);
-					SetTextColor(hDC, RGB(r, g, b) );
-					ReleaseDC(hDlgWnd, hDC);
-
-					return (BOOL)(HBRUSH)GetStockObject(NULL_BRUSH);
-				}
-				return FALSE;
-			}
-			break ;
-#endif
 	}
 
 	return CPropertyPage::OnCommand(wParam, lParam);
 }
 
-void CGeneralPropPageDlg::OnOK()
+void CCopypastePropPageDlg::OnOK()
 {
 	CButton *btn;
-	char buf[64];
-	int val;
 
 	// (1)
 	btn = (CButton *)GetDlgItem(IDC_LINECOPY);
@@ -292,34 +335,9 @@ void CGeneralPropPageDlg::OnOK()
 	btn = (CButton *)GetDlgItem(IDC_SELECT_LBUTTON);
 	ts.SelectOnlyByLButton = btn->GetCheck();
 
-	// (5)
-	btn = (CButton *)GetDlgItem(IDC_DISABLE_SENDBREAK);
-	ts.DisableAcceleratorSendBreak = btn->GetCheck();
-
-	// (6)
-	btn = (CButton *)GetDlgItem(IDC_CLICKABLE_URL);
-	ts.EnableClickableUrl = btn->GetCheck();
-
-	// (7)
-	GetDlgItemText(IDC_DELIM_LIST, ts.DelimList, sizeof(ts.DelimList));
-
-	// (8) 337: 2007/03/20
-	btn = (CButton *)GetDlgItem(IDC_ACCEPT_BROADCAST);
-	ts.AcceptBroadcast = btn->GetCheck();
-
-	// (9)IDC_CONFIRM_CHANGE_PASTE
+	// (5)IDC_CONFIRM_CHANGE_PASTE
 	btn = (CButton *)GetDlgItem(IDC_CONFIRM_CHANGE_PASTE);
 	ts.ConfirmChangePaste = btn->GetCheck();
-
-	// (10)IDC_MOUSEWHEEL_SCROLL_LINE
-	GetDlgItemText(IDC_SCROLL_LINE, buf, sizeof(buf));
-	val = atoi(buf);
-	if (val > 0) 
-		ts.MouseWheelScrollLine = val;
-
-	// (11)IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE 
-	btn = (CButton *)GetDlgItem(IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE);
-	ts.AutoScrollOnlyInBottomLine = btn->GetCheck();
 }
 
 
@@ -484,6 +502,44 @@ BOOL CVisualPropPageDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 			}
 
 			return TRUE;
+#if 0
+		case WM_CTLCOLORSTATIC:
+			{
+				HDC hDC = (HDC)wp;
+				HWND hWnd = (HWND)lp;
+
+				//if (label_hdc == NULL) {
+					hDC = GetWindowDC(GetDlgItem(hDlgWnd, IDC_SAMPLE_COLOR));
+				//	label_hdc = hDC;
+				//}
+
+				if ( hWnd == GetDlgItem(hDlgWnd, IDC_SAMPLE_COLOR) ) {
+					BYTE r, g, b;
+
+					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_RED);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+					r = atoi(buf);
+
+					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_GREEN);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+					g = atoi(buf);
+
+					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_BLUE);
+					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
+					b = atoi(buf);
+
+					OutputDebugPrintf("%06x\n", RGB(r, g, b));
+
+					SetBkMode(hDC, TRANSPARENT);
+					SetTextColor(hDC, RGB(r, g, b) );
+					ReleaseDC(hDlgWnd, hDC);
+
+					return (BOOL)(HBRUSH)GetStockObject(NULL_BRUSH);
+				}
+				return FALSE;
+			}
+			break ;
+#endif
 	}
 
 	return CPropertyPage::OnCommand(wParam, lParam);
@@ -1046,6 +1102,7 @@ CAddSettingPropSheetDlg::CAddSettingPropSheetDlg(LPCTSTR pszCaption, CWnd* pPare
 	:CPropertySheet(pszCaption, pParentWnd, iSelectPage)
 {
 	AddPage(&m_GeneralPage);
+	AddPage(&m_CopypastePage);
 	AddPage(&m_VisualPage);
 	AddPage(&m_LogPage);
 	AddPage(&m_CygwinPage);
@@ -1081,20 +1138,25 @@ BOOL CAddSettingPropSheetDlg::OnInitDialog()
 	tc.pszText = ts.UIMsg;
 	tab->SetItem(0, &tc);
 
+	get_lang_msg("DLG_TABSHEET_TITLE_COPYPASTE", ts.UIMsg, sizeof(ts.UIMsg),
+	             "Copy and Paste", ts.UILanguageFile);
+	tc.pszText = ts.UIMsg;
+	tab->SetItem(1, &tc);
+
 	get_lang_msg("DLG_TABSHEET_TITLE_VISUAL", ts.UIMsg, sizeof(ts.UIMsg),
 	             "Visual", ts.UILanguageFile);
 	tc.pszText = ts.UIMsg;
-	tab->SetItem(1, &tc);
+	tab->SetItem(2, &tc);
 
 	get_lang_msg("DLG_TABSHEET_TITLE_Log", ts.UIMsg, sizeof(ts.UIMsg),
 	             "Log", ts.UILanguageFile);
 	tc.pszText = ts.UIMsg;
-	tab->SetItem(2, &tc);
+	tab->SetItem(3, &tc);
 
 	get_lang_msg("DLG_TABSHEET_TITLE_CYGWIN", ts.UIMsg, sizeof(ts.UIMsg),
 	             "Cygwin", ts.UILanguageFile);
 	tc.pszText = ts.UIMsg;
-	tab->SetItem(3, &tc);
+	tab->SetItem(4, &tc);
 
 	return FALSE;
 }

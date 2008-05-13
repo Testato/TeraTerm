@@ -47,6 +47,31 @@ protected:
 
 
 
+// Copypaste Page
+class CCopypastePropPageDlg : public CPropertyPage
+{
+	DECLARE_DYNAMIC(CCopypastePropPageDlg)
+
+public:
+	CCopypastePropPageDlg();
+	virtual ~CCopypastePropPageDlg();
+	BOOL OnInitDialog();
+	void OnOK();
+
+	enum { IDD = IDD_TABSHEET_COPYPASTE };
+
+private:
+	HFONT DlgCopypasteFont;
+	LOGFONT logfont;
+	HFONT font;
+
+protected:
+	DECLARE_MESSAGE_MAP()
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+};
+
+
+
 // Visual Page
 class CVisualPropPageDlg : public CPropertyPage
 {
@@ -143,8 +168,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CGeneralPropPageDlg m_GeneralPage;
-	CVisualPropPageDlg  m_VisualPage;
-	CLogPropPageDlg     m_LogPage;
-	CCygwinPropPageDlg  m_CygwinPage;
+	CGeneralPropPageDlg   m_GeneralPage;
+	CCopypastePropPageDlg m_CopypastePage;
+	CVisualPropPageDlg    m_VisualPage;
+	CLogPropPageDlg       m_LogPage;
+	CCygwinPropPageDlg    m_CygwinPage;
 };
