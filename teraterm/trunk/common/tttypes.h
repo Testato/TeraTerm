@@ -409,6 +409,7 @@ struct tttset {
 	WORD TEKIcon;
 	WORD ScrollWindowClearScreen;
 	WORD AutoScrollOnlyInBottomLine;
+	WORD UnknownUnicodeCharaAsWide;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -843,6 +844,7 @@ typedef TMap far *PMap;
  *   added tttset.TEKIcon.
  *   added tttset.ScrollWindowClearScreen.
  *   added tttset.AutoScrollOnlyInBottomLine.
+ *   added tttset.UnknownUnicodeCharaAsWide.
  *
  * - At version 4.58, ttset_memfilemap was replaced with ttset_memfilemap_6.
  *   added tttset.TranslateWheelToCursor.

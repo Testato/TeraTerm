@@ -1162,6 +1162,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	                        Temp, sizeof(Temp), FName);
 	ts->TEKIcon = IconName2IconId(Temp);
 
+	// Unknown Unicode Character
+	ts->UnknownUnicodeCharaAsWide =
+		GetOnOff(Section, "UnknownUnicodeCharacterAsWide", FName, TRUE);
+
 #ifdef USE_NORMAL_BGCOLOR
 	// UseNormalBGColor
 	ts->UseNormalBGColor =
@@ -1960,6 +1964,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// AutoScrollOnlyInBottomLine
 	WriteOnOff(Section, "AutoScrollOnlyInBottomLine", FName,
 		ts->AutoScrollOnlyInBottomLine);
+
+	// Unknown Unicode Character
+	WriteOnOff(Section, "UnknownUnicodeCharacterAsWide", FName,
+	           ts->UnknownUnicodeCharaAsWide);
 }
 
 #define VTEditor "VT editor keypad"

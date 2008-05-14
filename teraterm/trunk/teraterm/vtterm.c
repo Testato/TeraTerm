@@ -2852,7 +2852,11 @@ static void UnicodeToCP932(unsigned int code, int byte)
 
 			if (cset == 0) {
 				//for (i = 0 ; i < byte ; i++) {
-				for (i = 0 ; i < 2 ; i++) {
+//				for (i = 0 ; i < 2 ; i++) {
+//					ParseASCII('?');
+//				}
+				ParseASCII('?');
+				if (ts.UnknownUnicodeCharaAsWide) {
 					ParseASCII('?');
 				}
 			}
