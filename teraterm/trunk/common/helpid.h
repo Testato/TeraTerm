@@ -34,6 +34,8 @@
 #define HlpTEKFilePrint         27
 #define HlpTEKSetupWindow       28
 #define HlpTEKSetupFont         29
+#define HlpFileYmodemRecv       30
+#define HlpFileYmodemSend       31
 
 
 #define HlpIndex    10000

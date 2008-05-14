@@ -126,6 +126,8 @@ protected:
 	afx_msg void OnFileKermitFinish();
 	afx_msg void OnFileXRcv();
 	afx_msg void OnFileXSend();
+	afx_msg void OnFileYRcv();
+	afx_msg void OnFileYSend();
 	afx_msg void OnFileZRcv();
 	afx_msg void OnFileZSend();
 	afx_msg void OnFileBPRcv();

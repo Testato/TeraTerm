@@ -941,6 +941,9 @@ BOOL OpenProtoDlg(PFileVar fv, int IdProto, int Mode, WORD Opt1, WORD Opt2)
 		case PROTO_XM:
 			vsize = sizeof(TXVar);
 			break;
+		case PROTO_YM:
+			vsize = sizeof(TYVar);
+			break;
 		case PROTO_ZM:
 			vsize = sizeof(TZVar);
 			break;
@@ -963,6 +966,11 @@ BOOL OpenProtoDlg(PFileVar fv, int IdProto, int Mode, WORD Opt1, WORD Opt2)
 			((PXVar)ProtoVar)->XMode = Mode;
 			((PXVar)ProtoVar)->XOpt = Opt1;
 			((PXVar)ProtoVar)->TextFlag = 1 - (Opt2 & 1);
+			break;
+		case PROTO_YM:  // TBD
+			((PYVar)ProtoVar)->YMode = Mode;
+			((PYVar)ProtoVar)->YOpt = Opt1;
+			((PYVar)ProtoVar)->TextFlag = 1 - (Opt2 & 1);
 			break;
 		case PROTO_ZM:
 			((PZVar)ProtoVar)->BinFlag = (Opt1 & 1) != 0;
@@ -1215,6 +1223,56 @@ void XMODEMStart(int mode)
 	cv.DelayFlag = FALSE;
 
 	if (! OpenProtoDlg(FileVar,PROTO_XM,mode,
+	                   ts.XmodemOpt,ts.XmodemBin))
+		ProtoEnd();
+}
+}
+
+extern "C" {
+void YMODEMStart(int mode)
+{
+	LONG Option;
+
+	if (! ProtoStart())
+		return;
+
+	if (mode==IdYReceive)
+		FileVar->OpId = OpYRcv;
+	else
+		FileVar->OpId = OpYSend;
+
+	if (strlen(&(FileVar->FullName[FileVar->DirLen]))==0)
+	{
+		Option = MAKELONG(ts.XmodemBin,ts.XmodemOpt);
+		if (! (*GetXFname)(FileVar->HMainWin,  // TBD
+		                   mode==IdYReceive,&Option,FileVar,ts.FileDir))
+		{
+			ProtoEnd();
+			return;
+		}
+		ts.XmodemOpt = HIWORD(Option);  // TBD
+		ts.XmodemBin = LOWORD(Option);
+	}
+	else
+		(*SetFileVar)(FileVar);
+
+	if (mode==IdYReceive)
+		FileVar->FileHandle = _lcreat(FileVar->FullName,0);
+	else
+		FileVar->FileHandle = _lopen(FileVar->FullName,OF_READ);
+
+	FileVar->FileOpen = FileVar->FileHandle>0;
+	if (! FileVar->FileOpen)
+	{
+		ProtoEnd();
+		return;
+	}
+	TalkStatus = IdTalkQuiet;
+
+	/* disable transmit delay (serial port) */
+	cv.DelayFlag = FALSE;
+
+	if (! OpenProtoDlg(FileVar,PROTO_YM,mode,
 	                   ts.XmodemOpt,ts.XmodemBin))
 		ProtoEnd();
 }

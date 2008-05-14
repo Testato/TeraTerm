@@ -26,6 +26,7 @@
 #define PROTO_ZM  3
 #define PROTO_BP  4
 #define PROTO_QV  5
+#define PROTO_YM  6
 
 #define OpLog      1
 #define OpSendFile 2
@@ -41,6 +42,8 @@
 #define OpBPSend   12
 #define OpQVRcv    13
 #define OpQVSend   14
+#define OpYRcv     15
+#define OpYSend    16
 
 #define TitLog      "Log"
 #define TitSendFile "Send file"

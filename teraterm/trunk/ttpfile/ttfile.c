@@ -15,6 +15,7 @@
 #include "dlglib.h"
 #include "kermit.h"
 #include "xmodem.h"
+#include "ymodem.h"
 #include "zmodem.h"
 #include "bplus.h"
 #include "quickvan.h"
@@ -949,6 +950,9 @@ void FAR PASCAL ProtoInit(int Proto, PFileVar fv, PCHAR pv, PComVar cv, PTTSet t
 			break;
 		case PROTO_XM:
 			XInit(fv,(PXVar)pv,cv,ts);
+			break;
+		case PROTO_YM:
+			YInit(fv,(PYVar)pv,cv,ts);
 			break;
 		case PROTO_ZM:
 			ZInit(fv,(PZVar)pv,cv,ts);

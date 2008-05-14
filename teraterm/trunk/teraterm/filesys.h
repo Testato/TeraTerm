@@ -65,6 +65,7 @@ void ProtoDlgTimeOut();
 void ProtoDlgCancel();
 void KermitStart(int mode);
 void XMODEMStart(int mode);
+void YMODEMStart(int mode);
 void ZMODEMStart(int mode);
 void BPStart(int mode);
 void QVStart(int mode);

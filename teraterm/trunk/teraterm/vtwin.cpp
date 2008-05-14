@@ -155,6 +155,8 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_COMMAND(ID_FILE_KERMITFINISH, OnFileKermitFinish)
 	ON_COMMAND(ID_FILE_XRCV, OnFileXRcv)
 	ON_COMMAND(ID_FILE_XSEND, OnFileXSend)
+	ON_COMMAND(ID_FILE_YRCV, OnFileYRcv)
+	ON_COMMAND(ID_FILE_YSEND, OnFileYSend)
 	ON_COMMAND(ID_FILE_ZRCV, OnFileZRcv)
 	ON_COMMAND(ID_FILE_ZSEND, OnFileZSend)
 	ON_COMMAND(ID_FILE_BPRCV, OnFileBPRcv)
@@ -1011,6 +1013,11 @@ void CVTWindow::InitMenu(HMENU *Menu)
 	GetMenuString(FileMenu, ID_FILE_XSEND, uimsg, sizeof(uimsg), MF_BYCOMMAND);
 	get_lang_msg("MENU_TRANS_X_SEND", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	ModifyMenu(FileMenu, ID_FILE_XSEND, MF_BYCOMMAND, ID_FILE_XSEND, ts.UIMsg);
+
+	// TBD: YMODEMはまだ未サポートなので、メニューは隠す。(2008.5.15 yutaka)
+	DeleteMenu(FileMenu, ID_FILE_YRCV, MF_BYCOMMAND);
+	DeleteMenu(FileMenu, ID_FILE_YSEND, MF_BYCOMMAND);
+	DrawMenuBar();
 
 	GetMenuString(FileMenu, ID_FILE_ZRCV, uimsg, sizeof(uimsg), MF_BYCOMMAND);
 	get_lang_msg("MENU_TRANS_Z_RCV", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
@@ -3330,6 +3337,18 @@ void CVTWindow::OnFileXSend()
 {
 	HelpId = HlpFileXmodemSend;
 	XMODEMStart(IdXSend);
+}
+
+void CVTWindow::OnFileYRcv()
+{
+	HelpId = HlpFileYmodemRecv;
+	YMODEMStart(IdYReceive);
+}
+
+void CVTWindow::OnFileYSend()
+{
+	HelpId = HlpFileYmodemSend;
+	YMODEMStart(IdYSend);
 }
 
 void CVTWindow::OnFileZRcv()

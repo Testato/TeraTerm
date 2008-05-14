@@ -398,6 +398,11 @@ BEGIN
                 MENUITEM "&Receive...",                 ID_FILE_XRCV
                 MENUITEM "&Send...",                    ID_FILE_XSEND
             END
+            POPUP "&YMODEM"
+           BEGIN
+                MENUITEM "Receive...",                  ID_FILE_YRCV
+                MENUITEM "Send...",                     ID_FILE_YSEND
+            END
             POPUP "&ZMODEM"
             BEGIN
                 MENUITEM "&Receive",                    ID_FILE_ZRCV

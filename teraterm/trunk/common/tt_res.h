@@ -198,6 +198,14 @@
 #define ID_TEKHELP_ABOUT                51990
 #define ID_EDIT_EXTERNALSETUP           52005
 #define ID_FILE_TERATERMMENU            52006
+#define ID_TRANSFER_YMODEM              52022
+#define ID_TRANSFER_YMODEM52023         52023
+#define ID_YMODEM_RECEIVE               52024
+#define ID_YMODEM_SEND                  52025
+#define ID_YMODEM_YRCV                  52026
+#define ID_YMODEM_YSEND                 52027
+#define ID_FILE_YRCV                    52028
+#define ID_FILE_YSEND                   52029
 
 // Next default values for new objects
 // 
@@ -205,7 +213,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        121
-#define _APS_NEXT_COMMAND_VALUE         52022
+#define _APS_NEXT_COMMAND_VALUE         52030
 #define _APS_NEXT_CONTROL_VALUE         2514
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
