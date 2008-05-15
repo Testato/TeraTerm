@@ -18,6 +18,7 @@
 #define GMF_KERMIT 0 /* Kermit Send */
 #define GMF_Z  1     /* ZMODEM Send */
 #define GMF_QV 2     /* Quick-VAN Send */
+#define GMF_Y  3     /* YMODEM Send */
 
 #define FnStrMemSize 4096
 
@@ -53,6 +54,8 @@
 #define TitKmtFin   "Kermit Finish"
 #define TitXRcv     "XMODEM Receive"
 #define TitXSend    "XMODEM Send"
+#define TitYRcv     "YMODEM Receive"
+#define TitYSend    "YMODEM Send"
 #define TitZRcv     "ZMODEM Receive"
 #define TitZSend    "ZMODEM Send"
 #define TitBPRcv    "B-Plus Receive"

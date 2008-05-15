@@ -167,6 +167,14 @@ void YInit
 {
 	//char inistr[MAXPATHLEN + 10];
 
+	if (! GetNextFname(fv))
+	{
+		return;
+	}
+	/* file open */
+	fv->FileHandle = _lopen(fv->FullName,OF_READ);
+	fv->FileOpen = fv->FileHandle>0;
+
 	fv->LogFlag = ((ts->LogFlag & LOG_Y)!=0);
 	if (fv->LogFlag)
 		fv->LogFile = _lcreat("YMODEM.LOG",0);

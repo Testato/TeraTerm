@@ -969,8 +969,7 @@ BOOL OpenProtoDlg(PFileVar fv, int IdProto, int Mode, WORD Opt1, WORD Opt2)
 			break;
 		case PROTO_YM:  // TBD
 			((PYVar)ProtoVar)->YMode = Mode;
-			((PYVar)ProtoVar)->YOpt = Opt1;
-			((PYVar)ProtoVar)->TextFlag = 1 - (Opt2 & 1);
+			((PYVar)ProtoVar)->YOpt = Yopt1K;  // TBD
 			break;
 		case PROTO_ZM:
 			((PZVar)ProtoVar)->BinFlag = (Opt1 & 1) != 0;
@@ -1231,49 +1230,37 @@ void XMODEMStart(int mode)
 extern "C" {
 void YMODEMStart(int mode)
 {
-	LONG Option;
+	WORD Opt;
 
 	if (! ProtoStart())
 		return;
 
-	if (mode==IdYReceive)
-		FileVar->OpId = OpYRcv;
-	else
+	if (mode==IdYSend)
+	{
+		Opt = ts.XmodemBin;
 		FileVar->OpId = OpYSend;
-
-	if (strlen(&(FileVar->FullName[FileVar->DirLen]))==0)
-	{
-		Option = MAKELONG(ts.XmodemBin,ts.XmodemOpt);
-		if (! (*GetXFname)(FileVar->HMainWin,  // TBD
-		                   mode==IdYReceive,&Option,FileVar,ts.FileDir))
+		if (strlen(&(FileVar->FullName[FileVar->DirLen]))==0)
 		{
-			ProtoEnd();
-			return;
+			if (! (*GetMultiFname)(FileVar,ts.FileDir,GMF_Y,&Opt) ||
+			    (FileVar->NumFname==0))
+			{
+				ProtoEnd();
+				return;
+			}
+			ts.XmodemBin = Opt;
 		}
-		ts.XmodemOpt = HIWORD(Option);  // TBD
-		ts.XmodemBin = LOWORD(Option);
-	}
-	else
+		else
 		(*SetFileVar)(FileVar);
-
-	if (mode==IdYReceive)
-		FileVar->FileHandle = _lcreat(FileVar->FullName,0);
-	else
-		FileVar->FileHandle = _lopen(FileVar->FullName,OF_READ);
-
-	FileVar->FileOpen = FileVar->FileHandle>0;
-	if (! FileVar->FileOpen)
-	{
-		ProtoEnd();
-		return;
 	}
+	else /* IdZReceive or IdZAuto */
+		FileVar->OpId = OpYRcv;
+
 	TalkStatus = IdTalkQuiet;
 
 	/* disable transmit delay (serial port) */
 	cv.DelayFlag = FALSE;
 
-	if (! OpenProtoDlg(FileVar,PROTO_YM,mode,
-	                   ts.XmodemOpt,ts.XmodemBin))
+	if (! OpenProtoDlg(FileVar,PROTO_YM,mode,Opt,0))
 		ProtoEnd();
 }
 }

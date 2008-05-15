@@ -500,6 +500,10 @@ BOOL FAR PASCAL GetMultiFname
 			get_lang_msg("FILEDLG_TRANS_TITLE_QVSEND", uimsg, sizeof(uimsg), TitQVSend, UILanguageFile);
 			strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
 			break;
+		case GMF_Y:
+			get_lang_msg("FILEDLG_TRANS_TITLE_YSEND", uimsg, sizeof(uimsg), TitYSend, UILanguageFile);
+			strncat_s(fv->DlgCaption, sizeof(fv->DlgCaption), uimsg, _TRUNCATE);
+			break;
 		default:
 			return FALSE;
 	}
@@ -986,6 +990,16 @@ BOOL FAR PASCAL ProtoParse
 					break;
 				}
 			break;
+		case PROTO_YM:
+			switch (((PYVar)pv)->YMode) {
+				case IdYReceive:
+					Ok = YReadPacket(fv,(PYVar)pv,cv);
+					break;
+				case IdYSend:
+					Ok = YSendPacket(fv,(PYVar)pv,cv);
+					break;
+				}
+			break;
 		case PROTO_ZM:
 			Ok = ZParse(fv,(PZVar)pv,cv);
 			break;
@@ -1015,6 +1029,9 @@ void FAR PASCAL ProtoTimeOutProc
 			break;
 		case PROTO_XM:
 			XTimeOutProc(fv,(PXVar)pv,cv);
+			break;
+		case PROTO_YM:
+			YTimeOutProc(fv,(PYVar)pv,cv);
 			break;
 		case PROTO_ZM:
 			ZTimeOutProc(fv,(PZVar)pv,cv);
