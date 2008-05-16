@@ -749,12 +749,24 @@ void CVTWindow::ButtonUp(BOOL Paste)
 
 	// added ConfirmPasteMouseRButton (2007.3.17 maya)
 	if (pasteRButton && !ts.ConfirmPasteMouseRButton) {
-		if (CBStartPasteConfirmChange(HVTWin))
+		if (CBStartPasteConfirmChange(HVTWin)) {
 			CBStartPaste(HVTWin,FALSE,0,NULL,0);
+			/* 最下行でだけ自動スクロールする設定の場合
+			   ペースト処理でスクロールさせる */
+			if (ts.AutoScrollOnlyInBottomLine != 0 && WinOrgY != 0) {
+				DispVScroll(SCROLL_BOTTOM, 0);
+			}
+		}
 	}
 	else if (pasteMButton) {
-		if (CBStartPasteConfirmChange(HVTWin))
+		if (CBStartPasteConfirmChange(HVTWin)) {
 			CBStartPaste(HVTWin,FALSE,0,NULL,0);
+			/* 最下行でだけ自動スクロールする設定の場合
+			   ペースト処理でスクロールさせる */
+			if (ts.AutoScrollOnlyInBottomLine != 0 && WinOrgY != 0) {
+				DispVScroll(SCROLL_BOTTOM, 0);
+			}
+		}
 	}
 }
 
@@ -3437,15 +3449,27 @@ void CVTWindow::OnEditCopyTable()
 void CVTWindow::OnEditPaste()
 {
 	// add confirm (2008.2.4 yutaka)
-	if (CBStartPasteConfirmChange(HVTWin))
+	if (CBStartPasteConfirmChange(HVTWin)) {
 		CBStartPaste(HVTWin,FALSE,0,NULL,0);
+		/* 最下行でだけ自動スクロールする設定の場合
+		   ペースト処理でスクロールさせる */
+		if (ts.AutoScrollOnlyInBottomLine != 0 && WinOrgY != 0) {
+			DispVScroll(SCROLL_BOTTOM, 0);
+		}
+	}
 }
 
 void CVTWindow::OnEditPasteCR()
 {
 	// add confirm (2008.3.11 maya)
-	if (CBStartPasteConfirmChange(HVTWin))
+	if (CBStartPasteConfirmChange(HVTWin)) {
 		CBStartPaste(HVTWin,TRUE,0,NULL,0);
+		/* 最下行でだけ自動スクロールする設定の場合
+		   ペースト処理でスクロールさせる */
+		if (ts.AutoScrollOnlyInBottomLine != 0 && WinOrgY != 0) {
+			DispVScroll(SCROLL_BOTTOM, 0);
+		}
+	}
 }
 
 void CVTWindow::OnEditClearScreen()
