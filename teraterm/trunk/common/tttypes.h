@@ -410,6 +410,7 @@ struct tttset {
 	WORD ScrollWindowClearScreen;
 	WORD AutoScrollOnlyInBottomLine;
 	WORD UnknownUnicodeCharaAsWide;
+	char YModemRcvCommand[MAX_PATH];
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -845,6 +846,7 @@ typedef TMap far *PMap;
  *   added tttset.ScrollWindowClearScreen.
  *   added tttset.AutoScrollOnlyInBottomLine.
  *   added tttset.UnknownUnicodeCharaAsWide.
+ *   added tttset.YModemRcvCommand.
  *
  * - At version 4.58, ttset_memfilemap was replaced with ttset_memfilemap_6.
  *   added tttset.TranslateWheelToCursor.

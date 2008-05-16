@@ -224,13 +224,13 @@ void YInit
 	case IdYSend:
 		yv->TextFlag = 0;
 
-#if 0
+#if 1
 		// ファイル送信開始前に、"rx ファイル名"を自動的に呼び出す。(2007.12.20 yutaka)
-		if (ts->XModemRcvCommand[0] != '\0') {
+		if (ts->YModemRcvCommand[0] != '\0') {
 			_snprintf_s(inistr, sizeof(inistr), _TRUNCATE, "%s %s\015", 
-				ts->XModemRcvCommand,
+				ts->YModemRcvCommand,
 				&(fv->FullName[fv->DirLen]));
-			FTConvFName(inistr + strlen(ts->XModemRcvCommand) + 1);
+			FTConvFName(inistr + strlen(ts->YModemRcvCommand) + 1);
 			YWrite(fv,yv,cv, inistr , strlen(inistr));
 		}
 #endif
