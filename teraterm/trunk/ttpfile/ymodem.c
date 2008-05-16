@@ -165,7 +165,7 @@ BOOL YCheckPacket(PYVar yv)
 void YInit
 (PFileVar fv, PYVar yv, PComVar cv, PTTSet ts)
 {
-	//char inistr[MAXPATHLEN + 10];
+	char inistr[MAXPATHLEN + 10];
 
 	if (! GetNextFname(fv))
 	{
