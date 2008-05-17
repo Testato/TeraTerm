@@ -225,12 +225,11 @@ void YInit
 		yv->TextFlag = 0;
 
 #if 1
-		// ファイル送信開始前に、"rx ファイル名"を自動的に呼び出す。(2007.12.20 yutaka)
+		// ファイル送信開始前に、"rb ファイル名"を自動的に呼び出す。(2007.12.20 yutaka)
+		strcpy(ts->YModemRcvCommand, "rb");
 		if (ts->YModemRcvCommand[0] != '\0') {
-			_snprintf_s(inistr, sizeof(inistr), _TRUNCATE, "%s %s\015", 
-				ts->YModemRcvCommand,
-				&(fv->FullName[fv->DirLen]));
-			FTConvFName(inistr + strlen(ts->YModemRcvCommand) + 1);
+			_snprintf_s(inistr, sizeof(inistr), _TRUNCATE, "%s\015", 
+				ts->YModemRcvCommand);
 			YWrite(fv,yv,cv, inistr , strlen(inistr));
 		}
 #endif
@@ -474,17 +473,23 @@ BOOL YSendPacket(PFileVar fv, PYVar yv, PComVar cv)
 		{
 			if (yv->SendFileInfo == 0) { // ファイル情報の送信
 			    struct _stat st;
-				int ret;
+				int ret, total;
 
 				yv->SendFileInfo = 1;
 
  			   /* timestamp */
 			   _stat(fv->FullName, &st);
 
-				ret = _snprintf_s(yv->PktOut, sizeof(yv->PktOut), _TRUNCATE, "%s\0%lu %lo %o",
-					fv->FullName, fv->FileSize, (long)st.st_mtime, 0644|_S_IFREG);
+				ret = _snprintf_s(yv->PktOut, sizeof(yv->PktOut), _TRUNCATE, "%s",
+					&(fv->FullName[fv->DirLen]));
+				yv->PktOut[ret] = 0x00;  // NUL
+				total = ret + 1;
 
-				i = ret;
+				ret = _snprintf_s(&(yv->PktOut[total]), sizeof(yv->PktOut) - total, _TRUNCATE, "%lu %lo %o",
+					fv->FileSize, (long)st.st_mtime, 0644|_S_IFREG);
+				total += ret;
+
+				i = total;
 				while (i <= yv->DataLen)
 				{
 					yv->PktOut[i] = 0x00;
