@@ -117,19 +117,22 @@ MSG_SAVESETUP_PERMISSION_ERROR=Teraterm.ini file doesn't have the writable permi
 
 DLG_TABSHEET_TITLE=Erweiterte Einstellungen
 DLG_TABSHEET_TITLE_GENERAL=Grundeinstellungen
+DLG_TABSHEET_TITLE_COPYPASTE=Copy and Paste
 DLG_TABSHEET_TITLE_VISUAL=Visuelle Einstellungen
 DLG_TABSHEET_TITLE_LOG=Log
 DLG_TABSHEET_TITLE_CYGWIN=Cygwin
 
-DLG_TAB_GENERAL_CONTINUE=mehrere Zeilen kopieren
-DLG_TAB_GENERAL_MOUSEPASTE=&Einfügen mit rechter Maustaste aus
-DLG_TAB_GENERAL_CONFIRMPASTE=&Einfügen mit rechter Maustaste ein
-DLG_TAB_GENERAL_SELECTLBUTTON=&Auswahl nur über Button
-DLG_TAB_GENERAL_DISABLESENDBREAK=DisableAccelerator&SendBreak
 DLG_TAB_GENERAL_CLICKURL=&klickbare URL
 DLG_TAB_GENERAL_DEMILITER=&Bergrenzungszeichen
+DLG_TAB_GENERAL_DISABLESENDBREAK=DisableAccelerator&SendBreak
 DLG_TAB_GENERAL_ACCEPTBROADCAST=&Akzeptiere Broadcast
 DLG_TAB_GENERAL_AUTOSCROLL_ONLY_IN_BOTTOM_LINE=&Autoschriftrolle nur in unterst Linie
+
+DLG_TAB_COPYPASTE_CONTINUE=mehrere Zeilen kopieren
+DLG_TAB_COPYPASTE_MOUSEPASTE=&Einfügen mit rechter Maustaste aus
+DLG_TAB_COPYPASTE_CONFIRMPASTE=&Einfügen mit rechter Maustaste ein
+DLG_TAB_COPYPASTE_SELECTLBUTTON=&Auswahl nur über Button
+DLG_TAB_COPYPASTE_CONFIRM_CHANGE_PASTE=ConfirmChange&Paste
 
 DLG_TAB_VISUAL_ALHPA=&Transparenz
 DLG_TAB_VISUAL_ETERM=&Eterm Aussehen
