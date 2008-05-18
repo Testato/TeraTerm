@@ -24,6 +24,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <io.h>
 
 static HANDLE hInst;
 
@@ -367,6 +368,19 @@ BOOL FAR PASCAL GetTransFname
 	{
 		ofn.Flags = ofn.Flags | OFN_FILEMUSTEXIST;
 		opt = MAKELONG(LOWORD(*Option),0xFFFF);
+
+		// フィルタがワイルドカードではなく、そのファイルが存在する場合
+		// あらかじめデフォルトのファイル名を入れておく (2008.5.18 maya)
+		if (strlen(FileSendFilter) > 0 &&
+		    !isInvalidFileNameChar(FileSendFilter)) {
+			char file[MAX_PATH];
+			strncpy_s(file, sizeof(file), CurDir, _TRUNCATE);
+			AppendSlash(file, sizeof(file));
+			strncat_s(file, sizeof(file), FileSendFilter, _TRUNCATE);
+			if (_access(file, 0) == 0) {
+				strncpy_s(fv->FullName, sizeof(fv->FullName), FileSendFilter, _TRUNCATE);
+			}
+		}
 	}
 	ofn.lCustData = (DWORD)&opt;
 	ofn.lpstrTitle = fv->DlgCaption;
@@ -477,6 +491,7 @@ BOOL FAR PASCAL GetMultiFname
 	OPENFILENAME ofn;
 	char TempDir[MAXPATHLEN];
 	BOOL Ok;
+	char defaultFName[MAX_PATH];
 
 	memset(FNFilter, 0, sizeof(FNFilter));  /* Set up for double null at end */
 
@@ -558,6 +573,20 @@ BOOL FAR PASCAL GetMultiFname
 		ofn.lpTemplateName = MAKEINTRESOURCE(IDD_FOPT);
 	}
 	ofn.hInstance = hInst;
+
+	// フィルタがワイルドカードではなく、そのファイルが存在する場合
+	// あらかじめデフォルトのファイル名を入れておく (2008.5.18 maya)
+	if (strlen(FileSendFilter) > 0 &&
+	    !isInvalidFileNameChar(FileSendFilter)) {
+		char file[MAX_PATH];
+		strncpy_s(file, sizeof(file), CurDir, _TRUNCATE);
+		AppendSlash(file, sizeof(file));
+		strncat_s(file, sizeof(file), FileSendFilter, _TRUNCATE);
+		if (_access(file, 0) == 0) {
+			strncpy_s(defaultFName, sizeof(defaultFName), FileSendFilter, _TRUNCATE);
+			ofn.lpstrFile = defaultFName;
+		}
+	}
 
 	Ok = GetOpenFileName(&ofn);
 	if (Ok)
@@ -895,6 +924,18 @@ BOOL FAR PASCAL GetXFname
 			pf = pf + strlen(FNFilter) + 1;
 			strncpy_s(pf, sizeof(FNFilter)-(pf - FNFilter) ,FileSendFilter, _TRUNCATE);
 			pf = pf + strlen(pf) + 1;
+
+			// フィルタがワイルドカードではなく、そのファイルが存在する場合
+			// あらかじめデフォルトのファイル名を入れておく (2008.5.18 maya)
+			if (!isInvalidFileNameChar(FileSendFilter)) {
+				char file[MAX_PATH];
+				strncpy_s(file, sizeof(file), CurDir, _TRUNCATE);
+				AppendSlash(file, sizeof(file));
+				strncat_s(file, sizeof(file), FileSendFilter, _TRUNCATE);
+				if (_access(file, 0) == 0) {
+					strncpy_s(fv->FullName, sizeof(fv->FullName), FileSendFilter, _TRUNCATE);
+				}
+			}
 		}
 	}
 
