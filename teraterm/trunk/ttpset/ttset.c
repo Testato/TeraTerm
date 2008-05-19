@@ -1164,7 +1164,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 
 	// Unknown Unicode Character
 	ts->UnknownUnicodeCharaAsWide =
-		GetOnOff(Section, "UnknownUnicodeCharacterAsWide", FName, TRUE);
+		GetOnOff(Section, "UnknownUnicodeCharacterAsWide", FName, FALSE);
 
 #ifdef USE_NORMAL_BGCOLOR
 	// UseNormalBGColor
