@@ -515,17 +515,49 @@ static int check_host_key(PTInstVar pvar, char FAR * hostname,
 	index--;
 	do {
 		int negated;
+		int bracketed;
+		char *end_bracket;
+		int host_matched = 0;
+		unsigned short keyfile_port = 22;
 
 		index++;
 		negated = data[index] == '!';
 
 		if (negated) {
 			index++;
-			if (match_pattern(data + index, hostname)) {
+			bracketed = data[index] == '[';
+			if (bracketed) {
+				end_bracket = strstr(data + index + 1, "]:");
+				if (end_bracket != NULL) {
+					*end_bracket = ' ';
+					index++;
+				}
+			}
+			host_matched = match_pattern(data + index, hostname);
+			if (bracketed && end_bracket != NULL) {
+				*end_bracket = ']';
+				keyfile_port = atoi(end_bracket + 2);
+			}
+			if (host_matched && keyfile_port == tcpport) {
 				return index + eat_to_end_of_line(data + index);
 			}
-		} else if (match_pattern(data + index, hostname)) {
-			matched = 1;
+		} else {
+			bracketed = data[index] == '[';
+			if (bracketed) {
+				end_bracket = strstr(data + index + 1, "]:");
+				if (end_bracket != NULL) {
+					*end_bracket = ' ';
+					index++;
+				}
+			}
+			host_matched = match_pattern(data + index, hostname);
+			if (bracketed && end_bracket != NULL) {
+				*end_bracket = ']';
+				keyfile_port = atoi(end_bracket + 2);
+			}
+			if (host_matched && keyfile_port == tcpport) {
+				matched = 1;
+			}
 		}
 
 		index += eat_to_end_of_pattern(data + index);
@@ -851,13 +883,21 @@ static char FAR *format_host_key(PTInstVar pvar)
 	enum hostkey_type type = pvar->hosts_state.hostkey.type;
 
 	if (type == KEY_RSA1) {
-		int result_len = host_len + 50 +
+		int result_len = host_len + 50 + 8 +
 		                 get_ushort16_MSBfirst(pvar->hosts_state.hostkey.exp) / 3 +
 		                 get_ushort16_MSBfirst(pvar->hosts_state.hostkey.mod) / 3;
 		result = (char FAR *) malloc(result_len);
 
-		strncpy_s(result, result_len, pvar->hosts_state.prefetched_hostname, _TRUNCATE);
-		index = host_len;
+		if (pvar->ssh_state.tcpport == 22) {
+			strncpy_s(result, result_len, pvar->hosts_state.prefetched_hostname, _TRUNCATE);
+			index = host_len;
+		}
+		else {
+			_snprintf_s(result, result_len, _TRUNCATE, "[%s]:%d",
+			            pvar->hosts_state.prefetched_hostname,
+			            pvar->ssh_state.tcpport);
+			index = strlen(result);
+		}
 
 		_snprintf_s(result + index, result_len - host_len, _TRUNCATE,
 		            " %d ", pvar->hosts_state.hostkey.bits);
@@ -890,10 +930,18 @@ static char FAR *format_host_key(PTInstVar pvar)
 			}
 
 			// setup
-			_snprintf_s(result, msize, _TRUNCATE, "%s %s %s\r\n",
-			            pvar->hosts_state.prefetched_hostname, 
-			            get_sshname_from_key(key),
-			            uu);
+			if (pvar->ssh_state.tcpport == 22) {
+				_snprintf_s(result, msize, _TRUNCATE, "%s %s %s\r\n",
+				            pvar->hosts_state.prefetched_hostname, 
+				            get_sshname_from_key(key),
+				            uu);
+			} else {
+				_snprintf_s(result, msize, _TRUNCATE, "[%s]:%d %s %s\r\n",
+				            pvar->hosts_state.prefetched_hostname,
+				            pvar->ssh_state.tcpport,
+				            get_sshname_from_key(key),
+				            uu);
+			}
 		}
 error:
 		if (blob != NULL)
@@ -1060,14 +1108,30 @@ static void delete_different_key(PTInstVar pvar)
 				host_index--;
 				do {
 					int negated;
+					int bracketed;
+					char *end_bracket;
+					int host_matched = 0;
+					unsigned short keyfile_port = 22;
 
 					host_index++;
 					negated = data[host_index] == '!';
 
 					if (negated) {
 						host_index++;
-						if (match_pattern(data + host_index,
-						                  pvar->ssh_state.hostname)) {
+						bracketed = data[host_index] == '[';
+						if (bracketed) {
+							end_bracket = strstr(data + host_index + 1, "]:");
+							if (end_bracket != NULL) {
+								*end_bracket = ' ';
+								host_index++;
+							}
+						}
+						host_matched = match_pattern(data + host_index, pvar->ssh_state.hostname);
+						if (bracketed && end_bracket != NULL) {
+							*end_bracket = ']';
+							keyfile_port = atoi(end_bracket + 2);
+						}
+						if (host_matched && keyfile_port == pvar->ssh_state.tcpport) {
 							matched = 0;
 							// 接続バージョンチェックのために host_index を進めてから抜ける
 							host_index--;
@@ -1078,9 +1142,23 @@ static void delete_different_key(PTInstVar pvar)
 							break;
 						}
 					}
-					else if (match_pattern(data + host_index,
-					                       pvar->ssh_state.hostname)) {
-						matched = 1;
+					else {
+						bracketed = data[host_index] == '[';
+						if (bracketed) {
+							end_bracket = strstr(data + host_index + 1, "]:");
+							if (end_bracket != NULL) {
+								*end_bracket = ' ';
+								host_index++;
+							}
+						}
+						host_matched = match_pattern(data + host_index, pvar->ssh_state.hostname);
+						if (bracketed && end_bracket != NULL) {
+							*end_bracket = ']';
+							keyfile_port = atoi(end_bracket + 2);
+						}
+						if (host_matched && keyfile_port == pvar->ssh_state.tcpport) {
+							matched = 1;
+						}
 					}
 					host_index += eat_to_end_of_pattern(data + host_index);
 				} while (data[host_index] == ',');
