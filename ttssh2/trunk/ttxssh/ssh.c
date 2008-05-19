@@ -1541,7 +1541,7 @@ static BOOL handle_server_public_key(PTInstVar pvar)
 	hostkey.bits = get_uint32(inmsg + host_key_bits_pos);
 	hostkey.exp = inmsg + host_key_bits_pos + 4;
 	hostkey.mod = inmsg + host_key_public_modulus_pos;
-	HOSTS_check_host_key(pvar, pvar->ssh_state.hostname, &hostkey);
+	HOSTS_check_host_key(pvar, pvar->ssh_state.hostname, pvar->ssh_state.tcpport, &hostkey);
 
 	return FALSE;
 }
@@ -1614,7 +1614,7 @@ static void init_protocol(PTInstVar pvar)
 	CRYPT_initialize_random_numbers(pvar);
 
 	// known_hostsファイルからホスト公開鍵を先読みしておく
-	HOSTS_prefetch_host_key(pvar, pvar->ssh_state.hostname);
+	HOSTS_prefetch_host_key(pvar, pvar->ssh_state.hostname, pvar->ssh_state.tcpport);
 
 	/* while we wait for a response from the server... */
 
@@ -2579,6 +2579,7 @@ void SSH_init(PTInstVar pvar)
 void SSH_open(PTInstVar pvar)
 {
 	pvar->ssh_state.hostname = _strdup(pvar->ts->HostName);
+	pvar->ssh_state.tcpport  = pvar->ts->TCPPort;
 	pvar->ssh_state.win_cols = pvar->ts->TerminalWidth;
 	pvar->ssh_state.win_rows = pvar->ts->TerminalHeight;
 }
@@ -5622,7 +5623,7 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 		emsg = emsg_tmp;
 		goto error;
 	}
-	HOSTS_check_host_key(pvar, pvar->ssh_state.hostname, &hostkey);
+	HOSTS_check_host_key(pvar, pvar->ssh_state.hostname, pvar->ssh_state.tcpport, &hostkey);
 
 
 	dh_server_pub = BN_new();
@@ -5949,7 +5950,7 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 		emsg = emsg_tmp;
 		goto error;
 	}
-	HOSTS_check_host_key(pvar, pvar->ssh_state.hostname, &hostkey);
+	HOSTS_check_host_key(pvar, pvar->ssh_state.hostname, pvar->ssh_state.tcpport, &hostkey);
 
 
 	dh_server_pub = BN_new();

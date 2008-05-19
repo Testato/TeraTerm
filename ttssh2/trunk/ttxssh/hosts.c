@@ -500,7 +500,7 @@ static char FAR *parse_bignum(char FAR * data)
 // known_hostsファイルの内容を解析し、指定したホストの公開鍵を探す。
 //
 static int check_host_key(PTInstVar pvar, char FAR * hostname,
-                          char FAR * data)
+                          unsigned short tcpport, char FAR * data)
 {
 	int index = eat_spaces(data);
 	int matched = 0;
@@ -623,7 +623,8 @@ static int check_host_key(PTInstVar pvar, char FAR * hostname,
 //
 // known_hostsファイルからホスト名に合致する行を読む
 //
-static int read_host_key(PTInstVar pvar, char FAR * hostname,
+static int read_host_key(PTInstVar pvar,
+                         char FAR * hostname, unsigned short tcpport,
                          int suppress_errors, int return_always)
 {
 	int i;
@@ -694,7 +695,7 @@ static int read_host_key(PTInstVar pvar, char FAR * hostname,
 		}
 
 		pvar->hosts_state.file_data_index +=
-			check_host_key(pvar, hostname,
+			check_host_key(pvar, hostname, tcpport,
 			               pvar->hosts_state.file_data +
 			               pvar->hosts_state.file_data_index);
 
@@ -718,13 +719,13 @@ static void finish_read_host_files(PTInstVar pvar, int suppress_errors)
 }
 
 // サーバへ接続する前に、known_hostsファイルからホスト公開鍵を先読みしておく。
-void HOSTS_prefetch_host_key(PTInstVar pvar, char FAR * hostname)
+void HOSTS_prefetch_host_key(PTInstVar pvar, char FAR * hostname, unsigned short tcpport)
 {
 	if (!begin_read_host_files(pvar, 1)) {
 		return;
 	}
 
-	if (!read_host_key(pvar, hostname, 1, 0)) {
+	if (!read_host_key(pvar, hostname, tcpport, 1, 0)) {
 		return;
 	}
 
@@ -1039,7 +1040,7 @@ static void delete_different_key(PTInstVar pvar)
 			int do_write = 0;
 			length = amount_written = 0;
 
-			if (!read_host_key(pvar, pvar->ssh_state.hostname, 0, 1)) {
+			if (!read_host_key(pvar, pvar->ssh_state.hostname, pvar->ssh_state.tcpport, 0, 1)) {
 				break;
 			}
 
@@ -1388,7 +1389,7 @@ void HOSTS_do_different_host_dialog(HWND wnd, PTInstVar pvar)
 //
 // SSH2対応を追加 (2006.3.24 yutaka)
 //
-BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname, Key *key)
+BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname, unsigned short tcpport, Key *key)
 {
 	int found_different_key = 0;
 
@@ -1408,7 +1409,7 @@ BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname, Key *key)
 	// 先読みされていない場合は、この時点でファイルから読み込む
 	if (begin_read_host_files(pvar, 0)) {
 		do {
-			if (!read_host_key(pvar, hostname, 0, 0)) {
+			if (!read_host_key(pvar, hostname, tcpport, 0, 0)) {
 				break;
 			}
 

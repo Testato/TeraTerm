@@ -57,12 +57,12 @@ typedef struct {
 
 void HOSTS_init(PTInstVar pvar);
 void HOSTS_open(PTInstVar pvar);
-void HOSTS_prefetch_host_key(PTInstVar pvar, char FAR * hostname);
+void HOSTS_prefetch_host_key(PTInstVar pvar, char FAR * hostname, unsigned short tcpport);
 #if 0
 BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname,
                          int bits, unsigned char FAR * exp, unsigned char FAR * mod);
 #else
-BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname, Key *key);
+BOOL HOSTS_check_host_key(PTInstVar pvar, char FAR * hostname, unsigned short tcpport, Key *key);
 #endif
 void HOSTS_do_unknown_host_dialog(HWND wnd, PTInstVar pvar);
 void HOSTS_do_different_host_dialog(HWND wnd, PTInstVar pvar);

@@ -429,6 +429,8 @@ typedef struct {
 
 	int win_cols;
 	int win_rows;
+
+	unsigned short tcpport;
 } SSHState;
 
 #define STATUS_DONT_SEND_USER_NAME            0x01
