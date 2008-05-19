@@ -2004,7 +2004,50 @@ void ChangeSelectRegion()
   SelectEndOld = SelectEnd;
 }
 
-int BuffDblClk(int Xw, int Yw)
+BOOL BuffUrlDblClk(int Xw, int Yw)
+{
+  int X, Y;
+  LONG TmpPtr;
+  BOOL url_invoked = FALSE;
+
+  if (! ts.EnableClickableUrl) {
+    return FALSE;
+  }
+
+  CaretOff();
+
+  DispConvWinToScreen(Xw,Yw,&X,&Y,NULL);
+  Y = Y + PageStart;
+  if ((Y<0) || (Y>=BuffEnd)) return 0;
+  if (X<0) X = 0;
+  if (X>=NumOfColumns) X = NumOfColumns-1;
+
+  if ((Y>=0) && (Y<BuffEnd)) {
+    LockBuffer();
+    TmpPtr = GetLinePtr(Y);
+    /* start - ishizaki */
+    if (AttrBuff[TmpPtr+X] & AttrURL) {
+      BoxSelect = FALSE;
+      SelectEnd = SelectStart;
+      ChangeSelectRegion();
+
+      url_invoked = TRUE;
+      invokeBrowser(TmpPtr+X);
+
+      SelectStart.x = 0;
+      SelectStart.y = 0;
+      SelectEnd.x = 0;
+      SelectEnd.y = 0;
+      SelectEndOld.x = 0;
+      SelectEndOld.y = 0;
+      Selected = FALSE;
+    }
+    UnlockBuffer();
+  }
+  return url_invoked;
+}
+
+void BuffDblClk(int Xw, int Yw)
 //  Select a word at (Xw, Yw) by mouse double click
 //    Xw: horizontal position in window coordinate (pixels)
 //    Yw: vertical
@@ -2014,13 +2057,12 @@ int BuffDblClk(int Xw, int Yw)
   LONG TmpPtr;
   BYTE b;
   BOOL DBCS;
-  int url_invoked = 0;
 
   CaretOff();
 
   DispConvWinToScreen(Xw,Yw,&X,&Y,NULL);
   Y = Y + PageStart;
-  if ((Y<0) || (Y>=BuffEnd)) return 0;
+  if ((Y<0) || (Y>=BuffEnd)) return;
   if (X<0) X = 0;
   if (X>=NumOfColumns) X = NumOfColumns-1;
 
@@ -2032,23 +2074,6 @@ int BuffDblClk(int Xw, int Yw)
   if ((Y>=0) && (Y<BuffEnd))
   {
     TmpPtr = GetLinePtr(Y);
-#if 1
-    /* start - ishizaki */
-	if (ts.EnableClickableUrl && (AttrBuff[TmpPtr+X] & AttrURL)) {
-      url_invoked = 1;
-      invokeBrowser(TmpPtr+X);
-
-      SelectStart.x = 0;
-      SelectStart.y = 0;
-      SelectEnd.x = 0;
-      SelectEnd.y = 0;
-      SelectEndOld.x = 0;
-      SelectEndOld.y = 0;
-      Selected = FALSE;
-      goto end;
-    }
-    /* end - ishizaki */
-#endif
 
     IStart = X;
     IStart = LeftHalfOfDBCS(TmpPtr,IStart);
@@ -2218,11 +2243,8 @@ int BuffDblClk(int Xw, int Yw)
     Selected = TRUE;
     ChangeSelectRegion();
   }
-/* start - ishizaki */
-end:
-/* end - ishizaki */
   UnlockBuffer();
-  return url_invoked;
+  return;
 }
 
 void BuffTplClk(int Yw)
