@@ -9,7 +9,7 @@ static codemap_t mapUnicodeSymbolToDecSp[] = {
 	 *   http://www.unicode.org/charts/PDF/U2000.pdf
 	 */
 	{ 0x2022, 0x007E },	// Bullet
-//	{ 0x2024, 0x007E },	// One dot operator
+//	{ 0x2024, 0x007E },	// One dot leader
 	{ 0x2027, 0x007E },	// Hyphenation point
 
 	/*
