@@ -5,6 +5,20 @@
  */
 static codemap_t mapUnicodeSymbolToDecSp[] = {
 	/*
+	 * General punctuation
+	 *   http://www.unicode.org/charts/PDF/U2000.pdf
+	 */
+	{ 0x2022, 0x007E },	// Bullet
+//	{ 0x2024, 0x007E },	// One dot operator
+	{ 0x2027, 0x007E },	// Hyphenation point
+
+	/*
+	 * Mathematical operators
+	 *   http://www.unicode.org/charts/PDF/U2200.pdf
+	 */
+//	{ 0x2219, 0x007E },	// Bullet operator
+
+	/*
 	 * Box drawing
 	 *   http://www.unicode.org/charts/PDF/U2500.pdf
 	 */
@@ -152,5 +166,12 @@ static codemap_t mapUnicodeSymbolToDecSp[] = {
 	 * Geometric Shapes
 	 *   http://www.unicode.org/charts/PDF/U25A0.pdf
 	 */
+	{ 0x25AA, 0x007E },	// Black small square
 	{ 0x25AE, 0x0060 },	// Black vertical rectangle
+
+	/*
+	 * Miscellaneous symbols and arrows
+	 *   http://www.unicode.org/charts/PDF/U2B00.pdf
+	 */
+	{ 0x2B1D, 0x007E },	// Black very small square
 };
