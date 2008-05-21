@@ -205,6 +205,9 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 	GetDlgItemText(dlg, IDC_SSHUSERHOSTS, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_AUTH_METHOD_RHOST", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_SSHUSERHOSTS, pvar->ts->UIMsg);
+	GetDlgItemText(dlg, IDC_SSHUSEPAGEANT, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_AUTH_METHOD_PAGEANT", pvar, uimsg);
+	SetDlgItemText(dlg, IDC_SSHUSEPAGEANT, pvar->ts->UIMsg);
 	GetDlgItemText(dlg, IDC_CHOOSERSAFILE, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_AUTH_PRIVATEKEY", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_CHOOSERSAFILE, pvar->ts->UIMsg);
@@ -1156,6 +1159,9 @@ static void init_default_auth_dlg(PTInstVar pvar, HWND dlg)
 	GetDlgItemText(dlg, IDC_SSHUSETIS, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_AUTHSETUP_METHOD_CHALLENGE", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_SSHUSETIS, pvar->ts->UIMsg);
+	GetDlgItemText(dlg, IDC_SSHUSEPAGEANT, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_AUTHSETUP_METHOD_PAGEANT", pvar, uimsg);
+	SetDlgItemText(dlg, IDC_SSHUSEPAGEANT, pvar->ts->UIMsg);
 	GetDlgItemText(dlg, IDC_CHOOSERSAFILE, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_AUTH_PRIVATEKEY", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_CHOOSERSAFILE, pvar->ts->UIMsg);
