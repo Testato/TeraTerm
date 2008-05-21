@@ -140,6 +140,10 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 	get_lang_msg("DLG_TAB_GENERAL_AUTOSCROLL_ONLY_IN_BOTTOM_LINE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE, ts.UIMsg);
 
+	GetDlgItemText(IDC_ACCEPT_MOUSE_EVENT_TRACKING, uimsg, sizeof(uimsg));
+	get_lang_msg("DLG_TAB_GENERAL_ACCEPT_MOUSE_EVENT_TRACKING", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	SetDlgItemText(IDC_ACCEPT_MOUSE_EVENT_TRACKING, ts.UIMsg);
+
 	// (1)DisableAcceleratorSendBreak
 	btn = (CButton *)GetDlgItem(IDC_DISABLE_SENDBREAK);
 	btn->SetCheck(ts.DisableAcceleratorSendBreak);
@@ -162,6 +166,10 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 	// (6)IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE
 	btn = (CButton *)GetDlgItem(IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE);
 	btn->SetCheck(ts.AutoScrollOnlyInBottomLine);
+
+	// (7)IDC_ACCEPT_MOUSE_EVENT_TRACKING
+	btn = (CButton *)GetDlgItem(IDC_ACCEPT_MOUSE_EVENT_TRACKING);
+	btn->SetCheck(ts.MouseEventTracking);
 
 	// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
 	::SetFocus(::GetDlgItem(GetSafeHwnd(), IDC_CLICKABLE_URL));
@@ -204,6 +212,10 @@ void CGeneralPropPageDlg::OnOK()
 	// (6)IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE 
 	btn = (CButton *)GetDlgItem(IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE);
 	ts.AutoScrollOnlyInBottomLine = btn->GetCheck();
+
+	// (7)IDC_ACCEPT_MOUSE_EVENT_TRACKING 
+	btn = (CButton *)GetDlgItem(IDC_ACCEPT_MOUSE_EVENT_TRACKING);
+	ts.MouseEventTracking = btn->GetCheck();
 }
 
 
