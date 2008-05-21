@@ -2819,7 +2819,6 @@ static void UnicodeToCP932(unsigned int code, int byte)
 	char mbchar[32];
 	unsigned char wchar[32];
 	unsigned short cset = 0;
-	int i;
 
 #if 0
 	Kanji = code & 0xff00;
@@ -2851,10 +2850,6 @@ static void UnicodeToCP932(unsigned int code, int byte)
 			}
 
 			if (cset == 0) {
-				//for (i = 0 ; i < byte ; i++) {
-//				for (i = 0 ; i < 2 ; i++) {
-//					ParseASCII('?');
-//				}
 				ParseASCII('?');
 				if (ts.UnknownUnicodeCharaAsWide) {
 					ParseASCII('?');
