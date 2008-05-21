@@ -85,6 +85,7 @@
 #define IDC_DEFAULTPATH_EDITOR          1062
 #define IDC_DEFAULTPATH_LABEL           1063
 #define IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE 1064
+#define IDC_ACCEPT_MOUSE_EVENT_TRACKING 1065
 #define IDD_PRNABORTDLG                 2100
 #define IDD_FILETRANSDLG                2200
 #define IDC_TRANSFNAME                  2201
