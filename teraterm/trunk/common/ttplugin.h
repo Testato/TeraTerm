@@ -1,7 +1,7 @@
-/* Teraterm extension mechanism
+/* TeraTerm extension mechanism
    Robert O'Callahan (roc+tt@cs.cmu.edu)
    
-   Teraterm by Takashi Teranishi (teranishi@rikaxp.riken.go.jp)
+   TeraTerm by Takashi Teranishi (teranishi@rikaxp.riken.go.jp)
 */
 
 #ifndef __TTPLUGIN_H

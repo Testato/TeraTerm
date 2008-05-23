@@ -3694,7 +3694,7 @@ void CVTWindow::OnSetupSave()
 			char uimsg[MAX_UIMSG];
 			get_lang_msg("MSG_TT_ERROR", uimsg, sizeof(uimsg), "Tera Term: ERROR", ts.UILanguageFile);
 			get_lang_msg("MSG_SAVESETUP_PERMISSION_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
-			             "Teraterm.ini file doesn't have the writable permission.", ts.UILanguageFile);
+			             "TERATERM.INI file doesn't have the writable permission.", ts.UILanguageFile);
 			MessageBox(ts.UIMsg, uimsg, MB_OK|MB_ICONEXCLAMATION);
 			return;
 		}
