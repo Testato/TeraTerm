@@ -1013,7 +1013,7 @@ private:
             SetWindowText(uimsg);
 
             UTIL_get_lang_msg("DLG_ABOUT_EXTENTION", uimsg, sizeof(uimsg),
-                              "Teraterm proxy extension");
+                              "TeraTerm proxy extension");
             UTIL_get_lang_msg("DLG_ABOUT_YEBISUYA", uimsg2, sizeof(uimsg2),
                               "YebisuyaHompo");
             UTIL_get_lang_msg("DLG_ABOUT_HOMEPAGE", uimsg3, sizeof(uimsg3),
