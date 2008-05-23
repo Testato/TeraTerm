@@ -11,7 +11,7 @@ The following directory structure is used:
 .\matcher       Files for the project that builds TEST.EXE which tests
                 the micro-regexp matcher used when scanning
                 ssh_known_hosts
-.\Teraterm-2.3  You should obtain the source for Teraterm 2.3 and
+.\Teraterm-2.3  You should obtain the source for TeraTerm 2.3 and
                 dump it here
 .\SSLeay-0.8.1  SSLeay 0.8.1, which you need to obtain the source
                 for and build in this directory

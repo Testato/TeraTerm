@@ -26,10 +26,10 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-/* Teraterm extension mechanism
+/* TeraTerm extension mechanism
    Robert O'Callahan (roc+tt@cs.cmu.edu)
    
-   Teraterm by Takashi Teranishi (teranishi@rikaxp.riken.go.jp)
+   TeraTerm by Takashi Teranishi (teranishi@rikaxp.riken.go.jp)
 */
 
 #include "ttxssh.h"
@@ -99,7 +99,7 @@ static TInstVar InstVar;
 #define GET_VAR()
 
 /*
-This code makes lots of assumptions about the order in which Teraterm
+This code makes lots of assumptions about the order in which TeraTerm
 does things, and how. A key assumption is that the Notification window
 passed into WSAAsyncSelect is the main terminal window. We also assume
 that the socket used in the first WSAconnect is the main session socket.
@@ -756,7 +756,7 @@ static void PASCAL FAR TTXOpenTCP(TTXSockHooks FAR * hooks)
 		FWDUI_load_settings(pvar);
 
 		pvar->cv->TelAutoDetect = FALSE;
-		/* This next line should not be needed because Teraterm's
+		/* This next line should not be needed because TeraTerm's
 		   CommLib should find ts->Telnet == 0 ... but we'll do this
 		   just to be on the safe side. */
 		pvar->cv->TelFlag = FALSE;
@@ -1186,7 +1186,7 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 						UTIL_get_lang_msg("MSG_TCPPORT_NAN_ERROR", pvar,
 						                  "The TCP port must be a number.");
 						MessageBox(dlg, pvar->ts->UIMsg,
-						           "Teraterm", MB_OK | MB_ICONEXCLAMATION);
+						           "TeraTerm", MB_OK | MB_ICONEXCLAMATION);
 						return TRUE;
 					}
 #ifndef NO_INET6
@@ -3709,7 +3709,7 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 	}
 }
 
-/* This function is called when Teraterm is quitting. You can use it to clean
+/* This function is called when TeraTerm is quitting. You can use it to clean
    up.
 
    This function is called for each extension, in reverse load order (see
@@ -3737,9 +3737,9 @@ static void PASCAL FAR TTXEnd(void)
 }
 
 /* This record contains all the information that the extension forwards to the
-   main Teraterm code. It mostly consists of pointers to the above functions.
+   main TeraTerm code. It mostly consists of pointers to the above functions.
    Any of the function pointers can be replaced with NULL, in which case
-   Teraterm will just ignore that function and assume default behaviour, which
+   TeraTerm will just ignore that function and assume default behaviour, which
    means "do nothing".
 */
 static TTXExports Exports = {
