@@ -137,7 +137,7 @@ FILEDLG_SELECT_LOGVIEW_APP_FILTER=exe(*.exe)\0*.exe\0すべてのファイル(*.*)\0*.*\
 FILEDLG_SELECT_LOGDIR_TITLE=ログフォルダを選択してください
 MSG_LOGFILE_INVALID_CHAR_ERROR=ログファイル名に無効な文字が含まれています
 MSG_LOGFILE_TOOLONG_ERROR=ログファイル名が長すぎます
-MSG_SAVESETUP_PERMISSION_ERROR=Teraterm.ini に書き込み権限がありません
+MSG_SAVESETUP_PERMISSION_ERROR=TERATERM.INI に書き込み権限がありません
 
 DLG_TABSHEET_TITLE=Tera Term: その他の設定
 DLG_TABSHEET_TITLE_GENERAL=全般
@@ -604,7 +604,7 @@ MSG_BLOWFISH_DECRYPT_ERROR2=Blowfish復号エラー(2)
 MSG_CIPHER_INIT_ERROR=暗号初期化エラー(%d)
 MSG_RSAKEY_SETUP_ERROR=RSA 鍵設定エラー
 MSG_UNAVAILABLE_CIPHERS_ERROR=このサーバはTTSSH 暗号アルゴリズムをサポートしていません.\nTTSSHとサーバ間のセキュアな接続を確立できません.\n接続を閉じます.
-MSG_CHIPHER_NONE_ERROR=このプログラムで使用可能な暗号化アルゴリズムと, サーバーが理解可能な暗号化アルゴリズムが異なっています. \nこのサーバーと通信するためには, 利用可能な暗号化アルゴリズムを増やさなければなりません. \nTTSSH セットアップダイアログボックス内を変更し, Teraterm を再起動してください.\n接続を閉じます.
+MSG_CHIPHER_NONE_ERROR=このプログラムで使用可能な暗号化アルゴリズムと, サーバーが理解可能な暗号化アルゴリズムが異なっています. \nこのサーバーと通信するためには, 利用可能な暗号化アルゴリズムを増やさなければなりません. \nTTSSH セットアップダイアログボックス内を変更し, TeraTerm を再起動してください.\n接続を閉じます.
 MSG_RASKEY_TOOWEAK_ERROR=サーバ RSA 鍵が極めて脆弱です. 安全な接続を確立できません.
 MSG_CIPHER_NOTSELECTED_ERROR=暗号アルゴリズムが未選択です
 
@@ -635,7 +635,7 @@ MSG_HOSTS_READ_ERROR=known_hosts 読み込み中にエラーが発生しました.
 MSG_HOSTS_ALLOC_ERROR=known_hosts 読み込み中にメモリ不足になりました.
 MSG_HOSTS_HOSTNAME_INVALID_ERROR=ホスト名に無効な文字が含まれています.\nセッションを閉じます.
 MSG_HOSTS_HOSTNAME_EMPTY_ERROR=ホスト名が空です.\nセッションを閉じます.
-MSG_HOSTS_FILE_UNSPECIFY_ERROR=known-hosts が指定されなかったので, ホストとそのキーを加えることができません.\nTeratermを再起動して, TTSSH セットアップダイアログボックスで読込み・書込みknown-hosts を指定してください.
+MSG_HOSTS_FILE_UNSPECIFY_ERROR=known-hosts が指定されなかったので, ホストとそのキーを加えることができません.\nTeraTermを再起動して, TTSSH セットアップダイアログボックスで読込み・書込みknown-hosts を指定してください.
 MSG_HOSTS_WRITE_EACCES_ERROR=ホスト鍵の書き込み中にエラーが発生しました.\nknown-hosts の書き込み権限がありません.
 MSG_HOSTS_WRITE_ERROR=ホスト鍵の書き込み中にエラーが発生しました.\nホスト鍵を書き込めません.
 
@@ -739,7 +739,7 @@ DLG_OTHER_CONNECT=接続成功メッセージ(&C)
 DLG_OTHER_ERROR=接続失敗メッセージ(&E)
 
 DLG_ABOUT_TITLE=TTProxyについて
-DLG_ABOUT_EXTENTION=Teraterm proxy拡張
+DLG_ABOUT_EXTENTION=TeraTerm proxy拡張
 DLG_ABOUT_YEBISUYA=蛭子屋本舗
 DLG_ABOUT_HOMEPAGE=TTProxyホームページ
 
