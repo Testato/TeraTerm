@@ -2886,8 +2886,9 @@ BOOL ParseFirstUTF8(BYTE b, int hfsplus_mode)
 
 	locptr = setlocale(LC_ALL, ts.Locale);
 
-	if ((b & 0x80) != 0x80) { // ASCII(0x00-0x7f)
+	if ((b & 0x80) != 0x80 || ((b & 0xe0) == 0x80 && count == 0)) {
 		// 1バイト目および2バイト目がASCIIの場合は、すべてASCII出力とする。
+		// 1バイト目がC1制御文字(0x80-0x9f)の場合も同様。
 		if (count == 0 || count == 1) {
 			if (hfsplus_mode == 1 && maybe_hfsplus == 1) {
 				UnicodeToCP932(first_code, 3);
