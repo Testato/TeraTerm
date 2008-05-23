@@ -67,6 +67,8 @@
         <ul>
           <li>TERATERM.INI に <a href="../setup/teraterm-win.html#WindowIcon">VTIcon</a>, <a href="../setup/teraterm-win.html#WindowIcon">TEKIcon</a> を追加した。デフォルトは"Default"。</li>
           <li><a href="../commandline/teraterm.html#vticon">/VTICON</a>, <a href="../commandline/teraterm.html#tekicon">/TEKICON</a>コマンドラインオプションを追加した。</li>
+	  <li>CygTermで起動されるVTウィンドウのウィンドウアイコンがCygTermのものになるようにした。(新規インストール時のみ)<br>
+	      アップグレードインストール時に同様の事がしたい場合は、cygterm.cfgを編集してTERM設定の最後に/VTIcon=CygTermを追加してください。</li>
         </ul></li>
       <li>ConfirmChangePaste の確認ダイアログを、マウスカーソルではなくキャレットの位置に表示するようにした。</li>
       <li>インストーラを修正した。
@@ -82,6 +84,7 @@
       <li>teraterm.ini の XModemRcvCommand のデフォルトが空になっていなかった問題を修正した。</li>
       <li>マウス操作の通知で、不正な位置を通知する事があったのを修正した。</li>
       <li>ttermpro.exeに /C= と /M= が指定された場合に、シリアル接続できない問題を修正した。<br>cf. <a href="http://sourceforge.jp/tracker/index.php?func=detail&aid=12403&group_id=1412&atid=5333">[ #12403] v4.58 and snapshot fail on serial macro</a></li>
+      <li>受信漢字コードがUTF-8またはUTF-8mの時、C1制御文字を使用した制御シーケンスが正しく扱えないのを修正した。</li>
       <li><a href="#ttssh_2.47">SSH2対応TTSSH(2.47)</a>へ差し替えた</li>
     </ul>
   </li>
