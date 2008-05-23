@@ -59,7 +59,7 @@
           <li>added AutoScrollOnlyInBottomLine entry to teraterm.ini. The default value is on.</li>
           <li>added a check box on <a href="../menu/setup-additional.html">Additional settings dialog</a>.</li>
         </ul></li>
-      <!--li>??????????????<a href="../setup/teraterm-trans.html#filter">FileSendFilter</a>?????????????????????????????????????????</li-->
+      <li>added specifying the default file name as the sending file name when a file specified by <a href="../setup/teraterm-trans.html#filter">FileSendFilter</a>.</li>
       <li>added '<a href="../macro/command/strmatch.html">strmatch</a>' macro command.</li>
       <li>added '<a href="../macro/command/setrts.html">setrts</a>' and '<a href="../macro/command/setdtr.html">setdtr</a>' macro command.</li>
       <li>added support for WM_COPYDATA message continuous transmission by using the Broadcast Command. Special thanks to Salarm.</li>
@@ -67,8 +67,8 @@
         <ul>
           <li>added the <a href="../setup/teraterm-win.html#WindowIcon">VTIcon</a> and <a href="../setup/teraterm-win.html#WindowIcon">TEKIcon</a> entry in teraterm.ini file. The default value is "Default".</li>
           <li>added the <a href="../commandline/teraterm.html#vticon">/VTICON</a> and <a href="../commandline/teraterm.html#tekicon">/TEKICON</a> command line option.</li>
-      <!--<li>CygTermで起動されるVTウィンドウのウィンドウアイコンがCygTermのものになるようにした。(新規インストール時のみ)<br>
-              アップグレードインストール時に同様の事がしたい場合は、cygterm.cfgを編集してTERM設定の最後に/VTIcon=CygTermを追加してください。</li> -->
+      <li>added setting up the CygTerm icon on VT window by launching CygTerm(This feature is enabled on a new installation).<br>
+              added the `/VTIcon=CygTerm' command line option in TERM entry of cygterm.cfg.</li>
         </ul></li>
       <li>Moved the confirmation dialog of ConfirmChangePaste from the mouse cursor to the current caret position.</li>
       <li>Modified TeraTerm installer script
@@ -84,7 +84,7 @@
       <li>Bug fix: XModemRcvCommand entry in teraterm.ini file could not be empty.</li>
       <li>Bug fix: Invalid position could be notified with the mouse event tracking.</li>
       <li>Bug fix: Could not automatically connect with the serial line when both "/C=" and "/M=" options are specified at ttermpro.exe.<br>cf. <a href="http://sourceforge.jp/tracker/index.php?func=detail&aid=12403&group_id=1412&atid=5333">[ #12403] v4.58 and snapshot fail on serial macro</a></li>
-  <!--<li>Bug fix: 受信漢字コードがUTF-8またはUTF-8mの時、C1制御文字を使用した制御シーケンスが正しく扱えないのを修正した。</li>-->
+  <li>Bug fix: The control sequence by using C1 control character could not work well when the receiving KANJI code is UTF-8 or UTF-8m.</li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.47">2.47</a></li>
     </ul>
   </li>
