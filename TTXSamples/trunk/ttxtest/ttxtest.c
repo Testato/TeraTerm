@@ -1,20 +1,20 @@
-/* Teraterm extension mechanism
+/* TeraTerm extension mechanism
    Robert O'Callahan (roc+tt@cs.cmu.edu)
    
-   Teraterm by Takashi Teranishi (teranishi@rikaxp.riken.go.jp)
+   TeraTerm by Takashi Teranishi (teranishi@rikaxp.riken.go.jp)
 */
 
 /* HOW TO WRITE A TERATERM EXTENSION
 
-   First of all, you will need the source code to Teraterm. For that, you
-   should visit the Teraterm Web page:
+   First of all, you will need the source code to TeraTerm. For that, you
+   should visit the TeraTerm Web page:
    http://www.vector.co.jp/authors/VA002416/teraterm.html
    You will frequently need to refer to the source code to find out how things
    work and when your functions are called. However, please try to write your
-   extension without assuming too much about the behaviour of Teraterm, in
+   extension without assuming too much about the behaviour of TeraTerm, in
    case it changes in the future!
 
-   You will also need a compiler that can build Teraterm. So far, the
+   You will also need a compiler that can build TeraTerm. So far, the
    extension system has only been tested with Visual C++ 4.2. Please report
    any problems to me (roc).
 
@@ -22,9 +22,9 @@
 
    Make sure you set the structure alignment option in the project to
    8 bytes (for Win32) or 2 bytes (for Win16), to be compatible with the
-   standard Teraterm binary.
+   standard TeraTerm binary.
    
-   You must add the Teraterm "source\common" directory to your include path
+   You must add the TeraTerm "common" directory to your include path
    to find the following 3 include files:
 */
 
@@ -32,7 +32,7 @@
 #include "tttypes.h"
 #include "ttplugin.h"
 
-/* These are the standard libraries used below. The main Teraterm program and
+/* These are the standard libraries used below. The main TeraTerm program and
    all its DLLs are each statically linked to the C runtime library --- i.e.
    they do not require any runtime library DLL, and they each have private
    copies of the runtime library functions that they use. Therefore, it's
@@ -44,13 +44,13 @@
 #include <string.h>
 
 /* When you build this extension, it should be called TTXTEST.DLL. To try it
-   out, copy it into the directory containing Teraterm. Currently, in order to
-   use extensions with Teraterm, you have to set the environment variable
+   out, copy it into the directory containing TeraTerm. Currently, in order to
+   use extensions with TeraTerm, you have to set the environment variable
    TERATERM_EXTENSIONS to something. So in a command shell, use
-   "set TERATERM_EXTENSIONS=1". Then use "ttermpro > dump" to run Teraterm and
+   "set TERATERM_EXTENSIONS=1". Then use "ttermpro > dump" to run TeraTerm and
    save the debugging output below to the file "dump".
 
-   When TERATERM_EXTENSIONS is set, Teraterm automatically scans the directory
+   When TERATERM_EXTENSIONS is set, TeraTerm automatically scans the directory
    containing it, looking for files of the form TTX*.DLL. It loads any that it
    finds. For each one that it finds, it calls TTXBind; see below for details.
 */
@@ -61,9 +61,9 @@
 #define ORDER 4000
 
 /* This code demonstrates how to maintain separate instance variables for
-   each instance of Teraterm that's using the DLL. It's easy in Win32, because
+   each instance of TeraTerm that's using the DLL. It's easy in Win32, because
    it happens automatically, but in Win16 there is only one set of global
-   data for all Teraterms using the DLL, so we have to jump through some
+   data for all TeraTerms using the DLL, so we have to jump through some
    hoops.
 */
 static HANDLE hInst; /* Instance handle of TTX*.DLL */
@@ -83,10 +83,10 @@ static TInstVar InstVar;
    pointers if you need to access them later. All sorts of global session data
    is stored in these variables, and you can do all sorts of tricks by reading
    and modifying their fields in some of the functions below. You'll have to
-   look at the Teraterm source code to see what the fields do and how and when
+   look at the TeraTerm source code to see what the fields do and how and when
    they're used.
    
-   This is called when Teraterm starts up, so don't do too much work in here
+   This is called when TeraTerm starts up, so don't do too much work in here
    or you will slow down the startup process even if your extension is not
    going to be used.
 */
@@ -95,11 +95,11 @@ static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
   pvar->cv = cv;
 }
 
-/* This function is called when Teraterm is opening a TCP connection, before
+/* This function is called when TeraTerm is opening a TCP connection, before
    any Winsock functions have actually been called.
 
    You receive a 'hooks' structure containing pointers to pointers to all the
-   Winsock functions that Teraterm will use. You can replace any of these
+   Winsock functions that TeraTerm will use. You can replace any of these
    function pointers to point to your own routines. However, if you replace a
    function pointer, you should save the old pointer somewhere and use that
    instead of calling Winsock directly. Some other extension might have put
@@ -125,7 +125,7 @@ static void PASCAL FAR TTXOpenTCP(TTXSockHooks FAR * hooks) {
   printf("TTXOpenTCP %d\n", ORDER);
 }
 
-/* This function is called when Teraterm is closing a TCP connection, after
+/* This function is called when TeraTerm is closing a TCP connection, after
    all Winsock functions have been called.
 
    Here you should restore any hooked pointers that you saved away. For
@@ -139,7 +139,7 @@ static void PASCAL FAR TTXCloseTCP(TTXSockHooks FAR * hooks) {
   printf("TTXCloseTCP %d\n", ORDER);
 }
 
-/* This function is called when Teraterm has loaded the TTDLG library. It
+/* This function is called when TeraTerm has loaded the TTDLG library. It
    gives the extension an opportunity to modify the function pointers that are
    used to create dialog boxes.
 
@@ -175,15 +175,15 @@ static void PASCAL FAR TTXGetUIHooks(TTXUIHooks FAR * hooks) {
   printf("TTXSetUIHooks %d\n", ORDER);
 }
 
-/* This function is called when Teraterm has loaded the TTSETUP library. It
+/* This function is called when TeraTerm has loaded the TTSETUP library. It
    gives the extension an opportunity to modify the function pointers that are
    used to read and write the settings file (TERATERM.INI) and to read and
    write the command line.
 
-   An extension will almost always hook these functions. When Teraterm reads
+   An extension will almost always hook these functions. When TeraTerm reads
    or writes its setup file, the extension will read or write its own internal
-   settings to an appropriate section of the INI file. When Teraterm parses
-   its command line, or builds a new command line to spawn a new Teraterm
+   settings to an appropriate section of the INI file. When TeraTerm parses
+   its command line, or builds a new command line to spawn a new TeraTerm
    session, the extension will check for its own options or write out its own
    options.
 
@@ -197,7 +197,7 @@ static void PASCAL FAR TTXGetSetupHooks(TTXSetupHooks FAR * hooks) {
   printf("TTXSetSetupHooks %d\n", ORDER);
 }
 
-/* This function is called whenever Teraterm changes the window size.
+/* This function is called whenever TeraTerm changes the window size.
 
    This function is called for each extension, in load order (see below).
 */
@@ -205,8 +205,8 @@ static void PASCAL FAR TTXSetWinSize(int rows, int cols) {
   printf("TTXSetWinSize %d\n", ORDER);
 }
 
-/* This function is called when Teraterm creates a new menu. This can happen
-   quite often, especially when the menubar is hidden and Teraterm wants to
+/* This function is called when TeraTerm creates a new menu. This can happen
+   quite often, especially when the menubar is hidden and TeraTerm wants to
    create a popup menu because the user ctrl-clicked in the window.
 
    The 'menu' parameter is the HMENU for the menu bar. The extension can add
@@ -228,7 +228,7 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
   AppendMenu(pvar->SetupMenu,flag, ID_MENUITEM,"&Debug mode");
 }
 
-/* This function is called when Teraterm pops up a submenu menu.
+/* This function is called when TeraTerm pops up a submenu menu.
 
    The 'menu' parameter is the HMENU for the submenu. The extension can change
    the status of any of the menu items, for example graying out some items.
@@ -249,12 +249,12 @@ static void PASCAL FAR TTXModifyPopupMenu(HMENU menu) {
   }
 }
 
-/* This function is called when Teraterm receives a command message.
+/* This function is called when TeraTerm receives a command message.
 
    The extension returns 1 if it processed the message, 0 otherwise. If it
    says it processed the message, then the message will not be processed
    anywhere else. The extensions look at the messages before the main
-   Teraterm code, so be careful of overriding existing commands.
+   TeraTerm code, so be careful of overriding existing commands.
 
    This function is called for each extension, in reverse load order (see
    below). Thus, the extension that has highest load order number gets to
@@ -279,7 +279,7 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
   return 0;
 }
 
-/* This function is called when Teraterm is quitting. You can use it to clean
+/* This function is called when TeraTerm is quitting. You can use it to clean
    up.
 
    This function is called for each extension, in reverse load order (see
@@ -290,9 +290,9 @@ static void PASCAL FAR TTXEnd(void) {
 }
 
 /* This record contains all the information that the extension forwards to the
-   main Teraterm code. It mostly consists of pointers to the above functions.
+   main TeraTerm code. It mostly consists of pointers to the above functions.
    Any of the function pointers can be replaced with NULL, in which case
-   Teraterm will just ignore that function and assume default behaviour, which
+   TeraTerm will just ignore that function and assume default behaviour, which
    means "do nothing".
 */
 static TTXExports Exports = {
@@ -337,21 +337,21 @@ static TTXExports Exports = {
   TTXEnd
 };
 
-/* This is the function that Teraterm calls to retrieve the export
+/* This is the function that TeraTerm calls to retrieve the export
    information. This code is for Visual C++. The name that gets exported is
-   "_TTXBind@8" and that is what the Teraterm program looks for. So, whichever
+   "_TTXBind@8" and that is what the TeraTerm program looks for. So, whichever
    compiler you use, you must make sure that that name is exported.
 
    The job of this function is to copy the export data from the structure
-   above into the record that Teraterm passed us a pointer to. That record
+   above into the record that TeraTerm passed us a pointer to. That record
    contains its size; we make sure we don't copy more than that amount of
    data. In the future, if we add TTX functions to the TTXExports record,
    then we could have new extensions that have a bigger TTXExports record than
-   old Teraterm binaries. In this case, the extra functions will simply not be
+   old TeraTerm binaries. In this case, the extra functions will simply not be
    called. This means we can write extensions that will work with both old and
-   new versions of Teraterm.
+   new versions of TeraTerm.
 
-   (In a similar way, we can run old extensions with new versions of Teraterm.
+   (In a similar way, we can run old extensions with new versions of TeraTerm.
    The main program initialises its exports record to zeroes before it calls
    TTXBind. This means that any data we don't copy in there is NULL, so any 
    extra functions that have been added since this extension was compiled
