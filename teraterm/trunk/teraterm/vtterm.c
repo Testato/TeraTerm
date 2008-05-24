@@ -2204,7 +2204,7 @@ void ControlSequence(BYTE b)
 
 void DeviceControl(BYTE b)
 {
-  if (ESCFlag && (b=='\\') || (b==ST))
+  if (ESCFlag && (b=='\\') || (b==ST && ts.KanjiCode!=IdSJIS))
   {
     ESCFlag = FALSE;
     ParseMode = SavedMode;
@@ -2249,7 +2249,7 @@ void DeviceControl(BYTE b)
 
 void DCUserKey(BYTE b)
 {
-  if (ESCFlag && (b=='\\') || (b==ST))
+  if (ESCFlag && (b=='\\') || (b==ST && ts.KanjiCode!=IdSJIS))
   {
     if (! WaitKeyId) DefineUserKey(NewKeyId,NewKeyStr,NewKeyLen);
     ESCFlag = FALSE;
@@ -2306,7 +2306,9 @@ void DCUserKey(BYTE b)
 
 void IgnoreString(BYTE b)
 {
-  if (ESCFlag && (b=='\\') || (b!=ESC && b<=US) || (b==ST))
+  if ((ESCFlag && (b=='\\')) ||
+      (b<=US && b!=ESC && b!=HT) ||
+      (b==ST && ts.KanjiCode!=IdSJIS))
     ParseMode = SavedMode;
 
   if (b==ESC) ESCFlag = TRUE;
@@ -2432,7 +2434,7 @@ void XSequence(BYTE b)
 		}
 		break;
 	  case ModeXsString:
-		if (b == ST || b == '\a') { /* String Terminator */
+		if ((b==ST && ts.KanjiCode!=IdSJIS) || b==BEL) { /* String Terminator */
 			StrBuff[StrLen] = '\0';
 			switch (Param[1]) {
 			  case 0: /* Change window title and icon name */
@@ -2476,7 +2478,7 @@ void XSequence(BYTE b)
 		}
 		break;
 	  case ModeXsColorSpec:
-		if (b == ST || b == '\a') { /* String Terminator */
+		if ((b==ST && ts.KanjiCode!=IdSJIS) || b==BEL) { /* String Terminator */
 			StrBuff[StrLen] = '\0';
 			if ((ts.ColorFlag & CF_XTERM256) && ColorNumber <= 255) {
 				if (strcmp(StrBuff, "?") == 0) {
@@ -2544,7 +2546,8 @@ void XSequence(BYTE b)
 	  case ModeXsEsc:
 		if (b == '\\') { /* String Terminator */
 			XsParseMode = PrevMode;
-			XSequence(ST);
+//			XSequence(ST);
+			XSequence(BEL);
 		}
 		else { /* Other character -- invalid sequence */
 			ParseMode = ModeFirst;
