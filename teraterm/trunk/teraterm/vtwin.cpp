@@ -1349,6 +1349,20 @@ void CVTWindow::ResetSetup()
 	/* setup terminal */
 	SetupTerm();
 
+	/* background and ANSI color */
+#ifdef ALPHABLEND_TYPE2
+	BGInitialize();
+	BGSetupPrimary(TRUE);
+	// 2006/03/17 by 337 : Alpha値も即時変更
+	// Layered窓になっていない場合は効果が無い
+	if (ts.EtermLookfeel.BGUseAlphaBlendAPI) {
+		MySetLayeredWindowAttributes(HVTWin, 0, ts.AlphaBlend, LWA_ALPHA);
+	}
+#else
+	DispApplyANSIColor();
+#endif
+	DispSetNearestColors(IdBack, IdFore+8, NULL);
+
 	/* setup window */
 	ChangeWin();
 
@@ -1381,16 +1395,6 @@ void CVTWindow::RestoreSetup()
 	if (LoadTTSET())
 		(*ReadIniFile)(ts.SetupFName,&ts);
 	FreeTTSET();
-
-#ifdef ALPHABLEND_TYPE2
-	BGInitialize();
-	BGSetupPrimary(TRUE);
-	// 2006/03/17 by 337 : Alpha値も即時変更
-	// Layered窓になっていない場合は効果が無い
-	if (ts.EtermLookfeel.BGUseAlphaBlendAPI) {
-		MySetLayeredWindowAttributes(HVTWin, 0, ts.AlphaBlend, LWA_ALPHA);
-	}
-#endif
 
 #if 0
 	ChangeDefaultSet(&ts,NULL);
@@ -3545,6 +3549,7 @@ void CVTWindow::OnExternalSetup()
 		case IDOK:
 #ifdef ALPHABLEND_TYPE2
 			BGInitialize();
+			BGSetupPrimary(TRUE);
 #else
 			DispApplyANSIColor();
 #endif
@@ -3587,15 +3592,13 @@ void CVTWindow::OnSetupWindow()
 	FreeTTDLG();
 
 	if (Ok) {
-		ChangeWin();
-
 		// Eterm lookfeelの画面情報も更新することで、リアルタイムでの背景色変更が
 		// 可能となる。(2006.2.24 yutaka)
 #ifdef ALPHABLEND_TYPE2
 		BGInitialize();
 		BGSetupPrimary(TRUE);
-		ResetSetup();
 #endif
+		ChangeWin();
 	}
 
 }
