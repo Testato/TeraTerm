@@ -70,6 +70,7 @@
 #define LBL_ENTRY                       1056
 #define GRP_PROMPT                      1057
 #define IDC_CHALLENGE_CHECK             1058
+#define IDC_PAGEANT_CHECK               1059
 #define ID_MENUITEM40013                40013
 #define ID_MENUITEM40014                40014
 #define ID_MENUITEM40015                40015

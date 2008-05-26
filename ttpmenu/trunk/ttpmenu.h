@@ -79,6 +79,7 @@
 #define		KEY_STARTUP				"Startup"
 #define		KEY_KEYFILE				"PrivateKeyFile"  // add (2005.1.27 yutaka)
 #define		KEY_CHALLENGE			"Challenge"       // add (2007.11.14 yutaka)
+#define		KEY_PAGEANT				"Pageant"         // add (2008.5.26 maya)
 
 #define		STR_ICONMODE			"showing large icon"
 #define		STR_LEFTBUTTONPOPUP		"showing list by left-click"
@@ -112,6 +113,7 @@ struct JobInfo {
 
 	char    PrivateKeyFile[MAX_PATH];   // 秘密鍵ファイル (2005.1.27 yutaka)
 	BOOL    bChallenge;                 // keyboard-interative method(/challenge)
+	BOOL    bPageant;                   // use Pageant(/pageant)
 };
 
 // 表示設定構造体

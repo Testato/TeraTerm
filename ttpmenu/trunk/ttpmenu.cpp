@@ -740,6 +740,9 @@ BOOL InitConfigDlg(HWND hWnd)
 	GetDlgItemText(hWnd, IDC_CHALLENGE_CHECK, uitmp, sizeof(uitmp));
 	UTIL_get_lang_msg("DLG_CONFIG_CHALLENGE", uimsg, sizeof(uimsg), uitmp, UILanguageFile);
 	SetDlgItemText(hWnd, IDC_CHALLENGE_CHECK, uimsg);
+	GetDlgItemText(hWnd, IDC_PAGEANT_CHECK, uitmp, sizeof(uitmp));
+	UTIL_get_lang_msg("DLG_CONFIG_PAGEANT", uimsg, sizeof(uimsg), uitmp, UILanguageFile);
+	SetDlgItemText(hWnd, IDC_PAGEANT_CHECK, uimsg);
 	GetDlgItemText(hWnd, BUTTON_ETC, uitmp, sizeof(uitmp));
 	UTIL_get_lang_msg("DLG_CONFIG_DETAIL", uimsg, sizeof(uimsg), uitmp, UILanguageFile);
 	SetDlgItemText(hWnd, BUTTON_ETC, uimsg);
@@ -1174,6 +1177,7 @@ BOOL ConnectHost(HWND hWnd, UINT idItem, char *szJobName)
 	// ユーザのパラメータを指定できるようにする (2005.1.25 yutaka)
 	// 公開鍵認証をサポート (2005.1.27 yutaka)
 	// /challengeをサポート (2007.11.14 yutaka)
+	// /pageantをサポート (2008.5.26 maya)
 	if (jobInfo.dwMode == MODE_AUTOLOGIN) {
 		if (jobInfo.bTtssh == TRUE) {
 			char tmp[MAX_PATH];
@@ -1188,6 +1192,13 @@ BOOL ConnectHost(HWND hWnd, UINT idItem, char *szJobName)
 					jobInfo.szHostName,
 					jobInfo.szUsername,
 					passwd,
+					tmp
+					);
+
+			} else if (jobInfo.bPageant) { // Pageant
+				_snprintf(szArgment, sizeof(szArgment), "%s:22 /ssh /auth=pageant /user=%s %s", 
+					jobInfo.szHostName,
+					jobInfo.szUsername,
 					tmp
 					);
 
@@ -1483,6 +1494,7 @@ BOOL RegSaveLoginHostInformation(JobInfo *jobInfo)
 	// SSH2
 	RegSetStr(hKey, KEY_KEYFILE, jobInfo->PrivateKeyFile);
 	RegSetDword(hKey, KEY_CHALLENGE, (DWORD) jobInfo->bChallenge);
+	RegSetDword(hKey, KEY_PAGEANT, (DWORD) jobInfo->bPageant);
 
 	RegClose(hKey);
 
@@ -1543,6 +1555,7 @@ BOOL RegLoadLoginHostInformation(char *szName, JobInfo *job_Info)
 	ZeroMemory(jobInfo.PrivateKeyFile, sizeof(jobInfo.PrivateKeyFile));
 	RegGetStr(hKey, KEY_KEYFILE, jobInfo.PrivateKeyFile, MAX_PATH);
 	RegGetDword(hKey, KEY_CHALLENGE, (LPDWORD) &(jobInfo.bChallenge));
+	RegGetDword(hKey, KEY_PAGEANT, (LPDWORD) &(jobInfo.bPageant));
 
 	RegClose(hKey);
 
@@ -1667,7 +1680,8 @@ BOOL SaveLoginHostInformation(HWND hWnd)
 		ZeroMemory(g_JobInfo.PrivateKeyFile, sizeof(g_JobInfo.PrivateKeyFile));
 	}
 	if (g_JobInfo.bTtssh) {
-		g_JobInfo.bChallenge	= (BOOL) ::IsDlgButtonChecked(hWnd, IDC_CHALLENGE_CHECK);
+		g_JobInfo.bChallenge = (BOOL) ::IsDlgButtonChecked(hWnd, IDC_CHALLENGE_CHECK);
+		g_JobInfo.bPageant = (BOOL) ::IsDlgButtonChecked(hWnd, IDC_PAGEANT_CHECK);
 	}
 
 	if (RegSaveLoginHostInformation(&g_JobInfo) == FALSE) {
@@ -1777,20 +1791,33 @@ BOOL LoadLoginHostInformation(HWND hWnd)
 	::SetDlgItemText(hWnd, IDC_KEYFILE_PATH, g_JobInfo.PrivateKeyFile);
 	if (g_JobInfo.bTtssh == TRUE) {
 		EnableWindow(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), TRUE);
+		EnableWindow(GetDlgItem(hWnd, IDC_PAGEANT_CHECK), TRUE);
 		if (g_JobInfo.bChallenge) {
 			SendMessage(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), BM_SETCHECK, BST_CHECKED, 0);
+			SendMessage(GetDlgItem(hWnd, IDC_PAGEANT_CHECK), BM_SETCHECK, BST_UNCHECKED, 0);
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), FALSE);
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_PAGEANT_CHECK), FALSE);
+		} else if (g_JobInfo.bPageant) {
+			SendMessage(GetDlgItem(hWnd, IDC_PAGEANT_CHECK), BM_SETCHECK, BST_CHECKED, 0);
+			SendMessage(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), BM_SETCHECK, BST_UNCHECKED, 0);
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), FALSE);
 		} else {
 			SendMessage(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), BM_SETCHECK, BST_UNCHECKED, 0);
+			SendMessage(GetDlgItem(hWnd, IDC_PAGEANT_CHECK), BM_SETCHECK, BST_UNCHECKED, 0);
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), TRUE);
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), TRUE);
 		}
 
 	} else {
+		SendMessage(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), BM_SETCHECK, BST_UNCHECKED, 0);
+		SendMessage(GetDlgItem(hWnd, IDC_PAGEANT_CHECK), BM_SETCHECK, BST_UNCHECKED, 0);
 		EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), FALSE);
 		EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), FALSE);
 		EnableWindow(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), FALSE);
+		EnableWindow(GetDlgItem(hWnd, IDC_PAGEANT_CHECK), FALSE);
 
 	}
 
@@ -1868,9 +1895,9 @@ BOOL DeleteLoginHostInformation(HWND hWnd)
    ======1=========2=========3=========4=========5=========6=========7======= */
 BOOL ManageWMCommand_Config(HWND hWnd, WPARAM wParam)
 {
-	char	*pt;
+	char *pt;
 	int ret = 0;
-	char	title[MAX_UIMSG], filter[MAX_UIMSG];
+	char title[MAX_UIMSG], filter[MAX_UIMSG];
 
 	// 秘密鍵ファイルのコントロール (2005.1.28 yutaka)
 	switch(wParam) {
@@ -1880,27 +1907,45 @@ BOOL ManageWMCommand_Config(HWND hWnd, WPARAM wParam)
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), TRUE);
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), TRUE);
 			EnableWindow(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), TRUE);
+			EnableWindow(GetDlgItem(hWnd, IDC_PAGEANT_CHECK), TRUE);
 
 		} else {
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), FALSE);
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), FALSE);
 			EnableWindow(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_PAGEANT_CHECK), FALSE);
 
 		}
 		return TRUE;
 
-	case IDC_CHALLENGE_CHECK | (BN_CLICKED << 16) :  
+	case IDC_CHALLENGE_CHECK | (BN_CLICKED << 16) :
 		// "use Challenge"をチェックした場合は鍵ファイルをdisabledにする。(2007.11.14 yutaka)
 		ret = SendMessage(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), BM_GETCHECK, 0, 0);
 		if (ret & BST_CHECKED) {
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), FALSE);
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), FALSE);
-			//EnableWindow(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), TRUE);
+			EnableWindow(GetDlgItem(hWnd, IDC_PAGEANT_CHECK), FALSE);
 
 		} else {
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), TRUE);
 			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), TRUE);
-			//EnableWindow(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_PAGEANT_CHECK), TRUE);
+
+		}
+		return TRUE;
+
+	case IDC_PAGEANT_CHECK | (BN_CLICKED << 16) :
+		// "use Pageant"のクリックに対応。(2008.5.26 maya)
+		ret = SendMessage(GetDlgItem(hWnd, IDC_PAGEANT_CHECK), BM_GETCHECK, 0, 0);
+		if (ret & BST_CHECKED) {
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), FALSE);
+			EnableWindow(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), FALSE);
+
+		} else {
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_PATH), TRUE);
+			EnableWindow(GetDlgItem(hWnd, IDC_KEYFILE_BUTTON), TRUE);
+			EnableWindow(GetDlgItem(hWnd, IDC_CHALLENGE_CHECK), TRUE);
 
 		}
 		return TRUE;
