@@ -21,13 +21,16 @@ TTSSHでは以下のコマンドラインオプションが使用できます。
 
 <dl>
   <dt>/f=&lt;file&gt;</dt>
-  <dd>teraterm.iniファイル(file)を読み込む</dd>
+  <dd>teraterm.iniファイル(file)を読み込む<br>
+      ファイル名が絶対パスでないときは、ttssh.dll からの相対パスと見なされます。</dd>
 
   <dt>/ssh-f=&lt;file&gt;</dt>
-  <dd>teraterm.iniファイル(file)を読み込む</dd>
+  <dd>teraterm.iniファイル(file)を読み込む<br>
+      ファイル名が絶対パスでないときは、ttssh.dll からの相対パスと見なされます。</dd>
 
   <dt>/ssh-consume=&lt;file&gt;</dt>
-  <dd>teraterm.iniファイル(file)の読み込み後、当該ファイルを削除する。</dd>
+  <dd>teraterm.iniファイル(file)の読み込み後、当該ファイルを削除する。<br>
+      ファイル名が絶対パスでないときは、ttssh.dll からの相対パスと見なされます。</dd>
 
   <dt>/t=&lt;value&gt;</dt>
   <dd><ul>
@@ -75,7 +78,8 @@ TTSSHでは以下のコマンドラインオプションが使用できます。
   <dd>パスワードを指定する</dd>
 
   <dt>/keyfile=&lt;file&gt;</dt>
-  <dd>秘密鍵を指定する</dd>
+  <dd>秘密鍵を指定する<br>
+      ファイル名が絶対パスでないときは、ttssh.dll からの相対パスと見なされます。</dd>
 
   <dt>/ask4passwd</dt>
   <dd>自動ログインをせず、パスワードを聞く<br>

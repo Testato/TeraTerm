@@ -74,7 +74,8 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
 
   <dt>/F=&lt;setup file&gt;</dt>
   <dd>設定ファイル<br>
-      <span class="syntax">/F=TERATERM.INI</span> (省略時)</dd>
+      <span class="syntax">/F=TERATERM.INI</span> (省略時)<br>
+      ファイル名が絶対パスでないときは、ttermpro.exe からの相対パスと見なされます。</dd>
 
   <dt>/FD=&lt;file transfer directory&gt;</dt>
   <dd>ファイル転送用ディレクトリ</dd>
@@ -87,7 +88,8 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
 
   <dt>/K=&lt;keyboard setup file&gt;</dt>
   <dd>キーボード設定ファイル<br>
-      <span class="syntax">/K=KEYBOARD.CNF</span> (省略時)</dd>
+      <span class="syntax">/K=KEYBOARD.CNF</span> (省略時)<br>
+      ファイル名が絶対パスでないときは、ttermpro.exe からの相対パスと見なされます。</dd>
 
   <dt>/KR=&lt;kanji code (receive)&gt;</dt>
   <dd>漢字コード (受信)
@@ -120,7 +122,8 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
       </ul></dd>
 
   <dt>/M=&lt;macro file&gt;</dt>
-  <dd>起動時にマクロを実行</dd>
+  <dd>起動時にマクロを実行<br>
+      ファイル名が絶対パスでないときは、ttermpro.exe からの相対パスと見なされます。</dd>
 
   <dt>/P=&lt;TCP port#&gt;</dt>
   <dd>TCP ポート番号</dd>

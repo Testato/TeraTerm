@@ -247,22 +247,5 @@ VTCompatTab=off
 </pre>
 
 
-<h1><a name="mousetrack">マウス操作の通知</a></h1>
-<p>
-ホスト側のアプリケーションによって、VT window がマウストラッキングモードに変更された場合、TeraTerm はマウス操作をホストへ報告するようになります。<br>
-マウストラッキングモードはxtermの拡張機能ですので、TERM環境変数が"xterm"以外だとホスト側のアプリケーションはこの機能を使わないかもしれません。
-<!-- xtermの拡張機能というのは本当? xtermのドキュメント(ctlseqs.txt)やソースを見ると、Normal tracking modeは #define SET_VT200_MOUSE と定義されている。また、モーションイベントはxterm独自の拡張とも書かれているから、ボタンイベントは以外が由来なようにも読める。ただ、VT220,VT240,VT420,VT520のドキュメントを確認しても、マウストラッキングモードに関する記述は見つからなかった。(そもそもこれらにマウスは付くのか?) --><br>
-この機能を無効にしたい場合は、設定ファイルの [Tera Term] セクションの MouseEventTracking 行を以下のように変更してください。
-</p>
-
-<pre>
-MouseEventTracking=off
-</pre>
-
-<pre>
-省略時:
-MouseEventTracking=on
-</pre>
-
 </BODY>
 </HTML>
