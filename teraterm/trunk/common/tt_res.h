@@ -147,6 +147,8 @@
 #define ID_FILE_BPSEND                  50154
 #define ID_FILE_QVRCV                   50155
 #define ID_FILE_QVSEND                  50156
+#define ID_FILE_YRCV                    50157
+#define ID_FILE_YSEND                   50158
 #define ID_FILE_CHANGEDIR               50170
 #define ID_FILE_REPLAYLOG               50171
 #define ID_FILE_LOGMEIN                 50172
@@ -199,14 +201,6 @@
 #define ID_TEKHELP_ABOUT                51990
 #define ID_EDIT_EXTERNALSETUP           52005
 #define ID_FILE_TERATERMMENU            52006
-#define ID_TRANSFER_YMODEM              52022
-#define ID_TRANSFER_YMODEM52023         52023
-#define ID_YMODEM_RECEIVE               52024
-#define ID_YMODEM_SEND                  52025
-#define ID_YMODEM_YRCV                  52026
-#define ID_YMODEM_YSEND                 52027
-#define ID_FILE_YRCV                    52028
-#define ID_FILE_YSEND                   52029
 
 // Next default values for new objects
 // 
