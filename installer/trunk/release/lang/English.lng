@@ -822,6 +822,7 @@ DLG_CONFIG_STARTUP=kick at starting
 DLG_CONFIG_SSH=use SSH
 DLG_CONFIG_KEYFILE=Keyfile
 DLG_CONFIG_CHALLENGE=use Challenge
+DLG_CONFIG_PAGEANT=use Pageant
 DLG_CONFIG_DETAIL=details
 
 DLG_ETC_TITLE=Configuration Details
