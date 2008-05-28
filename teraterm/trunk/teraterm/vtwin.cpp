@@ -1029,6 +1029,7 @@ void CVTWindow::InitMenu(HMENU *Menu)
 	// TBD: YMODEMはまだ未サポートなので、メニューは隠す。(2008.5.15 yutaka)
 //#define YMODEM_TBD
 #ifndef YMODEM_TBD
+	DeleteMenu(TransMenu, 2, MF_BYPOSITION);
 	DeleteMenu(FileMenu, ID_FILE_YRCV, MF_BYCOMMAND);
 	DeleteMenu(FileMenu, ID_FILE_YSEND, MF_BYCOMMAND);
 	DrawMenuBar();
