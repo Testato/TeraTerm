@@ -2194,7 +2194,12 @@ void DispChangeWinSize(int Nx, int Ny)
   if ((dW!=0) || (dH!=0))
   {
 	AdjustSize = TRUE;
-	SetWindowPos(HVTWin,HWND_TOP,0,0,W+dW,H+dH,SWP_NOMOVE);
+
+	// SWP_NOMOVE を指定しているのになぜか 0,0 が反映され、
+	// マルチディスプレイ環境ではプライマリモニタに
+	// 移動してしまうのを修正 (2008.5.29 maya)
+	//SetWindowPos(HVTWin,HWND_TOP,0,0,W+dW,H+dH,SWP_NOMOVE);
+	SetWindowPos(HVTWin,HWND_TOP,R.left,R.top,W+dW,H+dH,SWP_NOMOVE);
   }
   else
     InvalidateRect(HVTWin,NULL,FALSE);
