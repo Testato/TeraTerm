@@ -2199,7 +2199,11 @@ void DispChangeWinSize(int Nx, int Ny)
 	// マルチディスプレイ環境ではプライマリモニタに
 	// 移動してしまうのを修正 (2008.5.29 maya)
 	//SetWindowPos(HVTWin,HWND_TOP,0,0,W+dW,H+dH,SWP_NOMOVE);
-	SetWindowPos(HVTWin,HWND_TOP,R.left,R.top,W+dW,H+dH,SWP_NOMOVE);
+
+	// マルチディスプレイ環境で最大化したときに、
+	// 隣のディスプレイにウィンドウの端がはみ出す問題を修正した。
+	// また、上記の状態では最大化状態でもウィンドウを移動させることが出来る。
+	// SetWindowPos(HVTWin,HWND_TOP,R.left,R.top,W+dW,H+dH,SWP_NOMOVE);
   }
   else
     InvalidateRect(HVTWin,NULL,FALSE);
