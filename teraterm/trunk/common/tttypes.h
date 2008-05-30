@@ -404,7 +404,7 @@ struct tttset {
 	int MouseWheelScrollLine;
 	WORD CRSend_ini;
 	WORD LocalEcho_ini;
-	WORD UTF8BoxDrawing;
+	WORD UnicodeDecSpMapping;
 	WORD VTIcon;
 	WORD TEKIcon;
 	WORD ScrollWindowClearScreen;
@@ -840,7 +840,7 @@ typedef TMap far *PMap;
  * - At version 4.59, ttset_memfilemap was replaced with ttset_memfilemap_7.
  *   added tttset.DisablePasteMouseMButton.
  *   added tttset.MouseWheelScrollLine.
- *   added tttset.UTF8BoxDrawing.
+ *   added tttset.UnicodeDecSpMapping.
  *   added tttset.VTIcon.
  *   added tttset.TEKIcon.
  *   added tttset.ScrollWindowClearScreen.

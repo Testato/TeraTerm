@@ -1148,9 +1148,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->MaximizedBugTweak =
 		GetOnOff(Section, "MaximizedBugTweak", FName, TRUE);
 
-	// Convert UTF-8 BoxDrawing to DEC Special characters
-	ts->UTF8BoxDrawing =
-		GetOnOff(Section, "UTF8BoxDrawing", FName, TRUE);
+	// Convert Unicode symbol characters to DEC Special characters
+	ts->UnicodeDecSpMapping =
+		GetPrivateProfileInt(Section, "UnicodeToDecSpMapping", 3, FName);
 
 	// VT Window Icon
 	GetPrivateProfileString(Section, "VTIcon", "Default",
@@ -1950,8 +1950,8 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// Maximized bug tweak
 	WriteOnOff(Section, "MaximizedBugTweak", FName, ts->MaximizedBugTweak);
 
-	// Convert UTF-8 BoxDrawing to DEC Special characters
-	WriteOnOff(Section, "UTF8BoxDrawing", FName, ts->UTF8BoxDrawing);
+	// Convert Unicode symbol characters to DEC Special characters
+	WriteUint(Section, "UnicodeToDecSpMapping", FName, ts->UnicodeDecSpMapping);
 
 	// VT Window Icon
 	IconId2IconName(Temp, sizeof(Temp), ts->VTIcon);

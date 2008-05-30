@@ -2832,10 +2832,10 @@ static void UnicodeToCP932(unsigned int code, int byte)
 	wchar[0] = code & 0xff;
 	wchar[1] = (code >> 8) & 0xff;
 
-	if (ts.UTF8BoxDrawing) {
+	if (ts.UnicodeDecSpMapping) {
 		cset = ConvertUnicode(code, mapUnicodeSymbolToDecSp, sizeof(mapUnicodeSymbolToDecSp)/sizeof(mapUnicodeSymbolToDecSp[0]));
 	}
-	if (cset != 0) {
+	if (((cset >> 8) & ts.UnicodeDecSpMapping) != 0) {
 		PutDecSp(cset & 0xff);
 	}
 	else {
