@@ -2201,9 +2201,11 @@ void DispChangeWinSize(int Nx, int Ny)
 	//SetWindowPos(HVTWin,HWND_TOP,0,0,W+dW,H+dH,SWP_NOMOVE);
 
 	// マルチディスプレイ環境で最大化したときに、
-	// 隣のディスプレイにウィンドウの端がはみ出す問題を修正した。
+	// 隣のディスプレイにウィンドウの端がはみ出す問題を修正 (2008.5.30 maya)
 	// また、上記の状態では最大化状態でもウィンドウを移動させることが出来る。
-	// SetWindowPos(HVTWin,HWND_TOP,R.left,R.top,W+dW,H+dH,SWP_NOMOVE);
+	if (!IsZoomed(HVTWin)) {
+		SetWindowPos(HVTWin,HWND_TOP,R.left,R.top,W+dW,H+dH,SWP_NOMOVE);
+	}
   }
   else
     InvalidateRect(HVTWin,NULL,FALSE);
