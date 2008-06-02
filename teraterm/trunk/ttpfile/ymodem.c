@@ -197,6 +197,8 @@ void YInit
 	fv->ByteCount = 0;
 
 	yv->SendFileInfo = 0;
+	yv->SendEot = 0;
+	yv->ResendEot = 0;
 
 	if (cv->PortType==IdTCPIP)
 	{
@@ -409,6 +411,7 @@ BOOL YReadPacket(PFileVar fv, PYVar yv, PComVar cv)
 	return TRUE;
 }
 
+// ファイル送信(local-to-remote)時に、YMODEMサーバからデータが送られてきたときに呼び出される。
 BOOL YSendPacket(PFileVar fv, PYVar yv, PComVar cv)
 {
 	BYTE b;
@@ -446,6 +449,9 @@ BOOL YSendPacket(PFileVar fv, PYVar yv, PComVar cv)
 					yv->YOpt = XoptCheck;
 					yv->CheckLen = 1;
 				}
+				if (yv->SendEot == 1) {
+					yv->ResendEot = 1;
+				}
 				SendFlag = TRUE;
 				break;
 
@@ -469,43 +475,58 @@ BOOL YSendPacket(PFileVar fv, PYVar yv, PComVar cv)
 			i = YRead1Byte(fv,yv,cv,&b);
 		} while (i!=0);
 
-		if (yv->PktNumSent==yv->PktNum) /* make a new packet */
+		if (yv->PktNumSent==yv->PktNum || /* make a new packet */
+			yv->ResendEot)
 		{
+			BYTE *dataptr = &yv->PktOut[3];
+			int eot = 0;
+
+			if (yv->ResendEot) {
+				eot = 1;
+				goto bufdone;
+			}
+
+			if (yv->DataLen==128)
+				yv->PktOut[0] = SOH;
+			else
+				yv->PktOut[0] = STX;
+			yv->PktOut[1] = yv->PktNumSent;
+			yv->PktOut[2] = ~ yv->PktNumSent;
+
+			// ブロック番号のカウントアップ。YMODEMでは"0"から開始する。
+			yv->PktNumSent++;
+
+			// ブロック0
 			if (yv->SendFileInfo == 0) { // ファイル情報の送信
-			    struct _stat st;
+				struct _stat st;
 				int ret, total;
+				BYTE buf[1024 + 10];
 
-				yv->SendFileInfo = 1;
+				yv->SendFileInfo = 1;   // 送信済みフラグon
 
- 			   /* timestamp */
+			   /* timestamp */
 			   _stat(fv->FullName, &st);
 
-				ret = _snprintf_s(yv->PktOut, sizeof(yv->PktOut), _TRUNCATE, "%s",
+				ret = _snprintf_s(buf, sizeof(buf), _TRUNCATE, "%s",
 					&(fv->FullName[fv->DirLen]));
-				yv->PktOut[ret] = 0x00;  // NUL
+				buf[ret] = 0x00;  // NUL
 				total = ret + 1;
 
-				ret = _snprintf_s(&(yv->PktOut[total]), sizeof(yv->PktOut) - total, _TRUNCATE, "%lu %lo %o",
+				ret = _snprintf_s(&(buf[total]), sizeof(buf) - total, _TRUNCATE, "%lu %lo %o",
 					fv->FileSize, (long)st.st_mtime, 0644|_S_IFREG);
 				total += ret;
 
 				i = total;
 				while (i <= yv->DataLen)
 				{
-					yv->PktOut[i] = 0x00;
+					buf[i] = 0x00;
 					i++;
 				}
-				yv->PktBufCount = yv->DataLen;
+
+				// データコピー
+				memcpy(dataptr, buf, yv->DataLen);
 
 			} else {
-				yv->PktNumSent++;
-				if (yv->DataLen==128)
-					yv->PktOut[0] = SOH;
-				else
-					yv->PktOut[0] = STX;
-				yv->PktOut[1] = yv->PktNumSent;
-				yv->PktOut[2] = ~ yv->PktNumSent;
-
 				i = 1;
 				while ((i<=yv->DataLen) && fv->FileOpen &&
 					(_lread(fv->FileHandle,&b,1)==1))
@@ -524,27 +545,39 @@ BOOL YSendPacket(PFileVar fv, PYVar yv, PComVar cv)
 						i++;
 					}
 
-					Check = YCalcCheck(yv,yv->PktOut);
-					if (yv->CheckLen==1) /* Checksum */
-						yv->PktOut[yv->DataLen+3] = (BYTE)Check;
-					else {
-						yv->PktOut[yv->DataLen+3] = HIBYTE(Check);
-						yv->PktOut[yv->DataLen+4] = LOBYTE(Check);
-					}
-					yv->PktBufCount = 3 + yv->DataLen + yv->CheckLen;
 				}
 				else { /* send EOT */
-					if (fv->FileOpen)
-					{
-						_lclose(fv->FileHandle);
-						fv->FileHandle = 0;
-						fv->FileOpen = FALSE;
-					}
-					yv->PktOut[0] = EOT;
-					yv->PktBufCount = 1;
+					eot = 1;
 				}
 
 			}
+
+bufdone:
+			if (eot == 0) {
+				Check = YCalcCheck(yv,yv->PktOut);
+				if (yv->CheckLen==1) /* Checksum */
+					yv->PktOut[yv->DataLen+3] = (BYTE)Check;
+				else {
+					yv->PktOut[yv->DataLen+3] = HIBYTE(Check);
+					yv->PktOut[yv->DataLen+4] = LOBYTE(Check);
+				}
+				yv->PktBufCount = 3 + yv->DataLen + yv->CheckLen;
+
+			} else {
+				if (fv->FileOpen)
+				{
+					_lclose(fv->FileHandle);
+					fv->FileHandle = 0;
+					fv->FileOpen = FALSE;
+				}
+				yv->PktOut[0] = EOT;
+				yv->PktBufCount = 1;
+
+				yv->SendEot = 1;
+				yv->ResendEot = 0;
+
+			}
+
 		}
 		else { /* resend packet */
 			yv->PktBufCount = 3 + yv->DataLen + yv->CheckLen;
