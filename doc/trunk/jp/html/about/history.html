@@ -24,7 +24,7 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.59">2008.5.11 (Ver 4.59 not-released)</a>
+  <li class="history"><a name="teraterm_4.59">2008.6.4 (Ver 4.59 not-released)</a>
     <ul>
       <li>前回のリリースでマウスの中ボタンのクリックによる貼り付けを削除したが、元に戻した。
         <ul>
@@ -61,6 +61,10 @@
           <li><a href="../menu/setup-additional.html">Additional settings ダイアログ</a>にチェックボックスを追加した。</li>
         </ul></li>
       <li>送信するファイルの選択時に、<a href="../setup/teraterm-trans.html#filter">FileSendFilter</a>で指定されたファイルが存在する場合にはデフォルトのファイル名に設定するようにした。</li>
+      <li>X/ZMODEMのログファイルに、16進ダンプのASCII表示を追加した。
+        <ul>
+          <li>teraterm.ini に YmodemLog エントリを追加した。デフォルトはoff。現時点ではYMODEMは未サポート。</li>
+        </ul></li>
       <li>マクロコマンド '<a href="../macro/command/strmatch.html">strmatch</a>' を追加した。</li>
       <li>マクロコマンド '<a href="../macro/command/setrts.html">setrts</a>','<a href="../macro/command/setdtr.html">setdtr</a>' を追加した。</li>
       <li>ブロードキャストコマンドにおいて、連続送信される WM_COPYDATA を正しく処理できるようにした。Salarm氏に感謝します。</li>
