@@ -33,8 +33,14 @@ int YRead1Byte(PFileVar fv, PYVar yv, PComVar cv, LPBYTE b)
 	{
 		if (fv->LogState==0)
 		{
+			// 残りのASCII表示を行う
+			fv->FlushLogLineBuf = 1;
+			FTLog1Byte(fv,0);
+			fv->FlushLogLineBuf = 0;
+
 			fv->LogState = 1;
 			fv->LogCount = 0;
+			fv->FlushLogLineBuf = 0;
 			_lwrite(fv->LogFile,"\015\012<<<\015\012",7);
 		}
 		FTLog1Byte(fv,*b);
@@ -51,6 +57,11 @@ int YWrite(PFileVar fv, PYVar yv, PComVar cv, PCHAR B, int C)
 	{
 		if (fv->LogState != 0)
 		{
+			// 残りのASCII表示を行う
+			fv->FlushLogLineBuf = 1;
+			FTLog1Byte(fv,0);
+			fv->FlushLogLineBuf = 0;
+
 			fv->LogState = 0;
 			fv->LogCount = 0;
 			_lwrite(fv->LogFile,"\015\012>>>\015\012",7);
@@ -199,6 +210,7 @@ void YInit
 	yv->SendFileInfo = 0;
 	yv->SendEot = 0;
 	yv->ResendEot = 0;
+	yv->LastSendEot = 0;
 
 	if (cv->PortType==IdTCPIP)
 	{
@@ -449,9 +461,12 @@ BOOL YSendPacket(PFileVar fv, PYVar yv, PComVar cv)
 					yv->YOpt = XoptCheck;
 					yv->CheckLen = 1;
 				}
-				if (yv->SendEot == 1) {
+
+				// 1回目のEOT送信後のNAK受信で、再度EOTを送る。
+				if (yv->SendEot) {
 					yv->ResendEot = 1;
 				}
+
 				SendFlag = TRUE;
 				break;
 
@@ -460,8 +475,12 @@ BOOL YSendPacket(PFileVar fv, PYVar yv, PComVar cv)
 
 			case 0x43:  // 'C'(43h)
 			case 0x47:  // 'G'(47h)
+				// 'C'を受け取ると、ブロックの送信を開始する。
 				if ((yv->PktNum==0) && (yv->PktNumOffset==0))
 				{
+					SendFlag = TRUE;
+				}
+				else if (yv->LastSendEot) {
 					SendFlag = TRUE;
 				}
 				break;
@@ -475,16 +494,42 @@ BOOL YSendPacket(PFileVar fv, PYVar yv, PComVar cv)
 			i = YRead1Byte(fv,yv,cv,&b);
 		} while (i!=0);
 
-		if (yv->PktNumSent==yv->PktNum || /* make a new packet */
-			yv->ResendEot)
+		if (yv->LastSendEot) { // オールゼロのブロックを送信して、もうファイルがないことを知らせる。
+			if (yv->DataLen==128)
+				yv->PktOut[0] = SOH;
+			else
+				yv->PktOut[0] = STX;
+			yv->PktOut[1] = 0;
+			yv->PktOut[2] = ~0;
+
+			i = 0;
+			while (i < yv->DataLen)
+			{
+				yv->PktOut[i+3] = 0x00;
+				i++;
+			}
+
+			Check = YCalcCheck(yv,yv->PktOut);
+			if (yv->CheckLen==1) /* Checksum */
+				yv->PktOut[yv->DataLen+3] = (BYTE)Check;
+			else {
+				yv->PktOut[yv->DataLen+3] = HIBYTE(Check);
+				yv->PktOut[yv->DataLen+4] = LOBYTE(Check);
+			}
+			yv->PktBufCount = 3 + yv->DataLen + yv->CheckLen;
+
+		} 
+		else if (yv->ResendEot) {  // 2回目のEOT送信
+			yv->PktOut[0] = EOT;
+			yv->PktBufCount = 1;
+
+			yv->LastSendEot = 1;
+
+		} 
+		else if (yv->PktNumSent==yv->PktNum) /* make a new packet */
 		{
 			BYTE *dataptr = &yv->PktOut[3];
-			int eot = 0;
-
-			if (yv->ResendEot) {
-				eot = 1;
-				goto bufdone;
-			}
+			int eot = 0;  // End Of Transfer
 
 			if (yv->DataLen==128)
 				yv->PktOut[0] = SOH;
@@ -547,13 +592,19 @@ BOOL YSendPacket(PFileVar fv, PYVar yv, PComVar cv)
 
 				}
 				else { /* send EOT */
+					if (fv->FileOpen)
+					{
+						_lclose(fv->FileHandle);
+						fv->FileHandle = 0;
+						fv->FileOpen = FALSE;
+					}
+
 					eot = 1;
 				}
 
 			}
 
-bufdone:
-			if (eot == 0) {
+			if (eot == 0) {  // データブロック
 				Check = YCalcCheck(yv,yv->PktOut);
 				if (yv->CheckLen==1) /* Checksum */
 					yv->PktOut[yv->DataLen+3] = (BYTE)Check;
@@ -563,18 +614,13 @@ bufdone:
 				}
 				yv->PktBufCount = 3 + yv->DataLen + yv->CheckLen;
 
-			} else {
-				if (fv->FileOpen)
-				{
-					_lclose(fv->FileHandle);
-					fv->FileHandle = 0;
-					fv->FileOpen = FALSE;
-				}
+			} else {  // EOT
 				yv->PktOut[0] = EOT;
 				yv->PktBufCount = 1;
 
-				yv->SendEot = 1;
+				yv->SendEot = 1;  // EOTフラグon。次はNAKを期待する。
 				yv->ResendEot = 0;
+				yv->LastSendEot = 0;
 
 			}
 
@@ -582,6 +628,7 @@ bufdone:
 		else { /* resend packet */
 			yv->PktBufCount = 3 + yv->DataLen + yv->CheckLen;
 		}
+
 		yv->PktBufPtr = 0;
 	}
 	/* a NAK or C could have arrived while we were buffering.  Consume it. */

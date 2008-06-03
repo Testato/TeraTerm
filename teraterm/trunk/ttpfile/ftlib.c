@@ -78,10 +78,38 @@ void FTLog1Byte(PFileVar fv, BYTE b)
 {
   char d[3];
 
-  if (fv->LogCount == 16)
+  if (fv->FlushLogLineBuf) {
+	  int rest = 16 - fv->LogCount;
+	  int i;
+
+	  for (i = 0 ; i < rest ; i++)
+		 _lwrite(fv->LogFile,"   ", 3);
+  }
+
+  if (fv->LogCount == 16 || fv->FlushLogLineBuf)
   {
+	  int i;
+
+      // ASCII•\Ž¦‚ð’Ç‰Á (2008.6.3 yutaka)
+	  _lwrite(fv->LogFile,"    ", 4);
+	  for (i = 0 ; i < fv->LogCount ; i++) {
+		  char ch[5];
+		  if (isprint(fv->LogLineBuf[i])) {
+			  _snprintf_s(ch, sizeof(ch), _TRUNCATE, "%c", fv->LogLineBuf[i]);
+			  _lwrite(fv->LogFile, ch, 1);
+
+		  } else {
+			  _lwrite(fv->LogFile, ".", 1);
+
+		  }
+
+	  }
+
     fv->LogCount = 0;
     _lwrite(fv->LogFile,"\015\012",2);
+
+	if (fv->FlushLogLineBuf)
+		return;
   }
 
   if (b<=0x9f)
@@ -96,6 +124,7 @@ void FTLog1Byte(PFileVar fv, BYTE b)
 
   d[2] = 0x20;
   _lwrite(fv->LogFile,d,3);
+  fv->LogLineBuf[fv->LogCount] = b;    // add (2008.6.3 yutaka)
   fv->LogCount++;
 }
 

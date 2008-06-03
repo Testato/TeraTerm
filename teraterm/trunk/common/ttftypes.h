@@ -92,6 +92,9 @@ typedef struct {
 
   char LogDefaultPath[MAX_PATH];
   BOOL HideDialog;
+
+  BYTE LogLineBuf[16];
+  int FlushLogLineBuf;
 } TFileVar;
 typedef TFileVar far *PFileVar;
 
@@ -180,6 +183,7 @@ typedef struct {
   int SendFileInfo;
   int SendEot;
   int ResendEot;
+  int LastSendEot;
 } TYVar;
 typedef TYVar far *PYVar;
 

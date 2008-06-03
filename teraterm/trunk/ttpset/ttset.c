@@ -1012,6 +1012,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	/* XMODEM log  -- special option */
 	ts->LogFlag |= LOG_X * GetOnOff(Section, "XmodemLog", FName, FALSE);
 
+	/* YMODEM log  -- special option */
+	ts->LogFlag |= LOG_Y * GetOnOff(Section, "YmodemLog", FName, FALSE);
+
 	/* Auto ZMODEM activation -- special option */
 	ts->FTFlag |= FT_ZAUTO * GetOnOff(Section, "ZmodemAuto", FName, FALSE);
 
@@ -1875,6 +1878,9 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 	/* XMODEM log  -- special option */
 	WriteOnOff(Section, "XmodemLog", FName, (WORD) (ts->LogFlag & LOG_X));
+
+	/* YMODEM log  -- special option */
+	WriteOnOff(Section, "YmodemLog", FName, (WORD) (ts->LogFlag & LOG_Y));
 
 	/* Auto ZMODEM activation -- special option */
 	WriteOnOff(Section, "ZmodemAuto", FName,
