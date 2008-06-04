@@ -8,7 +8,7 @@ Display compile progress=No
 Full-text search=Yes
 Index file=Index.hhk
 Language=0x409 âpåÍ (ïƒçë)
-Title=UTF-8 TeraTerm Pro with TTSSH2 help
+Title=Tera Term help
 
 [WINDOWS]
 teraterm=,"teraterm.hhc","Index.hhk","html\index.html","html\index.html",,,,,0x62520,,0x3846,,,,,,,,0
@@ -288,7 +288,6 @@ HlpMacroAppendixesNegative=html\macro\appendixes\negative.html
 HlpMacroAppendixesAscii=html\macro\appendixes\ascii.html
 HlpMacroAppendixesRegex=html\reference\RE.txt
 HlpUninstall=html\uninstall.html
-
 
 [MAP]
 #include ..\..\teraterm\source\common\helpid.h
