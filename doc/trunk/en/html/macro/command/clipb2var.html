@@ -70,7 +70,7 @@ messagebox data 'clipboard data'
 <pre class="macro-example">
 <code>; read a clipboard content and write it to a file.
 fileopen fp 'clipboard.txt' 0
-if result &gt;&lt; 0 end
+if result &lt;&gt; 0 end
 
 offset = 0
 do

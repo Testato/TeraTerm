@@ -70,7 +70,7 @@ messagebox data 'clipboard data'
 <pre class="macro-example">
 <code>; クリップボードの内容をファイル(clipboard.txt)に書き出す
 fileopen fp 'clipboard.txt' 0
-if result &gt;&lt; 0 end
+if result &lt;&gt; 0 end
 
 offset = 0
 do
