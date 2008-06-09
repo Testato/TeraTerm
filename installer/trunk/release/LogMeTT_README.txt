@@ -41,7 +41,7 @@ user and connection specific variables.
 
 LogMeTT is freeware application distributed without the source code.
 
-More details can be found in LogMeTT.hlp file.
+More details can be found in LogMeTT.chm file.
 
 
 Please visit LogMeTT support forum for more information:
@@ -52,55 +52,96 @@ http://www.neocom.ca/forum/index.php
                  =============================
                  (in reverse chronological order)
 
+2008-06-07 (Ver 2.9 Release 4)
+New features added:
+- Adding new node activates node name editor.
+
+Bugs fixed:
+- New popup menu component introduced in version 9.2.3 was incorrectly
+rendering menu structure and had possible memory leak issue. This is
+fixed now.
+- "Cut" operation applied to Tree nodes was updating icons incorrectly.
+- Connection tree branches were not collapsing when "This computer" node
+was selected.
+- Opening LTT file could turn into Import when unsaved previous
+LTT file was loaded and 'Cancel' opening button was pressed in Warning
+dialog box.
+
+
+
+2008-06-01 (Ver 2.9 Release 3)
+New features added:
+- Replaced Popup menu component to simplify menu structure. The
+same menu can be used to start the macro and to open submenu. In
+the previous versions such item was duplicated into it's own submenu.
+- Added keyword $snippet$. This key word disables direct access to
+the macro from LogMeTT popup menu. It is case-insensitive and can
+be places anywhere within a Macro code. Example of use case: Node
+"ABC" contains few starting lines of Macro code that are common for
+all child node macros. The Macro linked to node "ABC" should never be
+executed apart from child macros. Key word $snippet$ placed inside
+the macro code attached to node "ABC" will restrict user from calling
+this macro separately.
+- Updated LogMeTT help file to reflect all the latest changes.
+
+Bugs fixed:
+- Restore TeraTerm configuration menu option was staying disabled
+after saving configuration at first time.
+- Fixed trailing spaces not being entered in Popup editor.
+- Switching tabs was marking node content as "Modified"
+- Node data was not showing up after certain sequence of clicks on
+tree nodes and the Tabs in the right part of LogMeTTC window.
+- Fixed the bug with Macro export into TTL file.
+
 2007-07-23 (Ver 2.9 Release 2)
 New features added:
 - Application was redesigned to support Microsoft Windows Vista and Windows XP themes.
-- Replaced hardcoded macro Templates with the plain text file 'ttmacro.tpl' that can 
+- Replaced hardcoded macro Templates with the plain text file 'ttmacro.tpl' that can
 be used as reference for building personal template library.
-- Added configurable name of Templates file to avoid overwriting custom templates 
+- Added configurable name of Templates file to avoid overwriting custom templates
 during upgrades.
-- Added tracking of admin rights when running under Windows Vista. Without admin rights 
-Vista does not allow to associate file extension with the application. Use ‘Run as 
-Administrator’ from Vista popup menu or change the properties of LogMeTTC.exe to be 
+- Added tracking of admin rights when running under Windows Vista. Without admin rights
+Vista does not allow to associate file extension with the application. Use ‘Run as
+Administrator’ from Vista popup menu or change the properties of LogMeTTC.exe to be
 always started as Administrator.
-- 'About' window was combined with Disclaimer message. It also contains 'What's new' tab. 
-- 'Help' menu is now calling Vista compatible LogMeTT and TeraTerm help files in .chm 
-format instead of old file with extension .hlp. This applies also to Context sensitive 
-help in editor area. LogMeTT help file however does not reflect all changes introduced in 
+- 'About' window was combined with Disclaimer message. It also contains 'What's new' tab.
+- 'Help' menu is now calling Vista compatible LogMeTT and TeraTerm help files in .chm
+format instead of old file with extension .hlp. This applies also to Context sensitive
+help in editor area. LogMeTT help file however does not reflect all changes introduced in
 this release.
-- Functionality of 'Print' speed button changed from showing Print Dialog to immediate 
+- Functionality of 'Print' speed button changed from showing Print Dialog to immediate
 printing. Print Dialog is still accessible from File->Print… menu.
-- Added 'Show Special Characters' option and speed button. 
-- All previously hardcoded keywords used by syntax highlighter were migrated to external 
-KeyFile.ini file. This will allow to add new key words without recompiling the application. 
+- Added 'Show Special Characters' option and speed button.
+- All previously hardcoded keywords used by syntax highlighter were migrated to external
+KeyFile.ini file. This will allow to add new key words without recompiling the application.
 KeyFile.ini also contains Help ID-s that are used by context sensitive help.
 - Upgraded Virtual Tree component to version 4.5.2
 - Added shortcuts F11 - "Run all selected" and F12 - "Apply Changes".
-- Added support of $[1]..$[8] key words that can be used as command line parameters for 
-RunLTT application. 
-- Added column selection mode. Use mouse while pressing <Alt> key to select columns in 
+- Added support of $[1]..$[8] key words that can be used as command line parameters for
+RunLTT application.
+- Added column selection mode. Use mouse while pressing <Alt> key to select columns in
 Macro editor.
 Bugs fixed:
-- Fixed the error happening while duplicating expanded branch of the Connections tree. 
-- Fixed node path that was appearing in reverse order in Print Preview window and in the 
+- Fixed the error happening while duplicating expanded branch of the Connections tree.
+- Fixed node path that was appearing in reverse order in Print Preview window and in the
 header of printouts.
-- Lots of other changes, code cleanup and bug fixing of 3rd party freeware components used 
+- Lots of other changes, code cleanup and bug fixing of 3rd party freeware components used
 by LogMeTT and LogMeTTC.
 
 
 
 2007-03-28 (Ver 2.9 Release 1)
 New features added:
-- Standalone TeraTerm Macro Editor - TTLEditor was created. It inherited all features 
+- Standalone TeraTerm Macro Editor - TTLEditor was created. It inherited all features
 of LogMeTT Macro Editor of version from version 2.8 release 6 and also got few new ones.
 TTLEditor supports drag and drop of plain text files and can be associated with file
 extension TTL.
 - Both LogMeTT Macro Editor and TTL Editor now support syntax completion proposal feature.
 Press [Ctrl-Space] while typing macro command and resizeble hint window will appear.
-- LogMeTT popup menu now has "IP Address" item that opens into sub menu allowing to 
+- LogMeTT popup menu now has "IP Address" item that opens into sub menu allowing to
 release/renew IP address for any or all network adapters or check adapter details.
 - File extension association functions were rewritten.
-- "Do not Prompt on disconnect" option was added to Settings window. It applies to 
+- "Do not Prompt on disconnect" option was added to Settings window. It applies to
 TeraTerm windows opened in "Run All Selected" mode.
 
 Bugs fixed:
