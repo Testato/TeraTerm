@@ -1,5 +1,5 @@
-#define AppName "UTF-8 TeraTerm Pro with TTSSH2"
-#define AppVer "4.58"
+#define AppName "Tera Term"
+#define AppVer "4.59"
 
 [Setup]
 AppCopyright=TeraTerm Project
@@ -12,7 +12,7 @@ ShowLanguageDialog=yes
 AllowNoIcons=true
 UninstallDisplayIcon={app}\ttermpro.exe
 AppMutex=TeraTermProAppMutex, TeraTermProMacroAppMutex, TeraTermProKeycodeAppMutex, TeraTermMenuAppMutex, CygTermAppMutex
-OutputBaseFilename=teraterm_utf8-{#AppVer}
+OutputBaseFilename=teraterm-{#AppVer}
 PrivilegesRequired=none
 
 [Languages]
@@ -109,15 +109,15 @@ Name: Collector; Description: Collector; Types: full
 Name: TTXKanjiMenu; Description: TTXKanjiMenu; Types: full
 
 [Icons]
-Name: {group}\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; IconIndex: 0; Components: TeraTerm; Flags: createonlyiffileexists
+Name: {group}\Tera Term; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; IconIndex: 0; Components: TeraTerm; Flags: createonlyiffileexists
 Name: {group}\{cm:UninstallProgram,{#AppName}}; Filename: {uninstallexe}; Components: TeraTerm; Flags: createonlyiffileexists
 Name: {group}\cyglaunch; Filename: {app}\cyglaunch.exe; WorkingDir: {app}; IconFilename: {app}\cyglaunch.exe; IconIndex: 0; Components: cygterm; Flags: createonlyiffileexists
 Name: {group}\LogMeTT; Filename: {app}\LogMeTT.exe; WorkingDir: {app}; IconFilename: {app}\logMeTT.exe; IconIndex: 0; Components: LogMeTT; Flags: createonlyiffileexists
 Name: {group}\TTLEdit; Filename: {app}\TTLEdit.exe; WorkingDir: {app}; IconFilename: {app}\TTLEdit.exe; IconIndex: 0; Components: LogMeTT; Flags: createonlyiffileexists
 Name: {group}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; IconIndex: 0; Components: TeraTerm_Menu; Flags: createonlyiffileexists
 Name: {group}\Collector; Filename: {app}\Collector\Collector.exe; WorkingDir: {app}\Collector; IconFilename: {app}\Collector\Collector.exe; IconIndex: 0; Components: Collector; Flags: createonlyiffileexists
-Name: {userdesktop}\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: desktopicon; IconIndex: 0; Flags: createonlyiffileexists
-Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: quicklaunchicon; IconIndex: 0; Flags: createonlyiffileexists
+Name: {userdesktop}\Tera Term; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: desktopicon; IconIndex: 0; Flags: createonlyiffileexists
+Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\Tera Term; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: quicklaunchicon; IconIndex: 0; Flags: createonlyiffileexists
 Name: {userstartup}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; Components: TeraTerm_Menu; IconIndex: 0; Tasks: startupttmenuicon; Flags: createonlyiffileexists
 Name: {userstartup}\Collector; Filename: {app}\collector\collector.exe; WorkingDir: {app}\Collector; IconFilename: {app}\collector\collector.exe; Components: Collector; Tasks: startupcollectoricon; IconIndex: 0; Flags: createonlyiffileexists
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\cyglaunch; Filename: {app}\cyglaunch.exe; WorkingDir: {app}; IconFilename: {app}\cyglaunch.exe; Components: cygterm; Tasks: quickcyglaunch; IconIndex: 0; Flags: createonlyiffileexists
@@ -292,11 +292,11 @@ ja.type_standard=標準インストール
 ja.type_full=フルインストール
 ja.type_compact=コンパクトインストール
 ja.type_custom=カスタムインストール
-en.launch_teraterm=Launch &TeraTerm Pro
+en.launch_teraterm=Launch &Tera Term
 en.launch_logmett=Launch &LogMeTT
 en.launch_ttmenu=Launch TeraTerm &Menu
 en.launch_collector=Launch &Collector
-ja.launch_teraterm=今すぐ &TeraTerm Pro を実行する
+ja.launch_teraterm=今すぐ &Tera Term を実行する
 ja.launch_logmett=今すぐ &LogMeTT を実行する
 ja.launch_ttmenu=今すぐ TeraTerm &Menu を実行する
 ja.launch_collector=今すぐ &Collector を実行する
