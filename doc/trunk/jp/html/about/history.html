@@ -26,6 +26,10 @@
 <ul>
   <li class="history"><a name="teraterm_4.59">2008.6.4 (Ver 4.59 not-released)</a>
     <ul>
+      <li>パッケージ名を「UTF-8 TeraTerm Pro with TTSSH2」から「Tera Term」に改名した。
+        <ul>
+          <li>アンインストール・新規インストールでの導入をおすすめします。</li>
+        </ul></li>
       <li>前回のリリースでマウスの中ボタンのクリックによる貼り付けを削除したが、元に戻した。
         <ul>
           <li>teraterm.ini に <a href="../setup/teraterm-misc.html#DisablePasteMouseMButton">DisablePasteMouseMButton</a> を追加した。デフォルトはon。</li>
@@ -34,7 +38,7 @@
         <ul>
           <li><a href="../menu/setup-additional.html">ConfirmChangePaste</a> （改行コードを含むクリップボードデータの貼り付けを確認する）オプションを追加した。</li>
           <li><a href="../menu/setup-additional.html">MouseEventTracking</a> オプションを追加した。</li>
-          <li>General タブの項目の一部を、新設した Copy and Paste タブに移動した。</li>
+          <li>General タブの項目の一部を、新設した "Copy and Paste" タブに移動した。</li>
           <li>開いているタブの内容しか保存されない問題を修正した。</li>
           <li>cygterm.cfg がない状態で保存するとファイルが新規作成されず、エラーメッセージが表示される問題を修正した。</li>
           <li>デフォルトのログファイル名が入力されていなかった場合に、不正なエラーメッセージを表示する問題を修正した。</li>
@@ -53,12 +57,20 @@
         </ul></li>
       <li>&lt;ESC&gt;[Jによる画面クリア時にカレントバッファをスクロールアウトさせるようにするかどうかを、設定できるようにした。
         <ul>
-          <li>teraterm.ini に ScrollWindowClearScreen を追加した。デフォルトはon。</li>
+          <li>teraterm.ini に <a href="../setup/teraterm-win.html#ScrollWindowClearScreen">ScrollWindowClearScreen</a> を追加した。デフォルトはon。</li>
         </ul></li>
       <li>最下行でだけ自動スクロールさせるようにした（何か表示されるときにスクロールバックをリセットしない）。ただし、CTRLやSHIFTなどの制御キー入力は無視する。Salarm氏に感謝します。
         <ul>
           <li>teraterm.ini に AutoScrollOnlyInBottomLine エントリを追加した。デフォルトはon。</li>
           <li><a href="../menu/setup-additional.html">Additional settings ダイアログ</a>にチェックボックスを追加した。</li>
+        </ul></li>
+      <li>対応していないUnicode文字をからDEC特殊文字へのマッピングで、マップされる文字を幾つかの種類に分類し、種類毎に変換するか設定できるようにした。
+        <ul>
+          <li>teraterm.ini に <a href="../setup/teraterm-term.html#UnknownUnicodeCharacterAsWide">UnknownUnicodeCharacterAsWide</a> エントリを追加した。デフォルトはoff。</li>
+        </ul></li>
+      <li>UnicodeからDEC特殊文字へのマッピングで、マップされる文字を幾つかの種類に分類し、種類毎に変換するか設定できるようにした。
+        <ul>
+          <li>teraterm.ini に <a href="../setup/teraterm-term.html#UnicodeDecSpMapping">UnicodeDecSpMapping</a> エントリを追加した。デフォルトは3。</li>
         </ul></li>
       <li>送信するファイルの選択時に、<a href="../setup/teraterm-trans.html#filter">FileSendFilter</a>で指定されたファイルが存在する場合にはデフォルトのファイル名に設定するようにした。</li>
       <li>X/ZMODEMのログファイルに、16進ダンプのASCII表示を追加した。
@@ -76,6 +88,7 @@
           アップグレードインストール時に同様の設定にしたい場合は、cygterm.cfgを編集してTERM設定に/VTIcon=CygTermを追加してください。</li>
         </ul></li>
       <li>ConfirmChangePaste の確認ダイアログを、マウスカーソルではなくキャレットの位置に表示するようにした。</li>
+      <li>Mouse Tracking Mode 時もダブルクリックによる単語選択を有効にした。</li>
       <li>インストーラを修正した。
         <ul>
           <li>cyglaunch のショートカットをスタートメニューに追加するようにした。</li>
@@ -88,7 +101,7 @@
       <li>内部で LogMeTT.exe, cygterm.exe, cygterm.cfg をフルパスで指定していなかったため、ファイル選択などにより ttermpro.exe のカレントディレクトリが変更されたときに正しく動かなくなる問題を修正した。</li>
       <li>teraterm.ini の XModemRcvCommand のデフォルトが空になっていなかった問題を修正した。</li>
       <li>マウス操作の通知で、不正な位置を通知する事があったのを修正した。</li>
-      <li>ttermpro.exeに /C= と /M= が指定された場合に、シリアル接続できない問題を修正した。<br>cf. <a href="http://sourceforge.jp/tracker/index.php?func=detail&aid=12403&group_id=1412&atid=5333">[ #12403] v4.58 and snapshot fail on serial macro</a></li>
+      <li>ttermpro.exeに /C= と /M= が指定された場合に、シリアル接続できない問題を修正した。</li>
       <li>受信漢字コードがUTF-8またはUTF-8mの時、C1制御文字を使用した制御シーケンスが正しく扱えないのを修正した。</li>
       <li>受信漢字コードがSJISの時、制御シーケンスによるウィンドウタイトル変更で、一部の漢字が使えないのを修正した。</li>
       <li>"New Connection" ダイアログで/F=オプションで設定ファイルを指定した時、背景色やANSI Color等の設定が正しく反映されないのを修正した。</li>
