@@ -135,10 +135,8 @@ Filename: {app}\teraterm.ini; Section: Tera Term; Key: VTIcon; String: Default; 
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: VTIcon; String: Default; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: TEKIcon; String: Default; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: TEKIcon; String: Default; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: MouseWheelScrollLine; String: 3; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: MouseWheelScrollLine; String: 3; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: DisablePasteMouseMButton; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: DisablePasteMouseMButton; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: SaveVTWinPos; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
