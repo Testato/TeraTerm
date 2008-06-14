@@ -247,5 +247,77 @@ VTCompatTab=off
 </pre>
 
 
+<h1><a name="ScrollWindowClearScreen">画面クリア時にカレントバッファをスクロールアウトさせるかどうか設定する</a></h1>
+
+<p>
+カーソルが左上(0, 0)にある場合の &lt;ESC&gt;[J (Erase Below) は、&lt;ESC&gt;[2J (Erase All) と同じことになる。<br>
+このとき、画面クリア時にカレントバッファをスクロールアウトするかどうかを設定できる。
+</p>
+
+<p>
+on の場合には、&lt;ESC&gt;[2J と同様にカレントバッファをスクロールアウトする。<br>
+off の場合にはカレントバッファをスクロールアウトせず、カーソル位置からスクリーンの最後までを消去する。
+</p>
+
+<pre>
+省略時:
+ScrollWindowClearScreen=on
+</pre>
+
+
+<h1><a name="UnknownUnicodeCharacterAsWide">対応していないUnicodeの文字をワイド文字として扱うか設定する</a></h1>
+
+<p>
+on の場合には、対応していないUnicodeの文字を "??" と表示します。<br>
+off の場合には、対応していないUnicodeの文字を "?" と表示します。
+</p>
+
+<pre>
+省略時:
+UnknownUnicodeCharacterAsWide=off
+</pre>
+
+
+<h1><a name="UnicodeDecSpMapping">UnicodeからDEC特殊文字へのマッピングを設定する</a></h1>
+
+<p>
+Middle dotに近い物を、DEC特殊文字のMiddle dotとして表示できる。<br>
+マップされる文字を幾つかの種類に分類し、種類毎に変換するか設定できる。種類ごとの値を足した数値を設定する。
+</p>
+
+<pre>
+種類A: 罫線
+値: 1
+  Box drawings(U+2500-U+257F)
+</pre>
+
+<pre>
+種類B: 4.58までは??と表示された文字(英語環境では何も表示されない物も含む)
+値: 2
+  Bullet (U+2022)
+  Hyphenation point (U+2027)
+  Light shade (25%) (U+2591)
+  Medium shade (50%) (U+2592)
+  Dark shade (75%) (U+2593)
+  Black small square (U+25AA)
+  Black vertical rectangle (U+25AE)
+  Black verty small square (U+2B1D)
+</pre>
+
+<pre>
+種類C: 日本語環境では中点、英語環境ではMiddle dotとして表示される文字
+値: 4
+  Middle dot (U+00B7)
+  One dot leader (U+2024)
+  Bullet operator (U+2219)
+</pre>
+
+<pre>
+省略時:
+# 種類AとB
+UnicodeDecSpMapping=3
+</pre>
+
+
 </BODY>
 </HTML>
