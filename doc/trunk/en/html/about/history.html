@@ -57,14 +57,14 @@
         </ul></li>
       <li>added support for configurating whether the current buffer would be scrolled out with &lt;ESC&gt;[J clear screen.
         <ul>
-          <li>added <a href="../setup/teraterm-win.html#ScrollWindowClearScreen">ScrollWindowClearScreen</a> entry in teraterm.ini file. The default value is on.</li>
+          <li>added <a href="../setup/teraterm-term.html#ScrollWindowClearScreen">ScrollWindowClearScreen</a> entry in teraterm.ini file. The default value is on.</li>
         </ul></li>
       <li>Prevented automatically scroll out other than the latest bottom line(Not reset scrollback on display activity). By way of exception, the control key such as Ctrl and Shift key does not work this feature. Special thanks to Salarm.
         <ul>
           <li>added AutoScrollOnlyInBottomLine entry to teraterm.ini. The default value is on.</li>
           <li>added a check box on <a href="../menu/setup-additional.html">Additional settings dialog</a>.</li>
         </ul></li>
-      <!--li>対応していないUnicode文字をからDEC特殊文字へのマッピングで、マップされる文字を幾つかの種類に分類し、種類毎に変換するか設定できるようにした。
+      <!--li>対応していないUnicodeの文字をワイド文字として扱うか設定できるようにした。
         <ul>
           <li>teraterm.ini に <a href="../setup/teraterm-term.html#UnknownUnicodeCharacterAsWide">UnknownUnicodeCharacterAsWide</a> エントリを追加した。デフォルトはoff。</li>
         </ul></li>
