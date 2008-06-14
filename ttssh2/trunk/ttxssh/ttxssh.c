@@ -1835,7 +1835,7 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 	// TTSSHのバージョンを設定する (2005.2.28 yutaka)
 	get_file_version("ttxssh.dll", &a, &b, &c, &d);
 	_snprintf_s(buf, sizeof(buf), _TRUNCATE,
-		"TTSSH\r\nTeraTerm Secure Shell extension, %d.%d", a, b);
+		"TTSSH\r\nTera Term Secure Shell extension, %d.%d", a, b);
 	SendMessage(GetDlgItem(dlg, IDC_TTSSH_VERSION), WM_SETTEXT, 0, (LPARAM)buf);
 
 	// OpenSSLのバージョンを設定する (2005.1.24 yutaka)
