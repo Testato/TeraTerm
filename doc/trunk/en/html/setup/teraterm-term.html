@@ -176,16 +176,16 @@ VTCompatTab=off
 </pre>
 
 
-<!--h1><a name="ScrollWindowClearScreen">画面クリア時にカレントバッファをスクロールアウトさせるかどうか設定する</a></h1>
+<h1><a name="ScrollWindowClearScreen">Scroll down the current buffer when the screen is clear</a></h1>
 
 <p>
-カーソルが左上(0, 0)にある場合の &lt;ESC&gt;[J (Erase Below) は、&lt;ESC&gt;[2J (Erase All) と同じことになる。<br>
-このとき、画面クリア時にカレントバッファをスクロールアウトするかどうかを設定できる。
+&lt;ESC&gt;[J (Erase Below) escape sequence equals &lt;ESC&gt;[2J (Erase All) when the current cursor is top left (0, 0).<br>
+A user can configure whether the current buffer scrolls down when the screen is clear.
 </p>
 
 <p>
-on の場合には、&lt;ESC&gt;[2J と同様にカレントバッファをスクロールアウトする。<br>
-off の場合にはカレントバッファをスクロールアウトせず、カーソル位置からスクリーンの最後までを消去する。
+If this configuration value is on, the current buffer will scroll down as well as &lt;ESC&gt;[2J escape sequenc.<br>
+If this configuration value is off, the current buffer will not scroll down. Instead, some buffers from the cursor position to the end of the screen.
 </p>
 
 <pre>
@@ -194,7 +194,7 @@ ScrollWindowClearScreen=on
 </pre>
 
 
-<h1><a name="UnknownUnicodeCharacterAsWide">???????Unicode???????????????????</a></h1>
+<!--h1><a name="UnknownUnicodeCharacterAsWide">???????Unicode???????????????????</a></h1>
 
 <p>
 on の場合には、対応していないUnicodeの文字を "??" と表示します。<br>
