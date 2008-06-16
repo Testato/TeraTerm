@@ -506,14 +506,13 @@ SaveVTWinPos=off
 
 
 <h1><a name="WindowIcon">Change the window icon</a></h1>
-<!--
 <p>
-TeraTermの実行ファイルには、VTウィンドウやTEKウィンドウのウィンドウアイコン等で使われている他にも、いくつかアイコンが含まれています。
-設定ファイルの[Tera Term]セクションのVTIcon, TEKIcon行を変更する事によって、VTウィンドウおよびTEKウィンドウのウィンドウアイコンにこれらのアイコンを使用する事が出来ます。
+TeraTerm executable program includes "VT window" icon, "TEK window" icon, and some other icons.
+If you change the value of VTIcon or TEKIcon, the displaying icon of VT window or TEK window is changed.
 </p>
 
 <p>
-例えば、VTウィンドウのアイコンに以前のアイコンを使いたい場合は、以下のように指定してください。
+For example, to use old icon for VT window, specify like the following:
 </p>
 
 <pre>
@@ -521,9 +520,8 @@ VTIcon=VT_CLASSIC
 </pre>
 
 <p>
-アイコン名には、以下が使用できます。
+Following icon names are available:
 </p>
--->
 
 <table>
 <thead>
@@ -537,7 +535,7 @@ VTIcon=VT_CLASSIC
   <tr><td>TTERM_CLASSIC</td> <td><img src="../image/tt_classic.png"></td></tr>
   <tr><td>VT_CLASSIC</td>    <td><img src="../image/vt_classic.png"></td></tr>
   <tr><td>CYGTERM</td>       <td><img src="../image/cygterm.png"></td></tr>
-  <tr><td>Default</td>       <td>Default<!--(VTウィンドウはVT, TEKウィンドウはTEK)--></td></tr>
+  <tr><td>Default</td>       <td>Default("VT" at VT window, "TEK" at TEK window)</td></tr>
 </tbody>
 </table>
 

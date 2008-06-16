@@ -70,7 +70,7 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
   <dt>/F=&lt;setup file&gt;</dt>
   <dd>Setup file<br>
       <span class="syntax">/F=TERATERM.INI</span> (default)<br>
-      <!--ファイル名が絶対パスでないときは、ttermpro.exe からの相対パスと見なされます。--></dd>
+      If this value is not a full path, it is understood as a relative path from ttermpro.exe.</dd>
 
   <dt>/FD=&lt;file transfer directory&gt;</dt>
   <dd>File transfer directory</dd>
@@ -84,7 +84,7 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
   <dt>/K=&lt;keyboard setup file&gt;</dt>
   <dd>Keyboard setup file<br>
       <span class="syntax">/K=KEYBOARD.CNF</span> (default)<br>
-      <!--ファイル名が絶対パスでないときは、ttermpro.exe からの相対パスと見なされます。--></dd>
+      If this value is not a full path, it is understood as a relative path from ttermpro.exe.</dd>
 
   <dt>/KR=&lt;kanji code (receive)&gt;</dt>
   <dd>Note: Japanese mode only
@@ -118,7 +118,7 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
 
   <dt>/M=&lt;macro file&gt;</dt>
   <dd>Start Tera Term with macro.<br>
-      <!--ファイル名が絶対パスでないときは、ttermpro.exe からの相対パスと見なされます。--></dd>
+      If this value is not a full path, it is understood as a relative path from ttermpro.exe.</dd>
 
   <dt>/P=&lt;TCP port#&gt;</dt>
   <dd>TCP port number</dd>
@@ -133,7 +133,7 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
       </ul></dd>
 
   <dt><a name="tekicon">/TEKICON=&lt;icon name&gt;</a></dt>
-  <dd>TEK window icon. <!--TEKウインドウのウインドウアイコンを指定する。icon nameには、設定ファイルの<a href="../setup/teraterm-win.html#WindowIcon">TEKIcon設定</a>と同じ物が使用できる。--></dd>
+  <dd>TEK window icon. Could be specify the same value of <a href="../setup/teraterm-win.html#WindowIcon">TEKIcon of setup file</a>.</dd>
 
   <dt>/TIMEOUT=&lt;connecting timeout value&gt;</dt>
   <dd>Could be specified per seconds.</dd>
@@ -142,7 +142,7 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
   <dd>Start Tera Term in hidden (invisible) state.</dd>
 
   <dt><a name="vticon">/VTICON=&lt;icon name&gt;</a></dt>
-  <dd>VT window icon. <!--VTウインドウのウインドウアイコンを指定する。icon nameには、設定ファイルの<a href="../setup/teraterm-win.html#WindowIcon">VTIcon設定</a>と同じ物が使用できる。--></dd>
+  <dd>VT window icon. Could be specify the same value of <a href="../setup/teraterm-win.html#WindowIcon">VTIcon of setup file</a>.</dd>
 
   <dt>/W="&lt;window title&gt;"</dt>
   <dd>Window title</dd>

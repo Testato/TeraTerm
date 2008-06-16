@@ -194,11 +194,11 @@ ScrollWindowClearScreen=on
 </pre>
 
 
-<!--h1><a name="UnknownUnicodeCharacterAsWide">???????Unicode???????????????????</a></h1>
+<h1><a name="UnknownUnicodeCharacterAsWide">Display unsupported Unicode character as wide character</a></h1>
 
 <p>
-on の場合には、対応していないUnicodeの文字を "??" と表示します。<br>
-off の場合には、対応していないUnicodeの文字を "?" と表示します。
+If this configuration value is on, the unsupported Unicode character is displayed as "??".<br>
+If this configuration value is off, the unsupported Unicode character is displayed as "?".
 </p>
 
 <pre>
@@ -207,22 +207,22 @@ UnknownUnicodeCharacterAsWide=off
 </pre>
 
 
-<h1><a name="UnicodeDecSpMapping">UnicodeからDEC特殊文字へのマッピングを設定する</a></h1>
+<h1><a name="UnicodeDecSpMapping">Mapping of Unicode to DEC special character</a></h1>
 
 <p>
-Middle dotに近い物を、DEC特殊文字のMiddle dotとして表示できる。<br>
-マップされる文字を幾つかの種類に分類し、種類毎に変換するか設定できる。種類ごとの値を足した数値を設定する。
+The character that likes Middle dot can be displayed as Middle dot of DEC special character.<br>
+The characters are classified as some types. The setting value is the sum of enabled types.
 </p>
 
 <pre>
-種類A: 罫線
-値: 1
+Type A: Rule marks
+Value: 1
   Box drawings(U+2500-U+257F)
 </pre>
 
 <pre>
-種類B: 4.58までは??と表示された文字(英語環境では何も表示されない物も含む)
-値: 2
+Type B: The character that is displayd "??" up to version 4.58 (it includes undisplayed characters in English environment)
+Value: 2
   Bullet (U+2022)
   Hyphenation point (U+2027)
   Light shade (25%) (U+2591)
@@ -234,8 +234,8 @@ Middle dotに近い物を、DEC特殊文字のMiddle dotとして表示できる。<br>
 </pre>
 
 <pre>
-種類C: 日本語環境では中点、英語環境ではMiddle dotとして表示される文字
-値: 4
+Type C: The character that is displayd as bullet(wide character) in Japanese environment, and is displayed as Middle dot in English environment.
+Value: 4
   Middle dot (U+00B7)
   One dot leader (U+2024)
   Bullet operator (U+2219)
@@ -243,9 +243,9 @@ Middle dotに近い物を、DEC特殊文字のMiddle dotとして表示できる。<br>
 
 <pre>
 Default:
-# 種類AとB
+# Type A and B
 UnicodeDecSpMapping=3
-</pre-->
+</pre>
 
 
 </BODY>
