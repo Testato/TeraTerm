@@ -268,6 +268,7 @@ ScrollWindowClearScreen=on
 <h1><a name="UnknownUnicodeCharacterAsWide">対応していないUnicodeの文字をワイド文字として扱うか設定する</a></h1>
 
 <p>
+受信漢字コードがUTF-8またはUTF-8mの設定の時に、Tera Termが対応していないUnicodeの文字の取り扱いを設定します。<br>
 on の場合には、対応していないUnicodeの文字を "??" と表示します。<br>
 off の場合には、対応していないUnicodeの文字を "?" と表示します。
 </p>
@@ -281,14 +282,22 @@ UnknownUnicodeCharacterAsWide=off
 <h1><a name="UnicodeDecSpMapping">UnicodeからDEC特殊文字へのマッピングを設定する</a></h1>
 
 <p>
-Middle dotに近い文字を、DEC特殊文字のMiddle dotとして表示できる。<br>
-マップされる文字を幾つかの種類に分類し、種類毎に変換するか設定できる。種類ごとの値を足した数値を設定する。
+日本語環境ではTera Termは罫線や一部の記号を2カラム幅で表示します。しかし、ホスト側のアプリケーションによってはUTF-8エンコーディング時にはこれらの文字が1カラム幅で表示されると期待した出力を行う物があり、その結果画面出力が崩れる場合があります。<br>
+また英語環境では罫線を+-|を使って表示したり、対応していない文字を??と表示したりします。<br>
+Tera Termでは、これらの文字でDEC特殊文字に近い物がある物は、それを使って表示するようにする事ができ、それによって表示の崩れを軽減する事ができます。<br>
+ただし、マウスで選択した時にクリップボードにコピーされるのが本来とは別の文字になってしまうという副作用があります。<br>
+この設定は、受信漢字コードがUTF-8またはUTF-8mの時のみ効果を持ちます。
+</p>
+
+<p>
+マップされる文字は幾つかの種類に分類されており、種類毎に変換するか設定する事が出来ます。<br>
+変換する種類ごとの値を足した数値をUnicodeToDecSpMappingに指定してください。
 </p>
 
 <pre>
 種類A: 罫線
 値: 1
-  Box drawings(U+2500-U+257F)
+  Box drawings (U+2500-U+257F)
 </pre>
 
 <pre>
@@ -306,6 +315,7 @@ Middle dotに近い文字を、DEC特殊文字のMiddle dotとして表示できる。<br>
 
 <pre>
 種類C: 日本語環境では中点、英語環境ではMiddle dotとして表示される文字
+       日本語環境以外では指定しない事を勧めます
 値: 4
   Middle dot (U+00B7)
   One dot leader (U+2024)
@@ -315,7 +325,7 @@ Middle dotに近い文字を、DEC特殊文字のMiddle dotとして表示できる。<br>
 <pre>
 省略時:
 # 種類AとB
-UnicodeDecSpMapping=3
+UnicodeToDecSpMapping=3
 </pre>
 
 

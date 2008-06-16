@@ -59,7 +59,7 @@
         <ul>
           <li>teraterm.ini に <a href="../setup/teraterm-term.html#ScrollWindowClearScreen">ScrollWindowClearScreen</a> を追加した。デフォルトはon。</li>
         </ul></li>
-      <li>最下行でだけ自動スクロールさせるようにした（何か表示されるときにスクロールバックをリセットしない）。ただし、CTRLやSHIFTなどの制御キー入力は無視する。Salarm氏に感謝します。
+      <li>最下行でだけ自動スクロールさせるようにした（何か表示されるときにスクロールバックをリセットしない）。ただし、なにかキー入力(CTRLやSHIFTなどの制御キーは除く)を行った時はスクロールバックをリセットする。Salarm氏に感謝します。
         <ul>
           <li>teraterm.ini に AutoScrollOnlyInBottomLine エントリを追加した。デフォルトはon。</li>
           <li><a href="../menu/setup-additional.html">Additional settings ダイアログ</a>にチェックボックスを追加した。</li>
@@ -68,9 +68,9 @@
         <ul>
           <li>teraterm.ini に <a href="../setup/teraterm-term.html#UnknownUnicodeCharacterAsWide">UnknownUnicodeCharacterAsWide</a> エントリを追加した。デフォルトはoff。</li>
         </ul></li>
-      <li>UnicodeからDEC特殊文字へのマッピングで、マップされる文字を幾つかの種類に分類し、種類毎に変換するか設定できるようにした。
+      <li>受信漢字コードがUTF-8またはUTF-8mの時、罫線や一部の記号をDEC特殊文字の近い文字で代替表示出来るようにした。代替表示される文字は幾つかの種類に分類され、種類毎に変換するか設定できる。
         <ul>
-          <li>teraterm.ini に <a href="../setup/teraterm-term.html#UnicodeDecSpMapping">UnicodeDecSpMapping</a> エントリを追加した。デフォルトは3。</li>
+          <li>teraterm.ini に <a href="../setup/teraterm-term.html#UnicodeDecSpMapping">UnicodeToDecSpMapping</a> エントリを追加した。デフォルトは3。</li>
         </ul></li>
       <li>送信するファイルの選択時に、<a href="../setup/teraterm-trans.html#filter">FileSendFilter</a>で指定されたファイルが存在する場合にはデフォルトのファイル名に設定するようにした。</li>
       <li>X/ZMODEMのログファイルに、16進ダンプのASCII表示を追加した。

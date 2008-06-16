@@ -197,6 +197,9 @@ ScrollWindowClearScreen=on
 <h1><a name="UnknownUnicodeCharacterAsWide">Display unsupported Unicode character as wide character</a></h1>
 
 <p>
+<!--
+  受信漢字コードがUTF-8またはUTF-8mの設定の時に、Tera Termが対応していないUnicodeの文字の取り扱いを設定します。<br>
+-->
 If this configuration value is on, the unsupported Unicode character is displayed as "??".<br>
 If this configuration value is off, the unsupported Unicode character is displayed as "?".
 </p>
@@ -210,14 +213,28 @@ UnknownUnicodeCharacterAsWide=off
 <h1><a name="UnicodeDecSpMapping">Mapping of Unicode to DEC special character</a></h1>
 
 <p>
-The character that likes Middle dot can be displayed as Middle dot of DEC special character.<br>
+The character that likes Middle dot can be displayed as Middle dot of DEC special character.
+<!--
+日本語環境ではTera Termは罫線や一部の記号を2カラム幅で表示します。しかし、ホスト側のアプリケーションによってはUTF-8エンコーディング時にはこれらの文字が1カラム幅で表示されると期待した出力を行う物があり、その結果画面出力が崩れる場合があります。<br>
+また英語環境では罫線を+-|を使って表示したり、対応していない文字を??と表示したりします。<br>
+Tera Termでは、これらの文字でDEC特殊文字に近い物がある物は、それを使って表示するようにする事ができ、それによって表示の崩れを軽減する事ができます。<br>
+ただし、マウスで選択した時にクリップボードにコピーされるのが本来とは別の文字になってしまうという副作用があります。<br>
+この設定は、受信漢字コードがUTF-8またはUTF-8mの時のみ効果を持ちます。
+-->
+</p>
+
+<p>
 The characters are classified as some types. The setting value is the sum of enabled types.
+<!--
+マップされる文字は幾つかの種類に分類されており、種類毎に変換するか設定する事が出来ます。<br>
+変換する種類ごとの値を足した数値をUnicodeToDecSpMappingに指定してください。
+-->
 </p>
 
 <pre>
 Type A: Rule marks
 Value: 1
-  Box drawings(U+2500-U+257F)
+  Box drawings (U+2500-U+257F)
 </pre>
 
 <pre>
@@ -235,6 +252,7 @@ Value: 2
 
 <pre>
 Type C: The character that is displayd as bullet(wide character) in Japanese environment, and is displayed as Middle dot in English environment.
+  <!-- 日本語環境以外では指定しない事を勧めます -->
 Value: 4
   Middle dot (U+00B7)
   One dot leader (U+2024)
@@ -244,7 +262,7 @@ Value: 4
 <pre>
 Default:
 # Type A and B
-UnicodeDecSpMapping=3
+UnicodeToDecSpMapping=3
 </pre>
 
 
