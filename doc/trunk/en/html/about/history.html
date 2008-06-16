@@ -59,7 +59,7 @@
         <ul>
           <li>added <a href="../setup/teraterm-term.html#ScrollWindowClearScreen">ScrollWindowClearScreen</a> entry in teraterm.ini file. The default value is on.</li>
         </ul></li>
-      <li>Prevented automatically scroll out other than the latest bottom line (Not reset scrollback on display activity). <!-- ただし、なにかキー入力(CTRLやSHIFTなどの制御キーは除く)を行った時はスクロールバックをリセットする。--> Special thanks to Salarm.
+      <li>Prevented automatically scroll out other than the latest bottom line (Not reset scrollback on display activity). However, the scrollback will be reset when a user inputs any key. Special thanks to Salarm.
         <ul>
           <li>added AutoScrollOnlyInBottomLine entry to teraterm.ini. The default value is on.</li>
           <li>added a check box on <a href="../menu/setup-additional.html">Additional settings dialog</a>.</li>
@@ -68,8 +68,8 @@
         <ul>
           <li>added the <a href="../setup/teraterm-term.html#UnknownUnicodeCharacterAsWide">UnknownUnicodeCharacterAsWide</a> entry in teraterm.ini file. The default value is off.</li>
         </ul></li>
-      <li>added support for the configuration of converting mapping characters from Unicode to DEC special character.
-      <!--受信漢字コードがUTF-8またはUTF-8mの時、罫線や一部の記号をDEC特殊文字の近い文字で代替表示出来るようにした。代替表示される文字は幾つかの種類に分類され、種類毎に変換するか設定できる。-->
+      <li>added support for the configuration of converting mapping characters from Unicode to DEC special character. <br>
+      When the received KANJI code is UTF-8 or UTF-8m, the character of the ruled line and the symbol can alternatively display the nearest character of DEC special font. The replaced character is classified according to some characters.
         <ul>
           <li>added the <a href="../setup/teraterm-term.html#UnicodeDecSpMapping">UnicodeToDecSpMapping</a> entry in teraterm.ini file. The default value is 3.</li>
         </ul></li>
