@@ -840,6 +840,8 @@ typedef TMap far *PMap;
  * - At version 4.59, ttset_memfilemap was replaced with ttset_memfilemap_7.
  *   added tttset.DisablePasteMouseMButton.
  *   added tttset.MouseWheelScrollLine.
+ *   added tttset.CRSend_ini.
+ *   added tttset.LocalEcho_ini.
  *   added tttset.UnicodeDecSpMapping.
  *   added tttset.VTIcon.
  *   added tttset.TEKIcon.
