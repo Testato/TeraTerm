@@ -197,9 +197,8 @@ ScrollWindowClearScreen=on
 <h1><a name="UnknownUnicodeCharacterAsWide">Display unsupported Unicode character as wide character</a></h1>
 
 <p>
-<!--
-  受信漢字コードがUTF-8またはUTF-8mの設定の時に、Tera Termが対応していないUnicodeの文字の取り扱いを設定します。<br>
--->
+When the received KANJI code is UTF-8 or UTF-8m, a user can configure the behavior of the Unicode characters which TeraTerm does not support as the pure Unicode.<br>
+  
 If this configuration value is on, the unsupported Unicode character is displayed as "??".<br>
 If this configuration value is off, the unsupported Unicode character is displayed as "?".
 </p>
@@ -224,11 +223,9 @@ Tera Termでは、これらの文字でDEC特殊文字に近い物がある物は、それを使って表示する
 </p>
 
 <p>
-The characters are classified as some types. The setting value is the sum of enabled types.
-<!--
-マップされる文字は幾つかの種類に分類されており、種類毎に変換するか設定する事が出来ます。<br>
-変換する種類ごとの値を足した数値をUnicodeToDecSpMappingに指定してください。
--->
+The characters are classified as some types. The setting value is the sum of enabled types.<br>
+Some mapping characters are classified, a user can configure the converting method.<br>
+If a user configures this option, please specify the sum value of the converting character at UnicodeToDecSpMapping entry.
 </p>
 
 <pre>
@@ -238,7 +235,9 @@ Value: 1
 </pre>
 
 <pre>
-Type B: The character that is displayd "??" up to version 4.58 (it includes undisplayed characters in English environment)
+Type B: The character that is displayd "??" up to version 4.58 
+(it includes undisplayed characters in English environment).
+
 Value: 2
   Bullet (U+2022)
   Hyphenation point (U+2027)
@@ -251,8 +250,10 @@ Value: 2
 </pre>
 
 <pre>
-Type C: The character that is displayd as bullet(wide character) in Japanese environment, and is displayed as Middle dot in English environment.
-  <!-- 日本語環境以外では指定しない事を勧めます -->
+Type C: The character that is displayd as bullet(wide character) 
+in Japanese environment, and is displayed as Middle dot in English environment.<br>
+NOTICE: A user is recommended to not specifying this option in Japanese environment.
+
 Value: 4
   Middle dot (U+00B7)
   One dot leader (U+2024)
