@@ -320,6 +320,8 @@ ja.msg_language_subcaption=ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚Ìƒƒjƒ…[‚âƒ_ƒCƒAƒƒO“™‚Ì•\¦Œ¾Œê‚ğ‘
 ja.msg_language_none=‰pŒê(&E)
 ja.msg_language_japanese=“ú–{Œê(&J)
 ja.msg_language_german=ƒhƒCƒcŒê(&G)
+en.msg_del_confirm=Are you sure that you want to delete %s ?
+ja.msg_del_confirm=%s ‚ğíœ‚µ‚Ü‚·‚©H
 
 [Code]
 var
@@ -619,11 +621,7 @@ begin
         ini[3] := '\cygterm.cfg';
         ini[4] := '\broadcast.log';
 
-        case ActiveLanguage of
-        'en': conf := 'Are you sure that you want to delete %s ?';
-        'ja': conf := '%s ‚ğíœ‚µ‚Ü‚·‚©H';
-        end;
-
+        conf := CustomMessage('msg_del_confirm');
         app     := ExpandConstant('{app}');
         userdoc := ExpandConstant('{userdocs}');
 
