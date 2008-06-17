@@ -322,6 +322,8 @@ ja.msg_language_japanese=日本語(&J)
 ja.msg_language_german=ドイツ語(&G)
 en.msg_del_confirm=Are you sure that you want to delete %s ?
 ja.msg_del_confirm=%s を削除しますか？
+en.msg_uninstall_confirm=It seems installed prev version. We advise uninstall first. Are you sure uninstall prev version ?
+ja.msg_uninstall_confirm=以前のバージョンがインストールされているようです。インストールの前にアンインストールすることをお勧めします。アンインストールしますか？
 
 [Code]
 var
@@ -531,9 +533,40 @@ end;
 
 function NextButtonClick(CurPageID: Integer): Boolean;
 var
+  uninstaller  : String;
+  uninstaller2 : String;
+  ResultCode: Integer;
   iniFile : String;
 begin
   case CurPageID of
+
+    wpWelcome:
+      begin
+
+        if RegQueryStringValue(HKEY_LOCAL_MACHINE,
+                               'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\UTF-8 TeraTerm Pro with TTSSH2_is1',
+                               'UninstallString', uninstaller) then
+        begin
+          // UTF-8 TeraTerm Pro with TTSSH2 のアンインストーラ文字列を発見した
+          if not RegKeyExists(HKEY_LOCAL_MACHINE,
+                              'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Tera Term_is1') then
+          begin
+            // Tera Term のインストールエントリが見つからない(共存していない)
+            if MsgBox(CustomMessage('msg_uninstall_confirm'), mbInformation, MB_YESNO) = IDYES then
+            begin
+              // ユーザがアンインストールを選択した
+              uninstaller2 := Copy(uninstaller, 2, Length(uninstaller) - 2);
+              if not Exec(uninstaller2, '', '', SW_SHOW,
+                          ewWaitUntilTerminated, ResultCode) then
+              begin
+                MsgBox(SysErrorMessage(ResultCode), mbError, MB_OK);
+              end;
+            end;
+          end;
+        end;
+
+      end;
+
     wpSelectComponents:
       begin
 
