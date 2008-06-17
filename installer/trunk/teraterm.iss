@@ -125,8 +125,8 @@ Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\cyglaunch; Filename
 [INI]
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: ScrollWindowClearScreen; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: ScrollWindowClearScreen; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: UnicodeDecSpMapping; String: 3; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: UnicodeDecSpMapping; String: 3; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {app}\teraterm.ini; Section: Tera Term; Key: UnicodeToDecSpMapping; String: 3; Flags: createkeyifdoesntexist; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: UnicodeToDecSpMapping; String: 3; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: UnknownUnicodeCharacterAsWide; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: UnknownUnicodeCharacterAsWide; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: AutoScrollOnlyInBottomLine; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
