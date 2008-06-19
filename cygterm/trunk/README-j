@@ -3,8 +3,8 @@
 
                 ターミナル・エミュレータで Cygwin を使う。
 
-                Copyright (c) 2007 TeraTerm Project
-                http://sourceforge.jp/projects/ttssh2/
+                Copyright (c) 2006-2008 TeraTerm Project
+                http://ttssh2.sourceforge.jp/
 
                 Based on CygTerm by Original developer:
                 Copyright (C) 2000-2006 NSym
@@ -155,7 +155,7 @@
 
     SOCKET_TIMEOUT
     --------------
-        TeraTermからのtelnet接続を待ち受けるソケットのタイムアウトを指定します。
+        Tera Termからのtelnet接続を待ち受けるソケットのタイムアウトを指定します。
         (デフォルト: 5秒)
 
     ENV_X
@@ -230,9 +230,9 @@
 
 // 注 意 事 項 //
 
-    * TeraTerm使用時の注意
+    * Tera Term使用時の注意
 
-    ターミナル・エミュレータが TeraTerm の場合、cygterm.exe から起動された
+    ターミナル・エミュレータが Tera Term の場合、cygterm.exe から起動された
     状態で設定保存 [Setup][Save setup] を行わないよう注意してください。
     TCP/IP設定の Telnetポート番号が 23 以外で保存され、通常の Telnet目的の
     実行時に接続できず、慌てることになってしまいます。
@@ -246,7 +246,7 @@
 
         ターミナルエミュレータ
                 Windows 2000 telnet.exe
-                TeraTermPro 2.3
+                Tera Term Pro 2.3
         シェル
                 bash 2.05b
                 zsh 4.1.1
@@ -255,7 +255,7 @@
 v1.07_13 2007/08/03 (by maya.negeta@gmail.com)
         * 開始ディレクトリを指定する '-d' オプションを追加した。
 
-v1.07_12 2007/06/10 (by sue@iwmt.org)
+v1.07_12 2007/06/10 (by doda)
         * telnetの待ち受けソケットのタイムアウトを設定するオプション SOCKET_TIMEOUT を追加した。
 
         SOCKET_TIMEOUT = 秒数 
@@ -270,10 +270,10 @@ v1.06_11 2006/09/29 (by maya.negeta@gmail.com)
         * 設定ファイルの優先順位を変更した。
           コマンドライン引数 > ~/.cygtermrc > /etc/cygterm.conf > cygterm.cfg > /etc/passwd
 
-v1.06_10 2006/09/28 (by sue@iwmt.org)
+v1.06_10 2006/09/28 (by doda)
         * ユーザ名を得るのに、環境変数USERNAMEの代わりにgetlogin()を使うようにした。
 
-v1.06_09 2006/09/25 (by sue@iwmt.org)
+v1.06_09 2006/09/25 (by doda)
         * SHELLが設定されていない場合は、/etc/passwdからシェルの情報を得るようにした。
 
 v1.06_08 2006/08/30 (by maya.negeta@gmail.com)
@@ -282,17 +282,17 @@ v1.06_08 2006/08/30 (by maya.negeta@gmail.com)
 v1.06_07 2006/08/19 (by maya.negeta@gmail.com)
         * Windows の 環境変数 HOME が設定されていれば使うようにした。
 
-v1.06_06 2006/08/18 (by sue@iwmt.org)
+v1.06_06 2006/08/18 (by doda)
         * -sと-tオプションのパラメータの長さを制限した。
 
 v1.06_05 2006/08/18 (by maya.negeta@gmail.com)
         * インストーラから起動チェックをするため、mutex を作成した。
 
-v1.06_04 2006/08/15 (by sue@iwmt.org)
+v1.06_04 2006/08/15 (by doda)
         * シェルをログインシェルとして呼び出すオプション LOGIN_SHELL を追加した。
           LOGIN_SHELL: yes | no
 
-v1.06_03 2006/08/15 (by sue@iwmt.org)
+v1.06_03 2006/08/15 (by doda)
         * ホームディレクトリで起動するのを選択するオプション HOME_CHDIR を追加した。
           HOME_CHDIR: yes | no
 

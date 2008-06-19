@@ -1,10 +1,10 @@
 
-                CygTerm - yet another Cygwin console
+                CygTerm+ - yet another Cygwin console
 
                 Using Cygwin with a terminal emulator.
                 
-                Copyright (c) 2007 TeraTerm Project
-                http://sourceforge.jp/projects/ttssh2/
+                Copyright (c) 2006-2008 TeraTerm Project
+                http://ttssh2.sourceforge.jp/
 
                 Based on CygTerm by Original developer:
                 Copyright (C) 2000-2006 NSym
@@ -154,7 +154,7 @@
     SOCKET_TIMEOUT
     --------------
         Specify the timeout of socket for waiting telnet connection from
-        TeraTerm. (default: 5secs)
+        Tera Term. (default: 5secs)
 
 
     ENV_X
@@ -227,12 +227,12 @@
 
 // N O T E S //
 
-    * Attention in TeraTerm
+    * Attention in Tera Term
 
-        If your terminal emulator is TeraTerm be careful not to save [Setup]
+        If your terminal emulator is Tera Term be careful not to save [Setup]
         [Save setup] in the situation that it was started by cygterm.exe.
         Otherwise telnet port number of TCP/IP is saved but 23 you will be
-        confused by connection failure when you normally run TeraTerm to do
+        confused by connection failure when you normally run Tera Term to do
         telnet.  In that case it will be recovered by saving the setting 
         with specifying TCP/IP Port# 23.
 
@@ -244,7 +244,7 @@
 
         Terminal emulator:
                 Windows 2000 telnet.exe
-                TeraTermPro 2.3
+                Tera Term Pro 2.3
         Shell:
                 bash 2.05b
                 zsh 4.1.1
@@ -253,7 +253,7 @@
 v1.07_13 2007/08/03 (by maya.negeta@gmail.com)
         * Added '-d' option that is specifies the start directory.
 
-v1.07_12 2007/06/10 (by sue@iwmt.org)
+v1.07_12 2007/06/10 (by doda)
         * Add 'SOCKET_TIMEOUT' entry which the timeout value of socket for waiting telnet connection in cygterm.cfg file.
 
 v1.07_11 2007/01/31 (import from cygterm v1.07)
@@ -266,10 +266,10 @@ v1.06_11 2006/09/29 (by maya.negeta@gmail.com)
         * Changed the priority of config files.
           command line arguments > ~/.cygtermrc > /etc/cygterm.conf > cygterm.cfg > /etc/passwd
 
-v1.06_10 2006/09/28 (by sue@iwmt.org)
+v1.06_10 2006/09/28 (by doda)
         * Use getlogin() instead of environment variable USERNAME to get user name.
 
-v1.06_09 2006/09/25 (by sue@iwmt.org)
+v1.06_09 2006/09/25 (by doda)
         * Get shell information from /etc/passwd if SHELL parameter is not specified.
 
 v1.06_08 2006/08/30 (by maya.negeta@gmail.com)
@@ -278,17 +278,17 @@ v1.06_08 2006/08/30 (by maya.negeta@gmail.com)
 v1.06_07 2006/08/19 (by maya.negeta@gmail.com)
         * Use `HOME' environment variable for changing home directory if the variable will be set.
 
-v1.06_06 2006/08/18 (by sue@iwmt.org)
+v1.06_06 2006/08/18 (by doda)
         * Limit a parameter length of both '-s' and '-t' option.
 
 v1.06_05 2006/08/18 (by maya.negeta@gmail.com)
         * Create mutex object for running check by installer.
 
-v1.06_04 2006/08/15 (by sue@iwmt.org)
+v1.06_04 2006/08/15 (by doda)
         * Add 'LOGIN_SHELL' entry which the shell is invoked as the login shell in cygterm.cfg file.
           LOGIN_SHELL: yes | no
 
-v1.06_03 2006/08/15 (by sue@iwmt.org)
+v1.06_03 2006/08/15 (by doda)
         * Add 'HOME_CHDIR' entry which home directory is changed in cygterm.cfg file.
           HOME_CHDIR: yes | no
 

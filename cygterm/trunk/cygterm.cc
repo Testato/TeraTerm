@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
 // CygTerm+ - yet another Cygwin console
-// Copyright (c) 2007 TeraTerm Project
+// Copyright (c) 2006-2008 TeraTerm Project
 // Copyright (C) 2000-2006 NSym.
 //---------------------------------------------------------------------------
 // This program is free software; you can redistribute it and/or modify it
@@ -24,6 +24,7 @@
 //   Using Cygwin with a terminal emulator.
 //   
 //   Writtern by TeraTerm Project.
+//            http://ttssh2.sourceforge.jp/
 //   
 //   Original written by NSym.
 //                         *** Web Pages ***
@@ -36,11 +37,11 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 03 - change directory to home only if HOME_CHDIR is set
-//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
+//   Written by IWAMOTO Kouichi. (doda)
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 04 - add login shell option
-//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
+//   Written by IWAMOTO Kouichi. (doda)
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 05 - add mutex
@@ -48,7 +49,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 06 - limit a parameter length of -s and -t option
-//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
+//   Written by IWAMOTO Kouichi. (doda)
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 07 - use %HOME% for home directory
@@ -60,11 +61,11 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 09 - get shell from /etc/passwd if SHELL is not specified
-//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
+//   Written by IWAMOTO Kouichi. (doda)
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 10 - to get user name, use getlogin() instead of $USERNAME
-//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
+//   Written by IWAMOTO Kouichi. (doda)
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 11 - stopped using %HOME% and /etc/passwd for home directory
@@ -73,7 +74,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 12 - add SOCKET_TIMEOUT setting.
-//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
+//   Written by IWAMOTO Kouichi. (doda)
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 13 - added '-d' option that is specifies the start directory
@@ -81,7 +82,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 14 - added '-o' option that is specifies additional option for terminal emulator
-//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
+//   Written by IWAMOTO Kouichi. (doda)
 //
 
 static char Program[] = "CygTerm+";
