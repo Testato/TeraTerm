@@ -1,7 +1,7 @@
-TTXFixedWinSize -- TeraTermのVTウィンドウのサイズを80x24に固定する
+TTXFixedWinSize -- Tera TermのVTウィンドウのサイズを80x24に固定する
 
 機能:
-  TeraTermのVTウィンドウのサイズを80x24に固定し、サイズの変更を行えなくします。
+  Tera TermのVTウィンドウのサイズを80x24に固定し、サイズの変更を行えなくします。
 
 解説:
   起動時、および設定の読み込み時のサイズはTTXGetSetupHooksでReadIniFileを
@@ -32,8 +32,4 @@ TTXFixedWinSize -- TeraTermのVTウィンドウのサイズを80x24に固定する
   意見の人には、TTXResizeWin/TTXResizeMenuの使用をお勧めします。
 
   *1:
-  元々、TTXResizeWin/TTXResizeMenuを作った後に、冗談で思いついたプラグイン
-  です。このプラグインに関するフィードバックは 
-  http://sourceforge.jp/users/doda/ まで連絡をお願いします。
-  
-
+  元々はTTXResizeWin/TTXResizeMenuの作成後に、冗談で思いついたプラグインです。

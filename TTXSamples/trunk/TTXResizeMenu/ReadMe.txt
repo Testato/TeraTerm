@@ -2,7 +2,7 @@ TTXResizeMenu -- Resizing VT window
 
 Feature:
   This feature adds Resize menu.
-  If a user selects the Resize menu item, TeraTerm VT window is changed to the specified size.
+  If a user selects the Resize menu item, Tera Term VT window is changed to the specified size.
 
 Description:
   TTXResizeMenu is based on TTXResizeWin plugin. 

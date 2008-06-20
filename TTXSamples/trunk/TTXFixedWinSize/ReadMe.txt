@@ -1,10 +1,10 @@
-TTXFixedWinSize -- TeraTerm VT window changing fixed 80x24.
+TTXFixedWinSize -- Tera Term VT window changing fixed 80x24.
 
 Feature:
-  TTXFixedWinSize plugin makes TeraTerm VT window sizing lock up. The fixed size is 80x24.
+  TTXFixedWinSize plugin makes Tera Term VT window sizing lock up. The fixed size is 80x24.
 
 Description:
-  When TeraTerm startup and read the configuration, this plugin hooks ReadIniFile function by using TTXGetSetupHooks. Sure, the plugin changes the terminal size after reading the configuration.
+  When Tera Term startup and read the configuration, this plugin hooks ReadIniFile function by using TTXGetSetupHooks. Sure, the plugin changes the terminal size after reading the configuration.
 
   端末設定ダイアログによるサイズの変更は、TTXGetUIHooksで端末設定ダイアログを
   フックして、ダイアログ終了時に端末サイズを書き換えています。
@@ -31,8 +31,4 @@ Miscellaneous:
   意見の人には、TTXResizeWin/TTXResizeMenuの使用をお勧めします。
 
   *1:
-  元々、TTXResizeWin/TTXResizeMenuを作った後に、冗談で思いついたプラグイン
-  です。このプラグインに関するフィードバックは 
-  http://sourceforge.jp/users/doda/ まで連絡をお願いします。
-
-
+  元々はTTXResizeWin/TTXResizeMenuの作成後に、冗談で思いついたプラグインです。

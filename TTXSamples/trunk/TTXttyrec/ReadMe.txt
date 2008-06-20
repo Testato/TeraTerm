@@ -15,7 +15,7 @@ Description:
 
 Bug:
   * Not support the serial connection. 
-  * A user can only record. Can not replay the recording data by using TeraTerm.
+  * A user can only record. Can not replay the recording data by using Tera Term.
 
 ToDo:
   * Support for the serial connection.

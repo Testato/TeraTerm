@@ -1,8 +1,8 @@
-TTXResizeMenu -- TeraTermのVTウィンドウのサイズを変更するメニューを表示する
+TTXResizeMenu -- Tera TermのVTウィンドウのサイズを変更するメニューを表示する
 
 機能:
-  TeraTermのメニューに、Resizeメニューを追加します。
-  Resizeメニュー内の項目が選択されると、そのサイズにTeraTermのVTウィンドウの
+  Tera Termのメニューに、Resizeメニューを追加します。
+  Resizeメニュー内の項目が選択されると、そのサイズにTera TermのVTウィンドウの
   サイズが変更されます。
 
 解説:
