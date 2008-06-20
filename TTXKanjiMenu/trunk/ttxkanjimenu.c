@@ -5,10 +5,10 @@
 
 //// ORIGINAL SOURCE CODE: ttxtest.c
 
-/* TeraTerm extension mechanism
+/* Tera Term extension mechanism
    Robert O'Callahan (roc+tt@cs.cmu.edu)
    
-   TeraTerm by Takashi Teranishi (teranishi@rikaxp.riken.go.jp)
+   Tera Term by Takashi Teranishi (teranishi@rikaxp.riken.go.jp)
 */
 
 #include "teraterm.h"
@@ -49,7 +49,7 @@ static TInstVar FAR * pvar;
 static TInstVar InstVar;
 
 /*
- * This function is called when TeraTerm starts up.
+ * This function is called when Tera Term starts up.
  */
 static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
 	pvar->ts = ts;
@@ -60,7 +60,7 @@ static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
 #define ID_MI_KANJIRECV 54009
 #define ID_MI_KANJISEND 54109
 /*
- * This function is called when TeraTerm creates a new menu.
+ * This function is called when Tera Term creates a new menu.
  */
 static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 	UINT flag = MF_ENABLED;
@@ -122,7 +122,7 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 
 
 /*
- * This function is called when TeraTerm pops up a submenu menu.
+ * This function is called when Tera Term pops up a submenu menu.
  */
 static void PASCAL FAR TTXModifyPopupMenu(HMENU menu) {
 	// メニューが呼び出されたら、最新の設定に更新する。(2007.5.25 yutaka)
@@ -132,7 +132,7 @@ static void PASCAL FAR TTXModifyPopupMenu(HMENU menu) {
 
 
 /*
- * This function is called when TeraTerm receives a command message.
+ * This function is called when Tera Term receives a command message.
  */
 static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
 	WORD val;
@@ -158,9 +158,9 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
 
 /*
  * This record contains all the information that the extension forwards to the
- * main TeraTerm code. It mostly consists of pointers to the above functions.
+ * main Tera Term code. It mostly consists of pointers to the above functions.
  * Any of the function pointers can be replaced with NULL, in which case
- * TeraTerm will just ignore that function and assume default behaviour, which
+ * Tera Term will just ignore that function and assume default behaviour, which
  * means "do nothing".
  */
 static TTXExports Exports = {
