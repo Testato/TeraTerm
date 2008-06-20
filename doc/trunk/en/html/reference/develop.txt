@@ -37,8 +37,8 @@
 The first digit is 5.
 
 The second digit is:
-  TeraTerm VT window          0
-  TeraTerm TEK window         1
+  Tera Term VT window         0
+  Tera Term TEK window        1
   TTSSH                       2
   TTProxy                     3
   TTXKanjiMenu                4
@@ -81,11 +81,11 @@ Example: adding a TTSSH menu under File menu
    ... doc/LANG/teraterm.hhp
 
 
-* How to build TeraTerm
-  To build TeraTerm source code is shown in the following step:
-  And you should use Visual Studio 2005 Standard Edition later version to build TeraTerm because TeraTerm program links MFC library (Visual Studio 2005 Express Edition can't be used).
+* How to build Tera Term
+  To build Tera Term source code is shown in the following step:
+  And you should use Visual Studio 2005 Standard Edition later version to build Tera Term because Tera Term program links MFC library (Visual Studio 2005 Express Edition can't be used).
 
-  1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
+  1. Checkout Tera Term source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
   2. Download 'Oniguruma' source code(http://www.geocities.jp/kosako3/oniguruma/) and extract at 'teraterm\source\oniguruma' directory.
 
        - Automatic procedure of build is following step:
@@ -110,8 +110,8 @@ Example: adding a TTSSH menu under File menu
 
   3. Open teraterm\visualc\ttermpro.sln with Visual Studio.
      The linefeed code of .sln file must be "CR+LF".
-  4. Build TeraTerm solution.
-  5. TeraTerm execution program will be generated in teraterm\visualc\bin directory if the building is successful.
+  4. Build Tera Term solution.
+  5. Tera Term execution program will be generated in teraterm\visualc\bin directory if the building is successful.
 
 
 * How to build TeraTerm Menu
@@ -130,7 +130,7 @@ Example: adding a TTSSH menu under File menu
   To build TTProxy source code is shown in the following step:
   And you need Visual Studio 2005(VC++8.0) to build.
 
-  1. Checkout TeraTerm source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
+  1. Checkout Tera Term source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
   2. Open TTProxy\TTProxy.sln with Visual Studio.
   3. Build TTProxy solution.
   4. TTProxy DLL module will be generated in TTProxy directory if the building is successful.
@@ -140,7 +140,7 @@ Example: adding a TTSSH menu under File menu
   To build TTSSH source code is shown in the following step:
   And you need Visual Studio 2005(VC++8.0) and ActivePerl to build.
 
-  * VS2005 Express Edition is able to build TTSSH. TTSSH links to ttpcmn.lib and it must be created beforehand. VS2005 Express Edition cannot build TeraTerm, but it can create ttpcmn.lib
+  * VS2005 Express Edition is able to build TTSSH. TTSSH links to ttpcmn.lib and it must be created beforehand. VS2005 Express Edition cannot build Tera Term, but it can create ttpcmn.lib
 
   * On VS2008 Express Edition, following error occurs:
       .\ttxssh.rc(10) : fatal error RC1015: cannot open include file 'afxres.h'.
@@ -212,8 +212,8 @@ Example: adding a TTSSH menu under File menu
   4. Select Compile of File menu and HTML help file will be created.
 
 
-* How to release TeraTerm installation package
-  To release TeraTerm installation package is shown in the following step:
+* How to release Tera Term installation package
+  To release Tera Term installation package is shown in the following step:
 
   1. Check latest libraries and tools.
     Visual Studio
@@ -246,14 +246,14 @@ Example: adding a TTSSH menu under File menu
        
        Note: Don't update the version number until the release, because the installer does not overwrite file when versions are same.
        
-       Note: By way of exception, CygTerm+ always upgrades not regarding TeraTerm release process when the patch is committed. The release date is the day committed by a developer. The suffix of CygTerm+ version is patchlevel, and then a user can get gcc compiler for free.
+       Note: By way of exception, CygTerm+ always upgrades not regarding Tera Term release process when the patch is committed. The release date is the day committed by a developer. The suffix of CygTerm+ version is patchlevel, and then a user can get gcc compiler for free.
 
   3. Evaluate executable program file.
-       - Rebuild TeraTerm program
+       - Rebuild Tera Term program
        - Make installer package
          Open "teraterm\installer\teraterm.iss" with ISTool and call [Project]-[Compile Setup] 
          with InnoSetup.
-       - Test TeraTerm installation and evaluate it.
+       - Test Tera Term installation and evaluate it.
 
   4. Added CVS tag.
        The naming rule is `Rxxx_RTM'(ex. R450_RTM).
@@ -270,7 +270,7 @@ Example: adding a TTSSH menu under File menu
            Change the type of previous Announcement from Announcement to Normal.
            Delete third previous Announcement.
 
-       (2) TeraTerm Changelog http://www.neocom.ca/forum/viewtopic.php?t=3
+       (2) Tera Term Changelog http://www.neocom.ca/forum/viewtopic.php?t=3
            Added current modification.
 
        (3) TTSSH Changelog http://www.neocom.ca/forum/viewtopic.php?t=29

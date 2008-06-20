@@ -3,13 +3,13 @@
 <HTML>
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<TITLE>TeraTermソースコード解説</TITLE>
+<TITLE>Tera Termソースコード解説</TITLE>
 <META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../style.css" type="text/css">
 </HEAD>
 <BODY>
 
-<h1 class="center">TeraTermソースコード解説</h1>
+<h1 class="center">Tera Termソースコード解説</h1>
 
 <hr width=80% align=center>
 
@@ -33,12 +33,12 @@
 <hr width=80% align=center>
 
 <h2><a name="foreword">はじめに</a></h2>
-　本文書では、TeraTermのソースコードについて解説をします。解説対象とするソースコードはバージョン"4.58"（2008年2月現在）のものをベースとしています。
+　本文書では、Tera Termのソースコードについて解説をします。解説対象とするソースコードはバージョン"4.58"（2008年2月現在）のものをベースとしています。
 <hr>
 
 
 <h2><a name="skillset">必要スキル</a></h2>
-　TeraTermのパッケージに含まれるほとんどのプログラムは、C言語で記述されています。一部のコードはC++言語で、MFC(Microsoft Foundation Class)が利用されています。Windows特有の処理を行うために、Win32 APIが多用されているため、APIの知識が必要となってきます。<br>
+　Tera Termのパッケージに含まれるほとんどのプログラムは、C言語で記述されています。一部のコードはC++言語で、MFC(Microsoft Foundation Class)が利用されています。Windows特有の処理を行うために、Win32 APIが多用されているため、APIの知識が必要となってきます。<br>
 　ソースコードをビルドするためには、Microsoft Visual Studio 2005 Standard Edition以上が必要です。Express EditionではMFCが利用できないため、ビルドができません。また、C++BuilderやTurbo C++ Explorer、gccなどのコンパイラにおいても、ビルドすることはできません。<br>
 　Windowsプログラミングに関する情報の源は、Microsoftが提供する「MSDNライブラリ」にあります。開発を行う際は、MSDNライブラリを頻繁に参照することになります。<br>
 　
@@ -51,25 +51,25 @@
 　ただし、CygTermのみはCygwinのgccでコンパイルをします。ゆえに、CygTermはgccの機能を使った実装になっています。言語はC++です。
 </p>
 
-　TeraTermのメインエンジンはC++で実装されていますが、C言語的なコーディングがなされているため、TeraTermのソースコードを読み解くには、C言語に関する基礎知識があれば問題ないと言えます。ただし、Microsoft Visual C++(VC++)はANSI C準拠(C89)とはいえ、C99には未対応であるために、本来のC99相当の機能が独自に拡張されている部分もあります。そうした独自拡張された関数には、頭文字にアンダースコア(_)が付いているために、区別が付けやすくなっています。たとえば、VC++の_snprintf()は、ANSI C(C99)のsnprintf()とは似て非なるものです。<br>
+　Tera TermのメインエンジンはC++で実装されていますが、C言語的なコーディングがなされているため、Tera Termのソースコードを読み解くには、C言語に関する基礎知識があれば問題ないと言えます。ただし、Microsoft Visual C++(VC++)はANSI C準拠(C89)とはいえ、C99には未対応であるために、本来のC99相当の機能が独自に拡張されている部分もあります。そうした独自拡張された関数には、頭文字にアンダースコア(_)が付いているために、区別が付けやすくなっています。たとえば、VC++の_snprintf()は、ANSI C(C99)のsnprintf()とは似て非なるものです。<br>
 
 <hr>
 
 
 <h2><a name="module">モジュール構成</a></h2>
-　TeraTermパッケージに含まれる実行モジュール（.exeと.dll）の関連図を以下に示します。実行ファイルの拡張子は".exe"になっており、必要に応じてDLLが動的リンクされます。いずれも32ビットプログラム(x86)であるために、x86-64やIA-64といった64ビット環境ではそのまま動作するかどうかは評価されていません。
+　Tera Termパッケージに含まれる実行モジュール（.exeと.dll）の関連図を以下に示します。実行ファイルの拡張子は".exe"になっており、必要に応じてDLLが動的リンクされます。いずれも32ビットプログラム(x86)であるために、x86-64やIA-64といった64ビット環境ではそのまま動作するかどうかは評価されていません。
 　
 <div align="center">
 <img src="image/module_relation.png" width=720 height=540>
 </div>
 
-　通常、ユーザがデスクトップやスタートメニューからアプリケーションを起動するときに、呼び出される実行ファイルは"ttermpro.exe"になります。実行ファイルはさらに5つのDLLとダイナミックリンクしています。静的リンクを行い、単一のEXEファイルにしていないのは、1つのプロセスのメモリ占有率を抑えるためです。TeraTermでは多数の起動が行われることが想定されるため、初期設計段階からDLLに分割されています。一度読み込まれたDLLは、複数のプロセス間で共有することができます。<br>
+　通常、ユーザがデスクトップやスタートメニューからアプリケーションを起動するときに、呼び出される実行ファイルは"ttermpro.exe"になります。実行ファイルはさらに5つのDLLとダイナミックリンクしています。静的リンクを行い、単一のEXEファイルにしていないのは、1つのプロセスのメモリ占有率を抑えるためです。Tera Termでは多数の起動が行われることが想定されるため、初期設計段階からDLLに分割されています。一度読み込まれたDLLは、複数のプロセス間で共有することができます。<br>
 　<br>
 　
-　マクロスクリプトを実行する際は、"ttpmacro.exe"というまったく別のプロセスが呼び出されます。"ttermpro.exe"とプロセス単位で分けられているのは、マクロを単体で実行できるようにするためです。両プロセス間で、データのやりとりを行うためには、プロセス間通信が必要です。TeraTermでは、DDE(Dynamic Data Exchange)と呼ばれる現在ではレガシーとなってしまったしくみが採用されています。将来のWindowsではDDEがサポートされなくなる可能性があり、その場合TeraTerm上でマクロを実行することは一切できなくなります。<br>
+　マクロスクリプトを実行する際は、"ttpmacro.exe"というまったく別のプロセスが呼び出されます。"ttermpro.exe"とプロセス単位で分けられているのは、マクロを単体で実行できるようにするためです。両プロセス間で、データのやりとりを行うためには、プロセス間通信が必要です。Tera Termでは、DDE(Dynamic Data Exchange)と呼ばれる現在ではレガシーとなってしまったしくみが採用されています。将来のWindowsではDDEがサポートされなくなる可能性があり、その場合Tera Term上でマクロを実行することは一切できなくなります。<br>
 　<br>
 　
-　TTSSHやTTProxy、TTXKanjiMenuといったプラグイン形式のDLLは、TeraTermの起動時に明示的に LoadLibrary() を使ってダイナミックロードされます。ロード対象となるDLLのファイル名は、TTXInit()#ttplug.c において、"TTX*.DLL"というパターンにマッチしたものとなります。<br>
+　TTSSHやTTProxy、TTXKanjiMenuといったプラグイン形式のDLLは、Tera Termの起動時に明示的に LoadLibrary() を使ってダイナミックロードされます。ロード対象となるDLLのファイル名は、TTXInit()#ttplug.c において、"TTX*.DLL"というパターンにマッチしたものとなります。<br>
 　<br>
 　
 　"keycode.exe"と"ttpmenu.exe"、"LogMeTT.exe"は単体アプリケーションです。<br>
@@ -81,8 +81,8 @@
 
 
 <h2><a name="library">ライブラリ構成</a></h2>
-　高度な機能を実現するために、フルスクラッチで実装することは効率がいいとは言えません。TeraTermでは開発効率化を図るために、オープンソースのライブラリを積極的に利用しています。ただし、オープンソース製品のライセンスによる競合には注意を払う必要があります（特にGPL）。<br>
-　下図に、オープンソースのライブラリをリンクしているモジュールと、そのリンク状況を示します。TeraTermマクロプログラムにおいて、"waitregex"や"sprintf"コマンドにおいて正規表現を利用するために、Onigurumaと呼ばれる正規表現ライブラリをリンクしています。TeraTerm本体では、バージョンダイアログにOnigurumaのバージョンを表示するためだけにリンクをしています。
+　高度な機能を実現するために、フルスクラッチで実装することは効率がいいとは言えません。Tera Termでは開発効率化を図るために、オープンソースのライブラリを積極的に利用しています。ただし、オープンソース製品のライセンスによる競合には注意を払う必要があります（特にGPL）。<br>
+　下図に、オープンソースのライブラリをリンクしているモジュールと、そのリンク状況を示します。Tera Termマクロプログラムにおいて、"waitregex"や"sprintf"コマンドにおいて正規表現を利用するために、Onigurumaと呼ばれる正規表現ライブラリをリンクしています。Tera Term本体では、バージョンダイアログにOnigurumaのバージョンを表示するためだけにリンクをしています。
 　
 <p>
 　SSHモジュールである"TTSSH"は、暗号処理を行うためにOpenSSLを利用しています。"OpenSSL"というネーミングからWebアクセスに使われるSSL(Secure Socket Layer)プロトコル専用のライブラリかと思われがちですが、基本的な暗号アルゴリズムをサポートしていることから、TTSSHではOpenSSLに含まれる低レイヤのルーチンを利用するだけに留まっています。このことは、すなわちOpenSSLライブラリにセキュリティホールが発見されたとしても、TTSSHへの影響は極めて低いということです。<br>
@@ -90,7 +90,7 @@
 　PuTTYは世界標準であるフリーのターミナルエミュレータです。PuTTYに含まれるPageantと呼ばれるSSH認証エージェントがあるのですが、TTSSHでPageantによる公開鍵認証をサポートするために、PuTTYのソースコードを利用しています。
 </p>
 　
-　なお、いずれのライブラリも静的リンク(static link)としています。ライブラリのコンパイルオプションには"/MT"を付加しています。動的リンク(dynamic link)を行うと、一部のユーザ環境でTeraTermが起動できないという現象が発生したために、現在では動的リンクは行っていません。
+　なお、いずれのライブラリも静的リンク(static link)としています。ライブラリのコンパイルオプションには"/MT"を付加しています。動的リンク(dynamic link)を行うと、一部のユーザ環境でTera Termが起動できないという現象が発生したために、現在では動的リンクは行っていません。
 　
 
 <div align="center">
@@ -101,11 +101,11 @@
 
 
 <h2><a name="plugin">プラグインサポート</a></h2>
-　TeraTermでは、DLLという形式でプラグインのしくみをサポートしています。プラグイン形式のDLLファイルを、TeraTermがインストールされているディレクトリへ設置するだけで、TeraTermのソースコードを修正することなく、機能追加を行うことができます。代表的なプラグインとして、TTSSHがあります。<br>
+　Tera Termでは、DLLという形式でプラグインのしくみをサポートしています。プラグイン形式のDLLファイルを、Tera Termがインストールされているディレクトリへ設置するだけで、Tera Termのソースコードを修正することなく、機能追加を行うことができます。代表的なプラグインとして、TTSSHがあります。<br>
 　プラグインを作成するためのサンプルコードとして、TTXSamples\ttxtest\ttxtest.c というソースファイルが用意されています。プラグインを開発するときは、このソースファイルをひな形とするとよいでしょう。実践的なプラグインとして、"TTX KanjiMenu"のソースコード（TTXKanjiMenu\配下）がシンプルで分かりやすいです。<br><br>
 
-　プラグインは、TeraTerm("ttermpro.exe")の起動時に読み込まれます。TTXInit()#ttplug.c が読み込みを行う関数で、カレントディレクトリから"TTX*.DLL"というワイルドカードに合致するDLLファイルが読み込み対象となります。<br>
-　複数のDLLが存在する場合は、TeraTerm本体からチェインするような形で、各DLLのエクスポート関数が連結されます。連結される順番は、それぞれのDLLが定義するオーダー値（TTXExports構造体のloadOrderメンバ）で決定され、現状下記の通りとなっています。　
+　プラグインは、Tera Term("ttermpro.exe")の起動時に読み込まれます。TTXInit()#ttplug.c が読み込みを行う関数で、カレントディレクトリから"TTX*.DLL"というワイルドカードに合致するDLLファイルが読み込み対象となります。<br>
+　複数のDLLが存在する場合は、Tera Term本体からチェインするような形で、各DLLのエクスポート関数が連結されます。連結される順番は、それぞれのDLLが定義するオーダー値（TTXExports構造体のloadOrderメンバ）で決定され、現状下記の通りとなっています。　
 <p>
 <table border=1 align=center>
 <tr>
@@ -130,7 +130,7 @@
 </table>
  </p>
 
-オーダー値が小さいほど、TeraTerm本体側に近くなります。たとえば、TeraTerm本体からTTXModifyMenu()が呼び出された場合、
+オーダー値が小さいほど、Tera Term本体側に近くなります。たとえば、Tera Term本体からTTXModifyMenu()が呼び出された場合、
 　
 　<ul>
 　 <li>TTXModifyMenu()#ttplug.c → TTProxyのTTXModifyMenu()  → TTSSHのTTXModifyMenu()  → TTX Kanji MenuのTTXModifyMenu()</li>
@@ -139,7 +139,7 @@
 という順番で、各DLLの関数が呼び出されていくことになります。
 　<br>
 
-　各DLLが、TeraTerm本体側から呼び出してもらうためにエクスポートする関数群は、TTXExports構造体で定義し、TTXBind()で渡します。たとえば、TTX Kanji Menuのエクスポート関数は以下のとおりです。不要な関数は NULL で定義してあります。
+　各DLLが、Tera Term本体側から呼び出してもらうためにエクスポートする関数群は、TTXExports構造体で定義し、TTXBind()で渡します。たとえば、TTX Kanji Menuのエクスポート関数は以下のとおりです。不要な関数は NULL で定義してあります。
 
 <pre class=code>
 static TTXExports Exports = {
@@ -164,7 +164,7 @@ static TTXExports Exports = {
 };
 </pre>
 
-　原則、プラグインのエクスポート関数は、他のプラグインと干渉しないように設計をするべきです。また、TeraTerm本体側からの呼び出しが、自分宛てであるかどうかを判断する必要がある場合もあります。<br>
+　原則、プラグインのエクスポート関数は、他のプラグインと干渉しないように設計をするべきです。また、Tera Term本体側からの呼び出しが、自分宛てであるかどうかを判断する必要がある場合もあります。<br>
 　プラグインがエクスポートする関数について、以下に示します。
 　
 <p>
@@ -181,12 +181,12 @@ static TTXExports Exports = {
 
 <tr>
   <td>TTXInit</td>
-  <td>TTXBind()の呼び出し後にすぐに実行される関数で、TeraTerm本体のグローバル変数(ts, cv)を受け取り、プラグインの初期化を行う。</td>
+  <td>TTXBind()の呼び出し後にすぐに実行される関数で、Tera Term本体のグローバル変数(ts, cv)を受け取り、プラグインの初期化を行う。</td>
 </tr>
 
 <tr>
   <td>TTXGetUIHooks</td>
-  <td>ダイアログのハンドルをフックするための関数。TeraTerm本体のダイアログインターフェイスを変更したい場合に使う。フック対象の関数は以下のとおり。<br>
+  <td>ダイアログのハンドルをフックするための関数。Tera Term本体のダイアログインターフェイスを変更したい場合に使う。フック対象の関数は以下のとおり。<br>
       &SetupTerminal, &SetupWin, &SetupKeyboard, &SetupSerialPort, 
       &SetupTCPIP, &GetHostName, &ChangeDirectory, &AboutDialog,   
       &ChooseFontDlg, &SetupGeneral, &WindowWindow                 
@@ -223,18 +223,18 @@ static TTXExports Exports = {
 
 <tr>
   <td>TTXSetWinSize</td>
-  <td>TeraTermウィンドウの画面サイズが変更されたときに呼び出される関数。</td>
+  <td>Tera Termウィンドウの画面サイズが変更されたときに呼び出される関数。</td>
 </tr>
 
 <tr>
   <td>TTXModifyMenu</td>
-  <td>TeraTermのメニューが初期化されるときに呼び出される関数。プラグイン用のメニューを挿入したい場合に使われる。
+  <td>Tera Termのメニューが初期化されるときに呼び出される関数。プラグイン用のメニューを挿入したい場合に使われる。
   </td>
 </tr>
 
 <tr>
   <td>TTXModifyPopupMenu</td>
-  <td>TeraTermのポップアップメニューが初期化されるときに呼び出される関数。プラグイン用のポップアップメニューを挿入したい場合に使われる。</td>
+  <td>Tera Termのポップアップメニューが初期化されるときに呼び出される関数。プラグイン用のポップアップメニューを挿入したい場合に使われる。</td>
 </tr>
 
 <tr>
@@ -245,7 +245,7 @@ static TTXExports Exports = {
 
 <tr>
   <td>TTXEnd</td>
-  <td>TeraTerm本体が終了するときに呼び出される関数。</td>
+  <td>Tera Term本体が終了するときに呼び出される関数。</td>
 </tr>
 
 <tr>
@@ -263,7 +263,7 @@ static TTXExports Exports = {
 
 
 <h2><a name="configuration">設定ファイルの読み書き</a></h2>
-　Windowsではアプリケーションのデータ保存のために、レジストリが伝統的に利用されていますが、TeraTermではその誕生がWindows 3.1までに遡るために、.iniファイルによるローカルディレクトリへの保存方法が標準となっています。<br>
+　Windowsではアプリケーションのデータ保存のために、レジストリが伝統的に利用されていますが、Tera Termではその誕生がWindows 3.1までに遡るために、.iniファイルによるローカルディレクトリへの保存方法が標準となっています。<br>
 　パッケージに同梱されるCollectorやLogMeTT、CygTermに関してもローカルディレクトリへデータが保存されます。<br>
 　例外として、TeraTerm Menuはデフォルトでレジストリへ保存をします。カレントディレクトリに"ttpmenu.ini"（0バイトで可）を設置することで、レジストリの代わりに.iniファイルを使うようにすることもできます。<br>
 　<br>
@@ -298,7 +298,7 @@ static TTXExports Exports = {
 </ul>
 <br>
 
-　TeraTermではセキュリティ強化を図るため、文字列操作のほとんどをセキュリティ強化バージョンに置き換えています。以下に代替関数を示します。<br>
+　Tera Termではセキュリティ強化を図るため、文字列操作のほとんどをセキュリティ強化バージョンに置き換えています。以下に代替関数を示します。<br>
 　<br>
 
 <table border=1 align=center>
@@ -370,7 +370,7 @@ static BOOL MySetLayeredWindowAttributes(HWND hwnd, COLORREF crKey, BYTE bAlpha,
 <h3>debug printf</h3>
 　Windowsアプリケーションでは printf() が使えません。標準出力がどこにも割り当てられていないからです。AllocConsole()とfreopen()を使えば、Windowsアプリケーションにおいても printf() を利用することができます。<br>
 　OutputDebugString()というAPIがあります。これは Visual Studio のデバッグコンソールにメッセージ出力することができる関数です。当該APIは、"Debug build"および"Release build"に関係なく、デバッガが存在すれば、メッセージを送信します。ゆえに、 Visual Studioがなくとも、<a href="http://www.vector.co.jp/soft/win95/prog/se046776.html">DBCon</a>のようなツールを使えば、アプリケーションの単体起動においても、OutputDebugString()によるメッセージを拾うことができます。<br>
-　TeraTermでは、可変長引数を扱えるようにラッパー関数を用意しています。
+　Tera Termでは、可変長引数を扱えるようにラッパー関数を用意しています。
 　
 <pre class=code>
 void OutputDebugPrintf(char *fmt, ...) {
@@ -397,11 +397,11 @@ void OutputDebugPrintf(char *fmt, ...) {
 
 
 <h2><a name="thread">マルチスレッド</a></h2>
-　Windowsのアプリケーションはマルチスレッドで設計されることがほとんどですが、Windows 3.1から95の時代ではあまり一般的ではありませんでした。そのため、元々TeraTermはマルチスレッド化されていません。ソースコードを見ると分かるように、グローバル変数が多用されているため、ほとんどの処理がスレッドセーフではありません。<br>
+　Windowsのアプリケーションはマルチスレッドで設計されることがほとんどですが、Windows 3.1から95の時代ではあまり一般的ではありませんでした。そのため、元々Tera Termはマルチスレッド化されていません。ソースコードを見ると分かるように、グローバル変数が多用されているため、ほとんどの処理がスレッドセーフではありません。<br>
 　ただし、一部の処理においては _beginthreadex() API を使ってスレッドが生成されています。以下にスレッド生成箇所を示します。
 
 <p>
-<div align=center><b>TeraTerm</b></div>
+<div align=center><b>Tera Term</b></div>
 <table border=1 align=center>
 <tr>
   <th>生成箇所</th>
@@ -450,7 +450,7 @@ void OutputDebugPrintf(char *fmt, ...) {
 </table>
 </p>
 
-　すでに説明したとおり、TeraTerm（TTSSH含む）の内部処理はスレッドセーフではないため、シンプルにスレッドを生成し、スレッド内から送受信処理等を行おうとすると、不具合が発生してしまいます。<br>
+　すでに説明したとおり、Tera Term（TTSSH含む）の内部処理はスレッドセーフではないため、シンプルにスレッドを生成し、スレッド内から送受信処理等を行おうとすると、不具合が発生してしまいます。<br>
 　TELNETやSSHのキープアライブ（ハートビート）処理を実現するためには、定期的にパケットの送信処理を行う必要があります。また、SCPによるファイル送受信を行う際においても、ファイルの送信処理中に、ユーザの端末操作のレスポンスを落とさないために、スレッドの使用が不可欠です。<br>
 　そこで、マルチスレッドを使う場合は、モードレスダイアログを非表示で作成したあとに、_beginthreadex() APIでスレッドを生成し、実際の処理はモードレスダイアログに行わせるという手段を使用しています。このしくみにより、マルチスレッドを使いながら、スレッドセーフを保つことができます。以下に、コード例を示します。<br>
 
@@ -538,14 +538,14 @@ void TelStartKeepAliveThread() {
 </p>
 
 　DDEは、TCPによるネットワーク通信と似ており、サーバとクライアント間を一対一で接続し、通信を行います。アプリケーションがDDEによる通信を行うために、DDEML(Dynamic Data Exchange Management Library)と呼ばれるライブラリをWin32 APIとして提供されています。<br>
-　DDE通信を行うために、一方がサーバとなり、他方がクライアントになる必要があります。また、通信のセッションをシステム全体でユニークとするために、識別情報が必要です。TCP通信ではIPアドレスとポート番号が使われますが、DDE通信では「サービス名」と「トピック名」の組み合わせが使われます。TeraTermではサービス名は"TERATERM"という文字列が使われ、トピック名はTeraTerm本体のウィンドウハンドル(HVTWin)の16進数値を文字列化したものが使われています。<br>
-　このようなしくみになっているために、マクロスクリプトからまったく別のTeraTermへコマンドを送ることはできません。<br>
+　DDE通信を行うために、一方がサーバとなり、他方がクライアントになる必要があります。また、通信のセッションをシステム全体でユニークとするために、識別情報が必要です。TCP通信ではIPアドレスとポート番号が使われますが、DDE通信では「サービス名」と「トピック名」の組み合わせが使われます。Tera Termではサービス名は"TERATERM"という文字列が使われ、トピック名はTera Term本体のウィンドウハンドル(HVTWin)の16進数値を文字列化したものが使われています。<br>
+　このようなしくみになっているために、マクロスクリプトからまったく別のTera Termへコマンドを送ることはできません。<br>
 
 <div align="center">
 <img src="image/dde.png" width=720 height=540>
 </div>
 
-　上図に示すように、TeraTerm本体("ttermpro.exe")がDDEサーバとなり、マクロプログラム("ttpmacro.exe")がDDEクライアントとなります。DDEでは、やりとりするデータの塊のことを「トランザクション」と呼びます。トランザクションには以下に示すような何種類かがあります。タイプは"ddeml.h"でマクロ定義されています。<br>
+　上図に示すように、Tera Term本体("ttermpro.exe")がDDEサーバとなり、マクロプログラム("ttpmacro.exe")がDDEクライアントとなります。DDEでは、やりとりするデータの塊のことを「トランザクション」と呼びます。トランザクションには以下に示すような何種類かがあります。タイプは"ddeml.h"でマクロ定義されています。<br>
 
 <p>
 <table border=1 align=center>
@@ -582,10 +582,10 @@ void TelStartKeepAliveThread() {
 </table>
 </p>
 
-　DDE通信の特徴として、アドバイズループ(advise loop)という概念があります。DDEサーバがアドバイズループに入ると、クライアントはサーバから定期的にデータを受け取り続けることができます。TeraTermでは、リモートホストからの受信データを、マクロプログラムへ渡すために、アドバイズループが使われています。<br>
+　DDE通信の特徴として、アドバイズループ(advise loop)という概念があります。DDEサーバがアドバイズループに入ると、クライアントはサーバから定期的にデータを受け取り続けることができます。Tera Termでは、リモートホストからの受信データを、マクロプログラムへ渡すために、アドバイズループが使われています。<br>
 
   <h3>ライブラリ</h3>
-　TeraTermで使われているDDEMLについて、以下に示します。
+　Tera Termで使われているDDEMLについて、以下に示します。
 　
 　
 <p>
@@ -617,7 +617,7 @@ void TelStartKeepAliveThread() {
 
 <tr>
   <td>DdeClientTransaction</td>
-  <td>クライアントからサーバへトランザクションを送ることができる。トランザクションタイプとして、XTYP_REQUEST・XTYP_EXECUTE・XTYP_ADVSTART・XTYP_POKEなどが指定できる。サーバからのACKを待つまでのタイムアウト時間を指定することができ、TeraTermではほとんど"1000ミリ秒（1秒）"が指定されている。ただし、ACKを確認するケースにおいては"5000ミリ秒（5秒）"が指定されている。</td>
+  <td>クライアントからサーバへトランザクションを送ることができる。トランザクションタイプとして、XTYP_REQUEST・XTYP_EXECUTE・XTYP_ADVSTART・XTYP_POKEなどが指定できる。サーバからのACKを待つまでのタイムアウト時間を指定することができ、Tera Termではほとんど"1000ミリ秒（1秒）"が指定されている。ただし、ACKを確認するケースにおいては"5000ミリ秒（5秒）"が指定されている。</td>
 </tr>
 
 <tr>
@@ -651,8 +651,8 @@ void TelStartKeepAliveThread() {
 
 
   <h3>実装</h3>
-　DDEサーバ側の実装について見ていきます。TeraTerm本体("ttermpro.exe")がDDEサーバとなり、かならずDDEサーバから起動されます。マクロプログラム("ttpmacro.exe")から直接マクロスクリプトが実行されるケースにおいても、"connect"マクロによりDDE接続をしないと、通信が開始できません。<br>
-　TeraTermのControlメニューからMacroを呼び出した場合、RunMacro()#ttdde.c がコールされます。<br>
+　DDEサーバ側の実装について見ていきます。Tera Term本体("ttermpro.exe")がDDEサーバとなり、かならずDDEサーバから起動されます。マクロプログラム("ttpmacro.exe")から直接マクロスクリプトが実行されるケースにおいても、"connect"マクロによりDDE接続をしないと、通信が開始できません。<br>
+　Tera TermのControlメニューからMacroを呼び出した場合、RunMacro()#ttdde.c がコールされます。<br>
 　HVTWinウィンドウハンドルからトピック名（8バイト）を作成し、DDEの初期化とサーバの登録を行います。また、このタイミングでDDEバッファ（1KB）を作成しています。その後、"ttpmacro.exe"を /D= オプションでトピック名を渡しつつ、起動をします。<br>
 　
 <pre class=code>
@@ -687,15 +687,15 @@ void TelStartKeepAliveThread() {
 
 
   <h3>バッファの管理</h3>
-　マクロプログラムでは"wait"コマンド等で、リモートホストから送られてきたデータを監視するための機能が用意されています。この機能を実現するためには、TeraTerm本体とマクロプログラムのそれぞれにおいて、バッファを用意する必要があり、プロセス間通信（DDEトランザクション）により、TeraTerm本体からマクロプログラムへリモートホストからの受信データを送らなければなりません。<br>
+　マクロプログラムでは"wait"コマンド等で、リモートホストから送られてきたデータを監視するための機能が用意されています。この機能を実現するためには、Tera Term本体とマクロプログラムのそれぞれにおいて、バッファを用意する必要があり、プロセス間通信（DDEトランザクション）により、Tera Term本体からマクロプログラムへリモートホストからの受信データを送らなければなりません。<br>
 
 <div align="center">
 <img src="image/dde_flowcontrol.png" width=720 height=540>
 </div>
 
-　まず、TeraTerm本体におけるリモートホストからのTCPパケット受信は、アイドルループ OnIdle()#teraterm.cpp にて行われます。OnIdle()から呼び出される CommReceive()#commlib.c において、TCPパケットデータをバッファ(cv->InBuff[])に格納します。このバッファは 1KB の大きさを持ちます。また、リングバッファではないため、バッファフルになった場合は、TCPパケットの受信をしません。ただし、バッファフル状態が長く続くと、Windowsカーネル内にTCPパケットが溜まっていき、いずれはリモートホストからのパケットを受信できなくなる可能性があります。<br>
+　まず、Tera Term本体におけるリモートホストからのTCPパケット受信は、アイドルループ OnIdle()#teraterm.cpp にて行われます。OnIdle()から呼び出される CommReceive()#commlib.c において、TCPパケットデータをバッファ(cv->InBuff[])に格納します。このバッファは 1KB の大きさを持ちます。また、リングバッファではないため、バッファフルになった場合は、TCPパケットの受信をしません。ただし、バッファフル状態が長く続くと、Windowsカーネル内にTCPパケットが溜まっていき、いずれはリモートホストからのパケットを受信できなくなる可能性があります。<br>
 　エスケープシーケンスの解析処理を行う過程で、「ログ採取」か「マクロ実行」を行っている場合は、LogPut1()が呼び出され、DDEバッファ(cv.LogBuf[])へ受信データが格納されます。このバッファは1KBの大きさを持つリングバッファであり、バッファフルになった場合は、最古のデータから上書きされてゆきます。<br>
-　TeraTerm本体のDDEバッファのデータは、エスケープシーケンスの解析処理が完了後、DDEAdv()#ttdde.c がすぐに呼び出され、自分自身（DDEサーバ）へ XTYP_ADVREQ トランザクションを送ります。XTYP_ADVREQを受け取ったら、DDEコールバック関数 DdeCallbackProc() が呼び出され、マクロプログラムへのデータ送信を行います。ここでアドバイズループが使われています。<br>
+　Tera Term本体のDDEバッファのデータは、エスケープシーケンスの解析処理が完了後、DDEAdv()#ttdde.c がすぐに呼び出され、自分自身（DDEサーバ）へ XTYP_ADVREQ トランザクションを送ります。XTYP_ADVREQを受け取ったら、DDEコールバック関数 DdeCallbackProc() が呼び出され、マクロプログラムへのデータ送信を行います。ここでアドバイズループが使われています。<br>
 
 <div align="center">
 <img src="image/dde_buffer.png" width=720 height=540>
@@ -703,15 +703,15 @@ void TelStartKeepAliveThread() {
 
 　アドバイズループによりDDEサーバよりデータが送られてくると、DDEクライアントであるマクロプログラムにおいては、XTYP_ADVDATAトランザクションがDDEコールバック関数 DdeCallbackProc()#ttmdde.c により処理されます。<br>
 　
-　なお、TeraTerm本体において、DDE通信用のバッファと、ログ採取用のバッファは cv.LogBuf[] で共有されています。バッファの先頭とデータサイズを表すインデックスは、DDE通信の場合は"DStart"と"Dcount"、ログ採取の場合は"LStart"と"Lcount"と区別されています。実際には、1つのバッファを共有しているわけなので、それぞれのインデックスが食い違うと、誤動作する原因となるため、常に同期を取っておくことになります。<br>
+　なお、Tera Term本体において、DDE通信用のバッファと、ログ採取用のバッファは cv.LogBuf[] で共有されています。バッファの先頭とデータサイズを表すインデックスは、DDE通信の場合は"DStart"と"Dcount"、ログ採取の場合は"LStart"と"Lcount"と区別されています。実際には、1つのバッファを共有しているわけなので、それぞれのインデックスが食い違うと、誤動作する原因となるため、常に同期を取っておくことになります。<br>
 <hr>
 
 
 <h2><a name="ttssh">TTSSHによるSSHの設計と実装</a></h2>
   <h3>概要</h3>
-　オリジナルのTTSSHは<a href="http://www.cs.cmu.edu/People/roc/">Robert O'Callahan</a>氏（現在は<a href="http://weblogs.mozillazine.org/roc/">Mozilla hacker</a>として活躍）により開発されたプラグインです。SSH1へ対応しており、ポートフォワーディングやzlibによるパケット圧縮もサポートしていました。TTSSHは、TeraTermをセキュア通信に対応させるためのプラグインであったために、SCPやSFTP等には未対応でした。オリジナルTeraTermが1998年に開発凍結後も、2001年ごろまでメンテナンスが続けられていました。<br>
+　オリジナルのTTSSHは<a href="http://www.cs.cmu.edu/People/roc/">Robert O'Callahan</a>氏（現在は<a href="http://weblogs.mozillazine.org/roc/">Mozilla hacker</a>として活躍）により開発されたプラグインです。SSH1へ対応しており、ポートフォワーディングやzlibによるパケット圧縮もサポートしていました。TTSSHは、Tera Termをセキュア通信に対応させるためのプラグインであったために、SCPやSFTP等には未対応でした。オリジナルTera Termが1998年に開発凍結後も、2001年ごろまでメンテナンスが続けられていました。<br>
 　TTSSHのSSH2対応を実現するために、TeraTerm Projectにより2004年から設計と実装が始められました。3年の歳月をかけて、ほぼSSH2プロトコルのフルサポートを実現しました。現在ではSCPへも対応しています。将来的にはSFTPへも対応されるかもしれません。<br>
-　原則、TTSSHの実装は<a href="http://www.openssh.com/">OpenSSH</a>を参考にしています。一部、コードをそのまま流用しているところもあります。ただし、OpenSSHはUNIXのコマンドライン向けに設計されているため、TeraTermのようなWindowsアプリケーションにはそのまま適合しない箇所も多く、フレームワークとしてはOpenSSHと大きく異なったものとなっています。<br>
+　原則、TTSSHの実装は<a href="http://www.openssh.com/">OpenSSH</a>を参考にしています。一部、コードをそのまま流用しているところもあります。ただし、OpenSSHはUNIXのコマンドライン向けに設計されているため、Tera TermのようなWindowsアプリケーションにはそのまま適合しない箇所も多く、フレームワークとしてはOpenSSHと大きく異なったものとなっています。<br>
 
 
   <h3>SSHプロトコル</h3>
@@ -734,7 +734,7 @@ void TelStartKeepAliveThread() {
 
 
   <h3>接続処理</h3>
-　TTSSHは、TeraTermの一部のコードでもあるため、ネットワーク接続処理はTeraTermとTTSSHの間を行き来することになり、処理の流れが複雑になっています。また、SSHプロトコルそのもののフローを熟知していないと、TTSSHのシーケンスを追っていくのが難しくなっています。以下に、リモートホストへの接続を行うまでのフローを示します。<br>
+　TTSSHは、Tera Termの一部のコードでもあるため、ネットワーク接続処理はTera TermとTTSSHの間を行き来することになり、処理の流れが複雑になっています。また、SSHプロトコルそのもののフローを熟知していないと、TTSSHのシーケンスを追っていくのが難しくなっています。以下に、リモートホストへの接続を行うまでのフローを示します。<br>
 
 <div align="center">
 <img src="image/ssh.png" width=720 height=540>
@@ -811,7 +811,7 @@ void TelStartKeepAliveThread() {
 
 <h2><a name="macro">マクロ言語の設計と実装</a></h2>
   <h3>概要</h3>
-　TeraTermのマクロスクリプトは、BASIC風の言語仕様となっています。BisonやFlexといったしくみは利用しておらず、力業的な独自の構文解析（再帰的下降法）により実装されています。そのため、本格的なスクリプト言語としての記述はできない側面があります。<br>
+　Tera Termのマクロスクリプトは、BASIC風の言語仕様となっています。BisonやFlexといったしくみは利用しておらず、力業的な独自の構文解析（再帰的下降法）により実装されています。そのため、本格的なスクリプト言語としての記述はできない側面があります。<br>
 　
   <h3>ファイルの読み込み</h3>
 　ttpmacro.exeの起動時に、マクロファイル(.ttl)が一括してバッファへ読み込まれます。
@@ -850,7 +850,7 @@ static BINT BuffPtr[MAXNESTLEVEL];        /* バッファのオフセット（読み込み位置�
 
 <tr>
   <td>送信データがある場合（OutLen > 0）</td>
-  <td>TeraTerm本体へデータを送る</td>
+  <td>Tera Term本体へデータを送る</td>
 </tr>
 
 <tr>
@@ -927,7 +927,7 @@ WORD LineLen;       /* バッファサイズ */
 <br>
 
   <h3>システムキャレット</h3>
-　TeraTermにおけるカーソル描画には、システムキャレットを利用しています。TeraTermで使用されているシステムキャレットを制御するAPIを以下に示します。
+　Tera Termにおけるカーソル描画には、システムキャレットを利用しています。Tera Termで使用されているシステムキャレットを制御するAPIを以下に示します。
 
 <p><ul>
   <li>CreateCaret</li>
@@ -955,8 +955,8 @@ WORD LineLen;       /* バッファサイズ */
 
   <h3>非アクティブ時のカーソル表示</h3>
 　ウィンドウが非アクティブの場合は、カーソルが消滅します。Windowsの上ではユーザが操作できうるウィンドウは1つであるため、システムキャレットも1つのみ用意されています。通常のオペレーションにおいては、この動作で問題がありません。<br>
-　しかし、ブロードキャストモードを利用する場合、非アクティブのTeraTermウィンドウに対して、コマンドを投入することになります。特に、viなどで複数の端末を同時操作するときは、カーソルが消えていると不都合があります。<br>
-　そこで、ウィンドウが非アクティブの場合においても、カーソルを描画するようにしています。ただし、システムキャレットは使えないので、自前でカーソルを描画する必要があります。TeraTermのウィンドウが非アクティブの場合においても、リモートホストから送られてくるエスケープシーケンスを処理するためにメインエンジンは動いており、常にカーソル位置は更新されています。現在のカーソル位置は、CursorXとCursorYに設定されています。<br>
+　しかし、ブロードキャストモードを利用する場合、非アクティブのTera Termウィンドウに対して、コマンドを投入することになります。特に、viなどで複数の端末を同時操作するときは、カーソルが消えていると不都合があります。<br>
+　そこで、ウィンドウが非アクティブの場合においても、カーソルを描画するようにしています。ただし、システムキャレットは使えないので、自前でカーソルを描画する必要があります。Tera Termのウィンドウが非アクティブの場合においても、リモートホストから送られてくるエスケープシーケンスを処理するためにメインエンジンは動いており、常にカーソル位置は更新されています。現在のカーソル位置は、CursorXとCursorYに設定されています。<br>
 　非アクティブ時のカーソル表示は CaretKillFocus() で行っています。このときに表示されるカーソルを「ポリゴンカーソル」と呼んでいます。ts.VTColor[0] は Text color です。非アクティブ状態でカーソル位置が更新されるときは、以前に描いたカーソルを消す必要があるので、そのときは ts.VTColor[1] で表される Background color で再描画することで、以前のカーソルを消去しています。<br>
 　Background colorでポリゴンカーソルを描画すると、ちょうどそのとき背景にあった文字の一部が欠けることがあります。そのため、その文字の再描画を行う必要があり、UpdateCaretKillFocus() で実現しています。当該関数では InvalidateRect() で WM_PAINT を送ることにより、文字の再描画を促しています。<br>
 

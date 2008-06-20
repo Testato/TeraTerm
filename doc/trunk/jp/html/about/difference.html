@@ -3,26 +3,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-<title>TeraTerm2.3との差分</title>
+<title>Tera Term Pro 2.3との差分</title>
 <META http-equiv="Content-Style-Type" content="text/css">
 <link rel="stylesheet" href="../style.css" type="text/css">
 </head>
 
 <body>
 
-<h1>TeraTerm2.3との差分</h1>
+<h1>Tera Term Pro 2.3との差分</h1>
 
 <p>
-Tera Term(TeraTerm 4.58)とTeraTerm 2.3との機能差分について以下に示します。
+Tera Term(Tera Term 4.58)とTera Term Pro 2.3との機能差分について以下に示します。
 </p>
 
 <h2>機能差分一覧</h2>
 
 <table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
 <tr>
-	<td width="20%"><b>項目</b></td>
-	<td width="30%"><b>TeraTerm 2.3</b></td>
-	<td width="30%"><b>Tera Term</b></td>
+	<th width="20%">項目</th>
+	<th width="30%">Tera Term Pro 2.3</th>
+	<th width="30%">Tera Term</th>
 </tr>
 
 <tr>
@@ -45,14 +45,14 @@ Tera Term(TeraTerm 4.58)とTeraTerm 2.3との機能差分について以下に示します。
 
 <tr>
 	<td>アイコン</td>
-	<td><IMG SRC="../image/teraterm.png" ALT="TeraTerm" WIDTH="32" HEIGHT="32">[*4]</td>
-	<td><IMG SRC="../image/teraterm_new.png" ALT="TeraTerm" WIDTH="32" HEIGHT="32">[*4]</td>
+	<td><img src="../image/teraterm.png" alt="Tera Term" width="32" height="32">[*4]</td>
+	<td><img src="../image/teraterm_new.png" alt="Tera Term" width="32" height="32">[*4]</td>
 </tr>
 
 <tr>
 	<td>TTSSHアイコン</td>
-	<td><IMG SRC="../image/ttsecure.png" ALT="TeraTerm" WIDTH="32" HEIGHT="32"></td>
-	<td><IMG SRC="../image/ttsecure_new.png" ALT="TeraTerm" WIDTH="32" HEIGHT="32">[*4]</td>
+	<td><img src="../image/ttsecure.png" alt="TTSSH" width="32" height="32"></td>
+	<td><img src="../image/ttsecure_new.png" alt="TTSSH" width="32" height="32">[*4]</td>
 </tr>
 
 <tr>
@@ -205,19 +205,19 @@ Tera Term(TeraTerm 4.58)とTeraTerm 2.3との機能差分について以下に示します。
 
 <ul>
   <li>[*1] 一部MFC(C++)を使用しているため、Express Editionではビルドができない。</li>
-  <li>[*2] 改造版 Tera Term を不特定多数の人に配布する場合には作者（寺西高氏）の許可が必要。ただし、プラグインは除く。いかなる場合においても金銭的利益を得るためにTeraTermを配布するには作者（寺西高氏）の許可が必要。</li>
+  <li>[*2] 改造版 Tera Term を不特定多数の人に配布する場合には作者（寺西高氏）の許可が必要。ただし、プラグインは除く。いかなる場合においても金銭的利益を得るためにTera Termを配布するには作者（寺西高氏）の許可が必要。</li>
   <li>[*3] <a href="http://www.opensource.org/licenses/bsd-license.php">修正BSDライセンス</a>に準拠する。</li>
   <li>[*4] アイコンの制作は坂本龍彦氏による。</li>
   <li>[*5] PuTTYやWinSCPなどで使われる<a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">SSH認証エージェント</a></li>
   <li>[*6] 内部でUnicode(UCS-2)とMBCSとの相互変換を行っているため、多言語同時表示は不可。すなわち、日本語版Windows上で日本語以外の言語を表示することはできない。ロケール設定により、中国語版Windows上でUTF-8による中国語を扱うことは可能。</li>
   <li>[*7] NAT環境において一定時間通信がないと、ルータが通信経路テーブルをクリアしてしまうために、SSHセッションが切断されてしまうという現象に対して、ハートビート機能により現象を回避することができる。</li>
-  <li>[*8] 言語ファイル(lang\*.lng)によりメニューやメッセージの表示言語を切り替えることができる。切り替えの有効化にはTeraTermの再起動が必要。</li>
+  <li>[*8] 言語ファイル(lang\*.lng)によりメニューやメッセージの表示言語を切り替えることができる。切り替えの有効化にはTera Termの再起動が必要。</li>
   <li>[*9] <a href="http://yebisuya.dip.jp/Software/TTProxy/">TTProxy</a>を使用。</li>
 </ul>
 
-<p></p>
-
-そのほかの細かな新機能について以下に示します。<br><br>
+<p>
+そのほかの細かな新機能について以下に示します。
+</p>
 
 <ul>
   <li>ANSIカラー色変更&行連結機能</li>
@@ -230,7 +230,7 @@ Tera Term(TeraTerm 4.58)とTeraTerm 2.3との機能差分について以下に示します。
   <li>セッションの複製</li>
   <li>スクロールバッファの最大長拡張</li>
   <li>エクスプローラからのディレクトリのドラッグ&ドロップに対応</li>
-  <li>2つめ以降のTeraTermの起動時にもディスクから teraterm.ini を読む</li>
+  <li>2つめ以降のTera Termの起動時にもディスクから teraterm.ini を読む</li>
   <li>VisualStyle(WindowsXP)対応</li>
   <li>新しいタイトルフォーマット</li>
   <li>ログ採取の新しいタイプを追加</li>
@@ -244,7 +244,6 @@ Tera Term(TeraTerm 4.58)とTeraTerm 2.3との機能差分について以下に示します。
   <li>バッファの画面表示部分の選択</li>
   <li>接続ダイアログのHostドロップダウンにbash styleショートカットキー(C-u, C-d, C-k, C-p, C-n, C-b, C-f, C-a, C-a)を追加</li>
 </ul>
-
 
 <hr>
 
@@ -263,20 +262,19 @@ Tera Term(TeraTerm 4.58)とTeraTerm 2.3との機能差分について以下に示します。
   <li>ZMODEMの送信において、ファイルサイズが20MBを超えるとクラッシュする。</li>
 </ol>
 
-
 <hr>
 
 <h2>新しいショートカットキー</h2>
 
 <table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
 <tr>
-	<td width="30%"><b>キー</b></td>
-	<td width="70%"><b>機能</b></td>
+	<th width="30%">キー</th>
+	<th width="70%">機能</th>
 </tr>
 
 <tr>
 	<td>ScrollLock</td>
-	<td>TeraTermウィンドウのスクロールロック/ロック解除（トグル）</td>
+	<td>Tera Termウィンドウのスクロールロック/ロック解除（トグル）</td>
 </tr>
 
 <tr>
@@ -318,8 +316,8 @@ Tera Term(TeraTerm 4.58)とTeraTerm 2.3との機能差分について以下に示します。
 
 <table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
 <tr>
-	<td width="30%"><b>コマンド</b></td>
-	<td width="70%"><b>機能</b></td>
+	<th width="30%">コマンド</th>
+	<th width="70%">機能</th>
 </tr>
 
 <tr>
@@ -424,7 +422,7 @@ Tera Term(TeraTerm 4.58)とTeraTerm 2.3との機能差分について以下に示します。
 
 <tr>
 	<td>callmenu</td>
-	<td>TeraTermウインドウのメニューを呼び出す。</td>
+	<td>Tera Termウインドウのメニューを呼び出す。</td>
 </tr>
 
 <tr>
@@ -444,7 +442,7 @@ Tera Term(TeraTerm 4.58)とTeraTerm 2.3との機能差分について以下に示します。
 
 <tr>
 	<td>getver</td>
-	<td>TeraTermのバージョンを取得する。 </td>
+	<td>Tera Termのバージョンを取得する。 </td>
 </tr>
 
 <tr>
@@ -465,8 +463,8 @@ Tera Term(TeraTerm 4.58)とTeraTerm 2.3との機能差分について以下に示します。
 
 <table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
 <tr>
-	<td width="30%"><b>エントリ</b></td>
-	<td width="70%"><b>意味</b></td>
+	<th width="30%">エントリ</th>
+	<th width="70%">意味</th>
 </tr>
 
 
@@ -477,7 +475,7 @@ Tera Term(TeraTerm 4.58)とTeraTerm 2.3との機能差分について以下に示します。
 
 <tr>
 	<td>ConnectingTimeout</td>
-	<td>TCP接続状態で、切断するまでのタイムアウト時間（秒）。TeraTermの/timeoutコマンドラインオプションでも変更可能。 </td>
+	<td>TCP接続状態で、切断するまでのタイムアウト時間（秒）。Tera Termの/timeoutコマンドラインオプションでも変更可能。 </td>
 </tr>
 
 <tr>
@@ -687,16 +685,14 @@ Tera Term(TeraTerm 4.58)とTeraTerm 2.3との機能差分について以下に示します。
 
 </table>
 
-
-
 <p>
 "TTSSH"セクションについて以下に示します。
 </p>
 
 <table align="center" bgcolor="#f0f0f0" border="1" cellpadding="1" cellspacing="1" width="100%">
 <tr>
-	<td width="30%"><b>エントリ</b></td>
-	<td width="70%"><b>意味</b></td>
+	<th width="30%">エントリ</th>
+	<th width="70%">意味</th>
 </tr>
 
 <tr>

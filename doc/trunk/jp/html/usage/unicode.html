@@ -12,13 +12,13 @@
 <h1>Unicode設定</h1>
 
 <p>
-UTF-8化を行うには、TeraTerm Proの「Setup」メニューから「General」を選び、Languageを"Japanese"へ変更します。
-次に、「Setup」メニューから「Terminal」を選択すると、ダイアログが出てくるので、「Kanji(receive)」および「Kanji(transmit)」にて、【UTF-8】を選んでください。TeraTerm Proの再起動は必要ありません。<br>
+UTF-8化を行うには、Tera Term Proの「Setup」メニューから「General」を選び、Languageを"Japanese"へ変更します。
+次に、「Setup」メニューから「Terminal」を選択すると、ダイアログが出てくるので、「Kanji(receive)」および「Kanji(transmit)」にて、【UTF-8】を選んでください。Tera Term Proの再起動は必要ありません。<br>
 コマンドラインの「/KT」および「/KR」オプションにおいて、"UTF8"を指定すると、送信および受信コードにUTF-8を設定することができます。
 </p>
 
 <p>
-現状のTeraTermは内部設計がUnicode対応になっておらず、以下に示すように文字コードは二段変換になっています。
+現状のTera Termは内部設計がUnicode対応になっておらず、以下に示すように文字コードは二段変換になっています。
 
 <pre>
 UTF-8 <-----> Unicode(UTF-16LE) <-----> MBCS

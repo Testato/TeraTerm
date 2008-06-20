@@ -28,7 +28,7 @@ If MACRO is not linked to Tera Term, this command runs Tera Term with &lt;comman
 </p>
 
 <p>
-If MACRO has already been linked to Tera Term and Tera Term is not connected to the host, this command causes Tera Term to connect to the host specified by &lt;command line parameters&gt;. See "<a href="../../commandline/teraterm.html">TeraTerm command line</a>" for the format of &lt;command line parameters&gt;.
+If MACRO has already been linked to Tera Term and Tera Term is not connected to the host, this command causes Tera Term to connect to the host specified by &lt;command line parameters&gt;. See "<a href="../../commandline/teraterm.html">Tera Term command line</a>" for the format of &lt;command line parameters&gt;.
 </p>
 
 <p>
@@ -69,7 +69,7 @@ Communication commands except "connect", "<a href="cygconnect.html">cygconnect</
 <h2>description by Boris</h2>
 
 <p>
-There are 3 types of connection you can establish from TeraTerm macro: 
+There are 3 types of connection you can establish from Tera Term macro: 
 </p>
 
 <ul>
@@ -88,7 +88,7 @@ connect '<em>myserver</em>:23'
 </code></pre>
 
 <p>
-Using /nossh is strongly recommended. Without this parameter TeraTerm will start connecting with the same method (telnet or SSH) that was used during last time when teraterm.ini file was saved. In case it was SSH than your macro will try to connect via SSH and will eventually fail.
+Using /nossh is strongly recommended. Without this parameter Tera Term will start connecting with the same method (telnet or SSH) that was used during last time when teraterm.ini file was saved. In case it was SSH than your macro will try to connect via SSH and will eventually fail.
 </p>
 
 <h3>SSH connections</h3>
@@ -199,7 +199,7 @@ connect '<em>myserver</em> /ssh /1 /auth=publickey/user=<em>username</em> /passw
 ; Run Tera Term, open SSH2 session and, not prompt for user name and password and use private key file
 connect '<em>myserver</em> /ssh /2 /auth=publickey /user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
 
-; TeraTerm automatically connects the remote host with the public key authentication, and not prompt for user name and password and use private key file.
+; Tera Term automatically connects the remote host with the public key authentication, and not prompt for user name and password and use private key file.
 connect '<em>myserver</em> /ssh /auth=pageant /user=<em>username</em>'
 
 ; RunTera Term and open serial port connection. Port number is x=1..256
@@ -214,7 +214,7 @@ connect CommandLine
 <ol>
  <li>In these examples parameters shown with Italic font have to be replaced with their actual values.</li>
  <li>The password can contain space character. To represent space inside the password replace it with '@' character. If '@' character itself is part of the password than it has to be replaced with 2 consecutive '@' characters '@@'.</li>
- <li>Please remember that entering actual username and password in TeraTerm macro will cause them to be stored as an open text and it is your responsibility to keep such macro is secure location.</li>
+ <li>Please remember that entering actual username and password in Tera Term macro will cause them to be stored as an open text and it is your responsibility to keep such macro is secure location.</li>
 </ol>
 
 <h2>See also</h2>

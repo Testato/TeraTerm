@@ -40,11 +40,11 @@
 1桁目は 5
 
 2桁目は
-  TeraTerm VT ウィンドウなら  0
-  TeraTerm TEK ウィンドウなら 1
-  TTSSH なら                  2
-  TTProxy なら                3
-  TTXKanjiMenu なら           4
+  Tera Term VT ウィンドウなら  0
+  Tera Term TEK ウィンドウなら 1
+  TTSSH なら                   2
+  TTProxy なら                 3
+  TTXKanjiMenu なら            4
 
 3桁目は
   [File] メニューなら    1
@@ -62,7 +62,7 @@
 
 
 ■ マクロコマンド追加時の作業リスト
-  TeraTermマクロを新設するときの作業手順について、以下に示します。
+  Tera Termマクロを新設するときの作業手順について、以下に示します。
 
 １．ソースコードの修正
 -- コマンドの内部 ID を採番する（「内部 ID」は"helpid.h"にも使用される）
@@ -87,8 +87,8 @@
    ... doc/LANG/teraterm.hhp
 
 
-■ TeraTermのビルド方法
-  TeraTermのビルド方法について以下に示します。
+■ Tera Termのビルド方法
+  Tera Termのビルド方法について以下に示します。
   ビルドにはVisual Studio 2005 Standard Edition以上が必要です（Visual Studio 2005 Express Editionは不可）。
 
   1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする。
@@ -146,7 +146,7 @@
   TTSSHのビルド方法について以下に示します。
   ビルドにはVisual Studio 2005(VC++8.0)、ActivePerlが必要です。
 
-  * TTSSH単体のビルドは VS2005 Express Edition でも可能です。ttpcmn.libをリンクするため、TeraTermのビルドを事前に行っておく必要があります。VS2005 Express EditionではTeraTermのビルドはできませんが、ttpcmn.libは作成することができます。
+  * TTSSH単体のビルドは VS2005 Express Edition でも可能です。ttpcmn.libをリンクするため、Tera Termのビルドを事前に行っておく必要があります。VS2005 Express EditionではTera Termのビルドはできませんが、ttpcmn.libは作成することができます。
   
   * VS2008 Express Editionでビルドすると、.rcファイルで下記のエラーが発生します。
       .\ttxssh.rc(10) : fatal error RC1015: cannot open include file 'afxres.h'.
@@ -282,7 +282,7 @@
            一つ前の Announcement の種類を Normal に変更する
            Announcement は三個残すことになっているので、三つ前の Announcement を削除する
 
-       (2) TeraTerm Changelog http://www.neocom.ca/forum/viewtopic.php?t=3
+       (2) Tera Term Changelog http://www.neocom.ca/forum/viewtopic.php?t=3
            今回の変更を追加する
 
        (3) TTSSH Changelog http://www.neocom.ca/forum/viewtopic.php?t=29
