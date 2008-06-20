@@ -1,4 +1,4 @@
-; sample macro of UTF-8 & SSH2 TeraTerm Pro
+; sample macro of Tera Term
 ; 
 ; File: ssh2login.ttl
 ; Description: auto login with SSH2 protocol

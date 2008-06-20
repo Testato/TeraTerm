@@ -1,4 +1,4 @@
-; sample macro of UTF-8 & SSH2 TeraTerm Pro
+; sample macro of Tera Term
 ;
 ; File: screencapture.ttl
 ; Description: capture screen contents and write to file
