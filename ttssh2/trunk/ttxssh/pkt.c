@@ -150,7 +150,7 @@ int PKT_recv(PTInstVar pvar, char FAR * buf, int buflen)
 
 	while (SSH_is_any_payload(pvar) ? buflen > 0 : !connection_closed) {
 		if (SSH_is_any_payload(pvar)) {
-			/* ssh.c has some session data for us to give to TeraTerm. */
+			/* ssh.c has some session data for us to give to Tera Term. */
 			int grabbed = SSH_extract_payload(pvar, buf, buflen);
 
 			amount_in_buf += grabbed;

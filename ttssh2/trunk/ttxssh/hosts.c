@@ -964,7 +964,7 @@ static void add_host_key(PTInstVar pvar)
 	if (name == NULL || name[0] == 0) {
 		UTIL_get_lang_msg("MSG_HOSTS_FILE_UNSPECIFY_ERROR", pvar,
 		                  "The host and its key cannot be added, because no known-hosts file has been specified.\n"
-		                  "Restart TeraTerm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
+		                  "Restart Tera Term and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 	} else {
 		char FAR *keydata = format_host_key(pvar);
@@ -1029,7 +1029,7 @@ static void delete_different_key(PTInstVar pvar)
 	if (name == NULL || name[0] == 0) {
 		UTIL_get_lang_msg("MSG_HOSTS_FILE_UNSPECIFY_ERROR", pvar,
 		                  "The host and its key cannot be added, because no known-hosts file has been specified.\n"
-		                  "Restart TeraTerm and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
+		                  "Restart Tera Term and specify a read/write known-hosts file in the TTSSH Setup dialog box.");
 		notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 	}
 	else {

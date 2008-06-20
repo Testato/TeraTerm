@@ -92,7 +92,7 @@ HANDLE hInst; /* Instance handle of TTXSSH.DLL */
 #define ID_SSHASYNCMESSAGEBOX 62504
 
 /*
-These are the fields that WOULD go in TeraTerm's 'ts' structure, if
+These are the fields that WOULD go in Tera Term's 'ts' structure, if
 we could put them there.
 */
 typedef struct _TS_SSH {

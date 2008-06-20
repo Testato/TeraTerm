@@ -375,7 +375,7 @@ void ssh_heartbeat_unlock(void)
 //
 #define MEMTAG_MAX 300
 #define LOGDUMP "ssh2dump.log"
-#define SENDTOME "Please send '"LOGDUMP"' file to TeraTerm developer team."
+#define SENDTOME "Please send '"LOGDUMP"' file to Tera Term developer team."
 
 typedef struct memtag {
 	char *name;
@@ -495,7 +495,7 @@ void save_memdump(char *filename)
 	t = time(NULL);
 	tm = localtime(&t);
 
-	fprintf(fp, "<<< TeraTerm SSH2 log dump >>>\n");
+	fprintf(fp, "<<< Tera Term SSH2 log dump >>>\n");
 	fprintf(fp, "saved time: %04d/%02d/%02d %02d:%02d:%02d\n",
 	        tm->tm_year + 1900,
 	        tm->tm_mon + 1,
@@ -4005,7 +4005,7 @@ static int choose_SSH2_compression_algorithm(char *server_proposal, char *my_pro
 
 	// OpenSSH 4.3では遅延パケット圧縮("zlib@openssh.com")が新規追加されているため、
 	// マッチしないように修正した。
-	// 現TeraTermでは遅延パケット圧縮は将来的にサポートする予定。
+	// 現Tera Termでは遅延パケット圧縮は将来的にサポートする予定。
 	// (2006.6.14 yutaka)
 	// 遅延パケット圧縮に対応。
 	// (2006.6.23 maya)
@@ -7943,7 +7943,7 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 		return FALSE;
 	}
 
-	// ペイロードとしてクライアント(TeraTerm)へ渡す
+	// ペイロードとしてクライアント(Tera Term)へ渡す
 	if (c->type == TYPE_SHELL) {
 		pvar->ssh_state.payload_datalen = str_len;
 		pvar->ssh_state.payload_datastart = 8; // id + strlen
@@ -8018,7 +8018,7 @@ static BOOL handle_SSH2_channel_extended_data(PTInstVar pvar)
 		return FALSE;
 	}
 
-	// ペイロードとしてクライアント(TeraTerm)へ渡す
+	// ペイロードとしてクライアント(Tera Term)へ渡す
 	if (c->type == TYPE_SHELL) {
 		pvar->ssh_state.payload_datalen = strlen;
 		pvar->ssh_state.payload_datastart = 12; // id + data_type + strlen
@@ -8144,7 +8144,7 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 		data += 4;
 		free(orig_str);
 
-		// X server(port 6000)へ接続する。接続に失敗するとTeraTerm自身が切断される。
+		// X server(port 6000)へ接続する。接続に失敗するとTera Term自身が切断される。
 		// TODO: 将来、切断されないようにしたい。(2005.7.3 yutaka)
 		FWD_X11_open(pvar, remote_id, NULL, 0, &chan_num);
 

@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.20 2008-05-23 05:04:09 doda Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.21 2008-06-20 11:58:47 doda Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -897,7 +897,7 @@ BOOL CRYPT_choose_ciphers(PTInstVar pvar)
 		UTIL_get_lang_msg("MSG_CHIPHER_NONE_ERROR", pvar,
 		                  "All the encryption algorithms that this program and the server both understand have been disabled.\n"
 		                  "To communicate with this server, you will have to enable some more ciphers\n"
-		                  "in the TTSSH Setup dialog box when you run TeraTerm again.\n"
+		                  "in the TTSSH Setup dialog box when you run Tera Term again.\n"
 		                  "This connection will now close.");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 		return FALSE;
