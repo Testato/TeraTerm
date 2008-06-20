@@ -1637,7 +1637,7 @@ error:
 }
 
 //
-// TeraTerm‚Ìversion‚ðŽæ“¾‚·‚é
+// Tera Term‚Ìversion‚ðŽæ“¾‚·‚é
 //
 // (2008.2.4 yutaka)
 //
@@ -2035,7 +2035,7 @@ WORD TTLPause()
 
 // add 'mpause' command
 // SYNOPSIS: mpause millisecoand
-// DESCRIPTION: This command would sleep TeraTerm macro program by specified millisecond time.
+// DESCRIPTION: This command would sleep Tera Term macro program by specified millisecond time.
 // (2006.2.10 yutaka)
 WORD TTLMilliPause()
 {
@@ -3011,7 +3011,7 @@ WORD TTLWait(BOOL Ln)
 // 'waitregex'(wait regular expression): wait command with regular expression
 //
 // This command has almost same function of 'wait' command. Additionally 'waitregex' can search 
-// the keyword with regular expression. TeraTerm uses a regex library that is called 'Oniguruma'.
+// the keyword with regular expression. Tera Term uses a regex library that is called 'Oniguruma'.
 // cf. http://www.geocities.jp/kosako3/oniguruma/
 //
 // (2005.10.5 yutaka)

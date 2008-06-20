@@ -228,7 +228,7 @@ static BOOL MySetLayeredWindowAttributes(HWND hwnd, COLORREF crKey, BYTE bAlpha,
 }
 
 
-// TeraTerm起動時とURL文字列mouse over時に呼ばれる (2005.4.2 yutaka)
+// Tera Term起動時とURL文字列mouse over時に呼ばれる (2005.4.2 yutaka)
 extern "C" void SetMouseCursor(char *cursor)
 {
 	HCURSOR hc;
@@ -878,7 +878,7 @@ void CVTWindow::ButtonDown(POINT p, int LMR)
 		if (! (LButton || MButton || RButton)) {
 			BOOL box = FALSE;
 
-			// select several pages of output from TeraTerm window (2005.5.15 yutaka)
+			// select several pages of output from Tera Term window (2005.5.15 yutaka)
 			if (LMR == IdLeftButton && ShiftKey()) {
 				BuffSeveralPagesSelect(p.x, p.y);
 
@@ -3015,7 +3015,7 @@ void CVTWindow::OnDuplicateSession()
 		char uimsg[MAX_UIMSG];
 		get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
 		get_lang_msg("MSG_EXEC_TT_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
-		             "Can't execute TeraTerm. (%d)", ts.UILanguageFile);
+		             "Can't execute Tera Term. (%d)", ts.UILanguageFile);
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
 	}
@@ -3301,7 +3301,7 @@ void CVTWindow::OnReplayLog()
 		return;
 
 
-	// "/R"オプション付きでTeraTermを起動する（ログが再生される）
+	// "/R"オプション付きでTera Termを起動する（ログが再生される）
 	_snprintf_s(Command, sizeof(Command), _TRUNCATE,
 	            "%s /R=\"%s\"", exec, szFile);
 
@@ -3314,7 +3314,7 @@ void CVTWindow::OnReplayLog()
 		char buf[80];
 		get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
 		get_lang_msg("MSG_EXEC_TT_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
-		             "Can't execute TeraTerm. (%d)", ts.UILanguageFile);
+		             "Can't execute Tera Term. (%d)", ts.UILanguageFile);
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE, ts.UIMsg, GetLastError());
 		::MessageBox(NULL, buf, uimsg, MB_OK | MB_ICONWARNING);
 	}
@@ -3945,7 +3945,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 	switch (msg) {
 		case WM_SHOWWINDOW:
 			if (wp) {  // show
-				// TeraTerm window list
+				// Tera Term window list
 				UpdateBroadcastWindowList(GetDlgItem(hWnd, IDC_LIST));
 				return TRUE;
 			}
@@ -3980,7 +3980,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			EnableWindow(GetDlgItem(hWnd, IDC_ENTERKEY_CHECK), FALSE);
 			EnableWindow(GetDlgItem(hWnd, IDC_PARENT_ONLY), FALSE);
 
-			// TeraTerm window list
+			// Tera Term window list
 			BroadcastWindowList = GetDlgItem(hWnd, IDC_LIST);
 			UpdateBroadcastWindowList(BroadcastWindowList);
 
@@ -4120,7 +4120,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 					// 337: 2007/03/20 チェックされていたら親ウィンドウにのみ送信
 					checked = SendMessage(GetDlgItem(hWnd, IDC_PARENT_ONLY), BM_GETCHECK, 0, 0);
 
-					// すべてのTeraTermにメッセージとデータを送る
+					// すべてのTera Termにメッセージとデータを送る
 					for (i = 0 ; i < 50 ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
 						if (checked) {
 							hd = GetParent(hWnd);
@@ -4139,7 +4139,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 						// WM_COPYDATAを使って、プロセス間通信を行う。
 						SendMessage(hd, WM_COPYDATA, (WPARAM)HVTWin, (LPARAM)&cds);
 
-						// 送信先TeraTermウィンドウに適当なメッセージを送る。
+						// 送信先Tera Termウィンドウに適当なメッセージを送る。
 						// これをしないと、送り込んだデータが反映されない模様。
 						// (2006.2.7 yutaka)
 						PostMessage(hd, WM_SETFOCUS, NULL, 0);

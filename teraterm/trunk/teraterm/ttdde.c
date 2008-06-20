@@ -1033,7 +1033,7 @@ void RunMacro(PCHAR FName, BOOL Startup)
 
 	// ログ採取中も下げないことにする。(2005.8.14 yutaka)
 #if 0
-	// TeraTerm本体でログ採取中にマクロを実行すると、マクロの動作が停止することが
+	// Tera Term本体でログ採取中にマクロを実行すると、マクロの動作が停止することが
 	// あるため、プロセスの優先度を1つ下げて実行させる。(2004/9/5 yutaka)
 	// ログ採取中のみに下げる。(2004/11/28 yutaka)
 	if (FileLog || BinLog) {

@@ -2400,7 +2400,7 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		get_lang_msg("DLG_ABOUT_TITLE", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
 		SetWindowText(Dialog, uimsg);
 
-		// TeraTermのバージョンを設定する (2005.2.28 yutaka)
+		// Tera Termのバージョンを設定する (2005.2.28 yutaka)
 		// __argv[0]では WinExec() したプロセスから参照できないようなので削除。(2005.3.14 yutaka)
 		get_file_version("ttermpro.exe", &a, &b, &c, &d);
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE, "Version %d.%d", a, b);

@@ -64,7 +64,7 @@ BOOL CCtrlWindow::OnIdle()
 	// (2005.5.25 yutaka)
 	// 以下の暫定処置は解除。
 	// (2006.10.13 yutaka)
-	// 以下の暫定処置は復活。TeraTerm本体側のOnIdle()において、XTYP_ADVREQが頻繁に飛ぶことが
+	// 以下の暫定処置は復活。Tera Term本体側のOnIdle()において、XTYP_ADVREQが頻繁に飛ぶことが
 	// CPUをストールさせてしまう要因と思われるのだが、根本的原因はいまだ不明。
 	// (2006.11.4 yutaka)
 	// 以下の暫定処置は DDESend() で行うため、削除。

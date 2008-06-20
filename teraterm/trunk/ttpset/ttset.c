@@ -2693,7 +2693,7 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 			}
 		}
 #ifndef NO_INET6
-		else if (_strnicmp(Temp, "/4", 2) == 0)	/* Protocol TeraTerm speaking */
+		else if (_strnicmp(Temp, "/4", 2) == 0)	/* Protocol Tera Term speaking */
 			ts->ProtocolFamily = AF_INET;
 		else if (_strnicmp(Temp, "/6", 2) == 0)
 			ts->ProtocolFamily = AF_INET6;

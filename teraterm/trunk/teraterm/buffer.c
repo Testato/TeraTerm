@@ -2277,7 +2277,7 @@ void BuffTplClk(int Yw)
 
 
 // The block of the text between old and new cursor positions is being selected.
-// This function enables to select several pages of output from TeraTerm window.
+// This function enables to select several pages of output from Tera Term window.
 // add (2005.5.15 yutaka)
 void BuffSeveralPagesSelect(int Xw, int Yw)
 //  Start text selection by mouse button down

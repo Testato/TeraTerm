@@ -36,9 +36,9 @@ BOOL Wait2Found;
 
 #define OutBufSize 512
 // リングバッファを 4KB から 16KB へ拡張した (2006.10.15 yutaka)
-// TeraTerm本体へ SendSync を送るときの上限チェックを 8KB にした。
-// TeraTerm本体側のDDEバッファは 1KB なので、それよりも大きな値にすることで、
-// TeraTermとマクロがスラッシング状態になることを防ぐ。
+// Tera Term本体へ SendSync を送るときの上限チェックを 8KB にした。
+// Tera Term本体側のDDEバッファは 1KB なので、それよりも大きな値にすることで、
+// Tera Termとマクロがスラッシング状態になることを防ぐ。
 #define RingBufSize (4096*4)
 #define RCountLimit (RingBufSize/2)
 
@@ -309,7 +309,7 @@ void DDESend()
 	OutBuf[OutLen] = 0;  // DDEデータの終端は null で終わることをサーバが期待している。
 
 	for (i = 0 ; i < retry_count ; i++) {
-		// サーバ(TeraTerm)へコマンド列を送る。成功すると非0が返る。
+		// サーバ(Tera Term)へコマンド列を送る。成功すると非0が返る。
 		if ((hd = DdeClientTransaction(OutBuf,OutLen+1,ConvH,Item,CF_OEMTEXT,XTYP_POKE,1000,NULL))
 			!= 0) {
 			OutLen = 0;  // バッファを空にする

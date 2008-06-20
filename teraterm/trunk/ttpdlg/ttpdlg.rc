@@ -208,7 +208,7 @@ FONT 8, "System", 400, 0, 0x80
 BEGIN
     ICON            IDI_TTERM,IDC_TT_ICON,6,6,20,20
     CONTROL         "Tera Term",IDC_TT_PRO,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,38,1,78,8
-    CONTROL         "TeraTerm version 2.3 + IPv6 0.81",IDC_TT23_LABEL,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,38,43,119,8
+    CONTROL         "Tera Term Pro version 2.3 + IPv6 0.81",IDC_TT23_LABEL,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,38,43,119,8
     CONTROL         "Mar 10, 1998 T. Teranishi",IDC_TT23DATE_LABEL,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,38,51,90,8
     CONTROL         "Copyright (C) 1994-1998 T. Teranishi",IDC_TERANISHI_LABEL,
                     "Static",SS_LEFTNOWORDWRAP | WS_GROUP,38,59,134,8

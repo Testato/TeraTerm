@@ -84,10 +84,10 @@ void PASCAL FAR TTXModifyPopupMenu(HMENU menu);
 BOOL PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd);
 
 /* This function is called to see whether Telnet mode can be turned on when
-   TeraTerm thinks it has detected a telnetd */
+   Tera Term thinks it has detected a telnetd */
 void PASCAL FAR TTXEnd(void);
 
-/* This function is called when a new TeraTerm is being started with certain
+/* This function is called when a new Tera Term is being started with certain
    settings and the extension may wish to add some options to the command line */
 void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen, PGetHNRec rec);
 #ifdef __cplusplus

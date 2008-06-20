@@ -270,7 +270,7 @@ void OpenHtmlHelp(HWND HWin, char *filename)
 	char HelpFN[MAXPATHLEN];
 
 	_snprintf(HelpFN, sizeof(HelpFN), "%s\\%s", ts.HomeDir, filename);
-	// HTMLヘルプのオーナーをTeraTermからデスクトップへ変更 (2006.4.7 yutaka)
+	// HTMLヘルプのオーナーをTera Termからデスクトップへ変更 (2006.4.7 yutaka)
 	if (HtmlHelp(GetDesktopWindow(), HelpFN, HH_DISPLAY_TOPIC, 0) == NULL) {
 		char buf[MAXPATHLEN];
 		_snprintf(buf, sizeof(buf), "Can't open HTML help file(%s).", HelpFN);
