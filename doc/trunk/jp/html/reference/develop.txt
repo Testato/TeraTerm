@@ -3,6 +3,7 @@
   Windows XP Professional
 - コンパイラ
   Visual Studio 2005 SP1 (Standard Edition 以上)
+  注: Visual Studio 2008 でコンパイルした実行ファイルは Windows NT 4.0, 98, Me で動きません。
 - インストーラ
   Inno Setup 5.2.3 (http://www.jrsoftware.org/isinfo.php)
   ISTool 5.2.1 (http://www.istool.org/)

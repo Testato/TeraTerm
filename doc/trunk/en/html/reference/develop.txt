@@ -3,6 +3,7 @@
   Windows XP Professional
 - Compiler
   Visual Studio 2005 SP1 Standard Edition (or higher edition)
+  Note: the executable program which was compiled by Visual Studio 2008 does not work on Windows NT 4.0, 98 and Me.
 - Installer
   Inno Setup 5.2.3 (http://www.jrsoftware.org/isinfo.php)
   ISTool 5.2.1 (http://www.istool.org/)
