@@ -99,7 +99,7 @@ Name: compact; Description: {cm:type_compact}
 Name: custom; Description: {cm:type_custom}; Flags: iscustom
 
 [Components]
-Name: TeraTerm; Description: TeraTerm & Macro; Flags: fixed; Types: custom compact full standard
+Name: TeraTerm; Description: Tera Term & Macro; Flags: fixed; Types: custom compact full standard
 Name: TTSSH; Description: TTSSH; Types: compact full standard
 Name: cygterm; Description: CygTerm+; Types: full standard; Check: not isIA64
 Name: LogMeTT; Description: LogMeTT & TTLEdit; Types: full standard
@@ -246,18 +246,18 @@ Root: HKCR; Subkey: Folder\shell\cygterm; ValueType: string; ValueData: Cy&gterm
 Root: HKCR; Subkey: Folder\shell\cygterm\command; ValueType: string; ValueData: """{app}\cyglaunch.exe"" -nocd -nols -d \""%L\"""; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: cygterm; Tasks: cygtermhere
 ; Associate with .TTL
 Root: HKCU; Subkey: Software\Classes\.ttl; ValueType: string; ValueData: TeraTerm.MacroFile; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
-Root: HKCU; Subkey: Software\Classes\TeraTerm.MacroFile; ValueType: string; ValueData: TeraTerm Macro File; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
+Root: HKCU; Subkey: Software\Classes\TeraTerm.MacroFile; ValueType: string; ValueData: Tera Term Macro File; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
 Root: HKCU; Subkey: Software\Classes\TeraTerm.MacroFile\DefaultIcon; ValueType: string; ValueData: {app}\ttpmacro.exe,0; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
 Root: HKCU; Subkey: Software\Classes\TeraTerm.MacroFile\shell\open\command; ValueType: string; ValueData: """{app}\ttpmacro.exe"" ""%1"""; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
 Root: HKCR; Subkey: .ttl; ValueType: string; ValueData: TeraTerm.MacroFile; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
-Root: HKCR; Subkey: TeraTerm.MacroFile; ValueType: string; ValueData: TeraTerm Macro File; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
+Root: HKCR; Subkey: TeraTerm.MacroFile; ValueType: string; ValueData: Tera Term Macro File; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
 Root: HKCR; Subkey: TeraTerm.MacroFile\DefaultIcon; ValueType: string; ValueData: {app}\ttpmacro.exe,0; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
 Root: HKCR; Subkey: TeraTerm.MacroFile\shell\open\command; ValueType: string; ValueData: """{app}\ttpmacro.exe"" ""%1"""; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
 ; Associate with telnet://
-Root: HKCU; Subkey: Software\Classes\telnet\shell; ValueType: string; ValueData: Open with TeraTerm; Flags: uninsclearvalue; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
-Root: HKCU; Subkey: Software\Classes\telnet\shell\Open with TeraTerm\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" /T=1 /nossh %1"; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
-Root: HKCR; Subkey: telnet\shell; ValueType: string; ValueData: Open with TeraTerm; Flags: uninsclearvalue; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
-Root: HKCR; Subkey: telnet\shell\Open with TeraTerm\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" /T=1 /nossh %1"; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
+Root: HKCU; Subkey: Software\Classes\telnet\shell; ValueType: string; ValueData: Open with Tera Term; Flags: uninsclearvalue; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
+Root: HKCU; Subkey: Software\Classes\telnet\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" /T=1 /nossh %1"; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
+Root: HKCR; Subkey: telnet\shell; ValueType: string; ValueData: Open with Tera Term; Flags: uninsclearvalue; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
+Root: HKCR; Subkey: telnet\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" /T=1 /nossh %1"; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
 
 [Tasks]
 Name: desktopicon; Description: {cm:task_desktopicon}; Components: TeraTerm
@@ -276,16 +276,16 @@ Filename: {app}\ttpmenu.exe; Flags: nowait postinstall skipifsilent unchecked; D
 Filename: {app}\Collector\Collector.exe; Flags: nowait postinstall skipifsilent unchecked; Description: {cm:launch_collector}; Components: Collector
 
 [CustomMessages]
-en.task_desktopicon=Create TeraTerm shortcut to &Desktop
-en.task_quicklaunchicon=Create TeraTerm shortcut to &Quick Launch
+en.task_desktopicon=Create Tera Term shortcut to &Desktop
+en.task_quicklaunchicon=Create Tera Term shortcut to &Quick Launch
 en.task_startupttmenuicon=Create TeraTerm &Menu shortcut to Startup
 en.task_startupcollectoricon=Create &Collector shortcut to Startup
 en.task_cygtermhere=Add "Cy&gterm Here" to Context menu
 en.task_quickcyglaunch=Create cyg&launch shortcut to Quick Launch
 en.task_macroassoc=Associate .&ttl file to ttmpacro.exe
 en.task_telnetassoc=Associate t&elnet protocol to ttermpro.exe
-ja.task_desktopicon=デスクトップに TeraTerm のショートカットを作る(&D)
-ja.task_quicklaunchicon=クイック起動に TeraTerm のショートカットを作る(&Q)
+ja.task_desktopicon=デスクトップに Tera Term のショートカットを作る(&D)
+ja.task_quicklaunchicon=クイック起動に Tera Term のショートカットを作る(&Q)
 ja.task_startupttmenuicon=スタートアップに TeraTerm &Menu のショートカットを作る
 ja.task_startupcollectoricon=スタートアップに &Collector のショートカットを作る
 ja.task_cygtermhere=コンテキストメニューに "Cy&gterm Here" を追加する
@@ -625,9 +625,9 @@ begin
 
         if not IsTaskSelected('telnetassoc') then
         begin;
-          RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, 'Software\Classes\telnet\shell\Open with TeraTerm');
+          RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, 'Software\Classes\telnet\shell\Open with Tera Term');
           RegDeleteValue(HKEY_CURRENT_USER, 'Software\Classes\telnet\shell', '');
-          RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'telnet\shell\Open with TeraTerm');
+          RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'telnet\shell\Open with Tera Term');
           RegDeleteValue(HKEY_CLASSES_ROOT, 'telnet\shell', '');
         end;
 

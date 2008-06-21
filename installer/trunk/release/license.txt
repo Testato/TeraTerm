@@ -59,8 +59,8 @@ OF SUCH DAMAGE.
 License of Cygterm+
 
 Using Cygwin with a terminal emulator.
-Copyright (C) 2000-2004 NSym
-Copyright (C) 2006 TeraTerm Project
+Copyright (C) 2000-2006 NSym
+Copyright (C) 2006-2008 TeraTerm Project
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
