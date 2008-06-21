@@ -4,7 +4,7 @@
 - コンパイラ
   Visual Studio 2005 SP1 (Standard Edition 以上)
 - インストーラ
-  Inno Setup 5.2.2 (http://www.jrsoftware.org/isinfo.php)
+  Inno Setup 5.2.3 (http://www.jrsoftware.org/isinfo.php)
   ISTool 5.2.1 (http://www.istool.org/)
   Japanese-5-5.1.11.isl (http://www.jrsoftware.org/files/istrans/)
 - その他
@@ -14,7 +14,7 @@
 
 ■ ライブラリ
 - oniguruma 5.9.1 (http://www.geocities.jp/kosako3/oniguruma/)
-- openssl 0.9.8g (http://www.openssl.org/)
+- openssl 0.9.8h (http://www.openssl.org/)
 - zlib 1.2.3 (http://www.zlib.net/)
 - PuTTY 0.60 (http://www.chiark.greenend.org.uk/~sgtatham/putty/)
 
@@ -238,7 +238,7 @@
     CygTerm
       http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/
     LogMeTT
-      http://www.neocom.ca/forum/viewtopic.php?t=567
+      http://www.neocom.ca/forum/viewforum.php?f=5
 
   2. バージョンを上げ、日付を変更する
      リリース作業時に、バージョンを一つインクリメントする。
