@@ -322,8 +322,8 @@ ja.msg_language_japanese=日本語(&J)
 ja.msg_language_german=ドイツ語(&G)
 en.msg_del_confirm=Are you sure that you want to delete %s ?
 ja.msg_del_confirm=%s を削除しますか？
-en.msg_uninstall_confirm=It seems installed prev version. We advise uninstall first. Are you sure uninstall prev version ?
-ja.msg_uninstall_confirm=以前のバージョンがインストールされているようです。インストールの前にアンインストールすることをお勧めします。アンインストールしますか？
+en.msg_uninstall_confirm=It seems a former version is installed. You are recommended to uninstall it previously. Do you uninstall former version ?
+ja.msg_uninstall_confirm=以前のバージョンがインストールされているようです。先にアンインストールすることをお勧めします。アンインストールしますか？
 
 [Code]
 var
@@ -555,10 +555,14 @@ begin
             if MsgBox(CustomMessage('msg_uninstall_confirm'), mbInformation, MB_YESNO) = IDYES then
             begin
               // ユーザがアンインストールを選択した
+
+              // 両端の " を削る
               uninstaller2 := Copy(uninstaller, 2, Length(uninstaller) - 2);
+
               if not Exec(uninstaller2, '', '', SW_SHOW,
                           ewWaitUntilTerminated, ResultCode) then
               begin
+                // 実行に失敗
                 MsgBox(SysErrorMessage(ResultCode), mbError, MB_OK);
               end;
             end;
