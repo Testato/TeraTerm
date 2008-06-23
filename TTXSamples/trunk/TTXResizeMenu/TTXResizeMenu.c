@@ -9,7 +9,7 @@
 #define ORDER 5900
 #define SECTION "Resize Menu"
 
-unsigned int def_resize_list[][2] = {
+int def_resize_list[][2] = {
 	{80, 37},
 	{120, 52},
 	{80, 24},
@@ -27,8 +27,8 @@ typedef struct {
   HMENU ResizeMenu;
   BOOL ReplaceTermDlg;
   PReadIniFile origReadIniFile;
-  unsigned int MenuItems;
-  unsigned int ResizeList[MAX_MENU_ITEMS][2];
+  int MenuItems;
+  int ResizeList[MAX_MENU_ITEMS][2];
 } TInstVar;
 
 static TInstVar FAR * pvar;
@@ -37,7 +37,7 @@ static TInstVar FAR * pvar;
 static TInstVar InstVar;
 
 void InitMenu() {
-  unsigned int i, x, y;
+  int i, x, y;
   char tmp[20];
 
   if (pvar->ResizeMenu != NULL) {
@@ -51,27 +51,27 @@ void InitMenu() {
     y = pvar->ResizeList[i][1];
     if (i < 15) {
       if (x == 0)
-	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "height: %u(&%x)", y, i+1);
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "height: %d(&%x)", y, i+1);
       else if (y == 0)
-	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "width: %u(&%x)", x, i+1);
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "width: %d(&%x)", x, i+1);
       else
-	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "%ux%u(&%x)", x, y, i+1);
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "%dx%d(&%x)", x, y, i+1);
     }
     else if (i < 35) {
       if (x == 0)
-	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "height: %u(&%c)", y, 'a' + i - 9);
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "height: %d(&%c)", y, 'a' + i - 9);
       else if (y == 0)
-	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "width: %u(&%c)", x, 'a' + i - 9);
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "width: %d(&%c)", x, 'a' + i - 9);
       else
-	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "%ux%u(&%c)", x, y, 'a' + i - 9);
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "%dx%d(&%c)", x, y, 'a' + i - 9);
     }
     else {
       if (x == 0)
-	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "height: %u", y);
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "height: %d", y);
       else if (y == 0)
-	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "width: %u", x);
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "width: %d", x);
       else
-	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "%ux%u", x, y);
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "%dx%d", x, y);
     }
     InsertMenu(pvar->ResizeMenu, -1, MF_BYPOSITION, ID_MENUID_BASE+i, tmp);
   }
@@ -108,7 +108,7 @@ static void PASCAL FAR TTXGetUIHooks(TTXUIHooks FAR * hooks) {
 }
 
 static void PASCAL FAR ResizeMenuReadIniFile(PCHAR fn, PTTSet ts) {
-  unsigned int i, x, y;
+  int i, x, y;
   char Key[20], Buff[100];
 
   (pvar->origReadIniFile)(fn, ts);
@@ -117,16 +117,27 @@ static void PASCAL FAR ResizeMenuReadIniFile(PCHAR fn, PTTSet ts) {
     _snprintf_s(Key, sizeof(Key), _TRUNCATE, "ResizeMenu%d", i+1);
     GetPrivateProfileString(SECTION, Key, "\n", Buff, sizeof(Buff), fn);
 
-    if (sscanf(Buff, "%u , %u", &x, &y) == 2) {
-      if (x == 0 && y == 0) {
-        break;
+    if (sscanf_s(Buff, "%d , %d", &x, &y) == 2) {
+      if (x < 0 ) {
+        x = 0;
       }
+
+      if (y < 0 ) {
+        y = 0;
+      }
+
       if (x > TermWidthMax ) {
         x = TermWidthMax;
       }
+
       if (y > TermHeightMax ) {
         y = TermHeightMax;
       }
+
+      if (x == 0 && y == 0) {
+        break;
+      }
+
       pvar->ResizeList[i][0] = x;
       pvar->ResizeList[i][1] = y;
     }
