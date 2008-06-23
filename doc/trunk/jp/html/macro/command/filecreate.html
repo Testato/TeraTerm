@@ -27,13 +27,18 @@ filecreate &lt;file handle&gt; &lt;filename&gt;
 ファイル &lt;filename&gt; を新しく作成しオープンする。<br>
 ファイルポインタはファイルの先頭にセットされる。すでに同じ名前のファイルが存在する場合、ファイルサイズは0にされる。<br>
 もしファイルが正しく作成され、オープンされた場合、ファイルハンドルが整数変数 &lt;file handle&gt; に格納される。それ以外の場合、&lt;file handle&gt; に-1が格納される。<br>
-ファイルの作成が成功した場合、システム変数 result に 0 が格納される。それ以外の場合, result に 0 以外が格納される。
+ファイルの作成が成功した場合、システム変数 result に 0 が格納される。それ以外の場合, result に 0 以外が格納される。<br>
+<br>
+
+なお、ファイル作成後、ファイルハンドルはオープンされたままとなる。
 </p>
 
 <h2>例</h2>
 
 <pre class="macro-example">
-<code>filecreate fhandle 'data.dat'
+<code>
+filecreate fhandle 'data.dat'
+fileclose fhandle
 </code></pre>
 
 </body>
