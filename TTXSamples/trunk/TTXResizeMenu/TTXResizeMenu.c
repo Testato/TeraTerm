@@ -7,8 +7,9 @@
 #include <string.h>
 
 #define ORDER 5900
+#define SECTION "Resize Menu"
 
-resize_list[][2] = {
+unsigned int def_resize_list[][2] = {
 	{80, 37},
 	{120, 52},
 	{80, 24},
@@ -16,7 +17,7 @@ resize_list[][2] = {
 };
 
 #define ID_MENUID_BASE 36500
-#define MENUID_MAX (sizeof(resize_list)/sizeof(resize_list[0]))
+#define MAX_MENU_ITEMS 20
 
 static HANDLE hInst; /* Instance handle of TTX*.DLL */
 
@@ -25,6 +26,9 @@ typedef struct {
   PComVar cv;
   HMENU ResizeMenu;
   BOOL ReplaceTermDlg;
+  PReadIniFile origReadIniFile;
+  unsigned int MenuItems;
+  unsigned int ResizeList[MAX_MENU_ITEMS][2];
 } TInstVar;
 
 static TInstVar FAR * pvar;
@@ -33,7 +37,7 @@ static TInstVar FAR * pvar;
 static TInstVar InstVar;
 
 void InitMenu() {
-  int i, x, y;
+  unsigned int i, x, y;
   char tmp[20];
 
   if (pvar->ResizeMenu != NULL) {
@@ -42,24 +46,51 @@ void InitMenu() {
 
   pvar->ResizeMenu = CreateMenu();
 
-  for (i=0; i<MENUID_MAX; i++) {
-    x = resize_list[i][0];
-    y = resize_list[i][1];
-    if (x == 0)
-      _snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "height: %d(&%x)", y, i+1);
-    else if (y == 0)
-      _snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "width: %d(&%x)", x, i+1);
-    else
-      _snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "%dx%d(&%x)", x, y, i+1);
+  for (i=0; i < pvar->MenuItems; i++) {
+    x = pvar->ResizeList[i][0];
+    y = pvar->ResizeList[i][1];
+    if (i < 15) {
+      if (x == 0)
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "height: %u(&%x)", y, i+1);
+      else if (y == 0)
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "width: %u(&%x)", x, i+1);
+      else
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "%ux%u(&%x)", x, y, i+1);
+    }
+    else if (i < 35) {
+      if (x == 0)
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "height: %u(&%c)", y, 'a' + i - 9);
+      else if (y == 0)
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "width: %u(&%c)", x, 'a' + i - 9);
+      else
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "%ux%u(&%c)", x, y, 'a' + i - 9);
+    }
+    else {
+      if (x == 0)
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "height: %u", y);
+      else if (y == 0)
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "width: %u", x);
+      else
+	_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, "%ux%u", x, y);
+    }
     InsertMenu(pvar->ResizeMenu, -1, MF_BYPOSITION, ID_MENUID_BASE+i, tmp);
   }
 }
 
 static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
+  int i;
+
   pvar->ts = ts;
   pvar->cv = cv;
   pvar->ReplaceTermDlg = FALSE;
   pvar->ResizeMenu = NULL;
+
+  pvar->MenuItems = sizeof(def_resize_list)/sizeof(def_resize_list[0]);
+
+  for (i=0; i < pvar->MenuItems; i++) {
+    pvar->ResizeList[i][0] = def_resize_list[i][0];
+    pvar->ResizeList[i][1] = def_resize_list[i][1];
+  }
 
   InitMenu();
 }
@@ -74,6 +105,52 @@ static void PASCAL FAR TTXGetUIHooks(TTXUIHooks FAR * hooks) {
     *hooks->SetupTerminal = TTXSetupTerminal;
   }
   return;
+}
+
+static void PASCAL FAR ResizeMenuReadIniFile(PCHAR fn, PTTSet ts) {
+  unsigned int i, x, y;
+  char Key[20], Buff[100];
+
+  (pvar->origReadIniFile)(fn, ts);
+
+  for (i=0; i<MAX_MENU_ITEMS; i++) {
+    _snprintf_s(Key, sizeof(Key), _TRUNCATE, "ResizeMenu%d", i+1);
+    GetPrivateProfileString(SECTION, Key, "\n", Buff, sizeof(Buff), fn);
+
+    if (sscanf(Buff, "%u , %u", &x, &y) == 2) {
+      if (x == 0 && y == 0) {
+        break;
+      }
+      if (x > TermWidthMax ) {
+        x = TermWidthMax;
+      }
+      if (y > TermHeightMax ) {
+        y = TermHeightMax;
+      }
+      pvar->ResizeList[i][0] = x;
+      pvar->ResizeList[i][1] = y;
+    }
+    else {
+      break;
+    }
+  }
+
+  if (i == 0) {
+    pvar->MenuItems = sizeof(def_resize_list)/sizeof(def_resize_list[0]);
+
+    for (i=0; i < pvar->MenuItems; i++) {
+      pvar->ResizeList[i][0] = def_resize_list[i][0];
+      pvar->ResizeList[i][1] = def_resize_list[i][1];
+    }
+  }
+  else {
+    pvar->MenuItems = i;
+  }
+}
+
+static void PASCAL FAR TTXGetSetupHooks(TTXSetupHooks FAR * hooks) {
+  pvar->origReadIniFile = *hooks->ReadIniFile;
+  *hooks->ReadIniFile = ResizeMenuReadIniFile;
 }
 
 static void PASCAL FAR TTXModifyMenu(HMENU menu) {
@@ -92,12 +169,12 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 
 static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
   int num;
-  if (cmd >= ID_MENUID_BASE && cmd < ID_MENUID_BASE + MENUID_MAX) {
+  if (cmd >= ID_MENUID_BASE && cmd < ID_MENUID_BASE + pvar->MenuItems) {
     num = cmd - ID_MENUID_BASE;
-    if (resize_list[num][0] > 0)
-      pvar->ts->TerminalWidth = resize_list[num][0];
-    if (resize_list[num][1] > 0)
-      pvar->ts->TerminalHeight = resize_list[num][1];
+    if (pvar->ResizeList[num][0] > 0)
+      pvar->ts->TerminalWidth = pvar->ResizeList[num][0];
+    if (pvar->ResizeList[num][1] > 0)
+      pvar->ts->TerminalHeight = pvar->ResizeList[num][1];
     pvar->ReplaceTermDlg = TRUE;
 
     // Call Setup-Terminal dialog
@@ -113,7 +190,7 @@ static TTXExports Exports = {
 
   TTXInit,
   TTXGetUIHooks,
-  NULL, // TTXGetSetupHooks,
+  TTXGetSetupHooks,
   NULL, // TTXOpenTCP,
   NULL, // TTXCloseTCP,
   NULL, // TTXSetWinSize,
