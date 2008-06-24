@@ -20,9 +20,9 @@ typedef void (PASCAL FAR *PAddHostToList)
 typedef void (PASCAL FAR *PParseParam)
   (PCHAR Param, PTTSet ts, PCHAR DDETopic);
 typedef void (PASCAL FAR *PCopySerialList)
-  (PCHAR IniSrc, PCHAR IniDest, PCHAR section, PCHAR key);
+  (PCHAR IniSrc, PCHAR IniDest, PCHAR section, PCHAR key, int MaxList);
 typedef void (PASCAL FAR *PAddValueToList)
-  (PCHAR FName, PCHAR Host, PCHAR section, PCHAR key);
+  (PCHAR FName, PCHAR Host, PCHAR section, PCHAR key, int MaxList);
 
 extern PReadIniFile ReadIniFile;
 extern PWriteIniFile WriteIniFile;

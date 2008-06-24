@@ -1236,7 +1236,7 @@ BOOL CALLBACK SerialDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
 	PTTSet ts;
-	char EntName[7];
+	char EntName[10];
 	char TempHost[HostNameMaxLength+1];
 	UINT i, Index;
 	WORD w;
@@ -1330,11 +1330,9 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			SendDlgItemMessage(Dialog, IDC_TCPIPHOST, EM_LIMITTEXT,
 			                   HostNameMaxLength-1, 0);
 
-			strncpy_s(EntName, sizeof(EntName),"Host", _TRUNCATE);
-
 			i = 1;
 			do {
-				uint2str(i,&EntName[4],sizeof(EntName)-4,2);
+				_snprintf_s(EntName, sizeof(EntName), _TRUNCATE, "Host%d", i);
 				GetPrivateProfileString("Hosts",EntName,"",
 				                        TempHost,sizeof(TempHost),ts->SetupFName);
 				if (strlen(TempHost) > 0)
@@ -1383,11 +1381,10 @@ BOOL CALLBACK TCPIPDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 						if (Index>MAXHOSTLIST)
 							Index = MAXHOSTLIST;
 
-						strncpy_s(EntName, sizeof(EntName),"Host", _TRUNCATE);
 						for (i = 1 ; i <= Index ; i++) {
 							SendDlgItemMessage(Dialog, IDC_TCPIPLIST, LB_GETTEXT,
 							                   i-1, (LPARAM)TempHost);
-							uint2str(i,&EntName[4],sizeof(EntName)-4,2);
+							_snprintf_s(EntName, sizeof(EntName), _TRUNCATE, "Host%i", i);
 							WritePrivateProfileString("Hosts",EntName,TempHost,ts->SetupFName);
 						}
 
@@ -1713,11 +1710,10 @@ BOOL CALLBACK HostDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			if ( GetHNRec->PortType==IdFile )
 				GetHNRec->PortType = IdTCPIP;
 
-			strncpy_s(EntName, sizeof(EntName),"Host", _TRUNCATE);
 
 			i = 1;
 			do {
-				uint2str(i,&EntName[4],sizeof(EntName)-4,2);
+				_snprintf_s(EntName, sizeof(EntName), _TRUNCATE, "Host%d", i);
 				GetPrivateProfileString("Hosts",EntName,"",
 				                        TempHost,sizeof(TempHost),GetHNRec->SetupFN);
 				if ( strlen(TempHost) > 0 )

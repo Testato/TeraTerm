@@ -72,6 +72,8 @@ static char THIS_FILE[] = __FILE__;
 // WM_COPYDATAによるプロセス間通信の種別 (2005.1.22 yutaka)
 #define IPC_BROADCAST_COMMAND 1
 
+#define BROADCAST_LOGFILE "broadcast.log"
+
 static HFONT DlgBroadcastFont;
 static HFONT DlgCommentFont;
 
@@ -3814,10 +3816,8 @@ void ApplyBoradCastCommandHisotry(HWND Dialog, char *historyfile)
 	int i = 1;
 
 	SendDlgItemMessage(Dialog, IDC_COMMAND_EDIT, CB_RESETCONTENT, 0, 0);
-	strncpy_s(EntName, sizeof(EntName),"Command", _TRUNCATE);
 	do {
-		_snprintf_s(EntName, sizeof(EntName), _TRUNCATE,
-		            "%s%d", "Command", i);
+		_snprintf_s(EntName, sizeof(EntName), _TRUNCATE, "Command%d", i);
 		GetPrivateProfileString("BroadcastCommands",EntName,"",
 		                        Command,sizeof(Command), historyfile);
 		if (strlen(Command) > 0)
@@ -3960,7 +3960,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			if (ts.BroadcastCommandHistory) {
 				SendMessage(GetDlgItem(hWnd, IDC_HISTORY_CHECK), BM_SETCHECK, BST_CHECKED, 0);
 			}
-			GetDefaultFName(ts.HomeDir, "broadcast.log", historyfile, sizeof(historyfile));
+			GetDefaultFName(ts.HomeDir, BROADCAST_LOGFILE, historyfile, sizeof(historyfile));
 			ApplyBoradCastCommandHisotry(hWnd, historyfile);
 
 			// エディットコントロールにフォーカスをあてる
@@ -4089,9 +4089,10 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 					// ブロードキャストコマンドの履歴を保存 (2007.3.3 maya)
 					history = SendMessage(GetDlgItem(hWnd, IDC_HISTORY_CHECK), BM_GETCHECK, 0, 0);
 					if (history) {
-						GetDefaultFName(ts.HomeDir, "broadcast.log", historyfile, sizeof(historyfile));
+						GetDefaultFName(ts.HomeDir, BROADCAST_LOGFILE, historyfile, sizeof(historyfile));
 						if (LoadTTSET()) {
-							(*AddValueToList)(historyfile, buf, "BroadcastCommands", "Command");
+							(*AddValueToList)(historyfile, buf, "BroadcastCommands", "Command",
+							                  ts.MaxBroadcatHistory);
 							FreeTTSET();
 						}
 						ApplyBoradCastCommandHisotry(hWnd, historyfile);
@@ -4164,7 +4165,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 
 				case IDC_COMMAND_EDIT:
 					if (HIWORD(wp) == CBN_DROPDOWN) {
-						GetDefaultFName(ts.HomeDir, "broadcast.log", historyfile, sizeof(historyfile));
+						GetDefaultFName(ts.HomeDir, BROADCAST_LOGFILE, historyfile, sizeof(historyfile));
 						ApplyBoradCastCommandHisotry(hWnd, historyfile);
 					}
 					return FALSE;
