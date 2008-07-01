@@ -290,7 +290,7 @@ HlpMacroAppendixesRegex=html\reference\RE.txt
 HlpUninstall=html\uninstall.html
 
 [MAP]
-#include ..\..\teraterm\source\common\helpid.h
+#include ..\..\teraterm\common\helpid.h
 
 [INFOTYPES]
 
