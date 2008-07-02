@@ -2464,9 +2464,7 @@ WORD TTLSprintf()
 		char s[ONIG_MAX_ERROR_MESSAGE_LEN];
 		onig_error_code_to_str(s, r, &einfo);
 		fprintf(stderr, "ERROR: %s\n", s);
-		LockVar();
 		SetResult(-1);
-		UnlockVar();
 		goto exit2;
 	}
 
@@ -2474,9 +2472,7 @@ WORD TTLSprintf()
 
 	GetStrVal(Fmt, &Err);
 	if (Err!=0) {
-		LockVar();
 		SetResult(1);
-		UnlockVar();
 		goto exit2;
 	}
 
@@ -2534,9 +2530,7 @@ WORD TTLSprintf()
 					r = onig_search(reg, str, end, start, range, region,
 					                ONIG_OPTION_NONE);
 					if (r != 0) {
-						LockVar();
 						SetResult(2);
-						UnlockVar();
 						Err = ErrSyntax;
 						goto exit1;
 					}
@@ -2551,9 +2545,7 @@ WORD TTLSprintf()
 							_snprintf_s(buf2, sizeof(buf2), _TRUNCATE, subFmt, Str);
 						}
 						else {
-							LockVar();
 							SetResult(3);
-							UnlockVar();
 							Err = TmpErr;
 							goto exit1;
 						}
@@ -2571,9 +2563,7 @@ WORD TTLSprintf()
 							}
 						}
 						else {
-							LockVar();
 							SetResult(3);
-							UnlockVar();
 							Err = TmpErr;
 							goto exit1;
 						}
@@ -2603,10 +2593,8 @@ WORD TTLSprintf()
 	}
 
 	// マッチした行を inputstr へ格納する
-	LockVar();
 	SetInputStr(buf);  // ここでバッファがクリアされる
 	SetResult(0);
-	UnlockVar();
 
 exit1:
 	onig_region_free(region, 1);
@@ -2804,9 +2792,7 @@ WORD TTLStrMatch()
 		result = 0;
 	}
 
-	LockVar();
 	SetResult(result);
-	UnlockVar();
 
 	return Err;
 }
