@@ -1355,6 +1355,12 @@ void CSScreenErase()
     BuffRegionScrollDownNLines(Param[1]);
   }
 
+  void CSBackTab()
+  {
+    if (Param[1]<1) Param[1] = 1;
+    BackTab(Param[1]);
+  }
+
   void CSMoveToColumnN()
   {
     if (Param[1]<1) Param[1] = 1;
@@ -2124,6 +2130,7 @@ void ParseCS(BYTE b) /* b is the final char */
 	    case 'S': CSScrollUP(); break;		// SU
 	    case 'T': CSScrollDown(); break;		// SD
 	    case 'X': CSEraseCharacter(); break;
+	    case 'Z': CSBackTab(); break;		// CBT
 	    case '`': CSMoveToColumnN(); break;
 	    case 'a': CSCursorRight(); break;
 	    case 'c': AnswerTerminalType(); break;

@@ -2804,6 +2804,23 @@ void MoveToNextTab(BOOL AutoWrapMode)
   Wrap = WrapState;
 }
 
+void BackTab(int count) {
+	int i;
+
+	for (i=0; i<NTabStops; i++) {
+		if (TabStops[i] >= CursorX) {
+			break;
+		}
+	}
+
+	if (i < count) {
+		MoveCursor(0, CursorY);
+	}
+	else {
+		MoveCursor(TabStops[i-count], CursorY);
+	}
+}
+
 void ClearTabStop(int Ps)
 // Clear tab stops
 //   Ps = 0: clear the tab stop at cursor
