@@ -266,15 +266,15 @@ Example: adding a TTSSH menu under File menu
   7. Announce release to mailing list(in Japan).
 
   8. Announce release to forum(in Canada).
-       (1) Announcements http://www.neocom.ca/forum/viewforum.php?f=5
+       (1) Announcements http://logmett.com/forum/viewforum.php?f=5
            Create new topic in `Announcements' entry.
            Change the type of previous Announcement from Announcement to Normal.
            Delete third previous Announcement.
 
-       (2) Tera Term Changelog http://www.neocom.ca/forum/viewtopic.php?t=3
+       (2) Tera Term Changelog http://logmett.com/forum/viewtopic.php?f=5&t=3
            Added current modification.
 
-       (3) TTSSH Changelog http://www.neocom.ca/forum/viewtopic.php?t=29
+       (3) TTSSH Changelog http://logmett.com/forum/viewtopic.php?f=5&t=29
            Added current modification.
 
   9. Delete spanshots.

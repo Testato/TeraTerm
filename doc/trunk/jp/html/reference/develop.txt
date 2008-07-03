@@ -278,15 +278,15 @@
   7. メーリングリストにアナウンスする
 
   8. フォーラムに告知する
-       (1) Announcements http://www.neocom.ca/forum/viewforum.php?f=5
+       (1) Announcements http://logmett.com/forum/viewforum.php?f=5
            Announcements に新規投稿する。種類は Announcement
            一つ前の Announcement の種類を Normal に変更する
            Announcement は三個残すことになっているので、三つ前の Announcement を削除する
 
-       (2) Tera Term Changelog http://www.neocom.ca/forum/viewtopic.php?t=3
+       (2) Tera Term Changelog http://logmett.com/forum/viewtopic.php?f=5&t=3
            今回の変更を追加する
 
-       (3) TTSSH Changelog http://www.neocom.ca/forum/viewtopic.php?t=29
+       (3) TTSSH Changelog http://logmett.com/forum/viewtopic.php?f=5&t=29
            今回の変更を追加する
 
   9. スナップショットを削除する
