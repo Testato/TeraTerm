@@ -761,7 +761,13 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		TF_BACKWRAP * GetOnOff(Section, "BackWrap", FName, FALSE);
 
 	/* Beep type -- special option */
-	ts->Beep = GetOnOff(Section, "Beep", FName, TRUE);
+	GetPrivateProfileString(Section, "Beep", "", Temp, sizeof(Temp), FName);
+	if (_stricmp(Temp, "off") == 0)
+		ts->Beep = IdBeepOff;
+	else if (_stricmp(Temp, "visual") == 0)
+		ts->Beep = IdBeepVisual;
+	else
+		ts->Beep = IdBeepOn;
 
 	/* Beep on connection & disconnection -- special option */
 	ts->PortFlag |=
@@ -1690,6 +1696,17 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 
 	/* Beep type -- special option */
 	WriteOnOff(Section, "Beep", FName, ts->Beep);
+	switch (ts->Beep) {
+	case IdBeepOff:
+		WritePrivateProfileString(Section, "Beep", "Off", FName);
+		break;
+	case IdBeepOn:
+		WritePrivateProfileString(Section, "Beep", "On", FName);
+		break;
+	case IdBeepVisual:
+		WritePrivateProfileString(Section, "Beep", "Visual", FName);
+		break;
+	}
 
 	/* Beep on connection & disconnection -- special option */
 	WriteOnOff(Section, "BeepOnConnect", FName,

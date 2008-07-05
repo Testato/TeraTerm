@@ -39,6 +39,8 @@
 #define NParamMax 16
 #define IntCharMax 5
 
+void CSQExchangeColor();
+
 /* character attribute */
 static TCharAttr CharAttr;
 
@@ -682,8 +684,18 @@ void ParseControl(BYTE b)
       CommBinaryOut(&cv,&(ts.Answerback[0]),ts.AnswerbackLen);
       break;
     case BEL:
-      if (ts.Beep!=0)
-	MessageBeep(0);
+      switch (ts.Beep) {
+      case IdBeepOff:
+	/* nothing to do */
+        break;
+      case IdBeepOn:
+        MessageBeep(0);
+        break;
+      case IdBeepVisual:
+        CSQExchangeColor();
+        CSQExchangeColor();
+        break;
+      }
       break;
     case BS: BackSpace(); break;
     case HT: Tab(); break;
@@ -1812,6 +1824,7 @@ void CSSetAttr()
       BGInitialize();
 #endif
       DispChangeBackground();
+      UpdateWindow(HVTWin);
     }
 
     void CSQ_h_Mode()

@@ -191,6 +191,11 @@ typedef TCharAttr *PCharAttr;
 // iconf flags (used in ts.VTIcon and ts.TEKIcon)
 #define IdIconDefault 0
 
+// Beep type
+#define IdBeepOff    0
+#define IdBeepOn     1
+#define IdBeepVisual 2
+
 // Eterm lookfeel alphablend structure
 typedef struct {
 	int BGEnable;
