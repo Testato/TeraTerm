@@ -25,15 +25,29 @@ BackWrap=off
 </pre>
 
 
-<h1><a name="beep">Disabling beep for the BEL character</a></h1>
+<h1><a name="beep">Disabling beep for the BEL character<!--BEL 文字受信時の動作--></a></h1>
+
+<!--<p>
+BEL 文字 (ASCII $07) が受信された時に Tera Term はビープ音を鳴らします。
+</p>-->
 
 <p>
-You can disable the beep sound for the BEL character (ASCII $07) by editing the Beep line in the [Tera Term] section of the setup file like the following:
+You can disable the beep sound for the BEL character by editing the Beep line in the [Tera Term] section of the setup file like the following:
 </p>
 
 <pre>
 Beep=off
 </pre>
+
+<!--
+<p>
+また、以下のようにするとビープ音を鳴らす代わりに端末画面をフラッシュさせるようになります。
+</p>
+
+<pre>
+Beep=visual
+</pre>
+-->
 
 <pre>
 Default:
