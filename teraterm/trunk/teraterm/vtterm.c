@@ -693,6 +693,7 @@ void ParseControl(BYTE b)
         break;
       case IdBeepVisual:
         CSQExchangeColor();
+        Sleep(10);
         CSQExchangeColor();
         break;
       }
