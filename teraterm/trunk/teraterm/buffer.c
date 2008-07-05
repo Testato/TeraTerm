@@ -2770,55 +2770,39 @@ void SetTabStop()
   }
 }
 
-void MoveToNextTab(BOOL AutoWrapMode)
-{
-  int i;
-  BOOL WrapState;
-
-  WrapState = Wrap;
-
-  if (NTabStops>0)
-  {
-    i = -1;
-    do
-      i++;
-    while ((TabStops[i]<=CursorX) && (i<NTabStops-1));
-    if (TabStops[i]>CursorX)
-      MoveCursor(TabStops[i],CursorY);
-    else {
-      MoveCursor(NumOfColumns-1,CursorY);
-      if (!ts.VTCompatTab) {
-        Wrap = AutoWrapMode;
-        return;
-      }
-    }
-  }
-  else {
-    MoveCursor(NumOfColumns-1,CursorY);
-    if (!ts.VTCompatTab) {
-      Wrap = AutoWrapMode;
-      return;
-    }
-  }
-
-  Wrap = WrapState;
-}
-
-void BackTab(int count) {
+void CursorForwardTab(int count, BOOL AutoWrapMode) {
 	int i;
+	BOOL WrapState;
 
-	for (i=0; i<NTabStops; i++) {
-		if (TabStops[i] >= CursorX) {
-			break;
-		}
-	}
+	WrapState = Wrap;
 
-	if (i < count) {
-		MoveCursor(0, CursorY);
+	for (i=0; i<NTabStops && TabStops[i] <= CursorX; i++)
+		;
+
+	i += count - 1;
+
+	if (i < NTabStops) {
+		MoveCursor(TabStops[i], CursorY);
 	}
 	else {
-		MoveCursor(TabStops[i-count], CursorY);
+		MoveCursor(NumOfColumns-1, CursorY);
+		if (!ts.VTCompatTab)
+			Wrap = AutoWrapMode;
+		else
+			Wrap = WrapState;
 	}
+}
+
+void CursorBackwardTab(int count) {
+	int i;
+
+	for (i=0; i<NTabStops && TabStops[i] < CursorX; i++)
+		;
+
+	if (i < count)
+		MoveCursor(0, CursorY);
+	else
+		MoveCursor(TabStops[i-count], CursorY);
 }
 
 void ClearTabStop(int Ps)

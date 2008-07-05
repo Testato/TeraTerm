@@ -356,7 +356,7 @@ void Tab()
 #endif /* NO_COPYLINE_FIX */
       Wrap = FALSE;
   }
-  MoveToNextTab(AutoWrapMode);
+  CursorForwardTab(1, AutoWrapMode);
   if (cv.HLogBuf!=0) Log1Byte(HT);
 }
 
@@ -1355,10 +1355,16 @@ void CSScreenErase()
     BuffRegionScrollDownNLines(Param[1]);
   }
 
-  void CSBackTab()
+  void CSForwardTab()
   {
     if (Param[1]<1) Param[1] = 1;
-    BackTab(Param[1]);
+    CursorForwardTab(Param[1], AutoWrapMode);
+  }
+
+  void CSBackwardTab()
+  {
+    if (Param[1]<1) Param[1] = 1;
+    CursorBackwardTab(Param[1]);
   }
 
   void CSMoveToColumnN()
@@ -2122,6 +2128,7 @@ void ParseCS(BYTE b) /* b is the final char */
 	    case 'F': CSCursorUp1(); break;
 	    case 'G': CSMoveToColumnN(); break;
 	    case 'H': CSMoveToXY(); break;
+	    case 'I': CSForwardTab(); break;		// CHT
 	    case 'J': CSScreenErase(); break;
 	    case 'K': CSLineErase(); break;
 	    case 'L': CSInsertLine(); break;
@@ -2130,7 +2137,7 @@ void ParseCS(BYTE b) /* b is the final char */
 	    case 'S': CSScrollUP(); break;		// SU
 	    case 'T': CSScrollDown(); break;		// SD
 	    case 'X': CSEraseCharacter(); break;
-	    case 'Z': CSBackTab(); break;		// CBT
+	    case 'Z': CSBackwardTab(); break;		// CBT
 	    case '`': CSMoveToColumnN(); break;
 	    case 'a': CSCursorRight(); break;
 	    case 'c': AnswerTerminalType(); break;

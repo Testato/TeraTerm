@@ -56,8 +56,8 @@ void BuffChangeTerminalSize(int Nx, int Ny);
 void ChangeWin();
 void ClearBuffer();
 void SetTabStop();
-void MoveToNextTab(BOOL AutoWrapMode);
-void BackTab(int count);
+void CursorForwardTab(int count, BOOL AutoWrapMode);
+void CursorBackwardTab(int count);
 void ClearTabStop(int Ps);
 void ShowStatusLine(int Show);
 #ifndef NO_COPYLINE_FIX
