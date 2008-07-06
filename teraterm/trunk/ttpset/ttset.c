@@ -225,6 +225,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		ts->Language = IdRussian;
 	else if (_stricmp(Temp, "English") == 0)
 		ts->Language = IdEnglish;
+	else if (_stricmp(Temp,"Korean") == 0) // HKS
+		ts->Language = IdKorean;
 	else {
 		switch (PRIMARYLANGID(GetSystemDefaultLangID())) {
 		case LANG_JAPANESE:
@@ -233,6 +235,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		case LANG_RUSSIAN:
 			ts->Language = IdRussian;
 			break;
+        case LANG_KOREAN:	// HKS
+			ts->Language = IdKorean; 
+			break; 
 		default:
 			ts->Language = IdEnglish;
 		}
@@ -1205,6 +1210,8 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 		strncpy_s(Temp, sizeof(Temp), "Japanese", _TRUNCATE);
 	else if (ts->Language == IdRussian)
 		strncpy_s(Temp, sizeof(Temp), "Russian", _TRUNCATE);
+	else if (ts->Language == IdKorean) //HKS
+		strncpy_s(Temp, sizeof(Temp), "Korean", _TRUNCATE);
 	else
 		strncpy_s(Temp, sizeof(Temp), "English", _TRUNCATE);
 	WritePrivateProfileString(Section, "Language", Temp, FName);

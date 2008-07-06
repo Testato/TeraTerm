@@ -60,6 +60,10 @@ static PCHAR far RussList[] = {"Windows","KOI8-R","CP 866","ISO 8859-5",NULL};
 static PCHAR far RussList2[] = {"Windows","KOI8-R",NULL};
 static PCHAR far LocaleList[] = {"japanese","chinese", "chinese-simplified", "chinese-traditional", NULL};
 
+// HKS
+static PCHAR far KoreanList[] = {"KS5601", "UTF-8", NULL};
+static PCHAR far KoreanListSend[] = {"KS5601", "UTF-8", NULL};
+
 BOOL CALLBACK TermDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
 	PTTSet ts;
@@ -275,6 +279,19 @@ BOOL CALLBACK TermDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			SetDropDownList(Dialog,IDC_TERMRUSSHOST,RussList,ts->RussHost);
 			SetDropDownList(Dialog,IDC_TERMRUSSCLIENT,RussList,ts->RussClient);
 		}
+		else if (ts->Language==IdKorean) // HKS
+		{
+			SetDropDownList(Dialog, IDC_TERMKANJI, KoreanList, (ts->KanjiCode==IdUTF8)? 2:1);
+			SetDropDownList(Dialog, IDC_TERMKANJISEND, KoreanListSend, (ts->KanjiCodeSend==IdUTF8)? 2:1);
+
+			// ロケ?ル用テキスト?ックス
+			SetDlgItemText(Dialog, IDC_LOCALE_EDIT, ts->Locale);
+			SendDlgItemMessage(Dialog, IDC_LOCALE_EDIT, EM_LIMITTEXT, sizeof(ts->Locale), 0);
+
+			SetDlgItemInt(Dialog, IDC_CODEPAGE_EDIT, ts->CodePage, FALSE);
+			//SendDlgItemMessage(Dialog, IDC_CODEPAGE_EDIT, EM_LIMITTEXT, 16, 0);
+
+		}
 		return TRUE;
 
 	case WM_COMMAND:
@@ -336,6 +353,27 @@ BOOL CALLBACK TermDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 				ts->RussHost = (WORD)GetCurSel(Dialog, IDC_TERMRUSSHOST);
 				ts->RussClient = (WORD)GetCurSel(Dialog, IDC_TERMRUSSCLIENT);
 			}
+			else if (ts->Language==IdKorean) // HKS
+			{
+				BOOL ret;
+
+				ts->KanjiCode = (WORD)GetCurSel(Dialog, IDC_TERMKANJI);
+		        if(ts->KanjiCode==2)
+				   ts->KanjiCode=IdUTF8;
+				ts->KanjiCodeSend = (WORD)GetCurSel(Dialog, IDC_TERMKANJISEND);
+				if(ts->KanjiCodeSend==2)
+				   ts->KanjiCodeSend=IdUTF8;
+				ts->JIS7KatakanaSend=0;
+				ts->JIS7Katakana=0;
+				ts->KanjiIn = 0;
+				ts->KanjiOut = 0;
+
+				GetDlgItemText(Dialog, IDC_LOCALE_EDIT, ts->Locale, sizeof(ts->Locale));
+				ts->CodePage = GetDlgItemInt(Dialog, IDC_CODEPAGE_EDIT, &ret, FALSE);
+				if(ts->CodePage==932)
+				  ts->Language = IdJapanese;
+			}
+
 		}
 		EndDialog(Dialog, 1);
 		if (DlgTermFont != NULL) {
@@ -2463,7 +2501,7 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 	return FALSE;
 }
 
-static PCHAR far LangList[] = {"English","Japanese","Russian",NULL};
+static PCHAR far LangList[] = {"English","Japanese","Russian","Korean",NULL};
 
 BOOL CALLBACK GenDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
@@ -2696,6 +2734,8 @@ BOOL FAR PASCAL SetupTerminal(HWND WndParent, PTTSet ts)
 		i = IDD_TERMDLGJ;
 	else if (ts->Language==IdRussian) // Russian mode
 		i = IDD_TERMDLGR;
+    else if (ts->Language==IdKorean) // Korean mode //HKS
+	    i = IDD_TERMDLGK;
 	else
 		i = IDD_TERMDLG;
 

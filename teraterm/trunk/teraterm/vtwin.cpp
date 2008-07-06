@@ -1412,6 +1412,8 @@ void CVTWindow::SetupTerm()
 {
 	if (ts.Language==IdJapanese)
 		ResetCharSet();
+	if (ts.Language==IdKorean)  // HKS
+		ResetCharSet();
 	cv.CRSend = ts.CRSend;
 
 	// for russian mode
@@ -3648,7 +3650,7 @@ void CVTWindow::OnSetupKeyboard()
 
 	if (Ok) {
 //	    ResetKeypadMode(TRUE);
-	    if (ts.Language==IdJapanese)
+	    if ((ts.Language==IdJapanese) || (ts.Language==IdKorean)) //HKS
 		ResetIME();
 	}
 }

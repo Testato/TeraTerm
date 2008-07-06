@@ -1921,7 +1921,7 @@ void ResetIME()
   cv.Language = ts.Language;
 
   /* reset IME */
-  if (ts.Language==IdJapanese)
+  if ((ts.Language==IdJapanese) || (ts.Language==IdKorean)) //HKS
   {
     if (ts.UseIME==0)
       FreeIME();
