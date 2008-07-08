@@ -30,7 +30,7 @@
 <!--
       <li>ビジュアルベルに対応した。BEL文字を受信した時に、Beepを鳴らす代わりに画面をフラッシュさせる事が出来る。
         <ul>
-          <li>TERATERM.INIの<a href="../setup/teraterm-term.html#beep">Beep</a>エントリを拡張し、On/Offの他にVisualを受け付けるようにした。</li>
+          <li>teraterm.iniの<a href="../setup/teraterm-term.html#beep">Beep</a>エントリを拡張し、On/Offの他にVisualを受け付けるようにした。</li>
       </ul></li>
 -->
       <li>added support for Korean language. Special thanks to Keonsoon Hwang.</li>
@@ -110,7 +110,7 @@
           <li>added the cyglaunch shortcut to the quick launch bar.</li>
           <li>linked .ttl file to the ttpmacro.exe program.</li>
           <li>linked telnet protocol to the ttermpro.exe program.</li>
-          <li>updated FileDir entry in the TERATERM.INI file to Tera Term installation directory.</li>
+          <li>updated FileDir entry in the teraterm.ini file to Tera Term installation directory.</li>
         </ul></li>
       <li>Bug fix: "Window list" dialog was not appeared in VT window.</li>
       <li>Bug fix: Some application like as LogMeTT.exe and cygterm.exe, or cygterm.cfg file would not work well when Tera Term current directory is changed because the fullpath does not be specified.</li>
@@ -1038,7 +1038,7 @@ SYNOPSIS:
   <li class="history"><a name="teraterm_2.06">2004.11.6 (Ver 2.06)</a>
     <ul>
       <li>fixed drawing ruled line with DEC special font remains garbage graphics, moreover UTF-8 feature to display only Japanese characters. And also fixed BOLD style of font problem.</li>
-      <li>TeraTerm second later instances can read configuration from TERATERM.INI.</li>
+      <li>TeraTerm second later instances can read configuration from teraterm.ini.</li>
       <li>added drag&amp;drop directory path in teraterm from explorer.</li>
       <li>rewrote README(English). Special thanks to Boris Maisuradze for his cooperation.</li>
     </ul>
@@ -1055,7 +1055,7 @@ SYNOPSIS:
       <li>added MFC7.1 runtime library</li>
       <li>setup environmental variable 'TERATERM_EXTENSIONS' is now ignored, TTSSH is always loaded.</li>
       <li>fixed UTF-8 encoding of HANKAKU KANA.</li>
-      <li>added /nossh option (fixed problem that doesn't start Cygterm with TTSSH section(Enabled=1) of TERATERM.INI file)</li>
+      <li>added /nossh option (fixed problem that doesn't start Cygterm with TTSSH section(Enabled=1) of teraterm.ini file)</li>
       <li>added SSH2 version TTSSH(<a href="#ttssh_1.00alpha2">1.00alpha2</a>)</li>
     </ul>
   </li>
@@ -1604,7 +1604,7 @@ SYNOPSIS:
       <li>added support of SSH1</li>
       <li>fixed the bug of suddenly disconnecting SSH session (the message "Oversized packet received from server" was appearing in dialog box)</li>
       <li>added /1, /2 command line options</li>
-      <li>added SSH protocol version related entry in TERATERM.INI file</li>
+      <li>added SSH protocol version related entry in teraterm.ini file</li>
     </ul>
   </li>
 
