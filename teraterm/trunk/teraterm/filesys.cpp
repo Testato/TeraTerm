@@ -459,6 +459,14 @@ void LogStart()
 	LogVar->FileOpen = (LogVar->FileHandle>0);
 	if (! LogVar->FileOpen)
 	{
+		char msg[128];
+
+		// ファイルオープンエラー時のメッセージ表示を追加した。(2008.7.9 yutaka)
+		if (LogVar->NoMsg == FALSE) {
+			_snprintf_s(msg, sizeof(msg), _TRUNCATE, "Can not create a `%s' file. (%d)", LogVar->FullName, GetLastError());
+			MessageBox(NULL, msg, "Tera Term: File open error", MB_OK | MB_ICONERROR);
+		}
+
 		FileTransEnd(OpLog);
 		return;
 	}
