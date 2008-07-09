@@ -3063,7 +3063,10 @@ BOOL ParseFirstRus(BYTE b)
 void ParseFirst(BYTE b)
 {
 	// UTF-8‚Ìê‡‚Í“Á•Ê‚Éˆ—‚·‚é
-	if ((ts.Language==IdJapanese && ts.KanjiCode == IdUTF8) &&
+	if ((ts.Language==IdKorean && ts.KanjiCode == IdUTF8) &&
+		ParseFirstUTF8(b, 0)) {
+			return;
+	} else	if ((ts.Language==IdJapanese && ts.KanjiCode == IdUTF8) &&
 		ParseFirstUTF8(b, 0)) {
 			return;
 	} else 	if ((ts.Language==IdJapanese && ts.KanjiCode == IdUTF8m) &&
