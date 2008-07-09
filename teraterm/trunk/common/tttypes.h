@@ -417,6 +417,7 @@ struct tttset {
 	WORD AutoScrollOnlyInBottomLine;
 	WORD UnknownUnicodeCharaAsWide;
 	char YModemRcvCommand[MAX_PATH];
+	WORD RemoteTitleChanging;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -843,6 +844,9 @@ typedef TMap far *PMap;
  * Increment the number of this macro value
  * when you change TMap or member of TMap.
  *
+ * - At version 4.59, ttset_memfilemap was replaced with ttset_memfilemap_8.
+ *   added tttset.RemoteTitleChanging.
+ *
  * - At version 4.59, ttset_memfilemap was replaced with ttset_memfilemap_7.
  *   added tttset.DisablePasteMouseMButton.
  *   added tttset.MouseWheelScrollLine.
@@ -891,4 +895,4 @@ typedef TMap far *PMap;
  *   added tttset.VTCompatTab.
  */
 
-#define TT_FILEMAPNAME "ttset_memfilemap_7"
+#define TT_FILEMAPNAME "ttset_memfilemap_8"

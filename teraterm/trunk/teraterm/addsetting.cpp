@@ -144,6 +144,10 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 	get_lang_msg("DLG_TAB_GENERAL_ACCEPT_MOUSE_EVENT_TRACKING", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_ACCEPT_MOUSE_EVENT_TRACKING, ts.UIMsg);
 
+	GetDlgItemText(IDC_ACCEPT_TITLE_CHANGING, uimsg, sizeof(uimsg));
+	get_lang_msg("DLG_TAB_GENERAL_ACCEPT_TITLE_CHANGING", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	SetDlgItemText(IDC_ACCEPT_TITLE_CHANGING, ts.UIMsg);
+
 	// (1)DisableAcceleratorSendBreak
 	btn = (CButton *)GetDlgItem(IDC_DISABLE_SENDBREAK);
 	btn->SetCheck(ts.DisableAcceleratorSendBreak);
@@ -170,6 +174,10 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 	// (7)IDC_ACCEPT_MOUSE_EVENT_TRACKING
 	btn = (CButton *)GetDlgItem(IDC_ACCEPT_MOUSE_EVENT_TRACKING);
 	btn->SetCheck(ts.MouseEventTracking);
+
+	// (8)IDC_ACCEPT_TITLE_CHANGING
+	btn = (CButton *)GetDlgItem(IDC_ACCEPT_TITLE_CHANGING);
+	btn->SetCheck(ts.RemoteTitleChanging);
 
 	// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
 	::SetFocus(::GetDlgItem(GetSafeHwnd(), IDC_CLICKABLE_URL));
@@ -216,6 +224,10 @@ void CGeneralPropPageDlg::OnOK()
 	// (7)IDC_ACCEPT_MOUSE_EVENT_TRACKING 
 	btn = (CButton *)GetDlgItem(IDC_ACCEPT_MOUSE_EVENT_TRACKING);
 	ts.MouseEventTracking = btn->GetCheck();
+
+	// (8)IDC_ACCEPT_TITLE_CHANGING 
+	btn = (CButton *)GetDlgItem(IDC_ACCEPT_TITLE_CHANGING);
+	ts.RemoteTitleChanging = btn->GetCheck();
 }
 
 

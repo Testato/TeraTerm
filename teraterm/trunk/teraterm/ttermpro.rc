@@ -89,6 +89,8 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,85,173,10
     CONTROL         "Accept &Mouse Event Tracking",IDC_ACCEPT_MOUSE_EVENT_TRACKING,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,100,180,10
+    CONTROL         "Accept Window &Title Changing Request",IDC_ACCEPT_TITLE_CHANGING,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,115,180,10
 END
 
 IDD_BROADCAST_DIALOG DIALOGEX 0, 0, 252, 98

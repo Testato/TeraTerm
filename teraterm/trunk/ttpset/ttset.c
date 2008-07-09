@@ -1194,6 +1194,11 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	// AutoScrollOnlyInBottomLine
 	ts->AutoScrollOnlyInBottomLine =
 		GetOnOff(Section, "AutoScrollOnlyInBottomLine", FName, FALSE);
+
+	// Accept remote-controlled window title changing
+	ts->RemoteTitleChanging =
+		GetOnOff(Section, "AcceptTitleChangingFromRemote", FName, TRUE);
+
 }
 
 void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
@@ -1998,6 +2003,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// Unknown Unicode Character
 	WriteOnOff(Section, "UnknownUnicodeCharacterAsWide", FName,
 	           ts->UnknownUnicodeCharaAsWide);
+
+	// Accept remote-controlled window title changing
+	WriteOnOff(Section, "AcceptTitleChangingFromRemote", FName,
+	           ts->RemoteTitleChanging);
 }
 
 #define VTEditor "VT editor keypad"

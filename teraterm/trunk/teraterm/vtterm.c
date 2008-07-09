@@ -2468,10 +2468,12 @@ void XSequence(BYTE b)
 			  case 0: /* Change window title and icon name */
 			  case 1: /* Change icon name */
 			  case 2: /* Change window title */
-				strncpy_s(ts.Title, sizeof(ts.Title), StrBuff, _TRUNCATE);
-				// (2006.6.15 maya) タイトルに渡す文字列をSJISに変換
-				ConvertToCP932(ts.Title, sizeof(ts.Title));
-				ChangeTitle();
+				if (ts.RemoteTitleChanging) {
+					strncpy_s(ts.Title, sizeof(ts.Title), StrBuff, _TRUNCATE);
+					// (2006.6.15 maya) タイトルに渡す文字列をSJISに変換
+					ConvertToCP932(ts.Title, sizeof(ts.Title));
+					ChangeTitle();
+				}
 				break;
 			  default:
 				/* nothing to do */;
