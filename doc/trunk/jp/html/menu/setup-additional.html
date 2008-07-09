@@ -32,24 +32,28 @@
       <dd>
 	ブロードキャストコマンドを受け入れます。
       </dd>
-      
+
       <dt>MouseWheelScrollLine</dt>
       <dd>
 	マウスホイールによるスクロール行数を設定します。
       </dd>
-      
+
       <dt>AutoScrollOnlyInBottomLine</dt>
       <dd>
 	最下行を表示していない状態では自動的にスクロールしないようにします。
       </dd>
-      
+
       <dt>Accept Mouse Event Tracking</dt>
       <dd>
-	ホスト側のアプリケーションによって、VT window がマウストラッキングモードに変更された場合、Tera Term はマウス操作をホストへ報告するようになります。<br>
-    マウストラッキングモードはxtermの拡張機能ですので、TERM環境変数が"xterm"以外だとホスト側のアプリケーションはこの機能を使わないかもしれません。
-    <!-- xtermの拡張機能というのは本当? xtermのドキュメント(ctlseqs.txt)やソースを見ると、Normal tracking modeは #define SET_VT200_MOUSE と定義されている。また、モーションイベントはxterm独自の拡張とも書かれているから、ボタンイベントは以外が由来なようにも読める。ただ、VT220,VT240,VT420,VT520のドキュメントを確認しても、マウストラッキングモードに関する記述は見つからなかった。(そもそもこれらにマウスは付くのか?) -->
+        ホスト側のアプリケーションによって、VT window がマウストラッキングモードに変更された場合、Tera Term はマウス操作をホストへ報告するようになります。<br>
+        マウストラッキングモードはxtermの拡張機能ですので、TERM環境変数が"xterm"以外だとホスト側のアプリケーションはこの機能を使わないかもしれません。
       </dd>
-      
+
+      <dt>Accept Window Title Changing Request</dt>
+      <dd>
+        リモートからのウィンドウタイトル変更要求を受け入れるかを設定します。
+      </dd>
+
     </dl>
 
     <h2>"Copy and Paste" タブ</h2>
@@ -97,7 +101,7 @@
 	Eterm風の半透明ウィンドウを使用することができます。
       </dd>
     </dl>
-    
+
     <p>
       詳しくは「<a href="../usage/transparent.html">透過ウインドウ</a>」
       を参照してください。
