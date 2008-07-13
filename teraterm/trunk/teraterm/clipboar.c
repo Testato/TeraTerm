@@ -244,6 +244,7 @@ static int PasteCanceled = 0;
 
 static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
+	static int cur_dlg_height, cur_dlg_width;
 	LOGFONT logfont;
 	HFONT font;
 	char uimsg[MAX_UIMSG];
@@ -334,6 +335,10 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 			SetWindowPos(hDlgWnd, NULL, p.x, p.y,
 			             0, 0, SWP_NOSIZE | SWP_NOZORDER);
 
+			// åªç›ÉTÉCÉYÇï€ë∂
+			cur_dlg_height = dlg_height;
+			cur_dlg_width = dlg_width;
+
 			return TRUE;
 
 		case WM_COMMAND:
@@ -382,6 +387,32 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 			EndDialog(hDlgWnd, 0);
 			return TRUE;
 #endif
+
+		case WM_SIZE:
+			{
+#if 0
+			double dw, dh;
+			RECT rc_edit;
+			double nw, nh;
+
+			GetWindowRect(hDlgWnd, &rc_dlg);
+			dlg_height = rc_dlg.bottom-rc_dlg.top;
+			dlg_width  = rc_dlg.right-rc_dlg.left;
+
+			// î{ó¶åvéZ
+			dw = (double)dlg_width / cur_dlg_width;
+			dh = (double)dlg_height / cur_dlg_height;
+			GetWindowRect(GetDlgItem(hDlgWnd, IDC_EDIT), &rc_edit);
+			nw = ((double)rc_edit.right - rc_edit.left) * dw;
+			nh = (double)(rc_edit.bottom - rc_edit.top) * dh;
+
+			MoveWindow(GetDlgItem(hDlgWnd, IDC_EDIT), 
+				rc_edit.left, rc_edit.top,
+				nw, nh, TRUE);
+		
+#endif
+			}
+			return TRUE;
 
 		default:
 			return FALSE;
