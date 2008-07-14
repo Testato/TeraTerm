@@ -1822,6 +1822,19 @@ void CSSetAttr()
       ColorRef = ts.VTColor[0];
       ts.VTColor[0] = ts.VTColor[1];
       ts.VTColor[1] = ColorRef;
+
+      ColorRef = ts.VTBoldColor[0];
+      ts.VTBoldColor[0] = ts.VTBoldColor[1];
+      ts.VTBoldColor[1] = ColorRef;
+
+      ColorRef = ts.VTBlinkColor[0];
+      ts.VTBlinkColor[0] = ts.VTBlinkColor[1];
+      ts.VTBlinkColor[1] = ColorRef;
+
+      ColorRef = ts.URLColor[0];
+      ts.URLColor[0] = ts.URLColor[1];
+      ts.URLColor[1] = ColorRef;
+
 #ifdef ALPHABLEND_TYPE2
       BGInitialize();
 #endif
