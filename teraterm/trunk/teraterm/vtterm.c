@@ -39,7 +39,7 @@
 #define NParamMax 16
 #define IntCharMax 5
 
-void CSQExchangeColor();
+void VisualBell();
 
 /* character attribute */
 static TCharAttr CharAttr;
@@ -692,9 +692,7 @@ void ParseControl(BYTE b)
         MessageBeep(0);
         break;
       case IdBeepVisual:
-        CSQExchangeColor();
-        Sleep(10);
-        CSQExchangeColor();
+	VisualBell();
         break;
       }
       break;
@@ -1135,6 +1133,9 @@ void ParseEscape(BYTE b) /* b is the final char */
 	  ClearBuffer();
 	  if (ts.PortType==IdSerial) // reset serial port
 	    CommResetSerial(&ts, &cv, TRUE);
+	  break;
+	case 'g': /* Visual Bell (screen original?) */
+	  VisualBell();
 	  break;
 	case 'n': Glr[0] = 2; break; /* LS2 */
 	case 'o': Glr[0] = 3; break; /* LS3 */
@@ -3283,4 +3284,10 @@ void FocusReport(BOOL focus) {
       CommBinaryOut(&cv,"\033[O",3);
     }
   }
+}
+
+void VisualBell() {
+	CSQExchangeColor();
+	Sleep(10);
+	CSQExchangeColor();
 }
