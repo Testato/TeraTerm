@@ -244,7 +244,6 @@ static int PasteCanceled = 0;
 
 static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
-	static int cur_dlg_height, cur_dlg_width;
 	LOGFONT logfont;
 	HFONT font;
 	char uimsg[MAX_UIMSG];
@@ -253,6 +252,8 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 	RECT rc_dsk, rc_dlg;
 	int dlg_height, dlg_width;
 	OSVERSIONINFO osvi;
+	static int ok2right, info2bottom, edit2ok, edit2info;
+	RECT rc_edit, rc_ok, rc_cancel, rc_info;
 
 	switch (msg) {
 		case WM_INITDIALOG:
@@ -335,9 +336,19 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 			SetWindowPos(hDlgWnd, NULL, p.x, p.y,
 			             0, 0, SWP_NOSIZE | SWP_NOZORDER);
 
-			// 現在サイズを保存
-			cur_dlg_height = dlg_height;
-			cur_dlg_width = dlg_width;
+			// 現在サイズから必要な値を計算
+			GetClientRect(hDlgWnd,                                 &rc_dlg);
+			GetWindowRect(GetDlgItem(hDlgWnd, IDC_EDIT),           &rc_edit);
+			GetWindowRect(GetDlgItem(hDlgWnd, IDOK),               &rc_ok);
+			GetWindowRect(GetDlgItem(hDlgWnd, IDC_CLIPBOARD_INFO), &rc_info);
+
+			p.x = rc_dlg.right;
+			p.y = rc_dlg.bottom;
+			ClientToScreen(hDlgWnd, &p);
+			ok2right = p.x - rc_ok.left;
+			info2bottom = p.y - rc_info.top;
+			edit2ok = rc_ok.left - rc_edit.right;
+			edit2info = rc_info.top - rc_edit.bottom;
 
 			return TRUE;
 
@@ -390,27 +401,50 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 
 		case WM_SIZE:
 			{
-#if 0
-			double dw, dh;
-			RECT rc_edit;
-			double nw, nh;
+				// 再配置
+				POINT p;
+				int dlg_w, dlg_h;
 
-			GetWindowRect(hDlgWnd, &rc_dlg);
-			dlg_height = rc_dlg.bottom-rc_dlg.top;
-			dlg_width  = rc_dlg.right-rc_dlg.left;
+				GetClientRect(hDlgWnd,                                 &rc_dlg);
+				dlg_w = rc_dlg.right;
+				dlg_h = rc_dlg.bottom;
 
-			// 倍率計算
-			dw = (double)dlg_width / cur_dlg_width;
-			dh = (double)dlg_height / cur_dlg_height;
-			GetWindowRect(GetDlgItem(hDlgWnd, IDC_EDIT), &rc_edit);
-			nw = ((double)rc_edit.right - rc_edit.left) * dw;
-			nh = (double)(rc_edit.bottom - rc_edit.top) * dh;
+				GetWindowRect(GetDlgItem(hDlgWnd, IDC_EDIT),           &rc_edit);
+				GetWindowRect(GetDlgItem(hDlgWnd, IDOK),               &rc_ok);
+				GetWindowRect(GetDlgItem(hDlgWnd, IDCANCEL),           &rc_cancel);
+				GetWindowRect(GetDlgItem(hDlgWnd, IDC_CLIPBOARD_INFO), &rc_info);
 
-			MoveWindow(GetDlgItem(hDlgWnd, IDC_EDIT), 
-				rc_edit.left, rc_edit.top,
-				nw, nh, TRUE);
-		
-#endif
+				// OK
+				p.x = rc_ok.left;
+				p.y = rc_ok.top;
+				ScreenToClient(hDlgWnd, &p);
+				SetWindowPos(GetDlgItem(hDlgWnd, IDOK), 0,
+				             dlg_w - ok2right, p.y, 0, 0,
+				             SWP_NOSIZE | SWP_NOZORDER);
+
+				// CANCEL
+				p.x = rc_cancel.left;
+				p.y = rc_cancel.top;
+				ScreenToClient(hDlgWnd, &p);
+				SetWindowPos(GetDlgItem(hDlgWnd, IDCANCEL), 0,
+				             dlg_w - ok2right, p.y, 0, 0,
+				             SWP_NOSIZE | SWP_NOZORDER);
+
+				// INFO
+				p.x = rc_info.left;
+				p.y = rc_info.top;
+				ScreenToClient(hDlgWnd, &p);
+				SetWindowPos(GetDlgItem(hDlgWnd, IDC_CLIPBOARD_INFO), 0,
+				             p.x, dlg_h - info2bottom, 0, 0,
+				             SWP_NOSIZE | SWP_NOZORDER);
+
+				// EDIT
+				p.x = rc_edit.left;
+				p.y = rc_edit.top;
+				ScreenToClient(hDlgWnd, &p);
+				SetWindowPos(GetDlgItem(hDlgWnd, IDC_EDIT), 0,
+				             0, 0, dlg_w - p.x - edit2ok - ok2right, dlg_h - p.y - edit2info - info2bottom,
+				             SWP_NOMOVE | SWP_NOZORDER);
 			}
 			return TRUE;
 
