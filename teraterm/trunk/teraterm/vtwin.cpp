@@ -3002,12 +3002,12 @@ void CVTWindow::OnDuplicateSession()
 	// 現在の設定内容を共有メモリへコピーしておく
 	CopyTTSetToShmem(&ts);
 
-	if (ts.TCPPort == 23) { // telnet
+	if (cv.TelFlag) { // telnet
 		_snprintf_s(Command, sizeof(Command), _TRUNCATE,
 		            "%s %s:%d /DUPLICATE /nossh", 
 		            exec, ts.HostName, ts.TCPPort);
 
-	} else if (ts.TCPPort == 22) { // SSH
+	} else if (cv.isSSH) { // SSH
 		// ここの処理は TTSSH 側にやらせるべき (2004.12.7 yutaka)
 		// TTSSH側でのオプション生成を追加。(2005.4.8 yutaka)
 		_snprintf_s(Command, sizeof(Command), _TRUNCATE,
