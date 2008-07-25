@@ -5276,10 +5276,121 @@ static char* key_fingerprint_raw(Key *k, int *dgst_raw_length)
 }
 
 
+const char *
+key_type(const Key *k)
+{
+	switch (k->type) {
+	case KEY_RSA1:
+		return "RSA1";
+	case KEY_RSA:
+		return "RSA";
+	case KEY_DSA:
+		return "DSA";
+	}
+	return "unknown";
+}
+
+unsigned int
+key_size(const Key *k)
+{
+	switch (k->type) {
+	case KEY_RSA1:
+	case KEY_RSA:
+		return BN_num_bits(k->rsa->n);
+	case KEY_DSA:
+		return BN_num_bits(k->dsa->p);
+	}
+	return 0;
+}
+
+// based on OpenSSH 5.1
+#define	FLDBASE		8
+#define	FLDSIZE_Y	(FLDBASE + 1)
+#define	FLDSIZE_X	(FLDBASE * 2 + 1)
+static char *
+key_fingerprint_randomart(u_char *dgst_raw, u_int dgst_raw_len, const Key *k)
+{
+	/*
+	 * Chars to be used after each other every time the worm
+	 * intersects with itself.  Matter of taste.
+	 */
+	char	*augmentation_string = " .o+=*BOX@%&#/^SE";
+	char	*retval, *p;
+	unsigned char	 field[FLDSIZE_X][FLDSIZE_Y];
+	unsigned int	 i, b;
+	int	 x, y;
+	size_t	 len = strlen(augmentation_string) - 1;
+
+	retval = calloc(1, (FLDSIZE_X + 3 + 1) * (FLDSIZE_Y + 2));
+
+	/* initialize field */
+	memset(field, 0, FLDSIZE_X * FLDSIZE_Y * sizeof(char));
+	x = FLDSIZE_X / 2;
+	y = FLDSIZE_Y / 2;
+
+	/* process raw key */
+	for (i = 0; i < dgst_raw_len; i++) {
+		int input;
+		/* each byte conveys four 2-bit move commands */
+		input = dgst_raw[i];
+		for (b = 0; b < 4; b++) {
+			/* evaluate 2 bit, rest is shifted later */
+			x += (input & 0x1) ? 1 : -1;
+			y += (input & 0x2) ? 1 : -1;
+
+			/* assure we are still in bounds */
+			x = max(x, 0);
+			y = max(y, 0);
+			x = min(x, FLDSIZE_X - 1);
+			y = min(y, FLDSIZE_Y - 1);
+
+			/* augment the field */
+			field[x][y]++;
+			input = input >> 2;
+		}
+	}
+
+	/* mark starting point and end point*/
+	field[FLDSIZE_X / 2][FLDSIZE_Y / 2] = len - 1;
+	field[x][y] = len;
+
+	/* fill in retval */
+	_snprintf_s(retval, FLDSIZE_X, _TRUNCATE, "+--[%4s %4u]", key_type(k), key_size(k));
+	p = strchr(retval, '\0');
+
+	/* output upper border */
+	for (i = p - retval - 1; i < FLDSIZE_X; i++)
+		*p++ = '-';
+	*p++ = '+';
+	*p++ = '\r';
+	*p++ = '\n';
+
+	/* output content */
+	for (y = 0; y < FLDSIZE_Y; y++) {
+		*p++ = '|';
+		for (x = 0; x < FLDSIZE_X; x++)
+			*p++ = augmentation_string[min(field[x][y], len)];
+		*p++ = '|';
+		*p++ = '\r';
+		*p++ = '\n';
+	}
+
+	/* output lower border */
+	*p++ = '+';
+	for (i = 0; i < FLDSIZE_X; i++)
+		*p++ = '-';
+	*p++ = '+';
+
+	return retval;
+}
+#undef	FLDBASE	
+#undef	FLDSIZE_Y
+#undef	FLDSIZE_X
+
 //
 // fingerprint（指紋：ホスト公開鍵のハッシュ）を生成する
 //
-char *key_fingerprint(Key *key)
+char *key_fingerprint(Key *key, enum fp_rep dgst_rep)
 {
 	char *retval = NULL;
 	unsigned char *dgst_raw;
@@ -5289,18 +5400,26 @@ char *key_fingerprint(Key *key)
 	// fingerprintのハッシュ値（バイナリ）を求める
 	dgst_raw = key_fingerprint_raw(key, &dgst_raw_len);
 
-	// 16進表記へ変換する
-	retval_len = dgst_raw_len * 3 + 1;
-	retval = malloc(retval_len);
-	retval[0] = '\0';
-	for (i = 0; i < dgst_raw_len; i++) {
-		char hex[4];
-		_snprintf_s(hex, sizeof(hex), _TRUNCATE, "%02x:", dgst_raw[i]);
-		strncat_s(retval, retval_len, hex, _TRUNCATE);
-	}
+	if (dgst_rep == SSH_FP_HEX) {
+		// 16進表記へ変換する
+		retval_len = dgst_raw_len * 3 + 1;
+		retval = malloc(retval_len);
+		retval[0] = '\0';
+		for (i = 0; i < dgst_raw_len; i++) {
+			char hex[4];
+			_snprintf_s(hex, sizeof(hex), _TRUNCATE, "%02x:", dgst_raw[i]);
+			strncat_s(retval, retval_len, hex, _TRUNCATE);
+		}
 
-	/* Remove the trailing ':' character */
-	retval[(dgst_raw_len * 3) - 1] = '\0';
+		/* Remove the trailing ':' character */
+		retval[(dgst_raw_len * 3) - 1] = '\0';
+
+	} else if (dgst_rep == SSH_FP_RANDOMART) {
+		retval = key_fingerprint_randomart(dgst_raw, dgst_raw_len, key);
+
+	} else {
+
+	}
 
 	memset(dgst_raw, 0, dgst_raw_len);
 	free(dgst_raw);

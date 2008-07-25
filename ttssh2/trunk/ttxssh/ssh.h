@@ -366,6 +366,13 @@ typedef struct Key {
 	unsigned char *mod;
 } Key;
 
+// fingerprint‚ÌŽí•Ê
+enum fp_rep {
+	SSH_FP_HEX,
+	SSH_FP_BUBBLEBABBLE,
+	SSH_FP_RANDOMART
+};
+
 enum scp_dir {
 	TOLOCAL, FROMREMOTE,
 };
@@ -521,6 +528,6 @@ Key *key_from_blob(char *data, int blen);
 void key_free(Key *key);
 RSA *duplicate_RSA(RSA *src);
 DSA *duplicate_DSA(DSA *src);
-char *key_fingerprint(Key *key);
+char *key_fingerprint(Key *key, enum fp_rep dgst_rep);
 
 #endif

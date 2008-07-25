@@ -827,7 +827,7 @@ static void init_hosts_dlg(PTInstVar pvar, HWND dlg)
 	char buf2[2048];
 	int i, j;
 	int ch;
-	char *fp;
+	char *fp = NULL;
 
 	// static textの # 部分をホスト名に置換する
 	GetDlgItemText(dlg, IDC_HOSTWARNING, buf, sizeof(buf));
@@ -844,8 +844,15 @@ static void init_hosts_dlg(PTInstVar pvar, HWND dlg)
 	SetDlgItemText(dlg, IDC_HOSTWARNING, buf2);
 
 	// fingerprintを設定する
-	fp = key_fingerprint(&pvar->hosts_state.hostkey);
+	fp = key_fingerprint(&pvar->hosts_state.hostkey, SSH_FP_HEX);
 	SendMessage(GetDlgItem(dlg, IDC_FINGER_PRINT), WM_SETTEXT, 0, (LPARAM)fp);
+	free(fp);
+
+	// ビジュアル化fingerprintを表示する
+	fp = key_fingerprint(&pvar->hosts_state.hostkey, SSH_FP_RANDOMART);
+	SendMessage(GetDlgItem(dlg, IDC_FP_RANDOMART), WM_SETTEXT, 0, (LPARAM)fp);
+	SendMessage(GetDlgItem(dlg, IDC_FP_RANDOMART), WM_SETFONT, (WPARAM)GetStockObject(ANSI_FIXED_FONT), TRUE);
+	free(fp);
 }
 
 static int print_mp_int(char FAR * buf, unsigned char FAR * mp)
