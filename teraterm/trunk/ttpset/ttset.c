@@ -1199,6 +1199,16 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->RemoteTitleChanging =
 		GetOnOff(Section, "AcceptTitleChangingFromRemote", FName, TRUE);
 
+	// Size of paste confirm dialog
+	GetPrivateProfileString(Section, "PasteDialogSize", "330,220",
+	                        Temp, sizeof(Temp), FName);
+	GetNthNum(Temp, 1, &ts->PasteDialogSize.cx);
+	GetNthNum(Temp, 2, &ts->PasteDialogSize.cy);
+	if (ts->PasteDialogSize.cx < 0)
+		ts->PasteDialogSize.cx = 330;
+	if (ts->PasteDialogSize.cy < 0)
+		ts->PasteDialogSize.cy = 220;
+
 }
 
 void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
@@ -2007,6 +2017,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// Accept remote-controlled window title changing
 	WriteOnOff(Section, "AcceptTitleChangingFromRemote", FName,
 	           ts->RemoteTitleChanging);
+
+	// Size of paste confirm dialog
+	WriteInt2(Section, "PasteDialogSize", FName,
+	          ts->PasteDialogSize.cx, ts->PasteDialogSize.cy);
 }
 
 #define VTEditor "VT editor keypad"

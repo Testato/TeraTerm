@@ -297,7 +297,7 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 
 			// キャレットが画面からはみ出しているときに貼り付けをすると
 			// 確認ウインドウが見えるところに表示されないことがある。
-			// ウインドウからはみ出した場合に調節する (2008.4.24 mya)
+			// ウインドウからはみ出した場合に調節する (2008.4.24 maya)
 			osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 			GetVersionEx(&osvi);
 			if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT && osvi.dwMajorVersion == 4) {
@@ -349,6 +349,11 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 			info2bottom = p.y - rc_info.top;
 			edit2ok = rc_ok.left - rc_edit.right;
 			edit2info = rc_info.top - rc_edit.bottom;
+
+			// サイズを復元
+			SetWindowPos(hDlgWnd, NULL, 0, 0,
+			             ts.PasteDialogSize.cx, ts.PasteDialogSize.cy,
+			             SWP_NOZORDER | SWP_NOMOVE);
 
 			return TRUE;
 
@@ -445,6 +450,11 @@ static LRESULT CALLBACK OnClipboardDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LP
 				SetWindowPos(GetDlgItem(hDlgWnd, IDC_EDIT), 0,
 				             0, 0, dlg_w - p.x - edit2ok - ok2right, dlg_h - p.y - edit2info - info2bottom,
 				             SWP_NOMOVE | SWP_NOZORDER);
+
+				// サイズを保存
+				GetWindowRect(hDlgWnd, &rc_dlg);
+				ts.PasteDialogSize.cx = rc_dlg.right - rc_dlg.left;
+				ts.PasteDialogSize.cy = rc_dlg.bottom - rc_dlg.top;
 			}
 			return TRUE;
 

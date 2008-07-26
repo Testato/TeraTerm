@@ -418,6 +418,7 @@ struct tttset {
 	WORD UnknownUnicodeCharaAsWide;
 	char YModemRcvCommand[MAX_PATH];
 	WORD RemoteTitleChanging;
+	SIZE PasteDialogSize;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -846,6 +847,7 @@ typedef TMap far *PMap;
  *
  * - At version 4.59, ttset_memfilemap was replaced with ttset_memfilemap_8.
  *   added tttset.RemoteTitleChanging.
+ *   added tttset.PasteDialogSize.
  *
  * - At version 4.59, ttset_memfilemap was replaced with ttset_memfilemap_7.
  *   added tttset.DisablePasteMouseMButton.
