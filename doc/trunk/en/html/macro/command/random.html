@@ -34,5 +34,22 @@ Generates random integer within the range 0..&lt;max number&gt;-1 and assigns it
 random val 100
 </code></pre>
 
+<pre class="macro-example">
+<code>
+; random selection
+while 1
+	random val 10
+	int2str valstr val
+	statusbox valstr 'val'
+	if val=0 then
+		messagebox 'The val is zero.' 'test'
+	elseif val<5 then
+		messagebox 'The val is less than five.' 'test'
+	else
+		messagebox 'The val is greater than five.' 'test'
+	endif
+endwhile
+</code></pre>
+
 </body>
 </html>

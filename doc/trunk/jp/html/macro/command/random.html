@@ -30,8 +30,26 @@ random &lt;integer variable&gt; &lt;max value&gt;
 <h2>—á</h2>
 
 <pre class="macro-example">
-<code>; 0‚©‚ç99‚Ü‚Å‚Ì—”‚ğ•Ï”val‚ÖŠi”[‚·‚é
+<code>
+; 0‚©‚ç99‚Ü‚Å‚Ì—”‚ğ•Ï”val‚ÖŠi”[‚·‚é
 random val 100
+</code></pre>
+
+<pre class="macro-example">
+<code>
+; —”‚Åˆ—‚ğ•ª‚¯‚é
+while 1
+	random val 10
+	int2str valstr val
+	statusbox valstr 'val'
+	if val=0 then
+		messagebox 'The val is zero.' 'test'
+	elseif val<5 then
+		messagebox 'The val is less than five.' 'test'
+	else
+		messagebox 'The val is greater than five.' 'test'
+	endif
+endwhile
 </code></pre>
 
 </body>
