@@ -87,6 +87,7 @@ protected:
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 	afx_msg void OnSysChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnSysColorChange();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
