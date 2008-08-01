@@ -39,6 +39,7 @@ int get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PCHAR iniF
 void doSelectFolder(HWND hWnd, char *path, int pathlen, char *msg);
 void OutputDebugPrintf(char *fmt, ...);
 BOOL is_NT4();
+int get_OPENFILENAME_SIZE();
 
 #ifdef __cplusplus
 }

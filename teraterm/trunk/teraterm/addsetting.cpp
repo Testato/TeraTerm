@@ -697,18 +697,9 @@ BOOL CLogPropPageDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 		case IDC_VIEWLOG_PATH | (BN_CLICKED << 16):
 			{
 				OPENFILENAME ofn;
-				OSVERSIONINFO osvi;
 
 				ZeroMemory(&ofn, sizeof(ofn));
-				osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-				GetVersionEx(&osvi);
-				if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT &&
-				    osvi.dwMajorVersion >= 5) {
-					ofn.lStructSize = sizeof(OPENFILENAME);
-				}
-				else {
-					ofn.lStructSize = OPENFILENAME_SIZE_VERSION_400;
-				}
+				ofn.lStructSize = get_OPENFILENAME_SIZE();
 				ofn.hwndOwner = GetSafeHwnd();
 				get_lang_msg("FILEDLG_SELECT_LOGVIEW_APP_FILTER", ts.UIMsg, sizeof(ts.UIMsg),
 				             "exe(*.exe)\\0*.exe\\0all(*.*)\\0*.*\\0\\0", ts.UILanguageFile);

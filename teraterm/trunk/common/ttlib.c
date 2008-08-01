@@ -706,3 +706,17 @@ BOOL is_NT4()
 	}
 	return FALSE;
 }
+
+int get_OPENFILENAME_SIZE()
+{
+	OSVERSIONINFO osvi;
+
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	GetVersionEx(&osvi);
+	if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT &&
+	    osvi.dwMajorVersion >= 5) {
+		return sizeof(OPENFILENAME);
+	}
+	//return OPENFILENAME_SIZE_VERSION_400;
+	return 76;
+}

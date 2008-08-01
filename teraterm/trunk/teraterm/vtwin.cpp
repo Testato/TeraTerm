@@ -3492,7 +3492,6 @@ void CVTWindow::OnShowLogDialog()
 void CVTWindow::OnReplayLog()
 {
 	OPENFILENAME ofn;
-	OSVERSIONINFO osvi;
 	char szFile[MAX_PATH];
 	char Command[MAX_PATH] = "notepad.exe";
 	char *exec = "ttermpro";
@@ -3503,15 +3502,7 @@ void CVTWindow::OnReplayLog()
 	// バイナリモードで採取したログファイルを選択する
 	memset(&ofn, 0, sizeof(OPENFILENAME));
 	memset(szFile, 0, sizeof(szFile));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	GetVersionEx(&osvi);
-	if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT &&
-		osvi.dwMajorVersion >= 5) {
-		ofn.lStructSize = sizeof(OPENFILENAME);
-	}
-	else {
-		ofn.lStructSize = OPENFILENAME_SIZE_VERSION_400;
-	}
+	ofn.lStructSize = get_OPENFILENAME_SIZE();
 	ofn.hwndOwner = HVTWin;
 	get_lang_msg("FILEDLG_OPEN_LOGFILE_FILTER", ts.UIMsg, sizeof(ts.UIMsg),
 	             "all(*.*)\\0*.*\\0\\0", ts.UILanguageFile);
