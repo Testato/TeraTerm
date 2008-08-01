@@ -618,15 +618,21 @@ static int PASCAL FAR TTXsend(SOCKET s, char const FAR * buf, int len,
 
 void notify_established_secure_connection(PTInstVar pvar)
 {
+	int fuLoad = LR_DEFAULTCOLOR;
+
+	if (is_NT4()) {
+		fuLoad = LR_VGACOLOR;
+	}
+
 	// LoadIcon ではなく LoadImage を使うようにし、
 	// 16x16 のアイコンを明示的に取得するようにした (2006.8.9 maya)
 	if (SecureLargeIcon == NULL) {
 		SecureLargeIcon = LoadImage(hInst, MAKEINTRESOURCE(IDI_SECURETT),
-		                            IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR);
+		                            IMAGE_ICON, 0, 0, fuLoad);
 	}
 	if (SecureSmallIcon == NULL) {
 		SecureSmallIcon = LoadImage(hInst, MAKEINTRESOURCE(IDI_SECURETT),
-		                            IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
+		                            IMAGE_ICON, 16, 16, fuLoad);
 	}
 
 	if (SecureLargeIcon != NULL && SecureSmallIcon != NULL) {
@@ -1971,6 +1977,21 @@ static BOOL CALLBACK TTXAboutDlg(HWND dlg, UINT msg, WPARAM wParam,
 		else {
 			DlgAboutFont = NULL;
 		}
+
+		// アイコンを動的にセット
+		{
+			int fuLoad = LR_DEFAULTCOLOR;
+			HICON hicon;
+
+			if (is_NT4()) {
+				fuLoad = LR_VGACOLOR;
+			}
+
+			hicon = LoadImage(hInst, MAKEINTRESOURCE(IDI_SECURETT),
+			                  IMAGE_ICON, 32, 32, fuLoad);
+			SendDlgItemMessage(dlg, IDC_TTSSH_ICON, STM_SETICON, (WPARAM)hicon, 0);
+		}
+
 		init_about_dlg((PTInstVar) lParam, dlg);
 		return TRUE;
 	case WM_COMMAND:
