@@ -579,7 +579,6 @@ CVTWindow::CVTWindow()
 	Hold = FALSE;
 	FirstPaint = TRUE;
 	ScrollLock = FALSE;  // èâä˙ílÇÕñ≥å¯ (2006.11.14 yutaka)
-	Resizing = FALSE;
 
 	/* Initialize scroll buffer */
 	InitBuffer();
@@ -2393,14 +2392,6 @@ void CVTWindow::OnSize(UINT nType, int cx, int cy)
 		h = cy / FontHeight;
 		HideStatusLine();
 		BuffChangeWinSize(w,h);
-
-#ifdef ENABLE_RESIZE_DISPLAY
-		if (Resizing) {
-			char buf[10];
-			_snprintf_s(buf, sizeof(buf), _TRUNCATE, "(%d,%d)", w, h);
-			SetWindowText(buf);
-		}
-#endif
 	}
 
 #ifdef WINDOW_MAXMIMUM_ENABLED
@@ -2638,10 +2629,7 @@ LONG CVTWindow::OnSettingChange(UINT wParam, LONG lParam)
 
 LONG CVTWindow::OnEnterSizeMove(UINT wParam, LONG lParam)
 {
-#ifdef ENABLE_RESIZE_DISPLAY
 	EnableSizeTip(1);
-	Resizing = TRUE;
-#endif
 
 #ifdef ALPHABLEND_TYPE2
 	BGOnEnterSizeMove();
@@ -2655,11 +2643,7 @@ LONG CVTWindow::OnExitSizeMove(UINT wParam, LONG lParam)
 	BGOnExitSizeMove();
 #endif
 
-#ifdef ENABLE_RESIZE_DISPLAY
 	EnableSizeTip(0);
-	Resizing = FALSE;
-	ChangeTitle();
-#endif
 
 	return CFrameWnd::DefWindowProc(WM_EXITSIZEMOVE,wParam,lParam);
 }

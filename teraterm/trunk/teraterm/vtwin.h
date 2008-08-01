@@ -4,8 +4,6 @@
 
 /* TERATERM.EXE, VT window */
 
-#define ENABLE_RESIZE_DISPLAY 1
-
 class CVTWindow : public CFrameWnd
 {
 private:
@@ -24,11 +22,6 @@ private:
 
   HMENU MainMenu, FileMenu, TransMenu, EditMenu,
     SetupMenu, ControlMenu, WinMenu, HelpMenu;
-
-#ifdef ENABLE_RESIZE_DISPLAY
-  // Resizing window
-  BOOL Resizing;
-#endif
 
 protected:
 
