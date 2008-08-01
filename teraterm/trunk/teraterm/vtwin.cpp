@@ -249,7 +249,7 @@ extern "C" void SetMouseCursor(char *cursor)
 
 
 	hc = (HCURSOR)LoadImage(NULL, MAKEINTRESOURCE(name), IMAGE_CURSOR,
-			0, 0, LR_DEFAULTSIZE | LR_SHARED);
+	                        0, 0, LR_DEFAULTSIZE | LR_SHARED);
 
 	if (hc != NULL) {
 		SetClassLongPtr(HVTWin, GCLP_HCURSOR, (LONG_PTR)hc);
@@ -491,6 +491,7 @@ CVTWindow::CVTWindow()
 	char *Param;
 	int CmdShow;
 	PKeyMap tempkm;
+	int fuLoad = LR_DEFAULTCOLOR;
 
 #ifdef _DEBUG
   ::_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -610,7 +611,12 @@ CVTWindow::CVTWindow()
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = AfxGetInstanceHandle();
-	wc.hIcon = LoadIcon(wc.hInstance, MAKEINTRESOURCE((ts.VTIcon!=IdIconDefault)?ts.VTIcon:IDI_VT));
+	if (is_NT4()) {
+		fuLoad = LR_VGACOLOR;
+	}
+	wc.hIcon = (HICON)LoadImage(wc.hInstance,
+	                            MAKEINTRESOURCE((ts.TEKIcon!=IdIconDefault)?ts.VTIcon:IDI_VT),
+	                            IMAGE_ICON, 0, 0, fuLoad);
 	//wc.hCursor = LoadCursor(NULL,IDC_IBEAM);
 	wc.hCursor = NULL; // マウスカーソルは動的に変更する (2005.4.2 yutaka)
 	wc.hbrBackground = NULL;
@@ -655,8 +661,8 @@ CVTWindow::CVTWindow()
 	// set the small icon
 	::PostMessage(HVTWin,WM_SETICON,0,
 	              (LPARAM)LoadImage(AfxGetInstanceHandle(),
-	              MAKEINTRESOURCE((ts.VTIcon!=IdIconDefault)?ts.VTIcon:IDI_VT),
-	              IMAGE_ICON,16,16,0));
+	                                MAKEINTRESOURCE((ts.VTIcon!=IdIconDefault)?ts.VTIcon:IDI_VT),
+	                                IMAGE_ICON,16,16,fuLoad));
 	MainMenu = NULL;
 	WinMenu = NULL;
 	if ((ts.HideTitle==0) && (ts.PopupMenu==0)) {

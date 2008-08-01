@@ -35,6 +35,7 @@ CTEKWindow::CTEKWindow()
   WNDCLASS wc;
   RECT rect;
   DWORD Style;
+  int fuLoad = LR_DEFAULTCOLOR;
 
   if (! LoadTTTEK()) return;
   TEKInit(&tk, &ts);
@@ -50,7 +51,12 @@ CTEKWindow::CTEKWindow()
   wc.cbClsExtra = 0;
   wc.cbWndExtra = 0;
   wc.hInstance = AfxGetInstanceHandle();
-  wc.hIcon = LoadIcon(wc.hInstance, MAKEINTRESOURCE((ts.TEKIcon!=IdIconDefault)?ts.TEKIcon:IDI_TEK));
+  if (is_NT4()) {
+    fuLoad = LR_VGACOLOR;
+  }
+  wc.hIcon = (HICON)LoadImage(wc.hInstance,
+                              MAKEINTRESOURCE((ts.TEKIcon!=IdIconDefault)?ts.TEKIcon:IDI_TEK),
+                              IMAGE_ICON, 0, 0, fuLoad);
   wc.hCursor = LoadCursor(NULL,IDC_ARROW);
   wc.hbrBackground = NULL;
   wc.lpszMenuName = NULL;
@@ -76,9 +82,9 @@ CTEKWindow::CTEKWindow()
 
   // set the small icon
   ::PostMessage(HTEKWin,WM_SETICON,0,
-    (LPARAM)LoadImage(AfxGetInstanceHandle(),
-      MAKEINTRESOURCE((ts.TEKIcon!=IdIconDefault)?ts.TEKIcon:IDI_TEK),
-      IMAGE_ICON,16,16,0));
+                (LPARAM)LoadImage(AfxGetInstanceHandle(),
+                                  MAKEINTRESOURCE((ts.TEKIcon!=IdIconDefault)?ts.TEKIcon:IDI_TEK),
+                                  IMAGE_ICON,16,16,fuLoad));
   MainMenu = NULL;
   WinMenu = NULL;
   if ((ts.HideTitle==0) && (ts.PopupMenu==0))

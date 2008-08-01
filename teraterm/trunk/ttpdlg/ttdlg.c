@@ -2430,6 +2430,20 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			DlgAboutFont = NULL;
 		}
 
+		// アイコンを動的にセット
+		{
+			int fuLoad = LR_DEFAULTCOLOR;
+			HICON hicon;
+
+			if (is_NT4()) {
+				fuLoad = LR_VGACOLOR;
+			}
+
+			hicon = LoadImage(hInst, MAKEINTRESOURCE(IDI_TTERM),
+			                  IMAGE_ICON, 32, 32, fuLoad);
+			SendDlgItemMessage(Dialog, IDC_TT_ICON, STM_SETICON, (WPARAM)hicon, 0);
+		}
+
 		GetWindowText(Dialog, uimsg2, sizeof(uimsg2));
 		get_lang_msg("DLG_ABOUT_TITLE", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
 		SetWindowText(Dialog, uimsg);

@@ -38,6 +38,7 @@ void get_lang_msg(PCHAR key, PCHAR buf, int buf_len, PCHAR def, PCHAR iniFile);
 int get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PCHAR iniFile);
 void doSelectFolder(HWND hWnd, char *path, int pathlen, char *msg);
 void OutputDebugPrintf(char *fmt, ...);
+BOOL is_NT4();
 
 #ifdef __cplusplus
 }

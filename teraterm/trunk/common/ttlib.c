@@ -693,3 +693,16 @@ void OutputDebugPrintf(char *fmt, ...) {
 	_vsnprintf(tmp, sizeof(tmp), fmt, arg);
 	OutputDebugString(tmp);
 }
+
+BOOL is_NT4()
+{
+	OSVERSIONINFO osvi;
+
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	GetVersionEx(&osvi);
+	if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT &&
+	    osvi.dwMajorVersion == 4) {
+		return TRUE;
+	}
+	return FALSE;
+}

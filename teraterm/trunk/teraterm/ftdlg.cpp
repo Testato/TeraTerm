@@ -29,6 +29,7 @@ BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv, PTTSet pts)
 {
   BOOL Ok;
   WNDCLASS wc;
+  int fuLoad = LR_DEFAULTCOLOR;
 
   fv = pfv;
   cv = pcv;
@@ -42,7 +43,11 @@ BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv, PTTSet pts)
   wc.cbClsExtra = 0;
   wc.cbWndExtra = DLGWINDOWEXTRA;
   wc.hInstance = AfxGetInstanceHandle();
-  wc.hIcon = LoadIcon(wc.hInstance, MAKEINTRESOURCE(IDI_TTERM));
+  if (is_NT4()) {
+    fuLoad = LR_VGACOLOR;
+  }
+  wc.hIcon = (HICON)LoadImage(wc.hInstance, MAKEINTRESOURCE(IDI_TTERM),
+                              IMAGE_ICON, 0, 0, fuLoad);
   wc.hCursor = LoadCursor(NULL,IDC_ARROW);
   wc.hbrBackground = (HBRUSH)(COLOR_BTNFACE+1);
   wc.lpszMenuName = NULL;
@@ -103,6 +108,8 @@ void CFileTransDlg::RefreshNum()
 
 BOOL CFileTransDlg::OnInitDialog()
 {
+  int fuLoad = LR_DEFAULTCOLOR;
+
   SetWindowText(fv->DlgCaption);
   SetDlgItemText(IDC_TRANSFNAME, &(fv->FullName[fv->DirLen]));
 
@@ -110,10 +117,13 @@ BOOL CFileTransDlg::OnInitDialog()
   SetDlgItemText(IDC_EDIT_FULLPATH, &(fv->FullName[0]));
 
   // set the small icon
+  if (is_NT4()) {
+    fuLoad = LR_VGACOLOR;
+  }
   ::PostMessage(GetSafeHwnd(),WM_SETICON,0,
-    (LPARAM)LoadImage(AfxGetInstanceHandle(),
-      MAKEINTRESOURCE(IDI_TTERM),
-      IMAGE_ICON,16,16,0));
+                (LPARAM)LoadImage(AfxGetInstanceHandle(),
+                                  MAKEINTRESOURCE(IDI_TTERM),
+                                  IMAGE_ICON,16,16,fuLoad));
   return 1;
 }
 
