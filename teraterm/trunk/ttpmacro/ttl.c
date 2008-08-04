@@ -1972,6 +1972,7 @@ int MessageCommand(int BoxId, LPWORD Err)
 	TStrVal Str1, Str2;
 	int sp = 1;
 	BOOL SPECIAL;
+	int ret;
 
 	*Err = 0;
 	GetStrVal2(Str1, Err, TRUE);
@@ -1988,9 +1989,14 @@ int MessageCommand(int BoxId, LPWORD Err)
 	if (*Err!=0) return 0;
 
 	SPECIAL = (sp == 0) ? FALSE : TRUE;
-	if (BoxId==IdMsgBox)
-		OpenMsgDlg(Str1,Str2,FALSE,SPECIAL);
-	else if (BoxId==IdYesNoBox)
+	if (BoxId==IdMsgBox) {
+		ret = OpenMsgDlg(Str1,Str2,FALSE,SPECIAL);
+		// メッセージボックスをキャンセルすると、マクロの終了とする。
+		// (2008.8.5 yutaka)		
+		if (ret == IDCANCEL) {
+			TTLStatus = IdTTLEnd;
+		}
+	} else if (BoxId==IdYesNoBox)
 		return OpenMsgDlg(Str1,Str2,TRUE,SPECIAL);
 	else if (BoxId==IdStatusBox)
 		OpenStatDlg(Str1,Str2,SPECIAL);

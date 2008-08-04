@@ -16,6 +16,7 @@ public:
 	//}}AFX_DATA
 
 	//{{AFX_VIRTUAL(CMsgDlg)
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 
 protected:

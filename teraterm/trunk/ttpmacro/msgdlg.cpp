@@ -175,3 +175,25 @@ void CMsgDlg::Relocation(BOOL is_init, int new_WW)
   SetWindowPos(&wndTop,PosX,PosY,WW,WH,0);
   InvalidateRect(NULL);
 }
+
+BOOL CMsgDlg::OnCommand(WPARAM wParam, LPARAM lParam)
+{
+	switch (LOWORD(wParam)) {
+	case IDCANCEL:
+		if( HIWORD(wParam) == BN_CLICKED ) {
+			// メッセージボックスをキャンセルすると、マクロの終了とする。
+			// (2008.8.5 yutaka)	
+			int ret;
+			ret = MessageBox(
+					"Are you sure that you want to halt this macro script?", 
+					"MACRO: confirmation", MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2);
+			if (ret == IDYES) {
+				EndDialog(IDCANCEL);
+			}
+		}
+		return TRUE;
+	default:
+		return (CDialog::OnCommand(wParam,lParam));
+	}
+}
+
