@@ -1996,8 +1996,15 @@ int MessageCommand(int BoxId, LPWORD Err)
 		if (ret == IDCANCEL) {
 			TTLStatus = IdTTLEnd;
 		}
-	} else if (BoxId==IdYesNoBox)
-		return OpenMsgDlg(Str1,Str2,TRUE,SPECIAL);
+	} else if (BoxId==IdYesNoBox) {
+		ret = OpenMsgDlg(Str1,Str2,TRUE,SPECIAL);
+		// メッセージボックスをキャンセルすると、マクロの終了とする。
+		// (2008.8.6 yutaka)		
+		if (ret == IDCLOSE) {
+			TTLStatus = IdTTLEnd;
+		}
+		return (ret);
+	}
 	else if (BoxId==IdStatusBox)
 		OpenStatDlg(Str1,Str2,SPECIAL);
 	return 0;

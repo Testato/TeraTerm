@@ -59,7 +59,7 @@ BOOL CMsgDlg::OnInitDialog()
   if (get_lang_font("DLG_SYSTEM_FONT", m_hWnd, &logfont, &DlgFont, UILanguageFile)) {
     SendDlgItemMessage(IDC_MSGTEXT, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
     SendDlgItemMessage(IDOK, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
-    SendDlgItemMessage(IDCANCEL, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
+    SendDlgItemMessage(IDCLOSE, WM_SETFONT, (WPARAM)DlgFont, MAKELPARAM(TRUE,0));
   }
 
   GetDlgItemText(IDOK, uimsg2, sizeof(uimsg2));
@@ -76,7 +76,7 @@ BOOL CMsgDlg::OnInitDialog()
   TH = s.cy;
 
   HOk = ::GetDlgItem(GetSafeHwnd(), IDOK);
-  HNo = ::GetDlgItem(GetSafeHwnd(), IDCANCEL);
+  HNo = ::GetDlgItem(GetSafeHwnd(), IDCLOSE);
   ::GetWindowRect(HOk,&R);
   BW = R.right-R.left;
   BH = R.bottom-R.top;
@@ -143,7 +143,7 @@ void CMsgDlg::Relocation(BOOL is_init, int new_WW)
 
   HText = ::GetDlgItem(GetSafeHwnd(), IDC_MSGTEXT);
   HOk = ::GetDlgItem(GetSafeHwnd(), IDOK);
-  HNo = ::GetDlgItem(GetSafeHwnd(), IDCANCEL);
+  HNo = ::GetDlgItem(GetSafeHwnd(), IDCLOSE);
 
   ::MoveWindow(HText,(TW-s.cx)/2,TH/2,TW,TH,TRUE);
   if (YesNoFlag)
@@ -154,7 +154,7 @@ void CMsgDlg::Relocation(BOOL is_init, int new_WW)
       GetDlgItemText(IDOK, uimsg2, sizeof(uimsg2));
       get_lang_msg("BTN_YES", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
       ::SetWindowText(HOk,uimsg);
-      GetDlgItemText(IDCANCEL, uimsg2, sizeof(uimsg2));
+      GetDlgItemText(IDCLOSE, uimsg2, sizeof(uimsg2));
       get_lang_msg("BTN_NO", uimsg, sizeof(uimsg), uimsg2, UILanguageFile);
       ::SetWindowText(HNo,uimsg);
     }
@@ -188,10 +188,20 @@ BOOL CMsgDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 					"Are you sure that you want to halt this macro script?", 
 					"MACRO: confirmation", MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2);
 			if (ret == IDYES) {
-				EndDialog(IDCANCEL);
+				if (YesNoFlag == TRUE) {
+					EndDialog(IDCLOSE);
+				} else {
+					EndDialog(IDCANCEL);
+				}
 			}
+			return TRUE;
 		}
+		return FALSE;
+
+	case IDCLOSE:
+		EndDialog(IDCANCEL);
 		return TRUE;
+
 	default:
 		return (CDialog::OnCommand(wParam,lParam));
 	}
