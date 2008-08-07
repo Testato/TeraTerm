@@ -38,15 +38,15 @@
           <li>added AcceptTitleChangingFromRemote entry in teraterm.ini file. The default is ON.</li>
           <li>added the check box on <a href="../menu/setup-additional.html">Additional settings</a> dialog.</li>
         </ul></li>
-      <!--li><a href="../menu/setup-additional.html">ConfirmChangePaste</a> の確認ダイアログのサイズを変更できるようにした。
-      <li><a href="../menu/setup-additional.html">ConfirmChangePaste</a> の確認ダイアログのサイズを保存できるようにした。
+      <li>added support for changing the size of the <a href="../menu/setup-additional.html">ConfirmChangePaste</a> dialog.</li>
+      <li>added support for saving the size of the <a href="../menu/setup-additional.html">ConfirmChangePaste</a> dialog to teraterm.ini file.
         <ul>
-          <li>teraterm.ini に PasteDialogSize エントリを追加した。デフォルトは330x230。</li>
-        </ul></li-->
+          <li>added PasteDialogSize entry in teraterm.ini file. The default value is 330x230.</li>
+        </ul></li>
       <li>added support for displaying the terminal size after resizing on the tool tip.</li>
       <li>added support for canceling the `messagebox' and the `yesnobox' macro command. When a user cancels the messagebox window, the macro engine halts.</li>
-      <!--li>Duplicate Session によるTELNETおよびSSHの複製が、port22,23以外だとできない問題を修正した。</li-->
-      <!--li>Windows 98/Me で、接続時に Terminal size の行数が不正に減る問題を修正した。</li-->
+      <li>Bug fix: A user could not duplicate the network session of TELNET and SSH without port 22 and 23.</li>
+      <li>Bug fix: The terminal size could reduce on Windows 98-compatible products.</li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.48">2.48</a></li>
     </ul>
   </li>
