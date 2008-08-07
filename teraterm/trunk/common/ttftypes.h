@@ -95,6 +95,8 @@ typedef struct {
 
   BYTE LogLineBuf[16];
   int FlushLogLineBuf;
+
+  int ProgStat;
 } TFileVar;
 typedef TFileVar far *PFileVar;
 

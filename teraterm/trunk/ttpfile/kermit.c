@@ -462,8 +462,8 @@ void KmtSendNextData(PFileVar fv, PKmtVar kv, PComVar cv)
   BOOL NextFlag;
 
   SetDlgNum(fv->HWin, IDC_PROTOBYTECOUNT, fv->ByteCount);
-  SetDlgPercent(fv->HWin, IDC_PROTOPERCENT,
-                fv->ByteCount, fv->FileSize);
+  SetDlgPercent(fv->HWin, IDC_PROTOPERCENT, IDC_PROTOPROGRESS,
+                fv->ByteCount, fv->FileSize, &fv->ProgStat);
   DataLen = 0;
   DataLenNew = 0;
 
@@ -482,8 +482,8 @@ void KmtSendNextData(PFileVar fv, PKmtVar kv, PComVar cv)
   if (DataLen==0)
   {
     SetDlgNum(fv->HWin, IDC_PROTOBYTECOUNT, fv->ByteCount);
-    SetDlgPercent(fv->HWin, IDC_PROTOPERCENT,
-                  fv->ByteCount, fv->FileSize);
+    SetDlgPercent(fv->HWin, IDC_PROTOPERCENT, IDC_PROTOPROGRESS,
+                  fv->ByteCount, fv->FileSize, &fv->ProgStat);
     KmtSendEOFPacket(fv,kv,cv);
   }
   else {
@@ -535,8 +535,8 @@ BOOL KmtSendNextFile(PFileVar fv, PKmtVar kv, PComVar cv)
 
   SetDlgItemText(fv->HWin, IDC_PROTOFNAME, &(fv->FullName[fv->DirLen]));
   SetDlgNum(fv->HWin, IDC_PROTOBYTECOUNT, fv->ByteCount);
-  SetDlgPercent(fv->HWin, IDC_PROTOPERCENT,
-                fv->ByteCount, fv->FileSize);
+  SetDlgPercent(fv->HWin, IDC_PROTOPERCENT, IDC_PROTOPROGRESS,
+                fv->ByteCount, fv->FileSize, &fv->ProgStat);
 
   KmtIncPacketNum(kv);
   strncpy_s(&(kv->PktOut[4]),sizeof(kv->PktOut)-4,&(fv->FullName[fv->DirLen]),_TRUNCATE); // put FName
@@ -607,6 +607,13 @@ void KmtInit
 
   SetWindowText(fv->HWin,fv->DlgCaption);
   SetDlgItemText(fv->HWin, IDC_PROTOPROT, "Kermit");
+
+  if (kv->KmtMode == IdKmtSend) {
+    InitDlgProgress(fv->HWin, IDC_PROTOPROGRESS, &fv->ProgStat);
+  }
+  else {
+    fv->ProgStat = -1;
+  }
 
   fv->FileOpen = FALSE;
 

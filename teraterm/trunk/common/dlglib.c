@@ -5,6 +5,7 @@
 /* Routines for dialog boxes */
 #include "teraterm.h"
 #include <stdio.h>
+#include <commctrl.h>
 
 void EnableDlgItem(HWND HDlg, int FirstId, int LastId)
 {
@@ -76,19 +77,22 @@ void SetDlgNum(HWND HDlg, int id_Item, LONG Num)
 	SetDlgItemText(HDlg,id_Item,Temp);
 }
 
-void SetDlgPercent(HWND HDlg, int id_Item, LONG a, LONG b)
-{
-#if 0
-	int Num;
-	char NumStr[10];
+void InitDlgProgress(HWND HDlg, int id_Progress, int *CurProgStat) {
+	HWND HProg;
+	HProg = GetDlgItem(HDlg, id_Progress);
 
-	if (b==0)
-		Num = 100;
-	else
-		Num = 100 * a / b;
-	sprintf(NumStr,"%u %c",Num,'%');
-	SetDlgItemText(HDlg, id_Item, NumStr);
-#else
+	*CurProgStat = 0;
+
+	SendMessage(HProg, PBM_SETRANGE, (WPARAM)0, MAKELPARAM(0, 100));
+	SendMessage(HProg, PBM_SETSTEP, (WPARAM)1, 0);
+	SendMessage(HProg, PBM_SETPOS, (WPARAM)0, 0);
+
+	ShowWindow(HProg, SW_SHOW);
+	return;
+}
+
+void SetDlgPercent(HWND HDlg, int id_Item, int id_Progress, LONG a, LONG b, int *p)
+{
 	// 20MB以上のファイルをアップロードしようとすると、buffer overflowで
 	// 落ちる問題への対処。(2005.3.18 yutaka)
 	// cf. http://sourceforge.jp/tracker/index.php?func=detail&aid=5713&group_id=1412&atid=5333
@@ -101,7 +105,11 @@ void SetDlgPercent(HWND HDlg, int id_Item, LONG a, LONG b)
 		Num = 100.0 * (double)a / (double)b; 
 	_snprintf_s(NumStr,sizeof(NumStr),_TRUNCATE,"%3.1f%%",Num); 
 	SetDlgItemText(HDlg, id_Item, NumStr); 
-#endif
+
+	if (id_Progress != 0 && p != NULL && *p >= 0 && *p < (int)Num) {
+		*p = (int)Num;
+		SendMessage(GetDlgItem(HDlg, id_Progress), PBM_SETPOS, (WPARAM)*p, 0);
+	}
 }
 
 void SetDropDownList(HWND HDlg, int Id_Item, PCHAR far *List, int nsel)

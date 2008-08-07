@@ -172,8 +172,13 @@ void XInit
   fv->LogCount = 0;
 
   fv->FileSize = 0;
-  if ((xv->XMode==IdXSend) && fv->FileOpen)
+  if ((xv->XMode==IdXSend) && fv->FileOpen) {
     fv->FileSize = GetFSize(fv->FullName);
+    InitDlgProgress(fv->HWin, IDC_PROTOPROGRESS, &fv->ProgStat);
+  }
+  else {
+    fv->ProgStat = -1;
+  }
 
   SetWindowText(fv->HWin, fv->DlgCaption);
   SetDlgItemText(fv->HWin, IDC_PROTOFNAME, &(fv->FullName[fv->DirLen]));
@@ -527,8 +532,8 @@ BOOL XSendPacket(PFileVar fv, PXVar xv, PComVar cv)
     SetDlgNum(fv->HWin, IDC_PROTOPKTNUM,
 	      xv->PktNumOffset+xv->PktNumSent);
     SetDlgNum(fv->HWin, IDC_PROTOBYTECOUNT, fv->ByteCount);
-    SetDlgPercent(fv->HWin, IDC_PROTOPERCENT,
-		  fv->ByteCount, fv->FileSize);
+    SetDlgPercent(fv->HWin, IDC_PROTOPERCENT, IDC_PROTOPROGRESS,
+		  fv->ByteCount, fv->FileSize, &fv->ProgStat);
   }
 
   return TRUE;

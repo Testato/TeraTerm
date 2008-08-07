@@ -119,6 +119,8 @@
 #define IDC_CHECK1                      2512
 #define IDC_CONFIRM_CHANGE_PASTE        2512
 #define IDC_MOUSEWHEEL_SCROLL_LINE      2513
+#define IDC_TRANSPROGRESS               2514
+#define IDC_PROTOPROGRESS               2515
 #define ID_ACC_SENDBREAK                50001
 #define ID_ACC_COPY                     50002
 #define ID_ACC_NEWCONNECTION            50003
@@ -210,7 +212,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        121
 #define _APS_NEXT_COMMAND_VALUE         52030
-#define _APS_NEXT_CONTROL_VALUE         2514
+#define _APS_NEXT_CONTROL_VALUE         2516
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

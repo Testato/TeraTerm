@@ -65,6 +65,8 @@ void BPInit
   BPDispMode(fv,bv);
   SetDlgItemText(fv->HWin, IDC_PROTOPROT, "B-Plus");
 
+  InitDlgProgress(fv->HWin, IDC_PROTOPROGRESS, &fv->ProgStat);
+
   /* file name, file size */
   if (bv->BPMode==IdBPSend)
     BPOpenFileToBeSent(fv);
@@ -430,8 +432,8 @@ void BPSendNPacket(PFileVar fv, PBPVar bv)
 
   SetDlgNum(fv->HWin, IDC_PROTOBYTECOUNT, fv->ByteCount);
   if (fv->FileSize>0)
-    SetDlgPercent(fv->HWin, IDC_PROTOPERCENT,
-      fv->ByteCount, fv->FileSize);
+    SetDlgPercent(fv->HWin, IDC_PROTOPERCENT, IDC_PROTOPROGRESS,
+      fv->ByteCount, fv->FileSize, &fv->ProgStat);
 }
 
 void BPCheckPacket(PFileVar fv, PBPVar bv, PComVar cv)
@@ -627,8 +629,8 @@ void BPParsePacket(PFileVar fv, PBPVar bv)
 		      bv->PktInCount - 2;
       SetDlgNum(fv->HWin, IDC_PROTOBYTECOUNT, fv->ByteCount);
       if (fv->FileSize>0)
-	SetDlgPercent(fv->HWin, IDC_PROTOPERCENT,
-	  fv->ByteCount, fv->FileSize);
+	SetDlgPercent(fv->HWin, IDC_PROTOPERCENT, IDC_PROTOPROGRESS,
+	  fv->ByteCount, fv->FileSize, &fv->ProgStat);
       break;
     case 'T':
       BPParseTPacket(fv,bv); /* File transfer */
