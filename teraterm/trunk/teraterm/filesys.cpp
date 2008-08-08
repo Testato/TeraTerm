@@ -16,6 +16,7 @@
 #include "ttdde.h"
 #include "ttlib.h"
 #include "helpid.h"
+#include "dlglib.h"
 
 #include "filesys.h"
 #include "ftlib.h"
@@ -221,6 +222,13 @@ BOOL OpenFTDlg(PFileVar fv)
 	GetDlgItemText(HFTDlg, IDC_TRANSHELP, uimsg, sizeof(uimsg));
 	get_lang_msg("BTN_HELP", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(HFTDlg, IDC_TRANSHELP, ts.UIMsg);
+
+	if (fv->OpId == OpSendFile) {
+		InitDlgProgress(HFTDlg, IDC_TRANSPROGRESS, &fv->ProgStat);
+	}
+	else {
+		fv->ProgStat = -1;
+	}
 
 	return (FTDlg!=NULL);
 }
@@ -777,6 +785,7 @@ void FileSendStart()
 		return;
 	}
 	SendVar->ByteCount = 0;
+	SendVar->FileSize = GetFSize(SendVar->FullName);
 
 	TalkStatus = IdTalkFile;
 	FileRetrySend = FALSE;

@@ -97,9 +97,20 @@ void CFileTransDlg::ChangeButton(BOOL PauseFlag)
 
 void CFileTransDlg::RefreshNum()
 {
-  char NumStr[13];
+  char NumStr[24];
+  double rate;
 
-  _snprintf_s(NumStr,sizeof(NumStr),_TRUNCATE,"%u",fv->ByteCount);
+  if (fv->OpId == OpSendFile && fv->FileSize > 0) {
+    rate = 100.0 * (double)fv->ByteCount / (double)fv->FileSize;
+    if (fv->ProgStat < (int)rate) {
+      fv->ProgStat = (int)rate;
+      SendDlgItemMessage(IDC_TRANSPROGRESS, PBM_SETPOS, (WPARAM)fv->ProgStat, 0);
+    }
+    _snprintf_s(NumStr,sizeof(NumStr),_TRUNCATE,"%u (%3.1f%%)",fv->ByteCount, rate);
+  }
+  else {
+    _snprintf_s(NumStr,sizeof(NumStr),_TRUNCATE,"%u",fv->ByteCount);
+  }
   SetDlgItemText(IDC_TRANSBYTES, NumStr);
 }
 

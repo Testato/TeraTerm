@@ -227,6 +227,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\common\dlglib.c"
+				>
+			</File>
+			<File
 				RelativePath="filesys.cpp"
 				>
 			</File>
