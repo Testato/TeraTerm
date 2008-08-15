@@ -11,6 +11,7 @@
 #include "ttdialog.h"
 #include "ttwsk.h"
 #include "ttsetup.h"
+#include "ttfileio.h"
 
 typedef struct {
   Tclosesocket FAR * Pclosesocket;
@@ -29,6 +30,13 @@ typedef struct {
   TWSACancelAsyncRequest FAR * PWSACancelAsyncRequest;
   TWSAGetLastError FAR * PWSAGetLastError;
 } TTXSockHooks;
+
+typedef struct {
+  TCreateFile FAR * PCreateFile;
+  TCloseFile FAR * PCloseFile;
+  TReadFile FAR * PReadFile;
+  TWriteFile FAR * PWriteFile;
+} TTXFileHooks;
 
 typedef struct {
   PReadIniFile FAR * ReadIniFile;
@@ -67,6 +75,8 @@ typedef struct {
   int (PASCAL FAR * TTXProcessCommand)(HWND hWin, WORD cmd); /* returns TRUE if handled, called last to first */
   void (PASCAL FAR * TTXEnd)(void); /* called last to first */
   void (PASCAL FAR * TTXSetCommandLine)(PCHAR cmd, int cmdlen, PGetHNRec rec); /* called first to last */
+  void (PASCAL FAR * TTXOpenFile)(TTXFileHooks FAR * hooks); /* called first to last */
+  void (PASCAL FAR * TTXCloseFile)(TTXFileHooks FAR * hooks); /* called last to first */
 } TTXExports;
 
 /* On entry, 'size' is set to the size of the structure and the rest of

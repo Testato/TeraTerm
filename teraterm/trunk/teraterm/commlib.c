@@ -12,6 +12,7 @@
 #include "ttcommon.h"
 #include "ttwsk.h"
 #include "ttlib.h"
+#include "ttfileio.h"
 #include "ttplug.h" /* TTPLUG */
 
 #include "commlib.h"
@@ -484,12 +485,14 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 #endif /* NO_INET6 */
 
     case IdSerial:
+      InitFileIO();  /* TTPLUG */
+      TTXOpenFile(); /* TTPLUG */
       _snprintf_s(P, sizeof(P), _TRUNCATE, "COM%d", ts->ComPort);
       strncpy_s(ErrMsg, sizeof(ErrMsg),P, _TRUNCATE);
       strncpy_s(P, sizeof(P),"\\\\.\\", _TRUNCATE);
       strncat_s(P, sizeof(P),ErrMsg, _TRUNCATE);
       cv->ComID =
-        CreateFile(P,GENERIC_READ | GENERIC_WRITE,
+        PCreateFile(P,GENERIC_READ | GENERIC_WRITE,
                    0,NULL,OPEN_EXISTING,
                    FILE_FLAG_OVERLAPPED,NULL);
       if (cv->ComID == INVALID_HANDLE_VALUE )
@@ -521,7 +524,9 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
       break; /* end of "case IdSerial:" */
 
     case IdFile:
-      cv->ComID = CreateFile(ts->HostName,GENERIC_READ,0,NULL,
+      InitFileIO();  /* TTPLUG */
+      TTXOpenFile(); /* TTPLUG */
+      cv->ComID = PCreateFile(ts->HostName,GENERIC_READ,0,NULL,
                              OPEN_EXISTING,0,NULL);
       InvalidHost = (cv->ComID == INVALID_HANDLE_VALUE);
       if (InvalidHost)
@@ -734,13 +739,15 @@ void CommClose(PComVar cv)
 		  PURGE_TXCLEAR | PURGE_RXCLEAR);
 	EscapeCommFunction(cv->ComID,CLRDTR);
 	SetCommMask(cv->ComID,0);
-	CloseHandle(cv->ComID);
+	PCloseFile(cv->ComID);
 	ClearCOMFlag(cv->ComPort);
       }
+      TTXCloseFile(); /* TTPLUG */
       break;
     case IdFile:
       if (cv->ComID != INVALID_HANDLE_VALUE)
-	CloseHandle(cv->ComID);
+	PCloseFile(cv->ComID);
+      TTXCloseFile(); /* TTPLUG */
       break;
   }
   cv->ComID = INVALID_HANDLE_VALUE;
@@ -794,7 +801,7 @@ void CommReceive(PComVar cv)
       case IdSerial:
 	do {
 	  ClearCommError(cv->ComID,&DErr,NULL);
-	  if (! ReadFile(cv->ComID,&(cv->InBuff[cv->InBuffCount]),
+	  if (! PReadFile(cv->ComID,&(cv->InBuff[cv->InBuffCount]),
 	    InBuffSize-cv->InBuffCount,&C,&rol))
 	  {
 	    if (GetLastError() == ERROR_IO_PENDING)
@@ -813,7 +820,7 @@ void CommReceive(PComVar cv)
 	ClearCommError(cv->ComID,&DErr,NULL);
 	break;
       case IdFile:
-	ReadFile(cv->ComID,&(cv->InBuff[cv->InBuffCount]),
+	PReadFile(cv->ComID,&(cv->InBuff[cv->InBuffCount]),
 		 InBuffSize-cv->InBuffCount,&C,NULL);
 	cv->InBuffCount = cv->InBuffCount + C;
 	break;
@@ -914,7 +921,7 @@ void CommSend(PComVar cv)
       break;
 
     case IdSerial:
-      if (! WriteFile(cv->ComID,&(cv->OutBuff[cv->OutPtr]),C,(LPDWORD)&D,&wol))
+      if (! PWriteFile(cv->ComID,&(cv->OutBuff[cv->OutPtr]),C,(LPDWORD)&D,&wol))
       {
 	if (GetLastError() == ERROR_IO_PENDING)
 	{

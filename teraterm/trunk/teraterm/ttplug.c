@@ -13,6 +13,8 @@
 #include "ttplug.h"
 #undef TTXOpenTCP
 #undef TTXCloseTCP
+#undef TTXOpenFile
+#undef TTXCloseFile
 #undef TTXGetUIHooks
 #undef TTXGetSetupHooks
 
@@ -139,6 +141,26 @@ void PASCAL FAR TTXInternalCloseTCP(TTXSockHooks FAR * hooks) {
   for (i = NumExtensions - 1; i >= 0; i--) {
     if (Extensions[i]->TTXCloseTCP != NULL) {
       Extensions[i]->TTXCloseTCP(hooks);
+    }
+  }
+}
+
+void PASCAL FAR TTXInternalOpenFile(TTXFileHooks FAR * hooks) {
+  int i;
+
+  for (i = 0; i < NumExtensions; i++) {
+    if (Extensions[i]->TTXOpenFile != NULL) {
+      Extensions[i]->TTXOpenFile(hooks);
+    }
+  }
+}
+
+void PASCAL FAR TTXInternalCloseFile(TTXFileHooks FAR * hooks) {
+  int i;
+
+  for (i = NumExtensions - 1; i >= 0; i--) {
+    if (Extensions[i]->TTXCloseFile != NULL) {
+      Extensions[i]->TTXCloseFile(hooks);
     }
   }
 }

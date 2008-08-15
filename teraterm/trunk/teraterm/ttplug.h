@@ -41,6 +41,24 @@ void PASCAL FAR TTXInternalCloseTCP(TTXSockHooks FAR * hooks);
     TTXInternalCloseTCP(&SockHooks);                             \
   } while (0)
 
+void PASCAL FAR TTXInternalOpenFile(TTXFileHooks FAR * hooks);
+#define TTXOpenFile()                                            \
+  do {                                                           \
+    static TTXFileHooks FileHooks = {                            \
+      &PCreateFile, &PCloseFile, &PReadFile, &PWriteFile         \
+    };                                                           \
+    TTXInternalOpenFile(&FileHooks);                             \
+  } while (0)
+
+void PASCAL FAR TTXInternalCloseFile(TTXFileHooks FAR * hooks);
+#define TTXCloseFile()                                           \
+  do {                                                           \
+    static TTXFileHooks FileHooks = {                            \
+      &PCreateFile, &PCloseFile, &PReadFile, &PWriteFile         \
+    };                                                           \
+    TTXInternalCloseFile(&FileHooks);                            \
+  } while (0)
+
 /* This function is called after the TTDLG DLL has been loaded.
    This macro stuff is to make sure that the functions in the caller's
    EXE or DLL are hooked. */
