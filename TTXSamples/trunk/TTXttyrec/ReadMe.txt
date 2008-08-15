@@ -14,10 +14,7 @@ Description:
   The gettimeofday API is built with the full scratch because Windows API does not have this function.
 
 Bug:
-  * Not support the serial connection. 
   * A user can only record. Can not replay the recording data by using Tera Term.
 
 ToDo:
-  * Support for the serial connection.
   * Support for replaying the recording data.
-

@@ -24,6 +24,7 @@ typedef struct {
   PTTSet ts;
   PComVar cv;
   Trecv origPrecv;
+  TReadFile origPReadFile;
   HANDLE fh;
   BOOL record;
   HMENU ControlMenu;
@@ -60,9 +61,33 @@ int PASCAL FAR TTXrecv(SOCKET s, char FAR *buff, int len, int flags) {
   return h.len;
 }
 
+BOOL PASCAL FAR TTXReadFile(HANDLE fh, LPVOID buff, DWORD len, LPDWORD rbytes, LPOVERLAPPED rol) {
+  struct recheader h;
+  int b[3], w;
+
+  if (!pvar->origPReadFile(fh, buff, len, rbytes, rol))
+    return FALSE;
+
+  if (pvar->record && *rbytes > 0) {
+    gettimeofday(&h.tv, NULL);
+    b[0] = h.tv.tv_sec;
+    b[1] = h.tv.tv_usec;
+    b[2] = *rbytes;
+    WriteFile(pvar->fh, b, sizeof(b), &w, NULL);
+    WriteFile(pvar->fh, buff, *rbytes, &w, NULL);
+  };
+
+  return TRUE;
+}
+
 static void PASCAL FAR TTXOpenTCP(TTXSockHooks FAR * hooks) {
   pvar->origPrecv = *hooks->Precv;
   *hooks->Precv = TTXrecv;
+}
+
+static void PASCAL FAR TTXOpenFile(TTXFileHooks FAR * hooks) {
+  pvar->origPReadFile = *hooks->PReadFile;
+  *hooks->PReadFile = TTXReadFile;
 }
 
 static void PASCAL FAR TTXModifyMenu(HMENU menu) {
@@ -148,7 +173,10 @@ static TTXExports Exports = {
   TTXModifyMenu,
   TTXModifyPopupMenu,
   TTXProcessCommand,
-  TTXEnd
+  TTXEnd,
+  NULL, // TTXSetCommandLine,
+  TTXOpenFile,
+  NULL  // TTXCloseFile
 };
 
 BOOL __declspec(dllexport) PASCAL FAR TTXBind(WORD Version, TTXExports FAR * exports) {
