@@ -374,7 +374,8 @@ void ssh_heartbeat_unlock(void)
 // (2005.3.7 yutaka)
 //
 #define MEMTAG_MAX 300
-#define LOGDUMP "ssh2dump.log"
+#define LOGDUMP "ssh2connect.log"
+#define LOG_PACKET_DUMP "ssh2packet.log"
 #define SENDTOME "Please send '"LOGDUMP"' file to Tera Term developer team."
 
 typedef struct memtag {
@@ -410,7 +411,7 @@ static void displine_memdump(FILE *fp, int addr, int *bytes, int byte_cnt)
 	/* ASCII表示 */
 	for (i = 0 ; i < byte_cnt ; i++) {
 		c = bytes[i];
-		if (c >= 0x20 && c <= 0x7f) {
+		if (isprint(c)) {
 			fprintf(fp, "%c", c);
 		} else {
 			fprintf(fp, ".");
@@ -455,6 +456,9 @@ void init_memdump(void)
 {
 	int i;
 
+	if (memtag_use > 0) 
+		return;
+
 	for (i = 0 ; i < MEMTAG_MAX ; i++) {
 		memtags[i].name = NULL;
 		memtags[i].desc = NULL;
@@ -479,6 +483,7 @@ void finish_memdump(void)
 		free(memtags[i].data);
 		memtags[i].len = 0;
 	}
+	memtag_count = 0;
 }
 
 void save_memdump(char *filename)
@@ -2731,6 +2736,12 @@ void SSH_notify_cred(PTInstVar pvar)
 
 void SSH_send(PTInstVar pvar, unsigned char const FAR * buf, unsigned int buflen)
 {
+	// RAWパケットダンプを追加 (2008.8.15 yutaka)
+	if (LOG_LEVEL_SSHDUMP <= pvar->session_settings.LogLevel) {
+		init_memdump();
+		push_memdump("SSH sending packet", "SSH_send", (char *)buf, buflen);
+	}
+
 	if (SSHv1(pvar)) {
 		if (get_handler(pvar, SSH_SMSG_STDOUT_DATA) != handle_data) {
 			return;
@@ -6279,6 +6290,9 @@ static BOOL handle_SSH2_newkeys(PTInstVar pvar)
 	notify_verbose_message(pvar, "SSH2_MSG_NEWKEYS is received(DH key generation is completed).", LOG_LEVEL_VERBOSE);
 
 	// ログ採取の終了 (2005.3.7 yutaka)
+	if (LOG_LEVEL_SSHDUMP <= pvar->session_settings.LogLevel) {
+		save_memdump(LOGDUMP);
+	}
 	finish_memdump();
 
 	// finish key exchange
@@ -8052,6 +8066,12 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 	str_len = get_uint32_MSBfirst(data);
 	data += 4;
 
+	// RAWパケットダンプを追加 (2008.8.15 yutaka)
+	if (LOG_LEVEL_SSHDUMP <= pvar->session_settings.LogLevel) {
+		init_memdump();
+		push_memdump("SSH receiving packet", "PKT_recv", (char *)data, str_len);
+	}
+
 	// バッファサイズのチェック
 	if (str_len > c->local_maxpacket) {
 		// TODO: logging
@@ -8303,6 +8323,12 @@ static BOOL handle_SSH2_channel_close(PTInstVar pvar)
 	buffer_t *msg;
 	char *s;
 	unsigned char *outmsg;
+
+	// コネクション切断時に、パケットダンプをファイルへ掃き出す。
+	if (LOG_LEVEL_SSHDUMP <= pvar->session_settings.LogLevel) {
+		save_memdump(LOG_PACKET_DUMP);
+		finish_memdump();
+	}
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;

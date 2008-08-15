@@ -248,6 +248,7 @@ typedef struct _TInstVar {
 #define LOG_LEVEL_URGENT     20
 #define LOG_LEVEL_WARNING    30
 #define LOG_LEVEL_VERBOSE    100
+#define LOG_LEVEL_SSHDUMP    200
 
 #define SSHv1(pvar) ((pvar)->protocol_major == 1)
 #define SSHv2(pvar) ((pvar)->protocol_major == 2)
