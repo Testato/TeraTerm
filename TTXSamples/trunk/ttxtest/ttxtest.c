@@ -290,6 +290,56 @@ static void PASCAL FAR TTXEnd(void) {
   printf("TTXEnd %d\n", ORDER);
 }
 
+/*
+*/
+static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen, PGetHNRec rec) {
+  printf("TTXSetCommandLine %d\n", ORDER);
+}
+
+/* This function is called when Tera Term is opening a Serial port and Replay
+   log file.
+
+   You receive a 'hooks' structure containing pointers to pointers to all the
+   file IO functions that Tera Term will use. You can replace any of these
+   function pointers to point to your own routines. However, if you replace a
+   function pointer, you should save the old pointer somewhere and use that
+   instead of calling file IO functions directly. Some other extension might
+   have put something there for you to use!
+
+   For example:
+   
+   [in TTXOpenFile]
+   ... saved_createfile = hooks->PCreateFile; hooks->PCreateFile = my_createfile; ...
+   
+   [in my_createfile]
+   ... saved_createfile(...); ...
+   [don't call the real CreateFile!]
+
+   Extensions that don't apply to all sessions (e.g. any extension that can be
+   disabled by the user) will check to see if they apply to the current
+   session, and if they don't, then no functions are be changed.
+
+   This function is called for each extension, in load order (see below).
+   Thus, the extension with highest load order puts its hooks in last.
+*/
+static void PASCAL FAR TTXOpenFile(TTXFileHooks FAR * hooks) {
+  printf("TTXOpenFile %d\n", ORDER);
+}
+
+/* This function is called when Tera Term is closing a serial connection,
+   after all file IO functions have been called.
+
+   Here you should restore any hooked pointers that you saved away. For
+   example:
+   ... hooks->PCreateFile = saved_createfile; ...
+
+   This function is called for each extension, in reverse load order (see
+   below).
+*/
+static void PASCAL FAR TTXCloseFile(TTXFileHooks FAR * hooks) {
+  printf("TTXCloseFile %d\n", ORDER);
+}
+
 /* This record contains all the information that the extension forwards to the
    main Tera Term code. It mostly consists of pointers to the above functions.
    Any of the function pointers can be replaced with NULL, in which case
@@ -335,7 +385,10 @@ static TTXExports Exports = {
   TTXModifyMenu,
   TTXModifyPopupMenu,
   TTXProcessCommand,
-  TTXEnd
+  TTXEnd,
+  TTXSetCommandLine,
+  TTXOpenFile,
+  TTXCloseFile
 };
 
 /* This is the function that Tera Term calls to retrieve the export
