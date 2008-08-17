@@ -741,7 +741,7 @@ void TelStartKeepAliveThread() {
 </div>
 
 
-  <h3>パケット処理</h3>
+  <h3>送信パケット処理</h3>
   SSH2プロトコルに載せて、パケットをサーバへ送るときのコードは以下のような書き方となります。begin_send_packet()の呼び出しで、「pvar->ssh_state.outbuf + 12」が返り値となり、それがペイロードを表します。ペイロードは純粋にサーバへ送りたいデータのことで、サイズやパディング等を含みません。<br>
   
 <pre class=code>
@@ -783,6 +783,51 @@ void TelStartKeepAliveThread() {
 <div align="center">
 <img src="image/ssh_packet_format2.png" width=720 height=540>
 </div>
+
+
+  <h3>受信パケット処理</h3>
+　パケットの受信は、TeraTerm本体側からは recv ソケット関数を呼び出した場合に、それがTELNETなのかSSHなのかを意識させないような設計になっていることと、 recv ソケット関数の呼び出しでは、かならずしも十分なバッファサイズが指定されてくるとは限らないため、少々実装が複雑になっています。<br>
+
+<div align="center">
+<img src="image/ssh_recv_packet.png" width=720 height=540>
+</div>
+
+　TeraTerm本体側は OnIdle()#teraterm.cpp というアイドルループにおいて、常時パケットの受信がないかをポーリングしています。それが CommReceive() で、recv()を呼び出します。recv()はTTSSHによりフックされているので、ソケット関数ではなく、TTXrecv()#ttxssh.c が呼び出されます。<br>
+　CommReceive()は recv() を呼び出す際に、バッファ(cv->InBuff[])の空きポインタとサイズを引数に渡します。バッファサイズは 1KB です。つまり、TTXrecv()のサイズには、1～1024 までの数値が渡される可能性があるということです。<br>
+　TTXrecv()から呼び出される PKT_recv() は、少々複雑なループ処理となっています。SSH接続を初めて行うときのシーケンスを以下に示します。
+　
+<ol>
+ <li>recv_data() で本当の recv() を呼び出し、サーバからの受信パケットをカーネルから受け取る。pvar->pkt_state.datalenが更新される。 </li>
+ <li>SSH_handle_server_ID() でSSHサーバのバージョンチェックが行われる。pvar->pkt_state.datastart と pvar->pkt_state.datalen を更新する。</li>
+ <li>再度、recv_data() が呼ばれるが、サーバからの受信データがもうないので、connection_closed=TRUE として while ループを抜ける。</li>
+ <li>TeraTermの recv() は"0"で返ってくる。すなわち、受信データなし。</li>
+</ol>
+
+　次に、SSH通信のための共通鍵生成までのシーケンスを以下に示します。
+
+<ol>
+ <li>recv_data() で本当の recv() を呼び出し、サーバからの受信パケットをカーネルから受け取る。pvar->pkt_state.datalenが更新される。 </li>
+ <li>SSH_predecrpyt_packet() で、受信パケットの先頭ブロックのみを復号化する。SSHパケットのサイズを取得する。</li>
+ <li>妥当なSSHパケットサイズならば、SSH_handle_packet() を呼び出し、メッセージタイプに応じたハンドラを呼び出す。pvar->ssh_state.payload と pvar->ssh_state.payloadlen を設定する。</li>
+ <li>pvar->pkt_state.datastart と pvar->pkt_state.datalen を更新する。</li>
+ <li>pvar->pkt_state.datalen がゼロになるまで、SSH_predecrpyt_packet() の処理を繰り返す。</li>
+ <li>recv_data() が呼ばれるが、サーバからの受信データがもうないので、connection_closed=TRUE として while ループを抜ける。</li>
+ <li>TeraTermの recv() は"0"で返ってくる。すなわち、受信データなし。</li>
+</ol>
+
+　次に、端末データ通信のシーケンスを以下に示します。
+
+<ol>
+ <li>recv_data() で本当の recv() を呼び出し、サーバからの受信パケットをカーネルから受け取る。pvar->pkt_state.datalenが更新される。 </li>
+ <li>SSH_predecrpyt_packet() で、受信パケットの先頭ブロックのみを復号化する。SSHパケットのサイズを取得する。</li>
+ <li>妥当なSSHパケットサイズならば、SSH_handle_packet() を呼び出し、メッセージタイプに応じたハンドラを呼び出す。pvar->ssh_state.payload と pvar->ssh_state.payloadlen を設定する。</li>
+ <li>メッセージタイプがSSH2_MSG_CHANNEL_DATAなので、handle_SSH2_channel_data() を呼び出す。pvar->ssh_state.payload_datalen と pvar->ssh_state.payload_datastart を設定する。</li>
+ <li>pvar->pkt_state.datastart と pvar->pkt_state.datalen を更新する。</li>
+ <li>SSH_is_any_payload() が真を返すようになり、PKT_recv()に渡されてきたバッファへデータをコピーする。</li>
+ <li>TeraTerm側のバッファサイズがいっぱいになった場合は、SSH端末データが残っていたとしても、PKT_recv()は返る。</li>
+ <li>TeraTerm側のバッファサイズに余裕がある場合は、recv_data()を呼び出し、サーバからの受信データを取得する。</li>
+ <li>TeraTermの recv() は「受信データサイズ」で返ってくる。</li>
+</ol>
 
 
   <h3>シーケンス制御</h3>
