@@ -208,10 +208,10 @@ void CBSend()
       }
 
       // SSH2 で大きいデータを貼り付けたときにエコーバックが欠けることが
-      // あるので、1000 バイト送信するごとに 10ms(この値に根拠はない) 待つ
+      // あるので、500 バイト送信するごとに 10ms(この値に根拠はない) 待つ
       // workaround (2008.8.22 maya)
       SendBytes++;
-      if (SendBytes > 1000) {
+      if (SendBytes > 500) {
         SendBytes = 0;
         Sleep(10);
       }
