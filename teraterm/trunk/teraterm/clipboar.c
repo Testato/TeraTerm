@@ -140,6 +140,7 @@ void CBSend()
 {
   int c;
   BOOL EndFlag;
+  int SendBytes = 0;
 
   if (CBMemHandle==NULL) return;
 
@@ -204,6 +205,15 @@ void CBSend()
       {
 	c = CommTextEcho(&cv,(PCHAR)&CBByte,1);
 	CBRetryEcho = (c==0);
+      }
+
+      // SSH2 で大きいデータを貼り付けたときにエコーバックが欠けることが
+      // あるので、1000 バイト送信するごとに 10ms(この値に根拠はない) 待つ
+      // workaround (2008.8.22 maya)
+      SendBytes++;
+      if (SendBytes > 1000) {
+        SendBytes = 0;
+        Sleep(10);
       }
     }
     else
