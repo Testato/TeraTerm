@@ -1067,7 +1067,6 @@ static void delete_different_key(PTInstVar pvar)
 				                  "The host key could not be written.");
 				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 			}
-			free(filename);
 			return;
 		}
 
