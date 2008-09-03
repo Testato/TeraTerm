@@ -614,9 +614,7 @@ CVTWindow::CVTWindow()
 	if (is_NT4()) {
 		fuLoad = LR_VGACOLOR;
 	}
-	wc.hIcon = (HICON)LoadImage(wc.hInstance,
-	                            MAKEINTRESOURCE((ts.TEKIcon!=IdIconDefault)?ts.VTIcon:IDI_VT),
-	                            IMAGE_ICON, 0, 0, fuLoad);
+	wc.hIcon = NULL;
 	//wc.hCursor = LoadCursor(NULL,IDC_IBEAM);
 	wc.hCursor = NULL; // マウスカーソルは動的に変更する (2005.4.2 yutaka)
 	wc.hbrBackground = NULL;
@@ -658,11 +656,21 @@ CVTWindow::CVTWindow()
 //-->
 #endif
 
-	// set the small icon
-	::PostMessage(HVTWin,WM_SETICON,0,
+	if (is_NT4()) {
+		fuLoad = LR_VGACOLOR;
+	}
+	::PostMessage(HVTWin,WM_SETICON,ICON_SMALL,
 	              (LPARAM)LoadImage(AfxGetInstanceHandle(),
 	                                MAKEINTRESOURCE((ts.VTIcon!=IdIconDefault)?ts.VTIcon:IDI_VT),
 	                                IMAGE_ICON,16,16,fuLoad));
+	// Vista の Aero において Alt+Tab 切り替えで表示されるアイコンが
+	// 16x16 アイコンの拡大になってしまうので、大きいアイコンも
+	// セットする (2008.9.3 maya)
+	::PostMessage(HVTWin,WM_SETICON,ICON_BIG,
+	              (LPARAM)LoadImage(AfxGetInstanceHandle(),
+	                                MAKEINTRESOURCE((ts.VTIcon!=IdIconDefault)?ts.VTIcon:IDI_VT),
+	                                IMAGE_ICON, 0, 0, fuLoad));
+
 	MainMenu = NULL;
 	WinMenu = NULL;
 	if ((ts.HideTitle==0) && (ts.PopupMenu==0)) {

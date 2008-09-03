@@ -43,11 +43,7 @@ BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv, PTTSet pts)
   wc.cbClsExtra = 0;
   wc.cbWndExtra = DLGWINDOWEXTRA;
   wc.hInstance = AfxGetInstanceHandle();
-  if (is_NT4()) {
-    fuLoad = LR_VGACOLOR;
-  }
-  wc.hIcon = (HICON)LoadImage(wc.hInstance, MAKEINTRESOURCE(IDI_TTERM),
-                              IMAGE_ICON, 0, 0, fuLoad);
+  wc.hIcon = NULL;
   wc.hCursor = LoadCursor(NULL,IDC_ARROW);
   wc.hbrBackground = (HBRUSH)(COLOR_BTNFACE+1);
   wc.lpszMenuName = NULL;
@@ -127,14 +123,18 @@ BOOL CFileTransDlg::OnInitDialog()
   // ログファイルはフルパス表示にする(2004.8.6 yutaka)
   SetDlgItemText(IDC_EDIT_FULLPATH, &(fv->FullName[0]));
 
-  // set the small icon
   if (is_NT4()) {
     fuLoad = LR_VGACOLOR;
   }
-  ::PostMessage(GetSafeHwnd(),WM_SETICON,0,
+  ::PostMessage(GetSafeHwnd(),WM_SETICON,ICON_SMALL,
                 (LPARAM)LoadImage(AfxGetInstanceHandle(),
                                   MAKEINTRESOURCE(IDI_TTERM),
                                   IMAGE_ICON,16,16,fuLoad));
+  ::PostMessage(GetSafeHwnd(),WM_SETICON,ICON_BIG,
+                (LPARAM)LoadImage(AfxGetInstanceHandle(),
+                                  MAKEINTRESOURCE(IDI_TTERM),
+                                  IMAGE_ICON, 0, 0, fuLoad));
+
   return 1;
 }
 

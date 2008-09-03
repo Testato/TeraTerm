@@ -193,6 +193,7 @@ BOOL CCtrlWindow::OnInitDialog()
   char uimsg[MAX_UIMSG], uimsg2[MAX_UIMSG];
   LOGFONT logfont;
   HFONT font;
+  int fuLoad = LR_DEFAULTCOLOR;
 
   CDialog::OnInitDialog();
 
@@ -222,11 +223,17 @@ BOOL CCtrlWindow::OnInitDialog()
     (CRTHeight-Rect.bottom+Rect.top) / 2,
     0,0,SWP_NOSIZE | SWP_NOZORDER);
 
-  // set the small icon
-  ::PostMessage(GetSafeHwnd(),WM_SETICON,0,
-    (LPARAM)LoadImage(AfxGetInstanceHandle(),
-    MAKEINTRESOURCE(IDI_TTMACRO),
-    IMAGE_ICON,16,16,0));
+  if (is_NT4()) {
+    fuLoad = LR_VGACOLOR;
+  }
+  ::PostMessage(GetSafeHwnd(),WM_SETICON,ICON_SMALL,
+                (LPARAM)LoadImage(AfxGetInstanceHandle(),
+                                  MAKEINTRESOURCE(IDI_TTMACRO),
+                                  IMAGE_ICON,16,16,fuLoad));
+  ::PostMessage(GetSafeHwnd(),WM_SETICON,ICON_BIG,
+                (LPARAM)LoadImage(AfxGetInstanceHandle(),
+                                  MAKEINTRESOURCE(IDI_TTMACRO),
+                                  IMAGE_ICON,0,0,fuLoad));
 
   ParseParam(&IOption,&VOption);
 

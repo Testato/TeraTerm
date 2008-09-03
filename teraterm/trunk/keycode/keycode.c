@@ -41,7 +41,7 @@ int PASCAL WinMain(HINSTANCE hInstance,
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
     wc.hInstance = hInstance;
-    wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_KEYCODE));
+    wc.hIcon = NULL;
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
     wc.lpszMenuName = NULL;
@@ -64,11 +64,16 @@ int PASCAL WinMain(HINSTANCE hInstance,
     NULL);
 
   ShowWindow(hWnd, nCmdShow);
-  // set the small icon
-  PostMessage(hWnd,WM_SETICON,0,
-    (LPARAM)LoadImage(hInstance,
-    MAKEINTRESOURCE(IDI_KEYCODE),
-    IMAGE_ICON,16,16,0));
+
+  PostMessage(hWnd,WM_SETICON,ICON_SMALL,
+              (LPARAM)LoadImage(hInstance,
+                                MAKEINTRESOURCE(IDI_KEYCODE),
+                                IMAGE_ICON,16,16,0));
+  PostMessage(hWnd,WM_SETICON,ICON_BIG,
+              (LPARAM)LoadImage(hInstance,
+                                MAKEINTRESOURCE(IDI_KEYCODE),
+                                IMAGE_ICON,0,0,0));
+
   while(GetMessage(&msg, NULL, 0, 0)) {
     TranslateMessage(&msg);
     DispatchMessage(&msg);
