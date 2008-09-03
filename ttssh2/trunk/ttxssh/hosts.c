@@ -47,6 +47,7 @@ See LICENSE.TXT for the license.
 #include <io.h>
 #include <errno.h>
 #include <sys/stat.h>
+#include <direct.h>
 
 static HFONT DlgHostsAddFont;
 static HFONT DlgHostsReplaceFont;
@@ -1042,7 +1043,8 @@ static void delete_different_key(PTInstVar pvar)
 	else {
 		Key key; // 接続中のホストのキー
 		int length;
-		char filename[L_tmpnam];
+		char filename[MAX_PATH];
+		char tmp[L_tmpnam];
 		int fd;
 		int amount_written = 0;
 		int close_result;
@@ -1050,7 +1052,9 @@ static void delete_different_key(PTInstVar pvar)
 		char buf[FILENAME_MAX];
 
 		// 書き込み一時ファイルを開く
-		tmpnam(filename);
+		_getcwd(filename, sizeof(filename));
+		tmpnam_s(tmp,sizeof(tmp));
+		strcat_s(filename, sizeof(filename), tmp);
 		fd = _open(filename,
 		          _O_CREAT | _O_WRONLY | _O_SEQUENTIAL | _O_BINARY | _O_TRUNC,
 		          _S_IREAD | _S_IWRITE);
