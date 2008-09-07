@@ -45,12 +45,12 @@
         </ul></li>
       <li>added support for displaying the terminal size after resizing on the tool tip.</li>
       <li>added support for the progress indicator on the file transfer dialog.</li>
-      <!--li>SSH2 接続でテキストを貼り付けた場合に送信するデータが欠けることがあるため、500バイト貼り付ける度に 10ms 待つ workaround を追加した。</li-->
+      <li>added the workaround for a lot of pasting data would corrupt on SSH2 connection. This workaround is 10msec waiting with each 500 byte.</li>
       <li>added support for canceling the `messagebox' and the `yesnobox' macro command. When a user cancels the messagebox window, the macro engine halts.</li>
       <li>added support for the TTX interface to hook the serial communication.</li>
       <li>Bug fix: A user could not duplicate the network session of TELNET and SSH without port 22 and 23.</li>
       <li>Bug fix: The terminal size could reduce on Windows 98-compatible products.</li>
-      <!--li>Windows Vista の Aero 環境で、Alt+Tab キーでウィンドウを切り替えをしたときに表示されるアイコンが 16x16 になる問題を修正した。</li-->
+      <li>Bug fix: TeraTerm icon would 16x16 size when a user changes the window by using Alt+Tab key on Windows Vista Aero.</li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.48">2.48</a></li>
     </ul>
   </li>
@@ -1169,7 +1169,7 @@ SYNOPSIS:
     <ul>
       <li>added support for VisualHostKey feature with OpenSSH 5.1.</li>
       <li>added a `200' number to LogLevel entry in teraterm.ini file. This logging level enables a user to caputure the SSH RAW packet data in a local file.</li>
-      <!--li>Windows Vista で ssh_known_hosts に保存されいてるホスト鍵を置換しようとするとフリーズする問題を修正した。</li-->
+      <li>Bug fix: TeraTerm would stall when a existing host key replaces on Windows Vista.</li>
     </ul>
   </li>
 
