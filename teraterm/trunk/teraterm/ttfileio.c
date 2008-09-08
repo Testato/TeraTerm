@@ -14,10 +14,22 @@ TWriteFile PWriteFile;
 TCreateFile PCreateFile;
 TCloseFile PCloseFile;
 
-void InitFileIO()
+static BOOL PASCAL FAR DummyWriteFile(HANDLE fh, LPCVOID buff,
+  DWORD len, LPDWORD wbytes, LPOVERLAPPED wol)
+{
+	*wbytes = len;
+	return TRUE;
+}
+
+void InitFileIO(int ConnType)
 {
   PReadFile = ReadFile;
-  PWriteFile = WriteFile;
+  if (ConnType == IdFile) {
+	PWriteFile = DummyWriteFile;
+  }
+  else {
+	PWriteFile = WriteFile;
+  }
   PCreateFile = CreateFile;
   PCloseFile = CloseHandle;
   return;

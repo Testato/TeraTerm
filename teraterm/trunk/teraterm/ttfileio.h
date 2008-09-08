@@ -25,7 +25,7 @@ extern TCreateFile PCreateFile;
 extern TCloseFile PCloseFile;
 
 /* proto types */
-void InitFileIO();
+void InitFileIO(int ConnType);
 
 #ifdef __cplusplus
 }

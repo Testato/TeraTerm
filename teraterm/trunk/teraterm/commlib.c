@@ -485,7 +485,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
 #endif /* NO_INET6 */
 
     case IdSerial:
-      InitFileIO();  /* TTPLUG */
+      InitFileIO(IdSerial);  /* TTPLUG */
       TTXOpenFile(); /* TTPLUG */
       _snprintf_s(P, sizeof(P), _TRUNCATE, "COM%d", ts->ComPort);
       strncpy_s(ErrMsg, sizeof(ErrMsg),P, _TRUNCATE);
@@ -524,7 +524,7 @@ void CommOpen(HWND HW, PTTSet ts, PComVar cv)
       break; /* end of "case IdSerial:" */
 
     case IdFile:
-      InitFileIO();  /* TTPLUG */
+      InitFileIO(IdFile);  /* TTPLUG */
       TTXOpenFile(); /* TTPLUG */
       cv->ComID = PCreateFile(ts->HostName,GENERIC_READ,0,NULL,
                              OPEN_EXISTING,0,NULL);
@@ -683,7 +683,10 @@ void CommStart(PComVar cv, LONG lParam, PTTSet ts)
         MessageBox(cv->HWin,ts->UIMsg,uimsg,MB_TASKMODAL | MB_ICONEXCLAMATION);
       }
       break;
-    case IdFile: cv->RRQ = TRUE; break;
+
+    case IdFile:
+      cv->RRQ = TRUE;
+      break;
   }
   cv->Ready = TRUE;
 }
@@ -820,15 +823,24 @@ void CommReceive(PComVar cv)
 	ClearCommError(cv->ComID,&DErr,NULL);
 	break;
       case IdFile:
-	PReadFile(cv->ComID,&(cv->InBuff[cv->InBuffCount]),
-		 InBuffSize-cv->InBuffCount,&C,NULL);
-	cv->InBuffCount = cv->InBuffCount + C;
+	if (PReadFile(cv->ComID,&(cv->InBuff[cv->InBuffCount]),
+	  InBuffSize-cv->InBuffCount,&C,NULL))
+	{
+	  if (C == 0) {
+	    DErr = ERROR_HANDLE_EOF;
+	  }
+	  else {
+	    cv->InBuffCount = cv->InBuffCount + C;
+	  }
+	}
+	else {
+	  DErr = GetLastError();
+	}
 	break;
     }
   }
 
-  if (cv->InBuffCount==0)
-  {
+  if (cv->InBuffCount==0) {
     switch (cv->PortType) {
       case IdTCPIP:
 	if (! TCPIPClosed)
@@ -840,11 +852,16 @@ void CommReceive(PComVar cv)
 	SetEvent(ReadEnd);
 	return;
       case IdFile:
-	PostMessage(cv->HWin, WM_USER_COMMNOTIFY, 0, FD_CLOSE);
-	break;
+	if (DErr != ERROR_IO_PENDING) {
+	  PostMessage(cv->HWin, WM_USER_COMMNOTIFY, 0, FD_CLOSE);
+	  cv->RRQ = FALSE;
+	}
+	else {
+	  cv->RRQ = TRUE;
+	}
+	return;
     }
     cv->RRQ = FALSE;
-
   }
 }
 
@@ -874,7 +891,8 @@ void CommSend(PComVar cv)
       ClearCommError(cv->ComID,&DErr,&Stat);
       Max = OutBuffSize - Stat.cbOutQue;
       break;
-    case IdFile: Max = cv->OutBuffCount;
+    case IdFile:
+      Max = cv->OutBuffCount;
       break;
   }
 
@@ -936,7 +954,14 @@ void CommSend(PComVar cv)
       }
       ClearCommError(cv->ComID,&DErr,&Stat);
       break;
-    case IdFile: D = C; break;
+
+    case IdFile:
+      if (! PWriteFile(cv->ComID, &(cv->OutBuff[cv->OutPtr]), C, (LPDWORD)&D, NULL)) {
+        if (! GetLastError() == ERROR_IO_PENDING) {
+          D = C; /* ignore data */
+        }
+      }
+      break;
   }
 
   cv->OutBuffCount = cv->OutBuffCount - D;
