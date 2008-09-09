@@ -1,10 +1,10 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include "teraterm.h"
 #include "tttypes.h"
 #include "ttplugin.h"
 #include "tt_res.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 
 #ifndef NO_INET6
 #include <winsock2.h>
@@ -38,9 +38,37 @@ struct recheader {
 static TInstVar FAR * pvar;
 static TInstVar InstVar;
 
+#define GetFileMenu(menu)	GetSubMenuByChildID(menu, ID_FILE_NEWCONNECTION)
+#define GetEditMenu(menu)	GetSubMenuByChildID(menu, ID_EDIT_COPY2)
+#define GetSetupMenu(menu)	GetSubMenuByChildID(menu, ID_SETUP_TERMINAL)
+#define GetControlMenu(menu)	GetSubMenuByChildID(menu, ID_CONTROL_RESETTERMINAL)
+#define GetHelpMenu(menu)	GetSubMenuByChildID(menu, ID_HELP_ABOUT)
+
+HMENU GetSubMenuByChildID(HMENU menu, UINT id) {
+  int i, j, items, subitems, cur_id;
+  HMENU m;
+
+  items = GetMenuItemCount(menu);
+
+  for (i=0; i<items; i++) {
+    if (m = GetSubMenu(menu, i)) {
+      subitems = GetMenuItemCount(m);
+      for (j=0; j<subitems; j++) {
+        cur_id = GetMenuItemID(m, j);
+	if (cur_id == id) {
+	  return m;
+	}
+      }
+    }
+  }
+  return NULL;
+}
+
 static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
   pvar->ts = ts;
   pvar->cv = cv;
+  pvar->origPrecv = NULL;
+  pvar->origPReadFile = NULL;
   pvar->fh = INVALID_HANDLE_VALUE;
   pvar->record = FALSE;
 }
@@ -85,15 +113,29 @@ static void PASCAL FAR TTXOpenTCP(TTXSockHooks FAR * hooks) {
   *hooks->Precv = TTXrecv;
 }
 
+static void PASCAL FAR TTXCloseTCP(TTXSockHooks FAR * hooks) {
+  if (pvar->origPrecv) {
+    *hooks->Precv = pvar->origPrecv;
+  }
+}
+
 static void PASCAL FAR TTXOpenFile(TTXFileHooks FAR * hooks) {
-  pvar->origPReadFile = *hooks->PReadFile;
-  *hooks->PReadFile = TTXReadFile;
+  if (pvar->cv->PortType == IdSerial) {
+    pvar->origPReadFile = *hooks->PReadFile;
+    *hooks->PReadFile = TTXReadFile;
+  }
+}
+
+static void PASCAL FAR TTXCloseFile(TTXFileHooks FAR * hooks) {
+  if (pvar->origPReadFile) {
+    *hooks->PReadFile = pvar->origPReadFile;
+  }
 }
 
 static void PASCAL FAR TTXModifyMenu(HMENU menu) {
   UINT flag = MF_BYCOMMAND | MF_STRING | MF_ENABLED;
 
-  pvar->ControlMenu = GetSubMenu(menu, 3);
+  pvar->ControlMenu = GetControlMenu(menu);
   if (pvar->record) {
     flag |= MF_CHECKED;
   }
@@ -168,7 +210,7 @@ static TTXExports Exports = {
   NULL, // TTXGetUIHooks,
   NULL, // TTXGetSetupHooks,
   TTXOpenTCP,
-  NULL, // TTXCloseTCP,
+  TTXCloseTCP,
   NULL, // TTXSetWinSize,
   TTXModifyMenu,
   TTXModifyPopupMenu,
@@ -176,7 +218,7 @@ static TTXExports Exports = {
   TTXEnd,
   NULL, // TTXSetCommandLine,
   TTXOpenFile,
-  NULL  // TTXCloseFile
+  TTXCloseFile
 };
 
 BOOL __declspec(dllexport) PASCAL FAR TTXBind(WORD Version, TTXExports FAR * exports) {
