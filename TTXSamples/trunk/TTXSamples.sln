@@ -10,6 +10,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TTXFixedWinSize", "TTXFixed
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TTXttyrec", "TTXttyrec\TTXttyrec.vcproj", "{5798E37E-0428-457E-A652-EE0A75130327}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TTXttyplay", "TTXttyrec\TTXttyplay.vcproj", "{3181E887-2183-4FB8-84CC-CA5B4D48BC71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -36,6 +38,10 @@ Global
 		{5798E37E-0428-457E-A652-EE0A75130327}.Debug|Win32.Build.0 = Debug|Win32
 		{5798E37E-0428-457E-A652-EE0A75130327}.Release|Win32.ActiveCfg = Release|Win32
 		{5798E37E-0428-457E-A652-EE0A75130327}.Release|Win32.Build.0 = Release|Win32
+		{3181E887-2183-4FB8-84CC-CA5B4D48BC71}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3181E887-2183-4FB8-84CC-CA5B4D48BC71}.Debug|Win32.Build.0 = Debug|Win32
+		{3181E887-2183-4FB8-84CC-CA5B4D48BC71}.Release|Win32.ActiveCfg = Release|Win32
+		{3181E887-2183-4FB8-84CC-CA5B4D48BC71}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
