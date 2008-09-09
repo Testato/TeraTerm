@@ -24,6 +24,32 @@ typedef struct {
 static TInstVar FAR * pvar;
 static TInstVar InstVar;
 
+#define GetFileMenu(menu)	GetSubMenuByChildID(menu, ID_FILE_NEWCONNECTION)
+#define GetEditMenu(menu)	GetSubMenuByChildID(menu, ID_EDIT_COPY2)
+#define GetSetupMenu(menu)	GetSubMenuByChildID(menu, ID_SETUP_TERMINAL)
+#define GetControlMenu(menu)	GetSubMenuByChildID(menu, ID_CONTROL_RESETTERMINAL)
+#define GetHelpMenu(menu)	GetSubMenuByChildID(menu, ID_HELP_ABOUT)
+
+HMENU GetSubMenuByChildID(HMENU menu, UINT id) {
+  int i, j, items, subitems, cur_id;
+  HMENU m;
+
+  items = GetMenuItemCount(menu);
+
+  for (i=0; i<items; i++) {
+    if (m = GetSubMenu(menu, i)) {
+      subitems = GetMenuItemCount(m);
+      for (j=0; j<subitems; j++) {
+        cur_id = GetMenuItemID(m, j);
+	if (cur_id == id) {
+	  return m;
+	}
+      }
+    }
+  }
+  return NULL;
+}
+
 static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
   pvar->ontop = FALSE;
 }
@@ -31,7 +57,7 @@ static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
 static void PASCAL FAR TTXModifyMenu(HMENU menu) {
   UINT flag = MF_BYCOMMAND | MF_STRING | MF_ENABLED;
 
-  pvar->ControlMenu = GetSubMenu(menu, 3);
+  pvar->ControlMenu = GetControlMenu(menu);
   if (pvar->ontop) {
     flag |= MF_CHECKED;
   }
