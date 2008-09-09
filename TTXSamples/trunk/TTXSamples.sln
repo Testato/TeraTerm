@@ -16,6 +16,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TTXtest", "ttxtest\TTXtest.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TTXKcodeChange", "TTXKcodeChange\TTXKcodeChange.vcproj", "{2E487F50-84E4-404D-A7E1-F9FA4A72BC25}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TTXViewMode", "TTXViewMode\TTXViewMode.vcproj", "{2296FB66-3FA4-4136-8252-ABECEEAC2D70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -54,6 +56,10 @@ Global
 		{2E487F50-84E4-404D-A7E1-F9FA4A72BC25}.Debug|Win32.Build.0 = Debug|Win32
 		{2E487F50-84E4-404D-A7E1-F9FA4A72BC25}.Release|Win32.ActiveCfg = Release|Win32
 		{2E487F50-84E4-404D-A7E1-F9FA4A72BC25}.Release|Win32.Build.0 = Release|Win32
+		{2296FB66-3FA4-4136-8252-ABECEEAC2D70}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2296FB66-3FA4-4136-8252-ABECEEAC2D70}.Debug|Win32.Build.0 = Debug|Win32
+		{2296FB66-3FA4-4136-8252-ABECEEAC2D70}.Release|Win32.ActiveCfg = Release|Win32
+		{2296FB66-3FA4-4136-8252-ABECEEAC2D70}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
