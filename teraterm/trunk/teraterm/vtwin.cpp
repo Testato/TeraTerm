@@ -3205,7 +3205,7 @@ void CVTWindow::OnFileNewConnection()
 // (2004.12.6 yutaka)
 void CVTWindow::OnDuplicateSession()
 {
-	char Command[MAX_PATH] = "notepad.exe";
+	char Command[MAX_PATH];
 	char *exec = "ttermpro";
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
@@ -3213,7 +3213,12 @@ void CVTWindow::OnDuplicateSession()
 	// 現在の設定内容を共有メモリへコピーしておく
 	CopyTTSetToShmem(&ts);
 
-	if (cv.TelFlag) { // telnet
+	if (ts.TCPPort != 23 && (strcmp(ts.HostName, "127.0.0.1") == 0 ||
+	    strcmp(ts.HostName, "localhost") == 0)) {
+		// localhostへの接続でポートが23以外の時はcygwin接続とみなす。
+		OnCygwinConnection();
+		return;
+	} else if (cv.TelFlag) { // telnet
 		_snprintf_s(Command, sizeof(Command), _TRUNCATE,
 		            "%s %s:%d /DUPLICATE /nossh", 
 		            exec, ts.HostName, ts.TCPPort);
@@ -3228,15 +3233,8 @@ void CVTWindow::OnDuplicateSession()
 		TTXSetCommandLine(Command, sizeof(Command), NULL); /* TTPLUG */
 
 	} else {
-		// 接続先が localhost ならCygwin接続の複製を行う。
-		// (2005.10.15 yutaka)
-		if (strcmp(ts.HostName, "127.0.0.1") == 0 || 
-			strcmp(ts.HostName, "localhost") == 0) {
-			OnCygwinConnection();
-		}
-
+		// telnet/ssh/cygwin接続以外では複製を行わない。
 		return;
-
 	}
 
 	memset(&si, 0, sizeof(si));
