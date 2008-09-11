@@ -5821,8 +5821,15 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 	}
 
 	if ((ret = key_verify(rsa, dsa, signature, siglen, hash, 20)) != 1) {
-		_snprintf_s(emsg_tmp, sizeof(emsg_tmp), _TRUNCATE,
-		            "key verify error(%d) @ handle_SSH2_dh_kex_reply()", ret);
+		if (ret == -3 && rsa != NULL) {
+			_snprintf_s(emsg_tmp, sizeof(emsg_tmp), _TRUNCATE,
+			            "key verify error(remote rsa key length is too short %d-bit) "
+			            "@ handle_SSH2_dh_kex_reply()", BN_num_bits(rsa->n));
+		}
+		else {
+			_snprintf_s(emsg_tmp, sizeof(emsg_tmp), _TRUNCATE,
+			            "key verify error(%d) @ handle_SSH2_dh_kex_reply()", ret);
+		}
 		emsg = emsg_tmp;
 		save_memdump(LOGDUMP);
 		goto error;
@@ -6169,8 +6176,15 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 	}
 
 	if ((ret = key_verify(rsa, dsa, signature, siglen, hash, 20)) != 1) {
-		_snprintf_s(emsg_tmp, sizeof(emsg_tmp), _TRUNCATE,
-		            "key verify error(%d) @ SSH2_DH_GEX\r\n%s", ret, SENDTOME);
+		if (ret == -3 && rsa != NULL) {
+			_snprintf_s(emsg_tmp, sizeof(emsg_tmp), _TRUNCATE,
+			            "key verify error(remote rsa key length is too short %d-bit) "
+			            "@ SSH2_DH_GEX", BN_num_bits(rsa->n));
+		}
+		else {
+			_snprintf_s(emsg_tmp, sizeof(emsg_tmp), _TRUNCATE,
+			            "key verify error(%d) @ SSH2_DH_GEX\r\n%s", ret, SENDTOME);
+		}
 		emsg = emsg_tmp;
 		save_memdump(LOGDUMP);
 		goto error;
