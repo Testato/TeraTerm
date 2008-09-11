@@ -55,8 +55,7 @@ The third digit is:
 
 Example: adding a TTSSH menu under File menu
 
-#define ID_SSHSCPMENU       52110  
-
+#define ID_SSHSCPMENU       52110
 
 
 * What to do when new macro command is added?
@@ -121,17 +120,19 @@ Example: adding a TTSSH menu under File menu
   3. Build ttpmenu solution.
   4. ttpmenu.exe will be generated in Release directory if the building is successful.
 
+
 * How to build TTXKanjiMenu
   1. Checkout TTXKanjiMenu source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
   2. Open TTXKanjiMenu\ttxkanjimenu.sln with Visual Studio.
   3. Build ttpmenu solution.
   4. ttxkanjimenu.dll will be generated in TTXKanjiMenu directory if the building is successful.
 
+
 * How to build TTProxy
   To build TTProxy source code is shown in the following step:
   And you need Visual Studio 2005(VC++8.0) to build.
 
-  1. Checkout Tera Term source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
+  1. Checkout TTProxy source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
   2. Open TTProxy\TTProxy.sln with Visual Studio.
   3. Build TTProxy solution.
   4. TTProxy DLL module will be generated in TTProxy directory if the building is successful.
@@ -198,6 +199,17 @@ Example: adding a TTSSH menu under File menu
       # make
 
 
+* How to build TTXSamples
+  To build TTXSamples source code is shown in the following step:
+  And you need Visual Studio 2005(VC++8.0) to build.
+  VS2005 Express Edition is able to build TTXSamples.
+
+  1. Checkout TTXSamples source code from SourceForge(http://sourceforge.jp/projects/ttssh2/).
+  2. Open TTXSamples\TTXSamples.sln with Visual Studio.
+  3. Build TTXSamples solution.
+  4. TTXSamples DLL module will be generated in TTXSamples directory if the building is successful.
+
+
 * How to build HTML help file
   To build  HTML help file is shown in the following step:
 
@@ -244,16 +256,15 @@ Example: adding a TTSSH menu under File menu
        ttxkanjimenu.rc // only modifying
        teraterm.iss
        html/about/hisotry.html
-       
+
        Note: Don't update the version number until the release, because the installer does not overwrite file when versions are same.
-       
+
        Note: By way of exception, CygTerm+ always upgrades not regarding Tera Term release process when the patch is committed. The release date is the day committed by a developer. The suffix of CygTerm+ version is patchlevel, and then a user can get gcc compiler for free.
 
   3. Evaluate executable program file.
        - Rebuild Tera Term program
        - Make installer package
-         Open "teraterm\installer\teraterm.iss" with ISTool and call [Project]-[Compile Setup] 
-         with InnoSetup.
+         Open "teraterm\installer\teraterm.iss" with ISTool and call [Project]-[Compile Setup] with InnoSetup.
        - Test Tera Term installation and evaluate it.
 
   4. Added CVS tag.

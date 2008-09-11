@@ -61,7 +61,6 @@
 #define ID_SSHSCPMENU       52110
 
 
-
 ■ マクロコマンド追加時の作業リスト
   Tera Termマクロを新設するときの作業手順について、以下に示します。
 
@@ -127,11 +126,13 @@
   3. ソリューションをビルドする
   4. ビルドに成功すると ttpmenu ディレクトリに ttpmenu.exe が生成される
 
+
 ■ TTXKanjiMenuのビルド方法
   1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
   2. TTXKanjiMenu\ttxkanjimenu.sln をVisual Studioで開く
   3. ソリューションをビルドする
   4. ビルドに成功すると TTXKanjiMenu ディレクトリに ttxkanjimenu.dll が生成される
+
 
 ■ TTProxyのビルド方法
   TTProxyのビルド方法について以下に示します。
@@ -148,7 +149,7 @@
   ビルドにはVisual Studio 2005(VC++8.0)、ActivePerlが必要です。
 
   * TTSSH単体のビルドは VS2005 Express Edition でも可能です。ttpcmn.libをリンクするため、Tera Termのビルドを事前に行っておく必要があります。VS2005 Express EditionではTera Termのビルドはできませんが、ttpcmn.libは作成することができます。
-  
+
   * VS2008 Express Editionでビルドすると、.rcファイルで下記のエラーが発生します。
       .\ttxssh.rc(10) : fatal error RC1015: cannot open include file 'afxres.h'.
 
@@ -202,6 +203,20 @@
       # cd cygterm
    3. CygTermをコンパイルする
       # make
+
+
+■ TTXSamplesのビルド方法
+  リポジトリのTTXSamplesに Tera Term Extension (TTX)のサンプルがあります。
+  TTXを作る際の参考にしてください。
+  TTXSamplesのビルドにはVisual Studio 2005(VC++8.0)が必要です。
+  Tera Term本体とは違い、Express Editionでもビルド可能です。
+
+  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
+  2. TTXSamples\TTXSamples.sln をVisual Studioで開く
+  3. ソリューションをビルドする
+  4. ビルドに成功すると TTXSamples ディレクトリにDLLが生成される
+
+  各TTXの詳細については、プロジェクト内のReadMe-ja.txtを参照してください。
 
 
 ■ ヘルプファイルのビルド方法
