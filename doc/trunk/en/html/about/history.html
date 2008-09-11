@@ -24,7 +24,7 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.60">2008.8.15(Ver 4.60 not-released)</a>
+  <li class="history"><a name="teraterm_4.60">2008.9.12 (Ver 4.60 not-released)</a>
     <ul>
       <li>added support of CHT (Cursor Forward Tabulation) and CBT (Cursor Backward Tabulation) control sequence.</li>
       <li>added support for Visual Bell. When TerTerm receive the BEL character, the window can flash instead of sounding the beep.
@@ -48,6 +48,7 @@
       <li>added the workaround for a lot of pasting data would corrupt on SSH2 connection. This workaround is 10msec waiting with each 500 byte.</li>
       <li>added support for canceling the `messagebox' and the `yesnobox' macro command. When a user cancels the messagebox window, the macro engine halts.</li>
       <li>added support for the TTX interface to hook the serial communication.</li>
+      <li>added '<a href="../macro/command/crc32.html">crc32</a>' macro command.</li>
       <li>Bug fix: A user could not duplicate the network session of TELNET and SSH without port 22 and 23.</li>
       <li>Bug fix: The terminal size could reduce on Windows 98-compatible products.</li>
       <li>Bug fix: TeraTerm icon would 16x16 size when a user changes the window by using Alt+Tab key on Windows Vista Aero.</li>

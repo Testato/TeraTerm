@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>crc32</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>crc32</h1>
+
+<p>
+CRC-32を計算する。
+</p>
+
+<pre class="macro-syntax">
+crc32 &lt;string&gt;
+</pre>
+
+<h2>解説</h2>
+
+<p>
+引数の文字列からCRC(Cyclic Redundancy Checking)を計算する。多項式は以下のとおり。<br><br>
+
+100000100110000010001110110110111 (x<sup>32</sup>+x<sup>26</sup>+x<sup>23</sup>+x<sup>22</sup>+x<sup>16</sup>+x<sup>12</sup>+x<sup>11</sup>+x<sup>10</sup>+x<sup>8</sup>+x<sup>7</sup>+x<sup>5</sup>+x<sup>4</sup>+x<sup>2</sup>+x<sup>1</sup>+x<sup>0</sup>)
+<br><br>
+
+計算結果は result 変数に数値として格納される。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>
+str = 'this is a test string to be CRC32ed'
+crc32 str
+
+; Display CRC32 result asHEX
+sprintf '0x%08X' result
+messagebox inputstr 'CRC32 = '
+</code></pre>
+
+</body>
+</html>
