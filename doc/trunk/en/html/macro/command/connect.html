@@ -117,23 +117,39 @@ connect '<em>myserver</em> /ssh /2 /auth=password /user=<em>username</em> /passw
 connect '<em>myserver</em> /ssh /auth=publickey /user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
 connect '<em>myserver</em> /ssh /1 /auth=publickey /user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
 connect '<em>myserver</em> /ssh /2 /auth=publickey /user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
+connect '<em>myserver</em> /ssh /auth=challenge /user=<em>username</em> /passwd=<em>password</em>'
+connect '<em>myserver</em> /ssh /1 /auth=challenge /user=<em>username</em> /passwd=<em>password</em>'
+connect '<em>myserver</em> /ssh /2 /auth=challenge /user=<em>username</em> /passwd=<em>password</em>'
 </code></pre>
 
 <p>
-Above 6 ways allow to skip popup dialog and pass username and password directly from macro. Please note that /auth=password or /auth=publickey is the parameter saying that authentication will be done by entering password or private-key-file thus you should not replace the word 'password' or the word 'publickey' in it with actual password.
+Above 9 ways allow to skip popup dialog and pass username and password directly from macro. Please note that /auth=password or /auth=publickey or /auth=challenge is the parameter saying that authentication will be done by entering password or private-key-file thus you should not replace the word 'password' or the word 'publickey' in it with actual password.
 </p>
 
 <pre class="macro-example">
-<code>connect 'myserver /ssh /auth=password /user=username /ask4passwd'
-connect 'myserver /ssh /1 /auth=password /user=username /ask4passwd'
-connect 'myserver /ssh /2 /auth=password /user=username /ask4passwd'
-connect 'myserver /ssh /auth=publickey /user=username /ask4passwd /keyfile=private-key-file'
-connect 'myserver /ssh /1 /auth=publickey /user=username /ask4passwd /keyfile=private-key-file'
-connect 'myserver /ssh /2 /auth=publickey /user=username /ask4passwd /keyfile=private-key-file'
+<code>connect '<em>myserver</em> /ssh /auth=pageant /user=<em>username</em>'
+connect '<em>myserver</em> /ssh /1 /auth=pageant /user=<em>username</em>'
+connect '<em>myserver</em> /ssh /2 /auth=pageant /user=<em>username</em>'
 </code></pre>
 
 <p>
-Above 6 ways pass username and authentication method directly from macro, and the popup asks for password.
+Above 3 ways allow to skip popup dialog and pass username directly from macro.
+</p>
+
+<pre class="macro-example">
+<code>connect '<em>myserve</em> /ssh /auth=password /user=<em>username</em> /ask4passwd'
+connect '<em>myserver</em> /ssh /1 /auth=password /user=<em>username</em> /ask4passwd'
+connect '<em>myserver</em> /ssh /2 /auth=password /user=<em>username</em> /ask4passwd'
+connect '<em>myserver</em> /ssh /auth=publickey /user=<em>username</em> /ask4passwd /keyfile=<em>private-key-file</em>'
+connect '<em>myserver</em> /ssh /1 /auth=publickey /user=<em>username</em> /ask4passwd /keyfile=<em>private-key-file</em>'
+connect '<em>myserver</em> /ssh /2 /auth=publickey /user=<em>username</em> /ask4passwd /keyfile=<em>private-key-file</em>'
+connect '<em>myserve</em> /ssh /auth=challenge /user=<em>username</em> /ask4passwd'
+connect '<em>myserver</em> /ssh /1 /auth=challenge /user=<em>username</em> /ask4passwd'
+connect '<em>myserver</em> /ssh /2 /auth=challenge /user=<em>username</em> /ask4passwd'
+</code></pre>
+
+<p>
+Above 9 ways pass username and authentication method directly from macro, and the popup asks for password.
 </p>
 
 <h3>General connection</h3>
