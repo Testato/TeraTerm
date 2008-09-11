@@ -175,6 +175,7 @@
 #define RsvStrMatch     135   // add 'strmatch' (2008.3.26 yutaka)
 #define RsvSetRts       136   // add 'setrts'  (2008.3.12 maya)
 #define RsvSetDtr       137   // add 'setdtr'  (2008.3.12 maya)
+#define RsvCrc32        138   // add 'crc32'  (2008.9.12 yutaka)
 
 #define RsvOperator     150
 #define RsvBNot         151

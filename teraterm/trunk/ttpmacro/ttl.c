@@ -517,6 +517,68 @@ WORD TTLConnect(WORD mode)
 	return Err;
 }
 
+/*
+ * cf. http://oku.edu.mie-u.ac.jp/~okumura/algo/
+ */
+#define CRCPOLY1 0x04C11DB7UL
+	/* x^{32}+x^{26}+x^{23}+x^{22}+x^{16}+x^{12}+x^{11]+
+	   x^{10}+x^8+x^7+x^5+x^4+x^2+x^1+1 */
+#define CRCPOLY2 0xEDB88320UL  /* ç∂âEãtì] */
+
+static unsigned long crc1(int n, unsigned char c[])
+{
+	int i, j;
+	unsigned long r;
+
+	r = 0xFFFFFFFFUL;
+	for (i = 0; i < n; i++) {
+		r ^= (unsigned long)c[i] << (32 - CHAR_BIT);
+		for (j = 0; j < CHAR_BIT; j++)
+			if (r & 0x80000000UL) r = (r << 1) ^ CRCPOLY1;
+			else                  r <<= 1;
+	}
+	return ~r & 0xFFFFFFFFUL;
+}
+
+static unsigned long crc2(int n, unsigned char c[])
+{
+	int i, j;
+	unsigned long r;
+
+	r = 0xFFFFFFFFUL;
+	for (i = 0; i < n; i++) {
+		r ^= c[i];
+		for (j = 0; j < CHAR_BIT; j++)
+			if (r & 1) r = (r >> 1) ^ CRCPOLY2;
+			else       r >>= 1;
+	}
+	return r ^ 0xFFFFFFFFUL;
+}
+
+// CRC32ÇÃåvéZÇçsÇ§ÅB
+//
+// èëéÆ: crc32 str
+//
+WORD TTLCrc32()
+{
+	TStrVal Str;
+	WORD Err;
+	unsigned long val;
+
+	Err = 0;
+	GetStrVal(Str,&Err);
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+	if (Str[0]==0) return Err;
+
+	val = crc2(strlen(Str), Str);
+
+	SetResult(val);
+
+	return Err;
+}
+
 WORD TTLDelPassword()
 {
 	TStrVal Str, Str2;
@@ -3373,6 +3435,8 @@ int ExecCmnd()
 		case RsvConnect:
 		case RsvCygConnect:
 			Err = TTLConnect(WId); break;
+		case RsvCrc32:
+			Err = TTLCrc32(); break;
 		case RsvDelPassword:
 			Err = TTLDelPassword(); break;
 		case RsvDisconnect:
