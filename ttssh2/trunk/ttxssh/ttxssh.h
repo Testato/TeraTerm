@@ -126,6 +126,9 @@ typedef struct _TS_SSH {
 
 	// try auth with "none" method for disable unsupported on dialog (2007.9.24 maya)
 	BOOL CheckAuthListFirst;
+
+	// Enable connection to the server that has RSA key length less than 768 bit (2008.9.11 maya)
+	BOOL EnableRsaShortKeyServer;
 } TS_SSH;
 
 typedef struct _TInstVar {

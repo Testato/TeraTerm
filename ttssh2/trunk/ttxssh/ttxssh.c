@@ -336,6 +336,9 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 	// 無効なメソッドをグレイアウトする (2007.9.24 maya)
 	settings->CheckAuthListFirst = read_BOOL_option(fileName, "CheckAuthListFirst", FALSE);
 
+	// 768bit 未満の RSA 鍵を持つサーバへの接続を有効にする (2008.9.11 maya)
+	settings->EnableRsaShortKeyServer = read_BOOL_option(fileName, "EnableRsaShortKeyServer", FALSE);
+
 	clear_local_settings(pvar);
 }
 
@@ -408,6 +411,10 @@ static void write_ssh_options(PTInstVar pvar, PCHAR fileName,
 	// 無効なメソッドをグレイアウトする (2007.9.24 maya)
 	WritePrivateProfileString("TTSSH", "CheckAuthListFirst",
 	                          settings->CheckAuthListFirst ? "1" : "0", fileName);
+
+	// 768bit 未満の RSA 鍵を持つサーバへの接続を有効にする (2008.9.11 maya)
+	WritePrivateProfileString("TTSSH", "EnableRsaShortKeyServer",
+	                          settings->EnableRsaShortKeyServer ? "1" : "0", fileName);
 }
 
 
