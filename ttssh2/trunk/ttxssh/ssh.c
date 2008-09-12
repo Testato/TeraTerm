@@ -5827,6 +5827,9 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 				            "key verify error(remote rsa key length is too short %d-bit) "
 				            "@ handle_SSH2_dh_kex_reply()", BN_num_bits(rsa->n));
 			}
+			else {
+				goto cont;
+			}
 		}
 		else {
 			_snprintf_s(emsg_tmp, sizeof(emsg_tmp), _TRUNCATE,
@@ -5837,6 +5840,7 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 		goto error;
 	}
 
+cont:
 	kex_derive_keys(pvar, pvar->we_need, hash, share_key, pvar->session_id, pvar->session_id_len);
 
 	// KEX finish
@@ -6184,6 +6188,9 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 				            "key verify error(remote rsa key length is too short %d-bit) "
 				            "@ SSH2_DH_GEX", BN_num_bits(rsa->n));
 			}
+			else {
+				goto cont;
+			}
 		}
 		else {
 			_snprintf_s(emsg_tmp, sizeof(emsg_tmp), _TRUNCATE,
@@ -6194,6 +6201,7 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 		goto error;
 	}
 
+cont:
 	kex_derive_keys(pvar, pvar->we_need, hash, share_key, pvar->session_id, pvar->session_id_len);
 
 	// KEX finish
