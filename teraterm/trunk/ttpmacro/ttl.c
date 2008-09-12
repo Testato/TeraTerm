@@ -579,6 +579,61 @@ WORD TTLCrc32()
 	return Err;
 }
 
+// CRC32の計算を行う。
+//
+// 書式: crc32file filename
+//
+WORD TTLCrc32File()
+{
+	TStrVal Str;
+	WORD Err;
+	unsigned long val = 0;
+	HANDLE fh = INVALID_HANDLE_VALUE, hMap = NULL;
+	LPBYTE lpBuf = NULL;
+	DWORD fsize;
+
+	Err = 0;
+	GetStrVal(Str,&Err);
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+	if (Str[0]==0) return Err;
+
+	fh = CreateFile(Str,GENERIC_READ|GENERIC_WRITE,0,NULL,OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,NULL); /* ファイルオープン */
+	if (fh == INVALID_HANDLE_VALUE) 
+		goto error;
+	/* ファイルマッピングオブジェクト作成 */
+	hMap = CreateFileMapping(fh,NULL,PAGE_READWRITE,0,0,NULL);
+	if (hMap == NULL)
+		goto error;
+
+	/* ファイルをマップし、先頭アドレスをlpBufに取得 */
+	lpBuf = (LPBYTE)MapViewOfFile(hMap,FILE_MAP_WRITE,0,0,0);
+	if (lpBuf == NULL)
+		goto error;
+
+	fsize = GetFileSize(fh,NULL);	
+
+	val = crc2(fsize, lpBuf);
+
+error:
+	if (lpBuf != NULL) {
+		UnmapViewOfFile(lpBuf);
+	}
+
+	if (hMap != NULL) {
+		CloseHandle(hMap);
+	}
+	if (fh != INVALID_HANDLE_VALUE) {
+		CloseHandle(fh);
+	}
+
+	SetResult(val);
+
+	return Err;
+}
+
 WORD TTLDelPassword()
 {
 	TStrVal Str, Str2;
@@ -3437,6 +3492,8 @@ int ExecCmnd()
 			Err = TTLConnect(WId); break;
 		case RsvCrc32:
 			Err = TTLCrc32(); break;
+		case RsvCrc32File:
+			Err = TTLCrc32File(); break;
 		case RsvDelPassword:
 			Err = TTLDelPassword(); break;
 		case RsvDisconnect:
