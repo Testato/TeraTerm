@@ -1156,6 +1156,10 @@
 					<param name="Local" value="html\macro\command\crc32.html">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="crc32file">
+					<param name="Local" value="html\macro\command\crc32.html">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="exec">
 					<param name="Local" value="html\macro\command\exec.html">
 					<param name="ImageNumber" value="11">

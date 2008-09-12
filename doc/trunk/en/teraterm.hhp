@@ -165,6 +165,7 @@ HlpMacroCommandClosett=html\macro\command\closett.html
 HlpMacroCommandCode2str=html\macro\command\code2str.html
 HlpMacroCommandConnect=html\macro\command\connect.html
 HlpMacroCommandCrc32=html\macro\command\crc32.html
+HlpMacroCommandCrc32File=html\macro\command\crc32.html
 HlpMacroCommandCygConnect=html\macro\command\cygconnect.html
 HlpMacroCommandDelpassword=html\macro\command\delpassword.html
 HlpMacroCommandDisconnect=html\macro\command\disconnect.html
