@@ -33,6 +33,27 @@ crc32file &lt;filename&gt;
 計算結果は result 変数に数値として格納される。
 </p>
 
+CRCアルゴリズムの実装を以下に示す。
+<pre class="macro-example">
+<code>
+#define CRCPOLY2 0xEDB88320UL  /* 左右逆転 */
+
+static unsigned long crc2(int n, unsigned char c[])
+{
+	int i, j;
+	unsigned long r;
+
+	r = 0xFFFFFFFFUL;
+	for (i = 0; i < n; i++) {
+		r ^= c[i];
+		for (j = 0; j < CHAR_BIT; j++)
+			if (r & 1) r = (r >> 1) ^ CRCPOLY2;
+			else       r >>= 1;
+	}
+	return r ^ 0xFFFFFFFFUL;
+}
+</code></pre>
+
 <h2>例</h2>
 
 <pre class="macro-example">
