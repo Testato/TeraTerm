@@ -557,42 +557,40 @@ static unsigned long crc2(int n, unsigned char c[])
 
 // CRC32の計算を行う。
 //
-// 書式: crc32 str
+// 書式: crc32 intvar str
 //
 WORD TTLCrc32()
 {
 	TStrVal Str;
-	WORD Err;
-	unsigned long val;
+	WORD Err, CRC;
 
 	Err = 0;
+	GetIntVar(&CRC, &Err);
 	GetStrVal(Str,&Err);
 	if ((Err==0) && (GetFirstChar()!=0))
 		Err = ErrSyntax;
 	if (Err!=0) return Err;
 	if (Str[0]==0) return Err;
 
-	val = crc2(strlen(Str), Str);
-
-	SetResult(val);
+	SetIntVal(CRC, crc2(strlen(Str), Str));
 
 	return Err;
 }
 
 // CRC32の計算を行う。
 //
-// 書式: crc32file filename
+// 書式: crc32file intvar filename
 //
 WORD TTLCrc32File()
 {
 	TStrVal Str;
-	WORD Err;
-	unsigned long val = 0;
+	WORD Err, CRC, result=0;
 	HANDLE fh = INVALID_HANDLE_VALUE, hMap = NULL;
 	LPBYTE lpBuf = NULL;
 	DWORD fsize;
 
 	Err = 0;
+	GetIntVar(&CRC, &Err);
 	GetStrVal(Str,&Err);
 	if ((Err==0) && (GetFirstChar()!=0))
 		Err = ErrSyntax;
@@ -601,21 +599,27 @@ WORD TTLCrc32File()
 
 	fh = CreateFile(Str,GENERIC_READ|GENERIC_WRITE,0,NULL,OPEN_EXISTING,
 		FILE_ATTRIBUTE_NORMAL,NULL); /* ファイルオープン */
-	if (fh == INVALID_HANDLE_VALUE) 
+	if (fh == INVALID_HANDLE_VALUE) {
+		result = -1;
 		goto error;
+	}
 	/* ファイルマッピングオブジェクト作成 */
 	hMap = CreateFileMapping(fh,NULL,PAGE_READWRITE,0,0,NULL);
-	if (hMap == NULL)
+	if (hMap == NULL) {
+		result = -1;
 		goto error;
+	}
 
 	/* ファイルをマップし、先頭アドレスをlpBufに取得 */
 	lpBuf = (LPBYTE)MapViewOfFile(hMap,FILE_MAP_WRITE,0,0,0);
-	if (lpBuf == NULL)
+	if (lpBuf == NULL) {
+		result = -1;
 		goto error;
+	}
 
-	fsize = GetFileSize(fh,NULL);	
+	fsize = GetFileSize(fh,NULL);
 
-	val = crc2(fsize, lpBuf);
+	SetIntVal(CRC, crc2(fsize, lpBuf));
 
 error:
 	if (lpBuf != NULL) {
@@ -629,7 +633,7 @@ error:
 		CloseHandle(fh);
 	}
 
-	SetResult(val);
+	SetResult(result);
 
 	return Err;
 }
