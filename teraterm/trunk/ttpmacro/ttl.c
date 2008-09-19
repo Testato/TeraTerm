@@ -1698,6 +1698,24 @@ WORD TTLGetTitle()
 	return Err;
 }
 
+WORD TTLGetTTDir()
+{
+	WORD VarId, Err;
+	char Temp[MAX_PATH],HomeDir[MAX_PATH];
+
+	Err = 0;
+	GetStrVar(&VarId,&Err);
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	GetModuleFileName(NULL, Temp, sizeof(Temp));
+	ExtractDirName(Temp, HomeDir);
+	SetStrVal(VarId,HomeDir);
+
+	return Err;
+}
+
 // 実行ファイルからバージョン情報を得る (2005.2.28 yutaka)
 static void get_file_version(char *exefile, int *major, int *minor, int *release, int *build)
 {
@@ -3581,6 +3599,8 @@ int ExecCmnd()
 			Err = TTLGetPassword(); break;
 		case RsvGetTitle:
 			Err = TTLGetTitle(); break;
+		case RsvGetTTDir:
+			Err = TTLGetTTDir(); break;
 		case RsvGetVer:
 			Err = TTLGetVer(); break;
 		case RsvGoto:

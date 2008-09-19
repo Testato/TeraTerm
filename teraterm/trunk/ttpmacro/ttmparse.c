@@ -176,6 +176,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 	else if (_stricmp(Str,"getpassword")==0) *WordId = RsvGetPassword;
 	else if (_stricmp(Str,"gettime")==0) *WordId = RsvGetTime;
 	else if (_stricmp(Str,"gettitle")==0) *WordId = RsvGetTitle;
+	else if (_stricmp(Str,"getttdir")==0) *WordId = RsvGetTTDir;
 	else if (_stricmp(Str,"getver")==0) *WordId = RsvGetVer;
 	else if (_stricmp(Str,"goto")==0) *WordId = RsvGoto;
 	else if (_stricmp(Str,"if")==0) *WordId = RsvIf;
