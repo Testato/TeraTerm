@@ -1154,10 +1154,12 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="crc32">
 					<param name="Local" value="html\macro\command\crc32.html">
+					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="crc32file">
 					<param name="Local" value="html\macro\command\crc32.html">
+					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="exec">
@@ -1182,6 +1184,11 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="gettime">
 					<param name="Local" value="html\macro\command\gettime.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="getttdir">
+					<param name="Local" value="html\macro\command\getttdir.html">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
