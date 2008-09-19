@@ -48,8 +48,7 @@
       <li>added the workaround for a lot of pasting data would corrupt on SSH2 connection. This workaround is 10msec waiting with each 500 byte.</li>
       <li>added support for canceling the `messagebox' and the `yesnobox' macro command. When a user cancels the messagebox window, the macro engine halts.</li>
       <li>added support for the TTX interface to hook the serial communication.</li>
-      <li>added '<a href="../macro/command/crc32.html">crc32</a>' macro command.</li>
-      <li>added '<a href="../macro/command/crc32.html">crc32file</a>' macro command.</li>
+      <li>added '<a href="../macro/command/crc32.html">crc32</a>' and <a href="../macro/command/crc32.html">crc32file</a> macro command.</li>
       <li>Bug fix: A user could not duplicate the network session of TELNET and SSH without port 22 and 23.</li>
       <li>Bug fix: The terminal size could reduce on Windows 98-compatible products.</li>
       <li>Bug fix: TeraTerm icon would 16x16 size when a user changes the window by using Alt+Tab key on Windows Vista Aero.</li>
@@ -1173,6 +1172,7 @@ SYNOPSIS:
       <li>added a `200' number to LogLevel entry in teraterm.ini file. This logging level enables a user to caputure the SSH RAW packet data in a local file.</li>
       <!--li>SSH2 RSA 接続で、サーバの鍵が短すぎるときのエラーメッセージを変更した。</li-->
       <li>Bug fix: TeraTerm would stall when a existing host key replaces on Windows Vista.</li>
+      <li>upgraded OpenSSL to 0.9.8i</li>
     </ul>
   </li>
 
