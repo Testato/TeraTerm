@@ -417,7 +417,7 @@ struct tttset {
 	WORD AutoScrollOnlyInBottomLine;
 	WORD UnknownUnicodeCharaAsWide;
 	char YModemRcvCommand[MAX_PATH];
-	WORD RemoteTitleChanging;
+	WORD AcceptTitleChangeRequest;
 	SIZE PasteDialogSize;
 };
 
@@ -846,7 +846,7 @@ typedef TMap far *PMap;
  * when you change TMap or member of TMap.
  *
  * - At version 4.59, ttset_memfilemap was replaced with ttset_memfilemap_8.
- *   added tttset.RemoteTitleChanging.
+ *   added tttset.AcceptTitleChangeRequest.
  *   added tttset.PasteDialogSize.
  *
  * - At version 4.59, ttset_memfilemap was replaced with ttset_memfilemap_7.

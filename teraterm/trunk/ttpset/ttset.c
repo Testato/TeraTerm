@@ -1196,8 +1196,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		GetOnOff(Section, "AutoScrollOnlyInBottomLine", FName, FALSE);
 
 	// Accept remote-controlled window title changing
-	ts->RemoteTitleChanging =
-		GetOnOff(Section, "AcceptTitleChangingFromRemote", FName, TRUE);
+	ts->AcceptTitleChangeRequest =
+		GetOnOff(Section, "AcceptTitleChangeRequest", FName, TRUE);
 
 	// Size of paste confirm dialog
 	GetPrivateProfileString(Section, "PasteDialogSize", "330,220",
@@ -2015,8 +2015,8 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	           ts->UnknownUnicodeCharaAsWide);
 
 	// Accept remote-controlled window title changing
-	WriteOnOff(Section, "AcceptTitleChangingFromRemote", FName,
-	           ts->RemoteTitleChanging);
+	WriteOnOff(Section, "AcceptTitleChangeRequest", FName,
+	           ts->AcceptTitleChangeRequest);
 
 	// Size of paste confirm dialog
 	WriteInt2(Section, "PasteDialogSize", FName,

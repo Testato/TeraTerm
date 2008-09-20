@@ -177,7 +177,7 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 
 	// (8)IDC_ACCEPT_TITLE_CHANGING
 	btn = (CButton *)GetDlgItem(IDC_ACCEPT_TITLE_CHANGING);
-	btn->SetCheck(ts.RemoteTitleChanging);
+	btn->SetCheck(ts.AcceptTitleChangeRequest);
 
 	// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
 	::SetFocus(::GetDlgItem(GetSafeHwnd(), IDC_CLICKABLE_URL));
@@ -227,7 +227,7 @@ void CGeneralPropPageDlg::OnOK()
 
 	// (8)IDC_ACCEPT_TITLE_CHANGING 
 	btn = (CButton *)GetDlgItem(IDC_ACCEPT_TITLE_CHANGING);
-	ts.RemoteTitleChanging = btn->GetCheck();
+	ts.AcceptTitleChangeRequest = btn->GetCheck();
 }
 
 
