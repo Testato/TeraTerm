@@ -167,6 +167,8 @@
 
   3. OpenSSLのソースコード(http://www.openssl.org/)を ttssh2\openssl ディレクトリに展開する。OpenSSLをビルドする（以下参照）。
      Release では openssl\out32\libeay32.lib が、Debug では openssl\out32.dbg\libeay32.lib がリンクされることになる。
+     Visual Studio 2005 Standard Editionでは、OpenSSL 0.9.8iのビルドが失敗します。Windows Server 2003 R2 Platform SDK をインストールし、"Crypt32.Lib"を C:\Program Files\Microsoft Visual Studio 8\VC\lib へ手動コピーしておく必要があります。
+     
 
       - 自動で行う場合
       + スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
