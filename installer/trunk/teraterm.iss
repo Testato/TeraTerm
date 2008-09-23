@@ -1,5 +1,5 @@
 #define AppName "Tera Term"
-#define AppVer "4.59"
+#define AppVer "4.60"
 
 [Setup]
 AppCopyright=TeraTerm Project
