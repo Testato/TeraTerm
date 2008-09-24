@@ -5306,6 +5306,8 @@ key_size(const Key *k)
 {
 	switch (k->type) {
 	case KEY_RSA1:
+		// SSH1‚Ìê‡‚Í key->rsa ‚Æ key->dsa ‚Í NULL ‚Å‚ ‚é‚Ì‚ÅAŽg‚í‚È‚¢B
+		return k->bits;
 	case KEY_RSA:
 		return BN_num_bits(k->rsa->n);
 	case KEY_DSA:
