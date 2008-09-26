@@ -15,7 +15,7 @@ RES = $(EXE:.exe=.res)
 ICO = $(EXE:.exe=.ico)
 RC  = $(EXE:.exe=.rc)
 
-all : $(EXE) $(LAUNCH)
+all : $(EXE) $(LAUNCH) src
 
 $(EXE) : $(SRC) $(RES)
   ifeq (0, $(shell nm /usr/lib/crt0.o | grep -c WinMainCRTStartup))
@@ -36,7 +36,7 @@ $(RES):	$(ICO) $(RC)
 	windres -O coff -o $(RES) $(RC)
 
 clean :
-	rm -f $(EXE) $(RC) $(RES) $(LAUNCH)
+	rm -f $(EXE) $(RC) $(RES) $(LAUNCH) cygterm+.tar.gz
 
 install : $(EXE)
 	@ install -v $(EXE) $(BINDIR)/$(EXE)
@@ -48,3 +48,5 @@ uninstall :
 	rm -f $(BINDIR)/$(EXE)
 	rm -f $(BINDIR)/$(CFG)
 
+src :
+	tar cf - $(SRC) $(ICO) $(CFG) cyglaunch.c README README-j Makefile | gzip > cygterm+.tar.gz
