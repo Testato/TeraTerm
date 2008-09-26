@@ -61,6 +61,7 @@ Source: release\ssh_known_hosts; DestDir: {app}; Components: TTSSH; Flags: onlyi
 Source: ..\cygterm\cygterm.exe; DestDir: {app}; Components: cygterm
 Source: ..\cygterm\cygterm.cfg; DestDir: {app}; Components: cygterm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\cygterm\cyglaunch.exe; DestDir: {app}; Components: cygterm
+Source: ..\cygterm\cygterm+.tar.gz; DestDir: {app}; Components: cygterm
 Source: release\LogMeTT_license.txt; DestDir: {app}; Components: LogMeTT
 Source: release\LogMeTT_README.txt; DestDir: {app}; Components: LogMeTT
 Source: release\LogMeTTc.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
