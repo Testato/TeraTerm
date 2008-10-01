@@ -165,6 +165,7 @@ HlpMacroCommand=html\macro\command\index.html
 HlpMacroCommandBeep=html\macro\command\beep.html
 HlpMacroCommandBplusrecv=html\macro\command\bplusrecv.html
 HlpMacroCommandBplussend=html\macro\command\bplussend.html
+HlpMacroCommandBreak=html\macro\command\break.html
 HlpMacroCommandCall=html\macro\command\call.html
 HlpMacroCommandCallmenu=html\macro\command\callmenu.html
 HlpMacroCommandChangedir=html\macro\command\changedir.html
