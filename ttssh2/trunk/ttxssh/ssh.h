@@ -507,6 +507,7 @@ int SSH_get_clear_MAC_size(PTInstVar pvar);
 
 void SSH2_send_kexinit(PTInstVar pvar);
 BOOL do_SSH2_userauth(PTInstVar pvar);
+BOOL do_SSH2_authrequest(PTInstVar pvar);
 void debug_print(int no, char *msg, int len);
 int get_cipher_block_size(SSHCipher cipher);
 int get_cipher_key_len(SSHCipher cipher);

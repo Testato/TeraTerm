@@ -135,7 +135,7 @@ static void SSH2_dh_gex_kex_init(PTInstVar pvar);
 static BOOL handle_SSH2_dh_common_reply(PTInstVar pvar);
 static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar);
 static BOOL handle_SSH2_newkeys(PTInstVar pvar);
-static BOOL handle_SSH2_authrequest(PTInstVar pvar);
+static BOOL handle_SSH2_service_accept(PTInstVar pvar);
 static BOOL handle_SSH2_userauth_success(PTInstVar pvar);
 static BOOL handle_SSH2_userauth_failure(PTInstVar pvar);
 static BOOL handle_SSH2_userauth_banner(PTInstVar pvar);
@@ -1638,7 +1638,7 @@ static void init_protocol(PTInstVar pvar)
 		enque_handler(pvar, SSH2_MSG_KEXDH_REPLY, handle_SSH2_dh_common_reply);
 		enque_handler(pvar, SSH2_MSG_KEX_DH_GEX_REPLY, handle_SSH2_dh_gex_reply);
 		enque_handler(pvar, SSH2_MSG_NEWKEYS, handle_SSH2_newkeys);
-		enque_handler(pvar, SSH2_MSG_SERVICE_ACCEPT, handle_SSH2_authrequest);
+		enque_handler(pvar, SSH2_MSG_SERVICE_ACCEPT, handle_SSH2_service_accept);
 		enque_handler(pvar, SSH2_MSG_USERAUTH_SUCCESS, handle_SSH2_userauth_success);
 		enque_handler(pvar, SSH2_MSG_USERAUTH_FAILURE, handle_SSH2_userauth_failure);
 		enque_handler(pvar, SSH2_MSG_USERAUTH_BANNER, handle_SSH2_userauth_banner);
@@ -6595,17 +6595,28 @@ static BOOL get_SSH2_publickey_blob(PTInstVar pvar, buffer_t **blobptr, int *blo
 	return TRUE;
 }
 
+static BOOL handle_SSH2_service_accept(PTInstVar pvar)
+{
+	char *data, *s, tmp[100];
+
+	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
+	data = pvar->ssh_state.payload;
+
+	s = buffer_get_string(&data, NULL);
+	_snprintf(tmp, sizeof(tmp), "SSH2_MSG_SERVICE_ACCEPT is received. service name=%s", s);
+	notify_verbose_message(pvar, tmp, LOG_LEVEL_VERBOSE);
+
+	return do_SSH2_authrequest(pvar);
+}
 
 // ユーザ認証パケットの構築
-static BOOL handle_SSH2_authrequest(PTInstVar pvar)
+BOOL do_SSH2_authrequest(PTInstVar pvar)
 {
 	buffer_t *msg = NULL;
 	char *s, *username;
 	unsigned char *outmsg;
 	int len;
 	char *connect_id = "ssh-connection";
-
-	notify_verbose_message(pvar, "SSH2_MSG_SERVICE_ACCEPT is received.", LOG_LEVEL_VERBOSE);
 
 	msg = buffer_init();
 	if (msg == NULL) {
@@ -7039,7 +7050,7 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 		if (!pvar->session_settings.CheckAuthListFirst ||
 		    pvar->ssh2_autologin == 1) {
 			// まず none で試行して返ってきたところなので、実際のログイン処理へ
-			handle_SSH2_authrequest(pvar);
+			do_SSH2_authrequest(pvar);
 		}
 		else {
 			// TIS 用に OK を押すタイマーを仕掛ける
@@ -7056,7 +7067,7 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 			SendMessage(pvar->auth_state.auth_dialog, WM_COMMAND, IDOK, 0);
 		}
 		else {
-			handle_SSH2_authrequest(pvar);
+			do_SSH2_authrequest(pvar);
 		}
 #endif
 		return TRUE;
@@ -7079,7 +7090,7 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 		}
 		else {
 			// まだ鍵がある
-			handle_SSH2_authrequest(pvar);
+			do_SSH2_authrequest(pvar);
 			return TRUE;
 		}
 	}
