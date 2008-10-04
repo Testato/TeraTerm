@@ -628,9 +628,9 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
                                    LPARAM lParam)
 {
-	const int IDC_TIMER1 = 300;
-	const int IDC_TIMER2 = 301;
-	const int IDC_TIMER3 = 302;
+	const int IDC_TIMER1 = 300; // 自動ログイン
+	const int IDC_TIMER2 = 301; // サポートされているメソッドをチェック
+	const int IDC_TIMER3 = 302; // チャレンジレスポンス
 	const int autologin_timeout = 10; // ミリ秒
 	PTInstVar pvar;
 	LOGFONT logfont;
@@ -762,6 +762,12 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			if (pvar->userauth_retry_count == 0 &&
 				((pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME) ||
 				 !(pvar->ssh_state.status_flags & STATUS_HOST_OK))) {
+				return FALSE;
+			}
+			else if (pvar->session_settings.CheckAuthListFirst &&
+			         !pvar->tryed_ssh2_authlist) {
+				// CheckAuthListFirst が有効で認証方式が来ていないときは
+				// OK を押せないようにする (2008.10.4 maya)
 				return FALSE;
 			}
 

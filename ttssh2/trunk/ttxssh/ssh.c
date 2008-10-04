@@ -1916,10 +1916,18 @@ int SSH2_dispatch_enabled_check(unsigned char message)
 
 void SSH2_dispatch_add_message(unsigned char message)
 {
+	int i;
 
 	if (handle_message_count >= HANDLE_MESSAGE_MAX) {
 		// TODO: error check
 		return;
+	}
+
+	// すでに登録されているメッセージは追加しない
+	for (i=0; i<handle_message_count; i++) {
+		if (handle_messages[i] == message) {
+			return;
+		}
 	}
 
 	handle_messages[handle_message_count++] = message;
@@ -6377,7 +6385,7 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 	// (2007.10.26 maya)
 	if (pvar->userauth_retry_count > 0
 	 || pvar->tryed_ssh2_authlist == TRUE) {
-		return handle_SSH2_authrequest(pvar);
+		return do_SSH2_authrequest(pvar);
 		/* NOT REACHED */
 	}
 
@@ -6606,6 +6614,21 @@ static BOOL handle_SSH2_service_accept(PTInstVar pvar)
 	_snprintf(tmp, sizeof(tmp), "SSH2_MSG_SERVICE_ACCEPT is received. service name=%s", s);
 	notify_verbose_message(pvar, tmp, LOG_LEVEL_VERBOSE);
 
+	SSH2_dispatch_init(5);
+	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
+	if (pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
+		// keyboard-interactive method
+		SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_INFO_REQUEST);
+	}
+	else if (pvar->auth_state.cur_cred.method == SSH_AUTH_PAGEANT) {
+		// Pageant
+		SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_PK_OK);
+	}
+	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_SUCCESS);
+	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_FAILURE);
+	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_BANNER);
+	SSH2_dispatch_add_message(SSH2_MSG_DEBUG);  // support for authorized_keys command (2006.2.23 yutaka)
+
 	return do_SSH2_authrequest(pvar);
 }
 
@@ -6666,6 +6689,8 @@ BOOL do_SSH2_authrequest(PTInstVar pvar)
 		buffer_put_string(msg, s, strlen(s));
 		s = "";  // submethods
 		buffer_put_string(msg, s, strlen(s));
+
+		SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_INFO_REQUEST);
 
 	} else if (pvar->auth_state.cur_cred.method == SSH_AUTH_RSA) { // 公開鍵認証
 		buffer_t *signbuf = NULL;
@@ -6756,6 +6781,8 @@ BOOL do_SSH2_authrequest(PTInstVar pvar)
 
 		pvar->pageant_keycurrent++;
 
+		SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_PK_OK);
+
 	} else {
 		goto error;
 
@@ -6768,21 +6795,6 @@ BOOL do_SSH2_authrequest(PTInstVar pvar)
 	memcpy(outmsg, buffer_ptr(msg), len);
 	finish_send_packet(pvar);
 	buffer_free(msg);
-
-	SSH2_dispatch_init(5);
-	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
-	if (pvar->auth_state.cur_cred.method == SSH_AUTH_TIS) {
-		// keyboard-interactive method
-		SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_INFO_REQUEST);
-	}
-	else if (pvar->auth_state.cur_cred.method == SSH_AUTH_PAGEANT) {
-		// Pageant
-		SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_PK_OK);
-	}
-	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_SUCCESS);
-	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_FAILURE);
-	SSH2_dispatch_add_message(SSH2_MSG_USERAUTH_BANNER);
-	SSH2_dispatch_add_message(SSH2_MSG_DEBUG);  // support for authorized_keys command (2006.2.23 yutaka)
 
 	{
 		char buf[128];
