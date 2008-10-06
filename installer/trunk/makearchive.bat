@@ -25,6 +25,7 @@ copy /y ..\ttssh2\ttxssh\Release\ttxssh.dll %dst%
 copy /y ..\cygterm\cygterm.exe %dst%
 copy /y ..\cygterm\cygterm.cfg %dst%
 copy /y ..\cygterm\cyglaunch.exe %dst%
+copy /y ..\cygterm\cygterm+.tar.gz %dst%
 copy /y ..\ttpmenu\Release\ttpmenu.exe %dst%
 copy /y ..\TTProxy\Release\TTXProxy.dll %dst%
 copy /y ..\TTXKanjiMenu\Release\ttxkanjimenu.dll %dst%
