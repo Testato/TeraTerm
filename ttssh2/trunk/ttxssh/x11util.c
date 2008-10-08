@@ -56,9 +56,10 @@ void X11_get_DISPLAY_info(char FAR * name_buf, int name_buf_len,
 		}
 
 		if (i > 0) {
-			int num_chars = __min(name_buf_len - 1, i);
-
-			strncpy_s(name_buf, num_chars, DISPLAY, _TRUNCATE);
+			char c = DISPLAY[i];
+			DISPLAY[i] = 0;
+			strncpy_s(name_buf, name_buf_len, DISPLAY, _TRUNCATE);
+			DISPLAY[i] = c;
 		}
 
 		if (DISPLAY[i] == ':') {
