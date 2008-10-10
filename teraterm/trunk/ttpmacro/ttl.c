@@ -1373,9 +1373,13 @@ WORD TTLFileStrSeek2()
 			}
 		}
 	} while (!Last && (i!=Len));
-	if (i==Len)
+	if (i==Len) {
+		// ファイルの1バイト目がヒットすると、ファイルポインタが突き破って -1 になるので、
+		// ゼロオフセットになるように調整する。(2008.10.10 yutaka)
+		if (pos2 < 0)
+			_llseek(FH, 0, 0);
 		SetResult(1);
-	else {
+	} else {
 		SetResult(0);
 		_llseek(FH,pos,0);
 	}
