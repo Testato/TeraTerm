@@ -26,7 +26,7 @@ filestrseek2 &lt;file handle&gt; &lt;string&gt;
 <p>
 Searches for &lt;string&gt; in the file specified by &lt;file handle&gt;.<br>
 The search is done backward and started from the current position of the file pointer. For the forward search, use the "<a href="filestrseek.html">filestrseek</a>" command.<br>
-If &lt;string&gt; is found, the file pointer is moved to the position of the character just before the string and the system variable "result" is set to 1.<br>
+If &lt;string&gt; is found, the file pointer is moved to the position of the character just before the string and the system variable "result" is set to 1. However, if the string locates at one byte of the file, the file pointer is zero offset.<br>
 If &lt;string&gt; is not found, the file pointer is not moved and "result" is set to zero.<br>
 If the file pointer is already zero before the execution of this command, "result" is set to zero.
 </p>

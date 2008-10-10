@@ -14,7 +14,7 @@
 <h1>filestrseek</h1>
 
 <p>
-ファイルから文字列を前方検索する。
+文字列をファイルの先頭から末尾に向かって検索する。
 </p>
 
 <pre class="macro-syntax">
@@ -25,7 +25,7 @@ filestrseek &lt;file handle&gt; &lt;string&gt;
 
 <p>
 ファイルハンドル &lt;file handle&gt; で指定されるファイルから、文字列 &lt;string&gt; を検索する。<br>
-検索は現在のファイルポインタの位置から開始する。検索は前方(ファイルの終わりの方)に向かって行われる。後方に向かっての検索には "<a href="filestrseek2.html">filestrseek2</a>" コマンドを使用する。<br>
+検索は現在のファイルポインタの位置から開始する。検索はファイルの終わりの方に向かって行われる。逆方向の検索には "<a href="filestrseek2.html">filestrseek2</a>" コマンドを使用する。<br>
 &lt;string&gt; が見つかった場合、ファイルポインタは  &lt;string&gt; の次の文字の位置になり、システム変数 result に 1 が格納される。<br>
 &lt;string&gt; が見つからなかった場合、ファイルポインタは移動せず、システム変数 result に 0 が格納される。
 </p>
