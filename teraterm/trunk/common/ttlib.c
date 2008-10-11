@@ -434,6 +434,7 @@ void ParseStrftimeFileName(PCHAR FName, int destlen)
 	char filename[MAX_PATH];
 	char dirname[MAX_PATH];
 	char buf[80];
+	char *c;
 	time_t time_local;
 	struct tm *tm_local;
 
@@ -455,12 +456,16 @@ void ParseStrftimeFileName(PCHAR FName, int destlen)
 	// ファイル名に使用できない文字を削除
 	deleteInvalidFileNameChar(buf);
 
-	ExtractDirName(FName, dirname);
-
-	// "\"を含まない(フルパスでない)場合に対応 (2006.11.30 maya)
-	strncpy_s(FName, destlen, dirname, _TRUNCATE);
-	AppendSlash(FName,destlen);
-	strncat_s(FName, destlen, buf, _TRUNCATE);
+	c = strrchr(FName, '\\');
+	if (c != NULL) {
+		ExtractDirName(FName, dirname);
+		strncpy_s(FName, destlen, dirname, _TRUNCATE);
+		AppendSlash(FName,destlen);
+		strncat_s(FName, destlen, filename, _TRUNCATE);
+	}
+	else { // "\"を含まない(フルパスでない)場合に対応 (2006.11.30 maya)
+		strncpy_s(FName, destlen, buf, _TRUNCATE);
+	}
 }
 
 void ConvFName(PCHAR HomeDir, PCHAR Temp, int templen, PCHAR DefExt, PCHAR FName, int destlen)
