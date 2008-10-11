@@ -27,7 +27,9 @@ filereadln &lt;file handle&gt; &lt;strvar&gt;
 Reads a line from the file specified by &lt;file handle&gt;.<br>
 The line is written into the string variable &lt;strvar&gt;.<br>
 The file pointer is moved to the beginning of the next line.<br>
-If the file pointer reaches the end of the file while reading the line, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
+If the file pointer reaches the end of the file while reading the line, the system variable "result" is set to 1. Otherwise, "result" is set to zero.<br>
+
+When a line only includes a new line, the string variable is empty and "result" is set to zero.
 </p>
 
 <h2>Example</h2>
