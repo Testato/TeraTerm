@@ -26,7 +26,8 @@
 <ul>
   <li class="history"><a name="teraterm_4.61">2008.10.10 (Ver 4.61 not-released)</a>
     <ul>
-      <li>Bug fix: Using the filestrseek2 macro command, a file pointer is minus value if the matched string locates at one byte in the file.</li>
+      <li>Bug fix: Using the <a href="../macro/command/filestrseek2.html">filestrseek2</a> macro command, a file pointer is minus value if the matched string locates at one byte in the file.</li>
+      <li>Bug fix: Using the <a href="../macro/command/logopen.html">logopen</a> macro command, when the specified filename does not include \ character, the log file is saved at the root directory.</li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.49">2.49</a></li>
     </ul>
   </li>
@@ -1177,8 +1178,8 @@ SYNOPSIS:
   <li class="history"><a name="ttssh_2.49">2008.9.24 (Ver 2.49 not-released)</a>
     <ul>
       <li>Bug fix: The general protection fault would occur on SSH1 connection.</li>
-      <!--li>SSH2 接続で CheckAuthListFirst が有効な場合に、有効な認証メソッドが帰ってくる前に接続ダイアログの OK ボタンを押すと接続が終了する問題を修正した。</li>
-      <li>DISPLAY 環境変数が設定されている場合に X 転送が開始できない問題を修正した。</li-->
+      <!--li>SSH2 接続で CheckAuthListFirst が有効な場合に、有効な認証メソッドが帰ってくる前に接続ダイアログの OK ボタンを押すと接続が終了する問題を修正した。</li-->
+      <li>Bug fix: X11 forwarding does not work when DISPLAY environment variable configures.</li>
     </ul>
   </li>
 
