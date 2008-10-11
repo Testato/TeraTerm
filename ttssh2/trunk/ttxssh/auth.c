@@ -625,6 +625,7 @@ static BOOL end_auth_dlg(PTInstVar pvar, HWND dlg)
 	return TRUE;
 }
 
+BOOL autologin_sent_none;
 static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
                                    LPARAM lParam)
 {
@@ -674,6 +675,7 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 
 		// SSH2 autologinが有効の場合は、タイマを仕掛ける。 (2004.12.1 yutaka)
 		if (pvar->ssh2_autologin == 1) {
+			autologin_sent_none = FALSE;
 			SetTimer(dlg, IDC_TIMER1, autologin_timeout, 0);
 		}
 		else {
@@ -700,8 +702,23 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			// 自動ログインのため
 			if (!(pvar->ssh_state.status_flags & STATUS_DONT_SEND_USER_NAME) &&
 			    (pvar->ssh_state.status_flags & STATUS_HOST_OK)) {
-				KillTimer(dlg, IDC_TIMER1);
-				SendMessage(dlg, WM_COMMAND, IDOK, 0);
+				if (SSHv2(pvar) &&
+				    pvar->session_settings.CheckAuthListFirst &&
+				    !pvar->tryed_ssh2_authlist) {
+					if (!autologin_sent_none) {
+						// AuthList が帰ってきていないと IDOK を押しても
+						// 進まないので、none を送る (2008.10.12 maya)
+						do_SSH2_userauth(pvar);
+						autologin_sent_none = TRUE;
+					}
+					//else {
+					//	none を送ってから帰ってくるまで待つ
+					//}
+				}
+				else {
+					KillTimer(dlg, IDC_TIMER1);
+					SendMessage(dlg, WM_COMMAND, IDOK, 0);
+				}
 			}
 		}
 		else if (wParam == IDC_TIMER2) {
@@ -764,7 +781,8 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 				 !(pvar->ssh_state.status_flags & STATUS_HOST_OK))) {
 				return FALSE;
 			}
-			else if (pvar->session_settings.CheckAuthListFirst &&
+			else if (SSHv2(pvar) &&
+			         pvar->session_settings.CheckAuthListFirst &&
 			         !pvar->tryed_ssh2_authlist) {
 				// CheckAuthListFirst が有効で認証方式が来ていないときは
 				// OK を押せないようにする (2008.10.4 maya)
