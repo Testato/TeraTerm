@@ -24,7 +24,8 @@ logopen &lt;filename&gt; &lt;binary flag&gt; &lt;append flag&gt; [&lt;plain text
 <h2>Remarks</h2>
 
 <p>
-Received characters are written to the file &lt;filename&gt;.
+Received characters are written to the file &lt;filename&gt;.<br>
+When the file does not include \ character, the file is saved at the root directory.
 </p>
 
 <p>
@@ -52,7 +53,24 @@ If &lt;hide dialog flag&gt; is not 0, "Log" dialog box is not displayed.
 <h2>Example</h2>
 
 <pre class="macro-example">
-<code>logopen 'myhost.log' 0 0
+<code>
+connect '/C=1'
+
+; get a user name
+getenv 'USERNAME' username
+; get the date and time
+gettime timestr "%Y%m%d-%H%M%S"
+
+; add the user name and the timestamp to the log file name
+sprintf 'd:\console_%s_%s.log' username timestr
+filename = inputstr
+
+logopen filename 0 0
+logwrite 'Log start'#13#10
+logwrite '*****************************************************'#13#10
+logclose
+
+exit
 </code></pre>
 
 </body>
