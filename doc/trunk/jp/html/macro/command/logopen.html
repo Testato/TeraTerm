@@ -25,7 +25,7 @@ logopen &lt;filename&gt; &lt;binary flag&gt; &lt;append flag&gt; [&lt;plain text
 
 <p>
 ファイル &lt;filename&gt; に受信した文字が書き込まれる。ログを開始したあとも次のコマンドは実行される。<br>
-ファイル名に \ を含まない場合、ルートディレクトリ直下に作成される。
+ファイル名に \ を含まない場合、カレントディレクトリに作成される。
 </p>
 
 <p>
@@ -62,7 +62,7 @@ getenv 'USERNAME' username
 gettime timestr "%Y%m%d-%H%M%S"
 
 ; ログファイル名に日時とユーザ名を入れる。
-sprintf 'd:\console_%s_%s.log' username timestr
+sprintf 'console_%s_%s.log' username timestr
 filename = inputstr
 
 logopen filename 0 0

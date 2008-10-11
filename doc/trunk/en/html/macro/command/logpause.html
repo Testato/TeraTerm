@@ -27,5 +27,44 @@ logpause
 Received characters are discarded while logging is paused.
 </p>
 
+<h2>Example</h2>
+
+<pre class="macro-example">
+<code>
+
+prompt = '$'
+
+cygconnect
+wait prompt
+
+; get a user name
+getenv 'USERNAME' username
+; get the date and time
+gettime timestr "%Y%m%d-%H%M%S"
+
+; add the user name and the timestamp to the log file name
+sprintf 'd:\console_%s_%s.log' username timestr
+filename = inputstr
+;messagebox filename 'filename'
+
+logopen filename 0 0
+logwrite 'Log start'#13#10
+sendln 'cal'
+wait prompt
+; Suspend logging
+logpause
+; The below command is not logging
+sendln 'date'
+wait prompt
+; Resume logging
+logstart
+sendln 'uptime'
+wait prompt
+logwrite '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'#13#10
+logclose
+
+exit
+</code></pre>
+
 </body>
 </html>

@@ -25,7 +25,7 @@ logopen &lt;filename&gt; &lt;binary flag&gt; &lt;append flag&gt; [&lt;plain text
 
 <p>
 Received characters are written to the file &lt;filename&gt;.<br>
-When the file does not include \ character, the file is saved at the root directory.
+When the file does not include \ character, the file is saved at the current directory.
 </p>
 
 <p>
@@ -62,7 +62,7 @@ getenv 'USERNAME' username
 gettime timestr "%Y%m%d-%H%M%S"
 
 ; add the user name and the timestamp to the log file name
-sprintf 'd:\console_%s_%s.log' username timestr
+sprintf 'console_%s_%s.log' username timestr
 filename = inputstr
 
 logopen filename 0 0

@@ -24,8 +24,47 @@ logpause
 <h2>解説</h2>
 
 <p>
-中断してる間に受信された文字はログファイルに書き込まれない。
+中断している間に受信された文字はログファイルに書き込まれない。
 </p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+<code>
+
+prompt = '$'
+
+cygconnect
+wait prompt
+
+; ユーザ名を取得
+getenv 'USERNAME' username
+; 日時を取得
+gettime timestr "%Y%m%d-%H%M%S"
+
+; ログファイル名に日時とユーザ名を入れる。
+sprintf 'd:\console_%s_%s.log' username timestr
+filename = inputstr
+;messagebox filename 'filename'
+
+logopen filename 0 0
+logwrite 'Log start'#13#10
+sendln 'cal'
+wait prompt
+; ログ停止
+logpause
+; 以下のコマンドはログ採取されない
+sendln 'date'
+wait prompt
+; ログ再開
+logstart
+sendln 'uptime'
+wait prompt
+logwrite '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'#13#10
+logclose
+
+exit
+</code></pre>
 
 </body>
 </html>
