@@ -14,7 +14,7 @@
 <h1>strscan</h1>
 
 <p>
-文字列に文字列が含まれているか検索する。
+部分文字列の位置を返す
 </p>
 
 <h2>形式</h2>
@@ -26,16 +26,55 @@ strscan &lt;string&gt; &lt;substring&gt;
 <h2>解説</h2>
 
 <p>
-文字列 &lt;string&gt; の中に 副文字列  &lt;substring&gt; が含まれているかどうか調べる。<br>
-もし、  &lt;substring&gt; が見つかった場合、その位置がシステム変数 result に格納される。<br>
+文字列 &lt;string&gt; の中に、 部分文字列  &lt;substring&gt; が含まれているかどうか調べる。<br>
+もし、  &lt;substring&gt; が見つかった場合、その位置（1オリジン）がシステム変数 result に格納される。<br>
 &lt;substring&gt; が複数含まれている場合、最初のものの位置が格納される。もし、 &lt;substring&gt; が見つからなかった場合、 result に0が格納される。
 </p>
 
 <h2>例</h2>
 
-<pre class="macro-example">
-<code>strscan 'tera term' 'term'
+<pre class="macro-example"><code>
+strscan 'tera term' 'term'
 ; result の値は6
+int2str valstr result
+messagebox valstr 'result'
+</code></pre>
+
+<pre class="macro-example"><code>
+; 16進文字列を16進および2進へ変換する
+basenum='0060E3da'
+base=16
+call base2dec
+int2str sdec decnum
+messagebox sdec 'decnum'
+base=2
+call dec2base
+messagebox basenum 'basenum'
+end
+
+:dec2base
+basenum=''
+tmp=decnum      ;modified so not destructive of decnum
+while tmp>0
+   strcopy '0123456789ABCDEF' (tmp%base)+1 1 basedig
+   strconcat basedig basenum
+   basenum=basedig
+   tmp=tmp/base
+endwhile
+return
+
+:base2dec
+decnum=0
+strlen basenum
+len=result
+for i 1 len
+   strcopy basenum i 1 basedig
+   decnum=decnum*base
+   strscan '0123456789ABCDEFabcdef' basedig
+   if result>16 result=result-6      ;take care of lower case
+   decnum=decnum+result-1
+next
+return
 </code></pre>
 
 </body>
