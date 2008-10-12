@@ -2318,7 +2318,7 @@ void DispChangeBackground()
   if (Background != NULL) DeleteObject(Background);
 
   if ((CurCharAttr.Attr2 & Attr2Back) != 0) {
-    if ((CurCharAttr.Back<16) && ((CurCharAttr.Attr&AttrBlink)!=0) == ((CurCharAttr.Back&7)==0))
+    if ((CurCharAttr.Back<16) && (CurCharAttr.Back&7)!=0)
       Background = CreateSolidBrush(ANSIColor[CurCharAttr.Back ^ 8]);
     else
       Background = CreateSolidBrush(ANSIColor[CurCharAttr.Back]);
@@ -3317,7 +3317,7 @@ void DispSetCurCharAttr(TCharAttr Attr) {
   if (Background != NULL) DeleteObject(Background);
 
   if ((CurCharAttr.Attr2 & Attr2Back) != 0) {
-    if ((CurCharAttr.Back<16) && ((CurCharAttr.Attr&AttrBlink)!=0) == ((CurCharAttr.Back&7)==0))
+    if ((CurCharAttr.Back<16) && (CurCharAttr.Back&7)!=0)
       Background = CreateSolidBrush(ANSIColor[CurCharAttr.Back ^ 8]);
     else
       Background = CreateSolidBrush(ANSIColor[CurCharAttr.Back]);
