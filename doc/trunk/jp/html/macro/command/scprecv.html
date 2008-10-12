@@ -27,11 +27,13 @@ scprecv &lt;remote filename&gt; [&lt;local filename&gt;]
 ファイル &lt;remote filename&gt; を SCP(Secure Copy Protocol) プロトコルで受信する。
 ローカルファイル &lt;local filename&gt; を省略した場合は、ファイルはローカルホストのカレントディレクトリへコピーされる。
 受信が終わるのを待たずに、次のコマンドを実行することができる。<br>
+
+なお、2GBを超えるファイルを扱うことはできない。
 </p>
 
 <h2>例</h2>
 
-<pre class="macro-syntax">
+<pre class="macro-example">
 <code>
 connect '192.168.3.2:22 /ssh /2 /auth=password /user=hoge /passwd=fuga'
 wait '$'
