@@ -118,158 +118,202 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 {
 	*WordId = 0;
 
-	if (_stricmp(Str,"beep")==0) *WordId = RsvBeep;
-	else if (_stricmp(Str,"bplusrecv")==0) *WordId = RsvBPlusRecv;
-	else if (_stricmp(Str,"bplussend")==0) *WordId = RsvBPlusSend;
-	else if (_stricmp(Str,"break")==0) *WordId = RsvBreak;
-	else if (_stricmp(Str,"call")==0) *WordId = RsvCall;
-	else if (_stricmp(Str,"callmenu")==0) *WordId = RsvCallMenu;
-	else if (_stricmp(Str,"changedir")==0) *WordId = RsvChangeDir;
-	else if (_stricmp(Str,"clearscreen")==0) *WordId = RsvClearScreen;
-	else if (_stricmp(Str,"clipb2var")==0) *WordId = RsvClipb2Var;  // add 'clipb2var' (2006.9.17 maya)
-	else if (_stricmp(Str,"closesbox")==0) *WordId = RsvCloseSBox;
-	else if (_stricmp(Str,"closett")==0) *WordId = RsvCloseTT;
-	else if (_stricmp(Str,"code2str")==0) *WordId = RsvCode2Str;
-	else if (_stricmp(Str,"connect")==0) *WordId = RsvConnect;
-	else if (_stricmp(Str,"crc32")==0) *WordId = RsvCrc32;
-	else if (_stricmp(Str,"crc32file")==0) *WordId = RsvCrc32File;
-	else if (_stricmp(Str,"cygconnect")==0) *WordId = RsvCygConnect;
-	else if (_stricmp(Str,"delpassword")==0) *WordId = RsvDelPassword;
-	else if (_stricmp(Str,"disconnect")==0) *WordId = RsvDisconnect;
-	else if (_stricmp(Str,"do")==0) *WordId = RsvDo;
-	else if (_stricmp(Str,"else")==0) *WordId = RsvElse;
-	else if (_stricmp(Str,"elseif")==0) *WordId = RsvElseIf;
-	else if (_stricmp(Str,"enablekeyb")==0) *WordId = RsvEnableKeyb;
-	else if (_stricmp(Str,"end")==0) *WordId = RsvEnd;
-	else if (_stricmp(Str,"endif")==0) *WordId = RsvEndIf;
-	else if (_stricmp(Str,"enduntil")==0) *WordId = RsvEndUntil;
-	else if (_stricmp(Str,"endwhile")==0) *WordId = RsvEndWhile;
-	else if (_stricmp(Str,"exec")==0) *WordId = RsvExec;
-	else if (_stricmp(Str,"execcmnd")==0) *WordId = RsvExecCmnd;
-	else if (_stricmp(Str,"exit")==0) *WordId = RsvExit;
-	else if (_stricmp(Str,"fileclose")==0) *WordId = RsvFileClose;
-	else if (_stricmp(Str,"fileconcat")==0) *WordId = RsvFileConcat;
-	else if (_stricmp(Str,"filecopy")==0) *WordId = RsvFileCopy;
-	else if (_stricmp(Str,"filecreate")==0) *WordId = RsvFileCreate;
-	else if (_stricmp(Str,"filedelete")==0) *WordId = RsvFileDelete;
-	else if (_stricmp(Str,"filemarkptr")==0) *WordId = RsvFileMarkPtr;
-	else if (_stricmp(Str,"filenamebox")==0) *WordId  = RsvFilenameBox; // add 'filenamebox' (2007.9.13 maya)
-	else if (_stricmp(Str,"fileopen")==0) *WordId = RsvFileOpen;
-	else if (_stricmp(Str,"filereadln")==0) *WordId = RsvFileReadln;
-	else if (_stricmp(Str,"fileread")==0) *WordId = RsvFileRead;    // add
-	else if (_stricmp(Str,"filerename")==0) *WordId = RsvFileRename;
-	else if (_stricmp(Str,"filesearch")==0) *WordId = RsvFileSearch;
-	else if (_stricmp(Str,"fileseek")==0) *WordId = RsvFileSeek;
-	else if (_stricmp(Str,"fileseekback")==0) *WordId = RsvFileSeekBack;
-	else if (_stricmp(Str,"filestrseek")==0) *WordId = RsvFileStrSeek;
-	else if (_stricmp(Str,"filestrseek2")==0) *WordId = RsvFileStrSeek2;
-	else if (_stricmp(Str,"filewrite")==0) *WordId = RsvFileWrite;
-	else if (_stricmp(Str,"filewriteln")==0) *WordId = RsvFileWriteLn;
-	else if (_stricmp(Str,"findclose")==0) *WordId = RsvFindClose;
-	else if (_stricmp(Str,"findfirst")==0) *WordId = RsvFindFirst;
-	else if (_stricmp(Str,"findnext")==0) *WordId = RsvFindNext;
-	else if (_stricmp(Str,"flushrecv")==0) *WordId = RsvFlushRecv;
-	else if (_stricmp(Str,"for")==0) *WordId = RsvFor;
-	else if (_stricmp(Str,"getdate")==0) *WordId = RsvGetDate;
-	else if (_stricmp(Str,"getdir")==0) *WordId = RsvGetDir;
-	else if (_stricmp(Str,"getenv")==0) *WordId = RsvGetEnv;
-	else if (_stricmp(Str,"getpassword")==0) *WordId = RsvGetPassword;
-	else if (_stricmp(Str,"gettime")==0) *WordId = RsvGetTime;
-	else if (_stricmp(Str,"gettitle")==0) *WordId = RsvGetTitle;
-	else if (_stricmp(Str,"getttdir")==0) *WordId = RsvGetTTDir;
-	else if (_stricmp(Str,"getver")==0) *WordId = RsvGetVer;
-	else if (_stricmp(Str,"goto")==0) *WordId = RsvGoto;
-	else if (_stricmp(Str,"if")==0) *WordId = RsvIf;
-	else if (_stricmp(Str,"ifdefined")==0) *WordId = RsvIfDefined;
-	else if (_stricmp(Str,"include")==0) *WordId = RsvInclude ;
-	else if (_stricmp(Str,"inputbox")==0) *WordId = RsvInputBox;
-	else if (_stricmp(Str,"int2str")==0) *WordId = RsvInt2Str;
-	else if (_stricmp(Str,"kmtfinish")==0) *WordId = RsvKmtFinish;
-	else if (_stricmp(Str,"kmtget")==0) *WordId = RsvKmtGet;
-	else if (_stricmp(Str,"kmtrecv")==0) *WordId = RsvKmtRecv;
-	else if (_stricmp(Str,"kmtsend")==0) *WordId = RsvKmtSend;
-	else if (_stricmp(Str,"loadkeymap")==0) *WordId = RsvLoadKeyMap;
-	else if (_stricmp(Str,"logclose")==0) *WordId = RsvLogClose;
-	else if (_stricmp(Str,"logopen")==0) *WordId = RsvLogOpen;
-	else if (_stricmp(Str,"logpause")==0) *WordId = RsvLogPause;
-	else if (_stricmp(Str,"logstart")==0) *WordId = RsvLogStart;
-	else if (_stricmp(Str,"logwrite")==0) *WordId = RsvLogWrite;
-	else if (_stricmp(Str,"loop")==0) *WordId = RsvLoop;
-	else if (_stricmp(Str,"makepath")==0) *WordId = RsvMakePath;
-	else if (_stricmp(Str,"messagebox")==0) *WordId = RsvMessageBox;
-	else if (_stricmp(Str,"next")==0) *WordId = RsvNext;
-	else if (_stricmp(Str,"passwordbox")==0) *WordId = RsvPasswordBox;
-	else if (_stricmp(Str,"pause")==0) *WordId = RsvPause;
-	else if (_stricmp(Str,"mpause")==0) *WordId = RsvMilliPause;
-	else if (_stricmp(Str,"quickvanrecv")==0) *WordId = RsvQuickVANRecv;
-	else if (_stricmp(Str,"quickvansend")==0) *WordId = RsvQuickVANSend;
-	else if (_stricmp(Str,"random")==0) *WordId = RsvRandom;    // add 'random' (2006.2.11 yutaka)
-	else if (_stricmp(Str,"recvln")==0) *WordId = RsvRecvLn;
-	else if (_stricmp(Str,"restoresetup")==0) *WordId = RsvRestoreSetup;
-	else if (_stricmp(Str,"return")==0) *WordId = RsvReturn;
-	else if (_stricmp(Str,"rotateleft")==0) *WordId = RsvRotateL;   // add 'rotateleft' (2007.8.19 maya)
-	else if (_stricmp(Str,"rotateright")==0) *WordId = RsvRotateR;  // add 'rotateright' (2007.8.19 maya)
-	else if (_stricmp(Str,"scprecv")==0) *WordId = RsvScpRecv;      // add 'scprecv' (2008.1.1 yutaka)
-	else if (_stricmp(Str,"scpsend")==0) *WordId = RsvScpSend;      // add 'scpsend' (2008.1.1 yutaka)
-	else if (_stricmp(Str,"send")==0) *WordId = RsvSend;
-	else if (_stricmp(Str,"sendbreak")==0) *WordId = RsvSendBreak;
-	else if (_stricmp(Str,"sendfile")==0) *WordId = RsvSendFile;
-	else if (_stricmp(Str,"sendkcode")==0) *WordId = RsvSendKCode;
-	else if (_stricmp(Str,"sendln")==0) *WordId = RsvSendLn;
-	else if (_stricmp(Str,"setbaud")==0) *WordId = RsvSetBaud;
-	else if (_stricmp(Str,"setdate")==0) *WordId = RsvSetDate;
-	else if (_stricmp(Str,"setdir")==0) *WordId = RsvSetDir;
-	else if (_stricmp(Str,"setdlgpos")==0) *WordId = RsvSetDlgPos;
-	else if (_stricmp(Str,"setdtr")==0) *WordId = RsvSetDtr;    // add 'setdtr'  (2008.3.12 maya)
-	else if (_stricmp(Str,"setecho")==0) *WordId = RsvSetEcho;
-	else if (_stricmp(Str,"setenv")==0) *WordId = RsvSetEnv;    // reactivate 'setenv' (2007.8.31 maya)
-	else if (_stricmp(Str,"setexitcode")==0) *WordId = RsvSetExitCode;
-	else if (_stricmp(Str,"setrts")==0) *WordId = RsvSetRts;    // add 'setrts'  (2008.3.12 maya)
-	else if (_stricmp(Str,"setsync")==0) *WordId = RsvSetSync;
-	else if (_stricmp(Str,"settime")==0) *WordId = RsvSetTime;
-	else if (_stricmp(Str,"settitle")==0) *WordId = RsvSetTitle;
-	else if (_stricmp(Str,"show")==0) *WordId = RsvShow;
-	else if (_stricmp(Str,"showtt")==0) *WordId = RsvShowTT;
-	else if (_stricmp(Str,"sprintf")==0) *WordId = RsvSprintf;  // add 'sprintf' (2007.5.1 yutaka)
-	else if (_stricmp(Str,"statusbox")==0) *WordId = RsvStatusBox;
-	else if (_stricmp(Str,"str2code")==0) *WordId = RsvStr2Code;
-	else if (_stricmp(Str,"str2int")==0) *WordId = RsvStr2Int;
-	else if (_stricmp(Str,"strcompare")==0) *WordId = RsvStrCompare;
-	else if (_stricmp(Str,"strconcat")==0) *WordId = RsvStrConcat;
-	else if (_stricmp(Str,"strcopy")==0) *WordId = RsvStrCopy;
-	else if (_stricmp(Str,"strlen")==0) *WordId = RsvStrLen;
-	else if (_stricmp(Str,"strmatch")==0) *WordId = RsvStrMatch;
-	else if (_stricmp(Str,"strscan")==0) *WordId = RsvStrScan;
-	else if (_stricmp(Str,"testlink")==0) *WordId = RsvTestLink;
-	else if (_stricmp(Str,"then")==0) *WordId = RsvThen;
-	else if (_stricmp(Str,"tolower")==0) *WordId = RsvToLower;  // add 'tolower' (2007.7.12 maya)
-	else if (_stricmp(Str,"toupper")==0) *WordId = RsvToUpper;  // add 'toupper' (2007.7.12 maya)
-	else if (_stricmp(Str,"unlink")==0) *WordId = RsvUnlink;
-	else if (_stricmp(Str,"until")==0) *WordId = RsvUntil;
-	else if (_stricmp(Str,"var2clipb")==0) *WordId = RsvVar2Clipb;  // add 'var2clipb' (2006.9.17 maya)
-	else if (_stricmp(Str,"waitregex")==0) *WordId = RsvWaitRegex;  // add 'waitregex' (2005.10.5 yutaka)
-	else if (_stricmp(Str,"wait")==0) *WordId = RsvWait;
-	else if (_stricmp(Str,"waitevent")==0) *WordId = RsvWaitEvent;
-	else if (_stricmp(Str,"waitln")==0) *WordId = RsvWaitLn;
-	else if (_stricmp(Str,"waitrecv")==0) *WordId = RsvWaitRecv;
-	else if (_stricmp(Str,"while")==0) *WordId = RsvWhile;
-	else if (_stricmp(Str,"xmodemrecv")==0) *WordId = RsvXmodemRecv;
-	else if (_stricmp(Str,"xmodemsend")==0) *WordId = RsvXmodemSend;
-	else if (_stricmp(Str,"yesnobox")==0) *WordId = RsvYesNoBox;
-	else if (_stricmp(Str,"zmodemrecv")==0) *WordId = RsvZmodemRecv;
-	else if (_stricmp(Str,"zmodemsend")==0) *WordId = RsvZmodemSend;
-
-#ifdef AND_IS_LOGICAL_AND
-	else if (_stricmp(Str,"not")==0) *WordId = RsvLNot;
-	else if (_stricmp(Str,"and")==0) *WordId = RsvLAnd;
-	else if (_stricmp(Str,"or")==0) *WordId = RsvLOr;
-	else if (_stricmp(Str,"xor")==0) *WordId = RsvLXor;
-#else
-	else if (_stricmp(Str,"not")==0) *WordId = RsvBNot;
-	else if (_stricmp(Str,"and")==0) *WordId = RsvBAnd;
-	else if (_stricmp(Str,"or")==0) *WordId = RsvBOr;
-	else if (_stricmp(Str,"xor")==0) *WordId = RsvBXor;
-#endif /* AND_IS_LOGICAL_AND */
+	switch (Str[0] | 32) { // to lower-case
+	case 'a':
+		if (_stricmp(Str,"and")==0) *WordId = RsvBAnd;
+		break;
+	case 'b':
+		if (_stricmp(Str,"beep")==0) *WordId = RsvBeep;
+		else if (_stricmp(Str,"bplusrecv")==0) *WordId = RsvBPlusRecv;
+		else if (_stricmp(Str,"bplussend")==0) *WordId = RsvBPlusSend;
+		else if (_stricmp(Str,"break")==0) *WordId = RsvBreak;
+		break;
+	case 'c':
+		if (_stricmp(Str,"call")==0) *WordId = RsvCall;
+		else if (_stricmp(Str,"callmenu")==0) *WordId = RsvCallMenu;
+		else if (_stricmp(Str,"changedir")==0) *WordId = RsvChangeDir;
+		else if (_stricmp(Str,"clearscreen")==0) *WordId = RsvClearScreen;
+		else if (_stricmp(Str,"clipb2var")==0) *WordId = RsvClipb2Var;  // add 'clipb2var' (2006.9.17 maya)
+		else if (_stricmp(Str,"closesbox")==0) *WordId = RsvCloseSBox;
+		else if (_stricmp(Str,"closett")==0) *WordId = RsvCloseTT;
+		else if (_stricmp(Str,"code2str")==0) *WordId = RsvCode2Str;
+		else if (_stricmp(Str,"connect")==0) *WordId = RsvConnect;
+		else if (_stricmp(Str,"crc32")==0) *WordId = RsvCrc32;
+		else if (_stricmp(Str,"crc32file")==0) *WordId = RsvCrc32File;
+		else if (_stricmp(Str,"cygconnect")==0) *WordId = RsvCygConnect;
+		break;
+	case 'd':
+		if (_stricmp(Str,"delpassword")==0) *WordId = RsvDelPassword;
+		else if (_stricmp(Str,"disconnect")==0) *WordId = RsvDisconnect;
+		else if (_stricmp(Str,"do")==0) *WordId = RsvDo;
+		break;
+	case 'e':
+		if (_stricmp(Str,"else")==0) *WordId = RsvElse;
+		else if (_stricmp(Str,"elseif")==0) *WordId = RsvElseIf;
+		else if (_stricmp(Str,"enablekeyb")==0) *WordId = RsvEnableKeyb;
+		else if (_stricmp(Str,"end")==0) *WordId = RsvEnd;
+		else if (_stricmp(Str,"endif")==0) *WordId = RsvEndIf;
+		else if (_stricmp(Str,"enduntil")==0) *WordId = RsvEndUntil;
+		else if (_stricmp(Str,"endwhile")==0) *WordId = RsvEndWhile;
+		else if (_stricmp(Str,"exec")==0) *WordId = RsvExec;
+		else if (_stricmp(Str,"execcmnd")==0) *WordId = RsvExecCmnd;
+		else if (_stricmp(Str,"exit")==0) *WordId = RsvExit;
+		break;
+	case 'f':
+		if (_stricmp(Str,"fileclose")==0) *WordId = RsvFileClose;
+		else if (_stricmp(Str,"fileconcat")==0) *WordId = RsvFileConcat;
+		else if (_stricmp(Str,"filecopy")==0) *WordId = RsvFileCopy;
+		else if (_stricmp(Str,"filecreate")==0) *WordId = RsvFileCreate;
+		else if (_stricmp(Str,"filedelete")==0) *WordId = RsvFileDelete;
+		else if (_stricmp(Str,"filemarkptr")==0) *WordId = RsvFileMarkPtr;
+		else if (_stricmp(Str,"filenamebox")==0) *WordId  = RsvFilenameBox; // add 'filenamebox' (2007.9.13 maya)
+		else if (_stricmp(Str,"fileopen")==0) *WordId = RsvFileOpen;
+		else if (_stricmp(Str,"filereadln")==0) *WordId = RsvFileReadln;
+		else if (_stricmp(Str,"fileread")==0) *WordId = RsvFileRead;    // add
+		else if (_stricmp(Str,"filerename")==0) *WordId = RsvFileRename;
+		else if (_stricmp(Str,"filesearch")==0) *WordId = RsvFileSearch;
+		else if (_stricmp(Str,"fileseek")==0) *WordId = RsvFileSeek;
+		else if (_stricmp(Str,"fileseekback")==0) *WordId = RsvFileSeekBack;
+		else if (_stricmp(Str,"filestrseek")==0) *WordId = RsvFileStrSeek;
+		else if (_stricmp(Str,"filestrseek2")==0) *WordId = RsvFileStrSeek2;
+		else if (_stricmp(Str,"filewrite")==0) *WordId = RsvFileWrite;
+		else if (_stricmp(Str,"filewriteln")==0) *WordId = RsvFileWriteLn;
+		else if (_stricmp(Str,"findclose")==0) *WordId = RsvFindClose;
+		else if (_stricmp(Str,"findfirst")==0) *WordId = RsvFindFirst;
+		else if (_stricmp(Str,"findnext")==0) *WordId = RsvFindNext;
+		else if (_stricmp(Str,"flushrecv")==0) *WordId = RsvFlushRecv;
+		else if (_stricmp(Str,"for")==0) *WordId = RsvFor;
+		break;
+	case 'g':
+		if (_stricmp(Str,"getdate")==0) *WordId = RsvGetDate;
+		else if (_stricmp(Str,"getdir")==0) *WordId = RsvGetDir;
+		else if (_stricmp(Str,"getenv")==0) *WordId = RsvGetEnv;
+		else if (_stricmp(Str,"getpassword")==0) *WordId = RsvGetPassword;
+		else if (_stricmp(Str,"gettime")==0) *WordId = RsvGetTime;
+		else if (_stricmp(Str,"gettitle")==0) *WordId = RsvGetTitle;
+		else if (_stricmp(Str,"getttdir")==0) *WordId = RsvGetTTDir;
+		else if (_stricmp(Str,"getver")==0) *WordId = RsvGetVer;
+		else if (_stricmp(Str,"goto")==0) *WordId = RsvGoto;
+		break;
+	case 'i':
+		if (_stricmp(Str,"if")==0) *WordId = RsvIf;
+		else if (_stricmp(Str,"ifdefined")==0) *WordId = RsvIfDefined;
+		else if (_stricmp(Str,"include")==0) *WordId = RsvInclude ;
+		else if (_stricmp(Str,"inputbox")==0) *WordId = RsvInputBox;
+		else if (_stricmp(Str,"int2str")==0) *WordId = RsvInt2Str;
+		break;
+	case 'k':
+		if (_stricmp(Str,"kmtfinish")==0) *WordId = RsvKmtFinish;
+		else if (_stricmp(Str,"kmtget")==0) *WordId = RsvKmtGet;
+		else if (_stricmp(Str,"kmtrecv")==0) *WordId = RsvKmtRecv;
+		else if (_stricmp(Str,"kmtsend")==0) *WordId = RsvKmtSend;
+		break;
+	case 'l':
+		if (_stricmp(Str,"loadkeymap")==0) *WordId = RsvLoadKeyMap;
+		else if (_stricmp(Str,"logclose")==0) *WordId = RsvLogClose;
+		else if (_stricmp(Str,"logopen")==0) *WordId = RsvLogOpen;
+		else if (_stricmp(Str,"logpause")==0) *WordId = RsvLogPause;
+		else if (_stricmp(Str,"logstart")==0) *WordId = RsvLogStart;
+		else if (_stricmp(Str,"logwrite")==0) *WordId = RsvLogWrite;
+		else if (_stricmp(Str,"loop")==0) *WordId = RsvLoop;
+		break;
+	case 'm':
+		if (_stricmp(Str,"makepath")==0) *WordId = RsvMakePath;
+		else if (_stricmp(Str,"messagebox")==0) *WordId = RsvMessageBox;
+		else if (_stricmp(Str,"mpause")==0) *WordId = RsvMilliPause;
+		break;
+	case 'n':
+		if (_stricmp(Str,"next")==0) *WordId = RsvNext;
+		else if (_stricmp(Str,"not")==0) *WordId = RsvBNot;
+		break;
+	case 'o':
+		if (_stricmp(Str,"or")==0) *WordId = RsvBOr;
+		break;
+	case 'p':
+		if (_stricmp(Str,"passwordbox")==0) *WordId = RsvPasswordBox;
+		else if (_stricmp(Str,"pause")==0) *WordId = RsvPause;
+		break;
+	case 'q':
+		if (_stricmp(Str,"quickvanrecv")==0) *WordId = RsvQuickVANRecv;
+		else if (_stricmp(Str,"quickvansend")==0) *WordId = RsvQuickVANSend;
+		break;
+	case 'r':
+		if (_stricmp(Str,"random")==0) *WordId = RsvRandom;    // add 'random' (2006.2.11 yutaka)
+		else if (_stricmp(Str,"recvln")==0) *WordId = RsvRecvLn;
+		else if (_stricmp(Str,"restoresetup")==0) *WordId = RsvRestoreSetup;
+		else if (_stricmp(Str,"return")==0) *WordId = RsvReturn;
+		else if (_stricmp(Str,"rotateleft")==0) *WordId = RsvRotateL;   // add 'rotateleft' (2007.8.19 maya)
+		else if (_stricmp(Str,"rotateright")==0) *WordId = RsvRotateR;  // add 'rotateright' (2007.8.19 maya)
+		break;
+	case 's':
+		if (_stricmp(Str,"scprecv")==0) *WordId = RsvScpRecv;      // add 'scprecv' (2008.1.1 yutaka)
+		else if (_stricmp(Str,"scpsend")==0) *WordId = RsvScpSend;      // add 'scpsend' (2008.1.1 yutaka)
+		else if (_stricmp(Str,"send")==0) *WordId = RsvSend;
+		else if (_stricmp(Str,"sendbreak")==0) *WordId = RsvSendBreak;
+		else if (_stricmp(Str,"sendfile")==0) *WordId = RsvSendFile;
+		else if (_stricmp(Str,"sendkcode")==0) *WordId = RsvSendKCode;
+		else if (_stricmp(Str,"sendln")==0) *WordId = RsvSendLn;
+		else if (_stricmp(Str,"setbaud")==0) *WordId = RsvSetBaud;
+		else if (_stricmp(Str,"setdate")==0) *WordId = RsvSetDate;
+		else if (_stricmp(Str,"setdir")==0) *WordId = RsvSetDir;
+		else if (_stricmp(Str,"setdlgpos")==0) *WordId = RsvSetDlgPos;
+		else if (_stricmp(Str,"setdtr")==0) *WordId = RsvSetDtr;    // add 'setdtr'  (2008.3.12 maya)
+		else if (_stricmp(Str,"setecho")==0) *WordId = RsvSetEcho;
+		else if (_stricmp(Str,"setenv")==0) *WordId = RsvSetEnv;    // reactivate 'setenv' (2007.8.31 maya)
+		else if (_stricmp(Str,"setexitcode")==0) *WordId = RsvSetExitCode;
+		else if (_stricmp(Str,"setrts")==0) *WordId = RsvSetRts;    // add 'setrts'  (2008.3.12 maya)
+		else if (_stricmp(Str,"setsync")==0) *WordId = RsvSetSync;
+		else if (_stricmp(Str,"settime")==0) *WordId = RsvSetTime;
+		else if (_stricmp(Str,"settitle")==0) *WordId = RsvSetTitle;
+		else if (_stricmp(Str,"show")==0) *WordId = RsvShow;
+		else if (_stricmp(Str,"showtt")==0) *WordId = RsvShowTT;
+		else if (_stricmp(Str,"sprintf")==0) *WordId = RsvSprintf;  // add 'sprintf' (2007.5.1 yutaka)
+		else if (_stricmp(Str,"statusbox")==0) *WordId = RsvStatusBox;
+		else if (_stricmp(Str,"str2code")==0) *WordId = RsvStr2Code;
+		else if (_stricmp(Str,"str2int")==0) *WordId = RsvStr2Int;
+		else if (_stricmp(Str,"strcompare")==0) *WordId = RsvStrCompare;
+		else if (_stricmp(Str,"strconcat")==0) *WordId = RsvStrConcat;
+		else if (_stricmp(Str,"strcopy")==0) *WordId = RsvStrCopy;
+		else if (_stricmp(Str,"strlen")==0) *WordId = RsvStrLen;
+		else if (_stricmp(Str,"strmatch")==0) *WordId = RsvStrMatch;
+		else if (_stricmp(Str,"strscan")==0) *WordId = RsvStrScan;
+		break;
+	case 't':
+		if (_stricmp(Str,"testlink")==0) *WordId = RsvTestLink;
+		else if (_stricmp(Str,"then")==0) *WordId = RsvThen;
+		else if (_stricmp(Str,"tolower")==0) *WordId = RsvToLower;  // add 'tolower' (2007.7.12 maya)
+		else if (_stricmp(Str,"toupper")==0) *WordId = RsvToUpper;  // add 'toupper' (2007.7.12 maya)
+		break;
+	case 'u':
+		if (_stricmp(Str,"unlink")==0) *WordId = RsvUnlink;
+		else if (_stricmp(Str,"until")==0) *WordId = RsvUntil;
+		break;
+	case 'v':
+		if (_stricmp(Str,"var2clipb")==0) *WordId = RsvVar2Clipb;  // add 'var2clipb' (2006.9.17 maya)
+		break;
+	case 'w':
+		if (_stricmp(Str,"waitregex")==0) *WordId = RsvWaitRegex;  // add 'waitregex' (2005.10.5 yutaka)
+		else if (_stricmp(Str,"wait")==0) *WordId = RsvWait;
+		else if (_stricmp(Str,"waitevent")==0) *WordId = RsvWaitEvent;
+		else if (_stricmp(Str,"waitln")==0) *WordId = RsvWaitLn;
+		else if (_stricmp(Str,"waitrecv")==0) *WordId = RsvWaitRecv;
+		else if (_stricmp(Str,"while")==0) *WordId = RsvWhile;
+		break;
+	case 'x':
+		if (_stricmp(Str,"xmodemrecv")==0) *WordId = RsvXmodemRecv;
+		else if (_stricmp(Str,"xmodemsend")==0) *WordId = RsvXmodemSend;
+		else if (_stricmp(Str,"xor")==0) *WordId = RsvBXor;
+		break;
+	case 'y':
+		if (_stricmp(Str,"yesnobox")==0) *WordId = RsvYesNoBox;
+		break;
+	case 'z':
+		if (_stricmp(Str,"zmodemrecv")==0) *WordId = RsvZmodemRecv;
+		else if (_stricmp(Str,"zmodemsend")==0) *WordId = RsvZmodemSend;
+		break;
+	default:
+		; /* nothing to do */
+	}
 
 	return (*WordId!=0);
 }
