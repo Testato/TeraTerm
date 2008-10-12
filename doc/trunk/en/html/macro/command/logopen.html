@@ -25,7 +25,7 @@ logopen &lt;filename&gt; &lt;binary flag&gt; &lt;append flag&gt; [&lt;plain text
 
 <p>
 Received characters are written to the file &lt;filename&gt;.<br>
-When the file does not include \ character, the file is saved at the current directory.
+When the file does not include \ character, the file is saved at the TeraTerm current directory. If a user want to change the directory, use the <a href="changedir.html">changedir</a> macro command.
 </p>
 
 <p>
@@ -64,6 +64,9 @@ gettime timestr "%Y%m%d-%H%M%S"
 ; add the user name and the timestamp to the log file name
 sprintf 'console_%s_%s.log' username timestr
 filename = inputstr
+
+; change the current directory
+changedir 'C:\Documents and Settings\yutaka\desktop'
 
 logopen filename 0 0
 logwrite 'Log start'#13#10

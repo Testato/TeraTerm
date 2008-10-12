@@ -25,7 +25,7 @@ logopen &lt;filename&gt; &lt;binary flag&gt; &lt;append flag&gt; [&lt;plain text
 
 <p>
 ファイル &lt;filename&gt; に受信した文字が書き込まれる。ログを開始したあとも次のコマンドは実行される。<br>
-ファイル名に \ を含まない場合、カレントディレクトリに作成される。
+ファイル名に \ を含まない場合、Tera Termのカレントディレクトリに作成される。当該ディレクトリを変更するには <a href="changedir.html">changedir</a> マクロを使用する。
 </p>
 
 <p>
@@ -64,6 +64,9 @@ gettime timestr "%Y%m%d-%H%M%S"
 ; ログファイル名に日時とユーザ名を入れる。
 sprintf 'console_%s_%s.log' username timestr
 filename = inputstr
+
+; カレントディレクトリを変更する
+changedir 'C:\Documents and Settings\yutaka\デスクトップ'
 
 logopen filename 0 0
 logwrite 'Log start'#13#10
