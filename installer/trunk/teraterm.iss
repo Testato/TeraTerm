@@ -91,7 +91,8 @@ Source: release\Collector\hthook.dll; DestDir: {app}\Collector\; Components: Col
 Source: release\Collector\mfc70.dll; DestDir: {app}\Collector\; Components: Collector
 Source: release\Collector\msvcr70.dll; DestDir: {app}\Collector\; Components: Collector
 Source: release\Collector\readme.txt; DestDir: {app}\Collector\; Components: Collector
-Source: ..\TTXKanjiMenu\release\ttxkanjimenu.dll; DestDir: {app}\; Components: TTXKanjiMenu; Flags: ignoreversion
+Source: ..\TTXKanjiMenu\release\ttxkanjimenu.dll; DestDir: {app}\; Components: Additional_Plugins/TTXKanjiMenu; Flags: ignoreversion
+Source: ..\TTXSamples\release\TTXCopyIniFile.dll; DestDir: {app}\; Components: Additional_Plugins/TTXCopyIniFile; Flags: ignoreversion
 
 [Types]
 Name: standard; Description: {cm:type_standard}
@@ -107,7 +108,9 @@ Name: LogMeTT; Description: LogMeTT & TTLEdit; Types: full standard
 Name: TeraTerm_Menu; Description: TeraTerm Menu; Types: full
 Name: TTProxy; Description: TTProxy; Types: full standard
 Name: Collector; Description: Collector; Types: full
-Name: TTXKanjiMenu; Description: TTXKanjiMenu; Types: full
+Name: Additional_Plugins; Description: Additional Plugins
+Name: Additional_Plugins/TTXKanjiMenu; Description: TTX KanjiMenu (Changes Kanji Code from VT-Window menu)
+Name: Additional_Plugins/TTXCopyIniFile; Description: TTX CopyIniFile (Copys ini file when save new Setup file)
 
 [Icons]
 Name: {group}\Tera Term; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; IconIndex: 0; Components: TeraTerm; Flags: createonlyiffileexists
@@ -263,6 +266,13 @@ Root: HKCU; Subkey: Software\Classes\telnet\shell; ValueType: string; ValueData:
 Root: HKCU; Subkey: Software\Classes\telnet\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" /T=1 /nossh %1"; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
 Root: HKCR; Subkey: telnet\shell; ValueType: string; ValueData: Open with Tera Term; Flags: uninsclearvalue; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
 Root: HKCR; Subkey: telnet\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" /T=1 /nossh %1"; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
+; Associate with ssh://
+Root: HKCU; Subkey: Software\Classes\ssh\shell; ValueType: string; ValueData: Open with Tera Term; Flags: uninsclearvalue; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
+Root: HKCU; Subkey: Software\Classes\ssh\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" /ssh %1"; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
+Root: HKCU; Subkey: Software\Classes\ssh; ValueName: URL Protocol; ValueType: string; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
+Root: HKCR; Subkey: ssh\shell; ValueType: string; ValueData: Open with Tera Term; Flags: uninsclearvalue; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
+Root: HKCR; Subkey: ssh\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" /ssh %1"; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
+Root: HKCR; Subkey: ssh; ValueName: URL Protocol; ValueType: string; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
 
 [Tasks]
 Name: desktopicon; Description: {cm:task_desktopicon}; Components: TeraTerm
@@ -273,6 +283,7 @@ Name: cygtermhere; Description: {cm:task_cygtermhere}; Components: cygterm; Flag
 Name: quickcyglaunch; Description: {cm:task_quickcyglaunch}; Components: cygterm; Flags: unchecked
 Name: macroassoc; Description: {cm:task_macroassoc}; Components: TeraTerm; Flags: unchecked
 Name: telnetassoc; Description: {cm:task_telnetassoc}; Components: TeraTerm; Flags: unchecked
+Name: sshassoc; Description: {cm:task_sshassoc}; Components: TTSSH; Flags: unchecked
 
 [Run]
 Filename: {app}\ttermpro.exe; Flags: nowait postinstall skipifsilent unchecked; Description: {cm:launch_teraterm}; Components: TeraTerm
@@ -289,6 +300,7 @@ en.task_cygtermhere=Add "Cy&gterm Here" to Context menu
 en.task_quickcyglaunch=Create cyg&launch shortcut to Quick Launch
 en.task_macroassoc=Associate .&ttl file to ttpmacro.exe
 en.task_telnetassoc=Associate t&elnet protocol to ttermpro.exe
+en.task_sshassoc=Associate &ssh protocol to ttermpro.exe
 ja.task_desktopicon=デスクトップに Tera Term のショートカットを作る(&D)
 ja.task_quicklaunchicon=クイック起動に Tera Term のショートカットを作る(&Q)
 ja.task_startupttmenuicon=スタートアップに TeraTerm &Menu のショートカットを作る
@@ -297,6 +309,7 @@ ja.task_cygtermhere=コンテキストメニューに "Cy&gterm Here" を追加する
 ja.task_quickcyglaunch=クイック起動に cyg&launch のショートカットを作る
 ja.task_macroassoc=.&ttl ファイルを ttpmacro.exe に関連付ける
 ja.task_telnetassoc=t&elnet プロトコルを ttermpro.exe に関連付ける
+ja.task_sshassoc=&ssh プロトコルを ttermpro.exe に関連付ける
 en.type_standard=Standard installation
 en.type_full=Full installation
 en.type_compact=Compact installation
