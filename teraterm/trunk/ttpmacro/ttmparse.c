@@ -77,7 +77,7 @@ void DispErr(WORD Err)
 		case ErrInvalidCtl: strncpy_s(Msg, sizeof(Msg),"Invalid control.", _TRUNCATE); break;
 		case ErrLabelAlreadyDef: strncpy_s(Msg, sizeof(Msg),"Label already defined.", _TRUNCATE); break;
 		case ErrLabelReq: strncpy_s(Msg, sizeof(Msg),"Label requiered.", _TRUNCATE); break;
-		case ErrLinkFirst: strncpy_s(Msg, sizeof(Msg),"Link macro first.", _TRUNCATE); break;
+		case ErrLinkFirst: strncpy_s(Msg, sizeof(Msg),"Link macro first. Use 'connect' macro.", _TRUNCATE); break;
 		case ErrStackOver: strncpy_s(Msg, sizeof(Msg),"Stack overflow.", _TRUNCATE); break;
 		case ErrSyntax: strncpy_s(Msg, sizeof(Msg),"Syntax error.", _TRUNCATE); break;
 		case ErrTooManyLabels: strncpy_s(Msg, sizeof(Msg),"Too many labels.", _TRUNCATE); break;
