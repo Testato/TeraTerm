@@ -54,7 +54,12 @@ messagebox &lt;message&gt; &lt;title&gt; [&lt;special&gt;]
 <h2>例</h2>
 
 <pre class="macro-example">
-<code>messagebox ErrorMessage 'Error'
+<code>
+messagebox ErrorMessage 'Error'
+
+title="5行表示"
+message="1行目\n2行目\n3行目\n4行目\n5行目\n"
+messagebox message title
 </code></pre>
 
 </body>
