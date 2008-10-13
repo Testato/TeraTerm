@@ -26,14 +26,20 @@ strlen &lt;string&gt;
 <h2>Remarks</h2>
 
 <p>
-Returns the length of &lt;string&gt; in the system variable "result".
+Returns the length of &lt;string&gt; in the system variable "result".<br>
+The length does not include the null-terminate character. Also, the length counts in terms of bytes.
 </p>
 
 <h2>Example</h2>
 
 <pre class="macro-example">
-<code>strscan 'tera term' 'term'
-; result = 6
+<code>
+strlen Txcnt
+if result>0 then
+	logwrite Txcnt
+else
+	messagebox 'Txcnt is NULL' 'error'
+endif
 </code></pre>
 
 </body>
