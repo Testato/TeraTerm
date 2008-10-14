@@ -40,7 +40,7 @@ Enter the synchronous mode only when it is necessary and re-enter the asynchrono
 
 <p>
 For a macro operation, which requires reliability, something like processing lines of received characters without loss of data, you need to enter the synchronous mode. However, the synchronous mode makes Tera Term slow in speed of receiving characters and causes Tera Term freeze if no character-reading command is executed for a long time.<br>
-On the other hand, a simple macro operation, such as auto login, works with almost no problem in the asynchronous mode, because the buffer size is large enough (4096 bytes) and all received characters are processed by character-reading commands before the buffer overflows.
+On the other hand, a simple macro operation, such as auto login, works with almost no problem in the asynchronous mode, because the buffer size is large enough (16K bytes) and all received characters are processed by character-reading commands before the buffer overflows.
 </p>
 
 <p>
@@ -49,11 +49,17 @@ See also "<a href="flushrecv.html">flushrecv</a>" for clearing the buffer.
 <h2>Example</h2>
 
 <pre class="macro-example">
-<code>; enter the synchronous mode
+<code>
+connect server
+; enter the synchronous mode
 setsync 1
+timeout = 60
+waitln '+OK' '-ERR'
 
 ; enter the asynchronous mode
 setsync 0
+
+end
 </code></pre>
 
 </body>
