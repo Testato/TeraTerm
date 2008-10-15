@@ -45,9 +45,14 @@ MACRO は初期状態が「非同期モード」である。このモードでは、受信文字を処理するコマ
 一方、単純なマクロ処理(例えば自動ログイン)ならば非同期モードでもほとんど問題なく動作する。この場合、バッファサイズは十分大きく(16Kバイト)、受信したすべての文字はバッファがあふれる前にコマンドによって処理される。
 <p>
 
+<div align="center">
+<img src="image/setsync.png" width=720 height=540>
+</div>
+
 <p>
 バッファのクリアについては "<a href="flushrecv.html">flushrecv</a>" を参照。
 </p>
+
 <h2>例</h2>
 
 <pre class="macro-example">
