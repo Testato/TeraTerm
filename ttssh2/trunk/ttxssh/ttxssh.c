@@ -1123,6 +1123,8 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 
 			enable_dlg_items(dlg, IDC_SSH_VERSION, IDC_SSH_VERSION, TRUE); 
 			enable_dlg_items(dlg, IDC_SSH_VERSION_LABEL, IDC_SSH_VERSION_LABEL, TRUE); 
+
+			enable_dlg_items(dlg, IDC_HISTORY, IDC_HISTORY, TRUE); // enabled
 		}
 #ifndef NO_INET6
 		else {
@@ -1133,6 +1135,8 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 
 			enable_dlg_items(dlg, IDC_SSH_VERSION, IDC_SSH_VERSION, FALSE); // disabled
 			enable_dlg_items(dlg, IDC_SSH_VERSION_LABEL, IDC_SSH_VERSION_LABEL, FALSE); // disabled (2004.11.23 yutaka)
+
+			enable_dlg_items(dlg, IDC_HISTORY, IDC_HISTORY, FALSE); // disabled
 		}
 #else
 		else
