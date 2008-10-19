@@ -24,7 +24,7 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 <ul>
-  <li class="history"><a name="teraterm_4.61">2008.10.10 (Ver 4.61 not-released)</a>
+  <li class="history"><a name="teraterm_4.61">2008.10.19 (Ver 4.61 not-released)</a>
     <ul>
       <li><a href="../macro/command/filestrseek2.html">filestrseek2</a>マクロコマンドにおいて、ファイルの1バイト目が合致すると、ファイルポインタが負数になってしまうバグを修正した。</li>
       <li><a href="../macro/command/logopen.html">logopen</a>マクロコマンドにおいて、ファイル名に \ が含まれない場合、ルートディレクトリ直下へ保存されるようになっていたため、カレントディレクトリに保存されるようにした。</a>
@@ -1194,6 +1194,7 @@
       <li>SSH1接続時にアプリケーションエラーで落ちる問題を修正した。</li>
       <li>SSH2 接続で CheckAuthListFirst が有効な場合に、有効な認証メソッドが帰ってくる前に接続ダイアログの OK ボタンを押すと接続が終了する問題を修正した。</li>
       <li>DISPLAY 環境変数が設定されている場合に X 転送が開始できない問題を修正した。</li>
+      <li>新規接続ダイアログにおいて、Historyチェックボックスの有効化・無効化を行っていなかった問題を修正した。</li>
     </ul>
   </li>
 
