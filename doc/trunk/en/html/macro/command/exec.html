@@ -45,5 +45,18 @@ exec 'notepad readme.txt'
 exec 'notepad readme.txt' 'maximize'
 </code></pre>
 
+<pre class="macro-example">
+<code>
+; Launch a batch file.
+tmp='cmd /c c:\upload.bat '
+strconcat tmp username1 
+strconcat tmp ' '
+strconcat tmp userpass1 
+strconcat tmp ' '
+strconcat tmp address
+messagebox tmp 'exec'
+exec tmp
+</code></pre>
+
 </body>
 </html>
