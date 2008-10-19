@@ -30,9 +30,35 @@ Executes a TTL statement expressed by the string &lt;statement&gt;.
 <h2>Example</h2>
 
 <pre class="macro-example">
-<code>; Execute the statement "send 'abc'".
+<code>
+; Execute the statement "send 'abc'".
 execcmnd "send 'abc'"
+; Stores 1 to the variable 'a'.
 execcmnd "a=1"
+</code></pre>
+
+<pre class="macro-example">
+<code>
+for x 1 10      ;creates variables arr1 thru arr10 and assigns them 1 thru 10
+  tmp='arr'
+  int2str ix x
+  strconcat tmp ix
+  strconcat tmp '='
+  strconcat tmp ix
+  execcmnd tmp
+next
+
+messagebox arr1 'variable1'
+messagebox arr2 'variable2'
+messagebox arr3 'variable3'
+messagebox arr4 'variable4'
+messagebox arr5 'variable5'
+messagebox arr6 'variable6'
+messagebox arr7 'variable7'
+messagebox arr8 'variable8'
+messagebox arr9 'variable9'
+messagebox arr10 'variable10'
+messagebox arr11 'variable11'  ; syntax error
 </code></pre>
 
 </body>
