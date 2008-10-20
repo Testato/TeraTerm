@@ -7,6 +7,7 @@
 #include "teraterm.h"
 #include <string.h>
 #include <stdio.h>
+#include <ctype.h>
 #include "ttmdlg.h"
 #include "ttmparse.h"
 
@@ -118,7 +119,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 {
 	*WordId = 0;
 
-	switch (Str[0] | 32) { // to lower-case
+	switch (Str[0] | 0x20) { // to lower-case
 	case 'a':
 		if (_stricmp(Str,"and")==0) *WordId = RsvBAnd;
 		break;
@@ -326,12 +327,12 @@ BYTE GetFirstChar()
 		b = LineBuff[LinePtr];
 	else return 0;
 
-	while ((LinePtr<LineLen) && ((b==0x20) || (b==0x09)))
+	while ((LinePtr<LineLen) && ((b==' ') || (b=='\t')))
 	{
 		LinePtr++;
 		if (LinePtr<LineLen) b = LineBuff[LinePtr];
 	}
-	if ((b>0x20) && (b!=';'))
+	if ((b>' ') && (b!=';'))
 	{
 		LinePtr++;
 		return b;
@@ -366,10 +367,7 @@ BOOL GetIdentifier(PCHAR Name)
 	if (b==0) return FALSE;
 
 	// Check first character of identifier
-	if (((b<'A') || (b>'Z')) &&
-	    (b!='_') &&
-	    ((b<'a') || (b>'z')))
-	{
+	if (! __iscsymf(b)) { // [^A-Za-z_]
 		LinePtr--;
 		return FALSE;
 	}
@@ -378,12 +376,7 @@ BOOL GetIdentifier(PCHAR Name)
 	i = 1;
 
 	if (LinePtr<LineLen) b = LineBuff[LinePtr];
-	while ((LinePtr<LineLen) &&
-	       ( (b>='0') && (b<='9') ||
-	         (b>='A') && (b<='Z') ||
-	         (b>='_') ||
-	         (b>='a') && (b<='z') ) )
-	{
+	while ((LinePtr<LineLen) && __iscsym(b)) { // [0-9A-Za-z_]
 		if (i<MaxNameLen-1)
 		{
 			Name[i] = b;
@@ -497,12 +490,7 @@ BOOL GetLabelName(PCHAR Name)
 
 	i = 1;
 	if (LinePtr<LineLen) b = LineBuff[LinePtr];
-	while ((LinePtr<LineLen) &&
-	       ( (b>='0') && (b<='9') ||
-	         (b>='A') && (b<='Z') ||
-	         (b>='_') ||
-	         (b>='a') && (b<='z') ) )
-	{
+	while ((LinePtr<LineLen) && __iscsym(b)) { // [0-9A-Za-z_]
 		if (i<MaxNameLen-1)
 		{
 			Name[i] = b;
@@ -548,14 +536,11 @@ BOOL GetLabelName(PCHAR Name)
 		b=0;
 		n = 0;
 		if (LinePtr<LineLen) b = LineBuff[LinePtr];
-		if (((b<'0') || (b>'9')) &&
-			(b!='$')) return ErrSyntax;
+		if (!isdigit(b) && (b!='$')) return ErrSyntax;
 
-		if (b!='$')
-		{ /* decimal */
-			while ((LinePtr<LineLen) && (b>='0') && (b<='9'))
-			{
-				n = n * 10 + b - 0x30;
+		if (b!='$') { /* decimal */
+			while ((LinePtr<LineLen) && isdigit(b)) { // [0-9]
+				n = n * 10 + b - '0';
 				LinePtr++;
 				if (LinePtr<LineLen) b = LineBuff[LinePtr];
 			}
@@ -563,17 +548,11 @@ BOOL GetLabelName(PCHAR Name)
 		else { /* hexadecimal */
 			LinePtr++;
 			if (LinePtr<LineLen) b = LineBuff[LinePtr];
-			while ((LinePtr<LineLen) &&
-			       ((b>='0') && (b<='9') ||
-			        (b>='A') && (b<='F') ||
-			        (b>='a') && (b<='f')))
-			{
-				if (b>='a')
-					b = b - 0x57;
-				else if (b>='A')
-					b = b - 0x37;
+			while ((LinePtr<LineLen) && isxdigit(b)) { // [0-9A-Fa-f]
+				if (isalpha(b))
+					b = (b|0x20) - 'a' + 10;
 				else
-					b = b - 0x30;
+					b = b - '0';
 				n = n * 16 + b;
 				LinePtr++;
 				if (LinePtr<LineLen) b = LineBuff[LinePtr];
@@ -601,16 +580,16 @@ BOOL GetString(PCHAR Str, LPWORD Err)
 	q = GetFirstChar();
 	if (q==0) return FALSE;
 	LinePtr--;
-	if ((q!=0x22) && (q!=0x27) && (q!='#'))
+	if ((q!='"') && (q!='\'') && (q!='#'))
 		return FALSE;
 
 	i = 0;
-	while (((q==0x22) || (q==0x27) || (q=='#')) && (*Err==0))
+	while (((q=='"') || (q=='\'') || (q=='#')) && (*Err==0))
 	{
 		LinePtr++;
 		switch (q) {
-			case 0x22:
-			case 0x27: *Err = GetQuotedStr(Str,q,&i); break;
+			case '"':
+			case '\'': *Err = GetQuotedStr(Str,q,&i); break;
 			case '#':  *Err = GetCharByCode(Str,&i);  break;
 		}
 		q = LineBuff[LinePtr];
@@ -626,13 +605,11 @@ BOOL GetNumber(int far *Num)
 
 	b = GetFirstChar();
 	if (b==0) return FALSE;
-	if ((b>='0') && (b<='9'))
-	{ /* decimal constant */
-		*Num = b-0x30;
+	if (isdigit(b)) { /* decimal constant */
+		*Num = b - '0';
 		if (LinePtr<LineLen) b = LineBuff[LinePtr];
-		while ((LinePtr<LineLen) && (b>='0') && (b<='9'))
-		{
-			*Num = *Num * 10 - 0x30 + b;
+		while ((LinePtr<LineLen) && isdigit(b)) {
+			*Num = *Num * 10 + b - '0';
 			LinePtr++;
 			if (LinePtr<LineLen) b = LineBuff[LinePtr];
 		}
@@ -640,17 +617,11 @@ BOOL GetNumber(int far *Num)
 	else if (b=='$')
 	{ /* hexadecimal constant */
 		if (LinePtr<LineLen) b = LineBuff[LinePtr];
-		while ((LinePtr<LineLen) &&
-		       ((b>='0') && (b<='9') ||
-		        (b>='A') && (b<='F') ||
-		        (b>='a') && (b<='f')))
-		{
-			if (b>='a')
-				b = b - 0x57;
-			else if (b>='A')
-				b = b - 0x37;
+		while ((LinePtr<LineLen) && isxdigit(b)) { // [0-9A-Fa-f]
+			if (isalpha(b))
+				b = (b|0x20) - 'a' + 10;
 			else
-				b = b - 0x30;
+				b = b - '0';
 			*Num = *Num * 16 + b;
 			LinePtr++;
 			if (LinePtr<LineLen) b = LineBuff[LinePtr];
