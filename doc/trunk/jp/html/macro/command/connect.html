@@ -17,7 +17,7 @@
 Ú‘±‚·‚éB
 </p>
 
-<pre class="macro-syntax">
+<pre class=".code">
 connect &lt;command line parameters&gt;
 </pre>
 
@@ -66,7 +66,7 @@ MACRO ‚ª Tera Term ‚Æ‚·‚Å‚ÉƒŠƒ“ƒN‚³‚ê‚Ä‚¢‚ÄATera Term ‚ªƒzƒXƒg‚É‚·‚Å‚ÉÚ‘±‚³‚ê‚
 Tera Term ‚Æ MACRO ‚ÌƒŠƒ“ƒN‚µ‚Ä‚¢‚È‚¢ó‘Ô‚Å‚ÍA"connect" ‚Æ "<a href="cygconnect.html">cygconnect</a>", "<a href="testlink.html">testlink</a>" ˆÈŠO‚Ì’ÊMƒRƒ}ƒ“ƒh‚ÍÀs‚Å‚«‚È‚¢B
 </p>
 
-<h2>Boris ‚É‚æ‚é‰ğà</h2>
+<h2>Ú‘±•û–@</h2>
 
 <p>
 Tera Termƒ}ƒNƒ‚©‚çÚ‘±‚·‚é•û–@‚É‚ÍA4 ‚Â‚Ìí—Ş‚ª‚ ‚è‚Ü‚·B
@@ -81,7 +81,7 @@ Tera Termƒ}ƒNƒ‚©‚çÚ‘±‚·‚é•û–@‚É‚ÍA4 ‚Â‚Ìí—Ş‚ª‚ ‚è‚Ü‚·B
 
 <h3>telnetÚ‘±</h2>
 
-<pre class="macro-example">
+<pre class=".code">
 <code>connect '<em>myserver</em>:23 /nossh'
 connect '<em>myserver</em>:23 /telnet'
 connect '<em>myserver</em>:23'
@@ -93,7 +93,7 @@ connect '<em>myserver</em>:23'
 
 <h3>SSHÚ‘±</h3>
 
-<pre class="macro-example">
+<pre class=".code">
 <code>connect '<em>myserver</em> /ssh'
 </code></pre>
 
@@ -101,7 +101,7 @@ connect '<em>myserver</em>:23'
 ‚±‚Ì•û–@‚ÍASSHƒo[ƒWƒ‡ƒ“‚ğw’è‚¹‚¸‚ÉSSHÚ‘±‚ğ‚µ‚Ü‚·B
 </p>
 
-<pre class="macro-example">
+<pre class=".code">
 <code>connect '<em>myserver</em> /ssh /1'
 connect '<em>myserver</em> /ssh /2'
 </code></pre>
@@ -110,7 +110,7 @@ connect '<em>myserver</em> /ssh /2'
 /1 ‚Æ /2 ‚ÌƒIƒvƒVƒ‡ƒ“‚ÍASSH1‚¨‚æ‚ÑSSH2‚Å‚ ‚é‚±‚Æ‚ğw’è‚µ‚Ü‚·B
 </p>
 
-<pre class="macro-example">
+<pre class=".code">
 <code>connect '<em>myserver</em> /ssh /auth=password /user=<em>username</em> /passwd=<em>password</em>'
 connect '<em>myserver</em> /ssh /1 /auth=password /user=<em>username</em> /passwd=<em>password</em>'
 connect '<em>myserver</em> /ssh /2 /auth=password /user=<em>username</em> /passwd=<em>password</em>'
@@ -126,7 +126,7 @@ connect '<em>myserver</em> /ssh /2 /auth=challenge /user=<em>username</em> /pass
 ‚±‚Ì9‚Â‚Ì•û–@‚ÍAƒ}ƒNƒ‚©‚çƒ†[ƒU–¼‚ÆƒpƒXƒ[ƒh‚ğ“n‚·‚±‚Æ‚É‚æ‚èASSH”FØƒ_ƒCƒAƒƒO‚ğƒXƒLƒbƒv‚³‚¹‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B/auth=password‚ÍƒpƒXƒ[ƒh”FØA/auth=publickey‚ÍŒöŠJŒ®”FØA/auth=challenge‚Íƒ`ƒƒƒŒƒ“ƒWƒŒƒXƒ|ƒ“ƒX”FØ‚Å‚ ‚é‚±‚Æ‚ğ•\‚µ‚Ü‚·B
 </p>
 
-<pre class="macro-example">
+<pre class=".code">
 <code>connect '<em>myserver</em> /ssh /auth=pageant /user=<em>username</em>'
 connect '<em>myserver</em> /ssh /1 /auth=pageant /user=<em>username</em>'
 connect '<em>myserver</em> /ssh /2 /auth=pageant /user=<em>username</em>'
@@ -136,7 +136,7 @@ connect '<em>myserver</em> /ssh /2 /auth=pageant /user=<em>username</em>'
 ‚±‚Ì3‚Â‚Ì•û–@‚ÍAƒ}ƒNƒ‚©‚çƒ†[ƒU–¼‚ğ“n‚·‚±‚Æ‚É‚æ‚èASSH”FØƒ_ƒCƒAƒƒO‚ğƒXƒLƒbƒv‚³‚¹‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B/auth=pageant‚ÍPageant‚ğg—p‚µ‚½”FØ‚Å‚ ‚é‚±‚Æ‚ğ•\‚µ‚Ü‚·B
 </p>
 
-<pre class="macro-example">
+<pre class=".code">
 <code>connect '<em>myserve</em> /ssh /auth=password /user=<em>username</em> /ask4passwd'
 connect '<em>myserver</em> /ssh /1 /auth=password /user=<em>username</em> /ask4passwd'
 connect '<em>myserver</em> /ssh /2 /auth=password /user=<em>username</em> /ask4passwd'
@@ -154,7 +154,7 @@ connect '<em>myserver</em> /ssh /2 /auth=challenge /user=<em>username</em> /ask4
 
 <h3>General connection</h3>
 
-<pre class="macro-example">
+<pre class=".code">
 <code>connect 'myserver /timeout=&lt;value&gt;'
 </code></pre>
 
@@ -164,7 +164,7 @@ Note: This option value is connecting timeout value(per seconds). Connecting to 
 
 <h3>COMƒ|[ƒgÚ‘±</h3>
 
-<pre class="macro-example">
+<pre class=".code">
 <code>connect '/C=x'
 </code></pre>
 
@@ -173,7 +173,7 @@ x‚ÍCOMƒ|[ƒg”Ô†‚ğ•\‚µ‚Ü‚·B‚½‚Æ‚¦‚ÎACOM1‚ÉÚ‘±‚µ‚½‚¢‚Ì‚È‚çA connect '/C=1' ‚Æ
 </p>
 
 <p>
-o“T: http://www.neocom.ca/forum/viewtopic.php?t=28
+o“T: <a href="http://logmett.com/forum/viewtopic.php?t=28">http://logmett.com/forum/viewtopic.php?t=28</a>
 </p>
 
 <h2>—á</h2>
@@ -226,6 +226,61 @@ connect '/C=x'
 CommandLine = '111.111.11.11'
 connect CommandLine
 </code></pre>
+
+
+<pre class="macro-example">
+<code>
+; Sample macro for Tera Term
+;  Telnet login
+
+; open Tera Term
+;   command line = 'TERATERM myhost.mydomain' (telnet)
+connect 'myhost.mydomain'
+
+; set username
+UsernamePrompt = 'Username:'
+Username = 'MYNAME'
+PasswordPrompt = 'Password:'
+; get password from file
+getpassword 'password.dat' 'mypassword' Password
+
+; login
+wait   UsernamePrompt
+sendln Username
+
+wait   PasswordPrompt
+sendln Password
+
+; OK, auto login complete.
+</code></pre>
+
+
+<pre class="macro-example">
+<code>
+; sample macro of Tera Term
+; 
+; File: ssh2login.ttl
+; Description: auto login with SSH2 protocol
+; Environment: generic
+
+username = 'nike'
+hostname = '192.168.1.3'
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+msg = 'Enter password for user '
+strconcat msg username
+passwordbox msg 'Get password'
+
+msg = hostname
+strconcat msg ':22 /ssh /auth=password /user='
+strconcat msg username
+strconcat msg ' /passwd='
+strconcat msg inputstr
+
+connect msg
+</code></pre>
+
 
 <h2>’ˆÓ</h2>
 
