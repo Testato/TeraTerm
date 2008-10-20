@@ -36,5 +36,16 @@ If &lt;append flag&gt; is zero, the file pointer is set to the beginning of the 
 fileopen fhandle 'data.dat' 1
 </code></pre>
 
+<pre class="macro-example">
+<code>
+fileopen fhandle 'test.bat' 0
+filewrite fhandle 'md .\v20080619_Test'
+fileclose fhandle
+pause 5
+exec 'cmd /c test.bat'
+pause 10
+exit
+</code></pre>
+
 </body>
 </html>
