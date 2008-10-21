@@ -32,12 +32,11 @@ fileopen &lt;file handle&gt; &lt;filename&gt; &lt;append flag&gt;
 <h2>—á</h2>
 
 <pre class="macro-example">
-<code>fileopen fhandle 'data.dat' 0
+fileopen fhandle 'data.dat' 0
 fileopen fhandle 'data.dat' 1
-</code></pre>
+</pre>
 
 <pre class="macro-example">
-<code>
 fileopen fhandle 'test.bat' 0
 filewrite fhandle 'md .\v20080619_Test'
 fileclose fhandle
@@ -45,7 +44,7 @@ pause 5
 exec 'cmd /c test.bat'
 pause 10
 exit
-</code></pre>
+</pre>
 
 </body>
 </html>

@@ -179,7 +179,7 @@ xはCOMポート番号を表します。たとえば、COM1に接続したいのなら、 connect '/C=1' と
 <h2>例</h2>
 
 <pre class="macro-example">
-<code>; パラメータなしで Tera Term を起動
+; パラメータなしで Tera Term を起動
 connect ''
 
 ; 接続が成功しなかった場合、5秒でタイムアウトが発生
@@ -225,11 +225,10 @@ connect '/C=x'
 
 CommandLine = '111.111.11.11'
 connect CommandLine
-</code></pre>
+</pre>
 
 
 <pre class="macro-example">
-<code>
 ; Sample macro for Tera Term
 ;  Telnet login
 
@@ -252,11 +251,10 @@ wait   PasswordPrompt
 sendln Password
 
 ; OK, auto login complete.
-</code></pre>
+</pre>
 
 
 <pre class="macro-example">
-<code>
 ; sample macro of Tera Term
 ; 
 ; File: ssh2login.ttl
@@ -279,7 +277,7 @@ strconcat msg ' /passwd='
 strconcat msg inputstr
 
 connect msg
-</code></pre>
+</pre>
 
 
 <h2>注意</h2>

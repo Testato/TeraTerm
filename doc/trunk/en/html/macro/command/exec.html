@@ -38,15 +38,14 @@ show ;default parameters when no show command specified.
 <h2>Example</h2>
 
 <pre class="macro-example">
-<code>; Run "Notepad".
+; Run "Notepad".
 exec 'notepad readme.txt'
 
 ; Run "Notepad" and maximize the application.
 exec 'notepad readme.txt' 'maximize'
-</code></pre>
+</pre>
 
 <pre class="macro-example">
-<code>
 ; Launch a batch file.
 tmp='cmd /c c:\upload.bat '
 strconcat tmp username1 
@@ -56,7 +55,7 @@ strconcat tmp ' '
 strconcat tmp address
 messagebox tmp 'exec'
 exec tmp
-</code></pre>
+</pre>
 
 </body>
 </html>

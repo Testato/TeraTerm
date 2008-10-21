@@ -73,12 +73,13 @@ formatが指定されなかった場合は、変数 result の値は変更されない。
 <h2>例</h2>
 
 <pre class="macro-example">
-<code>;現在の時刻をtimestrに格納。形式はHH:MM:SS。
+;現在の時刻をtimestrに格納。形式はHH:MM:SS。
 gettime timestr
 
-;現在の日時を元にしてログファイル名を生成し、変数logfileに格納。形式はlog-YYYYMMDD-HHMMSS.txt
+;現在の日時を元にしてログファイル名を生成し、変数logfileに格納。
+;形式はlog-YYYYMMDD-HHMMSS.txt
 gettime logfile "log-%Y%m%d-%H%M%S.txt"
-</code></pre>
+</pre>
 
 <h2>参照</h2>
 <ul>

@@ -33,7 +33,7 @@ If &lt;string&gt; is not found, the file pointer is not moved and "result" is se
 <h2>Example</h2>
 
 <pre class="macro-example">
-<code>fileopen fhandle 'teraterm.log' 0
+fileopen fhandle 'teraterm.log' 0
 
 ; Search for the string "abc" in the file "teraterm.log".
 filestrseek fhandle 'abc'
@@ -43,7 +43,7 @@ filereadln fhandle str
 
 :not_found
 fileclose fhandle
-</code></pre>
+</pre>
 
 </body>
 </html>
