@@ -215,7 +215,8 @@ connect '<em>myserver</em> /ssh /1 /auth=publickey/user=<em>username</em> /passw
 ; Run Tera Term, open SSH2 session and, not prompt for user name and password and use private key file
 connect '<em>myserver</em> /ssh /2 /auth=publickey /user=<em>username</em> /passwd=<em>password</em> /keyfile=<em>private-key-file</em>'
 
-; Tera Term automatically connects the remote host with the public key authentication, and not prompt for user name and password and use private key file.
+; Tera Term automatically connects the remote host with the public key 
+; authentication, and not prompt for user name and password and use private key file.
 connect '<em>myserver</em> /ssh /auth=pageant /user=<em>username</em>'
 
 ; RunTera Term and open serial port connection. Port number is x=1..256
@@ -285,6 +286,7 @@ connect msg
  <li>In these examples parameters shown with Italic font have to be replaced with their actual values.</li>
  <li>The password can contain space character. To represent space inside the password replace it with '@' character. If '@' character itself is part of the password than it has to be replaced with 2 consecutive '@' characters '@@'.</li>
  <li>Please remember that entering actual username and password in Tera Term macro will cause them to be stored as an open text and it is your responsibility to keep such macro is secure location.</li>
+ <li>When a user re-connect the remote host soon after disconnecting the server, a user could not connect the server. For more detail, refer to "<a href="../appendixes/disconnecttiming.html">here</a>".</li>
 </ol>
 
 <h2>See also</h2>
