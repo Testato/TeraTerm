@@ -2647,9 +2647,11 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 		}
 		else if ((_strnicmp(Temp, "/KR=", 4) == 0) ||
 		         (_strnicmp(Temp, "/KT=", 4) == 0)) {	/* kanji code */
-			if (_strnicmp(&Temp[4], "UTF8m", 5) == 0)
+			if (_strnicmp(&Temp[4], "UTF8m",  5) == 0 ||
+			    _strnicmp(&Temp[4], "UTF-8m", 6) == 0)
 				c = IdUTF8m;
-			else if (_strnicmp(&Temp[4], "UTF8", 4) == 0)
+			else if (_strnicmp(&Temp[4], "UTF8",  4) == 0 ||
+			         _strnicmp(&Temp[4], "UTF-8", 5) == 0)
 				c = IdUTF8;
 			else if (_strnicmp(&Temp[4], "SJIS", 4) == 0)
 				c = IdSJIS;
