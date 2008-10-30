@@ -981,6 +981,7 @@ void ESCSBCSSelect(BYTE b)
     case '0': Gn[Dist] = IdSpecial; break;
     case '<': Gn[Dist] = IdASCII; break;
     case '>': Gn[Dist] = IdASCII; break;
+    case 'A': Gn[Dist] = IdASCII; break;
     case 'B': Gn[Dist] = IdASCII; break;
     case 'H': Gn[Dist] = IdASCII; break;
     case 'I':
