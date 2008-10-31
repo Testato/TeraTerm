@@ -144,18 +144,22 @@
     LOGIN_SHELL
     -----------
         If this parameter is set to yes, shell is invoked as a login shell.
-	(default: no)
+        (default: no)
 
     HOME_CHDIR
     ----------
-	If this paramete is set to yes, current directory is changed to home
-	directory before invoke a shell. (default: no)
+        If this parameter is set to yes, current directory is changed to home
+        directory before invoke a shell. (default: no)
 
     SOCKET_TIMEOUT
     --------------
         Specify the timeout of socket for waiting telnet connection from
         Tera Term. (default: 5secs)
 
+    SSH_AGENT_PROXY
+    ---------------
+        If this parameter is set to yes, cygterm provides ssh-agent proxy.
+        (default: no)
 
     ENV_X
     -----
@@ -204,6 +208,12 @@
     -nocd
             The shell is invoked without changing the current directory.
 
+    -a
+            Enable ssh-agent proxy support.
+
+    -o 'parameter'
+            Additional parameter for terminal-emulator.
+
     -v 'env-var'
             Specify the environment variable to be set when starting the shell.
             This format is the same as ENV_X in the configuration file.
@@ -238,18 +248,25 @@
 
 // T E S T E D  O N //
 
-    As of 2004-Jan, CygTerm has been tested in the following environments.
+    As of 2008-Nov, CygTerm+ has been tested in the following environments.
 
-        Windows 2000 SP4 + Cygwin 1.5.5(0.94/3/2) 
+        WindowsXP SP4 + Cygwin 1.5.25-15
 
         Terminal emulator:
-                Windows 2000 telnet.exe
                 Tera Term Pro 2.3
+                Tera Term 4.60
+                PuTTY 0.60
         Shell:
-                bash 2.05b
-                zsh 4.1.1
+                bash 3.2.39
+                zsh 4.3.4
 
 // C H A N G E S //
+v1.07_15 2008/11/01 (doda)
+        * Added ssh-agent proxy support.
+
+v1.07_14 2007/12/17 (doda)
+        * Added '-o' option that is specifies the additional parameters for terminal-emulator.
+
 v1.07_13 2007/08/03 (by maya.negeta@gmail.com)
         * Added '-d' option that is specifies the start directory.
 
