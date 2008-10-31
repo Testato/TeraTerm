@@ -202,13 +202,21 @@ BOOL CALLBACK TFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 			// plain textチェックボックスはデフォルトでON (2005.2.20 yutaka)
 			ShowDlgItem(Dialog,IDC_PLAINTEXT,IDC_PLAINTEXT);
-			if (Hi & 0x1000) {
+			if (Lo) {
+				// Binaryフラグが有効なときはチェックできない
+				DisableDlgItem(Dialog,IDC_PLAINTEXT,IDC_PLAINTEXT);
+			}
+			else if (Hi & 0x1000) {
 				SetRB(Dialog,1,IDC_PLAINTEXT,IDC_PLAINTEXT);
 			}
 
 			// timestampチェックボックス (2006.7.23 maya)
 			ShowDlgItem(Dialog,IDC_TIMESTAMP,IDC_TIMESTAMP);
-			if (Hi & 0x2000) {
+			if (Lo) {
+				// Binaryフラグが有効なときはチェックできない
+				DisableDlgItem(Dialog,IDC_TIMESTAMP,IDC_TIMESTAMP);
+			}
+			else if (Hi & 0x2000) {
 				SetRB(Dialog,1,IDC_TIMESTAMP,IDC_TIMESTAMP);
 			}
 
@@ -222,59 +230,70 @@ BOOL CALLBACK TFnHook(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 
 	case WM_COMMAND: // for old style dialog
 		switch (LOWORD(wParam)) {
-	case IDOK:
-		pl = (LPLONG)GetWindowLong(Dialog,DWL_USER);
-		if (pl!=NULL)
-		{
+		case IDOK:
+			pl = (LPLONG)GetWindowLong(Dialog,DWL_USER);
+			if (pl!=NULL)
+			{
+				GetRB(Dialog,&Lo,IDC_FOPTBIN,IDC_FOPTBIN);
+				Hi = HIWORD(*pl);
+				if (Hi!=0xFFFF)
+					GetRB(Dialog,&Hi,IDC_FOPTAPPEND,IDC_FOPTAPPEND);
+				*pl = MAKELONG(Lo,Hi);
+			}
+			break;
+		case IDCANCEL:
+			break;
+		case IDC_FOPTBIN:
 			GetRB(Dialog,&Lo,IDC_FOPTBIN,IDC_FOPTBIN);
-			Hi = HIWORD(*pl);
-			if (Hi!=0xFFFF)
-				GetRB(Dialog,&Hi,IDC_FOPTAPPEND,IDC_FOPTAPPEND);
-			*pl = MAKELONG(Lo,Hi);
-		}
-		break;
-	case IDCANCEL:
-		break;
+			if (Lo) {
+				DisableDlgItem(Dialog,IDC_PLAINTEXT,IDC_TIMESTAMP);
+			}
+			else {
+				EnableDlgItem(Dialog,IDC_PLAINTEXT,IDC_TIMESTAMP);
+			}
+			break;
 		}
 		break;
 	case WM_NOTIFY:	// for Explorer-style dialog
 		notify = (LPOFNOTIFY)lParam;
 		switch (notify->hdr.code) {
-	case CDN_FILEOK:
-		pl = (LPLONG)GetWindowLong(Dialog,DWL_USER);
-		if (pl!=NULL)
-		{
-			WORD val = 0;
+		case CDN_FILEOK:
+			pl = (LPLONG)GetWindowLong(Dialog,DWL_USER);
+			if (pl!=NULL)
+			{
+				WORD val = 0;
 
-			GetRB(Dialog,&Lo,IDC_FOPTBIN,IDC_FOPTBIN);
-			Hi = HIWORD(*pl);
-			if (Hi!=0xFFFF)
-				GetRB(Dialog,&Hi,IDC_FOPTAPPEND,IDC_FOPTAPPEND);
+				GetRB(Dialog,&Lo,IDC_FOPTBIN,IDC_FOPTBIN);
+				Hi = HIWORD(*pl);
+				if (Hi!=0xFFFF)
+					GetRB(Dialog,&Hi,IDC_FOPTAPPEND,IDC_FOPTAPPEND);
 
-			// plain text check-box
-			GetRB(Dialog,&val,IDC_PLAINTEXT,IDC_PLAINTEXT);
-			if (val > 0) { // checked
-				Hi |= 0x1000;
+				if (!Lo) {
+					// plain text check-box
+					GetRB(Dialog,&val,IDC_PLAINTEXT,IDC_PLAINTEXT);
+					if (val > 0) { // checked
+						Hi |= 0x1000;
+					}
+
+					// timestampチェックボックス (2006.7.23 maya)
+					GetRB(Dialog,&val,IDC_TIMESTAMP,IDC_TIMESTAMP);
+					if (val > 0) {
+						Hi |= 0x2000;
+					}
+				}
+
+				// Hide dialogチェックボックス (2008.1.30 maya)
+				GetRB(Dialog,&val,IDC_HIDEDIALOG,IDC_HIDEDIALOG);
+				if (val > 0) {
+					Hi |= 0x4000;
+				}
+
+				*pl = MAKELONG(Lo,Hi);
 			}
-
-			// timestampチェックボックス (2006.7.23 maya)
-			GetRB(Dialog,&val,IDC_TIMESTAMP,IDC_TIMESTAMP);
-			if (val > 0) {
-				Hi |= 0x2000;
+			if (DlgFoptFont != NULL) {
+				DeleteObject(DlgFoptFont);
 			}
-
-			// Hide dialogチェックボックス (2008.1.30 maya)
-			GetRB(Dialog,&val,IDC_HIDEDIALOG,IDC_HIDEDIALOG);
-			if (val > 0) {
-				Hi |= 0x4000;
-			}
-
-			*pl = MAKELONG(Lo,Hi);
-		}
-		if (DlgFoptFont != NULL) {
-			DeleteObject(DlgFoptFont);
-		}
-		break;
+			break;
 		}
 		break;
 	}

@@ -321,6 +321,14 @@ void ConvertLogname(char *c, int destlen)
 	strncpy_s(c, destlen, buf, _TRUNCATE);
 }
 
+void FixLogOption()
+{
+	if (ts.TransBin) {
+		ts.LogTypePlainText = false;
+		ts.LogTimestamp = false;
+	}
+}
+
 extern "C" {
 void LogStart()
 {
@@ -418,6 +426,8 @@ void LogStart()
 		// &h をホスト名に置換 (2007.5.14)
 		ConvertLogname(LogVar->FullName, sizeof(LogVar->FullName));
 		(*SetFileVar)(LogVar);
+
+		FixLogOption();
 	}
 
 	if (ts.TransBin > 0)
