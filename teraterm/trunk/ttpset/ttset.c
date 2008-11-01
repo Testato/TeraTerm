@@ -1196,7 +1196,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		GetOnOff(Section, "AutoScrollOnlyInBottomLine", FName, FALSE);
 
 	// Accept remote-controlled window title changing
-	GetPrivateProfileString(Section, "AcceptTitleChangeRequest", "off",
+	GetPrivateProfileString(Section, "AcceptTitleChangeRequest", "overwrite",
 	                        Temp, sizeof(Temp), FName);
 	if (_stricmp(Temp, "overwrite") == 0 || _stricmp(Temp, "on") == 0)
 		ts->AcceptTitleChangeRequest = IdTitleChangeRequestOverwrite;
