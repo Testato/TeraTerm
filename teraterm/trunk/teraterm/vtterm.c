@@ -32,7 +32,7 @@
 #define ModeDCUserKey 3
 #define ModeSOS   4
 #define ModeCSI   5
-#define ModeXS	  6
+#define ModeXS    6
 #define ModeDLE   7
 #define ModeCAN   8
 
@@ -2484,9 +2484,9 @@ void XSequence(BYTE b)
 			  case 1: /* Change icon name */
 			  case 2: /* Change window title */
 				if (ts.AcceptTitleChangeRequest) {
-					strncpy_s(ts.Title, sizeof(ts.Title), StrBuff, _TRUNCATE);
+					strncpy_s(cv.TitleRemote, sizeof(cv.TitleRemote), StrBuff, _TRUNCATE);
 					// (2006.6.15 maya) ƒ^ƒCƒgƒ‹‚É“n‚·•¶Žš—ñ‚ðSJIS‚É•ÏŠ·
-					ConvertToCP932(ts.Title, sizeof(ts.Title));
+					ConvertToCP932(cv.TitleRemote, sizeof(cv.TitleRemote));
 					ChangeTitle();
 				}
 				break;

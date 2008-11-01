@@ -129,9 +129,26 @@ void ConvertToCP932(char *str, int destlen)
  */
 void ChangeTitle()
 {
-	char TempTitle[HostNameMaxLength + 50 + 1]; // バッファ拡張
+	char TempTitle[HostNameMaxLength + 100 + 1]; // バッファ拡張
+	char TempTitleWithRemote[100];
 
-	strncpy_s(TempTitle, sizeof(TempTitle), ts.Title, _TRUNCATE);
+	// リモートからのタイトルを別に扱う (2008.11.1 maya)
+	if (ts.AcceptTitleChangeRequest == IdTitleChangeRequestOff) {
+		strncpy_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), ts.Title, _TRUNCATE);
+	}
+	else if (ts.AcceptTitleChangeRequest == IdTitleChangeRequestBefore) {
+		_snprintf_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), _TRUNCATE,
+		            "%s %s", cv.TitleRemote, ts.Title);
+	}
+	else if (ts.AcceptTitleChangeRequest == IdTitleChangeRequestAfter) {
+		_snprintf_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), _TRUNCATE,
+		            "%s %s", ts.Title, cv.TitleRemote);
+	}
+	else {
+		strncpy_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), cv.TitleRemote, _TRUNCATE);
+	}
+
+	strncpy_s(TempTitle, sizeof(TempTitle), TempTitleWithRemote, _TRUNCATE);
 
 	if ((ts.TitleFormat & 1)!=0)
 	{ // host name
@@ -156,7 +173,7 @@ void ChangeTitle()
 			}
 
 			if (ts.TitleFormat & 8) {
-				_snprintf_s(TempTitle, sizeof(TempTitle), _TRUNCATE, "%s - %s", str, ts.Title);
+				_snprintf_s(TempTitle, sizeof(TempTitle), _TRUNCATE, "%s - %s", str, TempTitleWithRemote);
 			} else {
 				strncat_s(TempTitle, sizeof(TempTitle), str, _TRUNCATE); 
 			}
@@ -172,7 +189,7 @@ void ChangeTitle()
 
 			if (ts.TitleFormat & 8) {
 				// format ID = 13(8 + 5): <hots/port> - <title>
-				_snprintf_s(TempTitle, sizeof(TempTitle), _TRUNCATE, "%s - %s", str, ts.Title);
+				_snprintf_s(TempTitle, sizeof(TempTitle), _TRUNCATE, "%s - %s", str, TempTitleWithRemote);
 			}
 			else {
 				strncat_s(TempTitle, sizeof(TempTitle), ts.HostName, _TRUNCATE);

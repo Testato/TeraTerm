@@ -1196,8 +1196,16 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		GetOnOff(Section, "AutoScrollOnlyInBottomLine", FName, FALSE);
 
 	// Accept remote-controlled window title changing
-	ts->AcceptTitleChangeRequest =
-		GetOnOff(Section, "AcceptTitleChangeRequest", FName, TRUE);
+	GetPrivateProfileString(Section, "AcceptTitleChangeRequest", "off",
+	                        Temp, sizeof(Temp), FName);
+	if (_stricmp(Temp, "overwrite") == 0)
+		ts->AcceptTitleChangeRequest = IdTitleChangeRequestOverwrite;
+	else if (_stricmp(Temp, "on") == 0 || _stricmp(Temp, "before") == 0)
+		ts->AcceptTitleChangeRequest = IdTitleChangeRequestBefore;
+	else if (_stricmp(Temp, "after") == 0)
+		ts->AcceptTitleChangeRequest = IdTitleChangeRequestAfter;
+	else
+		ts->AcceptTitleChangeRequest = IdTitleChangeRequestOff;
 
 	// Size of paste confirm dialog
 	GetPrivateProfileString(Section, "PasteDialogSize", "330,220",
@@ -2015,8 +2023,17 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	           ts->UnknownUnicodeCharaAsWide);
 
 	// Accept remote-controlled window title changing
-	WriteOnOff(Section, "AcceptTitleChangeRequest", FName,
-	           ts->AcceptTitleChangeRequest);
+	if (ts->AcceptTitleChangeRequest == IdTitleChangeRequestOff)
+		strncpy_s(Temp, sizeof(Temp), "off", _TRUNCATE);
+	else if (ts->AcceptTitleChangeRequest == IdTitleChangeRequestOverwrite)
+		strncpy_s(Temp, sizeof(Temp), "overwrite", _TRUNCATE);
+	else if (ts->AcceptTitleChangeRequest == IdTitleChangeRequestBefore)
+		strncpy_s(Temp, sizeof(Temp), "before", _TRUNCATE);
+	else if (ts->AcceptTitleChangeRequest == IdTitleChangeRequestAfter)
+		strncpy_s(Temp, sizeof(Temp), "after", _TRUNCATE);
+	else
+		Temp[0] = 0;
+	WritePrivateProfileString(Section, "AcceptTitleChangeRequest", Temp, FName);
 
 	// Size of paste confirm dialog
 	WriteInt2(Section, "PasteDialogSize", FName,

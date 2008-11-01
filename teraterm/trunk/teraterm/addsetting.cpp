@@ -102,6 +102,7 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 	char uimsg[MAX_UIMSG];
 	char buf[64];
 	CButton *btn;
+	CComboBox *cmb;
 
 	CPropertyPage::OnInitDialog();
 
@@ -144,9 +145,15 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 	get_lang_msg("DLG_TAB_GENERAL_ACCEPT_MOUSE_EVENT_TRACKING", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_ACCEPT_MOUSE_EVENT_TRACKING, ts.UIMsg);
 
-	GetDlgItemText(IDC_ACCEPT_TITLE_CHANGING, uimsg, sizeof(uimsg));
+	GetDlgItemText(IDC_ACCEPT_TITLE_CHANGING_LABEL, uimsg, sizeof(uimsg));
 	get_lang_msg("DLG_TAB_GENERAL_ACCEPT_TITLE_CHANGING", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_ACCEPT_TITLE_CHANGING, ts.UIMsg);
+	SetDlgItemText(IDC_ACCEPT_TITLE_CHANGING_LABEL, ts.UIMsg);
+
+	SendDlgItemMessage(IDC_ACCEPT_TITLE_CHANGING, CB_ADDSTRING, 0, (LPARAM)"off");
+	SendDlgItemMessage(IDC_ACCEPT_TITLE_CHANGING, CB_ADDSTRING, 0, (LPARAM)"overwrite");
+	SendDlgItemMessage(IDC_ACCEPT_TITLE_CHANGING, CB_ADDSTRING, 0, (LPARAM)"before");
+	SendDlgItemMessage(IDC_ACCEPT_TITLE_CHANGING, CB_ADDSTRING, 0, (LPARAM)"after");
+
 
 	// (1)DisableAcceleratorSendBreak
 	btn = (CButton *)GetDlgItem(IDC_DISABLE_SENDBREAK);
@@ -176,8 +183,8 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 	btn->SetCheck(ts.MouseEventTracking);
 
 	// (8)IDC_ACCEPT_TITLE_CHANGING
-	btn = (CButton *)GetDlgItem(IDC_ACCEPT_TITLE_CHANGING);
-	btn->SetCheck(ts.AcceptTitleChangeRequest);
+	cmb = (CComboBox *)GetDlgItem(IDC_ACCEPT_TITLE_CHANGING);
+	cmb->SetCurSel(ts.AcceptTitleChangeRequest);
 
 	// ダイアログにフォーカスを当てる (2004.12.7 yutaka)
 	::SetFocus(::GetDlgItem(GetSafeHwnd(), IDC_CLICKABLE_URL));
@@ -193,6 +200,7 @@ BOOL CGeneralPropPageDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 void CGeneralPropPageDlg::OnOK()
 {
 	CButton *btn;
+	CComboBox *cmb;
 	char buf[64];
 	int val;
 
@@ -226,8 +234,8 @@ void CGeneralPropPageDlg::OnOK()
 	ts.MouseEventTracking = btn->GetCheck();
 
 	// (8)IDC_ACCEPT_TITLE_CHANGING 
-	btn = (CButton *)GetDlgItem(IDC_ACCEPT_TITLE_CHANGING);
-	ts.AcceptTitleChangeRequest = btn->GetCheck();
+	cmb = (CComboBox *)GetDlgItem(IDC_ACCEPT_TITLE_CHANGING);
+	ts.AcceptTitleChangeRequest = cmb->GetCurSel();
 }
 
 

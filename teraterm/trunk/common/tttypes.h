@@ -197,6 +197,12 @@ typedef TCharAttr *PCharAttr;
 #define IdBeepOn     1
 #define IdBeepVisual 2
 
+// TitleChangeRequest types
+#define IdTitleChangeRequestOff       0
+#define IdTitleChangeRequestOverwrite 1
+#define IdTitleChangeRequestBefore    2
+#define IdTitleChangeRequestAfter     3
+
 // Eterm lookfeel alphablend structure
 typedef struct {
 	int BGEnable;
@@ -802,6 +808,7 @@ typedef struct {
 
 	time_t LastSendTime;
 	WORD isSSH;
+	char TitleRemote[50];
 } TComVar;
 typedef TComVar far *PComVar;
 
@@ -844,6 +851,9 @@ typedef TMap far *PMap;
 /*
  * Increment the number of this macro value
  * when you change TMap or member of TMap.
+ *
+ * - At version 4.61, ttset_memfilemap was replaced with ttset_memfilemap_9.
+ *   added TComVar.TitleRemote.
  *
  * - At version 4.60, ttset_memfilemap was replaced with ttset_memfilemap_8.
  *   added tttset.AcceptTitleChangeRequest.
@@ -897,4 +907,4 @@ typedef TMap far *PMap;
  *   added tttset.VTCompatTab.
  */
 
-#define TT_FILEMAPNAME "ttset_memfilemap_8"
+#define TT_FILEMAPNAME "ttset_memfilemap_9"
