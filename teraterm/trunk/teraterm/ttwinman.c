@@ -148,7 +148,12 @@ void ChangeTitle()
 		strncpy_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), cv.TitleRemote, _TRUNCATE);
 	}
 
-	strncpy_s(TempTitle, sizeof(TempTitle), TempTitleWithRemote, _TRUNCATE);
+	if (Connecting || !cv.Ready) {
+		strncpy_s(TempTitle, sizeof(TempTitle), ts.Title, _TRUNCATE);
+	}
+	else {
+		strncpy_s(TempTitle, sizeof(TempTitle), TempTitleWithRemote, _TRUNCATE);
+	}
 
 	if ((ts.TitleFormat & 1)!=0)
 	{ // host name
