@@ -75,8 +75,32 @@ MENU_HELP_ABOUT=&Über Tera Term...
 
 MENU_SHOW_MENUBAR=Zeige Menüleiste 
 
+
+TEKMENU_FILE=&File
+TEKMENU_FILE_PRINT=&Print...\tAlt+P
+TEKMENU_FILE_EXIT=E&xit\tAlt+Q
+
+TEKMENU_EDIT=&Edit
+TEKMENU_EDIT_COPY=&Copy\tAlt+C
+TEKMENU_EDIT_COPYSCREEN=Copy &screen
+TEKMENU_EDIT_PASTE=&Paste\tAlt+V
+TEKMENU_EDIT_PASTECR=Paste<C&R>\tAlt+R
+TEKMENU_EDIT_CLSCREEN=C&lear screen
+
+TEKMENU_SETUP=&Setup
+TEKMENU_SETUP_WINDOW=&Window
+TEKMENU_SETUP_FONT=&Font
+
 TEKMENU_VTWIN=VT-Fenster
 
+TEKMENU_WINDOW=&Window
+
+TEKMENU_HELP=&Help
+TEKMENU_HELP_INDEX=&Index
+TEKMENU_HELP_USING=Using &help
+TEKMENU_HELP_ABOUT=&About Tera Term...
+
+TEKMENU_SHOW_MENUBAR=Show menu &bar
 
 ; ttermpro
 ; filesys.cpp
@@ -128,7 +152,11 @@ DLG_TAB_GENERAL_DISABLESENDBREAK=DisableAccelerator&SendBreak
 DLG_TAB_GENERAL_ACCEPTBROADCAST=&Akzeptiere Broadcast
 DLG_TAB_GENERAL_AUTOSCROLL_ONLY_IN_BOTTOM_LINE=&Autoschriftrolle nur in unterst Linie
 DLG_TAB_GENERAL_ACCEPT_MOUSE_EVENT_TRACKING=Accept &Mouse Event Tracking
-DLG_TAB_GENERAL_ACCEPT_TITLE_CHANGING=Accept Window &Title Changing Request
+DLG_TAB_GENERAL_ACCEPT_TITLE_CHANGING=Accept Window &Title Change Request
+DLG_TAB_GENERAL_ACCEPT_TITLE_CHANGING_OFF=off
+DLG_TAB_GENERAL_ACCEPT_TITLE_CHANGING_OVERWRITE=overwrite
+DLG_TAB_GENERAL_ACCEPT_TITLE_CHANGING_BEFORE=before
+DLG_TAB_GENERAL_ACCEPT_TITLE_CHANGING_AFTER=after
 
 DLG_TAB_COPYPASTE_CONTINUE=mehrere Zeilen kopieren
 DLG_TAB_COPYPASTE_MOUSEPASTE=&Einfügen mit rechter Maustaste aus
@@ -157,6 +185,7 @@ DLG_BROADCAST_HISTORY=Verlauf
 DLG_BROADCAST_PARENTONLY=Sende nur Prozess
 DLG_BROADCAST_ENTER=Auswahl Taste
 DLG_BROADCAST_SUBMIT=Absenden
+DLG_BROADCAT_REALTIME=Realtime mode
 
 DLG_PRNABORT_PRINTING=Printing
 
@@ -195,6 +224,7 @@ DLG_FONT_TITLE=Schriftart einstellen
 DLG_FONT_FONT=Schriftart
 DLG_FONT_SIZE=Größe
 DLG_FONT_BOLD=fettschreiben
+DLG_FONT_CHARSET=Font &char set:
 DLG_FONT_SAMPLE=Bespiel
 
 DLG_GEN_TITLE=Tera Grundeinstellungen
@@ -275,7 +305,9 @@ DLG_WIN_HORZ=Horizontale Linie
 DLG_WIN_HIDETITLE=verstecke Titelleiste
 DLG_WIN_HIDEMENU=verstecke Menüleiste
 DLG_WIN_COLOREMU=&Color emulation
-DLG_WIN_FULLCOLOR=volle Farben
+DLG_WIN_PCBOLD16=&16 Colors (PC style)
+DLG_WIN_AIXTERM16=1&6 Colors (aixterm style)
+DLG_WIN_XTERM256=&256 Colors (xterm style)
 DLG_WIN_SCROLL1=Scroll Puffer:
 DLG_WIN_SCROLL3=Zeilen
 DLG_WIN_COLOR=Farben
@@ -305,6 +337,7 @@ DLG_FOPT_BINARY=&Binary
 DLG_FOPT_APPEND=&Append
 DLG_FOPT_PLAIN=&Plain text
 DLG_FOPT_TIMESTAMP=&Timestamp
+DLG_FOPT_HIDEDIALOG=Hide &dialog
 
 DLG_XOPT=Option
 DLG_XOPT_CHECKSUM=Check&sum
@@ -338,6 +371,10 @@ FILEDLG_TRANS_TITLE_BPRCV=B-Plus Receive
 FILEDLG_TRANS_TITLE_BPSEND=B-Plus Send
 FILEDLG_TRANS_TITLE_QVRCV=Quick-VAN Receive
 FILEDLG_TRANS_TITLE_QVSEND=Quick-VAN Send
+
+; dlg clipboard
+DLG_CLIPBOARD_TITLE=Tera Term: Clipboard confirmation
+DLG_CLIPBOARD_INFO=Currently, Clipboard has been locked.
 
 ; ttptek
 ; tttek.c
@@ -420,6 +457,8 @@ DLG_AUTH_METHOD_CHALLENGE2=Benutze challenge/response (keyboard-interactive)
 DLG_AUTH_PRIVATEKEY=Schlüssel:
 DLG_AUTH_LOCALUSER=Lokaler Benutzername:
 DLG_AUTH_HOST_PRIVATEKEY=rhosts Schlüssel:
+MSG_PAGEANT_NOTFOUND=Can't find Pageant.
+MSG_PAGEANT_NOKEY=Pageant has no valid key.
 
 ; dlg auth setup
 DLG_AUTHSETUP_TITLE=TTSSH: Authentifikation Einstellungen
@@ -646,6 +685,7 @@ MSG_UNKNOWN_OPTION_ERROR=Unrecognized command-line option: %s
 
 ; x11util.c
 MSG_X_AUTH_ERROR=Remote X application sent incorrect authentication data.\nIts X session is being cancelled.
+
 MSG_CREATEWINDOW_KEYGEN_ERROR=Unable to display Key Generator dialog box.
 MSG_CREATEWINDOW_ABOUT_ERROR=Unable to display About dialog box.
 MSG_CREATEWINDOW_SETUP_ERROR=Unable to display TTSSH Setup dialog box.
@@ -669,7 +709,7 @@ BTN_CONTINUE=&Continue
 [TTProxy]
 DLG_TAHOMA_FONT=Tahoma,8,0
 
-NEMU_SETUP=&Proxy
+NEMU_SETUP=&Proxy...
 MENU_ABOUT=&Über TTProxy...
 
 DLG_SETUP_TITLE=Proxy Setup
@@ -686,7 +726,7 @@ DLG_OTHER_COMMON=Common setup
 DLG_OTHER_TIMEOUT=Connection &Timeout
 DLG_OTHER_SECOND=seconds
 DLG_OTHER_LOG=Proxy connection &log
-DLG_OTHER_REFER=Re&fer
+DLG_OTHER_REFER=Re&fer...
 DLG_OTHER_SOCKS=SOCKS proxy setup
 DLG_OTHER_RESOLV=Name &Resolving
 DLG_OTHER_RESOLV_AUTO=auto resolve
@@ -782,6 +822,7 @@ DLG_CONFIG_STARTUP=kick at starting
 DLG_CONFIG_SSH=use SSH
 DLG_CONFIG_KEYFILE=Keyfile
 DLG_CONFIG_CHALLENGE=use Challenge
+DLG_CONFIG_PAGEANT=use Pageant
 DLG_CONFIG_DETAIL=details
 
 DLG_ETC_TITLE=Configuration Details
