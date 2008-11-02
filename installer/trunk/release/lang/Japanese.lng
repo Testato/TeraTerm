@@ -431,7 +431,6 @@ DLG_ABOUT_CLIENTID="クライアントID: "
 DLG_ABOUT_HOSTKEY="ホスト鍵: "
 DLG_ABOUT_TOSERVER=" TTSSH→サーバ, "
 DLG_ABOUT_FROMSERVER=" サーバ→TTSSH"
-DLG_ABOUT_ENCRYPTION="暗号化方式: "
 DLG_ABOUT_COMPDELAY="遅延圧縮状況: "
 DLG_ABOUT_CIPHER_INFO=%s でサーバへ, %s でサーバから
 DLG_ABOUT_KEY_INFO=%d-bit server key, %d-bit host key

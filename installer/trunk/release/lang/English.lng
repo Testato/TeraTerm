@@ -431,7 +431,6 @@ DLG_ABOUT_CLIENTID="Client ID: "
 DLG_ABOUT_HOSTKEY="Host Key: "
 DLG_ABOUT_TOSERVER=" to server, "
 DLG_ABOUT_FROMSERVER=" from server"
-DLG_ABOUT_ENCRYPTION="Encryption: "
 DLG_ABOUT_COMPDELAY="Delayed Compression: "
 DLG_ABOUT_CIPHER_INFO=%s to server, %s from server
 DLG_ABOUT_KEY_INFO=%d-bit server key, %d-bit host key
