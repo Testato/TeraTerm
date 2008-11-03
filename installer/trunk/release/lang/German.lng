@@ -58,6 +58,7 @@ MENU_SETUP_LOADKEYMAP=&Keyboard Layout einstellen
 
 MENU_CONTROL=&Steuerung
 MENU_CONTROL_RESET=&Terminal zurücksetzen
+MENU_CONTROL_RESETTITLE=R&eset remote title
 MENU_CONTROL_AREYOUTHERE=Are you &there\tAlt+T
 MENU_CONTROL_SENDBREAK=&Sende Abbruch\tAlt+B
 MENU_CONTROL_RESETPORT=Port zurücksetzen
