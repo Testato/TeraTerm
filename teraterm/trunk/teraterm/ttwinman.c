@@ -132,26 +132,26 @@ void ChangeTitle()
 	char TempTitle[HostNameMaxLength + 100 + 1]; // バッファ拡張
 	char TempTitleWithRemote[100];
 
-	// リモートからのタイトルを別に扱う (2008.11.1 maya)
-	if (ts.AcceptTitleChangeRequest == IdTitleChangeRequestOff) {
+	if (Connecting || !cv.Ready || strlen(cv.TitleRemote) == 0) {
 		strncpy_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), ts.Title, _TRUNCATE);
-	}
-	else if (ts.AcceptTitleChangeRequest == IdTitleChangeRequestAhead) {
-		_snprintf_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), _TRUNCATE,
-		            "%s %s", cv.TitleRemote, ts.Title);
-	}
-	else if (ts.AcceptTitleChangeRequest == IdTitleChangeRequestLast) {
-		_snprintf_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), _TRUNCATE,
-		            "%s %s", ts.Title, cv.TitleRemote);
-	}
-	else {
-		strncpy_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), cv.TitleRemote, _TRUNCATE);
-	}
-
-	if (Connecting || !cv.Ready) {
 		strncpy_s(TempTitle, sizeof(TempTitle), ts.Title, _TRUNCATE);
 	}
 	else {
+		// リモートからのタイトルを別に扱う (2008.11.1 maya)
+		if (ts.AcceptTitleChangeRequest == IdTitleChangeRequestOff) {
+			strncpy_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), ts.Title, _TRUNCATE);
+		}
+		else if (ts.AcceptTitleChangeRequest == IdTitleChangeRequestAhead) {
+			_snprintf_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), _TRUNCATE,
+			            "%s %s", cv.TitleRemote, ts.Title);
+		}
+		else if (ts.AcceptTitleChangeRequest == IdTitleChangeRequestLast) {
+			_snprintf_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), _TRUNCATE,
+			            "%s %s", ts.Title, cv.TitleRemote);
+		}
+		else {
+			strncpy_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), cv.TitleRemote, _TRUNCATE);
+		}
 		strncpy_s(TempTitle, sizeof(TempTitle), TempTitleWithRemote, _TRUNCATE);
 	}
 

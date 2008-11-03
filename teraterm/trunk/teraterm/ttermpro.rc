@@ -468,6 +468,7 @@ BEGIN
     POPUP "C&ontrol"
     BEGIN
         MENUITEM "&Reset terminal",             ID_CONTROL_RESETTERMINAL
+        MENUITEM "R&eset remote title",         ID_CONTROL_RESETREMOTETITLE
         MENUITEM SEPARATOR
         MENUITEM "Are you &there\tAlt+T",       ID_CONTROL_AREYOUTHERE
         MENUITEM "&Send break\tAlt+B",          ID_CONTROL_SENDBREAK

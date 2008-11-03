@@ -159,6 +159,7 @@ protected:
 	afx_msg void OnSetupRestore();
 	afx_msg void OnSetupLoadKeyMap();
 	afx_msg void OnControlResetTerminal();
+	afx_msg void OnControlResetRemoteTitle();
 	afx_msg void OnControlBroadcastCommand();
 	afx_msg void OnControlAreYouThere();
 	afx_msg void OnControlSendBreak();

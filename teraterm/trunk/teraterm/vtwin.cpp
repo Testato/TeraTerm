@@ -191,6 +191,7 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	ON_COMMAND(ID_SETUP_RESTORE, OnSetupRestore)
 	ON_COMMAND(ID_SETUP_LOADKEYMAP, OnSetupLoadKeyMap)
 	ON_COMMAND(ID_CONTROL_RESETTERMINAL, OnControlResetTerminal)
+	ON_COMMAND(ID_CONTROL_RESETREMOTETITLE, OnControlResetRemoteTitle)
 	ON_COMMAND(ID_CONTROL_AREYOUTHERE, OnControlAreYouThere)
 	ON_COMMAND(ID_CONTROL_SENDBREAK, OnControlSendBreak)
 	ON_COMMAND(ID_CONTROL_RESETPORT, OnControlResetPort)
@@ -567,6 +568,7 @@ CVTWindow::CVTWindow()
 
 	// コマンドラインでも設定ファイルでも変更しないのでここで初期化 (2008.1.25 maya)
 	cv.isSSH = 0;
+	cv.TitleRemote[0] = '\0';
 
 	/* window status */
 	AdjustSize = TRUE;
@@ -1146,6 +1148,9 @@ void CVTWindow::InitMenu(HMENU *Menu)
 	GetMenuString(ControlMenu, ID_CONTROL_RESETTERMINAL, uimsg, sizeof(uimsg), MF_BYCOMMAND);
 	get_lang_msg("MENU_CONTROL_RESET", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	ModifyMenu(ControlMenu, ID_CONTROL_RESETTERMINAL, MF_BYCOMMAND, ID_CONTROL_RESETTERMINAL, ts.UIMsg);
+	GetMenuString(ControlMenu, ID_CONTROL_RESETREMOTETITLE, uimsg, sizeof(uimsg), MF_BYCOMMAND);
+	get_lang_msg("MENU_CONTROL_RESETTITLE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	ModifyMenu(ControlMenu, ID_CONTROL_RESETREMOTETITLE, MF_BYCOMMAND, ID_CONTROL_RESETREMOTETITLE, ts.UIMsg);
 	GetMenuString(ControlMenu, ID_CONTROL_AREYOUTHERE, uimsg, sizeof(uimsg), MF_BYCOMMAND);
 	get_lang_msg("MENU_CONTROL_AREYOUTHERE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	ModifyMenu(ControlMenu, ID_CONTROL_AREYOUTHERE, MF_BYCOMMAND, ID_CONTROL_AREYOUTHERE, ts.UIMsg);
@@ -4004,6 +4009,12 @@ void CVTWindow::OnControlResetTerminal()
 	CommLock(&ts,&cv,FALSE);
 
 	KeybEnabled  = TRUE;
+}
+
+void CVTWindow::OnControlResetRemoteTitle()
+{
+	cv.TitleRemote[0] = '\0';
+	ChangeTitle();
 }
 
 void CVTWindow::OnControlAreYouThere()
