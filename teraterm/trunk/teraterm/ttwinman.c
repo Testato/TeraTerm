@@ -136,11 +136,11 @@ void ChangeTitle()
 	if (ts.AcceptTitleChangeRequest == IdTitleChangeRequestOff) {
 		strncpy_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), ts.Title, _TRUNCATE);
 	}
-	else if (ts.AcceptTitleChangeRequest == IdTitleChangeRequestBefore) {
+	else if (ts.AcceptTitleChangeRequest == IdTitleChangeRequestAhead) {
 		_snprintf_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), _TRUNCATE,
 		            "%s %s", cv.TitleRemote, ts.Title);
 	}
-	else if (ts.AcceptTitleChangeRequest == IdTitleChangeRequestAfter) {
+	else if (ts.AcceptTitleChangeRequest == IdTitleChangeRequestLast) {
 		_snprintf_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), _TRUNCATE,
 		            "%s %s", ts.Title, cv.TitleRemote);
 	}

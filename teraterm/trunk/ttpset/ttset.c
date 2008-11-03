@@ -1200,10 +1200,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	                        Temp, sizeof(Temp), FName);
 	if (_stricmp(Temp, "overwrite") == 0 || _stricmp(Temp, "on") == 0)
 		ts->AcceptTitleChangeRequest = IdTitleChangeRequestOverwrite;
-	else if (_stricmp(Temp, "before") == 0)
-		ts->AcceptTitleChangeRequest = IdTitleChangeRequestBefore;
-	else if (_stricmp(Temp, "after") == 0)
-		ts->AcceptTitleChangeRequest = IdTitleChangeRequestAfter;
+	else if (_stricmp(Temp, "ahead") == 0)
+		ts->AcceptTitleChangeRequest = IdTitleChangeRequestAhead;
+	else if (_stricmp(Temp, "last") == 0)
+		ts->AcceptTitleChangeRequest = IdTitleChangeRequestLast;
 	else
 		ts->AcceptTitleChangeRequest = IdTitleChangeRequestOff;
 
@@ -2027,10 +2027,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 		strncpy_s(Temp, sizeof(Temp), "off", _TRUNCATE);
 	else if (ts->AcceptTitleChangeRequest == IdTitleChangeRequestOverwrite)
 		strncpy_s(Temp, sizeof(Temp), "overwrite", _TRUNCATE);
-	else if (ts->AcceptTitleChangeRequest == IdTitleChangeRequestBefore)
-		strncpy_s(Temp, sizeof(Temp), "before", _TRUNCATE);
-	else if (ts->AcceptTitleChangeRequest == IdTitleChangeRequestAfter)
-		strncpy_s(Temp, sizeof(Temp), "after", _TRUNCATE);
+	else if (ts->AcceptTitleChangeRequest == IdTitleChangeRequestAhead)
+		strncpy_s(Temp, sizeof(Temp), "ahead", _TRUNCATE);
+	else if (ts->AcceptTitleChangeRequest == IdTitleChangeRequestLast)
+		strncpy_s(Temp, sizeof(Temp), "last", _TRUNCATE);
 	else
 		Temp[0] = 0;
 	WritePrivateProfileString(Section, "AcceptTitleChangeRequest", Temp, FName);

@@ -154,9 +154,9 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 	SendDlgItemMessage(IDC_ACCEPT_TITLE_CHANGING, CB_ADDSTRING, 0, (LPARAM)ts.UIMsg);
 	get_lang_msg("DLG_TAB_GENERAL_ACCEPT_TITLE_CHANGING_OVERWRITE", ts.UIMsg, sizeof(ts.UIMsg), "overwrite", ts.UILanguageFile);
 	SendDlgItemMessage(IDC_ACCEPT_TITLE_CHANGING, CB_ADDSTRING, 0, (LPARAM)ts.UIMsg);
-	get_lang_msg("DLG_TAB_GENERAL_ACCEPT_TITLE_CHANGING_BEFORE", ts.UIMsg, sizeof(ts.UIMsg), "before", ts.UILanguageFile);
+	get_lang_msg("DLG_TAB_GENERAL_ACCEPT_TITLE_CHANGING_AHEAD", ts.UIMsg, sizeof(ts.UIMsg), "ahead", ts.UILanguageFile);
 	SendDlgItemMessage(IDC_ACCEPT_TITLE_CHANGING, CB_ADDSTRING, 0, (LPARAM)ts.UIMsg);
-	get_lang_msg("DLG_TAB_GENERAL_ACCEPT_TITLE_CHANGING_AFTER", ts.UIMsg, sizeof(ts.UIMsg), "after", ts.UILanguageFile);
+	get_lang_msg("DLG_TAB_GENERAL_ACCEPT_TITLE_CHANGING_LAST", ts.UIMsg, sizeof(ts.UIMsg), "last", ts.UILanguageFile);
 	SendDlgItemMessage(IDC_ACCEPT_TITLE_CHANGING, CB_ADDSTRING, 0, (LPARAM)ts.UIMsg);
 
 

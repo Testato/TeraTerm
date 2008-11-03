@@ -200,8 +200,8 @@ typedef TCharAttr *PCharAttr;
 // TitleChangeRequest types
 #define IdTitleChangeRequestOff       0
 #define IdTitleChangeRequestOverwrite 1
-#define IdTitleChangeRequestBefore    2
-#define IdTitleChangeRequestAfter     3
+#define IdTitleChangeRequestAhead     2
+#define IdTitleChangeRequestLast      3
 
 // Eterm lookfeel alphablend structure
 typedef struct {
