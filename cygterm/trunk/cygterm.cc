@@ -575,8 +575,6 @@ void agent_proxy()
 	addr.sun_family = AF_UNIX;
 	strlcpy(addr.sun_path, sockname, sizeof(addr.sun_path));
 
-	unlink(sockname);
-
 	if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
 		goto agent_thread_cleanup;
 	}
@@ -596,7 +594,15 @@ void agent_proxy()
 	sigaction(SIGHUP, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
 
-	while ((asock = accept(sock, NULL, NULL)) > 0) {
+	while (1) {
+		if ((asock = accept(sock, NULL, NULL)) < 0) {
+			switch (errno) {
+			case EINTR:
+			case ECONNABORTED:
+				continue;
+			}
+			break;
+		}
 		recvlen = 0;
 		while ((readlen = read(asock, buff+recvlen, 4-recvlen)) > 0) {
 			recvlen += readlen;
@@ -649,7 +655,7 @@ int exec_agent_proxy()
 	if (mkdtemp(sockdir) == NULL) {
 		return -1;
 	}
-	snprintf(sockname, sizeof(sockname), "%s/agent.%ld", sockdir, pid);
+	snprintf(sockname, sizeof(sockname), "%s/agent.%ld", sockdir, getpid());
 
 	malloc_size = sizeof(sh_env_t) + strlen(sockname) + 15;
 	e = (sh_env_t*)malloc(malloc_size);
@@ -664,6 +670,7 @@ int exec_agent_proxy()
 		return -1;
 	}
 	if (pid == 0) {
+		setsid();
 		agent_proxy();
 	}
 	return pid;
