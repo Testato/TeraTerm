@@ -26,6 +26,8 @@
 <ul>
   <li class="history"><a name="teraterm_4.61">2008.10.19 (Ver 4.61 not-released)</a>
     <ul>
+      <li>ログ保存時に Binary フラグが有効なときは、Plain text と Timestamp フラグを無効にするようにした。</li>
+      <li><a href="../menu/setup-additional.html">リモートからのウィンドウタイトル</a>の表示方法を追加した。標準のタイトルの前または後に表示できるようにした。</li>
       <li>文字属性に関する以下の問題を修正した。すべて4.58でのエンバグ。
         <ul>
           <li>消去領域に高輝度,下線,点滅,反転属性を適用していた。</li>
@@ -34,8 +36,6 @@
           <li>DECALN(DEC Screen Alignment Test)での表示に文字属性を適用していた。</li>
         </ul></li>
       <li>英国環境等でDEC特殊文字の表示後に英小文字等が正しく表示されない問題への対応として、UK文字セットの指示をUS-ASCIIの指示として扱うようにした。</li>
-      <li>ログ保存時に Binary フラグが有効なときは、Plain text と Timestamp フラグを無効にするようにした。</li>
-      <li><a href="../menu/setup-additional.html">リモートからのウィンドウタイトル</a>の表示方法を追加した。標準のタイトルの前または後に表示できるようにした。</li>
       <li>マクロで、変数名およびラベルに使えないはずの文字が使えていたのを修正した。</li>
       <li><a href="../macro/command/filestrseek2.html">filestrseek2</a>マクロコマンドにおいて、ファイルの1バイト目が合致すると、ファイルポインタが負数になってしまうバグを修正した。</li>
       <li><a href="../macro/command/logopen.html">logopen</a>マクロコマンドにおいて、ファイル名に \ が含まれない場合、ルートディレクトリ直下へ保存されるようになっていたため、カレントディレクトリに保存されるようにした。</a>

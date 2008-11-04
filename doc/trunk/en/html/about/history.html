@@ -26,16 +26,16 @@
 <ul>
   <li class="history"><a name="teraterm_4.61">2008.10.19 (Ver 4.61 not-released)</a>
     <ul>
-      <!-- li>文字属性に関する以下の問題を修正した。すべて4.58でのエンバグ。
+      <li>disabled the Plain text and Timestamp flag when the Binary flag is enabled.</li>
+      <li>added the display method of <a href="../menu/setup-additional.html">Accept Window Title Change Request</a>. The title can insert before or after the canonical title.</li>
+      <li>Bug fix: The following problems about the character attribute. These buges are enbug in 4.58.
         <ul>
           <li>消去領域に高輝度,下線,点滅,反転属性を適用していた。</li>
           <li>「編集」メニューの「画面消去」「バッファ消去」で、現在の背景色で消去していた。</li>
           <li>ED(Erase in Display:ただし画面全体の消去(2J)を除く),EL(Erase in Line)等で、消去後の表示とバッファの内容が同期していない事があった。</li>
           <li>DECALN(DEC Screen Alignment Test)での表示に文字属性を適用していた。</li>
-        </ul></li -->
-      <!-- li>英国環境等でDEC特殊文字の表示後に英小文字等が正しく表示されない問題への対応として、UK文字セットの指示をUS-ASCIIの指示として扱うようにした。</li -->
-      <!--li>ログ保存時に Binary フラグが有効なときは、Plain text と Timestamp フラグを無効にするようにした。</li-->
-      <!--li><a href="../menu/setup-additional.html">リモートからのウィンドウタイトル</a>の表示方法を追加した。標準のタイトルの前または後に表示できるようにした。</li-->
+        </ul></li>
+      <li>added support for replace the command of UK character set with the US-ASCII. This is the workaround that the lower-case alphabet can not properly display after showing DEC special character.</li>
       <li>Bug fix: The macro label can be specified the characters other than alphabet and numeric ones.</li>
       <li>Bug fix: Using the <a href="../macro/command/filestrseek2.html">filestrseek2</a> macro command, a file pointer is minus value if the matched string locates at one byte in the file.</li>
       <li>Bug fix: Using the <a href="../macro/command/logopen.html">logopen</a> macro command, when the specified filename does not include \ character, the log file is saved at the root directory.</li>
