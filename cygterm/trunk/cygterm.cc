@@ -324,7 +324,7 @@ void load_cfg()
     // auto generated configuration file path
     char tmp_conf[MAX_PATH] = "/tmp/cygtermrc.XXXXXX";
 
-    // get user name from getloin().  if it fails, use $USERNAME instead.
+    // get user name from getlogin().  if it fails, use $USERNAME instead.
     // and get /etc/passwd information by getpwnam(3) with user name,
     // and generate temporary configuration file by mktemp(3).
     const char* username = getlogin();
