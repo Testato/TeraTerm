@@ -14,11 +14,6 @@
 #endif /* NO_INET6 */
 
 #define ORDER 4800
-#define ID_MENUITEM 37000
-
-#define IdReportNone      0
-#define IdReportSendKcode 1
-#define IdReportRecvKcode 2
 
 #define IdModeFirst   0
 #define IdModeESC     1
@@ -35,7 +30,6 @@ typedef struct {
   Tsend origPsend;
   TReadFile origPReadFile;
   TWriteFile origPWriteFile;
-  int report;
 } TInstVar;
 
 static TInstVar FAR * pvar;
@@ -48,7 +42,6 @@ static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
   pvar->origPsend = NULL;
   pvar->origPReadFile = NULL;
   pvar->origPWriteFile = NULL;
-  pvar->report = IdReportNone;
 }
 
 void CommOut(char *str, int len) {
@@ -185,7 +178,7 @@ void ParseInputStr(char *rstr, int rcount) {
 	for (p=buff, func=0; isdigit(*p); p++) {
 	  func = func * 10 + *p - '0';
 	}
-	if (*p != ';' || func == 0) {
+	if (*p != ';' || p == buff) {
 	  blen = 0;
 	  mode = IdModeFirst;
 	  break;
@@ -267,7 +260,7 @@ void ParseInputStr(char *rstr, int rcount) {
 	    CommOut("\r", 1);
 	    break;
 	  default:
-	    /* nothing to do */;
+	    ; /* nothing to do */
 	}
 	blen = 0;
 	mode = IdModeFirst;
@@ -314,13 +307,6 @@ static void PASCAL FAR TTXCloseFile(TTXFileHooks FAR * hooks) {
   if (pvar->origPReadFile) {
     *hooks->PReadFile = pvar->origPReadFile;
   }
-}
-
-static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
-  if (cmd==ID_MENUITEM) {
-    return 1;
-  }
-  return 0;
 }
 
 static TTXExports Exports = {
