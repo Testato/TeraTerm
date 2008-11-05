@@ -868,6 +868,7 @@ BOOL CCygwinPropPageDlg::OnInitDialog()
 	_snprintf_s(settings.env2, sizeof(settings.env2), _TRUNCATE, "");
 	settings.login_shell = FALSE;
 	settings.home_chdir = FALSE;
+	settings.agent_proxy = FALSE;
 
 	strncpy_s(cfg, sizeof(cfg), ts.HomeDir, _TRUNCATE);
 	AppendSlash(cfg, sizeof(cfg));
@@ -916,6 +917,11 @@ BOOL CCygwinPropPageDlg::OnInitDialog()
 					settings.home_chdir = TRUE;
 				}
 
+			} else if (_stricmp(head, "SSH_AGENT_PROXY") == 0) {
+				if (strchr("YyTt", *body)) {
+					settings.agent_proxy = TRUE;
+				}
+
 			} else {
 				// TODO: error check
 
@@ -934,6 +940,8 @@ BOOL CCygwinPropPageDlg::OnInitDialog()
 	btn->SetCheck(settings.login_shell);
 	btn = (CButton *)GetDlgItem(IDC_HOME_CHDIR);
 	btn->SetCheck(settings.home_chdir);
+	btn = (CButton *)GetDlgItem(IDC_AGENT_PROXY);
+	btn->SetCheck(settings.agent_proxy);
 
 	// Cygwin install path
 	SetDlgItemText(IDC_CYGWIN_PATH, ts.CygwinDirectory);
@@ -985,6 +993,8 @@ void CCygwinPropPageDlg::OnOK()
 	settings.login_shell = btn->GetCheck();
 	btn = (CButton *)GetDlgItem(IDC_HOME_CHDIR);
 	settings.home_chdir = btn->GetCheck();
+	btn = (CButton *)GetDlgItem(IDC_AGENT_PROXY);
+	settings.agent_proxy = btn->GetCheck();
 
 	strncpy_s(cfg, sizeof(cfg), ts.HomeDir, _TRUNCATE);
 	AppendSlash(cfg, sizeof(cfg));
@@ -1050,6 +1060,10 @@ void CCygwinPropPageDlg::OnOK()
 					fprintf(tmp_fp, "HOME_CHDIR = %s\n", (settings.home_chdir == TRUE) ? "yes" : "no");
 					settings.home_chdir = FALSE;
 				}
+				else if (_stricmp(head, "SSH_AGENT_PROXY") == 0) {
+					fprintf(tmp_fp, "SSH_AGENT_PROXY = %s\n", (settings.agent_proxy == TRUE) ? "yes" : "no");
+					settings.agent_proxy = FALSE;
+				}
 				else {
 					fprintf(tmp_fp, "%s = %s\n", head, body);
 				}
@@ -1086,6 +1100,9 @@ void CCygwinPropPageDlg::OnOK()
 		}
 		if (settings.home_chdir) {
 			fprintf(tmp_fp, "HOME_CHDIR = yes\n");
+		}
+		if (settings.agent_proxy) {
+			fprintf(tmp_fp, "SSH_AGENT_PROXY = yes\n");
 		}
 		fclose(tmp_fp);
 

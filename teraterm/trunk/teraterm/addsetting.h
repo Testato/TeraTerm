@@ -18,6 +18,7 @@ typedef struct cygterm {
 	char env2[128];
 	BOOL login_shell;
 	BOOL home_chdir;
+	BOOL agent_proxy;
 } cygterm_t;
 
 
