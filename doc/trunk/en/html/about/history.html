@@ -29,12 +29,12 @@
       <li>disabled the Plain text and Timestamp flag when the Binary flag is enabled.</li>
       <li>added the display method of <a href="../menu/setup-additional.html">Accept Window Title Change Request</a>. The title can insert before or after the canonical title.</li>
       <li>Bug fix: The following problems about the character attribute. These buges are enbug in 4.58.
-        <ul>
+        <!-- ul>
           <li>消去領域に高輝度,下線,点滅,反転属性を適用していた。</li>
           <li>「編集」メニューの「画面消去」「バッファ消去」で、現在の背景色で消去していた。</li>
           <li>ED(Erase in Display:ただし画面全体の消去(2J)を除く),EL(Erase in Line)等で、消去後の表示とバッファの内容が同期していない事があった。</li>
           <li>DECALN(DEC Screen Alignment Test)での表示に文字属性を適用していた。</li>
-        </ul></li>
+        </ul --></li>
       <li>added support for replace the command of UK character set with the US-ASCII. This is the workaround that the lower-case alphabet can not properly display after showing DEC special character.</li>
       <li>Bug fix: The macro label can be specified the characters other than alphabet and numeric ones.</li>
       <li>Bug fix: Using the <a href="../macro/command/filestrseek2.html">filestrseek2</a> macro command, a file pointer is minus value if the matched string locates at one byte in the file.</li>
@@ -1197,6 +1197,7 @@ SYNOPSIS:
       <li>Bug fix: When the CheckAuthListFirst is enabled on SSH2 connection, TeraTerm disconnects after pushing the OK button of the dialog before the valid authentication method receives.</li>
       <li>Bug fix: X11 forwarding does not work when DISPLAY environment variable configures.</li>
       <li>Bug fix: History checkbox has not been enable or disabled on a new connection.</li>
+      <!-- li>Bug fix: SCPファイル送信で、ファイル名にスペースや一部の記号が含まれていると送信できなかったり、誤ったファイル名で送信される問題を修正した。<li -->
     </ul>
   </li>
 
