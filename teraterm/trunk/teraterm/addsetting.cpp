@@ -848,6 +848,7 @@ BOOL CCygwinPropPageDlg::OnInitDialog()
 		SendDlgItemMessage(IDC_ENV2, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_LOGIN_SHELL, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_HOME_CHDIR, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_AGENT_PROXY, WM_SETFONT, (WPARAM)DlgCygwinFont, MAKELPARAM(TRUE,0));
 	}
 	else {
 		DlgCygwinFont = NULL;
