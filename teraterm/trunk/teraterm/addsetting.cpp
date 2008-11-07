@@ -129,7 +129,7 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 	get_lang_msg("DLG_TAB_GENERAL_CLICKURL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_CLICKABLE_URL, ts.UIMsg);
 	GetDlgItemText(IDC_DELIMITER, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_DEMILITER", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	get_lang_msg("DLG_TAB_GENERAL_DELIMITER", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_DELIMITER, ts.UIMsg);
 	GetDlgItemText(IDC_DISABLE_SENDBREAK, uimsg, sizeof(uimsg));
 	get_lang_msg("DLG_TAB_GENERAL_DISABLESENDBREAK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
