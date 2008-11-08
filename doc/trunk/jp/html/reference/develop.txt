@@ -4,6 +4,9 @@
 - コンパイラ
   Visual Studio 2005 SP1 (Standard Edition 以上)
   注: Visual Studio 2008 でコンパイルした実行ファイルは Windows NT 4.0, 98, Me で動きません。
+  Windows Server 2003 R2 Platform SDK
+  注: Visual Studio 2005 Standard Editionでは、OpenSSL 0.9.8iのビルドが失敗します。Windows Server 2003 R2 Platform SDK をインストールし、"Crypt32.Lib"をリンクできるようにしておく必要があります。
+  注2: SDK でインストールされたディレクトリが最優先になるよう、INCLUDE および LIB 環境変数を設定します。
 - インストーラ
   Inno Setup 5.2.3 (http://www.jrsoftware.org/isinfo.php)
   ISTool 5.2.1 (http://www.istool.org/)
@@ -167,8 +170,6 @@
 
   3. OpenSSLのソースコード(http://www.openssl.org/)を ttssh2\openssl ディレクトリに展開する。OpenSSLをビルドする（以下参照）。
      Release では openssl\out32\libeay32.lib が、Debug では openssl\out32.dbg\libeay32.lib がリンクされることになる。
-     Visual Studio 2005 Standard Editionでは、OpenSSL 0.9.8iのビルドが失敗します。Windows Server 2003 R2 Platform SDK をインストールし、"Crypt32.Lib"を C:\Program Files\Microsoft Visual Studio 8\VC\lib へ手動コピーしておく必要があります。
-     
 
       - 自動で行う場合
       + スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
