@@ -65,5 +65,23 @@ setsync 0
 end
 </pre>
 
+
+<pre class="macro-example">
+connect '/C=1'
+ 
+setsync 1 
+ 
+while 1
+  ; Request data
+  sendln  'REQ'
+  
+  ; Delay for 1 second
+  pause 1
+  
+  flushrecv
+endwhile
+</pre>
+
+
 </body>
 </html>
