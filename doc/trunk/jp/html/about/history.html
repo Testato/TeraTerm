@@ -39,6 +39,7 @@
       <li>マクロで、変数名およびラベルに使えないはずの文字が使えていたのを修正した。</li>
       <li><a href="../macro/command/filestrseek2.html">filestrseek2</a>マクロコマンドにおいて、ファイルの1バイト目が合致すると、ファイルポインタが負数になってしまうバグを修正した。</li>
       <li><a href="../macro/command/logopen.html">logopen</a>マクロコマンドにおいて、ファイル名に \ が含まれない場合、ルートディレクトリ直下へ保存されるようになっていたため、カレントディレクトリに保存されるようにした。</a>
+      <li><a href="../macro/command/gettitle.html">gettitle</a>マクロコマンドにおいて、ウィンドウタイトルの長さが32バイト以上の時に31バイト目までしか取得できない問題を修正した。</li>
       <li>インストーラを修正した。
         <ul>
           <li>ssh プロトコルを ttermpro.exe に関連付けできるようにした。</li>

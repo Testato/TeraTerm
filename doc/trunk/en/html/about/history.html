@@ -39,6 +39,7 @@
       <li>Bug fix: The macro label can be specified the characters other than alphabet and numeric ones.</li>
       <li>Bug fix: Using the <a href="../macro/command/filestrseek2.html">filestrseek2</a> macro command, a file pointer is minus value if the matched string locates at one byte in the file.</li>
       <li>Bug fix: Using the <a href="../macro/command/logopen.html">logopen</a> macro command, when the specified filename does not include \ character, the log file is saved at the root directory.</li>
+      <li>Bug fix: Using the <a href="../macro/command/gettitle.html">gettitle</a> macro command, can't get entire string when the window title is longer than 31 bytes. <!-- ウィンドウタイトルの長さが32バイト以上の時に31バイト目までしか取得できない問題を修正した。--></li>
       <li>Modified Tera Term installer script
         <ul>
           <li>linked ssh protocol to the ttermpro.exe program.</li>
