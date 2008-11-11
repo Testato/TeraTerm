@@ -1686,7 +1686,7 @@ WORD TTLGetTime(WORD mode)
 WORD TTLGetTitle()
 {
 	WORD VarId, Err;
-	TName Str;
+	char Str[TitleBuffSize*2];
 
 	Err = 0;
 	GetStrVar(&VarId,&Err);

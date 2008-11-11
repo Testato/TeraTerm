@@ -129,8 +129,8 @@ void ConvertToCP932(char *str, int destlen)
  */
 void ChangeTitle()
 {
-	char TempTitle[HostNameMaxLength + 100 + 1]; // バッファ拡張
-	char TempTitleWithRemote[100];
+	char TempTitle[HostNameMaxLength + TitleBuffSize * 2 + 1]; // バッファ拡張
+	char TempTitleWithRemote[TitleBuffSize * 2];
 
 	if (Connecting || !cv.Ready || strlen(cv.TitleRemote) == 0) {
 		strncpy_s(TempTitleWithRemote, sizeof(TempTitleWithRemote), ts.Title, _TRUNCATE);

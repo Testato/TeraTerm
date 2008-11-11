@@ -203,6 +203,8 @@ typedef TCharAttr *PCharAttr;
 #define IdTitleChangeRequestAhead     2
 #define IdTitleChangeRequestLast      3
 
+#define TitleBuffSize  50
+
 // Eterm lookfeel alphablend structure
 typedef struct {
 	int BGEnable;
@@ -300,7 +302,7 @@ struct tttset {
 	WORD TmpColor[4][6];
 	/* end - ishizaki */
 	/* Tera Term window setup variables */
-	char Title[50];
+	char Title[TitleBuffSize];
 	WORD TitleFormat;
 	WORD CursorShape;
 	WORD NonblinkingCursor;
@@ -808,7 +810,7 @@ typedef struct {
 
 	time_t LastSendTime;
 	WORD isSSH;
-	char TitleRemote[50];
+	char TitleRemote[TitleBuffSize];
 } TComVar;
 typedef TComVar far *PComVar;
 
