@@ -40,8 +40,8 @@ typedef struct {
   PParseParam origParseParam;
   WORD add_mode;
   BOOL ChangeTitle;
-  char add_title[50];
-  char orig_title[50];
+  char add_title[TitleBuffSize];
+  char orig_title[TitleBuffSize];
 } TInstVar;
 
 static TInstVar FAR * pvar;

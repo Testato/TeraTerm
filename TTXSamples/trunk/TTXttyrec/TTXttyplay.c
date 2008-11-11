@@ -48,7 +48,7 @@ typedef struct {
 	struct timeval last;
 	struct timeval wait;
 	char openfn[MAX_PATH];
-	char origTitle[50];
+	char origTitle[TitleBuffSize];
 } TInstVar;
 
 static TInstVar FAR * pvar;
