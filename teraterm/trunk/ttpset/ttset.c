@@ -2627,6 +2627,10 @@ void FAR PASCAL ParseParam(PCHAR Param, PTTSet ts, PCHAR DDETopic)
 			if (DDETopic != NULL)
 				strncpy_s(DDETopic, 21, &Temp[3], _TRUNCATE);	// 21 = sizeof(TopicName)
 		}
+		// "New connection" ダイアログを表示しない (2008.11.14 maya)
+		else if (_strnicmp(Temp, "/DS", 3) == 0) {
+			ts->HostDialogOnStartup = FALSE;
+		}
 		// TCPLocalEcho/TCPCRSend を無効にする (maya 2007.4.25)
 		else if (_strnicmp(Temp, "/E", 2) == 0) {
 			DisableTCPEchoCR = TRUE;
