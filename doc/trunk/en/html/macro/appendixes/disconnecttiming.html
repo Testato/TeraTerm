@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<h1>Ø’fŒã‚·‚®‚ÉÚ‘±‚·‚éê‡‚Ì’ˆÓ“_</h1>
+<h1>NOTICE: Immediately re-connect the server after disconnection</h1>
 <p>
 ƒzƒXƒg‚Æ‚ÌÚ‘±‚ğI—¹ŒãA‚·‚®‚ÉconnectƒRƒ}ƒ“ƒh‚ÅV‚µ‚¢Ú‘±‚ğŠJn‚·‚éê‡AˆÈ‰º‚Ì‚æ‚¤‚È–â‘è‚ª”­¶‚·‚éê‡‚ª‚ ‚éB—á‚¦‚ÎA
 </p>
@@ -34,18 +34,18 @@ sendln "exit"‚ÅexitƒRƒ}ƒ“ƒh‚ğ‘—‚Á‚Ä‚©‚çƒzƒXƒg‚ªÚ‘±‚ğØ’f‚µ‚Ä‚­‚é‚Ì‚É­‚µƒ^ƒCƒ€ƒ
 </p>
 
 <pre class="macro-example">
-; exitƒRƒ}ƒ“ƒh‚ğ‘—‚Á‚ÄAƒzƒXƒg‚Æ‚ÌÚ‘±‚ğI—¹‚·‚éB
+; Sends the exit command and prompts the server disconnection.
 sendln "exit"
 
 do
-	; 10ƒ~ƒŠ•b‘Ò‚Â
+	; Waits 10 msec.
 	mpause 10
-	; Ú‘±ó‘Ô‚ğŠm”F‚·‚é
+	; Confirms the connection status.
 	testlink
-; ‚Ü‚¾ƒzƒXƒg‚ÆÚ‘±‚³‚ê‚Ä‚¢‚é(<a href="../command/testlink.html">result‚ª2</a>)‚È‚ç‚Îƒ‹[ƒv‚ğŒJ‚è•Ô‚·
+; Repeats if TeraTerm connects the server. See <a href="../command/testlink.html">result is 2</a>.
 loop while result = 2
 
-; V‚µ‚¢Ú‘±‚ğŠJn‚·‚éB
+; Re-connects a new connection.
 connect "server"
 </pre>
 
@@ -54,13 +54,13 @@ connect "server"
 </p>
 
 <pre class="macro-example">
-; exitƒRƒ}ƒ“ƒh‚ğ‘—‚Á‚ÄAƒzƒXƒg‚Æ‚ÌÚ‘±‚ğI—¹‚·‚éB
+; Sends the exit command and prompts the server disconnection.
 sendln "exit"
 
-; Tera Term‚ğØ‚è—£‚·
+; Unlinks TeraTerm.
 unlink
 
-; V‚µ‚¢Ú‘±‚ğŠJn‚·‚éB
+; Re-connects a new connection.
 connect "server"
 </pre>
 
