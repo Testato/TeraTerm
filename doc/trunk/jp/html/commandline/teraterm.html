@@ -18,7 +18,7 @@ Tera Term Pro を起動するときのコマンドライン(ショートカットのリンク先)の形式
 
 <pre class="syntax">
 TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
-         [/B] [/BAUD=&lt;baud rate&gt;] [/C=&lt;serial port#&gt;] [/E]
+         [/B] [/BAUD=&lt;baud rate&gt;] [/C=&lt;serial port#&gt;] [/DS] [/E]
          [/F=&lt;setup file&gt;] [/FD=&lt;file transfer directory&gt;]
          [/H] [/I] [/K=&lt;keyboard setup file&gt;]
          [/KR=&lt;kanji code (receive)&gt;] [/KT=&lt;kanji code (transmit)&gt;]
@@ -68,6 +68,9 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
 
   <dt>/DUPLICATE</dt>
   <dd>使用禁止（セッションの複製で内部で使われる）</dd>
+
+  <dt>/DS</dt>
+  <dd>起動時に "New connection" ダイアログを表示しない</dd>
 
   <dt>/E</dt>
   <dd>TCPLocalEcho/TCPCRSend の設定を無効にする</dd>

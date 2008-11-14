@@ -14,7 +14,7 @@
 
 <pre class="syntax">
 TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
-         [/B] [/BAUD=&lt;baud rate&gt;] [/C=&lt;serial port#&gt;] [/E]
+         [/B] [/BAUD=&lt;baud rate&gt;] [/C=&lt;serial port#&gt;] [/DS] [/E]
          [/F=&lt;setup file&gt;] [/FD=&lt;file transfer directory&gt;]
          [/H] [/I] [/K=&lt;keyboard setup file&gt;]
          [/KR=&lt;kanji code (receive)&gt;] [/KT=&lt;kanji code (transmit)&gt;]
@@ -63,6 +63,9 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
 
   <dt>/DUPLICATE</dt>
   <dd>Internal use(must not specify this option)</dd>
+
+  <dt>/DS</dt>
+  <dd>Disable displaying the "New connection" dialog on startup</dd>
 
   <dt>/E</dt>
   <dd>Disable TCPLocalEcho and TCPCRSend option</dd>
