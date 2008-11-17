@@ -11,7 +11,7 @@
 
 <h1>NOTICE: Immediately re-connect the server after disconnection</h1>
 <p>
-ホストとの接続を終了後、すぐにconnectコマンドで新しい接続を開始する場合、以下のような問題が発生する場合がある。例えば、
+When a user immediately connects to the server after disconnection, a problem will occurs. Refer to below code.
 </p>
 
 <pre class="macro-example">
@@ -23,14 +23,14 @@ connect "server"
 </pre>
 
 <p>
-このマクロは大抵の場合はうまく動かない。<br>
+This macro script will do not work in most cases.<br>
 sendln "exit"でexitコマンドを送ってからホストが接続を切断してくるのに少しタイムラグが発生する。<br>
 マクロはこのタイムラグの間に次のconnectコマンドを実行する。<br>
 しかしホストとの接続がまだ終了していないため、connectコマンドは既に接続しているとみなして何も行わない。
 </p>
 
 <p>
-この問題を回避するには、以下のようにホストとの接続が終了したのを確認してからconnectコマンドを実行するようにする。
+To fix this problem, use the connect command after finish the disconnection. See below code.
 </p>
 
 <pre class="macro-example">
@@ -50,7 +50,7 @@ connect "server"
 </pre>
 
 <p>
-また、<a href="../../menu/setup-tcpip.html#autowinclose">切断後自動的にウィンドウを閉じる設定</a>の場合、以下のようにunlinkコマンドでTera Termを切り離してもよい。
+Also, when <a href="../../menu/setup-tcpip.html#autowinclose">Auto window close</a> configuration is enabled, a user uses the unlink command. Refer to in the following code:
 </p>
 
 <pre class="macro-example">
