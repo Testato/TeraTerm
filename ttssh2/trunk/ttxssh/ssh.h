@@ -78,12 +78,12 @@ typedef enum {
 	SSH_CIPHER_NONE, SSH_CIPHER_IDEA, SSH_CIPHER_DES, SSH_CIPHER_3DES,
 	SSH_CIPHER_TSS, SSH_CIPHER_RC4, SSH_CIPHER_BLOWFISH,
 	// for SSH2
-	SSH2_CIPHER_3DES_CBC, SSH2_CIPHER_AES128,
-	SSH2_CIPHER_AES192,SSH2_CIPHER_AES256,
-	SSH2_CIPHER_BLOWFISH,
+	SSH2_CIPHER_3DES_CBC, SSH2_CIPHER_AES128_CBC,
+	SSH2_CIPHER_AES192_CBC,SSH2_CIPHER_AES256_CBC,
+	SSH2_CIPHER_BLOWFISH_CBC,
 } SSHCipher;
 
-#define SSH_CIPHER_MAX SSH2_CIPHER_BLOWFISH
+#define SSH_CIPHER_MAX SSH2_CIPHER_BLOWFISH_CBC
 
 typedef enum {
 	SSH_AUTH_NONE, SSH_AUTH_RHOSTS, SSH_AUTH_RSA, SSH_AUTH_PASSWORD,
@@ -287,11 +287,11 @@ typedef struct ssh2_cipher {
 } ssh2_cipher_t;
 
 static ssh2_cipher_t ssh2_ciphers[] = {
-	{SSH2_CIPHER_3DES_CBC, "3des-cbc",      8, 24, EVP_des_ede3_cbc},
-	{SSH2_CIPHER_AES128,   "aes128-cbc",   16, 16, EVP_aes_128_cbc},
-	{SSH2_CIPHER_AES192,   "aes192-cbc",   16, 24, EVP_aes_192_cbc},
-	{SSH2_CIPHER_AES256,   "aes256-cbc",   16, 32, EVP_aes_256_cbc},
-	{SSH2_CIPHER_BLOWFISH, "blowfish-cbc",  8, 16, EVP_bf_cbc},
+	{SSH2_CIPHER_3DES_CBC,     "3des-cbc",      8, 24, EVP_des_ede3_cbc},
+	{SSH2_CIPHER_AES128_CBC,   "aes128-cbc",   16, 16, EVP_aes_128_cbc},
+	{SSH2_CIPHER_AES192_CBC,   "aes192-cbc",   16, 24, EVP_aes_192_cbc},
+	{SSH2_CIPHER_AES256_CBC,   "aes256-cbc",   16, 32, EVP_aes_256_cbc},
+	{SSH2_CIPHER_BLOWFISH_CBC, "blowfish-cbc",  8, 16, EVP_bf_cbc},
 	{SSH_CIPHER_NONE, NULL, 0, 0, NULL},
 };
 

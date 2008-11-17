@@ -3862,19 +3862,19 @@ void SSH2_update_cipher_myproposal(PTInstVar pvar)
 		cipher = pvar->settings.CipherOrder[i] - '0';
 		if (cipher == 0) // disabled line
 			break;
-		if (cipher == SSH2_CIPHER_AES128) {
+		if (cipher == SSH2_CIPHER_AES128_CBC) {
 			strncat_s(buf, sizeof(buf), "aes128-cbc,", _TRUNCATE);
 		}
 		else if (cipher == SSH2_CIPHER_3DES_CBC) {
 			strncat_s(buf, sizeof(buf), "3des-cbc,", _TRUNCATE);
 		}
-		else if (cipher == SSH2_CIPHER_AES192) {
+		else if (cipher == SSH2_CIPHER_AES192_CBC) {
 			strncat_s(buf, sizeof(buf), "aes192-cbc,", _TRUNCATE);
 		}
-		else if (cipher == SSH2_CIPHER_AES256) {
+		else if (cipher == SSH2_CIPHER_AES256_CBC) {
 			strncat_s(buf, sizeof(buf), "aes256-cbc,", _TRUNCATE);
 		}
-		else if (cipher == SSH2_CIPHER_BLOWFISH) {
+		else if (cipher == SSH2_CIPHER_BLOWFISH_CBC) {
 			strncat_s(buf, sizeof(buf), "blowfish-cbc,", _TRUNCATE);
 		}
 	}
@@ -3980,13 +3980,13 @@ static SSHCipher choose_SSH2_cipher_algorithm(char *server_proposal, char *my_pr
 	if (strstr(ptr, "3des-cbc")) {
 		cipher = SSH2_CIPHER_3DES_CBC;
 	} else if (strstr(ptr, "aes128-cbc")) {
-		cipher = SSH2_CIPHER_AES128;
+		cipher = SSH2_CIPHER_AES128_CBC;
 	} else if (strstr(ptr, "aes192-cbc")) {
-		cipher = SSH2_CIPHER_AES192;
+		cipher = SSH2_CIPHER_AES192_CBC;
 	} else if (strstr(ptr, "aes256-cbc")) {
-		cipher = SSH2_CIPHER_AES256;
+		cipher = SSH2_CIPHER_AES256_CBC;
 	} else if (strstr(ptr, "blowfish-cbc")) {
-		cipher = SSH2_CIPHER_BLOWFISH;
+		cipher = SSH2_CIPHER_BLOWFISH_CBC;
 	}
 
 	return (cipher);
@@ -6316,9 +6316,9 @@ static void do_SSH2_dispatch_setup_for_transfer(PTInstVar pvar)
 
 static BOOL handle_SSH2_newkeys(PTInstVar pvar)
 {
-	int supported_ciphers = (1 << SSH2_CIPHER_3DES_CBC | 1 << SSH2_CIPHER_AES128
-	                       | 1 << SSH2_CIPHER_AES192   | 1 << SSH2_CIPHER_AES256
-	                       | 1 << SSH2_CIPHER_BLOWFISH
+	int supported_ciphers = (1 << SSH2_CIPHER_3DES_CBC     | 1 << SSH2_CIPHER_AES128_CBC
+	                       | 1 << SSH2_CIPHER_AES192_CBC   | 1 << SSH2_CIPHER_AES256_CBC
+	                       | 1 << SSH2_CIPHER_BLOWFISH_CBC
 		);
 	int type = (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA) |
 	           (1 << SSH_AUTH_TIS) | (1 << SSH_AUTH_PAGEANT);

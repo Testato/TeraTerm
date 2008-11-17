@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.21 2008-06-20 11:58:47 doda Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.22 2008-11-17 08:45:12 maya Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -704,10 +704,10 @@ BOOL CRYPT_set_supported_ciphers(PTInstVar pvar, int sender_ciphers,
 	} else { // for SSH2(yutaka)
 		// SSH2がサポートするデータ通信用アルゴリズム（公開鍵交換用とは別）
 		cipher_mask = (1 << SSH2_CIPHER_3DES_CBC)
-		            | (1 << SSH2_CIPHER_AES128)
-		            | (1 << SSH2_CIPHER_BLOWFISH)
-		            | (1 << SSH2_CIPHER_AES192)
-		            | (1 << SSH2_CIPHER_AES256);
+		            | (1 << SSH2_CIPHER_AES128_CBC)
+		            | (1 << SSH2_CIPHER_BLOWFISH_CBC)
+		            | (1 << SSH2_CIPHER_AES192_CBC)
+		            | (1 << SSH2_CIPHER_AES256_CBC);
 	}
 
 	sender_ciphers &= cipher_mask;
@@ -1171,9 +1171,9 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 			}
 
 			// for SSH2(yutaka)
-		case SSH2_CIPHER_AES128:
-		case SSH2_CIPHER_AES192:
-		case SSH2_CIPHER_AES256:
+		case SSH2_CIPHER_AES128_CBC:
+		case SSH2_CIPHER_AES192_CBC:
+		case SSH2_CIPHER_AES256_CBC:
 			{
 				struct Enc *enc;
 
@@ -1192,7 +1192,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				break;
 			}
 
-		case SSH2_CIPHER_BLOWFISH:
+		case SSH2_CIPHER_BLOWFISH_CBC:
 			{
 				struct Enc *enc;
 
@@ -1267,9 +1267,9 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 			}
 
 			// for SSH2(yutaka)
-		case SSH2_CIPHER_AES128:
-		case SSH2_CIPHER_AES192:
-		case SSH2_CIPHER_AES256:
+		case SSH2_CIPHER_AES128_CBC:
+		case SSH2_CIPHER_AES192_CBC:
+		case SSH2_CIPHER_AES256_CBC:
 			{
 				struct Enc *enc;
 
@@ -1288,7 +1288,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				break;
 			}
 
-		case SSH2_CIPHER_BLOWFISH:
+		case SSH2_CIPHER_BLOWFISH_CBC:
 			{
 				struct Enc *enc;
 
@@ -1384,14 +1384,14 @@ static char FAR *get_cipher_name(int cipher)
 	// SSH2 
 	case SSH2_CIPHER_3DES_CBC:
 		return "3DES-CBC";
-	case SSH2_CIPHER_AES128:
-		return "AES128";
-	case SSH2_CIPHER_AES192:
-		return "AES192";
-	case SSH2_CIPHER_AES256:
-		return "AES256";
-	case SSH2_CIPHER_BLOWFISH:
-		return "Blowfish";
+	case SSH2_CIPHER_AES128_CBC:
+		return "AES128-CBC";
+	case SSH2_CIPHER_AES192_CBC:
+		return "AES192-CBC";
+	case SSH2_CIPHER_AES256_CBC:
+		return "AES256-CBC";
+	case SSH2_CIPHER_BLOWFISH_CBC:
+		return "Blowfish-CBC";
 
 	default:
 		return "Unknown";
