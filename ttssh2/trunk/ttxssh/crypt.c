@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.22 2008-11-17 08:45:12 maya Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.23 2008-11-17 13:30:38 maya Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -232,7 +232,7 @@ static void cAES128_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 	if (bytes % block_size) {
 		char tmp[80];
 		UTIL_get_lang_msg("MSG_AES128_ENCRYPT_ERROR1", pvar,
-		                  "AES128 encrypt error(1): bytes %d (%d)");
+		                  "AES128/192/256 encrypt error(1): bytes %d (%d)");
 		_snprintf_s(tmp, sizeof(tmp), _TRUNCATE,
 		            pvar->ts->UIMsg, bytes, block_size);
 		notify_fatal_error(pvar, tmp);
@@ -241,7 +241,7 @@ static void cAES128_encrypt(PTInstVar pvar, unsigned char FAR * buf,
 
 	if (EVP_Cipher(&pvar->evpcip[MODE_OUT], newbuf, buf, bytes) == 0) {
 		UTIL_get_lang_msg("MSG_AES128_ENCRYPT_ERROR2", pvar,
-		                  "AES128 encrypt error(2)");
+		                  "AES128/192/256 encrypt error(2)");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 		goto error;
 
@@ -279,7 +279,7 @@ static void cAES128_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 	if (bytes % block_size) {
 		char tmp[80];
 		UTIL_get_lang_msg("MSG_AES128_DECRYPT_ERROR1", pvar,
-		                  "AES128 decrypt error(1): bytes %d (%d)");
+		                  "AES128/192/256 decrypt error(1): bytes %d (%d)");
 		_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, pvar->ts->UIMsg, bytes, block_size);
 		notify_fatal_error(pvar, tmp);
 		goto error;
@@ -287,7 +287,7 @@ static void cAES128_decrypt(PTInstVar pvar, unsigned char FAR * buf,
 
 	if (EVP_Cipher(&pvar->evpcip[MODE_IN], newbuf, buf, bytes) == 0) {
 		UTIL_get_lang_msg("MSG_AES128_DECRYPT_ERROR2", pvar,
-		                  "AES128 decrypt error(2)");
+		                  "AES128/192/256 decrypt error(2)");
 		notify_fatal_error(pvar, pvar->ts->UIMsg);
 		goto error;
 
