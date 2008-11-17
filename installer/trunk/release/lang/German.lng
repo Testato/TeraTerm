@@ -591,10 +591,10 @@ DLG_UNKNOWNHOST_FINGERPRINT=Der Fingerabdruck des Schlüssels::
 DLG_UNKNOWNHOST_ADD=Füge den Server zur known hosts liste hinzu.
 
 ; crypt.c
-MSG_AES128_ENCRYPT_ERROR1=AES128 encrypt error(1): bytes %d (%d)
-MSG_AES128_ENCRYPT_ERROR2=AES128 encrypt error(2)
-MSG_AES128_DECRYPT_ERROR1=AES128 decrypt error(1): bytes %d (%d)
-MSG_AES128_DECRYPT_ERROR2=AES128 decrypt error(2)
+MSG_AES128_ENCRYPT_ERROR1=AES128/192/256 encrypt error(1): bytes %d (%d)
+MSG_AES128_ENCRYPT_ERROR2=AES128/192/256 encrypt error(2)
+MSG_AES128_DECRYPT_ERROR1=AES128/192/256 decrypt error(1): bytes %d (%d)
+MSG_AES128_DECRYPT_ERROR2=AES128/192/256 decrypt error(2)
 MSG_3DESCBC_ENCRYPT_ERROR1=3DES-CBC encrypt error(1): bytes %d (%d)
 MSG_3DESCBC_ENCRYPT_ERROR2=3DES-CBC encrypt error(2)
 MSG_3DESCBC_DECRYPT_ERROR1=3DES-CBC decrypt error(1): bytes %d (%d)
