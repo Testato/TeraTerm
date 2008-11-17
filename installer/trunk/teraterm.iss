@@ -108,9 +108,9 @@ Name: LogMeTT; Description: LogMeTT & TTLEdit; Types: full standard
 Name: TeraTerm_Menu; Description: TeraTerm Menu; Types: full
 Name: TTProxy; Description: TTProxy; Types: full standard
 Name: Collector; Description: Collector; Types: full
-Name: Additional_Plugins; Description: Additional Plugins
-Name: Additional_Plugins/TTXKanjiMenu; Description: TTX KanjiMenu (Changes Kanji Code from VT-Window menu)
-Name: Additional_Plugins/TTXCopyIniFile; Description: TTX CopyIniFile (Copys ini file when save new Setup file)
+Name: Additional_Plugins; Description: {cm:comp_TTX}
+Name: Additional_Plugins/TTXKanjiMenu; Description: TTX KanjiMenu ({cm:comp_TTX_KanjiMenu})
+Name: Additional_Plugins/TTXCopyIniFile; Description: TTX CopyIniFile ({cm:comp_TTX_CopyIniFile})
 
 [Icons]
 Name: {group}\Tera Term; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; IconIndex: 0; Components: TeraTerm; Flags: createonlyiffileexists
@@ -342,6 +342,12 @@ en.msg_del_confirm=Are you sure that you want to delete %s ?
 ja.msg_del_confirm=%s を削除しますか？
 en.msg_uninstall_confirm=It seems a former version is installed. You are recommended to uninstall it previously. Do you uninstall former version ?
 ja.msg_uninstall_confirm=以前のバージョンがインストールされているようです。先にアンインストールすることをお勧めします。アンインストールしますか？
+en.comp_TTX=Additional Plugins
+ja.comp_TTX=追加プラグイン
+en.comp_TTX_KanjiMenu=Changes Japanese Kanji Code from VT-Window menu
+ja.comp_TTX_KanjiMenu=日本語の漢字コードをVTウィンドウのメニューから設定する
+en.comp_TTX_CopyIniFile=Copys ini file when save new Setup file
+ja.comp_TTX_CopyIniFile=Copys ini file when save new Setup file
 
 [Code]
 var
