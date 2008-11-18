@@ -1,5 +1,5 @@
 #define AppName "Tera Term"
-#define AppVer "4.60"
+#define AppVer "4.61-Alpha3"
 
 [Setup]
 AppCopyright=TeraTerm Project
@@ -93,6 +93,14 @@ Source: release\Collector\msvcr70.dll; DestDir: {app}\Collector\; Components: Co
 Source: release\Collector\readme.txt; DestDir: {app}\Collector\; Components: Collector
 Source: ..\TTXKanjiMenu\release\ttxkanjimenu.dll; DestDir: {app}\; Components: Additional_Plugins/TTXKanjiMenu; Flags: ignoreversion
 Source: ..\TTXSamples\release\TTXCopyIniFile.dll; DestDir: {app}\; Components: Additional_Plugins/TTXCopyIniFile; Flags: ignoreversion
+Source: ..\TTXSamples\release\TTXResizeMenu.dll; DestDir: {app}\; Components: Additional_Plugins/TTXResizeMenu; Flags: ignoreversion
+Source: ..\TTXSamples\release\TTXResizeWin.dll; DestDir: {app}\; Components: Additional_Plugins/TTXResizeWin; Flags: ignoreversion
+Source: ..\TTXSamples\release\TTXFixedWinSize.dll; DestDir: {app}\; Components: Additional_Plugins/TTXFixedWinSize; Flags: ignoreversion
+Source: ..\TTXSamples\release\TTXttyrec.dll; DestDir: {app}\; Components: Additional_Plugins/TTXttyrec; Flags: ignoreversion
+Source: ..\TTXSamples\release\TTXttyplay.dll; DestDir: {app}\; Components: Additional_Plugins/TTXttyrec; Flags: ignoreversion
+Source: ..\TTXSamples\release\TTXKcodeChange.dll; DestDir: {app}\; Components: Additional_Plugins/TTXKcodeChange; Flags: ignoreversion
+Source: ..\TTXSamples\release\TTXViewMode.dll; DestDir: {app}\; Components: Additional_Plugins/TTXViewMode; Flags: ignoreversion
+Source: ..\TTXSamples\release\TTXAlwaysOnTop.dll; DestDir: {app}\; Components: Additional_Plugins/TTXAlwaysOnTop; Flags: ignoreversion
 
 [Types]
 Name: standard; Description: {cm:type_standard}
@@ -109,8 +117,15 @@ Name: TeraTerm_Menu; Description: TeraTerm Menu; Types: full
 Name: TTProxy; Description: TTProxy; Types: full standard
 Name: Collector; Description: Collector; Types: full
 Name: Additional_Plugins; Description: {cm:comp_TTX}
-Name: Additional_Plugins/TTXKanjiMenu; Description: TTX KanjiMenu ({cm:comp_TTX_KanjiMenu})
-Name: Additional_Plugins/TTXCopyIniFile; Description: TTX CopyIniFile ({cm:comp_TTX_CopyIniFile})
+Name: Additional_Plugins/TTXCopyIniFile; Description: TTXCopyIniFile ({cm:comp_TTXCopyIniFile})
+Name: Additional_Plugins/TTXResizeMenu; Description: TTXResizeMenu ({cm:comp_TTXResizeMenu})
+Name: Additional_Plugins/TTXResizeWin; Description: TTXResizeWin ({cm:comp_TTXResizeWin})
+Name: Additional_Plugins/TTXFixedWinSize; Description: TTXFixedWinSize ({cm:comp_TTXFixedWinSize})
+Name: Additional_Plugins/TTXttyrec; Description: TTXttyrec ({cm:comp_TTXttyrec})
+Name: Additional_Plugins/TTXKanjiMenu; Description: TTXKanjiMenu ({cm:comp_TTXKanjiMenu})
+Name: Additional_Plugins/TTXKcodeChange; Description: TTXKcodeChange ({cm:comp_TTXKcodeChange})
+Name: Additional_Plugins/TTXViewMode; Description: TTXViewMode ({cm:comp_TTXViewMode})
+Name: Additional_Plugins/TTXAlwaysOnTop; Description: TTXAlwaysOnTop ({cm:comp_TTXAlwaysOnTop})
 
 [Icons]
 Name: {group}\Tera Term; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; IconIndex: 0; Components: TeraTerm; Flags: createonlyiffileexists
@@ -344,10 +359,24 @@ en.msg_uninstall_confirm=It seems a former version is installed. You are recomme
 ja.msg_uninstall_confirm=以前のバージョンがインストールされているようです。先にアンインストールすることをお勧めします。アンインストールしますか？
 en.comp_TTX=Additional Plugins
 ja.comp_TTX=追加プラグイン
-en.comp_TTX_KanjiMenu=Changes Japanese Kanji Code from VT-Window menu
-ja.comp_TTX_KanjiMenu=日本語の漢字コードをVTウィンドウのメニューから設定する
-en.comp_TTX_CopyIniFile=Copys ini file when save new Setup file
-ja.comp_TTX_CopyIniFile=Copys ini file when save new Setup file
+en.comp_TTXCopyIniFile=Copys ini file when save new Setup file (save with comments)
+ja.comp_TTXCopyIniFile=設定ファイルの保存時にファイルをコピーする (コメントも保存される)
+en.comp_TTXResizeMenu=
+ja.comp_TTXResizeMenu=VTウィンドウのサイズをプリセット値の中から変更できるようにする
+en.comp_TTXResizeWin=
+ja.comp_TTXResizeWin=VTウィンドウのサイズを80x24に変更できるようにする
+en.comp_TTXFixedWinSize=
+ja.comp_TTXFixedWinSize=VTウィンドウのサイズを80x24に固定する
+en.comp_TTXttyrec=
+ja.comp_TTXttyrec=ttyrec形式の録画データを記録/再生できるようにする
+en.comp_TTXKanjiMenu=Changes Japanese Kanji Code from VT-Window menu
+ja.comp_TTXKanjiMenu=日本語の漢字コードをVTウィンドウのメニューから設定できるようにする
+en.comp_TTXKcodeChange=
+ja.comp_TTXKcodeChange=リモートからのシーケンスで日本語の漢字コードを変更する
+en.comp_TTXViewMode=
+ja.comp_TTXViewMode=表示専用モードにすることができる
+en.comp_TTXAlwaysOnTop=
+ja.comp_TTXAlwaysOnTop=常に最前面に表示できるようにする
 
 [Code]
 var
@@ -750,4 +779,5 @@ Name: {app}\libeay.txt; Type: files
 
 [_ISToolPreCompile]
 Name: makechm.bat
-Name: build.bat; Parameters: rebuild
+;Name: build.bat; Parameters: rebuild
+Name: build.bat
