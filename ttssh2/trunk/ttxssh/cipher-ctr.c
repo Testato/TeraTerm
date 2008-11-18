@@ -99,7 +99,7 @@ ssh_aes_ctr_iv(EVP_CIPHER_CTX *evp, int doset, unsigned char * iv, unsigned int 
 {
 	struct ssh_aes_ctr_ctx *c;
 
-	if ((c = EVP_CIPHER_CTX_get_app_data(evp)) == NULL)
+	if ((c = EVP_CIPHER_CTX_get_app_data(evp)) != NULL)
 		if(doset)
 			memcpy(c->aes_counter, iv, len);
 		else
