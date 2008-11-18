@@ -231,6 +231,10 @@
 			>
 		</File>
 		<File
+			RelativePath="cipher-ctr.c"
+			>
+		</File>
+		<File
 			RelativePath="crypt.c"
 			>
 		</File>

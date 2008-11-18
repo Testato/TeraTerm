@@ -3877,6 +3877,15 @@ void SSH2_update_cipher_myproposal(PTInstVar pvar)
 		else if (cipher == SSH2_CIPHER_BLOWFISH_CBC) {
 			strncat_s(buf, sizeof(buf), "blowfish-cbc,", _TRUNCATE);
 		}
+		else if (cipher == SSH2_CIPHER_AES128_CTR) {
+			strncat_s(buf, sizeof(buf), "aes128-ctr,", _TRUNCATE);
+		}
+		else if (cipher == SSH2_CIPHER_AES192_CTR) {
+			strncat_s(buf, sizeof(buf), "aes192-ctr,", _TRUNCATE);
+		}
+		else if (cipher == SSH2_CIPHER_AES256_CTR) {
+			strncat_s(buf, sizeof(buf), "aes256-ctr,", _TRUNCATE);
+		}
 	}
 	if (buf[0] != '\0') {
 		len = strlen(buf);
@@ -3987,6 +3996,12 @@ static SSHCipher choose_SSH2_cipher_algorithm(char *server_proposal, char *my_pr
 		cipher = SSH2_CIPHER_AES256_CBC;
 	} else if (strstr(ptr, "blowfish-cbc")) {
 		cipher = SSH2_CIPHER_BLOWFISH_CBC;
+	} else if (strstr(ptr, "aes128-ctr")) {
+		cipher = SSH2_CIPHER_AES128_CTR;
+	} else if (strstr(ptr, "aes192-ctr")) {
+		cipher = SSH2_CIPHER_AES192_CTR;
+	} else if (strstr(ptr, "aes256-ctr")) {
+		cipher = SSH2_CIPHER_AES256_CTR;
 	}
 
 	return (cipher);
@@ -6316,10 +6331,15 @@ static void do_SSH2_dispatch_setup_for_transfer(PTInstVar pvar)
 
 static BOOL handle_SSH2_newkeys(PTInstVar pvar)
 {
-	int supported_ciphers = (1 << SSH2_CIPHER_3DES_CBC     | 1 << SSH2_CIPHER_AES128_CBC
-	                       | 1 << SSH2_CIPHER_AES192_CBC   | 1 << SSH2_CIPHER_AES256_CBC
+	int supported_ciphers = (1 << SSH2_CIPHER_3DES_CBC
+	                       | 1 << SSH2_CIPHER_AES128_CBC
+	                       | 1 << SSH2_CIPHER_AES192_CBC
+	                       | 1 << SSH2_CIPHER_AES256_CBC
 	                       | 1 << SSH2_CIPHER_BLOWFISH_CBC
-		);
+	                       | 1 << SSH2_CIPHER_AES128_CTR
+	                       | 1 << SSH2_CIPHER_AES192_CTR
+	                       | 1 << SSH2_CIPHER_AES256_CTR
+	);
 	int type = (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA) |
 	           (1 << SSH_AUTH_TIS) | (1 << SSH_AUTH_PAGEANT);
 

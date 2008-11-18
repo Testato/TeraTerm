@@ -190,9 +190,13 @@ static void normalize_cipher_order(char FAR * buf)
 		SSH2_CIPHER_BLOWFISH_CBC,
 		SSH2_CIPHER_AES192_CBC,
 		SSH2_CIPHER_AES256_CBC,
+		SSH2_CIPHER_AES128_CTR,
+		SSH2_CIPHER_AES192_CTR,
+		SSH2_CIPHER_AES256_CTR,
 		SSH_CIPHER_3DES,
 		SSH_CIPHER_NONE,
-		SSH_CIPHER_DES, SSH_CIPHER_BLOWFISH
+		SSH_CIPHER_DES,
+		SSH_CIPHER_BLOWFISH
 	};
 #endif
 
@@ -2058,6 +2062,12 @@ static char FAR *get_cipher_name(int cipher)
 		return "3DES-CBC(SSH2)";
 	case SSH2_CIPHER_BLOWFISH_CBC:
 		return "Blowfish-CBC(SSH2)";
+	case SSH2_CIPHER_AES128_CTR:
+		return "AES128-CTR(SSH2)";
+	case SSH2_CIPHER_AES192_CTR:
+		return "AES192-CTR(SSH2)";
+	case SSH2_CIPHER_AES256_CTR:
+		return "AES256-CTR(SSH2)";
 
 	default:
 		return NULL;

@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.23 2008-11-17 13:30:38 maya Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.24 2008-11-18 06:24:09 maya Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -705,9 +705,12 @@ BOOL CRYPT_set_supported_ciphers(PTInstVar pvar, int sender_ciphers,
 		// SSH2がサポートするデータ通信用アルゴリズム（公開鍵交換用とは別）
 		cipher_mask = (1 << SSH2_CIPHER_3DES_CBC)
 		            | (1 << SSH2_CIPHER_AES128_CBC)
-		            | (1 << SSH2_CIPHER_BLOWFISH_CBC)
 		            | (1 << SSH2_CIPHER_AES192_CBC)
-		            | (1 << SSH2_CIPHER_AES256_CBC);
+		            | (1 << SSH2_CIPHER_AES256_CBC)
+		            | (1 << SSH2_CIPHER_BLOWFISH_CBC)
+		            | (1 << SSH2_CIPHER_AES128_CTR)
+		            | (1 << SSH2_CIPHER_AES192_CTR)
+		            | (1 << SSH2_CIPHER_AES256_CTR);
 	}
 
 	sender_ciphers &= cipher_mask;
@@ -1174,6 +1177,9 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 		case SSH2_CIPHER_AES128_CBC:
 		case SSH2_CIPHER_AES192_CBC:
 		case SSH2_CIPHER_AES256_CBC:
+		case SSH2_CIPHER_AES128_CTR:
+		case SSH2_CIPHER_AES192_CTR:
+		case SSH2_CIPHER_AES256_CTR:
 			{
 				struct Enc *enc;
 
@@ -1270,6 +1276,9 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 		case SSH2_CIPHER_AES128_CBC:
 		case SSH2_CIPHER_AES192_CBC:
 		case SSH2_CIPHER_AES256_CBC:
+		case SSH2_CIPHER_AES128_CTR:
+		case SSH2_CIPHER_AES192_CTR:
+		case SSH2_CIPHER_AES256_CTR:
 			{
 				struct Enc *enc;
 
@@ -1392,6 +1401,12 @@ static char FAR *get_cipher_name(int cipher)
 		return "AES256-CBC";
 	case SSH2_CIPHER_BLOWFISH_CBC:
 		return "Blowfish-CBC";
+	case SSH2_CIPHER_AES128_CTR:
+		return "AES128-CTR";
+	case SSH2_CIPHER_AES192_CTR:
+		return "AES192-CTR";
+	case SSH2_CIPHER_AES256_CTR:
+		return "AES256-CTR";
 
 	default:
 		return "Unknown";

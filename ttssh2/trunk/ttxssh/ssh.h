@@ -44,6 +44,8 @@ See LICENSE.TXT for the license.
 	count++; \
 }
 
+// from OpenSSH
+extern const EVP_CIPHER *evp_aes_128_ctr(void);
 
 // yutaka
 #define SSH2_USE
@@ -80,10 +82,11 @@ typedef enum {
 	// for SSH2
 	SSH2_CIPHER_3DES_CBC, SSH2_CIPHER_AES128_CBC,
 	SSH2_CIPHER_AES192_CBC,SSH2_CIPHER_AES256_CBC,
-	SSH2_CIPHER_BLOWFISH_CBC,
+	SSH2_CIPHER_BLOWFISH_CBC, SSH2_CIPHER_AES128_CTR,
+	SSH2_CIPHER_AES192_CTR, SSH2_CIPHER_AES256_CTR,
 } SSHCipher;
 
-#define SSH_CIPHER_MAX SSH2_CIPHER_BLOWFISH_CBC
+#define SSH_CIPHER_MAX SSH2_CIPHER_AES256_CTR
 
 typedef enum {
 	SSH_AUTH_NONE, SSH_AUTH_RHOSTS, SSH_AUTH_RSA, SSH_AUTH_PASSWORD,
@@ -292,6 +295,9 @@ static ssh2_cipher_t ssh2_ciphers[] = {
 	{SSH2_CIPHER_AES192_CBC,   "aes192-cbc",   16, 24, EVP_aes_192_cbc},
 	{SSH2_CIPHER_AES256_CBC,   "aes256-cbc",   16, 32, EVP_aes_256_cbc},
 	{SSH2_CIPHER_BLOWFISH_CBC, "blowfish-cbc",  8, 16, EVP_bf_cbc},
+	{SSH2_CIPHER_AES128_CTR,   "aes128-ctr",   16, 16, evp_aes_128_ctr},
+	{SSH2_CIPHER_AES192_CTR,   "aes192-ctr",   16, 24, evp_aes_128_ctr},
+	{SSH2_CIPHER_AES256_CTR,   "aes256-ctr",   16, 32, evp_aes_128_ctr},
 	{SSH_CIPHER_NONE, NULL, 0, 0, NULL},
 };
 
