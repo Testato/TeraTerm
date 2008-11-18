@@ -24,9 +24,9 @@ connect "server"
 
 <p>
 This macro script will do not work in most cases.<br>
-sendln "exit"でexitコマンドを送ってからホストが接続を切断してくるのに少しタイムラグが発生する。<br>
-マクロはこのタイムラグの間に次のconnectコマンドを実行する。<br>
-しかしホストとの接続がまだ終了していないため、connectコマンドは既に接続しているとみなして何も行わない。
+
+When a user sends the exit command, it will take a few minutes to disconnect the server. So, a time lag will occur.<br>
+If a user uses the connect command while the time lag occurs, the connect command will become successful because the local host still connects to the remote host.<br>
 </p>
 
 <p>
