@@ -7839,7 +7839,7 @@ static unsigned __stdcall ssh_scp_thread(void FAR * p)
 	do {
 		// Cancelボタンが押下されたらウィンドウが消える。
 		if (IsWindowVisible(hWnd) == 0)
-			goto scp_thread_cancel_abort;
+			goto cancel_abort;
 
 		// ファイルから読み込んだデータはかならずサーバへ送信する。
 		ret = fread(buf, 1, sizeof(buf), c->scp.localfp);
@@ -7849,7 +7849,7 @@ static unsigned __stdcall ssh_scp_thread(void FAR * p)
 		do {
 			// socket or channelがクローズされたらスレッドを終わる
 			if (pvar->socket == INVALID_SOCKET || c->scp.state == SCP_CLOSING || c->used == 0)
-				goto scp_thread_abort;
+				goto abort;
 
 			if (ret > c->remote_window) {
 				Sleep(100);
@@ -7886,10 +7886,10 @@ static unsigned __stdcall ssh_scp_thread(void FAR * p)
 
 	return 0;
 
-scp_thread_cancel_abort:
+cancel_abort:
 	ssh2_channel_send_close(pvar, c);
 
-scp_thread_abort:
+abort:
 
 	return 0;
 }
@@ -7963,7 +7963,7 @@ static unsigned __stdcall ssh_scp_receive_thread(void FAR * p)
 	for (;;) {
 		// Cancelボタンが押下されたらウィンドウが消える。
 		if (IsWindowVisible(hWnd) == 0)
-			goto scp_receive_cancel_abort;
+			goto cancel_abort;
 
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) != 0) {
 			switch (msg.message) {
@@ -7974,7 +7974,7 @@ static unsigned __stdcall ssh_scp_receive_thread(void FAR * p)
 
 				if (c->scp.filercvsize >= c->scp.filetotalsize) { // EOF
 					free(data);  // free!
-					goto scp_receive_done;
+					goto done;
 				}
 
 				if (c->scp.filercvsize + buflen > c->scp.filetotalsize) { // overflow (include EOF)
@@ -7995,7 +7995,7 @@ static unsigned __stdcall ssh_scp_receive_thread(void FAR * p)
 				SendMessage(GetDlgItem(c->scp.progress_window, IDC_PROGRESS), WM_SETTEXT, 0, (LPARAM)s);
 
 				if (eof)
-					goto scp_receive_done;
+					goto done;
 
 				break;
 			}
@@ -8003,11 +8003,11 @@ static unsigned __stdcall ssh_scp_receive_thread(void FAR * p)
 		Sleep(0);
 	}
 
-scp_receive_done:
+done:
 	c->scp.state = SCP_CLOSING;
 	ShowWindow(c->scp.progress_window, SW_HIDE);
 
-scp_receive_cancel_abort:
+cancel_abort:
 	ssh2_channel_send_close(pvar, c);
 	return 0;
 }
