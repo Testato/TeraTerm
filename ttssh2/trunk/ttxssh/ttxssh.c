@@ -738,7 +738,7 @@ void notify_verbose_message(PTInstVar pvar, char FAR * msg, int level)
 			time_t now = time(NULL);
 			char tmp[26];
 			DWORD processid;
-			strcpy_s(tmp, sizeof(tmp), _strdup(ctime(&now)));
+			strcpy_s(tmp, sizeof(tmp), ctime(&now));
 			tmp[strlen(tmp)-1]= 0; // delete "\n"
 			_write(file, tmp, strlen(tmp));
 			GetWindowThreadProcessId(pvar->cv->HWin, &processid);
