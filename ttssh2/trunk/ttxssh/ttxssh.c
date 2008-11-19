@@ -735,6 +735,15 @@ void notify_verbose_message(PTInstVar pvar, char FAR * msg, int level)
 		             _S_IREAD | _S_IWRITE);
 
 		if (file >= 0) {
+			time_t now = time(NULL);
+			char tmp[26];
+			DWORD processid;
+			strcpy_s(tmp, sizeof(tmp), _strdup(ctime(&now)));
+			tmp[strlen(tmp)-1]= 0; // delete "\n"
+			_write(file, tmp, strlen(tmp));
+			GetWindowThreadProcessId(pvar->cv->HWin, &processid);
+			_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, " [%lu] ",processid);
+			_write(file, tmp, strlen(tmp));
 			_write(file, msg, strlen(msg));
 			_write(file, "\n", 1);
 			_close(file);
@@ -745,19 +754,13 @@ void notify_verbose_message(PTInstVar pvar, char FAR * msg, int level)
 static void PASCAL FAR TTXOpenTCP(TTXSockHooks FAR * hooks)
 {
 	if (pvar->settings.Enabled) {
-		char buf[1024] = "\n---------------------------------------------------------------------\nInitiating SSH session at ";
-		struct tm FAR *newtime;
-		time_t long_time;
-
 		// TCPLocalEcho/TCPCRSend ‚ð–³Œø‚É‚·‚é (maya 2007.4.25)
 		pvar->ts->DisableTCPEchoCR = TRUE;
 
 		pvar->session_settings = pvar->settings;
 
-		time(&long_time);
-		newtime = localtime(&long_time);
-		strncat_s(buf, sizeof(buf), asctime(newtime), _TRUNCATE);
-		notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
+		notify_verbose_message(pvar, "---------------------------------------------------------------------", LOG_LEVEL_VERBOSE);
+		notify_verbose_message(pvar, "Initiating SSH session", LOG_LEVEL_VERBOSE);
 
 		FWDUI_load_settings(pvar);
 

@@ -381,6 +381,7 @@ void ssh_heartbeat_unlock(void)
 typedef struct memtag {
 	char *name;
 	char *desc;
+	time_t time;
 	int len;
 	char *data;
 } memtag_t;
@@ -515,6 +516,8 @@ void save_memdump(char *filename)
 		fprintf(fp, "name: %s\n", memtags[i].name);
 		fprintf(fp, "--------------------------------------------\n");
 		fprintf(fp, "description: %s\n", memtags[i].desc);
+		fprintf(fp, "--------------------------------------------\n");
+		fprintf(fp, "time: %s", ctime(&memtags[i].time));
 		fprintf(fp, "============================================\n");
 		dump_memdump(fp, memtags[i].data, memtags[i].len);
 		fprintf(fp, "\n\n\n");
@@ -542,6 +545,7 @@ void push_memdump(char *name, char *desc, char *data, int len)
 	memtag_count++;
 	ptr->name = _strdup(name);
 	ptr->desc = _strdup(desc);
+	ptr->time = time(NULL);
 	ptr->data = dp;
 	ptr->len = len;
 }
@@ -2634,6 +2638,7 @@ void SSH_notify_disconnecting(PTInstVar pvar, char FAR * reason)
 		finish_send_packet(pvar);
 		buffer_free(msg);
 
+		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_CLOSE was sent at SSH_notify_disconnecting().", LOG_LEVEL_VERBOSE);
 	}
 
 }
@@ -3173,6 +3178,7 @@ void SSH_fail_channel_open(PTInstVar pvar, uint32 remote_channel_num)
 		finish_send_packet(pvar);
 		buffer_free(msg);
 
+		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN_FAILURE was sent at SSH_fail_channel_open().", LOG_LEVEL_VERBOSE);
 	}
 }
 
@@ -3216,6 +3222,7 @@ void SSH_confirm_channel_open(PTInstVar pvar, uint32 remote_channel_num,
 		finish_send_packet(pvar);
 		buffer_free(msg);
 
+		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN_CONFIRMATION was sent at SSH_confirm_channel_open().", LOG_LEVEL_VERBOSE);
 	}
 }
 
@@ -3275,6 +3282,8 @@ void SSH_channel_input_eof(PTInstVar pvar, uint32 remote_channel_num, uint32 loc
 			memcpy(outmsg, buffer_ptr(msg), len);
 			finish_send_packet(pvar);
 			buffer_free(msg);
+
+			notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_EOF was sent at SSH_channel_input_eof().", LOG_LEVEL_VERBOSE);
 	}
 
 }
@@ -3404,6 +3413,8 @@ void SSH_request_X11_forwarding(PTInstVar pvar,
 		finish_send_packet(pvar);
 		buffer_free(msg);
 
+		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_REQUEST was sent at SSH_request_X11_forwarding().", LOG_LEVEL_VERBOSE);
+
 		free(newdata);
 	}
 
@@ -3498,6 +3509,8 @@ void SSH_open_channel(PTInstVar pvar, uint32 local_channel_num,
 			memcpy(outmsg, buffer_ptr(msg), len);
 			finish_send_packet(pvar);
 			buffer_free(msg);
+
+			notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN was sent at SSH_open_channel().", LOG_LEVEL_VERBOSE);
 
 			return;
 
@@ -3627,6 +3640,8 @@ int SSH_scp_transaction(PTInstVar pvar, char *sendfile, char *dstfile, enum scp_
 	finish_send_packet(pvar);
 	buffer_free(msg);
 
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN was sent at SSH_scp_transaction().", LOG_LEVEL_VERBOSE);
+
 	return TRUE;
 
 error:
@@ -3690,6 +3705,8 @@ int SSH_sftp_transaction(PTInstVar pvar)
 	memcpy(outmsg, buffer_ptr (msg), len);
 	finish_send_packet(pvar);
 	buffer_free(msg);
+
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN was sent at SSH_sftp_transaction().", LOG_LEVEL_VERBOSE);
 
 	return TRUE;
 
@@ -7032,7 +7049,7 @@ static BOOL handle_SSH2_userauth_success(PTInstVar pvar)
 	start_ssh_heartbeat_thread(pvar);
 
 	notify_verbose_message(pvar, "User authentication is successful and SSH heartbeat thread is starting.", LOG_LEVEL_VERBOSE);
-	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN was sent.", LOG_LEVEL_VERBOSE);
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN was sent at handle_SSH2_userauth_success().", LOG_LEVEL_VERBOSE);
 
 	return TRUE;
 }
@@ -7714,6 +7731,8 @@ static void do_SSH2_adjust_window_size(PTInstVar pvar, Channel_t *c)
 		finish_send_packet(pvar);
 		buffer_free(msg);
 
+		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_WINDOW_ADJUST was sent at do_SSH2_adjust_window_size().", LOG_LEVEL_SSHDUMP);
+
 		// クライアントのwindow sizeを増やす
 		c->local_window = c->local_window_max;
 	}
@@ -7741,6 +7760,8 @@ void ssh2_channel_send_close(PTInstVar pvar, Channel_t *c)
 		memcpy(outmsg, buffer_ptr(msg), len);
 		finish_send_packet(pvar);
 		buffer_free(msg);
+
+		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_CLOSE was sent at ssh2_channel_send_close().", LOG_LEVEL_VERBOSE);
 	}
 }
 
