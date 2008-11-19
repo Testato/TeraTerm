@@ -110,8 +110,6 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 	GetObject(font, sizeof(LOGFONT), &logfont);
 	if (get_lang_font("DLG_TAHOMA_FONT", GetSafeHwnd(), &logfont, &DlgGeneralFont, ts.UILanguageFile)) {
 		SendDlgItemMessage(IDC_CLICKABLE_URL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-		SendDlgItemMessage(IDC_DELIMITER, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
-		SendDlgItemMessage(IDC_DELIM_LIST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_DISABLE_SENDBREAK, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_ACCEPT_BROADCAST, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0)); // 337: 2007/03/20
 		SendDlgItemMessage(IDC_MOUSEWHEEL_SCROLL_LINE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
@@ -128,9 +126,6 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 	GetDlgItemText(IDC_CLICKABLE_URL, uimsg, sizeof(uimsg));
 	get_lang_msg("DLG_TAB_GENERAL_CLICKURL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_CLICKABLE_URL, ts.UIMsg);
-	GetDlgItemText(IDC_DELIMITER, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_DELIMITER", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_DELIMITER, ts.UIMsg);
 	GetDlgItemText(IDC_DISABLE_SENDBREAK, uimsg, sizeof(uimsg));
 	get_lang_msg("DLG_TAB_GENERAL_DISABLESENDBREAK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_DISABLE_SENDBREAK, ts.UIMsg);
@@ -168,26 +163,23 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 	btn = (CButton *)GetDlgItem(IDC_CLICKABLE_URL);
 	btn->SetCheck(ts.EnableClickableUrl);
 
-	// (3)delimiter characters
-	SetDlgItemText(IDC_DELIM_LIST, ts.DelimList);
-
-	// (4)AcceptBroadcast 337: 2007/03/20
+	// (3)AcceptBroadcast 337: 2007/03/20
 	btn = (CButton *)GetDlgItem(IDC_ACCEPT_BROADCAST);
 	btn->SetCheck(ts.AcceptBroadcast);
 
-	// (5)IDC_MOUSEWHEEL_SCROLL_LINE
+	// (4)IDC_MOUSEWHEEL_SCROLL_LINE
 	_snprintf_s(buf, sizeof(buf), "%d", ts.MouseWheelScrollLine);
 	SetDlgItemText(IDC_SCROLL_LINE, buf);
 
-	// (6)IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE
+	// (5)IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE
 	btn = (CButton *)GetDlgItem(IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE);
 	btn->SetCheck(ts.AutoScrollOnlyInBottomLine);
 
-	// (7)IDC_ACCEPT_MOUSE_EVENT_TRACKING
+	// (6)IDC_ACCEPT_MOUSE_EVENT_TRACKING
 	btn = (CButton *)GetDlgItem(IDC_ACCEPT_MOUSE_EVENT_TRACKING);
 	btn->SetCheck(ts.MouseEventTracking);
 
-	// (8)IDC_ACCEPT_TITLE_CHANGING
+	// (7)IDC_ACCEPT_TITLE_CHANGING
 	cmb = (CComboBox *)GetDlgItem(IDC_ACCEPT_TITLE_CHANGING);
 	cmb->SetCurSel(ts.AcceptTitleChangeRequest);
 
@@ -217,28 +209,25 @@ void CGeneralPropPageDlg::OnOK()
 	btn = (CButton *)GetDlgItem(IDC_CLICKABLE_URL);
 	ts.EnableClickableUrl = btn->GetCheck();
 
-	// (3)
-	GetDlgItemText(IDC_DELIM_LIST, ts.DelimList, sizeof(ts.DelimList));
-
-	// (4) 337: 2007/03/20
+	// (3) 337: 2007/03/20
 	btn = (CButton *)GetDlgItem(IDC_ACCEPT_BROADCAST);
 	ts.AcceptBroadcast = btn->GetCheck();
 
-	// (5)IDC_MOUSEWHEEL_SCROLL_LINE
+	// (4)IDC_MOUSEWHEEL_SCROLL_LINE
 	GetDlgItemText(IDC_SCROLL_LINE, buf, sizeof(buf));
 	val = atoi(buf);
 	if (val > 0) 
 		ts.MouseWheelScrollLine = val;
 
-	// (6)IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE 
+	// (5)IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE 
 	btn = (CButton *)GetDlgItem(IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE);
 	ts.AutoScrollOnlyInBottomLine = btn->GetCheck();
 
-	// (7)IDC_ACCEPT_MOUSE_EVENT_TRACKING 
+	// (6)IDC_ACCEPT_MOUSE_EVENT_TRACKING 
 	btn = (CButton *)GetDlgItem(IDC_ACCEPT_MOUSE_EVENT_TRACKING);
 	ts.MouseEventTracking = btn->GetCheck();
 
-	// (8)IDC_ACCEPT_TITLE_CHANGING 
+	// (7)IDC_ACCEPT_TITLE_CHANGING 
 	cmb = (CComboBox *)GetDlgItem(IDC_ACCEPT_TITLE_CHANGING);
 	ts.AcceptTitleChangeRequest = cmb->GetCurSel();
 }
@@ -281,6 +270,8 @@ BOOL CCopypastePropPageDlg::OnInitDialog()
 		SendDlgItemMessage(IDC_CONFIRM_PASTE_RBUTTON, WM_SETFONT, (WPARAM)DlgCopypasteFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_SELECT_LBUTTON, WM_SETFONT, (WPARAM)DlgCopypasteFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_CONFIRM_CHANGE_PASTE, WM_SETFONT, (WPARAM)DlgCopypasteFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_DELIMITER, WM_SETFONT, (WPARAM)DlgCopypasteFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_DELIM_LIST, WM_SETFONT, (WPARAM)DlgCopypasteFont, MAKELPARAM(TRUE,0));
 	}
 	else {
 		DlgCopypasteFont = NULL;
@@ -301,6 +292,9 @@ BOOL CCopypastePropPageDlg::OnInitDialog()
 	GetDlgItemText(IDC_CONFIRM_CHANGE_PASTE, uimsg, sizeof(uimsg));
 	get_lang_msg("DLG_TAB_COPYPASTE_CONFIRM_CHANGE_PASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_CONFIRM_CHANGE_PASTE, ts.UIMsg);
+	GetDlgItemText(IDC_DELIMITER, uimsg, sizeof(uimsg));
+	get_lang_msg("DLG_TAB_COPYPASTE_DELIMITER", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	SetDlgItemText(IDC_DELIMITER, ts.UIMsg);
 
 	// (1)Enable continued-line copy
 	btn = (CButton *)GetDlgItem(IDC_LINECOPY);
@@ -326,6 +320,10 @@ BOOL CCopypastePropPageDlg::OnInitDialog()
 	// (5)ConfirmChangePaste 
 	btn = (CButton *)GetDlgItem(IDC_CONFIRM_CHANGE_PASTE);
 	btn->SetCheck(ts.ConfirmChangePaste);
+
+	// (6)delimiter characters
+	SetDlgItemText(IDC_DELIM_LIST, ts.DelimList);
+
 
 	// ダイアログにフォーカスを当てる
 	::SetFocus(::GetDlgItem(GetSafeHwnd(), IDC_LINECOPY));
@@ -375,6 +373,9 @@ void CCopypastePropPageDlg::OnOK()
 	// (5)IDC_CONFIRM_CHANGE_PASTE
 	btn = (CButton *)GetDlgItem(IDC_CONFIRM_CHANGE_PASTE);
 	ts.ConfirmChangePaste = btn->GetCheck();
+
+	// (6)
+	GetDlgItemText(IDC_DELIM_LIST, ts.DelimList, sizeof(ts.DelimList));
 }
 
 
