@@ -96,7 +96,6 @@ static TInstVar FAR *pvar;
 
   /* WIN32 allows multiple instances of a DLL */
 static TInstVar InstVar;
-#define GET_VAR()
 
 /*
 This code makes lots of assumptions about the order in which Tera Term
@@ -521,8 +520,6 @@ static int PASCAL FAR TTXconnect(SOCKET s,
                                  const struct sockaddr FAR * name,
                                  int namelen)
 {
-	GET_VAR();
-
 #ifndef NO_INET6
 	if (pvar->socket == INVALID_SOCKET) {
 		struct sockaddr_storage ss;
@@ -580,8 +577,6 @@ static int PASCAL FAR TTXconnect(SOCKET s,
 static int PASCAL FAR TTXWSAAsyncSelect(SOCKET s, HWND hWnd, u_int wMsg,
                                         long lEvent)
 {
-	GET_VAR();
-
 	if (s == pvar->socket) {
 		pvar->notification_events = lEvent;
 		pvar->notification_msg = wMsg;
@@ -597,8 +592,6 @@ static int PASCAL FAR TTXWSAAsyncSelect(SOCKET s, HWND hWnd, u_int wMsg,
 
 static int PASCAL FAR TTXrecv(SOCKET s, char FAR * buf, int len, int flags)
 {
-	GET_VAR();
-
 	if (s == pvar->socket) {
 		int ret;
 
@@ -615,8 +608,6 @@ static int PASCAL FAR TTXrecv(SOCKET s, char FAR * buf, int len, int flags)
 static int PASCAL FAR TTXsend(SOCKET s, char const FAR * buf, int len,
                               int flags)
 {
-	GET_VAR();
-
 	if (s == pvar->socket) {
 		ssh_heartbeat_lock();
 		SSH_send(pvar, buf, len);
@@ -753,8 +744,6 @@ void notify_verbose_message(PTInstVar pvar, char FAR * msg, int level)
 
 static void PASCAL FAR TTXOpenTCP(TTXSockHooks FAR * hooks)
 {
-	GET_VAR();
-
 	if (pvar->settings.Enabled) {
 		char buf[1024] = "\n---------------------------------------------------------------------\nInitiating SSH session at ";
 		struct tm FAR *newtime;
@@ -801,8 +790,6 @@ static void PASCAL FAR TTXOpenTCP(TTXSockHooks FAR * hooks)
 
 static void PASCAL FAR TTXCloseTCP(TTXSockHooks FAR * hooks)
 {
-	GET_VAR();
-
 	if (pvar->session_settings.Enabled) {
 		pvar->socket = INVALID_SOCKET;
 
@@ -950,8 +937,6 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 	char uimsg[MAX_UIMSG];
 	static HWND hwndHostname     = NULL; // HOSTNAME dropdown
 	static HWND hwndHostnameEdit = NULL; // Edit control on HOSTNAME dropdown
-
-	GET_VAR();
 
 	switch (msg) {
 	case WM_INITDIALOG:
@@ -1382,15 +1367,11 @@ static BOOL FAR PASCAL TTXGetHostName(HWND parent, PGetHNRec rec)
 
 static void PASCAL FAR TTXGetUIHooks(TTXUIHooks FAR * hooks)
 {
-	GET_VAR();
-
 	*hooks->GetHostName = TTXGetHostName;
 }
 
 static void FAR PASCAL TTXReadINIFile(PCHAR fileName, PTTSet ts)
 {
-	GET_VAR();
-
 	(pvar->ReadIniFile) (fileName, ts);
 	read_ssh_options(pvar, fileName);
 	pvar->settings = *pvar->ts_SSH;
@@ -1400,8 +1381,6 @@ static void FAR PASCAL TTXReadINIFile(PCHAR fileName, PTTSet ts)
 
 static void FAR PASCAL TTXWriteINIFile(PCHAR fileName, PTTSet ts)
 {
-	GET_VAR();
-
 	(pvar->WriteIniFile) (fileName, ts);
 	*pvar->ts_SSH = pvar->settings;
 	clear_local_settings(pvar);
@@ -1613,7 +1592,6 @@ static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
 	BOOL inQuotes = FALSE;
 	BOOL inFileParam = FALSE;
 	PCHAR option = NULL;
-	GET_VAR();
 
 	if (pvar->hostdlg_activated) {
 		pvar->settings.Enabled = pvar->hostdlg_Enabled;
@@ -1711,8 +1689,6 @@ static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
 
 static void PASCAL FAR TTXGetSetupHooks(TTXSetupHooks FAR * hooks)
 {
-	GET_VAR();
-
 	pvar->ReadIniFile = *hooks->ReadIniFile;
 	pvar->WriteIniFile = *hooks->WriteIniFile;
 	pvar->ParseParam = *hooks->ParseParam;
@@ -1724,8 +1700,6 @@ static void PASCAL FAR TTXGetSetupHooks(TTXSetupHooks FAR * hooks)
 
 static void PASCAL FAR TTXSetWinSize(int rows, int cols)
 {
-	GET_VAR();
-
 	SSH_notify_win_size(pvar, cols, rows);
 }
 
@@ -1748,8 +1722,6 @@ static void insertMenuBeforeItem(HMENU menu, WORD beforeItemID, WORD flags,
 
 static void PASCAL FAR TTXModifyMenu(HMENU menu)
 {
-	GET_VAR();
-
 	/* inserts before ID_HELP_ABOUT */
 	UTIL_get_lang_msg("MENU_ABOUT", pvar, "About &TTSSH...");
 	insertMenuBeforeItem(menu, 50990, MF_ENABLED, ID_ABOUTMENU, pvar->ts->UIMsg);
@@ -3500,8 +3472,6 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 {
 	char uimsg[MAX_UIMSG];
 
-	GET_VAR();
-
 	if (pvar->fatal_error) {
 		return 0;
 	}
@@ -3645,7 +3615,6 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 	char *buf;
 	char *p;
 	int i;
-	GET_VAR();
 
 	GetTempPath(sizeof(tmpPath), tmpPath);
 	GetTempFileName(tmpPath, "TTX", 0, tmpFile);
@@ -3759,8 +3728,6 @@ static void PASCAL FAR TTXSetCommandLine(PCHAR cmd, int cmdlen,
 */
 static void PASCAL FAR TTXEnd(void)
 {
-	GET_VAR();
-
 	uninit_TTSSH(pvar);
 
 	if (pvar->err_msg != NULL) {
