@@ -3945,6 +3945,7 @@ void CVTWindow::OnSetupSave()
 		}
 #endif
 
+		CopyFile(TmpSetupFN, ts.SetupFName, TRUE);
 		/* write current setup values to file */
 		(*WriteIniFile)(ts.SetupFName,&ts);
 		/* copy host list */
