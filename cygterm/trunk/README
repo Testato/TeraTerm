@@ -172,7 +172,8 @@
     Command Line Options
 
         cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
-                    [-s 'shell'] [-v 'env-var' ...]
+                    [-s 'shell'] [-ls | -nols] [-cd | -nocd] [-a | -A]
+                    [-v 'env-var' ...] [-d 'directory] [-o 'option']
 
     -t 'terminal-emulator'
             Specify the command line of a terminal emulator to execute.
@@ -208,11 +209,11 @@
     -nocd
             The shell is invoked without changing the current directory.
 
-    -a
-            Enable ssh-agent proxy support.
+    -A
+            Enable ssh-agent forwarding support.
 
-    -o 'parameter'
-            Additional parameter for terminal-emulator.
+    -a
+            Disable ssh-agent forwarding support.
 
     -v 'env-var'
             Specify the environment variable to be set when starting the shell.
@@ -223,6 +224,9 @@
     -d 'directory'
             The current directory is moved to the specified directory and
             the shell is invoked.
+
+    -o 'parameter'
+            Additional parameter for terminal-emulator.
 
     The terminal emulator or connection port number, and the shell on Cygwin,
     these need to be specified at least.  If these are given on the command
@@ -261,6 +265,10 @@
                 zsh 4.3.4
 
 // C H A N G E S //
+v1.07_16 2008/11/21 (doda)
+        * The option that enables ssh-agent proxy support is changed from '-a' to '-A'.
+        * Added '-a' option that disables ssh-agent proxy support.
+
 v1.07_15 2008/11/01 (doda)
         * Added ssh-agent proxy support.
 

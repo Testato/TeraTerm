@@ -88,9 +88,13 @@
 // patch level 15 - add ssh-agent proxy support
 //   Written by IWAMOTO Kouichi. (doda)
 //
+/////////////////////////////////////////////////////////////////////////////
+// patch level 16 - added '-A' option and change '-a' option
+//   Written by IWAMOTO Kouichi. (doda)
+//
 
 static char Program[] = "CygTerm+";
-static char Version[] = "version 1.07_15 (2008/11/01)";
+static char Version[] = "version 1.07_16 (2008/11/21)";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -433,8 +437,11 @@ void get_args(int argc, char** argv)
         else if (!strcmp(*argv, "+ls")) {       // +ls
             enable_loginshell = false;
         }
-        else if (!strcmp(*argv, "-a")) {       // -a
+        else if (!strcmp(*argv, "-A")) {       // -A
             enable_agent_proxy = true;
+        }
+        else if (!strcmp(*argv, "-a")) {       // -a
+            enable_agent_proxy = false;
         }
         else if (!strcmp(*argv, "-v")) {        // -v <additional env var>
             if (*(argv+1) != NULL) {
