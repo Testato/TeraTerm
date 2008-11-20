@@ -1316,17 +1316,19 @@ static BOOL handle_auth_required(PTInstVar pvar)
 static BOOL handle_ignore(PTInstVar pvar)
 {
 	if (SSHv1(pvar)) {
+		notify_verbose_message(pvar, "SSH_MSG_IGNORE was received.", LOG_LEVEL_VERBOSE);
+
 		if (grab_payload(pvar, 4)
 		 && grab_payload(pvar, get_payload_uint32(pvar, 0))) {
 			/* ignore it! but it must be decompressed */
 		}
 	}
-	/*
 	else {
+		notify_verbose_message(pvar, "SSH2_MSG_IGNORE was received.", LOG_LEVEL_VERBOSE);
+
 		// メッセージが SSH2_MSG_IGNORE の時は何もしない
 		// Cisco ルータ対策 (2006.11.28 maya)
 	}
-	 */
 	return TRUE;
 }
 
@@ -1338,6 +1340,8 @@ static BOOL handle_debug(PTInstVar pvar)
 	char buf[2048];
 
 	if (SSHv1(pvar)) {
+		notify_verbose_message(pvar, "SSH_MSG_DEBUG was received.", LOG_LEVEL_VERBOSE);
+
 		if (grab_payload(pvar, 4)
 		 && grab_payload(pvar, description_len =
 		                 get_payload_uint32(pvar, 0))) {
@@ -1348,6 +1352,8 @@ static BOOL handle_debug(PTInstVar pvar)
 			return TRUE;
 		}
 	} else {
+		notify_verbose_message(pvar, "SSH2_MSG_DEBUG was received.", LOG_LEVEL_VERBOSE);
+
 		if (grab_payload(pvar, 5)
 		 && grab_payload(pvar,
 		                 (description_len = get_payload_uint32(pvar, 1)) + 4)
@@ -1382,6 +1388,8 @@ static BOOL handle_disconnect(PTInstVar pvar)
 	char uimsg[MAX_UIMSG];
 
 	if (SSHv1(pvar)) {
+		notify_verbose_message(pvar, "SSH_MSG_DISCONNECT was received.", LOG_LEVEL_VERBOSE);
+
 		if (grab_payload(pvar, 4)
 		 && grab_payload(pvar, description_len = get_payload_uint32(pvar, 0))) {
 			reason_code = -1;
@@ -1391,6 +1399,8 @@ static BOOL handle_disconnect(PTInstVar pvar)
 			return TRUE;
 		}
 	} else {
+		notify_verbose_message(pvar, "SSH2_MSG_DISCONNECT was received.", LOG_LEVEL_VERBOSE);
+
 		if (grab_payload(pvar, 8)
 		 && grab_payload(pvar,
 		                 (description_len = get_payload_uint32(pvar, 4)) + 4)
@@ -1482,6 +1492,8 @@ static BOOL handle_server_public_key(PTInstVar pvar)
 	char FAR *inmsg;
 	Key hostkey;
 	int supported_types;
+
+	notify_verbose_message(pvar, "SSH_SMSG_PUBLIC_KEY was received.", LOG_LEVEL_VERBOSE);
 
 	if (!grab_payload(pvar, 14))
 		return FALSE;
@@ -2006,6 +2018,8 @@ void SSH_handle_packet(PTInstVar pvar, char FAR * data, int len,
 				set_uint32(outmsg,
 				           pvar->ssh_state.receiver_sequence_number - 1);
 				finish_send_packet(pvar);
+
+				notify_verbose_message(pvar, "SSH2_MSG_UNIMPLEMENTED was sent at SSH_handle_packet().", LOG_LEVEL_VERBOSE);
 				/* XXX need to decompress incoming packet, but how? */
 			}
 		} else {
@@ -3082,6 +3096,8 @@ static void SSH2_send_channel_data(PTInstVar pvar, Channel_t *c, unsigned char F
 		buffer_free(msg);
 		//debug_print(1, pvar->ssh_state.outbuf, 7 + 4 + 1 + 1 + len);
 
+		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_DATA was sent at SSH_handle_packet().", LOG_LEVEL_SSHDUMP);
+
 		// remote window sizeの調整
 		if (buflen <= c->remote_window) {
 			c->remote_window -= buflen;
@@ -3331,6 +3347,7 @@ void SSH_request_forwarding(PTInstVar pvar, int from_server_port,
 		finish_send_packet(pvar);
 		buffer_free(msg);
 
+		notify_verbose_message(pvar, "SSH2_MSG_GLOBAL_REQUEST was sent at SSH_request_forwarding().", LOG_LEVEL_VERBOSE);
 	}
 }
 
@@ -3978,7 +3995,7 @@ void SSH2_send_kexinit(PTInstVar pvar)
 	// my_kexに取っておくため、フリーしてはいけない。
 	//buffer_free(msg);
 
-	notify_verbose_message(pvar, "SSH2_MSG_KEXINIT was sent", LOG_LEVEL_VERBOSE);
+	notify_verbose_message(pvar, "SSH2_MSG_KEXINIT was sent at SSH2_send_kexinit().", LOG_LEVEL_VERBOSE);
 }
 
 
@@ -4166,7 +4183,7 @@ static BOOL handle_SSH2_kexinit(PTInstVar pvar)
 	char tmp[1024+512];
 	char *ptr;
 
-	notify_verbose_message(pvar, "SSH2_MSG_KEXINIT is receiving", LOG_LEVEL_VERBOSE);
+	notify_verbose_message(pvar, "SSH2_MSG_KEXINIT was received.", LOG_LEVEL_VERBOSE);
 
 	// すでにキー交換が終わっているにも関わらず、サーバから SSH2_MSG_KEXINIT が
 	// 送られてくる場合は、キー再作成を行う。(2004.10.24 yutaka)
@@ -4602,7 +4619,7 @@ static void SSH2_dh_kex_init(PTInstVar pvar)
 
 	buffer_free(msg);
 
-	notify_verbose_message(pvar, "SSH2_MSG_KEXDH_INIT was sent", LOG_LEVEL_VERBOSE);
+	notify_verbose_message(pvar, "SSH2_MSG_KEXDH_INIT was sent at SSH2_dh_kex_init().", LOG_LEVEL_VERBOSE);
 
 	return;
 
@@ -4676,7 +4693,7 @@ static void SSH2_dh_gex_kex_init(PTInstVar pvar)
 
 	buffer_free(msg);
 
-	notify_verbose_message(pvar, "SSH2_MSG_KEX_DH_GEX_REQUEST was sent", LOG_LEVEL_VERBOSE);
+	notify_verbose_message(pvar, "SSH2_MSG_KEX_DH_GEX_REQUEST was sent at SSH2_dh_gex_kex_init().", LOG_LEVEL_VERBOSE);
 
 	return;
 
@@ -4697,7 +4714,7 @@ static BOOL handle_SSH2_dh_gex_group(PTInstVar pvar)
 	buffer_t *msg = NULL;
 	unsigned char *outmsg;
 
-	notify_verbose_message(pvar, "SSH2_MSG_KEX_DH_GEX_GROUP is receiving", LOG_LEVEL_VERBOSE);
+	notify_verbose_message(pvar, "SSH2_MSG_KEX_DH_GEX_GROUP was received.", LOG_LEVEL_VERBOSE);
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
@@ -4732,7 +4749,7 @@ static BOOL handle_SSH2_dh_gex_group(PTInstVar pvar)
 	memcpy(outmsg, buffer_ptr(msg), len);
 	finish_send_packet(pvar);
 
-	notify_verbose_message(pvar, "SSH2_MSG_KEX_DH_GEX_INIT was sent", LOG_LEVEL_VERBOSE);
+	notify_verbose_message(pvar, "SSH2_MSG_KEX_DH_GEX_INIT was sent at handle_SSH2_dh_gex_group().", LOG_LEVEL_VERBOSE);
 
 	// ここで作成したDH鍵は、あとでハッシュ計算に使うため取っておく。(2004.10.31 yutaka)
 	pvar->kexdh = dh;
@@ -5702,7 +5719,7 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 	int ret;
 	Key hostkey;  // hostkey
 
-	notify_verbose_message(pvar, "SSH2_MSG_KEXDH_REPLY is receiving", LOG_LEVEL_VERBOSE);
+	notify_verbose_message(pvar, "SSH2_MSG_KEXDH_REPLY was received.", LOG_LEVEL_VERBOSE);
 
 	memset(&hostkey, 0, sizeof(hostkey));
 
@@ -5889,7 +5906,7 @@ cont:
 	begin_send_packet(pvar, SSH2_MSG_NEWKEYS, 0);
 	finish_send_packet(pvar);
 
-	notify_verbose_message(pvar, "SSH2_MSG_NEWKEYS was sent to server.", LOG_LEVEL_VERBOSE);
+	notify_verbose_message(pvar, "SSH2_MSG_NEWKEYS was sent at handle_SSH2_dh_kex_reply().", LOG_LEVEL_VERBOSE);
 
 	// SSH2_MSG_NEWKEYSを送り終わったあとにキーの設定および再設定を行う
 	// 送信用の暗号鍵は SSH2_MSG_NEWKEYS の送信後に、受信用のは SSH2_MSG_NEWKEYS の
@@ -6037,7 +6054,7 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 	int ret;
 	Key hostkey;  // hostkey
 
-	notify_verbose_message(pvar, "SSH2_MSG_KEX_DH_GEX_REPLY is receiving", LOG_LEVEL_VERBOSE);
+	notify_verbose_message(pvar, "SSH2_MSG_KEX_DH_GEX_REPLY was received.", LOG_LEVEL_VERBOSE);
 
 	memset(&hostkey, 0, sizeof(hostkey));
 
@@ -6250,7 +6267,7 @@ cont:
 	begin_send_packet(pvar, SSH2_MSG_NEWKEYS, 0);
 	finish_send_packet(pvar);
 
-	notify_verbose_message(pvar, "SSH2_MSG_NEWKEYS was sent to server.", LOG_LEVEL_VERBOSE);
+	notify_verbose_message(pvar, "SSH2_MSG_NEWKEYS was sent at handle_SSH2_dh_gex_reply().", LOG_LEVEL_VERBOSE);
 
 	// SSH2_MSG_NEWKEYSを送り終わったあとにキーの設定および再設定を行う
 	// 送信用の暗号鍵は SSH2_MSG_NEWKEYS の送信後に、受信用のは SSH2_MSG_NEWKEYS の
@@ -6360,7 +6377,7 @@ static BOOL handle_SSH2_newkeys(PTInstVar pvar)
 	int type = (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA) |
 	           (1 << SSH_AUTH_TIS) | (1 << SSH_AUTH_PAGEANT);
 
-	notify_verbose_message(pvar, "SSH2_MSG_NEWKEYS is received(DH key generation is completed).", LOG_LEVEL_VERBOSE);
+	notify_verbose_message(pvar, "SSH2_MSG_NEWKEYS was received(DH key generation is completed).", LOG_LEVEL_VERBOSE);
 
 	// ログ採取の終了 (2005.3.7 yutaka)
 	if (LOG_LEVEL_SSHDUMP <= pvar->session_settings.LogLevel) {
@@ -6457,7 +6474,7 @@ BOOL do_SSH2_userauth(PTInstVar pvar)
 	SSH2_dispatch_add_message(SSH2_MSG_SERVICE_ACCEPT);
 	SSH2_dispatch_add_message(SSH2_MSG_IGNORE); // XXX: Tru64 UNIX workaround   (2005.3.5 yutaka)
 
-	notify_verbose_message(pvar, "SSH2_MSG_SERVICE_REQUEST was sent.", LOG_LEVEL_VERBOSE);
+	notify_verbose_message(pvar, "SSH2_MSG_SERVICE_REQUEST was sent at do_SSH2_userauth().", LOG_LEVEL_VERBOSE);
 
 	return TRUE;
 }
@@ -6648,7 +6665,7 @@ static BOOL handle_SSH2_service_accept(PTInstVar pvar)
 	data = pvar->ssh_state.payload;
 
 	s = buffer_get_string(&data, NULL);
-	_snprintf(tmp, sizeof(tmp), "SSH2_MSG_SERVICE_ACCEPT is received. service name=%s", s);
+	_snprintf(tmp, sizeof(tmp), "SSH2_MSG_SERVICE_ACCEPT was received. service name=%s", s);
 	notify_verbose_message(pvar, tmp, LOG_LEVEL_VERBOSE);
 
 	SSH2_dispatch_init(5);
@@ -6836,7 +6853,7 @@ BOOL do_SSH2_authrequest(PTInstVar pvar)
 	{
 		char buf[128];
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE,
-		            "SSH2_MSG_USERAUTH_REQUEST was sent(method %d)",
+		            "SSH2_MSG_USERAUTH_REQUEST was sent do_SSH2_authrequest(). (method %d)",
 		            pvar->auth_state.cur_cred.method);
 		notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
 	}
@@ -6893,6 +6910,11 @@ static LRESULT CALLBACK ssh_heartbeat_dlg_proc(HWND hWnd, UINT msg, WPARAM wp, L
 			memcpy(outmsg, buffer_ptr(msg), len);
 			finish_send_packet(pvar);
 			buffer_free(msg);
+			if (SSHv1(pvar)) {
+				notify_verbose_message(pvar, "SSH_MSG_IGNORE was sent at ssh_heartbeat_dlg_proc().", LOG_LEVEL_VERBOSE);
+			} else {
+				notify_verbose_message(pvar, "SSH2_MSG_IGNORE was sent at ssh_heartbeat_dlg_proc().", LOG_LEVEL_VERBOSE);
+			}
 			}
 			return TRUE;
 			break;
@@ -7003,6 +7025,8 @@ static BOOL handle_SSH2_userauth_success(PTInstVar pvar)
 	int len;
 	Channel_t *c;
 
+	notify_verbose_message(pvar, "SSH2_MSG_USERAUTH_SUCCESS was received.", LOG_LEVEL_VERBOSE);
+
 	// パスワードの破棄 (2006.8.22 yutaka)
 	if (pvar->settings.remember_password == 0) {
 		destroy_malloced_string(&pvar->auth_state.cur_cred.password);
@@ -7045,11 +7069,12 @@ static BOOL handle_SSH2_userauth_success(PTInstVar pvar)
 	finish_send_packet(pvar);
 	buffer_free(msg);
 
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN was sent at handle_SSH2_userauth_success().", LOG_LEVEL_VERBOSE);
+
 	// ハートビート・スレッドの開始 (2004.12.11 yutaka)
 	start_ssh_heartbeat_thread(pvar);
 
 	notify_verbose_message(pvar, "User authentication is successful and SSH heartbeat thread is starting.", LOG_LEVEL_VERBOSE);
-	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN was sent at handle_SSH2_userauth_success().", LOG_LEVEL_VERBOSE);
 
 	return TRUE;
 }
@@ -7062,6 +7087,8 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 	char *cstring;
 	int partial;
 	char buf[1024];
+
+	notify_verbose_message(pvar, "SSH2_MSG_USERAUTH_FAILURE was received.", LOG_LEVEL_VERBOSE);
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
@@ -7176,6 +7203,7 @@ static BOOL handle_SSH2_userauth_failure(PTInstVar pvar)
 static BOOL handle_SSH2_userauth_banner(PTInstVar pvar)
 {
 	//
+	notify_verbose_message(pvar, "SSH2_MSG_USERAUTH_BANNER was received.", LOG_LEVEL_VERBOSE);
 
 	return TRUE;
 }
@@ -7212,7 +7240,7 @@ BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar)
 		unsigned char *outmsg;
 		int i;
 
-		notify_verbose_message(pvar, "SSH2_MSG_USERAUTH_INFO_REQUEST is received.", LOG_LEVEL_VERBOSE);
+		notify_verbose_message(pvar, "SSH2_MSG_USERAUTH_INFO_REQUEST was received.", LOG_LEVEL_VERBOSE);
 
 		// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 		data = pvar->ssh_state.payload;
@@ -7286,6 +7314,8 @@ BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar)
 		memcpy(outmsg, buffer_ptr(msg), len);
 		finish_send_packet(pvar);
 		buffer_free(msg);
+
+		notify_verbose_message(pvar, "SSH2_MSG_USERAUTH_INFO_RESPONSE was sent at handle_SSH2_userauth_inforeq().", LOG_LEVEL_VERBOSE);
 	}
 	else { // SSH_AUTH_PAGEANT
 		// SSH2_MSG_USERAUTH_PK_OK
@@ -7301,7 +7331,7 @@ BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar)
 		unsigned char *signedmsg;
 		int signedlen;
 
-		notify_verbose_message(pvar, "SSH2_MSG_USERAUTH_PK_OK is received.", LOG_LEVEL_VERBOSE);
+		notify_verbose_message(pvar, "SSH2_MSG_USERAUTH_PK_OK was received.", LOG_LEVEL_VERBOSE);
 
 		if (pvar->ssh2_autologin == 1) { // SSH2自動ログイン
 			username = pvar->ssh2_username;
@@ -7389,6 +7419,8 @@ BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar)
 		finish_send_packet(pvar);
 		buffer_free(msg);
 
+		notify_verbose_message(pvar, "SSH2_MSG_USERAUTH_REQUEST was sent at handle_SSH2_userauth_inforeq().", LOG_LEVEL_VERBOSE);
+
 		pvar->pageant_keyfinal = TRUE;
 	}
 
@@ -7410,6 +7442,8 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 #else
 	int wantconfirm = 1; // true
 #endif
+
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN_CONFIRMATION was received.", LOG_LEVEL_VERBOSE);
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
@@ -7570,6 +7604,8 @@ static BOOL handle_SSH2_open_failure(PTInstVar pvar)
 	char tmpbuf[256];
 	char *rmsg;
 
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN_FAILURE was received.", LOG_LEVEL_VERBOSE);
+
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
 	// パケットサイズ - (パディングサイズ+1)；真のパケットサイズ
@@ -7623,6 +7659,7 @@ static BOOL handle_SSH2_open_failure(PTInstVar pvar)
 static BOOL handle_SSH2_request_success(PTInstVar pvar)
 {	
 	// 必要であればログを取る。特に何もしなくてもよい。
+	notify_verbose_message(pvar, "SSH2_MSG_REQUEST_SUCCESS was received.", LOG_LEVEL_VERBOSE);
 
 	return TRUE;
 }
@@ -7631,6 +7668,7 @@ static BOOL handle_SSH2_request_success(PTInstVar pvar)
 static BOOL handle_SSH2_request_failure(PTInstVar pvar)
 {	
 	// 必要であればログを取る。特に何もしなくてもよい。
+	notify_verbose_message(pvar, "SSH2_MSG_REQUEST_FAILURE was received.", LOG_LEVEL_VERBOSE);
 
 	return TRUE;
 }
@@ -7646,7 +7684,7 @@ static BOOL handle_SSH2_channel_success(PTInstVar pvar)
 	{
 		char buf[128];
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE,
-		            "SSH2_MSG_CHANNEL_SUCCESS is received(nego_status %d).",
+		            "SSH2_MSG_CHANNEL_SUCCESS was received(nego_status %d).",
 		            pvar->session_nego_status);
 		notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
 	}
@@ -7732,7 +7770,7 @@ static void do_SSH2_adjust_window_size(PTInstVar pvar, Channel_t *c)
 		buffer_free(msg);
 
 		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_WINDOW_ADJUST was sent at do_SSH2_adjust_window_size().", LOG_LEVEL_SSHDUMP);
-
+		OutputDebugPrintf("remote_id:%d local_id:%d\n", c->remote_id, c->self_id);
 		// クライアントのwindow sizeを増やす
 		c->local_window = c->local_window_max;
 	}
@@ -8137,6 +8175,8 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 	unsigned int str_len;
 	Channel_t *c;
 
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_DATA was received.", LOG_LEVEL_SSHDUMP);
+
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
 	// パケットサイズ - (パディングサイズ+1)；真のパケットサイズ
@@ -8214,6 +8254,8 @@ static BOOL handle_SSH2_channel_extended_data(PTInstVar pvar)
 	Channel_t *c;
 	int data_type;
 
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_EXTENDED_DATA was received.", LOG_LEVEL_SSHDUMP);
+
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
 	// パケットサイズ - (パディングサイズ+1)；真のパケットサイズ
@@ -8278,6 +8320,7 @@ static BOOL handle_SSH2_channel_eof(PTInstVar pvar)
 	int id;
 	Channel_t *c;
 
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_EOF was received.", LOG_LEVEL_VERBOSE);
 	// 切断時にサーバが SSH2_MSG_CHANNEL_EOF を送ってくるので、チャネルを解放する。(2005.6.19 yutaka)
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
@@ -8312,6 +8355,8 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 	int remote_window;
 	int remote_maxpacket;
 	int chan_num = -1;
+
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN was received.", LOG_LEVEL_VERBOSE);
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
@@ -8416,6 +8461,8 @@ static BOOL handle_SSH2_channel_close(PTInstVar pvar)
 	char *s;
 	unsigned char *outmsg;
 
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_CLOSE was received.", LOG_LEVEL_VERBOSE);
+
 	// コネクション切断時に、パケットダンプをファイルへ掃き出す。
 	if (LOG_LEVEL_SSHDUMP <= pvar->session_settings.LogLevel) {
 		save_memdump(LOG_PACKET_DUMP);
@@ -8453,6 +8500,8 @@ static BOOL handle_SSH2_channel_close(PTInstVar pvar)
 		finish_send_packet(pvar);
 		buffer_free(msg);
 
+		notify_verbose_message(pvar, "SSH2_MSG_DISCONNECT was sent at handle_SSH2_channel_close().", LOG_LEVEL_VERBOSE);
+
 		// TCP connection closed
 		notify_closed_connection(pvar);
 
@@ -8487,6 +8536,8 @@ static BOOL handle_SSH2_channel_request(PTInstVar pvar)
 	char *emsg = "exit-status";
 	int estat = 0;
 	Channel_t *c;
+
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_REQUEST was received.", LOG_LEVEL_VERBOSE);
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
@@ -8542,6 +8593,12 @@ static BOOL handle_SSH2_channel_request(PTInstVar pvar)
 		memcpy(outmsg, buffer_ptr(msg), len);
 		finish_send_packet(pvar);
 		buffer_free(msg);
+
+		if (success) {
+			notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_SUCCESS was sent at handle_SSH2_channel_request().", LOG_LEVEL_VERBOSE);
+		} else {
+			notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_FAILURE was sent at handle_SSH2_channel_request().", LOG_LEVEL_VERBOSE);
+		}
 	}
 
 	return TRUE;
@@ -8555,6 +8612,8 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 	int id;
 	unsigned int adjust;
 	Channel_t *c;
+
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_WINDOW_ADJUST was received.", LOG_LEVEL_SSHDUMP);
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
