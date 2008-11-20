@@ -13,8 +13,8 @@
 
 <pre class="syntax">
 cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
-            [-s 'shell'] [-ls | -nols] [-cd | -nocd]
-            [-v 'env-var' ...] [-d 'directory']
+            [-s 'shell'] [-ls | -nols] [-cd | -nocd] [-A | -a]
+            [-v 'env-var' ...] [-d 'directory'] [-o 'option']
 </pre>
 
 <dl>
@@ -59,6 +59,12 @@ cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
   <dt>-nocd</dt>
   <dd>The shell is invoked without changing the current directory.</dd>
 
+  <dt>-A</dt>
+  <dd>Enable ssh-agent proxy support.</dd>
+
+  <dt>-a</dt>
+  <dd>Disable ssh-agent proxy support.</dd>
+
   <dt>-v 'env-var'</dt>
   <dd>
     Specify the environment variable to be set when starting the shell.
@@ -70,6 +76,9 @@ cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
   <dt>-d 'directory'</dt>
   <dd>The current directory is moved to the specified directory and the shell is invoked.</dd>
 </dl>
+
+  <dt>-o 'option'</dt>
+  <dd>Additional parameter for terminal-emulator.</dd>
 
 <p>
 The terminal emulator or connection port number, and the shell on Cygwin, these need to be specified at least.  If these are given on the command line, cygterm.exe can be run without configuration file cygterm.cfg.

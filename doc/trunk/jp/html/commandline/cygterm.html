@@ -13,8 +13,8 @@
 
 <pre class="syntax">
 cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
-            [-s 'shell'] [-ls | -nols] [-cd | -nocd]
-            [-v 'env-var' ...] [-d 'directory']
+            [-s 'shell'] [-ls | -nols] [-cd | -nocd] [-A | -a]
+            [-v 'env-var' ...] [-d 'directory'] [-o 'option']
 </pre>
 
 <dl>
@@ -60,6 +60,16 @@ cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
   <dt>-nocd</dt>
   <dd>カレントディレクトリを移動せずにシェルを起動します。</dd>
 
+  <dt>-A</dt>
+  <dd>
+    ssh認証エージェント転送機能を有効にします。
+    OpenSSHのssh認証エージェントに対応したプログラムが、
+    CygTerm+を通してPageantにアクセス出来るようになります。
+  </dd>
+
+  <dt>-a</dt>
+  <dd>ssh認証エージェント転送機能を無効にします。</dd>
+
   <dt>-v 'env-var'</dt>
   <dd>
     シェル起動時に設定しておきたい環境変数を指定します。
@@ -71,6 +81,12 @@ cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
   <dt>-d 'directory'</dt>
   <dd>カレントディレクトリを指定されたディレクトリに移動してからシェルを起動します。</dd>
 </dl>
+
+  <dt>-o 'option'</dt>
+  <dd>
+    ターミナル・エミュレータへの追加のパラメータを指定します。
+    TERMを変えずに追加のパラメータを指定したい時に使います。
+  </dd>
 
 <p>
 ターミナル・エミュレータもしくは接続先ポート番号、と Cygwin側シェルの指定が最低必要となります。 これらがコマンドライン・オプションによって与えられるならば、設定ファイル cygterm.cfg が無くても実行できます。

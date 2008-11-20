@@ -48,7 +48,7 @@
           <li>linked ssh protocol to the ttermpro.exe program.</li>
         </ul></li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.49">2.49</a></li>
-      <li>upgraded CygTerm+ to <a href="#cygterm_1.07_15">1.07_15</a></li>
+      <li>upgraded CygTerm+ to <a href="#cygterm_1.07_16">1.07_16</a></li>
     </ul>
   </li>
 
@@ -1697,11 +1697,18 @@ SYNOPSIS:
 
 <h2><a name="cygterm">CygTerm+</a></h2>
 <ul>
+  <li class="history"><a name="cygterm_1.07_16">v1.07_16 2008/11/21 (by doda)</a>
+    <ul>
+      <li>The option that enables ssh-agent proxy support is changed from '-a' to '-A'.</li>
+      <li>Added '-a' option that disables ssh-agent proxy support.</li>
+    </ul>
+  </li>
+
   <li class="history"><a name="cygterm_1.07_15">v1.07_15 2008/11/01 (by doda)</a>
     <ul>
-      <li>Added ssh-agent proxy support.<!-- OpenSSHに対応したプログラムが、CygTerm+を通してPageantにアクセスできるようになる。-->
+      <li>Added ssh-agent proxy support.<!-- OpenSSHのssh認証エージェントに対応したプログラムが、CygTerm+を通してPageantにアクセスできるようになる。-->
       <ul>
-        <li>Added '-a' option that is enable ssh-agent proxy support.</li>
+        <li>Added '-a' option that enables ssh-agent proxy support.</li>
       </ul></li>
     </ul>
   </li>
