@@ -1,5 +1,5 @@
 #define AppName "Tera Term"
-#define AppVer "4.61-Alpha3"
+#define AppVer "4.61-Alpha4"
 
 [Setup]
 AppCopyright=TeraTerm Project
@@ -353,17 +353,17 @@ en.msg_uninstall_confirm=It seems a former version is installed. You are recomme
 ja.msg_uninstall_confirm=以前のバージョンがインストールされているようです。先にアンインストールすることをお勧めします。アンインストールしますか？
 en.comp_TTX=Additional Plugins
 ja.comp_TTX=追加プラグイン
-en.comp_TTXResizeMenu=
+en.comp_TTXResizeMenu=VT-Window size can be changed from preset
 ja.comp_TTXResizeMenu=VTウィンドウのサイズをプリセット値の中から変更できるようにする
-en.comp_TTXttyrec=
+en.comp_TTXttyrec=ttyrec format record data can be recorded or playback
 ja.comp_TTXttyrec=ttyrec形式の録画データを記録/再生できるようにする
 en.comp_TTXKanjiMenu=Changes Japanese Kanji Code from VT-Window menu
 ja.comp_TTXKanjiMenu=日本語の漢字コードをVTウィンドウのメニューから設定できるようにする
-en.comp_TTXKcodeChange=
+en.comp_TTXKcodeChange=Change Japanese Kanji code by remote sequence
 ja.comp_TTXKcodeChange=リモートからのシーケンスで日本語の漢字コードを変更する
-en.comp_TTXViewMode=
+en.comp_TTXViewMode=View-only mode can be used
 ja.comp_TTXViewMode=表示専用モードにすることができる
-en.comp_TTXAlwaysOnTop=
+en.comp_TTXAlwaysOnTop=Always On Top can be used
 ja.comp_TTXAlwaysOnTop=常に最前面に表示できるようにする
 
 [Code]
