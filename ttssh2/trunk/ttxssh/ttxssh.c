@@ -192,6 +192,7 @@ static void normalize_cipher_order(char FAR * buf)
 		SSH2_CIPHER_AES128_CTR,
 		SSH2_CIPHER_AES192_CTR,
 		SSH2_CIPHER_AES256_CTR,
+		SSH2_CIPHER_ARCFOUR,
 		SSH_CIPHER_3DES,
 		SSH_CIPHER_NONE,
 		SSH_CIPHER_DES,
@@ -2043,6 +2044,8 @@ static char FAR *get_cipher_name(int cipher)
 		return "AES192-CTR(SSH2)";
 	case SSH2_CIPHER_AES256_CTR:
 		return "AES256-CTR(SSH2)";
+	case SSH2_CIPHER_ARCFOUR:
+		return "Arcfour(SSH2)";
 
 	default:
 		return NULL;

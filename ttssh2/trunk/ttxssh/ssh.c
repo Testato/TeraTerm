@@ -3920,6 +3920,9 @@ void SSH2_update_cipher_myproposal(PTInstVar pvar)
 		else if (cipher == SSH2_CIPHER_AES256_CTR) {
 			strncat_s(buf, sizeof(buf), "aes256-ctr,", _TRUNCATE);
 		}
+		else if (cipher == SSH2_CIPHER_ARCFOUR) {
+			strncat_s(buf, sizeof(buf), "arcfour,", _TRUNCATE);
+		}
 	}
 	if (buf[0] != '\0') {
 		len = strlen(buf);
@@ -4036,6 +4039,8 @@ static SSHCipher choose_SSH2_cipher_algorithm(char *server_proposal, char *my_pr
 		cipher = SSH2_CIPHER_AES192_CTR;
 	} else if (strstr(ptr, "aes256-ctr")) {
 		cipher = SSH2_CIPHER_AES256_CTR;
+	} else if (strstr(ptr, "arcfour")) {
+		cipher = SSH2_CIPHER_ARCFOUR;
 	}
 
 	return (cipher);
@@ -6373,6 +6378,7 @@ static BOOL handle_SSH2_newkeys(PTInstVar pvar)
 	                       | 1 << SSH2_CIPHER_AES128_CTR
 	                       | 1 << SSH2_CIPHER_AES192_CTR
 	                       | 1 << SSH2_CIPHER_AES256_CTR
+	                       | 1 << SSH2_CIPHER_ARCFOUR
 	);
 	int type = (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA) |
 	           (1 << SSH_AUTH_TIS) | (1 << SSH_AUTH_PAGEANT);

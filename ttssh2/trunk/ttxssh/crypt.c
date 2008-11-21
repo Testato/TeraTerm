@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.24 2008-11-18 06:24:09 maya Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.25 2008-11-21 18:54:22 doda Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -481,6 +481,81 @@ error:
 	free(newbuf);
 }
 
+static void cArcfour_encrypt(PTInstVar pvar, unsigned char FAR * buf,
+                               int bytes)
+{
+	unsigned char *newbuf = malloc(bytes);
+	int block_size = pvar->ssh2_keys[MODE_OUT].enc.block_size;
+
+	// 事前復号化により、全ペイロードが復号化されている場合は、0バイトになる。(2004.11.7 yutaka)
+	if (bytes == 0)
+		goto error;
+
+	if (newbuf == NULL)
+		return;
+
+	if (bytes % block_size) {
+		char tmp[80];
+		UTIL_get_lang_msg("MSG_ARCFOUR_ENCRYPT_ERROR1", pvar,
+		                  "Arcfour encrypt error(1): bytes %d (%d)");
+		_snprintf_s(tmp, sizeof(tmp), _TRUNCATE,
+		            pvar->ts->UIMsg, bytes, block_size);
+		notify_fatal_error(pvar, tmp);
+		goto error;
+	}
+
+	if (EVP_Cipher(&pvar->evpcip[MODE_OUT], newbuf, buf, bytes) == 0) {
+		UTIL_get_lang_msg("MSG_ARCFOUR_ENCRYPT_ERROR2", pvar,
+		                  "Arcfour encrypt error(2)");
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+		goto error;
+
+	} else {
+		memcpy(buf, newbuf, bytes);
+
+	}
+
+error:
+	free(newbuf);
+}
+
+static void cArcfour_decrypt(PTInstVar pvar, unsigned char FAR * buf,
+                               int bytes)
+{
+	unsigned char *newbuf = malloc(bytes);
+	int block_size = pvar->ssh2_keys[MODE_IN].enc.block_size;
+
+	// 事前復号化により、全ペイロードが復号化されている場合は、0バイトになる。(2004.11.7 yutaka)
+	if (bytes == 0)
+		goto error;
+
+	if (newbuf == NULL)
+		return;
+
+	if (bytes % block_size) {
+		char tmp[80];
+		UTIL_get_lang_msg("MSG_ARCFOUR_DECRYPT_ERROR1", pvar,
+		                  "Arcfour decrypt error(1): bytes %d (%d)");
+		_snprintf_s(tmp, sizeof(tmp), _TRUNCATE, pvar->ts->UIMsg, bytes, block_size);
+		notify_fatal_error(pvar, tmp);
+		goto error;
+	}
+
+	if (EVP_Cipher(&pvar->evpcip[MODE_IN], newbuf, buf, bytes) == 0) {
+		UTIL_get_lang_msg("MSG_ARCFOUR_DECRYPT_ERROR2", pvar,
+		                  "Arcfour decrypt error(2)");
+		notify_fatal_error(pvar, pvar->ts->UIMsg);
+		goto error;
+
+	} else {
+		memcpy(buf, newbuf, bytes);
+
+	}
+
+error:
+	free(newbuf);
+}
+
 
 
 static void c3DES_encrypt(PTInstVar pvar, unsigned char FAR * buf,
@@ -710,7 +785,8 @@ BOOL CRYPT_set_supported_ciphers(PTInstVar pvar, int sender_ciphers,
 		            | (1 << SSH2_CIPHER_BLOWFISH_CBC)
 		            | (1 << SSH2_CIPHER_AES128_CTR)
 		            | (1 << SSH2_CIPHER_AES192_CTR)
-		            | (1 << SSH2_CIPHER_AES256_CTR);
+		            | (1 << SSH2_CIPHER_AES256_CTR)
+		            | (1 << SSH2_CIPHER_ARCFOUR);
 	}
 
 	sender_ciphers &= cipher_mask;
@@ -1217,6 +1293,24 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				break;
 			}
 
+		case SSH2_CIPHER_ARCFOUR:
+			{
+				struct Enc *enc;
+
+				enc = &pvar->ssh2_keys[MODE_OUT].enc;
+				cipher_init_SSH2(&pvar->evpcip[MODE_OUT],
+				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
+				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
+				                 CIPHER_ENCRYPT,
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 pvar);
+				//debug_print(10, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
+				//debug_print(11, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
+
+				pvar->crypt_state.encrypt = cArcfour_encrypt;
+				break;
+			}
+
 		case SSH_CIPHER_3DES:{
 				c3DES_init(encryption_key, &pvar->crypt_state.enc.c3DES);
 				pvar->crypt_state.encrypt = c3DES_encrypt;
@@ -1316,6 +1410,25 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				break;
 			}
 
+		case SSH2_CIPHER_ARCFOUR:
+			{
+				struct Enc *enc;
+
+				enc = &pvar->ssh2_keys[MODE_IN].enc;
+				cipher_init_SSH2(&pvar->evpcip[MODE_IN],
+				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
+				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
+				                 CIPHER_DECRYPT,
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 pvar);
+
+				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
+				//debug_print(13, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
+
+				pvar->crypt_state.decrypt = cArcfour_decrypt;
+				break;
+			}
+
 		case SSH_CIPHER_3DES:{
 				c3DES_init(decryption_key, &pvar->crypt_state.dec.c3DES);
 				pvar->crypt_state.decrypt = c3DES_decrypt;
@@ -1407,6 +1520,8 @@ static char FAR *get_cipher_name(int cipher)
 		return "AES192-CTR";
 	case SSH2_CIPHER_AES256_CTR:
 		return "AES256-CTR";
+	case SSH2_CIPHER_ARCFOUR:
+		return "ARCFOUR";
 
 	default:
 		return "Unknown";
