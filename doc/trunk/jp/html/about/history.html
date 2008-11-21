@@ -1198,11 +1198,11 @@
 
 <h2><a name="ttssh">TTSSH</a></h2>
 <ul>
-  <li class="history"><a name="ttssh_2.49">2008.9.24 (Ver 2.49 not-released)</a>
+  <li class="history"><a name="ttssh_2.49">2008.11.22 (Ver 2.49 not-released)</a>
     <ul>
-      <li>SSH2 の共通鍵暗号方式に AES128-CTR, AES192-CTR, AES256-CTR を追加した。セキュリティ対応: <a href="http://jvn.jp/niscc/CPNI-957037/">CPNI-957037</a>
+      <li>SSH2 の共通鍵暗号方式に AES128-CTR, AES192-CTR, AES256-CTR, Arcfour を追加した。セキュリティ対応: <a href="http://jvn.jp/niscc/CPNI-957037/">CPNI-957037</a>
         <ul>
-          <li>teraterm.ini の CipherOrder エントリに"&lt;", "=", "&gt;"を追加した。</li>
+          <li>teraterm.ini の CipherOrder エントリに"&lt;", "=", "&gt;", "?"を追加した。</li>
         </ul></li>
       <li>SSH1接続時にアプリケーションエラーで落ちる問題を修正した。</li>
       <li>SSH2 接続で CheckAuthListFirst が有効な場合に、有効な認証メソッドが返ってくる前に接続ダイアログの OK ボタンを押すと接続が終了する問題を修正した。</li>
