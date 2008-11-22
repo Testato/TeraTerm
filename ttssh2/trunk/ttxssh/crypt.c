@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.25 2008-11-21 18:54:22 doda Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.26 2008-11-22 06:46:43 doda Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -786,7 +786,9 @@ BOOL CRYPT_set_supported_ciphers(PTInstVar pvar, int sender_ciphers,
 		            | (1 << SSH2_CIPHER_AES128_CTR)
 		            | (1 << SSH2_CIPHER_AES192_CTR)
 		            | (1 << SSH2_CIPHER_AES256_CTR)
-		            | (1 << SSH2_CIPHER_ARCFOUR);
+		            | (1 << SSH2_CIPHER_ARCFOUR)
+		            | (1 << SSH2_CIPHER_ARCFOUR128)
+		            | (1 << SSH2_CIPHER_ARCFOUR256);
 	}
 
 	sender_ciphers &= cipher_mask;
@@ -1187,10 +1189,12 @@ void cipher_init_SSH2(EVP_CIPHER_CTX *evp,
                       const u_char *iv, u_int ivlen,
                       int encrypt,
                       const EVP_CIPHER *type,
+                      int discard_len,
                       PTInstVar pvar)
 {
 	int klen;
 	char tmp[80];
+	unsigned char *junk = NULL, *discard = NULL;
 
 	EVP_CIPHER_CTX_init(evp);
 	if (EVP_CipherInit(evp, type, NULL, (u_char *)iv, (encrypt == CIPHER_ENCRYPT)) == 0) {
@@ -1218,6 +1222,24 @@ void cipher_init_SSH2(EVP_CIPHER_CTX *evp,
 		notify_fatal_error(pvar, tmp);
 		return;
 	}
+
+	if (discard_len > 0) {
+		junk = malloc(discard_len);
+		discard = malloc(discard_len);
+		if (junk == NULL || discard == NULL ||
+		    EVP_Cipher(evp, discard, junk, discard_len) == 0) {
+			UTIL_get_lang_msg("MSG_CIPHER_INIT_ERROR", pvar,
+			                  "Cipher initialize error(%d)");
+			_snprintf_s(tmp, sizeof(tmp), _TRUNCATE,
+			            pvar->ts->UIMsg, 3);
+			notify_fatal_error(pvar, tmp);
+		}
+		else {
+			memset(discard, 0, discard_len);
+		}
+		free(junk);
+		free(discard);
+	}
 }
 
 
@@ -1240,6 +1262,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_ENCRYPT,
 				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 get_cipher_discard_len(pvar->crypt_state.sender_cipher),
 				                 pvar);
 
 				//debug_print(10, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
@@ -1265,6 +1288,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_ENCRYPT,
 				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 get_cipher_discard_len(pvar->crypt_state.sender_cipher),
 				                 pvar);
 
 				//debug_print(10, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
@@ -1284,6 +1308,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_ENCRYPT,
 				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 get_cipher_discard_len(pvar->crypt_state.sender_cipher),
 				                 pvar);
 
 				//debug_print(10, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
@@ -1294,6 +1319,8 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 			}
 
 		case SSH2_CIPHER_ARCFOUR:
+		case SSH2_CIPHER_ARCFOUR128:
+		case SSH2_CIPHER_ARCFOUR256:
 			{
 				struct Enc *enc;
 
@@ -1303,6 +1330,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_ENCRYPT,
 				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 get_cipher_discard_len(pvar->crypt_state.sender_cipher),
 				                 pvar);
 				//debug_print(10, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
 				//debug_print(11, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
@@ -1357,6 +1385,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_DECRYPT,
 				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 get_cipher_discard_len(pvar->crypt_state.sender_cipher),
 				                 pvar);
 
 				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
@@ -1382,6 +1411,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_DECRYPT,
 				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 get_cipher_discard_len(pvar->crypt_state.sender_cipher),
 				                 pvar);
 
 				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
@@ -1401,6 +1431,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_DECRYPT,
 				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 get_cipher_discard_len(pvar->crypt_state.sender_cipher),
 				                 pvar);
 
 				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
@@ -1411,6 +1442,8 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 			}
 
 		case SSH2_CIPHER_ARCFOUR:
+		case SSH2_CIPHER_ARCFOUR128:
+		case SSH2_CIPHER_ARCFOUR256:
 			{
 				struct Enc *enc;
 
@@ -1420,6 +1453,7 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
 				                 CIPHER_DECRYPT,
 				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
+				                 get_cipher_discard_len(pvar->crypt_state.sender_cipher),
 				                 pvar);
 
 				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
@@ -1521,7 +1555,11 @@ static char FAR *get_cipher_name(int cipher)
 	case SSH2_CIPHER_AES256_CTR:
 		return "AES256-CTR";
 	case SSH2_CIPHER_ARCFOUR:
-		return "ARCFOUR";
+		return "Arcfour";
+	case SSH2_CIPHER_ARCFOUR128:
+		return "Arcfour128";
+	case SSH2_CIPHER_ARCFOUR256:
+		return "Arcfour256";
 
 	default:
 		return "Unknown";

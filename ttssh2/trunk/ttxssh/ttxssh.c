@@ -193,6 +193,8 @@ static void normalize_cipher_order(char FAR * buf)
 		SSH2_CIPHER_AES192_CTR,
 		SSH2_CIPHER_AES256_CTR,
 		SSH2_CIPHER_ARCFOUR,
+		SSH2_CIPHER_ARCFOUR128,
+		SSH2_CIPHER_ARCFOUR256,
 		SSH_CIPHER_3DES,
 		SSH_CIPHER_NONE,
 		SSH_CIPHER_DES,
@@ -2046,6 +2048,10 @@ static char FAR *get_cipher_name(int cipher)
 		return "AES256-CTR(SSH2)";
 	case SSH2_CIPHER_ARCFOUR:
 		return "Arcfour(SSH2)";
+	case SSH2_CIPHER_ARCFOUR128:
+		return "Arcfour128(SSH2)";
+	case SSH2_CIPHER_ARCFOUR256:
+		return "Arcfour256(SSH2)";
 
 	default:
 		return NULL;
@@ -3383,9 +3389,9 @@ public_error:
 				MD5_Update(&md, (const unsigned char *)passphrase, strlen(passphrase));
 				MD5_Final(digest, &md);
 				if (cipher_num == SSH_CIPHER_NONE) {
-					cipher_init_SSH2(&cipher_ctx, digest, 16, NULL, 0, CIPHER_ENCRYPT, EVP_enc_null(), pvar);
+					cipher_init_SSH2(&cipher_ctx, digest, 16, NULL, 0, CIPHER_ENCRYPT, EVP_enc_null(), 0, pvar);
 				} else {
-					cipher_init_SSH2(&cipher_ctx, digest, 16, NULL, 0, CIPHER_ENCRYPT, evp_ssh1_3des(), pvar);
+					cipher_init_SSH2(&cipher_ctx, digest, 16, NULL, 0, CIPHER_ENCRYPT, evp_ssh1_3des(), 0, pvar);
 				}
 				len = buffer_len(b);
 				if (len % 8) { // fatal error

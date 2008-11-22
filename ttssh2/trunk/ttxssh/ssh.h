@@ -84,10 +84,10 @@ typedef enum {
 	SSH2_CIPHER_AES192_CBC, SSH2_CIPHER_AES256_CBC,
 	SSH2_CIPHER_BLOWFISH_CBC, SSH2_CIPHER_AES128_CTR,
 	SSH2_CIPHER_AES192_CTR, SSH2_CIPHER_AES256_CTR,
-	SSH2_CIPHER_ARCFOUR,
+	SSH2_CIPHER_ARCFOUR, SSH2_CIPHER_ARCFOUR128, SSH2_CIPHER_ARCFOUR256,
 } SSHCipher;
 
-#define SSH_CIPHER_MAX SSH2_CIPHER_ARCFOUR
+#define SSH_CIPHER_MAX SSH2_CIPHER_ARCFOUR256
 
 typedef enum {
 	SSH_AUTH_NONE, SSH_AUTH_RHOSTS, SSH_AUTH_RSA, SSH_AUTH_PASSWORD,
@@ -222,7 +222,7 @@ enum hmac_type {
                             "diffie-hellman-group14-sha1," \
                             "diffie-hellman-group1-sha1"
 #define KEX_DEFAULT_PK_ALG  "ssh-rsa,ssh-dss"
-#define KEX_DEFAULT_ENCRYPT "aes256-ctr,aes256-cbc,aes192-ctr,aes192-cbc,aes128-ctr,aes128-cbc,3des-cbc,blowfish-cbc,arcfour"
+#define KEX_DEFAULT_ENCRYPT "aes256-ctr,aes256-cbc,aes192-ctr,aes192-cbc,aes128-ctr,aes128-cbc,3des-cbc,blowfish-cbc,arcfour256,arcfour128,arcfour"
 #define KEX_DEFAULT_MAC     "hmac-sha1,hmac-md5"
 // support of "Compression delayed" (2006.6.23 maya)
 #define KEX_DEFAULT_COMP	"none,zlib@openssh.com,zlib"
@@ -287,20 +287,23 @@ typedef struct ssh2_cipher {
 	char *name;
 	int block_size;
 	int key_len;
+	int discard_len;
 	const EVP_CIPHER *(*func)(void);
 } ssh2_cipher_t;
 
 static ssh2_cipher_t ssh2_ciphers[] = {
-	{SSH2_CIPHER_3DES_CBC,     "3des-cbc",      8, 24, EVP_des_ede3_cbc},
-	{SSH2_CIPHER_AES128_CBC,   "aes128-cbc",   16, 16, EVP_aes_128_cbc},
-	{SSH2_CIPHER_AES192_CBC,   "aes192-cbc",   16, 24, EVP_aes_192_cbc},
-	{SSH2_CIPHER_AES256_CBC,   "aes256-cbc",   16, 32, EVP_aes_256_cbc},
-	{SSH2_CIPHER_BLOWFISH_CBC, "blowfish-cbc",  8, 16, EVP_bf_cbc},
-	{SSH2_CIPHER_AES128_CTR,   "aes128-ctr",   16, 16, evp_aes_128_ctr},
-	{SSH2_CIPHER_AES192_CTR,   "aes192-ctr",   16, 24, evp_aes_128_ctr},
-	{SSH2_CIPHER_AES256_CTR,   "aes256-ctr",   16, 32, evp_aes_128_ctr},
-	{SSH2_CIPHER_ARCFOUR,      "arcfour",       8, 16, EVP_rc4},
-	{SSH_CIPHER_NONE, NULL, 0, 0, NULL},
+	{SSH2_CIPHER_3DES_CBC,     "3des-cbc",      8, 24, 0, EVP_des_ede3_cbc},
+	{SSH2_CIPHER_AES128_CBC,   "aes128-cbc",   16, 16, 0, EVP_aes_128_cbc},
+	{SSH2_CIPHER_AES192_CBC,   "aes192-cbc",   16, 24, 0, EVP_aes_192_cbc},
+	{SSH2_CIPHER_AES256_CBC,   "aes256-cbc",   16, 32, 0, EVP_aes_256_cbc},
+	{SSH2_CIPHER_BLOWFISH_CBC, "blowfish-cbc",  8, 16, 0, EVP_bf_cbc},
+	{SSH2_CIPHER_AES128_CTR,   "aes128-ctr",   16, 16, 0, evp_aes_128_ctr},
+	{SSH2_CIPHER_AES192_CTR,   "aes192-ctr",   16, 24, 0, evp_aes_128_ctr},
+	{SSH2_CIPHER_AES256_CTR,   "aes256-ctr",   16, 32, 0, evp_aes_128_ctr},
+	{SSH2_CIPHER_ARCFOUR,      "arcfour",       8, 16, 0, EVP_rc4},
+	{SSH2_CIPHER_ARCFOUR128,   "arcfour128",    8, 16, 1536, EVP_rc4},
+	{SSH2_CIPHER_ARCFOUR256,   "arcfour256",    8, 32, 1536, EVP_rc4},
+	{SSH_CIPHER_NONE, NULL, 0, 0, 0, NULL},
 };
 
 
@@ -520,6 +523,7 @@ void debug_print(int no, char *msg, int len);
 int get_cipher_block_size(SSHCipher cipher);
 int get_cipher_key_len(SSHCipher cipher);
 const EVP_CIPHER* get_cipher_EVP_CIPHER(SSHCipher cipher);
+int get_cipher_discard_len(SSHCipher cipher);
 void ssh_heartbeat_lock_initialize(void);
 void ssh_heartbeat_lock_finalize(void);
 void ssh_heartbeat_lock(void);

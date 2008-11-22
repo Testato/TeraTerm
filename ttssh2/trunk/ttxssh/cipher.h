@@ -98,6 +98,7 @@ void cipher_init_SSH2(
 		const u_char *iv, u_int ivlen,
 		int encrypt,
 		const EVP_CIPHER *type,
+		int discard_len,
 		PTInstVar pvar
 );
 

@@ -3799,6 +3799,21 @@ int get_cipher_key_len(SSHCipher cipher)
 	return (val);
 }
 
+int get_cipher_discard_len(SSHCipher cipher)
+{
+	ssh2_cipher_t *ptr = ssh2_ciphers;
+	int val = 0;
+
+	while (ptr->name != NULL) {
+		if (cipher == ptr->cipher) {
+			val = ptr->discard_len;
+			break;
+		}
+		ptr++;
+	}
+	return (val);
+}
+
 static char * get_cipher_string(SSHCipher cipher)
 {
 	ssh2_cipher_t *ptr = ssh2_ciphers;
@@ -3923,6 +3938,12 @@ void SSH2_update_cipher_myproposal(PTInstVar pvar)
 		else if (cipher == SSH2_CIPHER_ARCFOUR) {
 			strncat_s(buf, sizeof(buf), "arcfour,", _TRUNCATE);
 		}
+		else if (cipher == SSH2_CIPHER_ARCFOUR128) {
+			strncat_s(buf, sizeof(buf), "arcfour128,", _TRUNCATE);
+		}
+		else if (cipher == SSH2_CIPHER_ARCFOUR256) {
+			strncat_s(buf, sizeof(buf), "arcfour256,", _TRUNCATE);
+		}
 	}
 	if (buf[0] != '\0') {
 		len = strlen(buf);
@@ -4039,6 +4060,10 @@ static SSHCipher choose_SSH2_cipher_algorithm(char *server_proposal, char *my_pr
 		cipher = SSH2_CIPHER_AES192_CTR;
 	} else if (strstr(ptr, "aes256-ctr")) {
 		cipher = SSH2_CIPHER_AES256_CTR;
+	} else if (strstr(ptr, "arcfour128")) {
+		cipher = SSH2_CIPHER_ARCFOUR128;
+	} else if (strstr(ptr, "arcfour256")) {
+		cipher = SSH2_CIPHER_ARCFOUR256;
 	} else if (strstr(ptr, "arcfour")) {
 		cipher = SSH2_CIPHER_ARCFOUR;
 	}
@@ -6379,6 +6404,8 @@ static BOOL handle_SSH2_newkeys(PTInstVar pvar)
 	                       | 1 << SSH2_CIPHER_AES192_CTR
 	                       | 1 << SSH2_CIPHER_AES256_CTR
 	                       | 1 << SSH2_CIPHER_ARCFOUR
+	                       | 1 << SSH2_CIPHER_ARCFOUR128
+	                       | 1 << SSH2_CIPHER_ARCFOUR256
 	);
 	int type = (1 << SSH_AUTH_PASSWORD) | (1 << SSH_AUTH_RSA) |
 	           (1 << SSH_AUTH_TIS) | (1 << SSH_AUTH_PAGEANT);
