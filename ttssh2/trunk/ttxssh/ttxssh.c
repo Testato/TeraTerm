@@ -195,6 +195,7 @@ static void normalize_cipher_order(char FAR * buf)
 		SSH2_CIPHER_ARCFOUR,
 		SSH2_CIPHER_ARCFOUR128,
 		SSH2_CIPHER_ARCFOUR256,
+		SSH2_CIPHER_CAST128_CBC,
 		SSH_CIPHER_3DES,
 		SSH_CIPHER_NONE,
 		SSH_CIPHER_DES,
@@ -2052,6 +2053,8 @@ static char FAR *get_cipher_name(int cipher)
 		return "Arcfour128(SSH2)";
 	case SSH2_CIPHER_ARCFOUR256:
 		return "Arcfour256(SSH2)";
+	case SSH2_CIPHER_CAST128_CBC:
+		return "CAST128-CBC(SSH2)";
 
 	default:
 		return NULL;
