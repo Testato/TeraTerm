@@ -265,17 +265,17 @@
                 zsh 4.3.4
 
 // C H A N G E S //
-v1.07_16 2008/11/21 (doda)
+v1.07_16 2008/11/21 (by doda)
         * The option that enables ssh-agent proxy support is changed from '-a' to '-A'.
         * Added '-a' option that disables ssh-agent proxy support.
 
-v1.07_15 2008/11/01 (doda)
+v1.07_15 2008/11/01 (by doda)
         * Added ssh-agent proxy support.
 
-v1.07_14 2007/12/17 (doda)
+v1.07_14 2007/12/17 (by doda)
         * Added '-o' option that is specifies the additional parameters for terminal-emulator.
 
-v1.07_13 2007/08/03 (by maya.negeta@gmail.com)
+v1.07_13 2007/08/03 (by maya)
         * Added '-d' option that is specifies the start directory.
 
 v1.07_12 2007/06/10 (by doda)
@@ -285,7 +285,7 @@ v1.07_11 2007/01/31 (import from cygterm v1.07)
         * Avoid WinMainCRTStartup() redefinition error with gcc 3.4.
         * Give an output gap for keyboard interrupt.
 
-v1.06_11 2006/09/29 (by maya.negeta@gmail.com)
+v1.06_11 2006/09/29 (by maya)
         * Stopped using HOME from environment variable and /etc/passwd.
           CygTerm passes HOME which is set by Cygwin. See also /etc/profile
         * Changed the priority of config files.
@@ -297,16 +297,16 @@ v1.06_10 2006/09/28 (by doda)
 v1.06_09 2006/09/25 (by doda)
         * Get shell information from /etc/passwd if SHELL parameter is not specified.
 
-v1.06_08 2006/08/30 (by maya.negeta@gmail.com)
+v1.06_08 2006/08/30 (by maya)
         * Changed the priority of config files. cygterm.cfg is top priority config file.
 
-v1.06_07 2006/08/19 (by maya.negeta@gmail.com)
+v1.06_07 2006/08/19 (by maya)
         * Use `HOME' environment variable for changing home directory if the variable will be set.
 
 v1.06_06 2006/08/18 (by doda)
         * Limit a parameter length of both '-s' and '-t' option.
 
-v1.06_05 2006/08/18 (by maya.negeta@gmail.com)
+v1.06_05 2006/08/18 (by maya)
         * Create mutex object for running check by installer.
 
 v1.06_04 2006/08/15 (by doda)
