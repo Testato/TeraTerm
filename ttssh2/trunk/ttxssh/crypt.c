@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEATTACK_DETECTED	1
 
 /*
- * $Id: crypt.c,v 1.27 2008-11-22 10:05:33 maya Exp $ Cryptographic attack
+ * $Id: crypt.c,v 1.28 2008-11-23 07:44:05 doda Exp $ Cryptographic attack
  * detector for ssh - source code (C)1998 CORE-SDI, Buenos Aires Argentina
  * Ariel Futoransky(futo@core-sdi.com) <http://www.core-sdi.com>
  */
@@ -1476,15 +1476,15 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 				enc = &pvar->ssh2_keys[MODE_IN].enc;
 				cipher_init_SSH2(&pvar->evpcip[MODE_IN],
-				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
-				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
+				                 enc->key, get_cipher_key_len(pvar->crypt_state.receiver_cipher),
+				                 enc->iv, get_cipher_block_size(pvar->crypt_state.receiver_cipher),
 				                 CIPHER_DECRYPT,
-				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
-				                 get_cipher_discard_len(pvar->crypt_state.sender_cipher),
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.receiver_cipher),
+				                 get_cipher_discard_len(pvar->crypt_state.receiver_cipher),
 				                 pvar);
 
-				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
-				//debug_print(13, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
+				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.receiver_cipher));
+				//debug_print(13, enc->iv, get_cipher_block_size(pvar->crypt_state.receiver_cipher));
 
 				pvar->crypt_state.decrypt = c3DES_CBC_decrypt;
 				break;
@@ -1502,15 +1502,15 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 				enc = &pvar->ssh2_keys[MODE_IN].enc;
 				cipher_init_SSH2(&pvar->evpcip[MODE_IN],
-				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
-				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
+				                 enc->key, get_cipher_key_len(pvar->crypt_state.receiver_cipher),
+				                 enc->iv, get_cipher_block_size(pvar->crypt_state.receiver_cipher),
 				                 CIPHER_DECRYPT,
-				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
-				                 get_cipher_discard_len(pvar->crypt_state.sender_cipher),
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.receiver_cipher),
+				                 get_cipher_discard_len(pvar->crypt_state.receiver_cipher),
 				                 pvar);
 
-				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
-				//debug_print(13, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
+				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.receiver_cipher));
+				//debug_print(13, enc->iv, get_cipher_block_size(pvar->crypt_state.receiver_cipher));
 
 				pvar->crypt_state.decrypt = cAES128_decrypt;
 				break;
@@ -1522,15 +1522,15 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 				enc = &pvar->ssh2_keys[MODE_IN].enc;
 				cipher_init_SSH2(&pvar->evpcip[MODE_IN],
-				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
-				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
+				                 enc->key, get_cipher_key_len(pvar->crypt_state.receiver_cipher),
+				                 enc->iv, get_cipher_block_size(pvar->crypt_state.receiver_cipher),
 				                 CIPHER_DECRYPT,
-				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
-				                 get_cipher_discard_len(pvar->crypt_state.sender_cipher),
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.receiver_cipher),
+				                 get_cipher_discard_len(pvar->crypt_state.receiver_cipher),
 				                 pvar);
 
-				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
-				//debug_print(13, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
+				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.receiver_cipher));
+				//debug_print(13, enc->iv, get_cipher_block_size(pvar->crypt_state.receiver_cipher));
 
 				pvar->crypt_state.decrypt = cBlowfish_decrypt2;
 				break;
@@ -1544,15 +1544,15 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 				enc = &pvar->ssh2_keys[MODE_IN].enc;
 				cipher_init_SSH2(&pvar->evpcip[MODE_IN],
-				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
-				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
+				                 enc->key, get_cipher_key_len(pvar->crypt_state.receiver_cipher),
+				                 enc->iv, get_cipher_block_size(pvar->crypt_state.receiver_cipher),
 				                 CIPHER_DECRYPT,
-				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
-				                 get_cipher_discard_len(pvar->crypt_state.sender_cipher),
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.receiver_cipher),
+				                 get_cipher_discard_len(pvar->crypt_state.receiver_cipher),
 				                 pvar);
 
-				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
-				//debug_print(13, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
+				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.receiver_cipher));
+				//debug_print(13, enc->iv, get_cipher_block_size(pvar->crypt_state.receiver_cipher));
 
 				pvar->crypt_state.decrypt = cArcfour_decrypt;
 				break;
@@ -1564,15 +1564,15 @@ BOOL CRYPT_start_encryption(PTInstVar pvar, int sender_flag, int receiver_flag)
 
 				enc = &pvar->ssh2_keys[MODE_IN].enc;
 				cipher_init_SSH2(&pvar->evpcip[MODE_IN],
-				                 enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher),
-				                 enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher),
+				                 enc->key, get_cipher_key_len(pvar->crypt_state.receiver_cipher),
+				                 enc->iv, get_cipher_block_size(pvar->crypt_state.receiver_cipher),
 				                 CIPHER_DECRYPT,
-				                 get_cipher_EVP_CIPHER(pvar->crypt_state.sender_cipher),
-				                 get_cipher_discard_len(pvar->crypt_state.sender_cipher),
+				                 get_cipher_EVP_CIPHER(pvar->crypt_state.receiver_cipher),
+				                 get_cipher_discard_len(pvar->crypt_state.receiver_cipher),
 				                 pvar);
 
-				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.sender_cipher));
-				//debug_print(13, enc->iv, get_cipher_block_size(pvar->crypt_state.sender_cipher));
+				//debug_print(12, enc->key, get_cipher_key_len(pvar->crypt_state.receiver_cipher));
+				//debug_print(13, enc->iv, get_cipher_block_size(pvar->crypt_state.receiver_cipher));
 
 				pvar->crypt_state.decrypt = cCast128_decrypt;
 				break;
