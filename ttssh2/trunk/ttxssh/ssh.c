@@ -3896,7 +3896,7 @@ void SSH2_packet_start(buffer_t *msg, unsigned char type)
 // the caller is normalize_cipher_order()
 void SSH2_update_cipher_myproposal(PTInstVar pvar)
 {
-	static char buf[128]; // TODO: malloc()‚É‚·‚×‚«
+	static char buf[192]; // TODO: malloc()‚É‚·‚×‚«
 	int cipher;
 	int len, i;
 
