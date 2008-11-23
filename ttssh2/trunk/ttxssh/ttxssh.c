@@ -167,6 +167,10 @@ static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv)
 	init_TTSSH(pvar);
 }
 
+/*
+ * Remove unsupported cipher or duplicated cipher.
+ * Add unspecified ciphers at the end of list.
+ */
 static void normalize_cipher_order(char FAR * buf)
 {
 	char ciphers_listed[SSH_CIPHER_MAX + 1];
@@ -184,17 +188,17 @@ static void normalize_cipher_order(char FAR * buf)
 #else
 	// for SSH2(yutaka)
 	static char default_ciphers[] = {
+		SSH2_CIPHER_AES256_CTR,
+		SSH2_CIPHER_AES256_CBC,
+		SSH2_CIPHER_AES192_CTR,
+		SSH2_CIPHER_AES192_CBC,
+		SSH2_CIPHER_AES128_CTR,
 		SSH2_CIPHER_AES128_CBC,
 		SSH2_CIPHER_3DES_CBC,
 		SSH2_CIPHER_BLOWFISH_CBC,
-		SSH2_CIPHER_AES192_CBC,
-		SSH2_CIPHER_AES256_CBC,
-		SSH2_CIPHER_AES128_CTR,
-		SSH2_CIPHER_AES192_CTR,
-		SSH2_CIPHER_AES256_CTR,
-		SSH2_CIPHER_ARCFOUR,
-		SSH2_CIPHER_ARCFOUR128,
 		SSH2_CIPHER_ARCFOUR256,
+		SSH2_CIPHER_ARCFOUR128,
+		SSH2_CIPHER_ARCFOUR,
 		SSH2_CIPHER_CAST128_CBC,
 		SSH_CIPHER_3DES,
 		SSH_CIPHER_NONE,

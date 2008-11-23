@@ -223,9 +223,8 @@ enum hmac_type {
                             "diffie-hellman-group14-sha1," \
                             "diffie-hellman-group1-sha1"
 #define KEX_DEFAULT_PK_ALG  "ssh-rsa,ssh-dss"
-#define KEX_DEFAULT_ENCRYPT "aes256-ctr,aes256-cbc,aes192-ctr,aes192-cbc," \
-                            "aes128-ctr,aes128-cbc,3des-cbc,blowfish-cbc," \
-                            "arcfour256,arcfour128,arcfour,cast128-cbc"
+// use the setting of pvar.CipherOrder.
+#define KEX_DEFAULT_ENCRYPT ""
 #define KEX_DEFAULT_MAC     "hmac-sha1,hmac-md5"
 // support of "Compression delayed" (2006.6.23 maya)
 #define KEX_DEFAULT_COMP	"none,zlib@openssh.com,zlib"

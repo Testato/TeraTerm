@@ -3948,12 +3948,10 @@ void SSH2_update_cipher_myproposal(PTInstVar pvar)
 			strncat_s(buf, sizeof(buf), "cast128-cbc,", _TRUNCATE);
 		}
 	}
-	if (buf[0] != '\0') {
-		len = strlen(buf);
-		buf[len - 1] = '\0';  // get rid of comma
-		myproposal[PROPOSAL_ENC_ALGS_CTOS] = buf;  // Client To Server
-		myproposal[PROPOSAL_ENC_ALGS_STOC] = buf;  // Server To Client
-	}
+	len = strlen(buf);
+	buf[len - 1] = '\0';  // get rid of comma
+	myproposal[PROPOSAL_ENC_ALGS_CTOS] = buf;  // Client To Server
+	myproposal[PROPOSAL_ENC_ALGS_STOC] = buf;  // Server To Client
 }
 
 
