@@ -283,7 +283,7 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 		flag |= MF_GRAYED;
 	}
 	InsertMenu(pvar->FileMenu, ID_FILE_REPLAYLOG, MF_BYCOMMAND | MF_SEPARATOR, 0, NULL);
-	InsertMenu(pvar->FileMenu, ID_FILE_REPLAYLOG, flag, ID_MENU_REPLAY, "Tt&yplay");
+	InsertMenu(pvar->FileMenu, ID_FILE_REPLAYLOG, flag, ID_MENU_REPLAY, "TT&Y Replay");
 
 //	InsertMenu(menu, ID_HELPMENU, MF_ENABLED, ID_MENU_REPLAY, "&t");
 }

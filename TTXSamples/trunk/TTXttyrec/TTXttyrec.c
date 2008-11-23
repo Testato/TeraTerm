@@ -27,7 +27,7 @@ typedef struct {
   TReadFile origPReadFile;
   HANDLE fh;
   BOOL record;
-  HMENU ControlMenu;
+  HMENU FileMenu;
 } TInstVar;
 
 struct recheader {
@@ -135,22 +135,22 @@ static void PASCAL FAR TTXCloseFile(TTXFileHooks FAR * hooks) {
 static void PASCAL FAR TTXModifyMenu(HMENU menu) {
   UINT flag = MF_BYCOMMAND | MF_STRING | MF_ENABLED;
 
-  pvar->ControlMenu = GetControlMenu(menu);
+  pvar->FileMenu = GetFileMenu(menu);
   if (pvar->record) {
     flag |= MF_CHECKED;
   }
-  InsertMenu(pvar->ControlMenu, ID_CONTROL_MACRO,
-		flag, ID_MENUITEM, "TT&Y Record");
-  InsertMenu(pvar->ControlMenu, ID_CONTROL_MACRO,
-		MF_BYCOMMAND | MF_SEPARATOR, 0, NULL);
+  InsertMenu(pvar->FileMenu, ID_FILE_SENDFILE,
+		flag, ID_MENUITEM, "TTY R&ecord");
+//  InsertMenu(pvar->FileMenu, ID_FILE_SENDFILE,
+//		MF_BYCOMMAND | MF_SEPARATOR, 0, NULL);
 }
 
 static void PASCAL FAR TTXModifyPopupMenu(HMENU menu) {
-  if (menu==pvar->ControlMenu) {
+  if (menu==pvar->FileMenu) {
     if (pvar->cv->Ready)
-      EnableMenuItem(pvar->ControlMenu, ID_MENUITEM, MF_BYCOMMAND | MF_ENABLED);
+      EnableMenuItem(pvar->FileMenu, ID_MENUITEM, MF_BYCOMMAND | MF_ENABLED);
     else
-      EnableMenuItem(pvar->ControlMenu, ID_MENUITEM, MF_BYCOMMAND | MF_GRAYED);
+      EnableMenuItem(pvar->FileMenu, ID_MENUITEM, MF_BYCOMMAND | MF_GRAYED);
   }
 }
 
@@ -166,7 +166,7 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
 	pvar->fh = INVALID_HANDLE_VALUE;
       }
       pvar->record = FALSE;
-      CheckMenuItem(pvar->ControlMenu, ID_MENUITEM, MF_BYCOMMAND | MF_UNCHECKED);
+      CheckMenuItem(pvar->FileMenu, ID_MENUITEM, MF_BYCOMMAND | MF_UNCHECKED);
     }
     else {
       if (pvar->fh != INVALID_HANDLE_VALUE) {
@@ -186,7 +186,7 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
 	pvar->fh = CreateFile(fname, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (pvar->fh != INVALID_HANDLE_VALUE) {
 	  pvar->record = TRUE;
-	  CheckMenuItem(pvar->ControlMenu, ID_MENUITEM, MF_BYCOMMAND | MF_CHECKED);
+	  CheckMenuItem(pvar->FileMenu, ID_MENUITEM, MF_BYCOMMAND | MF_CHECKED);
 	}
       }
     }
