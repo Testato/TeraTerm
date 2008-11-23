@@ -1,5 +1,5 @@
 #define AppName "Tera Term"
-#define AppVer "4.61-Alpha4"
+#define AppVer "4.61-RC1"
 
 [Setup]
 AppCopyright=TeraTerm Project
@@ -534,7 +534,7 @@ begin
     2:
       SetIniString('Tera Term', 'UILanguageFile', 'lang\German.lng', iniFile);
     else
-      SetIniString('Tera Term', 'UILanguageFile', '', iniFile);
+      SetIniString('Tera Term', 'UILanguageFile', 'lang\English.lng', iniFile);
   end;
 
   if Length(FileDir) = 0 then begin
@@ -769,5 +769,4 @@ Name: {app}\libeay.txt; Type: files
 
 [_ISToolPreCompile]
 Name: makechm.bat
-;Name: build.bat; Parameters: rebuild
-Name: build.bat
+; Name: build.bat; Parameters: rebuild
