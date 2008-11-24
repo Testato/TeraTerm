@@ -6948,9 +6948,9 @@ static LRESULT CALLBACK ssh_heartbeat_dlg_proc(HWND hWnd, UINT msg, WPARAM wp, L
 			finish_send_packet(pvar);
 			buffer_free(msg);
 			if (SSHv1(pvar)) {
-				notify_verbose_message(pvar, "SSH_MSG_IGNORE was sent at ssh_heartbeat_dlg_proc().", LOG_LEVEL_VERBOSE);
+				notify_verbose_message(pvar, "SSH_MSG_IGNORE was sent at ssh_heartbeat_dlg_proc().", LOG_LEVEL_SSHDUMP);
 			} else {
-				notify_verbose_message(pvar, "SSH2_MSG_IGNORE was sent at ssh_heartbeat_dlg_proc().", LOG_LEVEL_VERBOSE);
+				notify_verbose_message(pvar, "SSH2_MSG_IGNORE was sent at ssh_heartbeat_dlg_proc().", LOG_LEVEL_SSHDUMP);
 			}
 			}
 			return TRUE;
@@ -7512,7 +7512,6 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	if (c->type == TYPE_PORTFWD) {
 		// port-forwading‚Ì"direct-tcpip"‚ª¬Œ÷B
 		FWD_confirmed_open(pvar, c->local_num, -1);
-		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_REQUEST was received. (port-fowarding)", LOG_LEVEL_VERBOSE);
 		return TRUE;
 	}
 
