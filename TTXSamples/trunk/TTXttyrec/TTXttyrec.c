@@ -139,8 +139,8 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
   if (pvar->record) {
     flag |= MF_CHECKED;
   }
-  InsertMenu(pvar->FileMenu, ID_FILE_SENDFILE,
-		flag, ID_MENUITEM, "TTY R&ecord");
+  InsertMenu(pvar->FileMenu, ID_FILE_PRINT2,
+		flag, ID_MENUITEM, "TT&Y Record");
 //  InsertMenu(pvar->FileMenu, ID_FILE_SENDFILE,
 //		MF_BYCOMMAND | MF_SEPARATOR, 0, NULL);
 }

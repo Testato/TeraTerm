@@ -16,7 +16,7 @@
 
 #include "gettimeofday.h"
 
-#define ORDER 6000
+#define ORDER 6001
 #define ID_MENU_REPLAY 37100
 
 #define BUFFSIZE 2000
@@ -282,8 +282,8 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 	if (pvar->enable) {
 		flag |= MF_GRAYED;
 	}
-	InsertMenu(pvar->FileMenu, ID_FILE_REPLAYLOG, MF_BYCOMMAND | MF_SEPARATOR, 0, NULL);
-	InsertMenu(pvar->FileMenu, ID_FILE_REPLAYLOG, flag, ID_MENU_REPLAY, "TT&Y Replay");
+	InsertMenu(pvar->FileMenu, ID_FILE_PRINT2, flag, ID_MENU_REPLAY, "TTY R&eplay");
+	InsertMenu(pvar->FileMenu, ID_FILE_PRINT2, MF_BYCOMMAND | MF_SEPARATOR, 0, NULL);
 
 //	InsertMenu(menu, ID_HELPMENU, MF_ENABLED, ID_MENU_REPLAY, "&t");
 }
