@@ -29,6 +29,9 @@
       <li>ログ保存時に Binary フラグが有効なときは、Plain text と Timestamp フラグを無効にするようにした。</li>
       <li><a href="../menu/setup-additional.html">リモートからのウィンドウタイトル</a>の表示方法を追加した。標準のタイトルの前または後に表示できるようにした。</li>
       <li><a href="../menu/setup-additional.html">"Additional settings" ダイアログ</a>で、"Delimitter Characters" 設定を "General" タブから "Copy and Paste" タブへ移動した。</li>
+      <li>"New connection" ダイアログを表示しない <a href="../commandline/teraterm.html">/DS</a>コマンドラインオプションを追加した。</li>
+      <li>設定の保存時、新規ファイルを指定した場合もコメントや各設定の位置関係が保存されるようにした。</li>
+      <li>英国環境等でDEC特殊文字の表示後に英小文字等が正しく表示されない問題への対応として、UK文字セットの指示をUS-ASCIIの指示として扱うようにした。</li>
       <li>文字属性に関する以下の問題を修正した。すべて4.58でのエンバグ。
         <ul>
           <li>消去領域に高輝度,下線,点滅,反転属性を適用していた。</li>
@@ -36,9 +39,6 @@
           <li>ED(Erase in Display:ただし画面全体の消去(2J)を除く),EL(Erase in Line)等で、消去後の表示とバッファの内容が同期していない事があった。</li>
           <li>DECALN(DEC Screen Alignment Test)での表示に文字属性を適用していた。</li>
         </ul></li>
-      <li>英国環境等でDEC特殊文字の表示後に英小文字等が正しく表示されない問題への対応として、UK文字セットの指示をUS-ASCIIの指示として扱うようにした。</li>
-      <li>"New connection" ダイアログを表示しない <a href="../commandline/teraterm.html">/DS</a>コマンドラインオプションを追加した。</li>
-      <li>設定の保存時、新規ファイルを指定した場合もコメントや各設定の位置関係が保存されるようにした。</li>
       <li>マクロで、変数名およびラベルに使えないはずの文字が使えていたのを修正した。</li>
       <li><a href="../macro/command/filestrseek2.html">filestrseek2</a>マクロコマンドにおいて、ファイルの1バイト目が合致すると、ファイルポインタが負数になってしまうバグを修正した。</li>
       <li><a href="../macro/command/logopen.html">logopen</a>マクロコマンドにおいて、ファイル名に \ が含まれない場合、ルートディレクトリ直下へ保存されるようになっていたため、カレントディレクトリに保存されるようにした。</a>
@@ -46,6 +46,9 @@
       <li>インストーラを修正した。
         <ul>
           <li>ssh プロトコルを ttermpro.exe に関連付けできるようにした。</li>
+          <li>Additional Plugins にプラグインを追加した。</li>
+          <li>TTXKanjiMenu を、Additional Plugins に移動した。</li>
+          <li>cygterm+ のソースを同梱するようにした。</li>
         </ul></li>
       <li><a href="#ttssh_2.49">SSH2対応TTSSH(2.49)</a>へ差し替えた</li>
       <li><a href="#cygterm_1.07_16">CygTerm+ 1.07_16</a>へ差し替えた</li>
@@ -1204,7 +1207,7 @@
         <ul>
           <li>teraterm.ini の CipherOrder エントリに"&lt;", "=", "&gt;", "?", "@", "A", "B" を追加した。</li>
         </ul></li>
-      <li>SSH1接続時にアプリケーションエラーで落ちる問題を修正した。</li>
+      <li>SSH1接続時にアプリケーションエラーで落ちる問題を修正した。2.48でのエンバグ。</li>
       <li>SSH2 接続で CheckAuthListFirst が有効な場合に、有効な認証メソッドが返ってくる前に接続ダイアログの OK ボタンを押すと接続が終了する問題を修正した。</li>
       <li>DISPLAY 環境変数が設定されている場合に X 転送が開始できない問題を修正した。</li>
       <li>新規接続ダイアログにおいて、Historyチェックボックスの有効化・無効化を行っていなかった問題を修正した。</li>
