@@ -37,6 +37,7 @@ See LICENSE.TXT for the license.
 #include "zlib.h"
 #include <openssl/evp.h>
 
+#include "buffer.h"
 
 #define DEBUG_PRINT_TO_FILE(base, msg, len) { \
 	static int count = 0; \
@@ -390,6 +391,14 @@ enum fp_rep {
 enum scp_dir {
 	TOLOCAL, FROMREMOTE,
 };
+
+#define SSH1_AGENT_CHANNEL_ID 0x10000000
+typedef struct agent_channel {
+	int local_id;
+	int remote_id;
+	buffer_t *agent_msg;
+	int agent_request_len;
+} agent_channel_t;
 
 /* The packet handler returns TRUE to keep the handler in place,
    FALSE to remove the handler. */

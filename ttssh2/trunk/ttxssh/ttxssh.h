@@ -129,6 +129,9 @@ typedef struct _TS_SSH {
 
 	// Enable connection to the server that has RSA key length less than 768 bit (2008.9.11 maya)
 	BOOL EnableRsaShortKeyServer;
+
+	// Enable Agent forwarding
+	BOOL ForwardAgent;
 } TS_SSH;
 
 typedef struct _TInstVar {
@@ -244,6 +247,10 @@ typedef struct _TInstVar {
 	int pageant_keycount;
 	int pageant_keycurrent;
 	BOOL pageant_keyfinal;// SSH2 PK_OK ‚ª—ˆ‚½‚Æ‚«‚É TRUE ‚É‚·‚é
+
+	// agent forward
+	BOOL agentfwd_enable;
+	agent_channel_t agent_channel; // for SSH1 only
 } TInstVar;
 
 #define LOG_LEVEL_FATAL      5

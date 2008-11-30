@@ -63,7 +63,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define SSH2_DEBUG
 #endif
 
-#define DONT_WANTCONFIRM 1  // (2005.3.28 yutaka)
+//#define DONT_WANTCONFIRM 1  // (2005.3.28 yutaka)
+#undef DONT_WANTCONFIRM // (2008.11.25 maya)
 #define INTBLOB_LEN 20
 #define SIGBLOB_LEN (2*INTBLOB_LEN)
 
@@ -75,7 +76,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define CHANNEL_MAX 100
 
 enum channel_type {
-	TYPE_SHELL, TYPE_PORTFWD, TYPE_SCP, TYPE_SFTP,
+	TYPE_SHELL, TYPE_PORTFWD, TYPE_SCP, TYPE_SFTP, TYPE_AGENT,
 };
 
 enum scp_state {
@@ -118,6 +119,8 @@ typedef struct channel {
 	int local_num;
 	bufchain_t *bufchain;
 	scp_t scp;
+	buffer_t *agent_msg;
+	int agent_request_len;
 } Channel_t;
 
 static Channel_t channels[CHANNEL_MAX];
@@ -144,6 +147,7 @@ static BOOL handle_SSH2_open_failure(PTInstVar pvar);
 static BOOL handle_SSH2_request_success(PTInstVar pvar);
 static BOOL handle_SSH2_request_failure(PTInstVar pvar);
 static BOOL handle_SSH2_channel_success(PTInstVar pvar);
+static BOOL handle_SSH2_channel_failure(PTInstVar pvar);
 static BOOL handle_SSH2_channel_data(PTInstVar pvar);
 static BOOL handle_SSH2_channel_extended_data(PTInstVar pvar);
 static BOOL handle_SSH2_channel_eof(PTInstVar pvar);
@@ -158,6 +162,8 @@ void SSH2_dispatch_add_range_message(unsigned char begin, unsigned char end);
 int dh_pub_is_valid(DH *dh, BIGNUM *dh_pub);
 static void start_ssh_heartbeat_thread(PTInstVar pvar);
 static void SSH2_send_channel_data(PTInstVar pvar, Channel_t *c, unsigned char FAR * buf, unsigned int buflen);
+void ssh2_channel_send_close(PTInstVar pvar, Channel_t *c);
+static BOOL SSH_agent_response(PTInstVar pvar, Channel_t *c, unsigned char *data, unsigned int buflen);
 
 //
 // channel function
@@ -199,6 +205,10 @@ static Channel_t *ssh2_channel_new(unsigned int window, unsigned int maxpack,
 		c->scp.progress_window = NULL;
 		c->scp.thread = (HANDLE)-1;
 		c->scp.localfp = NULL;
+	}
+	if (type == TYPE_AGENT) {
+		c->agent_msg = buffer_init();
+		c->agent_request_len = 0;
 	}
 
 	return (c);
@@ -287,6 +297,9 @@ static void ssh2_channel_delete(Channel_t *c)
 			CloseHandle(c->scp.thread);
 			c->scp.thread = (HANDLE)-1L;
 		}
+	}
+	if (c->type == TYPE_AGENT) {
+		buffer_free(c->agent_msg);
 	}
 
 	memset(c, 0, sizeof(Channel_t));
@@ -1673,6 +1686,7 @@ static void init_protocol(PTInstVar pvar)
 		enque_handler(pvar, SSH2_MSG_CHANNEL_REQUEST, handle_SSH2_channel_request);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_WINDOW_ADJUST, handle_SSH2_window_adjust);
 		enque_handler(pvar, SSH2_MSG_CHANNEL_SUCCESS, handle_SSH2_channel_success);
+		enque_handler(pvar, SSH2_MSG_CHANNEL_FAILURE, handle_SSH2_channel_failure);
 //		enque_handler(pvar, SSH2_MSG_GLOBAL_REQUEST, handle_unimplemented);
 		enque_handler(pvar, SSH2_MSG_REQUEST_FAILURE, handle_SSH2_request_failure);
 		enque_handler(pvar, SSH2_MSG_REQUEST_SUCCESS, handle_SSH2_request_success);
@@ -1878,12 +1892,19 @@ static BOOL handle_channel_open_failure(PTInstVar pvar)
 
 static BOOL handle_channel_data(PTInstVar pvar)
 {
-	int len;
+	int len, local_channel;
 
 	if (grab_payload(pvar, 8)
 	 && grab_payload(pvar, len = get_payload_uint32(pvar, 4))) {
-		FWD_received_data(pvar, get_payload_uint32(pvar, 0),
-		                  pvar->ssh_state.payload + 8, len);
+		local_channel = get_payload_uint32(pvar, 0);
+		if (local_channel == pvar->agent_channel.local_id) {
+			SSH_agent_response(pvar, NULL,
+			                   pvar->ssh_state.payload + 8, len);
+		}
+		else {
+			FWD_received_data(pvar, local_channel,
+			                  pvar->ssh_state.payload + 8, len);
+		}
 	}
 	return TRUE;
 }
@@ -1891,7 +1912,14 @@ static BOOL handle_channel_data(PTInstVar pvar)
 static BOOL handle_channel_input_eof(PTInstVar pvar)
 {
 	if (grab_payload(pvar, 4)) {
-		FWD_channel_input_eof(pvar, get_payload_uint32(pvar, 0));
+		int local_id = get_payload_uint32(pvar, 0);
+		if (local_id == pvar->agent_channel.local_id) {
+			SSH_channel_input_eof(pvar, pvar->agent_channel.remote_id,
+			                            pvar->agent_channel.local_id);
+		}
+		else {
+			FWD_channel_input_eof(pvar, local_id);
+		}
 	}
 	return TRUE;
 }
@@ -1899,8 +1927,42 @@ static BOOL handle_channel_input_eof(PTInstVar pvar)
 static BOOL handle_channel_output_eof(PTInstVar pvar)
 {
 	if (grab_payload(pvar, 4)) {
-		FWD_channel_output_eof(pvar, get_payload_uint32(pvar, 0));
+		int local_id = get_payload_uint32(pvar, 0);
+		if (local_id == pvar->agent_channel.local_id) {
+			SSH_channel_output_eof(pvar, pvar->agent_channel.remote_id);
+			buffer_free(pvar->agent_channel.agent_msg);
+		}
+		else {
+			FWD_channel_output_eof(pvar, get_payload_uint32(pvar, 0));
+		}
 	}
+	return TRUE;
+}
+
+static BOOL handle_agent_open(PTInstVar pvar)
+{
+	if (grab_payload(pvar, 4)) {
+		pvar->agent_channel.remote_id = get_payload_uint32(pvar, 0);
+		if (pvar->agentfwd_enable) {
+			// SSH1 の channel 実装が port forward しか想定していなかったので、
+			// agent forward では固定値を使う
+			pvar->agent_channel.local_id = SSH1_AGENT_CHANNEL_ID;
+			pvar->agent_channel.agent_msg = buffer_init();
+			pvar->agent_channel.agent_request_len = 0;
+			SSH_confirm_channel_open(pvar,
+			                         pvar->agent_channel.remote_id,
+			                         pvar->agent_channel.local_id);
+		}
+		else {
+			SSH_fail_channel_open(pvar, pvar->agent_channel.remote_id);
+		}
+	}
+	/*
+	else {
+		// 通知する相手channelが分からないので何もできない
+	}
+	*/
+
 	return TRUE;
 }
 
@@ -2043,6 +2105,7 @@ static BOOL handle_pty_success(PTInstVar pvar)
 	              handle_channel_output_eof);
 	enque_handler(pvar, SSH_MSG_PORT_OPEN, handle_channel_open);
 	enque_handler(pvar, SSH_SMSG_X11_OPEN, handle_X11_channel_open);
+	enque_handler(pvar, SSH_SMSG_AGENT_OPEN, handle_agent_open);
 	return FALSE;
 }
 
@@ -2080,10 +2143,41 @@ static void prep_pty(PTInstVar pvar)
 	finish_send_packet(pvar);
 }
 
+static BOOL handle_agent_request_success(PTInstVar pvar)
+{
+	pvar->agentfwd_enable = TRUE;
+	prep_pty(pvar);
+	return FALSE;
+}
+
+static BOOL handle_agent_request_failure(PTInstVar pvar)
+{
+	prep_pty(pvar);
+	return FALSE;
+}
+
+static void prep_agent_request(PTInstVar pvar)
+{
+	static const int msgs[] = { SSH_SMSG_SUCCESS, SSH_SMSG_FAILURE };
+	static const SSHPacketHandler handlers[]
+	= { handle_agent_request_success, handle_agent_request_failure };
+
+	enque_handlers(pvar, 2, msgs, handlers);
+
+	begin_send_packet(pvar, SSH_CMSG_AGENT_REQUEST_FORWARDING, 0);
+	finish_send_packet(pvar);
+}
+
 static void prep_forwarding(PTInstVar pvar)
 {
 	FWD_prep_forwarding(pvar);
-	prep_pty(pvar);
+
+	if (pvar->session_settings.ForwardAgent) {
+		prep_agent_request(pvar);
+	}
+	else {
+		prep_pty(pvar);
+	}
 }
 
 
@@ -2604,6 +2698,7 @@ void SSH_init(PTInstVar pvar)
 	pvar->decomp_buffer = NULL;
 	pvar->ssh2_authlist = NULL; // (2007.4.27 yutaka)
 	pvar->tryed_ssh2_authlist = FALSE;
+	pvar->agentfwd_enable = FALSE;
 
 }
 
@@ -2971,6 +3066,7 @@ void SSH_end(PTInstVar pvar)
 	            &pvar->ssh_state.precompress_outbuflen);
 	buf_destroy(&pvar->ssh_state.postdecompress_inbuf,
 	            &pvar->ssh_state.postdecompress_inbuflen);
+	pvar->agentfwd_enable = FALSE;
 
 	// support of "Compression delayed" (2006.6.23 maya)
 	if (pvar->ssh_state.compressing ||
@@ -7464,10 +7560,85 @@ BOOL handle_SSH2_userauth_inforeq(PTInstVar pvar)
 	return TRUE;
 }
 
+BOOL send_pty_request(PTInstVar pvar, Channel_t *c)
+{
+	buffer_t *msg, *ttymsg;
+	char *s = "pty-req";  // pseudo terminalのリクエスト
+	unsigned char *outmsg;
+	int len;
+#ifdef DONT_WANTCONFIRM
+	int wantconfirm = 0; // false
+#else
+	int wantconfirm = 1; // true
+#endif
+
+	// pty open
+	msg = buffer_init();
+	if (msg == NULL) {
+		// TODO: error check
+		return FALSE;
+	}
+	ttymsg = buffer_init();
+	if (ttymsg == NULL) {
+		// TODO: error check
+		buffer_free(msg);
+		return FALSE;
+	}
+
+	buffer_put_int(msg, c->remote_id);
+	buffer_put_string(msg, s, strlen(s));
+	buffer_put_char(msg, wantconfirm);  // wantconfirm (disableに変更 2005/3/28 yutaka)
+
+	s = pvar->ts->TermType; // TERM
+	buffer_put_string(msg, s, strlen(s));
+	buffer_put_int(msg, pvar->ssh_state.win_cols);  // columns
+	buffer_put_int(msg, pvar->ssh_state.win_rows);  // lines
+	buffer_put_int(msg, 480);  // XXX:
+	buffer_put_int(msg, 640);  // XXX:
+
+	// TTY modeはここで渡す (2005.7.17 yutaka)
+#if 0
+	s = "";
+	buffer_put_string(msg, s, strlen(s));
+#else
+	buffer_put_char(ttymsg, 129);  // TTY_OP_OSPEED_PROTO2
+	buffer_put_int(ttymsg, 9600);  // baud rate
+	buffer_put_char(ttymsg, 128);  // TTY_OP_ISPEED_PROTO2
+	buffer_put_int(ttymsg, 9600);  // baud rate
+	// VERASE
+	buffer_put_char(ttymsg, 3);
+	if (pvar->ts->BSKey == IdBS) {
+		buffer_put_int(ttymsg, 0x08); // BS key
+	} else {
+		buffer_put_int(ttymsg, 0x7F); // DEL key
+	}
+	// TTY_OP_END
+	buffer_put_char(ttymsg, 0);
+
+	// SSH2では文字列として書き込む。
+	buffer_put_string(msg, buffer_ptr(ttymsg), buffer_len(ttymsg));
+#endif
+
+	len = buffer_len(msg);
+	outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_REQUEST, len);
+	memcpy(outmsg, buffer_ptr(msg), len);
+	finish_send_packet(pvar);
+	buffer_free(msg);
+	buffer_free(ttymsg);
+
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_REQUEST was sent at send_pty_request().", LOG_LEVEL_VERBOSE);
+	pvar->session_nego_status = 2;
+
+	if (wantconfirm == 0) {
+		handle_SSH2_channel_success(pvar);
+	}
+
+	return TRUE;
+}
 
 static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 {	
-	buffer_t *msg, *ttymsg;
+	buffer_t *msg;
 	char *s;
 	unsigned char *outmsg;
 	int len;
@@ -7524,16 +7695,37 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 
 	//debug_print(100, data, len);
 
-	// pty open
+	if (c->type == TYPE_SHELL) {
+		// エージェント転送 (2008.11.25 maya)
+		if (pvar->session_settings.ForwardAgent) {
+			// pty-req より前にリクエストしないとエラーになる模様
+
+			msg = buffer_init();
+			if (msg == NULL) {
+				// TODO: error check
+				return FALSE;
+			}
+			buffer_put_int(msg, c->remote_id);
+			s = "auth-agent-req@openssh.com";
+			buffer_put_string(msg, s, strlen(s));
+			buffer_put_char(msg, 1); // want reply
+			len = buffer_len(msg);
+			outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_REQUEST, len);
+			memcpy(outmsg, buffer_ptr(msg), len);
+			finish_send_packet(pvar);
+			buffer_free(msg);
+
+			notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_REQUEST was sent at handle_SSH2_channel_success().", LOG_LEVEL_VERBOSE);
+			return TRUE;
+		}
+		else {
+			return send_pty_request(pvar, c);
+		}
+	}
+
 	msg = buffer_init();
 	if (msg == NULL) {
 		// TODO: error check
-		return FALSE;
-	}
-	ttymsg = buffer_init();
-	if (ttymsg == NULL) {
-		// TODO: error check
-		buffer_free(msg);
 		return FALSE;
 	}
 
@@ -7542,8 +7734,6 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 		s = "exec";
 	} else if (c->type == TYPE_SFTP) {
 		s = "subsystem";
-	} else if (c->type == TYPE_SHELL) {
-		s = "pty-req";  // pseudo terminalのリクエスト
 	} else {
 		s = "";  // NOT REACHED
 	}
@@ -7560,61 +7750,21 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 
 		}
 		buffer_put_string(msg, sbuf, strlen(sbuf));
-		goto done;
 	}
-
-	if (c->type == TYPE_SFTP) {
+	else if (c->type == TYPE_SFTP) {
 		char *sbuf = "sftp";
 		buffer_put_string(msg, sbuf, strlen(sbuf));
-		goto done;
 	}
 
-	s = pvar->ts->TermType; // TERM
-	buffer_put_string(msg, s, strlen(s));
-	buffer_put_int(msg, pvar->ssh_state.win_cols);  // columns
-	buffer_put_int(msg, pvar->ssh_state.win_rows);  // lines
-	buffer_put_int(msg, 480);  // XXX:
-	buffer_put_int(msg, 640);  // XXX:
-
-	// TTY modeはここで渡す (2005.7.17 yutaka)
-#if 0
-	s = "";
-	buffer_put_string(msg, s, strlen(s));
-#else
-	buffer_put_char(ttymsg, 129);  // TTY_OP_OSPEED_PROTO2
-	buffer_put_int(ttymsg, 9600);  // baud rate
-	buffer_put_char(ttymsg, 128);  // TTY_OP_ISPEED_PROTO2
-	buffer_put_int(ttymsg, 9600);  // baud rate
-	// VERASE
-	buffer_put_char(ttymsg, 3);
-	if (pvar->ts->BSKey == IdBS) {
-		buffer_put_int(ttymsg, 0x08); // BS key
-	} else {
-		buffer_put_int(ttymsg, 0x7F); // DEL key
-	}
-	// TTY_OP_END
-	buffer_put_char(ttymsg, 0);
-
-	// SSH2では文字列として書き込む。
-	buffer_put_string(msg, buffer_ptr(ttymsg), buffer_len(ttymsg));
-#endif
-
-done:
 	len = buffer_len(msg);
 	outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_REQUEST, len);
 	memcpy(outmsg, buffer_ptr(msg), len);
 	finish_send_packet(pvar);
 	buffer_free(msg);
-	buffer_free(ttymsg);
 
 	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_REQUEST was sent at handle_SSH2_open_confirm().", LOG_LEVEL_VERBOSE);
 
-	if (c->type == TYPE_SHELL) {
-		if (wantconfirm == 0) {
-			handle_SSH2_channel_success(pvar);
-		}
-
-	} else if (c->type == TYPE_SCP) {
+	if (c->type == TYPE_SCP) {
 		// SCPで remote-to-local の場合は、サーバからのファイル送信要求を出す。
 		// この時点では remote window size が"0"なので、すぐには送られないが、遅延送信処理で送られる。
 		// (2007.12.27 yutaka)
@@ -7716,6 +7866,11 @@ static BOOL handle_SSH2_channel_success(PTInstVar pvar)
 	unsigned char *outmsg;
 	int len;
 	Channel_t *c;
+#ifdef DONT_WANTCONFIRM
+	int wantconfirm = 0; // false
+#else
+	int wantconfirm = 1; // true
+#endif
 
 	{
 		char buf[128];
@@ -7726,13 +7881,17 @@ static BOOL handle_SSH2_channel_success(PTInstVar pvar)
 	}
 
 	if (pvar->session_nego_status == 1) {
-#ifdef DONT_WANTCONFIRM
-		int wantconfirm = 0; // false
-#else
-		int wantconfirm = 1; // true
-#endif
+		// find channel by shell id(2005.2.27 yutaka)
+		c = ssh2_channel_lookup(pvar->shell_id);
+		if (c == NULL) {
+			// TODO: error check
+			return FALSE;
+		}
+		pvar->agentfwd_enable = TRUE;
+		return send_pty_request(pvar, c);
 
-		pvar->session_nego_status = 2;
+	} else if (pvar->session_nego_status == 2) {
+		pvar->session_nego_status = 3;
 		msg = buffer_init();
 		if (msg == NULL) {
 			// TODO: error check
@@ -7763,11 +7922,36 @@ static BOOL handle_SSH2_channel_success(PTInstVar pvar)
 			handle_SSH2_channel_success(pvar);
 		}
 
-	} else if (pvar->session_nego_status == 2) {
-		pvar->session_nego_status = 3;
+	} else if (pvar->session_nego_status == 3) {
+		pvar->session_nego_status = 4;
 
 	} else {
 
+	}
+
+	return TRUE;
+}
+
+static BOOL handle_SSH2_channel_failure(PTInstVar pvar)
+{
+	Channel_t *c;
+
+	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_FAILURE was received.", LOG_LEVEL_VERBOSE);
+
+	if (pvar->session_nego_status == 1) {
+		// リモートで auth-agent-req@openssh.com がサポートされてないので
+		// エラーは気にせず次へ進む
+
+		// find channel by shell id(2005.2.27 yutaka)
+		c = ssh2_channel_lookup(pvar->shell_id);
+		if (c == NULL) {
+			// TODO: error check
+			return FALSE;
+		}
+		return send_pty_request(pvar, c);
+	}
+	else {
+		return FALSE;
 	}
 
 	return TRUE;
@@ -8264,7 +8448,10 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 
 	} else if (c->type == TYPE_SFTP) {  // SFTP
 
-
+	} else if (c->type == TYPE_AGENT) {  // agent forward
+		if (!SSH_agent_response(pvar, c, data, str_len)) {
+			return FALSE;
+		}
 	}
 
 	//debug_print(200, data, strlen);
@@ -8376,6 +8563,9 @@ static BOOL handle_SSH2_channel_eof(PTInstVar pvar)
 	if (c->type == TYPE_PORTFWD) {
 		FWD_channel_input_eof(pvar, c->local_num);
 	}
+	else if (c->type == TYPE_AGENT) {
+		ssh2_channel_send_close(pvar, c);
+	}
 
 	return TRUE;
 }
@@ -8391,6 +8581,8 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 	int remote_window;
 	int remote_maxpacket;
 	int chan_num = -1;
+	buffer_t *msg;
+	unsigned char *outmsg;
 
 	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN was received.", LOG_LEVEL_VERBOSE);
 
@@ -8475,6 +8667,57 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 		c->remote_id = remote_id;
 		c->remote_window = remote_window;
 		c->remote_maxpacket = remote_maxpacket;
+
+	} else if (strcmp(ctype, "auth-agent@openssh.com") == 0) { // agent forwarding
+		if (pvar->agentfwd_enable) {
+			c = ssh2_channel_new(CHAN_TCP_WINDOW_DEFAULT, CHAN_TCP_PACKET_DEFAULT, TYPE_AGENT, chan_num);
+			if (c == NULL) {
+				UTIL_get_lang_msg("MSG_SSH_NO_FREE_CHANNEL", pvar,
+				                  "Could not open new channel. TTSSH is already opening too many channels.");
+				notify_nonfatal_error(pvar, pvar->ts->UIMsg);
+				return FALSE;
+			}
+			c->remote_id = remote_id;
+			c->remote_window = remote_window;
+			c->remote_maxpacket = remote_maxpacket;
+			
+			msg = buffer_init();
+			if (msg == NULL) {
+				// TODO: error check
+				return FALSE;
+			}
+			buffer_put_int(msg, c->remote_id);
+			buffer_put_int(msg, c->self_id);
+			buffer_put_int(msg, c->local_window);
+			buffer_put_int(msg, c->local_maxpacket);
+
+			len = buffer_len(msg);
+			outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN_CONFIRMATION, len);
+			memcpy(outmsg, buffer_ptr(msg), len);
+			finish_send_packet(pvar);
+			buffer_free(msg);
+
+			notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN_CONFIRMATION was sent at handle_SSH2_channel_open().", LOG_LEVEL_VERBOSE);
+		}
+		else {
+			msg = buffer_init();
+			if (msg == NULL) {
+				// TODO: error check
+				return FALSE;
+			}
+			buffer_put_int(msg, remote_id);
+			buffer_put_int(msg, SSH2_OPEN_ADMINISTRATIVELY_PROHIBITED);
+			buffer_put_string(msg, "", 0); // description
+			buffer_put_string(msg, "", 0); // language tag
+
+			len = buffer_len(msg);
+			outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN_FAILURE, len);
+			memcpy(outmsg, buffer_ptr(msg), len);
+			finish_send_packet(pvar);
+			buffer_free(msg);
+
+			notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN_FAILURE was sent at handle_SSH2_channel_open().", LOG_LEVEL_VERBOSE);
+		}
 
 	} else {
 		// unknown type(unsupported)
@@ -8677,6 +8920,172 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 	// 送り残し
 	ssh2_channel_retry_send_bufchain(pvar, c);
+
+	return TRUE;
+}
+
+static BOOL SSH_agent_response(PTInstVar pvar, Channel_t *c, unsigned char *data, unsigned int buflen)
+{
+	int req_len, len;
+	unsigned char *keylist;
+	buffer_t *msg;
+	unsigned char cmd, res_cmd;
+
+	req_len = get_uint32_MSBfirst(data);
+
+	// 分割された CHANNEL_DATA の受信に対応 (2008.11.30 maya)
+	if (SSHv2(pvar)) {
+		if (c->agent_msg->len > 0 || req_len + 4 != buflen) {
+			if (c->agent_msg->len == 0) {
+				c->agent_request_len = req_len;
+			}
+			buffer_put_raw(c->agent_msg, data, buflen);
+			if (c->agent_request_len > c->agent_msg->len) {
+				return TRUE;
+			}
+			else {
+				data = c->agent_msg->buf;
+			}
+		}
+	}
+	else {
+		if (pvar->agent_channel.agent_msg->len > 0 || req_len + 4 != buflen) {
+			if (pvar->agent_channel.agent_msg->len == 0) {
+				pvar->agent_channel.agent_request_len = req_len;
+			}
+			buffer_put_raw(pvar->agent_channel.agent_msg, data, buflen);
+			if (pvar->agent_channel.agent_request_len > pvar->agent_channel.agent_msg->len) {
+				return TRUE;
+			}
+			else {
+				data = pvar->agent_channel.agent_msg->buf;
+			}
+		}
+	}
+
+	data += 4;
+	cmd = *data;
+
+	if (cmd == 11 || cmd == 1) {
+		// Pageant に鍵一覧を要求し、リモートに渡す
+		msg = buffer_init();
+		if (msg == NULL) {
+			return TRUE;
+		}
+
+		if (cmd == 11) { // SSH2_AGENTC_REQUEST_IDENTITIES
+			len = putty_get_ssh2_keylist(&keylist);
+			res_cmd = 12; // SSH2_AGENT_IDENTITIES_ANSWER
+		}
+		else { // SSH1_AGENTC_REQUEST_RSA_IDENTITIES 1
+			len = putty_get_ssh1_keylist(&keylist);
+			res_cmd = 2; // SSH1_AGENT_RSA_IDENTITIES_ANSWER
+		}
+
+		if (len < 5) {
+			// Pageant が起動していないか、鍵がない
+			buffer_put_int(msg, 4 + 1);
+			buffer_put_char(msg, res_cmd); 
+			buffer_put_int(msg, 0); // 鍵の数 0 をセット
+		}
+		else {
+			buffer_put_int(msg, len + 1);
+			buffer_put_char(msg, res_cmd); 
+			buffer_put_raw(msg, keylist, len);
+		}
+
+		if (SSHv2(pvar)) {
+			SSH2_send_channel_data(pvar, c, msg->buf, msg->len);
+		}
+		else {
+			SSH_channel_send(pvar, pvar->agent_channel.local_id,
+			                       pvar->agent_channel.remote_id,
+			                 msg->buf, msg->len);
+		}
+		buffer_free(msg);
+	}
+	else if (cmd == 13 || cmd == 3) {
+		// Pageant に署名/ハッシュを要求し、リモートに渡す
+		msg = buffer_init();
+		if (msg == NULL) {
+			return TRUE;
+		}
+
+		if (cmd == 13) { // SSH2_AGENTC_SIGN_REQUEST
+			unsigned char *signedmsg;
+			int signedlen;
+
+			data += 1;
+			len = get_uint32_MSBfirst(data);
+			signedmsg = putty_sign_ssh2_key(data, data + 4 + len, &signedlen);
+			if (signedmsg == NULL) {
+				// この channel を閉じる
+				if (SSHv2(pvar)) {
+					ssh2_channel_send_close(pvar, c);
+				}
+				else {
+					SSH_channel_input_eof(pvar, pvar->agent_channel.remote_id,
+					                            pvar->agent_channel.local_id);
+				}
+				return TRUE;
+			}
+
+			buffer_put_int(msg, 1 + signedlen);
+			buffer_put_char(msg, 14); // SSH2_AGENT_SIGN_RESPONSE
+			buffer_put_raw(msg, signedmsg, signedlen);
+
+			safefree(signedmsg);
+		}
+		else { // SSH1_AGENTC_RSA_CHALLENGE
+			unsigned char *hash;
+			int keylen, challengelen, hashlen;
+			data += 1;
+			keylen = putty_get_ssh1_keylen(data, req_len);
+			challengelen = req_len - keylen - 1 - 16 - 4;
+			hash = putty_hash_ssh1_challenge(data, keylen,
+			                                 data + keylen, challengelen,
+			                                 data + keylen + challengelen,
+			                                 &hashlen);
+			if (hash == NULL) {
+				// この channel を閉じる
+				if (SSHv2(pvar)) {
+					ssh2_channel_send_close(pvar, c);
+				}
+				else {
+					SSH_channel_input_eof(pvar, pvar->agent_channel.remote_id,
+					                            pvar->agent_channel.local_id);
+				}
+				return TRUE;
+			}
+
+			buffer_put_int(msg, 1 + hashlen);
+			buffer_put_char(msg, 4); // SSH1_AGENT_RSA_RESPONSE
+			buffer_put_raw(msg, hash, hashlen);
+
+			safefree(hash);
+		}
+
+		if (SSHv2(pvar)) {
+			SSH2_send_channel_data(pvar, c, msg->buf, msg->len);
+		}
+		else {
+			SSH_channel_send(pvar, pvar->agent_channel.local_id,
+			                       pvar->agent_channel.remote_id,
+			                       msg->buf, msg->len);
+		}
+		buffer_free(msg);
+	}
+	else {
+		// この channel を閉じる
+		if (SSHv2(pvar)) {
+			ssh2_channel_send_close(pvar, c);
+		}
+		else {
+			SSH_channel_input_eof(pvar, pvar->agent_channel.remote_id,
+			                            pvar->agent_channel.local_id);
+		}
+		return TRUE;
+	}
 
 	return TRUE;
 }

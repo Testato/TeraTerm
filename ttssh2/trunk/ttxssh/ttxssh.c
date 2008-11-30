@@ -350,6 +350,9 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 	// 768bit 未満の RSA 鍵を持つサーバへの接続を有効にする (2008.9.11 maya)
 	settings->EnableRsaShortKeyServer = read_BOOL_option(fileName, "EnableRsaShortKeyServer", FALSE);
 
+	// agent forward を有効にする (2008.11.25 maya)
+	settings->ForwardAgent = read_BOOL_option(fileName, "ForwardAgent", FALSE);
+
 	clear_local_settings(pvar);
 }
 
@@ -426,6 +429,10 @@ static void write_ssh_options(PTInstVar pvar, PCHAR fileName,
 	// 768bit 未満の RSA 鍵を持つサーバへの接続を有効にする (2008.9.11 maya)
 	WritePrivateProfileString("TTSSH", "EnableRsaShortKeyServer",
 	                          settings->EnableRsaShortKeyServer ? "1" : "0", fileName);
+
+	// agent forward を有効にする (2008.11.25 maya)
+	WritePrivateProfileString("TTSSH", "ForwardAgent",
+	                          settings->ForwardAgent ? "1" : "0", fileName);
 }
 
 
@@ -1470,6 +1477,9 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 			           _stricmp(option + 4, "-autologon") == 0) {
 				pvar->settings.TryDefaultAuth = TRUE;
 
+			} else if (MATCH_STR(option + 4, "-A") == 0) {
+				pvar->settings.ForwardAgent = TRUE;
+
 			} else if (_stricmp(option + 4, "-acceptall") == 0) {
 				pvar->settings.LocalForwardingIdentityCheck = FALSE;
 
@@ -2121,6 +2131,9 @@ static void init_setup_dlg(PTInstVar pvar, HWND dlg)
 	GetDlgItemText(dlg, IDC_HEARTBEATLABEL2, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_SSHSETUP_HEARTBEAT_UNIT", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_HEARTBEATLABEL2, pvar->ts->UIMsg);
+	GetDlgItemText(dlg, IDC_FORWARDAGENT, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_SSHSETUP_FORWARDAGENT", pvar, uimsg);
+	SetDlgItemText(dlg, IDC_FORWARDAGENT, pvar->ts->UIMsg);
 	GetDlgItemText(dlg, IDC_NOTICEBANNER, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_SSHSETUP_NOTICE", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_NOTICEBANNER, pvar->ts->UIMsg);
@@ -2172,6 +2185,9 @@ static void init_setup_dlg(PTInstVar pvar, HWND dlg)
 		SetDlgItemText(dlg, IDC_HEARTBEAT_EDIT, buf);
 	}
 
+	if (pvar->settings.ForwardAgent) {
+		CheckDlgButton(dlg, IDC_FORWARDAGENT, TRUE);
+	}
 }
 
 void get_teraterm_dir_relative_name(char FAR * buf, int bufsize,
@@ -2310,6 +2326,7 @@ static void complete_setup_dlg(PTInstVar pvar, HWND dlg)
 		i = 60;
 	pvar->settings.ssh_heartbeat_overtime = i;
 
+	pvar->settings.ForwardAgent = IsDlgButtonChecked(dlg, IDC_FORWARDAGENT);
 }
 
 static void move_cur_sel_delta(HWND listbox, int delta)
@@ -2436,6 +2453,7 @@ static BOOL CALLBACK TTXSetupDlg(HWND dlg, UINT msg, WPARAM wParam,
 			SendDlgItemMessage(dlg, IDC_HEARTBEATLABEL, WM_SETFONT, (WPARAM)DlgSetupFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_HEARTBEAT_EDIT, WM_SETFONT, (WPARAM)DlgSetupFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_HEARTBEATLABEL2, WM_SETFONT, (WPARAM)DlgSetupFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_FORWARDAGENT, WM_SETFONT, (WPARAM)DlgSetupFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDOK, WM_SETFONT, (WPARAM)DlgSetupFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDCANCEL, WM_SETFONT, (WPARAM)DlgSetupFont, MAKELPARAM(TRUE,0));
 		}
