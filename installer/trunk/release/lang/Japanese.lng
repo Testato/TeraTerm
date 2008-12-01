@@ -575,8 +575,9 @@ DLG_SSHSETUP_CIPHER_BORDER=<以下の暗号アルゴリズムは使用されません>
 DLG_SSHSETUP_KNOWNHOST=SSH Known Hosts
 DLG_SSHSETUP_KNOWNHOST_RW=読み書き(&W):
 DLG_SSHSETUP_KNOWNHOST_RO=読み取り専用(&R):
-DLG_SSHSETUP_HEARTBEAT=ハートビート(keep-alive)
+DLG_SSHSETUP_HEARTBEAT=ハートビート(&keep-alive)
 DLG_SSHSETUP_HEARTBEAT_UNIT=秒(0を指定すると無効)
+DLG_SSHSETUP_FORWARDAGENT=エージェント転送を有効にする(&A)
 DLG_SSHSETUP_NOTICE=いずれの変更も次回のセッション以降有効になります.
 
 FILEDLG_OPEN_KNOWNHOSTS_RW_TITLE=読み書き用knownhostsファイルを選択してください
