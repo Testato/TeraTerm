@@ -1505,13 +1505,13 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 				MessageBox(NULL, buf, "TTSSH", MB_OK | MB_ICONEXCLAMATION);
 			}
 
-			return 1;
+			return OPTION_CLEAR;
 
 		// ttermpro.exe の /T= 指定の流用なので、大文字も許す (2006.10.19 maya)
 		} else if (MATCH_STR_I(option + 1, "t=") == 0) {
 			if (strcmp(option + 3, "2") == 0) {
 				pvar->settings.Enabled = 1;
-				return 1;
+				return OPTION_CLEAR;
 			} else {
 				pvar->settings.Enabled = 0;
 			}
@@ -1600,15 +1600,59 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 		}
 
 	}
+	else if ((MATCH_STR_I(option, "ssh://") == 0) ||
+	         (MATCH_STR_I(option, "ssh1://") == 0) ||
+	         (MATCH_STR_I(option, "ssh2://") == 0) ||
+	         (MATCH_STR_I(option, "slogin://") == 0) ||
+	         (MATCH_STR_I(option, "slogin1://") == 0) ||
+	         (MATCH_STR_I(option, "slogin2://") == 0)) {
 
-	return 0;
+		char *p, *p2, *p3;
+		int optlen;
+
+		p = strchr(option, ':');
+		optlen = strlen(option);
+
+		switch (*(p-1)) {
+		case '1':
+			pvar->settings.ssh_protocol_version = 1;
+			break;
+		case '2':
+			pvar->settings.ssh_protocol_version = 2;
+			break;
+		}
+
+		p += 3;
+		memset(option, ' ', p - option);
+
+		if ((p2 = strchr(p, '/')) != NULL) {
+			memset(p2, ' ', strlen(option) - (p2 - option));
+		}
+
+		if ((p2 = strchr(p, '@')) != NULL) {
+			*p2 = 0;
+			if ((p3 = strchr(p, ':')) != NULL) {
+				*p3 = 0;
+				strcpy_s(pvar->ssh2_password, sizeof(pvar->ssh2_password), p3 + 1);
+				pvar->ssh2_autologin = 1;
+			}
+			strcpy_s(pvar->ssh2_username, sizeof(pvar->ssh2_username), p);
+			memset(p, ' ', (p2 - p) + 1);
+		}
+
+		pvar->settings.Enabled = 1;
+
+		return OPTION_REPLACE;
+	}
+
+	return OPTION_NONE;
 }
 
 static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
                                      PCHAR DDETopic)
 {
 	// スペースを含むファイル名を認識するように修正 (2006.10.7 maya)
-	int i;
+	int i, buflen;
 	BOOL inParam = FALSE;
 	BOOL inQuotes = FALSE;
 	BOOL inFileParam = FALSE;
@@ -1635,17 +1679,26 @@ static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
 					strncat_s(buf, buf_len, option, _TRUNCATE);
 					option[Equal - option + 1] = c;
 					strncat_s(buf, buf_len, Equal + 2, _TRUNCATE);
-					if (parse_option(pvar, *buf == '"' ? buf + 1 : buf)) {
+					switch (parse_option(pvar, *buf == '"' ? buf + 1 : buf)) {
+					  case OPTION_CLEAR:
 						memset(option, ' ', i + 1 - (option - param));
-					} else {
+						break;
+					  case OPTION_REPLACE:
+						buflen = strlen(buf);
+						memcpy(option, buf, buflen);
+						memset(option + buflen, ' ', i + 1 - buflen - (option - param));
+						break;
+					  default:
 						param[i] = ch;
 					}
 					free(buf);
 				}
 				else {
-					if (parse_option(pvar, *option == '"' ? option + 1 : option)) {
+					switch (parse_option(pvar, *option == '"' ? option + 1 : option)) {
+					  case OPTION_CLEAR:
 						memset(option, ' ', i + 1 - (option - param));
-					} else {
+						break;
+					  default:
 						param[i] = ch;
 					}
 				}
@@ -1690,14 +1743,21 @@ static void FAR PASCAL TTXParseParam(PCHAR param, PTTSet ts,
 			strncat_s(buf, buf_len, option, _TRUNCATE);
 			option[Equal - option + 1] = c;
 			strncat_s(buf, buf_len, Equal + 2, _TRUNCATE);
-			if (parse_option(pvar, *buf == '"' ? buf + 1 : buf)) {
+			switch (parse_option(pvar, *buf == '"' ? buf + 1 : buf)) {
+			  case OPTION_CLEAR:
 				memset(option, ' ', i + 1 - (option - param));
+				break;
+			  case OPTION_REPLACE:
+				strcpy_s(option, i - (param - option), buf);
+				break;
 			}
 			free(buf);
 		}
 		else {
-			if (parse_option(pvar, option)) {
+			switch (parse_option(pvar, option)) {
+			  case OPTION_CLEAR:
 				memset(option, ' ', i - (option - param));
+				break;
 			}
 		}
 	}

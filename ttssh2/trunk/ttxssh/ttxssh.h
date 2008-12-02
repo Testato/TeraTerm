@@ -91,6 +91,10 @@ HANDLE hInst; /* Instance handle of TTXSSH.DLL */
 #define ID_SSHDIFFERENTHOST   62503
 #define ID_SSHASYNCMESSAGEBOX 62504
 
+#define OPTION_NONE     0
+#define OPTION_CLEAR    1
+#define OPTION_REPLACE  2
+
 /*
 These are the fields that WOULD go in Tera Term's 'ts' structure, if
 we could put them there.
