@@ -279,11 +279,17 @@ Root: HKCR; Subkey: telnet\shell; ValueType: string; ValueData: Open with Tera T
 Root: HKCR; Subkey: telnet\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" /T=1 /nossh %1"; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
 ; Associate with ssh://
 Root: HKCU; Subkey: Software\Classes\ssh\shell; ValueType: string; ValueData: Open with Tera Term; Flags: uninsclearvalue; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
-Root: HKCU; Subkey: Software\Classes\ssh\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" /ssh %1"; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
+Root: HKCU; Subkey: Software\Classes\ssh\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" %1"; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
 Root: HKCU; Subkey: Software\Classes\ssh; ValueName: URL Protocol; ValueType: string; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
 Root: HKCR; Subkey: ssh\shell; ValueType: string; ValueData: Open with Tera Term; Flags: uninsclearvalue; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
-Root: HKCR; Subkey: ssh\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" /ssh %1"; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
+Root: HKCR; Subkey: ssh\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" %1"; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
 Root: HKCR; Subkey: ssh; ValueName: URL Protocol; ValueType: string; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
+Root: HKCU; Subkey: Software\Classes\slogin\shell; ValueType: string; ValueData: Open with Tera Term; Flags: uninsclearvalue; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
+Root: HKCU; Subkey: Software\Classes\slogin\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" %1"; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
+Root: HKCU; Subkey: Software\Classes\slogin; ValueName: URL Protocol; ValueType: string; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
+Root: HKCR; Subkey: slogin\shell; ValueType: string; ValueData: Open with Tera Term; Flags: uninsclearvalue; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
+Root: HKCR; Subkey: slogin\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" %1"; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
+Root: HKCR; Subkey: slogin; ValueName: URL Protocol; ValueType: string; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: sshassoc
 
 [Tasks]
 Name: desktopicon; Description: {cm:task_desktopicon}; Components: TeraTerm
