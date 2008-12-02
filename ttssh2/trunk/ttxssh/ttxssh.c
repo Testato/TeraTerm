@@ -1477,11 +1477,14 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 			           _stricmp(option + 4, "-autologon") == 0) {
 				pvar->settings.TryDefaultAuth = TRUE;
 
-			} else if (MATCH_STR(option + 4, "-A") == 0) {
-				pvar->settings.ForwardAgent = TRUE;
-
 			} else if (_stricmp(option + 4, "-acceptall") == 0) {
 				pvar->settings.LocalForwardingIdentityCheck = FALSE;
+
+			// -axx‚æ‚èã‚É‚µ‚Ä‚Í‚¾‚ß
+			} else if (MATCH_STR(option + 4, "-a") == 0) {
+				pvar->settings.ForwardAgent = FALSE;
+			} else if (MATCH_STR(option + 4, "-A") == 0) {
+				pvar->settings.ForwardAgent = TRUE;
 
 			} else if (MATCH_STR(option + 4, "-consume=") == 0) {
 				read_ssh_options_from_user_file(pvar, option + 13);
