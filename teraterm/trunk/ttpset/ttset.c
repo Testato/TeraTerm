@@ -2501,14 +2501,6 @@ static void ParseHostName(char *HostStr, WORD * port)
 			HostStr[i - 1] = '\0';
 		is_telnet_handler = 1;
 	}
-	/* strlen("ssh://") == 6 */
-	else if ((_strnicmp(HostStr, "ssh://", 6) == 0)) {
-		/* trim "ssh://" and tail "/" */
-		memmove(HostStr, &(HostStr[6]), strlen(HostStr) - 5);
-		i = strlen(HostStr);
-		if (i > 0 && (HostStr[i - 1] == '/'))
-			HostStr[i - 1] = '\0';
-	}
 
 	/* parsing string enclosed by [ ] */
 	s = HostStr;
