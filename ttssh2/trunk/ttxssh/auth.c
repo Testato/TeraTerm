@@ -196,6 +196,9 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 	GetDlgItemText(dlg, IDC_REMEMBER_PASSWORD, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_AUTH_REMEMBER_PASSWORD", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_REMEMBER_PASSWORD, pvar->ts->UIMsg);
+	GetDlgItemText(dlg, IDC_FORWARD_AGENT, uimsg, sizeof(uimsg));
+	UTIL_get_lang_msg("DLG_AUTH_FWDAGENT", pvar, uimsg);
+	SetDlgItemText(dlg, IDC_FORWARD_AGENT, pvar->ts->UIMsg);
 	GetDlgItemText(dlg, IDC_SSHUSEPASSWORD, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_AUTH_METHOD_PASSWORD", pvar, uimsg);
 	SetDlgItemText(dlg, IDC_SSHUSEPASSWORD, pvar->ts->UIMsg);
@@ -354,6 +357,8 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 		SendMessage(GetDlgItem(dlg, IDC_REMEMBER_PASSWORD), BM_SETCHECK, BST_UNCHECKED, 0);
 	}
 
+	// settings ‚©‚çŒ»Ý‚ÌÝ’è‚ðŽ‚Á‚Ä‚­‚é (2008.12.4 maya)
+	CheckDlgButton(dlg, IDC_FORWARD_AGENT, pvar->settings.ForwardAgent);
 }
 
 static char FAR *alloc_control_text(HWND ctl)
@@ -655,6 +660,7 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 			SendDlgItemMessage(dlg, IDC_SSHPASSWORDCAPTION, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHPASSWORD, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_REMEMBER_PASSWORD, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_FORWARD_AGENT, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHUSEPASSWORD, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SSHUSERSA, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_CHOOSERSAFILE, WM_SETFONT, (WPARAM)DlgAuthFont, MAKELPARAM(TRUE,0));
@@ -847,6 +853,11 @@ static BOOL CALLBACK auth_dlg_proc(HWND dlg, UINT msg, WPARAM wParam,
 
 		case IDC_CHOOSEHOSTRSAFILE:
 			choose_host_RSA_key_file(dlg, pvar);
+			return TRUE;
+
+		case IDC_FORWARD_AGENT:
+			// ‚±‚ÌƒZƒbƒVƒ‡ƒ“‚É‚Ì‚Ý”½‰f‚³‚ê‚é (2008.12.4 maya)
+			pvar->session_settings.ForwardAgent = IsDlgButtonChecked(dlg, IDC_FORWARD_AGENT);
 			return TRUE;
 
 		default:
