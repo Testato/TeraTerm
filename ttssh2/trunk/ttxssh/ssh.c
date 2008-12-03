@@ -3156,6 +3156,7 @@ static void SSH2_send_channel_data(PTInstVar pvar, Channel_t *c, unsigned char F
 	buffer_t *msg;
 	unsigned char *outmsg;
 	unsigned int len;
+	char log[128];
 
 	// SSH2鍵交換中の場合、パケットを捨てる。(2005.6.19 yutaka)
 	if (pvar->rekeying) {
@@ -3192,7 +3193,8 @@ static void SSH2_send_channel_data(PTInstVar pvar, Channel_t *c, unsigned char F
 		buffer_free(msg);
 		//debug_print(1, pvar->ssh_state.outbuf, 7 + 4 + 1 + 1 + len);
 
-		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_DATA was sent at SSH_handle_packet().", LOG_LEVEL_SSHDUMP);
+		_snprintf_s(log, sizeof(log), _TRUNCATE, "SSH2_MSG_CHANNEL_DATA was sent at SSH2_send_channel_data(). local:%d remote:%d", c->self_id, c->remote_id);
+		notify_verbose_message(pvar, log, LOG_LEVEL_SSHDUMP);
 
 		// remote window sizeの調整
 		if (buflen <= c->remote_window) {
@@ -3294,6 +3296,36 @@ void SSH_fail_channel_open(PTInstVar pvar, uint32 remote_channel_num)
 	}
 }
 
+void SSH2_confirm_channel_open(PTInstVar pvar, uint32 local_id)
+{
+	buffer_t *msg;
+	unsigned char *outmsg;
+	int len;
+	Channel_t *c;
+	char log[128];
+
+	c = ssh2_channel_lookup(local_id);
+
+	msg = buffer_init();
+	if (msg == NULL) {
+		// TODO: error check
+		return;
+	}
+	buffer_put_int(msg, c->remote_id);
+	buffer_put_int(msg, c->self_id);
+	buffer_put_int(msg, c->local_window);
+	buffer_put_int(msg, c->local_maxpacket);
+
+	len = buffer_len(msg);
+	outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN_CONFIRMATION, len);
+	memcpy(outmsg, buffer_ptr(msg), len);
+	finish_send_packet(pvar);
+	buffer_free(msg);
+
+	_snprintf_s(log, sizeof(log), _TRUNCATE, "SSH2_MSG_CHANNEL_OPEN_CONFIRMATION was sent at SSH_confirm_channel_open(). local:%d remote:%d", c->self_id, c->remote_id);
+	notify_verbose_message(pvar, log, LOG_LEVEL_VERBOSE);
+}
+
 void SSH_confirm_channel_open(PTInstVar pvar, uint32 remote_channel_num,
 							  uint32 local_channel_num)
 {
@@ -3306,9 +3338,6 @@ void SSH_confirm_channel_open(PTInstVar pvar, uint32 remote_channel_num,
 		finish_send_packet(pvar);
 
 	} else {
-		buffer_t *msg;
-		unsigned char *outmsg;
-		int len;
 		Channel_t *c;
 
 		// port-forwarding(remote to local)のローカル接続への成功をサーバへ返す。(2005.7.2 yutaka)
@@ -3317,24 +3346,7 @@ void SSH_confirm_channel_open(PTInstVar pvar, uint32 remote_channel_num,
 			// It is sure to be successful as long as it's not a program bug either.
 			return;
 		}
-
-		msg = buffer_init();
-		if (msg == NULL) {
-			// TODO: error check
-			return;
-		}
-		buffer_put_int(msg, c->remote_id);
-		buffer_put_int(msg, c->self_id);
-		buffer_put_int(msg, c->local_window);
-		buffer_put_int(msg, c->local_maxpacket);
-
-		len = buffer_len(msg);
-		outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN_CONFIRMATION, len);
-		memcpy(outmsg, buffer_ptr(msg), len);
-		finish_send_packet(pvar);
-		buffer_free(msg);
-
-		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN_CONFIRMATION was sent at SSH_confirm_channel_open().", LOG_LEVEL_VERBOSE);
+		SSH2_confirm_channel_open(pvar, c->self_id);
 	}
 }
 
@@ -3368,6 +3380,7 @@ void SSH_channel_input_eof(PTInstVar pvar, uint32 remote_channel_num, uint32 loc
 			unsigned char *outmsg;
 			int len;
 			Channel_t *c;
+			char log[128];
 
 			// SSH2鍵交換中の場合、パケットを捨てる。(2005.6.21 yutaka)
 			if (pvar->rekeying) {
@@ -3395,7 +3408,8 @@ void SSH_channel_input_eof(PTInstVar pvar, uint32 remote_channel_num, uint32 loc
 			finish_send_packet(pvar);
 			buffer_free(msg);
 
-			notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_EOF was sent at SSH_channel_input_eof().", LOG_LEVEL_VERBOSE);
+			_snprintf_s(log, sizeof(log), _TRUNCATE, "SSH2_MSG_CHANNEL_EOF was sent at SSH_channel_input_eof(). local:%d remote:%d", c->self_id, c->remote_id);
+			notify_verbose_message(pvar, log, LOG_LEVEL_VERBOSE);
 	}
 
 }
@@ -8004,6 +8018,7 @@ void ssh2_channel_send_close(PTInstVar pvar, Channel_t *c)
 		buffer_t *msg;
 		unsigned char *outmsg;
 		int len;
+		char log[128];
 
 		// SSH2 serverにchannel closeを伝える
 		msg = buffer_init();
@@ -8019,7 +8034,8 @@ void ssh2_channel_send_close(PTInstVar pvar, Channel_t *c)
 		finish_send_packet(pvar);
 		buffer_free(msg);
 
-		notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_CLOSE was sent at ssh2_channel_send_close().", LOG_LEVEL_VERBOSE);
+		_snprintf_s(log, sizeof(log), _TRUNCATE, "SSH2_MSG_CHANNEL_CLOSE was sent at ssh2_channel_send_close(). local:%d remote:%d", c->self_id, c->remote_id);
+		notify_verbose_message(pvar, log, LOG_LEVEL_VERBOSE);
 	}
 }
 
@@ -8394,8 +8410,7 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 	int id;
 	unsigned int str_len;
 	Channel_t *c;
-
-	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_DATA was received.", LOG_LEVEL_SSHDUMP);
+	char log[128];
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
 	data = pvar->ssh_state.payload;
@@ -8413,6 +8428,9 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 		// TODO:
 		return FALSE;
 	}
+
+	_snprintf_s(log, sizeof(log), _TRUNCATE, "SSH2_MSG_CHANNEL_DATA was received. local:%d remote:%d", c->self_id, c->remote_id);
+	notify_verbose_message(pvar, log, LOG_LEVEL_SSHDUMP);
 
 	// string length
 	str_len = get_uint32_MSBfirst(data);
@@ -8542,8 +8560,8 @@ static BOOL handle_SSH2_channel_eof(PTInstVar pvar)
 	char *data;
 	int id;
 	Channel_t *c;
+	char log[128];
 
-	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_EOF was received.", LOG_LEVEL_VERBOSE);
 	// 切断時にサーバが SSH2_MSG_CHANNEL_EOF を送ってくるので、チャネルを解放する。(2005.6.19 yutaka)
 
 	// 6byte（サイズ＋パディング＋タイプ）を取り除いた以降のペイロード
@@ -8560,6 +8578,10 @@ static BOOL handle_SSH2_channel_eof(PTInstVar pvar)
 		// TODO:
 		return FALSE;
 	}
+
+	_snprintf_s(log, sizeof(log), _TRUNCATE, "SSH2_MSG_CHANNEL_EOF was received. local:%d remote:%d", c->self_id, c->remote_id);
+	notify_verbose_message(pvar, log, LOG_LEVEL_VERBOSE);
+
 	if (c->type == TYPE_PORTFWD) {
 		FWD_channel_input_eof(pvar, c->local_num);
 	}
@@ -8681,23 +8703,7 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 			c->remote_window = remote_window;
 			c->remote_maxpacket = remote_maxpacket;
 			
-			msg = buffer_init();
-			if (msg == NULL) {
-				// TODO: error check
-				return FALSE;
-			}
-			buffer_put_int(msg, c->remote_id);
-			buffer_put_int(msg, c->self_id);
-			buffer_put_int(msg, c->local_window);
-			buffer_put_int(msg, c->local_maxpacket);
-
-			len = buffer_len(msg);
-			outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_OPEN_CONFIRMATION, len);
-			memcpy(outmsg, buffer_ptr(msg), len);
-			finish_send_packet(pvar);
-			buffer_free(msg);
-
-			notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_OPEN_CONFIRMATION was sent at handle_SSH2_channel_open().", LOG_LEVEL_VERBOSE);
+			SSH2_confirm_channel_open(pvar, c->self_id);
 		}
 		else {
 			msg = buffer_init();
@@ -8739,8 +8745,7 @@ static BOOL handle_SSH2_channel_close(PTInstVar pvar)
 	buffer_t *msg;
 	char *s;
 	unsigned char *outmsg;
-
-	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_CLOSE was received.", LOG_LEVEL_VERBOSE);
+	char log[128];
 
 	// コネクション切断時に、パケットダンプをファイルへ掃き出す。
 	if (LOG_LEVEL_SSHDUMP <= pvar->session_settings.LogLevel) {
@@ -8760,6 +8765,9 @@ static BOOL handle_SSH2_channel_close(PTInstVar pvar)
 		// TODO:
 		return FALSE;
 	}
+
+	_snprintf_s(log, sizeof(log), _TRUNCATE, "SSH2_MSG_CHANNEL_CLOSE was received. local:%d remote:%d", c->self_id, c->remote_id);
+	notify_verbose_message(pvar, log, LOG_LEVEL_VERBOSE);
 
 	if (c->type == TYPE_SHELL) {
 		msg = buffer_init();
