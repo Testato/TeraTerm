@@ -9095,5 +9095,14 @@ static BOOL SSH_agent_response(PTInstVar pvar, Channel_t *c, unsigned char *data
 		return TRUE;
 	}
 
+	// 使い終わったデータを消去/再確保
+	if (SSHv2(pvar)) {
+		buffer_free(c->agent_msg);
+		c->agent_msg = buffer_init();
+	}
+	else {
+		buffer_free(pvar->agent_channel.agent_msg);
+		pvar->agent_channel.agent_msg = buffer_init();
+	}
 	return TRUE;
 }
