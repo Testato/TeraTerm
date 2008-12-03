@@ -3296,15 +3296,15 @@ void SSH_fail_channel_open(PTInstVar pvar, uint32 remote_channel_num)
 	}
 }
 
-void SSH2_confirm_channel_open(PTInstVar pvar, uint32 local_id)
+void SSH2_confirm_channel_open(PTInstVar pvar, Channel_t *c)
 {
 	buffer_t *msg;
 	unsigned char *outmsg;
 	int len;
-	Channel_t *c;
 	char log[128];
 
-	c = ssh2_channel_lookup(local_id);
+	if (c == NULL)
+		return;
 
 	msg = buffer_init();
 	if (msg == NULL) {
@@ -3346,7 +3346,7 @@ void SSH_confirm_channel_open(PTInstVar pvar, uint32 remote_channel_num,
 			// It is sure to be successful as long as it's not a program bug either.
 			return;
 		}
-		SSH2_confirm_channel_open(pvar, c->self_id);
+		SSH2_confirm_channel_open(pvar, c);
 	}
 }
 
@@ -3365,6 +3365,42 @@ void SSH_channel_output_eof(PTInstVar pvar, uint32 remote_channel_num)
 	}
 }
 
+void SSH2_channel_input_eof(PTInstVar pvar, Channel_t *c)
+{
+	buffer_t *msg;
+	unsigned char *outmsg;
+	int len;
+	char log[128];
+
+	if (c == NULL)
+		return;
+
+	// SSH2鍵交換中の場合、パケットを捨てる。(2005.6.21 yutaka)
+	if (pvar->rekeying) {
+		// TODO: 理想としてはパケット破棄ではなく、パケット読み取り遅延にしたいところだが、
+		// 将来直すことにする。
+		c = NULL;
+
+		return;
+	}
+
+	msg = buffer_init();
+	if (msg == NULL) {
+		// TODO: error check
+		return;
+	}
+	buffer_put_int(msg, c->remote_id);  // remote ID
+
+	len = buffer_len(msg);
+	outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_EOF, len);
+	memcpy(outmsg, buffer_ptr(msg), len);
+	finish_send_packet(pvar);
+	buffer_free(msg);
+
+	_snprintf_s(log, sizeof(log), _TRUNCATE, "SSH2_MSG_CHANNEL_EOF was sent at SSH2_channel_input_eof(). local:%d remote:%d", c->self_id, c->remote_id);
+	notify_verbose_message(pvar, log, LOG_LEVEL_VERBOSE);
+}
+
 void SSH_channel_input_eof(PTInstVar pvar, uint32 remote_channel_num, uint32 local_channel_num)
 {
 	if (SSHv1(pvar)){
@@ -3376,42 +3412,14 @@ void SSH_channel_input_eof(PTInstVar pvar, uint32 remote_channel_num, uint32 loc
 
 	} else {
 		// SSH2: チャネルクローズをサーバへ通知
-			buffer_t *msg;
-			unsigned char *outmsg;
-			int len;
-			Channel_t *c;
-			char log[128];
+		Channel_t *c;
 
-			// SSH2鍵交換中の場合、パケットを捨てる。(2005.6.21 yutaka)
-			if (pvar->rekeying) {
-				// TODO: 理想としてはパケット破棄ではなく、パケット読み取り遅延にしたいところだが、
-				// 将来直すことにする。
-				c = NULL;
-
-				return;
-			}
-
-			c = ssh2_local_channel_lookup(local_channel_num);
-			if (c == NULL)
-				return;
-
-			msg = buffer_init();
-			if (msg == NULL) {
-				// TODO: error check
-				return;
-			}
-			buffer_put_int(msg, c->remote_id);  // remote ID
-
-			len = buffer_len(msg);
-			outmsg = begin_send_packet(pvar, SSH2_MSG_CHANNEL_EOF, len);
-			memcpy(outmsg, buffer_ptr(msg), len);
-			finish_send_packet(pvar);
-			buffer_free(msg);
-
-			_snprintf_s(log, sizeof(log), _TRUNCATE, "SSH2_MSG_CHANNEL_EOF was sent at SSH_channel_input_eof(). local:%d remote:%d", c->self_id, c->remote_id);
-			notify_verbose_message(pvar, log, LOG_LEVEL_VERBOSE);
+		c = ssh2_local_channel_lookup(local_channel_num);
+		if (c == NULL)
+			return;
+		
+		SSH2_channel_input_eof(pvar, c);
 	}
-
 }
 
 void SSH_request_forwarding(PTInstVar pvar, int from_server_port,
@@ -8703,7 +8711,7 @@ static BOOL handle_SSH2_channel_open(PTInstVar pvar)
 			c->remote_window = remote_window;
 			c->remote_maxpacket = remote_maxpacket;
 			
-			SSH2_confirm_channel_open(pvar, c->self_id);
+			SSH2_confirm_channel_open(pvar, c);
 		}
 		else {
 			msg = buffer_init();
