@@ -451,6 +451,7 @@ DLG_AUTH_BANNER2_FAILED=Authentication failed. Please retry.
 DLG_AUTH_USERNAME=User &name:
 DLG_AUTH_PASSWORD=&Passphrase:
 DLG_AUTH_REMEMBER_PASSWORD=Remember password on &memory
+DLG_AUTH_FWDAGENT=F&orward agent
 DLG_AUTH_METHOD_PASSWORD=Use p&lain password to log in
 DLG_AUTH_METHOD_RSA=Use &RSA/DSA key to log in
 DLG_AUTH_METHOD_RHOST=Use r&hosts to log in (SSH1)

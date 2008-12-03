@@ -450,6 +450,7 @@ DLG_AUTH_BANNER2_FAILED=Authentifikation fehlgeschlagen.Bitte nocheinmal versuch
 DLG_AUTH_USERNAME=Benutzername:
 DLG_AUTH_PASSWORD=Passphrase:
 DLG_AUTH_REMEMBER_PASSWORD=Passphrase speichern
+DLG_AUTH_FWDAGENT=F&orward agent
 DLG_AUTH_METHOD_PASSWORD=Benutze Passwortauthentifikation
 DLG_AUTH_METHOD_RSA=Benutze DSA/RSA Schlüssel
 DLG_AUTH_METHOD_RHOST=Benutze rhosts (SSH1)
