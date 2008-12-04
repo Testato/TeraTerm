@@ -2948,6 +2948,9 @@ WORD TTLStrMatch()
 		result = 0;
 	}
 
+	// FindRegexStringOne‚Ì’†‚ÅUnlockVar()‚³‚ê‚Ä‚µ‚Ü‚¤‚Ì‚ÅALockVar()‚µ‚È‚¨‚·B
+	LockVar();
+
 	SetResult(result);
 
 	return Err;
