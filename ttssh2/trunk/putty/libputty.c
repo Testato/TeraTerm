@@ -9,11 +9,6 @@
 #include "ssh.h"
 #include "libputty.h"
 
-// WINDOWS\WINPGNTC.C
-extern int agent_exists(void);
-extern int agent_query(void *in, int inlen, void **out, int *outlen,
-                       void (*callback)(void *, void *, int), void *callback_ctx);
-
 /*
  * for SSH2
  *   Œ®‚Ìˆê——‚ð“¾‚é

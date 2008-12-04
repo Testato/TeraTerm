@@ -8942,10 +8942,9 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 
 static BOOL SSH_agent_response(PTInstVar pvar, Channel_t *c, unsigned char *data, unsigned int buflen)
 {
-	int req_len, len;
-	unsigned char *keylist;
-	buffer_t *msg;
-	unsigned char cmd, res_cmd;
+	int req_len;
+	unsigned char *response;
+	int resplen, retval;
 
 	req_len = get_uint32_MSBfirst(data);
 
@@ -8979,119 +8978,9 @@ static BOOL SSH_agent_response(PTInstVar pvar, Channel_t *c, unsigned char *data
 		}
 	}
 
-	data += 4;
-	cmd = *data;
-
-	if (cmd == 11 || cmd == 1) {
-		// Pageant に鍵一覧を要求し、リモートに渡す
-		msg = buffer_init();
-		if (msg == NULL) {
-			return TRUE;
-		}
-
-		if (cmd == 11) { // SSH2_AGENTC_REQUEST_IDENTITIES
-			len = putty_get_ssh2_keylist(&keylist);
-			res_cmd = 12; // SSH2_AGENT_IDENTITIES_ANSWER
-		}
-		else { // SSH1_AGENTC_REQUEST_RSA_IDENTITIES 1
-			len = putty_get_ssh1_keylist(&keylist);
-			res_cmd = 2; // SSH1_AGENT_RSA_IDENTITIES_ANSWER
-		}
-
-		if (len < 5) {
-			// Pageant が起動していないか、鍵がない
-			buffer_put_int(msg, 4 + 1);
-			buffer_put_char(msg, res_cmd); 
-			buffer_put_int(msg, 0); // 鍵の数 0 をセット
-		}
-		else {
-			buffer_put_int(msg, len + 1);
-			buffer_put_char(msg, res_cmd); 
-			buffer_put_raw(msg, keylist, len);
-		}
-
-		if (SSHv2(pvar)) {
-			SSH2_send_channel_data(pvar, c, msg->buf, msg->len);
-		}
-		else {
-			SSH_channel_send(pvar, pvar->agent_channel.local_id,
-			                       pvar->agent_channel.remote_id,
-			                 msg->buf, msg->len);
-		}
-		buffer_free(msg);
-	}
-	else if (cmd == 13 || cmd == 3) {
-		// Pageant に署名/ハッシュを要求し、リモートに渡す
-		msg = buffer_init();
-		if (msg == NULL) {
-			return TRUE;
-		}
-
-		if (cmd == 13) { // SSH2_AGENTC_SIGN_REQUEST
-			unsigned char *signedmsg;
-			int signedlen;
-
-			data += 1;
-			len = get_uint32_MSBfirst(data);
-			signedmsg = putty_sign_ssh2_key(data, data + 4 + len, &signedlen);
-			if (signedmsg == NULL) {
-				// この channel を閉じる
-				if (SSHv2(pvar)) {
-					ssh2_channel_send_close(pvar, c);
-				}
-				else {
-					SSH_channel_input_eof(pvar, pvar->agent_channel.remote_id,
-					                            pvar->agent_channel.local_id);
-				}
-				return TRUE;
-			}
-
-			buffer_put_int(msg, 1 + signedlen);
-			buffer_put_char(msg, 14); // SSH2_AGENT_SIGN_RESPONSE
-			buffer_put_raw(msg, signedmsg, signedlen);
-
-			safefree(signedmsg);
-		}
-		else { // SSH1_AGENTC_RSA_CHALLENGE
-			unsigned char *hash;
-			int keylen, challengelen, hashlen;
-			data += 1;
-			keylen = putty_get_ssh1_keylen(data, req_len);
-			challengelen = req_len - keylen - 1 - 16 - 4;
-			hash = putty_hash_ssh1_challenge(data, keylen,
-			                                 data + keylen, challengelen,
-			                                 data + keylen + challengelen,
-			                                 &hashlen);
-			if (hash == NULL) {
-				// この channel を閉じる
-				if (SSHv2(pvar)) {
-					ssh2_channel_send_close(pvar, c);
-				}
-				else {
-					SSH_channel_input_eof(pvar, pvar->agent_channel.remote_id,
-					                            pvar->agent_channel.local_id);
-				}
-				return TRUE;
-			}
-
-			buffer_put_int(msg, 1 + hashlen);
-			buffer_put_char(msg, 4); // SSH1_AGENT_RSA_RESPONSE
-			buffer_put_raw(msg, hash, hashlen);
-
-			safefree(hash);
-		}
-
-		if (SSHv2(pvar)) {
-			SSH2_send_channel_data(pvar, c, msg->buf, msg->len);
-		}
-		else {
-			SSH_channel_send(pvar, pvar->agent_channel.local_id,
-			                       pvar->agent_channel.remote_id,
-			                       msg->buf, msg->len);
-		}
-		buffer_free(msg);
-	}
-	else {
+	req_len = get_uint32_MSBfirst(data);
+	retval = agent_query(data, req_len + 4, &response, &resplen, NULL, NULL);
+	if (retval != 1 || resplen < 5) {
 		// この channel を閉じる
 		if (SSHv2(pvar)) {
 			ssh2_channel_send_close(pvar, c);
@@ -9100,9 +8989,20 @@ static BOOL SSH_agent_response(PTInstVar pvar, Channel_t *c, unsigned char *data
 			SSH_channel_input_eof(pvar, pvar->agent_channel.remote_id,
 			                            pvar->agent_channel.local_id);
 		}
-		return TRUE;
+		goto exit;
 	}
 
+	if (SSHv2(pvar)) {
+		SSH2_send_channel_data(pvar, c, response, resplen);
+	}
+	else {
+		SSH_channel_send(pvar, pvar->agent_channel.local_id,
+		                       pvar->agent_channel.remote_id,
+		                       response, resplen);
+	}
+	safefree(response);
+
+exit:
 	// 使い終わったデータを消去/再確保
 	if (SSHv2(pvar)) {
 		buffer_free(c->agent_msg);
