@@ -204,7 +204,7 @@ static void safe_WSACancelAsyncRequest(PTInstVar pvar, HANDLE request)
 	}
 }
 
-static int check_local_channel_num(PTInstVar pvar, int local_num)
+int FWD_check_local_channel_num(PTInstVar pvar, int local_num)
 {
 	if (local_num < 0 || local_num >= pvar->fwd_state.num_channels
 	 || pvar->fwd_state.channels[local_num].status == 0) {
@@ -299,16 +299,24 @@ void FWD_free_channel(PTInstVar pvar, uint32 local_channel_num)
 {
 	FWDChannel FAR *channel = &pvar->fwd_state.channels[local_channel_num];
 
-	UTIL_destroy_sock_write_buf(&channel->writebuf);
-	if (channel->filter != NULL) {
-		channel->filter(channel->filter_closure, 0, NULL, NULL);
-		channel->filter = NULL;
-		channel->filter_closure = NULL;
+	if (channel->type == TYPE_AGENT) {
+		buffer_free(channel->agent_msg);
+		// channel_close 時と TTSSH 終了時に2回呼ばれるので、二重 free 防止のため
+		channel->agent_msg = NULL;
+		channel->status = 0;
 	}
-	channel->status = 0;
-	if (channel->local_socket != INVALID_SOCKET) {
-		safe_closesocket(pvar, channel->local_socket);
-		channel->local_socket = INVALID_SOCKET;
+	else {
+		UTIL_destroy_sock_write_buf(&channel->writebuf);
+		if (channel->filter != NULL) {
+			channel->filter(channel->filter_closure, 0, NULL, NULL);
+			channel->filter = NULL;
+			channel->filter_closure = NULL;
+		}
+		channel->status = 0;
+		if (channel->local_socket != INVALID_SOCKET) {
+			safe_closesocket(pvar, channel->local_socket);
+			channel->local_socket = INVALID_SOCKET;
+		}
 	}
 
 	if (channel->request_num >= 0) {
@@ -328,7 +336,7 @@ void FWD_channel_input_eof(PTInstVar pvar, uint32 local_channel_num)
 {
 	FWDChannel FAR *channel;
 
-	if (!check_local_channel_num(pvar, local_channel_num))
+	if (!FWD_check_local_channel_num(pvar, local_channel_num))
 		return;
 
 	channel = pvar->fwd_state.channels + local_channel_num;
@@ -347,7 +355,7 @@ void FWD_channel_output_eof(PTInstVar pvar, uint32 local_channel_num)
 {
 	FWDChannel FAR *channel;
 
-	if (!check_local_channel_num(pvar, local_channel_num))
+	if (!FWD_check_local_channel_num(pvar, local_channel_num))
 		return;
 
 	channel = pvar->fwd_state.channels + local_channel_num;
@@ -629,7 +637,7 @@ static int alloc_channel(PTInstVar pvar, int new_status,
 	}
 
 	if (new_channel < 0) {
-		new_num_channels = pvar->fwd_state.num_channels * 2 + 1;
+		new_num_channels = pvar->fwd_state.num_channels + 1;
 		pvar->fwd_state.channels =
 			(FWDChannel FAR *) realloc(pvar->fwd_state.channels,
 			                           sizeof(FWDChannel) *
@@ -656,6 +664,41 @@ static int alloc_channel(PTInstVar pvar, int new_status,
 	channel->request_num = new_request_num;
 	pvar->fwd_state.requests[new_request_num].num_channels++;
 	UTIL_init_sock_write_buf(&channel->writebuf);
+
+	return new_channel;
+}
+
+static int alloc_agent_channel(PTInstVar pvar, int remote_channel_num)
+{
+	int i;
+	int new_num_channels;
+	int new_channel = -1;
+	FWDChannel FAR *channel;
+
+	for (i = 0; i < pvar->fwd_state.num_channels && new_channel < 0; i++) {
+		if (pvar->fwd_state.channels[i].status == 0) {
+			new_channel = i;
+		}
+	}
+
+	if (new_channel < 0) {
+		new_num_channels = pvar->fwd_state.num_channels + 1;
+		pvar->fwd_state.channels =
+			(FWDChannel FAR *) realloc(pvar->fwd_state.channels,
+			                           sizeof(FWDChannel) *
+			                           new_num_channels);
+
+		new_channel = pvar->fwd_state.num_channels;
+		pvar->fwd_state.num_channels = new_num_channels;
+	}
+
+	channel = pvar->fwd_state.channels + new_channel;
+	channel->status = FWD_AGENT_DUMMY;
+	channel->remote_num = remote_channel_num;
+	channel->request_num = -1;
+	channel->type = TYPE_AGENT;
+	channel->agent_msg = buffer_init();
+	channel->agent_request_len = 0;
 
 	return new_channel;
 }
@@ -1738,6 +1781,9 @@ static void create_local_channel(PTInstVar pvar, uint32 remote_channel_num,
 	channel->filter_closure = filter_closure;
 	channel->filter = filter;
 
+	// (2008.12.5 maya)
+	channel->type = TYPE_PORTFWD;
+
 	// save channel number (2005.7.2 yutaka)
 	if (chan_num != NULL) {
 		*chan_num = channel_num;
@@ -1854,13 +1900,24 @@ void FWD_X11_open(PTInstVar pvar, uint32 remote_channel_num,
 	notify_nonfatal_error(pvar, pvar->ts->UIMsg);
 }
 
+// agent forwarding の要求に対し、FWDChannel を作成する
+// SSH1 のときのみ呼ばれる
+int FWD_agent_open(PTInstVar pvar, uint32 remote_channel_num)
+{
+	if (SSHv1(pvar)) {
+		return alloc_agent_channel(pvar, remote_channel_num);
+	}
+
+	return -1;
+}
+
 void FWD_confirmed_open(PTInstVar pvar, uint32 local_channel_num,
                         uint32 remote_channel_num)
 {
 	SOCKET s;
 	FWDChannel FAR *channel;
 
-	if (!check_local_channel_num(pvar, local_channel_num))
+	if (!FWD_check_local_channel_num(pvar, local_channel_num))
 		return;
 
 	channel = pvar->fwd_state.channels + local_channel_num;
@@ -1879,7 +1936,7 @@ void FWD_confirmed_open(PTInstVar pvar, uint32 local_channel_num,
 
 void FWD_failed_open(PTInstVar pvar, uint32 local_channel_num)
 {
-	if (!check_local_channel_num(pvar, local_channel_num))
+	if (!FWD_check_local_channel_num(pvar, local_channel_num))
 		return;
 
 	UTIL_get_lang_msg("MSG_FWD_DENIED_BY_SERVER_ERROR", pvar,
@@ -1935,7 +1992,7 @@ void FWD_received_data(PTInstVar pvar, uint32 local_channel_num,
 	FWDChannel FAR *channel;
 	int action = FWD_FILTER_RETAIN;
 
-	if (!check_local_channel_num(pvar, local_channel_num))
+	if (!FWD_check_local_channel_num(pvar, local_channel_num))
 		return;
 
 	channel = pvar->fwd_state.channels + local_channel_num;

@@ -75,10 +75,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // channel data structure
 #define CHANNEL_MAX 100
 
-enum channel_type {
-	TYPE_SHELL, TYPE_PORTFWD, TYPE_SCP, TYPE_SFTP, TYPE_AGENT,
-};
-
 enum scp_state {
 	SCP_INIT, SCP_TIMESTAMP, SCP_FILEINFO, SCP_DATA, SCP_CLOSING,
 };
@@ -163,7 +159,7 @@ int dh_pub_is_valid(DH *dh, BIGNUM *dh_pub);
 static void start_ssh_heartbeat_thread(PTInstVar pvar);
 static void SSH2_send_channel_data(PTInstVar pvar, Channel_t *c, unsigned char FAR * buf, unsigned int buflen);
 void ssh2_channel_send_close(PTInstVar pvar, Channel_t *c);
-static BOOL SSH_agent_response(PTInstVar pvar, Channel_t *c, unsigned char *data, unsigned int buflen);
+static BOOL SSH_agent_response(PTInstVar pvar, Channel_t *c, int local_channel_num, unsigned char *data, unsigned int buflen);
 
 //
 // channel function
@@ -1892,17 +1888,22 @@ static BOOL handle_channel_open_failure(PTInstVar pvar)
 
 static BOOL handle_channel_data(PTInstVar pvar)
 {
-	int len, local_channel;
+	int len;
 
 	if (grab_payload(pvar, 8)
 	 && grab_payload(pvar, len = get_payload_uint32(pvar, 4))) {
-		local_channel = get_payload_uint32(pvar, 0);
-		if (local_channel == pvar->agent_channel.local_id) {
-			SSH_agent_response(pvar, NULL,
+		FWDChannel *channel;
+		int local_channel_num = get_payload_uint32(pvar, 0);
+		if (!FWD_check_local_channel_num(pvar, local_channel_num)) {
+			return FALSE;
+		}
+		channel = pvar->fwd_state.channels + local_channel_num;
+		if (channel->type == TYPE_AGENT) {
+			SSH_agent_response(pvar, NULL, local_channel_num,
 			                   pvar->ssh_state.payload + 8, len);
 		}
 		else {
-			FWD_received_data(pvar, local_channel,
+			FWD_received_data(pvar, local_channel_num,
 			                  pvar->ssh_state.payload + 8, len);
 		}
 	}
@@ -1912,13 +1913,18 @@ static BOOL handle_channel_data(PTInstVar pvar)
 static BOOL handle_channel_input_eof(PTInstVar pvar)
 {
 	if (grab_payload(pvar, 4)) {
-		int local_id = get_payload_uint32(pvar, 0);
-		if (local_id == pvar->agent_channel.local_id) {
-			SSH_channel_input_eof(pvar, pvar->agent_channel.remote_id,
-			                            pvar->agent_channel.local_id);
+		int local_channel_num = get_payload_uint32(pvar, 0);
+		FWDChannel *channel;
+		if (!FWD_check_local_channel_num(pvar, local_channel_num)) {
+			return FALSE;
+		}
+		channel = pvar->fwd_state.channels + local_channel_num;
+		if (channel->type == TYPE_AGENT) {
+			channel->status |= FWD_CLOSED_REMOTE_IN;
+			SSH_channel_input_eof(pvar, channel->remote_num, local_channel_num);
 		}
 		else {
-			FWD_channel_input_eof(pvar, local_id);
+			FWD_channel_input_eof(pvar, local_channel_num);
 		}
 	}
 	return TRUE;
@@ -1927,13 +1933,19 @@ static BOOL handle_channel_input_eof(PTInstVar pvar)
 static BOOL handle_channel_output_eof(PTInstVar pvar)
 {
 	if (grab_payload(pvar, 4)) {
-		int local_id = get_payload_uint32(pvar, 0);
-		if (local_id == pvar->agent_channel.local_id) {
-			SSH_channel_output_eof(pvar, pvar->agent_channel.remote_id);
-			buffer_free(pvar->agent_channel.agent_msg);
+		int local_channel_num = get_payload_uint32(pvar, 0);
+		FWDChannel *channel;
+		if (!FWD_check_local_channel_num(pvar, local_channel_num)) {
+			return FALSE;
+		}
+		channel = pvar->fwd_state.channels + local_channel_num;
+		if (channel->type == TYPE_AGENT) {
+			channel->status |= FWD_CLOSED_REMOTE_OUT;
+			SSH_channel_output_eof(pvar, channel->remote_num);
+			FWD_free_channel(pvar, local_channel_num);
 		}
 		else {
-			FWD_channel_output_eof(pvar, get_payload_uint32(pvar, 0));
+			FWD_channel_output_eof(pvar, local_channel_num);
 		}
 	}
 	return TRUE;
@@ -1942,19 +1954,20 @@ static BOOL handle_channel_output_eof(PTInstVar pvar)
 static BOOL handle_agent_open(PTInstVar pvar)
 {
 	if (grab_payload(pvar, 4)) {
-		pvar->agent_channel.remote_id = get_payload_uint32(pvar, 0);
+		int remote_id = get_payload_uint32(pvar, 0);
+		int local_id;
+
 		if (pvar->agentfwd_enable) {
-			// SSH1 の channel 実装が port forward しか想定していなかったので、
-			// agent forward では固定値を使う
-			pvar->agent_channel.local_id = SSH1_AGENT_CHANNEL_ID;
-			pvar->agent_channel.agent_msg = buffer_init();
-			pvar->agent_channel.agent_request_len = 0;
-			SSH_confirm_channel_open(pvar,
-			                         pvar->agent_channel.remote_id,
-			                         pvar->agent_channel.local_id);
+			local_id = FWD_agent_open(pvar, remote_id);
+			if (local_id == -1) {
+				SSH_fail_channel_open(pvar, remote_id);
+			}
+			else {
+				SSH_confirm_channel_open(pvar, remote_id, local_id);
+			}
 		}
 		else {
-			SSH_fail_channel_open(pvar, pvar->agent_channel.remote_id);
+			SSH_fail_channel_open(pvar, remote_id);
 		}
 	}
 	/*
@@ -8475,7 +8488,7 @@ static BOOL handle_SSH2_channel_data(PTInstVar pvar)
 	} else if (c->type == TYPE_SFTP) {  // SFTP
 
 	} else if (c->type == TYPE_AGENT) {  // agent forward
-		if (!SSH_agent_response(pvar, c, data, str_len)) {
+		if (!SSH_agent_response(pvar, c, 0, data, str_len)) {
 			return FALSE;
 		}
 	}
@@ -8940,9 +8953,15 @@ static BOOL handle_SSH2_window_adjust(PTInstVar pvar)
 	return TRUE;
 }
 
-static BOOL SSH_agent_response(PTInstVar pvar, Channel_t *c, unsigned char *data, unsigned int buflen)
+// Channel_t ........... SSH2のチャネル構造体
+// local_channel_num ... SSH1のローカルチャネル番号
+static BOOL SSH_agent_response(PTInstVar pvar, Channel_t *c, int local_channel_num,
+                               unsigned char *data, unsigned int buflen)
 {
 	int req_len;
+	FWDChannel *fc;
+	buffer_t *agent_msg;
+	int *agent_request_len;
 	unsigned char *response;
 	int resplen, retval;
 
@@ -8950,31 +8969,24 @@ static BOOL SSH_agent_response(PTInstVar pvar, Channel_t *c, unsigned char *data
 
 	// 分割された CHANNEL_DATA の受信に対応 (2008.11.30 maya)
 	if (SSHv2(pvar)) {
-		if (c->agent_msg->len > 0 || req_len + 4 != buflen) {
-			if (c->agent_msg->len == 0) {
-				c->agent_request_len = req_len;
-			}
-			buffer_put_raw(c->agent_msg, data, buflen);
-			if (c->agent_request_len > c->agent_msg->len) {
-				return TRUE;
-			}
-			else {
-				data = c->agent_msg->buf;
-			}
-		}
+		agent_msg = c->agent_msg;
+		agent_request_len = &c->agent_request_len;
 	}
 	else {
-		if (pvar->agent_channel.agent_msg->len > 0 || req_len + 4 != buflen) {
-			if (pvar->agent_channel.agent_msg->len == 0) {
-				pvar->agent_channel.agent_request_len = req_len;
-			}
-			buffer_put_raw(pvar->agent_channel.agent_msg, data, buflen);
-			if (pvar->agent_channel.agent_request_len > pvar->agent_channel.agent_msg->len) {
-				return TRUE;
-			}
-			else {
-				data = pvar->agent_channel.agent_msg->buf;
-			}
+		fc = pvar->fwd_state.channels + local_channel_num;
+		agent_msg = fc->agent_msg;
+		agent_request_len = &fc->agent_request_len;
+	}
+	if (agent_msg->len > 0 || req_len + 4 != buflen) {
+		if (agent_msg->len == 0) {
+			*agent_request_len = req_len + 4;
+		}
+		buffer_put_raw(agent_msg, data, buflen);
+		if (*agent_request_len > agent_msg->len) {
+			return TRUE;
+		}
+		else {
+			data = agent_msg->buf;
 		}
 	}
 
@@ -8986,8 +8998,7 @@ static BOOL SSH_agent_response(PTInstVar pvar, Channel_t *c, unsigned char *data
 			ssh2_channel_send_close(pvar, c);
 		}
 		else {
-			SSH_channel_input_eof(pvar, pvar->agent_channel.remote_id,
-			                            pvar->agent_channel.local_id);
+			SSH_channel_input_eof(pvar, fc->remote_num, local_channel_num);
 		}
 		goto exit;
 	}
@@ -8996,21 +9007,13 @@ static BOOL SSH_agent_response(PTInstVar pvar, Channel_t *c, unsigned char *data
 		SSH2_send_channel_data(pvar, c, response, resplen);
 	}
 	else {
-		SSH_channel_send(pvar, pvar->agent_channel.local_id,
-		                       pvar->agent_channel.remote_id,
-		                       response, resplen);
+		SSH_channel_send(pvar, local_channel_num, fc->remote_num,
+		                 response, resplen);
 	}
 	safefree(response);
 
 exit:
-	// 使い終わったデータを消去/再確保
-	if (SSHv2(pvar)) {
-		buffer_free(c->agent_msg);
-		c->agent_msg = buffer_init();
-	}
-	else {
-		buffer_free(pvar->agent_channel.agent_msg);
-		pvar->agent_channel.agent_msg = buffer_init();
-	}
+	// 使い終わったバッファをクリア
+	buffer_clear(agent_msg);
 	return TRUE;
 }

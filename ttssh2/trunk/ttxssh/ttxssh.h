@@ -254,7 +254,6 @@ typedef struct _TInstVar {
 
 	// agent forward
 	BOOL agentfwd_enable;
-	agent_channel_t agent_channel; // for SSH1 only
 } TInstVar;
 
 #define LOG_LEVEL_FATAL      5

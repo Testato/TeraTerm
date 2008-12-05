@@ -34,12 +34,13 @@ See LICENSE.TXT for the license.
 #ifndef __FWD_H
 #define __FWD_H
 
-#define FWD_REMOTE_CONNECTED 0x01
-#define FWD_LOCAL_CONNECTED  0x02
-#define FWD_CLOSED_REMOTE_IN 0x04
+#define FWD_REMOTE_CONNECTED  0x01
+#define FWD_LOCAL_CONNECTED   0x02
+#define FWD_CLOSED_REMOTE_IN  0x04
 #define FWD_CLOSED_REMOTE_OUT 0x08
-#define FWD_CLOSED_LOCAL_IN  0x10
-#define FWD_CLOSED_LOCAL_OUT 0x20
+#define FWD_CLOSED_LOCAL_IN   0x10
+#define FWD_CLOSED_LOCAL_OUT  0x20
+#define FWD_AGENT_DUMMY       0x40
 
 #define FWD_FILTER_REMOVE       0
 #define FWD_FILTER_RETAIN       1
@@ -65,6 +66,11 @@ typedef struct {
 #ifndef NO_INET6
   struct addrinfo FAR * to_host_addrs;
 #endif /* NO_INET6 */
+
+  // for agent forwarding
+  buffer_t *agent_msg;
+  int agent_request_len;
+  enum channel_type type;
 } FWDChannel;
 
 /* Request types */
@@ -160,5 +166,7 @@ void FWD_channel_input_eof(PTInstVar pvar, uint32 local_channel_num);
 void FWD_channel_output_eof(PTInstVar pvar, uint32 local_channel_num);
 void FWD_end(PTInstVar pvar);
 void FWD_free_channel(PTInstVar pvar, uint32 local_channel_num);
+int FWD_check_local_channel_num(PTInstVar pvar, int local_num);
+int FWD_agent_open(PTInstVar pvar, uint32 remote_channel_num);
 
 #endif

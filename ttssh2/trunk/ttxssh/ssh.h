@@ -106,6 +106,10 @@ typedef enum {
 #define SSH_PROTOFLAG_SCREEN_NUMBER 1
 #define SSH_PROTOFLAG_HOST_IN_FWD_OPEN 2
 
+enum channel_type {
+	TYPE_SHELL, TYPE_PORTFWD, TYPE_SCP, TYPE_SFTP, TYPE_AGENT,
+};
+
 // for SSH1
 #define SSH_MAX_SEND_PACKET_SIZE   250000
 
@@ -391,14 +395,6 @@ enum fp_rep {
 enum scp_dir {
 	TOLOCAL, FROMREMOTE,
 };
-
-#define SSH1_AGENT_CHANNEL_ID 0x10000000
-typedef struct agent_channel {
-	int local_id;
-	int remote_id;
-	buffer_t *agent_msg;
-	int agent_request_len;
-} agent_channel_t;
 
 /* The packet handler returns TRUE to keep the handler in place,
    FALSE to remove the handler. */
