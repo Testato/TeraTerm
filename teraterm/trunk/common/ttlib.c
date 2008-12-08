@@ -461,7 +461,7 @@ void ParseStrftimeFileName(PCHAR FName, int destlen)
 		ExtractDirName(FName, dirname);
 		strncpy_s(FName, destlen, dirname, _TRUNCATE);
 		AppendSlash(FName,destlen);
-		strncat_s(FName, destlen, filename, _TRUNCATE);
+		strncat_s(FName, destlen, buf, _TRUNCATE);
 	}
 	else { // "\"‚ğŠÜ‚Ü‚È‚¢(ƒtƒ‹ƒpƒX‚Å‚È‚¢)ê‡‚É‘Î‰ (2006.11.30 maya)
 		strncpy_s(FName, destlen, buf, _TRUNCATE);
