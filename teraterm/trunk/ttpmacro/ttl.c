@@ -1594,6 +1594,25 @@ WORD TTLGetEnv()
 	return Err;
 }
 
+WORD TTLGetHostname()
+{
+	WORD VarId, Err;
+	char Str[MaxStrLen];
+
+	Err = 0;
+	GetStrVar(&VarId,&Err);
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if ((Err==0) && (! Linked))
+		Err = ErrLinkFirst;
+	if (Err!=0) return Err;
+
+	Err = GetTTParam(CmdGetHostname,Str,sizeof(Str));
+	if (Err==0)
+		SetStrVal(VarId,Str);
+	return Err;
+}
+
 WORD TTLGetPassword()
 {
 	TStrVal Str, Str2, Temp2;
@@ -3602,6 +3621,8 @@ int ExecCmnd()
 			Err = TTLGetDir(); break;
 		case RsvGetEnv:
 			Err = TTLGetEnv(); break;
+		case RsvGetHostname:
+			Err = TTLGetHostname(); break;
 		case RsvGetPassword:
 			Err = TTLGetPassword(); break;
 		case RsvGetTitle:

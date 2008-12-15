@@ -51,6 +51,7 @@
 #define CmdSetBaud      'K'
 #define CmdSetRts       'L'
 #define CmdSetDtr       'M'
+#define CmdGetHostname  'N'
 
 #ifdef __cplusplus
 extern "C" {

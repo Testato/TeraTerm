@@ -178,6 +178,7 @@
 #define RsvCrc32        138   // add 'crc32'  (2008.9.12 yutaka)
 #define RsvCrc32File    139   // add 'crc32file'  (2008.9.13 yutaka)
 #define RsvGetTTDir     140   // add 'getttdir'  (2008.9.20 maya)
+#define RsvGetHostname  141   // add 'gethostname'  (2008.12.15 maya)
 
 #define RsvOperator     150
 #define RsvBNot         151

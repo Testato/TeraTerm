@@ -210,6 +210,7 @@
 #define HlpMacroCommandGetdate          92043
 #define HlpMacroCommandGetdir           92044
 #define HlpMacroCommandGetenv           92045
+#define HlpMacroCommandGethostname      92141
 #define HlpMacroCommandGetpassword      92046
 #define HlpMacroCommandGettime          92047
 #define HlpMacroCommandGettitle         92048

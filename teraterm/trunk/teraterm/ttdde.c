@@ -323,6 +323,7 @@ WORD HexStr2Word(PCHAR Str)
 #define CmdSetBaud      'K'
 #define CmdSetRts       'L'
 #define CmdSetDtr       'M'
+#define CmdGetHostname  'N'
 
 HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 {
@@ -802,6 +803,17 @@ scp_rcv_error:
 		else {
 			ret = EscapeCommFunction(cv.ComID, SETDTR);
 		}
+		}
+		break;
+
+	case CmdGetHostname:  // add 'gethostname' (2008.12.15 maya)
+		if (cv.Open) {
+			if (cv.PortType == IdTCPIP) {
+				strncpy_s(ParamFileName, sizeof(ParamFileName),ts.HostName, _TRUNCATE);
+			}
+			else if (cv.PortType == IdSerial) {
+				_snprintf_s(ParamFileName, sizeof(ParamFileName), _TRUNCATE, "COM%d", ts.ComPort);
+			}
 		}
 		break;
 
