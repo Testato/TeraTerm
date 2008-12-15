@@ -647,6 +647,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="gethostname">
+					<param name="Local" value="html\macro\command\gethostname.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="gettitle">
 					<param name="Local" value="html\macro\command\gettitle.html">
 					<param name="ImageNumber" value="11">
