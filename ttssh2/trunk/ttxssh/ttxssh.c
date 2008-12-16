@@ -1609,13 +1609,21 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 	         (MATCH_STR_I(option, "slogin://") == 0) ||
 	         (MATCH_STR_I(option, "slogin1://") == 0) ||
 	         (MATCH_STR_I(option, "slogin2://") == 0)) {
-
+		//
+		// ssh://user@host/ 等のURL形式のサポート
+		// 基本的な書式は telnet:// URLに順ずる
+		//
+		// 参考:
+		//   RFC3986: Uniform Resource Identifier (URI): Generic Syntax
+		//   RFC4248: The telnet URI Scheme
+		//
 		char *p, *p2, *p3;
-		int optlen;
+		int optlen, hostlen;
 
-		p = strchr(option, ':');
 		optlen = strlen(option);
 
+		// 最初の':'の前の文字が数字だった場合、それをsshプロトコルバージョンとみなす
+		p = strchr(option, ':');
 		switch (*(p-1)) {
 		case '1':
 			pvar->settings.ssh_protocol_version = 1;
@@ -1625,23 +1633,42 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 			break;
 		}
 
+		// authority part までポインタを移動
 		p += 3;
-		memset(option, ' ', p - option);
 
+		// path part を切り捨てる
 		if ((p2 = strchr(p, '/')) != NULL) {
-			memset(p2, ' ', strlen(option) - (p2 - option));
+			*p2 = 0;
 		}
 
+		// '@'があった場合、それより前はユーザ情報
 		if ((p2 = strchr(p, '@')) != NULL) {
 			*p2 = 0;
+			// ':'以降はパスワード
 			if ((p3 = strchr(p, ':')) != NULL) {
 				*p3 = 0;
 				strcpy_s(pvar->ssh2_password, sizeof(pvar->ssh2_password), p3 + 1);
 				pvar->ssh2_autologin = 1;
 			}
 			strcpy_s(pvar->ssh2_username, sizeof(pvar->ssh2_username), p);
-			memset(p, ' ', (p2 - p) + 1);
+			// p が host part の先頭('@'の次の文字)を差すようにする
+			p = p2 + 1;
 		}
+
+		// host part を option の先頭に移動して、scheme part を潰す
+		// port指定が無かった時にport番号を足すための領域確保の意味もある
+		hostlen = strlen(p);
+		memmove_s(option, optlen, p, hostlen);
+		option[hostlen] = 0;
+
+		// ポート指定が無い時は":22"を足す
+		if (strchr(option, ':') == NULL) {
+			memcpy_s(option+hostlen, optlen-hostlen, ":22", 3);
+			hostlen += 3;
+		}
+
+		// ポート指定より後をすべてスペースで潰す
+		memset(option+hostlen, ' ', optlen-hostlen);
 
 		pvar->settings.Enabled = 1;
 
