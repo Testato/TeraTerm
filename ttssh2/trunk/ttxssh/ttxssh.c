@@ -1662,7 +1662,12 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 		option[hostlen] = 0;
 
 		// ポート指定が無い時は":22"を足す
+#ifndef NO_INET6
+		if (option[0] == '[' && option[hostlen-1] == ']' ||     // IPv6 raw address without port
+		    option[0] != '[' && strchr(option, ':') == NULL) {  // hostname or IPv4 raw address without port
+#else
 		if (strchr(option, ':') == NULL) {
+#endif							/* NO_INET6 */
 			memcpy_s(option+hostlen, optlen-hostlen, ":22", 3);
 			hostlen += 3;
 		}
