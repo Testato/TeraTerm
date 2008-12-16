@@ -1447,6 +1447,28 @@ static void replace_to_blank(char *src, char *dst, int dst_len)
 	*dst = '\0';
 }
 
+// Percent-encodeされた文字列srcをデコードしてdstにコピーする。
+// dstlenはdstのサイズ。これより結果が長い場合、その分は切り捨てられる。
+static void percent_decode(char *dst, int dstlen, char *src) {
+	if (src == NULL || dst == NULL || dstlen < 1) {
+		return;
+	}
+
+	while (*src != 0 && dstlen > 1) {
+		if (*src == '%' && isxdigit(*(src+1)) && isxdigit(*(src+2))) {
+			src++; *dst  = (isalpha(*src) ? (*src|0x20) - 'a' + 10 : *src - '0') << 4;
+			src++; *dst |= (isalpha(*src) ? (*src|0x20) - 'a' + 10 : *src - '0');
+			src++; dst++;
+		}
+		else {
+			*dst++ = *src++;
+		}
+		dstlen--;
+	}
+	*dst = 0;
+	return;
+}
+
 /* returns 1 if the option text must be deleted */
 static int parse_option(PTInstVar pvar, char FAR * option)
 {
@@ -1647,10 +1669,10 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 			// ':'以降はパスワード
 			if ((p3 = strchr(p, ':')) != NULL) {
 				*p3 = 0;
-				strcpy_s(pvar->ssh2_password, sizeof(pvar->ssh2_password), p3 + 1);
+				percent_decode(pvar->ssh2_password, sizeof(pvar->ssh2_password), p3 + 1);
 				pvar->ssh2_autologin = 1;
 			}
-			strcpy_s(pvar->ssh2_username, sizeof(pvar->ssh2_username), p);
+			percent_decode(pvar->ssh2_username, sizeof(pvar->ssh2_username), p);
 			// p が host part の先頭('@'の次の文字)を差すようにする
 			p = p2 + 1;
 		}
