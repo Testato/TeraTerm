@@ -123,6 +123,7 @@ MSG_DANDD_CONF=ファイル転送を行いますか？
 MSG_DANDD_CONF_TITLE=Tera Term: ファイル ドラッグ&ドロップ
 MSG_EXEC_TT_ERROR=Tera Term を実行できません (%d)
 MSG_FIND_CYGTERM_DIR_ERROR=Cygwin ディレクトリが見つかりません
+MSG_CYGTERM_ENV_ALLOC_ERROR=環境変数用のメモリが確保できません
 MSG_EXEC_CYGTERM_ERROR=Cygterm が実行できません
 MSG_EXEC_TTMENU_ERROR=TeraTerm Menu が実行できません (%d)
 MSG_EXEC_LOGMETT_ERROR=LogMeTT が実行できません. (%d)

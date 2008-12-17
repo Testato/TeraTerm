@@ -123,6 +123,7 @@ MSG_DANDD_CONF=Are you sure that you want to send the file content?
 MSG_DANDD_CONF_TITLE=Tera Term: File Drag and Drop
 MSG_EXEC_TT_ERROR=Can't execute Tera Term. (%d)
 MSG_FIND_CYGTERM_DIR_ERROR=Can't find Cygwin directory.
+MSG_CYGTERM_ENV_ALLOC_ERROR=Can't allocate memory for environment variable.
 MSG_EXEC_CYGTERM_ERROR=Can't execute Cygterm.
 MSG_EXEC_TTMENU_ERROR=Can't execute TeraTerm Menu. (%d)
 MSG_EXEC_LOGMETT_ERROR=Can't execute LogMeTT. (%d)
