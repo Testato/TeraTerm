@@ -19,6 +19,7 @@
 
 <pre class="macro-syntax">
 waitregex &lt;string1 with regular expression&gt; [&lt;string2 with regular expression&gt; ...]
+mwaitregex &lt;string1 with regular expression&gt; [&lt;string2 with regular expression&gt; ...]
 </pre>
 
 <h2>解説</h2>
@@ -26,8 +27,11 @@ waitregex &lt;string1 with regular expression&gt; [&lt;string2 with regular expr
 <p>
 <a href="../../reference/RE.txt">Oniguruma の正規表現</a> が使用できます。<br>
 正規表現文字列のうち 1 つ以上を含む行（最大 256 文字）をホストから受信するか、タイムアウトが発生するまで MACRO を停止させる。正規表現文字列は最大 10 個まで指定できる。<br>
-システム変数 timeout が 0 より大きい場合、&lt;timeout&gt; 秒の時間がすぎるとタイムアウトが発生する。 timeout の値が 0 以下の場合は、タイムアウトは発生しない。
-このコマンドの実行結果はシステム変数 result , inputstr, matchstr に格納される。変数 result の値の意味は以下のとおり。
+システム変数 timeout が 0 より大きい場合、&lt;timeout&gt; 秒の時間がすぎるとタイムアウトが発生する。 timeout の値が 0 以下の場合は、タイムアウトは発生しない。<br>
+mwaitregex コマンドは、ミリ秒単位でのウェイトとなる。
+<br>
+
+これらのコマンドの実行結果はシステム変数 result , inputstr, matchstr に格納される。変数 result の値の意味は以下のとおり。
 </p>
 
 <table>

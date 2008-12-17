@@ -19,6 +19,7 @@
 
 <pre class="macro-syntax">
 wait &lt;string1&gt; [&lt;string2&gt; ...]
+mwait &lt;string1&gt; [&lt;string2&gt; ...]
 </pre>
 
 <h2>解説</h2>
@@ -26,7 +27,9 @@ wait &lt;string1&gt; [&lt;string2&gt; ...]
 <p>
 文字列 &lt;string1&gt; [&lt;string2&gt; ...]  のうち一つがホストから送られてくるか、タイムアウトが発生するまで MACRO を停止させる。文字列は最大 10 個まで指定できる。<br>
 システム変数 timeout が 0 より大きい場合、&lt;timeout&gt; 秒の時間がすぎるとタイムアウトが発生する。 timeout の値が 0 以下の場合は、タイムアウトは発生しない。<br>
-このコマンドの実行結果はシステム変数 result に格納される。変数 result の値の意味は以下のとおり。
+mwait コマンドは、ミリ秒単位でのウェイトとなる。<br><br>
+
+これらのコマンドの実行結果はシステム変数 result に格納される。変数 result の値の意味は以下のとおり。
 </p>
 
 <table>
@@ -69,6 +72,10 @@ If result=2 goto error
 
 ; 行先頭の "&gt;" か、行末の "complete." を待つ。(ASCIIコード10, 13は LF, CR)
 wait #10'&gt;' 'complete.'#13
+
+; タイムアウトを100ミリ秒に設定。
+timeout = 100
+mwait 'server response'
 </pre>
 
 </body>

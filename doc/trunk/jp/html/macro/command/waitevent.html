@@ -19,6 +19,7 @@
 
 <pre class="macro-syntax">
 waitevent &lt;events&gt;
+mwaitevent &lt;events&gt;
 </pre>
 
 <h2>解説</h2>
@@ -51,8 +52,10 @@ waitevent &lt;events&gt;
 </table>
 
 <p>
-システム変数 timeout が 0 より大きい場合、&lt;timeout&gt; 秒の時間がすぎるとtimeout (タイムアウト)イベントが発生する。timeout の値が 0 以下の場合は、タイムアウトは発生しない。
+システム変数 timeout が 0 より大きい場合、&lt;timeout&gt; 秒の時間がすぎるとtimeout (タイムアウト)イベントが発生する。timeout の値が 0 以下の場合は、タイムアウトは発生しない。<br>
+mwaitevent コマンドは、ミリ秒単位でのウェイトとなる。
 </p>
+
 
 <p>
 unlink イベントは Tera Term が閉じられたときに発生する。
@@ -63,7 +66,7 @@ disconnection (または connection) イベントは、Tera Term とホストの間の通信が閉じ
 </p>
 
 <p>
-waitevent コマンドは実際に発生したイベントの識別子をシステム変数 result に格納する。
+これらのコマンドは実際に発生したイベントの識別子をシステム変数 result に格納する。
 </p>
 
 <h2>例</h2>

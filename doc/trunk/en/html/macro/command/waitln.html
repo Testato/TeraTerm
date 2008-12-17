@@ -19,6 +19,7 @@ Waits a line that contains string.
 
 <pre class="macro-syntax">
 waitln &lt;string1&gt; [&lt;string2&gt; ...]
+mwaitln &lt;string1&gt; [&lt;string2&gt; ...]
 </pre>
 
 <h2>Remarks</h2>
@@ -26,7 +27,9 @@ waitln &lt;string1&gt; [&lt;string2&gt; ...]
 <p>
 Pauses until a line which contains one of the character strings is received from the host, or until the timeout occurs. Maximum number of the strings is 10.<br>
 If the system variable "timeout" is greater than zero, the timeout occurs when &lt;timeout&gt; seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.<br>
-The "waitln" command returns the received line in the system variable "inputstr" and one of the following values in the system variable "result":
+When a user uses the mwaitln command, the measure of waiting time is millisecond.<br><br>
+
+These commands return the received line in the system variable "inputstr" and one of the following values in the system variable "result":
 </p>
 
 <table>

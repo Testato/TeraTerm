@@ -19,6 +19,7 @@
 
 <pre class="macro-syntax">
 waitln &lt;string1&gt; [&lt;string2&gt; ...]
+mwaitln &lt;string1&gt; [&lt;string2&gt; ...]
 </pre>
 
 <h2>解説</h2>
@@ -26,7 +27,9 @@ waitln &lt;string1&gt; [&lt;string2&gt; ...]
 <p>
 文字列 &lt;string1&gt;, [&lt;string2&gt;, ...] のうち一つを含む行をホストから受信するか、タイムアウトが発生するまで MACRO を停止させる。文字列は最大 10 個まで指定できる。<br>
 システム変数 timeout が 0 より大きい場合、&lt;timeout&gt; 秒の時間がすぎるとタイムアウトが発生する。timeout の値が 0 以下の場合は、タイムアウトは発生しない。<br>
-このコマンドは受信した行をシステム変数 inputstr に格納し、以下の値をシステム変数 result に格納する。
+mwaitln コマンドは、ミリ秒単位でのウェイトとなる。<br><br>
+
+これらのコマンドは受信した行をシステム変数 inputstr に格納し、以下の値をシステム変数 result に格納する。
 </p>
 
 <table>
