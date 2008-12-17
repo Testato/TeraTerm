@@ -23,8 +23,9 @@ char *FName = ".\\TERATERM.INI";
 //
 void OnCygwinConnection(char *CygwinDirectory, char *cmdline)
 {
-	char file[MAX_PATH], buf[1024];
-	char c, *envptr;
+	char file[MAX_PATH];
+	char c, *envptr, *envbuff;
+	int envbufflen;
 	char *exename = "cygterm.exe";
 	char cmd[1024];
 	STARTUPINFO si;
@@ -48,11 +49,25 @@ void OnCygwinConnection(char *CygwinDirectory, char *cmdline)
 	}
 found_dll:;
 	if (envptr != NULL) {
-		_snprintf(buf, sizeof(buf), "PATH=%s;%s", file, envptr);
+		envbufflen = strlen(file) + strlen(envptr) + 7; // "PATH="(5) + ";"(1) + NUL(1)
+		if ((envbuff=malloc(envbufflen)) == NULL) {
+			MessageBox(NULL, "Can't allocate memory.", "ERROR", MB_OK | MB_ICONWARNING);
+			return;
+		}
+		_snprintf(envbuff, envbufflen, "PATH=%s;%s", file, envptr);
 	} else {
-		_snprintf(buf, sizeof(buf), "PATH=%s", file);
+		envbufflen = strlen(file) + strlen(envptr) + 6; // "PATH="(5) + NUL(1)
+		if ((envbuff=malloc(envbufflen)) == NULL) {
+			MessageBox(NULL, "Can't allocate memory.", "ERROR", MB_OK | MB_ICONWARNING);
+			return;
+		}
+		_snprintf(envbuff, envbufflen, "PATH=%s", file);
 	}
-	_putenv(buf);
+	_putenv(envbuff);
+	if (envbuff) {
+		free(envbuff);
+		envbuff = NULL;
+	}
 
 found_path:;
 	memset(&si, 0, sizeof(si));
