@@ -3264,8 +3264,9 @@ void CVTWindow::OnDuplicateSession()
 //
 void CVTWindow::OnCygwinConnection()
 {
-	char file[MAX_PATH], buf[1024];
-	char c, *envptr;
+	char file[MAX_PATH];
+	char c, *envptr, *envbuff=NULL;
+	int envbufflen;
 	char *exename = "cygterm.exe";
 	char cygterm[MAX_PATH];
 	STARTUPINFO si;
@@ -3293,11 +3294,31 @@ void CVTWindow::OnCygwinConnection()
 	}
 found_dll:;
 	if (envptr != NULL) {
-		_snprintf_s(buf, sizeof(buf), _TRUNCATE, "PATH=%s;%s", file, envptr);
+		envbufflen = strlen(file) + strlen(envptr) + 7; // "PATH="(5) + ";"(1) + NUL(1)
+		if ((envbuff = (char *)malloc(envbufflen)) == NULL) {
+			get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+			get_lang_msg("MSG_CYGTERM_ENV_ALLOC_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+			             "Can't allocate memory for environment variable.", ts.UILanguageFile);
+			::MessageBox(NULL, ts.UIMsg, uimsg, MB_OK | MB_ICONWARNING);
+			return;
+		}
+		_snprintf_s(envbuff, envbufflen, _TRUNCATE, "PATH=%s;%s", file, envptr);
 	} else {
-		_snprintf_s(buf, sizeof(buf), _TRUNCATE, "PATH=%s", file);
+		envbufflen = strlen(file) + 6; // "PATH="(5) + NUL(1)
+		if ((envbuff = (char *)malloc(envbufflen)) == NULL) {
+			get_lang_msg("MSG_ERROR", uimsg, sizeof(uimsg), "ERROR", ts.UILanguageFile);
+			get_lang_msg("MSG_CYGTERM_ENV_ALLOC_ERROR", ts.UIMsg, sizeof(ts.UIMsg),
+			             "Can't allocate memory for environment variable.", ts.UILanguageFile);
+			::MessageBox(NULL, ts.UIMsg, uimsg, MB_OK | MB_ICONWARNING);
+			return;
+		}
+		_snprintf_s(envbuff, envbufflen, _TRUNCATE, "PATH=%s", file);
 	}
-	_putenv(buf);
+	_putenv(envbuff);
+	if (envbuff) {
+		free(envbuff);
+		envbuff = NULL;
+	}
 
 found_path:;
 	memset(&si, 0, sizeof(si));
