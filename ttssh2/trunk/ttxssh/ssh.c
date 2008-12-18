@@ -7986,7 +7986,7 @@ static BOOL handle_SSH2_channel_failure(PTInstVar pvar)
 		return send_pty_request(pvar, c);
 	}
 	else {
-		return FALSE;
+		return TRUE;
 	}
 
 	return TRUE;
