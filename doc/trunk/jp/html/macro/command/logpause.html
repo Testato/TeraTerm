@@ -41,8 +41,7 @@ getenv 'USERNAME' username
 gettime timestr "%Y%m%d-%H%M%S"
 
 ; ログファイル名に日時とユーザ名を入れる。
-sprintf 'd:\console_%s_%s.log' username timestr
-filename = inputstr
+sprintf2 filename 'd:\console_%s_%s.log' username timestr
 ;messagebox filename 'filename'
 
 logopen filename 0 0

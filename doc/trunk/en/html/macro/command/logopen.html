@@ -61,8 +61,7 @@ getenv 'USERNAME' username
 gettime timestr "%Y%m%d-%H%M%S"
 
 ; add the user name and the timestamp to the log file name
-sprintf 'console_%s_%s.log' username timestr
-filename = inputstr
+sprintf filename 'console_%s_%s.log' username timestr
 
 ; change the current directory
 changedir 'C:\Documents and Settings\yutaka\desktop'

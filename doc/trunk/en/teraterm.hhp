@@ -260,6 +260,7 @@ HlpMacroCommandSettitle=html\macro\command\settitle.html
 HlpMacroCommandShow=html\macro\command\show.html
 HlpMacroCommandShowtt=html\macro\command\showtt.html
 HlpMacroCommandSprintf=html\macro\command\sprintf.html
+HlpMacroCommandSprintf2=html\macro\command\sprintf2.html
 HlpMacroCommandStatusbox=html\macro\command\statusbox.html
 HlpMacroCommandStr2code=html\macro\command\str2code.html
 HlpMacroCommandStr2int=html\macro\command\str2int.html

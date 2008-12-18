@@ -61,8 +61,7 @@ getenv 'USERNAME' username
 gettime timestr "%Y%m%d-%H%M%S"
 
 ; ログファイル名に日時とユーザ名を入れる。
-sprintf 'console_%s_%s.log' username timestr
-filename = inputstr
+sprintf2 filename 'console_%s_%s.log' username timestr
 
 ; カレントディレクトリを変更する
 changedir 'C:\Documents and Settings\yutaka\デスクトップ'
