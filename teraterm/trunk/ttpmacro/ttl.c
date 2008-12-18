@@ -2606,12 +2606,12 @@ WORD TTLShow()
 //
 // (2007.5.1 yutaka)
 // (2007.5.3 maya)
-WORD TTLSprintf()
+WORD TTLSprintf(int getvar)
 {
 	TStrVal Fmt;
 	int Num;
 	TStrVal Str;
-	WORD Err = 0, TmpErr;
+	WORD Err = 0, TmpErr, VarId;
 	char buf[MaxStrLen];
 	char *p, subFmt[MaxStrLen], buf2[MaxStrLen];
 
@@ -2629,6 +2629,14 @@ WORD TTLSprintf()
 	OnigErrorInfo einfo;
 	OnigRegion *region;
 	UChar* pattern, * str;
+
+	if (getvar) {
+		GetStrVar(&VarId,&Err);
+		if (Err!=0) {
+			SetResult(4);
+			return Err;
+		}
+	}
 
 	pattern = (UChar* )"^%[-+0 #]*(?:[1-9][0-9]*)?(?:\\.[0-9]*)?$";
 
@@ -2767,8 +2775,13 @@ WORD TTLSprintf()
 		strncat_s(buf, sizeof(buf), subFmt, _TRUNCATE);
 	}
 
-	// マッチした行を inputstr へ格納する
-	SetInputStr(buf);  // ここでバッファがクリアされる
+	if (getvar) {
+		SetStrVal(VarId, buf);
+	}
+	else {
+		// マッチした行を inputstr へ格納する
+		SetInputStr(buf);  // ここでバッファがクリアされる
+	}
 	SetResult(0);
 
 exit1:
@@ -3736,7 +3749,9 @@ int ExecCmnd()
 		case RsvShowTT:
 			Err = TTLCommCmdInt(CmdShowTT,0); break;
 		case RsvSprintf:
-			Err = TTLSprintf(); break;
+			Err = TTLSprintf(0); break;
+		case RsvSprintf2:
+			Err = TTLSprintf(1); break;
 		case RsvStatusBox:
 			Err = TTLStatusBox(); break;
 		case RsvStr2Code:

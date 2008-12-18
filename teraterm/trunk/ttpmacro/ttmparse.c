@@ -270,6 +270,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 		else if (_stricmp(Str,"show")==0) *WordId = RsvShow;
 		else if (_stricmp(Str,"showtt")==0) *WordId = RsvShowTT;
 		else if (_stricmp(Str,"sprintf")==0) *WordId = RsvSprintf;  // add 'sprintf' (2007.5.1 yutaka)
+		else if (_stricmp(Str,"sprintf2")==0) *WordId = RsvSprintf2;  // add 'sprintf2' (2008.12.18 maya)
 		else if (_stricmp(Str,"statusbox")==0) *WordId = RsvStatusBox;
 		else if (_stricmp(Str,"str2code")==0) *WordId = RsvStr2Code;
 		else if (_stricmp(Str,"str2int")==0) *WordId = RsvStr2Int;

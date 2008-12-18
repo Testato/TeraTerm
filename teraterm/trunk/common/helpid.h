@@ -268,6 +268,7 @@
 #define HlpMacroCommandShow             92087
 #define HlpMacroCommandShowtt           92088
 #define HlpMacroCommandSprintf          92117
+#define HlpMacroCommandSprintf2         92142
 #define HlpMacroCommandStatusbox        92089
 #define HlpMacroCommandStr2code         92090
 #define HlpMacroCommandStr2int          92091
