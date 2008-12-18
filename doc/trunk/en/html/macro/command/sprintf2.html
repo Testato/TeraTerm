@@ -82,13 +82,13 @@ As a result of this command, the system variable "result" is set to one of the f
 <h2>Example</h2>
 
 <pre class="macro-example">
-sprintf ver 'Tera Term 4.%d' 51
+sprintf2 ver 'Tera Term 4.%d' 51
 messagebox ver 'sprintf test(1)'
 
-sprintf win 'Windows %d (+%s)' 2000 'SP4'
+sprintf2 win 'Windows %d (+%s)' 2000 'SP4'
 messagebox win 'sprintf test(2)'
 
-sprintf test '%s=%d %s=0x%x' 'dec' 10 'hex' 33
+sprintf2 test '%s=%d %s=0x%x' 'dec' 10 'hex' 33
 messagebox test 'sprintf test macro(3)'
 </pre>
 
