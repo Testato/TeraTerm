@@ -1877,7 +1877,7 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu)
 	insertMenuBeforeItem(menu, 50360, MF_ENABLED, ID_SSHKEYGENMENU, pvar->ts->UIMsg);
 
 	/* inserts before ID_FILE_CHANGEDIR */
-	UTIL_get_lang_msg("MENU_SSH_SCP", pvar, "SSH SCP...");
+	UTIL_get_lang_msg("MENU_SSH_SCP", pvar, "SS&H SCP...");
 	insertMenuBeforeItem(menu, 50170, MF_ENABLED, ID_SSHSCPMENU, pvar->ts->UIMsg);
 }
 
