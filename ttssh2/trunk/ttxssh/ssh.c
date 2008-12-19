@@ -7707,7 +7707,10 @@ static BOOL handle_SSH2_open_confirm(PTInstVar pvar)
 	data += 4;
 
 	c->remote_id = remote_id;
-	pvar->session_nego_status = 1;
+	if (c->self_id == pvar->shell_id) {
+		// 最初のチャネル以外でリセットしてはいけない (2008.12.19 maya)
+		pvar->session_nego_status = 1;
+	}
 
 	// remote window size
 	c->remote_window = get_uint32_MSBfirst(data);
