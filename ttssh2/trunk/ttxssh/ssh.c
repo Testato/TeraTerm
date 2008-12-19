@@ -7909,14 +7909,12 @@ static BOOL handle_SSH2_channel_success(PTInstVar pvar)
 #else
 	int wantconfirm = 1; // true
 #endif
+	char buf[128];
 
-	{
-		char buf[128];
-		_snprintf_s(buf, sizeof(buf), _TRUNCATE,
-		            "SSH2_MSG_CHANNEL_SUCCESS was received(nego_status %d).",
-		            pvar->session_nego_status);
-		notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
-	}
+	_snprintf_s(buf, sizeof(buf), _TRUNCATE,
+	            "SSH2_MSG_CHANNEL_SUCCESS was received(nego_status %d).",
+	            pvar->session_nego_status);
+	notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
 
 	if (pvar->session_nego_status == 1) {
 		// find channel by shell id(2005.2.27 yutaka)
@@ -7973,25 +7971,34 @@ static BOOL handle_SSH2_channel_success(PTInstVar pvar)
 static BOOL handle_SSH2_channel_failure(PTInstVar pvar)
 {
 	Channel_t *c;
+	char *data;
+	int channel_id;
+	char buf[128];
+
+	data = pvar->ssh_state.payload;
+	channel_id = get_uint32_MSBfirst(data);
 
 	notify_verbose_message(pvar, "SSH2_MSG_CHANNEL_FAILURE was received.", LOG_LEVEL_VERBOSE);
 
-	if (pvar->session_nego_status == 1) {
+	c = ssh2_channel_lookup(channel_id);
+	if (c == NULL) {
+		// TODO: error check
+		return FALSE;
+	}
+
+	if (pvar->session_nego_status == 1 && pvar->shell_id == channel_id) {
 		// リモートで auth-agent-req@openssh.com がサポートされてないので
 		// エラーは気にせず次へ進む
 
-		// find channel by shell id(2005.2.27 yutaka)
-		c = ssh2_channel_lookup(pvar->shell_id);
-		if (c == NULL) {
-			// TODO: error check
-			return FALSE;
-		}
+		strncpy_s(buf, sizeof(buf),
+		          "auth-agent-req@openssh.com is not supported by remote host.",
+		          _TRUNCATE);
+		notify_verbose_message(pvar, buf, LOG_LEVEL_VERBOSE);
+
 		return send_pty_request(pvar, c);
 	}
-	else {
-		return TRUE;
-	}
 
+	ssh2_channel_delete(c);
 	return TRUE;
 }
 
