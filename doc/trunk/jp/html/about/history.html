@@ -24,15 +24,20 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 
-<h3><a name="teraterm_4.62">2008.12.17 (Ver 4.62 not-released)</h3>
+<h3><a name="teraterm_4.62">2008.12.24 (Ver 4.62 not-released)</a></h3>
 <ul class="history">
   <li>変更
     <ul>
       <li>マクロコマンド "<a href="../macro/command/sprintf2.html">sprintf2</a>" を新規追加した。</li>
+      <li>Controlキーを押している間はマウスイベント通知を無効に出来るようにした。
+        <ul>
+          <li>teraterm.ini に DisableMouseTrackingByCtrl エントリを追加した。デフォルトはoff。</li>
+          <li><a href="../menu/setup-additional.html">Additional settings ダイアログ</a>にチェックボックスを追加した。</li>
+        </ul></li>
     </ul></li>
   <li>バグ修正
     <ul>
-      <li>cygwin接続時、環境変数PATHが途中で切れる事があったのを修正した。</li>
+      <li>cygwin接続時、環境変数PATHが1024バイトで切られるのを修正した。</li>
     </ul></li>
   <li>その他
     <ul>
@@ -82,12 +87,12 @@
 </ul>
 
 <h3><a name="teraterm_4.60">2008.9.23 (Ver 4.60)</a></h3>
-    <ul>
+<ul class="history">
       <li>CHT(前方タブ移動),CBT(後方タブ移動)制御シーケンスに対応した。一部のアプリケーションでの表示の崩れが改善される。</li>
       <li>ビジュアルベルに対応した。BEL文字を受信した時に、Beepを鳴らす代わりに画面をフラッシュさせる事ができる。
         <ul>
           <li>teraterm.iniの<a href="../setup/teraterm-term.html#beep">Beep</a>エントリを拡張し、On/Offの他にVisualを受け付けるようにした。</li>
-      </ul></li>
+        </ul></li>
       <li>韓国語(KS5601)へ対応した。Keonsoon Hwang氏に感謝します。</li>
       <li>ログファイルが開けない場合、エラーメッセージ表示するようにした。ただし、logopenマクロの場合は何も表示しない。</li>
       <li>リモートからのウィンドウタイトル変更要求を受け入れるか設定できるようにした。
@@ -1149,7 +1154,7 @@
 
 <h2><a name="ttssh">TTSSH</a></h2>
 
-<h3><a name="ttssh_2.50">2008.12.17 (Ver 2.50 not-released)</h3>
+<h3><a name="ttssh_2.50">2008.12.24 (Ver 2.50 not-released)</a></h3>
 <ul class="history">
   <li>変更
     <ul>
@@ -1219,13 +1224,13 @@
          <li>ファイル受信先は "ファイル転送のためのディレクトリ" に固定</li>
          <li>受信ファイル名は直接入力</li>
        </ul></li>
-      
+
       <li><a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">Pageant</a>(an SSH authentication agent for PuTTY, PSCP and Plink) を使用した公開鍵認証に対応した。
         <ul>
           <li>コマンドラインオプションの /auth に pageant を追加した。</li>
         </ul></li>
       <li>"SECURITY WARNING" ダイアログをキャンセルするとアプリケーションエラーとなる問題の workaround を削除した。</li>
-        
+
 </ul>
 
 <h3><a name="ttssh_2.45">2008.1.15 (Ver 2.45)</h3>

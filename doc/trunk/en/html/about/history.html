@@ -24,23 +24,28 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 
-<!--
-<h3><a name="teraterm_4.62">2008.12.17 (Ver 4.62 not-released)</h3>
+<h3><a name="teraterm_4.62">2008.12.24 (Ver 4.62 not-released)</a></h3>
 <ul class="history">
   <li>Changes
     <ul>
       <li>added `<a href="../macro/command/sprintf2.html">sprintf2</a>' macro command. </li>
+<!--
+      <li>Controlキーを押している間はマウスイベント通知を無効に出来るようにした。
+        <ul>
+          <li>added DisableMouseTrackingByCtrl in teraterm.ini file. The default is OFF.</li>
+          <li>added the check box on <a href="../menu/setup-additional.html">Additional settings</a> dialog.</li>
+        </ul></li>
+-->
     </ul></li>
   <li>Bug fixes
     <ul>
-      <li>cygwin接続時、環境変数PATHが途中で切れる事があったのを修正した。</li>
+      <li>Bug fix: In the Cygwin connection, PATH environment variable is truncated to 1024 bytes.</li>
     </ul></li>
   <li>Misc
     <ul>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.50">2.50</a></li>
     </ul></li>
 </ul>
--->
 
 <h3><a name="teraterm_4.61">2008.12.16 (Ver 4.61)</a></h3>
 <ul class="history">
@@ -83,13 +88,13 @@
     </ul></li>
 </ul>
 
-  <li class="history"><a name="teraterm_4.60">2008.9.23 (Ver 4.60)</a>
-    <ul>
+<h3><a name="teraterm_4.60">2008.9.23 (Ver 4.60)</a></h3>
+<ul class="history">
       <li>added support of CHT (Cursor Forward Tabulation) and CBT (Cursor Backward Tabulation) control sequence.</li>
       <li>added support for Visual Bell. When TeraTerm receive the BEL character, the window can flash instead of sounding the beep.
         <ul>
           <li>added the Visual option of <a href="../setup/teraterm-term.html#beep">Beep</a> entry in teraterm.ini file.</li>
-      </ul></li>
+        </ul></li>
       <li>added support for Korean language. Special thanks to Keonsoon Hwang.</li>
       <li>added the error message when a user can not open a log file. However, the logopen macro does not show the error message.</li>
       <li>added support for receiving the escape sequence regarding the code can change the window title.
@@ -1148,23 +1153,26 @@ SYNOPSIS:
 
 <h2><a name="ttssh">TTSSH</a></h2>
 
-<!--
-<h3><a name="ttssh_2.50">2008.12.17 (Ver 2.50 not-released)</h3>
+<h3><a name="ttssh_2.50">2008.12.24 (Ver 2.50 not-released)</a></h3>
 <ul class="history">
   <li>Changes
     <ul>
-      <li>ssh:// URLの取り扱いを一部変更した。
+      <!-- li>ssh:// URLの取り扱いを一部変更した。-->
+      <li>Changes ssh:// URL handling.
         <ul>
-          <li>URLにポート指定が含まれていない場合、ポート22に接続するようにした。</li>
-          <li>ユーザ名,パスワードのパーセントエンコーディングをデコードするようにした。</li>
+          <!-- li>URLにポート指定が含まれていない場合、ポート22に接続するようにした。</li -->
+          <li>When port number is not specified in URL, use 22.</li>
+          <!-- li>ユーザ名,パスワードのパーセントエンコーディングをデコードするようにした。</li -->
+          <li>Decodes percent-encoded user name and password.</li>
         </ul></li>
     </ul></li>
+<!--
   <li>Bug fixes
     <ul>
       <li></li>
     </ul></li>
-</ul>
 -->
+</ul>
 
 <h3><a name="ttssh_2.49">2008.12.16 (Ver 2.49)</h3>
 <ul class="history">
@@ -1218,13 +1226,13 @@ SYNOPSIS:
          <li>The source address is fixed in the 'current directory for file transfers'.</li>
          <li>Directly input the receiving file name</li>
        </ul></li>
-      
+
       <li>added support for the public key authentication with <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">Pageant</a>(an SSH authentication agent for PuTTY, PSCP and Plink).</li>
         <ul>
           <li>added "pageant" value to "/auth" command line switch.</li>
         </ul></li>
       <li>deleted a workaround for application fault when pressing ESC key at "SECURITY WARNING" dialog.</li>
-        
+
 </ul>
 
 <h3><a name="ttssh_2.45">2008.1.15 (Ver 2.45)</h3>
