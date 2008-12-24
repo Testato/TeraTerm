@@ -427,6 +427,7 @@ struct tttset {
 	char YModemRcvCommand[MAX_PATH];
 	WORD AcceptTitleChangeRequest;
 	SIZE PasteDialogSize;
+	WORD DisableMouseTrackingByCtrl;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -854,6 +855,9 @@ typedef TMap far *PMap;
  * Increment the number of this macro value
  * when you change TMap or member of TMap.
  *
+ * - At version 4.62, ttset_memfilemap was replaced with ttset_memfilemap_10.
+ *   added tttset.DisableMouseTrackingByCtrl.
+ *
  * - At version 4.61, ttset_memfilemap was replaced with ttset_memfilemap_9.
  *   added TComVar.TitleRemote.
  *
@@ -909,4 +913,4 @@ typedef TMap far *PMap;
  *   added tttset.VTCompatTab.
  */
 
-#define TT_FILEMAPNAME "ttset_memfilemap_9"
+#define TT_FILEMAPNAME "ttset_memfilemap_10"

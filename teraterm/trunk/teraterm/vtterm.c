@@ -3183,6 +3183,9 @@ BOOL MouseReport(int Event, int Button, int Xpos, int Ypos) {
   if (MouseReportMode == IdMouseTrackNone)
     return FALSE;
 
+  if (ts.DisableMouseTrackingByCtrl && ControlKey())
+    return FALSE;
+
   DispConvWinToScreen(Xpos, Ypos, &x, &y, NULL);
   x++; y++;
 

@@ -101,7 +101,7 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 {
 	char uimsg[MAX_UIMSG];
 	char buf[64];
-	CButton *btn;
+	CButton *btn, *btn2;
 	CComboBox *cmb;
 
 	CPropertyPage::OnInitDialog();
@@ -116,6 +116,7 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 		SendDlgItemMessage(IDC_SCROLL_LINE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_ACCEPT_MOUSE_EVENT_TRACKING, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_DISABLE_MOUSE_TRACKING_CTRL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_ACCEPT_TITLE_CHANGING_LABEL, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_ACCEPT_TITLE_CHANGING, WM_SETFONT, (WPARAM)DlgGeneralFont, MAKELPARAM(TRUE,0));
 	}
@@ -141,6 +142,9 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 	GetDlgItemText(IDC_ACCEPT_MOUSE_EVENT_TRACKING, uimsg, sizeof(uimsg));
 	get_lang_msg("DLG_TAB_GENERAL_ACCEPT_MOUSE_EVENT_TRACKING", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_ACCEPT_MOUSE_EVENT_TRACKING, ts.UIMsg);
+	GetDlgItemText(IDC_DISABLE_MOUSE_TRACKING_CTRL, uimsg, sizeof(uimsg));
+	get_lang_msg("DLG_TAB_GENERAL_DISABLE_MOUSE_TRACKING_CTRL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	SetDlgItemText(IDC_DISABLE_MOUSE_TRACKING_CTRL, ts.UIMsg);
 	GetDlgItemText(IDC_ACCEPT_TITLE_CHANGING_LABEL, uimsg, sizeof(uimsg));
 	get_lang_msg("DLG_TAB_GENERAL_ACCEPT_TITLE_CHANGING", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_ACCEPT_TITLE_CHANGING_LABEL, ts.UIMsg);
@@ -177,9 +181,18 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 
 	// (6)IDC_ACCEPT_MOUSE_EVENT_TRACKING
 	btn = (CButton *)GetDlgItem(IDC_ACCEPT_MOUSE_EVENT_TRACKING);
+	btn2 = (CButton *)GetDlgItem(IDC_DISABLE_MOUSE_TRACKING_CTRL);
 	btn->SetCheck(ts.MouseEventTracking);
+	if (ts.MouseEventTracking) {
+		btn2->EnableWindow(TRUE);
+	} else {
+		btn2->EnableWindow(FALSE);
+	}
 
-	// (7)IDC_ACCEPT_TITLE_CHANGING
+	// (7)IDC_DISABLE_MOUSE_TRACKING_CTRL
+	btn2->SetCheck(ts.DisableMouseTrackingByCtrl);
+
+	// (8)IDC_ACCEPT_TITLE_CHANGING
 	cmb = (CComboBox *)GetDlgItem(IDC_ACCEPT_TITLE_CHANGING);
 	cmb->SetCurSel(ts.AcceptTitleChangeRequest);
 
@@ -191,6 +204,19 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 
 BOOL CGeneralPropPageDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 {
+	CButton *btn, *btn2;
+
+	switch (wParam) {
+		case IDC_ACCEPT_MOUSE_EVENT_TRACKING | (BN_CLICKED << 16):
+			btn = (CButton *)GetDlgItem(IDC_ACCEPT_MOUSE_EVENT_TRACKING);
+			btn2 = (CButton *)GetDlgItem(IDC_DISABLE_MOUSE_TRACKING_CTRL);
+			if (btn->GetCheck()) {
+				btn2->EnableWindow(TRUE);
+			} else {
+				btn2->EnableWindow(FALSE);
+			}
+			return TRUE;
+	}
 	return CPropertyPage::OnCommand(wParam, lParam);
 }
 
@@ -227,7 +253,11 @@ void CGeneralPropPageDlg::OnOK()
 	btn = (CButton *)GetDlgItem(IDC_ACCEPT_MOUSE_EVENT_TRACKING);
 	ts.MouseEventTracking = btn->GetCheck();
 
-	// (7)IDC_ACCEPT_TITLE_CHANGING 
+	// (7)IDC_DISABLE_MOUSE_TRACKING_CTRL 
+	btn = (CButton *)GetDlgItem(IDC_DISABLE_MOUSE_TRACKING_CTRL);
+	ts.DisableMouseTrackingByCtrl = btn->GetCheck();
+
+	// (8)IDC_ACCEPT_TITLE_CHANGING 
 	cmb = (CComboBox *)GetDlgItem(IDC_ACCEPT_TITLE_CHANGING);
 	ts.AcceptTitleChangeRequest = cmb->GetCurSel();
 }

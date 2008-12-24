@@ -88,6 +88,7 @@
 #define IDC_ACCEPT_MOUSE_EVENT_TRACKING 1065
 #define IDC_ACCEPT_TITLE_CHANGING       1066
 #define IDC_AGENT_PROXY                 1067
+#define IDC_DISABLE_MOUSE_TRACKING_CTRL 1068
 #define IDD_PRNABORTDLG                 2100
 #define IDD_FILETRANSDLG                2200
 #define IDC_TRANSFNAME                  2201

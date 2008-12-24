@@ -1217,6 +1217,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	if (ts->PasteDialogSize.cy < 0)
 		ts->PasteDialogSize.cy = 220;
 
+	// Disable mouse event tracking when Control-Key is pressed.
+	ts->DisableMouseTrackingByCtrl =
+		GetOnOff(Section, "DisableMouseTrackingByCtrl", FName, FALSE);
 }
 
 void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
@@ -2038,6 +2041,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// Size of paste confirm dialog
 	WriteInt2(Section, "PasteDialogSize", FName,
 	          ts->PasteDialogSize.cx, ts->PasteDialogSize.cy);
+
+	// Disable mouse event tracking when Control-Key is pressed.
+	WriteOnOff(Section, "DisableMouseTrackingByCtrl", FName,
+	           ts->DisableMouseTrackingByCtrl);
 }
 
 #define VTEditor "VT editor keypad"
