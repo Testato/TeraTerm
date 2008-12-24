@@ -165,6 +165,8 @@ NextWin=1039
 ; Ctrl + Shift + Tab
 PrevWin=1551
 LocalEcho=off
+; ScrollLock
+ScrollLock=70
 
 ;Example of user key definitions.
 ;[User keys]
