@@ -28,7 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Tera Term extension mechanism
    Robert O'Callahan (roc+tt@cs.cmu.edu)
-   
+
    Tera Term by Takashi Teranishi (teranishi@rikaxp.riken.go.jp)
 */
 
@@ -417,8 +417,8 @@ static void write_ssh_options(PTInstVar pvar, PCHAR fileName,
 	WritePrivateProfileString("TTSSH", "HeartBeat", buf, fileName);
 
 	// Remember password (2006.8.5 yutaka)
-	WritePrivateProfileString("TTSSH", "RememberPassword", 
-	    settings->remember_password ? "1" : "0", 
+	WritePrivateProfileString("TTSSH", "RememberPassword",
+	    settings->remember_password ? "1" : "0",
 	    fileName);
 
 	// 初回の認証ダイアログでサポートされているメソッドをチェックし、
@@ -898,7 +898,7 @@ LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
 									str[select] = '\0';
 
 								}
-							} 
+							}
 
 							if (wParam == 0x55) { // カーソルより左側をすべて消す
 								if (select >= len) {
@@ -1119,7 +1119,7 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 			SendDlgItemMessage(dlg, IDC_HOSTCOM, CB_SETCURSEL, w - 1, 0);
 		else {					/* All com ports are already used */
 			GetHNRec->PortType = IdTCPIP;
-			enable_dlg_items(dlg, IDC_HOSTSERIAL, IDC_HOSTSERIAL, FALSE); 
+			enable_dlg_items(dlg, IDC_HOSTSERIAL, IDC_HOSTSERIAL, FALSE);
 		}
 
 		CheckRadioButton(dlg, IDC_HOSTTCPIP, IDC_HOSTSERIAL,
@@ -1128,8 +1128,8 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 		if (GetHNRec->PortType == IdTCPIP) {
 			enable_dlg_items(dlg, IDC_HOSTCOMLABEL, IDC_HOSTCOM, FALSE);
 
-			enable_dlg_items(dlg, IDC_SSH_VERSION, IDC_SSH_VERSION, TRUE); 
-			enable_dlg_items(dlg, IDC_SSH_VERSION_LABEL, IDC_SSH_VERSION_LABEL, TRUE); 
+			enable_dlg_items(dlg, IDC_SSH_VERSION, IDC_SSH_VERSION, TRUE);
+			enable_dlg_items(dlg, IDC_SSH_VERSION_LABEL, IDC_SSH_VERSION_LABEL, TRUE);
 
 			enable_dlg_items(dlg, IDC_HISTORY, IDC_HISTORY, TRUE); // enabled
 		}
@@ -1233,7 +1233,7 @@ static BOOL CALLBACK TTXHostDlg(HWND dlg, UINT msg, WPARAM wParam,
 					} else if (IsDlgButtonChecked(dlg, IDC_HOSTSSH)) {
 						pvar->hostdlg_Enabled = TRUE;
 
-						// check SSH protocol version 
+						// check SSH protocol version
 						memset(afstr, 0, sizeof(afstr));
 						GetDlgItemText(dlg, IDC_SSH_VERSION, afstr, sizeof(afstr));
 						if (_stricmp(afstr, "SSH1") == 0) {
@@ -1566,7 +1566,7 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 			pvar->settings.Enabled = 0;
 
 		} else if (MATCH_STR(option + 1, "auth") == 0) {
-			// SSH2自動ログインオプションの追加 
+			// SSH2自動ログインオプションの追加
 			//
 			// SYNOPSIS: /ssh /auth=passowrd /user=ユーザ名 /passwd=パスワード
 			//           /ssh /auth=publickey /user=ユーザ名 /passwd=パスワード /keyfile=パス
@@ -1698,6 +1698,27 @@ static int parse_option(PTInstVar pvar, char FAR * option)
 		memset(option+hostlen, ' ', optlen-hostlen);
 
 		pvar->settings.Enabled = 1;
+
+		return OPTION_REPLACE;
+	}
+	else if (strchr(option, '@') != NULL) {
+		//
+		// user@host 形式のサポート
+		//   取り合えずsshでのみサポートの為、ユーザ名はttssh内で潰す。
+		//   (ssh接続以外 --  ttsshには関係ない場合でも)
+		//   将来的にtelnet authentication optionをサポートした時は
+		//   Tera Term本体で処理するようにする予定。
+		//
+		char *p;
+		p = strchr(option, '@');
+		*p = 0;
+
+		strncpy_s(pvar->ssh2_username, sizeof(pvar->ssh2_username), option, _TRUNCATE);
+
+		// ユーザ名部分をスペースで潰す。
+		// 後続のTTXやTera Term本体で解釈する時にはスペースを読み飛ばすので、
+		// ホスト名を先頭に詰める必要は無い。
+		memset(option, ' ', p-option+1);
 
 		return OPTION_REPLACE;
 	}
@@ -1918,14 +1939,14 @@ void get_file_version(char *exefile, int *major, int *minor, int *release, int *
 	}
 
 	ret = VerQueryValue(buf,
-			"\\VarFileInfo\\Translation", 
+			"\\VarFileInfo\\Translation",
 			(LPVOID *)&lplgcode, &unLen);
 	if (ret == FALSE)
 		goto error;
 
 	for (i = 0 ; i < (int)(unLen / sizeof(LANGANDCODEPAGE)) ; i++) {
 		_snprintf_s(fmt, sizeof(fmt), _TRUNCATE,
-		            "\\StringFileInfo\\%04x%04x\\FileVersion", 
+		            "\\StringFileInfo\\%04x%04x\\FileVersion",
 		            lplgcode[i].wLanguage, lplgcode[i].wCodePage);
 		VerQueryValue(buf, fmt, &pbuf, &unLen);
 		if (unLen > 0) { // get success
@@ -1962,7 +1983,7 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 	GetDlgItemText(dlg, IDOK, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("BTN_OK", pvar, uimsg);
 	SetDlgItemText(dlg, IDOK, pvar->ts->UIMsg);
-	
+
 	// TTSSHのバージョンを設定する (2005.2.28 yutaka)
 	get_file_version("ttxssh.dll", &a, &b, &c, &d);
 	_snprintf_s(buf, sizeof(buf), _TRUNCATE,
@@ -2211,7 +2232,7 @@ static void init_setup_dlg(PTInstVar pvar, HWND dlg)
 	int i;
 	int ch;
 	char uimsg[MAX_UIMSG];
-	
+
 	GetWindowText(dlg, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("DLG_SSHSETUP_TITLE", pvar, uimsg);
 	SetWindowText(dlg, pvar->ts->UIMsg);
@@ -2260,7 +2281,7 @@ static void init_setup_dlg(PTInstVar pvar, HWND dlg)
 	GetDlgItemText(dlg, IDCANCEL, uimsg, sizeof(uimsg));
 	UTIL_get_lang_msg("BTN_CANCEL", pvar, uimsg);
 	SetDlgItemText(dlg, IDCANCEL, pvar->ts->UIMsg);
-	
+
 	SendMessage(compressionControl, TBM_SETRANGE, TRUE, MAKELONG(0, 9));
 	SendMessage(compressionControl, TBM_SETPOS, TRUE,
 	            pvar->settings.CompressionLevel);
@@ -2731,7 +2752,7 @@ error:
 
 
 //
-// RC4 
+// RC4
 //
 
 /* Size of key to use */
@@ -2969,7 +2990,7 @@ int uuencode(unsigned char *src, int srclen, unsigned char *target, int targsize
 		output[1] = ((input[0] & 0x03) << 4) + (input[1] >> 4);
 		output[2] = ((input[1] & 0x0f) << 2) + (input[2] >> 6);
 		output[3] = input[2] & 0x3f;
-		if (output[0] >= 64 || 
+		if (output[0] >= 64 ||
 		    output[1] >= 64 ||
 		    output[2] >= 64 ||
 		    output[3] >= 64)
@@ -2992,7 +3013,7 @@ int uuencode(unsigned char *src, int srclen, unsigned char *target, int targsize
 		output[0] = input[0] >> 2;
 		output[1] = ((input[0] & 0x03) << 4) + (input[1] >> 4);
 		output[2] = ((input[1] & 0x0f) << 2) + (input[2] >> 6);
-		if (output[0] >= 64 || 
+		if (output[0] >= 64 ||
 		    output[1] >= 64 ||
 		    output[2] >= 64)
 			return -1;
@@ -3104,7 +3125,7 @@ static BOOL CALLBACK TTXScpDialog(HWND dlg, UINT msg, WPARAM wParam,
 			}
 			return FALSE;
 
-		case IDCANCEL:			
+		case IDCANCEL:
 			EndDialog(dlg, 0); // dialog close
 			return TRUE;
 
@@ -3149,7 +3170,7 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 	HFONT font;
 
 	switch (msg) {
-	case WM_INITDIALOG: 
+	case WM_INITDIALOG:
 		{
 		GetWindowText(dlg, uimsg, sizeof(uimsg));
 		UTIL_get_lang_msg("DLG_KEYGEN_TITLE", pvar, uimsg);
@@ -3236,7 +3257,7 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 			}
 			return TRUE;
 
-		case IDCANCEL:			
+		case IDCANCEL:
 			// don't forget to free SSH resource!
 			free_ssh_key();
 			EndDialog(dlg, 0); // dialog close
@@ -3359,7 +3380,7 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 					buffer_put_bignum2(b, rsa->e);
 					buffer_put_bignum2(b, rsa->n);
 				}
-				
+
 				blob = buffer_ptr(b);
 				len = buffer_len(b);
 				uuenc = malloc(len * 2);
@@ -3386,9 +3407,9 @@ public_error:
 			break;
 
 		// saving private key file
-		case IDC_SAVE_PRIVATE_KEY: 
+		case IDC_SAVE_PRIVATE_KEY:
 			{
-			char buf[1024], buf_conf[1024];  // passphrase 
+			char buf[1024], buf_conf[1024];  // passphrase
 			int ret;
 			OPENFILENAME ofn;
 			char filename[MAX_PATH];
@@ -3503,7 +3524,7 @@ public_error:
 				// padding with 8byte align
 				while (buffer_len(b) % 8) {
 					buffer_put_char(b, 0);
-				} 
+				}
 
 				//
 				// step(2)
@@ -3631,7 +3652,7 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 	}
 
 	switch (cmd) {
-	case ID_SSHSCPMENU: 
+	case ID_SSHSCPMENU:
 		if (DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SSHSCP), hWin, TTXScpDialog,
 			(LPARAM) pvar) == -1) {
 			UTIL_get_lang_msg("MSG_CREATEWINDOW_SCP_ERROR", pvar,
@@ -3642,7 +3663,7 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd)
 		}
 		return 1;
 
-	case ID_SSHKEYGENMENU: 
+	case ID_SSHKEYGENMENU:
 		if (DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SSHKEYGEN), hWin, TTXKeyGenerator,
 			(LPARAM) pvar) == -1) {
 			UTIL_get_lang_msg("MSG_CREATEWINDOW_KEYGEN_ERROR", pvar,
@@ -3741,7 +3762,7 @@ static void replace_blank_to_mark(char *str, char *dst, int dst_len)
 		if (str[i] == '@')
 			n++;
 	}
-	if (dst_len < (len + 2*n)) 
+	if (dst_len < (len + 2*n))
 		return;
 
 	for (i = 0 ; i < len ; i++) {
