@@ -13,7 +13,7 @@
 <h1>Tera Term command line</h1>
 
 <pre class="syntax">
-TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
+TTERMPRO [ &lt;host&gt;[[:]&lt;TCP port#&gt;] | telnet://&lt;host&gt;[:&lt;TCP port#&gt;][/] ]
          [/B] [/BAUD=&lt;baud rate&gt;] [/C=&lt;serial port#&gt;] [/DS] [/E]
          [/F=&lt;setup file&gt;] [/FD=&lt;file transfer directory&gt;]
          [/H] [/I] [/K=&lt;keyboard setup file&gt;]
@@ -41,6 +41,12 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
   <dd>&lt;host&gt; with a TCP port number.<br>
       Space character(s) between &lt;host&gt; and &lt;TCP port#&gt;.<br>
       Number just after &lt;host&gt; is interpreted as a port number.</dd>
+
+  <dt>telnet://&lt;host&gt;[:&lt;TCP port#&gt;][/]</dt>
+  <dd>URL style - for telnet handler<br>
+<!--  TCP port number and "/" at the end is È—ª‰Â”\.<br> -->
+      If TCP port number is omitted, use 23. (TCPPort setting in setup file is ignored.)
+  </dd>
 
   <dt>/B</dt>
   <dd>Telnet binary option.</dd>

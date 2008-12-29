@@ -17,7 +17,7 @@ Tera Term Pro を起動するときのコマンドライン(ショートカットのリンク先)の形式
 </p>
 
 <pre class="syntax">
-TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
+TTERMPRO [ &lt;host&gt;[[:]&lt;TCP port#&gt;] | telnet://&lt;host&gt;[:&lt;TCP port#&gt;][/] ]
          [/B] [/BAUD=&lt;baud rate&gt;] [/C=&lt;serial port#&gt;] [/DS] [/E]
          [/F=&lt;setup file&gt;] [/FD=&lt;file transfer directory&gt;]
          [/H] [/I] [/K=&lt;keyboard setup file&gt;]
@@ -45,6 +45,12 @@ TTERMPRO [&lt;host&gt;[[:]&lt;TCP port#&gt;]]
   <dd>TCP ポート番号つき &lt;host&gt;<br>
       &lt;host&gt; と &lt;TCP port#&gt; の間に1個以上の空白文字が置かれる。<br>
       &lt;host&gt; のすぐ後にくる数字は TCP ポート番号とみなされる。</dd>
+
+  <dt>telnet://&lt;host&gt;[:&lt;TCP port#&gt;][/]</dt>
+  <dd>URL形式 - telnetハンドラ用<br>
+      TCP ポート番号および末尾の / は省略可能。<br>
+      TCP ポート番号が省略された場合は23となる。(設定ファイルのTCPPortの値は無視される)
+  </dd>
 
   <dt>/B</dt>
   <dd>Telnet バイナリオプション</dd>
