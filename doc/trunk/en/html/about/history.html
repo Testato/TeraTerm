@@ -24,18 +24,16 @@
 
 <h2><a name="teraterm">Tera Term</a></h2>
 
-<h3><a name="teraterm_4.62">2008.12.24 (Ver 4.62 not-released)</a></h3>
+<h3><a name="teraterm_4.62">2008.12.30 (Ver 4.62 not-released)</a></h3>
 <ul class="history">
   <li>Changes
     <ul>
       <li>added `<a href="../macro/command/sprintf2.html">sprintf2</a>' macro command. </li>
-<!--
-      <li>Controlキーを押している間はマウスイベント通知を無効に出来るようにした。
+      <li>The mouse event notification can be disabled while a user pushes the Control key.
         <ul>
           <li>added DisableMouseTrackingByCtrl in teraterm.ini file. The default is OFF.</li>
           <li>added the check box on <a href="../menu/setup-additional.html">Additional settings</a> dialog.</li>
         </ul></li>
--->
     </ul></li>
   <li>Bug fixes
     <ul>
@@ -1153,26 +1151,22 @@ SYNOPSIS:
 
 <h2><a name="ttssh">TTSSH</a></h2>
 
-<h3><a name="ttssh_2.50">2008.12.24 (Ver 2.50 not-released)</a></h3>
+<h3><a name="ttssh_2.50">2008.12.30 (Ver 2.50 not-released)</a></h3>
 <ul class="history">
   <li>Changes
     <ul>
-      <!-- li>ssh:// URLの取り扱いを一部変更した。-->
       <li>Changes ssh:// URL handling.
         <ul>
-          <!-- li>URLにポート指定が含まれていない場合、ポート22に接続するようにした。</li -->
-          <li>When port number is not specified in URL, use 22.</li>
-          <!-- li>ユーザ名,パスワードのパーセントエンコーディングをデコードするようにした。</li -->
-          <li>Decodes percent-encoded user name and password.</li>
+          <li>When a port number is not specified in the URL string, 22 port will be mandatory specified.</li>
+          <li>The percent-encoded user name and password are decoded.</li>
         </ul></li>
-      <!-- li>"New Connection"ダイアログのホスト名やコマンドラインで、user@host形式のユーザ名指定を行えるようにした。</li -->
+      <li>added the `user@host' format in the host name of "New Connection" dialog and the command line option.</li>
+      <li>added a keyboard shortcut(&H) on SSH SCP menu.</li>
     </ul></li>
-<!--
   <li>Bug fixes
     <ul>
-      <li></li>
+      <li>When a user does the SCP action twice, TeraTerm will be shut down after receiving SSH2_MSG_CHANNEL_FAILURE.</li>
     </ul></li>
--->
 </ul>
 
 <h3><a name="ttssh_2.49">2008.12.16 (Ver 2.49)</h3>
