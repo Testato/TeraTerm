@@ -254,7 +254,7 @@
 
     As of 2008-Nov, CygTerm+ has been tested in the following environments.
 
-        WindowsXP SP4 + Cygwin 1.5.25-15
+        WindowsXP SP3 + Cygwin 1.5.25-15
 
         Terminal emulator:
                 Tera Term Pro 2.3
