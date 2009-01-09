@@ -108,16 +108,25 @@ MaxBroadcatHistory=99
 </p>
 
 <p>
-アプリケーションカーソルモードでもマウスホイールの回転でスクロールバーを動かしたい場合は、設定ファイルの [Tera Term] セクションの TranslateWheelToCursor 行を以下のように変更してください。
+この機能を無効にしてアプリケーションカーソルモードでもマウスホイールの回転でスクロールバーを動かしたい場合は、設定ファイルの [Tera Term] セクションの TranslateWheelToCursor 行を以下のように変更してください。
 </p>
 
 <pre>
 TranslateWheelToCursor=off
 </pre>
 
+<p>
+また、コントロールキーを押している間のみこの機能を無効にしたい場合は、設定ファイルの [Tera Term] セクションの DisableWheelToCursorByCtrl 行を以下のように変更してください。
+</p>
+
+<pre>
+DisableWheelToCursorByCtrl=on
+</pre>
+
 <pre>
 省略時:
 TranslateWheelToCursor=on
+DisableWheelToCursorByCtrl=off
 </pre>
 
 
