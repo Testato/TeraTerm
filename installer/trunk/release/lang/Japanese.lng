@@ -420,7 +420,7 @@ MENU_ABOUT=&TTSSHについて...
 MENU_SSH=SS&H...
 MENU_SSH_AUTH=SSH認証(&A)...
 MENU_SSH_FORWARD=SSH転送(&O)...
-MENU_SSH_KEYGEN=SSHキー生成(&N)...
+MENU_SSH_KEYGEN=SSH鍵生成(&N)...
 
 ; dlg about
 DLG_ABOUT_TITLE=TTSSHについて
@@ -545,9 +545,9 @@ DLG_HOST_HELP=ヘルプ(&H)
 MSG_TCPPORT_NAN_ERROR=TCPポート番号には数値を入力してください.
 
 ; dlg keygen
-DLG_KEYGEN_TITLE=TTSSH: キー生成
-DLG_KEYGEN_KEYTYPE=キーの種類
-DLG_KEYGEN_PASSPHRASE=キーのパスフレーズ:
+DLG_KEYGEN_TITLE=TTSSH: 鍵生成
+DLG_KEYGEN_KEYTYPE=鍵の種類
+DLG_KEYGEN_PASSPHRASE=鍵のパスフレーズ:
 DLG_KEYGEN_PASSPHRASE2=パスフレーズの確認:
 DLG_KEYGEN_SAVEPUBLIC=公開鍵の保存(&C)
 DLG_KEYGEN_SAVEPRIVATE=秘密鍵の保存(&P)
@@ -657,7 +657,7 @@ MSG_HOSTS_READ_ERROR=known_hosts 読み込み中にエラーが発生しました.
 MSG_HOSTS_ALLOC_ERROR=known_hosts 読み込み中にメモリ不足になりました.
 MSG_HOSTS_HOSTNAME_INVALID_ERROR=ホスト名に無効な文字が含まれています.\nセッションを閉じます.
 MSG_HOSTS_HOSTNAME_EMPTY_ERROR=ホスト名が空です.\nセッションを閉じます.
-MSG_HOSTS_FILE_UNSPECIFY_ERROR=known-hosts が指定されなかったので, ホストとそのキーを加えることができません.\nTera Termを再起動して, TTSSH セットアップダイアログボックスで読込み・書込みknown-hosts を指定してください.
+MSG_HOSTS_FILE_UNSPECIFY_ERROR=known-hosts が指定されなかったので, ホストとその鍵を加えることができません.\nTera Termを再起動して, TTSSH セットアップダイアログボックスで読込み・書込みknown-hosts を指定してください.
 MSG_HOSTS_WRITE_EACCES_ERROR=ホスト鍵の書き込み中にエラーが発生しました.\nknown-hosts の書き込み権限がありません.
 MSG_HOSTS_WRITE_ERROR=ホスト鍵の書き込み中にエラーが発生しました.\nホスト鍵を書き込めません.
 
@@ -707,7 +707,7 @@ MSG_UNKNOWN_OPTION_ERROR=無効なコマンドラインオプション: %s
 ; x11util.c
 MSG_X_AUTH_ERROR=リモートのX アプリケーションから無効な認証データを受信しました. \nX セッションは無効になっています.
 
-MSG_CREATEWINDOW_KEYGEN_ERROR=キー生成ダイアログボックスを開けません.
+MSG_CREATEWINDOW_KEYGEN_ERROR=鍵生成ダイアログボックスを開けません.
 MSG_CREATEWINDOW_ABOUT_ERROR=情報ダイアログボックスを開けません.
 MSG_CREATEWINDOW_SETUP_ERROR=TTSSH 設定ダイアログボックスを開けません.
 MSG_CREATEWINDOW_FWDSETUP_ERROR=SSH ポート転送設定ダイアログボックスを開けません.
