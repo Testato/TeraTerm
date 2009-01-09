@@ -1220,6 +1220,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	// Disable mouse event tracking when Control-Key is pressed.
 	ts->DisableMouseTrackingByCtrl =
 		GetOnOff(Section, "DisableMouseTrackingByCtrl", FName, FALSE);
+
+	// Disable TranslateWheelToCursor setting when Control-Key is pressed.
+	ts->DisableWheelToCursorByCtrl =
+		GetOnOff(Section, "DisableWheelToCursorByCtrl", FName, FALSE);
 }
 
 void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
@@ -2045,6 +2049,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// Disable mouse event tracking when Control-Key is pressed.
 	WriteOnOff(Section, "DisableMouseTrackingByCtrl", FName,
 	           ts->DisableMouseTrackingByCtrl);
+
+	// Disable TranslateWHeelToCursor when Control-Key is pressed.
+	WriteOnOff(Section, "DisableWheelToCursorByCtrl", FName,
+	           ts->DisableWheelToCursorByCtrl);
 }
 
 #define VTEditor "VT editor keypad"

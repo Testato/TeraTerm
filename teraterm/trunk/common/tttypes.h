@@ -428,6 +428,7 @@ struct tttset {
 	WORD AcceptTitleChangeRequest;
 	SIZE PasteDialogSize;
 	WORD DisableMouseTrackingByCtrl;
+	WORD DisableWheelToCursorByCtrl;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -857,6 +858,7 @@ typedef TMap far *PMap;
  *
  * - At version 4.62, ttset_memfilemap was replaced with ttset_memfilemap_10.
  *   added tttset.DisableMouseTrackingByCtrl.
+ *   added tttset.DisableWheelToCursorByCtrl.
  *
  * - At version 4.61, ttset_memfilemap was replaced with ttset_memfilemap_9.
  *   added TComVar.TitleRemote.
