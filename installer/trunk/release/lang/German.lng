@@ -549,6 +549,11 @@ DLG_KEYGEN_PASSPHRASE2=Passphrase bestätigen:
 DLG_KEYGEN_SAVEPUBLIC=Public Key
 DLG_KEYGEN_SAVEPRIVATE=Private Key
 DLG_KEYGEN_GENERATE=Generieren
+DLG_KEYGEN_BITS=Key &Bits:
+
+MSG_KEYBITS_NAN_ERROR=The key bits must be a number.
+MSG_KEYBITS_RSA_MIN_ERROR=The key bits is too small.
+MSG_KEYBITS_DSA_SIZE_ERROR=The DSA key must be 1024 bits.
 
 DLG_SAVE_PUBLICKEY_TITLE=Speichern Public key:
 FILEDLG_SAVE_PUBLICKEY_RSA1_FILTER=SSH1 RSA key(identity.pub)\0identity.pub\0All Files(*.*)\0*.*\0\0
