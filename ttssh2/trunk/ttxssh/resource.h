@@ -141,6 +141,8 @@
 #define IDC_EDIT3                       1103
 #define IDC_FP_RANDOMART                1103
 #define IDC_TTSSH_ICON                  1104
+#define IDC_KEYBITS_LABEL               1105
+#define IDC_KEYBITS                     1106
 #define IDC_SSHUSEPASSWORD              1201
 #define IDC_SSHUSERSA                   1202
 #define IDC_SSHFWDREMOTETOLOCAL         1202

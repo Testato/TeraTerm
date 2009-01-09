@@ -2676,10 +2676,8 @@ static void free_ssh_key(void)
 }
 
 
-static BOOL generate_ssh_key(enum hostkey_type type)
+static BOOL generate_ssh_key(enum hostkey_type type, int bits)
 {
-	int bits = 1024;
-
 	// if SSH key already is generated, should free the resource.
 	free_ssh_key();
 
@@ -3178,6 +3176,9 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 		GetDlgItemText(dlg, IDC_KEYTYPE, uimsg, sizeof(uimsg));
 		UTIL_get_lang_msg("DLG_KEYGEN_KEYTYPE", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_KEYTYPE, pvar->ts->UIMsg);
+		GetDlgItemText(dlg, IDC_KEYBITS_LABEL, uimsg, sizeof(uimsg));
+		UTIL_get_lang_msg("DLG_KEYGEN_BITS", pvar, uimsg);
+		SetDlgItemText(dlg, IDC_KEYBITS_LABEL, pvar->ts->UIMsg);
 		GetDlgItemText(dlg, IDC_KEY_LABEL, uimsg, sizeof(uimsg));
 		UTIL_get_lang_msg("DLG_KEYGEN_PASSPHRASE", pvar, uimsg);
 		SetDlgItemText(dlg, IDC_KEY_LABEL, pvar->ts->UIMsg);
@@ -3204,6 +3205,8 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 			SendDlgItemMessage(dlg, IDC_RSA1_TYPE, WM_SETFONT, (WPARAM)DlgKeygenFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_RSA_TYPE, WM_SETFONT, (WPARAM)DlgKeygenFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_DSA_TYPE, WM_SETFONT, (WPARAM)DlgKeygenFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_KEYBITS_LABEL, WM_SETFONT, (WPARAM)DlgKeygenFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_KEYBITS, WM_SETFONT, (WPARAM)DlgKeygenFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_KEY_LABEL, WM_SETFONT, (WPARAM)DlgKeygenFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_CONFIRM_LABEL, WM_SETFONT, (WPARAM)DlgKeygenFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_KEY_EDIT, WM_SETFONT, (WPARAM)DlgKeygenFont, MAKELPARAM(TRUE,0));
@@ -3221,6 +3224,10 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 		SendMessage(GetDlgItem(dlg, IDC_RSA_TYPE), BM_SETCHECK, BST_CHECKED, 0);
 		key_type = KEY_RSA;
 
+		// default key bits
+		SetDlgItemInt(dlg, IDC_KEYBITS, SSH_RSA_KEYGEN_DEFAULT_BITS, FALSE);
+		SendDlgItemMessage(dlg, IDC_KEYBITS, EM_LIMITTEXT, 4, 0);
+
 		// passphrase edit box disabled(default)
 		EnableWindow(GetDlgItem(dlg, IDC_KEY_EDIT), FALSE);
 		EnableWindow(GetDlgItem(dlg, IDC_CONFIRM_EDIT), FALSE);
@@ -3235,6 +3242,10 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
 		case IDOK: // key generate button pressed
+			{
+			int bits;
+			BOOL Ok;
+
 			// passphrase edit box disabled(default)
 			EnableWindow(GetDlgItem(dlg, IDC_KEY_EDIT), FALSE);
 			EnableWindow(GetDlgItem(dlg, IDC_CONFIRM_EDIT), FALSE);
@@ -3243,7 +3254,35 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 			EnableWindow(GetDlgItem(dlg, IDC_SAVE_PUBLIC_KEY), FALSE);
 			EnableWindow(GetDlgItem(dlg, IDC_SAVE_PRIBATE_KEY), FALSE);
 
-			if (generate_ssh_key(key_type)) {
+			bits = GetDlgItemInt(dlg, IDC_KEYBITS, &Ok, FALSE);
+			if (!Ok) {
+				UTIL_get_lang_msg("MSG_KEYBITS_NAN_ERROR", pvar,
+				                  "The key bits must be a number.");
+				MessageBox(dlg, pvar->ts->UIMsg,
+				           "Tera Term", MB_OK | MB_ICONEXCLAMATION);
+				return TRUE;
+			}
+
+			if (key_type == KEY_DSA) {
+				if (bits != 1024) {
+					UTIL_get_lang_msg("MSG_KEYBITS_DSA_SIZE_ERROR", pvar,
+					                  "The DSA key must be 1024 bits.");
+					MessageBox(dlg, pvar->ts->UIMsg,
+					           "Tera Term", MB_OK | MB_ICONEXCLAMATION);
+					return TRUE;
+				}
+			}
+			else {	// KEY_RSA1 or KEY_RSA
+				if (bits < SSH_RSA_MINIMUM_MODULUS_SIZE) {
+					UTIL_get_lang_msg("MSG_KEYBITS_RSA_MIN_ERROR", pvar,
+					                  "The key bits is too small.");
+					MessageBox(dlg, pvar->ts->UIMsg,
+					           "Tera Term", MB_OK | MB_ICONEXCLAMATION);
+					return TRUE;
+				}
+			}
+
+			if (generate_ssh_key(key_type, bits)) {
 				// passphrase edit box disabled(default)
 				EnableWindow(GetDlgItem(dlg, IDC_KEY_EDIT), TRUE);
 				EnableWindow(GetDlgItem(dlg, IDC_CONFIRM_EDIT), TRUE);
@@ -3256,6 +3295,7 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 				SetFocus(GetDlgItem(dlg, IDC_KEY_EDIT));
 			}
 			return TRUE;
+			}
 
 		case IDCANCEL:
 			// don't forget to free SSH resource!
@@ -3268,15 +3308,25 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 
 		// if radio button pressed...
 		case IDC_RSA1_TYPE | (BN_CLICKED << 16):
+			if (key_type == KEY_DSA) {
+				SetDlgItemInt(dlg, IDC_KEYBITS, SSH_RSA_KEYGEN_DEFAULT_BITS, FALSE);
+				EnableWindow(GetDlgItem(dlg, IDC_KEYBITS), TRUE);
+			}
 			key_type = KEY_RSA1;
 			break;
 
 		case IDC_RSA_TYPE | (BN_CLICKED << 16):
+			if (key_type == KEY_DSA) {
+				SetDlgItemInt(dlg, IDC_KEYBITS, SSH_RSA_KEYGEN_DEFAULT_BITS, FALSE);
+				EnableWindow(GetDlgItem(dlg, IDC_KEYBITS), TRUE);
+			}
 			key_type = KEY_RSA;
 			break;
 
 		case IDC_DSA_TYPE | (BN_CLICKED << 16):
 			key_type = KEY_DSA;
+			SetDlgItemInt(dlg, IDC_KEYBITS, 1024, FALSE);
+			EnableWindow(GetDlgItem(dlg, IDC_KEYBITS), FALSE);
 			break;
 
 		// saving public key file

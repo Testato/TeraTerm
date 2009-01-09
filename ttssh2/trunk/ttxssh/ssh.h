@@ -238,6 +238,8 @@ enum hmac_type {
 /* Minimum modulus size (n) for RSA keys. */
 #define SSH_RSA_MINIMUM_MODULUS_SIZE    768
 
+#define SSH_RSA_KEYGEN_DEFAULT_BITS	2048
+
 enum kex_init_proposals {
 	PROPOSAL_KEX_ALGS,
 	PROPOSAL_SERVER_HOST_KEY_ALGS,
