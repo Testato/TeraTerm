@@ -138,6 +138,10 @@ Name: {userstartup}\Collector; Filename: {app}\collector\collector.exe; WorkingD
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\cyglaunch; Filename: {app}\cyglaunch.exe; WorkingDir: {app}; IconFilename: {app}\cyglaunch.exe; Components: cygterm; Tasks: quickcyglaunch; IconIndex: 0; Flags: createonlyiffileexists
 
 [INI]
+Filename: {app}\teraterm.ini; Section: Tera Term; Key: DisableWheelToCursorByCtrl; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: DisableWheelToCursorByCtrl; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
+Filename: {app}\teraterm.ini; Section: Tera Term; Key: DisableMouseTrackingByCtrl; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: DisableMouseTrackingByCtrl; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: TTSSH; Key: EnableRsaShortKeyServer; String: 0; Flags: createkeyifdoesntexist; Components: TTSSH
 Filename: {userdocs}\teraterm.ini; Section: TTSSH; Key: EnableRsaShortKeyServer; String: 0; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TTSSH
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: AcceptTitleChangeRequest; String: overwrite; Flags: createkeyifdoesntexist; Components: TeraTerm
