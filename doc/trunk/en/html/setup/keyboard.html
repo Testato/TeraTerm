@@ -44,21 +44,28 @@ The distribution package contains the following keyboard setup files:
   <dd>A customize sample based on IBMKEYB.CNF<br>
       <ul>
         <li>F1-F10 are modified</li>
-        <li>Special keys(*1) are used to send a character sequence which displays a symbol on the key top of each VT200 terminal keyboard.</li>
+        <li>Editor keypad(*1) and Special keys(*2) are used to send a character sequence which displays a symbol on the key top of each VT200 terminal keyboard(*3).</li>
+      </ul></dd>
+
+  <dt>EDITOR.CNF</dt>
+  <dd>A customize sample based on IBMKEYB.CNF<br>
+      <ul>
+        <li>Editor keypad(*1) are used to send a character sequence which displays a symbol on the key top of each VT200 terminal keyboard(*3).</li>
       </ul></dd>
 
   <dt>KEYBOARD.CNF</dt>
-  <dd>Default keyboard setup file (copy of IBMKEYB.CNF at the moment just after the installation)</dd>
+  <dd>Default keyboard setup file (copy of EDITOR.CNF at the moment just after the installation)</dd>
 </dl>
 
 <p>
-(*1) Special keys mentioned here are Ins, Del, Home, End, PageUp, PageDown and *, /, +, -, Ctrl+"+" on a Ten-Key pad.<br>
-The location of these keys on VT220 is different from a generic 101(106) keyboard. With a keyboard setup file other than FUNCTION.CNF, a character sequence to be sent is same as one of 101(106) keyboard. This is derived from the specification of original Tera Term Pro.<br>
-On the other hand, FUNCTION.CNF defines a character sequence which displays a symbol of each key top "as-is". By using this, special keys will behave as each symbol of key top when an application which utilizes speical keys is run.
+(*1) Editor keypad mentioned here are Ins, Del, Home, End, PageUp and PageDown.<br>
+(*2) Special keys mentioned here are *, /, +, -, Ctrl+"+" on a Ten-Key pad.<br>
+(*3) The location of these keys on VT220 is different from a generic 101(106) keyboard. With a keyboard setup file other than FUNCTION.CNF  and EDITOR.CNF, a character sequence to be sent is same as one of 101(106) keyboard. This is derived from the specification of original Tera Term Pro.<br>
+On the other hand, FUNCTION.CNF and EDITOR.CNF defines a character sequence which displays a symbol of each key top "as-is". By using this, special keys will behave as each symbol of key top when an application which utilizes speical keys is run.
 </p>
 
 <p>
-The installer will copy <strong>IBMKEYB.CNF</strong> on <strong>KEYBOARD.CNF</strong>.
+The installer will copy <strong>EDITOR.CNF</strong> on <strong>KEYBOARD.CNF</strong>.
 If you want to use a different key map, copy an appropriate file on <strong>KEYBOARD.CNF</strong> to meet your need.
 </p>
 
