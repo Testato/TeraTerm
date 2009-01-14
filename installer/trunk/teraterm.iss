@@ -41,7 +41,8 @@ Source: ..\doc\jp\teratermj.chm; DestDir: {app}; Components: TeraTerm
 Source: release\license.txt; DestDir: {app}; Components: TeraTerm
 Source: release\FUNCTION.CNF; DestDir: {app}; Components: TeraTerm
 Source: release\IBMKEYB.CNF; DestDir: {app}; Components: TeraTerm
-Source: release\KEYBOARD.CNF; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
+Source: release\EDITOR.CNF; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify; DestName: KEYBOARD.CNF
+Source: release\EDITOR.CNF; DestDir: {app}; Components: TeraTerm
 Source: release\NT98KEYB.CNF; DestDir: {app}; Components: TeraTerm
 Source: release\PC98KEYB.CNF; DestDir: {app}; Components: TeraTerm
 Source: ..\teraterm\release\keycode.exe; DestDir: {app}; Components: TeraTerm

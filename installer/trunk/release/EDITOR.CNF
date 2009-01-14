@@ -3,9 +3,6 @@
 ;
 ; This file based on IBMKEYB.CNF
 ; 1. send the symbol of each key top "as-is" at editor keypad.
-; 2. send the symbol of each key top "as-is" at *, /, +, -, Ctrl+"+" on a Ten-Key pad.
-; 3. enables using the function key from F1 to F10.
-;    See [User keys] section.
 ;
 [VT editor keypad]
 ;Up arrow key
@@ -50,33 +47,37 @@ Num7=71
 Num8=72
 ;Num pad 9 key
 Num9=73
+;Ctrl + Num pad '+' key
+NumMinus=1102
 ;Num pad '+' key
-NumPlus=78
+NumComma=78
 ;Num pad '.' key
 NumPeriod=83
 ;Num pad Enter key
 NumEnter=284
+;Num pad NumLock key
+PF1=325
 ;Num pad '/' key
-NumSlash=309
+PF2=309
 ;Num pad '*' key
-NumAsterisk=55
+PF3=55
 ;Num pad '-' key
-NumMinus=74
+PF4=74
 
 [VT function keys]
 Hold=off
 Print=off
 Break=off
 ;F6 key
-;F6=64
+F6=64
 ;F7 key
-;F7=65
+F7=65
 ;F8 key
-;F8=66
+F8=66
 ;F9 key
-;F9=67
+F9=67
 ;F10 key
-;F10=68
+F10=68
 ;F11 key
 F11=87
 ;F12 key
@@ -130,15 +131,15 @@ UDK20=1604
 
 [X function keys]
 ; F1 key
-;XF1=59
+XF1=59
 ; F2 key
-;XF2=60
+XF2=60
 ; F3 key
-;XF3=61
+XF3=61
 ; F4 key
-;XF4=62
+XF4=62
 ; F5 key
-;XF5=63
+XF5=63
 
 [Shortcut keys]
 ; Ctrl + Insert
@@ -187,25 +188,3 @@ ScrollLock=70
 ;	Ctrl + F5 key: Executing a menu command
 ;User5=1087,3,50110
 [User keys]
-; F1
-User1=59,0,$1BOP
-; F2
-User2=60,0,$1BOQ
-; F3
-User3=61,0,$1BOR
-; F4
-User4=62,0,$1BOS
-; F5
-User5=63,0,$1BOt
-; F6
-User6=64,0,$1BOu
-; F7
-User7=65,0,$1BOv
-; F8
-User8=66,0,$1BOl
-; F9
-User9=67,0,$1BOw
-; F10
-User10=68,0,$1BOx
-
-
