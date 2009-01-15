@@ -554,9 +554,7 @@ DLG_KEYGEN_SAVEPRIVATE=Save &private key
 DLG_KEYGEN_GENERATE=&Generate
 DLG_KEYGEN_BITS=Key &Bits:
 
-MSG_KEYBITS_NAN_ERROR=The key bits must be a number.
-MSG_KEYBITS_RSA_MIN_ERROR=The key bits is too small.
-MSG_KEYBITS_DSA_SIZE_ERROR=The DSA key must be 1024 bits.
+MSG_KEYBITS_MIN_ERROR=The key bits is too small.
 
 FILEDLG_SAVE_PUBLICKEY_TITLE=Save public key as:
 FILEDLG_SAVE_PUBLICKEY_RSA1_FILTER=SSH1 RSA key(identity.pub)\0identity.pub\0All Files(*.*)\0*.*\0\0

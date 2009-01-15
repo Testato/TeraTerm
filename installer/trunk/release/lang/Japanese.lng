@@ -554,9 +554,7 @@ DLG_KEYGEN_SAVEPRIVATE=秘密鍵の保存(&P)
 DLG_KEYGEN_GENERATE=生成(&G)
 DLG_KEYGEN_BITS=ビット数(&B):
 
-MSG_KEYBITS_NAN_ERROR=鍵のビット数には数値を入力してください.
-MSG_KEYBITS_RSA_MIN_ERROR=鍵のビット数が小さすぎます.
-MSG_KEYBITS_DSA_SIZE_ERROR=DSA鍵のビット数は1024である必要があります.
+MSG_KEYBITS_MIN_ERROR=鍵のビット数が小さすぎます.
 
 FILEDLG_SAVE_PUBLICKEY_TITLE=公開鍵の保存先:
 FILEDLG_SAVE_PUBLICKEY_RSA1_FILTER=SSH1 RSA key(identity.pub)\0identity.pub\0すべてのファイル(*.*)\0*.*\0\0
