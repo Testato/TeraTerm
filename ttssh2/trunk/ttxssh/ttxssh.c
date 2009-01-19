@@ -94,6 +94,12 @@ static HFONT DlgKeygenFont;
 
 static TInstVar FAR *pvar;
 
+typedef struct {
+	int	cnt;
+	HWND	dlg;
+	enum hostkey_type type;
+} cbarg_t;
+
   /* WIN32 allows multiple instances of a DLL */
 static TInstVar InstVar;
 
@@ -2675,8 +2681,7 @@ static void free_ssh_key(void)
 	public_key.rsa = NULL;
 }
 
-
-static BOOL generate_ssh_key(enum hostkey_type type, int bits)
+static BOOL generate_ssh_key(enum hostkey_type type, int bits, void (*cbfunc)(int, int, void *), void *cbarg)
 {
 	// if SSH key already is generated, should free the resource.
 	free_ssh_key();
@@ -2686,7 +2691,7 @@ static BOOL generate_ssh_key(enum hostkey_type type, int bits)
 		RSA *pub = NULL;
 
 		// private key
-		priv =  RSA_generate_key(bits, 35, NULL, NULL);
+		priv =  RSA_generate_key(bits, 35, cbfunc, cbarg);
 		if (priv == NULL)
 			goto error;
 		private_key.rsa = priv;
@@ -2709,7 +2714,7 @@ static BOOL generate_ssh_key(enum hostkey_type type, int bits)
 		DSA *pub = NULL;
 
 		// private key
-		priv = DSA_generate_parameters(bits, NULL, 0, NULL, NULL, NULL, NULL);
+		priv = DSA_generate_parameters(bits, NULL, 0, NULL, NULL, cbfunc, cbarg);
 		if (priv == NULL)
 			goto error;
 		if (!DSA_generate_key(priv)) {
@@ -3158,6 +3163,47 @@ __declspec(dllexport) int CALLBACK TTXScpReceivefile(char *remotefile, char *loc
 	return SSH_scp_transaction(pvar, remotefile, localfile, FROMREMOTE);
 }
 
+static void keygen_progress(int phase, int count, cbarg_t *cbarg) {
+	char buff[1024];
+	static char msg[1024];
+
+	switch (phase) {
+	case 0:
+		if (count == 0) {
+			UTIL_get_lang_msg("MSG_KEYGEN_GENERATING", pvar, "generating key");
+			strncpy_s(msg, sizeof(msg), pvar->ts->UIMsg, _TRUNCATE);
+		}
+		if (cbarg->type == KEY_DSA && count %10 != 0) {
+			return;
+		}
+		_snprintf_s(buff, sizeof(buff), _TRUNCATE, "%s %d/4 (%d)", msg, cbarg->cnt*2+1, count);
+		break;
+	case 1:
+		if (count < 0) {
+			return;
+		}
+		_snprintf_s(buff, sizeof(buff), _TRUNCATE, "%s %d/4 (%d)", msg, cbarg->cnt*2+2, count);
+		break;
+	case 2:
+		return;
+		break;
+	case 3:
+		if (count == 0) {
+			cbarg->cnt = 1;
+			return;
+		}
+		else {
+			UTIL_get_lang_msg("MSG_KEYGEN_GENERATED", pvar, "key generated");
+			_snprintf_s(buff, sizeof(buff), _TRUNCATE, "%s", pvar->ts->UIMsg);
+		}
+		break;
+	default:
+		return;
+	}
+
+	SetDlgItemText(cbarg->dlg, IDC_KEYGEN_PROGRESS_LABEL, buff);
+	return;
+}
 
 static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
                                      LPARAM lParam)
@@ -3211,6 +3257,7 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 			SendDlgItemMessage(dlg, IDC_CONFIRM_LABEL, WM_SETFONT, (WPARAM)DlgKeygenFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_KEY_EDIT, WM_SETFONT, (WPARAM)DlgKeygenFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_CONFIRM_EDIT, WM_SETFONT, (WPARAM)DlgKeygenFont, MAKELPARAM(TRUE,0));
+			SendDlgItemMessage(dlg, IDC_KEYGEN_PROGRESS_LABEL, WM_SETFONT, (WPARAM)DlgKeygenFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SAVE_PUBLIC_KEY, WM_SETFONT, (WPARAM)DlgKeygenFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDC_SAVE_PRIVATE_KEY, WM_SETFONT, (WPARAM)DlgKeygenFont, MAKELPARAM(TRUE,0));
 			SendDlgItemMessage(dlg, IDOK, WM_SETFONT, (WPARAM)DlgKeygenFont, MAKELPARAM(TRUE,0));
@@ -3244,6 +3291,11 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 		case IDOK: // key generate button pressed
 			{
 			int bits;
+			cbarg_t cbarg;
+
+			cbarg.cnt = 0;
+			cbarg.type = key_type;
+			cbarg.dlg = dlg;
 
 			// passphrase edit box disabled(default)
 			EnableWindow(GetDlgItem(dlg, IDC_KEY_EDIT), FALSE);
@@ -3263,7 +3315,7 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 				return TRUE;
 			}
 
-			if (generate_ssh_key(key_type, bits)) {
+			if (generate_ssh_key(key_type, bits, keygen_progress, &cbarg)) {
 				// passphrase edit box disabled(default)
 				EnableWindow(GetDlgItem(dlg, IDC_KEY_EDIT), TRUE);
 				EnableWindow(GetDlgItem(dlg, IDC_CONFIRM_EDIT), TRUE);
