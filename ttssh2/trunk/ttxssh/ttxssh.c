@@ -3316,6 +3316,17 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 			}
 
 			if (generate_ssh_key(key_type, bits, keygen_progress, &cbarg)) {
+				MSG msg;
+				int c = 0;
+				// 鍵の計算中に発生したイベント（ボタン連打など）をフラッシュする。
+				while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+					TranslateMessage(&msg);
+					DispatchMessage(&msg);
+					c++;
+					if (c >= 100)
+						break;
+				}
+
 				// passphrase edit box disabled(default)
 				EnableWindow(GetDlgItem(dlg, IDC_KEY_EDIT), TRUE);
 				EnableWindow(GetDlgItem(dlg, IDC_CONFIRM_EDIT), TRUE);
