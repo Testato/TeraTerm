@@ -1158,7 +1158,7 @@ SYNOPSIS:
 
 <h2><a name="ttssh">TTSSH</a></h2>
 
-<h3><a name="ttssh_2.50">2008.12.30 (Ver 2.50 not-released)</a></h3>
+<h3><a name="ttssh_2.50">2009.1.9 (Ver 2.50 not-released)</a></h3>
 <ul class="history">
   <li>Changes
     <ul>
@@ -1170,10 +1170,12 @@ SYNOPSIS:
       <li>added the `user@host' format in the host name of "New Connection" dialog and the command line option.</li>
       <li>added a keyboard shortcut(&H) on SSH SCP menu.</li>
       <li>added a SSH key bits editbox on SSH KeyGenerator dialog.</li>
+      <li>added the progress status while a SSH key is generating.</li>
     </ul></li>
   <li>Bug fixes
     <ul>
       <li>When a user does the SCP action twice, TeraTerm will be shut down after receiving SSH2_MSG_CHANNEL_FAILURE.</li>
+      <li>Windows events while generating a SSH key on the SSH KeyGenerator dialog are discarded.</li>
     </ul></li>
   <li>Misc
     <ul>
