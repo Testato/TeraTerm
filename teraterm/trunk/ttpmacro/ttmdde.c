@@ -83,220 +83,249 @@ enum regex_type RegexActionType;
 // ring buffer
 void Put1Byte(BYTE b)
 {
-  RingBuf[RBufPtr] = b;
-  RBufPtr++;
-  if (RBufPtr>=RingBufSize) RBufPtr = RBufPtr-RingBufSize;
-  if (RBufCount>=RingBufSize)
-  {
-    RBufCount = RingBufSize;
-    RBufStart = RBufPtr;
-  }
-  else
-    RBufCount++;
+	RingBuf[RBufPtr] = b;
+	RBufPtr++;
+	if (RBufPtr>=RingBufSize) {
+		RBufPtr = RBufPtr-RingBufSize;
+	}
+	if (RBufCount>=RingBufSize) {
+		RBufCount = RingBufSize;
+		RBufStart = RBufPtr;
+	}
+	else {
+		RBufCount++;
+	}
 }
 
 BOOL Read1Byte(LPBYTE b)
 {
-  if (RBufCount<=0)
-    return FALSE;
+	if (RBufCount<=0) {
+		return FALSE;
+	}
 
-  *b = RingBuf[RBufStart];
-  RBufStart++;
-  if (RBufStart>=RingBufSize)
-    RBufStart = RBufStart-RingBufSize;
-  RBufCount--;
-  if (QuoteFlag)
-  {
-    *b= *b-1;
-    QuoteFlag = FALSE;
-  }
-  else 
-    QuoteFlag = (*b==0x01);
+	*b = RingBuf[RBufStart];
+	RBufStart++;
+	if (RBufStart>=RingBufSize) {
+		RBufStart = RBufStart-RingBufSize;
+	}
+	RBufCount--;
+	if (QuoteFlag) {
+		*b= *b-1;
+		QuoteFlag = FALSE;
+	}
+	else {
+		QuoteFlag = (*b==0x01);
+	}
 
-  return (! QuoteFlag);
+	return (! QuoteFlag);
 }
 
 HDDEDATA AcceptData(HDDEDATA ItemHSz, HDDEDATA Data)
 {
-  HDDEDATA DH;
-  PCHAR DPtr;
-  DWORD DSize;
-  int i;
+	HDDEDATA DH;
+	PCHAR DPtr;
+	DWORD DSize;
+	int i;
 
-  if (DdeCmpStringHandles((HSZ)ItemHSz, Item) != 0) return 0;
+	if (DdeCmpStringHandles((HSZ)ItemHSz, Item) != 0) {
+		return 0;
+	}
 
-  DH = Data;
-  if (DH==0)
-    DH = DdeClientTransaction(NULL,0,ConvH,Item,CF_OEMTEXT,XTYP_REQUEST,1000,NULL);
+	DH = Data;
+	if (DH==0) {
+		DH = DdeClientTransaction(NULL,0,ConvH,Item,CF_OEMTEXT,XTYP_REQUEST,1000,NULL);
+	}
 
-  if (DH==0) return (HDDEDATA)DDE_FACK;
-  DPtr = DdeAccessData(DH,&DSize);
-  if (DPtr==NULL) return (HDDEDATA)DDE_FACK;
-  DSize = strlen(DPtr);
-  for (i=0; i<(signed)DSize; i++)
-    Put1Byte((BYTE)DPtr[i]);
-  DdeUnaccessData(DH);
-  DdeFreeDataHandle(DH);
-  SyncSent = FALSE;
+	if (DH==0) {
+		return (HDDEDATA)DDE_FACK;
+	}
+	DPtr = DdeAccessData(DH,&DSize);
+	if (DPtr==NULL) {
+		return (HDDEDATA)DDE_FACK;
+	}
+	DSize = strlen(DPtr);
+	for (i=0; i<(signed)DSize; i++) {
+		Put1Byte((BYTE)DPtr[i]);
+	}
+	DdeUnaccessData(DH);
+	DdeFreeDataHandle(DH);
+	SyncSent = FALSE;
 
-  return (HDDEDATA)DDE_FACK;
+	return (HDDEDATA)DDE_FACK;
 }
 
 // CallBack Procedure for DDEML
 HDDEDATA CALLBACK DdeCallbackProc(UINT CallType, UINT Fmt, HCONV Conv,
   HSZ hsz1, HSZ hsz2, HDDEDATA Data, DWORD Data1, DWORD Data2)
 {
-  if (Inst==0) return 0;
-  switch (CallType) {
-    case XTYP_REGISTER: break;
-    case XTYP_UNREGISTER: break;
-    case XTYP_XACT_COMPLETE: break;
-    case XTYP_ADVDATA:
-      return (AcceptData((HDDEDATA)hsz2,Data));
-    case XTYP_DISCONNECT:
-      ConvH = 0;
-      Linked = FALSE;
-      PostMessage(HMainWin,WM_USER_DDEEND,0,0);
-      break;
-  }
-  return 0;
+	if (Inst==0) {
+		return 0;
+	}
+	switch (CallType) {
+		case XTYP_REGISTER:
+			break;
+		case XTYP_UNREGISTER:
+			break;
+		case XTYP_XACT_COMPLETE:
+			break;
+		case XTYP_ADVDATA:
+			return (AcceptData((HDDEDATA)hsz2,Data));
+		case XTYP_DISCONNECT:
+			ConvH = 0;
+			Linked = FALSE;
+			PostMessage(HMainWin,WM_USER_DDEEND,0,0);
+			break;
+	}
+	return 0;
 }
 
 void Byte2HexStr(BYTE b, LPSTR HexStr)
 {
-  if (b<0xa0)
-    HexStr[0] = 0x30 + (b >> 4);
-  else
-    HexStr[0] = 0x37 + (b >> 4);
-  if ((b & 0x0f) < 0x0a)
-    HexStr[1] = 0x30 + (b & 0x0f);
-  else
-    HexStr[1] = 0x37 + (b & 0x0f);
-  HexStr[2] = 0;
+	if (b<0xa0) {
+		HexStr[0] = 0x30 + (b >> 4);
+	}
+	else {
+		HexStr[0] = 0x37 + (b >> 4);
+	}
+	if ((b & 0x0f) < 0x0a) {
+		HexStr[1] = 0x30 + (b & 0x0f);
+	}
+	else {
+		HexStr[1] = 0x37 + (b & 0x0f);
+	}
+	HexStr[2] = 0;
 }
 
 void Word2HexStr(WORD w, LPSTR HexStr)
 {
-  Byte2HexStr(HIBYTE(w),HexStr);
-  Byte2HexStr(LOBYTE(w),&HexStr[2]);
+	Byte2HexStr(HIBYTE(w),HexStr);
+	Byte2HexStr(LOBYTE(w),&HexStr[2]);
 }
 
 BOOL InitDDE(HWND HWin)
 {
-  int i;
-  WORD w;
-  char Cmd[10];
+	int i;
+	WORD w;
+	char Cmd[10];
 
-  HMainWin = HWin;
-  Linked = FALSE;
-  SyncMode = FALSE;
-  OutLen = 0;
-  RBufStart = 0;
-  RBufPtr = 0;
-  RBufCount = 0;
-  QuoteFlag = FALSE;
-  for (i = 0 ; i<=9 ; i++)
-  {
-    PWaitStr[i] = NULL;
-    WaitStrLen[i] = 0;
-    WaitCount[i] = 0;
-  }
+	HMainWin = HWin;
+	Linked = FALSE;
+	SyncMode = FALSE;
+	OutLen = 0;
+	RBufStart = 0;
+	RBufPtr = 0;
+	RBufCount = 0;
+	QuoteFlag = FALSE;
+	for (i = 0 ; i<=9 ; i++) {
+		PWaitStr[i] = NULL;
+		WaitStrLen[i] = 0;
+		WaitCount[i] = 0;
+	}
 
-  if (DdeInitialize(&Inst, (PFNCALLBACK)DdeCallbackProc,
-	APPCMD_CLIENTONLY |
-	CBF_SKIP_REGISTRATIONS |
-	CBF_SKIP_UNREGISTRATIONS,0)
-      != DMLERR_NO_ERROR) return FALSE;
+	if (DdeInitialize(&Inst, (PFNCALLBACK)DdeCallbackProc,
+	                  APPCMD_CLIENTONLY |
+	                  CBF_SKIP_REGISTRATIONS |
+	                  CBF_SKIP_UNREGISTRATIONS,0)
+	    != DMLERR_NO_ERROR) {
+		return FALSE;
+	}
 
-  Service= DdeCreateStringHandle(Inst, ServiceName, CP_WINANSI);
-  Topic  = DdeCreateStringHandle(Inst, TopicName, CP_WINANSI);
-  Item	 = DdeCreateStringHandle(Inst, ItemName, CP_WINANSI);
-  Item2  = DdeCreateStringHandle(Inst, ItemName2, CP_WINANSI);
-  if ((Service==0) || (Topic==0) ||
-      (Item==0) || (Item2==0)) return FALSE;
+	Service= DdeCreateStringHandle(Inst, ServiceName, CP_WINANSI);
+	Topic  = DdeCreateStringHandle(Inst, TopicName, CP_WINANSI);
+	Item   = DdeCreateStringHandle(Inst, ItemName, CP_WINANSI);
+	Item2  = DdeCreateStringHandle(Inst, ItemName2, CP_WINANSI);
+	if ((Service==0) || (Topic==0) ||
+	    (Item==0) || (Item2==0)) {
+		return FALSE;
+	}
 
-  ConvH = DdeConnect(Inst, Service, Topic, NULL);
-  if (ConvH == 0) return FALSE;
-  Linked = TRUE;
+	ConvH = DdeConnect(Inst, Service, Topic, NULL);
+	if (ConvH == 0) {
+		return FALSE;
+	}
+	Linked = TRUE;
 
-  Cmd[0] = CmdSetHWnd;
-  w = HIWORD(HWin);
-  Word2HexStr(w,&(Cmd[1]));
-  w = LOWORD(HWin);
-  Word2HexStr(w,&(Cmd[5]));
+	Cmd[0] = CmdSetHWnd;
+	w = HIWORD(HWin);
+	Word2HexStr(w,&(Cmd[1]));
+	w = LOWORD(HWin);
+	Word2HexStr(w,&(Cmd[5]));
 
-  DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,
-    CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
+	DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,
+	                     CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
 
-  DdeClientTransaction(NULL,0,ConvH,Item,
-    CF_OEMTEXT,XTYP_ADVSTART,1000,NULL);
+	DdeClientTransaction(NULL,0,ConvH,Item,
+	                     CF_OEMTEXT,XTYP_ADVSTART,1000,NULL);
 
-  return TRUE;
+	return TRUE;
 }
 
 void EndDDE()
 {
-  DWORD Temp;
+	DWORD Temp;
 
-  Linked = FALSE;
-  SyncMode = FALSE;
+	Linked = FALSE;
+	SyncMode = FALSE;
 
-  ConvH = 0;
-  TopicName[0] = 0;
+	ConvH = 0;
+	TopicName[0] = 0;
 
-  Temp = Inst;
-  if (Inst != 0)
-  {
-    Inst = 0;
-    if (Service != 0)
-      DdeFreeStringHandle(Temp, Service);
-    Service = 0;
-    if (Topic != 0)
-      DdeFreeStringHandle(Temp, Topic);
-    Topic = 0;
-    if (Item != 0)
-      DdeFreeStringHandle(Temp, Item);
-    Item = 0;
-    if (Item2 != 0)
-      DdeFreeStringHandle(Temp, Item2);
-    Item2 = 0;
+	Temp = Inst;
+	if (Inst != 0) {
+		Inst = 0;
+		if (Service != 0) {
+			DdeFreeStringHandle(Temp, Service);
+		}
+		Service = 0;
+		if (Topic != 0) {
+			DdeFreeStringHandle(Temp, Topic);
+		}
+		Topic = 0;
+		if (Item != 0) {
+			DdeFreeStringHandle(Temp, Item);
+		}
+		Item = 0;
+		if (Item2 != 0) {
+			DdeFreeStringHandle(Temp, Item2);
+		}
+		Item2 = 0;
 
-    DdeUninitialize(Temp);  // Ignore the return value
-  }
+		DdeUninitialize(Temp);  // Ignore the return value
+	}
 }
 
 void DDEOut1Byte(BYTE B)
 {
-  if (((B==0x00) || (B==0x01)) &&
-      (OutLen < OutBufSize-2))
-  {
-// Character encoding
-//   to support NUL character sending
+	if (((B==0x00) || (B==0x01)) &&
+	    (OutLen < OutBufSize-2)) {
+	// Character encoding
+	//   to support NUL character sending
+	//
+	//  [char to be sent] --> [encoded character]
+	//        00          -->     01 01
+	//        01          -->     01 02
 //
-//  [char to be sent] --> [encoded character]
-//	   00	      -->     01 01
-//	   01	      -->     01 02
-//
-    OutBuf[OutLen] = 0x01;
-    OutBuf[OutLen+1] = B+1;
-    OutLen = OutLen + 2;
-  }
-  else if (OutLen < OutBufSize-1)
-  {
-    OutBuf[OutLen] = B;
-    OutLen++;
-  }
+		OutBuf[OutLen] = 0x01;
+		OutBuf[OutLen+1] = B+1;
+		OutLen = OutLen + 2;
+	}
+	else if (OutLen < OutBufSize-1)
+	{
+		OutBuf[OutLen] = B;
+		OutLen++;
+	}
 }
 
 void DDEOut(PCHAR B)
 {
-  int i;
+	int i;
 
-  i = strlen(B);
-  if (OutLen+i > OutBufSize-1)
-    i = OutBufSize-1 - OutLen;
-  memcpy(&(OutBuf[OutLen]),B,i);
-  OutLen = OutLen + i;
+	i = strlen(B);
+	if (OutLen+i > OutBufSize-1) {
+		i = OutBufSize-1 - OutLen;
+	}
+	memcpy(&(OutBuf[OutLen]),B,i);
+	OutLen = OutLen + i;
 }
 
 void DDESend()
@@ -310,8 +339,7 @@ void DDESend()
 
 	for (i = 0 ; i < retry_count ; i++) {
 		// サーバ(Tera Term)へコマンド列を送る。成功すると非0が返る。
-		if ((hd = DdeClientTransaction(OutBuf,OutLen+1,ConvH,Item,CF_OEMTEXT,XTYP_POKE,1000,NULL))
-			!= 0) {
+		if ((hd = DdeClientTransaction(OutBuf,OutLen+1,ConvH,Item,CF_OEMTEXT,XTYP_POKE,1000,NULL)) != 0) {
 			OutLen = 0;  // バッファを空にする
 
 			//if (i > 0) MessageBox(NULL, "retry success", "DDESend()", MB_OK);
@@ -336,103 +364,113 @@ void DDESend()
 
 void ClearRecvLnBuff()
 {
-  RecvLnPtr = 0;
-  RecvLnLast = 0;
+	RecvLnPtr = 0;
+	RecvLnLast = 0;
 }
 
 void PutRecvLnBuff(BYTE b)
 {
-  if (RecvLnLast==0x0a)
-    ClearRecvLnBuff();
-  if (RecvLnPtr < sizeof(RecvLnBuff)-1)
-    RecvLnBuff[RecvLnPtr++] = b;
-  RecvLnLast = b;
+	if (RecvLnLast==0x0a) {
+		ClearRecvLnBuff();
+	}
+	if (RecvLnPtr < sizeof(RecvLnBuff)-1) {
+		RecvLnBuff[RecvLnPtr++] = b;
+	}
+	RecvLnLast = b;
 }
 
 PCHAR GetRecvLnBuff()
 {
-  if ((RecvLnPtr>0) &&
-      RecvLnBuff[RecvLnPtr-1]==0x0a)
-  {
-    RecvLnPtr--;
-    if ((RecvLnPtr>0) &&
-	RecvLnBuff[RecvLnPtr-1]==0x0d)
-      RecvLnPtr--;
-  }
-  RecvLnBuff[RecvLnPtr] = 0;
-  ClearRecvLnBuff();
-  return RecvLnBuff;
+	if ((RecvLnPtr>0) &&
+	    RecvLnBuff[RecvLnPtr-1]==0x0a) {
+		RecvLnPtr--;
+		if ((RecvLnPtr>0) &&
+		    RecvLnBuff[RecvLnPtr-1]==0x0d) {
+			RecvLnPtr--;
+		}
+	}
+	RecvLnBuff[RecvLnPtr] = 0;
+	ClearRecvLnBuff();
+	return RecvLnBuff;
 }
 
 void FlushRecv()
 {
-  ClearRecvLnBuff();
-  RBufStart = 0;
-  RBufPtr = 0;
-  RBufCount = 0;
+	ClearRecvLnBuff();
+	RBufStart = 0;
+	RBufPtr = 0;
+	RBufCount = 0;
 }
 
 void ClearWait()
 {
-  int i;
+	int i;
 
-  for (i = 0 ; i <= 9 ; i++)
-  {
-    if (PWaitStr[i]!=NULL)
-      free(PWaitStr[i]);
-    PWaitStr[i] = NULL;
-    WaitStrLen[i] = 0;
-    WaitCount[i] = 0;
-  }
+	for (i = 0 ; i <= 9 ; i++) {
+		if (PWaitStr[i]!=NULL) {
+			free(PWaitStr[i]);
+		}
+		PWaitStr[i] = NULL;
+		WaitStrLen[i] = 0;
+		WaitCount[i] = 0;
+	}
 
-  RegexActionType = REGEX_NONE; // regex disabled
+	RegexActionType = REGEX_NONE; // regex disabled
 }
 
 void SetWait(int Index, PCHAR Str)
 {
-  int len;
-  len = strlen(Str);
-  if (PWaitStr[Index-1]!=NULL)
-    free(PWaitStr[Index-1]);
-  PWaitStr[Index-1] = malloc(len+1);
-  strncpy_s(PWaitStr[Index-1],len+1,Str,_TRUNCATE);
-  WaitStrLen[Index-1] = len;
-  WaitCount[Index-1] = 0;
+	int len;
+	len = strlen(Str);
+	if (PWaitStr[Index-1]!=NULL) {
+		free(PWaitStr[Index-1]);
+	}
+	PWaitStr[Index-1] = malloc(len+1);
+	strncpy_s(PWaitStr[Index-1],len+1,Str,_TRUNCATE);
+	WaitStrLen[Index-1] = len;
+	WaitCount[Index-1] = 0;
 }
 
 int CmpWait(int Index, PCHAR Str)
 {
-  if (PWaitStr[Index-1]!=NULL)
-    return strcmp(PWaitStr[Index-1],Str);
-  else
-    return 1;
+	if (PWaitStr[Index-1]!=NULL) {
+		return strcmp(PWaitStr[Index-1],Str);
+	}
+	return 1;
 }
 
 void SetWait2(PCHAR Str, int Len, int Pos)
 {
-  strncpy_s(Wait2SubStr, sizeof(Wait2SubStr),Str, _TRUNCATE);
-  Wait2SubLen = strlen(Wait2SubStr);
+	strncpy_s(Wait2SubStr, sizeof(Wait2SubStr),Str, _TRUNCATE);
+	Wait2SubLen = strlen(Wait2SubStr);
 
-  if (Len<1)
-    Wait2Len = 0;
-  else if (Len>MaxStrLen-1)
-    Wait2Len = MaxStrLen-1;
-  else
-    Wait2Len = Len;
+	if (Len<1) {
+		Wait2Len = 0;
+	}
+	else if (Len>MaxStrLen-1) {
+		Wait2Len = MaxStrLen-1;
+	}
+	else {
+		Wait2Len = Len;
+	}
 
-  if (Wait2Len<Wait2SubLen)
-    Wait2Len = Wait2SubLen;
+	if (Wait2Len<Wait2SubLen) {
+		Wait2Len = Wait2SubLen;
+	}
 
-  if (Pos<1)
-    Wait2SubPos = 1;
-  else if (Pos>Wait2Len-Wait2SubLen+1)
-    Wait2SubPos = Wait2Len-Wait2SubLen+1;
-  else
-    Wait2SubPos = Pos;
+	if (Pos<1) {
+		Wait2SubPos = 1;
+	}
+	else if (Pos>Wait2Len-Wait2SubLen+1) {
+		Wait2SubPos = Wait2Len-Wait2SubLen+1;
+	}
+	else {
+		Wait2SubPos = Pos;
+	}
 
-  Wait2Count = 0;
-  Wait2Str[0] = 0;
-  Wait2Found = (Wait2SubStr[0]==0);
+	Wait2Count = 0;
+	Wait2Str[0] = 0;
+	Wait2Found = (Wait2SubStr[0]==0);
 }
 
 
@@ -582,20 +620,21 @@ int Wait()
 		PutRecvLnBuff(b);
 
 		if (RegexActionType == REGEX_NONE) { // 正規表現なしの場合は1バイトずつ検索する(wait command)
-			for (i = 9 ; i >= 0 ; i--)
-			{
+			for (i = 9 ; i >= 0 ; i--) {
 				Str = PWaitStr[i];
-				if (Str!=NULL)
-				{
-					if ((BYTE)Str[WaitCount[i]]==b)
+				if (Str!=NULL) {
+					if ((BYTE)Str[WaitCount[i]]==b) {
 						WaitCount[i]++;
+					}
 					else if (WaitCount[i]>0) {
 						WaitCount[i] = 0;
-						if ((BYTE)Str[0]==b)
+						if ((BYTE)Str[0]==b) {
 							WaitCount[i] = 1;
+						}
 					}
-					if (WaitCount[i]==WaitStrLen[i])
+					if (WaitCount[i]==WaitStrLen[i]) {
 						Found = i+1;
+					}
 				}
 			}
 		}
@@ -617,201 +656,229 @@ int Wait()
 
 BOOL Wait2()
 {
-  BYTE b;
+	BYTE b;
 
-  while (! (Wait2Found && (Wait2Count==Wait2Len))
-	 && Read1Byte(&b))
-  {
-    if (Wait2Count>=Wait2Len)
-    {
-      memmove(Wait2Str,&(Wait2Str[1]),Wait2Len-1);
-      Wait2Str[Wait2Len-1] = b;
-      Wait2Count = Wait2Len;
-    }
-    else {
-      Wait2Str[Wait2Count] = b;
-      Wait2Count++;
-    }
-    Wait2Str[Wait2Count] = 0;
-    if ((! Wait2Found) &&
-	(Wait2Count>=Wait2SubPos+Wait2SubLen-1))
-      Wait2Found =
-	(strncmp(&(Wait2Str[Wait2SubPos-1]),
-		 Wait2SubStr,Wait2SubLen)==0);
-  }
-  SendSync();
+	while (! (Wait2Found && (Wait2Count==Wait2Len)) && Read1Byte(&b)) {
+		if (Wait2Count>=Wait2Len) {
+			memmove(Wait2Str,&(Wait2Str[1]),Wait2Len-1);
+			Wait2Str[Wait2Len-1] = b;
+			Wait2Count = Wait2Len;
+		}
+		else {
+			Wait2Str[Wait2Count] = b;
+			Wait2Count++;
+		}
+		Wait2Str[Wait2Count] = 0;
+		if ((! Wait2Found) && (Wait2Count>=Wait2SubPos+Wait2SubLen-1)) {
+			Wait2Found = (strncmp(&(Wait2Str[Wait2SubPos-1]), Wait2SubStr,Wait2SubLen)==0);
+		}
+	}
+	SendSync();
 
-  return (Wait2Found && (Wait2Count==Wait2Len));
+	return (Wait2Found && (Wait2Count==Wait2Len));
 }
 
 void SetFile(PCHAR FN)
 {
-  char Cmd[256];
+	char Cmd[256];
 
 #if 1
-  _snprintf_s(Cmd, sizeof(Cmd), _TRUNCATE, "%c%s", CmdSetFile, FN);
+	_snprintf_s(Cmd, sizeof(Cmd), _TRUNCATE, "%c%s", CmdSetFile, FN);
 #else
-  Cmd[0] = CmdSetFile;
-  strcpy(&(Cmd[1]),FN);
+	Cmd[0] = CmdSetFile;
+	strcpy(&(Cmd[1]),FN);
 #endif
-  DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
+	DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
 }
 
 // add (2008.1.3 yutaka)
 void SetSecondFile(PCHAR FN)
 {
-  char Cmd[256];
+	char Cmd[256];
 
 #if 1
-  memset(Cmd, 0, sizeof(Cmd));
-  if (FN[0] != '\0') 
-	_snprintf_s(Cmd, sizeof(Cmd), _TRUNCATE, "%c%s", CmdSetSecondFile, FN);
-  else
-	  Cmd[0] = CmdSetSecondFile;
+	memset(Cmd, 0, sizeof(Cmd));
+	if (FN[0] != '\0') {
+		_snprintf_s(Cmd, sizeof(Cmd), _TRUNCATE, "%c%s", CmdSetSecondFile, FN);
+	}
+	else {
+		Cmd[0] = CmdSetSecondFile;
+	}
 #else
-  Cmd[0] = CmdSetFile;
-  strcpy(&(Cmd[1]),FN);
+	Cmd[0] = CmdSetFile;
+	strcpy(&(Cmd[1]),FN);
 #endif
-  DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
+	DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
 }
 
 void SetBinary(int BinFlag)
 {
-  char Cmd[3];
+	char Cmd[3];
 
-  Cmd[0] = CmdSetBinary;
-  Cmd[1] = 0x30 + (BinFlag & 1);
-  Cmd[2] = 0;
-  DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
+	Cmd[0] = CmdSetBinary;
+	Cmd[1] = 0x30 + (BinFlag & 1);
+	Cmd[2] = 0;
+	DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
 }
 
 void SetAppend(int AppendFlag)
 {
-  char Cmd[18];
+	char Cmd[18];
 
-  Cmd[0] = CmdSetAppend;
-  Cmd[1] = 0x30 + (AppendFlag & 1);
-  Cmd[2] = 0x30;
-  Cmd[3] = 0x30;
-  Cmd[4] = 0x30;
-  Cmd[5] = 0x30;
-  Cmd[6] = 0x30;
-  Cmd[7] = 0x30;
-  Cmd[8] = 0x30;
-  Cmd[9] = 0x30;
-  Cmd[10] = 0x30;
-  Cmd[11] = 0x30;
-  Cmd[12] = 0x30;
-  Cmd[13] = 0x30 + ((AppendFlag & 0x1000) != 0);
-  Cmd[14] = 0x30 + ((AppendFlag & 0x2000) != 0);
-  Cmd[15] = 0x30 + ((AppendFlag & 0x4000) != 0);
-  Cmd[16] = 0x30;
-  Cmd[17] = 0;
-  DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
+	Cmd[0]  = CmdSetAppend;
+	Cmd[1]  = 0x30 + (AppendFlag & 1);
+	Cmd[2]  = 0x30;
+	Cmd[3]  = 0x30;
+	Cmd[4]  = 0x30;
+	Cmd[5]  = 0x30;
+	Cmd[6]  = 0x30;
+	Cmd[7]  = 0x30;
+	Cmd[8]  = 0x30;
+	Cmd[9]  = 0x30;
+	Cmd[10] = 0x30;
+	Cmd[11] = 0x30;
+	Cmd[12] = 0x30;
+	Cmd[13] = 0x30 + ((AppendFlag & 0x1000) != 0);
+	Cmd[14] = 0x30 + ((AppendFlag & 0x2000) != 0);
+	Cmd[15] = 0x30 + ((AppendFlag & 0x4000) != 0);
+	Cmd[16] = 0x30;
+	Cmd[17] = 0;
+	DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
 }
 
 void SetXOption(int XOption)
 {
-  char Cmd[3];
+	char Cmd[3];
 
-  if ((XOption<1) || (XOption>3)) XOption = 1;
-  Cmd[0] = CmdSetXmodemOpt;
-  Cmd[1] = 0x30 + XOption;
-  Cmd[2] = 0;
-  DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
+	if ((XOption<1) || (XOption>3)) {
+		XOption = 1;
+	}
+	Cmd[0] = CmdSetXmodemOpt;
+	Cmd[1] = 0x30 + XOption;
+	Cmd[2] = 0;
+	DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
 }
 
 void SendSync()
 {
-  char Cmd[10];
-  int i;
+	char Cmd[10];
+	int i;
 
-  if (! Linked) return;
-  if (! SyncMode) return;
-  if (SyncSent) return;
-  if (RBufCount>=RCountLimit) return;
+	if (! Linked) {
+		return;
+	}
+	if (! SyncMode) {
+		return;
+	}
+	if (SyncSent) {
+		return;
+	}
+	if (RBufCount>=RCountLimit) {
+		return;
+	}
 
-  // notify free buffer space to Tera Term
-  i = RingBufSize - RBufCount;
-  if (i<1) i = 1;
-  if (i>RingBufSize) i = RingBufSize;
-  SyncSent = TRUE;
+	// notify free buffer space to Tera Term
+	i = RingBufSize - RBufCount;
+	if (i<1) {
+		i = 1;
+	}
+	if (i>RingBufSize) {
+		i = RingBufSize;
+	}
+	SyncSent = TRUE;
 
-  _snprintf_s(Cmd,sizeof(Cmd),_TRUNCATE,"%c%u",CmdSetSync,i);
-  DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
+	_snprintf_s(Cmd,sizeof(Cmd),_TRUNCATE,"%c%u",CmdSetSync,i);
+	DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
 }
 
 void SetSync(BOOL OnFlag)
 {
-  char Cmd[10];
-  int i;
+	char Cmd[10];
+	int i;
 
-  if (! Linked) return;
-  if (SyncMode==OnFlag) return;
-  SyncMode = OnFlag;
+	if (! Linked) {
+		return;
+	}
+	if (SyncMode==OnFlag) {
+		return;
+	}
+	SyncMode = OnFlag;
 
-  if (OnFlag) { // sync mode on
-    // notify free buffer space to Tera Term
-    i = RingBufSize - RBufCount;
-    if (i<1) i = 1;
-    if (i>RingBufSize) i = RingBufSize;
-    SyncSent = TRUE;
-  }
-  else // sync mode off
-    i = 0;
+	if (OnFlag) { // sync mode on
+		// notify free buffer space to Tera Term
+		i = RingBufSize - RBufCount;
+		if (i<1) {
+			i = 1;
+		}
+		if (i>RingBufSize) {
+			i = RingBufSize;
+		}
+		SyncSent = TRUE;
+	}
+	else { // sync mode off
+		i = 0;
+	}
 
-  _snprintf_s(Cmd,sizeof(Cmd),_TRUNCATE,"%c%u",CmdSetSync,i);
-  DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
+	_snprintf_s(Cmd,sizeof(Cmd),_TRUNCATE,"%c%u",CmdSetSync,i);
+	DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
 }
 
 WORD SendCmnd(char OpId, int WaitFlag)
 /* WaitFlag  should be 0 or IdTTLWaitCmndEnd or IdTTLWaitCmndResult. */
 {
-  char Cmd[2];
+	char Cmd[2];
 
-  if (! Linked)
-    return ErrLinkFirst;
+	if (! Linked) {
+		return ErrLinkFirst;
+	}
 
-  if (WaitFlag!=0) TTLStatus = WaitFlag;
-  Cmd[0] = OpId;
-  Cmd[1] = 0;
-  if (DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,5000,NULL)==0)
-    TTLStatus = IdTTLRun;
+	if (WaitFlag!=0) {
+		TTLStatus = WaitFlag;
+	}
+	Cmd[0] = OpId;
+	Cmd[1] = 0;
+	if (DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,5000,NULL)==0) {
+		TTLStatus = IdTTLRun;
+	}
 
-  return 0;
+	return 0;
 }
 
 WORD GetTTParam(char OpId, PCHAR Param, int destlen)
 {
-  HDDEDATA Data;
-  PCHAR DataPtr;
+	HDDEDATA Data;
+	PCHAR DataPtr;
 
-  if (! Linked)
-    return ErrLinkFirst;
+	if (! Linked) {
+		return ErrLinkFirst;
+	}
 
-  SendCmnd(OpId,0);
-  Data = DdeClientTransaction(NULL,0,ConvH,Item2,CF_OEMTEXT,XTYP_REQUEST,5000,NULL);
-  if (Data==0) return 0;
-  DataPtr = (PCHAR)DdeAccessData(Data,NULL);
-  if (DataPtr!=NULL)
-  {
-    strncpy_s(Param,destlen,DataPtr,_TRUNCATE);
-    DdeUnaccessData(Data);
-  }
-  DdeFreeDataHandle(Data);
+	SendCmnd(OpId,0);
+	Data = DdeClientTransaction(NULL,0,ConvH,Item2,CF_OEMTEXT,XTYP_REQUEST,5000,NULL);
+	if (Data==0) {
+		return 0;
+	}
+	DataPtr = (PCHAR)DdeAccessData(Data,NULL);
+	if (DataPtr!=NULL) {
+		strncpy_s(Param,destlen,DataPtr,_TRUNCATE);
+		DdeUnaccessData(Data);
+	}
+	DdeFreeDataHandle(Data);
 
-  return 0;
+	return 0;
 }
 
 // add 'callmenu' (2007.11.18 maya)
 WORD CallMenu(int MenuId)
 {
-  char Cmd[10];
+	char Cmd[10];
 
-  if (! Linked) ErrLinkFirst;
+	if (! Linked) {
+		ErrLinkFirst;
+	}
 
-  _snprintf_s(Cmd,sizeof(Cmd),_TRUNCATE,"%c%u",CmdCallMenu,MenuId);
-  DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
+	_snprintf_s(Cmd,sizeof(Cmd),_TRUNCATE,"%c%u",CmdCallMenu,MenuId);
+	DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,1000,NULL);
 
-  return 0;
+	return 0;
 }
