@@ -330,18 +330,18 @@ void FixLogOption()
 }
 
 extern "C" {
-void LogStart()
+BOOL LogStart()
 {
 	LONG Option;
 	char *logdir;
 
-	if ((FileLog) || (BinLog)) return;
+	if ((FileLog) || (BinLog)) return FALSE;
 
-	if (! LoadTTFILE()) return;
+	if (! LoadTTFILE()) return FALSE;
 	if (! NewFileVar(&LogVar))
 	{
 		FreeTTFILE();
-		return;
+		return FALSE;
 	}
 	LogVar->OpId = OpLog;
 
@@ -384,7 +384,7 @@ void LogStart()
 		{
 			FreeFileVar(&LogVar);
 			FreeTTFILE();
-			return;
+			return FALSE;
 		}
 		ts.TransBin = LOWORD(Option);
 		ts.Append = HIWORD(Option);
@@ -437,7 +437,7 @@ void LogStart()
 		if (! CreateBinBuf())
 		{
 			FileTransEnd(OpLog);
-			return;
+			return FALSE;
 		}
 	}
 	else {
@@ -446,7 +446,7 @@ void LogStart()
 		if (! CreateLogBuf())
 		{
 			FileTransEnd(OpLog);
-			return;
+			return FALSE;
 		}
 	}
 	cv.LStart = cv.LogPtr;
@@ -486,12 +486,16 @@ void LogStart()
 		}
 
 		FileTransEnd(OpLog);
-		return;
+		return FALSE;
 	}
 	LogVar->ByteCount = 0;
 
-	if (! OpenFTDlg(LogVar))
+	if (! OpenFTDlg(LogVar)) {
 		FileTransEnd(OpLog);
+		return FALSE;
+	}
+
+	return TRUE;
 }
 }
 

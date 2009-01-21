@@ -43,7 +43,7 @@ void ShowFTDlg(WORD OpId);
 BOOL NewFileVar(PFileVar *FV);
 void FreeFileVar(PFileVar *FV);
 
-void LogStart();
+BOOL LogStart();
 void Log1Byte(BYTE b);
 void LogToFile();
 BOOL CreateLogBuf();
