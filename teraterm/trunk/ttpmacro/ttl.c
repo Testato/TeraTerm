@@ -2032,6 +2032,7 @@ WORD TTLLogOpen()
 	WORD Err;
 	int BinFlag, AppendFlag;
 	int TmpFlag, TmpOpt;
+	char ret[2];
 
 	Err = 0;
 	GetStrVal(Str,&Err);
@@ -2068,7 +2069,18 @@ WORD TTLLogOpen()
 	SetFile(Str);
 	SetBinary(BinFlag);
 	SetAppend(AppendFlag);
-	return SendCmnd(CmdLogOpen,0);
+
+	memset(ret, 0, sizeof(ret));
+	Err = GetTTParam(CmdLogOpen,ret,sizeof(ret));
+	if (Err==0) {
+		if (ret[0] == 0x31) {
+			SetResult(0);
+		}
+		else {
+			SetResult(1);
+		}
+	}
+	return Err;
 }
 
 WORD TTLLoop()

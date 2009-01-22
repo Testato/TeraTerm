@@ -492,13 +492,20 @@ HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 	case CmdLogOpen:
 		if ((LogVar==NULL) && NewFileVar(&LogVar))
 		{
+			BOOL ret;
 			LogVar->DirLen = 0;
 			LogVar->NoMsg = TRUE;
 			strncpy_s(LogVar->FullName, sizeof(LogVar->FullName),ParamFileName, _TRUNCATE);
 			ParseStrftimeFileName(LogVar->FullName, sizeof(LogVar->FullName));
 			ts.TransBin = ParamBinaryFlag;
 			ts.Append = ParamAppendFlag;
-			LogStart();
+			ret = LogStart();
+			if (ret) {
+				strncpy_s(ParamFileName, sizeof(ParamFileName),"1", _TRUNCATE);
+			}
+			else {
+				strncpy_s(ParamFileName, sizeof(ParamFileName),"0", _TRUNCATE);
+			}
 		}
 		else
 			return DDE_FNOTPROCESSED;
