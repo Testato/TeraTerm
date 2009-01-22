@@ -2656,16 +2656,18 @@ static BOOL CALLBACK TTXSetupDlg(HWND dlg, UINT msg, WPARAM wParam,
 typedef struct {
 	RSA *rsa;
 	DSA *dsa;
+	enum hostkey_type type;
 } ssh_private_key_t;
 
-static ssh_private_key_t private_key = {NULL, NULL};
+static ssh_private_key_t private_key = {NULL, NULL, KEY_UNSPEC};
 
 typedef struct {
 	RSA *rsa;
 	DSA *dsa;
+	enum hostkey_type type;
 } ssh_public_key_t;
 
-static ssh_public_key_t public_key = {NULL, NULL};;
+static ssh_public_key_t public_key = {NULL, NULL, KEY_UNSPEC};
 
 static void free_ssh_key(void)
 {
@@ -2679,6 +2681,9 @@ static void free_ssh_key(void)
 	private_key.rsa = NULL;
 	RSA_free(public_key.rsa);
 	public_key.rsa = NULL;
+
+	private_key.type = KEY_UNSPEC;
+	public_key.type = KEY_UNSPEC;
 }
 
 static BOOL generate_ssh_key(enum hostkey_type type, int bits, void (*cbfunc)(int, int, void *), void *cbarg)
@@ -2745,6 +2750,9 @@ static BOOL generate_ssh_key(enum hostkey_type type, int bits, void (*cbfunc)(in
 	} else {
 		goto error;
 	}
+
+	private_key.type = type;
+	public_key.type = type;
 
 	return TRUE;
 
@@ -3378,13 +3386,13 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 			ZeroMemory(&ofn, sizeof(ofn));
 			ofn.lStructSize = sizeof(ofn);
 			ofn.hwndOwner = dlg;
-			if (key_type == KEY_RSA1) {
+			if (public_key.type == KEY_RSA1) {
 				UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_RSA1_FILTER", pvar,
 				                  "SSH1 RSA key(identity.pub)\\0identity.pub\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
 				strncpy_s(filename, sizeof(filename), "identity.pub", _TRUNCATE);
-			} else if (key_type == KEY_RSA) {
+			} else if (public_key.type == KEY_RSA) {
 				UTIL_get_lang_msg("FILEDLG_SAVE_PUBLICKEY_RSA_FILTER", pvar,
 				                  "SSH2 RSA key(id_rsa.pub)\\0id_rsa.pub\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
@@ -3420,7 +3428,7 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 				break;
 			}
 
-			if (key_type == KEY_RSA1) { // SSH1 RSA
+			if (public_key.type == KEY_RSA1) { // SSH1 RSA
 				RSA *rsa = public_key.rsa;
 				int bits;
 				char *buf;
@@ -3450,7 +3458,7 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 				if (b == NULL)
 					goto public_error;
 
-				if (key_type == KEY_DSA) { // DSA
+				if (public_key.type == KEY_DSA) { // DSA
 					keyname = "ssh-dss";
 					buffer_put_string(b, keyname, strlen(keyname));
 					buffer_put_bignum2(b, dsa->p);
@@ -3530,13 +3538,13 @@ public_error:
 			ZeroMemory(&ofn, sizeof(ofn));
 			ofn.lStructSize = sizeof(ofn);
 			ofn.hwndOwner = dlg;
-			if (key_type == KEY_RSA1) {
+			if (private_key.type == KEY_RSA1) {
 				UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_RSA1_FILTER", pvar,
 				                  "SSH1 RSA key(identity)\\0identity\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
 				ofn.lpstrFilter = uimsg;
 				strncpy_s(filename, sizeof(filename), "identity", _TRUNCATE);
-			} else if (key_type == KEY_RSA) {
+			} else if (private_key.type == KEY_RSA) {
 				UTIL_get_lang_msg("FILEDLG_SAVE_PRIVATEKEY_RSA_FILTER", pvar,
 				                  "SSH2 RSA key(id_rsa)\\0id_rsa\\0All Files(*.*)\\0*.*\\0\\0");
 				memcpy(uimsg, pvar->ts->UIMsg, sizeof(uimsg));
@@ -3560,7 +3568,7 @@ public_error:
 			}
 
 			// saving private key file
-			if (key_type == KEY_RSA1) { // SSH1 RSA
+			if (private_key.type == KEY_RSA1) { // SSH1 RSA
 				int cipher_num;
 				buffer_t *b, *enc;
 				unsigned int rnd;
