@@ -39,15 +39,13 @@ logopen &lt;filename&gt; &lt;binary flag&gt; &lt;append flag&gt; [&lt;plain text
 </p>
 
 <p>
-&lt;plain text flag&gt; が 0 以外の場合、ASCII 非表示文字をログに書き込まない。
-</p>
-
-<p>
-&lt;timestamp flag&gt; が 0 以外の場合、ログの行頭に時刻を追加する。
-</p>
-
-<p>
+&lt;plain text flag&gt; が 0 以外の場合、ASCII 非表示文字をログに書き込まない。<br>
+&lt;timestamp flag&gt; が 0 以外の場合、ログの行頭に時刻を追加する。<br>
 &lt;hide dialog flag&gt; が 0 以外の場合、ログ転送のダイアログを表示しない。
+</p>
+
+<p>
+ログファイルを開けた場合、result に 0 が格納される。開けなかった場合は 1 が格納される。<em>(バージョン 4.62 以降)</em>
 </p>
 
 <h2>例</h2>

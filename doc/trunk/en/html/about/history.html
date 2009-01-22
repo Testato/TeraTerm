@@ -28,7 +28,6 @@
 <ul class="history">
   <li>Changes
     <ul>
-      <li>added `<a href="../macro/command/sprintf2.html">sprintf2</a>' macro command. </li>
       <li>The mouse event tracking can be disabled while a user pushes the Control key.
         <ul>
           <li>added DisableMouseTrackingByCtrl in teraterm.ini file. The default is OFF.</li>
@@ -41,6 +40,8 @@
         </ul></li>
       <li>Disabled the "Eterm lookfeel" checkbox on the Additional settings dialog. If a user enables the feature, directly edit the teraterm.ini file.</li>
       <li>added a workaround that the font can not rightly configure on Windows 7 beta(build7000).</li>
+      <li>added `<a href="../macro/command/sprintf2.html">sprintf2</a>' macro command. </li>
+      <!--li>マクロコマンド "<a href="../macro/command/logopen.html">logopen</a>" で、result に結果を格納するようにした。</li-->
     </ul></li>
   <li>Bug fixes
     <ul>
@@ -1171,11 +1172,12 @@ SYNOPSIS:
       <li>added a keyboard shortcut(&H) on SSH SCP menu.</li>
       <li>added a SSH key bits editbox on SSH KeyGenerator dialog.</li>
       <li>added the progress status while a SSH key is generating.</li>
+      <li>Windows events while generating a SSH key on the SSH KeyGenerator dialog are discarded.</li>
     </ul></li>
   <li>Bug fixes
     <ul>
       <li>When a user does the SCP action twice, TeraTerm will be shut down after receiving SSH2_MSG_CHANNEL_FAILURE.</li>
-      <li>Windows events while generating a SSH key on the SSH KeyGenerator dialog are discarded.</li>
+      <!--li>生成した鍵の保存時にアプリケーションが落ちることがある問題を修正した。</li-->
     </ul></li>
   <li>Misc
     <ul>

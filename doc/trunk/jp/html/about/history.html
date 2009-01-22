@@ -28,7 +28,6 @@
 <ul class="history">
   <li>変更
     <ul>
-      <li>マクロコマンド "<a href="../macro/command/sprintf2.html">sprintf2</a>" を新規追加した。</li>
       <li>Controlキーを押している間はマウスイベント通知を無効にできるようにした。
         <ul>
           <li>teraterm.ini に DisableMouseTrackingByCtrl エントリを追加した。デフォルトはoff。</li>
@@ -41,6 +40,8 @@
         </ul></li>
       <li>Additional settingsから"Eterm lookfeel"をチェックできないようにした。Eterm lookfeel機能を有効にするには、teraterm.ini を直接編集すること。</li>
       <li>Windows7β(build7000)において、フォント設定ができない現象への暫定処置を加えた。</li>
+      <li>マクロコマンド "<a href="../macro/command/sprintf2.html">sprintf2</a>" を新規追加した。</li>
+      <li>マクロコマンド "<a href="../macro/command/logopen.html">logopen</a>" で、result に結果を格納するようにした。</li>
     </ul></li>
   <li>バグ修正
     <ul>
@@ -1174,11 +1175,12 @@
       <li>SSH SCPメニューにショートカットキー(&H)を追加した。</li>
       <li>SSH鍵生成ダイアログで、鍵のビット数を指定できるようにした。</li>
       <li>SSH鍵生成ダイアログで、鍵生成中に進捗状況を表示するようにした。</li>
+      <li>SSH鍵生成ダイアログで、鍵生成中に発生したイベントを破棄するようにした。</li>
     </ul></li>
   <li>バグ修正
     <ul>
       <li>SCPを連続して行うと、SSH2_MSG_CHANNEL_FAILURE 受信時にアプリケーションが終了してしまう問題へ対処した。</li>
-      <li>SSH鍵生成ダイアログで、鍵生成中に発生したイベントを破棄するようにした。</li>
+      <li>生成した鍵の保存時にアプリケーションが落ちることがある問題を修正した。</li>
     </ul></li>
   <li>その他
     <ul>
