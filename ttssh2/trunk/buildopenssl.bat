@@ -1,5 +1,7 @@
 cd openssl
 
+if exist "Makefile.bak" goto build
+
 perl Configure VC-WIN32
 
 copy ms\do_ms.bat ms\do_ms.bat.orig
@@ -18,5 +20,8 @@ perl -e "open(IN,'ms\ntd.mak');while(<IN>){s/\/MD/\/MT/;print $_;}close(IN);" > 
 copy /Y ms\ntd.mak.tmp ms\ntd.mak
 del ms\ntd.mak.tmp
 
+:build
 nmake -f ms\nt.mak
 nmake -f ms\ntd.mak
+
+cd ..
