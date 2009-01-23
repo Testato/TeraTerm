@@ -25,8 +25,14 @@ recvln
 
 <p>
 Retrieves a line of received characters from the host and stores it in the system variable "inputstr".<br>
-This command waits until a line is received or the communication between Tera Term and the host is terminated or the timeout occurs.<br>
-If the system variable "timeout" is greater than zero, the timeout occurs when &lt;timeout&gt; seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.<br>
+This command waits until a line is received or the communication between Tera Term and the host is terminated or the timeout occurs.
+</p>
+
+<p>
+If the system variable "timeout" or "mtimeout" is greater than zero, the timeout occurs when &lt;timeout&gt;.&lt;mtimeout&gt; seconds have passed. If the timeout is less than or equal to zero, the timeout never occurs.
+</p>
+
+<p>
 If the line is received successfully, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
 </p>
 

@@ -25,12 +25,14 @@ mwaitn &lt;received byte count&gt;
 <h2>Remarks</h2>
 
 <p>
-Pauses until the given number of bytes are received from the host, or until the timeout occurs.<br>
+Pauses until the given number of bytes are received from the host, or until the timeout occurs.
+</p>
 
-If the system variable "timeout" is greater than zero, the timeout occurs when &lt;timeout&gt; seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.<br>
+<p>
+If the system variable "timeout" or "mtimeout" is greater than zero, the timeout occurs when &lt;timeout&gt;.&lt;mtimeout&gt; seconds have passed. If the timeout is less than or equal to zero, the timeout never occurs.
+</p>
 
-When a user uses the mwaitn command, the measure of waiting time is millisecond.<br><br>
-
+<p>
 These commands return one of the following values in the system variable "result":
 </p>
 

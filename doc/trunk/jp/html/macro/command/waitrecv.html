@@ -19,7 +19,6 @@
 
 <pre class="macro-syntax">
 waitrecv &lt;sub-string&gt; &lt;len&gt; &lt;pos&gt;
-mwaitrecv &lt;sub-string&gt; &lt;len&gt; &lt;pos&gt;
 </pre>
 
 <h2>解説</h2>
@@ -38,8 +37,7 @@ mwaitrecv &lt;sub-string&gt; &lt;len&gt; &lt;pos&gt;
 </p>
 
 <p>
-システム変数 timeout が 0 より大きい場合、その値の秒数の時間がすぎるとタイムアウトが起きる。timeout の値が 0 以下の場合は、タイムアウトはない。<br>
-mwaitrecv コマンドは、ミリ秒単位でのウェイトとなる。
+システム変数 timeout か mtimeout が 0 より大きい場合、&lt;timeout&gt;.&lt;mtimeout&gt; 秒の時間がすぎるとタイムアウトが発生する。タイムアウトの値が 0 以下の場合は、タイムアウトは発生しない。
 </p>
 
 <p>

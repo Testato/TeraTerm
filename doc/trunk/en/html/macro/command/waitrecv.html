@@ -19,7 +19,6 @@ Waits string.
 
 <pre class="macro-syntax">
 waitrecv &lt;sub-string&gt; &lt;len&gt; &lt;pos&gt;
-mwaitrecv &lt;sub-string&gt; &lt;len&gt; &lt;pos&gt;
 </pre>
 
 <h2>Remarks</h2>
@@ -39,8 +38,7 @@ If such a string is received, it is saved in the system variable "inputstr".
 </p>
 
 <p>
-If the system variable "timeout" is greater than zero, the timeout occurs when &lt;timeout&gt; seconds have passed. If the "timeout" is less than or equal to zero, the timeout never occurs.<br>
-When a user uses the mwaitrecv command, the measure of waiting time is millisecond.
+If the system variable "timeout" or "mtimeout" is greater than zero, the timeout occurs when &lt;timeout&gt;.&lt;mtimeout&gt; seconds have passed. If the timeout is less than or equal to zero, the timeout never occurs.
 </p>
 
 <p>

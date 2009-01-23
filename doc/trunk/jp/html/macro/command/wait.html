@@ -19,16 +19,19 @@
 
 <pre class="macro-syntax">
 wait &lt;string1&gt; [&lt;string2&gt; ...]
-mwait &lt;string1&gt; [&lt;string2&gt; ...]
 </pre>
 
 <h2>解説</h2>
 
 <p>
-文字列 &lt;string1&gt; [&lt;string2&gt; ...]  のうち一つがホストから送られてくるか、タイムアウトが発生するまで MACRO を停止させる。文字列は最大 10 個まで指定できる。<br>
-システム変数 timeout が 0 より大きい場合、&lt;timeout&gt; 秒の時間がすぎるとタイムアウトが発生する。 timeout の値が 0 以下の場合は、タイムアウトは発生しない。<br>
-mwait コマンドは、ミリ秒単位でのウェイトとなる。<br><br>
+文字列 &lt;string1&gt; [&lt;string2&gt; ...]  のうち一つがホストから送られてくるか、タイムアウトが発生するまで MACRO を停止させる。文字列は最大 10 個まで指定できる。
+</p>
 
+<p>
+システム変数 timeout か mtimeout が 0 より大きい場合、&lt;timeout&gt;.&lt;mtimeout&gt; 秒の時間がすぎるとタイムアウトが発生する。タイムアウトの値が 0 以下の場合は、タイムアウトは発生しない。
+</p>
+
+<p>
 これらのコマンドの実行結果はシステム変数 result に格納される。変数 result の値の意味は以下のとおり。
 </p>
 

@@ -27,7 +27,7 @@
 名前              型        初期値  システム変数を使用するコマンド
 <HR>
 groupmatchstr1    文字列    ""      waitregex
-groupmatchstr2
+:
 groupmatchstr9
 
 inputstr          文字列    ""      recvln, waitln, waitrecv, passwordbox, inputbox
@@ -37,13 +37,16 @@ matchstr          文字列    ""      waitregex
 param2            文字列    *1      *1
 :
 param9            文字列    *1      *1
+
 result            整数      0       bplussend, bplusrecv, clipb2var, kmtfinish, kmtget,
                                     kmtrecv, kmtsend, ifdefined, quickvanrecv, quickvansend,
                                     recvln, var2clipb, wait, waitevent, waitln, waitrecv,
                                     waitregex, xmodemrecv, xmodemsend, zmodemrecv, zmodemsend,
                                     str2int, strcompare, strlen, strscan, filereadln,
                                     filesearch, filestrseek, yesnobox
+
 timeout           整数      0       recvln, wait, waitevent, waitln, waitrecv, waitregex
+mtimeout          整数      0       recvln, wait, waitevent, waitln, waitrecv, waitregex
 </pre>
 
 <p>

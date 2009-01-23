@@ -19,7 +19,6 @@ Waits an event.
 
 <pre class="macro-syntax">
 waitevent &lt;events&gt;
-mwaitevent &lt;events&gt;
 </pre>
 
 <h2>Remarks</h2>
@@ -52,8 +51,7 @@ Pauses until one of the events specified by &lt;events&gt; occurs. &lt;events&gt
 </table>
 
 <p>
-The timeout event occurs when &lt;timeout&gt; seconds have passed. &lt;timeout&gt; is the value of the system variable "timeout". If &lt;timeout&gt; is less than or equal to zero, this event never occurs.<br>
-When a user uses the mwaitevent command, the measure of waiting time is millisecond.
+The timeout event occurs when &lt;timeout&gt;.&lt;mtimeout&gt; seconds have passed. &lt;timeout&gt; is the value of the system variable "timeout". &lt;mtimeout&gt; is the value of the system variable "mtimeout". If timeout is less than or equal to zero, this event never occurs.
 </p>
 
 <p>
