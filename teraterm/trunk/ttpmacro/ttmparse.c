@@ -19,7 +19,7 @@ WORD LineLen;
 
 // 変数の個数を128->256、ラベルの個数を256->512へ拡張した。(2006.2.1 yutaka)
 // 変数の個数を、InitTTL で作っているシステム変数の分だけ追加した。(2006.7.26 maya)
-#define MaxNumOfIntVar (LONG)(128*2+2)
+#define MaxNumOfIntVar (LONG)(128*2+3)
 #define MaxNumOfStrVar (LONG)(128*2+19)
 #define MaxNumOfLabVar (LONG)256*2
 

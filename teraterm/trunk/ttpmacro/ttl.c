@@ -75,6 +75,7 @@ BOOL InitTTL(HWND HWin)
 	// System variables
 	NewIntVar("result",0);
 	NewIntVar("timeout",0);
+	NewIntVar("mtimeout",0);    // ミリ秒単位のタイムアウト用 (2009.1.23 maya)
 	NewStrVar("inputstr","");
 	NewStrVar("matchstr","");   // for 'waitregex' command (2005.10.7 yutaka)
 	NewStrVar("groupmatchstr1","");   // for 'waitregex' command (2005.10.15 yutaka)
@@ -2301,13 +2302,16 @@ WORD TTLRecvLn()
 	SetResult(1);
 	TTLStatus = IdTTLWaitNL;
 	TimeOut = 0;
-	if (CheckVar("timeout",&ValType,&VarId) &&
-	    (ValType==TypInteger))
-		TimeOut = CopyIntVal(VarId);
+	if (CheckVar("timeout",&ValType,&VarId) && (ValType==TypInteger)) {
+		TimeOut = CopyIntVal(VarId) * 1000;
+	}
+	if (CheckVar("mtimeout",&ValType,&VarId) && (ValType==TypInteger)) {
+		TimeOut += CopyIntVal(VarId);
+	}
 
 	if (TimeOut>0)
 	{
-		TimeLimit = (DWORD)(TimeOut*1000);
+		TimeLimit = (DWORD)TimeOut;
 		TimeStart = GetTickCount();
 		SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
 	}
@@ -3179,13 +3183,16 @@ WORD TTLWait(BOOL Ln)
 		else
 			TTLStatus = IdTTLWait;
 		TimeOut = 0;
-		if (CheckVar("timeout",&ValType,&VarId) &&
-		    (ValType==TypInteger))
-			TimeOut = CopyIntVal(VarId);
+		if (CheckVar("timeout",&ValType,&VarId) && (ValType==TypInteger)) {
+			TimeOut = CopyIntVal(VarId) * 1000;
+		}
+		if (CheckVar("mtimeout",&ValType,&VarId) && (ValType==TypInteger)) {
+			TimeOut += CopyIntVal(VarId);
+		}
 
 		if (TimeOut>0)
 		{
-			TimeLimit = (DWORD)(TimeOut*1000);
+			TimeLimit = (DWORD)TimeOut;
 			TimeStart = GetTickCount();
 			SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
 		}
@@ -3230,13 +3237,16 @@ WORD TTLWaitEvent()
 
 	WakeupCondition &= 15;
 	TimeOut = 0;
-	if (CheckVar("timeout",&ValType,&VarId) &&
-	    (ValType==TypInteger))
-		TimeOut = CopyIntVal(VarId);
+	if (CheckVar("timeout",&ValType,&VarId) && (ValType==TypInteger)) {
+		TimeOut = CopyIntVal(VarId) * 1000;
+	}
+	if (CheckVar("mtimeout",&ValType,&VarId) && (ValType==TypInteger)) {
+		TimeOut += CopyIntVal(VarId);
+	}
 
 	if (TimeOut>0)
 	{
-		TimeLimit = (DWORD)(TimeOut*1000);
+		TimeLimit = (DWORD)TimeOut;
 		TimeStart = GetTickCount();
 		SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
 	}
@@ -3266,12 +3276,16 @@ WORD TTLWaitRecv()
 
 	TTLStatus = IdTTLWait2;
 	TimeOut = 0;
-	if (CheckVar("timeout",&VarType,&VarId) &&
-	    (VarType==TypInteger))
-		TimeOut = CopyIntVal(VarId);
+	if (CheckVar("timeout",&VarType,&VarId) && (VarType==TypInteger)) {
+		TimeOut = CopyIntVal(VarId) * 1000;
+	}
+	if (CheckVar("mtimeout",&VarType,&VarId) && (VarType==TypInteger)) {
+		TimeOut += CopyIntVal(VarId);
+	}
+
 	if (TimeOut>0)
 	{
-		TimeLimit = (DWORD)(TimeOut*1000);
+		TimeLimit = (DWORD)TimeOut;
 		TimeStart = GetTickCount();
 		SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
 	}
