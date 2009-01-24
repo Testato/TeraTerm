@@ -3313,6 +3313,13 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 			EnableWindow(GetDlgItem(dlg, IDC_SAVE_PUBLIC_KEY), FALSE);
 			EnableWindow(GetDlgItem(dlg, IDC_SAVE_PRIBATE_KEY), FALSE);
 
+			EnableWindow(GetDlgItem(dlg, IDC_RSA1_TYPE), FALSE);
+			EnableWindow(GetDlgItem(dlg, IDC_RSA_TYPE), FALSE);
+			EnableWindow(GetDlgItem(dlg, IDC_DSA_TYPE), FALSE);
+			EnableWindow(GetDlgItem(dlg, IDC_KEYBITS), FALSE);
+			EnableWindow(GetDlgItem(dlg, IDOK), FALSE);
+			EnableWindow(GetDlgItem(dlg, IDCANCEL), FALSE);
+
 			bits = GetDlgItemInt(dlg, IDC_KEYBITS, NULL, FALSE);
 
 			if (bits < ((key_type==KEY_DSA)?SSH_DSA_MINIMUM_KEY_SIZE:SSH_RSA_MINIMUM_KEY_SIZE)) {
@@ -3342,6 +3349,13 @@ static BOOL CALLBACK TTXKeyGenerator(HWND dlg, UINT msg, WPARAM wParam,
 				// file saving dialog disabled(default)
 				EnableWindow(GetDlgItem(dlg, IDC_SAVE_PUBLIC_KEY), TRUE);
 				EnableWindow(GetDlgItem(dlg, IDC_SAVE_PRIBATE_KEY), TRUE);
+
+				EnableWindow(GetDlgItem(dlg, IDC_RSA1_TYPE), TRUE);
+				EnableWindow(GetDlgItem(dlg, IDC_RSA_TYPE), TRUE);
+				EnableWindow(GetDlgItem(dlg, IDC_DSA_TYPE), TRUE);
+				EnableWindow(GetDlgItem(dlg, IDC_KEYBITS), TRUE);
+				EnableWindow(GetDlgItem(dlg, IDOK), TRUE);
+				EnableWindow(GetDlgItem(dlg, IDCANCEL), TRUE);
 
 				// set focus to passphrase edit control (2007.1.27 maya)
 				SetFocus(GetDlgItem(dlg, IDC_KEY_EDIT));
