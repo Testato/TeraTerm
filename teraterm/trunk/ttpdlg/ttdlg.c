@@ -666,8 +666,7 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 				SetRB(Dialog,ts->EnableScrollBuff,IDC_WINSCROLL1,IDC_WINSCROLL1);
 				SetDlgItemInt(Dialog,IDC_WINSCROLL2,ts->ScrollBuffSize,FALSE);
 
-				// “ü—ÍÅ‘åŒ…”‚ð 5 ‚©‚ç 8 ‚ÖŠg’£ (2004.11.28 yutaka)
-				SendDlgItemMessage(Dialog, IDC_WINSCROLL2, EM_LIMITTEXT, 8, 0);
+				SendDlgItemMessage(Dialog, IDC_WINSCROLL2, EM_LIMITTEXT, 6, 0);
 
 				if ( ts->EnableScrollBuff==0 )
 					DisableDlgItem(Dialog,IDC_WINSCROLL2,IDC_WINSCROLL3);
