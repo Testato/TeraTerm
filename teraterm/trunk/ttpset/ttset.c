@@ -1234,6 +1234,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	// Disable TranslateWheelToCursor setting when Control-Key is pressed.
 	ts->DisableWheelToCursorByCtrl =
 		GetOnOff(Section, "DisableWheelToCursorByCtrl", FName, FALSE);
+
+	// Strict Key Mapping.
+	ts->StrictKeyMapping =
+		GetOnOff(Section, "StrictKeyMapping", FName, FALSE);
 }
 
 void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
@@ -2073,6 +2077,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// Disable TranslateWHeelToCursor when Control-Key is pressed.
 	WriteOnOff(Section, "DisableWheelToCursorByCtrl", FName,
 	           ts->DisableWheelToCursorByCtrl);
+
+	// Strict Key Mapping.
+	WriteOnOff(Section, "StrictKeyMapping", FName,
+	           ts->StrictKeyMapping);
 }
 
 #define VTEditor "VT editor keypad"

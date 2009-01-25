@@ -432,6 +432,7 @@ struct tttset {
 	SIZE PasteDialogSize;
 	WORD DisableMouseTrackingByCtrl;
 	WORD DisableWheelToCursorByCtrl;
+	WORD StrictKeyMapping;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -863,6 +864,7 @@ typedef TMap far *PMap;
  *   added tttset.DisableMouseTrackingByCtrl.
  *   added tttset.DisableWheelToCursorByCtrl.
  *   added tttset.VTReverseColor[].
+ *   added tttset.StrictKeyMapping.
  *
  * - At version 4.61, ttset_memfilemap was replaced with ttset_memfilemap_9.
  *   added TComVar.TitleRemote.
