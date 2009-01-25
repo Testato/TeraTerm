@@ -672,37 +672,37 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 				if ( ts->EnableScrollBuff==0 )
 					DisableDlgItem(Dialog,IDC_WINSCROLL2,IDC_WINSCROLL3);
 				for (i = 0 ; i <= 1 ; i++) {
-					ts->TmpColor[0][i*3]	 = GetRValue(ts->VTColor[i]);
+					ts->TmpColor[0][i*3]   = GetRValue(ts->VTColor[i]);
 					ts->TmpColor[0][i*3+1] = GetGValue(ts->VTColor[i]);
 					ts->TmpColor[0][i*3+2] = GetBValue(ts->VTColor[i]);
-					ts->TmpColor[1][i*3]	 = GetRValue(ts->VTBoldColor[i]);
+					ts->TmpColor[1][i*3]   = GetRValue(ts->VTBoldColor[i]);
 					ts->TmpColor[1][i*3+1] = GetGValue(ts->VTBoldColor[i]);
 					ts->TmpColor[1][i*3+2] = GetBValue(ts->VTBoldColor[i]);
-					ts->TmpColor[2][i*3]	 = GetRValue(ts->VTBlinkColor[i]);
+					ts->TmpColor[2][i*3]   = GetRValue(ts->VTBlinkColor[i]);
 					ts->TmpColor[2][i*3+1] = GetGValue(ts->VTBlinkColor[i]);
 					ts->TmpColor[2][i*3+2] = GetBValue(ts->VTBlinkColor[i]);
+					ts->TmpColor[3][i*3]   = GetRValue(ts->VTReverseColor[i]);
+					ts->TmpColor[3][i*3+1] = GetGValue(ts->VTReverseColor[i]);
+					ts->TmpColor[3][i*3+2] = GetBValue(ts->VTReverseColor[i]);
 					/* begin - ishizaki */
-					ts->TmpColor[3][i*3]	 = GetRValue(ts->URLColor[i]);
-					ts->TmpColor[3][i*3+1] = GetGValue(ts->URLColor[i]);
-					ts->TmpColor[3][i*3+2] = GetBValue(ts->URLColor[i]);
+					ts->TmpColor[4][i*3]   = GetRValue(ts->URLColor[i]);
+					ts->TmpColor[4][i*3+1] = GetGValue(ts->URLColor[i]);
+					ts->TmpColor[4][i*3+2] = GetBValue(ts->URLColor[i]);
 					/* end - ishizaki */
 				}
 				ShowDlgItem(Dialog,IDC_WINATTRTEXT,IDC_WINATTR);
 				get_lang_msg("DLG_TERM_NORMAL", uimsg, sizeof(uimsg), "Normal", UILanguageFile);
-				SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
-				                   0, (LPARAM)uimsg);
+				SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING, 0, (LPARAM)uimsg);
 				get_lang_msg("DLG_TERM_BOLD", uimsg, sizeof(uimsg), "Bold", UILanguageFile);
-				SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
-				                   0, (LPARAM)uimsg);
+				SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING, 0, (LPARAM)uimsg);
 				get_lang_msg("DLG_TERM_BLINK", uimsg, sizeof(uimsg), "Blink", UILanguageFile);
-				SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
-				                   0, (LPARAM)uimsg);
+				SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING, 0, (LPARAM)uimsg);
+				get_lang_msg("DLG_TERM_REVERSEATTR", uimsg, sizeof(uimsg), "Reverse", UILanguageFile);
+				SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING, 0, (LPARAM)uimsg);
 				/* begin - ishizaki */
-				SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING,
-				                   0, (LPARAM)"URL");
+				SendDlgItemMessage(Dialog, IDC_WINATTR, CB_ADDSTRING, 0, (LPARAM)"URL");
 				/* end - ishizaki */
-				SendDlgItemMessage(Dialog, IDC_WINATTR, CB_SETCURSEL,
-				                   0,0);
+				SendDlgItemMessage(Dialog, IDC_WINATTR, CB_SETCURSEL, 0,0);
 #ifdef USE_NORMAL_BGCOLOR
 				ShowDlgItem(Dialog,IDC_WINUSENORMALBG,IDC_WINUSENORMALBG);
 				SetRB(Dialog,ts->UseNormalBGColor,IDC_WINUSENORMALBG,IDC_WINUSENORMALBG);
@@ -780,15 +780,20 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 									RGB(ts->TmpColor[2][i*3],
 									    ts->TmpColor[2][i*3+1],
 									    ts->TmpColor[2][i*3+2]);
-								/* begin - ishizaki */
-								ts->URLColor[i] =
+								ts->VTReverseColor[i] =
 									RGB(ts->TmpColor[3][i*3],
 									    ts->TmpColor[3][i*3+1],
 									    ts->TmpColor[3][i*3+2]);
+								/* begin - ishizaki */
+								ts->URLColor[i] =
+									RGB(ts->TmpColor[4][i*3],
+									    ts->TmpColor[4][i*3+1],
+									    ts->TmpColor[4][i*3+2]);
 								/* end - ishizaki */
 								ts->VTColor[i] = GetNearestColor(DC,ts->VTColor[i]);
 								ts->VTBoldColor[i] = GetNearestColor(DC,ts->VTBoldColor[i]);
 								ts->VTBlinkColor[i] = GetNearestColor(DC,ts->VTBlinkColor[i]);
+								ts->VTReverseColor[i] = GetNearestColor(DC,ts->VTReverseColor[i]);
 								/* begin - ishizaki */
 								ts->URLColor[i] = GetNearestColor(DC,ts->URLColor[i]);
 								/* end - ishizaki */

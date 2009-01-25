@@ -1821,8 +1821,11 @@ void CSSetAttr()
       BuffUpdateScroll();
 
       ColorRef = ts.VTColor[0];
-      ts.VTColor[0] = ts.VTColor[1];
-      ts.VTColor[1] = ColorRef;
+      ts.VTColor[0] = ts.VTReverseColor[0];
+      ts.VTReverseColor[0] = ColorRef;
+      ColorRef = ts.VTColor[1];
+      ts.VTColor[1] = ts.VTReverseColor[1];
+      ts.VTReverseColor[1] = ColorRef;
 
       ColorRef = ts.VTBoldColor[0];
       ts.VTBoldColor[0] = ts.VTBoldColor[1];
@@ -1835,6 +1838,8 @@ void CSSetAttr()
       ColorRef = ts.URLColor[0];
       ts.URLColor[0] = ts.URLColor[1];
       ts.URLColor[1] = ColorRef;
+
+      ReverseColor = !ReverseColor;
 
 #ifdef ALPHABLEND_TYPE2
       BGInitialize();
@@ -1853,11 +1858,9 @@ void CSSetAttr()
 	  case 3:
 	    ChangeTerminalSize(132,NumOfLines-StatusLine);
 	    break;
-	  case 5:
-	    if (ReverseColor) return;
-	    ReverseColor = TRUE;
-	      /* Exchange text/back color */
-	    CSQExchangeColor();
+	  case 5: /* Reverse Video */
+	    if (!ReverseColor)
+	      CSQExchangeColor(); /* Exchange text/back color */
 	    break;
 	  case 6:
 	    if ((StatusLine>0) &&
@@ -1959,11 +1962,9 @@ void CSSetAttr()
 	  case 3:
 	    ChangeTerminalSize(80,NumOfLines-StatusLine);
 	    break;
-	  case 5:
-	    if (! ReverseColor) return;
-	    ReverseColor = FALSE;
-	    /* Exchange text/back color */
-	    CSQExchangeColor();
+	  case 5: /* Normal Video */
+	    if (ReverseColor)
+	      CSQExchangeColor(); /* Exchange text/back color */
 	    break;
 	  case 6:
 	    if ((StatusLine>0) &&

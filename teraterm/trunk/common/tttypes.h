@@ -51,6 +51,8 @@
   /* Color attribute bit masks */
 #define Attr2Fore         0x01
 #define Attr2Back         0x02
+#define AttrColorMask     (AttrBold | AttrBlink | AttrReverse)
+#define Attr2ColorMask    (Attr2Fore | Attr2Back)
 
 typedef struct {
 	BYTE Attr;
@@ -299,7 +301,7 @@ struct tttset {
 	HFONT SampleFont;
 	/* begin - ishizaki */
 	/* WORD TmpColor[3][6]; */
-	WORD TmpColor[4][6];
+	WORD TmpColor[5][6];
 	/* end - ishizaki */
 	/* Tera Term window setup variables */
 	char Title[TitleBuffSize];
@@ -320,6 +322,7 @@ struct tttset {
 	/* end   - ishizaki */
 	COLORREF VTBoldColor[2];
 	COLORREF VTBlinkColor[2];
+	COLORREF VTReverseColor[2];
 	WORD Beep;
 /*------ KeybSet --------*/
 	WORD BSKey;
@@ -859,6 +862,7 @@ typedef TMap far *PMap;
  * - At version 4.62, ttset_memfilemap was replaced with ttset_memfilemap_10.
  *   added tttset.DisableMouseTrackingByCtrl.
  *   added tttset.DisableWheelToCursorByCtrl.
+ *   added tttset.VTReverseColor[].
  *
  * - At version 4.61, ttset_memfilemap was replaced with ttset_memfilemap_9.
  *   added TComVar.TitleRemote.

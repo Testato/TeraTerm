@@ -462,6 +462,16 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		                          (BYTE) ts->TmpColor[0][i * 3 + 1],
 		                          (BYTE) ts->TmpColor[0][i * 3 + 2]);
 
+	/* VT Reverse Color */
+	GetPrivateProfileString(Section, "VTReverseColor", "255,255,255,0,0,0",
+	                        Temp, sizeof(Temp), FName);
+	for (i = 0; i <= 5; i++)
+		GetNthNum(Temp, i + 1, (int far *) &(ts->TmpColor[0][i]));
+	for (i = 0; i <= 1; i++)
+		ts->VTReverseColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
+		                          (BYTE) ts->TmpColor[0][i * 3 + 1],
+		                          (BYTE) ts->TmpColor[0][i * 3 + 2]);
+
 	/* begin - ishizaki */
 	ts->EnableClickableUrl =
 		GetOnOff(Section, "EnableClickableUrl", FName, FALSE);
@@ -1499,7 +1509,7 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	          ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
 	          ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
 
-	/* VT bold color */
+	/* VT Bold Color */
 	for (i = 0; i <= 1; i++) {
 		ts->TmpColor[0][i * 3] = GetRValue(ts->VTBoldColor[i]);
 		ts->TmpColor[0][i * 3 + 1] = GetGValue(ts->VTBoldColor[i]);
@@ -1509,11 +1519,21 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	          ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
 	          ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
 
-	/* VT blink color */
+	/* VT Blink Color */
 	for (i = 0; i <= 1; i++) {
 		ts->TmpColor[0][i * 3] = GetRValue(ts->VTBlinkColor[i]);
 		ts->TmpColor[0][i * 3 + 1] = GetGValue(ts->VTBlinkColor[i]);
 		ts->TmpColor[0][i * 3 + 2] = GetBValue(ts->VTBlinkColor[i]);
+	}
+	WriteInt6(Section, "VTBlinkColor", FName,
+	          ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
+	          ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
+
+	/* VT Reverse Color */
+	for (i = 0; i <= 1; i++) {
+		ts->TmpColor[0][i * 3] = GetRValue(ts->VTReverseColor[i]);
+		ts->TmpColor[0][i * 3 + 1] = GetGValue(ts->VTReverseColor[i]);
+		ts->TmpColor[0][i * 3 + 2] = GetBValue(ts->VTReverseColor[i]);
 	}
 	WriteInt6(Section, "VTBlinkColor", FName,
 	          ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],

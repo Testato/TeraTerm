@@ -110,6 +110,7 @@ char BGSPIPath[MAX_PATH];
 COLORREF BGVTColor[2];
 COLORREF BGVTBoldColor[2];
 COLORREF BGVTBlinkColor[2];
+COLORREF BGVTReverseColor[2];
 /* begin - ishizaki */
 COLORREF BGURLColor[2];
 /* end - ishizaki */
@@ -1053,6 +1054,9 @@ void BGReadTextColorConfig(char *file)
   BGVTBoldColor[0]  = BGGetColor("VTBoldFore" ,BGVTBoldColor[0],file);
   BGVTBoldColor[1]  = BGGetColor("VTBoldBack" ,BGVTBoldColor[1],file);
 
+  BGVTReverseColor[0]  = BGGetColor("VTReverseFore" ,BGVTReverseColor[0],file);
+  BGVTReverseColor[1]  = BGGetColor("VTReverseBack" ,BGVTReverseColor[1],file);
+
   /* begin - ishizaki */
   BGURLColor[0]     = BGGetColor("URLFore" ,BGURLColor[0],file);
   BGURLColor[1]     = BGGetColor("URLBack" ,BGURLColor[1],file);
@@ -1145,6 +1149,9 @@ void BGInitialize(void)
 
   BGVTBlinkColor[0] = ts.VTBlinkColor[0];
   BGVTBlinkColor[1] = ts.VTBlinkColor[1];
+
+  BGVTReverseColor[0] = ts.VTReverseColor[0];
+  BGVTReverseColor[1] = ts.VTReverseColor[1];
 
 #if 0
   /* begin - ishizaki */
@@ -2571,12 +2578,21 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
   if (Reverse != ((Attr.Attr & AttrReverse) != 0))
   {
 #ifdef ALPHABLEND_TYPE2
-//<!--by AKASI
     BGReverseText = TRUE;
-//-->
 #endif
-    SetTextColor(VTDC,BackColor);
-    SetBkColor(  VTDC,TextColor);
+    if ((Attr.Attr & AttrColorMask) == AttrReverse && (Attr.Attr2 & Attr2ColorMask) == 0) {
+#ifdef ALPHABLEND_TYPE2
+      SetTextColor(VTDC, BGVTReverseColor[0]);
+      SetBkColor(  VTDC, BGVTReverseColor[1]);
+#else
+      SetTextColor(VTDC, ts.VTReverseColor[0]);
+      SetBkColor(  VTDC, ts.VTReverseColor[1]);
+#endif
+    }
+    else {
+      SetTextColor(VTDC, BackColor);
+      SetBkColor(  VTDC, TextColor);
+    }
   }
   else {
 #ifdef ALPHABLEND_TYPE2
