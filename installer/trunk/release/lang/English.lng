@@ -326,6 +326,7 @@ DLG_WIN_ALWAYSBG=Always &use Normal text's BG
 DLG_WIN_NORMAL=Normal
 DLG_WIN_BOLD=Bold
 DLG_WIN_BLINK=Blink
+DLG_WIN_REVERSEATTR=Reverse
 
 DLG_WINLIST_TITLE=Tera Term: Window list
 DLG_WINLIST_LABEL=&Window:
