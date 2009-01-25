@@ -75,6 +75,9 @@ static int Wait2SubLen, Wait2SubPos;
 static TStrVal RecvLnBuff;
 static int RecvLnPtr = 0;
 static BYTE RecvLnLast = 0;
+// for "WaitN" command
+static int WaitNLen = 0;
+static BOOL RecvLnClear = TRUE;
 
 // regex action flag
 enum regex_type RegexActionType;
@@ -370,7 +373,7 @@ void ClearRecvLnBuff()
 
 void PutRecvLnBuff(BYTE b)
 {
-	if (RecvLnLast==0x0a) {
+	if (RecvLnLast==0x0a && RecvLnClear) {
 		ClearRecvLnBuff();
 	}
 	if (RecvLnPtr < sizeof(RecvLnBuff)-1) {
@@ -429,6 +432,23 @@ void SetWait(int Index, PCHAR Str)
 	strncpy_s(PWaitStr[Index-1],len+1,Str,_TRUNCATE);
 	WaitStrLen[Index-1] = len;
 	WaitCount[Index-1] = 0;
+}
+
+void SetRecvLnClear(BOOL v)
+{
+	RecvLnClear = v;
+}
+
+void ClearWaitN()
+{
+	WaitNLen = 0;
+	SetRecvLnClear(TRUE);
+}
+
+void SetWaitN(int Len)
+{
+	WaitNLen = Len;
+	SetRecvLnClear(FALSE);
 }
 
 int CmpWait(int Index, PCHAR Str)
@@ -676,6 +696,24 @@ BOOL Wait2()
 	SendSync();
 
 	return (Wait2Found && (Wait2Count==Wait2Len));
+}
+
+// add 'waitn'  (2009.1.26 maya)
+//   patch from p3g4asus
+BOOL WaitN()
+{
+	BYTE b;
+
+	while (RecvLnPtr < WaitNLen && Read1Byte(&b)) {
+		PutRecvLnBuff(b);
+	}
+	SendSync();
+
+	if (RecvLnPtr>=WaitNLen) {
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 void SetFile(PCHAR FN)

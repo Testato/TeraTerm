@@ -299,6 +299,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 		else if (_stricmp(Str,"wait")==0) *WordId = RsvWait;
 		else if (_stricmp(Str,"waitevent")==0) *WordId = RsvWaitEvent;
 		else if (_stricmp(Str,"waitln")==0) *WordId = RsvWaitLn;
+		else if (_stricmp(Str,"waitn")==0) *WordId = RsvWaitN;  // add 'waitn'  (2009.1.26 maya)
 		else if (_stricmp(Str,"waitrecv")==0) *WordId = RsvWaitRecv;
 		else if (_stricmp(Str,"while")==0) *WordId = RsvWhile;
 		break;

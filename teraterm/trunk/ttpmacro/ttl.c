@@ -3255,6 +3255,49 @@ WORD TTLWaitEvent()
 	return Err;
 }
 
+
+WORD TTLWaitN()
+{
+	WORD Err, ValType, VarId;
+	int TimeOut, WaitBytes;
+
+	ClearWaitN();
+
+	Err = 0;
+	GetIntVal(&WaitBytes,&Err);
+	if ((Err==0) && (GetFirstChar()!=0))
+		Err = ErrSyntax;
+	if (Err!=0) return Err;
+
+	SetWaitN(WaitBytes);
+
+	if (! Linked)
+		Err = ErrLinkFirst;
+	if (Err!=0) return Err;
+
+	TTLStatus = IdTTLWaitN;
+	TimeOut = 0;
+	if (CheckVar("timeout",&ValType,&VarId) && (ValType==TypInteger)) {
+		TimeOut = CopyIntVal(VarId) * 1000;
+	}
+	if (CheckVar("mtimeout",&ValType,&VarId) && (ValType==TypInteger)) {
+		TimeOut += CopyIntVal(VarId);
+	}
+
+	if (TimeOut>0)
+	{
+		TimeLimit = (DWORD)TimeOut;
+		TimeStart = GetTickCount();
+		SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
+	}
+	else {
+		ClearWaitN();
+	}
+
+	return Err;
+}
+
+
 WORD TTLWaitRecv()
 {
 	TStrVal Str;
@@ -3816,6 +3859,8 @@ int ExecCmnd()
 			Err = TTLWaitEvent(); break;
 		case RsvWaitLn:
 			Err = TTLWait(TRUE); break;
+		case RsvWaitN:
+			Err = TTLWaitN(); break;
 		case RsvWaitRecv:
 			Err = TTLWaitRecv(); break;
 		case RsvWhile:

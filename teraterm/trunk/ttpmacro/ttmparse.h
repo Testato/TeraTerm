@@ -15,6 +15,7 @@
 #define IdTTLWaitCmndResult 9
 #define IdTTLSleep          10
 #define IdTTLEnd            11
+#define IdTTLWaitN          12
 
 #define ErrCloseParent      1
 #define ErrCantCall         2
@@ -180,6 +181,7 @@
 #define RsvGetTTDir     140   // add 'getttdir'  (2008.9.20 maya)
 #define RsvGetHostname  141   // add 'gethostname'  (2008.12.15 maya)
 #define RsvSprintf2     142   // add 'sprintf2'  (2008.12.18 maya)
+#define RsvWaitN        143   // add 'waitn'  (2009.1.26 maya)
 
 #define RsvOperator     150
 #define RsvBNot         151

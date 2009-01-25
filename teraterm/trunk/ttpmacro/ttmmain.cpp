@@ -160,6 +160,22 @@ BOOL CCtrlWindow::OnIdle()
     else if (ComReady==0)
       SetTimer(IdTimeOutTimer,0, NULL);
   }
+  else if (TTLStatus==IdTTLWaitN)
+  {
+    if (WaitN())
+    {
+      KillTimer(IdTimeOutTimer);
+      TTLStatus = IdTTLRun;
+      LockVar();
+      SetResult(1);
+      SetInputStr(GetRecvLnBuff());
+      UnlockVar();
+      ClearWaitN();
+      return TRUE;
+    }
+    else if (ComReady==0)
+      SetTimer(IdTimeOutTimer,0, NULL);
+  }
 
   return FALSE;
 }
@@ -394,6 +410,21 @@ void CCtrlWindow::OnTimer(UINT nIDEvent)
       TTLStatus = IdTTLRun;
     }
   }
+  else if (TTLStatus == IdTTLWaitN)
+  {
+    if ((! Linked) || (ComReady==0) || TimeOut)
+    {
+      PCHAR p = GetRecvLnBuff();
+      SetInputStr(p);
+      if (strlen(p) > 0) {
+	SetResult(-1);
+      }
+      else {
+	SetResult(0);
+      }
+      TTLStatus = IdTTLRun;
+    }
+  }
   else if (TTLStatus==IdTTLPause)
   {
     if (TimeOut)
@@ -454,7 +485,8 @@ LONG CCtrlWindow::OnDdeComReady(UINT wParam, LONG lParam)
   if ((TTLStatus == IdTTLWait) ||
       (TTLStatus == IdTTLWaitLn) ||
       (TTLStatus == IdTTLWaitNL) ||
-      (TTLStatus == IdTTLWait2))
+      (TTLStatus == IdTTLWait2) ||
+      (TTLStatus == IdTTLWaitN))
   {
     if (ComReady==0)
       SetTimer(IdTimeOutTimer,0, NULL);
@@ -510,7 +542,8 @@ LONG CCtrlWindow::OnDdeEnd(UINT wParam, LONG lParam)
   else if ((TTLStatus == IdTTLWait) ||
 	   (TTLStatus == IdTTLWaitLn) ||
 	   (TTLStatus == IdTTLWaitNL) ||
-	   (TTLStatus == IdTTLWait2))
+	   (TTLStatus == IdTTLWait2) ||
+	   (TTLStatus == IdTTLWaitN))
     SetTimer(IdTimeOutTimer,0, NULL);
   else if (TTLStatus==IdTTLSleep)
   {
