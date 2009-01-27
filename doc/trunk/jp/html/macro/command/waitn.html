@@ -19,13 +19,12 @@
 
 <pre class="macro-syntax">
 waitn &lt;received byte count&gt;
-mwaitn &lt;received byte count&gt;
 </pre>
 
 <h2>解説</h2>
 
 <p>
-引数に指定したバイト数以上のデータが受信されるまで、待つ。
+引数に指定したバイト数以上のデータが受信されるまで、待つ。256 バイト以上を指定しても、255 バイトを待つ。
 </p>
 
 <p>
@@ -42,12 +41,16 @@ mwaitn &lt;received byte count&gt;
   <th>意味</th>
  </tr>
  <tr>
+  <td>-1</td>
+  <td>文字が来て inputstr に保存された。指定された文字数に達する前にタイムアウトが発生した。</td>
+ </tr>
+ <tr>
   <td>0</td>
-  <td>タイムアウト。どの文字列も来なかった。</td>
+  <td>1文字も来ずにタイムアウトが発生した。</td>
  </tr>
  <tr>
   <td>1</td>
-  <td>その他(TBD)</td>
+  <td>指定された数の文字が来て、 inputstr に保存された。</td>
  </tr>
 </table>
 
