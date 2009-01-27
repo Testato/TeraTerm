@@ -301,7 +301,7 @@ struct tttset {
 	HFONT SampleFont;
 	/* begin - ishizaki */
 	/* WORD TmpColor[3][6]; */
-	WORD TmpColor[5][6];
+	WORD TmpColor[12][6];
 	/* end - ishizaki */
 	/* Tera Term window setup variables */
 	char Title[TitleBuffSize];
@@ -320,9 +320,16 @@ struct tttset {
 	/* begin - ishizaki */
 	COLORREF URLColor[2];
 	/* end   - ishizaki */
-	COLORREF VTBoldColor[2];
-	COLORREF VTBlinkColor[2];
-	COLORREF VTReverseColor[2];
+	COLORREF VTBoldColor[2];       // SGR 1
+	COLORREF VTFaintColor[2];      // SGR 2
+	COLORREF VTItalicColor[2];     // SGR 3
+	COLORREF VTUnderlineColor[2];  // SGR 4
+	COLORREF VTBlinkColor[2];      // SGR 5
+	COLORREF VTRapidBlinkColor[2]; // SGR 6
+	COLORREF VTReverseColor[2];    // SGR 7
+	COLORREF VTInvisibleColor[2];  // SGR 8
+	COLORREF VTStrikeoutColor[2];  // SGR 9
+	COLORREF DummyColor[2];
 	WORD Beep;
 /*------ KeybSet --------*/
 	WORD BSKey;
@@ -863,7 +870,7 @@ typedef TMap far *PMap;
  * - At version 4.62, ttset_memfilemap was replaced with ttset_memfilemap_10.
  *   added tttset.DisableMouseTrackingByCtrl.
  *   added tttset.DisableWheelToCursorByCtrl.
- *   added tttset.VTReverseColor[].
+ *   added tttset.VTReverseColor[]. etc.
  *   added tttset.StrictKeyMapping.
  *
  * - At version 4.61, ttset_memfilemap was replaced with ttset_memfilemap_9.
