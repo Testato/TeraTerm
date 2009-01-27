@@ -3269,6 +3269,10 @@ WORD TTLWaitN()
 		Err = ErrSyntax;
 	if (Err!=0) return Err;
 
+	if (WaitBytes >= MaxStrLen) {
+		WaitBytes = MaxStrLen - 1;
+	}
+
 	SetWaitN(WaitBytes);
 
 	if (! Linked)
