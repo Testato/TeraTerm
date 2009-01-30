@@ -136,11 +136,11 @@ You can change the maximum scroll buffer size, which can be specified in the [Se
 
 <pre>
 MaxBuffSize=&lt;number of lines&gt;
-    (should be less than or equal to 100000)
+    (should be less than or equal to 500000)
 </pre>
 
 <p>
-Note: Tera Term consumes &lt;number of lines&gt; * &lt;terminal width&gt; * 2 bytes of memory for the scroll buffer.
+Note: Tera Term consumes &lt;scroll buffer size&gt; * &lt;terminal width&gt; * 5 bytes of memory for the scroll buffer.
 </p>
 
 <pre>
@@ -545,21 +545,6 @@ VTIcon=Default
 TEKIcon=Default
 </pre>
 
-
-<h1><a name="linebuf">Line buffer</a></h1>
-
-<p>
-If you configure 10000 lines over of Tera Term line buffer, you need to setup MaxBuffSize entry in the 'teraterm.ini' file. See example of this value below.
-</p>
-
-<pre>
-MaxBuffSize=500000
-</pre>
-
-<pre>
-Default:
-MaxBuffSize=10000
-</pre>
 
 </body>
 </html>

@@ -144,7 +144,7 @@ LanguageSelection=on
 
 <pre>
 MaxBuffSize=&lt;number of lines&gt;
-    (100000 以下)
+    (500000 以下)
 </pre>
 
 <p>
@@ -152,7 +152,7 @@ MaxBuffSize=&lt;number of lines&gt;
 </p>
 
 <p>
-注: Tera Term は &lt;最大行数&gt; * &lt;terminal width&gt; * 2 バイト分のメモリをスクロールバッファーのために使用します。
+注: Tera Term は &lt;スクロールバッファの行数&gt; * &lt;terminal width&gt; * 5 バイト分のメモリをスクロールバッファーのために使用します。
 </p>
 
 <pre>
@@ -560,22 +560,6 @@ VTIcon=VT_CLASSIC
 省略時:
 VTIcon=Default
 TEKIcon=Default
-</pre>
-
-
-<h1><a name="linebuf">ラインバッファ</a></h1>
-
-<p>
-ラインバッファを 10000 行を超える設定をしたい場合、MaxBuffSize エントリも合わせて設定をする必要があります。以下に例を示します。
-</p>
-
-<pre>
-MaxBuffSize=500000
-</pre>
-
-<pre>
-省略時:
-MaxBuffSize=10000
 </pre>
 
 </body>
