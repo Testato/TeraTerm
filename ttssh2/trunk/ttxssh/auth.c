@@ -239,15 +239,19 @@ static void init_auth_dlg(PTInstVar pvar, HWND dlg)
 		default_method = pvar->auth_state.failed_method;
 	}
 
-	set_auth_options_status(dlg,
-	                        auth_types_to_control_IDs[default_method]);
+	// ホスト確認ダイアログから抜けたとき=ウィンドウがアクティブになったとき
+	// に SetFocus が実行され、コマンドラインで渡された認証方式が上書きされて
+	// しまうので、自動ログイン有効時は SetFocus しない (2009.1.31 maya)
+	if (!pvar->ssh2_autologin) {
+		set_auth_options_status(dlg, auth_types_to_control_IDs[default_method]);
 
-	if (default_method == SSH_AUTH_TIS) {
-		/* we disabled the password control, so fix the focus */
-		SetFocus(GetDlgItem(dlg, IDC_SSHUSETIS));
-	}
-	else if (default_method == SSH_AUTH_PAGEANT) {
-		SetFocus(GetDlgItem(dlg, IDC_SSHUSEPAGEANT));
+		if (default_method == SSH_AUTH_TIS) {
+			/* we disabled the password control, so fix the focus */
+			SetFocus(GetDlgItem(dlg, IDC_SSHUSETIS));
+		}
+		else if (default_method == SSH_AUTH_PAGEANT) {
+			SetFocus(GetDlgItem(dlg, IDC_SSHUSEPAGEANT));
+		}
 	}
 
 	if (pvar->auth_state.user != NULL) {
