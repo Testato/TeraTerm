@@ -89,6 +89,7 @@ BOOL CCtrlWindow::OnIdle()
 			LockVar();
 			SetResult(ResultCode);
 			UnlockVar();
+			ClearWait();
 			return TRUE;
 		}
 		else if (ComReady==0) {
@@ -386,6 +387,7 @@ void CCtrlWindow::OnTimer(UINT nIDEvent)
 			if (TTLStatus==IdTTLWaitNL) {
 				SetInputStr(GetRecvLnBuff());
 			}
+			ClearWait();
 			TTLStatus = IdTTLRun;
 		}
 	}
