@@ -85,49 +85,55 @@ int IsUpdateMacroCommand(void)
 
 BOOL LoadMacroFile(PCHAR FileName, int IBuff)
 {
-  int F;
-  int dummy_read = 0;
+	int F;
+	int dummy_read = 0;
 
-  if ((FileName[0]==0) || (IBuff>MAXNESTLEVEL-1)) return FALSE;
-  if (BuffHandle[IBuff]!=0) return FALSE;
-  BuffPtr[IBuff] = 0;
+	if ((FileName[0]==0) || (IBuff>MAXNESTLEVEL-1)) {
+		return FALSE;
+	}
+	if (BuffHandle[IBuff]!=0) {
+		return FALSE;
+	}
+	BuffPtr[IBuff] = 0;
 
-  // get file length
-  BuffLen[IBuff] = GetFSize(FileName);
+	// get file length
+	BuffLen[IBuff] = GetFSize(FileName);
 #if 1
-  // includeで指定されたマクロファイルが空の場合にエラーにはしない。(2007.6.8 yutaka)
-  if (BuffLen[IBuff]==0) {
-   	  // GlobalLock()の引数がゼロだと NULL が返ってくるので、ダミーで空白を入れる。
-	  BuffLen[IBuff] = 2;
-	  dummy_read = 1;
-  }
+	// includeで指定されたマクロファイルが空の場合にエラーにはしない。(2007.6.8 yutaka)
+	if (BuffLen[IBuff]==0) {
+		// GlobalLock()の引数がゼロだと NULL が返ってくるので、ダミーで空白を入れる。
+		BuffLen[IBuff] = 2;
+		dummy_read = 1;
+	}
 #endif
-  if (BuffLen[IBuff]>MAXBUFFLEN) return FALSE;
+	if (BuffLen[IBuff]>MAXBUFFLEN) {
+		return FALSE;
+	}
 
-  F = _lopen(FileName,0);
-  if (F<=0) return FALSE;
-  BuffHandle[IBuff] = GlobalAlloc(GMEM_MOVEABLE, BuffLen[IBuff]);
-  if (BuffHandle[IBuff]!=NULL)
-  {
-    Buff[IBuff] = GlobalLock(BuffHandle[IBuff]);
-    if (Buff[IBuff]!=NULL)
-    {
-      _lread(F, Buff[IBuff], BuffLen[IBuff]);
-	  if (dummy_read == 1) {
-		  Buff[IBuff][0] = ' ';
-		  Buff[IBuff][1] = '\0';
-	  }
-      _lclose(F);
-      GlobalUnlock(BuffHandle[IBuff]);
-      return TRUE;
-    }
-    else {
-      GlobalFree(BuffHandle[IBuff]);
-      BuffHandle[IBuff] = 0;
-    }
-  }
-  _lclose(F);
-  return FALSE;
+	F = _lopen(FileName,0);
+	if (F<=0) {
+		return FALSE;
+	}
+	BuffHandle[IBuff] = GlobalAlloc(GMEM_MOVEABLE, BuffLen[IBuff]);
+	if (BuffHandle[IBuff]!=NULL) {
+		Buff[IBuff] = GlobalLock(BuffHandle[IBuff]);
+		if (Buff[IBuff]!=NULL) {
+			_lread(F, Buff[IBuff], BuffLen[IBuff]);
+			if (dummy_read == 1) {
+				Buff[IBuff][0] = ' ';
+				Buff[IBuff][1] = '\0';
+			}
+			_lclose(F);
+			GlobalUnlock(BuffHandle[IBuff]);
+			return TRUE;
+		}
+		else {
+			GlobalFree(BuffHandle[IBuff]);
+			BuffHandle[IBuff] = 0;
+		}
+	}
+	_lclose(F);
+	return FALSE;
 }
 
 
@@ -220,251 +226,272 @@ BOOL GetNewLine()
 
 BOOL RegisterLabels(int IBuff)
 {
-  BYTE b;
-  TName LabName;
-  WORD Err;
-  WORD VarType, VarId;
+	BYTE b;
+	TName LabName;
+	WORD Err;
+	WORD VarType, VarId;
 
-  Buff[IBuff] = GlobalLock(BuffHandle[IBuff]);
-  if (Buff[IBuff]==NULL) return FALSE;
-  BuffPtr[IBuff] = 0;
+	Buff[IBuff] = GlobalLock(BuffHandle[IBuff]);
+	if (Buff[IBuff]==NULL) {
+		return FALSE;
+	}
+	BuffPtr[IBuff] = 0;
 
-  while (GetRawLine())
-  {
-    Err = 0;
+	while (GetRawLine()) {
+		Err = 0;
 
-    b = GetFirstChar();
-    if (b==':')
-    {
-      if (GetLabelName(LabName) && (GetFirstChar()==0))
-      {
-        if (CheckVar(LabName,&VarType,&VarId))
-          Err = ErrLabelAlreadyDef;
-        else
-          if (! NewLabVar(LabName,BuffPtr[IBuff],(WORD)IBuff))
-            Err = ErrTooManyLabels;
-      }
-      else
-        Err = ErrSyntax;
-    }
+		b = GetFirstChar();
+		if (b==':') {
+			if (GetLabelName(LabName) && (GetFirstChar()==0)) {
+				if (CheckVar(LabName,&VarType,&VarId)) {
+					Err = ErrLabelAlreadyDef;
+				}
+				else {
+					if (! NewLabVar(LabName,BuffPtr[IBuff],(WORD)IBuff)) {
+						Err = ErrTooManyLabels;
+					}
+				}
+			}
+			else {
+				Err = ErrSyntax;
+			}
+		}
 
-    if (Err>0) DispErr(Err);
-  }
-  BuffPtr[IBuff] = 0;
-  InitLineNo(); // (2005.7.18 yutaka)
-  GlobalUnlock(BuffHandle[IBuff]);
-  return TRUE;
+		if (Err>0) {
+			DispErr(Err);
+		}
+	}
+	BuffPtr[IBuff] = 0;
+	InitLineNo(); // (2005.7.18 yutaka)
+	GlobalUnlock(BuffHandle[IBuff]);
+	return TRUE;
 }
 
 BOOL InitBuff(PCHAR FileName)
 {
-  int i;
+	int i;
 
-  SP = 0;
-  NextFlag = FALSE;
-  EndWhileFlag = 0;
-  BreakFlag = 0;
-  for (i=0 ; i<=MAXNESTLEVEL-1 ; i++)
-    BuffHandle[i] = 0;
-  INest = 0;
-  if (! LoadMacroFile(FileName, INest)) return FALSE;
-  if (! RegisterLabels(INest)) return FALSE;
-  return TRUE;
+	SP = 0;
+	NextFlag = FALSE;
+	EndWhileFlag = 0;
+	BreakFlag = 0;
+	for (i=0 ; i<=MAXNESTLEVEL-1 ; i++) {
+		BuffHandle[i] = 0;
+	}
+	INest = 0;
+	if (! LoadMacroFile(FileName, INest)) {
+		return FALSE;
+	}
+	if (! RegisterLabels(INest)) {
+		return FALSE;
+	}
+	return TRUE;
 }
 
 void CloseBuff(int IBuff)
 {
-  int i;
+	int i;
 
-  DelLabVar((WORD)IBuff);
-  for (i=IBuff ; i<=MAXNESTLEVEL-1 ; i++)
-  {
-    if (BuffHandle[i]!=NULL)
-    {
-      GlobalUnlock(BuffHandle[i]);
-      GlobalFree(BuffHandle[i]);
-    }
-    BuffHandle[i] = NULL;
-  }
+	DelLabVar((WORD)IBuff);
+	for (i=IBuff ; i<=MAXNESTLEVEL-1 ; i++) {
+		if (BuffHandle[i]!=NULL) {
+			GlobalUnlock(BuffHandle[i]);
+			GlobalFree(BuffHandle[i]);
+		}
+		BuffHandle[i] = NULL;
+	}
 
-  while ((SP>0) && (LevelStack[SP-1]>=IBuff))
-    SP--;
+	while ((SP>0) && (LevelStack[SP-1]>=IBuff)) {
+		SP--;
+	}
 }
 
 void JumpToLabel(int ILabel)
 {
-  BINT Ptr;
-  WORD Level;
+	BINT Ptr;
+	WORD Level;
 
-  CopyLabel((WORD)ILabel, &Ptr,&Level);
-  if (Level < INest)
-  {
-    INest = Level;
-    CloseBuff(INest+1);
-  }
-  BuffPtr[INest] = Ptr;
+	CopyLabel((WORD)ILabel, &Ptr,&Level);
+	if (Level < INest) {
+		INest = Level;
+		CloseBuff(INest+1);
+	}
+	BuffPtr[INest] = Ptr;
 }
 
 WORD CallToLabel(int ILabel)
 {
-  BINT Ptr;
-  WORD Level;
+	BINT Ptr;
+	WORD Level;
 
-  CopyLabel((WORD)ILabel, &Ptr,&Level);
-  if (Level != INest)
-    return ErrCantCall;
+	CopyLabel((WORD)ILabel, &Ptr,&Level);
+	if (Level != INest) {
+		return ErrCantCall;
+	}
 
-  if (SP>=MAXSP)
-    return ErrStackOver;
+	if (SP>=MAXSP) {
+		return ErrStackOver;
+	}
 
-  PtrStack[SP] = BuffPtr[INest];
-  LevelStack[SP] = INest;
-  TypeStack[SP] = CtlCall;
-  SP++;
+	PtrStack[SP] = BuffPtr[INest];
+	LevelStack[SP] = INest;
+	TypeStack[SP] = CtlCall;
+	SP++;
 
-  BuffPtr[INest] = Ptr;
-  return 0;
+	BuffPtr[INest] = Ptr;
+	return 0;
 }
 
 WORD ReturnFromSub()
 {
-  if ((SP<1) ||
-      (TypeStack[SP-1]!=CtlCall)) return ErrInvalidCtl;
+	if ((SP<1) || (TypeStack[SP-1]!=CtlCall)) {
+		return ErrInvalidCtl;
+	}
 
-  SP--;
-  if (LevelStack[SP] < INest)
-  {
-    INest = LevelStack[SP];
-    CloseBuff(INest+1);
-  }
-  BuffPtr[INest] = PtrStack[SP];
-  return 0;
+	SP--;
+	if (LevelStack[SP] < INest) {
+		INest = LevelStack[SP];
+		CloseBuff(INest+1);
+	}
+	BuffPtr[INest] = PtrStack[SP];
+	return 0;
 }
 
 BOOL BuffInclude(PCHAR FileName)
 {
-  if (INest>=MAXNESTLEVEL-1) return FALSE;
-  INest++;
-  if (LoadMacroFile(FileName, INest))
-  {
-    if (RegisterLabels(INest))
-      return TRUE;
-    else {
-      CloseBuff(INest);
-      INest--;
-    }
-  }
-  else
-    INest--;
+	if (INest>=MAXNESTLEVEL-1) {
+		return FALSE;
+	}
+	INest++;
+	if (LoadMacroFile(FileName, INest)) {
+		if (RegisterLabels(INest)) {
+			return TRUE;
+		}
+		else {
+			CloseBuff(INest);
+			INest--;
+		}
+	}
+	else {
+		INest--;
+	}
 
-  return FALSE;
+	return FALSE;
 }
 
 BOOL ExitBuffer()
 {
-  if (INest<1) return FALSE;
-  CloseBuff(INest);
-  INest--;
-  return TRUE;
+	if (INest<1) {
+		return FALSE;
+	}
+	CloseBuff(INest);
+	INest--;
+	return TRUE;
 }
 
 int SetForLoop()
 {
-  if (SP>=MAXSP)
-    return ErrStackOver;
+	if (SP>=MAXSP) {
+		return ErrStackOver;
+	}
 
-  PtrStack[SP] = LineStart;
-  LevelStack[SP] = INest;
-  TypeStack[SP] = CtlFor;
-  SP++;
-  return 0;
+	PtrStack[SP] = LineStart;
+	LevelStack[SP] = INest;
+	TypeStack[SP] = CtlFor;
+	SP++;
+	return 0;
 }
 
 void LastForLoop()
 {
-  if ((SP<1) || (TypeStack[SP-1]!=CtlFor)) return;
-  PtrStack[SP-1] = INVALIDPTR;  
+	if ((SP<1) || (TypeStack[SP-1]!=CtlFor)) {
+		return;
+	}
+	PtrStack[SP-1] = INVALIDPTR;
 }
 
 BOOL CheckNext()
 {
-  if (NextFlag)
-  {
-    NextFlag = FALSE;
-    return TRUE;
-  }
-  return FALSE;
+	if (NextFlag) {
+		NextFlag = FALSE;
+		return TRUE;
+	}
+	return FALSE;
 }
 
 int NextLoop()
 {
-  if ((SP<1) || (TypeStack[SP-1]!=CtlFor))
-    return ErrInvalidCtl;
+	if ((SP<1) || (TypeStack[SP-1]!=CtlFor)) {
+		return ErrInvalidCtl;
+	}
 
-  NextFlag = (PtrStack[SP-1]!=INVALIDPTR);
-  if (! NextFlag) // exit from loop
-  {
-    SP--;
-    return 0;
-  }
-  if (LevelStack[SP-1] < INest)
-  {
-    INest = LevelStack[SP-1];
-    CloseBuff(INest+1);
-  }
-  BuffPtr[INest] = PtrStack[SP-1];
-  return 0;
+	NextFlag = (PtrStack[SP-1]!=INVALIDPTR);
+	if (! NextFlag) // exit from loop
+	{
+		SP--;
+		return 0;
+	}
+	if (LevelStack[SP-1] < INest) {
+		INest = LevelStack[SP-1];
+		CloseBuff(INest+1);
+	}
+	BuffPtr[INest] = PtrStack[SP-1];
+	return 0;
 }
 
 int SetWhileLoop()
 {
-  if (SP>=MAXSP)
-    return ErrStackOver;
+	if (SP>=MAXSP) {
+		return ErrStackOver;
+	}
 
-  PtrStack[SP] = LineStart;
-  LevelStack[SP] = INest;
-  TypeStack[SP] = CtlWhile;
-  SP++;
-  return 0;
+	PtrStack[SP] = LineStart;
+	LevelStack[SP] = INest;
+	TypeStack[SP] = CtlWhile;
+	SP++;
+	return 0;
 }
 
 void EndWhileLoop()
 {
-  EndWhileFlag = 1;
+	EndWhileFlag = 1;
 }
 
 int BackToWhile(BOOL flag)
 {
-  if ((SP<1) || (TypeStack[SP-1]!=CtlWhile))
-    return ErrInvalidCtl;
+	if ((SP<1) || (TypeStack[SP-1]!=CtlWhile)) {
+		return ErrInvalidCtl;
+	}
 
-  SP--;
-  if (LevelStack[SP] < INest)
-  {
-    INest = LevelStack[SP];
-    CloseBuff(INest+1);
-  }
-  if (flag) BuffPtr[INest] = PtrStack[SP];
-  return 0;
+	SP--;
+	if (LevelStack[SP] < INest) {
+		INest = LevelStack[SP];
+		CloseBuff(INest+1);
+	}
+	if (flag) {
+		BuffPtr[INest] = PtrStack[SP];
+	}
+	return 0;
 }
 
 WORD BreakLoop()
 {
-  if (SP<1)
-    return ErrInvalidCtl;
+	if (SP<1) {
+		return ErrInvalidCtl;
+	}
 
-  switch (TypeStack[SP-1]) {
-    case CtlFor:
-    case CtlWhile:
-      SP--;
-      if (LevelStack[SP] < INest) {
-	INest = LevelStack[SP];
-	CloseBuff(INest+1);
-      }
-      BreakFlag = 1;
-      break;
-    default:
-      return ErrInvalidCtl;
-  }
-  return 0;
+	switch (TypeStack[SP-1]) {
+		case CtlFor:
+		case CtlWhile:
+			SP--;
+			if (LevelStack[SP] < INest) {
+				INest = LevelStack[SP];
+				CloseBuff(INest+1);
+			}
+			BreakFlag = 1;
+			break;
+		default:
+			return ErrInvalidCtl;
+	}
+	return 0;
 }
