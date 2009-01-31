@@ -2216,7 +2216,7 @@ WORD TTLPause()
 		TTLStatus = IdTTLPause;
 		TimeLimit = (DWORD)(TimeOut*1000);
 		TimeStart = GetTickCount();
-		SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
+		SetTimer(HMainWin, IdTimeOutTimer, TIMEOUT_TIMER_MS, NULL);
 	}
 	return Err;
 }
@@ -2313,7 +2313,7 @@ WORD TTLRecvLn()
 	{
 		TimeLimit = (DWORD)TimeOut;
 		TimeStart = GetTickCount();
-		SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
+		SetTimer(HMainWin, IdTimeOutTimer, TIMEOUT_TIMER_MS, NULL);
 	}
 
 	return 0;
@@ -3194,7 +3194,7 @@ WORD TTLWait(BOOL Ln)
 		{
 			TimeLimit = (DWORD)TimeOut;
 			TimeStart = GetTickCount();
-			SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
+			SetTimer(HMainWin, IdTimeOutTimer, TIMEOUT_TIMER_MS, NULL);
 		}
 	}
 	else
@@ -3248,7 +3248,7 @@ WORD TTLWaitEvent()
 	{
 		TimeLimit = (DWORD)TimeOut;
 		TimeStart = GetTickCount();
-		SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
+		SetTimer(HMainWin, IdTimeOutTimer, TIMEOUT_TIMER_MS, NULL);
 	}
 
 	TTLStatus = IdTTLSleep;
@@ -3288,7 +3288,7 @@ WORD TTLWaitN()
 	{
 		TimeLimit = (DWORD)TimeOut;
 		TimeStart = GetTickCount();
-		SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
+		SetTimer(HMainWin, IdTimeOutTimer, TIMEOUT_TIMER_MS, NULL);
 	}
 	else {
 		ClearWaitN();
@@ -3330,7 +3330,7 @@ WORD TTLWaitRecv()
 	{
 		TimeLimit = (DWORD)TimeOut;
 		TimeStart = GetTickCount();
-		SetTimer(HMainWin, IdTimeOutTimer, 50, NULL);
+		SetTimer(HMainWin, IdTimeOutTimer, TIMEOUT_TIMER_MS, NULL);
 	}
 	return Err;
 }

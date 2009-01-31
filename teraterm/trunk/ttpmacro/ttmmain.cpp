@@ -447,7 +447,7 @@ void CCtrlWindow::OnTimer(UINT nIDEvent)
   if (TimeOut || (TTLStatus==IdTTLRun))
     return;
 
-  SetTimer(IdTimeOutTimer, 50, NULL);
+  SetTimer(IdTimeOutTimer, TIMEOUT_TIMER_MS, NULL);
 }
 
 void CCtrlWindow::PostNcDestroy()

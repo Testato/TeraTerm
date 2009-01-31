@@ -5,6 +5,7 @@
 /* TTMACRO.EXE, Tera Term Language interpreter */
 
 #define IdTimeOutTimer 1
+#define TIMEOUT_TIMER_MS 50
 
 // wakeup condition for sleep state
 #define IdWakeupTimeout 1
