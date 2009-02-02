@@ -864,7 +864,7 @@ void SetSync(BOOL OnFlag)
 WORD SendCmnd(char OpId, int WaitFlag)
 /* WaitFlag  should be 0 or IdTTLWaitCmndEnd or IdTTLWaitCmndResult. */
 {
-	char Cmd[2];
+	char Cmd[10];
 
 	if (! Linked) {
 		return ErrLinkFirst;
@@ -873,8 +873,11 @@ WORD SendCmnd(char OpId, int WaitFlag)
 	if (WaitFlag!=0) {
 		TTLStatus = WaitFlag;
 	}
+	// 1byte+NULだと、なぜかVisual Studioでデバッグできなくなる（ヒープエラー発生）ので、
+	// 2byte+NULで送る。(2009.2.3 yutaka)
 	Cmd[0] = OpId;
-	Cmd[1] = 0;
+	Cmd[1] = OpId;
+	Cmd[2] = '\0';
 	if (DdeClientTransaction(Cmd,strlen(Cmd)+1,ConvH,0,CF_OEMTEXT,XTYP_EXECUTE,5000,NULL)==0) {
 		TTLStatus = IdTTLRun;
 	}
