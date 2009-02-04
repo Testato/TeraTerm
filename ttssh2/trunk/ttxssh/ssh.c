@@ -5977,7 +5977,10 @@ static BOOL handle_SSH2_dh_kex_reply(PTInstVar pvar)
 		goto error;
 	}
 	HOSTS_check_host_key(pvar, pvar->ssh_state.hostname, pvar->ssh_state.tcpport, &hostkey);
-
+	if (pvar->socket == INVALID_SOCKET) {
+		emsg = "Server disconnected @ handle_SSH2_dh_kex_reply()";
+		goto error;
+	}
 
 	dh_server_pub = BN_new();
 	if (dh_server_pub == NULL) {
@@ -6317,7 +6320,10 @@ static BOOL handle_SSH2_dh_gex_reply(PTInstVar pvar)
 		goto error;
 	}
 	HOSTS_check_host_key(pvar, pvar->ssh_state.hostname, pvar->ssh_state.tcpport, &hostkey);
-
+	if (pvar->socket == INVALID_SOCKET) {
+		emsg = "Server disconnected @ handle_SSH2_dh_gex_reply()";
+		goto error;
+	}
 
 	dh_server_pub = BN_new();
 	if (dh_server_pub == NULL) {

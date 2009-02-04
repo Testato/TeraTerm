@@ -967,7 +967,10 @@ error:
 
 static void add_host_key(PTInstVar pvar)
 {
-	char FAR *name = pvar->hosts_state.file_names[0];
+	char FAR *name = NULL;
+
+	if ( pvar->hosts_state.file_names != NULL)
+		name = pvar->hosts_state.file_names[0];
 
 	if (name == NULL || name[0] == 0) {
 		UTIL_get_lang_msg("MSG_HOSTS_FILE_UNSPECIFY_ERROR", pvar,
