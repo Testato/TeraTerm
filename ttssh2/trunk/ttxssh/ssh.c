@@ -1194,6 +1194,9 @@ static void deque_handlers(PTInstVar pvar, int message)
 		pvar->ssh_state.packet_handlers[message];
 	SSHPacketHandlerItem FAR *first_item_in_set = cur_item;
 
+	if (cur_item == NULL)
+		return;
+
 	do {
 		SSHPacketHandlerItem FAR *next_in_set = cur_item->next_in_set;
 
