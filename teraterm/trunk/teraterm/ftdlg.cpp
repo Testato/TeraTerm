@@ -56,6 +56,14 @@ BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv, PTTSet pts)
   else // parent window is VT window
     Ok = CDialog::Create(CFileTransDlg::IDD, NULL);
 
+  // ŒÄ‚Ño‚µŒ³‚©‚çˆÚ“® (2009.2.7 maya)
+  if (fv->HideDialog) {
+    ShowWindow(SW_HIDE);
+  }
+  else if (fv->OpId == OpLog) {
+    ShowWindow(SW_MINIMIZE);
+  }
+
   fv->HWin = GetSafeHwnd();
 
   font = (HFONT)SendMessage(WM_GETFONT, 0, 0);

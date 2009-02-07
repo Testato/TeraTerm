@@ -189,10 +189,7 @@ BOOL OpenFTDlg(PFileVar fv)
 	{
 		FTDlg->Create(fv, &cv, &ts);
 		FTDlg->RefreshNum();
-		if (fv->HideDialog)
-			FTDlg->ShowWindow(SW_HIDE);
-		else if (fv->OpId == OpLog) {
-			FTDlg->ShowWindow(SW_MINIMIZE);
+		if (fv->OpId == OpLog) {
 			HWndLog = FTDlg->m_hWnd; // steven add 
 		}
 	}
