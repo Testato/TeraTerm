@@ -57,11 +57,14 @@ BOOL CFileTransDlg::Create(PFileVar pfv, PComVar pcv, PTTSet pts)
     Ok = CDialog::Create(CFileTransDlg::IDD, NULL);
 
   // ŒÄ‚Ño‚µŒ³‚©‚çˆÚ“® (2009.2.7 maya)
-  if (fv->HideDialog) {
-    ShowWindow(SW_HIDE);
-  }
-  else if (fv->OpId == OpLog) {
-    ShowWindow(SW_MINIMIZE);
+  if (!fv->HideDialog) {
+    if (fv->OpId == OpLog) {
+      ShowWindow(SW_SHOW);
+      ShowWindow(SW_MINIMIZE);
+    }
+    else {
+      ShowWindow(SW_SHOW);
+    }
   }
 
   fv->HWin = GetSafeHwnd();
