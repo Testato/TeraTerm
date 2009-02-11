@@ -1539,7 +1539,7 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 		ts->TmpColor[0][i * 3 + 1] = GetGValue(ts->VTReverseColor[i]);
 		ts->TmpColor[0][i * 3 + 2] = GetBValue(ts->VTReverseColor[i]);
 	}
-	WriteInt6(Section, "VTBlinkColor", FName,
+	WriteInt6(Section, "VTReverseColor", FName,
 	          ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
 	          ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
 
