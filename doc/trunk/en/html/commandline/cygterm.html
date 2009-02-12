@@ -18,28 +18,28 @@ cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
 </pre>
 
 <dl>
-  <dt>-t 'terminal-emulator'</dt>
+  <dt id="t">-t 'terminal-emulator'</dt>
   <dd>
     Specify the command line of a terminal emulator to execute.
     This format is the same as TERM in the configuration file.
     The command line should be enclosed in quotes to include spaces.
   </dd>
 
-  <dt>-p port-number</dt>
+  <dt id="p">-p port-number</dt>
   <dd>
     Instead of executing a terminal emulator, try connection to this
     port number of localhost.  It is considered another program uses
     `-p' option to use Cygwin via cygterm.exe
   </dd>
 
-  <dt>-dumb</dt>
+  <dt id="dumb">-dumb</dt>
   <dd>
     Suppress the TELNET options negotiation.  And ignore any TELNET
     commands sent from terminal side.  The environment variable
     TERM is set to `dumb' on the shell side.
   </dd>
 
-  <dt>-s 'shell'</dt>
+  <dt id="s">-s 'shell'</dt>
   <dd>
     Specify the command line of a shell on Cygwin to execute.
     This format is the same as SHELL in the configuration file.
@@ -47,25 +47,28 @@ cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
     Any command can be spedicied even if a non-shell command.
   </dd>
 
-  <dt>-ls</dt>
+  <dt id="ls">-ls</dt>
   <dd>Execute a shell as a login shell.</dd>
 
-  <dt>-nols</dt>
+  <dt id="nols">-nols</dt>
   <dd>Execute a shell as a normal (not login) shell.</dd>
 
-  <dt>-cd</dt>
-  <dd>The current directory is moved to the user home directory and the shell is invoked.</dd>
+  <dt id="cd">-cd</dt>
+  <dd>
+    The current directory is moved to the user home directory
+    and the shell is invoked.
+  </dd>
 
-  <dt>-nocd</dt>
+  <dt id="nocd">-nocd</dt>
   <dd>The shell is invoked without changing the current directory.</dd>
 
-  <dt>-A</dt>
+  <dt id="noagent">-A</dt>
   <dd>Enable ssh-agent proxy support.</dd>
 
-  <dt>-a</dt>
+  <dt id="a">-a</dt>
   <dd>Disable ssh-agent proxy support.</dd>
 
-  <dt>-v 'env-var'</dt>
+  <dt id="v">-v 'env-var'</dt>
   <dd>
     Specify the environment variable to be set when starting the shell.
     This format is the same as ENV_X in the configuration file.
@@ -73,12 +76,17 @@ cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
     One or more `-v' options are available.
   </dd>
 
-  <dt>-d 'directory'</dt>
-  <dd>The current directory is moved to the specified directory and the shell is invoked.</dd>
-</dl>
+  <dt id="d">-d 'directory'</dt>
+  <dd>
+    The current directory is moved to the specified directory
+    and the shell is invoked.
+  </dd>
 
-  <dt>-o 'option'</dt>
-  <dd>Additional parameter for terminal-emulator.</dd>
+  <dt id="o">-o 'option'</dt>
+  <dd>
+    Additional parameter for terminal-emulator.
+  </dd>
+</dl>
 
 <p>
 The terminal emulator or connection port number, and the shell on Cygwin, these need to be specified at least.  If these are given on the command line, cygterm.exe can be run without configuration file cygterm.cfg.

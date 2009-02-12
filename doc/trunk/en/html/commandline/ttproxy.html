@@ -22,7 +22,7 @@ protocol://&lt;user&lt;:password&gt;@&gt;proxyserver:proxyport/realhost
 </pre>
 
 <dl>
-  <dt>protocol</dt>
+  <dt id="protocol">protocol</dt>
   <dd>Proxy type<br>Supported proxy types are followings:
     <ul>
       <li>http</li>
@@ -36,30 +36,30 @@ protocol://&lt;user&lt;:password&gt;@&gt;proxyserver:proxyport/realhost
       <li>socks5+ssl</li>
     </ul></dd>
 
-  <dt>proxyserver</dt>
+  <dt id="proxyserver">proxyserver</dt>
   <dd>Proxy server host</dd>
 
-  <dt>proxyport</dt>
+  <dt id="proxyport">proxyport</dt>
   <dd>Proxy server port</dd>
 
-  <dt>realhost</dt>
+  <dt id="realhost">realhost</dt>
   <dd>Server host that you want to connect</dd>
 
-  <dt>user</dt>
+  <dt id="user">user</dt>
   <dd>User name for proxy authentication</dd>
 
-  <dt>password</dt>
+  <dt id="password">password</dt>
   <dd>Password for proxy authentication</dd>
 </dl>
 
-<h2>Example</h2>
+<h2 id="example">Example</h2>
 <pre>
 ttermpro.exe -proxy=socks5://user:pass@proxy:1080 sshserver /ssh
 ttermpro.exe -proxy=telnet://proxy:8023 telnetserver:23 /nossh
 ttermpro.exe http+ssl://proxy:8080/sshserver /ssh
 </pre>
 
-<h2>Note</h2>
+<h2 id="notes">Note</h2>
 <p>
 The following style is invalid.
 </p>

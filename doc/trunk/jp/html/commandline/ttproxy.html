@@ -22,7 +22,7 @@ protocol://&lt;user&lt;:password&gt;@&gt;proxyserver:proxyport/realhost
 </pre>
 
 <dl>
-  <dt>protocol</dt>
+  <dt id="protocol">protocol</dt>
   <dd>プロキシのプロトコル<br>以下の種類が使用可能です。
     <ul>
       <li>http</li>
@@ -36,30 +36,30 @@ protocol://&lt;user&lt;:password&gt;@&gt;proxyserver:proxyport/realhost
       <li>socks5+ssl</li>
     </ul></dd>
 
-  <dt>proxyserver</dt>
+  <dt id="proxyserver">proxyserver</dt>
   <dd>プロキシサーバ</dd>
 
-  <dt>proxyport</dt>
+  <dt id="proxyport">proxyport</dt>
   <dd>プロキシサーバのポート番号</dd>
 
-  <dt>realhost</dt>
+  <dt id="realhost">realhost</dt>
   <dd>実際に接続したいサーバ</dd>
 
-  <dt>user</dt>
+  <dt id="user">user</dt>
   <dd>プロキシで認証が必要な場合のユーザ名</dd>
 
-  <dt>password</dt>
+  <dt id="password">password</dt>
   <dd>プロキシで認証が必要な場合のパスワード</dd>
 </dl>
 
-<h2>使用例</h2>
+<h2 id="example">使用例</h2>
 <pre>
 ttermpro.exe -proxy=socks5://user:pass@proxy:1080 sshserver /ssh
 ttermpro.exe -proxy=telnet://proxy:8023 telnetserver:23 /nossh
 ttermpro.exe http+ssl://proxy:8080/sshserver /ssh
 </pre>
 
-<h2>注意</h2>
+<h2 id="notes">注意</h2>
 <p>
 以下の形式は使用できません。
 </p>
