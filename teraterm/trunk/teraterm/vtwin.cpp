@@ -3049,6 +3049,9 @@ LONG CVTWindow::OnCommStart(UINT wParam, LONG lParam)
 		if (ts.HostDialogOnStartup) {
 			OnFileNewConnection();
 		}
+		else {
+			SetDdeComReady(0);
+		}
 	}
 	else {
 		Connecting = TRUE;
