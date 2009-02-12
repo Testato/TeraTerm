@@ -8,7 +8,7 @@
 #include <Windows.h>
 
 #define ORDER 5800
-#define ID_MENU_BASE      35000
+#define ID_MENU_BASE      55000
 #define ID_MENU_TOP       ID_MENU_BASE + 1
 #define ID_MENU_BOTTOM    ID_MENU_BASE + 2
 #define ID_MENU_TOPMOST   ID_MENU_BASE + 3

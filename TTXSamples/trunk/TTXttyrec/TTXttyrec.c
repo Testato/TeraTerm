@@ -16,7 +16,7 @@
 #include "gettimeofday.h"
 
 #define ORDER 6000
-#define ID_MENUITEM 37000
+#define ID_MENUITEM 55301
 
 static HANDLE hInst; /* Instance handle of TTX*.DLL */
 

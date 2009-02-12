@@ -9,8 +9,8 @@
 #include <windows.h>
 
 #define ORDER 4000
-#define ID_MENU_VIEWMODE 34500
-#define ID_MENU_SETPASS  34501
+#define ID_MENU_VIEWMODE 55200
+#define ID_MENU_SETPASS  55210
 
 #define SECTION "TTXViewMode"
 

@@ -7,7 +7,7 @@
 #include <string.h>
 
 #define ORDER 5800
-#define ID_MENUITEM 36000
+#define ID_MENUITEM 55199
 
 #define TERM_WIDTH  80
 #define TERM_HEIGHT 24

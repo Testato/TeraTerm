@@ -16,7 +16,7 @@ int def_resize_list[][2] = {
 	{110, 37}
 };
 
-#define ID_MENUID_BASE 36500
+#define ID_MENUID_BASE 55101
 #define MAX_MENU_ITEMS 20
 
 static HANDLE hInst; /* Instance handle of TTX*.DLL */

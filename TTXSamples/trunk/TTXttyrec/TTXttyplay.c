@@ -17,7 +17,7 @@
 #include "gettimeofday.h"
 
 #define ORDER 6001
-#define ID_MENU_REPLAY 37100
+#define ID_MENU_REPLAY 55302
 
 #define BUFFSIZE 2000
 
