@@ -463,6 +463,31 @@ TTXKanjiMenu メニューコマンド       ID
 [KanjiCode] Send: JIS               54112
 [KanjiCode] Send: UTF-8             54113
 
+TTXAlwaysOnTop メニューコマンド     ID
+-----------------------------------------
+[Control] Always on top             55000
+-- SetWindowPos(HWND_TOP)           55001 (メニュー割り当て無し)
+-- SetWindowPos(HWND_BOTTOM)        55002 (メニュー割り当て無し)
+-- SetWindowPos(HWND_TOPMOST)       55003 (メニュー割り当て無し)
+-- SetWindowPos(HWND_NOTOPMOST)     55004 (メニュー割り当て無し)
+
+TTXResizeMenu メニューコマンド      ID
+-----------------------------------------
+[Resize] Menu(1) - Menu(20)         55101 - 55120
+
+TTXViewMode メニューコマンド        ID
+-----------------------------------------
+[Setup] ViewMode password           55200
+[Control] View mode                 55210
+
+TTXttyrec メニューコマンド          ID
+-----------------------------------------
+[File] TTY Record                   55301
+
+TTXttyplay メニューコマンド         ID
+-----------------------------------------
+[File] TTY Replay                   55302
+
 2) TEK window
 
 メニューコマンド                    ID
