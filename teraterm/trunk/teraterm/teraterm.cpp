@@ -40,6 +40,14 @@ CTeraApp::CTeraApp()
 // CTeraApp instance
 CTeraApp theApp;
 
+// VS2005でビルドされたバイナリが Windows95 でも起動できるようにするために、
+// IsDebuggerPresent()のシンボル定義を追加する。
+// さらにWindows Sockets2.0のインストールも必要。
+EXTERN_C BOOL WINAPI _imp__IsDebuggerPresent(void)
+{
+	return FALSE;
+}
+
 // CTeraApp initialization
 BOOL CTeraApp::InitInstance()
 {

@@ -41,6 +41,14 @@ CCtrlApp theApp;
 
 /////////////////////////////////////////////////////////////////////////////
 
+// VS2005でビルドされたバイナリが Windows95 でも起動できるようにするために、
+// IsDebuggerPresent()のシンボル定義を追加する。
+// さらにWindows Sockets2.0のインストールも必要。
+EXTERN_C BOOL WINAPI _imp__IsDebuggerPresent(void)
+{
+	return FALSE;
+}
+
 BOOL CCtrlApp::InitInstance()
 {
 	static HMODULE HTTSET = NULL;

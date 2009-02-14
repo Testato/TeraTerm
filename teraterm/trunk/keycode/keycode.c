@@ -20,6 +20,14 @@ static BOOL KeyDown = FALSE;
 static BOOL Short;
 static WORD Scan;
 
+// VS2005でビルドされたバイナリが Windows95 でも起動できるようにするために、
+// IsDebuggerPresent()のシンボル定義を追加する。
+// さらにWindows Sockets2.0のインストールも必要。
+EXTERN_C BOOL WINAPI _imp__IsDebuggerPresent(void)
+{
+	return FALSE;
+}
+
 int PASCAL WinMain(HINSTANCE hInstance,
   HINSTANCE hPrevInstance,
   LPSTR lpszCmdLine,
