@@ -42,7 +42,6 @@ CTeraApp theApp;
 
 // VS2005でビルドされたバイナリが Windows95 でも起動できるようにするために、
 // IsDebuggerPresent()のシンボル定義を追加する。
-// さらにWindows Sockets2.0のインストールも必要。
 //
 // cf.http://jet2.u-abel.net/program/tips/forceimp.htm
 // 装飾された名前のアドレスを作るための仮定義
