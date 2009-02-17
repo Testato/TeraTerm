@@ -110,7 +110,7 @@ Name: custom; Description: {cm:type_custom}; Flags: iscustom
 Name: TeraTerm; Description: Tera Term & Macro; Flags: fixed; Types: custom compact full standard
 Name: TTSSH; Description: TTSSH; Types: compact full standard
 Name: cygterm; Description: CygTerm+; Types: full standard; Check: not isIA64
-Name: LogMeTT; Description: LogMeTT & TTLEdit; Types: full standard; MinVersion: 4.1.1998,0
+Name: LogMeTT; Description: LogMeTT & TTLEdit; Types: full standard; MinVersion: 4.1.1998,4.0.1381sp6
 Name: TeraTerm_Menu; Description: TeraTerm Menu; Types: full
 Name: TTProxy; Description: TTProxy; Types: full standard
 Name: Collector; Description: Collector; Types: full
