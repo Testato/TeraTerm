@@ -26,14 +26,14 @@ static WORD Scan;
 // cf.http://jet2.u-abel.net/program/tips/forceimp.htm
 // 装飾された名前のアドレスを作るための仮定義
 // (これだけでインポートを横取りしている)
-EXTERN_C int WINAPI _imp__IsDebuggerPresent()
+int WINAPI _imp__IsDebuggerPresent()
     { return PtrToInt((void*) &_imp__IsDebuggerPresent); }
 // 実際に横取り処理を行う関数
-EXTERN_C BOOL WINAPI Cover_IsDebuggerPresent()
+BOOL WINAPI Cover_IsDebuggerPresent()
     { return FALSE; }
 // 関数が実際に呼び出されたときに備えて
 // 横取り処理関数を呼び出させるための下準備
-EXTERN_C void __stdcall DoCover_IsDebuggerPresent()
+void __stdcall DoCover_IsDebuggerPresent()
 {
     DWORD dw;
     DWORD_PTR FAR* lpdw;
@@ -54,8 +54,8 @@ EXTERN_C void __stdcall DoCover_IsDebuggerPresent()
 //  初期化を急ぐ必要が無い場合は WinMain 内から
 //  DoCover_IsDebuggerPresent を呼び出して構いません。
 #if 0
-/* C言語では以下のコードは、コンパイルエラーとなるので、いったん外す。*/
-EXTERN_C int s_DoCover_IsDebuggerPresent
+/* C言語では以下のコードは、コンパイルエラーとなるので、WinMain から呼ぶ。*/
+int s_DoCover_IsDebuggerPresent
     = (int) (DoCover_IsDebuggerPresent(), 0);
 #endif
 
@@ -72,6 +72,8 @@ int PASCAL WinMain(HINSTANCE hInstance,
   // 2重起動防止のためではないので、特に返り値は見ない
   HANDLE hMutex;
   hMutex = CreateMutex(NULL, TRUE, "TeraTermProKeycodeAppMutex");
+
+  DoCover_IsDebuggerPresent();
 
   if(!hPrevInstance)
   {
