@@ -83,14 +83,14 @@ static char FAR *ProtocolFamilyList[] = { "UNSPEC", "IPv6", "IPv4", NULL };
 // cf.http://jet2.u-abel.net/program/tips/forceimp.htm
 // 装飾された名前のアドレスを作るための仮定義
 // (これだけでインポートを横取りしている)
-EXTERN_C int WINAPI _imp__IsDebuggerPresent()
+int WINAPI _imp__IsDebuggerPresent()
     { return PtrToInt((void*) &_imp__IsDebuggerPresent); }
 // 実際に横取り処理を行う関数
-EXTERN_C BOOL WINAPI Cover_IsDebuggerPresent()
+BOOL WINAPI Cover_IsDebuggerPresent()
     { return FALSE; }
 // 関数が実際に呼び出されたときに備えて
 // 横取り処理関数を呼び出させるための下準備
-EXTERN_C void __stdcall DoCover_IsDebuggerPresent()
+void __stdcall DoCover_IsDebuggerPresent()
 {
     DWORD dw;
     DWORD_PTR FAR* lpdw;
@@ -111,8 +111,8 @@ EXTERN_C void __stdcall DoCover_IsDebuggerPresent()
 //  初期化を急ぐ必要が無い場合は WinMain 内から
 //  DoCover_IsDebuggerPresent を呼び出して構いません。
 #if 0
-/* C言語では以下のコードは、コンパイルエラーとなるので、いったん外す。*/
-EXTERN_C int s_DoCover_IsDebuggerPresent
+/* C言語では以下のコードは、コンパイルエラーとなるので、DllMain から呼ぶ。*/
+int s_DoCover_IsDebuggerPresent
     = (int) (DoCover_IsDebuggerPresent(), 0);
 #endif
 
@@ -4125,6 +4125,7 @@ BOOL WINAPI DllMain(HANDLE hInstance,
   // cf. http://www.microsoft.com/japan/msdn/vs_previous/visualc/techmat/feature/MemLeaks/
   //_CrtSetBreakAlloc(3228);
 #endif
+		DoCover_IsDebuggerPresent();
 		DisableThreadLibraryCalls(hInstance);
 		hInst = hInstance;
 		pvar = &InstVar;
