@@ -59,8 +59,11 @@ EXTERN_C void __stdcall DoCover_IsDebuggerPresent()
 //  この変数宣言の手前に書きます。
 //  初期化を急ぐ必要が無い場合は WinMain 内から
 //  DoCover_IsDebuggerPresent を呼び出して構いません。
+#if 0
+/* C言語では以下のコードは、コンパイルエラーとなるので、いったん外す。*/
 EXTERN_C int s_DoCover_IsDebuggerPresent
     = (int) (DoCover_IsDebuggerPresent(), 0);
+#endif
 
 static HANDLE hInst;
 
