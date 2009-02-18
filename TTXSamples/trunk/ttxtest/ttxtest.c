@@ -62,14 +62,14 @@
 // cf.http://jet2.u-abel.net/program/tips/forceimp.htm
 // 装飾された名前のアドレスを作るための仮定義
 // (これだけでインポートを横取りしている)
-EXTERN_C int WINAPI _imp__IsDebuggerPresent()
+int WINAPI _imp__IsDebuggerPresent()
     { return PtrToInt((void*) &_imp__IsDebuggerPresent); }
 // 実際に横取り処理を行う関数
-EXTERN_C BOOL WINAPI Cover_IsDebuggerPresent()
+BOOL WINAPI Cover_IsDebuggerPresent()
     { return FALSE; }
 // 関数が実際に呼び出されたときに備えて
 // 横取り処理関数を呼び出させるための下準備
-EXTERN_C void __stdcall DoCover_IsDebuggerPresent()
+void __stdcall DoCover_IsDebuggerPresent()
 {
     DWORD dw;
     DWORD_PTR FAR* lpdw;
@@ -89,8 +89,8 @@ EXTERN_C void __stdcall DoCover_IsDebuggerPresent()
 //  この変数宣言の手前に書きます。
 //  初期化を急ぐ必要が無い場合は WinMain 内から
 //  DoCover_IsDebuggerPresent を呼び出して構いません。
-EXTERN_C int s_DoCover_IsDebuggerPresent
-    = (int) (DoCover_IsDebuggerPresent(), 0);
+//int s_DoCover_IsDebuggerPresent
+//    = (int) (DoCover_IsDebuggerPresent(), 0);
 
 /* This variable is used for the load order of the extension (see below for
    details). We also print it out in all the diagnostics, to make sure the
@@ -474,6 +474,7 @@ BOOL WINAPI DllMain(HANDLE hInstance,
       break;
     case DLL_PROCESS_ATTACH:
       /* do process initialization */
+      DoCover_IsDebuggerPresent();
       hInst = hInstance;
       pvar = &InstVar;
       break;
