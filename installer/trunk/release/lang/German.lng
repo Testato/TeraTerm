@@ -424,17 +424,17 @@ MENU_SSH_KEYGEN=&SSH Keygenerator
 
 ; dlg about
 DLG_ABOUT_TITLE=About TTSSH
-DLG_ABOUT_SERVERID="Server ID: "
-DLG_ABOUT_PROTOCOL="Benutztes Protokoll: "
-DLG_ABOUT_ENCRYPTION="Verschlüsselung: "
-DLG_ABOUT_SERVERKEY="Server Schlüssel: "
-DLG_ABOUT_AUTH="Authentifikation: "
-DLG_ABOUT_COMP="Kompression: "
-DLG_ABOUT_CLIENTID="Client ID: "
-DLG_ABOUT_HOSTKEY="Client Schlüssel: "
-DLG_ABOUT_TOSERVER=" zum Server, "
+DLG_ABOUT_SERVERID=Server ID:
+DLG_ABOUT_PROTOCOL=Benutztes Protokoll:
+DLG_ABOUT_ENCRYPTION=Verschlüsselung:
+DLG_ABOUT_SERVERKEY=Server Schlüssel:
+DLG_ABOUT_AUTH=Authentifikation:
+DLG_ABOUT_COMP=Kompression:
+DLG_ABOUT_CLIENTID=Client ID:
+DLG_ABOUT_HOSTKEY=Client Schlüssel:
+DLG_ABOUT_TOSERVER=" zum Server,"
 DLG_ABOUT_FROMSERVER=" vom Server"
-DLG_ABOUT_COMPDELAY="Delayed Compression: "
+DLG_ABOUT_COMPDELAY=Delayed Compression:
 DLG_ABOUT_CIPHER_INFO=%s zum server, %s vom server
 DLG_ABOUT_KEY_INFO=%d-bit Server Schlüssel, %d-bit Client Schlüssel
 DLG_ABOUT_KEY_NONE=None
