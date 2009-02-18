@@ -1,7 +1,18 @@
+rem ●使用例
+rem 通常のビルド
+rem   makearchive.bat
+rem リビルド
+rem   makearchive.bat rebuild
+rem デバッグ情報含む
+rem   makearchive.bat debug
+rem プラグイン含む
+rem   makearchive.bat plugins
+
 SET debug=no
 SET plugins=no
 
 if "%1"=="debug" SET debug=yes
+if "%1"=="plugins" SET plugins=yes
 
 CALL makechm.bat
 CALL build.bat %1
