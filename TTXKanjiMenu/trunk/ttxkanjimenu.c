@@ -108,12 +108,21 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 	}
 
 	{
+		OSVERSIONINFO osvi;
 		MENUITEMINFO mi;
 
 		pvar->hmEncode = CreateMenu();
 
-		memset(&mi, 0, sizeof(MENUITEMINFO));
-		mi.cbSize = sizeof(MENUITEMINFO);
+		// Windows 95 でメニューが表示されないのでバージョンチェックを入れる (2009.2.18 maya)
+		GetVersionEx(&osvi);
+		if (osvi.dwMajorVersion >= 5) {
+			memset(&mi, 0, sizeof(MENUITEMINFO));
+			mi.cbSize = sizeof(MENUITEMINFO);
+		}
+		else {
+			memset(&mi, 0, sizeof(MENUITEMINFO)-sizeof(HBITMAP));
+			mi.cbSize = sizeof(MENUITEMINFO)-sizeof(HBITMAP);
+		}
 		mi.fMask  = MIIM_TYPE | MIIM_SUBMENU;
 		mi.fType  = MFT_STRING;
 		mi.hSubMenu = pvar->hmEncode;
