@@ -2056,33 +2056,33 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 	if (pvar->socket != INVALID_SOCKET) {
 		if (SSHv1(pvar)) {
 			SSH_get_server_ID_info(pvar, buf, sizeof(buf));
-			UTIL_get_lang_msg("DLG_ABOUT_SERVERID", pvar, "Server ID: ");
+			UTIL_get_lang_msg("DLG_ABOUT_SERVERID", pvar, "Server ID:");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
 			SSH_get_protocol_version_info(pvar, buf, sizeof(buf));
-			UTIL_get_lang_msg("DLG_ABOUT_PROTOCOL", pvar, "Using protocol: ");
+			UTIL_get_lang_msg("DLG_ABOUT_PROTOCOL", pvar, "Using protocol:");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
 			CRYPT_get_cipher_info(pvar, buf, sizeof(buf));
-			UTIL_get_lang_msg("DLG_ABOUT_ENCRYPTION", pvar, "Encryption: ");
+			UTIL_get_lang_msg("DLG_ABOUT_ENCRYPTION", pvar, "Encryption:");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
 			CRYPT_get_server_key_info(pvar, buf, sizeof(buf));
-			UTIL_get_lang_msg("DLG_ABOUT_SERVERKEY", pvar, "Server keys: ");
+			UTIL_get_lang_msg("DLG_ABOUT_SERVERKEY", pvar, "Server keys:");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
 			AUTH_get_auth_info(pvar, buf, sizeof(buf));
-			UTIL_get_lang_msg("DLG_ABOUT_AUTH", pvar, "Authentication: ");
+			UTIL_get_lang_msg("DLG_ABOUT_AUTH", pvar, "Authentication:");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
 			SSH_get_compression_info(pvar, buf, sizeof(buf));
-			UTIL_get_lang_msg("DLG_ABOUT_COMP", pvar, "Compression: ");
+			UTIL_get_lang_msg("DLG_ABOUT_COMP", pvar, "Compression:");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
 
 		} else { // SSH2
 			SSH_get_server_ID_info(pvar, buf, sizeof(buf));
-			UTIL_get_lang_msg("DLG_ABOUT_SERVERID", pvar, "Server ID: ");
+			UTIL_get_lang_msg("DLG_ABOUT_SERVERID", pvar, "Server ID:");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
-			UTIL_get_lang_msg("DLG_ABOUT_CLIENTID", pvar, "Client ID: ");
+			UTIL_get_lang_msg("DLG_ABOUT_CLIENTID", pvar, "Client ID:");
 			append_about_text(dlg, pvar->ts->UIMsg, pvar->client_version_string);
 
 			SSH_get_protocol_version_info(pvar, buf, sizeof(buf));
-			UTIL_get_lang_msg("DLG_ABOUT_PROTOCOL", pvar, "Using protocol: ");
+			UTIL_get_lang_msg("DLG_ABOUT_PROTOCOL", pvar, "Using protocol:");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
 
 			if (pvar->kex_type == KEX_DH_GRP1_SHA1) {
@@ -2092,14 +2092,14 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 			} else {
 				strncpy_s(buf, sizeof(buf), KEX_DHGEX, _TRUNCATE);
 			}
-			append_about_text(dlg, "KEX: ", buf);
+			append_about_text(dlg, "KEX:", buf);
 
 			if (pvar->hostkey_type == KEY_DSA) {
 				strncpy_s(buf, sizeof(buf), "ssh-dss", _TRUNCATE);
 			} else {
 				strncpy_s(buf, sizeof(buf), "ssh-rsa", _TRUNCATE);
 			}
-			UTIL_get_lang_msg("DLG_ABOUT_HOSTKEY", pvar, "Host Key: ");
+			UTIL_get_lang_msg("DLG_ABOUT_HOSTKEY", pvar, "Host Key:");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
 
 			// add HMAC algorithm (2004.12.17 yutaka)
@@ -2108,8 +2108,8 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 				strncat_s(buf, sizeof(buf), "hmac-sha1", _TRUNCATE);
 			} else if (pvar->ctos_hmac == HMAC_MD5) {
 				strncat_s(buf, sizeof(buf), "hmac-md5", _TRUNCATE);
-			}
-			UTIL_get_lang_msg("DLG_ABOUT_TOSERVER", pvar, " to server, ");
+			}MessageBox(NULL, "", "", MB_OK);
+			UTIL_get_lang_msg("DLG_ABOUT_TOSERVER", pvar, " to server,");
 			strncat_s(buf, sizeof(buf), pvar->ts->UIMsg, _TRUNCATE);
 			if (pvar->stoc_hmac == HMAC_SHA1) {
 				strncat_s(buf, sizeof(buf), "hmac-sha1", _TRUNCATE);
@@ -2118,25 +2118,25 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 			}
 			UTIL_get_lang_msg("DLG_ABOUT_FROMSERVER", pvar, " from server");
 			strncat_s(buf, sizeof(buf), pvar->ts->UIMsg, _TRUNCATE);
-			append_about_text(dlg, "HMAC: ", buf);
+			append_about_text(dlg, "HMAC:", buf);
 
 			CRYPT_get_cipher_info(pvar, buf, sizeof(buf));
-			UTIL_get_lang_msg("DLG_ABOUT_ENCRYPTION", pvar, "Encryption: ");
+			UTIL_get_lang_msg("DLG_ABOUT_ENCRYPTION", pvar, "Encryption:");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
 			CRYPT_get_server_key_info(pvar, buf, sizeof(buf));
-			UTIL_get_lang_msg("DLG_ABOUT_SERVERKEY", pvar, "Server keys: ");
+			UTIL_get_lang_msg("DLG_ABOUT_SERVERKEY", pvar, "Server keys:");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
 
 			AUTH_get_auth_info(pvar, buf, sizeof(buf));
-			UTIL_get_lang_msg("DLG_ABOUT_AUTH", pvar, "Authentication: ");
+			UTIL_get_lang_msg("DLG_ABOUT_AUTH", pvar, "Authentication:");
 			append_about_text(dlg, pvar->ts->UIMsg, buf);
 
 			SSH_get_compression_info(pvar, buf, sizeof(buf));
 			if (pvar->ctos_compression == COMP_DELAYED) { // ’x‰„ƒpƒPƒbƒgˆ³k‚Ìê‡ (2006.6.23 yutaka)
-				UTIL_get_lang_msg("DLG_ABOUT_COMPDELAY", pvar, "Delayed Compression: ");
+				UTIL_get_lang_msg("DLG_ABOUT_COMPDELAY", pvar, "Delayed Compression:");
 				append_about_text(dlg, pvar->ts->UIMsg, buf);
 			} else {
-				UTIL_get_lang_msg("DLG_ABOUT_COMP", pvar, "Compression: ");
+				UTIL_get_lang_msg("DLG_ABOUT_COMP", pvar, "Compression:");
 				append_about_text(dlg, pvar->ts->UIMsg, buf);
 			}
 		}
