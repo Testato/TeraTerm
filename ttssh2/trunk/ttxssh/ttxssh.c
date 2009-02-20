@@ -77,44 +77,7 @@ static char FAR *ProtocolFamilyList[] = { "UNSPEC", "IPv6", "IPv4", NULL };
 
 #include "sftp.h"
 
-// VS2005でビルドされたバイナリが Windows95 でも起動できるようにするために、
-// IsDebuggerPresent()のシンボル定義を追加する。
-//
-// cf.http://jet2.u-abel.net/program/tips/forceimp.htm
-// 装飾された名前のアドレスを作るための仮定義
-// (これだけでインポートを横取りしている)
-int WINAPI _imp__IsDebuggerPresent()
-    { return PtrToInt((void*) &_imp__IsDebuggerPresent); }
-// 実際に横取り処理を行う関数
-BOOL WINAPI Cover_IsDebuggerPresent()
-    { return FALSE; }
-// 関数が実際に呼び出されたときに備えて
-// 横取り処理関数を呼び出させるための下準備
-void __stdcall DoCover_IsDebuggerPresent()
-{
-    DWORD dw;
-    DWORD_PTR FAR* lpdw;
-    // 横取り関数を設定するアドレスを取得
-    lpdw = (DWORD_PTR FAR*) &_imp__IsDebuggerPresent;
-    // このアドレスを書き込めるように設定
-    // (同じプログラム内なので障害なく行える)
-    VirtualProtect(lpdw, sizeof(DWORD_PTR), PAGE_READWRITE, &dw);
-    // 横取り関数を設定
-    *lpdw = (DWORD_PTR)(FARPROC) Cover_IsDebuggerPresent;
-    // 読み書きの状態を元に戻す
-    VirtualProtect(lpdw, sizeof(DWORD_PTR), dw, NULL);
-}
-// アプリケーションが初期化される前に下準備を呼び出す
-// ※ かなり早くに初期化したいときは、このコードを
-//  ファイルの末尾に書いて「#pragma init_seg(lib)」を、
-//  この変数宣言の手前に書きます。
-//  初期化を急ぐ必要が無い場合は WinMain 内から
-//  DoCover_IsDebuggerPresent を呼び出して構いません。
-#if 0
-/* C言語では以下のコードは、コンパイルエラーとなるので、DllMain から呼ぶ。*/
-int s_DoCover_IsDebuggerPresent
-    = (int) (DoCover_IsDebuggerPresent(), 0);
-#endif
+#include "compat_w95.h"
 
 #define MATCH_STR(s, o) strncmp((s), (o), NUM_ELEM(o) - 1)
 #define MATCH_STR_I(s, o) _strnicmp((s), (o), NUM_ELEM(o) - 1)
@@ -2108,7 +2071,7 @@ static void init_about_dlg(PTInstVar pvar, HWND dlg)
 				strncat_s(buf, sizeof(buf), "hmac-sha1", _TRUNCATE);
 			} else if (pvar->ctos_hmac == HMAC_MD5) {
 				strncat_s(buf, sizeof(buf), "hmac-md5", _TRUNCATE);
-			}MessageBox(NULL, "", "", MB_OK);
+			}
 			UTIL_get_lang_msg("DLG_ABOUT_TOSERVER", pvar, " to server,");
 			strncat_s(buf, sizeof(buf), pvar->ts->UIMsg, _TRUNCATE);
 			if (pvar->stoc_hmac == HMAC_SHA1) {
