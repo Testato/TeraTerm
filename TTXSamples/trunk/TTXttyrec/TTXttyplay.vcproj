@@ -18,7 +18,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			IntermediateDirectory="play.$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="0"
 			>
@@ -94,7 +94,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			IntermediateDirectory="play.$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="0"
 			WholeProgramOptimization="1"
