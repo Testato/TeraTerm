@@ -7,8 +7,6 @@
 #define IDC_CURPASS                     2001
 #define IDC_NEWPASS                     2002
 #define IDC_RETPASS                     2003
-#define ID_MENU_VIEWMODE                34500
-#define ID_MENU_SETPASS                 34501
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
