@@ -24,6 +24,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TTXAdditionalTitle", "TTXAd
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TTXCallSysMenu", "TTXCallSysMenu\TTXCallSysMenu.vcproj", "{25709A86-E6B8-4CDA-906C-02D935E05978}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TTXCommandLineOpt", "TTXCommandLineOpt\TTXCommandLineOpt.vcproj", "{EE8BFC38-7000-42F1-BBC3-17F19855918A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -78,6 +80,10 @@ Global
 		{25709A86-E6B8-4CDA-906C-02D935E05978}.Debug|Win32.Build.0 = Debug|Win32
 		{25709A86-E6B8-4CDA-906C-02D935E05978}.Release|Win32.ActiveCfg = Release|Win32
 		{25709A86-E6B8-4CDA-906C-02D935E05978}.Release|Win32.Build.0 = Release|Win32
+		{EE8BFC38-7000-42F1-BBC3-17F19855918A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EE8BFC38-7000-42F1-BBC3-17F19855918A}.Debug|Win32.Build.0 = Debug|Win32
+		{EE8BFC38-7000-42F1-BBC3-17F19855918A}.Release|Win32.ActiveCfg = Release|Win32
+		{EE8BFC38-7000-42F1-BBC3-17F19855918A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
