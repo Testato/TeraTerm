@@ -40,23 +40,31 @@
         </ul></li>
       <li>Additional settingsから"Eterm lookfeel"をチェックできないようにした。Eterm lookfeel機能を有効にするには、teraterm.ini を直接編集すること。</li>
       <li>Windows7β(build7000)において、非表示状態にあるフォントがフォント選択ダイアログにリストアップされるようにした。</li>
-      <li>Windows95で起動できるようにした。別途、Windows95への<a href="http://support.microsoft.com/kb/182108">Windows Sockets2.0</a> のインストールも必要。</li>
+      <li>反転属性の色を指定出来るようにした。
+        <ul>
+          <li>teraterm.ini に VTReverseColor エントリを追加した。</li>
+        </ul></li>
       <li>teraterm.ini の ConfirmChangePaste（危険なクリップボードの貼り付け） はデフォルトで on とした。</li>
+      <li>KEYBOARD.CNF をインストーラパッケージから削除した。</li>
+      <li>EDITOR.CNF をインストーラパッケージに新規追加した。</li>
       <li>マクロコマンド "<a href="../macro/command/sprintf2.html">sprintf2</a>" を新規追加した。</li>
       <li>マクロコマンド "<a href="../macro/command/waitn.html">waitn</a>" を新規追加した。p3g4asus氏に感謝します。</li>
       <li>マクロコマンド "<a href="../macro/command/logopen.html">logopen</a>" で、result に結果を格納するようにした。</li>
+      <li>マクロ変数に"mtimeout"を新規追加した。wait系マクロは、「timeout * 1000 + mtimeout」ミリ秒待つようになる。 </li>
     </ul></li>
   <li>バグ修正
     <ul>
       <li>cygwin接続時、環境変数PATHが1024バイトで切られるのを修正した。</li>
-      <li>Visual Studio上でマクロのデバッグができるように、DDEトランザクション通信に暫定処置を加えた。</li>
+      <li>Visual Studio上でマクロのデバッグができるように、DDEトランザクション通信に暫定処置（ワークアラウンド）を加えた。</li>
       <li><a href="../macro/command/connect.html">connect</a>マクロコマンドにおいて、<a href="../commandline/teraterm.html#ds">/DS</a>コマンドラインオプションを指定した時にconnectコマンドが終了しないバグを修正した。</li>
+      <li>ログウィンドウを非表示に指定した時、一瞬ログウィンドウが表示されていたのを表示されないようにした。</li>
     </ul></li>
   <li>その他
     <ul>
       <li><a href="#ttssh_2.50">SSH2対応TTSSH(2.50)</a>へ差し替えた</li>
       <li><a href="#kanjimenu_0.1.5">TTX KanjiMenu Plugin(0.1.5)</a>へ差し替えた。</li>
       <li>Windows 95 のサポートを復活した</li>
+      <li>Windows 7β(build7000) の暫定サポート</li>
     </ul></li>
 </ul>
 
@@ -1189,6 +1197,7 @@
       <li>SCPを連続して行うと、SSH2_MSG_CHANNEL_FAILURE 受信時にアプリケーションが終了してしまう問題へ対処した。</li>
       <li>生成した鍵の保存時にアプリケーションが落ちることがある問題を修正した。</li>
       <li>Windows 95 で About TTSSH ダイアログを表示するとアプリケーションが落ちることがある問題を修正した。</li>
+      <li>ホスト鍵確認ダイアログから認証ダイアログに戻ったときに、コマンドラインで渡された認証方式がデフォルトの認証方式で上書きされることがある問題を修正した。</li>
     </ul></li>
   <li>その他
     <ul>

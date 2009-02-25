@@ -40,23 +40,31 @@
         </ul></li>
       <li>Disabled the "Eterm lookfeel" checkbox on the Additional settings dialog. If a user enables the feature, directly edit the teraterm.ini file.</li>
       <li>The hidden fonts can be shown on the font selection dialog with Windows 7 beta(build7000).</li>
-      <li>added support for Windows 95. And then a user needs to install <a href="http://support.microsoft.com/kb/182108/en-us">Windows Sockets2.0</a> on Microsoft Windows 95.</li>
+      <li>added support for specifying the reverser color.
+        <ul>
+          <li>added VTReverseColor entry in teraterm.ini file.</li>
+        </ul></li>
       <li>Changed ConfirmChangePaste's default value into on.</li>
+      <li>Removed KEYBOARD.CNF file in TeraTerm installation package.</li>
+      <li>Added EDITOR.CNF file in TeraTerm installation package.</li>
       <li>added `<a href="../macro/command/sprintf2.html">sprintf2</a>' macro command. </li>
       <li>added `<a href="../macro/command/waitn.html">waitn</a>' macro command. Special thanks to p3g4asus.</li>
       <li>added the result of "<a href="../macro/command/logopen.html">logopen</a>" macro command stores to 'result' variable.</li>
+      <li>added "mtimeout" macro variable. When a user uses the wait-related macro, TeraTerm waits "timeout * 1000 + mtimeout" millisecond.</li>
     </ul></li>
   <li>Bug fixes
     <ul>
       <li>Bug fix: In the Cygwin connection, PATH environment variable is truncated to 1024 bytes.</li>
       <li>Bug fix: added the workaround that a developer can debug the TeraTerm macro script on Visual Studio.</li>
       <li>Bug fix: <a href="../macro/command/connect.html">connect</a> macro cano not finish when <a href="../commandline/teraterm.html#ds">/DS</a> is specified.</li>
+      <li>Bug fix: By using logopen macro with the hidden option, the log window appears for a quick moment.</li>
     </ul></li>
   <li>Misc
     <ul>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.50">2.50</a></li>
       <li>upgraded TTX KanjiMenu Plugin to <a href="#kanjimenu_0.1.5">0.1.5</a>.</li>
-      <!--li>Windows 95 のサポートを復活した</li-->
+      <li>added support for Microsoft Windows 95.</li>
+      <li>added limited support for Microsoft Windows 7 beta(build7000).</li>
     </ul></li>
 </ul>
 
@@ -1185,7 +1193,8 @@ SYNOPSIS:
     <ul>
       <li>When a user does the SCP action twice, TeraTerm will be shut down after receiving SSH2_MSG_CHANNEL_FAILURE.</li>
       <li>Application fault could occur when the generated key is saved with SSH key generator dialog.</li>
-      <!--li>Windows 95 で About TTSSH ダイアログを表示するとアプリケーションが落ちることがある問題を修正した。</li-->
+      <li>When TTSSH about dialog is shown, the application fault occurs on Windows 95.</li>
+      <li>When a user switches the SSH authetication dialog from the host key confirmation dialog, a authentication method is overwritten by the default method value.</li>
     </ul></li>
   <li>Misc
     <ul>
