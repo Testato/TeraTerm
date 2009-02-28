@@ -1079,7 +1079,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 
 	// added ConfirmChangePaste (2008.2.3 yutaka)
 	ts->ConfirmChangePaste =
-		GetOnOff(Section, "ConfirmChangePaste", FName, FALSE);
+		GetOnOff(Section, "ConfirmChangePaste", FName, TRUE);
 
 	// added ScrollWindowClearScreen (2008.5.3 yutaka)
 	ts->ScrollWindowClearScreen =
