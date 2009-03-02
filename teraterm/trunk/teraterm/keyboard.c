@@ -301,6 +301,166 @@ int KeyDown(HWND HWin, WORD VKey, WORD Count, WORD Scan)
 	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
 	}
 	break;
+      case VK_F1:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdXF1,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_F2:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdXF2,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_F3:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdXF3,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdF13,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F4:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdXF4,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdF14,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F5:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdXF5,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdHelp,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F6:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdF6,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdDo,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F7:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdF7,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdF17,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F8:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdF8,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdF18,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F9:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdF9,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdF19,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F10:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdF10,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdF20,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F11:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdF11,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_F12:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdF12,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
       case '2':
       case '@':
 	if (Control && !ts.StrictKeyMapping) {
@@ -599,6 +759,230 @@ void KeyCodeSend(WORD KCode, WORD Count)
       case VK_NEXT:
 	if (Single && !ts.StrictKeyMapping) {
 	  GetKeyStr(HWin, KeyMap, IdNext,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_F1:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdXF1,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_F2:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdXF2,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_F3:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdXF3,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdF13,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F4:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdXF4,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdF14,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F5:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdXF5,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdHelp,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F6:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdF6,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdDo,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F7:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdF7,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdF17,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F8:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdF8,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdF18,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F9:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdF9,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdF19,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F10:
+        if (!ts.StrictKeyMapping) {
+	  if (Single) {
+	    GetKeyStr(HWin, KeyMap, IdF10,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	  else if (ShiftKey()) {
+	    GetKeyStr(HWin, KeyMap, IdF20,
+	              AppliKeyMode && ! ts.DisableAppKeypad,
+	              AppliCursorMode && ! ts.DisableAppCursor,
+	              Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	  }
+	}
+	break;
+      case VK_F11:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdF11,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_F12:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdF12,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_F13:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdF13,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_F14:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdF14,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_F15:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdHelp,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_F16:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdDo,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_F17:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdF17,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_F18:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdF18,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_F19:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdF19,
+	            AppliKeyMode && ! ts.DisableAppKeypad,
+	            AppliCursorMode && ! ts.DisableAppCursor,
+	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
+	}
+	break;
+      case VK_F20:
+	if (Single && !ts.StrictKeyMapping) {
+	  GetKeyStr(HWin, KeyMap, IdF20,
 	            AppliKeyMode && ! ts.DisableAppKeypad,
 	            AppliCursorMode && ! ts.DisableAppCursor,
 	            Send8BitMode, Code, sizeof(Code), &CodeLength, &CodeType);
