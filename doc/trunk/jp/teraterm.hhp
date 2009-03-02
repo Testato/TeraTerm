@@ -252,6 +252,7 @@ HlpMacroCommandScprecv=html\macro\command\scprecv.html
 HlpMacroCommandScpsend=html\macro\command\scpsend.html
 HlpMacroCommandSend=html\macro\command\send.html
 HlpMacroCommandSendbreak=html\macro\command\sendbreak.html
+HlpMacroCommandSendbroadcast=html\macro\command\sendbroadcast.html
 HlpMacroCommandSendfile=html\macro\command\sendfile.html
 HlpMacroCommandSendkcode=html\macro\command\sendkcode.html
 HlpMacroCommandSendln=html\macro\command\sendln.html
