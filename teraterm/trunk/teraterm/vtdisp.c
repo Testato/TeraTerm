@@ -2423,6 +2423,7 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 //   Reverse: true if text is selected (reversed) by mouse
 {
   COLORREF TextColor, BackColor;
+  int NoReverseColor = 2;
 
   if (VTDC==NULL)  DispInitDC();
 
@@ -2468,22 +2469,28 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 	  if ((ts.ColorFlag & CF_ANSICOLOR) && (Attr.Attr2 & Attr2Fore)) {
 		TextColor = ANSIColor[Attr.Fore];
 	  }
-	  else
+	  else {
 #ifdef ALPHABLEND_TYPE2 // AKASI
 		TextColor = BGVTColor[0];
 #else
 		TextColor = ts.VTColor[0];
 #endif
+		NoReverseColor = 1;
+	  }
 
 	  if ((ts.ColorFlag & CF_ANSICOLOR) && (Attr.Attr2 & Attr2Back)) {
 		BackColor = ANSIColor[Attr.Back];
 	  }
-	  else
+	  else {
 #ifdef ALPHABLEND_TYPE2 // AKASI
 		BackColor = BGVTColor[1];
 #else
 		BackColor = ts.VTColor[1];
 #endif
+		if (NoReverseColor == 1) {
+		  NoReverseColor = !(ts.ColorFlag & CF_REVERSECOLOR);
+		}
+	  }
 	}
   }
   else { // full color
@@ -2510,7 +2517,7 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 	  TextColor = BGVTBoldColor[0];
 	else if ((ts.ColorFlag & CF_URLCOLOR) && (Attr.Attr & AttrURL))
 	  TextColor = BGURLColor[0];
-	else
+	else {
 	  TextColor = BGVTColor[0];
 #else
 	  TextColor = ts.VTBlinkColor[0];
@@ -2518,9 +2525,11 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 	  TextColor = ts.VTBoldColor[0];
 	else if ((ts.ColorFlag & CF_URLCOLOR) && (Attr.Attr & AttrURL))
 	  TextColor = ts.URLColor[0];
-	else
+	else {
 	  TextColor = ts.VTColor[0];
 #endif
+	  NoReverseColor = 1;
+	}
 	if ((ts.ColorFlag & CF_ANSICOLOR) && (Attr.Attr2 & Attr2Back)) {
 	  if (Attr.Back<8 && (ts.ColorFlag&CF_PCBOLD16)) {
 	    if (((Attr.Attr&AttrBlink)!=0) == (Attr.Back!=0)) {
@@ -2544,7 +2553,7 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 	  BackColor = BGVTBoldColor[1];
 	else if ((ts.ColorFlag & CF_URLCOLOR) && (Attr.Attr & AttrURL))
 	  BackColor = BGURLColor[1];
-	else
+	else {
 	  BackColor = BGVTColor[1];
 #else
 	  BackColor = ts.VTBlinkColor[1];
@@ -2552,9 +2561,13 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 	  BackColor = ts.VTBoldColor[1];
 	else if ((ts.ColorFlag & CF_URLCOLOR) && (Attr.Attr & AttrURL))
 	  BackColor = ts.URLColor[1];
-	else
+	else {
 	  BackColor = ts.VTColor[1];
 #endif
+	  if (NoReverseColor == 1) {
+	    NoReverseColor = !(ts.ColorFlag & CF_REVERSECOLOR);
+	  }
+	}
   }
 #ifdef USE_NORMAL_BGCOLOR_REJECT
   if (ts.UseNormalBGColor) {
@@ -2571,7 +2584,7 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 #ifdef ALPHABLEND_TYPE2
     BGReverseText = TRUE;
 #endif
-    if ((ts.ColorFlag & CF_REVERSECOLOR) && (Attr.Attr & AttrColorMask) == AttrReverse && !(Attr.Attr2 & Attr2ColorMask)) {
+    if ((Attr.Attr & AttrReverse) && !NoReverseColor) {
 #ifdef ALPHABLEND_TYPE2
       SetTextColor(VTDC, BGVTReverseColor[0]);
       SetBkColor(  VTDC, BGVTReverseColor[1]);
