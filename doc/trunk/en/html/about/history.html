@@ -40,21 +40,26 @@
         </ul></li>
       <li>Disabled the "Eterm lookfeel" checkbox on the Additional settings dialog. If a user enables the feature, directly edit the teraterm.ini file.</li>
       <li>The hidden fonts can be shown on the font selection dialog with Windows 7 beta(build7000).</li>
-      <!-- li>added support for specifying the reverser color.
+      <li>added support for specifying the reverser color.
         <ul>
-          <li>added VTReverseColor entry in teraterm.ini file.</li>
+          <li>added VTReverseColor entry in teraterm.ini file.<!-- <br>
+              注: アップグレードインストール時は互換性のためこの機能は無効にされています。有効にする場合は、後述のEnableReverseAttrColorをonに設定してください。--></li>
+        </ul></li>
+      <!-- li>高輝度,点滅および反転属性の色と、ANSIカラー表示を無効にできるようにした。
+        <ul>
+          <li>teraterm.ini に EnableBoldAttrColor, EnableBlinkAttrColor, EnableReverseAttrColor, EnableURLColor, EnableANSIColor エントリを追加した。デフォルトはすべてon。</li>
         </ul></li -->
       <li>Changed ConfirmChangePaste's default value into on.</li>
-      <li>Added EDITOR.CNF file in TeraTerm installation package.</li>
+      <li>Added EDITOR.CNF file in Tera Term installation package.</li>
       <li>added `<a href="../macro/command/sprintf2.html">sprintf2</a>' macro command. </li>
       <li>added `<a href="../macro/command/waitn.html">waitn</a>' macro command. Special thanks to p3g4asus.</li>
       <li>added the result of "<a href="../macro/command/logopen.html">logopen</a>" macro command stores to 'result' variable.</li>
-      <li>added "mtimeout" macro variable. When a user uses the wait-related macro, TeraTerm waits "timeout * 1000 + mtimeout" millisecond.</li>
+      <li>added "mtimeout" macro variable. When a user uses the wait-related macro, Tera Term waits "timeout * 1000 + mtimeout" millisecond.</li>
     </ul></li>
   <li>Bug fixes
     <ul>
       <li>Bug fix: In the Cygwin connection, PATH environment variable is truncated to 1024 bytes.</li>
-      <li>Bug fix: added the workaround that a developer can debug the TeraTerm macro script on Visual Studio.</li>
+      <li>Bug fix: added the workaround that a developer can debug the Tera Term macro script on Visual Studio.</li>
       <li>Bug fix: <a href="../macro/command/connect.html">connect</a> macro cano not finish when <a href="../commandline/teraterm.html#ds">/DS</a> is specified.</li>
       <li>Bug fix: By using logopen macro with the hidden option, the log window appears for a quick moment.</li>
     </ul></li>
@@ -75,7 +80,7 @@
       <li>added the display method of <a href="../menu/setup-additional.html">Accept Window Title Change Request</a>. The title can insert before or after the canonical title.</li>
       <li>moved the "Delimitter Characters" configuration from "General" tab to "Copy and Paste" tab on the <a href="../menu/setup-additional.html">"Additional settings" dialog</a>.</li>
       <li>added the <a href="../commandline/teraterm.html">/DS</a> command line option. It disables the "New connection" dialog.</li>
-      <li>Preserved the comment and the position of the entry in teraterm.ini file when a user saved the TeraTerm configuration.</li>
+      <li>Preserved the comment and the position of the entry in teraterm.ini file when a user saved the Tera Term configuration.</li>
       <li>added support for replace the command of UK character set with the US-ASCII. This is the workaround that the lower-case alphabet can not properly display after showing DEC special character.</li>
       <li>added '<a href="../macro/command/gethostname.html">gethostname</a>' macro command.</li>
     </ul></li>
@@ -91,7 +96,7 @@
       <li>Bug fix: The macro label can be specified the characters other than alphabet and numeric ones.</li>
       <li>Bug fix: Using the <a href="../macro/command/filestrseek2.html">filestrseek2</a> macro command, a file pointer is minus value if the matched string locates at one byte in the file.</li>
       <li>Bug fix: Using the <a href="../macro/command/logopen.html">logopen</a> macro command, when the specified filename does not include \ character, the log file is saved at the root directory.</li>
-      <li>Bug fix: Using the <a href="../macro/command/gettitle.html">gettitle</a> macro command, TeraTerm could not get an entire string when the window title is longer than 31 bytes. </li>
+      <li>Bug fix: Using the <a href="../macro/command/gettitle.html">gettitle</a> macro command, Tera Term could not get an entire string when the window title is longer than 31 bytes. </li>
       <li>Bug fix: <a href="../macro/command/strmatch.html">strmatch</a> macro command does not work. </li>
     </ul></li>
   <li>Misc
@@ -101,7 +106,7 @@
           <li>added ssh:// associated with the ttermpro.exe.</li>
           <li>added some plugins in the Additional Plugins.</li>
           <li>moved the TTXKanjiMenu plugin to the Additional Plugins.</li>
-          <li>added the cygterm+ source code in TeraTerm package.</li>
+          <li>added the cygterm+ source code in Tera Term package.</li>
         </ul></li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.49">2.49</a></li>
       <li>upgraded CygTerm+ to <a href="#cygterm_1.07_16">1.07_16</a></li>
@@ -111,7 +116,7 @@
 <h3><a name="teraterm_4.60">2008.9.23 (Ver 4.60)</a></h3>
 <ul class="history">
       <li>added support of CHT (Cursor Forward Tabulation) and CBT (Cursor Backward Tabulation) control sequence.</li>
-      <li>added support for Visual Bell. When TeraTerm receive the BEL character, the window can flash instead of sounding the beep.
+      <li>added support for Visual Bell. When Tera Term receive the BEL character, the window can flash instead of sounding the beep.
         <ul>
           <li>added the Visual option of <a href="../setup/teraterm-term.html#beep">Beep</a> entry in teraterm.ini file.</li>
         </ul></li>
@@ -136,7 +141,7 @@
       <li>added '<a href="../macro/command/getttdir.html">getttdir</a>' macro command.</li>
       <li>Bug fix: A user could not duplicate the network session of TELNET and SSH without port 22 and 23.</li>
       <li>Bug fix: The terminal size could reduce on Windows 98-compatible products.</li>
-      <li>Bug fix: TeraTerm icon would 16x16 size when a user changes the window by using Alt+Tab key on Windows Vista Aero.</li>
+      <li>Bug fix: Tera Term icon would 16x16 size when a user changes the window by using Alt+Tab key on Windows Vista Aero.</li>
       <li>upgraded TTSSH version supporting SSH2 to <a href="#ttssh_2.48">2.48</a></li>
 </ul>
 

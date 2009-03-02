@@ -40,10 +40,14 @@
         </ul></li>
       <li>Additional settingsから"Eterm lookfeel"をチェックできないようにした。Eterm lookfeel機能を有効にするには、teraterm.ini を直接編集すること。</li>
       <li>Windows7β(build7000)において、非表示状態にあるフォントがフォント選択ダイアログにリストアップされるようにした。</li>
-      <!-- li>反転属性の色を指定出来るようにした。
+      <li>反転属性の色を指定出来るようにした。
         <ul>
-          <li>teraterm.ini に VTReverseColor エントリを追加した。</li>
-        </ul></li -->
+          <li>teraterm.ini に VTReverseColor エントリを追加した。<br>注: アップグレードインストール時は互換性のためこの機能は無効にされています。有効にする場合は、後述のEnableReverseAttrColorをonに設定してください。</li>
+        </ul></li>
+      <li>高輝度,点滅および反転属性の色と、ANSIカラー表示を無効にできるようにした。
+        <ul>
+          <li>teraterm.ini に EnableBoldAttrColor, EnableBlinkAttrColor, EnableReverseAttrColor, EnableURLColor, EnableANSIColor エントリを追加した。デフォルトはすべてon。</li>
+        </ul></li>
       <li>teraterm.ini の ConfirmChangePaste（危険なクリップボードの貼り付け） はデフォルトで on とした。</li>
       <li>EDITOR.CNF をインストーラパッケージに新規追加した。</li>
       <li>マクロコマンド "<a href="../macro/command/sprintf2.html">sprintf2</a>" を新規追加した。</li>
