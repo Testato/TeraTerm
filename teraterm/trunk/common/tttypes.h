@@ -180,12 +180,20 @@ typedef TCharAttr *PCharAttr;
 #define TF_ENABLESLINE        64
 #define TF_BACKWRAP           128
 
-// ANSI color flags (used in ts.ColorFlag)
+// ANSI/Attribute color flags (used in ts.ColorFlag)
 #define CF_PCBOLD16     1
 #define CF_AIXTERM16    2
 #define CF_XTERM256     4
-#define CF_FULLCOLOR    7
-#define CF_USETEXTCOLOR 8
+#define CF_FULLCOLOR    (CF_PCBOLD16 | CF_AIXTERM16 | CF_XTERM256)
+
+#define CF_ANSICOLOR    8
+
+#define CF_BOLDCOLOR    16
+#define CF_BLINKCOLOR   32
+#define CF_REVERSECOLOR 64
+#define CF_URLCOLOR     128
+
+#define CF_USETEXTCOLOR 256
 
 // port flags (used in ts.PortFlag)
 #define PF_CONFIRMDISCONN 1
@@ -313,7 +321,7 @@ struct tttset {
 	LONG ScrollBuffMax;
 	WORD HideTitle;
 	WORD PopupMenu;
-	WORD ColorFlag;
+	int ColorFlag;
 	WORD TEKColorEmu;
 	COLORREF VTColor[2];
 	COLORREF TEKColor[2];

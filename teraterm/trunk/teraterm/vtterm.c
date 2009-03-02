@@ -1820,12 +1820,20 @@ void CSSetAttr()
 
       BuffUpdateScroll();
 
-      ColorRef = ts.VTColor[0];
-      ts.VTColor[0] = ts.VTReverseColor[0];
-      ts.VTReverseColor[0] = ColorRef;
-      ColorRef = ts.VTColor[1];
-      ts.VTColor[1] = ts.VTReverseColor[1];
-      ts.VTReverseColor[1] = ColorRef;
+      if (ts.ColorFlag & CF_REVERSECOLOR) {
+        ColorRef = ts.VTColor[0];
+        ts.VTColor[0] = ts.VTReverseColor[0];
+        ts.VTReverseColor[0] = ColorRef;
+        ColorRef = ts.VTColor[1];
+        ts.VTColor[1] = ts.VTReverseColor[1];
+        ts.VTReverseColor[1] = ColorRef;
+        ts.VTColor[0] = ts.VTReverseColor[0];
+      }
+      else {
+        ColorRef = ts.VTColor[0];
+        ts.VTColor[0] = ts.VTColor[1];
+        ts.VTColor[1] = ColorRef;
+      }
 
       ColorRef = ts.VTBoldColor[0];
       ts.VTBoldColor[0] = ts.VTBoldColor[1];

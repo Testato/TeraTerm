@@ -2435,7 +2435,7 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
   SelectObject(VTDC, VTFont[Attr.Attr & AttrFontMask]);
 
   if ((ts.ColorFlag & CF_FULLCOLOR) == 0) {
-	if ((Attr.Attr & AttrBlink) != 0) {
+	if ((ts.ColorFlag & CF_BLINKCOLOR) && (Attr.Attr & AttrBlink)) {
 #ifdef ALPHABLEND_TYPE2 // AKASI
 	  TextColor = BGVTBlinkColor[0];
 	  BackColor = BGVTBlinkColor[1];
@@ -2444,7 +2444,7 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 	  BackColor = ts.VTBlinkColor[1];
 #endif
 	}
-	else if ((Attr.Attr & AttrBold) != 0) {
+	else if ((ts.ColorFlag & CF_BOLDCOLOR) && (Attr.Attr & AttrBold)) {
 #ifdef ALPHABLEND_TYPE2 // AKASI
 	  TextColor = BGVTBoldColor[0];
 	  BackColor = BGVTBoldColor[1];
@@ -2454,11 +2454,10 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 #endif
 	}
     /* begin - ishizaki */
-	else if ((Attr.Attr & AttrURL) != 0) {
+	else if ((ts.ColorFlag & CF_URLCOLOR) && (Attr.Attr & AttrURL)) {
 #ifdef ALPHABLEND_TYPE2 // AKASI
 	  TextColor = BGURLColor[0];
 	  BackColor = BGURLColor[1];
-//-->
 #else
 	  TextColor = ts.URLColor[0];
 	  BackColor = ts.URLColor[1];
@@ -2466,7 +2465,7 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 	}
     /* end - ishizaki */
 	else {
-	  if ((Attr.Attr2 & Attr2Fore) != 0) {
+	  if ((ts.ColorFlag & CF_ANSICOLOR) && (Attr.Attr2 & Attr2Fore)) {
 		TextColor = ANSIColor[Attr.Fore];
 	  }
 	  else
@@ -2476,7 +2475,7 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 		TextColor = ts.VTColor[0];
 #endif
 
-	  if ((Attr.Attr2 & Attr2Back) != 0) {
+	  if ((ts.ColorFlag & CF_ANSICOLOR) && (Attr.Attr2 & Attr2Back)) {
 		BackColor = ANSIColor[Attr.Back];
 	  }
 	  else
@@ -2488,7 +2487,7 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 	}
   }
   else { // full color
-	if ((Attr.Attr2 & Attr2Fore) != 0) {
+	if ((ts.ColorFlag & CF_ANSICOLOR) && (Attr.Attr2 & Attr2Fore)) {
 	  if (Attr.Fore<8 && (ts.ColorFlag&CF_PCBOLD16)) {
 	    if (((Attr.Attr&AttrBold)!=0) == (Attr.Fore!=0)) {
 	      TextColor = ANSIColor[Attr.Fore];
@@ -2504,29 +2503,25 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 	    TextColor = ANSIColor[Attr.Fore];
 	  }
 	}
-	else if ((Attr.Attr & AttrBlink) != 0)
+	else if ((ts.ColorFlag & CF_BLINKCOLOR) && (Attr.Attr & AttrBlink))
 #ifdef ALPHABLEND_TYPE2 // AKASI
 	  TextColor = BGVTBlinkColor[0];
-	else if ((Attr.Attr & AttrBold) != 0)
+	else if ((ts.ColorFlag & CF_BOLDCOLOR) && (Attr.Attr & AttrBold))
 	  TextColor = BGVTBoldColor[0];
-    /* begin - ishizaki */
-	else if ((Attr.Attr & AttrURL) != 0)
+	else if ((ts.ColorFlag & CF_URLCOLOR) && (Attr.Attr & AttrURL))
 	  TextColor = BGURLColor[0];
-    /* end - ishizaki */
 	else
 	  TextColor = BGVTColor[0];
 #else
 	  TextColor = ts.VTBlinkColor[0];
-	else if ((Attr.Attr & AttrBold) != 0)
+	else if ((ts.ColorFlag & CF_BOLDCOLOR) && (Attr.Attr & AttrBold))
 	  TextColor = ts.VTBoldColor[0];
-    /* begin - ishizaki */
-	else if ((Attr.Attr & AttrURL) != 0)
+	else if ((ts.ColorFlag & CF_URLCOLOR) && (Attr.Attr & AttrURL))
 	  TextColor = ts.URLColor[0];
-    /* end - ishizaki */
 	else
 	  TextColor = ts.VTColor[0];
 #endif
-	if ((Attr.Attr2 & Attr2Back) != 0) {
+	if ((ts.ColorFlag & CF_ANSICOLOR) && (Attr.Attr2 & Attr2Back)) {
 	  if (Attr.Back<8 && (ts.ColorFlag&CF_PCBOLD16)) {
 	    if (((Attr.Attr&AttrBlink)!=0) == (Attr.Back!=0)) {
 	      BackColor = ANSIColor[Attr.Back];
@@ -2542,31 +2537,27 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 	    BackColor = ANSIColor[Attr.Back];
 	  }
 	}
-	else if ((Attr.Attr & AttrBlink) != 0)
+	else if ((ts.ColorFlag & CF_BLINKCOLOR) && (Attr.Attr & AttrBlink))
 #ifdef ALPHABLEND_TYPE2 // AKASI
 	  BackColor = BGVTBlinkColor[1];
-	else if ((Attr.Attr & AttrBold) != 0)
+	else if ((ts.ColorFlag & CF_BOLDCOLOR) && (Attr.Attr & AttrBold))
 	  BackColor = BGVTBoldColor[1];
-    /* begin - ishizaki */
-	else if ((Attr.Attr & AttrURL) != 0)
+	else if ((ts.ColorFlag & CF_URLCOLOR) && (Attr.Attr & AttrURL))
 	  BackColor = BGURLColor[1];
-    /* end - ishizaki */
 	else
-	  BackColor = ts.VTColor[1]; // BGVTColor[1] dewa naika?
+	  BackColor = BGVTColor[1];
 #else
 	  BackColor = ts.VTBlinkColor[1];
-	else if ((Attr.Attr & AttrBold) != 0)
+	else if ((ts.ColorFlag & CF_BOLDCOLOR) && (Attr.Attr & AttrBold))
 	  BackColor = ts.VTBoldColor[1];
-    /* begin - ishizaki */
-	else if ((Attr.Attr & AttrURL) != 0)
+	else if ((ts.ColorFlag & CF_URLCOLOR) && (Attr.Attr & AttrURL))
 	  BackColor = ts.URLColor[1];
-    /* end - ishizaki */
 	else
 	  BackColor = ts.VTColor[1];
 #endif
   }
 #ifdef USE_NORMAL_BGCOLOR_REJECT
-  if (ts.UseNormalBGColor != 0) {
+  if (ts.UseNormalBGColor) {
  #ifdef ALPHABLEND_TYPE2
     BackColor = BGVTColor[1];
  #else
@@ -2580,7 +2571,7 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
 #ifdef ALPHABLEND_TYPE2
     BGReverseText = TRUE;
 #endif
-    if ((Attr.Attr & AttrColorMask) == AttrReverse && (Attr.Attr2 & Attr2ColorMask) == 0) {
+    if ((ts.ColorFlag & CF_REVERSECOLOR) && (Attr.Attr & AttrColorMask) == AttrReverse && !(Attr.Attr2 & Attr2ColorMask)) {
 #ifdef ALPHABLEND_TYPE2
       SetTextColor(VTDC, BGVTReverseColor[0]);
       SetBkColor(  VTDC, BGVTReverseColor[1]);
@@ -2595,10 +2586,8 @@ void DispSetupDC(TCharAttr Attr, BOOL Reverse)
     }
   }
   else {
-#ifdef ALPHABLEND_TYPE2
-//<!--by AKASI
+#ifdef ALPHABLEND_TYPE2 // by AKASI
     BGReverseText = FALSE;
-//-->
 #endif
     SetTextColor(VTDC,TextColor);
     SetBkColor(  VTDC,BackColor);

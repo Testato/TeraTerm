@@ -210,7 +210,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->FTFlag = 0;				// File transfer flags
 	ts->MenuFlag = 0;			// Menu flags
 	ts->TermFlag = 0;			// Terminal flag
-	ts->ColorFlag = 0;			// ANSI color flags
+	ts->ColorFlag = 0;			// ANSI/Attribute color flags
 	ts->PortFlag = 0;			// Port flags
 	ts->TelPort = 23;
 
@@ -453,6 +453,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		ts->VTBoldColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
 		                         (BYTE) ts->TmpColor[0][i * 3 + 1],
 		                         (BYTE) ts->TmpColor[0][i * 3 + 2]);
+	ts->ColorFlag |=
+		GetOnOff(Section, "EnableBoldAttrColor", FName, TRUE)?CF_BOLDCOLOR:0;
+
 
 	/* VT Blink Color */
 	GetPrivateProfileString(Section, "VTBlinkColor", "255,0,0,255,255,255",
@@ -463,6 +466,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		ts->VTBlinkColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
 		                          (BYTE) ts->TmpColor[0][i * 3 + 1],
 		                          (BYTE) ts->TmpColor[0][i * 3 + 2]);
+	ts->ColorFlag |=
+		GetOnOff(Section, "EnableBlinkAttrColor", FName, TRUE)?CF_BLINKCOLOR:0;
 
 	/* VT Reverse Color */
 	GetPrivateProfileString(Section, "VTReverseColor", "255,255,255,0,0,0",
@@ -473,8 +478,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		ts->VTReverseColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
 		                          (BYTE) ts->TmpColor[0][i * 3 + 1],
 		                          (BYTE) ts->TmpColor[0][i * 3 + 2]);
+	ts->ColorFlag |=
+		GetOnOff(Section, "EnableReverseAttrColor", FName, TRUE)?CF_REVERSECOLOR:0;
 
-	/* begin - ishizaki */
 	ts->EnableClickableUrl =
 		GetOnOff(Section, "EnableClickableUrl", FName, FALSE);
 
@@ -487,7 +493,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		ts->URLColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
 		                      (BYTE) ts->TmpColor[0][i * 3 + 1],
 		                      (BYTE) ts->TmpColor[0][i * 3 + 2]);
-	/* end - ishizaki */
+	ts->ColorFlag |=
+		GetOnOff(Section, "EnableURLColor", FName, TRUE)?CF_URLCOLOR:0;
 
 	/* TEK Color */
 	GetPrivateProfileString(Section, "TEKColor", "0,0,0,255,255,255",
@@ -560,6 +567,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		ts->ANSIColor[i] = GetNearestColor(TmpDC, ts->ANSIColor[i]);
 #endif						/* NO_ANSI_COLOR_EXTENSION */
 	ReleaseDC(0, TmpDC);
+	ts->ColorFlag |=
+		GetOnOff(Section, "EnableANSIColor", FName, TRUE)?CF_ANSICOLOR:0;
 
 	/* TEK color emulation */
 	ts->TEKColorEmu = GetOnOff(Section, "TEKColorEmulation", FName, FALSE);
@@ -1545,7 +1554,6 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	          ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
 	          ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
 
-	/* start - ishizaki */
 	WriteOnOff(Section, "EnableClickableUrl", FName,
 	           ts->EnableClickableUrl);
 
@@ -1558,7 +1566,21 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	WriteInt6(Section, "URLColor", FName,
 	          ts->TmpColor[0][0], ts->TmpColor[0][1], ts->TmpColor[0][2],
 	          ts->TmpColor[0][3], ts->TmpColor[0][4], ts->TmpColor[0][5]);
-	/* end - ishizaki */
+
+	WriteOnOff(Section, "EnableBoldAttrColor", FName,
+	           (WORD) (ts->ColorFlag & CF_BOLDCOLOR));
+
+	WriteOnOff(Section, "EnableBlinkAttrColor", FName,
+	           (WORD) (ts->ColorFlag & CF_BLINKCOLOR));
+
+	WriteOnOff(Section, "EnableReverseAttrColor", FName,
+	           (WORD) (ts->ColorFlag & CF_REVERSECOLOR));
+
+	WriteOnOff(Section, "EnableURLColor", FName,
+	           (WORD) (ts->ColorFlag & CF_URLCOLOR));
+
+	WriteOnOff(Section, "EnableANSIColor", FName,
+	           (WORD) (ts->ColorFlag & CF_ANSICOLOR));
 
 	/* TEK Color */
 	for (i = 0; i <= 1; i++) {
