@@ -182,6 +182,7 @@
 #define RsvGetHostname  141   // add 'gethostname'  (2008.12.15 maya)
 #define RsvSprintf2     142   // add 'sprintf2'  (2008.12.18 maya)
 #define RsvWaitN        143   // add 'waitn'  (2009.1.26 maya)
+#define RsvSendBroadcast    144
 
 #define RsvOperator     150
 #define RsvBNot         151

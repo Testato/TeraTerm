@@ -4182,6 +4182,40 @@ static void UpdateBroadcastWindowList(HWND hWnd)
 #endif
 }
 
+extern "C"
+void SendAllBroadcastMessage(HWND HVTWin, HWND hWnd, int parent_only, char *buf, int buflen)
+{
+	int i;
+	HWND hd;
+	COPYDATASTRUCT cds;
+
+	// すべてのTera Termにメッセージとデータを送る
+	for (i = 0 ; i < 50 ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
+		if (parent_only) {
+			hd = GetParent(hWnd);
+			i = 50;		// 337: 強引かつ直値 :P
+		} else {
+			hd = GetNthWin(i);
+		}
+		if (hd == NULL)
+			break;
+
+		ZeroMemory(&cds, sizeof(cds));
+		cds.dwData = IPC_BROADCAST_COMMAND;
+		cds.cbData = buflen;
+		cds.lpData = buf;
+
+		// WM_COPYDATAを使って、プロセス間通信を行う。
+		SendMessage(hd, WM_COPYDATA, (WPARAM)HVTWin, (LPARAM)&cds);
+
+		// 送信先Tera Termウィンドウに適当なメッセージを送る。
+		// これをしないと、送り込んだデータが反映されない模様。
+		// (2006.2.7 yutaka)
+		PostMessage(hd, WM_SETFOCUS, NULL, 0);
+	}
+
+}
+
 
 //
 // すべてのターミナルへ同一コマンドを送信するモードレスダイアログの表示
@@ -4334,10 +4368,6 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			switch (LOWORD(wp)) {
 				case IDOK:
 					{
-						int i;
-						HWND hd;
-						COPYDATASTRUCT cds;
-
 						memset(buf, 0, sizeof(buf));
 						ret = GetDlgItemText(hWnd, IDC_COMMAND_EDIT, buf, 256 - 1);
 						if (ret == 0) { // error
@@ -4379,31 +4409,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 					// 337: 2007/03/20 チェックされていたら親ウィンドウにのみ送信
 					checked = SendMessage(GetDlgItem(hWnd, IDC_PARENT_ONLY), BM_GETCHECK, 0, 0);
 
-					// すべてのTera Termにメッセージとデータを送る
-					for (i = 0 ; i < 50 ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
-						if (checked) {
-							hd = GetParent(hWnd);
-							i = 50;		// 337: 強引かつ直値 :P
-						} else {
-							hd = GetNthWin(i);
-						}
-						if (hd == NULL)
-							break;
-
-						ZeroMemory(&cds, sizeof(cds));
-						cds.dwData = IPC_BROADCAST_COMMAND;
-						cds.cbData = strlen(buf);
-						cds.lpData = buf;
-
-						// WM_COPYDATAを使って、プロセス間通信を行う。
-						SendMessage(hd, WM_COPYDATA, (WPARAM)HVTWin, (LPARAM)&cds);
-
-						// 送信先Tera Termウィンドウに適当なメッセージを送る。
-						// これをしないと、送り込んだデータが反映されない模様。
-						// (2006.2.7 yutaka)
-						PostMessage(hd, WM_SETFOCUS, NULL, 0);
-					}
-
+					SendAllBroadcastMessage(HVTWin, hWnd, checked, buf, strlen(buf));
 					}
 
 					// モードレスダイアログは一度生成されると、アプリケーションが終了するまで

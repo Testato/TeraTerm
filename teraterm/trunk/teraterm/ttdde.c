@@ -52,6 +52,8 @@ static char ParamSecondFileName[256];
 
 #define CBBufSize TermWidthMax
 
+void SendAllBroadcastMessage(HWND HVTWin, HWND hWnd, int parent_only, char *buf, int buflen);
+
 void GetClientHWnd(PCHAR HWndStr)
 {
   int i;
@@ -324,6 +326,7 @@ WORD HexStr2Word(PCHAR Str)
 #define CmdSetRts       'L'
 #define CmdSetDtr       'M'
 #define CmdGetHostname  'N'
+#define CmdSendBroadcast  'O'
 
 HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 {
@@ -822,6 +825,12 @@ scp_rcv_error:
 				_snprintf_s(ParamFileName, sizeof(ParamFileName), _TRUNCATE, "COM%d", ts.ComPort);
 			}
 		}
+		break;
+
+	case CmdSendBroadcast:
+		SendAllBroadcastMessage(HVTWin, HVTWin, 0, ParamFileName, strlen(ParamFileName));
+		DdeCmnd = TRUE;
+		EndDdeCmnd(0);     // マクロ実行を終了させる。
 		break;
 
 	default:

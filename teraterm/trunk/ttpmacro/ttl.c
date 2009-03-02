@@ -2402,6 +2402,19 @@ WORD TTLSend()
 	return 0;
 }
 
+WORD TTLSendBroadcast()
+{
+	TStrVal Str;
+	WORD Err;
+
+	if (GetString(Str,&Err))
+	{
+		if (Err!=0) return Err;
+	}
+	SetFile(Str);
+	return SendCmnd(CmdSendBroadcast,IdTTLWaitCmndEnd);
+}
+
 WORD TTLSendFile()
 {
 	TStrVal Str;
@@ -3783,6 +3796,8 @@ int ExecCmnd()
 			Err = TTLSend(); break;
 		case RsvSendBreak:
 			Err = TTLCommCmd(CmdSendBreak,0); break;
+		case RsvSendBroadcast:
+			Err = TTLSendBroadcast(); break;
 		case RsvSendFile:
 			Err = TTLSendFile(); break;
 		case RsvSendKCode:
