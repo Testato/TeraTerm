@@ -173,11 +173,11 @@ DLG_TAB_VISUAL_MOUSE=&Mauszeiger
 DLG_TAB_VISUAL_RED=&Rot
 DLG_TAB_VISUAL_GREEN=&Grün
 DLG_TAB_VISUAL_BLUE=&Blau
-DLG_TAB_VISUAL_BOLD=Enable bold attribute color
-DLG_TAB_VISUAL_BLINK=Enable blink attribute color
-DLG_TAB_VISUAL_REVERSE=Enable reverse attribute color
-DLG_TAB_VISUAL_URL=Enable url color
-DLG_TAB_VISUAL_ANSI=Enable ANSI color
+DLG_TAB_VISUAL_BOLD=Enable b&old attribute color
+DLG_TAB_VISUAL_BLINK=Enable b&link attribute color
+DLG_TAB_VISUAL_REVERSE=Enable re&verse attribute color
+DLG_TAB_VISUAL_URL=Enable &url color
+DLG_TAB_VISUAL_ANSI=Enable A&NSI color
 
 DLG_TAB_LOG_EDITOR=&Auswahl Editor
 DLG_TAB_LOG_FILENAME=&Standardprotokoll Name
