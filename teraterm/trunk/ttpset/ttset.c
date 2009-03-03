@@ -1240,11 +1240,11 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 
 	// Disable mouse event tracking when Control-Key is pressed.
 	ts->DisableMouseTrackingByCtrl =
-		GetOnOff(Section, "DisableMouseTrackingByCtrl", FName, FALSE);
+		GetOnOff(Section, "DisableMouseTrackingByCtrl", FName, TRUE);
 
 	// Disable TranslateWheelToCursor setting when Control-Key is pressed.
 	ts->DisableWheelToCursorByCtrl =
-		GetOnOff(Section, "DisableWheelToCursorByCtrl", FName, FALSE);
+		GetOnOff(Section, "DisableWheelToCursorByCtrl", FName, TRUE);
 
 	// Strict Key Mapping.
 	ts->StrictKeyMapping =
