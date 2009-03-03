@@ -174,6 +174,11 @@ DLG_TAB_VISUAL_MOUSE=&MouseCursor
 DLG_TAB_VISUAL_RED=&Red
 DLG_TAB_VISUAL_GREEN=&Green
 DLG_TAB_VISUAL_BLUE=&Blue
+DLG_TAB_VISUAL_BOLD=Enable bold attribute color
+DLG_TAB_VISUAL_BLINK=Enable blink attribute color
+DLG_TAB_VISUAL_REVERSE=Enable reverse attribute color
+DLG_TAB_VISUAL_URL=Enable url color
+DLG_TAB_VISUAL_ANSI=Enable ANSI color
 
 DLG_TAB_LOG_EDITOR=View Log &Editor
 DLG_TAB_LOG_FILENAME=Default Log &File Name(strftime format)
