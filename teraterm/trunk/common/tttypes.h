@@ -194,6 +194,7 @@ typedef TCharAttr *PCharAttr;
 #define CF_URLCOLOR     128
 
 #define CF_USETEXTCOLOR 256
+#define CF_REVERSEVIDEO 512
 
 // port flags (used in ts.PortFlag)
 #define PF_CONFIRMDISCONN 1

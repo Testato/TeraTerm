@@ -46,7 +46,6 @@ static TCharAttr CharAttr;
 
 /* various modes of VT emulation */
 static BOOL RelativeOrgMode;
-static BOOL ReverseColor;
 static BOOL InsertMode;
 static BOOL LFMode;
 static BOOL AutoWrapMode;
@@ -167,7 +166,7 @@ void ResetTerminal() /*reset variables but don't update screen */
   AppliKeyMode = FALSE;
   AppliCursorMode = FALSE;
   RelativeOrgMode = FALSE;
-  ReverseColor = FALSE;
+  ts.ColorFlag &= ~CF_REVERSEVIDEO;
   AutoRepeatMode = TRUE;
   Send8BitMode = ts.Send8BitCtrl;
   FocusReportMode = FALSE;
@@ -1847,7 +1846,7 @@ void CSSetAttr()
       ts.URLColor[0] = ts.URLColor[1];
       ts.URLColor[1] = ColorRef;
 
-      ReverseColor = !ReverseColor;
+      ts.ColorFlag ^= CF_REVERSEVIDEO;
 
 #ifdef ALPHABLEND_TYPE2
       BGInitialize();
@@ -1867,7 +1866,7 @@ void CSSetAttr()
 	    ChangeTerminalSize(132,NumOfLines-StatusLine);
 	    break;
 	  case 5: /* Reverse Video */
-	    if (!ReverseColor)
+	    if (!(ts.ColorFlag & CF_REVERSEVIDEO))
 	      CSQExchangeColor(); /* Exchange text/back color */
 	    break;
 	  case 6:
@@ -1971,7 +1970,7 @@ void CSSetAttr()
 	    ChangeTerminalSize(80,NumOfLines-StatusLine);
 	    break;
 	  case 5: /* Normal Video */
-	    if (ReverseColor)
+	    if (ts.ColorFlag & CF_REVERSEVIDEO)
 	      CSQExchangeColor(); /* Exchange text/back color */
 	    break;
 	  case 6:

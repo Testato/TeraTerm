@@ -660,6 +660,7 @@ void CVisualPropPageDlg::OnOK()
 	int sel;
 	int beforeAlphaBlend;
 	char buf[MAXPATHLEN];
+	COLORREF TmpColor;
 
 	// (1)
 	beforeAlphaBlend = ts.AlphaBlend;
@@ -684,31 +685,51 @@ void CVisualPropPageDlg::OnOK()
 	// (5) Attr Bold Color
 	btn = (CButton *)GetDlgItem(IDC_ENABLE_ATTR_COLOR_BOLD);
 	if (((ts.ColorFlag & CF_BOLDCOLOR) != 0) != btn->GetCheck()) {
-	  ts.ColorFlag ^= CF_BOLDCOLOR;
+		ts.ColorFlag ^= CF_BOLDCOLOR;
 	}
 
 	// (6) Attr Blink Color
 	btn = (CButton *)GetDlgItem(IDC_ENABLE_ATTR_COLOR_BLINK);
 	if (((ts.ColorFlag & CF_BLINKCOLOR) != 0) != btn->GetCheck()) {
-	  ts.ColorFlag ^= CF_BLINKCOLOR;
+		ts.ColorFlag ^= CF_BLINKCOLOR;
 	}
 
 	// (7) Attr Reverse Color
 	btn = (CButton *)GetDlgItem(IDC_ENABLE_ATTR_COLOR_REVERSE);
-	if (((ts.ColorFlag & CF_REVERSECOLOR) != 0) != btn->GetCheck()) {
-	  ts.ColorFlag ^= CF_REVERSECOLOR;
+	if (ts.ColorFlag & CF_REVERSEVIDEO) { // Reverse Videoモード(DECSCNM)時は処理を変える
+		if (ts.ColorFlag & CF_REVERSECOLOR) {
+			if (!btn->GetCheck()) {
+				TmpColor = ts.VTColor[0];
+				ts.VTColor[0] = ts.VTReverseColor[1];
+				ts.VTReverseColor[1] = ts.VTColor[1];
+				ts.VTColor[1] = ts.VTReverseColor[0];
+				ts.VTReverseColor[0] = TmpColor;
+				ts.ColorFlag ^= CF_REVERSECOLOR;
+			}
+		}
+		else if (btn->GetCheck()) {
+			TmpColor = ts.VTColor[0];
+			ts.VTColor[0] = ts.VTReverseColor[0];
+			ts.VTReverseColor[0] = ts.VTColor[1];
+			ts.VTColor[1] = ts.VTReverseColor[1];
+			ts.VTReverseColor[1] = TmpColor;
+			ts.ColorFlag ^= CF_REVERSECOLOR;
+		}
+	}
+	else if (((ts.ColorFlag & CF_REVERSECOLOR) != 0) != btn->GetCheck()) {
+		ts.ColorFlag ^= CF_REVERSECOLOR;
 	}
 
 	// (8) URL Color
 	btn = (CButton *)GetDlgItem(IDC_ENABLE_URL_COLOR);
 	if (((ts.ColorFlag & CF_URLCOLOR) != 0) != btn->GetCheck()) {
-	  ts.ColorFlag ^= CF_URLCOLOR;
+		ts.ColorFlag ^= CF_URLCOLOR;
 	}
 
 	// (9) Color
 	btn = (CButton *)GetDlgItem(IDC_ENABLE_ANSI_COLOR);
 	if (((ts.ColorFlag & CF_ANSICOLOR) != 0) != btn->GetCheck()) {
-	  ts.ColorFlag ^= CF_ANSICOLOR;
+		ts.ColorFlag ^= CF_ANSICOLOR;
 	}
 
 	// 2006/03/11 by 337 : Alpha値も即時変更
