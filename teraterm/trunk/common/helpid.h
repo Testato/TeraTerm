@@ -250,7 +250,7 @@
 #define HlpMacroCommandScpsend          92132
 #define HlpMacroCommandSend             92074
 #define HlpMacroCommandSendbreak        92075
-#define HlpMacroCommandSendbroadcast        92144
+#define HlpMacroCommandSendbroadcast    92144
 #define HlpMacroCommandSendfile         92076
 #define HlpMacroCommandSendkcode        92077
 #define HlpMacroCommandSendln           92078
@@ -288,6 +288,7 @@
 #define HlpMacroCommandWait             92100
 #define HlpMacroCommandWaitevent        92101
 #define HlpMacroCommandWaitln           92102
+#define HlpMacroCommandWaitn            92143
 #define HlpMacroCommandWaitrecv         92103
 #define HlpMacroCommandWaitregex        92110
 #define HlpMacroCommandWhile            92104
