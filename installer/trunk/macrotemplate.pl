@@ -11,17 +11,18 @@
 # [改版履歴]
 # 1.0 (2008.02.16 Yutaka Hirata)
 # 1.1 (2008.02.23 Yutaka Hirata)
+# 1.2 (2009.03.03 Yutaka Hirata)
 #
 
-$macroidfile = '..\source\ttmacro\ttmparse.h';
-$helpidfile = '..\source\common\helpid.h';
-$encmdfile = '..\..\doc\en\html\macro\command';
-$jpcmdfile = '..\..\doc\jp\html\macro\command';
-$enhhcfile = '..\..\doc\en\teraterm.hhc';
-$jphhcfile = '..\..\doc\jp\teraterm.hhc';
-$enhhpfile = '..\..\doc\en\teraterm.hhp';
-$jphhpfile = '..\..\doc\jp\teraterm.hhp';
-$keyfile = '..\release\keyfile.ini';
+$macroidfile = '..\teraterm\ttpmacro\ttmparse.h';
+$helpidfile = '..\teraterm\common\helpid.h';
+$encmdfile = '..\doc\en\html\macro\command';
+$jpcmdfile = '..\doc\jp\html\macro\command';
+$enhhcfile = '..\doc\en\teraterm.hhc';
+$jphhcfile = '..\doc\jp\teraterm.hhc';
+$enhhpfile = '..\doc\en\teraterm.hhp';
+$jphhpfile = '..\doc\jp\teraterm.hhp';
+$keyfile = 'release\keyfile.ini';
 
 if ($#ARGV != -1) {
 	print "$ARGV[0]\n";
@@ -30,8 +31,9 @@ if ($#ARGV != -1) {
 } else {
 	while (<DATA>) {
 		chomp;
-		if (/(.+)=.*/) {
+		if (/#define\s+Rsv(\w+)\s+.*/) {
 			$key = lc($1);
+			
 			print "==== $key マクロを検証中...\n";
 			do_main($key);
 		}
@@ -64,6 +66,24 @@ sub do_main {
 		return;
 	}
 #	print "$id\n";
+
+	# 置換
+	if ($macro eq 'else' ||
+	    $macro eq 'elseif' ||
+	    $macro eq 'endif'
+	   ) {
+		$macro = 'Ifthenelseif';
+	}
+	if ($macro eq 'endwhile'
+	   ) {
+		$macro = 'while';
+	}
+	if ($macro eq 'findfirst' ||
+	    $macro eq 'findnext' ||
+	    $macro eq 'findclose'
+	   ) {
+		$macro = 'Findoperations';
+	}
 
 	$s = "Command$macro\\b";
 	$ret = read_keyword($helpidfile, $s);
@@ -165,132 +185,150 @@ sub read_keyword {
 	return ($line);
 }
 
-# コマンド列はkeyfile.iniから抜粋
+# コマンド列は ttmparse.h から抜粋
 __END__
-Beep=92001
-Bplusrecv=92002
-Bplussend=92003
-Break=92120
-Call=92004
-Callmenu=92125
-Changedir=92005
-Clearscreen=92006
-Clipb2var=92113
-Closesbox=92007
-Closett=92008
-Code2str=92009
-Connect=92010
-CygConnect=92130
-Delpassword=92011
-Disconnect=92012
-Do=92126
-Enablekeyb=92015
-End=92016
-EndUntil=92129
-Exec=92019
-Execcmnd=92020
-Exit=92021
-Fileclose=92022
-Fileconcat=92023
-Filecopy=92024
-Filecreate=92025
-Filedelete=92026
-Filemarkptr=92027
-Filenamebox=92124
-Fileopen=92028
-Fileread=92116
-Filereadln=92029
-Filerename=92030
-Filesearch=92031
-Fileseek=92032
-Fileseekback=92033
-Filestrseek=92034
-Filestrseek2=92035
-Filewrite=92036
-Filewriteln=92037
-Findoperations=92039
-Flushrecv=92041
-Fornext=92042
-Getdate=92043
-Getdir=92044
-Getenv=92045
-Getpassword=92046
-Gettime=92047
-Gettitle=92048
-Getver=92133
-Goto=92049
-Ifdefined=92115
-Ifthenelseif=92050
-Include=92051
-Inputbox=92052
-Int2str=92053
-Kmtfinish=92054
-Kmtget=92055
-Kmtrecv=92056
-Kmtsend=92057
-Loadkeymap=92058
-Logclose=92059
-Logopen=92060
-Logpause=92061
-Logstart=92062
-Logwrite=92063
-Loop=92127
-Makepath=92064
-Messagebox=92065
-Mpause=92111
-Passwordbox=92067
-Pause=92068
-Quickvanrecv=92069
-Quickvansend=92070
-Random=92112
-Recvln=92071
-Restoresetup=92072
-Return=92073
-Rotateleft=92122
-Rotateright=92121
-Scprecv=92131
-Scpsend=92132
-Send=92074
-Sendbreak=92075
-Sendfile=92076
-Sendkcode=92077
-Sendln=92078
-Setbaud=92134
-Setdate=92079
-Setdir=92080
-Setdlgpos=92081
-Setenv=92123
-Setecho=92082
-Setexitcode=92083
-Setsync=92084
-Settime=92085
-Settitle=92086
-Show=92087
-Showtt=92088
-Sprintf=92117
-Statusbox=92089
-Str2code=92090
-Str2int=92091
-Strcompare=92092
-Strconcat=92093
-Strcopy=92094
-Strlen=92095
-Strscan=92096
-Testlink=92097
-Tolower=92118
-Toupper=92119
-Unlink=92099
-Until=92128
-Var2clipb=92114
-Wait=92100
-Waitevent=92101
-Waitln=92102
-Waitrecv=92103
-Waitregex=92110
-While=92104
-Xmodemrecv=92105
-Xmodemsend=92106
-Yesnobox=92107
-Zmodemrecv=92108
-Zmodemsend=92109
+#define RsvBeep         1
+#define RsvBPlusRecv    2
+#define RsvBPlusSend    3
+#define RsvCall         4
+#define RsvChangeDir    5
+#define RsvClearScreen  6
+#define RsvCloseSBox    7
+#define RsvCloseTT      8
+#define RsvCode2Str     9
+#define RsvConnect      10
+#define RsvDelPassword  11
+#define RsvDisconnect   12
+#define RsvElse         13
+#define RsvElseIf       14
+#define RsvEnableKeyb   15
+#define RsvEnd          16
+#define RsvEndIf        17
+#define RsvEndWhile     18
+#define RsvExec         19
+#define RsvExecCmnd     20
+#define RsvExit         21
+#define RsvFileClose    22
+#define RsvFileConcat   23
+#define RsvFileCopy     24
+#define RsvFileCreate   25
+#define RsvFileDelete   26
+#define RsvFileMarkPtr  27
+#define RsvFileOpen     28
+#define RsvFileReadln   29
+#define RsvFileRename   30
+#define RsvFileSearch   31
+#define RsvFileSeek     32
+#define RsvFileSeekBack 33
+#define RsvFileStrSeek  34
+#define RsvFileStrSeek2 35
+#define RsvFileWrite    36
+#define RsvFileWriteLn  37
+#define RsvFindClose    38
+#define RsvFindFirst    39
+#define RsvFindNext     40
+#define RsvFlushRecv    41
+#define RsvFor          42
+#define RsvGetDate      43
+#define RsvGetDir       44
+#define RsvGetEnv       45
+#define RsvGetPassword  46
+#define RsvGetTime      47
+#define RsvGetTitle     48
+#define RsvGoto         49
+#define RsvIf           50
+#define RsvInclude      51
+#define RsvInputBox     52
+#define RsvInt2Str      53
+#define RsvKmtFinish    54
+#define RsvKmtGet       55
+#define RsvKmtRecv      56
+#define RsvKmtSend      57
+#define RsvLoadKeyMap   58
+#define RsvLogClose     59
+#define RsvLogOpen      60
+#define RsvLogPause     61
+#define RsvLogStart     62
+#define RsvLogWrite     63
+#define RsvMakePath     64
+#define RsvMessageBox   65
+#define RsvNext         66
+#define RsvPasswordBox  67
+#define RsvPause        68
+#define RsvQuickVANRecv 69
+#define RsvQuickVANSend 70
+#define RsvRecvLn       71
+#define RsvRestoreSetup 72
+#define RsvReturn       73
+#define RsvSend         74
+#define RsvSendBreak    75
+#define RsvSendFile     76
+#define RsvSendKCode    77
+#define RsvSendLn       78
+#define RsvSetDate      79
+#define RsvSetDir       80
+#define RsvSetDlgPos    81
+#define RsvSetEcho      82
+#define RsvSetExitCode  83
+#define RsvSetSync      84
+#define RsvSetTime      85
+#define RsvSetTitle     86
+#define RsvShow         87
+#define RsvShowTT       88
+#define RsvStatusBox    89
+#define RsvStr2Code     90
+#define RsvStr2Int      91
+#define RsvStrCompare   92
+#define RsvStrConcat    93
+#define RsvStrCopy      94
+#define RsvStrLen       95
+#define RsvStrScan      96
+#define RsvTestLink     97
+#define RsvThen         98
+#define RsvUnlink       99
+#define RsvWait         100
+#define RsvWaitEvent    101
+#define RsvWaitLn       102
+#define RsvWaitRecv     103
+#define RsvWhile        104
+#define RsvXmodemRecv   105
+#define RsvXmodemSend   106
+#define RsvYesNoBox     107
+#define RsvZmodemRecv   108
+#define RsvZmodemSend   109
+#define RsvWaitRegex    110   // add 'waitregex' (2005.10.5 yutaka)
+#define RsvMilliPause   111   // add 'mpause' (2006.2.10 yutaka)
+#define RsvRandom       112   // add 'random' (2006.2.11 yutaka)
+#define RsvClipb2Var    113   // add 'clipb2var' (2006.9.17 maya)
+#define RsvVar2Clipb    114   // add 'var2clipb' (2006.9.17 maya)
+#define RsvIfDefined    115   // add 'ifdefined' (2006.9.23 maya)
+#define RsvFileRead     116   // add 'fileread' (2006.11.1 yutaka)
+#define RsvSprintf      117   // add 'sprintf' (2007.5.1 yutaka)
+#define RsvToLower      118   // add 'tolower' (2007.7.12 maya)
+#define RsvToUpper      119   // add 'toupper' (2007.7.12 maya)
+#define RsvBreak        120   // add 'break' (2007.7.20 doda)
+#define RsvRotateR      121   // add 'rotateright' (2007.8.19 maya)
+#define RsvRotateL      122   // add 'rotateleft' (2007.8.19 maya)
+#define RsvSetEnv       123   // reactivate 'setenv' (2007.8.31 maya)
+#define RsvFilenameBox  124   // add 'filenamebox' (2007.9.13 maya)
+#define RsvCallMenu     125   // add 'callmenu' (2007.11.18 maya)
+#define RsvDo           126   // add 'do' (2007.11.20 doda)
+#define RsvLoop         127   // add 'loop' (2007.11.20 doda)
+#define RsvUntil        128   // add 'until' (2007.11.20 doda)
+#define RsvEndUntil     129   // add 'enduntil' (2007.11.20 doda)
+#define RsvCygConnect   130   // add 'cygconnect' (2007.12.17 doda)
+#define RsvScpRecv      131   // add 'scprecv' (2008.1.1 yutaka)
+#define RsvScpSend      132   // add 'scpsend' (2008.1.1 yutaka)
+#define RsvGetVer       133   // add 'getver'  (2008.2.4 yutaka)
+#define RsvSetBaud      134   // add 'setbaud' (2008.2.13 yutaka)
+#define RsvStrMatch     135   // add 'strmatch' (2008.3.26 yutaka)
+#define RsvSetRts       136   // add 'setrts'  (2008.3.12 maya)
+#define RsvSetDtr       137   // add 'setdtr'  (2008.3.12 maya)
+#define RsvCrc32        138   // add 'crc32'  (2008.9.12 yutaka)
+#define RsvCrc32File    139   // add 'crc32file'  (2008.9.13 yutaka)
+#define RsvGetTTDir     140   // add 'getttdir'  (2008.9.20 maya)
+#define RsvGetHostname  141   // add 'gethostname'  (2008.12.15 maya)
+#define RsvSprintf2     142   // add 'sprintf2'  (2008.12.18 maya)
+#define RsvWaitN        143   // add 'waitn'  (2009.1.26 maya)
+#define RsvSendBroadcast    144
 
