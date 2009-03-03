@@ -2416,6 +2416,7 @@ WORD TTLSendBroadcast()
 		return ErrLinkFirst;
 
 	buf[0] = '\0';
+	EndOfLine = FALSE;
 
 	do {
 		if (GetString(Str,&Err))
