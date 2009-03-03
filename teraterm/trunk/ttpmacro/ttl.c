@@ -2402,16 +2402,48 @@ WORD TTLSend()
 	return 0;
 }
 
+// "sendbroadcast"コマンド (2009.3.3 yutaka)
 WORD TTLSendBroadcast()
 {
+	TStrVal buf;    // 一行バッファ
+	char asc[10];
 	TStrVal Str;
-	WORD Err;
+	WORD Err, ValType;
+	int Val;
+	BOOL EndOfLine;
 
-	if (GetString(Str,&Err))
-	{
-		if (Err!=0) return Err;
-	}
-	SetFile(Str);
+	if (! Linked)
+		return ErrLinkFirst;
+
+	buf[0] = '\0';
+
+	do {
+		if (GetString(Str,&Err))
+		{
+			if (Err!=0) return Err;
+			strncat_s(buf, MaxStrLen, Str, _TRUNCATE);
+		}
+		else if (GetExpression(&ValType,&Val,&Err))
+		{
+			if (Err!=0) return Err;
+			switch (ValType) {
+				case TypInteger:  // intはASCIIコードとみなす。
+					asc[0] = LOBYTE(Val);
+					asc[1] = '\0';
+					strncat_s(buf, MaxStrLen, asc, _TRUNCATE);
+					break;
+				case TypString: 
+					strncat_s(buf, MaxStrLen, StrVarPtr((WORD)Val), _TRUNCATE);
+					break;
+				default:
+					return ErrTypeMismatch;
+			}
+		}
+		else
+			EndOfLine = TRUE;
+	} while (! EndOfLine);
+
+	SetFile(buf);
 	return SendCmnd(CmdSendBroadcast,IdTTLWaitCmndEnd);
 }
 
