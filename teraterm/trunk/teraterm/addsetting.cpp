@@ -459,6 +459,11 @@ BOOL CVisualPropPageDlg::OnInitDialog()
 		SendDlgItemMessage(IDC_BLUE, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_COLOR_BLUE, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_SAMPLE_COLOR, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_ENABLE_ATTR_COLOR_BOLD, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_ENABLE_ATTR_COLOR_BLINK, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_ENABLE_ATTR_COLOR_REVERSE, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_ENABLE_URL_COLOR, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_ENABLE_ANSI_COLOR, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
 	}
 	else {
 		DlgVisualFont = NULL;
@@ -482,6 +487,21 @@ BOOL CVisualPropPageDlg::OnInitDialog()
 	GetDlgItemText(IDC_BLUE, uimsg, sizeof(uimsg));
 	get_lang_msg("DLG_TAB_VISUAL_BLUE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
 	SetDlgItemText(IDC_BLUE, ts.UIMsg);
+	GetDlgItemText(IDC_ENABLE_ATTR_COLOR_BOLD, uimsg, sizeof(uimsg));
+	get_lang_msg("DLG_TAB_VISUAL_BOLD", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	SetDlgItemText(IDC_ENABLE_ATTR_COLOR_BOLD, ts.UIMsg);
+	GetDlgItemText(IDC_ENABLE_ATTR_COLOR_BLINK, uimsg, sizeof(uimsg));
+	get_lang_msg("DLG_TAB_VISUAL_BLINK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	SetDlgItemText(IDC_ENABLE_ATTR_COLOR_BLINK, ts.UIMsg);
+	GetDlgItemText(IDC_ENABLE_ATTR_COLOR_REVERSE, uimsg, sizeof(uimsg));
+	get_lang_msg("DLG_TAB_VISUAL_REVERSE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	SetDlgItemText(IDC_ENABLE_ATTR_COLOR_REVERSE, ts.UIMsg);
+	GetDlgItemText(IDC_ENABLE_URL_COLOR, uimsg, sizeof(uimsg));
+	get_lang_msg("DLG_TAB_VISUAL_URL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	SetDlgItemText(IDC_ENABLE_URL_COLOR, ts.UIMsg);
+	GetDlgItemText(IDC_ENABLE_ANSI_COLOR, uimsg, sizeof(uimsg));
+	get_lang_msg("DLG_TAB_VISUAL_ANSI", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
+	SetDlgItemText(IDC_ENABLE_ANSI_COLOR, ts.UIMsg);
 
 	// (1)AlphaBlend
 	_snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d", ts.AlphaBlend);
@@ -510,6 +530,26 @@ BOOL CVisualPropPageDlg::OnInitDialog()
 	            (WPARAM)label_hdc,
 	            (LPARAM)GetDlgItem(IDC_SAMPLE_COLOR));
 #endif
+
+	// (5)Bold Attr Color
+	btn = (CButton *)GetDlgItem(IDC_ENABLE_ATTR_COLOR_BOLD);
+	btn->SetCheck((ts.ColorFlag&CF_BOLDCOLOR) != 0);
+
+	// (6)Blink Attr Color
+	btn = (CButton *)GetDlgItem(IDC_ENABLE_ATTR_COLOR_BLINK);
+	btn->SetCheck((ts.ColorFlag&CF_BLINKCOLOR) != 0);
+
+	// (7)Reverse Attr Color
+	btn = (CButton *)GetDlgItem(IDC_ENABLE_ATTR_COLOR_REVERSE);
+	btn->SetCheck((ts.ColorFlag&CF_REVERSECOLOR) != 0);
+
+	// (8)URL Color
+	btn = (CButton *)GetDlgItem(IDC_ENABLE_URL_COLOR);
+	btn->SetCheck((ts.ColorFlag&CF_URLCOLOR) != 0);
+
+	// (9)Color
+	btn = (CButton *)GetDlgItem(IDC_ENABLE_ANSI_COLOR);
+	btn->SetCheck((ts.ColorFlag&CF_ANSICOLOR) != 0);
 
 	// ダイアログにフォーカスを当てる 
 	::SetFocus(::GetDlgItem(GetSafeHwnd(), IDC_ALPHA_BLEND));
@@ -639,6 +679,36 @@ void CVisualPropPageDlg::OnOK()
 	sel = listbox->GetCurSel();
 	if (sel >= 0 && sel < MOUSE_CURSOR_MAX) {
 		strncpy_s(ts.MouseCursorName, sizeof(ts.MouseCursorName), MouseCursor[sel].name, _TRUNCATE);
+	}
+
+	// (5) Attr Bold Color
+	btn = (CButton *)GetDlgItem(IDC_ENABLE_ATTR_COLOR_BOLD);
+	if (((ts.ColorFlag & CF_BOLDCOLOR) != 0) != btn->GetCheck()) {
+	  ts.ColorFlag ^= CF_BOLDCOLOR;
+	}
+
+	// (6) Attr Blink Color
+	btn = (CButton *)GetDlgItem(IDC_ENABLE_ATTR_COLOR_BLINK);
+	if (((ts.ColorFlag & CF_BLINKCOLOR) != 0) != btn->GetCheck()) {
+	  ts.ColorFlag ^= CF_BLINKCOLOR;
+	}
+
+	// (7) Attr Reverse Color
+	btn = (CButton *)GetDlgItem(IDC_ENABLE_ATTR_COLOR_REVERSE);
+	if (((ts.ColorFlag & CF_REVERSECOLOR) != 0) != btn->GetCheck()) {
+	  ts.ColorFlag ^= CF_REVERSECOLOR;
+	}
+
+	// (8) URL Color
+	btn = (CButton *)GetDlgItem(IDC_ENABLE_URL_COLOR);
+	if (((ts.ColorFlag & CF_URLCOLOR) != 0) != btn->GetCheck()) {
+	  ts.ColorFlag ^= CF_URLCOLOR;
+	}
+
+	// (9) Color
+	btn = (CButton *)GetDlgItem(IDC_ENABLE_ANSI_COLOR);
+	if (((ts.ColorFlag & CF_ANSICOLOR) != 0) != btn->GetCheck()) {
+	  ts.ColorFlag ^= CF_ANSICOLOR;
 	}
 
 	// 2006/03/11 by 337 : Alpha値も即時変更
