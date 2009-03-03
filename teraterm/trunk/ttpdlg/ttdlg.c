@@ -648,21 +648,9 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 			if (ts->VTFlag>0) {
 				get_lang_msg("DLG_WIN_PCBOLD16", uimsg, sizeof(uimsg), "&16 Colors (PC style)", UILanguageFile);
 				SetDlgItemText(Dialog, IDC_WINCOLOREMU,uimsg);
-				if ((ts->ColorFlag & CF_PCBOLD16)!=0)
-					i = 1;
-				else
-					i = 0;
-				SetRB(Dialog,i,IDC_WINCOLOREMU,IDC_WINCOLOREMU);
-				if ((ts->ColorFlag & CF_AIXTERM16)!=0)
-					i = 1;
-				else
-					i = 0;
-				SetRB(Dialog,i,IDC_WINAIXTERM16,IDC_WINAIXTERM16);
-				if ((ts->ColorFlag & CF_XTERM256)!=0)
-					i = 1;
-				else
-					i = 0;
-				SetRB(Dialog,i,IDC_WINXTERM256,IDC_WINXTERM256);
+				SetRB(Dialog, (ts->ColorFlag&CF_PCBOLD16)!=0, IDC_WINCOLOREMU, IDC_WINCOLOREMU);
+				SetRB(Dialog, (ts->ColorFlag&CF_AIXTERM16)!=0, IDC_WINAIXTERM16, IDC_WINAIXTERM16);
+				SetRB(Dialog, (ts->ColorFlag&CF_XTERM256)!=0,IDC_WINXTERM256,IDC_WINXTERM256);
 				ShowDlgItem(Dialog,IDC_WINAIXTERM16,IDC_WINXTERM256);
 				ShowDlgItem(Dialog,IDC_WINSCROLL1,IDC_WINSCROLL3);
 				SetRB(Dialog,ts->EnableScrollBuff,IDC_WINSCROLL1,IDC_WINSCROLL1);
@@ -673,23 +661,47 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 				if ( ts->EnableScrollBuff==0 )
 					DisableDlgItem(Dialog,IDC_WINSCROLL2,IDC_WINSCROLL3);
 				for (i = 0 ; i <= 1 ; i++) {
-					ts->TmpColor[0][i*3]   = GetRValue(ts->VTColor[i]);
-					ts->TmpColor[0][i*3+1] = GetGValue(ts->VTColor[i]);
-					ts->TmpColor[0][i*3+2] = GetBValue(ts->VTColor[i]);
-					ts->TmpColor[1][i*3]   = GetRValue(ts->VTBoldColor[i]);
-					ts->TmpColor[1][i*3+1] = GetGValue(ts->VTBoldColor[i]);
-					ts->TmpColor[1][i*3+2] = GetBValue(ts->VTBoldColor[i]);
-					ts->TmpColor[2][i*3]   = GetRValue(ts->VTBlinkColor[i]);
-					ts->TmpColor[2][i*3+1] = GetGValue(ts->VTBlinkColor[i]);
-					ts->TmpColor[2][i*3+2] = GetBValue(ts->VTBlinkColor[i]);
-					ts->TmpColor[3][i*3]   = GetRValue(ts->VTReverseColor[i]);
-					ts->TmpColor[3][i*3+1] = GetGValue(ts->VTReverseColor[i]);
-					ts->TmpColor[3][i*3+2] = GetBValue(ts->VTReverseColor[i]);
-					/* begin - ishizaki */
-					ts->TmpColor[4][i*3]   = GetRValue(ts->URLColor[i]);
-					ts->TmpColor[4][i*3+1] = GetGValue(ts->URLColor[i]);
-					ts->TmpColor[4][i*3+2] = GetBValue(ts->URLColor[i]);
-					/* end - ishizaki */
+					if (ts->ColorFlag & CF_REVERSEVIDEO) {
+						//
+						// Reverse Videoモード(DECSCNMがon)の時は
+						// ・VTColorとVTReverseColorを入れ替える
+						// ・他の属性色は文字色と背景色を入れ替える
+						//
+						ts->TmpColor[0][i*3]   = GetRValue(ts->VTReverseColor[i]);
+						ts->TmpColor[0][i*3+1] = GetGValue(ts->VTReverseColor[i]);
+						ts->TmpColor[0][i*3+2] = GetBValue(ts->VTReverseColor[i]);
+						ts->TmpColor[1][i*3]   = GetRValue(ts->VTBoldColor[!i]);
+						ts->TmpColor[1][i*3+1] = GetGValue(ts->VTBoldColor[!i]);
+						ts->TmpColor[1][i*3+2] = GetBValue(ts->VTBoldColor[!i]);
+						ts->TmpColor[2][i*3]   = GetRValue(ts->VTBlinkColor[!i]);
+						ts->TmpColor[2][i*3+1] = GetGValue(ts->VTBlinkColor[!i]);
+						ts->TmpColor[2][i*3+2] = GetBValue(ts->VTBlinkColor[!i]);
+						ts->TmpColor[3][i*3]   = GetRValue(ts->VTColor[i]);
+						ts->TmpColor[3][i*3+1] = GetGValue(ts->VTColor[i]);
+						ts->TmpColor[3][i*3+2] = GetBValue(ts->VTColor[i]);
+						ts->TmpColor[4][i*3]   = GetRValue(ts->URLColor[!i]);
+						ts->TmpColor[4][i*3+1] = GetGValue(ts->URLColor[!i]);
+						ts->TmpColor[4][i*3+2] = GetBValue(ts->URLColor[!i]);
+					}
+					else {
+						ts->TmpColor[0][i*3]   = GetRValue(ts->VTColor[i]);
+						ts->TmpColor[0][i*3+1] = GetGValue(ts->VTColor[i]);
+						ts->TmpColor[0][i*3+2] = GetBValue(ts->VTColor[i]);
+						ts->TmpColor[1][i*3]   = GetRValue(ts->VTBoldColor[i]);
+						ts->TmpColor[1][i*3+1] = GetGValue(ts->VTBoldColor[i]);
+						ts->TmpColor[1][i*3+2] = GetBValue(ts->VTBoldColor[i]);
+						ts->TmpColor[2][i*3]   = GetRValue(ts->VTBlinkColor[i]);
+						ts->TmpColor[2][i*3+1] = GetGValue(ts->VTBlinkColor[i]);
+						ts->TmpColor[2][i*3+2] = GetBValue(ts->VTBlinkColor[i]);
+						ts->TmpColor[3][i*3]   = GetRValue(ts->VTReverseColor[i]);
+						ts->TmpColor[3][i*3+1] = GetGValue(ts->VTReverseColor[i]);
+						ts->TmpColor[3][i*3+2] = GetBValue(ts->VTReverseColor[i]);
+						/* begin - ishizaki */
+						ts->TmpColor[4][i*3]   = GetRValue(ts->URLColor[i]);
+						ts->TmpColor[4][i*3+1] = GetGValue(ts->URLColor[i]);
+						ts->TmpColor[4][i*3+2] = GetBValue(ts->URLColor[i]);
+						/* end - ishizaki */
+					}
 				}
 				ShowDlgItem(Dialog,IDC_WINATTRTEXT,IDC_WINATTR);
 				get_lang_msg("DLG_WIN_NORMAL", uimsg, sizeof(uimsg), "Normal", UILanguageFile);
@@ -769,28 +781,57 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 									GetDlgItemInt(Dialog,IDC_WINSCROLL2,NULL,FALSE);
 							}
 							for (i = 0 ; i <= 1 ; i++) {
-								ts->VTColor[i] =
-									RGB(ts->TmpColor[0][i*3],
-									    ts->TmpColor[0][i*3+1],
-									    ts->TmpColor[0][i*3+2]);
-								ts->VTBoldColor[i] =
-									RGB(ts->TmpColor[1][i*3],
-									    ts->TmpColor[1][i*3+1],
-									    ts->TmpColor[1][i*3+2]);
-								ts->VTBlinkColor[i] =
-									RGB(ts->TmpColor[2][i*3],
-									    ts->TmpColor[2][i*3+1],
-									    ts->TmpColor[2][i*3+2]);
-								ts->VTReverseColor[i] =
-									RGB(ts->TmpColor[3][i*3],
-									    ts->TmpColor[3][i*3+1],
-									    ts->TmpColor[3][i*3+2]);
-								/* begin - ishizaki */
-								ts->URLColor[i] =
-									RGB(ts->TmpColor[4][i*3],
-									    ts->TmpColor[4][i*3+1],
-									    ts->TmpColor[4][i*3+2]);
-								/* end - ishizaki */
+								if (ts->ColorFlag & CF_REVERSEVIDEO) {
+									//
+									// Reverse Videoモード(DECSCNMがon)の時は
+									// ・VTColorとVTReverseColorを入れ替える
+									// ・他の属性色は文字色と背景色を入れ替える
+									//
+									ts->VTReverseColor[i] =
+										RGB(ts->TmpColor[0][i*3],
+										    ts->TmpColor[0][i*3+1],
+										    ts->TmpColor[0][i*3+2]);
+									ts->VTBoldColor[i] =
+										RGB(ts->TmpColor[1][(!i)*3],
+										    ts->TmpColor[1][(!i)*3+1],
+										    ts->TmpColor[1][(!i)*3+2]);
+									ts->VTBlinkColor[i] =
+										RGB(ts->TmpColor[2][(!i)*3],
+										    ts->TmpColor[2][(!i)*3+1],
+										    ts->TmpColor[2][(!i)*3+2]);
+									ts->VTColor[i] =
+										RGB(ts->TmpColor[3][i*3],
+										    ts->TmpColor[3][i*3+1],
+										    ts->TmpColor[3][i*3+2]);
+									ts->URLColor[i] =
+										RGB(ts->TmpColor[4][(!i)*3],
+										    ts->TmpColor[4][(!i)*3+1],
+										    ts->TmpColor[4][(!i)*3+2]);
+								}
+								else {
+									ts->VTColor[i] =
+										RGB(ts->TmpColor[0][i*3],
+										    ts->TmpColor[0][i*3+1],
+										    ts->TmpColor[0][i*3+2]);
+									ts->VTBoldColor[i] =
+										RGB(ts->TmpColor[1][i*3],
+										    ts->TmpColor[1][i*3+1],
+										    ts->TmpColor[1][i*3+2]);
+									ts->VTBlinkColor[i] =
+										RGB(ts->TmpColor[2][i*3],
+										    ts->TmpColor[2][i*3+1],
+										    ts->TmpColor[2][i*3+2]);
+									ts->VTReverseColor[i] =
+										RGB(ts->TmpColor[3][i*3],
+										    ts->TmpColor[3][i*3+1],
+										    ts->TmpColor[3][i*3+2]);
+									/* begin - ishizaki */
+									ts->URLColor[i] =
+										RGB(ts->TmpColor[4][i*3],
+										    ts->TmpColor[4][i*3+1],
+										    ts->TmpColor[4][i*3+2]);
+									/* end - ishizaki */
+								}
 								ts->VTColor[i] = GetNearestColor(DC,ts->VTColor[i]);
 								ts->VTBoldColor[i] = GetNearestColor(DC,ts->VTBoldColor[i]);
 								ts->VTBlinkColor[i] = GetNearestColor(DC,ts->VTBlinkColor[i]);
@@ -803,11 +844,22 @@ BOOL CALLBACK WinDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 							GetRB(Dialog,&ts->UseNormalBGColor,
 							      IDC_WINUSENORMALBG,IDC_WINUSENORMALBG);
 							// 2006/03/11 by 337
-							if (ts->UseNormalBGColor) {
-								ts->VTBoldColor[1] =
-								ts->VTBlinkColor[1] =
-								ts->URLColor[1] =
-									ts->VTColor[1];
+							if (ts->ColorFlag & CF_REVERSEVIDEO) {
+								// Reverse Videoモード(DECSCNMがon)の時は文字色を反転背景色に合わせる
+								if (ts->UseNormalBGColor) {
+									ts->VTBoldColor[0] =
+									ts->VTBlinkColor[0] =
+									ts->URLColor[0] =
+										ts->VTReverseColor[1];
+								}
+							}
+							else {
+								if (ts->UseNormalBGColor) {
+									ts->VTBoldColor[1] =
+									ts->VTBlinkColor[1] =
+									ts->URLColor[1] =
+										ts->VTColor[1];
+								}
 							}
 #endif
 						}
