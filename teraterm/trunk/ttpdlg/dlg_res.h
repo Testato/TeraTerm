@@ -184,9 +184,9 @@
 #define IDC_WINLISTCLOSE                1202
 #define IDC_WINLISTHELP                 1299
 #define IDD_TERMDLGR                    1300
-//HKS
 #define IDD_TERMDLGK                    1301
 #define IDC_STATIC                      -1
+#define IDC_BUILDTOOL                   -1
 
 // Next default values for new objects
 // 

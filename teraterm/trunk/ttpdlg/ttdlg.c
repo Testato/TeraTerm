@@ -2400,7 +2400,7 @@ static void do_subclass_window(HWND hWnd, url_subclass_t *parent)
 BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 {
 	int a, b, c, d;
-	char buf[30];
+	char buf[128], tmpbuf[128];
 	HDC hdc;
 	HWND hwnd;
 	RECT r;
@@ -2469,6 +2469,26 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 		// (2006.7.24 yutaka)
 		_snprintf_s(buf, sizeof(buf), _TRUNCATE, "Oniguruma %s", onig_version());
 		SendMessage(GetDlgItem(Dialog, IDC_ONIGURUMA_LABEL), WM_SETTEXT, 0, (LPARAM)buf);
+
+		// ビルドしたときに使われたVisual C++のバージョンを設定する。(2009.3.3 yutaka)
+		_snprintf_s(buf, sizeof(buf), _TRUNCATE, "Built using Microsoft Visual C++");
+#ifdef _MSC_FULL_VER
+		_snprintf_s(tmpbuf, sizeof(tmpbuf), _TRUNCATE, " %d.%d",
+			(_MSC_FULL_VER / 10000000) - 6,
+			(_MSC_FULL_VER / 100000) % 100);
+		strncat_s(buf, sizeof(buf), tmpbuf, _TRUNCATE);
+		if (_MSC_FULL_VER % 100000) {
+			_snprintf_s(tmpbuf, sizeof(tmpbuf), _TRUNCATE, " build %d",
+				_MSC_FULL_VER % 100000);
+			strncat_s(buf, sizeof(buf), tmpbuf, _TRUNCATE);
+		}
+#elif defined(_MSC_VER)
+		_snprintf_s(tmpbuf, sizeof(tmpbuf), _TRUNCATE, " %d.%d",
+			(_MSC_VER / 100) - 6,
+			_MSC_VER % 100);
+		strncat_s(buf, sizeof(buf), tmpbuf, _TRUNCATE);
+#endif
+		SendMessage(GetDlgItem(Dialog, IDC_BUILDTOOL), WM_SETTEXT, 0, (LPARAM)buf);
 
 		// static text のサイズを変更 (2007.4.16 maya)
 		hwnd = GetDlgItem(Dialog, IDC_AUTHOR_URL);
