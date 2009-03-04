@@ -253,6 +253,8 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 		else if (_stricmp(Str,"send")==0) *WordId = RsvSend;
 		else if (_stricmp(Str,"sendbreak")==0) *WordId = RsvSendBreak;
 		else if (_stricmp(Str,"sendbroadcast")==0) *WordId = RsvSendBroadcast;
+		else if (_stricmp(Str,"sendmulticast")==0) *WordId = RsvSendMulticast;
+		else if (_stricmp(Str,"setmulticastname")==0) *WordId = RsvSetMulticastName;
 		else if (_stricmp(Str,"sendfile")==0) *WordId = RsvSendFile;
 		else if (_stricmp(Str,"sendkcode")==0) *WordId = RsvSendKCode;
 		else if (_stricmp(Str,"sendln")==0) *WordId = RsvSendLn;

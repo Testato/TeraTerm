@@ -2448,6 +2448,76 @@ WORD TTLSendBroadcast()
 	return SendCmnd(CmdSendBroadcast,IdTTLWaitCmndEnd);
 }
 
+// "setmulticastname"コマンド (2009.3.5 yutaka)
+WORD TTLSetMulticastName()
+{
+	TStrVal Str;
+	WORD Err;
+
+	if (GetString(Str,&Err))
+	{
+		if (Err!=0) return Err;
+	}
+
+	SetFile(Str);
+	return SendCmnd(CmdSetMulticastName,IdTTLWaitCmndEnd);
+}
+
+// "sendmulticast"コマンド (2009.3.5 yutaka)
+WORD TTLSendMulticast()
+{
+	TStrVal buf;    // 一行バッファ
+	char asc[10];
+	TStrVal Str;
+	WORD Err, ValType;
+	int Val;
+	BOOL EndOfLine;
+
+	if (! Linked)
+		return ErrLinkFirst;
+
+	// マルチキャスト識別用の名前を取得する。
+	if (GetString(Str,&Err))
+	{
+		if (Err!=0) return Err;
+	}
+	SetFile(Str);
+
+	buf[0] = '\0';
+	EndOfLine = FALSE;
+
+	do {
+		if (GetString(Str,&Err))
+		{
+			if (Err!=0) return Err;
+			strncat_s(buf, MaxStrLen, Str, _TRUNCATE);
+		}
+		else if (GetExpression(&ValType,&Val,&Err))
+		{
+			if (Err!=0) return Err;
+			switch (ValType) {
+				case TypInteger:  // intはASCIIコードとみなす。
+					asc[0] = LOBYTE(Val);
+					asc[1] = '\0';
+					strncat_s(buf, MaxStrLen, asc, _TRUNCATE);
+					break;
+				case TypString: 
+					strncat_s(buf, MaxStrLen, StrVarPtr((WORD)Val), _TRUNCATE);
+					break;
+				default:
+					return ErrTypeMismatch;
+			}
+		}
+		else
+			EndOfLine = TRUE;
+	} while (! EndOfLine);
+
+	SetSecondFile(buf);
+	return SendCmnd(CmdSendMulticast,IdTTLWaitCmndEnd);
+}
+
+
+
 WORD TTLSendFile()
 {
 	TStrVal Str;
@@ -3831,6 +3901,10 @@ int ExecCmnd()
 			Err = TTLCommCmd(CmdSendBreak,0); break;
 		case RsvSendBroadcast:
 			Err = TTLSendBroadcast(); break;
+		case RsvSendMulticast:
+			Err = TTLSendMulticast(); break;
+		case RsvSetMulticastName:
+			Err = TTLSetMulticastName(); break;
 		case RsvSendFile:
 			Err = TTLSendFile(); break;
 		case RsvSendKCode:

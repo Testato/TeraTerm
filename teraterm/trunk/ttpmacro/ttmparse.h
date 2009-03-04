@@ -183,6 +183,8 @@
 #define RsvSprintf2     142   // add 'sprintf2'  (2008.12.18 maya)
 #define RsvWaitN        143   // add 'waitn'  (2009.1.26 maya)
 #define RsvSendBroadcast    144
+#define RsvSendMulticast    145
+#define RsvSetMulticastName    146
 
 #define RsvOperator     150
 #define RsvBNot         151
