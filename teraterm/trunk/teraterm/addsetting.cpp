@@ -665,9 +665,11 @@ void CVisualPropPageDlg::OnOK()
 	// (1)
 	beforeAlphaBlend = ts.AlphaBlend;
 	GetDlgItemText(IDC_ALPHA_BLEND, buf, sizeof(buf));
-	ts.AlphaBlend = atoi(buf);
-	ts.AlphaBlend = max(0, ts.AlphaBlend);
-	ts.AlphaBlend = min(255, ts.AlphaBlend);
+	if (isdigit(buf[0])) {
+		ts.AlphaBlend = atoi(buf);
+		ts.AlphaBlend = max(0, ts.AlphaBlend);
+		ts.AlphaBlend = min(255, ts.AlphaBlend);
+	}
 
 	// (2)
 	// グローバル変数 BGEnable を直接書き換えると、プログラムが落ちることが
