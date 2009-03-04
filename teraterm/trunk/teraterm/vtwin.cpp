@@ -4128,7 +4128,7 @@ static LRESULT CALLBACK HostnameEditProc(HWND dlg, UINT msg,
 					SendMessage(dlg, EM_SETSEL, 0, 0);
 				}
 #if 0
-				for (i = 0 ; i < 50 ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
+				for (i = 0 ; i < MAXNWIN ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
 					hd = GetNthWin(i);
 					if (hd == NULL)
 						break;
@@ -4166,7 +4166,7 @@ static void UpdateBroadcastWindowList(HWND hWnd)
 
 	SendMessage(hWnd, LB_RESETCONTENT, 0, 0);
 
-	for (i = 0 ; i < 50 ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
+	for (i = 0 ; i < MAXNWIN ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
 		hd = GetNthWin(i);
 		if (hd == NULL)
 			break;
@@ -4190,10 +4190,10 @@ void SendAllBroadcastMessage(HWND HVTWin, HWND hWnd, int parent_only, char *buf,
 	COPYDATASTRUCT cds;
 
 	// すべてのTera Termにメッセージとデータを送る
-	for (i = 0 ; i < 50 ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
+	for (i = 0 ; i < MAXNWIN ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
 		if (parent_only) {
 			hd = GetParent(hWnd);
-			i = 50;		// 337: 強引かつ直値 :P
+			i = MAXNWIN;		// 337: 強引かつ直値 :P
 		} else {
 			hd = GetNthWin(i);
 		}
