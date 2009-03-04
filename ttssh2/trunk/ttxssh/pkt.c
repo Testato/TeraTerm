@@ -33,6 +33,7 @@ See LICENSE.TXT for the license.
 
 #include "ttxssh.h"
 #include "util.h"
+#include "pkt.h"
 
 //#define READAMOUNT 60000
 // 60000 -> 65536 へ拡張。SSH2ではwindow制御を行うため、SSH2のwindow sizeと
@@ -240,7 +241,7 @@ int PKT_recv(PTInstVar pvar, char FAR * buf, int buflen)
 				pvar->pkt_state.datastart += total_packet_size;
 				pvar->pkt_state.datalen -= total_packet_size;
 
-			} else if (total_packet_size > 4 * 1024 * 1024) {
+			} else if (total_packet_size > PACKET_MAX_SIZE) {
 				// 4MBを超える巨大なパケットが届いたら、異常終了する。
 				// 実際にはデータ化けで復号失敗時に、誤認識することが多い。
 				UTIL_get_lang_msg("MSG_PKT_OVERSIZED_ERROR", pvar,

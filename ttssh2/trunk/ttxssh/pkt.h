@@ -34,6 +34,10 @@ See LICENSE.TXT for the license.
 #ifndef __PKT_H
 #define __PKT_H
 
+// 最大で受信できるパケットサイズ。OpenSSH 5.2では 256KB だが、
+// TTSSH ではオリジナルの頃から 4MB なので、それに合わせることにする。
+#define PACKET_MAX_SIZE (4 * 1024 * 1024)
+
 typedef struct {
   char FAR * buf;
   unsigned long buflen;

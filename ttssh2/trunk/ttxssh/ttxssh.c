@@ -334,7 +334,7 @@ static void read_ssh_options(PTInstVar pvar, PCHAR fileName)
 	                        sizeof(buf), fileName);
 	settings->WriteBufferSize = atoi(buf);
 	if (settings->WriteBufferSize <= 0) {
-		settings->WriteBufferSize = 2 * 1024 * 1024;
+		settings->WriteBufferSize = (PACKET_MAX_SIZE / 2);   // 2MB
 	}
 
 	settings->LocalForwardingIdentityCheck =

@@ -663,7 +663,7 @@ static int buffer_packet_data(PTInstVar pvar, int limit)
 static BOOL grab_payload(PTInstVar pvar, int num_bytes)
 {
 	/* Accept maximum of 4MB of payload data */
-	int in_buffer = buffer_packet_data(pvar, 4 * 1024 * 1024);
+	int in_buffer = buffer_packet_data(pvar, PACKET_MAX_SIZE);
 
 	if (in_buffer < 0) {
 		return FALSE;
