@@ -479,7 +479,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		                          (BYTE) ts->TmpColor[0][i * 3 + 1],
 		                          (BYTE) ts->TmpColor[0][i * 3 + 2]);
 	ts->ColorFlag |=
-		GetOnOff(Section, "EnableReverseAttrColor", FName, TRUE)?CF_REVERSECOLOR:0;
+		GetOnOff(Section, "EnableReverseAttrColor", FName, FALSE)?CF_REVERSECOLOR:0;
 
 	ts->EnableClickableUrl =
 		GetOnOff(Section, "EnableClickableUrl", FName, FALSE);
