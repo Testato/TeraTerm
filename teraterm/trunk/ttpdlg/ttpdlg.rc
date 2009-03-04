@@ -254,7 +254,7 @@ BEGIN
     PUSHBUTTON      "&Help",IDC_DIRHELP,115,34,36,14
 END
 
-IDD_ABOUTDLG DIALOGEX 20, 20, 187, 120
+IDD_ABOUTDLG DIALOGEX 20, 20, 187, 128
 STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 CAPTION "About Tera Term"
 FONT 8, "System", 400, 0, 0x80
@@ -268,16 +268,17 @@ BEGIN
                     "Static",SS_LEFTNOWORDWRAP | WS_GROUP,38,59,134,8
     DEFPUSHBUTTON   "OK",IDOK,136,6,32,16,WS_GROUP
     CONTROL         "All Rights Reserved.",IDC_RIGHTS_LABEL,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,38,75,76,8
-    CONTROL         "(C) 2004-2009 TeraTerm Project",IDC_PROJECT_LABEL,
+    CONTROL         "(C) 2004-2009 Tera Term Project",IDC_PROJECT_LABEL,
                     "Static",SS_LEFTNOWORDWRAP | WS_GROUP,38,67,122,9
     LTEXT           "Includes:",IDC_INLUCDE_LABEL,38,26,31,8
     LTEXT           "Version",IDC_TT_VERSION,38,10,68,8
-    RTEXT           "Author:",IDC_AUTHOR_LABEL,5,97,28,8
-    LTEXT           "http://ttssh2.sourceforge.jp/",IDC_AUTHOR_URL,36,97,128,8,SS_NOTIFY | WS_TABSTOP
-    RTEXT           "Forum:",IDC_FORUM_LABEL,8,107,25,8
-    LTEXT           "http://www.logmett.com/forum/index.php",IDC_FORUM_URL,36,107,136,8,SS_NOTIFY | WS_TABSTOP
+    RTEXT           "Author:",IDC_AUTHOR_LABEL,5,106,28,8
+    LTEXT           "http://ttssh2.sourceforge.jp/",IDC_AUTHOR_URL,36,106,128,8,SS_NOTIFY | WS_TABSTOP
+    RTEXT           "Forum:",IDC_FORUM_LABEL,8,115,25,8
+    LTEXT           "http://www.logmett.com/forum/index.php",IDC_FORUM_URL,36,115,136,8,SS_NOTIFY | WS_TABSTOP
     LTEXT           "Oniguruma: ",IDC_ONIGURUMA_LABEL,38,35,114,8
     LTEXT           "Built using Microsoft Visual C++",IDC_BUILDTOOL,7,87,172,10
+    LTEXT           "Last Modified:",IDC_BUILDTIME,7,97,165,8
 END
 
 IDD_FONTDLG DIALOGEX 20, 20, 207, 144
@@ -472,7 +473,7 @@ BEGIN
     IDD_ABOUTDLG, DIALOG
     BEGIN
         RIGHTMARGIN, 186
-        BOTTOMMARGIN, 115
+        BOTTOMMARGIN, 125
     END
 
     IDD_WINDLG, DIALOG

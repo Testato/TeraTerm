@@ -2595,6 +2595,10 @@ BOOL CALLBACK AboutDlg(HWND Dialog, UINT Message, WPARAM wParam, LPARAM lParam)
 #endif
 		SendMessage(GetDlgItem(Dialog, IDC_BUILDTOOL), WM_SETTEXT, 0, (LPARAM)buf);
 
+		// ビルドタイムを設定する。(2009.3.4 yutaka)
+		_snprintf_s(buf, sizeof(buf), _TRUNCATE, "Last Modified: %s", __TIMESTAMP__);
+		SendMessage(GetDlgItem(Dialog, IDC_BUILDTIME), WM_SETTEXT, 0, (LPARAM)buf);
+
 		// static text のサイズを変更 (2007.4.16 maya)
 		hwnd = GetDlgItem(Dialog, IDC_AUTHOR_URL);
 		hdc = GetDC(hwnd);
