@@ -4,6 +4,8 @@
 
 /* TERATERM.EXE, VT window */
 
+#ifdef __cplusplus
+
 class CVTWindow : public CFrameWnd
 {
 private:
@@ -174,3 +176,16 @@ protected:
 	//}}AFX_MSG
     DECLARE_MESSAGE_MAP();
 };
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void SendAllBroadcastMessage(HWND HVTWin, HWND hWnd, int parent_only, char *buf, int buflen);
+void SendMulticastMessage(HWND HVTWin, HWND hWnd, char *name, char *buf, int buflen);
+void SetMulticastName(char *name);
+
+#ifdef __cplusplus
+}
+#endif

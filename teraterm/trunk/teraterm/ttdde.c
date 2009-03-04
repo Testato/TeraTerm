@@ -19,6 +19,8 @@
 #include "ttdde.h"
 #include "commlib.h"
 
+#include "vtwin.h"
+
 #define ServiceName "TERATERM"
 #define ItemName "DATA"
 #define ItemName2 "PARAM"
@@ -51,8 +53,6 @@ static WORD ParamXmodemOpt;
 static char ParamSecondFileName[256];
 
 #define CBBufSize TermWidthMax
-
-void SendAllBroadcastMessage(HWND HVTWin, HWND hWnd, int parent_only, char *buf, int buflen);
 
 void GetClientHWnd(PCHAR HWndStr)
 {
@@ -327,6 +327,8 @@ WORD HexStr2Word(PCHAR Str)
 #define CmdSetDtr       'M'
 #define CmdGetHostname  'N'
 #define CmdSendBroadcast  'O'
+#define CmdSendMulticast  'P'
+#define CmdSetMulticastName  'Q'
 
 HDDEDATA AcceptExecute(HSZ TopicHSz, HDDEDATA Data)
 {
@@ -827,8 +829,20 @@ scp_rcv_error:
 		}
 		break;
 
-	case CmdSendBroadcast:
+	case CmdSendBroadcast: // 'sendbroadcast'
 		SendAllBroadcastMessage(HVTWin, HVTWin, 0, ParamFileName, strlen(ParamFileName));
+		DdeCmnd = TRUE;
+		EndDdeCmnd(0);     // マクロ実行を終了させる。
+		break;
+
+	case CmdSendMulticast: // 'sendmulticast'
+		SendMulticastMessage(HVTWin, HVTWin, ParamFileName, ParamSecondFileName, strlen(ParamSecondFileName));
+		DdeCmnd = TRUE;
+		EndDdeCmnd(0);     // マクロ実行を終了させる。
+		break;
+
+	case CmdSetMulticastName: // 'setmulticastname'
+		SetMulticastName(ParamFileName);
 		DdeCmnd = TRUE;
 		EndDdeCmnd(0);     // マクロ実行を終了させる。
 		break;

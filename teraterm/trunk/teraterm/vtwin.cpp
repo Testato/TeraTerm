@@ -70,7 +70,8 @@ static char THIS_FILE[] = __FILE__;
 #define WINDOW_MAXMIMUM_ENABLED 1
 
 // WM_COPYDATAによるプロセス間通信の種別 (2005.1.22 yutaka)
-#define IPC_BROADCAST_COMMAND 1
+#define IPC_BROADCAST_COMMAND 1      // 全端末へ送信
+#define IPC_MULTICAST_COMMAND 2      // 任意の端末群へ送信
 
 #define BROADCAST_LOGFILE "broadcast.log"
 
@@ -4182,6 +4183,10 @@ static void UpdateBroadcastWindowList(HWND hWnd)
 #endif
 }
 
+/*
+ * 全TeraTermへメッセージを送信するブロードキャストモード。
+ * "sendbroadcast"マクロコマンドからも利用される。
+ */
 extern "C"
 void SendAllBroadcastMessage(HWND HVTWin, HWND hWnd, int parent_only, char *buf, int buflen)
 {
@@ -4216,6 +4221,76 @@ void SendAllBroadcastMessage(HWND HVTWin, HWND hWnd, int parent_only, char *buf,
 
 }
 
+
+/*
+ * 任意のTeraTerm群へメッセージを送信するマルチキャストモード。厳密には、
+ * ブロードキャスト送信を行い、受信側でメッセージを取捨選択する。
+ * "sendmulticast"マクロコマンドからのみ利用される。
+ */
+extern "C"
+void SendMulticastMessage(HWND HVTWin, HWND hWnd, char *name, char *buf, int buflen)
+{
+	int i;
+	HWND hd;
+	COPYDATASTRUCT cds;
+	char *msg = NULL;
+	int msglen, nlen;
+
+	/* 送信メッセージを構築する。
+	 *
+	 * msg
+	 * +------+--------------+--+
+	 * |name\0|buf           |\0|
+	 * +------+--------------+--+
+	 * <--------------------->
+	 * msglen = strlen(name) + 1 + buflen
+	 * bufの直後には \0 は付かない。
+	 */
+	nlen = strlen(name) + 1;
+	msglen = nlen + buflen;
+	msg = (char *)malloc(msglen);
+	if (msg == NULL)
+		goto error;
+	strcpy_s(msg, msglen, name);
+	memcpy(msg + nlen, buf, buflen);
+
+	// すべてのTera Termにメッセージとデータを送る
+	for (i = 0 ; i < MAXNWIN ; i++) { // 50 = MAXNWIN(@ ttcmn.c)
+		hd = GetNthWin(i);
+		if (hd == NULL)
+			break;
+
+		ZeroMemory(&cds, sizeof(cds));
+		cds.dwData = IPC_MULTICAST_COMMAND;
+		cds.cbData = msglen;
+		cds.lpData = msg;
+
+		// WM_COPYDATAを使って、プロセス間通信を行う。
+		SendMessage(hd, WM_COPYDATA, (WPARAM)HVTWin, (LPARAM)&cds);
+
+		// 送信先Tera Termウィンドウに適当なメッセージを送る。
+		// これをしないと、送り込んだデータが反映されない模様。
+		// (2006.2.7 yutaka)
+		PostMessage(hd, WM_SETFOCUS, NULL, 0);
+	}
+
+error:
+	free(msg);
+}
+
+
+static char multicast_name[128];
+
+extern "C"
+void SetMulticastName(char *name)
+{
+	strncpy_s(multicast_name, sizeof(multicast_name), name, _TRUNCATE);
+}
+
+static int CompareMulticastName(char *name)
+{
+	return strcmp(multicast_name, name);
+}
 
 //
 // すべてのターミナルへ同一コマンドを送信するモードレスダイアログの表示
@@ -4516,9 +4591,10 @@ activate:;
 // WM_COPYDATAの受信
 LONG CVTWindow::OnReceiveIpcMessage(UINT wParam, LONG lParam)
 {
-	int len;
 	COPYDATASTRUCT *cds;
-	char *buf;
+	char *buf, *msg, *name;
+	int buflen, msglen, nlen;
+	int sending = 0;
 
 	if (!cv.Ready)
 		return 0;
@@ -4537,12 +4613,29 @@ LONG CVTWindow::OnReceiveIpcMessage(UINT wParam, LONG lParam)
 	}
 
 	cds = (COPYDATASTRUCT *)lParam;
-	len = cds->cbData;
-	buf = (char *)cds->lpData;
+	msglen = cds->cbData;
+	msg = (char *)cds->lpData;
 	if (cds->dwData == IPC_BROADCAST_COMMAND) {
+		buf = msg;
+		buflen = msglen;
+		sending = 1;
+
+	} else if (cds->dwData == IPC_MULTICAST_COMMAND) {
+		name = msg;
+		nlen = strlen(name) + 1;
+		buf = msg + nlen;
+		buflen = msglen - nlen; 
+
+		// マルチキャスト名をチェックする
+		if (CompareMulticastName(name) == 0) {  // 同じ
+			sending = 1;
+		}
+	}
+
+	if (sending) {
 		// 端末へ文字列を送り込む
 		// DDE通信に使う関数に変更。(2006.2.7 yutaka)
-		CBStartPaste(HVTWin, FALSE, TermWidthMax/*CBBufSize*/, buf, len);
+		CBStartPaste(HVTWin, FALSE, TermWidthMax/*CBBufSize*/, buf, buflen);
 		// 送信データがある場合は送信する
 		if (TalkStatus == IdTalkCB) {
 			CBSend();

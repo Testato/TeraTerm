@@ -53,6 +53,8 @@
 #define CmdSetDtr       'M'
 #define CmdGetHostname  'N'
 #define CmdSendBroadcast  'O'
+#define CmdSendMulticast  'P'
+#define CmdSetMulticastName  'Q'
 
 #ifdef __cplusplus
 extern "C" {
