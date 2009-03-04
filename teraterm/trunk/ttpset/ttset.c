@@ -415,16 +415,16 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->PopupMenu = GetOnOff(Section, "PopupMenu", FName, FALSE);
 
 	/* PC-Style bold color mapping */
-	ts->ColorFlag |=
-		CF_PCBOLD16 * GetOnOff(Section, "PcBoldColor", FName, FALSE);
+	if (GetOnOff(Section, "PcBoldColor", FName, FALSE))
+		ts->ColorFlag |= CF_PCBOLD16;
 
 	/* aixterm style 16 colors mode */
-	ts->ColorFlag |=
-		CF_AIXTERM16 * GetOnOff(Section, "Aixterm16Color", FName, FALSE);
+	if (GetOnOff(Section, "Aixterm16Color", FName, FALSE))
+		ts->ColorFlag |= CF_AIXTERM16;
 
 	/* xterm style 256 colors mode */
-	ts->ColorFlag |=
-		CF_XTERM256 * GetOnOff(Section, "Xterm256Color", FName, TRUE);
+	if (GetOnOff(Section, "Xterm256Color", FName, TRUE))
+		ts->ColorFlag |= CF_XTERM256;
 
 	/* Enable scroll buffer */
 	ts->EnableScrollBuff =
@@ -453,9 +453,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		ts->VTBoldColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
 		                         (BYTE) ts->TmpColor[0][i * 3 + 1],
 		                         (BYTE) ts->TmpColor[0][i * 3 + 2]);
-	ts->ColorFlag |=
-		GetOnOff(Section, "EnableBoldAttrColor", FName, TRUE)?CF_BOLDCOLOR:0;
-
+	if (GetOnOff(Section, "EnableBoldAttrColor", FName, TRUE))
+		ts->ColorFlag |= CF_BOLDCOLOR;
 
 	/* VT Blink Color */
 	GetPrivateProfileString(Section, "VTBlinkColor", "255,0,0,255,255,255",
@@ -466,8 +465,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		ts->VTBlinkColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
 		                          (BYTE) ts->TmpColor[0][i * 3 + 1],
 		                          (BYTE) ts->TmpColor[0][i * 3 + 2]);
-	ts->ColorFlag |=
-		GetOnOff(Section, "EnableBlinkAttrColor", FName, TRUE)?CF_BLINKCOLOR:0;
+	if (GetOnOff(Section, "EnableBlinkAttrColor", FName, TRUE))
+		ts->ColorFlag |= CF_BLINKCOLOR;
 
 	/* VT Reverse Color */
 	GetPrivateProfileString(Section, "VTReverseColor", "255,255,255,0,0,0",
@@ -478,8 +477,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		ts->VTReverseColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
 		                          (BYTE) ts->TmpColor[0][i * 3 + 1],
 		                          (BYTE) ts->TmpColor[0][i * 3 + 2]);
-	ts->ColorFlag |=
-		GetOnOff(Section, "EnableReverseAttrColor", FName, FALSE)?CF_REVERSECOLOR:0;
+	if (GetOnOff(Section, "EnableReverseAttrColor", FName, FALSE))
+		ts->ColorFlag |= CF_REVERSECOLOR;
 
 	ts->EnableClickableUrl =
 		GetOnOff(Section, "EnableClickableUrl", FName, FALSE);
@@ -493,8 +492,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		ts->URLColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
 		                      (BYTE) ts->TmpColor[0][i * 3 + 1],
 		                      (BYTE) ts->TmpColor[0][i * 3 + 2]);
-	ts->ColorFlag |=
-		GetOnOff(Section, "EnableURLColor", FName, TRUE)?CF_URLCOLOR:0;
+	if (GetOnOff(Section, "EnableURLColor", FName, TRUE))
+		ts->ColorFlag |= CF_URLCOLOR;
 
 	/* TEK Color */
 	GetPrivateProfileString(Section, "TEKColor", "0,0,0,255,255,255",
@@ -567,8 +566,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		ts->ANSIColor[i] = GetNearestColor(TmpDC, ts->ANSIColor[i]);
 #endif						/* NO_ANSI_COLOR_EXTENSION */
 	ReleaseDC(0, TmpDC);
-	ts->ColorFlag |=
-		GetOnOff(Section, "EnableANSIColor", FName, TRUE)?CF_ANSICOLOR:0;
+	if (GetOnOff(Section, "EnableANSIColor", FName, TRUE))
+		ts->ColorFlag |= CF_ANSICOLOR;
 
 	/* TEK color emulation */
 	ts->TEKColorEmu = GetOnOff(Section, "TEKColorEmulation", FName, FALSE);
@@ -758,33 +757,31 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 
 /*--------------------------------------------------*/
 	/* 8 bit control code flag  -- special option */
-	ts->TermFlag |=
-		TF_ACCEPT8BITCTRL *
-		GetOnOff(Section, "Accept8BitCtrl", FName, TRUE);
+	if (GetOnOff(Section, "Accept8BitCtrl", FName, TRUE))
+		ts->TermFlag |= TF_ACCEPT8BITCTRL;
 
 	/* Wrong sequence flag  -- special option */
-	ts->TermFlag |=
-		TF_ALLOWWRONGSEQUENCE *
-		GetOnOff(Section, "AllowWrongSequence", FName, FALSE);
+	if (GetOnOff(Section, "AllowWrongSequence", FName, FALSE))
+		ts->TermFlag |= TF_ALLOWWRONGSEQUENCE;
 
 	if (((ts->TermFlag & TF_ALLOWWRONGSEQUENCE) == 0) &&
 	    (ts->KanjiOut == IdKanjiOutH))
 		ts->KanjiOut = IdKanjiOutJ;
 
 	// Auto file renaming --- special option
-	ts->FTFlag |=
-		FT_RENAME * GetOnOff(Section, "AutoFileRename", FName, FALSE);
+	if (GetOnOff(Section, "AutoFileRename", FName, FALSE))
+		ts->FTFlag |= FT_RENAME;
 
 	// Auto invoking (character set->G0->GL) --- special option
-	ts->TermFlag |=
-		TF_AUTOINVOKE * GetOnOff(Section, "AutoInvoke", FName, FALSE);
+	if (GetOnOff(Section, "AutoInvoke", FName, FALSE))
+		ts->TermFlag |= TF_AUTOINVOKE;
 
 	// Auto text copy --- special option
 	ts->AutoTextCopy = GetOnOff(Section, "AutoTextCopy", FName, TRUE);
 
 	/* Back wrap -- special option */
-	ts->TermFlag |=
-		TF_BACKWRAP * GetOnOff(Section, "BackWrap", FName, FALSE);
+	if (GetOnOff(Section, "BackWrap", FName, FALSE))
+		ts->TermFlag |= TF_BACKWRAP;
 
 	/* Beep type -- special option */
 	GetPrivateProfileString(Section, "Beep", "", Temp, sizeof(Temp), FName);
@@ -796,12 +793,12 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		ts->Beep = IdBeepOn;
 
 	/* Beep on connection & disconnection -- special option */
-	ts->PortFlag |=
-		PF_BEEPONCONNECT * GetOnOff(Section, "BeepOnConnect", FName,
-		                            FALSE);
+	if (GetOnOff(Section, "BeepOnConnect", FName, FALSE))
+		ts->PortFlag |= PF_BEEPONCONNECT;
 
 	/* Auto B-Plus activation -- special option */
-	ts->FTFlag |= FT_BPAUTO * GetOnOff(Section, "BPAuto", FName, FALSE);
+	if (GetOnOff(Section, "BPAuto", FName, FALSE))
+		ts->FTFlag |= FT_BPAUTO;
 	if ((ts->FTFlag & FT_BPAUTO) != 0) {	/* Answerback */
 		strncpy_s(ts->Answerback, sizeof(ts->Answerback), "\020++\0200",
 		          _TRUNCATE);
@@ -809,24 +806,24 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	}
 
 	/* B-Plus ESCCTL flag  -- special option */
-	ts->FTFlag |=
-		FT_BPESCCTL * GetOnOff(Section, "BPEscCtl", FName, FALSE);
+	if (GetOnOff(Section, "BPEscCtl", FName, FALSE))
+		ts->FTFlag |= FT_BPESCCTL;
 
 	/* B-Plus log  -- special option */
-	ts->LogFlag |= LOG_BP * GetOnOff(Section, "BPLog", FName, FALSE);
+	if (GetOnOff(Section, "BPLog", FName, FALSE))
+		ts->LogFlag |= LOG_BP;
 
 	/* Clear serial port buffer when port opening -- special option */
 	ts->ClearComBuffOnOpen =
 		GetOnOff(Section, "ClearComBuffOnOpen", FName, TRUE);
 
 	/* Confirm disconnection -- special option */
-	ts->PortFlag |=
-		PF_CONFIRMDISCONN * GetOnOff(Section, "ConfirmDisconnect",
-		                             FName, TRUE);
+	if (GetOnOff(Section, "ConfirmDisconnect", FName, TRUE))
+		ts->PortFlag |= PF_CONFIRMDISCONN;
 
 	/* Ctrl code in Kanji -- special option */
-	ts->TermFlag |=
-		TF_CTRLINKANJI * GetOnOff(Section, "CtrlInKanji", FName, TRUE);
+	if (GetOnOff(Section, "CtrlInKanji", FName, TRUE))
+		ts->TermFlag |= TF_CTRLINKANJI;
 
 	/* Debug flag  -- special option */
 	ts->Debug = GetOnOff(Section, "Debug", FName, FALSE);
@@ -841,20 +838,20 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->DelimDBCS = GetOnOff(Section, "DelimDBCS", FName, TRUE);
 
 	// Enable popup menu -- special option
-	if (GetOnOff(Section, "EnablePopupMenu", FName, TRUE) == 0)
+	if (GetOnOff(Section, "EnablePopupMenu", FName, TRUE))
 		ts->MenuFlag |= MF_NOPOPUP;
 
 	// Enable "Show menu" -- special option
-	if (GetOnOff(Section, "EnableShowMenu", FName, TRUE) == 0)
+	if (GetOnOff(Section, "EnableShowMenu", FName, TRUE))
 		ts->MenuFlag |= MF_NOSHOWMENU;
 
 	// Enable the status line -- special option
-	ts->TermFlag |=
-		TF_ENABLESLINE * GetOnOff(Section, "EnableStatusLine", FName, TRUE);
+	if (GetOnOff(Section, "EnableStatusLine", FName, TRUE))
+		ts->TermFlag |= TF_ENABLESLINE;
 
 	// fixed JIS --- special
-	ts->TermFlag |=
-		TF_FIXEDJIS * GetOnOff(Section, "FixedJIS", FName, FALSE);
+	if (GetOnOff(Section, "FixedJIS", FName, FALSE))
+		ts->TermFlag |= TF_FIXEDJIS;
 
 	/* IME Flag  -- special option */
 	ts->UseIME = GetOnOff(Section, "IME", FName, TRUE);
@@ -863,10 +860,11 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->IMEInline = GetOnOff(Section, "IMEInline", FName, TRUE);
 
 	/* Kermit log  -- special option */
-	ts->LogFlag |= LOG_KMT * GetOnOff(Section, "KmtLog", FName, FALSE);
+	if (GetOnOff(Section, "KmtLog", FName, FALSE))
+		ts->LogFlag |= LOG_KMT;
 
 	// Enable language selection -- special option
-	if (GetOnOff(Section, "LanguageSelection", FName, TRUE) == 0)
+	if (GetOnOff(Section, "LanguageSelection", FName, TRUE))
 		ts->MenuFlag |= MF_NOLANGUAGE;
 
 	/* Maximum scroll buffer size  -- special option */
@@ -928,7 +926,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		GetNthNum(Temp, 1 + i, &ts->PrnMargin[i]);
 
 	/* Quick-VAN log  -- special option */
-	ts->LogFlag |= LOG_QV * GetOnOff(Section, "QVLog", FName, FALSE);
+	if (GetOnOff(Section, "QVLog", FName, FALSE))
+		ts->LogFlag |= LOG_QV;
 
 	/* Quick-VAN window size -- special */
 	ts->QVWinSize = GetPrivateProfileInt(Section, "QVWinSize", 8, FName);
@@ -969,7 +968,8 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->TelEcho = GetOnOff(Section, "TelEcho", FName, FALSE);
 
 	/* Telnet log  -- special option */
-	ts->LogFlag |= LOG_TEL * GetOnOff(Section, "TelLog", FName, FALSE);
+	if (GetOnOff(Section, "TelLog", FName, FALSE))
+		ts->LogFlag |= LOG_TEL;
 
 	/* TCP port num for telnet -- special option */
 	ts->TelPort = GetPrivateProfileInt(Section, "TelPort", 23, FName);
@@ -995,10 +995,9 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	else
 		ts->TCPCRSend = 0;		// disabled
 
-	/* Use text (background) color for "white (black)"
-	   --- special option */
-	ts->ColorFlag |=
-		CF_USETEXTCOLOR * GetOnOff(Section, "UseTextColor", FName, FALSE);
+	/* Use text (background) color for "white (black)" --- special option */
+	if (GetOnOff(Section, "UseTextColor", FName, FALSE))
+		ts->ColorFlag |= CF_USETEXTCOLOR;
 
 	/* Title format -- special option */
 	ts->TitleFormat =
@@ -1038,17 +1037,20 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	GetNthNum(Temp, 2, (int far *) &ts->TEKPPI.y);
 
 	// Show "Window" menu -- special option
-	ts->MenuFlag |=
-		MF_SHOWWINMENU * GetOnOff(Section, "WindowMenu", FName, TRUE);
+	if (GetOnOff(Section, "WindowMenu", FName, TRUE))
+		ts->MenuFlag |= MF_SHOWWINMENU;
 
 	/* XMODEM log  -- special option */
-	ts->LogFlag |= LOG_X * GetOnOff(Section, "XmodemLog", FName, FALSE);
+	if (GetOnOff(Section, "XmodemLog", FName, FALSE))
+		ts->LogFlag |= LOG_X;
 
 	/* YMODEM log  -- special option */
-	ts->LogFlag |= LOG_Y * GetOnOff(Section, "YmodemLog", FName, FALSE);
+	if (GetOnOff(Section, "YmodemLog", FName, FALSE))
+		ts->LogFlag |= LOG_Y;
 
 	/* Auto ZMODEM activation -- special option */
-	ts->FTFlag |= FT_ZAUTO * GetOnOff(Section, "ZmodemAuto", FName, FALSE);
+	if (GetOnOff(Section, "ZmodemAuto", FName, FALSE))
+		ts->FTFlag |= FT_ZAUTO;
 
 	/* ZMODEM data subpacket length for sending -- special */
 	ts->ZmodemDataLen =
@@ -1058,11 +1060,12 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		GetPrivateProfileInt(Section, "ZmodemWinSize", 32767, FName);
 
 	/* ZMODEM ESCCTL flag  -- special option */
-	ts->FTFlag |=
-		FT_ZESCCTL * GetOnOff(Section, "ZmodemEscCtl", FName, FALSE);
+	if (GetOnOff(Section, "ZmodemEscCtl", FName, FALSE))
+		ts->FTFlag |= FT_ZESCCTL;
 
 	/* ZMODEM log  -- special option */
-	ts->LogFlag |= LOG_Z * GetOnOff(Section, "ZmodemLog", FName, FALSE);
+	if (GetOnOff(Section, "ZmodemLog", FName, FALSE))
+		ts->LogFlag |= LOG_Z;
 
 	/* ZMODEM 受信コマンド (2007.12.21 yutaka) */
 	GetPrivateProfileString(Section, "ZModemRcvCommand", "rz",
