@@ -254,6 +254,7 @@
 #define HlpMacroCommandSendfile         92076
 #define HlpMacroCommandSendkcode        92077
 #define HlpMacroCommandSendln           92078
+#define HlpMacroCommandSendmulticast    92145
 #define HlpMacroCommandSetbaud          92134
 #define HlpMacroCommandSetdate          92079
 #define HlpMacroCommandSetdir           92080
@@ -262,6 +263,7 @@
 #define HlpMacroCommandSetenv           92123
 #define HlpMacroCommandSetecho          92082
 #define HlpMacroCommandSetexitcode      92083
+#define HlpMacroCommandSetMulticastName 92146
 #define HlpMacroCommandSetrts           92136
 #define HlpMacroCommandSetsync          92084
 #define HlpMacroCommandSettime          92085
