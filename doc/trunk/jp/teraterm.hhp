@@ -290,6 +290,7 @@ HlpMacroCommandVar2clipb=html\macro\command\var2clipb.html
 HlpMacroCommandWait=html\macro\command\wait.html
 HlpMacroCommandWaitevent=html\macro\command\waitevent.html
 HlpMacroCommandWaitln=html\macro\command\waitln.html
+HlpMacroCommandWaitn=html\macro\command\waitn.html
 HlpMacroCommandWaitrecv=html\macro\command\waitrecv.html
 HlpMacroCommandWaitregex=html\macro\command\waitregex.html
 HlpMacroCommandWhile=html\macro\command\while.html

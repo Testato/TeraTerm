@@ -754,6 +754,7 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="sendbroadcast">
 					<param name="Local" value="html\macro\command\sendbroadcast.html">
+					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="sendfile">
@@ -828,6 +829,11 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="waitln">
 					<param name="Local" value="html\macro\command\waitln.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="waitn">
+					<param name="Local" value="html\macro\command\waitn.html">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
