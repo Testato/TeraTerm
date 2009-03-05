@@ -2,10 +2,8 @@
 #include "tttypes.h"
 #include "ttplugin.h"
 #include "tt_res.h"
-// #include <stdlib.h>
-// #include <stdio.h>
-#include <string.h>
-#include <Windows.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "compat_w95.h"
 
