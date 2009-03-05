@@ -2402,8 +2402,7 @@ WORD TTLSend()
 	return 0;
 }
 
-// "sendbroadcast"コマンド (2009.3.3 yutaka)
-WORD TTLSendBroadcast()
+static WORD DoSendBroadcast(BOOL crlf)
 {
 	TStrVal buf;    // 一行バッファ
 	char asc[10];
@@ -2423,6 +2422,8 @@ WORD TTLSendBroadcast()
 		{
 			if (Err!=0) return Err;
 			strncat_s(buf, MaxStrLen, Str, _TRUNCATE);
+			if (crlf) 
+				strncat_s(buf, MaxStrLen, "\n", _TRUNCATE);
 		}
 		else if (GetExpression(&ValType,&Val,&Err))
 		{
@@ -2432,9 +2433,13 @@ WORD TTLSendBroadcast()
 					asc[0] = LOBYTE(Val);
 					asc[1] = '\0';
 					strncat_s(buf, MaxStrLen, asc, _TRUNCATE);
+					if (crlf) 
+						strncat_s(buf, MaxStrLen, "\n", _TRUNCATE);
 					break;
 				case TypString: 
 					strncat_s(buf, MaxStrLen, StrVarPtr((WORD)Val), _TRUNCATE);
+					if (crlf) 
+						strncat_s(buf, MaxStrLen, "\n", _TRUNCATE);
 					break;
 				default:
 					return ErrTypeMismatch;
@@ -2446,6 +2451,18 @@ WORD TTLSendBroadcast()
 
 	SetFile(buf);
 	return SendCmnd(CmdSendBroadcast,IdTTLWaitCmndEnd);
+}
+
+// "sendbroadcast"コマンド (2009.3.3 yutaka)
+WORD TTLSendBroadcast()
+{
+	return DoSendBroadcast(FALSE);
+}
+
+// "sendlnbroadcast"コマンド (2009.3.6 yutaka)
+WORD TTLSendlnBroadcast()
+{
+	return DoSendBroadcast(TRUE);
 }
 
 // "setmulticastname"コマンド (2009.3.5 yutaka)
@@ -3901,6 +3918,8 @@ int ExecCmnd()
 			Err = TTLCommCmd(CmdSendBreak,0); break;
 		case RsvSendBroadcast:
 			Err = TTLSendBroadcast(); break;
+		case RsvSendlnBroadcast:
+			Err = TTLSendlnBroadcast(); break;
 		case RsvSendMulticast:
 			Err = TTLSendMulticast(); break;
 		case RsvSetMulticastName:

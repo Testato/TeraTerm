@@ -251,6 +251,7 @@
 #define HlpMacroCommandSend             92074
 #define HlpMacroCommandSendbreak        92075
 #define HlpMacroCommandSendbroadcast    92144
+#define HlpMacroCommandSendlnbroadcast  92147
 #define HlpMacroCommandSendfile         92076
 #define HlpMacroCommandSendkcode        92077
 #define HlpMacroCommandSendln           92078
