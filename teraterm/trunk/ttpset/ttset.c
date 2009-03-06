@@ -838,11 +838,11 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	ts->DelimDBCS = GetOnOff(Section, "DelimDBCS", FName, TRUE);
 
 	// Enable popup menu -- special option
-	if (GetOnOff(Section, "EnablePopupMenu", FName, TRUE))
+	if (!GetOnOff(Section, "EnablePopupMenu", FName, TRUE))
 		ts->MenuFlag |= MF_NOPOPUP;
 
 	// Enable "Show menu" -- special option
-	if (GetOnOff(Section, "EnableShowMenu", FName, TRUE))
+	if (!GetOnOff(Section, "EnableShowMenu", FName, TRUE))
 		ts->MenuFlag |= MF_NOSHOWMENU;
 
 	// Enable the status line -- special option
@@ -864,7 +864,7 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		ts->LogFlag |= LOG_KMT;
 
 	// Enable language selection -- special option
-	if (GetOnOff(Section, "LanguageSelection", FName, TRUE))
+	if (!GetOnOff(Section, "LanguageSelection", FName, TRUE))
 		ts->MenuFlag |= MF_NOLANGUAGE;
 
 	/* Maximum scroll buffer size  -- special option */
