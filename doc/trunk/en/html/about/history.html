@@ -45,17 +45,17 @@
           <li>added VTReverseColor entry in teraterm.ini file.<!-- <br>
               注: アップグレードインストール時は互換性のためこの機能は無効にされています。有効にする場合は、後述のEnableReverseAttrColorをonに設定してください。--></li>
         </ul></li>
-      <!-- li>高輝度,点滅および反転属性の色と、ANSIカラー表示を無効にできるようにした。
+      <li>added being able to disable the high brightness color, the blink color, the reverse color and the ANSI color displaying.
         <ul>
-          <li>teraterm.ini に EnableBoldAttrColor, EnableBlinkAttrColor, EnableReverseAttrColor, EnableURLColor, EnableANSIColor エントリを追加した。デフォルトは、EnableReverseAttrColorはoff、それ以外はon。</li>
+          <li>added EnableBoldAttrColor, EnableBlinkAttrColor, EnableReverseAttrColor, EnableURLColor and EnableANSIColor entryies in teraterm.ini file. The default value of EnableReverseAttrColor is off, the others are on.</li>
           <li>added the check box on <a href="../menu/setup-additional.html">Additional settings</a> dialog.</li>
-        </ul></li -->
+        </ul></li>
       <li>Changed ConfirmChangePaste's default value into on.</li>
       <li>Added EDITOR.CNF file in Tera Term installation package.</li>
-      <!-- li>キーボード設定ファイルが無い時のエディタキーパッドおよびファンクションキーの動作を変更し、対応するVTキーのシーケンスを送出するようにした。
+      <li>Changed the function of the editor keypad and the function key. When the keyboard configuration file is not found, TeraTerm sends the corresponded VT key sequence.
         <ul>
           <li>addded StrictKeyMapping entry in teraterm.ini file.</li>
-        </ul></li -->
+        </ul></li>
       <li>Added the Visual C++ version and the built time on About TeraTerm dialog.</li>
       <li>added `<a href="../macro/command/sprintf2.html">sprintf2</a>' macro command. </li>
       <li>added `<a href="../macro/command/waitn.html">waitn</a>' macro command. Special thanks to p3g4asus.</li>
@@ -72,8 +72,8 @@
       <li>Bug fix: added the workaround that a developer can debug the Tera Term macro script on Visual Studio.</li>
       <li>Bug fix: <a href="../macro/command/connect.html">connect</a> macro cano not finish when <a href="../commandline/teraterm.html#ds">/DS</a> is specified.</li>
       <li>Bug fix: By using logopen macro with the hidden option, the log window appears for a quick moment.</li>
-      <!-- li>Bug fix: リバースビデオモード(DECSCNMがon)の時、Window Setupダイアログでの文字/背景色設定が正しく動かないのを修正した。</li -->
-      <!-- li>Bug fix: リバースビデオモード(DECSCNMがon)の時、設定の保存/読み込みで文字/背景色が正しく保存/復元されないのを修正した。</li -->
+      <li>Bug fix: When the reverse video mode is enabled, DECSCNM is on, the character and background color configuration does not work.</li>
+      <li>Bug fix: When the reverse video mode is enabled, DECSCNM is on, the character and background color does not restore after saving and loading the configuration.</li>
     </ul></li>
   <li>Misc
     <ul>
