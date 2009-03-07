@@ -1,6 +1,7 @@
 /*
  * TTX KanjiMenu Plugin
  *    Copyright (C) 2007 Sunao HARA (naoh@nagoya-u.jp)
+ *    Copyright (C) 2007-2009 TeraTerm Project.
  */
 
 //// ORIGINAL SOURCE CODE: ttxtest.c
@@ -44,6 +45,7 @@ typedef struct {
 	PTTSet ts;
 	PComVar cv;
 	HMENU hmEncode;
+	BOOL ChangeBoth;
 } TInstVar;
 
 static TInstVar FAR * pvar;
@@ -57,11 +59,41 @@ static TInstVar InstVar;
 static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
 	pvar->ts = ts;
 	pvar->cv = cv;
+	pvar->ChangeBoth = FALSE;
 }
 
 // #define ID_MI_KANJIMASK 0xFF00
 #define ID_MI_KANJIRECV 54009
 #define ID_MI_KANJISEND 54109
+#define ID_MI_CHANGEBOTH 54200
+
+static void PASCAL FAR InsertSendKcodeMenu(HMENU menu) {
+	UINT flag = MF_BYPOSITION | MF_STRING | MF_CHECKED;
+
+	InsertMenu(menu, 5, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
+
+	GetI18nStr(IniSection, "MENU_SEND_SJIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+	           "Send: S&hift_JIS", pvar->ts->UILanguageFile);
+	InsertMenu(menu, 6, flag, ID_MI_KANJISEND+IdSJIS,  pvar->ts->UIMsg);
+	GetI18nStr(IniSection, "MENU_SEND_EUCJP", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+	           "Send: EU&C-JP", pvar->ts->UILanguageFile);
+	InsertMenu(menu, 7, flag, ID_MI_KANJISEND+IdEUC,   pvar->ts->UIMsg);
+	GetI18nStr(IniSection, "MENU_SEND_JIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+	           "Send: J&IS", pvar->ts->UILanguageFile);
+	InsertMenu(menu, 8, flag, ID_MI_KANJISEND+IdJIS,   pvar->ts->UIMsg);
+	GetI18nStr(IniSection, "MENU_SEND_UTF8", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+	           "Send: U&TF-8", pvar->ts->UILanguageFile);
+	InsertMenu(menu, 9, flag, ID_MI_KANJISEND+IdUTF8,  pvar->ts->UIMsg);
+}
+
+static void PASCAL FAR DeleteSendKcodeMenu(HMENU menu) {
+	DeleteMenu(menu, 5, MF_BYPOSITION);
+	DeleteMenu(menu, 5, MF_BYPOSITION);
+	DeleteMenu(menu, 5, MF_BYPOSITION);
+	DeleteMenu(menu, 5, MF_BYPOSITION);
+	DeleteMenu(menu, 5, MF_BYPOSITION);
+}
+
 /*
  * This function is called when Tera Term creates a new menu.
  */
@@ -113,22 +145,19 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 		GetI18nStr(IniSection, "MENU_RECV_UTF8m", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
 		           "Recv: UTF-8&m", pvar->ts->UILanguageFile);
 		AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdUTF8m, pvar->ts->UIMsg);
+
+		if (!pvar->ChangeBoth) {
+			InsertSendKcodeMenu(pvar->hmEncode);
+		}
+
 		AppendMenu(pvar->hmEncode, MF_SEPARATOR, 0, NULL);
-		GetI18nStr(IniSection, "MENU_SEND_SJIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-		           "Send: S&hift_JIS", pvar->ts->UILanguageFile);
-		AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdSJIS,  pvar->ts->UIMsg);
-		GetI18nStr(IniSection, "MENU_SEND_EUCJP", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-		           "Send: EU&C-JP", pvar->ts->UILanguageFile);
-		AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdEUC,   pvar->ts->UIMsg);
-		GetI18nStr(IniSection, "MENU_SEND_JIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-		           "Send: J&IS", pvar->ts->UILanguageFile);
-		AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdJIS,   pvar->ts->UIMsg);
-		GetI18nStr(IniSection, "MENU_SEND_UTF8", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-		           "Send: U&TF-8", pvar->ts->UILanguageFile);
-		AppendMenu(pvar->hmEncode, flag, ID_MI_KANJISEND+IdUTF8,  pvar->ts->UIMsg);
+		AppendMenu(pvar->hmEncode, flag, ID_MI_CHANGEBOTH ,  "Ch&ange both");
 
 		UpdateRecvMenu(pvar->ts->KanjiCode);
-		UpdateSendMenu(pvar->ts->KanjiCodeSend);
+		if (!pvar->ChangeBoth) {
+			UpdateSendMenu(pvar->ts->KanjiCodeSend);
+		}
+		CheckMenuItem(pvar->hmEncode, ID_MI_CHANGEBOTH, MF_BYCOMMAND | (pvar->ChangeBoth)?MF_CHECKED:0);
 	}
 }
 
@@ -139,7 +168,10 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 static void PASCAL FAR TTXModifyPopupMenu(HMENU menu) {
 	// メニューが呼び出されたら、最新の設定に更新する。(2007.5.25 yutaka)
 	UpdateRecvMenu(pvar->ts->KanjiCode);
-	UpdateSendMenu(pvar->ts->KanjiCodeSend);
+	if (!pvar->ChangeBoth) {
+		UpdateSendMenu(pvar->ts->KanjiCodeSend);
+	}
+	CheckMenuItem(pvar->hmEncode, ID_MI_CHANGEBOTH, MF_BYCOMMAND | (pvar->ChangeBoth)?MF_CHECKED:0);
 }
 
 
@@ -149,19 +181,43 @@ static void PASCAL FAR TTXModifyPopupMenu(HMENU menu) {
 static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
 	WORD val;
 
-	if( (cmd > ID_MI_KANJIRECV) && (cmd <= ID_MI_KANJIRECV+IdUTF8m)) {
+	if ((cmd > ID_MI_KANJIRECV) && (cmd <= ID_MI_KANJIRECV+IdUTF8m)) {
 		// 範囲チェックを追加 
 		// TTProxyのバージョンダイアログを開くと、当該ハンドラが呼ばれ、誤動作していたのを修正。
 		// (2007.7.13 yutaka)
 		val = cmd - ID_MI_KANJIRECV;
 		pvar->cv->KanjiCodeEcho = pvar->ts->KanjiCode = val;
+		if (pvar->ChangeBoth) {
+			if (val == IdUTF8m) {
+				val = IdUTF8;
+			}
+			pvar->cv->KanjiCodeSend = pvar->ts->KanjiCodeSend = val;
+		}
 		return UpdateRecvMenu(pvar->ts->KanjiCode)?1:0;
 	}
-	else
-	if( (cmd > ID_MI_KANJISEND) && (cmd <= ID_MI_KANJISEND+IdUTF8) ) {
+	else if ((cmd > ID_MI_KANJISEND) && (cmd <= ID_MI_KANJISEND+IdUTF8)) {
 		val = cmd - ID_MI_KANJISEND;
 		pvar->cv->KanjiCodeSend = pvar->ts->KanjiCodeSend = val;
-		return UpdateSendMenu(pvar->ts->KanjiCodeSend)?1:0;
+		if (pvar->ChangeBoth) {
+			pvar->cv->KanjiCodeEcho = pvar->ts->KanjiCode = val;
+			return UpdateRecvMenu(pvar->ts->KanjiCode)?1:0;
+		}
+		else {
+			return UpdateSendMenu(pvar->ts->KanjiCodeSend)?1:0;
+		}
+	}
+	else if (cmd == ID_MI_CHANGEBOTH) {
+		if (pvar->ChangeBoth) {
+			pvar->ChangeBoth = FALSE;
+			InsertSendKcodeMenu(pvar->hmEncode);
+			CheckMenuItem(pvar->hmEncode, ID_MI_CHANGEBOTH, MF_BYCOMMAND);
+		}
+		else {
+			pvar->ChangeBoth = TRUE;
+			DeleteSendKcodeMenu(pvar->hmEncode);
+			CheckMenuItem(pvar->hmEncode, ID_MI_CHANGEBOTH, MF_BYCOMMAND | MF_CHECKED);
+		}
+		return 1;
 	}
 
 	return 0;
