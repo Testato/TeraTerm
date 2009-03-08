@@ -45,6 +45,7 @@ typedef struct {
 	PTTSet ts;
 	PComVar cv;
 	HMENU hmEncode;
+	PReadIniFile origReadIniFile;
 	BOOL ChangeBoth;
 } TInstVar;
 
@@ -59,7 +60,26 @@ static TInstVar InstVar;
 static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
 	pvar->ts = ts;
 	pvar->cv = cv;
+	pvar->origReadIniFile = NULL;
 	pvar->ChangeBoth = FALSE;
+}
+
+static void PASCAL FAR TTXKanjiMenuReadIniFile(PCHAR fn, PTTSet ts) {
+	char buff[20];
+
+	/* Call original ReadIniFile */
+	pvar->origReadIniFile(fn, ts);
+
+	GetPrivateProfileString(IniSection, "ChangeBoth", "Off", buff, sizeof(buff), fn);
+	if (_stricmp(buff, "on") == 0) {
+		pvar->ChangeBoth = TRUE;
+	}
+	return;
+}
+
+static void PASCAL FAR TTXGetSetupHooks(TTXSetupHooks FAR *hooks) {
+	pvar->origReadIniFile = *hooks->ReadIniFile;
+	*hooks->ReadIniFile = TTXKanjiMenuReadIniFile;
 }
 
 // #define ID_MI_KANJIMASK 0xFF00
@@ -240,16 +260,16 @@ static TTXExports Exports = {
 
 /* Now we just list the functions that we've implemented. */
 	TTXInit,
-	NULL, /* TTXGetUIHooks */
-	NULL, /* TTXGetSetupHooks */
-	NULL, /* TTXOpenTCP */
-	NULL, /* TTXCloseTCP */
-	NULL, /* TTXSetWinSize */
+	NULL, // TTXGetUIHooks,
+	TTXGetSetupHooks,
+	NULL, // TTXOpenTCP,
+	NULL, // TTXCloseTCP,
+	NULL, // TTXSetWinSize,
 	TTXModifyMenu,
 	TTXModifyPopupMenu,
 	TTXProcessCommand,
-	NULL, /* TTXEnd */
-	NULL  /* TTXSetCommandLine */
+	NULL, // TTXEnd,
+	NULL  // TTXSetCommandLine
 };
 
 BOOL __declspec(dllexport) PASCAL FAR TTXBind(WORD Version, TTXExports FAR * exports) {
