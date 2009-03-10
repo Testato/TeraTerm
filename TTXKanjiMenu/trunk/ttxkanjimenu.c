@@ -171,12 +171,15 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 		}
 
 		AppendMenu(pvar->hmEncode, MF_SEPARATOR, 0, NULL);
-		AppendMenu(pvar->hmEncode, flag, ID_MI_CHANGEBOTH ,  "Ch&ange both");
+		GetI18nStr(IniSection, "MENU_CHANGE_BOTH", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		           "Recv: UTF-8&m", pvar->ts->UILanguageFile);
+		AppendMenu(pvar->hmEncode, flag, ID_MI_CHANGEBOTH ,  pvar->ts->UIMsg);
 
 		UpdateRecvMenu(pvar->ts->KanjiCode);
 		if (!pvar->ChangeBoth) {
 			UpdateSendMenu(pvar->ts->KanjiCodeSend);
 		}
+
 		CheckMenuItem(pvar->hmEncode, ID_MI_CHANGEBOTH, MF_BYCOMMAND | (pvar->ChangeBoth)?MF_CHECKED:0);
 	}
 }
