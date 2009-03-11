@@ -31,6 +31,10 @@ static TMacroShmem *pm = NULL;
 static int mindex = -1;
 static BOOL QuoteFlag;
 
+// 排他制御
+#define MUTEX_NAME "Mutex Object for macro shmem"
+static HANDLE hMutex = NULL;
+
 // 共有メモリのマッピング
 int open_macro_shmem(void)
 {
@@ -48,6 +52,8 @@ int open_macro_shmem(void)
 
 	memset(pm, 0, sizeof(TMacroShmem));
 
+	hMutex = CreateMutex(NULL, FALSE, MUTEX_NAME);
+
 	return TRUE;
 }
 
@@ -61,6 +67,18 @@ void close_macro_shmem(void)
 		CloseHandle(HMap);
 		HMap = NULL;
 	}
+	if (hMutex)
+		CloseHandle(hMutex);
+}
+
+static HANDLE lock_shmem(void)
+{
+	return OpenMutex(MUTEX_ALL_ACCESS, FALSE, MUTEX_NAME);
+}
+
+static void unlock_shmem(HANDLE hd)
+{
+	ReleaseMutex(hd);
 }
 
 // マクロウィンドウを登録する
@@ -68,6 +86,9 @@ int register_macro_window(HWND hwnd)
 {
 	int i;
 	int ret = FALSE;
+	HANDLE hd;
+
+	hd = lock_shmem();
 
 	for (i = 0 ; i < MAXNWIN ; i++) {
 		if (pm->WinList[i] == NULL) {
@@ -79,6 +100,8 @@ int register_macro_window(HWND hwnd)
 		}
 	}
 
+	unlock_shmem(hd);
+
 	return (ret);
 }
 
@@ -87,6 +110,9 @@ int unregister_macro_window(HWND hwnd)
 {
 	int i;
 	int ret = FALSE;
+	HANDLE hd;
+
+	hd = lock_shmem();
 
 	for (i = 0 ; i < MAXNWIN ; i++) {
 		if (pm->WinList[i] == hwnd) {
@@ -97,6 +123,8 @@ int unregister_macro_window(HWND hwnd)
 		}
 	}
 
+	unlock_shmem(hd);
+
 	return (ret);
 }
 
@@ -106,6 +134,9 @@ void put_macro_1byte(BYTE b)
 	int RBufPtr = pm->mbufs[mindex].RBufPtr;
 	int RBufCount = pm->mbufs[mindex].RBufCount;
 	int RBufStart = pm->mbufs[mindex].RBufStart;
+	HANDLE hd;
+
+	hd = lock_shmem();
 
 	RingBuf[RBufPtr] = b;
 	RBufPtr++;
@@ -124,6 +155,8 @@ void put_macro_1byte(BYTE b)
 	pm->mbufs[mindex].RBufPtr = RBufPtr;
 	pm->mbufs[mindex].RBufCount = RBufCount;
 	pm->mbufs[mindex].RBufStart = RBufStart;
+
+	unlock_shmem(hd);
 }
 
 int read_macro_1byte(LPBYTE b)
@@ -132,10 +165,12 @@ int read_macro_1byte(LPBYTE b)
 	int RBufPtr = pm->mbufs[mindex].RBufPtr;
 	int RBufCount = pm->mbufs[mindex].RBufCount;
 	int RBufStart = pm->mbufs[mindex].RBufStart;
+	HANDLE hd;
 
 	if (RBufCount<=0) {
 		return FALSE;
 	}
+	hd = lock_shmem();
 
 	*b = RingBuf[RBufStart];
 	RBufStart++;
@@ -155,6 +190,8 @@ int read_macro_1byte(LPBYTE b)
 	pm->mbufs[mindex].RBufPtr = RBufPtr;
 	pm->mbufs[mindex].RBufCount = RBufCount;
 	pm->mbufs[mindex].RBufStart = RBufStart;
+
+	unlock_shmem(hd);
 
 	return (! QuoteFlag);
 }
