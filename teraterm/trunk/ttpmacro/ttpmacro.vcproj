@@ -388,6 +388,10 @@
 				RelativePath="ttmparse.c"
 				>
 			</File>
+			<File
+				RelativePath=".\wait4all.c"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
