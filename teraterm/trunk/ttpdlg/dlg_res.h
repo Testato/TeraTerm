@@ -173,6 +173,7 @@
 #define IDC_TCPIPTELNETKEEPALIVELABEL   1069
 #define IDC_SELECT_DIR                  1070
 #define IDC_BUILDTIME                   1071
+#define IDC_BUILDTOOL                   1072
 #define IDC_SAMPLE                      1073
 #define IDC_FONTLABEL                   1088
 #define IDC_SIZELABEL                   1090
@@ -187,7 +188,6 @@
 #define IDD_TERMDLGR                    1300
 #define IDD_TERMDLGK                    1301
 #define IDC_STATIC                      -1
-#define IDC_BUILDTOOL                   -1
 
 // Next default values for new objects
 // 
@@ -196,7 +196,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        103
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1072
+#define _APS_NEXT_CONTROL_VALUE         1074
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
