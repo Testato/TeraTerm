@@ -114,6 +114,43 @@ static void PASCAL FAR DeleteSendKcodeMenu(HMENU menu) {
 	DeleteMenu(menu, 5, MF_BYPOSITION);
 }
 
+static void PASCAL FAR UpdateRecvMenuCaption(HMENU menu, BOOL ChangeBoth) {
+	if (ChangeBoth) {
+		GetI18nStr(IniSection, "MENU_BOTH_SJIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		           "Recv/Send: &Shift_JIS", pvar->ts->UILanguageFile);
+		ModifyMenu(menu, ID_MI_KANJIRECV+IdSJIS,  MF_BYCOMMAND, ID_MI_KANJIRECV+IdSJIS,  pvar->ts->UIMsg);
+		GetI18nStr(IniSection, "MENU_BOTH_EUCJP", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		           "Recv/Send: &EUC-JP", pvar->ts->UILanguageFile);
+		ModifyMenu(menu, ID_MI_KANJIRECV+IdEUC,   MF_BYCOMMAND, ID_MI_KANJIRECV+IdEUC,   pvar->ts->UIMsg);
+		GetI18nStr(IniSection, "MENU_BOTH_JIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		           "Recv/Send: &JIS", pvar->ts->UILanguageFile);
+		ModifyMenu(menu, ID_MI_KANJIRECV+IdJIS,   MF_BYCOMMAND, ID_MI_KANJIRECV+IdJIS,   pvar->ts->UIMsg);
+		GetI18nStr(IniSection, "MENU_BOTH_UTF8", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		           "Recv/Send: &UTF-8", pvar->ts->UILanguageFile);
+		ModifyMenu(menu, ID_MI_KANJIRECV+IdUTF8,  MF_BYCOMMAND, ID_MI_KANJIRECV+IdUTF8,  pvar->ts->UIMsg);
+		GetI18nStr(IniSection, "MENU_BOTH_UTF8m", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		           "Recv: UTF-8&m/Send: UTF-8", pvar->ts->UILanguageFile);
+		ModifyMenu(menu, ID_MI_KANJIRECV+IdUTF8m, MF_BYCOMMAND, ID_MI_KANJIRECV+IdUTF8m, pvar->ts->UIMsg);
+	}
+	else {
+		GetI18nStr(IniSection, "MENU_RECV_SJIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		           "Recv: &Shift_JIS", pvar->ts->UILanguageFile);
+		ModifyMenu(menu, ID_MI_KANJIRECV+IdSJIS,  MF_BYCOMMAND, ID_MI_KANJIRECV+IdSJIS,  pvar->ts->UIMsg);
+		GetI18nStr(IniSection, "MENU_RECV_EUCJP", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		           "Recv: &EUC-JP", pvar->ts->UILanguageFile);
+		ModifyMenu(menu, ID_MI_KANJIRECV+IdEUC,   MF_BYCOMMAND, ID_MI_KANJIRECV+IdEUC,   pvar->ts->UIMsg);
+		GetI18nStr(IniSection, "MENU_RECV_JIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		           "Recv: &JIS", pvar->ts->UILanguageFile);
+		ModifyMenu(menu, ID_MI_KANJIRECV+IdJIS,   MF_BYCOMMAND, ID_MI_KANJIRECV+IdJIS,   pvar->ts->UIMsg);
+		GetI18nStr(IniSection, "MENU_RECV_UTF8", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		           "Recv: &UTF-8", pvar->ts->UILanguageFile);
+		ModifyMenu(menu, ID_MI_KANJIRECV+IdUTF8,  MF_BYCOMMAND, ID_MI_KANJIRECV+IdUTF8,  pvar->ts->UIMsg);
+		GetI18nStr(IniSection, "Recv: UTF-8&m", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		           "Recv: UTF-8&m", pvar->ts->UILanguageFile);
+		ModifyMenu(menu, ID_MI_KANJIRECV+IdUTF8m, MF_BYCOMMAND, ID_MI_KANJIRECV+IdUTF8m, pvar->ts->UIMsg);
+	}
+}
+
 /*
  * This function is called when Tera Term creates a new menu.
  */
@@ -168,6 +205,9 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 
 		if (!pvar->ChangeBoth) {
 			InsertSendKcodeMenu(pvar->hmEncode);
+		}
+		else {
+			UpdateRecvMenuCaption(pvar->hmEncode, pvar->ChangeBoth);
 		}
 
 		AppendMenu(pvar->hmEncode, MF_SEPARATOR, 0, NULL);
@@ -240,6 +280,7 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
 			DeleteSendKcodeMenu(pvar->hmEncode);
 			CheckMenuItem(pvar->hmEncode, ID_MI_CHANGEBOTH, MF_BYCOMMAND | MF_CHECKED);
 		}
+		UpdateRecvMenuCaption(pvar->hmEncode, pvar->ChangeBoth);
 		return 1;
 	}
 
