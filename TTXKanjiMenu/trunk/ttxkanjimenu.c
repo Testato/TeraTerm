@@ -172,7 +172,7 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 
 		AppendMenu(pvar->hmEncode, MF_SEPARATOR, 0, NULL);
 		GetI18nStr(IniSection, "MENU_CHANGE_BOTH", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-		           "Recv: UTF-8&m", pvar->ts->UILanguageFile);
+		           "Ch&ange both", pvar->ts->UILanguageFile);
 		AppendMenu(pvar->hmEncode, flag, ID_MI_CHANGEBOTH ,  pvar->ts->UIMsg);
 
 		UpdateRecvMenu(pvar->ts->KanjiCode);
