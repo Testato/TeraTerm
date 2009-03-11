@@ -18,6 +18,8 @@
 
 #include "ttlib.h"
 
+#include "wait4all.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -258,6 +260,9 @@ BOOL CCtrlWindow::OnInitDialog()
 		PostQuitMessage(0);
 	}
 
+	// wait4all
+	register_macro_window(GetSafeHwnd());
+
 	strncpy_s(Temp, sizeof(Temp), "MACRO - ", _TRUNCATE);
 	strncat_s(Temp, sizeof(Temp), ShortName, _TRUNCATE);
 	SetWindowText(Temp);
@@ -316,6 +321,8 @@ void CCtrlWindow::OnClose()
 
 void CCtrlWindow::OnDestroy()
 {
+	unregister_macro_window(GetSafeHwnd());
+
 	EndTTL();
 	EndDDE();
 	CDialog::OnDestroy();

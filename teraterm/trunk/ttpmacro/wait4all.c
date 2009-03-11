@@ -6,6 +6,8 @@
 #include <windows.h>
 #include "wait4all.h"
 
+static int function_disable = 1;
+
 // TODO: 以下の定義は共通ヘッダからincludeすべき
 #define MAXNWIN 50
 #define RingBufSize (4096*4)
@@ -36,7 +38,7 @@ static BOOL QuoteFlag;
 static HANDLE hMutex = NULL;
 
 // 共有メモリのマッピング
-int open_macro_shmem(void)
+static int open_macro_shmem(void)
 {
 	HMap = CreateFileMapping(
 		(HANDLE) 0xFFFFFFFF, NULL, PAGE_READWRITE,
@@ -57,7 +59,7 @@ int open_macro_shmem(void)
 	return TRUE;
 }
 
-void close_macro_shmem(void)
+static void close_macro_shmem(void)
 {
 	if (pm) {
 		UnmapViewOfFile(pm);
@@ -87,6 +89,8 @@ int register_macro_window(HWND hwnd)
 	int i;
 	int ret = FALSE;
 	HANDLE hd;
+
+	open_macro_shmem();
 
 	hd = lock_shmem();
 
@@ -125,6 +129,8 @@ int unregister_macro_window(HWND hwnd)
 
 	unlock_shmem(hd);
 
+	close_macro_shmem();
+
 	return (ret);
 }
 
@@ -135,6 +141,9 @@ void put_macro_1byte(BYTE b)
 	int RBufCount = pm->mbufs[mindex].RBufCount;
 	int RBufStart = pm->mbufs[mindex].RBufStart;
 	HANDLE hd;
+
+	if (function_disable)
+		return;
 
 	hd = lock_shmem();
 
@@ -166,6 +175,9 @@ int read_macro_1byte(LPBYTE b)
 	int RBufCount = pm->mbufs[mindex].RBufCount;
 	int RBufStart = pm->mbufs[mindex].RBufStart;
 	HANDLE hd;
+
+	if (function_disable)
+		return FALSE;
 
 	if (RBufCount<=0) {
 		return FALSE;

@@ -17,6 +17,8 @@
 
 #include "ttl.h"
 
+#include "wait4all.h"
+
 // Oniguruma: Regular expression library
 #define ONIG_EXTERN extern
 #include "oniguruma.h"
@@ -86,6 +88,9 @@ enum regex_type RegexActionType;
 // ring buffer
 void Put1Byte(BYTE b)
 {
+	// 従来のリングバッファへ書き込むと同時に、wait4all用共有メモリへも書き出す。(2009.3.12 yutaka)
+	put_macro_1byte(b);
+
 	RingBuf[RBufPtr] = b;
 	RBufPtr++;
 	if (RBufPtr>=RingBufSize) {
