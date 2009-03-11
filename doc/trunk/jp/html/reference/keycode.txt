@@ -462,6 +462,7 @@ TTXKanjiMenu メニューコマンド       ID
 [KanjiCode] Send: EUC-JP            54111
 [KanjiCode] Send: JIS               54112
 [KanjiCode] Send: UTF-8             54113
+[KanjiCode] Change both             54200
 
 TTXAlwaysOnTop メニューコマンド     ID
 -----------------------------------------
