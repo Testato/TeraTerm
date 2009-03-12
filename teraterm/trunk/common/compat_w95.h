@@ -34,10 +34,11 @@ void __stdcall DoCover_IsDebuggerPresent()
     DWORD dw;
     DWORD_PTR FAR* lpdw;
     OSVERSIONINFO osvi;
+    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
     // Windows95 ‚Å‚È‚¯‚ê‚Î‚±‚±‚Å‚¨‚í‚è
     GetVersionEx(&osvi);
     if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT ||
-        // osvi.dwMajorVersion > 4 ||
+        osvi.dwMajorVersion > 4 ||
         osvi.dwMinorVersion > 0) {
         return;
     }
