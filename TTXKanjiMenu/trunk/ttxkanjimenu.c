@@ -73,6 +73,12 @@ static void PASCAL FAR TTXKanjiMenuReadIniFile(PCHAR fn, PTTSet ts) {
 	GetPrivateProfileString(IniSection, "ChangeBoth", "Off", buff, sizeof(buff), fn);
 	if (_stricmp(buff, "on") == 0) {
 		pvar->ChangeBoth = TRUE;
+		if (pvar->ts->KanjiCode == IdUTF8m) {
+			pvar->ts->KanjiCodeSend = IdUTF8;
+		}
+		else {
+			pvar->ts->KanjiCodeSend = pvar->ts->KanjiCode;
+		}
 	}
 	return;
 }
@@ -278,6 +284,15 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
 		}
 		else {
 			pvar->ChangeBoth = TRUE;
+
+			if (pvar->ts->KanjiCode == IdUTF8m) {
+				val = IdUTF8;
+			}
+			else {
+				val = pvar->ts->KanjiCode;
+			}
+			pvar->cv->KanjiCodeSend = pvar->ts->KanjiCodeSend = val;
+
 			DeleteSendKcodeMenu(pvar->hmEncode);
 			CheckMenuItem(pvar->hmEncode, ID_MI_CHANGEBOTH, MF_BYCOMMAND | MF_CHECKED);
 		}
