@@ -2,6 +2,7 @@
 // IsDebuggerPresent()のシンボル定義を追加する。
 //
 // cf.http://jet2.u-abel.net/program/tips/forceimp.htm
+
 // 装飾された名前のアドレスを作るための仮定義
 // (これだけでインポートを横取りしている)
 #ifdef __cplusplus
@@ -32,6 +33,14 @@ void __stdcall DoCover_IsDebuggerPresent()
 {
     DWORD dw;
     DWORD_PTR FAR* lpdw;
+    OSVERSIONINFO osvi;
+    // Windows95 でなければここでおわり
+    GetVersionEx(&osvi);
+    if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT ||
+        // osvi.dwMajorVersion > 4 ||
+        osvi.dwMinorVersion > 0) {
+        return;
+    }
     // 横取り関数を設定するアドレスを取得
     lpdw = (DWORD_PTR FAR*) &_imp__IsDebuggerPresent;
     // このアドレスを書き込めるように設定
