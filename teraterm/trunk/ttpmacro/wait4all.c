@@ -6,11 +6,7 @@
 #include <windows.h>
 #include "wait4all.h"
 
-static int function_disable = 1;
-
-// TODO: 以下の定義は共通ヘッダからincludeすべき
-#define MAXNWIN 50
-#define RingBufSize (4096*4)
+static int function_disable = 1;  // まだデバッグ中なので、無効化しておく。
 
 // 共有メモリフォーマット拡張時は、以下の名称を変更すること。
 #define TTM_FILEMAPNAME "ttm_memfilemap_1"
@@ -134,6 +130,24 @@ int unregister_macro_window(HWND hwnd)
 	return (ret);
 }
 
+void get_macro_active_info(int *num, int *index)
+{
+	int i;
+	HANDLE hd;
+
+	hd = lock_shmem();
+
+	*num = pm->NWin;
+
+	for (i = 0 ; i < MAXNWIN ; i++) {
+		if (pm->WinList[i]) {
+			*index++ = i;
+		}
+	}
+
+	unlock_shmem(hd);
+}
+
 void put_macro_1byte(BYTE b)
 {
 	char *RingBuf = pm->mbufs[mindex].RingBuf;
@@ -168,12 +182,12 @@ void put_macro_1byte(BYTE b)
 	unlock_shmem(hd);
 }
 
-int read_macro_1byte(LPBYTE b)
+int read_macro_1byte(int index, LPBYTE b)
 {
-	char *RingBuf = pm->mbufs[mindex].RingBuf;
-	int RBufPtr = pm->mbufs[mindex].RBufPtr;
-	int RBufCount = pm->mbufs[mindex].RBufCount;
-	int RBufStart = pm->mbufs[mindex].RBufStart;
+	char *RingBuf = pm->mbufs[index].RingBuf;
+	int RBufPtr = pm->mbufs[index].RBufPtr;
+	int RBufCount = pm->mbufs[index].RBufCount;
+	int RBufStart = pm->mbufs[index].RBufStart;
 	HANDLE hd;
 
 	if (function_disable)
@@ -199,9 +213,9 @@ int read_macro_1byte(LPBYTE b)
 	}
 
 	// push back
-	pm->mbufs[mindex].RBufPtr = RBufPtr;
-	pm->mbufs[mindex].RBufCount = RBufCount;
-	pm->mbufs[mindex].RBufStart = RBufStart;
+	pm->mbufs[index].RBufPtr = RBufPtr;
+	pm->mbufs[index].RBufCount = RBufCount;
+	pm->mbufs[index].RBufStart = RBufStart;
 
 	unlock_shmem(hd);
 

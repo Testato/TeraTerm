@@ -3341,6 +3341,12 @@ WORD TTLWait4all(BOOL Ln)
 {
 	WORD Err = 0;
 
+	Err = TTLWait(Ln);
+	TTLStatus = IdTTLWait4all;
+
+	Wait4allGotIndex = FALSE;
+	Wait4allFoundNum = 0;
+
 	return Err;
 }
 

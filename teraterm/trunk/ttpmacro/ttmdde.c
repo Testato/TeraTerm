@@ -84,6 +84,9 @@ static BOOL RecvLnClear = TRUE;
 // regex action flag
 enum regex_type RegexActionType;
 
+// for wait4all
+BOOL Wait4allGotIndex = FALSE;
+int Wait4allFoundNum = 0;
 
 // ring buffer
 void Put1Byte(BYTE b)
@@ -720,6 +723,68 @@ BOOL WaitN()
 
 	return FALSE;
 }
+
+
+static int Wait4allOneBuffer(int index)
+{
+	BYTE b;
+	int i, Found;
+	PCHAR Str;
+
+	Found = 0;
+	while ((Found==0) && read_macro_1byte(index, &b))
+	{
+		for (i = 9 ; i >= 0 ; i--) {
+			Str = PWaitStr[i];
+			if (Str!=NULL) {
+				if ((BYTE)Str[WaitCount[i]]==b) {
+					WaitCount[i]++;
+				}
+				else if (WaitCount[i]>0) {
+					WaitCount[i] = 0;
+					if ((BYTE)Str[0]==b) {
+						WaitCount[i] = 1;
+					}
+				}
+				if (WaitCount[i]==WaitStrLen[i]) {
+					Found = i+1;
+				}
+			}
+		}
+	}
+
+	if (Found>0) ClearWait();
+	SendSync();
+
+	return Found;
+}
+
+//
+// 全マクロのバッファをsnoopし、期待したキーワードがすべて揃うまでウェイトする。
+//
+//  1: 揃った
+//  0: 揃っていない
+//
+int Wait4all()
+{
+	static int num, index[MAXNWIN];
+	int i, ret;
+
+	if (Wait4allGotIndex == FALSE) {
+		get_macro_active_info(&num,index);
+		Wait4allGotIndex = TRUE;
+	}
+
+	for (i = 0 ; i < num ; i++) {
+		ret = Wait4allOneBuffer(index[i]);
+		if (ret) {
+			Wait4allFoundNum++;
+		}
+	}
+
+	return (Wait4allFoundNum >= num);
+}
+
 
 void SetFile(PCHAR FN)
 {

@@ -168,6 +168,21 @@ BOOL CCtrlWindow::OnIdle()
 			SetTimer(IdTimeOutTimer,0, NULL);
 		}
 	}
+	else if (TTLStatus==IdTTLWait4all) {
+		ResultCode = Wait4all();
+		if (ResultCode>0) {
+			KillTimer(IdTimeOutTimer);
+			TTLStatus = IdTTLRun;
+			LockVar();
+			SetResult(ResultCode);
+			UnlockVar();
+			ClearWait();
+			return TRUE;
+		}
+		else if (ComReady==0) {
+			SetTimer(IdTimeOutTimer,0, NULL);
+		}
+	}
 
 	return FALSE;
 }

@@ -77,6 +77,7 @@ void SetWait2(PCHAR Str, int Len, int Pos);
 int Wait();
 BOOL Wait2();
 BOOL WaitN();
+int Wait4all();
 void SetFile(PCHAR FN);
 void SetSecondFile(PCHAR FN);
 void SetBinary(int BinFlag);
@@ -105,6 +106,10 @@ enum regex_type {
 	REGEX_WAITEVENT,
 };
 extern enum regex_type RegexActionType;
+
+extern BOOL Wait4allGotIndex;
+extern int Wait4allFoundNum;
+
 
 #ifdef __cplusplus
 }

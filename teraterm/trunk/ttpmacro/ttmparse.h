@@ -16,6 +16,7 @@
 #define IdTTLSleep          10
 #define IdTTLEnd            11
 #define IdTTLWaitN          12
+#define IdTTLWait4all       13
 
 #define ErrCloseParent      1
 #define ErrCantCall         2
