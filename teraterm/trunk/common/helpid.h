@@ -289,6 +289,7 @@
 #define HlpMacroCommandUntil            92128
 #define HlpMacroCommandVar2clipb        92114
 #define HlpMacroCommandWait             92100
+#define HlpMacroCommandWait4all         92148
 #define HlpMacroCommandWaitevent        92101
 #define HlpMacroCommandWaitln           92102
 #define HlpMacroCommandWaitn            92143

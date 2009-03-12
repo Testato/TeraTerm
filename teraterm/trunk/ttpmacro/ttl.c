@@ -3337,6 +3337,14 @@ WORD TTLWait(BOOL Ln)
 }
 
 
+WORD TTLWait4all(BOOL Ln)
+{
+	WORD Err = 0;
+
+	return Err;
+}
+
+
 // 'waitregex'(wait regular expression): wait command with regular expression
 //
 // This command has almost same function of 'wait' command. Additionally 'waitregex' can search 
@@ -3996,6 +4004,8 @@ int ExecCmnd()
 			Err = TTLWaitRegex(FALSE); break;    // add 'waitregex' (2005.10.5 yutaka)
 		case RsvWait:
 			Err = TTLWait(FALSE); break;
+		case RsvWait4all:
+			Err = TTLWait4all(FALSE); break;
 		case RsvWaitEvent:
 			Err = TTLWaitEvent(); break;
 		case RsvWaitLn:

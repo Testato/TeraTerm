@@ -301,6 +301,7 @@ BOOL CheckReservedWord(PCHAR Str, LPWORD WordId)
 	case 'w':
 		if (_stricmp(Str,"waitregex")==0) *WordId = RsvWaitRegex;  // add 'waitregex' (2005.10.5 yutaka)
 		else if (_stricmp(Str,"wait")==0) *WordId = RsvWait;
+		else if (_stricmp(Str,"wait4all")==0) *WordId = RsvWait4all;
 		else if (_stricmp(Str,"waitevent")==0) *WordId = RsvWaitEvent;
 		else if (_stricmp(Str,"waitln")==0) *WordId = RsvWaitLn;
 		else if (_stricmp(Str,"waitn")==0) *WordId = RsvWaitN;  // add 'waitn'  (2009.1.26 maya)

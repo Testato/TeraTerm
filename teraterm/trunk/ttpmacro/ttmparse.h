@@ -186,6 +186,7 @@
 #define RsvSendMulticast    145
 #define RsvSetMulticastName    146
 #define RsvSendlnBroadcast    147
+#define RsvWait4all         148
 
 #define RsvOperator     150
 #define RsvBNot         151
