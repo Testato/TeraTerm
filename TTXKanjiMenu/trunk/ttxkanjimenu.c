@@ -47,6 +47,7 @@ typedef struct {
 	HMENU hmEncode;
 	PSetupTerminal origSetupTermDlg;
 	PReadIniFile origReadIniFile;
+	PWriteIniFile origWriteIniFile;
 	BOOL ChangeBoth;
 } TInstVar;
 
@@ -62,6 +63,7 @@ static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
 	pvar->ts = ts;
 	pvar->cv = cv;
 	pvar->origReadIniFile = NULL;
+	pvar->origWriteIniFile = NULL;
 	pvar->ChangeBoth = FALSE;
 }
 
@@ -122,9 +124,20 @@ static void PASCAL FAR TTXKanjiMenuReadIniFile(PCHAR fn, PTTSet ts) {
 	return;
 }
 
+static void PASCAL FAR TTXKanjiMenuWriteIniFile(PCHAR fn, PTTSet ts) {
+	/* Call original WriteIniFile */
+	pvar->origWriteIniFile(fn, ts);
+
+	WritePrivateProfileString(IniSection, "ChangeBoth", pvar->ChangeBoth?"On":"Off", fn);
+
+	return;
+}
+
 static void PASCAL FAR TTXGetSetupHooks(TTXSetupHooks FAR *hooks) {
 	pvar->origReadIniFile = *hooks->ReadIniFile;
 	*hooks->ReadIniFile = TTXKanjiMenuReadIniFile;
+	pvar->origWriteIniFile = *hooks->WriteIniFile;
+	*hooks->WriteIniFile = TTXKanjiMenuWriteIniFile;
 }
 
 // #define ID_MI_KANJIMASK 0xFF00
