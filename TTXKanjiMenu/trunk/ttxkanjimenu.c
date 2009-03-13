@@ -190,7 +190,7 @@ static void PASCAL FAR UpdateRecvMenuCaption(HMENU menu, BOOL ChangeBoth) {
 		GetI18nStr(IniSection, "MENU_RECV_UTF8", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
 		           "Recv: &UTF-8", pvar->ts->UILanguageFile);
 		ModifyMenu(menu, ID_MI_KANJIRECV+IdUTF8,  MF_BYCOMMAND, ID_MI_KANJIRECV+IdUTF8,  pvar->ts->UIMsg);
-		GetI18nStr(IniSection, "Recv: UTF-8&m", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		GetI18nStr(IniSection, "MENU_RECV_UTF8m", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
 		           "Recv: UTF-8&m", pvar->ts->UILanguageFile);
 		ModifyMenu(menu, ID_MI_KANJIRECV+IdUTF8m, MF_BYCOMMAND, ID_MI_KANJIRECV+IdUTF8m, pvar->ts->UIMsg);
 	}
