@@ -45,6 +45,7 @@ typedef struct {
 	PTTSet ts;
 	PComVar cv;
 	HMENU hmEncode;
+	PSetupTerminal origSetupTermDlg;
 	PReadIniFile origReadIniFile;
 	BOOL ChangeBoth;
 } TInstVar;
@@ -62,6 +63,44 @@ static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
 	pvar->cv = cv;
 	pvar->origReadIniFile = NULL;
 	pvar->ChangeBoth = FALSE;
+}
+
+static BOOL FAR PASCAL TTXKanjiMenuSetupTerminal(HWND parent, PTTSet ts) {
+	WORD orgRecvCode, orgSendCode;
+	BOOL ret;
+
+	orgRecvCode = pvar->ts->KanjiCode;
+	orgSendCode = pvar->ts->KanjiCodeSend;
+
+	ret = pvar->origSetupTermDlg(parent, ts);
+
+	if (ret) {
+		if (orgRecvCode == pvar->ts->KanjiCode && orgSendCode != pvar->ts->KanjiCodeSend) {
+			// 送信コードのみ変更した場合は送信コードに合わせる
+			// ただし、送信:UTF-8 && 受信: UTF-8mの場合は対象外
+			if (pvar->ts->KanjiCodeSend != IdUTF8 || pvar->ts->KanjiCode != IdUTF8m) {
+				pvar->ts->KanjiCode = pvar->ts->KanjiCodeSend;
+			}
+		}
+		else {
+			// それ以外は受信コードに合わせる
+			if (pvar->ts->KanjiCode == IdUTF8m) {
+				pvar->ts->KanjiCodeSend = IdUTF8;
+			}
+			else {
+				pvar->ts->KanjiCodeSend = pvar->ts->KanjiCode;
+			}
+		}
+	}
+
+	return ret;
+}
+
+static void PASCAL FAR TTXGetUIHooks(TTXUIHooks FAR * hooks) {
+	if (pvar->ChangeBoth) {
+		pvar->origSetupTermDlg = *hooks->SetupTerminal;
+		*hooks->SetupTerminal = TTXKanjiMenuSetupTerminal;
+	}
 }
 
 static void PASCAL FAR TTXKanjiMenuReadIniFile(PCHAR fn, PTTSet ts) {
@@ -320,7 +359,7 @@ static TTXExports Exports = {
 
 /* Now we just list the functions that we've implemented. */
 	TTXInit,
-	NULL, // TTXGetUIHooks,
+	TTXGetUIHooks,
 	TTXGetSetupHooks,
 	NULL, // TTXOpenTCP,
 	NULL, // TTXCloseTCP,
