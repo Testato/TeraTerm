@@ -48,7 +48,9 @@ static int open_macro_shmem(void)
 	if (pm == NULL)
 		return FALSE;
 
-	memset(pm, 0, sizeof(TMacroShmem));
+	if (FirstInstance) { // 初回にアタッチした人が、責任を持ってクリアしておく。
+		memset(pm, 0, sizeof(TMacroShmem));
+	}
 
 	hMutex = CreateMutex(NULL, FALSE, MUTEX_NAME);
 
@@ -118,7 +120,10 @@ int unregister_macro_window(HWND hwnd)
 		if (pm->WinList[i] == hwnd) {
 			pm->NWin--;
 			pm->WinList[i] = NULL;
-			memset(&pm->mbufs[i], 0, sizeof(pm->mbufs)); // オールクリア
+
+			pm->mbufs[i].RBufCount = 0;
+			pm->mbufs[i].RBufPtr = 0;
+			pm->mbufs[i].RBufStart = 0;
 			ret = TRUE;
 			break;
 		}

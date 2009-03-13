@@ -753,7 +753,7 @@ static int Wait4allOneBuffer(int index)
 		}
 	}
 
-	if (Found>0) ClearWait();
+//	if (Found>0) ClearWait();
 	SendSync();
 
 	return Found;
@@ -787,7 +787,14 @@ int Wait4all()
 	// wait4all実行中に、プロセスが増減することがあるため。
 	curnum = get_macro_active_num();
 
-	return (Wait4allFoundNum >= curnum);
+	if (Wait4allFoundNum >= curnum) {
+		ClearWait();
+		return 1; // 全部そろった
+
+	} else {
+
+		return 0;
+	}
 }
 
 
