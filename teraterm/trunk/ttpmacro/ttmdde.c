@@ -769,6 +769,7 @@ int Wait4all()
 {
 	static int num, index[MAXNWIN];
 	int i, ret;
+	int curnum;
 
 	if (Wait4allGotIndex == FALSE) {
 		get_macro_active_info(&num,index);
@@ -782,7 +783,11 @@ int Wait4all()
 		}
 	}
 
-	return (Wait4allFoundNum >= num);
+	// 今現在、アクティブなttpmacroの数を取得する。
+	// wait4all実行中に、プロセスが増減することがあるため。
+	curnum = get_macro_active_num();
+
+	return (Wait4allFoundNum >= curnum);
 }
 
 

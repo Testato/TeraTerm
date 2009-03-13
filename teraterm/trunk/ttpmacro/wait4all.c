@@ -118,6 +118,7 @@ int unregister_macro_window(HWND hwnd)
 		if (pm->WinList[i] == hwnd) {
 			pm->NWin--;
 			pm->WinList[i] = NULL;
+			memset(&pm->mbufs[i], 0, sizeof(pm->mbufs)); // オールクリア
 			ret = TRUE;
 			break;
 		}
@@ -130,6 +131,7 @@ int unregister_macro_window(HWND hwnd)
 	return (ret);
 }
 
+// アクティブになっているttpmacroのインデックス配列を返す。
 void get_macro_active_info(int *num, int *index)
 {
 	int i;
@@ -148,16 +150,28 @@ void get_macro_active_info(int *num, int *index)
 	unlock_shmem(hd);
 }
 
+// 現在のアクティブttpmacro数を返す
+int get_macro_active_num(void)
+{
+	return pm->NWin;
+}
+
+
 void put_macro_1byte(BYTE b)
 {
-	char *RingBuf = pm->mbufs[mindex].RingBuf;
-	int RBufPtr = pm->mbufs[mindex].RBufPtr;
-	int RBufCount = pm->mbufs[mindex].RBufCount;
-	int RBufStart = pm->mbufs[mindex].RBufStart;
+	char *RingBuf;
+	int RBufPtr;
+	int RBufCount;
+	int RBufStart;
 	HANDLE hd;
 
 	if (function_disable)
 		return;
+
+	RingBuf = pm->mbufs[mindex].RingBuf;
+	RBufPtr = pm->mbufs[mindex].RBufPtr;
+	RBufCount = pm->mbufs[mindex].RBufCount;
+	RBufStart = pm->mbufs[mindex].RBufStart;
 
 	hd = lock_shmem();
 
@@ -184,14 +198,19 @@ void put_macro_1byte(BYTE b)
 
 int read_macro_1byte(int index, LPBYTE b)
 {
-	char *RingBuf = pm->mbufs[index].RingBuf;
-	int RBufPtr = pm->mbufs[index].RBufPtr;
-	int RBufCount = pm->mbufs[index].RBufCount;
-	int RBufStart = pm->mbufs[index].RBufStart;
+	char *RingBuf;
+	int RBufPtr;
+	int RBufCount;
+	int RBufStart;
 	HANDLE hd;
 
 	if (function_disable)
 		return FALSE;
+
+	RingBuf = pm->mbufs[index].RingBuf;
+	RBufPtr = pm->mbufs[index].RBufPtr;
+	RBufCount = pm->mbufs[index].RBufCount;
+	RBufStart = pm->mbufs[index].RBufStart;
 
 	if (RBufCount<=0) {
 		return FALSE;

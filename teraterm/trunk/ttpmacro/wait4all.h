@@ -18,6 +18,7 @@ extern "C" {
 int register_macro_window(HWND hwnd);
 int unregister_macro_window(HWND hwnd);
 void get_macro_active_info(int *num, int *index);
+int get_macro_active_num(void);
 void put_macro_1byte(BYTE b);
 int read_macro_1byte(int index, LPBYTE b);
 
