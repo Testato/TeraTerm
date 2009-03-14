@@ -174,10 +174,10 @@ DLG_TAB_VISUAL_MOUSE=&MouseCursor
 DLG_TAB_VISUAL_RED=&Red
 DLG_TAB_VISUAL_GREEN=&Green
 DLG_TAB_VISUAL_BLUE=&Blue
-DLG_TAB_VISUAL_BOLD=Enable b&old attribute color
-DLG_TAB_VISUAL_BLINK=Enable b&link attribute color
-DLG_TAB_VISUAL_REVERSE=Enable re&verse attribute color
-DLG_TAB_VISUAL_URL=Enable &url color
+DLG_TAB_VISUAL_BOLD=Enable B&old attribute color
+DLG_TAB_VISUAL_BLINK=Enable B&link attribute color
+DLG_TAB_VISUAL_REVERSE=Enable Re&verse attribute color
+DLG_TAB_VISUAL_URL=Enable &URL color
 DLG_TAB_VISUAL_ANSI=Enable A&NSI color
 
 DLG_TAB_LOG_EDITOR=View Log &Editor
