@@ -6,7 +6,10 @@
 #include <windows.h>
 #include "wait4all.h"
 
-static int function_disable = 1;  // まだデバッグ中なので、無効化しておく。
+// まだデバッグ中なので、無効化しておく。
+//  1: disable
+//  0: enable
+static int function_disable = 1;  
 
 // 共有メモリフォーマット拡張時は、以下の名称を変更すること。
 #define TTM_FILEMAPNAME "ttm_memfilemap_1"
@@ -32,6 +35,17 @@ static BOOL QuoteFlag;
 // 排他制御
 #define MUTEX_NAME "Mutex Object for macro shmem"
 static HANDLE hMutex = NULL;
+
+// 共有メモリインデックス
+int macro_shmem_index = -1;
+
+
+// wait4allコマンドが有効かどうかを返す
+int is_wait4all_enabled(void)
+{
+	return !function_disable;
+}
+
 
 // 共有メモリのマッピング
 static int open_macro_shmem(void)
@@ -96,7 +110,7 @@ int register_macro_window(HWND hwnd)
 		if (pm->WinList[i] == NULL) {
 			pm->NWin++;
 			pm->WinList[i] = hwnd;
-			mindex = i;   // インデックスを保存
+			macro_shmem_index = mindex = i;   // インデックスを保存
 			ret = TRUE;
 			break;
 		}

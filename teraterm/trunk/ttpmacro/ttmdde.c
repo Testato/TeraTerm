@@ -92,7 +92,10 @@ int Wait4allFoundNum = 0;
 void Put1Byte(BYTE b)
 {
 	// 従来のリングバッファへ書き込むと同時に、wait4all用共有メモリへも書き出す。(2009.3.12 yutaka)
-	put_macro_1byte(b);
+	if (is_wait4all_enabled()) {
+		put_macro_1byte(b);
+		return;
+	} 
 
 	RingBuf[RBufPtr] = b;
 	RBufPtr++;
@@ -110,6 +113,10 @@ void Put1Byte(BYTE b)
 
 BOOL Read1Byte(LPBYTE b)
 {
+	if (is_wait4all_enabled()) {
+		return read_macro_1byte(macro_shmem_index, b);
+	} 
+
 	if (RBufCount<=0) {
 		return FALSE;
 	}
@@ -791,8 +798,10 @@ int Wait4all()
 	// 今現在、アクティブなttpmacroの数を取得する。
 	// wait4all実行中に、プロセスが増減することがあるため。
 	curnum = get_macro_active_num();
+	if (curnum < num)
+		num = curnum;
 
-	if (Wait4allFoundNum >= curnum) {
+	if (Wait4allFoundNum >= num) {
 		ClearWait();
 		return 1; // 全部そろった
 
