@@ -767,19 +767,24 @@ static int Wait4allOneBuffer(int index)
 //
 int Wait4all()
 {
-	static int num, index[MAXNWIN];
+	static int num, index[MAXNWIN], found[MAXNWIN];
 	int i, ret;
 	int curnum;
 
 	if (Wait4allGotIndex == FALSE) {
-		get_macro_active_info(&num,index);
+		num = 0;
+		memset(index, 0, sizeof(index));
+		memset(found, 0, sizeof(found));
+		get_macro_active_info(&num, index);
 		Wait4allGotIndex = TRUE;
 	}
 
 	for (i = 0 ; i < num ; i++) {
 		ret = Wait4allOneBuffer(index[i]);
-		if (ret) {
+		if (ret && found[i] == 0) {
 			Wait4allFoundNum++;
+			// 同じ端末で、重複してマッチした場合は、2重にカウントしないようにする。
+			found[i] = 1;
 		}
 	}
 
