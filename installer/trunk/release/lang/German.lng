@@ -176,7 +176,7 @@ DLG_TAB_VISUAL_BLUE=&Blau
 DLG_TAB_VISUAL_BOLD=Enable B&old attribute color
 DLG_TAB_VISUAL_BLINK=Enable B&link attribute color
 DLG_TAB_VISUAL_REVERSE=Enable Re&verse attribute color
-DLG_TAB_VISUAL_URL=Enable &URL color
+DLG_TAB_VISUAL_URL=Enable &URL attribute color
 DLG_TAB_VISUAL_ANSI=Enable A&NSI color
 
 DLG_TAB_LOG_EDITOR=&Auswahl Editor
