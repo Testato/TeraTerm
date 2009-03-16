@@ -341,5 +341,26 @@ UnicodeToDecSpMapping=3
 </pre>
 
 
+<h1><a name="StrictKeyMapping">ファンクションキー等のデフォルトの動作</a></h1>
+
+<p>
+Tera Term 4.62 より、ファンクションキーやエディタキーパッドのキーのデフォルトの動作が変更になりました。
+これにより、キーボード設定ファイルでこれらのキー設定をoffにしたり、キーボード設定ファイルが無い場合も、VT端末の同じようなキーのシーケンスが送出されるようになりました。
+</p>
+
+<p>
+キーボード設定ファイルでファンクションキー等をoffにした時に、以前のバージョンの Tera Term と同じように何も送出しないようにするには、設定ファイルの [Tera Term] セクションの StrictKeyMapping 行を以下のように変更してください。
+</p>
+
+<pre>
+StrictKeyMapping=on
+</pre>
+
+<pre>
+省略時:
+StrictKeyMapping=off
+</pre>
+
+
 </BODY>
 </HTML>
