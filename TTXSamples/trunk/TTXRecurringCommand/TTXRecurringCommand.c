@@ -2,6 +2,8 @@
 #include "tttypes.h"
 #include "ttplugin.h"
 #include "ttlib.h"
+#include "tt_res.h"
+#include "resource.h"
 
 #include "compat_w95.h"
 
@@ -10,6 +12,8 @@
 #define MINIMUM_INTERVAL 10
 
 #define IdRecurringTimer 3001
+
+#define ID_MENU_SETUP 55500
 
 #define SECTION "TTXRecurringCommand"
 
@@ -22,15 +26,43 @@ typedef struct {
   TWriteFile origPWriteFile;
   PReadIniFile origReadIniFile;
   PWriteIniFile origWriteIniFile;
+  HMENU SetupMenu;
   int interval;
   BOOL enable;
   int cmdLen;
   char command[50];
+  char orgCommand[50];
 } TInstVar;
 
 typedef TInstVar FAR * PTInstVar;
 PTInstVar pvar;
 static TInstVar InstVar;
+
+#define GetFileMenu(menu)       GetSubMenuByChildID(menu, ID_FILE_NEWCONNECTION)
+#define GetEditMenu(menu)       GetSubMenuByChildID(menu, ID_EDIT_COPY2)
+#define GetSetupMenu(menu)      GetSubMenuByChildID(menu, ID_SETUP_TERMINAL)
+#define GetControlMenu(menu)    GetSubMenuByChildID(menu, ID_CONTROL_RESETTERMINAL)
+#define GetHelpMenu(menu)       GetSubMenuByChildID(menu, ID_HELP_ABOUT)
+
+HMENU GetSubMenuByChildID(HMENU menu, UINT id) {
+  int i, j, items, subitems, cur_id;
+  HMENU m;
+
+  items = GetMenuItemCount(menu);
+
+  for (i=0; i<items; i++) {
+    if (m = GetSubMenu(menu, i)) {
+      subitems = GetMenuItemCount(m);
+      for (j=0; j<subitems; j++) {
+        cur_id = GetMenuItemID(m, j);
+        if (cur_id == id) {
+          return m;
+        }
+      }
+    }
+  }
+  return NULL;
+}
 
 WORD GetOnOff(PCHAR Sect, PCHAR Key, PCHAR FName, BOOL Default)
 {
@@ -221,7 +253,8 @@ static void PASCAL FAR TTXCloseFile(TTXFileHooks FAR * hooks) {
 
 static void PASCAL FAR TTXReadIniFile(PCHAR fn, PTTSet ts) {
   pvar->origReadIniFile(fn, ts);
-  GetPrivateProfileString(SECTION, "Command", "", pvar->command, sizeof(pvar->command), fn);
+  GetPrivateProfileString(SECTION, "Command", "", pvar->orgCommand, sizeof(pvar->orgCommand), fn);
+  strncpy_s(pvar->command, sizeof(pvar->command), pvar->orgCommand, _TRUNCATE);
   RestoreNewLine(pvar->command);
   pvar->cmdLen = (int)strlen(pvar->command);
   pvar->interval = GetPrivateProfileInt(SECTION, "Interval", MINIMUM_INTERVAL, fn);
@@ -233,17 +266,15 @@ static void PASCAL FAR TTXReadIniFile(PCHAR fn, PTTSet ts) {
 }
 
 static void PASCAL FAR TTXWriteIniFile(PCHAR fn, PTTSet ts) {
-//  char buff[20];
+  char buff[20];
 
   pvar->origWriteIniFile(fn, ts);
 
-/*
   WritePrivateProfileString(SECTION, "Enable", pvar->enable?"On":"Off", fn);
-  WritePrivateProfileString(SECTION, "Command", pvar->command, fn);
+  WritePrivateProfileString(SECTION, "Command", pvar->orgCommand, fn);
 
   _snprintf_s(buff, sizeof(buff), _TRUNCATE, "%d", pvar->interval);
   WritePrivateProfileString(SECTION, "Interval", buff, fn);
- */
   return;
 }
 
@@ -252,6 +283,63 @@ static void PASCAL FAR TTXGetSetupHooks(TTXSetupHooks FAR * hooks) {
   *hooks->ReadIniFile = TTXReadIniFile;
   pvar->origWriteIniFile = *hooks->WriteIniFile;
   *hooks->WriteIniFile = TTXWriteIniFile;
+}
+
+static void PASCAL FAR TTXModifyMenu(HMENU menu) {
+  UINT flag = MF_BYCOMMAND | MF_STRING | MF_ENABLED;
+
+  pvar->SetupMenu = GetSetupMenu(menu);
+
+  InsertMenu(pvar->SetupMenu, ID_SETUP_ADDITIONALSETTINGS, flag, ID_MENU_SETUP, "Rec&urring command");
+}
+
+static LRESULT CALLBACK RecurringCommandSetting(HWND dlg, UINT msg, WPARAM wParam, LPARAM lParam) {
+  switch (msg) {
+    case WM_INITDIALOG:
+      SendMessage(GetDlgItem(dlg, IDC_ENABLE), BM_SETCHECK, pvar->enable?BST_CHECKED:BST_UNCHECKED, 0);
+      SetDlgItemInt(dlg, IDC_INTERVAL, pvar->interval, FALSE);
+      SetDlgItemText(dlg, IDC_COMMAND, pvar->orgCommand);
+
+      return TRUE;
+    case WM_COMMAND:
+      switch (LOWORD(wParam)) {
+        case IDOK:
+          pvar->enable = IsDlgButtonChecked(dlg, IDC_ENABLE) == BST_CHECKED;
+
+	  pvar->interval = GetDlgItemInt(dlg, IDC_INTERVAL, NULL, FALSE);
+
+          GetDlgItemText(dlg, IDC_COMMAND, pvar->orgCommand, sizeof(pvar->orgCommand));
+          strncpy_s(pvar->command, sizeof(pvar->command), pvar->orgCommand, _TRUNCATE);
+          RestoreNewLine(pvar->command);
+          pvar->cmdLen = (int)strlen(pvar->command);
+
+          EndDialog(dlg, IDOK);
+          return TRUE;
+
+        case IDCANCEL:
+          EndDialog(dlg, IDCANCEL);
+          return TRUE;
+      }
+      break;
+  }
+  return FALSE;
+}
+
+static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
+  switch (cmd) {
+    case ID_MENU_SETUP:
+      switch (DialogBoxParam(hInst, MAKEINTRESOURCE(IDD_SETUP_RECURRINGCOMMAND), hWin, RecurringCommandSetting, (LPARAM)NULL)) {
+        case IDOK:
+          break;
+        case IDCANCEL:
+          break;
+        case -1:
+          MessageBox(hWin, "TTXRecurringCommand: Error", "Can't display dialog box.", MB_OK | MB_ICONEXCLAMATION);
+          break;
+      }
+      return 1;
+  }
+  return 0;
 }
 
 static TTXExports Exports = {
@@ -264,9 +352,9 @@ static TTXExports Exports = {
   TTXOpenTCP,
   TTXCloseTCP,
   NULL, // TTXSetWinSize,
-  NULL, // TTXModifyMenu,
+  TTXModifyMenu,
   NULL, // TTXModifyPopupMenu,
-  NULL, // TTXProcessCommand,
+  TTXProcessCommand,
   NULL, // TTXEnd,
   NULL, // TTXSetCommandLine,
   TTXOpenFile,
