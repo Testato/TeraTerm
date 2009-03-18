@@ -1826,7 +1826,6 @@ void CSSetAttr()
         ColorRef = ts.VTColor[1];
         ts.VTColor[1] = ts.VTReverseColor[1];
         ts.VTReverseColor[1] = ColorRef;
-        ts.VTColor[0] = ts.VTReverseColor[0];
       }
       else {
         ColorRef = ts.VTColor[0];
