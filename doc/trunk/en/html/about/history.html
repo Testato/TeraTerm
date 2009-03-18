@@ -42,8 +42,8 @@
       <li>The hidden fonts can be shown on the font selection dialog with Windows 7 beta(build7000).</li>
       <li>added support for specifying the reverser color.
         <ul>
-          <li>added VTReverseColor entry in teraterm.ini file.<!-- <br>
-              注: アップグレードインストール時は互換性のためこの機能は無効にされています。有効にする場合は、後述のEnableReverseAttrColorをonに設定してください。--></li>
+          <li>added VTReverseColor entry in teraterm.ini file.<br>
+              Notice: This function is disabled for the backward compatibility when a user selects the upgrade installation. If a user want to enable this feature, turn on the EnableReverseAttrColor entry.</li>
         </ul></li>
       <li>added being able to disable the high brightness color, the blink color, the reverse attribute color and the ANSI color displaying.
         <ul>
@@ -1288,7 +1288,7 @@ SYNOPSIS:
          <li>Only support for SSH2 protocol.</li>
          <li>Not supporting for SFTP(SSH File Transfer Protocol).</li>
        </ul></li>
-      <li>Bug fix: TCP disconnection was mis-detected in the packet sending. This bug is regression in TTSSH 1.01 because SSH heartbeat thread is not thread-safe.</li>
+      <li>Bug fix: TCP disconnection was mis-detected in the packet sending. This problem is a regression from TTSSH 1.01 because SSH heartbeat thread is not thread-safe.</li>
       <li>Bug fix: SSH is disabled when "/ssh1" or "/ssh2" is included in hostname on New Connection dialog.</li>
       <li>Bug fix: Twice sending SSH2_MSG_SERVICE_REQUEST packet when the user default is not specified and the user authentication method is challenge, /ask4passwd is specified at commad line parameter.</li>
       <li>Bug fix: TIS authentication dialog would not appear when CheckAuthListFirst entry is off and the user authentication method is challenge, /ask4passwd is specified at commad line parameter.</li>
@@ -1947,11 +1947,11 @@ SYNOPSIS:
 
 <h3><a name="kanjimenu_0.1.5">2009.2.18 (Ver 0.1.5 not released)</a></h3>
 <ul class="history">
-      <!-- li>送受信両方を同時に変更できるようにした。
+      <li>added support for changing concurrently both the Recv and the Send.
         <ul>
-          <li>teraterm.ini に ChangeBoth エントリを追加した。デフォルトはoff。</li>
-        </ul></li -->
-      <!--li>Windows 95 でメニューが表示されない問題を修正した。</li-->
+          <li>added the ChangeBoth entry in the teraterm.ini file. The default value is off.</li>
+        </ul></li>
+      <li>Bug fix: The menu can not display on Windows 95.</li>
 </ul>
 
 <h3><a name="kanjimenu_0.1.4">2008.2.29 (Ver 0.1.4)</a></h3>
