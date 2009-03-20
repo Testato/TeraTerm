@@ -10,6 +10,7 @@
 #define ORDER 4000
 
 #define MINIMUM_INTERVAL 10
+#define DEFAULT_INTERVAL 300
 
 #define IdRecurringTimer 3001
 
@@ -217,7 +218,7 @@ static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
 	pvar->origPWriteFile = NULL;
 	pvar->origReadIniFile = NULL;
 	pvar->origWriteIniFile = NULL;
-	pvar->interval = MINIMUM_INTERVAL;
+	pvar->interval = DEFAULT_INTERVAL;
 }
 
 //
@@ -289,7 +290,7 @@ static void PASCAL FAR TTXReadIniFile(PCHAR fn, PTTSet ts) {
 	RestoreNewLine(pvar->command);
 	pvar->cmdLen = (int)strlen(pvar->command);
 
-	pvar->interval = GetPrivateProfileInt(SECTION, "Interval", MINIMUM_INTERVAL, fn);
+	pvar->interval = GetPrivateProfileInt(SECTION, "Interval", DEFAULT_INTERVAL, fn);
 	if (pvar->interval < MINIMUM_INTERVAL) {
 		pvar->interval = MINIMUM_INTERVAL;
 	}
