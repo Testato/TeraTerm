@@ -275,16 +275,14 @@ UnicodeToDecSpMapping=3
 </pre>
 
 
-<!--
-<h1><a name="StrictKeyMapping">ファンクションキー等のデフォルトの動作</a></h1>
+<h1><a name="StrictKeyMapping">Mapping of the function key</a></h1>
 
 <p>
-Tera Term 4.62 より、ファンクションキーやエディタキーパッドのキーのデフォルトの動作が変更になりました。
-これにより、キーボード設定ファイルでこれらのキー設定をoffにしたり、キーボード設定ファイルが無い場合も、VT端末の同じようなキーのシーケンスが送出されるようになりました。
+A use can change the default action of the function key and the editor keypad from Tera Term 4.62. When a user can use this feature, the key sequence like as the VT termianl sends to the server without the keyboard configuration file.
 </p>
 
 <p>
-キーボード設定ファイルでファンクションキー等をoffにした時に、以前のバージョンの Tera Term と同じように何も送出しないようにするには、設定ファイルの [Tera Term] セクションの StrictKeyMapping 行を以下のように変更してください。
+If a user disables the function key action in the keyboard configuration file and sends nothing to the server, please change the StrictKeyMapping entry in teraterm.ini file in the following:
 </p>
 
 <pre>
@@ -292,10 +290,9 @@ StrictKeyMapping=on
 </pre>
 
 <pre>
-省略時:
+The default value:
 StrictKeyMapping=off
 </pre>
--->
 
 
 </BODY>
