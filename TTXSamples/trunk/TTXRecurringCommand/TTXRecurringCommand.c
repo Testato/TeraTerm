@@ -361,6 +361,9 @@ static LRESULT CALLBACK RecurringCommandSetting(HWND dlg, UINT msg, WPARAM wPara
 			}
 
 			pvar->interval = GetDlgItemInt(dlg, IDC_INTERVAL, NULL, FALSE);
+			if (pvar->interval < MINIMUM_INTERVAL) {
+				pvar->interval = MINIMUM_INTERVAL;
+			}
 
 			GetDlgItemText(dlg, IDC_COMMAND, pvar->orgCommand, sizeof(pvar->orgCommand));
 			strncpy_s(pvar->command, sizeof(pvar->command), pvar->orgCommand, _TRUNCATE);
