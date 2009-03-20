@@ -350,15 +350,6 @@ static LRESULT CALLBACK RecurringCommandSetting(HWND dlg, UINT msg, WPARAM wPara
 		switch (LOWORD(wParam)) {
 		  case IDOK:
 			pvar->enable = IsDlgButtonChecked(dlg, IDC_ENABLE) == BST_CHECKED;
-			if (pvar->cv->Ready) {
-				if (pvar->enable) {
-					SetTimer(pvar->cv->HWin, IdRecurringTimer,
-					         pvar->interval * 1000, RecurringTimerProc);
-				}
-				else {
-					KillTimer(pvar->cv->HWin, IdRecurringTimer);
-				}
-			}
 
 			pvar->interval = GetDlgItemInt(dlg, IDC_INTERVAL, NULL, FALSE);
 			if (pvar->interval < MINIMUM_INTERVAL) {
@@ -369,6 +360,16 @@ static LRESULT CALLBACK RecurringCommandSetting(HWND dlg, UINT msg, WPARAM wPara
 			strncpy_s(pvar->command, sizeof(pvar->command), pvar->orgCommand, _TRUNCATE);
 			RestoreNewLine(pvar->command);
 			pvar->cmdLen = (int)strlen(pvar->command);
+
+			if (pvar->cv->Ready) {
+				if (pvar->enable) {
+					SetTimer(pvar->cv->HWin, IdRecurringTimer,
+					         pvar->interval * 1000, RecurringTimerProc);
+				}
+				else {
+					KillTimer(pvar->cv->HWin, IdRecurringTimer);
+				}
+			}
 
 			EndDialog(dlg, IDOK);
 			return TRUE;
