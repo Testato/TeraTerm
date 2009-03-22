@@ -48,7 +48,7 @@ typedef struct {
 	PSetupTerminal origSetupTermDlg;
 	PReadIniFile origReadIniFile;
 	PWriteIniFile origWriteIniFile;
-	BOOL ChangeBoth;
+	BOOL UseOneSetting;
 } TInstVar;
 
 static TInstVar FAR * pvar;
@@ -64,7 +64,7 @@ static void PASCAL FAR TTXInit(PTTSet ts, PComVar cv) {
 	pvar->cv = cv;
 	pvar->origReadIniFile = NULL;
 	pvar->origWriteIniFile = NULL;
-	pvar->ChangeBoth = FALSE;
+	pvar->UseOneSetting = FALSE;
 }
 
 static BOOL FAR PASCAL TTXKanjiMenuSetupTerminal(HWND parent, PTTSet ts) {
@@ -99,7 +99,7 @@ static BOOL FAR PASCAL TTXKanjiMenuSetupTerminal(HWND parent, PTTSet ts) {
 }
 
 static void PASCAL FAR TTXGetUIHooks(TTXUIHooks FAR * hooks) {
-	if (pvar->ChangeBoth) {
+	if (pvar->UseOneSetting) {
 		pvar->origSetupTermDlg = *hooks->SetupTerminal;
 		*hooks->SetupTerminal = TTXKanjiMenuSetupTerminal;
 	}
@@ -111,9 +111,9 @@ static void PASCAL FAR TTXKanjiMenuReadIniFile(PCHAR fn, PTTSet ts) {
 	/* Call original ReadIniFile */
 	pvar->origReadIniFile(fn, ts);
 
-	GetPrivateProfileString(IniSection, "ChangeBoth", "Off", buff, sizeof(buff), fn);
+	GetPrivateProfileString(IniSection, "UseOneSetting", "Off", buff, sizeof(buff), fn);
 	if (_stricmp(buff, "on") == 0) {
-		pvar->ChangeBoth = TRUE;
+		pvar->UseOneSetting = TRUE;
 		if (pvar->ts->KanjiCode == IdUTF8m) {
 			pvar->ts->KanjiCodeSend = IdUTF8;
 		}
@@ -128,7 +128,7 @@ static void PASCAL FAR TTXKanjiMenuWriteIniFile(PCHAR fn, PTTSet ts) {
 	/* Call original WriteIniFile */
 	pvar->origWriteIniFile(fn, ts);
 
-	WritePrivateProfileString(IniSection, "ChangeBoth", pvar->ChangeBoth?"On":"Off", fn);
+	WritePrivateProfileString(IniSection, "UseOneSetting", pvar->UseOneSetting?"On":"Off", fn);
 
 	return;
 }
@@ -143,7 +143,7 @@ static void PASCAL FAR TTXGetSetupHooks(TTXSetupHooks FAR *hooks) {
 // #define ID_MI_KANJIMASK 0xFF00
 #define ID_MI_KANJIRECV 54009
 #define ID_MI_KANJISEND 54109
-#define ID_MI_CHANGEBOTH 54200
+#define ID_MI_USEONESETTING 54200
 
 static void PASCAL FAR InsertSendKcodeMenu(HMENU menu) {
 	UINT flag = MF_BYPOSITION | MF_STRING | MF_CHECKED;
@@ -172,21 +172,21 @@ static void PASCAL FAR DeleteSendKcodeMenu(HMENU menu) {
 	DeleteMenu(menu, 5, MF_BYPOSITION);
 }
 
-static void PASCAL FAR UpdateRecvMenuCaption(HMENU menu, BOOL ChangeBoth) {
-	if (ChangeBoth) {
-		GetI18nStr(IniSection, "MENU_BOTH_SJIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+static void PASCAL FAR UpdateRecvMenuCaption(HMENU menu, BOOL UseOneSetting) {
+	if (UseOneSetting) {
+		GetI18nStr(IniSection, "MENU_SJIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
 		           "Recv/Send: &Shift_JIS", pvar->ts->UILanguageFile);
 		ModifyMenu(menu, ID_MI_KANJIRECV+IdSJIS,  MF_BYCOMMAND, ID_MI_KANJIRECV+IdSJIS,  pvar->ts->UIMsg);
-		GetI18nStr(IniSection, "MENU_BOTH_EUCJP", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		GetI18nStr(IniSection, "MENU_EUCJP", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
 		           "Recv/Send: &EUC-JP", pvar->ts->UILanguageFile);
 		ModifyMenu(menu, ID_MI_KANJIRECV+IdEUC,   MF_BYCOMMAND, ID_MI_KANJIRECV+IdEUC,   pvar->ts->UIMsg);
-		GetI18nStr(IniSection, "MENU_BOTH_JIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		GetI18nStr(IniSection, "MENU_JIS", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
 		           "Recv/Send: &JIS", pvar->ts->UILanguageFile);
 		ModifyMenu(menu, ID_MI_KANJIRECV+IdJIS,   MF_BYCOMMAND, ID_MI_KANJIRECV+IdJIS,   pvar->ts->UIMsg);
-		GetI18nStr(IniSection, "MENU_BOTH_UTF8", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		GetI18nStr(IniSection, "MENU_UTF8", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
 		           "Recv/Send: &UTF-8", pvar->ts->UILanguageFile);
 		ModifyMenu(menu, ID_MI_KANJIRECV+IdUTF8,  MF_BYCOMMAND, ID_MI_KANJIRECV+IdUTF8,  pvar->ts->UIMsg);
-		GetI18nStr(IniSection, "MENU_BOTH_UTF8m", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		GetI18nStr(IniSection, "MENU_UTF8m", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
 		           "Recv: UTF-8&m/Send: UTF-8", pvar->ts->UILanguageFile);
 		ModifyMenu(menu, ID_MI_KANJIRECV+IdUTF8m, MF_BYCOMMAND, ID_MI_KANJIRECV+IdUTF8m, pvar->ts->UIMsg);
 	}
@@ -262,24 +262,24 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 		           "Recv: UTF-8&m", pvar->ts->UILanguageFile);
 		AppendMenu(pvar->hmEncode, flag, ID_MI_KANJIRECV+IdUTF8m, pvar->ts->UIMsg);
 
-		if (!pvar->ChangeBoth) {
+		if (!pvar->UseOneSetting) {
 			InsertSendKcodeMenu(pvar->hmEncode);
 		}
 		else {
-			UpdateRecvMenuCaption(pvar->hmEncode, pvar->ChangeBoth);
+			UpdateRecvMenuCaption(pvar->hmEncode, pvar->UseOneSetting);
 		}
 
 		AppendMenu(pvar->hmEncode, MF_SEPARATOR, 0, NULL);
-		GetI18nStr(IniSection, "MENU_CHANGE_BOTH", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
-		           "Ch&ange both", pvar->ts->UILanguageFile);
-		AppendMenu(pvar->hmEncode, flag, ID_MI_CHANGEBOTH ,  pvar->ts->UIMsg);
+		GetI18nStr(IniSection, "MENU_USE_ONE_SETTING", pvar->ts->UIMsg, sizeof(pvar->ts->UIMsg),
+		           "Use &one setting", pvar->ts->UILanguageFile);
+		AppendMenu(pvar->hmEncode, flag, ID_MI_USEONESETTING ,  pvar->ts->UIMsg);
 
 		UpdateRecvMenu(pvar->ts->KanjiCode);
-		if (!pvar->ChangeBoth) {
+		if (!pvar->UseOneSetting) {
 			UpdateSendMenu(pvar->ts->KanjiCodeSend);
 		}
 
-		CheckMenuItem(pvar->hmEncode, ID_MI_CHANGEBOTH, MF_BYCOMMAND | (pvar->ChangeBoth)?MF_CHECKED:0);
+		CheckMenuItem(pvar->hmEncode, ID_MI_USEONESETTING, MF_BYCOMMAND | (pvar->UseOneSetting)?MF_CHECKED:0);
 	}
 }
 
@@ -290,10 +290,10 @@ static void PASCAL FAR TTXModifyMenu(HMENU menu) {
 static void PASCAL FAR TTXModifyPopupMenu(HMENU menu) {
 	// メニューが呼び出されたら、最新の設定に更新する。(2007.5.25 yutaka)
 	UpdateRecvMenu(pvar->ts->KanjiCode);
-	if (!pvar->ChangeBoth) {
+	if (!pvar->UseOneSetting) {
 		UpdateSendMenu(pvar->ts->KanjiCodeSend);
 	}
-	CheckMenuItem(pvar->hmEncode, ID_MI_CHANGEBOTH, MF_BYCOMMAND | (pvar->ChangeBoth)?MF_CHECKED:0);
+	CheckMenuItem(pvar->hmEncode, ID_MI_USEONESETTING, MF_BYCOMMAND | (pvar->UseOneSetting)?MF_CHECKED:0);
 }
 
 
@@ -309,7 +309,7 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
 		// (2007.7.13 yutaka)
 		val = cmd - ID_MI_KANJIRECV;
 		pvar->cv->KanjiCodeEcho = pvar->ts->KanjiCode = val;
-		if (pvar->ChangeBoth) {
+		if (pvar->UseOneSetting) {
 			if (val == IdUTF8m) {
 				val = IdUTF8;
 			}
@@ -320,7 +320,7 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
 	else if ((cmd > ID_MI_KANJISEND) && (cmd <= ID_MI_KANJISEND+IdUTF8)) {
 		val = cmd - ID_MI_KANJISEND;
 		pvar->cv->KanjiCodeSend = pvar->ts->KanjiCodeSend = val;
-		if (pvar->ChangeBoth) {
+		if (pvar->UseOneSetting) {
 			pvar->cv->KanjiCodeEcho = pvar->ts->KanjiCode = val;
 			return UpdateRecvMenu(pvar->ts->KanjiCode)?1:0;
 		}
@@ -328,14 +328,14 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
 			return UpdateSendMenu(pvar->ts->KanjiCodeSend)?1:0;
 		}
 	}
-	else if (cmd == ID_MI_CHANGEBOTH) {
-		if (pvar->ChangeBoth) {
-			pvar->ChangeBoth = FALSE;
+	else if (cmd == ID_MI_USEONESETTING) {
+		if (pvar->UseOneSetting) {
+			pvar->UseOneSetting = FALSE;
 			InsertSendKcodeMenu(pvar->hmEncode);
-			CheckMenuItem(pvar->hmEncode, ID_MI_CHANGEBOTH, MF_BYCOMMAND);
+			CheckMenuItem(pvar->hmEncode, ID_MI_USEONESETTING, MF_BYCOMMAND);
 		}
 		else {
-			pvar->ChangeBoth = TRUE;
+			pvar->UseOneSetting = TRUE;
 
 			if (pvar->ts->KanjiCode == IdUTF8m) {
 				val = IdUTF8;
@@ -346,9 +346,9 @@ static int PASCAL FAR TTXProcessCommand(HWND hWin, WORD cmd) {
 			pvar->cv->KanjiCodeSend = pvar->ts->KanjiCodeSend = val;
 
 			DeleteSendKcodeMenu(pvar->hmEncode);
-			CheckMenuItem(pvar->hmEncode, ID_MI_CHANGEBOTH, MF_BYCOMMAND | MF_CHECKED);
+			CheckMenuItem(pvar->hmEncode, ID_MI_USEONESETTING, MF_BYCOMMAND | MF_CHECKED);
 		}
-		UpdateRecvMenuCaption(pvar->hmEncode, pvar->ChangeBoth);
+		UpdateRecvMenuCaption(pvar->hmEncode, pvar->UseOneSetting);
 		return 1;
 	}
 
