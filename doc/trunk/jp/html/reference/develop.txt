@@ -257,7 +257,7 @@
     CygTerm
       http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/
     LogMeTT
-      http://www.neocom.ca/forum/viewforum.php?f=5
+      http://www.logmett.com/forum/viewforum.php?f=5
 
   2. バージョンを上げ、日付を変更する
      リリース作業時に、バージョンを一つインクリメントする。
