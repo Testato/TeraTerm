@@ -130,10 +130,14 @@ BEGIN
     LTEXT           "&Blue",IDC_BLUE,45,115,22,8
     EDITTEXT        IDC_COLOR_BLUE,69,113,15,14,ES_AUTOHSCROLL | ES_NUMBER
     LTEXT           "SAMPLE",IDC_SAMPLE_COLOR,90,98,25,8
-    CONTROL         "Enable B&old attribute color",IDC_ENABLE_ATTR_COLOR_BOLD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,78,105,12
-    CONTROL         "Enable B&link attribute color",IDC_ENABLE_ATTR_COLOR_BLINK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,90,105,12
-    CONTROL         "Enable Re&verse attribute color",IDC_ENABLE_ATTR_COLOR_REVERSE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,102,105,12
-    CONTROL         "Enable &URL attribute color",IDC_ENABLE_URL_COLOR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,114,105,12
+    CONTROL         "Enable B&old attribute color",IDC_ENABLE_ATTR_COLOR_BOLD,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,78,105,12
+    CONTROL         "Enable B&link attribute color",IDC_ENABLE_ATTR_COLOR_BLINK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,90,105,12
+    CONTROL         "Enable Re&verse attribute color",IDC_ENABLE_ATTR_COLOR_REVERSE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,102,105,12
+    CONTROL         "Enable &URL attribute color",IDC_ENABLE_URL_COLOR,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,114,105,12
     CONTROL         "Enable A&NSI color",IDC_ENABLE_ANSI_COLOR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,126,105,12
 END
 
@@ -347,8 +351,8 @@ IDI_CYGTERM             ICON                    "..\\..\\cygterm\\cygterm.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,61,0,0
- PRODUCTVERSION 4,61,0,0
+ FILEVERSION 4,62,0,0
+ PRODUCTVERSION 4,62,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -365,12 +369,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "TeraTerm Project T. Teranishi"
             VALUE "FileDescription", "Tera Term"
-            VALUE "FileVersion", "4, 61, 0, 0"
+            VALUE "FileVersion", "4, 62, 0, 0"
             VALUE "InternalName", "TTERMPRO"
-            VALUE "LegalCopyright", "(C)TeraTerm Project 2004-2008, (C)T. Teranishi 1994-1998"
+            VALUE "LegalCopyright", "(C)TeraTerm Project 2004-2009, (C)T. Teranishi 1994-1998"
             VALUE "OriginalFilename", "TTERMPRO.EXE"
             VALUE "ProductName", "Tera Term"
-            VALUE "ProductVersion", "4, 61, 0, 0"
+            VALUE "ProductVersion", "4, 62, 0, 0"
         END
     END
     BLOCK "VarFileInfo"
