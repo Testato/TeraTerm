@@ -774,10 +774,12 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="sendlnbroadcast">
 					<param name="Local" value="html\macro\command\sendlnbroadcast.html">
+					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="sendmulticast">
 					<param name="Local" value="html\macro\command\sendmulticast.html">
+					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="setbaud">
@@ -797,6 +799,7 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="setmulticastname">
 					<param name="Local" value="html\macro\command\setmulticastname.html">
+					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="setrts">
@@ -836,6 +839,7 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="wait4all">
 					<param name="Local" value="html\macro\command\wait4all.html">
+					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="waitevent">
