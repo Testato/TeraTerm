@@ -837,6 +837,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="wait">
+					<param name="Local" value="html\macro\command\wait4all.html">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="waitevent">
 					<param name="Local" value="html\macro\command\waitevent.html">
 					<param name="ImageNumber" value="11">
