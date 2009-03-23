@@ -1252,6 +1252,10 @@ void FAR PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	// Strict Key Mapping.
 	ts->StrictKeyMapping =
 		GetOnOff(Section, "StrictKeyMapping", FName, FALSE);
+
+	// added Wait4allMacroCommand (2009.3.23 yutaka)
+	ts->Wait4allMacroCommand =
+		GetOnOff(Section, "Wait4allMacroCommand", FName, FALSE);
 }
 
 void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
@@ -2150,6 +2154,10 @@ void FAR PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	// Strict Key Mapping.
 	WriteOnOff(Section, "StrictKeyMapping", FName,
 	           ts->StrictKeyMapping);
+
+	// Wait4allMacroCommand
+	WriteOnOff(Section, "Wait4allMacroCommand", FName,
+	           ts->Wait4allMacroCommand);
 }
 
 #define VTEditor "VT editor keypad"

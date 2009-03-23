@@ -10,7 +10,7 @@
 
 //  1: disable
 //  0: enable
-static int function_disable = 0;  
+static int function_disable = 1;  
 
 // 共有メモリフォーマット拡張時は、以下の名称を変更すること。
 #define TTM_FILEMAPNAME "ttm_memfilemap_1"
