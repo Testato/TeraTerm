@@ -34,6 +34,7 @@ void GetNthNum(PCHAR Source, int Nth, int far *Num);
 void WINAPI GetDefaultFName(char *home, char *file, char *dest, int destlen);
 void GetDefaultSetupFName(char *home, char *dest, int destlen);
 void GetUILanguageFile(char *buf, int buflen);
+void GetOnOffEntryInifile(char *entry, char *buf, int buflen);
 void get_lang_msg(PCHAR key, PCHAR buf, int buf_len, PCHAR def, PCHAR iniFile);
 int get_lang_font(PCHAR key, HWND dlg, PLOGFONT logfont, HFONT *font, PCHAR iniFile);
 void doSelectFolder(HWND hWnd, char *path, int pathlen, char *msg);

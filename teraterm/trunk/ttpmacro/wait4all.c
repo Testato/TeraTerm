@@ -3,13 +3,14 @@
  *
  */
 #include <stdio.h>
+#include <string.h>
 #include <windows.h>
 #include "wait4all.h"
+#include "ttlib.h"
 
-// まだデバッグ中なので、無効化しておく。
 //  1: disable
 //  0: enable
-static int function_disable = 1;  
+static int function_disable = 0;  
 
 // 共有メモリフォーマット拡張時は、以下の名称を変更すること。
 #define TTM_FILEMAPNAME "ttm_memfilemap_1"
@@ -101,6 +102,14 @@ int register_macro_window(HWND hwnd)
 	int i;
 	int ret = FALSE;
 	HANDLE hd;
+	char buf[20];
+
+	GetOnOffEntryInifile("Wait4allMacroCommand", buf, sizeof(buf));
+	if (_stricmp(buf, "on") == 0) {
+		function_disable = 0;
+	} else {
+		function_disable = 1;
+	}
 
 	open_macro_shmem();
 

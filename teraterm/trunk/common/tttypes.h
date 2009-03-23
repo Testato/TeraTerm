@@ -449,6 +449,7 @@ struct tttset {
 	WORD DisableMouseTrackingByCtrl;
 	WORD DisableWheelToCursorByCtrl;
 	WORD StrictKeyMapping;
+	WORD Wait4allMacroCommand;
 };
 
 typedef struct tttset TTTSet, *PTTSet;
@@ -876,6 +877,9 @@ typedef TMap far *PMap;
  * Increment the number of this macro value
  * when you change TMap or member of TMap.
  *
+ * - At version 4.63, ttset_memfilemap was replaced with ttset_memfilemap_11.
+ *   added tttset.Wait4allMacroCommand.
+ *
  * - At version 4.62, ttset_memfilemap was replaced with ttset_memfilemap_10.
  *   added tttset.DisableMouseTrackingByCtrl.
  *   added tttset.DisableWheelToCursorByCtrl.
@@ -937,4 +941,4 @@ typedef TMap far *PMap;
  *   added tttset.VTCompatTab.
  */
 
-#define TT_FILEMAPNAME "ttset_memfilemap_10"
+#define TT_FILEMAPNAME "ttset_memfilemap_11"
