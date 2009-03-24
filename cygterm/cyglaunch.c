@@ -1,8 +1,7 @@
 //
 // Cygterm launcher
 //
-// Copyright (c)2007-2008 TeraTerm Project
-//   http://ttssh2.sourceforge.jp/
+// Copyright (C)2007 TeraTerm Project
 //
 // [How to compile]
 // Cygwin:
@@ -23,9 +22,8 @@ char *FName = ".\\TERATERM.INI";
 //
 void OnCygwinConnection(char *CygwinDirectory, char *cmdline)
 {
-	char file[MAX_PATH];
-	char c, *envptr, *envbuff;
-	int envbufflen;
+	char file[MAX_PATH], buf[1024];
+	char c, *envptr;
 	char *exename = "cygterm.exe";
 	char cmd[1024];
 	STARTUPINFO si;
@@ -49,25 +47,11 @@ void OnCygwinConnection(char *CygwinDirectory, char *cmdline)
 	}
 found_dll:;
 	if (envptr != NULL) {
-		envbufflen = strlen(file) + strlen(envptr) + 7; // "PATH="(5) + ";"(1) + NUL(1)
-		if ((envbuff=malloc(envbufflen)) == NULL) {
-			MessageBox(NULL, "Can't allocate memory.", "ERROR", MB_OK | MB_ICONWARNING);
-			return;
-		}
-		_snprintf(envbuff, envbufflen, "PATH=%s;%s", file, envptr);
+		_snprintf(buf, sizeof(buf), "PATH=%s;%s", file, envptr);
 	} else {
-		envbufflen = strlen(file) + strlen(envptr) + 6; // "PATH="(5) + NUL(1)
-		if ((envbuff=malloc(envbufflen)) == NULL) {
-			MessageBox(NULL, "Can't allocate memory.", "ERROR", MB_OK | MB_ICONWARNING);
-			return;
-		}
-		_snprintf(envbuff, envbufflen, "PATH=%s", file);
+		_snprintf(buf, sizeof(buf), "PATH=%s", file);
 	}
-	_putenv(envbuff);
-	if (envbuff) {
-		free(envbuff);
-		envbuff = NULL;
-	}
+	_putenv(buf);
 
 found_path:;
 	memset(&si, 0, sizeof(si));
