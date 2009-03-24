@@ -20,11 +20,9 @@
 - PuTTY 0.60 (http://www.chiark.greenend.org.uk/~sgtatham/putty/)
 
 
-* Notice of CVS accessing
-- CVS repository line code is LF.
-  The line code may be crashed when WinCVS will misstake the configuration of line code. Sure, uncheck "Checkout text file with the Unix LF (0xa)" option.
-
-- Japanese character code should be used Shift_JIS in commit log.
+* Notice for SVN commiter
+- SVN repository for commiter is followings:
+  svn+ssh://svn.sourceforge.jp/svnroot/ttssh2/trunk
 
 - Should not edit checkout file in copying directory.
   The other modification code may be deleted in CVS server when you commit checkout file. Also, fix it carefully when the conflicting occurs.
@@ -267,8 +265,8 @@ Example: adding a TTSSH menu under File menu
          Open "teraterm\installer\teraterm.iss" with ISTool and call [Project]-[Compile Setup] with InnoSetup.
        - Test Tera Term installation and evaluate it.
 
-  4. Added CVS tag.
-       The naming rule is `Rxxx_RTM'(ex. R450_RTM).
+  4. Create SVN tag.
+       The naming rule is `teraterm-version'(ex. teraterm-4_62).
 
   5. Update SourceForge.jp project site.
 

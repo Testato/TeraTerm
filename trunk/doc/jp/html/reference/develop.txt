@@ -23,14 +23,9 @@
 - PuTTY 0.60 (http://www.chiark.greenend.org.uk/~sgtatham/putty/)
 
 
-■ CVSに関する注意点
-- リポジトリの改行コードはLFです。
-  WinCVSで改行コードの設定を間違えると、リポジトリの改行コードが壊れます。
-    WinCVSでは、「Checkout text file with the Unix LF (0xa)」のチェックを外しておきます。
-
-- コミットログに日本語を含める場合はShift_JISを使ってください。
-  WinCVSごった煮では、デフォルトがEUCになっています。
-    「管理」－「設定」で、ごった煮（日本語問題）タブで、「WinCVSが更新ログを日本語EUCに…」のチェックを外しておきます。
+■ SVN コミッターへの注意
+- SVN リポジトリは一般向けとは違い、以下の通りです。
+  svn+ssh://svn.sourceforge.jp/svnroot/ttssh2/trunk
 
 - ファイルを別のディレクトリで編集しないでください。
   コミットしたときに別の人の修正を削除してしまうことがあります。
@@ -282,7 +277,7 @@
          ISTool で teraterm\installer\teraterm.iss を開き、[Project]-[Compile Setup]で作成される
        インストールおよび実行をテストする
 
-  4. cvs のタグをつける。タグ名は「Rバージョン_RTM」。たとえば、v4.56ならば"R456_RTM"。
+  4. SVN のタグを作成する。タグ名は「teraterm-バージョン」。たとえば、v4.62ならば"teraterm-4_62"。
 
   5. SourceForge.jp を更新する
        [ダウンロード]-[管理]-[新規作成]
