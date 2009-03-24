@@ -1,0 +1,165 @@
+■開発環境
+・コンパイラ
+  Visual Studio 2005 (Standard Edition 以上)
+・インストーラ
+  Inno Setup 5.1.8 (http://innosetup.org/isinfo.php)
+  ISTool 5.1.8 (http://innosetup.org/isdl.php#qsp)
+    QuickStart Pack の中に入っています。
+  Japanese-5-5.1.0.isl (http://innosetup.org/files/istrans/)
+・その他
+  ActivePerl 5.8 以上
+    OpenSSL のコンパイル、ドキュメントファイルの文字コード・改行コード変換に必要です。
+
+
+■ライブラリ
+・oniguruma 4.4.6 (http://www.geocities.jp/kosako3/oniguruma/)
+・openssl 0.9.8d (http://www.openssl.org/)
+・zlib 1.2.3 (http://www.zlib.net/)
+
+
+■TeraTermのビルド方法
+  TeraTermのビルド方法について以下に示します。ビルドにはVisual Studio 2005 Standard Edition以上が必要です（Visual Studio 2005 Express Editionは不可）。
+  
+  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする。
+  2. Onigurumaのソースコード(http://www.geocities.jp/kosako3/oniguruma/)を teraterm\source\oniguruma ディレクトリに展開する。
+  
+       自動で行う場合
+       スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
+       コマンドプロンプト上から teraterm\source ディレクトリに移動する。
+       buildoniguruma.bat を実行する。
+  
+       手動で行う場合
+       スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
+       コマンドプロンプト上から teraterm\source\oniguruma ディレクトリに移動する。
+       コマンドプロンプトから以下の入力を行い、Onigurumaをビルドする（onig_s.libがリンクされる）。
+       (1) copy win32\Makefile Makefile
+       (2) copy win32\config.h config.h
+       (3) Makefile をエディタで開いて、CFLAGS の行に /MT を追加する
+       (4) copy Makefile Makefile.debug
+       (5) Makefile.debug をエディタで開いて、CFLAGS の行の /MT を /MTd に変更する
+           また、libname を debug\$(libbase)_s.lib に変更する
+       (6) mkdir debug
+       (7) nmake -f Makefile.debug
+       (8) nmake clean
+       (9) nmake
+          
+  3. teraterm\visualc\ttermpro.sln をVisual Studioで開く
+  4. ソリューションをビルドする
+  5. ビルドに成功するとteraterm\visualc\bin ディレクトリに実行プログラムが生成される
+
+
+■TeraTerm Menuのビルド方法
+  TeraTerm Menuのビルド方法について以下に示します。ビルドにはVisual Studio 2005(VC++8.0)が必要です。
+  
+  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
+  2. teraterm\source\ttmenu\ttpmenu.sln をVisual Studioで開く
+  3. ソリューションをビルドする
+  4. ビルドに成功すると teraterm\source\ttmenu ディレクトリに実行プログラムが生成される
+
+
+■TTProxyのビルド方法
+  TTProxyのビルド方法について以下に示します。ビルドにはVisual Studio 2005(VC++8.0)が必要です。
+  
+  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする
+  2. TTProxy\TTProxy.sln をVisual Studioで開く
+  3. ソリューションをビルドする
+  4. ビルドに成功すると TTProxy ディレクトリにDLLが生成される
+
+
+■TTSSHのビルド方法
+  TTSSHのビルド方法について以下に示します。ビルドにはVisual Studio 2005(VC++8.0)、ActivePerlが必要です。
+  
+  1. ソースコードをSourceForge(http://sourceforge.jp/projects/ttssh2/)からチェックアウトする。
+  
+  2. zlibのソースコード(http://www.zlib.net/)を ttssh2\zlib ディレクトリに展開する。
+     Release では zlib\projects\visualc6\Win32_LIB_Release\zlib.lib がリンクされることになる（コンパイルオプションに /MT が指定されていること）。
+     Debug では zlib\projects\visualc6\Win32_LIB_Release\zlibd.lib がリンクされることになる（コンパイルオプションに /MTd が指定されていること）。
+  
+  3. OpenSSLのソースコード(http://www.openssl.org/)を ttssh2\openssl ディレクトリに展開する。OpenSSLをビルドする（以下参照）。
+     Release では openssl\out32\libeay32.lib が、Debug では openssl\out32.dbg\libeay32.lib がリンクされることになる。
+
+       自動で行う場合
+       スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
+       コマンドプロンプト上から ttssh2 ディレクトリに移動する。
+       buildopenssl.bat を実行する。
+
+       手動で行う場合
+       スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
+       + cd openssl
+       + perl Configure VC-WIN32
+           (Yes, you need perl to build OpenSSL!)
+       + ms\do_ms.bat をエディタで開いて、ms\nt.mak の次の行に下記の内容を追記する
+         perl util\mk1mf.pl no-asm debug VC-WIN32 >ms\ntd.mak
+       + ms\do_ms
+       + ms\nt.mak をエディタで開いて、CFLAG行の /MD を /MT に変更する
+       + ms\ntd.mak をエディタで開いて、CFLAG行の /MDd を /MTd に変更する
+       + nmake -f ms\nt.mak
+       + nmake -f ms\ntd.mak
+       + cd ..
+           (Now you are back in PortForwarder folder.)
+        See the instruction in the OpenSSL documentation for details.
+
+  4. ttssh2\ttssh.sln をVisual Studioで開く
+  5. ソリューションをビルドする
+  6. ビルドに成功するとttssh2\ttxssh ディレクトリにDLLが生成される
+
+
+
+■CygTermのビルド方法
+  CygTermのビルド方法について以下に示します。
+  
+   1. Cygwin(http://www.cygwin.com/)をインストールする
+   2. Cygwinのシェルを起動し、teraterm\cygterm ディレクトリへ移動する。
+      # cd teraterm/cygterm
+   3. CygTermをコンパイルする
+      # make
+
+
+■ヘルプファイルのビルド方法
+  ヘルプファイルのビルド方法について以下に示します。
+  
+  1. HTML Help Workshopを以下のサイトから入手しインストールする。
+     http://msdn.microsoft.com/library/default.asp?url=/library/en-us/htmlhelp/html/hwMicrosoftHTMLHelpDownloads.asp
+     
+  2. FileのOpenから doc\en\teraterm.hhp および doc\jp\teratermj.hhp を開く
+  
+  3. FileのCompileでヘルプファイルをコンパイルする
+
+
+■リリースの方法
+  リリースの方法について以下に示します。
+  
+  1. バージョンを確認し、日付を変更する
+       ttermpro.rc
+       ttxssh.rc
+       ttmacro.rc // 変更時のみ
+       utf8-readme-j.txt
+       utf8-readme.txt
+       ssh2-readme-j.txt
+       ssh2-readme.txt
+       teraterm.iss
+       ※変更があれば、バージョン情報と変更履歴は更新されているはず
+  2. readme をコピーする
+       teraterm\installer\convtext.bat を実行
+  3. 動作確認をする
+       プログラムをコンパイルし直す
+       インストーラを作成する
+         teraterm\installer\teraterm.iss を開き、[Build]-[Compile]で作成される
+       インストールおよび実行をテストする
+  4. cvs のタグをつける
+  5. SourceForge.jp を更新する
+       [リリースファイル]-[リリースファイル/変更]-[新規作成]
+         英語の変更履歴を入力してリリースを作成する
+         ログインしていなくても変更履歴が表示されることを確認する
+       [リリースファイル]-[変更履歴]-[翻訳]
+         言語がJapaneseになっていることを確認し、日本語の変更履歴を入力する
+  6. メーリングリストにアナウンスする
+  7. フォーラムに告知する
+       (1) Announcements http://www.neocom.ca/forum/viewforum.php?f=5
+           Announcements に新規投稿する。種類は Announcement
+           一つ前の Announcement の種類を Normal に変更する
+           Announcement は三個残すことになっているので、三つ前の Announcement を削除する
+       (2) TeraTerm Changelog http://www.neocom.ca/forum/viewtopic.php?t=3
+           今回の変更を追加する
+       (3) TTSSH Changelog http://www.neocom.ca/forum/viewtopic.php?t=29
+           今回の変更を追加する

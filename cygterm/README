@@ -1,13 +1,13 @@
 
-                CygTerm+ - yet another Cygwin console
+                CygTerm - yet another Cygwin console
 
                 Using Cygwin with a terminal emulator.
                 
-                Copyright (c) 2006-2008 TeraTerm Project
-                http://ttssh2.sourceforge.jp/
+                Copyright (c) 2006 TeraTerm Project
+                http://sourceforge.jp/projects/ttssh2/
 
                 Based on CygTerm by Original developer:
-                Copyright (C) 2000-2006 NSym
+                Copyright (C) 2000-2004 NSym
 
                 nsym@dd.iij4u.or.jp
 
@@ -143,23 +143,9 @@
 
     LOGIN_SHELL
     -----------
-        If this parameter is set to yes, shell is invoked as a login shell.
-        (default: no)
 
     HOME_CHDIR
     ----------
-        If this parameter is set to yes, current directory is changed to home
-        directory before invoke a shell. (default: no)
-
-    SOCKET_TIMEOUT
-    --------------
-        Specify the timeout of socket for waiting telnet connection from
-        Tera Term. (default: 5secs)
-
-    SSH_AGENT_PROXY
-    ---------------
-        If this parameter is set to yes, cygterm provides ssh-agent proxy.
-        (default: no)
 
     ENV_X
     -----
@@ -172,8 +158,7 @@
     Command Line Options
 
         cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
-                    [-s 'shell'] [-ls | -nols] [-cd | -nocd] [-a | -A]
-                    [-v 'env-var' ...] [-d 'directory] [-o 'option']
+                    [-s 'shell'] [-v 'env-var' ...]
 
     -t 'terminal-emulator'
             Specify the command line of a terminal emulator to execute.
@@ -209,24 +194,11 @@
     -nocd
             The shell is invoked without changing the current directory.
 
-    -A
-            Enable ssh-agent forwarding support.
-
-    -a
-            Disable ssh-agent forwarding support.
-
     -v 'env-var'
             Specify the environment variable to be set when starting the shell.
             This format is the same as ENV_X in the configuration file.
             The expression should be enclosed in quotes to include spaces.
             One or more `-v' options are available.
-
-    -d 'directory'
-            The current directory is moved to the specified directory and
-            the shell is invoked.
-
-    -o 'parameter'
-            Additional parameter for terminal-emulator.
 
     The terminal emulator or connection port number, and the shell on Cygwin,
     these need to be specified at least.  If these are given on the command
@@ -241,79 +213,58 @@
 
 // N O T E S //
 
-    * Attention in Tera Term
+    * Attention in TeraTerm
 
-        If your terminal emulator is Tera Term be careful not to save [Setup]
+        If your terminal emulator is TeraTerm be careful not to save [Setup]
         [Save setup] in the situation that it was started by cygterm.exe.
         Otherwise telnet port number of TCP/IP is saved but 23 you will be
-        confused by connection failure when you normally run Tera Term to do
+        confused by connection failure when you normally run TeraTerm to do
         telnet.  In that case it will be recovered by saving the setting 
         with specifying TCP/IP Port# 23.
 
 // T E S T E D  O N //
 
-    As of 2008-Nov, CygTerm+ has been tested in the following environments.
+    As of 2004-Jan, CygTerm has been tested in the following environments.
 
-        WindowsXP SP3 + Cygwin 1.5.25-15
+        Windows 2000 SP4 + Cygwin 1.5.5(0.94/3/2) 
 
         Terminal emulator:
-                Tera Term Pro 2.3
-                Tera Term 4.60
-                PuTTY 0.60
+                Windows 2000 telnet.exe
+                TeraTermPro 2.3
         Shell:
-                bash 3.2.39
-                zsh 4.3.4
+                bash 2.05b
+                zsh 4.1.1
 
 // C H A N G E S //
-v1.07_16 2008/11/21 (by doda)
-        * The option that enables ssh-agent proxy support is changed from '-a' to '-A'.
-        * Added '-a' option that disables ssh-agent proxy support.
-
-v1.07_15 2008/11/01 (by doda)
-        * Added ssh-agent proxy support.
-
-v1.07_14 2007/12/17 (by doda)
-        * Added '-o' option that is specifies the additional parameters for terminal-emulator.
-
-v1.07_13 2007/08/03 (by maya)
-        * Added '-d' option that is specifies the start directory.
-
-v1.07_12 2007/06/10 (by doda)
-        * Add 'SOCKET_TIMEOUT' entry which the timeout value of socket for waiting telnet connection in cygterm.cfg file.
-
-v1.07_11 2007/01/31 (import from cygterm v1.07)
-        * Avoid WinMainCRTStartup() redefinition error with gcc 3.4.
-        * Give an output gap for keyboard interrupt.
-
-v1.06_11 2006/09/29 (by maya)
+v1.06_11 2006/09/29 (by maya.negeta@gmail.com)
         * Stopped using HOME from environment variable and /etc/passwd.
           CygTerm passes HOME which is set by Cygwin. See also /etc/profile
         * Changed the priority of config files.
           command line arguments > ~/.cygtermrc > /etc/cygterm.conf > cygterm.cfg > /etc/passwd
 
-v1.06_10 2006/09/28 (by doda)
+v1.06_10 2006/09/28 (by sue@iwmt.org)
         * Use getlogin() instead of environment variable USERNAME to get user name.
 
-v1.06_09 2006/09/25 (by doda)
+v1.06_09 2006/09/25 (by sue@iwmt.org)
         * Get shell information from /etc/passwd if SHELL parameter is not specified.
 
-v1.06_08 2006/08/30 (by maya)
+v1.06_08 2006/08/30 (by maya.negeta@gmail.com)
         * Changed the priority of config files. cygterm.cfg is top priority config file.
 
-v1.06_07 2006/08/19 (by maya)
+v1.06_07 2006/08/19 (by maya.negeta@gmail.com)
         * Use `HOME' environment variable for changing home directory if the variable will be set.
 
-v1.06_06 2006/08/18 (by doda)
+v1.06_06 2006/08/18 (by sue@iwmt.org)
         * Limit a parameter length of both '-s' and '-t' option.
 
-v1.06_05 2006/08/18 (by maya)
+v1.06_05 2006/08/18 (by maya.negeta@gmail.com)
         * Create mutex object for running check by installer.
 
-v1.06_04 2006/08/15 (by doda)
+v1.06_04 2006/08/15 (by sue@iwmt.org)
         * Add 'LOGIN_SHELL' entry which the shell is invoked as the login shell in cygterm.cfg file.
           LOGIN_SHELL: yes | no
 
-v1.06_03 2006/08/15 (by doda)
+v1.06_03 2006/08/15 (by sue@iwmt.org)
         * Add 'HOME_CHDIR' entry which home directory is changed in cygterm.cfg file.
           HOME_CHDIR: yes | no
 

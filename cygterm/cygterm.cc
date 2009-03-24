@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CygTerm+ - yet another Cygwin console
-// Copyright (c) 2006-2008 TeraTerm Project
-// Copyright (C) 2000-2006 NSym.
+// Copyright (c) 2006 TeraTerm Project
+// Copyright (C) 2000-2004 NSym.
 //---------------------------------------------------------------------------
 // This program is free software; you can redistribute it and/or modify it
 // under the terms of the GNU General Public License (GPL) as published by
@@ -24,7 +24,6 @@
 //   Using Cygwin with a terminal emulator.
 //   
 //   Writtern by TeraTerm Project.
-//            http://ttssh2.sourceforge.jp/
 //   
 //   Original written by NSym.
 //                         *** Web Pages ***
@@ -37,11 +36,11 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 03 - change directory to home only if HOME_CHDIR is set
-//   Written by IWAMOTO Kouichi. (doda)
+//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 04 - add login shell option
-//   Written by IWAMOTO Kouichi. (doda)
+//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 05 - add mutex
@@ -49,7 +48,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 06 - limit a parameter length of -s and -t option
-//   Written by IWAMOTO Kouichi. (doda)
+//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 07 - use %HOME% for home directory
@@ -61,40 +60,15 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 09 - get shell from /etc/passwd if SHELL is not specified
-//   Written by IWAMOTO Kouichi. (doda)
+//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
 //
 /////////////////////////////////////////////////////////////////////////////
 // patch level 10 - to get user name, use getlogin() instead of $USERNAME
-//   Written by IWAMOTO Kouichi. (doda)
-//
-/////////////////////////////////////////////////////////////////////////////
-// patch level 11 - stopped using %HOME% and /etc/passwd for home directory
-//                  changed the priority of config files
-//   Written by NAGATA Shinya. (maya.negeta@gmail.com)
-//
-/////////////////////////////////////////////////////////////////////////////
-// patch level 12 - add SOCKET_TIMEOUT setting.
-//   Written by IWAMOTO Kouichi. (doda)
-//
-/////////////////////////////////////////////////////////////////////////////
-// patch level 13 - added '-d' option that is specifies the start directory
-//   Written by NAGATA Shinya. (maya.negeta@gmail.com)
-//
-/////////////////////////////////////////////////////////////////////////////
-// patch level 14 - added '-o' option that is specifies additional option for terminal emulator
-//   Written by IWAMOTO Kouichi. (doda)
-//
-/////////////////////////////////////////////////////////////////////////////
-// patch level 15 - add ssh-agent proxy support
-//   Written by IWAMOTO Kouichi. (doda)
-//
-/////////////////////////////////////////////////////////////////////////////
-// patch level 16 - added '-A' option and change '-a' option
-//   Written by IWAMOTO Kouichi. (doda)
+//   Written by IWAMOTO Kouichi. (sue@iwmt.org)
 //
 
 static char Program[] = "CygTerm+";
-static char Version[] = "version 1.07_16 (2008/11/21)";
+static char Version[] = "version 1.06_11 (2006/09/28)";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -109,18 +83,10 @@ static char Version[] = "version 1.07_16 (2008/11/21)";
 #include <termios.h>
 #include <sys/time.h>
 #include <sys/socket.h>
-#include <sys/un.h>
 #include <sys/wait.h>
 #include <arpa/inet.h>
 #include <windows.h>
 #include <pwd.h>
-
-// pageant support (ssh-agent proxy)
-//----------------------------------
-#define AGENT_COPYDATA_ID 0x804e50ba
-#define AGENT_MAX_MSGLEN 8192
-char sockdir[] = "/tmp/ssh-XXXXXXXXXX";
-char sockname[256];
 
 // PTY device name
 //----------------
@@ -134,16 +100,11 @@ int port_range = 40;     // default number of ports
 // command lines of a terminal-emulator and a shell
 //-------------------------------------------------
 char cmd_term[256] = "";
-char cmd_termopt[256] = "";
 char cmd_shell[128] = "";
 
 // TCP port for connection to another terminal application
 //--------------------------------------------------------
 int cl_port = 0;
-
-// telnet socket timeout
-//----------------------
-int telsock_timeout = 5;    // timeout 5 sec
 
 // dumb terminal flag
 //-------------------
@@ -156,10 +117,6 @@ bool home_chdir = false;
 // login shell flag
 //-----------------
 bool enable_loginshell = false;
-
-// ssh agent proxy
-//----------------
-bool enable_agent_proxy = false;
 
 // terminal type & size
 //---------------------
@@ -191,11 +148,11 @@ void api_error(char* string = "")
     char msg[1024];
     char *ptr = msg;
     if (string != NULL)
-        ptr += snprintf(ptr, sizeof(msg), "%s\n\n", string);
+        ptr += sprintf(ptr, "%s\n\n", string);
     FormatMessage(
         FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
         NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-        ptr, sizeof(msg)-(ptr-msg), NULL
+        ptr, 256, NULL
     );
     msg_print(msg);
 }
@@ -208,8 +165,8 @@ void c_error(char* string = "")
     char msg[1024];
     char *ptr = msg;
     if (string != NULL)
-        ptr += snprintf(ptr, sizeof(msg), "%s\n\n", string);
-    snprintf(ptr, sizeof(msg)-(ptr-msg), "%s\n", strerror(errno));
+        ptr += sprintf(ptr, "%s\n\n", string);
+    sprintf(ptr, "%s\n", strerror(errno));
     msg_print(msg);
 }
 
@@ -283,16 +240,6 @@ void parse_cfg_line(char *buf)
             enable_loginshell = true;
         }
     }
-    else if (!strcasecmp(name, "SOCKET_TIMEOUT")) {
-        // telnet socket timeout
-        telsock_timeout = atoi(val);
-    }
-    else if (!strcasecmp(name, "SSH_AGENT_PROXY")) {
-        // ssh-agent proxy
-        if (strchr("YyTt", *val) != NULL || atoi(val) > 0) {
-            enable_agent_proxy = true;
-        }
-    }
 
     return;
 }
@@ -328,7 +275,7 @@ void load_cfg()
     // auto generated configuration file path
     char tmp_conf[MAX_PATH] = "/tmp/cygtermrc.XXXXXX";
 
-    // get user name from getlogin().  if it fails, use $USERNAME instead.
+    // get user name from getloin().  if it fails, use $USERNAME instead.
     // and get /etc/passwd information by getpwnam(3) with user name,
     // and generate temporary configuration file by mktemp(3).
     const char* username = getlogin();
@@ -395,8 +342,6 @@ void load_cfg()
 //-----------------------//
 void get_args(int argc, char** argv)
 {
-    char tmp[sizeof(cmd_termopt)];
-
     for (++argv; *argv != NULL; ++argv) {
         if (!strcmp(*argv, "-t")) {             // -t <terminal emulator>
             if (*++argv == NULL)
@@ -437,12 +382,6 @@ void get_args(int argc, char** argv)
         else if (!strcmp(*argv, "+ls")) {       // +ls
             enable_loginshell = false;
         }
-        else if (!strcmp(*argv, "-A")) {       // -A
-            enable_agent_proxy = true;
-        }
-        else if (!strcmp(*argv, "-a")) {       // -a
-            enable_agent_proxy = false;
-        }
         else if (!strcmp(*argv, "-v")) {        // -v <additional env var>
             if (*(argv+1) != NULL) {
                 ++argv;
@@ -454,233 +393,7 @@ void get_args(int argc, char** argv)
                 }
             }
         }
-        else if (!strcmp(*argv, "-d")) {        // -d <exec directory>
-            if (*++argv == NULL)
-                break;
-            chdir(*argv);
-        }
-        else if (!strcmp(*argv, "-o")) {        // -o <additional option for terminal>
-            if (*++argv == NULL)
-                break;
-            if (cmd_termopt[0] == '\0') {
-                strncpy(cmd_termopt, *argv, sizeof(cmd_termopt)-1);
-                cmd_termopt[sizeof(cmd_termopt)-1] = '\0';
-            }
-            else {
-                snprintf(tmp, sizeof(tmp), "%s %s", cmd_termopt, *argv);
-                strncpy(cmd_termopt, tmp, sizeof(cmd_termopt)-1);
-                cmd_termopt[sizeof(cmd_termopt)-1] = '\0';
-            }
-        }
     }
-}
-
-//===================================//
-// pageant support (ssh-agent proxy) //
-//-----------------------------------//
-unsigned long get_uint32(unsigned char *buff)
-{
-	return ((unsigned long)buff[0] << 24) +
-	       ((unsigned long)buff[1] << 16) +
-	       ((unsigned long)buff[2] <<  8) +
-	       ((unsigned long)buff[3]);
-}
-
-void set_uint32(unsigned char *buff, unsigned long v)
-{
-	buff[0] = (unsigned char)(v >> 24);
-	buff[1] = (unsigned char)(v >> 16);
-	buff[2] = (unsigned char)(v >>  8);
-	buff[3] = (unsigned char)v;
-	return;
-}
-
-unsigned long agent_request(unsigned char *out, unsigned long out_size, unsigned char *in)
-{
-	HWND hwnd;
-	char mapname[25];
-	HANDLE fmap = NULL;
-	unsigned char *p = NULL;
-	COPYDATASTRUCT cds;
-	unsigned long len;
-	unsigned long ret = 0;
-
-	if (out_size < 5) {
-		return 0;
-	}
-	if ((len = get_uint32(in)) > AGENT_MAX_MSGLEN) {
-		goto agent_error;
-	}
-
-	hwnd = FindWindow("Pageant", "Pageant");
-	if (!hwnd) {
-		goto agent_error;
-	}
-
-	sprintf(mapname, "PageantRequest%08x", (unsigned)GetCurrentThreadId());
-	fmap = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE,
-	                         0, AGENT_MAX_MSGLEN, mapname);
-	if (!fmap) {
-		goto agent_error;
-	}
-
-	if ((p = (unsigned char *)MapViewOfFile(fmap, FILE_MAP_WRITE, 0, 0, 0)) == NULL) {
-		goto agent_error;
-	}
-
-	cds.dwData = AGENT_COPYDATA_ID;
-	cds.cbData = strlen(mapname) + 1;
-	cds.lpData = mapname;
-
-	memcpy(p, in, len + 4);
-	if (SendMessage(hwnd, WM_COPYDATA, (WPARAM)NULL, (LPARAM)&cds) > 0) {
-		len = get_uint32(p);
-		if (out_size >= len + 4) {
-			memcpy(out, p, len + 4);
-			ret = len + 4;
-		}
-	}
-
-agent_error:
-	if (p) {
-		UnmapViewOfFile(p);
-	}
-	if (fmap) {
-		CloseHandle(fmap);
-	}
-	if (ret == 0) {
-		set_uint32(out, 1);
-		out[4] = 5; // SSH_AGENT_FAILURE
-	}
-
-	return ret;
-}
-
-void sighandler(int sig) {
-	unlink(sockname);
-	rmdir(sockdir);
-	exit(0);
-};
-
-//=================//
-// ssh-agent proxy //
-//-----------------//
-void agent_proxy()
-{
-	int sock, asock;
-	unsigned long readlen, reqlen, recvlen;
-	struct sockaddr_un addr;
-	unsigned char buff[AGENT_MAX_MSGLEN];
-	struct sigaction act;
-	sigset_t blk;
-
-	if ((sock = socket(PF_UNIX, SOCK_STREAM, 0)) < 0) {
-		msg_print("socket failed.");
-		exit(0);
-	}
-	memset(&addr, 0, sizeof(addr));
-	addr.sun_family = AF_UNIX;
-	strlcpy(addr.sun_path, sockname, sizeof(addr.sun_path));
-
-	if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-		goto agent_thread_cleanup;
-	}
-	if (listen(sock, -1) < 0) {
-		goto agent_thread_cleanup;
-	}
-
-	sigfillset(&blk);
-	sigdelset(&blk, SIGKILL);
-	sigdelset(&blk, SIGSTOP);
-
-	memset(&act, 0, sizeof(act));
-	act.sa_handler = sighandler;
-	act.sa_mask = blk;
-	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGTERM, &act, NULL);
-	sigaction(SIGHUP, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL);
-
-	while (1) {
-		if ((asock = accept(sock, NULL, NULL)) < 0) {
-			switch (errno) {
-			case EINTR:
-			case ECONNABORTED:
-				continue;
-			}
-			break;
-		}
-		recvlen = 0;
-		while ((readlen = read(asock, buff+recvlen, 4-recvlen)) > 0) {
-			recvlen += readlen;
-			if (recvlen < 4) {
-				continue;
-			}
-			recvlen = 0;
-			reqlen = get_uint32(buff);
-			while ((readlen = read(asock, buff+4+recvlen, reqlen-recvlen)) > 0) {
-				recvlen += readlen;
-				if (recvlen < reqlen) {
-					continue;
-				}
-
-				sigprocmask(SIG_BLOCK, &blk, NULL);
-				readlen = agent_request(buff, sizeof(buff), buff);
-				sigprocmask(SIG_UNBLOCK, &blk, NULL);
-
-				if (readlen > 0) {
-					write(asock, buff, readlen);
-				}
-				else {
-					set_uint32(buff, 1);
-					buff[4] = 5; // SSH_AGENT_FAILURE
-					write(asock, buff, 5);
-				}
-			}
-			recvlen = 0;
-		}
-		shutdown(asock, SHUT_RDWR);
-		close(asock);
-	}
-
-agent_thread_cleanup:
-	shutdown(sock, SHUT_RDWR);
-	close(sock);
-
-	unlink(sockname);
-	rmdir(sockdir);
-
-	exit(0);
-}
-
-int exec_agent_proxy()
-{
-	int pid;
-	sh_env_t *e;
-	int malloc_size;
-
-	if (mkdtemp(sockdir) == NULL) {
-		return -1;
-	}
-	snprintf(sockname, sizeof(sockname), "%s/agent.%ld", sockdir, getpid());
-
-	malloc_size = sizeof(sh_env_t) + strlen(sockname) + 15;
-	e = (sh_env_t*)malloc(malloc_size);
-	if (!e) {
-		return -1;
-	}
-	snprintf(e->env, malloc_size - sizeof(sh_env_t), "SSH_AUTH_SOCK=%s", sockname);
-	e->next = NULL;
-	sh_envp = (sh_envp->next = e);
-	
-	if ((pid = fork()) < 0) {
-		return -1;
-	}
-	if (pid == 0) {
-		setsid();
-		agent_proxy();
-	}
-	return pid;
 }
 
 //=============================//
@@ -758,7 +471,7 @@ int accept_telnet(int lsock)
     FD_ZERO(&rbits);
     FD_SET(lsock, &rbits);
     struct timeval tm;
-    tm.tv_sec = telsock_timeout;
+    tm.tv_sec = 5; // timeout 5 sec
     tm.tv_usec = 0;
     if (select(FD_SETSIZE, &rbits, 0, 0, &tm) <= 0) {
         return -1;
@@ -1121,7 +834,6 @@ void telnet_session(int te_sock, int sh_pty)
     FD_SET(sh, &rtmp);
     u_char c;
     int cr = 0;
-    int cnt = 0;
     for (;;) {
         rbits = rtmp;
         if (select(FD_SETSIZE, &rbits, 0, 0, 0) <= 0) {
@@ -1142,10 +854,7 @@ void telnet_session(int te_sock, int sh_pty)
             if (te.flush_out() == false) {
                 break;
             }
-            if (cnt++ < 20) {
-                continue;  // give priority to data from a shell
-            }
-            cnt = 0;
+            continue;  // give priority to data from a shell
         }
         if (FD_ISSET(te, &rbits)) {
             // send data from a terminal to a shell
@@ -1192,7 +901,7 @@ int main(int argc, char** argv)
     int te_sock = -1;
     int sh_pty = -1;
     HANDLE hTerm = NULL;
-    int sh_pid, agent_pid = 0;
+    int sh_pid;
 
     // Create mutex for running check by installer (2006.8.18 maya)
     HANDLE hMutex;
@@ -1226,9 +935,9 @@ int main(int argc, char** argv)
         }
         in_addr addr;
         addr.s_addr = htonl(INADDR_LOOPBACK);
-        char tmp[256];
-        snprintf(tmp, sizeof(tmp), cmd_term, inet_ntoa(addr), (int)ntohs(listen_port));
-        snprintf(cmd_term, sizeof(cmd_term), "%s %s", tmp, cmd_termopt);
+        char tmp[128];
+        sprintf(tmp, cmd_term, inet_ntoa(addr), (int)ntohs(listen_port));
+        strcpy(cmd_term, tmp);
 
         // execute a terminal emulator
         if ((hTerm = exec_term()) == NULL) {
@@ -1246,12 +955,6 @@ int main(int argc, char** argv)
     if (!dumb) {
         telnet_nego(te_sock);
     }
-
-    // execute ssh-agent proxy
-    if (enable_agent_proxy) {
-        agent_pid = exec_agent_proxy();
-    }
-
     // execute a shell
     if ((sh_pty = exec_shell(&sh_pid)) < 0) {
         goto cleanup;
@@ -1265,14 +968,9 @@ int main(int argc, char** argv)
     telnet_session(te_sock, sh_pty);
 
   cleanup:
-    if (agent_pid > 0) {
-        kill(agent_pid, SIGTERM);
-    }
     if (sh_pty >= 0) {
         close(sh_pty);
         kill(sh_pid, SIGKILL);
-    }
-    if (agent_pid > 0 || sh_pty >= 0) {
         wait((int*)NULL);
     }
     if (listen_sock >= 0) {
@@ -1290,13 +988,24 @@ int main(int argc, char** argv)
     return 0;
 }
 
-#ifdef NO_WIN_MAIN
-// This program is an Win32 application but, start as Cygwin main().
-//------------------------------------------------------------------
+/**
+ * To avoid bellow error, disable follow codes.
+ * NOTE: To avoid display console window as cygwin application,
+ *       you must build without "gcc -g"
+ * -----------------------------------------------------------------------------
+ * gcc -g -fno-exceptions -o cygterm.exe cygterm.cc  -mwindows -lc -ltk
+ * /tmp/ccfWqjPN.o: In function `WinMainCRTStartup':
+ * /build/cygterm106/cygterm.cc:877: multiple definition of `_WinMainCRTStartup'
+ * /usr/lib/gcc/i686-pc-cygwin/3.4.4/../../../crt0.o:: first defined here
+ * collect2: ld returned 1 exit status
+ * make: *** [cygterm.exe] Error 1
+ */
+#if 0
+// This program is a Win32 application but, start as Cygwin main().
+//-----------------------------------------------------------------
 extern "C" {
     void mainCRTStartup(void);
     void WinMainCRTStartup(void) { mainCRTStartup(); }
 };
 #endif
-
 //EOF
