@@ -1,0 +1,316 @@
+diff -ruw cygterm106/Makefile cygterm106_01/Makefile
+--- cygterm106/Makefile	2004-01-24 16:14:58.000000000 +0900
++++ cygterm106_01/Makefile	2006-02-08 09:15:36.671875000 +0900
+@@ -4,29 +4,34 @@
+ 
+ CC = gcc
+ CFLAGS = -O2 -fno-exceptions
++#CFLAGS = -g -fno-exceptions
+ LIBS = -mwindows
+ 
+ EXE = cygterm.exe
+ SRC = $(EXE:.exe=.cc)
+ CFG = $(EXE:.exe=.cfg)
++RES = $(EXE:.exe=.res)
++ICO = $(EXE:.exe=.ico)
++RC  = $(EXE:.exe=.rc)
+ 
+ $(EXE) : $(SRC) $(RES)
+ 	$(CC) $(CFLAGS) -o $(EXE) $(SRC) $(RES) $(LIBS)
+ 	strip $(EXE)
+ 
+ ## icon test
+-#TEST_ICO = /cygwin.ico
+-#with-icon :
+-#	@echo "(Use $(TEST_ICO))"
+-#	@cp $(TEST_ICO) x.ico
+-#	@echo 'icon ICON x.ico' > x.rc
+-#	windres -O coff -o x.res x.rc
+-#	@rm -f x.rc x.ico
+-#	@make RES=x.res
+-#	@rm -f x.res
++TEST_ICO = /cygwin.ico
++
++$(ICO):	$(TEST_ICO)
++	cp -p $(TEST_ICO) $(ICO)
++
++$(RC):
++	echo 'icon ICON $(ICO)' > $(RC)
++
++$(RES):	$(ICO) $(RC)
++	windres -O coff -o $(RES) $(RC)
+ 
+ clean :
+-	rm -f $(EXE)
++	rm -f $(EXE) $(ICO) $(RC) $(RES)
+ 
+ install : $(EXE)
+ 	@ install -v $(EXE) $(BINDIR)/$(EXE)
+diff -ruw cygterm106/README cygterm106_01/README
+--- cygterm106/README	2004-01-26 21:40:00.000000000 +0900
++++ cygterm106_01/README	2006-02-08 09:28:13.375000000 +0900
+@@ -212,6 +212,17 @@
+                 zsh 4.1.1
+ 
+ // C H A N G E S //
++v1.06_01 2006/02/08 (by babydamons@yahoo.co.jp)
++        * The following configuration file reading was supported:
++            + /etc/cygterm.conf
++            + ~/.cygtermrc
++
++        * Shell is invoked with user's home-directory.
++
++        * Get account configuration from /etc/passwd by getpwnam(3),
++          getting account name from USERNAME environment by getenv(3).
++
++        * Makefile was changed, default build is with icon executable.
+ 
+ v1.06 2004/01/24
+         * The following command line options were added:
+diff -ruw cygterm106/README-j cygterm106_01/README-j
+--- cygterm106/README-j	2004-01-26 21:36:32.000000000 +0900
++++ cygterm106_01/README-j	2006-02-08 09:31:26.156250000 +0900
+@@ -206,6 +206,17 @@
+                 zsh 4.1.1
+ 
+ // 変 更 履 歴 //
++v1.06_01 2006/02/08 (by babydamons@yahoo.co.jp)
++        * 以下の設定ファイルの読み込みをサポート:
++            + /etc/cygterm.conf
++            + ~/.cygtermrc
++
++        * シェルがユーザのホームディレクトリで起動されるように。
++
++        * アカウントの設定情報を/etc/passwdからgetpwnam(3)で読み込むように。
++          アカウント名は環境変数USERNAMEからgetenv(3)で取得してます。
++
++        * Makefile修正：ディフォルトでアイコンつきの.exeをビルドします。
+ 
+ v1.06 2004/01/24
+         * コマンドライン・オプションを追加。
+diff -ruw cygterm106/cygterm.cc cygterm106_01/cygterm.cc
+--- cygterm106/cygterm.cc	2004-01-24 16:14:58.000000000 +0900
++++ cygterm106_01/cygterm.cc	2006-02-08 09:24:28.046875000 +0900
+@@ -26,8 +26,17 @@
+ //  (English) http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index-e.html
+ // (Japanese) http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
+ //
++/////////////////////////////////////////////////////////////////////////////
++// patch level 01 - support for "~/.cygtermrc" and "/etc/cygterm.conf"
++//   Written by BabyDaemon. (babydamons@yahoo.co.jp)
++//
++//                         *** Web Pages ***
++// (Japanese) http://www.dd.iij4u.or.jp/~nsym/cygwin/cygterm/index.html
++// Sorry, Japanese web pages only, but I will try read English e-mail,
++// If I recieved it.
++
+ static char Program[] = "CygTerm";
+-static char Version[] = "version 1.06 (2004/01/24)";
++static char Version[] = "version 1.06_01 (2006/02/08)";
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+@@ -45,6 +54,7 @@
+ #include <sys/wait.h>
+ #include <arpa/inet.h>
+ #include <windows.h>
++#include <pwd.h>
+ 
+ // PTY device name
+ //----------------
+@@ -120,49 +130,24 @@
+     msg_print(msg);
+ }
+ 
+-//====================//
+-// load configuration //
+-//--------------------//
+-void load_cfg()
++//==================================//
++// parse line in configuration file //
++//----------------------------------//
++void parse_cfg_line(char *buf)
+ {
+-    char cfg[MAX_PATH]; // configuration file (.cfg) path
+-
+-    // get cfg path from exe path
+-    if (GetModuleFileName(NULL, cfg, MAX_PATH) <= 0) {
+-        return;
+-    }
+-    char* bs = strrchr(cfg, '\\');
+-    if (bs == NULL) {
+-        return;
+-    }
+-    char* dot = strrchr(bs, '.');
+-    if (dot == NULL) {
+-        strcat(bs, ".cfg");
+-    } else {
+-        strcpy(dot, ".cfg");
+-    }
+-
+-    // read each setting parameter
+-    FILE* fp;
+-    if ((fp = fopen(cfg, "r")) == NULL) {
+-        return;
+-    }
+-    char buf[BUFSIZ];
+-    while (fgets(buf, sizeof(buf), fp) != NULL) {
+-
+         // "KEY = VALUE" format in each line.
+         // skip leading/trailing blanks. KEY is not case-sensitive.
+         char* p1;
+         for (p1 = buf; isspace(*p1); ++p1);
+         if (!isalpha(*p1)) {
+-            continue; // comment line with non-alphabet 1st char
++        return; // comment line with non-alphabet 1st char
+         }
+         char* name = p1;
+         for (++p1; isalnum(*p1) || *p1 == '_'; ++p1);
+         char* p2;
+         for (p2 = p1; isspace(*p2); ++p2);
+         if (*p2 != '=') {
+-            continue;
++        return; // igonore line without '='
+         }
+         for (++p2; isspace(*p2); ++p2);
+         char* val = p2;
+@@ -201,9 +186,100 @@
+                 sh_envp = (sh_envp->next = e);
+             }
+         }
++    return;
++}
++
++//====================//
++// load configuration //
++//--------------------//
++void load_cfg()
++{
++    // Windows system configuration file (.cfg) path
++    char win_conf[MAX_PATH];
++
++    // get cfg path from exe path
++    if (GetModuleFileName(NULL, win_conf, MAX_PATH) <= 0) {
++        return;
++    }
++    char* bs = strrchr(win_conf, '\\');
++    if (bs == NULL) {
++        return;
++    }
++    char* dot = strrchr(bs, '.');
++    if (dot == NULL) {
++        strcat(bs, ".cfg");
++    } else {
++        strcpy(dot, ".cfg");
++    }
++
++    static char sys_conf[] = "/etc/cygterm.conf";
++
++    // user configuration file (~/.*rc) path
++    static char usr_conf[MAX_PATH] = "";
++
++    // auto generated configuration file path
++    static char tmp_conf[MAX_PATH] = "/tmp/cygtermrc.XXXXXX";
++
++    // get user name form Windows ENVIRONMENT,
++    // and get /etc/passwd information by getpwnam(3) with USERNAME,
++    // and generate temporary configuration file by mktemp(3).
++    const char* username = getenv("USERNAME");
++    if (username != NULL) {
++        struct passwd* pw_ent = getpwnam(username);
++        if (pw_ent != NULL) {
++            strcpy(usr_conf, pw_ent->pw_dir);
++            strcat(usr_conf, "/.");
++            strcat(usr_conf, bs + 1);
++            char* dot = strrchr(usr_conf, '.');
++            if (dot == NULL) {
++                strcat(bs, "rc");
++            } else {
++                strcpy(dot, "rc");
++            }
++        }
++        mktemp(tmp_conf);
++        FILE* fp = fopen(tmp_conf, "w");
++        if (fp != NULL) {
++            if (pw_ent != NULL) {
++                fprintf(fp, "ENV_1=HOME=%s\n",  pw_ent->pw_dir);
++                fprintf(fp, "ENV_2=USER=%s\n",  pw_ent->pw_name);
++                fprintf(fp, "ENV_3=SHELL=%s\n", pw_ent->pw_shell);
++            } else {
++                fprintf(fp, "ENV_1=HOME=/home/%s\n", username);
++                fprintf(fp, "ENV_2=USER=%s\n",       username);
+     }
+     fclose(fp);
+ }
++    }
++
++    if (strcmp(usr_conf, "") == 0) {
++        strcpy(usr_conf, "");
++        strcpy(tmp_conf, "");
++    }
++
++    char *conf_path[] = { win_conf, sys_conf, tmp_conf, usr_conf };
++    for (int i = 0; i < 4; i++) {
++        // ignore empty configuration file path
++        if (strcmp(conf_path[i], "") == 0) {
++            continue;
++        }
++        // read each setting parameter
++        FILE* fp;
++        if ((fp = fopen(conf_path[i], "r")) == NULL) {
++            continue;
++        }
++        char buf[BUFSIZ];
++        while (fgets(buf, sizeof(buf), fp) != NULL) {
++            parse_cfg_line(buf);
++        }
++        fclose(fp);
++    }
++
++    // remove temporary configuration file, if it was generated.
++    if (strcmp(tmp_conf, "") != 0) {
++        unlink(tmp_conf);
++    }
++}
+ 
+ //=======================//
+ // commandline arguments //
+@@ -457,6 +533,12 @@
+         for (e = sh_env.next; e != NULL; e = e->next) {
+             putenv(e->env);
+         }
++        // chdir to home directory
++        const char *home_dir = getenv("HOME");
++        if (home_dir != NULL) {
++            // ignore chdir(2) system-call error.
++            chdir(home_dir);
++        }
+         // execute a shell
+         char *argv[32];
+         get_argv(argv, 32, cmd_shell);
+@@ -814,11 +896,24 @@
+     return 0;
+ }
+ 
++/**
++ * To avoid bellow error, disable follow codes.
++ * NOTE: To avoid display console window as cygwin application,
++ *       you must build without "gcc -g"
++ * -----------------------------------------------------------------------------
++ * gcc -g -fno-exceptions -o cygterm.exe cygterm.cc  -mwindows -lc -ltk
++ * /tmp/ccfWqjPN.o: In function `WinMainCRTStartup':
++ * /build/cygterm106/cygterm.cc:877: multiple definition of `_WinMainCRTStartup'
++ * /usr/lib/gcc/i686-pc-cygwin/3.4.4/../../../crt0.o:: first defined here
++ * collect2: ld returned 1 exit status
++ * make: *** [cygterm.exe] Error 1
++ */
++#if 0
+ // This program is a Win32 application but, start as Cygwin main().
+ //-----------------------------------------------------------------
+ extern "C" {
+     void mainCRTStartup(void);
+     void WinMainCRTStartup(void) { mainCRTStartup(); }
+ };
+-
++#endif
+ //EOF
