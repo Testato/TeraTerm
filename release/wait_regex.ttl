@@ -1,0 +1,28 @@
+; sample macro of UTF-8 & SSH2 TeraTerm Pro
+; 
+; File: wait_regex.ttl
+; Description: wait command with regular expression
+; Environment: generic
+; Update: 2005/10/7
+; Author: Yutaka Hirata
+
+connect '192.168.1.2 /2 /ssh /auth=password /user=yutaka /passwd=yutaka'
+
+while 1
+
+	sendln 'uptime'
+	waitregex 'Longhorn' '.*@sai' 'Pentium\d+' 'TeraTermX{3}'
+
+	int2str s result
+	messagebox s 'result'
+	messagebox inputstr 'inputstr'
+	messagebox matchstr 'matchstr'
+
+	sendln 'cal'
+	wait 'yutaka'
+
+	pause 3
+
+endwhile
+
+
