@@ -2,7 +2,7 @@
 # マクロコマンドのドキュメント類のチェックを行う
 #
 # [実行方法]
-#   すべて(ttmparse.h より読み込み)のマクロを検証する
+#   __END__以降のマクロ列を検証する
 #   >perl macrotemplate.pl
 #
 #   指定したマクロを検証する
@@ -11,41 +11,27 @@
 # [改版履歴]
 # 1.0 (2008.02.16 Yutaka Hirata)
 # 1.1 (2008.02.23 Yutaka Hirata)
-# 1.2 (2009.03.03 Yutaka Hirata)
-# 1.3 (2009.03.04 NAGATA Shinya)
 #
 
-$macroidfile = '..\teraterm\ttpmacro\ttmparse.h';
-$helpidfile = '..\teraterm\common\helpid.h';
-$encmdfile = '..\doc\en\html\macro\command';
-$jpcmdfile = '..\doc\jp\html\macro\command';
-$enhhcfile = '..\doc\en\teraterm.hhc';
-$jphhcfile = '..\doc\jp\teraterm.hhc';
-$enhhpfile = '..\doc\en\teraterm.hhp';
-$jphhpfile = '..\doc\jp\teraterm.hhp';
-$keyfile = 'release\keyfile.ini';
+$macroidfile = '..\source\ttmacro\ttmparse.h';
+$helpidfile = '..\source\common\helpid.h';
+$encmdfile = '..\..\doc\en\html\macro\command';
+$jpcmdfile = '..\..\doc\jp\html\macro\command';
+$enhhcfile = '..\..\doc\en\teraterm.hhc';
+$jphhcfile = '..\..\doc\jp\teraterm.hhc';
+$enhhpfile = '..\..\doc\en\teraterm.hhp';
+$jphhpfile = '..\..\doc\jp\teraterm.hhp';
+$keyfile = '..\release\keyfile.ini';
 
 if ($#ARGV != -1) {
-	print "==== " . $ARGV[0] . "マクロを検証中...\n";
+	print "$ARGV[0]\n";
 	do_main(lc($ARGV[0]));
 
 } else {
-	@FULL_COMMAND = ();
-	open(FP, "$macroidfile") || die "Can't open $file.";
-	while (<FP>) {
-		if (/^#define Rsv(\w+)\s+(\d+)/) {
-			if ($1 eq 'Operator') {
-				last;
-			}
-			push(@FULL_COMMAND, "$1 $2");
-		}
-	}
-	close(FP);
-	
-	foreach (@FULL_COMMAND) {
-		if (/(\w+)\s+.*/) {
+	while (<DATA>) {
+		chomp;
+		if (/(.+)=.*/) {
 			$key = lc($1);
-			
 			print "==== $key マクロを検証中...\n";
 			do_main($key);
 		}
@@ -79,44 +65,6 @@ sub do_main {
 	}
 #	print "$id\n";
 
-	# 置換
-	# ttmparse.h と helpid.h で名前が一致していないため
-	if ($macro eq 'if' ||
-	    $macro eq 'then' ||
-	    $macro eq 'else' ||
-	    $macro eq 'elseif' ||
-	    $macro eq 'endif'
-	   ) {
-		$macro = 'Ifthenelseif';
-	}
-	if ($macro eq 'for' ||
-	    $macro eq 'next'
-	   ) {
-		$macro = 'fornext';
-	}
-	if ($macro eq 'endwhile'
-	   ) {
-		$macro = 'while';
-	}
-	if ($macro eq 'findfirst' ||
-	    $macro eq 'findnext' ||
-	    $macro eq 'findclose'
-	   ) {
-		$macro = 'Findoperations';
-	}
-	if ($macro eq 'millipause'
-	   ) {
-		$macro = 'mpause';
-	}
-	if ($macro eq 'rotatel'
-	   ) {
-		$macro = 'rotateleft';
-	}
-	if ($macro eq 'rotater'
-	   ) {
-		$macro = 'rotateright';
-	}
-
 	$s = "Command$macro\\b";
 	$ret = read_keyword($helpidfile, $s);
 	$helpline = $ret;
@@ -134,28 +82,6 @@ sub do_main {
 		print "$idline\n";
 		print "$ret\n";
 		return;
-	}
-
-	$pat = "\\b$macro\\b";
-	$ret = read_keyword($keyfile, $pat);
-	if ($ret eq '') {
-		print "$keyfile ファイルに $pat コマンドがありません\n";
-	}
-
-	# 置換
-	# helpid.h とコマンドのヘルプファイルで名前が一致していないため
-	if ($macro eq 'do' ||
-	    $macro eq 'loop'
-	   ) {
-		$macro = 'doloop';
-	}
-	if ($macro eq 'enduntil'
-	   ) {
-		$macro = 'until';
-	}
-	if ($macro eq 'crc32file'
-	   ) {
-		$macro = 'crc32';
 	}
 	
 	$s = "$encmdfile\\$macro.html";
@@ -208,6 +134,13 @@ sub do_main {
 		print "$jphhpfile ファイルに $pat へのALIASリンクがありません\n";
 	}
 
+
+	$pat = "\\b$macro\\b";
+	$ret = read_keyword($keyfile, $pat);
+	if ($ret eq '') {
+		print "$keyfile ファイルに $pat コマンドがありません\n";
+	}
+
 }
 
 sub read_keyword {
@@ -231,3 +164,133 @@ sub read_keyword {
 	}
 	return ($line);
 }
+
+# コマンド列はkeyfile.iniから抜粋
+__END__
+Beep=92001
+Bplusrecv=92002
+Bplussend=92003
+Break=92120
+Call=92004
+Callmenu=92125
+Changedir=92005
+Clearscreen=92006
+Clipb2var=92113
+Closesbox=92007
+Closett=92008
+Code2str=92009
+Connect=92010
+CygConnect=92130
+Delpassword=92011
+Disconnect=92012
+Do=92126
+Enablekeyb=92015
+End=92016
+EndUntil=92129
+Exec=92019
+Execcmnd=92020
+Exit=92021
+Fileclose=92022
+Fileconcat=92023
+Filecopy=92024
+Filecreate=92025
+Filedelete=92026
+Filemarkptr=92027
+Filenamebox=92124
+Fileopen=92028
+Fileread=92116
+Filereadln=92029
+Filerename=92030
+Filesearch=92031
+Fileseek=92032
+Fileseekback=92033
+Filestrseek=92034
+Filestrseek2=92035
+Filewrite=92036
+Filewriteln=92037
+Findoperations=92039
+Flushrecv=92041
+Fornext=92042
+Getdate=92043
+Getdir=92044
+Getenv=92045
+Getpassword=92046
+Gettime=92047
+Gettitle=92048
+Getver=92133
+Goto=92049
+Ifdefined=92115
+Ifthenelseif=92050
+Include=92051
+Inputbox=92052
+Int2str=92053
+Kmtfinish=92054
+Kmtget=92055
+Kmtrecv=92056
+Kmtsend=92057
+Loadkeymap=92058
+Logclose=92059
+Logopen=92060
+Logpause=92061
+Logstart=92062
+Logwrite=92063
+Loop=92127
+Makepath=92064
+Messagebox=92065
+Mpause=92111
+Passwordbox=92067
+Pause=92068
+Quickvanrecv=92069
+Quickvansend=92070
+Random=92112
+Recvln=92071
+Restoresetup=92072
+Return=92073
+Rotateleft=92122
+Rotateright=92121
+Scprecv=92131
+Scpsend=92132
+Send=92074
+Sendbreak=92075
+Sendfile=92076
+Sendkcode=92077
+Sendln=92078
+Setbaud=92134
+Setdate=92079
+Setdir=92080
+Setdlgpos=92081
+Setenv=92123
+Setecho=92082
+Setexitcode=92083
+Setsync=92084
+Settime=92085
+Settitle=92086
+Show=92087
+Showtt=92088
+Sprintf=92117
+Statusbox=92089
+Str2code=92090
+Str2int=92091
+Strcompare=92092
+Strconcat=92093
+Strcopy=92094
+Strlen=92095
+Strscan=92096
+Testlink=92097
+Tolower=92118
+Toupper=92119
+Unlink=92099
+Until=92128
+Var2clipb=92114
+Wait=92100
+Waitevent=92101
+Waitln=92102
+Waitrecv=92103
+Waitregex=92110
+While=92104
+Xmodemrecv=92105
+Xmodemsend=92106
+Yesnobox=92107
+Zmodemrecv=92108
+Zmodemsend=92109
+

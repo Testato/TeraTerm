@@ -1,18 +1,18 @@
-#define AppName "Tera Term"
-#define AppVer "4.62"
+#define AppName "UTF-8 TeraTerm Pro with TTSSH2"
+#define AppVer "4.58"
 
 [Setup]
 AppCopyright=TeraTerm Project
 AppName={#AppName}
 AppVerName={#AppName} {#AppVer}
-LicenseFile=release\license.txt
+LicenseFile=..\release\license.txt
 DefaultDirName={pf}\teraterm
 DefaultGroupName={#AppName}
 ShowLanguageDialog=yes
 AllowNoIcons=true
 UninstallDisplayIcon={app}\ttermpro.exe
 AppMutex=TeraTermProAppMutex, TeraTermProMacroAppMutex, TeraTermProKeycodeAppMutex, TeraTermMenuAppMutex, CygTermAppMutex
-OutputBaseFilename=teraterm-{#AppVer}
+OutputBaseFilename=teraterm_utf8-{#AppVer}
 PrivilegesRequired=none
 
 [Languages]
@@ -28,77 +28,69 @@ Name: {app}\plugin; Components: TeraTerm
 Name: {app}\lang; Components: TeraTerm
 
 [Files]
-Source: ..\teraterm\release\ttermpro.exe; DestDir: {app}; Components: TeraTerm; Flags: ignoreversion
-Source: ..\teraterm\release\ttpcmn.dll; DestDir: {app}; Components: TeraTerm
-Source: ..\teraterm\release\ttpdlg.dll; DestDir: {app}; Components: TeraTerm
-Source: ..\teraterm\release\ttpfile.dll; DestDir: {app}; Components: TeraTerm
-Source: ..\teraterm\release\ttpset.dll; DestDir: {app}; Components: TeraTerm
-Source: ..\teraterm\release\ttptek.dll; DestDir: {app}; Components: TeraTerm
-Source: release\TERATERM.INI; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
-Source: release\TSPECIAL1.TTF; DestDir: {fonts}; Components: TeraTerm; Attribs: readonly; Flags: overwritereadonly uninsneveruninstall; FontInstall: Tera Special; Check: isPowerUsersMore
-Source: ..\doc\en\teraterm.chm; DestDir: {app}; Components: TeraTerm
-Source: ..\doc\jp\teratermj.chm; DestDir: {app}; Components: TeraTerm
-Source: release\license.txt; DestDir: {app}; Components: TeraTerm
-Source: release\FUNCTION.CNF; DestDir: {app}; Components: TeraTerm
-Source: release\IBMKEYB.CNF; DestDir: {app}; Components: TeraTerm
-Source: release\EDITOR.CNF; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify; DestName: KEYBOARD.CNF
-Source: release\EDITOR.CNF; DestDir: {app}; Components: TeraTerm
-Source: release\NT98KEYB.CNF; DestDir: {app}; Components: TeraTerm
-Source: release\PC98KEYB.CNF; DestDir: {app}; Components: TeraTerm
-Source: ..\teraterm\release\keycode.exe; DestDir: {app}; Components: TeraTerm
-Source: ..\teraterm\release\ttpmacro.exe; DestDir: {app}; Components: TeraTerm; Flags: ignoreversion
-Source: release\delpassw.ttl; DestDir: {app}; Components: TeraTerm
-Source: release\dialup.ttl; DestDir: {app}; Components: TeraTerm
-Source: release\login.ttl; DestDir: {app}; Components: TeraTerm
-Source: release\mpause.ttl; DestDir: {app}; Components: TeraTerm
-Source: release\random.ttl; DestDir: {app}; Components: TeraTerm
-Source: release\screencapture.ttl; DestDir: {app}; Components: TeraTerm
-Source: release\ssh2login.ttl; DestDir: {app}; Components: TeraTerm
-Source: release\wait_regex.ttl; DestDir: {app}; Components: TeraTerm
-Source: release\lang\Japanese.lng; DestDir: {app}\lang; Components: TeraTerm; Attribs: readonly; Flags: uninsremovereadonly overwritereadonly
-Source: release\lang\German.lng; DestDir: {app}\lang; Components: TeraTerm; Attribs: readonly; Flags: uninsremovereadonly overwritereadonly
-Source: ..\ttssh2\ttxssh\Release\ttxssh.dll; DestDir: {app}; Components: TTSSH; Flags: ignoreversion
-Source: release\ssh_known_hosts; DestDir: {app}; Components: TTSSH; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
+Source: ..\visualc\bin\release\ttermpro.exe; DestDir: {app}; Components: TeraTerm; Flags: ignoreversion
+Source: ..\visualc\bin\release\ttpcmn.dll; DestDir: {app}; Components: TeraTerm
+Source: ..\visualc\bin\release\ttpdlg.dll; DestDir: {app}; Components: TeraTerm
+Source: ..\visualc\bin\release\ttpfile.dll; DestDir: {app}; Components: TeraTerm
+Source: ..\visualc\bin\release\ttpset.dll; DestDir: {app}; Components: TeraTerm
+Source: ..\visualc\bin\release\ttptek.dll; DestDir: {app}; Components: TeraTerm
+Source: ..\release\TERATERM.INI; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
+Source: ..\release\TSPECIAL1.TTF; DestDir: {fonts}; Components: TeraTerm; Attribs: readonly; Flags: overwritereadonly uninsneveruninstall; FontInstall: Tera Special; Check: isPowerUsersMore
+Source: ..\..\doc\en\teraterm.chm; DestDir: {app}; Components: TeraTerm
+Source: ..\..\doc\jp\teratermj.chm; DestDir: {app}; Components: TeraTerm
+Source: ..\release\license.txt; DestDir: {app}; Components: TeraTerm
+Source: ..\release\FUNCTION.CNF; DestDir: {app}; Components: TeraTerm
+Source: ..\release\IBMKEYB.CNF; DestDir: {app}; Components: TeraTerm
+Source: ..\release\KEYBOARD.CNF; DestDir: {app}; Components: TeraTerm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
+Source: ..\release\NT98KEYB.CNF; DestDir: {app}; Components: TeraTerm
+Source: ..\release\PC98KEYB.CNF; DestDir: {app}; Components: TeraTerm
+Source: ..\visualc\bin\release\keycode.exe; DestDir: {app}; Components: TeraTerm
+Source: ..\visualc\bin\release\ttpmacro.exe; DestDir: {app}; Components: TeraTerm; Flags: ignoreversion
+Source: ..\release\delpassw.ttl; DestDir: {app}; Components: TeraTerm
+Source: ..\release\dialup.ttl; DestDir: {app}; Components: TeraTerm
+Source: ..\release\login.ttl; DestDir: {app}; Components: TeraTerm
+Source: ..\release\mpause.ttl; DestDir: {app}; Components: TeraTerm
+Source: ..\release\random.ttl; DestDir: {app}; Components: TeraTerm
+Source: ..\release\screencapture.ttl; DestDir: {app}; Components: TeraTerm
+Source: ..\release\ssh2login.ttl; DestDir: {app}; Components: TeraTerm
+Source: ..\release\wait_regex.ttl; DestDir: {app}; Components: TeraTerm
+Source: ..\release\lang\Japanese.lng; DestDir: {app}\lang; Components: TeraTerm; Attribs: readonly; Flags: uninsremovereadonly overwritereadonly
+Source: ..\release\lang\German.lng; DestDir: {app}\lang; Components: TeraTerm; Attribs: readonly; Flags: uninsremovereadonly overwritereadonly
+Source: ..\..\ttssh2\ttxssh\Release\ttxssh.dll; DestDir: {app}; Components: TTSSH; Flags: ignoreversion
+Source: ..\release\ssh_known_hosts; DestDir: {app}; Components: TTSSH; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\cygterm\cygterm.exe; DestDir: {app}; Components: cygterm
 Source: ..\cygterm\cygterm.cfg; DestDir: {app}; Components: cygterm; Flags: onlyifdoesntexist uninsneveruninstall; Permissions: authusers-modify
 Source: ..\cygterm\cyglaunch.exe; DestDir: {app}; Components: cygterm
-Source: ..\cygterm\cygterm+.tar.gz; DestDir: {app}; Components: cygterm
-Source: release\LogMeTT_license.txt; DestDir: {app}; Components: LogMeTT
-Source: release\LogMeTT_README.txt; DestDir: {app}; Components: LogMeTT
-Source: release\LogMeTTc.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
-Source: release\LogMeTT.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
-Source: release\logmett.chm; DestDir: {app}; Components: LogMeTT
-Source: release\runltt.exe; DestDir: {app}; Components: LogMeTT
-Source: release\KeyFile.ini; DestDir: {app}; Components: LogMeTT
-Source: release\TTLEdit.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
-Source: release\SynComp.pro; DestDir: {app}; Components: LogMeTT
-Source: release\ttmacro.tpl; DestDir: {app}; Components: LogMeTT
-Source: ..\ttpmenu\Release\ttpmenu.exe; DestDir: {app}; Components: TeraTerm_Menu; Flags: ignoreversion
-Source: release\ttmenu_readme-j.txt; DestDir: {app}; Components: TeraTerm_Menu
-Source: ..\TTProxy\Release\TTXProxy.dll; DestDir: {app}; Components: TTProxy; Flags: ignoreversion
-Source: release\theme\Advanced.sample; DestDir: {app}\theme\; Components: TeraTerm
-Source: release\theme\Scale.INI; DestDir: {app}\theme\; Components: TeraTerm
-Source: release\theme\Tile.INI; DestDir: {app}\theme\; Components: TeraTerm
-Source: release\theme\scale\23.jpg; DestDir: {app}\theme\scale; Components: TeraTerm
-Source: release\theme\scale\43.jpg; DestDir: {app}\theme\scale; Components: TeraTerm
-Source: release\theme\tile\03.jpg; DestDir: {app}\theme\tile; Components: TeraTerm
-Source: release\theme\tile\44.jpg; DestDir: {app}\theme\tile; Components: TeraTerm
-Source: release\plugin\ttAKJpeg.dll; DestDir: {app}\plugin\; Components: TeraTerm
-Source: release\plugin\ttAKJpeg.txt; DestDir: {app}\plugin\; Components: TeraTerm
-Source: release\Collector\Collector.exe; DestDir: {app}\Collector\; Components: Collector
-Source: release\Collector\collector.ini; DestDir: {app}\Collector\; Components: Collector
-Source: release\Collector\Collector_org.exe; DestDir: {app}\Collector\; Components: Collector
-Source: release\Collector\hthook.dll; DestDir: {app}\Collector\; Components: Collector
-Source: release\Collector\mfc70.dll; DestDir: {app}\Collector\; Components: Collector
-Source: release\Collector\msvcr70.dll; DestDir: {app}\Collector\; Components: Collector
-Source: release\Collector\readme.txt; DestDir: {app}\Collector\; Components: Collector
-Source: ..\TTXKanjiMenu\release\ttxkanjimenu.dll; DestDir: {app}\; Components: Additional_Plugins/TTXKanjiMenu; Flags: ignoreversion
-Source: ..\TTXSamples\release\TTXResizeMenu.dll; DestDir: {app}\; Components: Additional_Plugins/TTXResizeMenu; Flags: ignoreversion
-Source: ..\TTXSamples\release\TTXttyrec.dll; DestDir: {app}\; Components: Additional_Plugins/TTXttyrec; Flags: ignoreversion
-Source: ..\TTXSamples\release\TTXttyplay.dll; DestDir: {app}\; Components: Additional_Plugins/TTXttyrec; Flags: ignoreversion
-Source: ..\TTXSamples\release\TTXKcodeChange.dll; DestDir: {app}\; Components: Additional_Plugins/TTXKcodeChange; Flags: ignoreversion
-Source: ..\TTXSamples\release\TTXViewMode.dll; DestDir: {app}\; Components: Additional_Plugins/TTXViewMode; Flags: ignoreversion
-Source: ..\TTXSamples\release\TTXAlwaysOnTop.dll; DestDir: {app}\; Components: Additional_Plugins/TTXAlwaysOnTop; Flags: ignoreversion
+Source: ..\release\LogMeTT_license.txt; DestDir: {app}; Components: LogMeTT
+Source: ..\release\LogMeTT_README.txt; DestDir: {app}; Components: LogMeTT
+Source: ..\release\LogMeTTc.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
+Source: ..\release\LogMeTT.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
+Source: ..\release\logmett.chm; DestDir: {app}; Components: LogMeTT
+Source: ..\release\runltt.exe; DestDir: {app}; Components: LogMeTT
+Source: ..\release\KeyFile.ini; DestDir: {app}; Components: LogMeTT
+Source: ..\release\TTLEdit.exe; DestDir: {app}; Components: LogMeTT; Flags: ignoreversion
+Source: ..\release\SynComp.pro; DestDir: {app}; Components: LogMeTT
+Source: ..\release\ttmacro.tpl; DestDir: {app}; Components: LogMeTT
+Source: ..\source\ttmenu\Release\ttpmenu.exe; DestDir: {app}; Components: TeraTerm_Menu; Flags: ignoreversion
+Source: ..\release\ttmenu_readme-j.txt; DestDir: {app}; Components: TeraTerm_Menu
+Source: ..\..\TTProxy\Release\TTXProxy.dll; DestDir: {app}; Components: TTProxy; Flags: ignoreversion
+Source: ..\release\theme\Advanced.sample; DestDir: {app}\theme\; Components: TeraTerm
+Source: ..\release\theme\Scale.INI; DestDir: {app}\theme\; Components: TeraTerm
+Source: ..\release\theme\Tile.INI; DestDir: {app}\theme\; Components: TeraTerm
+Source: ..\release\theme\scale\23.jpg; DestDir: {app}\theme\scale; Components: TeraTerm
+Source: ..\release\theme\scale\43.jpg; DestDir: {app}\theme\scale; Components: TeraTerm
+Source: ..\release\theme\tile\03.jpg; DestDir: {app}\theme\tile; Components: TeraTerm
+Source: ..\release\theme\tile\44.jpg; DestDir: {app}\theme\tile; Components: TeraTerm
+Source: ..\release\plugin\ttAKJpeg.dll; DestDir: {app}\plugin\; Components: TeraTerm
+Source: ..\release\plugin\ttAKJpeg.txt; DestDir: {app}\plugin\; Components: TeraTerm
+Source: ..\release\Collector\Collector.exe; DestDir: {app}\Collector\; Components: Collector
+Source: ..\release\Collector\collector.ini; DestDir: {app}\Collector\; Components: Collector
+Source: ..\release\Collector\Collector_org.exe; DestDir: {app}\Collector\; Components: Collector
+Source: ..\release\Collector\hthook.dll; DestDir: {app}\Collector\; Components: Collector
+Source: ..\release\Collector\mfc70.dll; DestDir: {app}\Collector\; Components: Collector
+Source: ..\release\Collector\msvcr70.dll; DestDir: {app}\Collector\; Components: Collector
+Source: ..\release\Collector\readme.txt; DestDir: {app}\Collector\; Components: Collector
+Source: ..\visualc\bin\release\ttxkanjimenu.dll; DestDir: {app}\; Components: TTXKanjiMenu; Flags: ignoreversion
 
 [Types]
 Name: standard; Description: {cm:type_standard}
@@ -107,80 +99,28 @@ Name: compact; Description: {cm:type_compact}
 Name: custom; Description: {cm:type_custom}; Flags: iscustom
 
 [Components]
-Name: TeraTerm; Description: Tera Term & Macro; Flags: fixed; Types: custom compact full standard
+Name: TeraTerm; Description: TeraTerm & Macro; Flags: fixed; Types: custom compact full standard
 Name: TTSSH; Description: TTSSH; Types: compact full standard
 Name: cygterm; Description: CygTerm+; Types: full standard; Check: not isIA64
-Name: LogMeTT; Description: LogMeTT & TTLEdit; Types: full standard; MinVersion: 4.1.1998,4.0.1381sp6
+Name: LogMeTT; Description: LogMeTT & TTLEdit; Types: full standard
 Name: TeraTerm_Menu; Description: TeraTerm Menu; Types: full
 Name: TTProxy; Description: TTProxy; Types: full standard
 Name: Collector; Description: Collector; Types: full
-Name: Additional_Plugins; Description: {cm:comp_TTX}
-Name: Additional_Plugins/TTXResizeMenu; Description: TTXResizeMenu ({cm:comp_TTXResizeMenu}); Types: full standard
-Name: Additional_Plugins/TTXttyrec; Description: TTXttyrec ({cm:comp_TTXttyrec}); Types: full standard
-Name: Additional_Plugins/TTXKanjiMenu; Description: TTXKanjiMenu ({cm:comp_TTXKanjiMenu}); Languages: en
-Name: Additional_Plugins/TTXKanjiMenu; Description: TTXKanjiMenu ({cm:comp_TTXKanjiMenu}); Types: full; Languages: ja
-Name: Additional_Plugins/TTXKcodeChange; Description: TTXKcodeChange ({cm:comp_TTXKcodeChange}); Languages: en
-Name: Additional_Plugins/TTXKcodeChange; Description: TTXKcodeChange ({cm:comp_TTXKcodeChange}); Types: full; Languages: ja
-Name: Additional_Plugins/TTXViewMode; Description: TTXViewMode ({cm:comp_TTXViewMode}); Types: full
-Name: Additional_Plugins/TTXAlwaysOnTop; Description: TTXAlwaysOnTop ({cm:comp_TTXAlwaysOnTop}); Types: full
+Name: TTXKanjiMenu; Description: TTXKanjiMenu; Types: full
 
 [Icons]
-Name: {group}\Tera Term; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; IconIndex: 0; Components: TeraTerm; Flags: createonlyiffileexists
+Name: {group}\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; IconIndex: 0; Components: TeraTerm; Flags: createonlyiffileexists
 Name: {group}\{cm:UninstallProgram,{#AppName}}; Filename: {uninstallexe}; Components: TeraTerm; Flags: createonlyiffileexists
-Name: {group}\cyglaunch; Filename: {app}\cyglaunch.exe; WorkingDir: {app}; IconFilename: {app}\cyglaunch.exe; IconIndex: 0; Components: cygterm; Flags: createonlyiffileexists
 Name: {group}\LogMeTT; Filename: {app}\LogMeTT.exe; WorkingDir: {app}; IconFilename: {app}\logMeTT.exe; IconIndex: 0; Components: LogMeTT; Flags: createonlyiffileexists
 Name: {group}\TTLEdit; Filename: {app}\TTLEdit.exe; WorkingDir: {app}; IconFilename: {app}\TTLEdit.exe; IconIndex: 0; Components: LogMeTT; Flags: createonlyiffileexists
 Name: {group}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; IconIndex: 0; Components: TeraTerm_Menu; Flags: createonlyiffileexists
 Name: {group}\Collector; Filename: {app}\Collector\Collector.exe; WorkingDir: {app}\Collector; IconFilename: {app}\Collector\Collector.exe; IconIndex: 0; Components: Collector; Flags: createonlyiffileexists
-Name: {userdesktop}\Tera Term; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: desktopicon; IconIndex: 0; Flags: createonlyiffileexists
-Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\Tera Term; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: quicklaunchicon; IconIndex: 0; Flags: createonlyiffileexists
+Name: {userdesktop}\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: desktopicon; IconIndex: 0; Flags: createonlyiffileexists
+Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\UTF-8 TeraTerm Pro; Filename: {app}\ttermpro.exe; WorkingDir: {app}; IconFilename: {app}\ttermpro.exe; Components: TeraTerm; Tasks: quicklaunchicon; IconIndex: 0; Flags: createonlyiffileexists
 Name: {userstartup}\TeraTerm Menu; Filename: {app}\ttpmenu.exe; WorkingDir: {app}; IconFilename: {app}\ttpmenu.exe; Components: TeraTerm_Menu; IconIndex: 0; Tasks: startupttmenuicon; Flags: createonlyiffileexists
 Name: {userstartup}\Collector; Filename: {app}\collector\collector.exe; WorkingDir: {app}\Collector; IconFilename: {app}\collector\collector.exe; Components: Collector; Tasks: startupcollectoricon; IconIndex: 0; Flags: createonlyiffileexists
-Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\cyglaunch; Filename: {app}\cyglaunch.exe; WorkingDir: {app}; IconFilename: {app}\cyglaunch.exe; Components: cygterm; Tasks: quickcyglaunch; IconIndex: 0; Flags: createonlyiffileexists
 
 [INI]
-Filename: {app}\teraterm.ini; Section: TTXKanjiMenu; Key: UseOneSetting; String: off; Flags: createkeyifdoesntexist; Components: Additional_Plugins/TTXKanjiMenu
-Filename: {userdocs}\teraterm.ini; Section: TTXKanjiMenu; Key: UseOneSetting; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: Additional_Plugins/TTXKanjiMenu
-Filename: {app}\teraterm.ini; Section: TTSSH; Key: ForwardAgent; String: off; Flags: createkeyifdoesntexist; Components: TTSSH
-Filename: {userdocs}\teraterm.ini; Section: TTSSH; Key: ForwardAgent; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TTSSH
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: EnableBoldAttrColor; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: EnableBoldAttrColor; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: EnableBlinkAttrColor; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: EnableBlinkAttrColor; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: EnableReverseAttrColor; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: EnableReverseAttrColor; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: EnableURLColor; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: EnableURLColor; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: EnableANSIColor; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: EnableANSIColor; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: StrictKeyMapping; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: StrictKeyMapping; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: VTReverseColor; String: 255,255,255,0,0,0; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: VTReverseColor; String: 255,255,255,0,0,0; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: DisableWheelToCursorByCtrl; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: DisableWheelToCursorByCtrl; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: DisableMouseTrackingByCtrl; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: DisableMouseTrackingByCtrl; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: TTSSH; Key: EnableRsaShortKeyServer; String: 0; Flags: createkeyifdoesntexist; Components: TTSSH
-Filename: {userdocs}\teraterm.ini; Section: TTSSH; Key: EnableRsaShortKeyServer; String: 0; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TTSSH
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: AcceptTitleChangeRequest; String: overwrite; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: AcceptTitleChangeRequest; String: overwrite; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: ScrollWindowClearScreen; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: ScrollWindowClearScreen; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: UnicodeToDecSpMapping; String: 3; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: UnicodeToDecSpMapping; String: 3; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: UnknownUnicodeCharacterAsWide; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: UnknownUnicodeCharacterAsWide; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: AutoScrollOnlyInBottomLine; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: AutoScrollOnlyInBottomLine; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: VTIcon; String: Default; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: VTIcon; String: Default; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: TEKIcon; String: Default; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: TEKIcon; String: Default; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: MouseWheelScrollLine; String: 3; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: MouseWheelScrollLine; String: 3; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: Tera Term; Key: DisablePasteMouseMButton; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
-Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: DisablePasteMouseMButton; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: SaveVTWinPos; String: off; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: SaveVTWinPos; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: Xterm256Color; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
@@ -219,8 +159,8 @@ Filename: {app}\teraterm.ini; Section: Tera Term; Key: DisableAppCursor; String:
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: DisableAppCursor; String: off; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: DisableAppKeypad; String: on; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: DisableAppKeypad; String: on; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
-Filename: {app}\teraterm.ini; Section: TTSSH; Key: CheckAuthListFirst; String: 0; Flags: createkeyifdoesntexist; Components: TTSSH
-Filename: {userdocs}\teraterm.ini; Section: TTSSH; Key: CheckAuthListFirst; String: 0; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TTSSH
+Filename: {app}\teraterm.ini; Section: TTSSH; Key: CheckAuthListFirst; String: 0; Flags: createkeyifdoesntexist; Components: TeraTerm
+Filename: {userdocs}\teraterm.ini; Section: TTSSH; Key: CheckAuthListFirst; String: 0; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: MaxBroadcatHistory; String: 99; Flags: createkeyifdoesntexist; Components: TeraTerm
 Filename: {userdocs}\teraterm.ini; Section: Tera Term; Key: MaxBroadcatHistory; String: 99; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TeraTerm
 Filename: {app}\teraterm.ini; Section: Tera Term; Key: TelKeepAliveInterval; String: 300; Flags: createkeyifdoesntexist; Components: TeraTerm
@@ -281,38 +221,10 @@ Filename: {app}\teraterm.ini; Section: TTSSH; Key: KeyboardInteractive; String: 
 Filename: {userdocs}\teraterm.ini; Section: TTSSH; Key: KeyboardInteractive; String: 0; Flags: createkeyifdoesntexist; Check: isUserIniExists; Components: TTSSH
 
 [Registry]
-; Cygterm Here
 Root: HKCU; Subkey: Software\Classes\Folder\shell\cygterm; ValueType: string; ValueData: Cy&gterm Here; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: cygterm; Tasks: cygtermhere
 Root: HKCU; Subkey: Software\Classes\Folder\shell\cygterm\command; ValueType: string; ValueData: """{app}\cyglaunch.exe"" -nocd -nols -d \""%L\"""; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: cygterm; Tasks: cygtermhere
 Root: HKCR; Subkey: Folder\shell\cygterm; ValueType: string; ValueData: Cy&gterm Here; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: cygterm; Tasks: cygtermhere
 Root: HKCR; Subkey: Folder\shell\cygterm\command; ValueType: string; ValueData: """{app}\cyglaunch.exe"" -nocd -nols -d \""%L\"""; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: cygterm; Tasks: cygtermhere
-; Associate with .TTL
-Root: HKCU; Subkey: Software\Classes\.ttl; ValueType: string; ValueData: TeraTerm.MacroFile; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
-Root: HKCU; Subkey: Software\Classes\TeraTerm.MacroFile; ValueType: string; ValueData: Tera Term Macro File; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
-Root: HKCU; Subkey: Software\Classes\TeraTerm.MacroFile\DefaultIcon; ValueType: string; ValueData: {app}\ttpmacro.exe,0; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
-Root: HKCU; Subkey: Software\Classes\TeraTerm.MacroFile\shell\open\command; ValueType: string; ValueData: """{app}\ttpmacro.exe"" ""%1"""; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
-Root: HKCR; Subkey: .ttl; ValueType: string; ValueData: TeraTerm.MacroFile; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
-Root: HKCR; Subkey: TeraTerm.MacroFile; ValueType: string; ValueData: Tera Term Macro File; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
-Root: HKCR; Subkey: TeraTerm.MacroFile\DefaultIcon; ValueType: string; ValueData: {app}\ttpmacro.exe,0; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
-Root: HKCR; Subkey: TeraTerm.MacroFile\shell\open\command; ValueType: string; ValueData: """{app}\ttpmacro.exe"" ""%1"""; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: macroassoc
-; Associate with telnet://
-Root: HKCU; Subkey: Software\Classes\telnet\shell; ValueType: string; ValueData: Open with Tera Term; Flags: uninsclearvalue; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
-Root: HKCU; Subkey: Software\Classes\telnet\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" /T=1 /nossh %1"; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
-Root: HKCR; Subkey: telnet\shell; ValueType: string; ValueData: Open with Tera Term; Flags: uninsclearvalue; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
-Root: HKCR; Subkey: telnet\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" /T=1 /nossh %1"; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TeraTerm; Tasks: telnetassoc
-; Associate with ssh://
-Root: HKCU; Subkey: Software\Classes\ssh\shell; ValueType: string; ValueData: Open with Tera Term; Flags: uninsclearvalue; Check: isMinimumOfWin2K; Components: TTSSH; Tasks: sshassoc
-Root: HKCU; Subkey: Software\Classes\ssh\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" %1"; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TTSSH; Tasks: sshassoc
-Root: HKCU; Subkey: Software\Classes\ssh; ValueName: URL Protocol; ValueType: string; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TTSSH; Tasks: sshassoc
-Root: HKCR; Subkey: ssh\shell; ValueType: string; ValueData: Open with Tera Term; Flags: uninsclearvalue; Check: not isMinimumOfWin2K; Components: TTSSH; Tasks: sshassoc
-Root: HKCR; Subkey: ssh\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" %1"; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TTSSH; Tasks: sshassoc
-Root: HKCR; Subkey: ssh; ValueName: URL Protocol; ValueType: string; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TTSSH; Tasks: sshassoc
-Root: HKCU; Subkey: Software\Classes\slogin\shell; ValueType: string; ValueData: Open with Tera Term; Flags: uninsclearvalue; Check: isMinimumOfWin2K; Components: TTSSH; Tasks: sshassoc
-Root: HKCU; Subkey: Software\Classes\slogin\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" %1"; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TTSSH; Tasks: sshassoc
-Root: HKCU; Subkey: Software\Classes\slogin; ValueName: URL Protocol; ValueType: string; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TTSSH; Tasks: sshassoc
-Root: HKCR; Subkey: slogin\shell; ValueType: string; ValueData: Open with Tera Term; Flags: uninsclearvalue; Check: not isMinimumOfWin2K; Components: TTSSH; Tasks: sshassoc
-Root: HKCR; Subkey: slogin\shell\Open with Tera Term\command; ValueType: string; ValueData: """{app}\ttermpro.exe"" %1"; Flags: uninsdeletekey; Check: not isMinimumOfWin2K; Components: TTSSH; Tasks: sshassoc
-Root: HKCR; Subkey: slogin; ValueName: URL Protocol; ValueType: string; Flags: uninsdeletekey; Check: isMinimumOfWin2K; Components: TTSSH; Tasks: sshassoc
 
 [Tasks]
 Name: desktopicon; Description: {cm:task_desktopicon}; Components: TeraTerm
@@ -320,10 +232,6 @@ Name: quicklaunchicon; Description: {cm:task_quicklaunchicon}; Components: TeraT
 Name: startupttmenuicon; Description: {cm:task_startupttmenuicon}; Components: TeraTerm_Menu
 Name: startupcollectoricon; Description: {cm:task_startupcollectoricon}; Components: Collector
 Name: cygtermhere; Description: {cm:task_cygtermhere}; Components: cygterm; Flags: unchecked
-Name: quickcyglaunch; Description: {cm:task_quickcyglaunch}; Components: cygterm; Flags: unchecked
-Name: macroassoc; Description: {cm:task_macroassoc}; Components: TeraTerm; Flags: unchecked
-Name: telnetassoc; Description: {cm:task_telnetassoc}; Components: TeraTerm; Flags: unchecked
-Name: sshassoc; Description: {cm:task_sshassoc}; Components: TTSSH; Flags: unchecked
 
 [Run]
 Filename: {app}\ttermpro.exe; Flags: nowait postinstall skipifsilent unchecked; Description: {cm:launch_teraterm}; Components: TeraTerm
@@ -332,24 +240,16 @@ Filename: {app}\ttpmenu.exe; Flags: nowait postinstall skipifsilent unchecked; D
 Filename: {app}\Collector\Collector.exe; Flags: nowait postinstall skipifsilent unchecked; Description: {cm:launch_collector}; Components: Collector
 
 [CustomMessages]
-en.task_desktopicon=Create Tera Term shortcut to &Desktop
-en.task_quicklaunchicon=Create Tera Term shortcut to &Quick Launch
+en.task_desktopicon=Create TeraTerm shortcut to &Desktop
+en.task_quicklaunchicon=Create TeraTerm shortcut to &Quick Launch
 en.task_startupttmenuicon=Create TeraTerm &Menu shortcut to Startup
 en.task_startupcollectoricon=Create &Collector shortcut to Startup
 en.task_cygtermhere=Add "Cy&gterm Here" to Context menu
-en.task_quickcyglaunch=Create cyg&launch shortcut to Quick Launch
-en.task_macroassoc=Associate .&ttl file to ttpmacro.exe
-en.task_telnetassoc=Associate t&elnet protocol to ttermpro.exe
-en.task_sshassoc=Associate &ssh protocol to ttermpro.exe
-ja.task_desktopicon=ÉfÉXÉNÉgÉbÉvÇ… Tera Term ÇÃÉVÉáÅ[ÉgÉJÉbÉgÇçÏÇÈ(&D)
-ja.task_quicklaunchicon=ÉNÉCÉbÉNãNìÆÇ… Tera Term ÇÃÉVÉáÅ[ÉgÉJÉbÉgÇçÏÇÈ(&Q)
+ja.task_desktopicon=ÉfÉXÉNÉgÉbÉvÇ… TeraTerm ÇÃÉVÉáÅ[ÉgÉJÉbÉgÇçÏÇÈ(&D)
+ja.task_quicklaunchicon=ÉNÉCÉbÉNãNìÆÇ… TeraTerm ÇÃÉVÉáÅ[ÉgÉJÉbÉgÇçÏÇÈ(&Q)
 ja.task_startupttmenuicon=ÉXÉ^Å[ÉgÉAÉbÉvÇ… TeraTerm &Menu ÇÃÉVÉáÅ[ÉgÉJÉbÉgÇçÏÇÈ
 ja.task_startupcollectoricon=ÉXÉ^Å[ÉgÉAÉbÉvÇ… &Collector ÇÃÉVÉáÅ[ÉgÉJÉbÉgÇçÏÇÈ
 ja.task_cygtermhere=ÉRÉìÉeÉLÉXÉgÉÅÉjÉÖÅ[Ç… "Cy&gterm Here" Çí«â¡Ç∑ÇÈ
-ja.task_quickcyglaunch=ÉNÉCÉbÉNãNìÆÇ… cyg&launch ÇÃÉVÉáÅ[ÉgÉJÉbÉgÇçÏÇÈ
-ja.task_macroassoc=.&ttl ÉtÉ@ÉCÉãÇ ttpmacro.exe Ç…ä÷òAïtÇØÇÈ
-ja.task_telnetassoc=t&elnet ÉvÉçÉgÉRÉãÇ ttermpro.exe Ç…ä÷òAïtÇØÇÈ
-ja.task_sshassoc=&ssh ÉvÉçÉgÉRÉãÇ ttermpro.exe Ç…ä÷òAïtÇØÇÈ
 en.type_standard=Standard installation
 en.type_full=Full installation
 en.type_compact=Compact installation
@@ -358,11 +258,11 @@ ja.type_standard=ïWèÄÉCÉìÉXÉgÅ[Éã
 ja.type_full=ÉtÉãÉCÉìÉXÉgÅ[Éã
 ja.type_compact=ÉRÉìÉpÉNÉgÉCÉìÉXÉgÅ[Éã
 ja.type_custom=ÉJÉXÉ^ÉÄÉCÉìÉXÉgÅ[Éã
-en.launch_teraterm=Launch &Tera Term
+en.launch_teraterm=Launch &TeraTerm Pro
 en.launch_logmett=Launch &LogMeTT
 en.launch_ttmenu=Launch TeraTerm &Menu
 en.launch_collector=Launch &Collector
-ja.launch_teraterm=ç°Ç∑ÇÆ &Tera Term Çé¿çsÇ∑ÇÈ
+ja.launch_teraterm=ç°Ç∑ÇÆ &TeraTerm Pro Çé¿çsÇ∑ÇÈ
 ja.launch_logmett=ç°Ç∑ÇÆ &LogMeTT Çé¿çsÇ∑ÇÈ
 ja.launch_ttmenu=ç°Ç∑ÇÆ TeraTerm &Menu Çé¿çsÇ∑ÇÈ
 ja.launch_collector=ç°Ç∑ÇÆ &Collector Çé¿çsÇ∑ÇÈ
@@ -378,24 +278,6 @@ ja.msg_language_subcaption=ÉAÉvÉäÉPÅ[ÉVÉáÉìÇÃÉÅÉjÉÖÅ[Ç‚É_ÉCÉAÉçÉOìôÇÃï\é¶åæåÍÇë
 ja.msg_language_none=âpåÍ(&E)
 ja.msg_language_japanese=ì˙ñ{åÍ(&J)
 ja.msg_language_german=ÉhÉCÉcåÍ(&G)
-en.msg_del_confirm=Are you sure that you want to delete %s ?
-ja.msg_del_confirm=%s ÇçÌèúÇµÇ‹Ç∑Ç©ÅH
-en.msg_uninstall_confirm=It seems a former version is installed. You are recommended to uninstall it previously. Do you uninstall former version ?
-ja.msg_uninstall_confirm=à»ëOÇÃÉoÅ[ÉWÉáÉìÇ™ÉCÉìÉXÉgÅ[ÉãÇ≥ÇÍÇƒÇ¢ÇÈÇÊÇ§Ç≈Ç∑ÅBêÊÇ…ÉAÉìÉCÉìÉXÉgÅ[ÉãÇ∑ÇÈÇ±Ç∆ÇÇ®ä©ÇﬂÇµÇ‹Ç∑ÅBÉAÉìÉCÉìÉXÉgÅ[ÉãÇµÇ‹Ç∑Ç©ÅH
-en.comp_TTX=Additional Plugins
-ja.comp_TTX=í«â¡ÉvÉâÉOÉCÉì
-en.comp_TTXResizeMenu=VT-Window size can be changed from preset
-ja.comp_TTXResizeMenu=VTÉEÉBÉìÉhÉEÇÃÉTÉCÉYÇÉvÉäÉZÉbÉgílÇÃíÜÇ©ÇÁïœçXÇ≈Ç´ÇÈÇÊÇ§Ç…Ç∑ÇÈ
-en.comp_TTXttyrec=ttyrec format record data can be recorded or playback
-ja.comp_TTXttyrec=ttyrecå`éÆÇÃò^âÊÉfÅ[É^ÇãLò^/çƒê∂Ç≈Ç´ÇÈÇÊÇ§Ç…Ç∑ÇÈ
-en.comp_TTXKanjiMenu=Changes Japanese Kanji Code from VT-Window menu
-ja.comp_TTXKanjiMenu=ì˙ñ{åÍÇÃäøéöÉRÅ[ÉhÇVTÉEÉBÉìÉhÉEÇÃÉÅÉjÉÖÅ[Ç©ÇÁê›íËÇ≈Ç´ÇÈÇÊÇ§Ç…Ç∑ÇÈ
-en.comp_TTXKcodeChange=Change Japanese Kanji code by remote sequence
-ja.comp_TTXKcodeChange=ÉäÉÇÅ[ÉgÇ©ÇÁÇÃÉVÅ[ÉPÉìÉXÇ≈ì˙ñ{åÍÇÃäøéöÉRÅ[ÉhÇïœçXÇ∑ÇÈ
-en.comp_TTXViewMode=View-only mode can be used
-ja.comp_TTXViewMode=ï\é¶êÍópÉÇÅ[ÉhÇ…Ç∑ÇÈÇ±Ç∆Ç™Ç≈Ç´ÇÈ
-en.comp_TTXAlwaysOnTop=Always On Top can be used
-ja.comp_TTXAlwaysOnTop=èÌÇ…ç≈ëOñ Ç…ï\é¶Ç≈Ç´ÇÈÇÊÇ§Ç…Ç∑ÇÈ
 
 [Code]
 var
@@ -477,7 +359,6 @@ var
   CodePage : integer;
   VTFont   : String;
   TEKFont  : String;
-  FileDir  : String;
 
 begin
   Language := GetIniString('Tera Term', 'Language', '', iniFile);
@@ -485,7 +366,6 @@ begin
   CodePage := GetIniInt('Tera Term', 'CodePage', 0, 0, 0, iniFile);
   VTFont   := GetIniString('Tera Term', 'VTFont', '', iniFile);
   TEKFont  := GetIniString('Tera Term', 'TEKFont', '', iniFile);
-  FileDir  := GetIniString('Tera Term', 'FileDir', '', iniFile);
 
   case GetUILanguage and $3FF of
   $04: // Chinese
@@ -563,12 +443,7 @@ begin
     2:
       SetIniString('Tera Term', 'UILanguageFile', 'lang\German.lng', iniFile);
     else
-      SetIniString('Tera Term', 'UILanguageFile', 'lang\English.lng', iniFile);
-  end;
-
-  if Length(FileDir) = 0 then begin
-    FileDir := ExpandConstant('{app}');
-    SetIniString('Tera Term', 'FileDir', FileDir, iniFile);
+      SetIniString('Tera Term', 'UILanguageFile', '', iniFile);
   end;
 
 end;
@@ -605,44 +480,9 @@ end;
 
 function NextButtonClick(CurPageID: Integer): Boolean;
 var
-  uninstaller  : String;
-  uninstaller2 : String;
-  ResultCode: Integer;
   iniFile : String;
 begin
   case CurPageID of
-
-    wpWelcome:
-      begin
-
-        if RegQueryStringValue(HKEY_LOCAL_MACHINE,
-                               'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\UTF-8 TeraTerm Pro with TTSSH2_is1',
-                               'UninstallString', uninstaller) then
-        begin
-          // UTF-8 TeraTerm Pro with TTSSH2 ÇÃÉAÉìÉCÉìÉXÉgÅ[Éâï∂éöóÒÇî≠å©ÇµÇΩ
-          if not RegKeyExists(HKEY_LOCAL_MACHINE,
-                              'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Tera Term_is1') then
-          begin
-            // Tera Term ÇÃÉCÉìÉXÉgÅ[ÉãÉGÉìÉgÉäÇ™å©Ç¬Ç©ÇÁÇ»Ç¢(ã§ë∂ÇµÇƒÇ¢Ç»Ç¢)
-            if MsgBox(CustomMessage('msg_uninstall_confirm'), mbInformation, MB_YESNO) = IDYES then
-            begin
-              // ÉÜÅ[ÉUÇ™ÉAÉìÉCÉìÉXÉgÅ[ÉãÇëIëÇµÇΩ
-
-              // óºí[ÇÃ " ÇçÌÇÈ
-              uninstaller2 := Copy(uninstaller, 2, Length(uninstaller) - 2);
-
-              if not Exec(uninstaller2, '', '', SW_SHOW,
-                          ewWaitUntilTerminated, ResultCode) then
-              begin
-                // é¿çsÇ…é∏îs
-                MsgBox(SysErrorMessage(ResultCode), mbError, MB_OK);
-              end;
-            end;
-          end;
-        end;
-
-      end;
-
     wpSelectComponents:
       begin
 
@@ -691,22 +531,6 @@ begin
           RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'Folder\shell\cygterm');
         end;
 
-        if not IsTaskSelected('macroassoc') then
-        begin;
-          RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, 'Software\Classes\.ttl');
-          RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, 'Software\Classes\TeraTerm.MacroFile');
-          RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, '.ttl');
-          RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'TeraTerm.MacroFile');
-        end;
-
-        if not IsTaskSelected('telnetassoc') then
-        begin;
-          RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, 'Software\Classes\telnet\shell\Open with Tera Term');
-          RegDeleteValue(HKEY_CURRENT_USER, 'Software\Classes\telnet\shell', '');
-          RegDeleteKeyIncludingSubkeys(HKEY_CLASSES_ROOT, 'telnet\shell\Open with Tera Term');
-          RegDeleteValue(HKEY_CLASSES_ROOT, 'telnet\shell', '');
-        end;
-
       end; // ssDone
    end; // case CurStep of
 end; // CurStepChanged
@@ -719,7 +543,7 @@ var
   confmsg : String;
   app     : String;
   userdoc : String;
-  i, res : integer;
+  i, j, res : integer;
 begin
   case CurUninstallStep of
     usPostUninstall:
@@ -730,7 +554,11 @@ begin
         ini[3] := '\cygterm.cfg';
         ini[4] := '\broadcast.log';
 
-        conf := CustomMessage('msg_del_confirm');
+        case ActiveLanguage of
+        'en': conf := 'Are you sure that you want to delete %s ?';
+        'ja': conf := '%s ÇçÌèúÇµÇ‹Ç∑Ç©ÅH';
+        end;
+
         app     := ExpandConstant('{app}');
         userdoc := ExpandConstant('{userdocs}');
 
@@ -797,5 +625,6 @@ Name: {app}\copyfont.pif; Type: files
 Name: {app}\libeay.txt; Type: files
 
 [_ISToolPreCompile]
+Name: convtext.bat
 Name: makechm.bat
 Name: build.bat; Parameters: rebuild

@@ -3,8 +3,8 @@
 
                 ターミナル・エミュレータで Cygwin を使う。
 
-                Copyright (c) 2006-2008 TeraTerm Project
-                http://ttssh2.sourceforge.jp/
+                Copyright (c) 2007 TeraTerm Project
+                http://sourceforge.jp/projects/ttssh2/
 
                 Based on CygTerm by Original developer:
                 Copyright (C) 2000-2006 NSym
@@ -155,15 +155,8 @@
 
     SOCKET_TIMEOUT
     --------------
-        Tera Termからのtelnet接続を待ち受けるソケットがタイムアウトするまでの
-        時間を指定します。 (デフォルト: 5秒)
-
-    SSH_AGENT_PROXY
-    ---------------
-        ssh認証エージェント転送機能を提供するかを指定します。
-        有効にすると、OpenSSHのssh認証エージェントに対応したプログラムが、
-	CygTerm+を通してPageantにアクセスできるようになります。
-        デフォルトは無効です。
+        TeraTermからのtelnet接続を待ち受けるソケットのタイムアウトを指定します。
+        (デフォルト: 5秒)
 
     ENV_X
     -----
@@ -176,8 +169,7 @@
     コマンドライン・オプション
 
         cygterm.exe [-t 'terminal-emulator'] [-p port-number] [-dumb]
-                    [-s 'shell'] [-ls | -nols] [-cd | -nocd] [-a | -A]
-                    [-v 'env-var' ...] [-d 'directory'] [-o 'parameter']
+                    [-s 'shell'] [-v 'env-var' ...]
 
         -t 'terminal-emulator'
                 ターミナル・エミュレータを指定します。
@@ -214,12 +206,6 @@
         -nocd
                 カレントディレクトリを移動せずにシェルを起動します。
 
-        -A
-                ssh認証エージェント転送機能を有効にします。
-
-        -a
-                ssh認証エージェント転送機能を無効にします。
-
         -v 'env-var'
                 シェル起動時に設定しておきたい環境変数を指定します。
                 指定形式は設定ファイルの ENV_X と同じです。
@@ -229,10 +215,6 @@
         -d 'directory'
                 カレントディレクトリを指定されたディレクトリに移動してから
                 シェルを起動します。
-
-        -o 'parameter'
-                ターミナル・エミュレータへの追加のパラメータを指定します。
-                TERMを変えずに追加のパラメータを指定したい時に使います。
 
     ターミナル・エミュレータもしくは接続先ポート番号、と Cygwin側シェルの
     指定が最低必要となります。 これらがコマンドライン・オプションによって
@@ -248,9 +230,9 @@
 
 // 注 意 事 項 //
 
-    * Tera Term使用時の注意
+    * TeraTerm使用時の注意
 
-    ターミナル・エミュレータが Tera Term の場合、cygterm.exe から起動された
+    ターミナル・エミュレータが TeraTerm の場合、cygterm.exe から起動された
     状態で設定保存 [Setup][Save setup] を行わないよう注意してください。
     TCP/IP設定の Telnetポート番号が 23 以外で保存され、通常の Telnet目的の
     実行時に接続できず、慌てることになってしまいます。
@@ -258,35 +240,22 @@
 
 // 動 作 確 認 //
 
-    2008年 11月現在、以下の環境で動作が確認できています。
+    2004年 1月現在、以下の環境で動作が確認できています。
 
-        WindowsXP SP3 + Cygwin 1.5.25-15
+        Windows 2000 SP4 + Cygwin 1.5.5(0.94/3/2)
 
         ターミナルエミュレータ
-                Tera Term Pro 2.3
-                Tera Term 4.60
-                PuTTY 0.60
+                Windows 2000 telnet.exe
+                TeraTermPro 2.3
         シェル
-                bash 3.2.39
-                zsh 4.3.4
+                bash 2.05b
+                zsh 4.1.1
 
 // 変 更 履 歴 //
-v1.07_16 2008/11/21 (by doda)
-        * ssh認証エージェント転送機能を有効にするオプションを '-a' から
-          '-A' に変更した。
-        * ssh認証エージェント転送機能を無効にするオプション '-a' を追加した。
-
-v1.07_15 2008/11/01 (by doda)
-        * ssh認証エージェント転送機能をサポートした。
-
-v1.07_14 2007/12/17 (by doda)
-        * ターミナル・エミュレータの追加のパラメータを指定するオプション
-          '-o' を追加した。
-
-v1.07_13 2007/08/03 (by maya)
+v1.07_13 2007/08/03 (by maya.negeta@gmail.com)
         * 開始ディレクトリを指定する '-d' オプションを追加した。
 
-v1.07_12 2007/06/10 (by doda)
+v1.07_12 2007/06/10 (by sue@iwmt.org)
         * telnetの待ち受けソケットのタイムアウトを設定するオプション SOCKET_TIMEOUT を追加した。
 
         SOCKET_TIMEOUT = 秒数 
@@ -295,35 +264,35 @@ v1.07_11 2007/01/31 (import from cygterm v1.07)
         * gcc 3.4 での WinMainCRTStartup() 再定義エラー回避
         * 連続出力時でもキーボード割り込みが入るように。
 
-v1.06_11 2006/09/29 (by maya)
+v1.06_11 2006/09/29 (by maya.negeta@gmail.com)
         * 環境変数と /etc/passwd の HOME を使わないようにした。
           Cygwin によってセットされた HOME が利用される。関連項目 /etc/profile
         * 設定ファイルの優先順位を変更した。
           コマンドライン引数 > ~/.cygtermrc > /etc/cygterm.conf > cygterm.cfg > /etc/passwd
 
-v1.06_10 2006/09/28 (by doda)
+v1.06_10 2006/09/28 (by sue@iwmt.org)
         * ユーザ名を得るのに、環境変数USERNAMEの代わりにgetlogin()を使うようにした。
 
-v1.06_09 2006/09/25 (by doda)
+v1.06_09 2006/09/25 (by sue@iwmt.org)
         * SHELLが設定されていない場合は、/etc/passwdからシェルの情報を得るようにした。
 
-v1.06_08 2006/08/30 (by maya)
+v1.06_08 2006/08/30 (by maya.negeta@gmail.com)
         * cygterm.cfg を設定ファイルの中で最優先されるようにした。
 
-v1.06_07 2006/08/19 (by maya)
+v1.06_07 2006/08/19 (by maya.negeta@gmail.com)
         * Windows の 環境変数 HOME が設定されていれば使うようにした。
 
-v1.06_06 2006/08/18 (by doda)
+v1.06_06 2006/08/18 (by sue@iwmt.org)
         * -sと-tオプションのパラメータの長さを制限した。
 
-v1.06_05 2006/08/18 (by maya)
+v1.06_05 2006/08/18 (by maya.negeta@gmail.com)
         * インストーラから起動チェックをするため、mutex を作成した。
 
-v1.06_04 2006/08/15 (by doda)
+v1.06_04 2006/08/15 (by sue@iwmt.org)
         * シェルをログインシェルとして呼び出すオプション LOGIN_SHELL を追加した。
           LOGIN_SHELL: yes | no
 
-v1.06_03 2006/08/15 (by doda)
+v1.06_03 2006/08/15 (by sue@iwmt.org)
         * ホームディレクトリで起動するのを選択するオプション HOME_CHDIR を追加した。
           HOME_CHDIR: yes | no
 
