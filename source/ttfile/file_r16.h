@@ -1,0 +1,12 @@
+#define IDC_FOPTBIN                     1001
+#define IDC_FOPTAPPEND                  1002
+#define IDC_XOPTCHECK                   1101
+#define IDC_XOPTCRC                     1102
+#define IDC_XOPT1K                      1103
+#define IDC_XOPTBIN                     1104
+#define IDD_FOPTOLD                     1200
+#define IDD_XOPTOLD                     1300
+#define IDD_ZOPTOLD                     1400
+#define IDD_GETFNDLG                    2000
+#define IDC_GETFN                       2001
+#define IDC_GETFNHELP                   2099
