@@ -1,4 +1,0 @@
-EXPORTS
-  FindCygwinPath
-  PortableExecutableMachine
-  CygwinVersion
