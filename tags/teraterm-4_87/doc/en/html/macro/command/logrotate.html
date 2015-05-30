@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>logrotate</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>logrotate</h1>
+
+<p>
+Rotates a log file.
+</p>
+
+<pre class="macro-syntax">
+logrotate 'size' '&lt;size&gt;'
+logrotate 'rotate' &lt;count&gt;
+logrotate 'halt'
+</pre>
+
+<h2>Parameters</h2>
+
+<dl>
+	<dt class="macro">'size' &lt;size&gt;</dt>
+	<dd>When a log file size is over &lt;size&gt; byte, the log file is be rotated.<br>
+	    The &lt;size&gt; value must be larger than 128.<br>
+	    If the &lt;size&gt; is followed by K, the size is assumed to be in kilobytes.
+	    If the M is used, the size is in megabytes.</dd>
+
+	<dt class="macro">'rotate' &lt;count&gt;</dt>
+	<dd>Log files are rotated &lt;count&gt; times before being removed.<br>
+	    The &lt;count&gt; value must be larger than 1.</dd>
+
+	<dt class="macro">'halt'</dt>
+	<dd>The log rotation is stopped.</dd>
+</dl>
+
+
+<h2>NOTICE</h2>
+
+<ol>
+ <li>A log file must be opened previously.</li>
+ <li>This command only configure the log rotation. So, the rotation does not be executed immediately.</li>
+</ol>
+
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+; Open log
+getspecialfolder str "MyDocuments"
+changedir str
+logopen 'teraterm_sample.log' 0 0
+
+; Start log rotation
+logrotate 'size' '32K'
+logrotate 'rotate' 3
+
+pause 600
+; Stop log rotation
+logrotate 'halt'
+
+pause 600
+
+; Close log
+logclose
+</pre>
+
+<h2>See also</h2>
+<ul>
+  <li><a href="logopen.html">logopen</a></li>
+</ul>
+
+</body>
+</html>
