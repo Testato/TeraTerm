@@ -1,3 +1,0 @@
-
-Refer to the ttssh2\doc\en\html\reference\develop.txt for these folders.
-
