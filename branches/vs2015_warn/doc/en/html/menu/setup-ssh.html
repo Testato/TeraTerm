@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>SSH([Setup] Menu)</title>
+    <META http-equiv="Content-Style-Type" content="text/css">
+    <link rel="stylesheet" href="../style.css" type="text/css">
+  </head>
+
+  <body>
+    <h1>SSH([Setup] Menu)</h1>
+
+    <h2>"TTSSH: Setup" Dialog box</h2>
+    <dl>
+      <dt id="CipherOrder">Preferred cipher order</dt>
+      <dd>
+	Specify the type of encryption for SSH with the order.<br>
+	&lt;ciphers below this line are disabled&gt;
+      </dd>
+
+      <dt id="KnownHosts">SSH Known Hosts</dt>
+      <dd>
+	Specify the file which includes a name of Host connected via SSH
+	(and Public key for Host).
+      </dd>
+
+      <dt id="HostkeyRotation">Host key rotation</dt>
+      <dd>
+	Configure the host key rotation feature(OpenSSH 6.8 or later).
+	<dl>
+	  <dt>No</dt>
+	  <dd>Do not update the known hosts file.</dd>
+	  <dt>Yes</dt>
+	  <dd>Automatically update the known hosts file.</dd>
+	  <dt>Ask</dt>
+	  <dd>A user is asked to confirm the modifications to the known hosts file.</dd>
+	</dl>
+      </dd>
+
+      <dt id="KeepAlive">HeartBeat (keep-alive)</dt>
+      <dd>
+	A Keep-alive packet is sent on a regular basis to maintain the
+	connection (particularly useful under NAT). If 0 is specified,
+	this feature is disabled.
+      </dd>
+
+      <dt id="RememberPassword">Remember password in memory</dt>
+      <dd>
+	The user password is preserved in the memory. The password in the memory is used by "Duplicate session" function. The password is deleted in the memory when Tera Term session disconnects.
+      </dd>
+
+      <dt id="AgentForwarding">Enable agent forwarding</dt>
+      <dd>
+      The SSH agent forwarding is enabled using by the Pageant application.
+      </dd>
+
+      <dt id="AgentForwardingConfirm">Confirm agent forwarding</dt>
+      <dd>
+	When the SSH agent-forwarding is requested, a user will confirm contacting the Pageant.
+      </dd>
+
+      <dt id="SSHFP">Verify host key fingerprint by DNS</dt>
+      <dd>
+	The host key of the SSH server is verified by using the <a href="../usage/ssh.html#SSHFP">SSHFP Resource Record</a>.<br />
+	The result of this verification should be used only as a guide.
+      </dd>
+
+      <dt id="KexOrder">KEX order (SSH2 only)</dt>
+      <dd>
+	Specify the type of KEX(Key Exchange) for SSH2 with the order.<br>
+	&lt;KEXs below this line are disabled&gt;
+      </dd>
+
+      <dt id="MacOrder">MAC order (SSH2 only)</dt>
+      <dd>
+	Specify the type of MAC for SSH2 with the order.<br>
+	&lt;MACs below this line are disabled&gt;
+      </dd>
+
+      <dt id="HostKeyOrder">Host key order (SSH2 only)</dt>
+      <dd>
+	Specify the type of host key for SSH2 with the order.<br>
+	&lt;Host keys below this line are disabled&gt;
+      </dd>
+
+      <dt id="CompressionOrder">Compression order (SSH2 only)</dt>
+      <dd>
+	Specify the type of compression key for SSH2 with the order.<br>
+	&lt;Compressions below this line are disabled&gt;
+      </dd>
+
+      <dt id="CompressionLevel">Compression level</dt>
+      <dd>
+	Specify the level of compression for transmission. The more right,
+	the more compression is done (note: it may degrade the throughout
+	with a high-speed link such as ADSL or FTTH).<br>
+	By using SSH1 protocol, when the Compression level is 0, the packet compression is disabled, or the Compression level is over 1, the compression is enabled. <br>
+	By using SSH2 protocol, use the Compression order to enable the packet compression. And then, set the Compression level to 1 over.
+      </dd>
+    </dl>
+  </body>
+</html>
