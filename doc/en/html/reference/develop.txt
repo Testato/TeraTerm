@@ -18,7 +18,7 @@
 -- Visual Studio Community 2013 Update 5
    MFC MBCS DLL Add-on
    Note: The executable program which was compiled by this version does not work on Windows Vista, XP, 2000, NT 4.0, 95, 98 and Me.
--- Visual Studio Community 2015 Update 1
+-- Visual Studio Community 2015
    Note: The executable program which was compiled by this version does not work on Windows Vista, XP, 2000, NT 4.0, 95, 98 and Me.
 - Installer
   Inno Setup 5.4.3 ANSI (http://www.jrsoftware.org/isinfo.php) (5.5.0 or higher doesn't support Windows NT 4.0 and 9x)
@@ -35,7 +35,7 @@
 
 * Libraries
 - Oniguruma 5.9.6 (https://github.com/kkos/oniguruma)
-- OpenSSL 1.0.2e (http://www.openssl.org/)
+- OpenSSL 1.0.2d (http://www.openssl.org/)
 - zlib 1.2.8 (http://www.zlib.net/)
 - PuTTY 0.66 (http://www.chiark.greenend.org.uk/~sgtatham/putty/)
 
@@ -293,7 +293,3 @@ Example: adding a TTSSH menu under File menu
         Create new topic in `Announcements' entry.
         Change the type of previous Announcement from Announcement to Normal.
         Delete third previous Announcement.
-
-  13. Announce release to Twitter.
-      https://twitter.com/Tera_Term
-      Post release announcement and pin.

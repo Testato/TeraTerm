@@ -660,7 +660,6 @@ void BGPreloadPicture(BGSrc *src)
 void BGGetWallpaperInfo(WallpaperInfo *wi)
 {
   int  length;
-  int style;
   int  tile;
   char str[256];
   HKEY hKey;
@@ -679,7 +678,7 @@ void BGGetWallpaperInfo(WallpaperInfo *wi)
   //壁紙スタイルゲット
   length = 256;
   RegQueryValueEx(hKey,"WallpaperStyle",NULL,NULL,(BYTE*)str,&length);
-  style = atoi(str);
+  wi->pattern = atoi(str);
 
   //壁紙スタイルゲット
   length = 256;
@@ -689,24 +688,20 @@ void BGGetWallpaperInfo(WallpaperInfo *wi)
   //これでいいの？
   if(tile)
     wi->pattern = BG_TILE;
-  else {
-    switch (style) {
-    case 0: // Center(中央に表示)
-      wi->pattern = BG_CENTER;
-      break;
-    case 2: // Stretch(画面に合わせて伸縮) アスペクト比は無視される
-      wi->pattern = BG_STRETCH;
-      break;
-    case 10: // Fill(ページ横幅に合わせる) とあるが、和訳がおかしい
-             // アスペクト比を維持して、はみ出してでも最大表示する
-      wi->pattern = BG_AUTOFILL;
-      break;
-    case 6: // Fit(ページ縦幅に合わせる) とあるが、和訳がおかしい
-      // アスペクト比を維持して、はみ出さないように最大表示する
-      wi->pattern = BG_AUTOFIT;
-      break;
-    }
-  }
+  else
+  if(wi->pattern == 0) // Center(中央に表示)
+    wi->pattern = BG_CENTER;
+  else
+  if(wi->pattern == 2) // Stretch(画面に合わせて伸縮) アスペクト比は無視される
+    wi->pattern = BG_STRETCH;
+  else
+  if(wi->pattern == 10) // Fill(ページ横幅に合わせる) とあるが、和訳がおかしい
+                        // アスペクト比を維持して、はみ出してでも最大表示する
+    wi->pattern = BG_AUTOFILL;
+  else
+  if(wi->pattern == 6) // Fit(ページ縦幅に合わせる) とあるが、和訳がおかしい
+                       // アスペクト比を維持して、はみ出さないように最大表示する
+    wi->pattern = BG_AUTOFIT;
 
   //レジストリキーのクローズ
   RegCloseKey(hKey);
@@ -745,12 +740,6 @@ static HBITMAP GetBitmapHandle(char *File)
 	CreateStreamOnHGlobal(hMem,TRUE,&iStream);
 
 	OleLoadPicture(iStream,nFileSize,FALSE,&IID_IPicture,(LPVOID*)&iPicture);
-
-	// 画像ファイルではないバイナリファイルを指定した場合に、
-	// プログラムが落ちる問題を修正した。
-	// (2015.12.5 yutaka)
-	if (iPicture == NULL)
-		return (hBitmap);
 
 	iStream->lpVtbl->Release((IStream *)iPicture);
 

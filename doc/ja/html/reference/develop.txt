@@ -20,7 +20,7 @@
    MFC MBCS DLL アドオン
    注: コンパイルされた実行ファイルは Windows Vista, XP, 2000, NT 4.0, 95, 98, Me で動きません。
        Windows Vista, XP をサポートするには v120_xp を指定してください。
--- Visual Studio Community 2015 Update 1
+-- Visual Studio Community 2015
    注: コンパイルされた実行ファイルは Windows Vista, XP, 2000, NT 4.0, 95, 98, Me で動きません。
        Windows Vista, XP をサポートするには v140_xp を指定してください。
 - インストーラ
@@ -38,7 +38,7 @@
 
 ■ ライブラリ
 - Oniguruma 5.9.6 (https://github.com/kkos/oniguruma)
-- OpenSSL 1.0.2e (http://www.openssl.org/)
+- OpenSSL 1.0.2d (http://www.openssl.org/)
 - zlib 1.2.8 (http://www.zlib.net/)
 - PuTTY 0.66 (http://www.chiark.greenend.org.uk/~sgtatham/putty/)
 
@@ -309,7 +309,3 @@
         Announcements に新規投稿する。種類は Announcement
         一つ前の Announcement の種類を Normal に変更する
         Announcement は三個残すことになっているので、三つ前の Announcement を削除する
-
-  13. Twitter に告知する
-      https://twitter.com/Tera_Term
-      リリース告知をツイートして固定する
