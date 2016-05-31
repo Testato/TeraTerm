@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>xmodemrecv</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>xmodemrecv</h1>
+
+<p>
+Receives a file from the host with the XMODEM protocol.
+</p>
+
+<pre class="macro-syntax">
+xmodemrecv &lt;filename&gt; &lt;binary flag&gt; &lt;option&gt;
+</pre>
+
+<h2>Remarks</h2>
+
+<p>
+Causes Tera Term to receive the file &lt;filename&gt; from the host with the XMODEM protocol. Pauses until the end of the file transfer.<br>
+If the file is transferred successfully, the system variable "result" is set to 1. Otherwise, "result" is set to zero.
+</p>
+
+<p>
+If the file is a binary file, &lt;binary flag&gt; must be non-zero.<br>
+If the file is a text file, &lt;binary flag&gt; must be zero.
+</p>
+
+<p>
+&lt;option&gt; specifies the XMODEM option (Type of error detection), and can be one of the following: <br>
+Packet size (1K) can be only specified at sender side. <em>(version 4.90 or later)</em>
+</p>
+
+<table>
+ <tr>
+  <th>&lt;option&gt;</th>
+  <th>(version 4.89 or earlier)</th>
+  <th>(version 4.90 or later)</th>
+ </tr>
+ <tr>
+  <td>1</td>
+  <td>Checksum</td>
+  <td>Checksum</td>
+ </tr>
+ <tr>
+  <td>2</td>
+  <td>CRC</td>
+  <td>CRC</td>
+ </tr>
+ <tr>
+  <td>3</td>
+  <td>1K</td>
+  <td>CRC</td>
+ </tr>
+ <tr>
+  <td>others</td>
+  <td>Checksum</td>
+  <td>Checksum</td>
+ </tr>
+</table>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+; XMODEM receive, text file, CRC
+xmodemrecv 'readme.txt' 0 2
+</pre>
+
+</body>
+</html>
