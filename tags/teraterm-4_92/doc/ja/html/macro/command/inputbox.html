@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>inputbox</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>inputbox</h1>
+
+<p>
+文字列を入力するためのダイアログボックスを開く。
+</p>
+
+<pre class="macro-syntax">
+inputbox &lt;message&gt; &lt;title&gt; [&lt;default&gt; [&lt;special&gt;]]
+</pre>
+
+<h2>パラメータ</h2>
+<dl>
+	<dt class="macro">文字列 &lt;message&gt;</dt>
+	<dd>ダイアログボックスに表示されるメッセージ。</dd>
+	
+	<dt class="macro">文字列 &lt;title&gt;</dt>
+	<dd>ダイアログボックスのタイトル。</dd>
+	
+	<dt class="macro">文字列 &lt;default&gt; (オプション デフォルト=""(空文字列))</dt>
+	<dd>エディットコントロールのデフォルト文字列です。</dd>
+	
+	<dt class="macro">整数値 &lt;special&gt; (オプション デフォルト=0)</dt>
+	<dd>0 でない場合は、&lt;message&gt; に含まれる以下の文字列は特殊文字として扱われます。<br>
+	    &lt;special&gt; の値は &lt;default&gt; には影響を与えません。<br>
+	    <table border="2">
+	     <tr>
+	      <th>入力</th>
+	      <th>出力</th>
+	     </tr>
+	     <tr>
+	      <td>\\</td>
+	      <td>"\"</td>
+	     </tr>
+	     <tr>
+	      <td>\n</td>
+	      <td>改行</td>
+	     </tr>
+	     <tr>
+	      <td>\t</td>
+	      <td>タブ</td>
+	     </tr>
+	    </table>
+	    このオプションの使用は推奨されません。strspecial マクロコマンドを使用して文字列を変換することで同等の結果を得られます。
+	</dd>
+</dl>
+
+<h2>返り値</h2>
+
+<dl>
+	<dt class="macro">システム変数 &lt;inputstr&gt;</dt>
+	<dd>入力された文字列が代入される。</dd>
+</dl>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+inputbox 'Password:' 'Login'
+sendln inputstr
+</pre>
+
+<h2>参照</h2>
+<ul>
+  <li><a href="strspecial.html">strspecial</a></li>
+</ul>
+
+</body>
+</html>

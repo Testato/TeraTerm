@@ -1,0 +1,151 @@
+if paramcnt <= 1 goto error
+
+;
+; params[] 未実装のバージョン用の params[] エミュレート
+;
+ifdefined params
+if result = 0 then
+	strdim params paramcnt+1
+
+	for i 1 paramcnt
+		sprintf2 cmd 'params[%d] = param%d' i i
+		execcmnd cmd
+	next
+endif
+
+testnum = 0
+
+for i 2 paramcnt
+	if testnum = 0 then
+		strmatch params[i] "test[1-9]"
+		if result then
+			testnum = i
+			break
+		endif
+	endif
+next
+
+if testnum then
+	sprintf2 cmd 'goto %s' params[testnum]
+	execcmnd cmd
+endif
+
+
+goto error
+
+
+:test1
+; ttpmacro.exe macrofile /vxx /ixx /V /i test1
+;
+; 以下のように解釈する事にする
+;   paramcnt: 6
+;   param2: /vxx
+;   param3: /ixx
+;   param4: /V
+;   param5: /i
+;   param6: test1
+;
+if paramcnt <> 6 goto error
+strcompare params[2] "/vxx"
+if result <> 0 goto error
+strcompare params[3] "/ixx"
+if result <> 0 goto error
+strcompare params[4] "/V"
+if result <> 0 goto error
+strcompare params[5] "/i"
+if result <> 0 goto error
+strcompare params[6] "test1"
+if result <> 0 goto error
+
+goto end
+
+:test2
+; ttpmacro.exe /V /i macrofile /v /I test2
+;
+; paramcnt: 4
+; param2: /v
+; param3: /I
+; param4: test2
+;
+if paramcnt <> 4 goto error
+strcompare params[2] "/v"
+if result <> 0 goto error
+strcompare params[3] "/I"
+if result <> 0 goto error
+strcompare params[4] "test2"
+if result <> 0 goto error
+
+goto end
+
+:test3
+; ttpmacro.exe /I macrofile test3 /Vxx /ixx /V /i
+;
+; 以下の解釈とする
+;   paramcnt: 6
+;   param2: test3
+;   param3: /Vxx
+;   param4: /ixx
+;   param5: /V
+;   param6: /i
+;
+if paramcnt <> 6 goto error
+strcompare params[2] "test3"
+if result <> 0 goto error
+strcompare params[3] "/Vxx"
+if result <> 0 goto error
+strcompare params[4] "/ixx"
+if result <> 0 goto error
+strcompare params[5] "/V"
+if result <> 0 goto error
+strcompare params[6] "/i"
+if result <> 0 goto error
+
+goto end
+
+:test4
+; ttpmacro.exe /i macrofile test4 /V /Vxx /ixx
+;
+; 以下の解釈とする
+;   paramcnt: 5
+;   param2: test4
+;   param3: /V
+;   param4: /Vxx
+;   param5: /ixx
+;
+if paramcnt <> 5 goto error
+strcompare params[2] "test4"
+if result <> 0 goto error
+strcompare params[3] "/V"
+if result <> 0 goto error
+strcompare params[4] "/Vxx"
+if result <> 0 goto error
+strcompare params[5] "/ixx"
+if result <> 0 goto error
+
+goto end
+
+:test5
+; 未実装
+goto end
+
+:test6
+; 未実装
+goto end
+
+:test7
+; 未実装
+goto end
+
+:test8
+; 未実装
+goto end
+
+:test9
+; 未実装
+goto end
+
+:error
+setexitcode 1
+
+:end
+end

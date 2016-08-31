@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>fileopen</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>fileopen</h1>
+
+<p>
+Opens a file.
+</p>
+
+<pre class="macro-syntax">
+fileopen &lt;file handle&gt; &lt;filename&gt; &lt;append flag&gt; [&lt;readonly flag&gt;]
+</pre>
+
+<h2>Parameters</h2>
+
+<dl>
+	<dt class="macro">integer variable &lt;file handle&gt;</dt>
+	<dd>If the file is successfully opened, the file handle is returned in this variable.<br />
+        Otherwise, &lt;file handle&gt; is set to -1.</dd>
+
+	<dt class="macro">string &lt;filename&gt;</dt>
+	<dd>Specify an opened file name<br />
+	    If the file does not exist, it is created and then opened.</dd>
+
+	<dt class="macro">integer &lt;append flag&gt;</dt>
+	<dd>If this parameter is zero, the file pointer is set to the beginning of the file.<br />
+	    If this parameter is nonzero, the file pointer is set to the end of the file.</dd>
+
+	<dt class="macro">integer &lt;readonly flag&gt; (optional default=0) (version 4.85 or later)</dt>
+	<dd>If this parameter is zero, it requests opening the file read/write.<br />
+	    If this parameter is nonzero, it requests opening the file read-only.</dd>
+</dl>
+
+<h2>Remarks</h2>
+
+<p>
+The file is opened in the binary mode.
+</p>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+fileopen fhandle 'data.dat' 0
+fileopen fhandle 'data.dat' 1
+</pre>
+
+<pre class="macro-example">
+fileopen fhandle 'test.bat' 0
+filewrite fhandle 'md .\v20080619_Test'
+fileclose fhandle
+pause 5
+exec 'cmd /c test.bat'
+pause 10
+end
+</pre>
+
+<h2>See also</h2>
+<ul>
+  <li><a href="filewrite.html">filewrite</a></li>
+  <li><a href="fileclose.html">fileclose</a></li>
+</ul>
+
+</body>
+</html>
