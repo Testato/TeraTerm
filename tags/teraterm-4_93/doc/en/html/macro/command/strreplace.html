@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>strreplace</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>strreplace</h1>
+
+<p>
+Replaces a string, with another string.
+</p>
+
+<h2>Format</h2>
+
+<pre class="macro-syntax">
+strreplace &lt;strvar&gt; &lt;index&gt; &lt;regex&gt; &lt;newstr&gt;
+</pre>
+
+<h2>Remarks</h2>
+
+<p>
+Replaces a specified &lt;regex&gt; string in the string variable &lt;strvar&gt; beginning at a specified position &lt;index&gt;(1-origin), with another specified &lt;newstr&gt; string.<br>
+If the &lt;newstr&gt; is ''(empty), the &lt;regex&gt; string is removed from &lt;strvar&gt;.
+</p>
+
+<p>
+When the replacing succeeds, the system variable "result" is set to 1 and the matched string by the &lt;regex&gt; is stored into the system variable "matchstr". <br>
+When the replacing fails by the reason &lt;regex&gt; not match &lt;strvar&gt;, the system variable "result" is set to 0. <br>
+When &lt;regex&gt; format is not valid, the system variable "result" is set to -1. 
+</p>
+
+<p>
+When a user searches the multi-byte string like as Japanese, the user must configure the regular encoding by using the <a href="regexoption.html">regexoption</a> previously.
+</p>
+
+<p>
+NOTE: When this macro command is performed, the 9 system variables from "groupmatchstr1" to "groupmatchstr9" are cleared.
+</p>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+src='linux.txt'
+strreplace src 1 '\.txt' '.doc'
+messagebox src 'result'          ; linux.doc
+</pre>
+
+<pre class="macro-example">
+src='I can do it.'
+strreplace src 1 'can\s' ''
+messagebox src 'result'     ; 'I do it.'
+</pre>
+
+<pre class="macro-example">
+src='Microsoft Windows XP [Version 5.1.2600]'
+strmatch src '(Version \d+.\d+.)\d+'
+
+int2str s result
+messagebox s groupmatchstr1
+pos=result                ; 23
+mstr=groupmatchstr1       ; Version 5.1.
+
+strreplace src pos mstr 'Build '
+if result=1 then
+	messagebox src 'result'   ; Microsoft Windows XP [Build 2600]
+endif
+</pre>
+
+<h2>See also</h2>
+<ul>
+  <li><a href="../../reference/RE.txt">Oniguruma Regular Expressions</a></li>
+  <li><a href="regexoption.html">regexoption</a></li>
+  <li><a href="strmatch.html">strmatch</a></li>
+  <li><a href="strinsert.html">strinsert</a></li>
+  <li><a href="strremove.html">strremove</a></li>
+</ul>
+
+</body>
+</html>
