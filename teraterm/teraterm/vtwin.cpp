@@ -1603,10 +1603,9 @@ void CVTWindow::ResetSetup()
 	BGSetupPrimary(TRUE);
 	// 2006/03/17 by 337 : Alpha’l‚à‘¦•ÏX
 	// Layered‘‹‚É‚È‚Á‚Ä‚¢‚È‚¢ê‡‚ÍŒø‰Ê‚ª–³‚¢
-	//
-	// AlphaBlend ‚ğ‘¦”½‰f‚Å‚«‚é‚æ‚¤‚É‚·‚éB
-	// (2016.12.24 yutaka)
-	SetWindowStyle(&ts);
+	if (ts.EtermLookfeel.BGUseAlphaBlendAPI) {
+		MySetLayeredWindowAttributes(HVTWin, 0, ts.AlphaBlend, LWA_ALPHA);
+	}
 #else
 	DispApplyANSIColor();
 #endif
