@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>listbox</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>listbox</h1>
+
+<p>
+リストボックスを開き、ユーザーに項目を選択させる。
+</p>
+
+<pre class="macro-syntax">
+listbox &lt;message&gt; &lt;title&gt; &lt;string array&gt; [&lt;selected&gt;]
+</pre>
+
+<h2>パラメータ</h2>
+
+<dl>
+	<dt class="macro">文字列 &lt;message&gt;</dt>
+	<dd>リストボックスに表示されるメッセージ。</dd>
+	
+	<dt class="macro">文字列 &lt;title&gt;</dt>
+	<dd>リストボックスのタイトル。</dd>
+	
+	<dt class="macro">文字列型配列 &lt;string array&gt;</dt>
+	<dd>リストボックスの選択項目。</dd>
+
+	<dt class="macro">整数値 &lt;selected&gt; (バージョン 4.89 以降)</dt>
+	<dd>初期選択項目(0オリジンインデックス)。省略可能。</dd>
+</dl>
+
+<h2>返り値</h2>
+
+<dl>
+	<dt class="macro">システム変数 &lt;result&gt;</dt>
+	<dd>項目が選択された場合、0 - (N-1)のいずれかの値が格納される。<br>
+	    キャンセルされた場合、-1が格納される。</dd>
+	
+</dl>
+
+<h2>解説</h2>
+
+<p>
+listbox マクロコマンドは &lt;string array&gt; の配列要素をすべて選択項目として表示します。<br />
+以下のように、表示しようとする選択項目数より大きい要素数で &lt;string array&gt; を定義すると、最後に空文字列が表示されます。
+</p>
+
+<pre>
+strdim msg 4
+msg[0] = 'バナナ' 
+msg[1] = 'りんご' 
+msg[2] = 'みかん'
+listbox '好きな食べ物を選んでください' 'あなたへの問い' msg
+
+; 選択肢が4つ表示される
+バナナ
+りんご
+みかん
+[空文字列]
+</pre>
+
+<p>
+<em>(バージョン 4.89 以降)</em><br>
+&lt;selected&gt; を指定する事で、初期状態で選択されている項目を指定する事ができます。<br />
+省略した場合は 0 (先頭)が指定されたものとして扱われます。
+</p>
+
+
+<h2>例</h2>
+
+<pre class="macro-example">
+strdim msg 3
+msg[0] = 'バナナ' 
+msg[1] = 'りんご' 
+msg[2] = 'みかん'
+listbox '好きな食べ物を選んでください' 'あなたへの問い' msg
+sprintf2 var "%d" result
+messagebox var "result"
+; result
+;   -1: Cancel
+;    0: バナナ
+;    1: りんご
+;    2: みかん
+</pre>
+
+<pre class="macro-example">
+strdim msg 7
+msg[0] = '晴れ' 
+msg[1] = '曇り' 
+msg[2] = '雨'
+msg[3] = '風'
+msg[4] = '雪'
+msg[5] = '霧'
+msg[6] = '分かりません'
+; デフォルトで7番目の項目が選択される
+listbox '今日の天気はどうですか?' 'あなたへの問い' msg 6
+sprintf2 var "%d" result
+messagebox var "result"
+</pre>
+
+<h2>参照</h2>
+<ul>
+  <li><a href="yesnobox.html">yesnobox</a></li>
+</ul>
+
+</body>
+</html>
