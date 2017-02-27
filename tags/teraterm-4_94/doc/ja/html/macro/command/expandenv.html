@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>expandenv</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>expandenv</h1>
+
+<p>
+環境変数文字列を展開する。
+</p>
+
+<h2>形式</h2>
+
+<pre class="macro-syntax">
+expandenv &lt;strvar&gt; [&lt;strval&gt;]
+</pre>
+
+<h2>パラメータ</h2>
+
+<dl>
+	<dt class="macro">文字列変数 &lt;strvar&gt;</dt>
+	<dd>この引数で指定した文字列が展開される。<br />
+	    第2引数(&lt;strval&gt;)を渡した場合は、展開結果が当該文字列変数に代入される。</dd>
+	
+	<dt class="macro">文字列 &lt;strval&gt; (オプション)</dt>
+	<dd>この引数を指定した場合、指定した文字列が展開され、文字列変数 &lt;strvar&gt;に代入される。</dd>
+
+</dl>
+
+<h2>解説</h2>
+
+<p>
+1つ以上の環境変数文字列(%variableName%)を展開し、当該文字列をカレントユーザの定義された値に置き換える。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+str = &quot;%WINDIR%\notepad.exe&quot;
+expandenv str
+messagebox str &quot;env&quot;    ; C:\WINDOWS\notepad.exe
+</pre>
+
+<pre class="macro-example">
+expandenv str &quot;%WINDIR%\notepad.exe&quot;
+messagebox str &quot;env&quot;    ; C:\WINDOWS\notepad.exe
+</pre>
+
+<pre class="macro-example">
+expandenv str &quot;%test%\notepad.exe&quot;
+messagebox str &quot;env&quot;    ; %test%\notepad.exe
+</pre>
+
+<h2>参照</h2>
+<ul>
+  <li><a href="getpassword.html">getpassword</a></li>
+</ul>
+
+</body>
+</html>
