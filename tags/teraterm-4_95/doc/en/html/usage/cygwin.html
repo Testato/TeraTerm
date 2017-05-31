@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>Cygwin connection</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<h1>Cygwin connection</h1>
+
+<p>
+Tera Term can connect to local Cygwin environment.<br>
+<A HREF="http://www.cygwin.com/">Cygwin</A> is a Linux-like environment for Windows.<br>
+Cygwin is open source software.
+</p>
+
+<p>
+[NOTE] Cygwin 1.5.x doesn't seem support Windows 7. Please use Cygwin 1.7.x on Windows 7 or later.
+</p>
+
+
+
+<h2>Cygterm+</h2>
+
+<p>
+Tera Term uses the Cygterm+ program to connect local Cygwin.<br>
+Select "Cygwin connection" from "File" menu or press "Alt + G " to connect to Cygwin.
+</p>
+
+<h3>Saving configuration</h3>
+
+<p>
+Be careful not to save [Setup] [Save setup] in the situation that it was started by cygterm.exe.<br>
+Otherwise telnet port number of TCP/IP is saved but 23 you will be confused by connection failure when you normally run Tera Term to do telnet.  In that case it will be recovered by saving the setting with specifying TCP/IP Port# 23.
+</p>
+
+<h3>How to search Cygwin</h3>
+
+<p>
+Tera Term must need to find the Cygwin installation path to launch the Cygterm+ program.
+So, Tera Term and cyglaunch will search the installation path in the following order.
+</p>
+
+<ol>
+  <li>TERATERM.INI
+    <ol>
+      <li>Reads the CygwinDirectory entry in the TERATERM.INI file which is placed in the directory loaded by the teraterm.exe and the cyglaunch.exe directory.</li>
+      <li>Searches the bin\cygwin1.dll file under the CygwinDirectory folder.</li>
+      <li>Adds the bin\cygwin1.dll file into the PATH environment variable if the file exists.</li>
+      <li>Launch the cygterm.exe program.</li>
+    </ol></li>
+  <li>PATH environment variable
+    <ol>
+      <li>Searches the bin\cygwin1.dll file into the directory included in the PATH environment variable.</li>
+      <li>Launch the cygterm.exe program.</li>
+    </ol></li>
+  <li>Round robin drive root
+    <ol>
+      <li>Searches the bin\cygwin1.dll file under cygwin and cygwin64 directory of the drive direct root from C: to Z:.</li>
+      <li>Searches the bin\cygwin1.dll file into the directory included in the PATH environment variable.</li>
+      <li>Launch the cygterm.exe program.</li>
+    </ol></li>
+</ol>
+
+<p>
+The CygwinDirectory entry in the TERATERM.INI file will be empty when Tera Term is newly installed.
+If the automatic retrieval is failed, please configure the CygwinDirectory entry.<br>
+The format is "drive-letter:\directory".
+</p>
+
+<pre>
+----------------------------
+; Cygwin install path
+CygwinDirectory = c:\cygwin
+; 64bit Cygwin
+; CygwinDirectory=c:\cygwin64
+----------------------------
+</pre>
+
+<h3>64bit Cygwin</h3>
+
+<p>
+A user needs an execution file by 
+Tera Term needs the cygterm+ program built on the 64bit Cygwin environment to connect 64bit Cygwin.
+Basically, Tera Term installation program will recognize the installed Cygwin version and copy an 
+appropriate cygterm+ program.<br>
+If the Tera Term installer makes an error in determination, please overwrite the cygterm.exe in the 
+cygterm+-x86_64 directory to the Tera Term installation directory. Moreover, please rebuild the 
+Cygterm+ source code.
+</p>
+
+<h3>Build Cygterm+</h3>
+
+<p>
+When the cygterm.exe program can not work well, please rebuild the Cygterm+ source code.<br>
+Latest source code is included as cygterm+.tar.gz.
+</p>
+
+<table border="1">
+  <caption>Packages that will need to be built</caption>
+  <tr>
+    <th>32bit Cygwin</th>
+    <th>64bit Cygwin</th>
+  </tr>
+  <tr>
+    <td>Devel/gcc-g++<br>
+        Devel/make<br>
+        Devel/mingw-gcc-core</td>
+    <td>Devel/gcc-g++<br>
+        Devel/make<br>
+        Devel/mingw64-x86_64-gcc-core</td>
+  </tr>
+</table>
+
+
+
+<h2>Cygterm Here</h2>
+
+<p>
+When this option is selected on the Tera Term installer, the "Cygterm Here" context menu is added on the right-click and opened folder. A user can open the Cygwin connection on the selected folder.
+</p>
+
+<p>
+Tera Term installer will configure the generic parameter, however the csh/tcsh may not check the CHERE_INVOKING. If indicated, please modify the /etc/csh.login file or modify the Cygterm Here registry in the following:
+</p>
+
+<pre>
+before:
+"C:\Program Files\teraterm\cyglaunch.exe" -nocd -v CHERE_INVOKING=y -d "\"%L\""
+after:
+"C:\Program Files\teraterm\cyglaunch.exe" -nocd -nols -d "\"%L\""
+</pre>
+
+
+</body>
+</html>

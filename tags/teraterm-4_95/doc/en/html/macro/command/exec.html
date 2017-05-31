@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>exec</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>exec</h1>
+
+<p>
+Runs an application.
+</p>
+
+<pre class="macro-syntax">
+exec &lt;command line&gt; [&lt;show&gt; [&lt;wait&gt; [&lt;current directory&gt;]]]
+</pre>
+
+<h2>Remarks</h2>
+
+<p>
+Runs an application specified by &lt;command line&gt;.
+</p>
+
+<pre>
+here show command: 
+hide
+minimize
+maximize
+show ;default parameters when no show command specified. 
+</pre>
+
+When a user specifies the 1 at the &lt;wait&gt; argument, Tera Term waits to finish the launched application. The exit code of the application stores the `result' system variable. <em>(version 4.63 or later)</em>
+
+<p>
+A current directory can be specified at the &lt;current directory&gt; argument. <em>(version 4.78 or later)</em>
+</p>
+
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+; Run "Notepad".
+exec 'notepad readme.txt'
+
+; Run "Notepad" and maximize the application.
+exec 'notepad readme.txt' 'maximize'
+
+; Run "Notepad" with the current directory.
+exec 'notepad readme.txt' 'show' 0 'c:\usr'
+</pre>
+
+<pre class="macro-example">
+; Launch a batch file.
+tmp='cmd /c c:\upload.bat '
+strconcat tmp username1 
+strconcat tmp ' '
+strconcat tmp userpass1 
+strconcat tmp ' '
+strconcat tmp address
+messagebox tmp 'exec'
+exec tmp
+</pre>
+
+<pre class="macro-example">
+; Make a directory.
+getenv "USERPROFILE" userprof
+getdate logdir "log-%Y%m%d"
+sprintf2 cmd 'cmd /c mkdir "%s\My Documents\%s"' userprof logdir
+exec cmd "HIDE"
+</pre>
+
+<h2>Note</h2>
+
+<p>
+When the macro script is executed on the 64bit Windows, an WOW64's application will not work well.<br />
+<br />
+The 32bit application can launch because the ttpmacro.exe is the 32bit program. An application will launch 
+the 64bit program again when the 32bit program is executed on the 64bit operating system. <br />
+If the &lt;wait&gt; is specified, the exec macro will continue to next step because the 32bit program launched by the
+macro script terminates soon. <br />
+<br />
+Please use the sysnative alias and launches the native application in the system directory to resolve this problem.
+</p>
+
+<pre class="macro-example">
+; fail
+exec 'mstsc /v 192.0.2.0 /w 1024 /h 768 /admin' 'show' 1
+
+; succeed
+exec 'C:\windows\sysnative\mstsc /v 192.0.2.0 /w 1024 /h 768 /admin' 'show' 1
+</pre>
+
+
+</body>
+</html>
