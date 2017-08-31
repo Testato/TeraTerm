@@ -1,0 +1,332 @@
+■ 開発環境
+- OS
+  Windows XP Professional / Windows 8 Pro / Windows 8.1 Pro / Windows 10 Pro
+- コンパイラ
+-- Visual Studio 2005 SP1 (Standard Edition 以上)
+   Microsoft Visual Studio 2005 Service Pack 1 MFC セキュリティ更新プログラム
+   Windows Server 2003 R2 Platform SDK(Microsoft Windows SDK for Windows 7 and .NET Framework 3.5 SP1)
+   注: Visual Studio 2005 Standard Editionでは、OpenSSL のビルドが失敗します。Windows Server 2003 R2 Platform SDK をインストールし、"Crypt32.Lib"をリンクできるようにしておく必要があります。
+       SDK でインストールされたディレクトリが最優先になるよう、INCLUDE および LIB 環境変数を設定します。
+       例: INCLUDE "C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Include"
+           LIB     "C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Lib"
+-- Visual Studio 2008 SP1 (Standard Edition 以上)
+   注: コンパイルされた実行ファイルは Windows NT 4.0, 95, 98, Me で動きません。
+-- Visual Studio 2010 SP1 (Professional Edition 以上)
+   注: コンパイルされた実行ファイルは Windows 2000, NT 4.0, 95, 98, Me で動きません。
+-- Visual Studio 2012 Update 4 (Professional Edition 以上)
+   注: コンパイルされた実行ファイルは Windows Vista, XP, 2000, NT 4.0, 95, 98, Me で動きません。
+       Windows Vista, XP をサポートするには v110_xp を指定してください。
+-- Visual Studio Community 2013 Update 5
+   MFC MBCS DLL アドオン
+   注: コンパイルされた実行ファイルは Windows Vista, XP, 2000, NT 4.0, 95, 98, Me で動きません。
+       Windows Vista, XP をサポートするには v120_xp を指定してください。
+-- Visual Studio Community 2015 Update 3
+   注: コンパイルされた実行ファイルは Windows Vista, XP, 2000, NT 4.0, 95, 98, Me で動きません。
+       Windows Vista, XP をサポートするには v140_xp を指定してください。
+-- Visual Studio Community 2017 
+   注: コンパイルされた実行ファイルは Windows Vista, XP, 2000, NT 4.0, 95, 98, Me で動きません。
+       Windows Vista, XP をサポートするには v141_xp を指定してください。
+-- バッチファイルからビルドするために
+   Visual Studio のコマンドプロンプトからバッチファイルを実行するか、以下のように環境変数を設定してください。
+   使用したいバージョンの Visual Studio の "(x86) Native Tools Command Prompt" を実行し、コンパイラのパスに関係する PATH と VSINSTALLDIR 変数を環境変数に登録してください。
+   例: INCLUDE       C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\INCLUDE;C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\ATLMFC\INCLUDE;C:\Program Files (x86)\Windows Kits\8.1\include\shared;C:\Program Files (x86)\Windows Kits\8.1\include\um;
+       LIB           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB;C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\ATLMFC\LIB;C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86;
+       PATH          C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE;C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN;C:\Program Files (x86)\Windows Kits\8.1\bin\x86
+       VSINSTALLDIR  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC
+- インストーラ
+  Inno Setup 5.5.9 ANSI (http://www.jrsoftware.org/isinfo.php)
+  Inno Setup Preprocessor
+  ISTool 5.3.0.1 (https://sourceforge.net/projects/istool/)
+- その他
+  Cygwin 1.5.x (1.7.x は Windows 9x をサポートしていないので不可)
+  ActivePerl 5.8 以上
+    OpenSSL のコンパイル、ドキュメントファイルの文字コード・改行コード変換に必要です。
+  Subversion for Windows (http://sourceforge.net/projects/win32svn/)
+    ソースのチェックアウトに使った svn と互換性のあるバージョン。
+    "svn.exe"を libs\svn\bin 配下にコピーしてください。
+
+
+■ ライブラリ
+- Oniguruma 6.6.0 (https://github.com/kkos/oniguruma)
+- OpenSSL 1.0.2l (http://www.openssl.org/)
+- zlib 1.2.11 (http://www.zlib.net/)
+- PuTTY 0.70 (http://www.chiark.greenend.org.uk/~sgtatham/putty/)
+- SFMT 1.5.1 (http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/index-jp.html)
+
+
+■ SVN コミッターへの注意
+- SVN リポジトリは一般向けとは違い、以下の通りです。
+  svn+ssh://svn.osdn.net/svnroot/ttssh2/trunk
+
+- ファイルを別のディレクトリで編集しないでください。
+  コミットしたときに別の人の修正を削除してしまうことがあります。
+
+- アップデート・コミット時の注意
+  svnの処理が失敗することがあるので、ファイルをエディタ等で開いたままで行わないでください。
+
+- 言語ファイル編集時の注意
+  言語ファイル(installer\release\lang\*.lng)は多言語対応エディタ(vim, EmEditor, Notepad++等)で編集してください。
+
+
+■ TERATERM.INI への項目追加
+- 項目名
+すでに EnableFoo... や DisableBar... が混在してしまっているが、混乱しやすい。
+今後は Baz... という形式にするのが望ましい。
+
+
+■ メニューID追加時の命名規則
+
+1桁目は 5
+
+2桁目は
+  Tera Term VT ウィンドウなら  0
+  Tera Term TEK ウィンドウなら 1
+  TTSSH なら                   2
+  TTProxy なら                 3
+  TTXKanjiMenu なら            4
+
+3桁目は
+  [File] メニューなら    1
+  [Edit] メニューなら    2
+  [Setup] メニューなら   3
+  [Control] メニューなら 4
+  [Window] メニューなら  8
+  [Help] メニューなら    9
+
+
+例：File配下にTTSSHのメニューを追加する
+
+#define ID_SSHSCPMENU       52110
+
+
+■ マクロコマンド追加時の作業リスト
+  Tera Termマクロを新設するときの作業手順について、以下に示します。
+
+１．ソースコードの修正
+-- コマンドの内部 ID を採番する。（「内部 ID」は"helpid.h"にも使用される）
+   ... teraterm/ttmacro/ttmparse.h
+-- コマンド名を走査して内部 ID に変換する。
+   ... CheckReservedWord@teraterm/ttmacro/ttmparse.c
+-- コマンドの内部 ID から実際に処理をする関数を呼ぶ。
+   ... ExecCmnd@teraterm/ttmacro/ttl.c
+-- 処理する関数を作る。
+
+２． ヘルプ(言語ごと)
+-- コマンドのヘルプを作る。
+   ... doc/LANG/html/macro/command/hogefunc.html
+-- コマンド一覧ページに追加する。
+   ... doc/LANG/html/macro/command/index.html
+-- ヘルプトピックに追加する。
+   ... doc/LANG/teraterm.hhc
+-- ヘルプページのコンテキスト ID を採番する。
+   値は コマンドの内部 ID + 92000。
+   ... teraterm/common/helpid.h
+-- コンテキスト ID と呼び出すファイルのエイリアスを作成する。
+   テキストエディタで直接開き、[ALIAS]にHTMLを追加する。
+   ... doc/LANG/teraterm.hhp
+
+
+■ ライブラリのビルド方法
+  1. PuTTY (used by TTSSH)
+     (1) putty のソースを libs/putty の中に展開する。
+
+  2. Oniguruma (used by Tera Term Macro)
+     (1) oniguruma のソースを libs/oniguruma の中に展開する。
+     (2) スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
+     (3) コマンドプロンプト上から libs ディレクトリに移動し、buildoniguruma6.bat を実行する。
+
+  3. OpenSSL (used by TTSSH)
+     (1) openssl のソースを libs/openssl の中に展開する。
+     (2) OpenSSL 1.0.0e 以降で、libs/openssl/Makefile.bak が最初から存在する場合は、一度だけ手動で削除してください。
+     (3) スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
+     (4) コマンドプロンプト上から libs ディレクトリに移動し、buildopenssl.bat を実行する。
+
+  4. Zlib (used by TTSSH)
+     (1) zlib のソースを libs/zlib の中に展開する。
+     (2) スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
+     (3) コマンドプロンプト上から libs ディレクトリに移動し、buildzlib.bat を実行する。
+
+  5. SFMT (used by Tera Term Macro)
+     (1) SFMT のソースを libs/SFMT の中に展開する。
+     (2) スタートメニューから「Visual Studio 2005 コマンド プロンプト」を起動する。
+     (3) コマンドプロンプト上から libs ディレクトリに移動し、buildSFMT.bat を実行する。
+
+
+■ Tera Termのビルド方法
+  Tera Termのビルド方法について以下に示します。
+  ビルドにはVisual Studio 2005 Standard Edition以上が必要です。（Visual Studio 2005 Express Editionは不可）
+
+  1. ソースコードをOSDN(https://ja.osdn.net/projects/ttssh2/)からチェックアウトする。
+  2. teraterm\visualc\ttermpro.sln をVisual Studioで開く。
+     .slnファイルの改行コードが"LF"になっていると、Visual Studioが起動しないので注意願います。
+  3. ソリューションをビルドする。
+  4. ビルドに成功するとteraterm ディレクトリに実行プログラムが生成される。
+
+
+■ TeraTerm Menuのビルド方法
+  1. ソースコードをOSDN(https://ja.osdn.net/projects/ttssh2/)からチェックアウトする。
+  2. ttpmenu\ttpmenu.sln をVisual Studioで開く。
+  3. ソリューションをビルドする。
+  4. ビルドに成功すると ttpmenu ディレクトリに ttpmenu.exe が生成される。
+
+
+■ TTXKanjiMenuのビルド方法
+  1. ソースコードをOSDN(https://ja.osdn.net/projects/ttssh2/)からチェックアウトする。
+  2. TTXKanjiMenu\ttxkanjimenu.sln をVisual Studioで開く。
+  3. ソリューションをビルドする。
+  4. ビルドに成功すると TTXKanjiMenu ディレクトリに ttxkanjimenu.dll が生成される。
+
+
+■ TTProxyのビルド方法
+  TTProxyのビルド方法について以下に示します。
+  ビルドにはVisual Studio 2005(VC++8.0)が必要です。
+
+  1. ソースコードをOSDN(https://ja.osdn.net/projects/ttssh2/)からチェックアウトする。
+  2. TTProxy\TTProxy.sln をVisual Studioで開く。
+  3. ソリューションをビルドする。
+  4. ビルドに成功すると TTProxy ディレクトリにDLLが生成される。
+
+
+■ TTSSHのビルド方法
+  TTSSHのビルド方法について以下に示します。
+  ビルドにはVisual Studio 2005(VC++8.0)、ActivePerlが必要です。
+
+  * TTSSH単体のビルドは VS2005 Express Edition でも可能です。ttpcmn.libをリンクするため、Tera Termのビルドを事前に行っておく必要があります。VS2005 Express EditionではTera Termのビルドはできませんが、ttpcmn.libは作成することができます。
+
+  * VS2008 Express Editionでビルドすると、.rcファイルで下記のエラーが発生します。
+      .\ttxssh.rc(10) : fatal error RC1015: cannot open include file 'afxres.h'.
+
+    本現象を回避するには、.rcファイルをテキストエディタで開き、afxres.hのincludeを削除し、新規に2行を追加します。
+
+      - #include "afxres.h"
+      + #include <windows.h>
+      + #define IDC_STATIC -1
+
+  1. ソースコードをOSDN(https://ja.osdn.net/projects/ttssh2/)からチェックアウトする。
+  2. ttssh2\ttssh.sln をVisual Studioで開く。
+  3. ソリューションをビルドする。
+  4. ビルドに成功するとttssh2\ttxssh ディレクトリにDLLが生成される。
+
+
+■ CygTermのビルド方法
+  CygTermのビルド方法について以下に示します。
+
+   1. Cygwin(http://www.cygwin.com/win-9x.html)をインストールする。
+      注意: 1.7.x は Windows 9x をサポートしていないので、1.5.x を利用する。
+            1.5.x は Windows 7 をサポートしていないようだが、1.5.x でコンパイルされたバイナリは 1.7.x 環境で実行できる。
+   2. Cygwinのシェルを起動し、cygterm ディレクトリへ移動する。
+      # cd cygterm
+   3. CygTermをコンパイルする。
+      # make
+
+
+■ TTXSamplesのビルド方法
+  リポジトリのTTXSamplesに Tera Term Extension (TTX)のサンプルがあります。
+  TTXを作る際の参考にしてください。
+  TTXSamplesのビルドにはVisual Studio 2005(VC++8.0)が必要です。
+  Tera Term本体とは違い、Express Editionでもビルド可能です。
+
+  1. ソースコードをOSDN(https://ja.osdn.net/projects/ttssh2/)からチェックアウトする。
+  2. TTXSamples\TTXSamples.sln をVisual Studioで開く。
+  3. ソリューションをビルドする。
+  4. ビルドに成功すると TTXSamples ディレクトリにDLLが生成される。
+  各TTXの詳細については、プロジェクト内のReadMe-ja.txtを参照してください。
+
+
+■ ヘルプファイルのビルド方法
+  ヘルプファイルのビルド方法について以下に示します。
+
+  1. HTML Help Workshopを以下のサイトから入手しインストールする。
+     http://www.microsoft.com/en-us/download/details.aspx?id=21138
+
+  2. コマンドプロンプトからバッチファイルを起動し、必要なファイルをコピーする。
+     > cd teraterm\insatller
+     > convtext.bat
+
+  3. FileのOpenから doc\en\teraterm.hhp および doc\jp\teratermj.hhp を開く。
+
+  4. FileのCompileでヘルプファイルをコンパイルする。
+
+
+■ リリースの方法
+  リリースの方法について以下に示します。
+
+  1. 依存ライブラリ、ツール、インポート元の最新版をチェックする。
+     Visual Studio
+       http://www.microsoft.com/japan/msdn/vstudio/downloads/default.aspx
+     Inno Setup
+       http://www.jrsoftware.org/isdl.php
+     Oniguruma
+       https://github.com/kkos/oniguruma
+     OpenSSL
+       http://www.openssl.org/
+     zlib
+       http://www.zlib.net/
+     PuTTY
+       http://www.chiark.greenend.org.uk/~sgtatham/putty/
+     SFMT
+       http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/index-jp.html
+     CygTerm
+       https://googledrive.com/host/0B1s-dM6d6yC4fmhEZ3c0VTNFWEFtV3daUlRGQmFHVnBmVHRybUNnUVliNWktNDRlZ2NnZTQ/index.html
+     LogMeTT
+       http://logmett.com/logmett-freeware
+       http://logmett.com/ttleditor
+
+  2. ドキュメントを確認する。
+     - ダイアログ上の設定項目・UIのない特別オプション・コマンドラインパラメータ・新規マクロコマンドなど、対応するドキュメントに漏れがないか確認する。
+     - 変更履歴の書き忘れを確認する。
+       おおむね変更した順に追記される変更履歴の順番を変更する。だいたいの指針としては、ターミナルエミュレーション関係・アプリケーションとしての変更・マクロの順。
+     - ドキュメント差分が翻訳されていることを確認する。
+
+  3. バージョンを上げ、日付を変更する。
+     リリース作業時に、バージョンを一つインクリメントする。
+     リリースされる前にバージョン番号が上がったファイルが出回るのを避けるため。
+     バグレポートなどで混乱の元になりそうなので、リリースまではバージョン番号を上げないこと。
+     - tt-version.h
+     - ttxssh-version.h
+     - ttpmenu.rc // 変更時のみ
+     - TTProxy.rc // 変更時のみ
+     - ttxkanjimenu.rc // 変更時のみ
+     - teraterm.iss
+       AppVer を上げる、snapshot を コメントアウト、バッチファイルの呼び出しを修正。
+     - html/about/hisotry.html
+
+     CygTerm+ は例外で、リリースとは関係なくバージョンが上がる。
+     パッチがコミットされると即リリース扱いになり、リリース日はその日付となる。
+     これは、バージョンの末尾が patchlevel であり、コンパイラの入手が容易なため。
+
+  4. 動作確認をする
+     - インストーラを作成する。
+       ISTool で teraterm\installer\teraterm.iss を開き、[Project]-[Compile Setup]で作成される。
+     - インストールおよび実行をテストする。
+
+  5. SVN のタグを作成する。
+     タグ名は「teraterm-バージョン」。たとえば、v4.82ならば"teraterm-4_82"。
+     svn copy -m "Release 4.82" svn+ssh://svn.osdn.net/svnroot/ttssh2/trunk svn+ssh://svn.osdn.net/svnroot/ttssh2/tags/teraterm-4_82
+
+  6. リリース用のタグでチェックアウトし直す。
+
+  7. インストーラを作成する。
+     ISTool で teraterm\installer\teraterm.iss を開き、[Project]-[Compile Setup]で作成される
+
+  8. OSDN を更新する。
+     - [ダウンロード]-[管理]-[新規作成]
+         変更履歴を入力してリリースを作成する。
+     - [ニュース一覧]-[新規登録]
+         ニュース記事を作成する。
+
+  9. メーリングリストにアナウンスする。
+
+  10. プロジェクトページを更新する。
+
+  11. スナップショットを削除する。
+
+  12. フォーラムに告知する。
+      - Announcements http://logmett.com/support-forums/5
+        Announcements に新規投稿する。種類は Announcement。
+        一つ前の Announcement の種類を Normal に変更する。
+        Announcement は三個残すことになっているので、三つ前の Announcement を削除する。
+
+  13. Twitter に告知する。
+      https://twitter.com/Tera_Term
+      リリース告知をツイートして固定する。

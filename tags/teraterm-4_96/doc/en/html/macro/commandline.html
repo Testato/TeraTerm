@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Command line</title>
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
+</head>
+<body>
+
+
+<h1>Command line</h1>
+
+<pre>
+<span class="syntax">TTPMACRO.EXE [/I] [/V] [&lt;macro file&gt; [&lt;parameters&gt;...]]</span>
+</pre>
+
+
+<h2>Options</h2>
+
+<dl>
+  <dt>/I</dt>
+  <dd>Iconify the macro window.</dd>
+
+  <dt>/V</dt>
+  <dd>Start MACRO in hidden (invisible) state.</dd>
+
+  <dt>&lt;macro file&gt;</dt>
+  <dd>Macro filename.<br>
+      If this value is not a full path, it is understood as a relative path from ttpmacro.exe.<br>
+      The filename(path excluded) is stored in the system variable "param1" and "params[1]".
+  </dd>
+
+  <dt>&lt;parameters&gt;</dt>
+  <dd>Parameter(s) is passed to macro file.<br>
+      The third argument of params system variable is stored into params[2] in a sequence.<br>
+      Simultaneously, from param2 to param9 variables are also stored.
+  </dd>
+</dl>
+
+<h2>System variables</h2>
+<p>
+<a href="syntax/variables.html">System variables</a> of command line configuration are as follow.
+</p>
+<dl>
+  <dt>params</dt>
+  <dd>String type array that parameters are stored<br>
+      Whole string of command line is stored in params[0]. A macro filename is stored in params[1]. <br>
+      The third argument is stored into params[2] in a sequence.
+  </dd>
+
+  <dt>param1</dt>
+  <dd>This is same as params[1]. A macro filename is stored.</dd>
+
+  <dt>From param2 to param9</dt>
+  <dd>Same as from params[2] to params[9].<br>
+      The third argument is stored into variable in a sequence. <br>
+      The variable that corresponds to params[10] or later does not exist.
+  </dd>
+
+  <dt>paramcnt</dt>
+  <dd>The number of params array. The params[1] that stores a macro filename counts.</dd>
+</dl>
+<p>
+Every element of params array and from param1 to param9 can store a string of up to 511 characters.
+</p>
+
+</body>
+</html>
