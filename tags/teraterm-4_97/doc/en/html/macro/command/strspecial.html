@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>strspecial</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>strspecial</h1>
+
+<p>
+Converts special characters.
+</p>
+
+<h2>Format</h2>
+
+<pre class="macro-syntax">
+strspecial &lt;strvar&gt; [&lt;strval&gt;]
+</pre>
+
+<h2>Parameters</h2>
+
+<dl>
+	<dt class="macro">string variable &lt;strvar&gt;</dt>
+	<dd>The specified string is converted.<br />
+	    When the second argument(&lt;strval&gt;) is given, the result converting the argument stores into the string variable &lt;strvar&gt;.</dd>
+	
+	<dt class="macro">string &lt;strval&gt; (optional)</dt>
+	<dd>When this argument is given,  the result converting the argument stores into the string variable &lt;strvar&gt;.</dd>
+
+</dl>
+
+<h2>Remarks</h2>
+
+<p>
+Converts the following characters in the string to special characters.
+</p>
+
+<table border="2">
+ <tr>
+  <th>input</th>
+  <th>output</th>
+ </tr>
+ <tr>
+  <td>\\</td>
+  <td>"\"</td>
+ </tr>
+ <tr>
+  <td>\n</td>
+  <td>line feed</td>
+ </tr>
+ <tr>
+  <td>\t</td>
+  <td>tab</td>
+ </tr>
+</table>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+str = "AB\tCD\nEF\\nGH"
+strspecial str
+messagebox str "special"
+</pre>
+
+<pre class="macro-example">
+strspecial str "AB\tCD\nEF\\nGH"
+messagebox str "special"
+</pre>
+
+</body>
+</html>

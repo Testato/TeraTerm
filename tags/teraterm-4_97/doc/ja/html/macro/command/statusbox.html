@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>statusbox</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>statusbox</h1>
+
+<p>
+ステータスダイアログボックスを表示する。
+</p>
+
+<pre class="macro-syntax">
+statusbox &lt;message&gt; &lt;title&gt; [&lt;special&gt;]
+</pre>
+
+<h2>パラメータ</h2>
+
+<dl>
+	<dt class="macro">文字列 &lt;message&gt;</dt>
+	<dd>ダイアログボックスに表示されるメッセージ。</dd>
+
+	<dt class="macro">文字列 &lt;title&gt;</dt>
+	<dd>ダイアログボックスのタイトル。</dd>
+
+	<dt class="macro">整数値 &lt;special&gt; (オプション デフォルト=0)</dt>
+	<dd>0 でない場合は、&lt;message&gt; に含まれる以下の文字列は特殊文字として扱われます。<br>
+	    <table border="2">
+	     <tr>
+	      <th>入力</th>
+	      <th>出力</th>
+	     </tr>
+	     <tr>
+	      <td>\\</td>
+	      <td>"\"</td>
+	     </tr>
+	     <tr>
+	      <td>\n</td>
+	      <td>改行</td>
+	     </tr>
+	     <tr>
+	      <td>\t</td>
+	      <td>タブ</td>
+	     </tr>
+	    </table>
+	    このオプションの使用は推奨されません。strspecial マクロコマンドを使用して文字列を変換することで同等の結果を得られます。
+	</dd>
+</dl>
+
+<h2>解説</h2>
+
+<p>
+ステータスダイアログボックスが表示されていない場合、それを表示します。<br>
+ダイアログボックスのメッセージを &lt;message&gt; に、タイトルを &lt;title&gt; に変えます。
+</p>
+
+<p>
+"<a href="setdlgpos.html">setdlgpos</a>" コマンドはステータスダイアログボックスの位置を変えます。<br>
+"<a href="closesbox.html">closesbox</a>" コマンドはステータスダイアログボックスを閉じます。EnterキーやESCキーでは閉じることはできません。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+; 表示位置を指定
+setdlgpos 200 200
+; ダイアログボックスを表示
+statusbox 'Message' 'Title'
+pause 3
+; ダイアログボックスを移動
+setdlgpos 0 0
+pause 3
+; ダイアログボックスを閉じる
+closesbox
+</pre>
+
+
+<pre class="macro-example">
+; カウンタを表示しながらループする
+step = 0
+while 1
+  call show_step
+  sendln 'echo do something'
+  wait '$'
+  pause 2
+endwhile
+end
+
+:show_step
+step = step + 1
+gettime timestr &quot;%Y/%m/%d-%H:%M:%S&quot;
+sprintf2 s &quot;counter %d&quot; step
+statusbox timestr s
+return
+</pre>
+
+<h2>参照</h2>
+<ul>
+  <li><a href="strspecial.html">strspecial</a></li>
+  <li><a href="closesbox.html">closesbox</a></li>
+  <li><a href="bringupbox.html">bringupbox</a></li>
+</ul>
+
+</body>
+</html>

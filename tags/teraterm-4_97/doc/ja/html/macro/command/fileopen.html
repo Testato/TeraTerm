@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>fileopen</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>fileopen</h1>
+
+<p>
+ファイルを開く。
+</p>
+
+<pre class="macro-syntax">
+fileopen &lt;file handle&gt; &lt;filename&gt; &lt;append flag&gt; [&lt;readonly flag&gt;]
+</pre>
+
+<h2>パラメータ</h2>
+
+<dl>
+	<dt class="macro">整数変数 &lt;file handle&gt;</dt>
+	<dd>もしファイルが正しくオープンされた場合、ファイルハンドルが格納される。<br />
+        それ以外の場合、&lt;file handle&gt; に-1が格納される。</dd>
+
+	<dt class="macro">文字列 &lt;filename&gt;</dt>
+	<dd>開くファイル名を指定する。<br />
+	    ファイルが存在しない場合は、新たに作成されてからオープンされる。</dd>
+
+	<dt class="macro">整数 &lt;append flag&gt;</dt>
+	<dd>0を指定すると、ファイルポインタの位置はファイルの始めにセットされる。<br />
+	    0以外を指定すると、ファイルポインタはファイルの最後にセットされる。</dd>
+
+	<dt class="macro">整数 &lt;readonly flag&gt; (オプション デフォルト=0) (バージョン 4.85 以降)</dt>
+	<dd>0を指定すると、読み書きモードでファイルを開く。<br />
+	    0以外を指定すると、読み取り専用モードでファイルを開く。</dd>
+</dl>
+
+<h2>解説</h2>
+
+<p>
+ファイルはバイナリモードでオープンされる。
+</p>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+fileopen fhandle 'data.dat' 0
+fileopen fhandle 'data.dat' 1
+</pre>
+
+<pre class="macro-example">
+fileopen fhandle 'test.bat' 0
+filewrite fhandle 'md .\v20080619_Test'
+fileclose fhandle
+pause 5
+exec 'cmd /c test.bat'
+pause 10
+end
+</pre>
+
+<h2>参照</h2>
+<ul>
+  <li><a href="filewrite.html">filewrite</a></li>
+  <li><a href="fileclose.html">fileclose</a></li>
+</ul>
+
+</body>
+</html>
