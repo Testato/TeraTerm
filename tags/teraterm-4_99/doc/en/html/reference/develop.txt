@@ -1,0 +1,324 @@
+* Development Environment
+- OS
+  Windows XP Professional / Windows 8 Pro / Windows 8.1 Pro / Windows 10 Pro
+- Compiler
+-- Visual Studio 2005 SP1 Standard Edition (or higher edition)
+   Microsoft Visual Studio 2005 Service Pack 1 MFC Security Update
+   Windows Server 2003 R2 Platform SDK(Microsoft Windows SDK for Windows 7 and .NET Framework 3.5 SP1)
+   Note: The OpenSSL will not able to build by using the Visual Studio 2005 Standard Edition. So, install the Windows Server 2003 R2 Platform SDK to link the "Crypt32.Lib" library.
+         Configure the INCLUDE and LIB environment variables to be given priority for the SDK installation directory.
+         e.g. INCLUDE "C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Include"
+              LIB     "C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\Lib"
+-- Visual Studio 2008 SP1 Standard Edition (or higher edition)
+   Note: The executable program which was compiled by this version does not work on Windows NT 4.0, 95, 98 and Me.
+-- Visual Studio 2010 SP1 Professional Edition (or higher edition)
+   Note: The executable program which was compiled by this version does not work on Windows 2000, NT 4.0, 95, 98 and Me.
+-- Visual Studio 2012 Update 4 Professional Edition (or higher edition)
+   Note: The executable program which was compiled by this version does not work on Windows Vista, XP, 2000, NT 4.0, 95, 98 and Me.
+-- Visual Studio Community 2013 Update 5
+   MFC MBCS DLL Add-on
+   Note: The executable program which was compiled by this version does not work on Windows Vista, XP, 2000, NT 4.0, 95, 98 and Me.
+-- Visual Studio Community 2015 Update 3
+   Note: The executable program which was compiled by this version does not work on Windows Vista, XP, 2000, NT 4.0, 95, 98 and Me.
+-- Visual Studio Community 2017 
+   Note: The executable program which was compiled by this version does not work on Windows Vista, XP, 2000, NT 4.0, 95, 98 and Me.
+-- How to build with batch file
+   Please execute the batch file on command prompt of Visual Studio. Otherwise, please configure 
+   below environment variables.
+   Please call "(x86) Native Tools Command Prompt" of your Visual Studio to register new PATH 
+   regarding the compiler path and VSINSTALLDIR variable.
+   Example: INCLUDE       C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\INCLUDE;C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\ATLMFC\INCLUDE;C:\Program Files (x86)\Windows Kits\8.1\include\shared;C:\Program Files (x86)\Windows Kits\8.1\include\um;
+       LIB           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\LIB;C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\ATLMFC\LIB;C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86;
+       PATH          C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE;C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN;C:\Program Files (x86)\Windows Kits\8.1\bin\x86
+       VSINSTALLDIR  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC
+- Installer
+  Inno Setup 5.5.9 ANSI (http://www.jrsoftware.org/isinfo.php)
+  Inno Setup Preprocessor
+  ISTool 5.3.0.1 (https://sourceforge.net/projects/istool/)
+- others
+  Cygwin 1.5.x (1.7.x doesn't support Windows 9x)
+  ActivePerl 5.8 later version
+    converts character-code and return-code of documents for building OpenSSL.
+  Subversion for Windows (http://sourceforge.net/projects/win32svn/)
+    Use the compatible version for check-outed svn version.
+    Extract into libs\svn. ("svnversion.exe" is located in libs\svn\bin directory.)
+
+
+* Libraries
+- Oniguruma 6.8.2 (https://github.com/kkos/oniguruma)
+- OpenSSL 1.0.2o (http://www.openssl.org/)
+- zlib 1.2.11 (http://www.zlib.net/)
+- PuTTY 0.70 (http://www.chiark.greenend.org.uk/~sgtatham/putty/)
+- SFMT 1.5.1 (http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/index.html)
+
+
+* Notice for SVN commiter
+- SVN repository for commiter is followings:
+  svn+ssh://svn.osdn.net/svnroot/ttssh2/trunk
+
+- Should not edit checkout file in copying directory.
+  The other modification code may be deleted in SVN server when you commit checkout file. Also, fix it carefully when the conflicting occurs.
+
+- Should not have opened checkout file.
+  SVN commit procedure may be failure while checkout file will have been opened.
+
+- Edit language files
+  Use the text editor supporting multi languages(vim, EmEditor, Notepad++, etc) to edit the language files(installer\release\lang\*.lng).
+
+
+* Add entry to TERATERM.INI
+- Entry name
+Unfortunately, the confusing entries such as EnableFoo... and DisableBar... are included. It recommends that the new name like as Baz....
+
+
+
+* Naming rule to add menu ID
+
+The first digit is 5.
+
+The second digit is:
+  Tera Term VT window         0
+  Tera Term TEK window        1
+  TTSSH                       2
+  TTProxy                     3
+  TTXKanjiMenu                4
+
+The third digit is:
+  [File] menu                 1
+  [Edit] menu                 2
+  [Setup] menu                3
+  [Control] menu              4
+  [Window] menu               8
+  [Help] menu                 9
+
+
+Example: adding a TTSSH menu under File menu
+
+#define ID_SSHSCPMENU       52110
+
+
+* What to do when new macro command is added?
+
+- Coding
+-- get a new number of command internal ID.
+   ... teraterm/ttmacro/ttmparse.h
+-- add a if statement to below function.
+   ... CheckReservedWord@teraterm/ttmacro/ttmparse.c
+-- add a caller doing the macro command.
+   ... ExecCmnd@teraterm/ttmacro/ttl.c
+-- make a function code for the macro command.
+
+- Help topic
+-- make the command help file.
+   ... doc/LANG/html/macro/command/hogefunc.html
+-- add the file to help topic.
+   ... doc/LANG/teraterm.hhc
+-- get a new number of context ID in help page.
+   The value is internal ID + 92000.
+   ... teraterm/common/helpid.h
+-- make the alias between context ID and calling file.
+   Open the .hhp file by using Text Editor, added a html line in [ALIAS] tag.
+   ... doc/LANG/teraterm.hhp
+
+
+* How to build Libraries
+  1. PuTTY (used by TTSSH)
+     (1) Extract putty source into libs/putty directory.
+
+  2. Oniguruma (used by Tera Term Macro)
+     (1) Extract oniguruma source into libs/oniguruma directory.
+     (2) Launch 'Visual Studio 2005 Command Prompt' batch file from start menu.
+     (3) Move 'libs' directory on the command prompt. And run buildoniguruma6.bat.
+
+  3. OpenSSL (used by TTSSH)
+     (1) Extract openssl source into libs/openssl directory.
+     (2) When the libs/openssl/Makefile.bak file exists on the OpenSSL 1.0.0e or later, delete the file only once
+     (3) Launch 'Visual Studio 2005 Command Prompt' batch file from start menu.
+     (4) Move 'libs' directory on the command prompt. And run buildopenssl.bat.
+
+  4. Zlib (used by TTSSH)
+     (1) Extract zlib source into libs/zlib directory.
+     (2) Launch 'Visual Studio 2005 Command Prompt' batch file from start menu.
+     (3) Move 'libs' directory on the command prompt. And run buildzlib.bat.
+
+  5. SFMT (used by Tera Term Macro)
+     (1) Extract SFMT source into libs/SFMT directory.
+     (2) Launch 'Visual Studio 2005 Command Prompt' batch file from start menu.
+     (3) Move 'libs' directory on the command prompt. And run buildSFMT.bat.
+
+
+* How to build Tera Term
+  To build Tera Term source code is shown in the following step:
+  And you should use Visual Studio 2005 Standard Edition later version to build Tera Term because Tera Term program links MFC library (Visual Studio 2005 Express Edition can't be used).
+
+  1. Checkout Tera Term source code from OSDN(https://osdn.net/projects/ttssh2/).
+  2. Open teraterm\visualc\ttermpro.sln with Visual Studio.
+     The linefeed code of .sln file must be "CR+LF".
+  3. Build Tera Term solution.
+  4. Tera Term execution program will be generated in teraterm\visualc\bin directory if the building is successful.
+
+
+* How to build TeraTerm Menu
+  1. Checkout TeraTerm Menu source code from OSDN(https://osdn.net/projects/ttssh2/).
+  2. Open ttpmenu\ttpmenu.sln with Visual Studio.
+  3. Build ttpmenu solution.
+  4. ttpmenu.exe will be generated in Release directory if the building is successful.
+
+
+* How to build TTXKanjiMenu
+  1. Checkout TTXKanjiMenu source code from OSDN(https://osdn.net/projects/ttssh2/).
+  2. Open TTXKanjiMenu\ttxkanjimenu.sln with Visual Studio.
+  3. Build ttpmenu solution.
+  4. ttxkanjimenu.dll will be generated in TTXKanjiMenu directory if the building is successful.
+
+
+* How to build TTProxy
+  To build TTProxy source code is shown in the following step:
+  And you need Visual Studio 2005(VC++8.0) to build.
+
+  1. Checkout TTProxy source code from OSDN(https://osdn.net/projects/ttssh2/).
+  2. Open TTProxy\TTProxy.sln with Visual Studio.
+  3. Build TTProxy solution.
+  4. TTProxy DLL module will be generated in TTProxy directory if the building is successful.
+
+
+* How to build TTSSH
+  To build TTSSH source code is shown in the following step:
+  And you need Visual Studio 2005(VC++8.0) and ActivePerl to build.
+
+  * VS2005 Express Edition is able to build TTSSH. TTSSH links to ttpcmn.lib and it must be created beforehand. VS2005 Express Edition cannot build Tera Term, but it can create ttpcmn.lib
+
+  * On VS2008 Express Edition, following error occurs:
+      .\ttxssh.rc(10) : fatal error RC1015: cannot open include file 'afxres.h'.
+
+    To avoid this error, edit ttxssh.rc file. Delete the line of "afxres.h", and add 2 lines.
+
+      - #include "afxres.h"
+      + #include <windows.h>
+      + #define IDC_STATIC -1
+
+  1. Checkout TTSSH source code from OSDN(https://osdn.net/projects/ttssh2/).
+  2. Open ttssh2\ttssh.sln with Visual Studio.
+  3. Build TTSSH solution.
+  4. TTSSH DLL will be generated in ttssh2\ttxssh directory if the building is successful.
+
+
+* How to build CygTerm
+  To build CygTerm source code is shown in the following step:
+
+   1. Install Cygwin(http://www.cygwin.com/win-9x.html) to your PC.
+      Note: 1.7.x doesn't support Windows 9x. Use version 1.5.x.
+            1.5.x doesn't seem support Windows 7. But a binary that is compiled by 1.5.x can execute in 1.7.x environment.
+   2. Launch Cygwin shell and go to cygterm directory.
+      # cd cygterm
+   3. Compile Cygterm.
+      # make
+
+
+* How to build TTXSamples
+  To build TTXSamples source code is shown in the following step:
+  And you need Visual Studio 2005(VC++8.0) to build.
+  VS2005 Express Edition is able to build TTXSamples.
+
+  1. Checkout TTXSamples source code from OSDN(https://osdn.net/projects/ttssh2/).
+  2. Open TTXSamples\TTXSamples.sln with Visual Studio.
+  3. Build TTXSamples solution.
+  4. TTXSamples DLL module will be generated in TTXSamples directory if the building is successful.
+
+
+* How to build HTML help file
+  To build  HTML help file is shown in the following step:
+
+  1. Intall HTML Help Workshop from below site:
+     http://www.microsoft.com/en-us/download/details.aspx?id=21138
+
+  2. Copy document files with batch file on command prompt.
+     > cd teraterm\insatller
+     > convtext.bat
+
+  3. Select Open of File menu and open doc\en\teraterm.hhp file or doc\jp\teratermj.hhp.
+
+  4. Select Compile of File menu and HTML help file will be created.
+
+
+* How to release Tera Term installation package
+  To release Tera Term installation package is shown in the following step:
+
+  0. Increment the version while RC release process.
+     - teraterm\common\tt-version.h
+     - ttssh2\ttxssh\ttxssh-version.h
+     - ttpmenu.rc // only modifying
+     - TTProxy.rc // only modifying
+     - ttxkanjimenu.rc // only modifying
+     - teraterm.iss
+       version up AppVer and add "RC"
+       comment out snapshot
+       change called batch files
+
+  1. Check latest libraries and tools.
+     Visual Studio
+       http://www.microsoft.com/japan/msdn/vstudio/downloads/default.aspx
+     Inno Setup
+       http://www.jrsoftware.org/isdl.php
+     Oniguruma
+       https://github.com/kkos/oniguruma
+     OpenSSL
+       http://www.openssl.org/
+     zlib
+       http://www.zlib.net/
+     PuTTY
+       http://www.chiark.greenend.org.uk/~sgtatham/putty/
+     SFMT
+       http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/index.html
+     CygTerm
+       https://googledrive.com/host/0B1s-dM6d6yC4fmhEZ3c0VTNFWEFtV3daUlRGQmFHVnBmVHRybUNnUVliNWktNDRlZ2NnZTQ/index-e.html
+     LogMeTT
+       http://logmett.com/logmett-freeware
+       http://logmett.com/ttleditor
+
+  2. Check the document files.
+
+  3. Increase the software version and modify date.
+     - teraterm.iss
+       remove "RC" from AppVer
+     - html/about/hisotry.html
+
+     Note: Don't update the version number until the release, because the installer does not overwrite file when versions are same.
+
+     Note: By way of exception, CygTerm+ always upgrades not regarding Tera Term release process when the patch is committed. The release date is the day committed by a developer. The suffix of CygTerm+ version is patchlevel, and then a user can get gcc compiler for free.
+
+  4. Evaluate executable program file.
+     - Make installer package
+       Open "teraterm\installer\teraterm.iss" with ISTool and call [Project]-[Compile Setup] with InnoSetup.
+     - Test Tera Term installation and evaluate it.
+
+  5. Create SVN tag.
+     The naming rule is `teraterm-version'(ex. teraterm-4_82).
+     svn copy -m "Release 4.82" svn+ssh://svn.osdn.net/svnroot/ttssh2/trunk svn+ssh://svn.osdn.net/svnroot/ttssh2/tags/teraterm-4_82
+
+  6. Re-checkout from svn tag.
+
+  7. Make installer package
+     Open "teraterm\installer\teraterm.iss" with ISTool and call [Project]-[Compile Setup] with InnoSetup.
+
+  8. Update OSDN project site.
+     - Add new release.
+     - Submit news.
+
+  9. Announce release to mailing list(in Japan).
+
+  10. Update OSDN project home page.
+
+  11. Delete snapshots.
+
+  12. Announce release to forum(in Canada).
+      - Announcements http://logmett.com/support-forums/5
+        Create new topic in `Announcements' entry.
+        Change the type of previous Announcement from Announcement to Normal.
+        Delete third previous Announcement.
+
+  13. Announce release to Twitter.
+      https://twitter.com/Tera_Term
+      Post release announcement and pin.
+
+  14. Update Chocolatey

@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+  <title>getipv6addr</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>getipv6addr</h1>
+
+<p>
+自端末のIPv6アドレスを取得する。
+</p>
+
+<pre class="macro-syntax">
+getipv6addr &lt;string array&gt; &lt;num&gt;
+</pre>
+
+<h2>パラメータ</h2>
+
+<dl>
+	<dt class="macro">配列 &lt;string array&gt;</dt>
+	<dd>IPアドレスを格納する文字型配列。</dd>
+
+	<dt class="macro">整数型変数 &lt;num&gt;</dt>
+	<dd>IPアドレスの個数を格納する整数型変数。IPアドレスが存在しない場合、0が格納される。</dd>
+</dl>
+
+<h2>返り値</h2>
+
+<dl>
+	<dt class="macro">システム変数 &lt;result&gt;</dt>
+	<dd>IPアドレスの取得に成功した場合、1が格納される。<br>
+	    IPアドレスの個数が&lt;string array&gt;の要素数より大きい場合、0が格納される。<br>
+	    IPアドレスの取得に失敗した場合、-1が格納される。Windows 2000 以前では常に失敗する。</dd>
+</dl>
+
+<h2>例</h2>
+
+<pre class="macro-example">
+ipaddr_size = 10
+strdim ipaddr ipaddr_size
+
+getipv6addr ipaddr num
+if result = -1 then
+    messagebox 'Error' 'IPv6 address'
+elseif result = 0 then
+    N = ipaddr_size - 1
+    for i 0 N
+        messagebox ipaddr[i] "IPv6 address"
+    next
+    N = num - ipaddr_size
+    sprintf2 str "And %d address(es)." N
+    messagebox str "IPv6 address"
+else
+    N = num - 1
+    for i 0 N
+        messagebox ipaddr[i] "IPv6 address"
+    next
+endif
+
+</pre>
+
+<h2>参照</h2>
+<ul>
+  <li><a href="getipv4addr.html">getipv4addr</a></li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>SSH([Setup] Menu)</title>
+    <META http-equiv="Content-Style-Type" content="text/css">
+    <link rel="stylesheet" href="../style.css" type="text/css">
+  </head>
+
+  <body>
+    <h1>SSH([Setup] Menu)</h1>
+
+    <h2>"TTSSH: Setup" Dialog box</h2>
+    <dl>
+      <dt id="CipherOrder">Preferred cipher order</dt>
+      <dd>
+	Specify the type of encryption for SSH with the order.<br>
+	&lt;ciphers below this line are disabled&gt;
+	<table border="1">
+	  <tr>
+	    <td>aes256-gcm@openssh.com</td>
+	    <td>not RFC5647, PROTOCOL of OpenSSH</td>
+	  </tr>
+	  <tr>
+	    <td>aes128-gcm@openssh.com</td>
+	    <td>not RFC5647, PROTOCOL of OpenSSH</td>
+	  </tr>
+	  <tr>
+	    <td>camellia256-ctr</td>
+	    <td>draft-kanno-secsh-camellia-02</td>
+	  </tr>
+	  <tr>
+	    <td>aes256-ctr</td>
+	    <td>RFC4344</td>
+	  </tr>
+	  <tr>
+	    <td>camellia256-cbc</td>
+	    <td>draft-kanno-secsh-camellia-02</td>
+	  </tr>
+	  <tr>
+	    <td>aes256-cbc</td>
+	    <td>RFC4253</td>
+	  </tr>
+	  <tr>
+	    <td>camellia192-ctr</td>
+	    <td>draft-kanno-secsh-camellia-02</td>
+	  </tr>
+	  <tr>
+	    <td>aes192-ctr</td>
+	    <td>RFC4344</td>
+	  </tr>
+	  <tr>
+	    <td>camellia192-cbc</td>
+	    <td>draft-kanno-secsh-camellia-02</td>
+	  </tr>
+	  <tr>
+	    <td>aes192-cbc</td>
+	    <td>RFC4253</td>
+	  </tr>
+	  <tr>
+	    <td>camellia128-ctr</td>
+	    <td>draft-kanno-secsh-camellia-02</td>
+	  </tr>
+	  <tr>
+	    <td>aes128-ctr</td>
+	    <td>RFC4344</td>
+	  </tr>
+	  <tr>
+	    <td>camellia128-cbc</td>
+	    <td>draft-kanno-secsh-camellia-02</td>
+	  </tr>
+	  <tr>
+	    <td>aes128-cbc</td>
+	    <td>RFC4253</td>
+	  </tr>
+	  <tr>
+	    <td>3des-ctr</td>
+	    <td>RFC4344</td>
+	  </tr>
+	  <tr>
+	    <td>3des-cbc</td>
+	    <td>RFC4253</td>
+	  </tr>
+	  <tr>
+	    <td>blowfish-ctr</td>
+	    <td>RFC4344</td>
+	  </tr>
+	  <tr>
+	    <td>blowfish-cbc</td>
+	    <td>RFC4253</td>
+	  </tr>
+	  <tr>
+	    <td>cast128-ctr</td>
+	    <td>RFC4344</td>
+	  </tr>
+	  <tr>
+	    <td>cast128-cbc</td>
+	    <td>RFC4253</td>
+	  </tr>
+	  <tr>
+	    <td>3DES(SSH1)</td>
+	    <td></td>
+	  </tr>
+	  <tr>
+	    <td>arcfour256</td>
+	    <td>RFC4345</td>
+	  </tr>
+	  <tr>
+	    <td>arcfour128</td>
+	    <td>RFC4345</td>
+	  </tr>
+	  <tr>
+	    <td>arcfour</td>
+	    <td>RFC4253</td>
+	  </tr>
+	  <tr>
+	    <td>Blowfish(SSH1)</td>
+	    <td></td>	    
+	  </tr>
+	  <tr>
+	    <td>DES(SSH1)</td>
+	    <td></td>	    
+	  </tr>
+	</table>
+      </dd>
+
+      <dt id="KnownHostsFiles">SSH Known Hosts</dt>
+      <dd>
+	Specify the file which includes a name of Host connected via SSH
+	(and Public key for Host).
+      </dd>
+
+      <dt id="UpdateHostkeys">Host key rotation</dt>
+      <dd>
+	<p>
+	Configure the host key rotation feature(OpenSSH 6.8 or later).
+	</p>
+	<p>
+	  SSH server has the host key, however the host key may be changed for any reason. <br />
+	  In this case, SSH server sends a list of new host keys to client. Next, the server urges updating of host key lists to client. <br />
+	  TTSSH can support this feature. When a list of new host key is received, the known hosts list of client is updated.
+	</p>
+	<dl>
+	  <dt>No</dt>
+	  <dd>Do not update the known hosts file.</dd>
+	  <dt>Yes</dt>
+	  <dd>Automatically update the known hosts file.</dd>
+	  <dt>Ask</dt>
+	  <dd>A user is asked to confirm the modifications to the known hosts file.</dd>
+	</dl>
+      </dd>
+
+      <dt id="HeartBeat">HeartBeat (keep-alive)</dt>
+      <dd>
+	A Keep-alive packet is sent on a regular basis to maintain the
+	connection (particularly useful under NAT). If 0 is specified,
+	this feature is disabled.
+      </dd>
+
+      <dt id="RememberPassword">Remember password in memory</dt>
+      <dd>
+	The user password is preserved in the memory. The password in the memory is used by "Duplicate session" function. The password is deleted in the memory when Tera Term session disconnects.
+      </dd>
+
+      <dt id="ForwardAgent">Enable agent forwarding</dt>
+      <dd>
+      The SSH agent forwarding is enabled using by the Pageant application.
+      </dd>
+
+      <dt id="ForwardAgentConfirm">Confirm agent forwarding</dt>
+      <dd>
+	When the SSH agent-forwarding is requested, a user will confirm contacting the Pageant.
+      </dd>
+
+      <dt id="VerifyHostKeyDNS">Verify host key fingerprint by DNS</dt>
+      <dd>
+	The host key of the SSH server is verified by using the <a href="../usage/ssh.html#VerifyHostKeyDNS">SSHFP Resource Record</a>.<br />
+	The result of this verification should be used only as a guide.
+      </dd>
+
+      <dt id="KexOrder">KEX order (SSH2 only)</dt>
+      <dd>
+	Specify the type of KEX(Key Exchange) for SSH2 with the order.<br>
+	&lt;KEXs below this line are disabled&gt;
+	<table border="1">
+	  <tr>
+	    <td>ecdh-sha2-nistp256</td>
+	    <td>RFC5656</td>
+	  </tr>
+	  <tr>
+	    <td>ecdh-sha2-nistp384</td>
+	    <td>RFC5656</td>
+	  </tr>
+	  <tr>
+	    <td>ecdh-sha2-nistp521</td>
+	    <td>RFC5656</td>
+	  </tr>
+	  <tr>
+	    <td>diffie-hellman-group18-sha512</td>
+	    <td>RFC8268</td>
+	  </tr>
+	  <tr>
+	    <td>diffie-hellman-group16-sha512</td>
+	    <td>RFC8268</td>
+	  </tr>
+	  <tr>
+	    <td>diffie-hellman-group14-sha256</td>
+	    <td>RFC8268</td>
+	  </tr>
+	  <tr>
+	    <td>diffie-hellman-group-exchange-sha256</td>
+	    <td>RFC4419</td>
+	  </tr>
+	  <tr>
+	    <td>diffie-hellman-group-exchange-sha1</td>
+	    <td>RFC4419</td>
+	  </tr>
+	  <tr>
+	    <td>diffie-hellman-group14-sha1</td>
+	    <td>RFC4253</td>
+	  </tr>
+	  <tr>
+	    <td>diffie-hellman-group1-sha1</td>
+	    <td>RFC4253</td>
+	  </tr>
+	</table>
+      </dd>
+
+      <dt id="MacOrder">MAC order (SSH2 only)</dt>
+      <dd>
+	Specify the type of MAC for SSH2 with the order.<br>
+	&lt;MACs below this line are disabled&gt;
+	<table border="1">
+	  <tr>
+	    <td>hmac-sha2-512</td>
+	    <td>RFC6668</td>
+	  </tr>
+	  <tr>
+	    <td>hmac-sha2-256</td>
+	    <td>RFC6668</td>
+	  </tr>
+	  <tr>
+	    <td>hmac-sha1</td>
+	    <td>RFC4253</td>
+	  </tr>
+	  <tr>
+	    <td>hmac-ripemd160@openssh.com</td>
+	    <td></td>
+	  </tr>
+	  <tr>
+	    <td>hmac-md5</td>
+	    <td>RFC4253</td>
+	  </tr>
+	  <tr>
+	    <td>hmac-sha1-96</td>
+	    <td>RFC4253</td>
+	  </tr>
+	  <tr>
+	    <td>hmac-md5-96</td>
+	    <td>RFC4253</td>
+	  </tr>
+	</table>
+      </dd>
+
+      <dt id="HostKeyOrder">Host key order (SSH2 only)</dt>
+      <dd>
+	Specify the type of host key for SSH2 with the order.<br>
+	&lt;Host keys below this line are disabled&gt;
+	<table border="1">
+	  <tr>
+	    <td>ecdsa-sha2-nistp256</td>
+	    <td>RFC5656</td>
+	  </tr>
+	  <tr>
+	    <td>ecdsa-sha2-nistp384</td>
+	    <td>RFC5656</td>
+	  </tr>
+	  <tr>
+	    <td>ecdsa-sha2-nistp521</td>
+	    <td>RFC5656</td>
+	  </tr>
+	  <tr>
+	    <td>ssh-ed25519</td>
+	    <td>draft-ietf-curdle-ssh-ed25519-02</td>
+	  </tr>
+	  <tr>
+	    <td>ssh-rsa</td>
+	    <td>RFC4253</td>
+	  </tr>
+	  <tr>
+	    <td>ssh-dss</td>
+	    <td>RFC4253</td>
+	  </tr>
+	</table>
+      </dd>
+
+      <dt id="CompOrder">Compression order (SSH2 only)</dt>
+      <dd>
+	Specify the type of compression key for SSH2 with the order.<br>
+	&lt;Compressions below this line are disabled&gt;
+	<table border="1">
+	  <tr>
+	    <td>zlib@openssh.com</td>
+	    <td>Delayed compression(Starts compressing after authentication)</td>
+	  </tr>
+	  <tr>
+	    <td>zlib</td>
+	    <td></td>
+	  </tr>
+	  <tr>
+	    <td>none</td>
+	    <td>No compression</td>
+	  </tr>
+	</table>
+      </dd>
+
+      <dt id="Compression">Compression level</dt>
+      <dd>
+	Specify the level of compression for transmission. The more right,
+	the more compression is done (note: it may degrade the throughout
+	with a high-speed link such as ADSL or FTTH).<br>
+	By using SSH1 protocol, when the Compression level is 0, the packet compression is disabled, or the Compression level is over 1, the compression is enabled. <br>
+	By using SSH2 protocol, use the Compression order to enable the packet compression. And then, set the Compression level to 1 over.
+      </dd>
+    </dl>
+  </body>
+</html>
