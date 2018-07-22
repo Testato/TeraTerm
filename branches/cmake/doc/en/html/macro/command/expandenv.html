@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>expandenv</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>expandenv</h1>
+
+<p>
+Expands environment-variable strings.
+</p>
+
+<h2>Format</h2>
+
+<pre class="macro-syntax">
+expandenv &lt;strvar&gt; [&lt;strval&gt;]
+</pre>
+
+<h2>Parameters</h2>
+
+<dl>
+	<dt class="macro">string variable &lt;strvar&gt;</dt>
+	<dd>The specified string is expanded.<br />
+	    When the second argument(&lt;strval&gt;) is given, the result expanding the argument stores into the string variable &lt;strvar&gt;.</dd>
+	
+	<dt class="macro">string &lt;strval&gt; (optional)</dt>
+	<dd>When this argument is given,  the result expanding the argument stores into the string variable &lt;strvar&gt;.</dd>
+
+</dl>
+
+<h2>Remarks</h2>
+
+<p>
+The expandenv command expands one or more environment-variable strings(%variableName%) and replaces them with the values for the current user.
+</p>
+
+<h2>Example</h2>
+
+<pre class="macro-example">
+str = &quot;%WINDIR%\notepad.exe&quot;
+expandenv str
+messagebox str &quot;env&quot;    ; C:\WINDOWS\notepad.exe
+</pre>
+
+<pre class="macro-example">
+expandenv str &quot;%WINDIR%\notepad.exe&quot;
+messagebox str &quot;env&quot;    ; C:\WINDOWS\notepad.exe
+</pre>
+
+<pre class="macro-example">
+expandenv str &quot;%test%\notepad.exe&quot;
+messagebox str &quot;env&quot;    ; %test%\notepad.exe
+</pre>
+
+<h2>See also</h2>
+<ul>
+  <li><a href="getpassword.html">getpassword</a></li>
+</ul>
+
+</body>
+</html>
