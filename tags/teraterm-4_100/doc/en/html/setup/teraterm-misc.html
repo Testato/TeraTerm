@@ -1,0 +1,411 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>Miscellaneous (Tera Term setup file)</TITLE>
+<META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
+</HEAD>
+<BODY>
+
+<h1 id="beep">Beep sound on connection</h1>
+
+<p>
+To enable a beep sound which is made when a TCP/IP connection is established and when the connection is terminated, edit the BeepOnConnect line in the [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+BeepOnConnect=on
+</pre>
+
+<pre>
+Default:
+BeepOnConnect=off
+</pre>
+
+
+<h1 id="macro">Executing a macro on startup</h1>
+
+<p>
+A macro can be executed automatically when Tera Term is started. You can specify the macro filename by using the command line option "
+/M=&lt;macro file&gt;" or by editing the StartupMacro line in the [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+StartupMacro=&lt;macro file&gt;
+</pre>
+
+<pre>
+Default:
+StartupMacro=
+</pre>
+
+
+<h1 id="UILang">User interface language file</h1>
+
+<p>
+To switch the display language, specify user interface language file that includes the message.
+</p>
+
+<pre>
+UILanguageFile=lang\Japanese.lng
+</pre>
+
+<pre>
+Default:
+UILanguageFile=
+</pre>
+
+
+<h1 id="broadcast">Number for the history of broadcast command</h1>
+
+<p>
+If you configure the number for the history of broadcast command, you need to set up MaxBroadcatHistory entry in the 'teraterm.ini' file. See example of this value below.
+</p>
+
+<pre>
+MaxBroadcatHistory=200
+</pre>
+
+<pre>
+Default:
+MaxBroadcatHistory=99
+</pre>
+
+
+<h1 id="mousewheel">Mouse wheel action in application cursor mode</h1>
+
+<p>
+Basically, Tera Term window scrolls up and scrolls down when a user rotates the mouse wheel. However, Tera Term would send key sequences of up and down cursor when the application cursor mode is enabled by starting vi or less command.
+</p>
+
+<p>
+To disable this feature, edit the TranslateWheelToCursor line in the [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+TranslateWheelToCursor=off
+</pre>
+
+<p>
+If a user wants to disable this feature while pushing the control key, edit the DisableWheelToCursorByCtrl line in the [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+DisableWheelToCursorByCtrl=on
+</pre>
+
+<pre>
+Default:
+TranslateWheelToCursor=on
+DisableWheelToCursorByCtrl=on
+</pre>
+
+
+<h1 id="hostdlg">Showing "New Connection" dialog on startup</h1>
+
+<p>
+Tera Term shows "New Connection" dialog on startup when the port type is TCP/IP. (The dialog is not shown when the port type is Serial). <br>
+If you do not want to show this dialog, please change HostDialogOnStartup entry of [Tera Term] section as follows.
+</p>
+
+<pre>
+HostDialogOnStartup=off
+</pre>
+
+<pre>
+Default:
+HostDialogOnStartup=on
+</pre>
+
+
+<h1 id="DisablePasteMouseMButton">Enable paste by clicking the middle button of mouse</h1>
+
+<p>
+In order to enable paste by clicking the middle button of mouse, change the DisablePasteMouseMButton line at [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+DisablePasteMouseMButton=off
+</pre>
+
+<pre>
+Default:
+DisablePasteMouseMButton=on
+</pre>
+
+
+<h1 id="DisableMenuNewConnection">Disable "New connection" menu</h1>
+
+<p>
+In order to disable "New connection" menu, change the DisableMenuNewConnection line at [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+DisableMenuNewConnection=on
+</pre>
+
+<pre>
+Default:
+DisableMenuNewConnection=off
+</pre>
+
+
+<h1 id="DisableMenuDuplicateSession">Disable "Duplicate session" menu</h1>
+
+<p>
+In order to disable "Duplicate session" menu, change the DisableMenuDuplicateSession line at [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+DisableMenuDuplicateSession=on
+</pre>
+
+<pre>
+Default:
+DisableMenuDuplicateSession=off
+</pre>
+
+
+<h1 id="DisableMenuSendBreak">Disable "Send break" menu</h1>
+
+<p>
+In order to disable "Send break" menu, change the DisableMenuSendBreak line at [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+DisableMenuSendBreak=on
+</pre>
+
+<pre>
+Default:
+DisableMenuSendBreak=off
+</pre>
+
+
+<h1 id="ClearScreenOnCloseConnection">Clear the screen when disconnected</h1>
+
+<p>
+In order to clear the screen, change the ClearScreenOnCloseConnection line at [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+ClearScreenOnCloseConnection=on
+</pre>
+
+<pre>
+Default:
+ClearScreenOnCloseConnection=off
+</pre>
+
+
+<h1 id="AcceleratorNewConnection">Disable accelerator key of New Connection</h1>
+
+<p>
+In order to disable accelerator key of "New Connection", change the AcceleratorNewConnection line at [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+AcceleratorNewConnection=off
+</pre>
+
+<pre>
+Default:
+AcceleratorNewConnection=on
+</pre>
+
+
+<h1 id="DisableAcceleratorDuplicateSession">Disable accelerator key of Duplicate session</h1>
+
+<p>
+In order to disable accelerator key of "Duplicate session", change the DisableAcceleratorDuplicateSession line at [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+DisableAcceleratorDuplicateSession=on
+</pre>
+
+<pre>
+Default:
+DisableAcceleratorDuplicateSession=off
+</pre>
+
+
+<h1 id="AcceleratorCygwinConnection">Disable accelerator key of Cygwin connection</h1>
+
+<p>
+In order to disable accelerator key of "Cygwin connection", change the AcceleratorCygwinConnection line at [Tera Term] section of the setup file like the following:
+</p>
+
+<pre>
+AcceleratorCygwinConnection=off
+</pre>
+
+<pre>
+Default:
+AcceleratorCygwinConnection=on
+</pre>
+
+
+<h1 id="ClickableUrlBrowser">A browser by using Clickable URL</h1>
+
+<p>
+When the clickable URL is enabled, the default browser will be launched.<br>
+If a user can specify the browser and the argument, change the ClickableUrlBrowser and the ClickableUrlBrowserArg entries at [Tera Term] section in the following:
+</p>
+
+<pre>
+ClickableUrlBrowser=firefox
+ClickableUrlBrowserArg=-new-tab
+
+ClickableUrlBrowser=opera
+ClickableUrlBrowserArg=-newpage
+
+ClickableUrlBrowser=iexplore
+ClickableUrlBrowserArg=
+
+ClickableUrlBrowser=chrome
+ClickableUrlBrowserArg=
+</pre>
+
+<pre>
+Default:
+ClickableUrlBrowser=
+ClickableUrlBrowserArg=
+</pre>
+
+
+<h1 id="JoinSplitURL">URL string concatenated of split line</h1>
+
+<p>
+When the end of URL string continues to the next line, basically the whole string is recognized as a URL string.
+However, when the carriage return is inserted into the URL string by the end of a line, the whole string 
+can not work well.<br>
+The URL string split by a carriage return can work well to configure the JoinSplitURL entry of the 
+[Tera Term] section in the teraterm.ini file.
+</p>
+
+<pre>
+JoinSplitURL=on
+</pre>
+
+<p>
+By using the emacs editor, a special character will be displayed at the end of the line when 
+the line continues to next line. If this character is recognized with a part of URL string,
+the whole string can not work well with the URL format. <br>
+So, Tera Term can ignore the special character to configure the JoinSplitURLIgnoreEOLChar entry
+of the [Tera Term] section in the teraterm.ini file.
+</p>
+
+<pre>
+JoinSplitURLIgnoreEOLChar=
+</pre>
+
+<p>
+Also, the emacs editor can change the special character to other character.<br>
+When the character is changed, a user configures the JoinSplitURLIgnoreEOLChar entry
+of the [Tera Term] section in the following:
+</p>
+
+<pre>
+JoinSplitURLIgnoreEOLChar=|
+</pre>
+
+<pre>
+Default:
+JoinSplitURL=off
+JoinSplitURLIgnoreEOLChar=\
+</pre>
+
+
+<h1 id="LogLockExclusive">Exclusive-lock log file</h1>
+
+<p>
+When a log file is opened in written mode, the file will be locked exclusively. So, the log file can not be opened by multiple processes.<br>
+When this option is disabled, a user can open a log file while Tera Term is opening the file.
+</p>
+
+<pre>
+LogLockExclusive=off
+</pre>
+
+<pre>
+Default:
+LogLockExclusive=on
+</pre>
+
+
+<h1 id="DeferredLogWriteMode">Deferred log write mode</h1>
+
+<p>
+The log file is written on the thread procedure to avoid Tera Term slows down 
+when the log file is recorded on the network drive.
+</p>
+
+<pre>
+DeferredLogWriteMode=off
+</pre>
+
+<pre>
+Default:
+DeferredLogWriteMode=on
+</pre>
+
+
+<h1 id="LogTimestampFormat">Specify timestamp format at the start of log file's line</h1>
+
+<p>
+When the log file is written, the timestamp can be added at the start of line and the timestamp format can be specified.
+</p>
+
+<pre>
+SYNOPSIS:
+%a      Abbreviated weekday name
+%b      Abbreviated month name
+%d      Day of month as decimal number (01 - 31)
+%e      Day of month as decimal number ( 1 - 31)
+%H      Hour in 24-hour format (00 - 23)
+%N      Milisecond as decimal number (000 - 999)
+%m      Month as decimal number (01 - 12)
+%M      Minute as decimal number (00 -  59)
+%S      Second as decimal number (00 - 59)
+%w      Weekday as decimal number (0 - 6; Sunday is 0)
+%Y      Year with century, as decimal number
+%%      Percent sign
+</pre>
+
+<pre>
+Example:
+; Sun Jun  4 21:12:40.123 2017
+LogTimestampFormat=%a %b %e %H:%M:%S.%N %Y
+</pre>
+
+<pre>
+Default:
+; 2017-06-04 21:12:40.123
+LogTimestampFormat=%Y-%m-%d %H:%M:%S.%N
+</pre>
+
+
+<h1 id="LogTimestampUTC">UTC is used as timestamp at the start of log file's line</h1>
+
+<p>
+When the log file is written, the timestamp can be added at the start of log file's line. Basically, local time is used. <br>
+When local time is used for summer time, the clock will go or back at summer time switching. So, unexpected clock will be recorded. <br>
+Fortunately, this problem can be avoided because UTC timestamp does not support summer time. <br>
+If UTC timestamp is used instead of local time, change the LogTimestampUTC entry of [Tera Term] section in the following:
+</p>
+
+<pre>
+LogTimestampUTC=on
+</pre>
+
+<pre>
+Default:
+LogTimestampUTC=off
+</pre>
+
+
+</BODY>
+</HTML>

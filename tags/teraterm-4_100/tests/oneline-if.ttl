@@ -1,0 +1,36 @@
+messagebox "このダイアログの後、エラーが出るのが意図した動作です" "確認"
+if 0 ; この行でエラーとなるのが正常
+messagebox 'エラーとなる処理 1 が終了しました' '確認'
+
+if 0 hogefugafuge ; この行はエラーにならない。
+messagebox 'エラーとならない処理を実行しました' '確認'
+
+messagebox "このダイアログの後、エラーが出るのが意図した動作です" "確認"
+if 1 ; この行もエラーとなるのが正常
+messagebox 'エラーとなる処理 2 が終了しました' '確認'
+
+messagebox "再度エラーが出る処理を行います" "確認"
+if 1 hogefuga ; この行もエラーとなるのが正常
+messagebox 'エラーとなる処理 3 が終了しました' '確認'
+
+if 0 messagebox "このダイアログが表示されるのは異常です" "if動作エラー 1"
+
+if 1 goto skip1
+messagebox "このダイアログが表示されるのは異常です" "if動作エラー 2"
+:skip1
+
+testlink
+if result == 0 then
+	messagebox "Tera TermのVTウィンドウを開きます" "確認"
+	connect "/ds"
+endif
+
+messagebox "Tera TermのVTウィンドウを閉じる処理を行います"#10#13"エラーが出ないのが正しい動作です" "確認"
+if 1 closett ; この行でエラーとなるのは異常
+
+testlink
+if result != 0 then
+	closett
+endif
+
+messagebox "すべての確認が終了しました" "終了"

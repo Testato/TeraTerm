@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Tera Term setup file</title>
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../style.css" type="text/css">
+</head>
+<body>
+
+<h1>Tera Term setup file</h1>
+
+<p>
+Tera Term is initialized by information contained in the setup file when Tera Term is started, or when the <a href="../menu/setup-restore.html">[Setup] Restore setup</a> command is executed.<br>
+The file name of the setup file can be specified as a <a href="../commandline/teraterm.html">command line</a> parameter of Tera Term. If you omit the file name extension, the default extension ".INI" is used.<br>
+If you omit the file name, TERATERM.INI in "My Documents"[*1] is used if there is TERATERM.INI in "My Documents." TERATERM.INI in teraterm directory is used if there is not TERATERM.INI in "My Documents."
+</p>
+
+<p>
+[*1] My Documents default placement
+</p>
+<table border=1>
+ <tr>
+  <th>OS</th>
+  <th>Placement</th>
+ </tr>
+ <tr>
+  <td>Vista/7/8</td>
+  <td>%UserProfile%\Documents</td>
+ </tr>
+ <tr>
+  <td>2000/XP</td>
+  <td>%UserProfile%\My Documents</td>
+ </tr>
+ <tr>
+  <td>NT4.0</td>
+  <td>C:\Winnt\Personal\<i>USERNAME</i>\Personal</td>
+ </tr>
+ <tr>
+  <td>ME</td>
+  <td>C:\My Documents, C:\WINDOWS\Profiles\<i>USERNAME</i>\My Documents</td>
+ </tr>
+ <tr>
+  <td>95/98</td>
+  <td>C:\My Documents</td>
+ </tr>
+</table>
+
+
+<p>
+<a href="teraterm-ini.html">All items of Tera Term setup file</a>
+</p>
+
+<p>
+The changed setup is not saved to set up file automatically. To save the current setup into the setup file, execute the <a href="../menu/setup-save.html">[Setup] Save setup</a> command.
+</p>
+
+<h2>Special options in the Tera Term setup file</h2>
+
+<p>
+You need to edit the Tera Term setup file directly to change the following setup items:
+</p>
+
+<h3>Terminal emulation</h3>
+<ul>
+ <li><a href="teraterm-term.html#backwrap">Back wrap</a></li>
+ <li><a href="teraterm-term.html#beep">The motion receiving BEL character</a></li>
+ <li><a href="teraterm-term.html#C1">Disabling the C1 (ASCII $80-$9F) control characters</a></li>
+ <li><a href="teraterm-term.html#C1send">Send C1 (ASCII $80-$9F) control characters</a></li>
+ <li><a href="teraterm-term.html#displayall">Displaying all received characters</a></li>
+ <li><a href="teraterm-term.html#statusline">Disabling the status line</a></li>
+ <li><a href="teraterm-term.html#tekgin">Mouse code in TEK GIN report</a></li>
+ <li><a href="teraterm-term.html#vttab">Displaying tab at end of line like VT terminal</a></li>
+ <li><a href="teraterm-term.html#ScrollWindowClearScreen">Scroll down the current buffer when the screen is clear</a></li>
+ <li><a href="teraterm-term.html#UnknownUnicodeCharacterAsWide">Display unsupported Unicode character as wide character</a></li>
+ <li><a href="teraterm-term.html#UnicodeDecSpMapping">Mapping of Unicode to DEC special character</a></li>
+ <li><a href="teraterm-term.html#StrictKeyMapping">Mapping of the function key</a></li>
+ <li><a href="teraterm-term.html#Meta8Bit">Sending MSB set character with Alt key</a></li>
+ <li><a href="teraterm-term.html#AltScr">Disabling the alternate screen buffer</a></li>
+ <li><a href="teraterm-term.html#TerminalUID">Configure Terminal Unique ID</a></li>
+ <li><a href="teraterm-term.html#LockTUID">Changing Terminal Unique ID</a></li>
+ <li><a href="teraterm-term.html#TabStopModify">Disabling tabstop modification</a></li>
+ <li><a href="teraterm-term.html#BellLimiting">Limited BEL Over</a></li>
+ <li><a href="teraterm-term.html#ISO2022ShiftFunction">Disabling ISO/IEC 2022 shift function</a></li>
+</ul>
+
+<h3>Window</h3>
+<ul>
+ <li><a href="teraterm-win.html#autocopy">Disabling auto text copying</a></li>
+ <li><a href="teraterm-win.html#delimiter">Delimiters of a word selected by double clicking</a></li>
+ <li><a href="teraterm-win.html#popup">Disabling the pop-up menu</a></li>
+ <li><a href="teraterm-win.html#menubar">Hiding the "Show menu bar" command</a></li>
+ <li><a href="teraterm-win.html#lang">Disabling the language mode selection</a></li>
+ <li><a href="teraterm-win.html#scrollbuf">Maximum scroll buffer size</a></li>
+ <li><a href="teraterm-win.html#blink">Nonblinking cursor</a></li>
+ <li><a href="teraterm-win.html#scrollline">Maximum number of lines to move in a jump scrolling</a></li>
+ <li><a href="teraterm-win.html#textselect">Disabling text selection when the window is activated by mouse</a></li>
+ <li><a href="teraterm-win.html#title">Title format</a></li>
+ <li><a href="teraterm-win.html#color">Actual colors of "white" and "black" colored text</a></li>
+ <li><a href="teraterm-win.html#space">Space between characters (lines)</a></li>
+ <li><a href="teraterm-win.html#window">Hiding the [Window] menu</a></li>
+ <li><a href="teraterm-win.html#eterm">Eterm lookfeel window</a></li>
+ <li><a href="teraterm-win.html#maximize">How to scroll the screen when the window size is maximized</a></li>
+ <li><a href="teraterm-win.html#killfocus">Display the cursor even if the window comes out of focus</a></li>
+ <li><a href="teraterm-win.html#vttekpos">Fix the initial window position</a></li>
+ <li><a href="teraterm-win.html#savevtwinpos">Save the window position</a></li>
+ <li><a href="teraterm-win.html#WindowIcon">Change the window icon</a></li>
+</ul>
+
+<h3>Communication</h3>
+<ul>
+ <li><a href="teraterm-com.html#maxport">Maximum serial port number</a></li>
+ <li><a href="teraterm-com.html#clearcom">Don't clear COM buffer when serial port opening</a></li>
+ <li><a href="teraterm-com.html#confirm">Disabling the warning on TCP/IP disconnection</a></li>
+ <li><a href="teraterm-com.html#telbin">Telnet binary option</a></li>
+ <li><a href="teraterm-com.html#telecho">Telnet echo option</a></li>
+ <li><a href="teraterm-com.html#tellog">Telnet log</a></li>
+ <li><a href="teraterm-com.html#port/nontelnet">Telnet port number / Terminal setup for non-telnet connection</a></li>
+ <li><a href="teraterm-com.html#detecttelnet">Disable Auto-Detect mode of Telnet command</a></li>
+ <li><a href="teraterm-com.html#linemode">Disabling "Line at a time" mode</a></li>
+ <li><a href="teraterm-com.html#SendBreakTime">Pause time while the break signal is sending to the serial port</a></li>
+ <li><a href="teraterm-com.html#AutoComPortReconnect">Automatic COM port Reconnection</a></li>
+ <li><a href="teraterm-com.html#TerminalSpeed">Change the terminal speed notifies to server</a></li>
+</ul>
+
+<h3>File transfer</h3>
+<ul>
+ <li><a href="teraterm-trans.html#rename">Auto renaming of a received file to avoid overwriting</a></li>
+ <li><a href="teraterm-trans.html#bpauto">Auto activation of B-Plus Receive</a></li>
+ <li><a href="teraterm-trans.html#bpesc">Escaping all control characters in the B-Plus protocol</a></li>
+ <li><a href="teraterm-trans.html#bplog">B-Plus log</a></li>
+ <li><a href="teraterm-trans.html#kmlog">Kermit log</a></li>
+ <li><a href="teraterm-trans.html#xmlog">XMODEM log</a></li>
+ <li><a href="teraterm-trans.html#xmodemrecv">Receive command for XMODEM</a></li>
+ <li><a href="teraterm-trans.html#XmodemTimeouts">Timeout settings for XMODEM</a></li>
+ <li><a href="teraterm-trans.html#YmodemTimeouts">Timeout settings for YMODEM</a></li>
+ <li><a href="teraterm-trans.html#zmauto">Auto activation of ZMODEM Receive / Send</a></li>
+ <li><a href="teraterm-trans.html#zmparam">Parameters for ZMODEM sending</a></li>
+ <li><a href="teraterm-trans.html#zmesc">Escaping all control characters in the ZMODEM protocol</a></li>
+ <li><a href="teraterm-trans.html#zmlog">ZMODEM log</a></li>
+ <li><a href="teraterm-trans.html#zmodemrecv">Receive command for ZMODEM</a></li>
+ <li><a href="teraterm-trans.html#ZmodemTimeouts">Timeout settings for ZMODEM</a></li>
+ <li><a href="teraterm-trans.html#filter">File name filter for send file dialog</a></li>
+ <li><a href="teraterm-trans.html#draganddrop">Confirmation of File Transfer by Drag &amp; Drop</a></li>
+ <li><a href="teraterm-trans.html#hidetransdialog">File Transfer Dialog is hidden</a></li>
+ <li><a href="teraterm-trans.html#FileSendHighSpeedMode">High Speed File Transfer on Serial Connection</a></li>
+</ul>
+
+<h3>Printing</h3>
+<ul>
+ <li><a href="teraterm-prn.html#delay">Delay of path-through printing</a></li>
+ <li><a href="teraterm-prn.html#direct">Path-through printing directly to a port</a></li>
+ <li><a href="teraterm-prn.html#ignoremc">Disabling the printing by the control sequence</a></li>
+ <li><a href="teraterm-prn.html#formfeed">Disabling the form-feed in the path-through printing</a></li>
+ <li><a href="teraterm-prn.html#font">Printer font</a></li>
+ <li><a href="teraterm-prn.html#margin">Page margins</a></li>
+ <li><a href="teraterm-prn.html#scale">Scaling factors for printing</a></li>
+ <li><a href="teraterm-prn.html#russfont">Russian code set of the printer font (Russian mode only)</a></li>
+</ul>
+
+<h3>Miscellaneous</h3>
+<ul>
+ <li><a href="teraterm-misc.html#beep">Beep sound on connection</a></li>
+ <li><a href="teraterm-misc.html#macro">Executing a macro on startup</a></li>
+ <li><a href="teraterm-misc.html#UILang">User interface language file</a></li>
+ <li><a href="teraterm-misc.html#broadcast">Number for the history of broadcast command</a></li>
+ <li><a href="teraterm-misc.html#mousewheel">Mouse wheel action in application cursor mode</a></li>
+ <li><a href="teraterm-misc.html#hostdlg">Showing "New Connection" dialog on startup</a></li>
+ <li><a href="teraterm-misc.html#DisablePasteMouseMButton">Enable paste by clicking the middle button of mouse</a></li>
+ <li><a href="teraterm-misc.html#DisableMenuNewConnection">Disable "New connection" menu</a></li>
+ <li><a href="teraterm-misc.html#DisableMenuDuplicateSession">Disable "Duplicate session" menu</a></li>
+ <li><a href="teraterm-misc.html#DisableMenuSendBreak">Disable "Send break" menu</a></li>
+ <li><a href="teraterm-misc.html#ClearScreenOnCloseConnection">Clear the screen when disconnected</a></li>
+ <li><a href="teraterm-misc.html#AcceleratorNewConnection">Disable accelerator key of New Connection</a></li>
+ <li><a href="teraterm-misc.html#DisableAcceleratorDuplicateSession">Disable accelerator key of Duplicate session</a></li>
+ <li><a href="teraterm-misc.html#AcceleratorCygwinConnection">Disable accelerator key of Cygwin connection</a></li>
+ <li><a href="teraterm-misc.html#ClickableUrlBrowser">A browser by using Clickable URL</a></li>
+ <li><a href="teraterm-misc.html#LogLockExclusive">Exclusive-lock log file</a></li>
+ <li><a href="teraterm-misc.html#DeferredLogWriteMode">Deferred log write mode</a></li>
+ <li><a href="teraterm-misc.html#LogTimestampFormat">Specify timestamp format at the start of log file's line</a></li>
+ <li><a href="teraterm-misc.html#LogTimestampUTC">UTC is used at timestamp format of the start of log file's line</a></li-->
+</ul>
+
+<h3>TTSSH</h3>
+<ul>
+ <li><a href="teraterm-ssh.html#AuthBanner">How to display authentication banner</a></li>
+ <li><a href="teraterm-ssh.html#DisablePopupMessage">Suppressing message box</a></li>
+ <!--li><a href="teraterm-ssh.html#EnableRsaShortKeyServer">Enabling connection to server with RSA host key less than 768bit</a></li-->
+ <li><a href="teraterm-ssh.html#GexMinimalGroupSize">Minimum group size for Diffie-Hellman Group Exchange</a></li>
+ <li><a href="teraterm-ssh.html#LogLevel">log level</a></li>
+ <li><a href="teraterm-ssh.html#X11Display">Destination display for X11 transfer</a></li>
+</ul>
+
+</body>
+</html>

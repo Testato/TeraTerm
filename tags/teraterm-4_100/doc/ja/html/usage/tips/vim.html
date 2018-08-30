@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<title>vim からの制御シーケンスの使用例</title>
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+<body>
+
+<h1>vim からの制御シーケンスの使用例</h1>
+<p>
+Tera Term では、制御シーケンスを使用する事によってホスト側から Tera Term の動作を変更したりする事が出来ます。
+ここでは vim からこれらの制御シーケンスを活用する為の設定例を紹介します。
+</p>
+
+<h2 id="CursorStyle">挿入モードへの出入り時にカーソル形状を変更する</h2>
+<p>
+Tera Term では、以下のカーソル表示状態変更制御シーケンスに対応しています。
+</p>
+
+<table border="1">
+  <tr> <th>略称</th> <th>シーケンス</th> <th>機能</th> </tr>
+
+  <tr> <td rowspan="2">DECTCEM</td>
+       <td>ESC [ ? 25 h</td> <td>カーソルを表示状態にする</td> </tr>
+  <tr> <td>ESC [ ? 25 l</td> <td>カーソルを非表示状態にする</td> </tr>
+
+  <tr> <td rowspan="7">DECSCUSR</td>
+       <td>ESC [ 0 SP q</td> <td>カーソル形状を箱型で点滅状態にする</td> </tr>
+  <tr> <td>ESC [ 1 SP q</td> <td>カーソル形状を箱型で点滅状態にする</td> </tr>
+  <tr> <td>ESC [ 2 SP q</td> <td>カーソル形状を箱型で点灯(非点滅)状態にする</td> </tr>
+  <tr> <td>ESC [ 3 SP q</td> <td>カーソル形状を下線で点滅状態にする</td> </tr>
+  <tr> <td>ESC [ 4 SP q</td> <td>カーソル形状を下線で点灯(非点滅)状態にする</td> </tr>
+  <tr> <td>ESC [ 5 SP q</td> <td>カーソル形状を縦線で点滅状態にする</td> </tr>
+  <tr> <td>ESC [ 6 SP q</td> <td>カーソル形状を縦線で点灯(非点滅)状態にする</td> </tr>
+
+  <tr> <td rowspan="2">WYSTCURM</td>
+       <td>ESC [ 33 h</td> <td>カーソルを点灯(非点滅)状態にする</td> </tr>
+  <tr> <td>ESC [ 33 l</td> <td>カーソルを点滅状態にする</td> </tr>
+
+  <tr> <td rowspan="2">WYULCURM</td>
+       <td>ESC [ 34 h</td> <td>カーソル形状を下線にする</td> </tr>
+  <tr> <td>ESC [ 34 l</td> <td>カーソル形状を箱型にする</td> </tr>
+
+  <tr> <td rowspan="2"> (AT&amp;T 610) </td>
+       <td>ESC [ ? 12 l</td> <td>カーソルを点灯(非点滅)状態にする</td> </tr>
+  <tr> <td>ESC [ ? 12 h</td> <td>カーソルを点滅状態にする</td> </tr>
+</table>
+
+<p>
+これらの制御シーケンスを挿入モードに入る時 (t_SI 設定)、置換モードに入る時 (t_SR 設定) および挿入モード/置換モードから出る時 (t_EI 設定) に出力する事で、挿入モード/置換モードでのカーソル形状を変更できます。<br>
+例えば .vimrc に以下の設定を追加すると、挿入モードに入った時にカーソル形状が縦線で点滅に、置換モードでは下線で点滅に、挿入モード/置換モードから出た時に箱型で点滅に変わるようになります。
+</p>
+
+<pre class="macro-example">
+let &amp;t_SI .= "\e[5 q"
+let &amp;t_SR .= "\e[3 q"
+let &amp;t_EI .= "\e[1 q"
+</pre>
+
+<p>注: DECTCEM <strong>以外</strong>の制御シーケンスを使うには、Additional Settings ダイアログの Control sequence タブに有る Cursor control sequence を on にする必要があります。(デフォルトは off)</p>
+
+
+<h2 id="Bracketed">クリップボードからの貼り付け時に自動インデントを無効にする</h2>
+<p class="notice">
+注: Vim 8.0.0238 より Vim 本体で Bracketed Paste Mode に対応した為、下記の設定を追加しなくても貼り付け時には自動インデントや補完等が無効になります。<br>
+しかし、tmux 利用時には Bracketed Paste Mode が有効にならないので、tmux を併用する場合は依然として下記の設定が必要になります。
+</p>
+
+<p>
+通常、ホスト側のアプリケーション (vim 等) からは、ユーザのキー入力とクリップボードからの貼り付けを区別できません。
+しかし xterm の拡張機能である Bracketed Paste Mode を利用するとこれらを区別出来るようになるため、クリップボードからの貼り付け時は動作を変える事ができます。
+</p>
+
+<p>
+.vimrc に以下の設定を追加すると、クリップボードからの貼り付け時に自動で set paste を実行して、自動インデントや補完等が無効になります。
+</p>
+
+<pre class="macro-example">
+if has("patch-8.0.0238")
+    " Bracketed Paste Mode対応バージョン(8.0.0238以降)では、特に設定しない
+    " 場合はTERMがxtermの時のみBracketed Paste Modeが使われる。
+    " tmux利用時はTERMがscreenなので、Bracketed Paste Modeを利用するには
+    " 以下の設定が必要となる。
+    if &amp;term =~ "screen"
+        let &amp;t_BE = "\e[?2004h"
+        let &amp;t_BD = "\e[?2004l"
+        exec "set t_PS=\e[200~"
+        exec "set t_PE=\e[201~"
+    endif
+else
+    " 8.0.0210 ～ 8.0.0237 ではVim本体でのBracketed Paste Mode対応の挙動が
+    " 望ましくない(自動インデントが無効にならない)ので、Vim本体側での対応を
+    " 無効にする。
+    if has("patch-8.0.0210")
+        set t_BE=
+    endif
+
+    " Vim本体がBracketed Paste Modeに対応していない時の為の設定。
+    if &amp;term =~ "xterm" || &amp;term =~ "screen"
+        let &amp;t_ti .= "\e[?2004h"
+        let &amp;t_te .= "\e[?2004l"
+
+        function XTermPasteBegin(ret)
+            set pastetoggle=&lt;Esc&gt;[201~
+            set paste
+            return a:ret
+        endfunction
+
+        noremap &lt;special&gt; &lt;expr&gt; &lt;Esc&gt;[200~ XTermPasteBegin("0i")
+        inoremap &lt;special&gt; &lt;expr&gt; &lt;Esc&gt;[200~ XTermPasteBegin("")
+        vnoremap &lt;special&gt; &lt;expr&gt; &lt;Esc&gt;[200~ XTermPasteBegin("c")
+        cnoremap &lt;special&gt; &lt;Esc&gt;[200~ &lt;nop&gt;
+        cnoremap &lt;special&gt; &lt;Esc&gt;[201~ &lt;nop&gt;
+    endif
+endif
+</pre>
+
+<p>
+上記の設定ではノーマルモードで貼り付けを行うと挿入モードに切り替わって貼り付けが行われますが、これを行わずに挿入モードの時のみ有効にする場合は以下の設定を使用して下さい。<br>
+後述の<a href="#withScreen">GNU Screenとの併用時の注意点</a>にある設定を行う場合はこちらの方が都合がいいでしょう。
+</p>
+
+<pre class="macro-example">
+if &amp;term =~ "xterm"
+    let &amp;t_SI .= "\e[?2004h"
+    let &amp;t_EI .= "\e[?2004l"
+
+    function XTermPasteBegin(ret)
+        set pastetoggle=&lt;Esc&gt;[201~
+        set paste
+        return a:ret
+    endfunction
+
+    inoremap &lt;special&gt; &lt;expr&gt; &lt;Esc&gt;[200~ XTermPasteBegin("")
+endif
+</pre>
+
+<h4>Bracketed Paste mode について</h4>
+<p>
+この機能は xterm 拡張で、有効になっていると、クリップボードからの貼り付け時に文字列の前後に特別なシーケンスを付加するというものです。<br>
+具体的には、DECSET の 2004(&lt;CSI&gt;?2004h) で有効になり、貼り付け時に文字列の前に &lt;ESC&gt;200~, 後ろに &lt;ESC&gt;201~ が付くようになります。
+</p>
+
+
+<h2 id="IMEcontrol">IME を制御する</h2>
+<p>
+Tera Term では IME の状態を制御する為の独自の制御シーケンスをサポートしています。
+この制御シーケンスを利用すれば、モードにより IME の有効/無効を切り替えるといった事が出来るようになります。
+</p>
+
+<p>
+.vimrc に以下の設定を追加すると、挿入モードから抜けた時に IME をオフにし、再度挿入モードに入った時に IME の状態を元に戻すようになります。
+</p>
+
+<pre class="macro-example">
+let &amp;t_SI .= "\e[&lt;r"
+let &amp;t_EI .= "\e[&lt;s\e[&lt;0t"
+let &amp;t_te .= "\e[&lt;0t\e[&lt;s"
+
+set timeoutlen=100
+</pre>
+
+<p>
+timeoutlen の設定は、挿入モードで ESC キーを押してから実際に挿入モードを抜ける(IME がオフになる)までの時間を調整しています。
+この値を短くすれば ESC キーを押してから IME がオフになるまでの時間が短くなりますが、 遅い回線を使っている時などにカーソルキーやファンクションキーが正しく働かないというトラブルが起きる事があります。<br>
+また ESC キーを押した後の遅れを減らすには"<a href="#AppESC">挿入モードでの ESC キーを押した後の待ちを無くす</a>"の設定を利用する方法もあります。
+</p>
+
+
+<h2 id="AppESC">挿入モードでの ESC キーを押した後の待ちを無くす</h2>
+<p>
+Tera Term や xterm 等の端末エミュレータでは、ESC キーが押された時に ESC (0x1b) を送信します。また、カーソルキーやファンクションキー等が押された時に ESC で始まる文字列を送信します。
+この為、ホスト側のアプリケーションでは ESC を受信しても、それだけでは ESC キーが押されたのか、それともカーソルキーやファンクションキーが押されたのか区別する事が出来ません。<br>
+そこで vim では ESC を受信した時は 1 秒ほど待ち、他の文字が送られてこないか、送られてきた場合はカーソルキー等を表す文字列になるかどうかで、ESC キーが押されたのか、それともカーソルキー等が押されたのかを判別します。
+この為、挿入モードで ESC キーを押されてから実際に挿入モードを抜けるのが 1 秒程遅れます。
+これにより、<a href="#CursorStyle">モードによりカーソル形状を変える設定</a>や <a href="#IMEcontrol">IME を制御する設定</a>を行っても、状態が反映されるのが遅れます。
+</p>
+
+<p>
+この問題は Application Escape Mode を使う事で回避できます。
+.vimrc に以下の設定を追加すると、挿入モードで ESC キーを押した時に待たずにすぐに挿入モードを抜けるようになります。
+</p>
+
+<pre class="macro-example">
+let &amp;t_SI .= "\e[?7727h"
+let &amp;t_EI .= "\e[?7727l"
+inoremap &lt;special&gt; &lt;Esc&gt;O[ &lt;Esc&gt;
+</pre>
+
+
+<h2 id="TitleStack">ウィンドウタイトルを保存/復元する</h2>
+
+<p class="notice">
+注: Vim 8.1.0253 より、Vim がタイトルの保存/復元機能に対応したため、下記の設定は必要ありません。
+</p>
+
+<p>
+Tera Term では xterm のウィンドウタイトル変更制御シーケンスに対応しています。
+例えば vim の場合、set title を実行するとウィンドウタイトルに現在開いているファイル名等の情報が表示されるようになります。<br>
+しかし vim はウィンドウタイトルの変更は出来ますが、元のタイトルが何であったか把握する事が出来ません。
+その為 vim の終了時に元のウィンドウタイトルに戻す事が出来ず、代わりに "Thanks for flying Vim" や "Vim を使ってくれてありがとう" というメッセージをウィンドウタイトルにセットして終了します。
+</p>
+
+<p>
+この問題は、ウィンドウタイトルの保存/復元機能を使う事で回避できます。
+.vimrc に以下の設定を追加すると、vim 起動時にウィンドウタイトルを保存し、終了時に保存したタイトルに復元するようになります。
+</p>
+
+<pre class="macro-example">
+if !has("patch-8.1.0253")
+    let &amp;t_ti .= "\e[22;0t"
+    let &amp;t_te .= "\e[23;0t"
+endif
+</pre>
+
+
+<h2 id="VerticalSplit">縦分割時のスクロールの高速化</h2>
+<p>
+vim で縦分割(vsplit)をすると遅いとかがくがくすると言われる事がよくあります。
+これは多くの端末エミュレータが基準としている VT100 や VT200 シリーズの仕様からくる問題です。
+</p>
+
+<p>
+VT100 にはスクロールする範囲を設定する機能(スクロールリージョン/上下マージン)が有りますが、
+これは例えば上マージンを5行目に、下マージンを20行目にセットする事によってスクロールする範囲を5行目から20行目にするというもので、
+縦方向の桁単位で指定する事は出来ません。<br>
+このため、横分割(split)では上下マージンを利用してスクロールを行う事が出来ますが、
+縦分割ではスクロールが利用できないため、スクロールしたい領域全体を書き直す必要があり、
+スクロールが遅くなります。
+</p>
+
+<p>
+しかし、VT400 シリーズ以降では桁位置によるスクロール範囲設定(左右マージン)機能が追加されており、Tera Term でもバージョン 4.79 からこの機能をサポートしました。
+以下の設定を .vimrc に追加して縦分割時のスクロールに左右マージンを利用するように設定する事によって、縦分割時のスクロールが改善されます。
+</p>
+
+<pre class="macro-example">
+if &amp;term =~ "xterm"
+    let &amp;t_ti .= "\e[?69h"
+    let &amp;t_te .= "\e[?69l"
+    let &amp;t_CV = "\e[%i%p1%d;%p2%ds"
+endif
+</pre>
+
+<p>
+注: この設定を行うと、左右マージンに対応していない端末では縦分割が正しく動かなくなります。xterm や mlterm, RLogin, tanasinn, pangoterm などは左右マージンに対応していますが、それ以外の端末を併用する場合は注意してください。
+</p>
+
+
+<h2 id="withScreen">GNU Screenとの併用時の注意点</h2>
+<p>
+GNU Screenを使用している場合、screen内部で動かしているアプリケーションが制御シーケンスを送っても、そのシーケンスにscreenが対応していない場合はTera Term側へ送らずに捨ててしまい期待通りに動きません。その場合、
+</p>
+
+<pre class="macro-example">
+if &amp;term == "screen"
+    let &amp;t_SI .= "\eP\e[3 q\e\\"
+    let &amp;t_EI .= "\eP\e[1 q\e\\"
+else
+    let &amp;t_SI .= "\e[3 q"
+    let &amp;t_EI .= "\e[1 q"
+endif
+</pre>
+
+<p>
+というように、端末タイプが screen の時は t_SI, t_EI, t_ti, t_te に設定するシーケンスを "\eP" と "\e\\" で挟むとTera Termに制御シーケンスが届くようになります。<br>
+ただし、この方法を使って制御シーケンスがscreenを抜けるようにしても送ったシーケンスの状態はscreenの管理外になるので、screenのウィンドウを切り替えた時等に期待通りに動かない場合がありますので注意してください。
+</p>
+
+
+<hr>
+
+<h1>vim の設定</h1>
+
+<h2 id="background">背景色</h2>
+<p>
+Tera Term 4.83からxtermのTermcap String Queryに対応したことにより、vimは起動時、端末の色数、すなわち
+256色対応であることを自動で認識できるようになりました。そのため、vimの背景色に応じたハイライトカラーを
+描画するために、適切に background の設定を行う必要性があります。<br>
+
+背景色が暗い色(例えば黒)の時は dark、明るい色(例えば白)の時は light にして、いずれかの設定を
+試してみてください。
+</p>
+
+<pre class="macro-example">
+set background=dark
+</pre>
+
+<p>
+background は端末の背景色を vim に伝えるための設定であり、正しく設定されていないと
+ハイライト等で文字色と背景色に似た色を使い見づらくなる場合があります。<br>
+色数の自動認識を止めるには set t_RV= を .vimrc に追加してください。ただし、マウスタイプ等の自動認識も止まります。
+</p>
+
+<p>
+なお、backgroundオプションの詳細は、vimで :help 'background'を参照願います。
+</p>
+
+</body>
+</html>

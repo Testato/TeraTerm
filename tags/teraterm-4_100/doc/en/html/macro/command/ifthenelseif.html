@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>if, then, elseif, else, endif</title>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+
+<body>
+
+
+<h1>if, then, elseif, else, endif</h1>
+
+<p>
+Conditional branching
+</p>
+
+<h2>1) Format 1</h2>
+
+<pre class="macro-syntax">
+if &lt;expression&gt; &lt;statement&gt;
+</pre>
+
+<h3>Remarks</h3>
+
+<p>
+Executes a &lt;statement&gt;, if &lt;expression&gt; is true(non-zero).
+</p>
+
+<h3>Example</h3>
+
+<pre class="macro-example">
+; If A&gt;1, jump to ':label'.
+if A&gt;1 goto label
+
+; If result&lt;&gt;0, assign 0 to A.
+if result A=0
+</pre>
+
+
+<h2>2) Format 2</h2>
+
+<pre class="macro-syntax">
+if &lt;expression 1&gt; then
+  ...
+  (Statements for the case:  &lt;expression 1&gt; is true (non-zero).)
+  ...
+[elseif &lt;expression 2&gt; then]
+  ...
+  (Statements for the case:  &lt;expression 1&gt; is false (zero) and &lt;expression 2&gt; is true.)
+  ...
+[elseif &lt;expression N&gt; then]
+  ...
+  (Statements for the case:  &lt;expression 1&gt;, &lt;expression 2&gt;,... and &lt;expression N-1&gt; are all false, and &lt;expression N&gt; is true.)
+  ...
+[else]
+  ...
+  (Statements for the case:  all the conditions above are false (zero).)
+  ...
+endif
+</pre>
+
+<h3>Remarks</h3>
+
+<p>
+'if' and 'elseif' statements must end with 'then'.<br>
+'elseif' and 'else' can be omitted.<br>
+'endif' can not be omitted.
+</p>
+
+<h3>Example</h3>
+
+<pre class="macro-example">
+if a=1 then
+  b = 1
+  c = 2
+  d = 3
+endif
+
+if i&lt;0 then
+  i=0
+else
+  i=i+1
+endif
+
+if i=1 then
+  c = '1'
+elseif i=2 then
+  c = '2'
+elseif i=3 then
+  c = '3'
+else
+  c = '?'
+endif
+</pre>
+
+
+<h3>*) NOTICE</h3>
+
+<em>(version 4.90 or later)</em><br>
+By using Format 2(if - endif), the syntax error occurs when then is not described.
+
+<pre class="macro-example">
+code = 100
+if code != 100
+	messagebox 'The code value is not 100.' 'error'
+	goto error
+else
+	messagebox 'The code value is 100.' 'OK'
+endif
+
+:error
+end
+</pre>
+
+
+<h2>See also</h2>
+<ul>
+  <li><a href="../syntax/expressions.html">Expressions and operators</a></li>
+</ul>
+
+</body>
+</html>

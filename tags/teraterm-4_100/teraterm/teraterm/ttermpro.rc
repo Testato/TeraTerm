@@ -1,0 +1,687 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "..\common\tt_res.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// âpåÍ (ïƒçë) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DAD_DIALOG DIALOGEX 0, 0, 251, 258
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Tera Term: File Drag and Drop"
+FONT 8, "Tahoma", 0, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_FILENAME_EDIT,7,6,236,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "Are you sure that you want to send the file content?",IDC_DAD_STATIC,7,25,173,8
+    CONTROL         "&SCP",IDC_SCP_RADIO,"Button",BS_AUTORADIOBUTTON | BS_NOTIFY,7,36,236,10
+    CONTROL         "S&end File (Paste content of file)",IDC_SENDFILE_RADIO,
+                    "Button",BS_AUTORADIOBUTTON | BS_NOTIFY,7,77,236,10
+    CONTROL         "&Paste Filename",IDC_PASTE_RADIO,"Button",BS_AUTORADIOBUTTON | BS_NOTIFY,7,109,236,10
+    LTEXT           "des&t:",IDC_SCP_PATH_LABEL,19,50,40,8
+    EDITTEXT        IDC_SCP_PATH,62,47,181,14,ES_AUTOHSCROLL
+    LTEXT           "dest is home directory if empty",IDC_SCP_PATH_NOTE,62,64,199,8
+    CONTROL         "Bina&ry",IDC_BINARY_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,92,188,10
+    CONTROL         "Es&cape",IDC_ESCAPE_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,125,188,10
+    CONTROL         "Separat&or is Space",IDC_SPACE_RADIO,"Button",BS_AUTORADIOBUTTON,21,139,188,10
+    CONTROL         "Separator is &NewLine",IDC_NEWLINE_RADIO,"Button",BS_AUTORADIOBUTTON,21,154,188,10
+    CONTROL         "&Do this for the next %d files",IDC_SAME_PROCESS_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,173,236,10
+    CONTROL         "Do sa&me process, next drop",IDC_SAME_PROCESS_NEXTDROP_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,188,236,10
+    CONTROL         "Do not d&isplay this dialog, next drop",IDC_DONTSHOW_CHECK,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,7,203,236,11
+    DEFPUSHBUTTON   "OK",IDOK,133,236,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,193,236,50,14
+    LTEXT           "Drop with CTRL, this dialog is displayed",IDC_DAD_NOTE,7,221,236,8
+END
+
+IDD_COMMENT_DIALOG DIALOGEX 0, 0, 239, 19
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Comment to Log"
+FONT 14, "System", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,201,3,32,12
+    EDITTEXT        IDC_EDIT_COMMENT,6,3,189,12,ES_AUTOHSCROLL
+END
+
+IDD_TABSHEET_GENERAL DIALOGEX 0, 0, 258, 188
+STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "Tahoma", 0, 0, 0x0
+BEGIN
+    CONTROL         "&Enable clickable URL",IDC_CLICKABLE_URL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,10,124,10
+    CONTROL         "Disable accelerator &send break",IDC_DISABLE_SENDBREAK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,25,183,10
+    CONTROL         "Accept &broadcast",IDC_ACCEPT_BROADCAST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,40,124,10
+    LTEXT           "Mouse &wheel scroll line",IDC_MOUSEWHEEL_SCROLL_LINE,11,55,103,8
+    EDITTEXT        IDC_SCROLL_LINE,123,53,29,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "A&uto scroll only in bottom line",IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,70,173,10
+    CONTROL         "&Clear display when window resized",IDC_CLEAR_ON_RESIZE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,85,220,10
+    CONTROL         "Change cursor shape with &IME state",IDC_CURSOR_CHANGE_IME,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,100,220,10
+    CONTROL         "List &hidden fonts in font dialog",IDC_LIST_HIDDEN_FONTS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,115,220,10
+    GROUPBOX        "Title format",IDC_TITLEFMT_GROUP,5,130,250,55
+    CONTROL         "&Display host/port name",IDC_TITLEFMT_DISPHOSTNAME,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,140,108,10
+    CONTROL         "Display session &number",IDC_TITLEFMT_DISPSESSION,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,155,108,10
+    CONTROL         "Display &VT/TEK",IDC_TITLEFMT_DISPVTTEK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,170,108,10
+    CONTROL         "Swap hostname and &title position",IDC_TITLEFMT_SWAPHOSTTITLE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,120,140,130,10
+    CONTROL         "Display tcp &port number",IDC_TITLEFMT_DISPTCPPORT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,120,155,130,10
+    CONTROL         "Display se&rial port speed",IDC_TITLEFMT_DISPSERIALSPEED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,120,170,130,10
+END
+
+IDD_TABSHEET_SEQUENCE DIALOGEX 0, 0, 258, 188
+STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "Tahoma", 0, 0, 0x0
+BEGIN
+    CONTROL         "Accept &mouse event tracking request",IDC_ACCEPT_MOUSE_EVENT_TRACKING,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,10,220,10
+    CONTROL         "&Disable mouse event tracking when Control is pressed",IDC_DISABLE_MOUSE_TRACKING_CTRL,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,25,210,10
+    LTEXT           "Accept window &title change request",IDC_ACCEPT_TITLE_CHANGING_LABEL,11,41,141,8
+    COMBOBOX        IDC_ACCEPT_TITLE_CHANGING,162,39,45,52,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Window t&itle report",IDC_TITLE_REPORT_LABEL,11,56,141,8
+    COMBOBOX        IDC_TITLE_REPORT,162,54,45,52,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "&Window control sequence",IDC_WINDOW_CTRL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,70,220,10
+    CONTROL         "Window &report sequence",IDC_WINDOW_REPORT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,85,220,10
+    CONTROL         "&Cursor control sequence",IDC_CURSOR_CTRL_SEQ,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,100,220,10
+    LTEXT           "C&lipboard access from remote",IDC_CLIPBOARD_ACCESS_LABEL,11,116,141,8
+    COMBOBOX        IDC_CLIPBOARD_ACCESS,162,114,45,52,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "&Notify clipboard access from remote",IDC_CLIPBOARD_NOTIFY,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,130,220,10
+END
+
+IDD_TABSHEET_COPYPASTE DIALOGEX 0, 0, 258, 188
+STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "Tahoma", 0, 0, 0x0
+BEGIN
+    CONTROL         "Enable continued &line copy",IDC_LINECOPY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,10,200,10
+    CONTROL         "&Disable mouse R button paste",IDC_DISABLE_PASTE_RBUTTON,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,25,200,10
+    CONTROL         "&Confirm mouse R button paste",IDC_CONFIRM_PASTE_RBUTTON,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,40,190,10
+    CONTROL         "Disable mouse &M button paste",IDC_DISABLE_PASTE_MBUTTON,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,55,200,10
+    CONTROL         "Select &only by L button",IDC_SELECT_LBUTTON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,70,200,10
+    CONTROL         "&Trim trailing new line character when pasting",IDC_TRIMNLCHAR,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,85,200,10
+    CONTROL         "&Normalize line break when pasting",IDC_NORMALIZE_LINEBREAK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,100,200,10
+    CONTROL         "Confirm change &paste",IDC_CONFIRM_CHANGE_PASTE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,115,200,10
+    LTEXT           "&String file",IDC_CONFIRM_STRING_FILE_LABEL,22,130,68,8
+    EDITTEXT        IDC_CONFIRM_STRING_FILE,95,128,106,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_CONFIRM_STRING_FILE_PATH,206,128,13,12
+    LTEXT           "Del&imiter characters",IDC_DELIMITER,11,145,65,10
+    EDITTEXT        IDC_DELIM_LIST,95,143,130,12,ES_AUTOHSCROLL
+    LTEXT           "P&aste delay per line",IDC_PASTEDELAY_LABEL,11,160,70,10
+    EDITTEXT        IDC_PASTEDELAY_EDIT,95,158,24,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "ms",IDC_PASTEDELAY_LABEL2,123,160,23,10
+END
+
+IDD_TABSHEET_VISUAL DIALOGEX 0, 0, 258, 188
+STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "Tahoma", 0, 0, 0x0
+BEGIN
+    LTEXT           "&Alpha blend",IDC_ALPHABLEND,10,10,43,8
+    EDITTEXT        IDC_ALPHA_BLEND,58,8,28,12,ES_AUTOHSCROLL | ES_NUMBER
+    GROUPBOX        "",IDC_STATIC,97,2,155,54
+    CONTROL         "&Eterm lookfeel(*)",IDC_ETERM_LOOKFEEL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,99,8,66,12
+    LTEXT           "Image Brightness",IDC_BGIMG_BRIGHTNESS,166,19,56,8
+    EDITTEXT        IDC_EDIT_BGIMG_BRIGHTNESS,225,18,22,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Background &Image",IDC_BGIMG_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,104,27,73,10
+    EDITTEXT        IDC_BGIMG_EDIT,103,38,108,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BGIMG_BUTTON,217,38,14,14
+    LTEXT           "&Mouse cursor",IDC_MOUSE,10,22,70,8
+    LISTBOX         IDC_MOUSE_CURSOR,10,32,48,35,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "&Font Quality",IDC_FONT_QUALITY_LABEL,93,59,70,8
+    COMBOBOX        IDC_FONT_QUALITY,167,58,80,52,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "ANSI color",IDC_ANSICOLOR,10,74,43,8
+    LISTBOX         IDC_ANSI_COLOR,10,84,28,51,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Red",IDC_RED,45,87,22,8
+    EDITTEXT        IDC_COLOR_RED,69,85,15,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "&Green",IDC_GREEN,45,104,22,8
+    EDITTEXT        IDC_COLOR_GREEN,69,102,15,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "&Blue",IDC_BLUE,45,121,22,8
+    EDITTEXT        IDC_COLOR_BLUE,69,119,15,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "SAMPLE",IDC_SAMPLE_COLOR,90,104,25,8
+    CONTROL         "Enable B&old attribute color",IDC_ENABLE_ATTR_COLOR_BOLD,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,74,105,12
+    CONTROL         "Enable B&link attribute color",IDC_ENABLE_ATTR_COLOR_BLINK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,86,105,12
+    CONTROL         "Enable Re&verse attribute color",IDC_ENABLE_ATTR_COLOR_REVERSE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,98,105,12
+    CONTROL         "Enable &URL attribute color",IDC_ENABLE_URL_COLOR,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,110,105,12
+    CONTROL         "Enable A&NSI color",IDC_ENABLE_ANSI_COLOR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,122,105,12
+    CONTROL         "Un&derline URL string",IDC_URL_UNDERLINE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,134,105,12
+    LTEXT           "(*)Need to Save setup and restart Tera Term",IDC_RESTART,5,147,247,8
+END
+
+IDD_TABSHEET_LOG DIALOGEX 0, 0, 258, 188
+STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "Tahoma", 0, 0, 0x0
+BEGIN
+    LTEXT           "View log &editor",IDC_VIEWLOG_LABEL,10,10,66,8
+    EDITTEXT        IDC_VIEWLOG_EDITOR,11,21,120,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_VIEWLOG_PATH,135,22,13,10
+    LTEXT           "Default log &file name(strftime format)",IDC_DEFAULTNAME_LABEL,10,41,139,8
+    EDITTEXT        IDC_DEFAULTNAME_EDITOR,11,52,120,12,ES_AUTOHSCROLL
+    LTEXT           "Default log &save folder",IDC_DEFAULTPATH_LABEL,10,72,139,8
+    EDITTEXT        IDC_DEFAULTPATH_EDITOR,11,83,120,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_DEFAULTPATH_PUSH,135,84,13,10
+    CONTROL         "A&uto start logging",IDC_AUTOSTART,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,102,124,10
+    GROUPBOX        "Log option",IDC_LOG_OPTION_GROUP,157,10,95,120
+    CONTROL         "Binary",IDC_OPT_BINARY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,163,24,86,10
+    CONTROL         "Append",IDC_OPT_APPEND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,163,38,86,10
+    CONTROL         "Plain text",IDC_OPT_PLAINTEXT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,163,52,86,10
+    CONTROL         "Hide dialog",IDC_OPT_HIDEDLG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,163,66,86,10
+    CONTROL         "Include screen buffer",IDC_OPT_INCBUF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,163,80,86,10
+    CONTROL         "Timestamp",IDC_OPT_TIMESTAMP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,163,94,86,10
+    COMBOBOX        IDC_OPT_TIMESTAMP_TYPE,165,108,85,60,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "",IDC_ROTATE_GROUP,5,115,139,62
+    CONTROL         "Log Rotate",IDC_LOG_ROTATE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,124,127,10
+    LTEXT           "Size",IDC_ROTATE_SIZE_TEXT,12,142,28,8
+    EDITTEXT        IDC_ROTATE_SIZE,48,139,46,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_ROTATE_SIZE_TYPE,99,139,31,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Rotate",IDC_ROTATE_STEP_TEXT,12,159,27,8
+    EDITTEXT        IDC_ROTATE_STEP,48,156,30,12,ES_AUTOHSCROLL
+END
+
+IDD_TABSHEET_CYGWIN DIALOGEX 0, 0, 258, 188
+STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "Tahoma", 0, 0, 0x0
+BEGIN
+    LTEXT           "Cygwin install &path",IDC_CYGWIN_PATH_LABEL,10,10,134,8
+    EDITTEXT        IDC_CYGWIN_PATH,10,22,64,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_SELECT_FILE,78,23,13,10
+    LTEXT           "TERM",IDC_TERM_LABEL,15,55,24,8
+    EDITTEXT        IDC_TERM_EDIT,40,53,185,14,ES_AUTOHSCROLL
+    LTEXT           "TERM_TYPE",IDC_TERMTYPE_LABEL,15,74,50,8
+    EDITTEXT        IDC_TERM_TYPE,65,72,40,14,ES_AUTOHSCROLL
+    LTEXT           "PORT START",IDC_PORTSTART_LABEL,15,93,50,8
+    EDITTEXT        IDC_PORT_START,65,91,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "PORT RANGE",IDC_PORTRANGE_LABEL,15,112,50,8
+    EDITTEXT        IDC_PORT_RANGE,65,110,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "SHELL",IDC_SHELL_LABEL,120,74,26,8
+    EDITTEXT        IDC_SHELL,147,72,78,14,ES_AUTOHSCROLL
+    GROUPBOX        "CygTerm",IDC_CYGWIN,8,42,225,100
+    LTEXT           "ENV_1",IDC_ENV1_LABEL,120,93,26,8
+    EDITTEXT        IDC_ENV1,147,91,78,14,ES_AUTOHSCROLL
+    LTEXT           "ENV_2",IDC_ENV2_LABEL,120,112,26,8
+    EDITTEXT        IDC_ENV2,147,110,78,14,ES_AUTOHSCROLL
+    CONTROL         "LOGIN_SHELL",IDC_LOGIN_SHELL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,128,60,10
+    CONTROL         "HOME_CHDIR",IDC_HOME_CHDIR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,80,128,60,10
+    CONTROL         "SSH_AGENT_PROXY",IDC_AGENT_PROXY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,145,128,80,10
+END
+
+IDD_BROADCAST_DIALOG DIALOGEX 0, 0, 252, 104
+STYLE DS_SETFONT | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Tera Term: Broadcast command"
+FONT 14, "System", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "Submit",IDOK,205,3,40,14
+    CONTROL         "Enter key",IDC_ENTERKEY_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,154,21,44,10
+    DEFPUSHBUTTON   "Close",IDCANCEL,205,30,40,14
+    CONTROL         "CRLF",IDC_RADIO_CRLF,"Button",BS_AUTORADIOBUTTON,67,21,29,10
+    GROUPBOX        "",IDC_ENTERGROUP,63,15,85,18
+    CONTROL         "CR",IDC_RADIO_CR,"Button",BS_AUTORADIOBUTTON,100,21,21,10
+    CONTROL         "LF",IDC_RADIO_LF,"Button",BS_AUTORADIOBUTTON,125,21,19,10
+    CONTROL         "History",IDC_HISTORY_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,21,47,10
+    COMBOBOX        IDC_COMMAND_EDIT,8,3,189,30,CBS_DROPDOWN | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Send to this process only",IDC_PARENT_ONLY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,36,111,10
+    CONTROL         "Realtime mode",IDC_REALTIME_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,134,36,62,10
+    LISTBOX         IDC_LIST,8,49,237,46,LBS_SORT | LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | LBS_WANTKEYBOARDINPUT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_PRNABORTDLG DIALOGEX 20, 20, 71, 43
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Tera Term"
+FONT 14, "System", 0, 0, 0x0
+BEGIN
+    CTEXT           "Printing",IDC_PRNABORT_PRINTING,17,7,37,12
+    DEFPUSHBUTTON   "Cancel",IDCANCEL,14,22,42,14
+END
+
+IDD_FILETRANSDLG DIALOGEX 20, 20, 176, 96
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CLASS "FTDlg32"
+FONT 14, "System", 0, 0, 0x0
+BEGIN
+    CONTROL         "Filename:",IDC_TRANS_FILENAME,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,15,12,38,10
+    EDITTEXT        IDC_TRANSFNAME,55,10,106,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_CLIENTEDGE
+    LTEXT           "Fullpath:",IDC_FULLPATH_LABEL,15,26,38,8
+    EDITTEXT        IDC_EDIT_FULLPATH,55,24,106,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_CLIENTEDGE
+    CONTROL         "Bytes transferred:",IDC_TRANS_TRANS,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,15,38,76,10
+    RTEXT           "",IDC_TRANSBYTES,97,38,64,10
+    CONTROL         "Elapsed time:",IDC_TRANS_ELAPSED,"Static",SS_LEFTNOWORDWRAP | NOT WS_VISIBLE,15,48,46,8
+    RTEXT           "",IDC_TRANS_ETIME,60,48,101,8
+    CONTROL         "",IDC_TRANSPROGRESS,"msctls_progress32",NOT WS_VISIBLE | WS_BORDER,15,60,146,12
+    DEFPUSHBUTTON   "Close",IDCANCEL,18,76,40,14
+    PUSHBUTTON      "Pau&se",IDC_TRANSPAUSESTART,68,76,40,14
+    PUSHBUTTON      "&Help",IDC_TRANSHELP,118,76,40,14
+END
+
+IDD_PROTDLG DIALOGEX 20, 20, 142, 95
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+FONT 14, "System", 0, 0, 0x0
+BEGIN
+    LTEXT           "Filename:",IDC_PROT_FILENAME,12,8,40,8
+    EDITTEXT        IDC_PROTOFNAME,56,6,74,11,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_CLIENTEDGE
+    LTEXT           "Protocol:",IDC_PROT_PROT,12,18,40,8
+    RTEXT           "",IDC_PROTOPROT,56,18,74,8
+    LTEXT           "Packet#:",IDC_PROT_PACKET,12,28,40,8
+    RTEXT           "",IDC_PROTOPKTNUM,90,28,40,8
+    CONTROL         "Bytes transferred:",IDC_PROT_TRANS,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,12,38,70,8
+    RTEXT           "",IDC_PROTOBYTECOUNT,90,38,40,8
+    LTEXT           "Elapsed time:",IDC_PROT_ELAPSED,12,48,46,8
+    RTEXT           "",IDC_PROTOELAPSEDTIME,60,48,70,8
+    RTEXT           "",IDC_PROTOPERCENT,104,61,26,8,0,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_PROTOPROGRESS,"msctls_progress32",NOT WS_VISIBLE | WS_BORDER | 0x1,12,58,92,14,WS_EX_TRANSPARENT
+    DEFPUSHBUTTON   "Cancel",IDCANCEL,51,77,40,14
+END
+
+IDD_CLIPBOARD_DIALOG DIALOGEX 0, 0, 216, 132
+STYLE DS_SETFONT | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Tera Term: Clipboard confirmation"
+FONT 8, "Tahoma", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,161,5,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,161,25,50,14
+    EDITTEXT        IDC_EDIT,5,5,150,112,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL | WS_HSCROLL
+END
+
+IDD_SETUP_DIR_DIALOG DIALOGEX 0, 0, 370, 211
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Setup directory"
+FONT 8, "Tahoma", 0, 0, 0x0
+BEGIN
+    GROUPBOX        "Tera Term Configuration File",IDC_INI_SETUPDIR_GROUP,7,7,355,46
+    EDITTEXT        IDC_INI_SETUPDIR_EDIT,13,17,253,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "...",IDC_INI_SETUPDIR_BUTTON,278,17,26,14
+    PUSHBUTTON      "Open File",IDC_INI_SETUPDIR_BUTTON_FILE,312,17,40,14
+    LTEXT           "Virtual Store",IDC_INI_SETUPDIR_STATIC_VSTORE,15,37,45,8
+    EDITTEXT        IDC_INI_SETUPDIR_EDIT_VSTORE,68,35,251,14,ES_AUTOHSCROLL | ES_READONLY
+    GROUPBOX        "Keyboard Configuration File",IDC_KEYCNF_SETUPDIR_GROUP,7,55,355,46
+    EDITTEXT        IDC_KEYCNF_SETUPDIR_EDIT,13,65,253,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "...",IDC_KEYCNF_SETUPDIR_BUTTON,278,65,26,14
+    PUSHBUTTON      "Open File",IDC_KEYCNF_SETUPDIR_BUTTON_FILE,312,65,40,14
+    LTEXT           "Virtual Store",IDC_KEYCNF_SETUPDIR_STATIC_VSTORE,15,85,45,8
+    EDITTEXT        IDC_KEYCNF_SETUPDIR_EDIT_VSTORE,68,83,251,14,ES_AUTOHSCROLL | ES_READONLY
+    GROUPBOX        "CygTerm Configuration File",IDC_CYGTERM_SETUPDIR_GROUP,7,103,355,46
+    EDITTEXT        IDC_CYGTERM_SETUPDIR_EDIT,13,113,253,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "...",IDC_CYGTERM_SETUPDIR_BUTTON,278,113,26,14
+    PUSHBUTTON      "Open File",IDC_CYGTERM_SETUPDIR_BUTTON_FILE,312,113,39,14
+    LTEXT           "Virtual Store",IDC_CYGTERM_SETUPDIR_STATIC_VSTORE,15,133,45,8
+    EDITTEXT        IDC_CYGTERM_SETUPDIR_EDIT_VSTORE,68,131,251,14,ES_AUTOHSCROLL | ES_READONLY
+    GROUPBOX        "SSH known_hosts File",IDC_SSH_SETUPDIR_GROUP,7,151,355,46
+    EDITTEXT        IDC_SSH_SETUPDIR_EDIT,13,161,253,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "...",IDC_SSH_SETUPDIR_BUTTON,278,161,26,14
+    PUSHBUTTON      "Open File",IDC_SSH_SETUPDIR_BUTTON_FILE,312,161,38,14
+    LTEXT           "Virtual Store",IDC_SSH_SETUPDIR_STATIC_VSTORE,15,181,45,8
+    EDITTEXT        IDC_SSH_SETUPDIR_EDIT_VSTORE,68,179,251,14,ES_AUTOHSCROLL | ES_READONLY
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DAD_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 250
+    END
+
+    IDD_COMMENT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 17
+    END
+
+    IDD_TABSHEET_GENERAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 252
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 185
+    END
+
+    IDD_TABSHEET_SEQUENCE, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 252
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 185
+    END
+
+    IDD_TABSHEET_COPYPASTE, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 252
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 185
+    END
+
+    IDD_TABSHEET_VISUAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 252
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 185
+    END
+
+    IDD_TABSHEET_LOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 252
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 185
+    END
+
+    IDD_TABSHEET_CYGWIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 252
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 185
+    END
+
+    IDD_BROADCAST_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 8
+        RIGHTMARGIN, 245
+        BOTTOMMARGIN, 102
+    END
+
+    IDD_FILETRANSDLG, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 80
+    END
+
+    IDD_CLIPBOARD_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 211
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 124
+    END
+
+    IDD_SETUP_DIR_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 362
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 204
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "..\\common\\tt_res.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""tt-version.rc""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_TTERM               ICON                    "..\\common\\teraterm.ico"
+IDI_VT                  ICON                    "..\\common\\vt.ico"
+IDI_TEK                 ICON                    "..\\common\\tek.ico"
+IDI_TTERM_CLASSIC       ICON                    "..\\common\\teraterm_classic.ico"
+IDI_VT_CLASSIC          ICON                    "..\\common\\vt_classic.ico"
+IDI_TTERM_3D            ICON                    "..\\common\\teraterm_3d.ico"
+IDI_VT_3D               ICON                    "..\\common\\vt_3d.ico"
+IDI_CYGTERM             ICON                    "..\\..\\cygterm\\cygterm.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New connection...\tAlt+N",   ID_FILE_NEWCONNECTION
+        MENUITEM "D&uplicate session\tAlt+D",   ID_FILE_DUPLICATESESSION
+        MENUITEM "Cy&gwin connection\tAlt+G",   ID_FILE_CYGWINCONNECTION
+        MENUITEM SEPARATOR
+        MENUITEM "&Log...",                     ID_FILE_LOG
+        MENUITEM "C&omment to Log...",          ID_FILE_COMMENTTOLOG
+        MENUITEM "&View Log",                   ID_FILE_VIEWLOG
+        MENUITEM "Sho&w Log dialog...",         ID_FILE_SHOWLOGDIALOG
+        MENUITEM "&Send file...",               ID_FILE_SENDFILE
+        POPUP "&Transfer"
+        BEGIN
+            POPUP "&Kermit"
+            BEGIN
+                MENUITEM "&Receive",                    ID_FILE_KERMITRCV
+                MENUITEM "&Get...",                     ID_FILE_KERMITGET
+                MENUITEM "&Send...",                    ID_FILE_KERMITSEND
+                MENUITEM "&Finish",                     ID_FILE_KERMITFINISH
+            END
+            POPUP "&XMODEM"
+            BEGIN
+                MENUITEM "&Receive...",                 ID_FILE_XRCV
+                MENUITEM "&Send...",                    ID_FILE_XSEND
+            END
+            POPUP "&YMODEM"
+            BEGIN
+                MENUITEM "&Receive...",                 ID_FILE_YRCV
+                MENUITEM "&Send...",                    ID_FILE_YSEND
+            END
+            POPUP "&ZMODEM"
+            BEGIN
+                MENUITEM "&Receive",                    ID_FILE_ZRCV
+                MENUITEM "&Send...",                    ID_FILE_ZSEND
+            END
+            POPUP "&B-Plus"
+            BEGIN
+                MENUITEM "&Receive",                    ID_FILE_BPRCV
+                MENUITEM "&Send...",                    ID_FILE_BPSEND
+            END
+            POPUP "&Quick-VAN"
+            BEGIN
+                MENUITEM "&Receive",                    ID_FILE_QVRCV
+                MENUITEM "&Send...",                    ID_FILE_QVSEND
+            END
+        END
+        MENUITEM "&Change directory...",        ID_FILE_CHANGEDIR
+        MENUITEM "&Replay Log...",              ID_FILE_REPLAYLOG
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...\tAlt+P",            ID_FILE_PRINT2
+        MENUITEM SEPARATOR
+        MENUITEM "&Disconnect\tAlt+I",          ID_FILE_DISCONNECT
+        MENUITEM "E&xit\tAlt+Q",                ID_FILE_EXIT
+        MENUITEM "Exit &All",                   ID_FILE_EXITALL
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy\tAlt+C",                ID_EDIT_COPY2
+        MENUITEM "Copy &table",                 ID_EDIT_COPYTABLE
+        MENUITEM SEPARATOR
+        MENUITEM "&Paste\tAlt+V",               ID_EDIT_PASTE2
+        MENUITEM "Paste<C&R>\tAlt+R",           ID_EDIT_PASTECR
+        MENUITEM SEPARATOR
+        MENUITEM "Clear &screen",               ID_EDIT_CLEARSCREEN
+        MENUITEM "Clear &buffer",               ID_EDIT_CLEARBUFFER
+        MENUITEM SEPARATOR
+        MENUITEM "Cancel se&lection",           ID_EDIT_CANCELSELECT
+        MENUITEM SEPARATOR
+        MENUITEM "S&elect screen",              ID_EDIT_SELECTSCREEN
+        MENUITEM "Select &all",                 ID_EDIT_SELECTALL
+    END
+    POPUP "&Setup"
+    BEGIN
+        MENUITEM "&Terminal...",                ID_SETUP_TERMINAL
+        MENUITEM "&Window...",                  ID_SETUP_WINDOW
+        MENUITEM "&Font...",                    ID_SETUP_FONT
+        MENUITEM "&Keyboard...",                ID_SETUP_KEYBOARD
+        MENUITEM "S&erial port...",             ID_SETUP_SERIALPORT
+        MENUITEM "T&CP/IP...",                  ID_SETUP_TCPIP
+        MENUITEM "&General...",                 ID_SETUP_GENERAL
+        MENUITEM "A&dditional settings...",     ID_SETUP_ADDITIONALSETTINGS
+        MENUITEM SEPARATOR
+        MENUITEM "&Save setup...",              ID_SETUP_SAVE
+        MENUITEM "&Restore setup...",           ID_SETUP_RESTORE
+        MENUITEM "Setup d&irectory...",         ID_OPEN_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "&Load key map...",            ID_SETUP_LOADKEYMAP
+    END
+    POPUP "C&ontrol"
+    BEGIN
+        MENUITEM "&Reset terminal",             ID_CONTROL_RESETTERMINAL
+        MENUITEM "R&eset remote title",         ID_CONTROL_RESETREMOTETITLE
+        MENUITEM SEPARATOR
+        MENUITEM "Are you &there\tAlt+T",       ID_CONTROL_AREYOUTHERE
+        MENUITEM "&Send break\tAlt+B",          ID_CONTROL_SENDBREAK
+        MENUITEM "Reset &port",                 ID_CONTROL_RESETPORT
+        MENUITEM "&Broadcast command",          ID_CONTROL_BROADCASTCOMMAND
+        MENUITEM SEPARATOR
+        MENUITEM "&Open TEK",                   ID_CONTROL_OPENTEK
+        MENUITEM "&Close TEK",                  ID_CONTROL_CLOSETEK
+        MENUITEM SEPARATOR
+        MENUITEM "&Macro",                      ID_CONTROL_MACRO
+        MENUITEM "Show Macro &Window",          ID_CONTROL_SHOW_MACRO
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Index",                      ID_HELP_INDEX2
+        MENUITEM SEPARATOR
+        MENUITEM "&About Tera Term...",         ID_HELP_ABOUT
+    END
+END
+
+IDR_TEKMENU MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Print...\tAlt+P",            ID_TEKFILE_PRINT
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit\tAlt+Q",                ID_TEKFILE_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy\tAlt+C",                ID_TEKEDIT_COPY
+        MENUITEM "Copy &screen",                ID_TEKEDIT_COPYSCREEN
+        MENUITEM "&Paste\tAlt+V",               ID_TEKEDIT_PASTE
+        MENUITEM "Paste<C&R>\tAlt+R",           ID_TEKEDIT_PASTECR
+        MENUITEM SEPARATOR
+        MENUITEM "C&lear screen",               ID_TEKEDIT_CLEARSCREEN
+    END
+    POPUP "&Setup"
+    BEGIN
+        MENUITEM "&Window...",                  ID_TEKSETUP_WINDOW
+        MENUITEM "&Font...",                    ID_TEKSETUP_FONT
+    END
+    MENUITEM "VT-wind&ow",                  ID_TEKVTWIN
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Index",                      ID_TEKHELP_INDEX
+        MENUITEM SEPARATOR
+        MENUITEM "&About Tera Term...",         ID_TEKHELP_ABOUT
+    END
+END
+
+IDR_PASTEMENU MENU 
+BEGIN
+    MENUITEM "&Paste",                      ID_EDIT_PASTE2
+    MENUITEM "Paste<C&R>",                  ID_EDIT_PASTECR
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACC ACCELERATORS 
+BEGIN
+    "T",            ID_ACC_AREYOUTHERE,     VIRTKEY, ALT, NOINVERT
+    "C",            ID_ACC_COPY,            VIRTKEY, ALT, NOINVERT
+    "Q",            ID_ACC_EXIT,            VIRTKEY, ALT, NOINVERT
+    "N",            ID_ACC_NEWCONNECTION,   VIRTKEY, ALT, NOINVERT
+    "V",            ID_ACC_PASTE,           VIRTKEY, ALT, NOINVERT
+    "R",            ID_ACC_PASTECR,         VIRTKEY, ALT, NOINVERT
+    "P",            ID_ACC_PRINT,           VIRTKEY, ALT, NOINVERT
+    "B",            ID_ACC_SENDBREAK,       VIRTKEY, ALT, NOINVERT
+    "G",            ID_ACC_CYGWINCONNECTION, VIRTKEY, ALT, NOINVERT
+    "D",            ID_ACC_DUPLICATESESSION, VIRTKEY, ALT, NOINVERT
+    "I",            ID_ACC_DISCONNECT,      VIRTKEY, ALT, NOINVERT
+END
+
+#endif    // âpåÍ (ïƒçë) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "tt-version.rc"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
