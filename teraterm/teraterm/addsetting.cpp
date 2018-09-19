@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2017 TeraTerm Project
+ * Copyright (C) 2008-2018 TeraTerm Project
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,8 +41,9 @@
 #include "ttwinman.h"
 #include "ttcommon.h"
 #include "ttftypes.h"
+#include "dlglib.h"
 
-mouse_cursor_t MouseCursor[] = {
+const mouse_cursor_t MouseCursor[] = {
 	{"ARROW", IDC_ARROW},
 	{"IBEAM", IDC_IBEAM},
 	{"CROSS", IDC_CROSS},
@@ -50,10 +51,6 @@ mouse_cursor_t MouseCursor[] = {
 	{NULL, NULL},
 };
 #define MOUSE_CURSOR_MAX (sizeof(MouseCursor)/sizeof(MouseCursor[0]) - 1)
-
-// 本体は vtwin.cpp
-extern void SetWindowStyle(TTTSet *ts);
-
 
 static void SetupRGBbox(HWND hDlgWnd, int index)
 {
@@ -102,9 +99,25 @@ END_MESSAGE_MAP()
 
 BOOL CGeneralPropPageDlg::OnInitDialog()
 {
-	char uimsg[MAX_UIMSG];
 	char buf[64];
 	CButton *btn;
+	static const DlgTextInfo TextInfos[] = {
+		{ IDC_CLICKABLE_URL, "DLG_TAB_GENERAL_CLICKURL" },
+		{ IDC_DISABLE_SENDBREAK, "DLG_TAB_GENERAL_DISABLESENDBREAK" },
+		{ IDC_ACCEPT_BROADCAST, "DLG_TAB_GENERAL_ACCEPTBROADCAST" },
+		{ IDC_MOUSEWHEEL_SCROLL_LINE, "DLG_TAB_GENERAL_MOUSEWHEEL_SCROLL_LINE" },
+		{ IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE, "DLG_TAB_GENERAL_AUTOSCROLL_ONLY_IN_BOTTOM_LINE" },
+		{ IDC_CLEAR_ON_RESIZE, "DLG_TAB_GENERAL_CLEAR_ON_RESIZE" },
+		{ IDC_CURSOR_CHANGE_IME, "DLG_TAB_GENERAL_CURSOR_CHANGE_IME" },
+		{ IDC_LIST_HIDDEN_FONTS, "DLG_TAB_GENERAL_LIST_HIDDEN_FONTS" },
+		{ IDC_TITLEFMT_GROUP, "DLG_TAB_GENERAL_TITLEFMT_GROUP" },
+		{ IDC_TITLEFMT_DISPHOSTNAME, "DLG_TAB_GENERAL_TITLEFMT_DISPHOSTNAME" },
+		{ IDC_TITLEFMT_DISPSESSION, "DLG_TAB_GENERAL_TITLEFMT_DISPSESSION" },
+		{ IDC_TITLEFMT_DISPVTTEK, "DLG_TAB_GENERAL_TITLEFMT_DISPVTTEK" },
+		{ IDC_TITLEFMT_SWAPHOSTTITLE, "DLG_TAB_GENERAL_TITLEFMT_SWAPHOSTTITLE" },
+		{ IDC_TITLEFMT_DISPTCPPORT, "DLG_TAB_GENERAL_TITLEFMT_DISPTCPPORT" },
+		{ IDC_TITLEFMT_DISPSERIALSPEED, "DLG_TAB_GENERAL_TITLEFMT_DISPSERIALSPEED" }
+	};
 
 	CPropertyPage::OnInitDialog();
 
@@ -132,52 +145,7 @@ BOOL CGeneralPropPageDlg::OnInitDialog()
 		DlgGeneralFont = NULL;
 	}
 
-	GetDlgItemText(IDC_CLICKABLE_URL, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_CLICKURL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_CLICKABLE_URL, ts.UIMsg);
-	GetDlgItemText(IDC_DISABLE_SENDBREAK, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_DISABLESENDBREAK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_DISABLE_SENDBREAK, ts.UIMsg);
-	GetDlgItemText(IDC_ACCEPT_BROADCAST, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_ACCEPTBROADCAST", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_ACCEPT_BROADCAST, ts.UIMsg);
-	GetDlgItemText(IDC_MOUSEWHEEL_SCROLL_LINE, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_MOUSEWHEEL_SCROLL_LINE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_MOUSEWHEEL_SCROLL_LINE, ts.UIMsg);
-	GetDlgItemText(IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_AUTOSCROLL_ONLY_IN_BOTTOM_LINE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_AUTOSCROLL_ONLY_IN_BOTTOM_LINE, ts.UIMsg);
-	GetDlgItemText(IDC_CLEAR_ON_RESIZE, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_CLEAR_ON_RESIZE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_CLEAR_ON_RESIZE, ts.UIMsg);
-	GetDlgItemText(IDC_CURSOR_CHANGE_IME, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_CURSOR_CHANGE_IME", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_CURSOR_CHANGE_IME, ts.UIMsg);
-	GetDlgItemText(IDC_LIST_HIDDEN_FONTS, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_LIST_HIDDEN_FONTS", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_LIST_HIDDEN_FONTS, ts.UIMsg);
-
-	GetDlgItemText(IDC_TITLEFMT_GROUP, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_TITLEFMT_GROUP", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_TITLEFMT_GROUP, ts.UIMsg);
-	GetDlgItemText(IDC_TITLEFMT_DISPHOSTNAME, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_TITLEFMT_DISPHOSTNAME", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_TITLEFMT_DISPHOSTNAME, ts.UIMsg);
-	GetDlgItemText(IDC_TITLEFMT_DISPSESSION, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_TITLEFMT_DISPSESSION", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_TITLEFMT_DISPSESSION, ts.UIMsg);
-	GetDlgItemText(IDC_TITLEFMT_DISPVTTEK, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_TITLEFMT_DISPVTTEK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_TITLEFMT_DISPVTTEK, ts.UIMsg);
-	GetDlgItemText(IDC_TITLEFMT_SWAPHOSTTITLE, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_TITLEFMT_SWAPHOSTTITLE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_TITLEFMT_SWAPHOSTTITLE, ts.UIMsg);
-	GetDlgItemText(IDC_TITLEFMT_DISPTCPPORT, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_TITLEFMT_DISPTCPPORT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_TITLEFMT_DISPTCPPORT, ts.UIMsg);
-	GetDlgItemText(IDC_TITLEFMT_DISPSERIALSPEED, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_GENERAL_TITLEFMT_DISPSERIALSPEED", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_TITLEFMT_DISPSERIALSPEED, ts.UIMsg);
+	SetDlgTexts(m_hWnd, TextInfos, _countof(TextInfos), ts.UILanguageFile);
 
 	// (1)DisableAcceleratorSendBreak
 	btn = (CButton *)GetDlgItem(IDC_DISABLE_SENDBREAK);
@@ -320,9 +288,22 @@ END_MESSAGE_MAP()
 
 BOOL CSequencePropPageDlg::OnInitDialog()
 {
-	char uimsg[MAX_UIMSG];
 	CButton *btn, *btn2;
 	CComboBox *cmb;
+	static const DlgTextInfo TextInfos[] = {
+		{ IDC_ACCEPT_MOUSE_EVENT_TRACKING, "DLG_TAB_SEQUENCE_ACCEPT_MOUSE_EVENT_TRACKING" },
+		{ IDC_DISABLE_MOUSE_TRACKING_CTRL, "DLG_TAB_SEQUENCE_DISABLE_MOUSE_TRACKING_CTRL" },
+		{ IDC_ACCEPT_TITLE_CHANGING_LABEL, "DLG_TAB_SEQUENCE_ACCEPT_TITLE_CHANGING" },
+
+		{ IDC_CURSOR_CTRL_SEQ, "DLG_TAB_SEQUENCE_CURSOR_CTRL" },
+		{ IDC_WINDOW_CTRL, "DLG_TAB_SEQUENCE_WINDOW_CTRL" },
+		{ IDC_WINDOW_REPORT, "DLG_TAB_SEQUENCE_WINDOW_REPORT" },
+		{ IDC_TITLE_REPORT_LABEL, "DLG_TAB_SEQUENCE_TITLE_REPORT" },
+
+		{ IDC_CLIPBOARD_ACCESS_LABEL, "DLG_TAB_SEQUENCE_CLIPBOARD_ACCESS" },
+
+		{ IDC_CLIPBOARD_NOTIFY, "DLG_TAB_SEQUENCE_CLIPBOARD_NOTIFY" },
+	};
 
 	CPropertyPage::OnInitDialog();
 
@@ -346,15 +327,7 @@ BOOL CSequencePropPageDlg::OnInitDialog()
 		DlgSequenceFont = NULL;
 	}
 
-	GetDlgItemText(IDC_ACCEPT_MOUSE_EVENT_TRACKING, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_SEQUENCE_ACCEPT_MOUSE_EVENT_TRACKING", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_ACCEPT_MOUSE_EVENT_TRACKING, ts.UIMsg);
-	GetDlgItemText(IDC_DISABLE_MOUSE_TRACKING_CTRL, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_SEQUENCE_DISABLE_MOUSE_TRACKING_CTRL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_DISABLE_MOUSE_TRACKING_CTRL, ts.UIMsg);
-	GetDlgItemText(IDC_ACCEPT_TITLE_CHANGING_LABEL, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_SEQUENCE_ACCEPT_TITLE_CHANGING", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_ACCEPT_TITLE_CHANGING_LABEL, ts.UIMsg);
+	SetDlgTexts(m_hWnd, TextInfos, _countof(TextInfos), ts.UILanguageFile);
 
 	get_lang_msg("DLG_TAB_SEQUENCE_ACCEPT_TITLE_CHANGING_OFF", ts.UIMsg, sizeof(ts.UIMsg), "off", ts.UILanguageFile);
 	SendDlgItemMessage(IDC_ACCEPT_TITLE_CHANGING, CB_ADDSTRING, 0, (LPARAM)ts.UIMsg);
@@ -365,29 +338,12 @@ BOOL CSequencePropPageDlg::OnInitDialog()
 	get_lang_msg("DLG_TAB_SEQUENCE_ACCEPT_TITLE_CHANGING_LAST", ts.UIMsg, sizeof(ts.UIMsg), "last", ts.UILanguageFile);
 	SendDlgItemMessage(IDC_ACCEPT_TITLE_CHANGING, CB_ADDSTRING, 0, (LPARAM)ts.UIMsg);
 
-	GetDlgItemText(IDC_CURSOR_CTRL_SEQ, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_SEQUENCE_CURSOR_CTRL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_CURSOR_CTRL_SEQ, ts.UIMsg);
-	GetDlgItemText(IDC_WINDOW_CTRL, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_SEQUENCE_WINDOW_CTRL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_WINDOW_CTRL, ts.UIMsg);
-	GetDlgItemText(IDC_WINDOW_REPORT, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_SEQUENCE_WINDOW_REPORT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_WINDOW_REPORT, ts.UIMsg);
-	GetDlgItemText(IDC_TITLE_REPORT_LABEL, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_SEQUENCE_TITLE_REPORT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_TITLE_REPORT_LABEL, ts.UIMsg);
-
 	get_lang_msg("DLG_TAB_SEQUENCE_TITLE_REPORT_IGNORE", ts.UIMsg, sizeof(ts.UIMsg), "ignore", ts.UILanguageFile);
 	SendDlgItemMessage(IDC_TITLE_REPORT, CB_ADDSTRING, 0, (LPARAM)ts.UIMsg);
 	get_lang_msg("DLG_TAB_SEQUENCE_TITLE_REPORT_ACCEPT", ts.UIMsg, sizeof(ts.UIMsg), "accept", ts.UILanguageFile);
 	SendDlgItemMessage(IDC_TITLE_REPORT, CB_ADDSTRING, 0, (LPARAM)ts.UIMsg);
 	get_lang_msg("DLG_TAB_SEQUENCE_TITLE_REPORT_EMPTY", ts.UIMsg, sizeof(ts.UIMsg), "empty", ts.UILanguageFile);
 	SendDlgItemMessage(IDC_TITLE_REPORT, CB_ADDSTRING, 0, (LPARAM)ts.UIMsg);
-
-	GetDlgItemText(IDC_CLIPBOARD_ACCESS_LABEL, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_SEQUENCE_CLIPBOARD_ACCESS", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_CLIPBOARD_ACCESS_LABEL, ts.UIMsg);
 
 	get_lang_msg("DLG_TAB_SEQUENCE_CLIPBOARD_ACCESS_OFF", ts.UIMsg, sizeof(ts.UIMsg), "off", ts.UILanguageFile);
 	SendDlgItemMessage(IDC_CLIPBOARD_ACCESS, CB_ADDSTRING, 0, (LPARAM)ts.UIMsg);
@@ -397,10 +353,6 @@ BOOL CSequencePropPageDlg::OnInitDialog()
 	SendDlgItemMessage(IDC_CLIPBOARD_ACCESS, CB_ADDSTRING, 0, (LPARAM)ts.UIMsg);
 	get_lang_msg("DLG_TAB_SEQUENCE_CLIPBOARD_ACCESS_ON", ts.UIMsg, sizeof(ts.UIMsg), "read/write", ts.UILanguageFile);
 	SendDlgItemMessage(IDC_CLIPBOARD_ACCESS, CB_ADDSTRING, 0, (LPARAM)ts.UIMsg);
-
-	GetDlgItemText(IDC_CLIPBOARD_NOTIFY, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_SEQUENCE_CLIPBOARD_NOTIFY", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_CLIPBOARD_NOTIFY, ts.UIMsg);
 
 	// (1)IDC_ACCEPT_MOUSE_EVENT_TRACKING
 	btn = (CButton *)GetDlgItem(IDC_ACCEPT_MOUSE_EVENT_TRACKING);
@@ -603,10 +555,23 @@ END_MESSAGE_MAP()
 
 BOOL CCopypastePropPageDlg::OnInitDialog()
 {
-	char uimsg[MAX_UIMSG];
 	CButton *btn, *btn2;
 	CEdit *edit;
 	char buf[64];
+	static const DlgTextInfo TextInfos[] = {
+		{ IDC_LINECOPY, "DLG_TAB_COPYPASTE_CONTINUE" },
+		{ IDC_DISABLE_PASTE_RBUTTON, "DLG_TAB_COPYPASTE_MOUSEPASTE" },
+		{ IDC_CONFIRM_PASTE_RBUTTON, "DLG_TAB_COPYPASTE_CONFIRMPASTE" },
+		{ IDC_DISABLE_PASTE_MBUTTON, "DLG_TAB_COPYPASTE_MOUSEPASTEM" },
+		{ IDC_SELECT_LBUTTON, "DLG_TAB_COPYPASTE_SELECTLBUTTON" },
+		{ IDC_TRIMNLCHAR, "DLG_TAB_COPYPASTE_TRIM_TRAILING_NL" },
+		{ IDC_NORMALIZE_LINEBREAK, "DLG_TAB_COPYPASTE_NORMALIZE_LINEBREAK" },
+		{ IDC_CONFIRM_CHANGE_PASTE, "DLG_TAB_COPYPASTE_CONFIRM_CHANGE_PASTE" },
+		{ IDC_CONFIRM_STRING_FILE_LABEL, "DLG_TAB_COPYPASTE_STRINGFILE" },
+		{ IDC_DELIMITER, "DLG_TAB_COPYPASTE_DELIMITER" },
+		{ IDC_PASTEDELAY_LABEL, "DLG_TAB_COPYPASTE_PASTEDELAY" },
+		{ IDC_PASTEDELAY_LABEL2, "DLG_TAB_COPYPASTE_PASTEDELAY2" }
+	};
 
 	CPropertyPage::OnInitDialog();
 
@@ -634,42 +599,7 @@ BOOL CCopypastePropPageDlg::OnInitDialog()
 		DlgCopypasteFont = NULL;
 	}
 
-	GetDlgItemText(IDC_LINECOPY, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_COPYPASTE_CONTINUE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_LINECOPY, ts.UIMsg);
-	GetDlgItemText(IDC_DISABLE_PASTE_RBUTTON, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_COPYPASTE_MOUSEPASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_DISABLE_PASTE_RBUTTON, ts.UIMsg);
-	GetDlgItemText(IDC_CONFIRM_PASTE_RBUTTON, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_COPYPASTE_CONFIRMPASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_CONFIRM_PASTE_RBUTTON, ts.UIMsg);
-	GetDlgItemText(IDC_DISABLE_PASTE_MBUTTON, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_COPYPASTE_MOUSEPASTEM", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_DISABLE_PASTE_MBUTTON, ts.UIMsg);
-	GetDlgItemText(IDC_SELECT_LBUTTON, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_COPYPASTE_SELECTLBUTTON", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_SELECT_LBUTTON, ts.UIMsg);
-	GetDlgItemText(IDC_TRIMNLCHAR, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_COPYPASTE_TRIM_TRAILING_NL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_TRIMNLCHAR, ts.UIMsg);
-	GetDlgItemText(IDC_NORMALIZE_LINEBREAK, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_COPYPASTE_NORMALIZE_LINEBREAK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_NORMALIZE_LINEBREAK, ts.UIMsg);
-	GetDlgItemText(IDC_CONFIRM_CHANGE_PASTE, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_COPYPASTE_CONFIRM_CHANGE_PASTE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_CONFIRM_CHANGE_PASTE, ts.UIMsg);
-	GetDlgItemText(IDC_CONFIRM_STRING_FILE_LABEL, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_COPYPASTE_STRINGFILE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_CONFIRM_STRING_FILE_LABEL, ts.UIMsg);
-	GetDlgItemText(IDC_DELIMITER, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_COPYPASTE_DELIMITER", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_DELIMITER, ts.UIMsg);
-	GetDlgItemText(IDC_PASTEDELAY_LABEL, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_COPYPASTE_PASTEDELAY", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_PASTEDELAY_LABEL, ts.UIMsg);
-	GetDlgItemText(IDC_PASTEDELAY_LABEL2, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_COPYPASTE_PASTEDELAY2", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_PASTEDELAY_LABEL2, ts.UIMsg);
+	SetDlgTexts(m_hWnd, TextInfos, _countof(TextInfos), ts.UILanguageFile);
 
 	// (1)Enable continued-line copy
 	btn = (CButton *)GetDlgItem(IDC_LINECOPY);
@@ -888,6 +818,7 @@ CVisualPropPageDlg::~CVisualPropPageDlg()
 }
 
 BEGIN_MESSAGE_MAP(CVisualPropPageDlg, CPropertyPage)
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 // CVisualPropPageDlg メッセージ ハンドラ
@@ -895,11 +826,31 @@ END_MESSAGE_MAP()
 BOOL CVisualPropPageDlg::OnInitDialog()
 {
 	char buf[MAXPATHLEN];
-	char uimsg[MAX_UIMSG];
 	CListBox *listbox;
 	CButton *btn;
 	CComboBox *cmb;
 	int i;
+	static const DlgTextInfo TextInfos[] = {
+		{ IDC_ALPHABLEND, "DLG_TAB_VISUAL_ALPHA" },
+		{ IDC_ALPHA_BLEND_ACTIVE_LABEL, "DLG_TAB_VISUAL_ALPHA_ACTIVE_LABEL" },
+		{ IDC_ALPHA_BLEND_INACTIVE_LABEL, "DLG_TAB_VISUAL_ALPHA_INACTIVE_LABEL" },
+		{ IDC_ETERM_LOOKFEEL, "DLG_TAB_VISUAL_ETERM" },
+		{ IDC_BGIMG_CHECK, "DLG_TAB_VISUAL_BGIMG" },
+		{ IDC_BGIMG_BRIGHTNESS, "DLG_TAB_VISUAL_BGIMG_BRIGHTNESS" },
+		{ IDC_MOUSE, "DLG_TAB_VISUAL_MOUSE" },
+		{ IDC_FONT_QUALITY_LABEL, "DLG_TAB_VISUAL_FONT_QUALITY" },
+		{ IDC_ANSICOLOR, "DLG_TAB_VISUAL_ANSICOLOR" },
+		{ IDC_RED, "DLG_TAB_VISUAL_RED" },
+		{ IDC_GREEN, "DLG_TAB_VISUAL_GREEN" },
+		{ IDC_BLUE, "DLG_TAB_VISUAL_BLUE" },
+		{ IDC_ENABLE_ATTR_COLOR_BOLD, "DLG_TAB_VISUAL_BOLD" },
+		{ IDC_ENABLE_ATTR_COLOR_BLINK, "DLG_TAB_VISUAL_BLINK" },
+		{ IDC_ENABLE_ATTR_COLOR_REVERSE, "DLG_TAB_VISUAL_REVERSE" },
+		{ IDC_ENABLE_URL_COLOR, "DLG_TAB_VISUAL_URL" },
+		{ IDC_ENABLE_ANSI_COLOR, "DLG_TAB_VISUAL_ANSI" },
+		{ IDC_URL_UNDERLINE, "DLG_TAB_VISUAL_URLUL" },
+		{ IDC_RESTART, "DLG_TAB_VISUAL_RESTART" },
+	};
 
 	CPropertyPage::OnInitDialog();
 
@@ -907,7 +858,10 @@ BOOL CVisualPropPageDlg::OnInitDialog()
 	GetObject(font, sizeof(LOGFONT), &logfont);
 	if (get_lang_font("DLG_TAHOMA_FONT", GetSafeHwnd(), &logfont, &DlgVisualFont, ts.UILanguageFile)) {
 		SendDlgItemMessage(IDC_ALPHABLEND, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
-		SendDlgItemMessage(IDC_ALPHA_BLEND, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_ALPHA_BLEND_ACTIVE, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_ALPHA_BLEND_INACTIVE, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_ALPHA_BLEND_ACTIVE_LABEL, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
+		SendDlgItemMessage(IDC_ALPHA_BLEND_INACTIVE_LABEL, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_ETERM_LOOKFEEL, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_MOUSE, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
 		SendDlgItemMessage(IDC_MOUSE_CURSOR, WM_SETFONT, (WPARAM)DlgVisualFont, MAKELPARAM(TRUE,0));
@@ -939,57 +893,7 @@ BOOL CVisualPropPageDlg::OnInitDialog()
 		DlgVisualFont = NULL;
 	}
 
-	GetDlgItemText(IDC_ALPHABLEND, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_ALPHA", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_ALPHABLEND, ts.UIMsg);
-	GetDlgItemText(IDC_ETERM_LOOKFEEL, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_ETERM", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_ETERM_LOOKFEEL, ts.UIMsg);
-	GetDlgItemText(IDC_BGIMG_CHECK, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_BGIMG", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_BGIMG_CHECK, ts.UIMsg);
-	GetDlgItemText(IDC_BGIMG_BRIGHTNESS, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_BGIMG_BRIGHTNESS", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_BGIMG_BRIGHTNESS, ts.UIMsg);
-	GetDlgItemText(IDC_MOUSE, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_MOUSE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_MOUSE, ts.UIMsg);
-	GetDlgItemText(IDC_FONT_QUALITY_LABEL, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_FONT_QUALITY", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_FONT_QUALITY_LABEL, ts.UIMsg);
-	GetDlgItemText(IDC_ANSICOLOR, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_ANSICOLOR", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_ANSICOLOR, ts.UIMsg);
-	GetDlgItemText(IDC_RED, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_RED", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_RED, ts.UIMsg);
-	GetDlgItemText(IDC_GREEN, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_GREEN", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_GREEN, ts.UIMsg);
-	GetDlgItemText(IDC_BLUE, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_BLUE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_BLUE, ts.UIMsg);
-	GetDlgItemText(IDC_ENABLE_ATTR_COLOR_BOLD, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_BOLD", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_ENABLE_ATTR_COLOR_BOLD, ts.UIMsg);
-	GetDlgItemText(IDC_ENABLE_ATTR_COLOR_BLINK, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_BLINK", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_ENABLE_ATTR_COLOR_BLINK, ts.UIMsg);
-	GetDlgItemText(IDC_ENABLE_ATTR_COLOR_REVERSE, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_REVERSE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_ENABLE_ATTR_COLOR_REVERSE, ts.UIMsg);
-	GetDlgItemText(IDC_ENABLE_URL_COLOR, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_URL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_ENABLE_URL_COLOR, ts.UIMsg);
-	GetDlgItemText(IDC_ENABLE_ANSI_COLOR, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_ANSI", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_ENABLE_ANSI_COLOR, ts.UIMsg);
-	GetDlgItemText(IDC_URL_UNDERLINE, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_URLUL", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_URL_UNDERLINE, ts.UIMsg);
-	GetDlgItemText(IDC_RESTART, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_VISUAL_RESTART", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_RESTART, ts.UIMsg);
+	SetDlgTexts(m_hWnd, TextInfos, _countof(TextInfos), ts.UILanguageFile);
 
 	get_lang_msg("DLG_TAB_VISUAL_FONT_QUALITY_DEFAULT", ts.UIMsg, sizeof(ts.UIMsg), "Default", ts.UILanguageFile);
 	SendDlgItemMessage(IDC_FONT_QUALITY, CB_ADDSTRING, 0, (LPARAM)ts.UIMsg);
@@ -1001,8 +905,10 @@ BOOL CVisualPropPageDlg::OnInitDialog()
 	SendDlgItemMessage(IDC_FONT_QUALITY, CB_ADDSTRING, 0, (LPARAM)ts.UIMsg);
 
 	// (1)AlphaBlend
-	_snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d", ts.AlphaBlend);
-	SetDlgItemText(IDC_ALPHA_BLEND, buf);
+	_snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d", ts.AlphaBlendActive);
+	SetDlgItemText(IDC_ALPHA_BLEND_ACTIVE, buf);
+	_snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d", ts.AlphaBlendInactive);
+	SetDlgItemText(IDC_ALPHA_BLEND_INACTIVE, buf);
 
 	// (2)[BG] BGEnable
 	btn = (CButton *)GetDlgItem(IDC_ETERM_LOOKFEEL);
@@ -1043,11 +949,16 @@ BOOL CVisualPropPageDlg::OnInitDialog()
 	}
 
 	// (3)Mouse cursor type
-	listbox = (CListBox *)GetDlgItem(IDC_MOUSE_CURSOR);
+	int sel = 0;
 	for (i = 0 ; MouseCursor[i].name ; i++) {
-		listbox->InsertString(i, MouseCursor[i].name);
+		const TCHAR *name = MouseCursor[i].name;
+		SendDlgItemMessage(IDC_MOUSE_CURSOR, CB_ADDSTRING, 0, (LPARAM)name);
+		if (_tcscmp(name, ts.MouseCursorName) == 0) {
+			sel = i;
+		}
 	}
-	listbox->SelectString(0, ts.MouseCursorName);
+	cmb = (CComboBox *)GetDlgItem(IDC_MOUSE_CURSOR);
+	cmb->SetCurSel(sel);
 
 	// (4)Font quality
 	cmb = (CComboBox *)GetDlgItem(IDC_FONT_QUALITY);
@@ -1104,7 +1015,7 @@ BOOL CVisualPropPageDlg::OnInitDialog()
 	btn->SetCheck((ts.FontFlag&FF_URLUNDERLINE) != 0);
 
 	// ダイアログにフォーカスを当てる
-	::SetFocus(::GetDlgItem(GetSafeHwnd(), IDC_ALPHA_BLEND));
+	::SetFocus(::GetDlgItem(GetSafeHwnd(), IDC_ALPHA_BLEND_ACTIVE));
 
 	return FALSE;
 }
@@ -1194,11 +1105,7 @@ BOOL CVisualPropPageDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 			sel = listbox->GetCurSel();
 			if (sel != -1) {
 				SetupRGBbox(GetSafeHwnd(), sel);
-#if 0
-				SendMessage(WM_CTLCOLORSTATIC,
-				            (WPARAM)label_hdc,
-				            (LPARAM)GetDlgItem(IDC_SAMPLE_COLOR));
-#endif
+				GetDlgItem(IDC_SAMPLE_COLOR)->Invalidate(TRUE);
 			}
 			return TRUE;
 
@@ -1227,75 +1134,60 @@ BOOL CVisualPropPageDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 
 				// 255を超えたRGB値は補正されるので、それをEditに表示する (2007.2.18 maya)
 				SetupRGBbox(GetSafeHwnd(), sel);
-#if 0
-				SendMessage(WM_CTLCOLORSTATIC,
-				            (WPARAM)label_hdc,
-				            (LPARAM)GetDlgItem(IDC_SAMPLE_COLOR));
-#endif
+
+				GetDlgItem(IDC_SAMPLE_COLOR)->Invalidate(TRUE);
 			}
 
 			return TRUE;
-#if 0
-		case WM_CTLCOLORSTATIC:
-			{
-				HDC hDC = (HDC)wp;
-				HWND hWnd = (HWND)lp;
-
-				//if (label_hdc == NULL) {
-					hDC = GetWindowDC(GetDlgItem(hDlgWnd, IDC_SAMPLE_COLOR));
-				//	label_hdc = hDC;
-				//}
-
-				if ( hWnd == GetDlgItem(hDlgWnd, IDC_SAMPLE_COLOR) ) {
-					BYTE r, g, b;
-
-					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_RED);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
-					r = atoi(buf);
-
-					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_GREEN);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
-					g = atoi(buf);
-
-					hWnd = GetDlgItem(hDlgWnd, IDC_COLOR_BLUE);
-					SendMessage(hWnd, WM_GETTEXT , sizeof(buf), (LPARAM)buf);
-					b = atoi(buf);
-
-					OutputDebugPrintf("%06x\n", RGB(r, g, b));
-
-					SetBkMode(hDC, TRANSPARENT);
-					SetTextColor(hDC, RGB(r, g, b) );
-					ReleaseDC(hDlgWnd, hDC);
-
-					return (BOOL)(HBRUSH)GetStockObject(NULL_BRUSH);
-				}
-				return FALSE;
-			}
-			break ;
-#endif
 	}
 
 	return CPropertyPage::OnCommand(wParam, lParam);
 }
 
+HBRUSH CVisualPropPageDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	if(pWnd->m_hWnd==GetDlgItem(IDC_SAMPLE_COLOR)->m_hWnd){
+		BYTE r, g, b;
+		char buf[8];
+
+		GetDlgItemText(IDC_COLOR_RED, buf, sizeof(buf));
+		r = atoi(buf);
+
+		GetDlgItemText(IDC_COLOR_GREEN, buf, sizeof(buf));
+		g = atoi(buf);
+
+		GetDlgItemText(IDC_COLOR_BLUE, buf, sizeof(buf));
+		b = atoi(buf);
+
+		pDC->SetBkMode(TRANSPARENT);
+		pDC->SetTextColor(RGB(r, g, b));
+
+		return (HBRUSH)GetStockObject(NULL_BRUSH);
+	}
+	return CPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
+}
+
 void CVisualPropPageDlg::OnOK()
 {
-	CListBox *listbox;
 	CButton *btn;
 	CComboBox *cmb;
 	int sel;
-	int beforeAlphaBlend;
 	char buf[MAXPATHLEN];
 	COLORREF TmpColor;
 	int flag_changed = 0;
 
 	// (1)
-	beforeAlphaBlend = ts.AlphaBlend;
-	GetDlgItemText(IDC_ALPHA_BLEND, buf, sizeof(buf));
+	GetDlgItemText(IDC_ALPHA_BLEND_ACTIVE, buf, sizeof(buf));
 	if (isdigit(buf[0])) {
-		ts.AlphaBlend = atoi(buf);
-		ts.AlphaBlend = max(0, ts.AlphaBlend);
-		ts.AlphaBlend = min(255, ts.AlphaBlend);
+		ts.AlphaBlendActive = atoi(buf);
+		ts.AlphaBlendActive = max(0, ts.AlphaBlendActive);
+		ts.AlphaBlendActive = min(255, ts.AlphaBlendActive);
+	}
+	GetDlgItemText(IDC_ALPHA_BLEND_INACTIVE, buf, sizeof(buf));
+	if (isdigit(buf[0])) {
+		ts.AlphaBlendInactive = atoi(buf);
+		ts.AlphaBlendInactive = max(0, ts.AlphaBlendInactive);
+		ts.AlphaBlendInactive = min(255, ts.AlphaBlendInactive);
 	}
 
 	// (2)
@@ -1321,8 +1213,8 @@ void CVisualPropPageDlg::OnOK()
 	}
 
 	// (3)
-	listbox = (CListBox *)GetDlgItem(IDC_MOUSE_CURSOR);
-	sel = listbox->GetCurSel();
+	cmb = (CComboBox *)GetDlgItem(IDC_MOUSE_CURSOR);
+	sel = cmb->GetCurSel();
 	if (sel >= 0 && sel < MOUSE_CURSOR_MAX) {
 		strncpy_s(ts.MouseCursorName, sizeof(ts.MouseCursorName), MouseCursor[sel].name, _TRUNCATE);
 	}
@@ -1402,17 +1294,6 @@ void CVisualPropPageDlg::OnOK()
 		ts.FontFlag ^= FF_URLUNDERLINE;
 	}
 
-	// 2006/03/11 by 337 : Alpha値も即時変更
-	// Layered窓になっていない場合は効果が無い
-	if (ts.EtermLookfeel.BGUseAlphaBlendAPI) {
-		// 起動時に半透明レイヤにしていない場合でも、即座に半透明となるようにする。(2006.4.1 yutaka)
-		//MySetLayeredWindowAttributes(HVTWin, 0, (ts.AlphaBlend > 255) ? 255: ts.AlphaBlend, LWA_ALPHA);
-		// 値が変更されたときのみ設定を反映する。(2007.10.19 maya)
-		if (ts.AlphaBlend != beforeAlphaBlend) {
-			SetWindowStyle(&ts);
-		}
-	}
-
 	if (flag_changed) {
 		// re-launch
 		// RestartTeraTerm(GetSafeHwnd(), &ts);
@@ -1458,10 +1339,28 @@ static char *GetLogRotateSizeType(int val)
 
 BOOL CLogPropPageDlg::OnInitDialog()
 {
-	char uimsg[MAX_UIMSG];
 	CButton *btn;
 	CComboBox *combo;
 	int i, TmpLogRotateSize;
+	static const DlgTextInfo TextInfos[] = {
+		{ IDC_VIEWLOG_LABEL, "DLG_TAB_LOG_EDITOR" },
+		{ IDC_DEFAULTNAME_LABEL, "DLG_TAB_LOG_FILENAME" },
+		{ IDC_DEFAULTPATH_LABEL, "DLG_TAB_LOG_FILEPATH" },
+		{ IDC_AUTOSTART, "DLG_TAB_LOG_AUTOSTART" },
+		// Log rotate
+		{ IDC_LOG_ROTATE, "DLG_TAB_LOG_ROTATE" },
+		{ IDC_ROTATE_SIZE_TEXT, "DLG_TAB_LOG_ROTATE_SIZE_TEXT" },
+		{ IDC_ROTATE_STEP_TEXT, "DLG_TAB_LOG_ROTATESTEP" },
+		// Log options
+		// FIXME: メッセージカタログは既存のログオプションのものを流用したが、アクセラレータキーが重複するかもしれない。
+		{ IDC_LOG_OPTION_GROUP, "DLG_FOPT" },
+		{ IDC_OPT_BINARY, "DLG_FOPT_BINARY" },
+		{ IDC_OPT_APPEND, "DLG_FOPT_APPEND" },
+		{ IDC_OPT_PLAINTEXT, "DLG_FOPT_PLAIN" },
+		{ IDC_OPT_HIDEDLG, "DLG_FOPT_HIDEDIALOG" },
+		{ IDC_OPT_INCBUF, "DLG_FOPT_ALLBUFFINFIRST" },
+		{ IDC_OPT_TIMESTAMP, "DLG_FOPT_TIMESTAMP" },
+	};
 
 	CPropertyPage::OnInitDialog();
 
@@ -1499,51 +1398,7 @@ BOOL CLogPropPageDlg::OnInitDialog()
 		DlgLogFont = NULL;
 	}
 
-	GetDlgItemText(IDC_VIEWLOG_LABEL, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_LOG_EDITOR", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_VIEWLOG_LABEL, ts.UIMsg);
-	GetDlgItemText(IDC_DEFAULTNAME_LABEL, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_LOG_FILENAME", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_DEFAULTNAME_LABEL, ts.UIMsg);
-	GetDlgItemText(IDC_DEFAULTPATH_LABEL, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_LOG_FILEPATH", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_DEFAULTPATH_LABEL, ts.UIMsg);
-	GetDlgItemText(IDC_AUTOSTART, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_LOG_AUTOSTART", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_AUTOSTART, ts.UIMsg);
-	// Log rotate
-	GetDlgItemText(IDC_LOG_ROTATE, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_LOG_ROTATE", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_LOG_ROTATE, ts.UIMsg);
-	GetDlgItemText(IDC_ROTATE_SIZE_TEXT, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_LOG_ROTATE_SIZE_TEXT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_ROTATE_SIZE_TEXT, ts.UIMsg);
-	GetDlgItemText(IDC_ROTATE_STEP_TEXT, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_LOG_ROTATESTEP", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_ROTATE_STEP_TEXT, ts.UIMsg);
-	// Log options
-	// FIXME: メッセージカタログは既存のログオプションのものを流用したが、アクセラレータキーが重複するかもしれない。
-	GetDlgItemText(IDC_LOG_OPTION_GROUP, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_FOPT", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_LOG_OPTION_GROUP, ts.UIMsg);
-	GetDlgItemText(IDC_OPT_BINARY, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_FOPT_BINARY", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_OPT_BINARY, ts.UIMsg);
-	GetDlgItemText(IDC_OPT_APPEND, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_FOPT_APPEND", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_OPT_APPEND, ts.UIMsg);
-	GetDlgItemText(IDC_OPT_PLAINTEXT, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_FOPT_PLAIN", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_OPT_PLAINTEXT, ts.UIMsg);
-	GetDlgItemText(IDC_OPT_HIDEDLG, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_FOPT_HIDEDIALOG", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_OPT_HIDEDLG, ts.UIMsg);
-	GetDlgItemText(IDC_OPT_INCBUF, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_FOPT_ALLBUFFINFIRST", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_OPT_INCBUF, ts.UIMsg);
-	GetDlgItemText(IDC_OPT_TIMESTAMP, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_FOPT_TIMESTAMP", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_OPT_TIMESTAMP, ts.UIMsg);
+	SetDlgTexts(m_hWnd, TextInfos, _countof(TextInfos), ts.UILanguageFile);
 
 	get_lang_msg("DLG_FOPT_TIMESTAMP_LOCAL", ts.UIMsg, sizeof(ts.UIMsg), "Local Time", ts.UILanguageFile);
 	SendDlgItemMessage(IDC_OPT_TIMESTAMP_TYPE, CB_ADDSTRING, 0, (LPARAM)ts.UIMsg);
@@ -1897,8 +1752,10 @@ END_MESSAGE_MAP()
 
 BOOL CCygwinPropPageDlg::OnInitDialog()
 {
-	char uimsg[MAX_UIMSG];
 	CButton *btn;
+	static const DlgTextInfo TextInfos[] = {
+		{ IDC_CYGWIN_PATH_LABEL, "DLG_TAB_CYGWIN_PATH" }
+	};
 
 	CPropertyPage::OnInitDialog();
 
@@ -1931,9 +1788,7 @@ BOOL CCygwinPropPageDlg::OnInitDialog()
 		DlgCygwinFont = NULL;
 	}
 
-	GetDlgItemText(IDC_CYGWIN_PATH_LABEL, uimsg, sizeof(uimsg));
-	get_lang_msg("DLG_TAB_CYGWIN_PATH", ts.UIMsg, sizeof(ts.UIMsg), uimsg, ts.UILanguageFile);
-	SetDlgItemText(IDC_CYGWIN_PATH_LABEL, ts.UIMsg);
+	SetDlgTexts(m_hWnd, TextInfos, _countof(TextInfos), ts.UILanguageFile);
 
 	memcpy(&settings, &ts.CygtermSettings, sizeof(cygterm_t));
 

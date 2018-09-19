@@ -78,6 +78,7 @@
 #include "winjump.h"
 #include "sizetip.h"
 #include "dnddlg.h"
+#include "compat_win.h"
 
 #include "initguid.h"
 //#include "Usbiodef.h"
@@ -113,9 +114,6 @@ static BOOL IgnoreRelease = FALSE;
 static HDEVNOTIFY hDevNotify = NULL;
 
 static int AutoDisconnectedPort = -1;
-
-// 本体は addsetting.cpp
-extern mouse_cursor_t MouseCursor[];
 
 /////////////////////////////////////////////////////////////////////////////
 // CVTWindow
@@ -259,36 +257,8 @@ BEGIN_MESSAGE_MAP(CVTWindow, CFrameWnd)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-static BOOL MySetLayeredWindowAttributes(HWND hwnd, COLORREF crKey, BYTE bAlpha, DWORD dwFlags)
-{
-	typedef BOOL (WINAPI *func)(HWND,COLORREF,BYTE,DWORD);
-	static HMODULE g_hmodUser32 = NULL;
-	static func g_pSetLayeredWindowAttributes = NULL;
-	char user32_dll[MAX_PATH];
-
-	GetSystemDirectory(user32_dll, sizeof(user32_dll));
-	strncat_s(user32_dll, sizeof(user32_dll), "\\user32.dll", _TRUNCATE);
-	if (g_hmodUser32 == NULL) {
-		g_hmodUser32 = LoadLibrary(user32_dll);
-		if (g_hmodUser32 == NULL) {
-			return FALSE;
-		}
-
-		g_pSetLayeredWindowAttributes =
-			(func)GetProcAddress(g_hmodUser32, "SetLayeredWindowAttributes");
-	}
-
-	if (g_pSetLayeredWindowAttributes == NULL) {
-		return FALSE;
-	}
-
-	return g_pSetLayeredWindowAttributes(hwnd, crKey,
-	                                     bAlpha, dwFlags);
-}
-
-
 // Tera Term起動時とURL文字列mouse over時に呼ばれる (2005.4.2 yutaka)
-void SetMouseCursor(char *cursor)
+static void SetMouseCursor(const char *cursor)
 {
 	HCURSOR hc;
 	LPCTSTR name = NULL;
@@ -312,32 +282,36 @@ void SetMouseCursor(char *cursor)
 	}
 }
 
-
-void SetWindowStyle(TTTSet *ts)
+/**
+ * @param[in]	alpha	0-255
+ */
+void CVTWindow::SetWindowAlpha(BYTE alpha)
 {
-	LONG_PTR lp;
-
-	SetMouseCursor(ts->MouseCursorName);
+	if (pSetLayeredWindowAttributes == NULL) {
+		return;	// レイヤードウインドウのサポートなし
+	}
+	if (Alpha == alpha) {
+		return;	// 変化なしなら何もしない
+	}
+	LONG_PTR lp = GetWindowLongPtr(HVTWin, GWL_EXSTYLE);
+	if (lp == 0) {
+		return;
+	}
 
 	// 2006/03/16 by 337: BGUseAlphaBlendAPIがOnならばLayered属性とする
 	//if (ts->EtermLookfeel.BGUseAlphaBlendAPI) {
 	// アルファ値が255の場合、画面のちらつきを抑えるため何もしないこととする。(2006.4.1 yutaka)
 	// 呼び出し元で、値が変更されたときのみ設定を反映する。(2007.10.19 maya)
-	if (ts->AlphaBlend < 255) {
-		lp = GetWindowLongPtr(HVTWin, GWL_EXSTYLE);
-		if (lp != 0) {
-			SetWindowLongPtr(HVTWin, GWL_EXSTYLE, lp | WS_EX_LAYERED);
-			MySetLayeredWindowAttributes(HVTWin, 0, ts->AlphaBlend, LWA_ALPHA);
-		}
+	if (alpha < 255) {
+		SetWindowLongPtr(HVTWin, GWL_EXSTYLE, lp | WS_EX_LAYERED);
+		pSetLayeredWindowAttributes(HVTWin, 0, alpha, LWA_ALPHA);
 	}
-	// アルファ値が 255 の場合、透明化属性を削除して再描画する。(2007.10.22 maya)
 	else {
-		lp = GetWindowLongPtr(HVTWin, GWL_EXSTYLE);
-		if (lp != 0) {
-			SetWindowLongPtr(HVTWin, GWL_EXSTYLE, lp & ~WS_EX_LAYERED);
-			RedrawWindow(HVTWin, NULL, NULL, RDW_ERASE | RDW_INVALIDATE | RDW_FRAME);
-		}
+		// アルファ値が 255 の場合、透明化属性を削除して再描画する。(2007.10.22 maya)
+		SetWindowLongPtr(HVTWin, GWL_EXSTYLE, lp & ~WS_EX_LAYERED);
+		::RedrawWindow(HVTWin, NULL, NULL, RDW_ERASE | RDW_INVALIDATE | RDW_FRAME);
 	}
+	Alpha = alpha;
 }
 
 void RegDeviceNotify(HWND hWnd)
@@ -385,7 +359,8 @@ void SetAutoConnectPort(int port)
 // (2007.9.30 yutaka)
 //
 // 例外コードを文字列へ変換する
-static char *GetExceptionString(int exception)
+#if !defined(_M_X64)
+static const char *GetExceptionString(DWORD exception)
 {
 #define EXCEPTION(x) case EXCEPTION_##x: return (#x);
 	static char buf[16];
@@ -574,6 +549,7 @@ error:
 //	return (EXCEPTION_EXECUTE_HANDLER);  /* そのままプロセスを終了させる */
 	return (EXCEPTION_CONTINUE_SEARCH);  /* 引き続き［アプリケーションエラー］ポップアップメッセージボックスを呼び出す */
 }
+#endif
 
 
 // Virtual Storeが有効であるかどうかを判別する。
@@ -669,7 +645,6 @@ CVTWindow::CVTWindow()
 #ifdef ALPHABLEND_TYPE2
 	DWORD ExStyle;
 #endif
-	char *Param;
 	int CmdShow;
 #ifdef SHARED_KEYMAP
 	char Temp[MAX_PATH];
@@ -679,11 +654,13 @@ CVTWindow::CVTWindow()
 	BOOL isFirstInstance;
 
 #ifdef _DEBUG
-  ::_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	::_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
 	// 例外ハンドラのフック (2007.9.30 yutaka)
+#if !defined(_M_X64)
 	SetUnhandledExceptionFilter(ApplicationFaultHandler);
+#endif
 
 	CommInit(&cv);
 	isFirstInstance = StartTeraTerm(&ts);
@@ -753,8 +730,8 @@ CVTWindow::CVTWindow()
 	/* Parse command line parameters*/
 	// 256バイト以上のコマンドラインパラメータ指定があると、BOF(Buffer Over Flow)で
 	// 落ちるバグを修正。(2007.6.12 maya)
-	Param = GetCommandLine();
 	if (LoadTTSET()) {
+		LPTSTR Param = GetCommandLine();
 		(*ParseParam)(Param, &ts, &(TopicName[0]));
 	}
 	FreeTTSET();
@@ -779,6 +756,7 @@ CVTWindow::CVTWindow()
 	Hold = FALSE;
 	FirstPaint = TRUE;
 	ScrollLock = FALSE;  // 初期値は無効 (2006.11.14 yutaka)
+	Alpha = 255;
 
 	/* Initialize scroll buffer */
 	InitBuffer();
@@ -838,7 +816,8 @@ CVTWindow::CVTWindow()
 	SerialNo = RegWin(HVTWin,NULL);
 
 	logfile_lock_initialize();
-	SetWindowStyle(&ts);
+	SetMouseCursor(ts.MouseCursorName);
+	SetWindowAlpha(ts.AlphaBlendActive);
 	// ロケールの設定
 	// wctomb のため
 	setlocale(LC_ALL, ts.Locale);
@@ -1033,7 +1012,8 @@ void CVTWindow::ButtonDown(POINT p, int LMR)
 		return;
 	}
 
-	if (mousereport = MouseReport(IdMouseEventBtnDown, LMR, p.x, p.y)) {
+	mousereport = MouseReport(IdMouseEventBtnDown, LMR, p.x, p.y);
+	if (mousereport) {
 		SetCapture();
 		return;
 	}
@@ -1644,7 +1624,7 @@ void CVTWindow::ResetSetup()
 	//
 	// AlphaBlend を即時反映できるようにする。
 	// (2016.12.24 yutaka)
-	SetWindowStyle(&ts);
+	SetWindowAlpha(ts.AlphaBlendActive);
 #else
 	DispApplyANSIColor();
 #endif
@@ -1773,7 +1753,7 @@ LRESULT CVTWindow::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 	else if ((ts.HideTitle>0) &&
 	         (message == WM_NCHITTEST)) {
 		Result = CFrameWnd::DefWindowProc(message,wParam,lParam);
-		if ((Result==HTCLIENT) && AltKey())
+		if ((Result==HTCLIENT) && AltKey()) {
 #ifdef ALPHABLEND_TYPE2
 			if(ShiftKey())
 				Result = HTBOTTOMRIGHT;
@@ -1782,6 +1762,7 @@ LRESULT CVTWindow::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 #else
 			Result = HTCAPTION;
 #endif
+		}
 		return Result;
 	}
 
@@ -1877,6 +1858,11 @@ BOOL CVTWindow::OnCommand(WPARAM wParam, LPARAM lParam)
 void CVTWindow::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 {
 	DispSetActive(nState!=WA_INACTIVE);
+	if (nState == WA_INACTIVE) {
+		SetWindowAlpha(ts.AlphaBlendInactive);
+	} else {
+		SetWindowAlpha(ts.AlphaBlendActive);
+	}
 }
 
 void CVTWindow::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -1913,7 +1899,7 @@ void CVTWindow::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 }
 
 /* copy from ttset.c*/
-static void WriteInt2(PCHAR Sect, PCHAR Key, PCHAR FName, int i1, int i2)
+static void WriteInt2(const char *Sect, const char *Key, const char *FName, int i1, int i2)
 {
 	char Temp[32];
 	_snprintf_s(Temp, sizeof(Temp), _TRUNCATE, "%d,%d", i1, i2);
@@ -1971,7 +1957,7 @@ void CVTWindow::OnAllClose()
 }
 
 // 終了問い合わせなしにTera Termを終了する。OnAllClose()受信用。
-LONG CVTWindow::OnNonConfirmClose(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnNonConfirmClose(WPARAM wParam, LPARAM lParam)
 {
 	// ここで ts の内容を意図的に書き換えても、終了時に自動セーブされるわけではないので、特に問題なし。
 	ts.PortFlag &= ~PF_CONFIRMDISCONN;
@@ -2085,7 +2071,8 @@ static bool SendScp(char *Filenames[], int FileCount, const char *SendDir)
 	char msg[128];
 
 	if (h == NULL) {
-		if ( ((h = GetModuleHandle("ttxssh.dll")) == NULL) ) {
+		h = GetModuleHandle("ttxssh.dll");
+		if (h == NULL) {
 			_snprintf_s(msg, sizeof(msg), _TRUNCATE, "GetModuleHandle(\"ttxssh.dll\")) %d", GetLastError());
 		scp_send_error:
 			::MessageBox(NULL, msg, "Tera Term: scpsend command error", MB_OK | MB_ICONERROR);
@@ -2120,7 +2107,7 @@ void CVTWindow::DropListFree()
 	}
 }
 
-LONG CVTWindow::OnDropNotify(UINT ShowDialog, LONG lParam)
+LRESULT CVTWindow::OnDropNotify(WPARAM ShowDialog, LPARAM lParam)
 {
 	// iniに保存されない、今実行しているTera Termでのみ有効な設定
 	static enum drop_type DefaultDropType = DROP_TYPE_CANCEL;
@@ -2133,7 +2120,7 @@ LONG CVTWindow::OnDropNotify(UINT ShowDialog, LONG lParam)
 	for (int i = 0; i < DropListCount; i++) {
 		const char *FileName = DropLists[i];
 		const DWORD attr = GetFileAttributes(FileName);
-		if (attr == -1 ) {
+		if (attr == (DWORD)-1 ) {
 			goto finish;
 		}
 		if (attr & FILE_ATTRIBUTE_DIRECTORY) {
@@ -2288,11 +2275,11 @@ LONG CVTWindow::OnDropNotify(UINT ShowDialog, LONG lParam)
 		{
 			// send by scp
 			char **FileNames = &DropLists[i];
-			int FileCount = DoSameProcess ? DropListCount - i : 1;
-			if (!SendScp(FileNames, FileCount, ts.ScpSendDir)) {
+			int FileCountScp = DoSameProcess ? DropListCount - i : 1;
+			if (!SendScp(FileNames, FileCountScp, ts.ScpSendDir)) {
 				goto finish;
 			}
-			i += FileCount - 1;
+			i += FileCountScp - 1;
 			break;
 		}
 		}
@@ -2568,6 +2555,24 @@ BOOL CVTWindow::OnMouseWheel(
 	CPoint pt      // カーソル位置
 )
 {
+	if (pSetLayeredWindowAttributes != NULL) {
+		BOOL InTitleBar;
+		POINT point = pt;
+		GetPositionOnWindow(HVTWin, &point,
+							NULL, NULL, &InTitleBar);
+		if (InTitleBar) {
+			int delta = zDelta < 0 ? -1 : 1;
+			int newAlpha = Alpha;
+			newAlpha += delta * ts.MouseWheelScrollLine;
+			if (newAlpha > 255)
+				newAlpha = 255;
+			else if (newAlpha < 0)
+				newAlpha = 0;
+			SetWindowAlpha(newAlpha);
+			return TRUE;
+		}
+	}
+
 	int line, i;
 
 	::ScreenToClient(HVTWin, &pt);
@@ -2951,7 +2956,7 @@ void CVTWindow::OnSysKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 }
 
-void CVTWindow::OnTimer(UINT nIDEvent)
+void CVTWindow::OnTimer(UINT_PTR nIDEvent)
 {
 	POINT Point;
 	WORD PortType;
@@ -3153,7 +3158,7 @@ BOOL CVTWindow::OnDeviceChange(UINT nEventType, DWORD_PTR dwData)
 }
 
 //<!--by AKASI
-LONG CVTWindow::OnWindowPosChanging(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnWindowPosChanging(WPARAM wParam, LPARAM lParam)
 {
 #ifdef ALPHABLEND_TYPE2
 	if(BGEnable && BGNoCopyBits) {
@@ -3164,7 +3169,7 @@ LONG CVTWindow::OnWindowPosChanging(UINT wParam, LONG lParam)
 	return CFrameWnd::DefWindowProc(WM_WINDOWPOSCHANGING,wParam,lParam);
 }
 
-LONG CVTWindow::OnSettingChange(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnSettingChange(WPARAM wParam, LPARAM lParam)
 {
 #ifdef ALPHABLEND_TYPE2
 	BGOnSettingChange();
@@ -3172,7 +3177,7 @@ LONG CVTWindow::OnSettingChange(UINT wParam, LONG lParam)
 	return CFrameWnd::DefWindowProc(WM_SETTINGCHANGE,wParam,lParam);
 }
 
-LONG CVTWindow::OnEnterSizeMove(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnEnterSizeMove(WPARAM wParam, LPARAM lParam)
 {
 	EnableSizeTip(1);
 
@@ -3182,7 +3187,7 @@ LONG CVTWindow::OnEnterSizeMove(UINT wParam, LONG lParam)
 	return CFrameWnd::DefWindowProc(WM_ENTERSIZEMOVE,wParam,lParam);
 }
 
-LONG CVTWindow::OnExitSizeMove(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnExitSizeMove(WPARAM wParam, LPARAM lParam)
 {
 #ifdef ALPHABLEND_TYPE2
 	BGOnExitSizeMove();
@@ -3194,7 +3199,7 @@ LONG CVTWindow::OnExitSizeMove(UINT wParam, LONG lParam)
 }
 //-->
 
-LONG CVTWindow::OnIMEComposition(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnIMEComposition(WPARAM wParam, LPARAM lParam)
 {
 	HGLOBAL hstr;
 	//LPSTR lpstr;
@@ -3252,14 +3257,14 @@ skip:
 	return CFrameWnd::DefWindowProc(WM_IME_COMPOSITION,wParam,lParam);
 }
 
-LONG CVTWindow::OnIMEInputChange(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnIMEInputChange(WPARAM wParam, LPARAM lParam)
 {
 	ChangeCaret();
 
 	return CFrameWnd::DefWindowProc(WM_INPUTLANGCHANGE,wParam,lParam);
 }
 
-LONG CVTWindow::OnIMENotify(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnIMENotify(WPARAM wParam, LPARAM lParam)
 {
 	if (wParam == IMN_SETOPENSTATUS) {
 		ChangeCaret();
@@ -3275,7 +3280,7 @@ LONG CVTWindow::OnIMENotify(UINT wParam, LONG lParam)
 //     http://27213143.at.webry.info/201202/article_2.html
 //     http://webcache.googleusercontent.com/search?q=cache:WzlX3ouMscIJ:anago.2ch.net/test/read.cgi/software/1325573999/82+IMR_DOCUMENTFEED&cd=13&hl=ja&ct=clnk&gl=jp
 // (2012.5.9 yutaka)
-LONG CVTWindow::OnIMERequest(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnIMERequest(WPARAM wParam, LPARAM lParam)
 {
 	static int complen, newsize;
 	static char comp[512];
@@ -3337,7 +3342,7 @@ LONG CVTWindow::OnIMERequest(UINT wParam, LONG lParam)
 	return CFrameWnd::DefWindowProc(WM_IME_REQUEST,wParam,lParam);
 }
 
-LONG CVTWindow::OnAccelCommand(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnAccelCommand(WPARAM wParam, LPARAM lParam)
 {
 	switch (wParam) {
 		case IdHold:
@@ -3430,7 +3435,7 @@ LONG CVTWindow::OnAccelCommand(UINT wParam, LONG lParam)
 	return 0;
 }
 
-LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnChangeMenu(WPARAM wParam, LPARAM lParam)
 {
 	HMENU SysMenu;
 	BOOL Show, B1, B2;
@@ -3492,7 +3497,7 @@ LONG CVTWindow::OnChangeMenu(UINT wParam, LONG lParam)
 	return 0;
 }
 
-LONG CVTWindow::OnChangeTBar(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnChangeTBar(WPARAM wParam, LPARAM lParam)
 {
 	BOOL TBar;
 	DWORD Style,ExStyle;
@@ -3554,7 +3559,7 @@ LONG CVTWindow::OnChangeTBar(UINT wParam, LONG lParam)
 	return 0;
 }
 
-LONG CVTWindow::OnCommNotify(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnCommNotify(WPARAM wParam, LPARAM lParam)
 {
 	switch (LOWORD(lParam)) {
 		case FD_READ:  // TCP/IP
@@ -3584,7 +3589,7 @@ LONG CVTWindow::OnCommNotify(UINT wParam, LONG lParam)
 	return 0;
 }
 
-LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnCommOpen(WPARAM wParam, LPARAM lParam)
 {
 	AutoDisconnectedPort = -1;
 
@@ -3679,7 +3684,7 @@ LONG CVTWindow::OnCommOpen(UINT wParam, LONG lParam)
 	return 0;
 }
 
-LONG CVTWindow::OnCommStart(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnCommStart(WPARAM wParam, LPARAM lParam)
 {
 	// 自動接続が無効のときも接続ダイアログを出すようにした (2006.9.15 maya)
 	if (((ts.PortType!=IdSerial) && (ts.HostName[0]==0)) ||
@@ -3705,7 +3710,7 @@ LONG CVTWindow::OnCommStart(UINT wParam, LONG lParam)
 	return 0;
 }
 
-LONG CVTWindow::OnDdeEnd(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnDdeEnd(WPARAM wParam, LPARAM lParam)
 {
 	EndDDE();
 	if (CloseTT) {
@@ -3714,42 +3719,42 @@ LONG CVTWindow::OnDdeEnd(UINT wParam, LONG lParam)
 	return 0;
 }
 
-LONG CVTWindow::OnDlgHelp(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnDlgHelp(WPARAM wParam, LPARAM lParam)
 {
 	OpenHelp(HH_HELP_CONTEXT, HelpId, ts.UILanguageFile);
 	return 0;
 }
 
-LONG CVTWindow::OnFileTransEnd(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnFileTransEnd(WPARAM wParam, LPARAM lParam)
 {
 	FileTransEnd(wParam);
 	return 0;
 }
 
-LONG CVTWindow::OnGetSerialNo(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnGetSerialNo(WPARAM wParam, LPARAM lParam)
 {
 	return (LONG)SerialNo;
 }
 
-LONG CVTWindow::OnKeyCode(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnKeyCode(WPARAM wParam, LPARAM lParam)
 {
 	KeyCodeSend(wParam,(WORD)lParam);
 	return 0;
 }
 
-LONG CVTWindow::OnProtoEnd(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnProtoEnd(WPARAM wParam, LPARAM lParam)
 {
 	ProtoDlgCancel();
 	return 0;
 }
 
-LONG CVTWindow::OnChangeTitle(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnChangeTitle(WPARAM wParam, LPARAM lParam)
 {
 	ChangeTitle();
 	return 0;
 }
 
-LONG CVTWindow::OnNotifyIcon(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnNotifyIcon(WPARAM wParam, LPARAM lParam)
 {
 	if (wParam == 1) {
 		switch (lParam) {
@@ -3893,7 +3898,7 @@ void CVTWindow::OnFileNewConnection()
 void CVTWindow::OnDuplicateSession()
 {
 	char Command[1024];
-	char *exec = "ttermpro";
+	const char *exec = "ttermpro";
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 	char cygterm_cfg[MAX_PATH];
@@ -3993,7 +3998,7 @@ void CVTWindow::OnCygwinConnection()
 	char file[MAX_PATH], *filename;
 	char c, *envptr, *envbuff=NULL;
 	int envbufflen;
-	char *exename = "cygterm.exe";
+	const char *exename = "cygterm.exe";
 	char cygterm[MAX_PATH];
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
@@ -4077,7 +4082,7 @@ found_path:;
 //
 void CVTWindow::OnTTMenuLaunch()
 {
-	char *exename = "ttpmenu.exe";
+	const char *exename = "ttpmenu.exe";
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 
@@ -4085,7 +4090,7 @@ void CVTWindow::OnTTMenuLaunch()
 	GetStartupInfo(&si);
 	memset(&pi, 0, sizeof(pi));
 
-	if (CreateProcess(NULL, exename, NULL, NULL, FALSE, 0,
+	if (CreateProcess(NULL, (LPSTR)exename, NULL, NULL, FALSE, 0,
 	                  NULL, NULL, &si, &pi) == 0) {
 		char buf[80];
 		char uimsg[MAX_UIMSG];
@@ -4144,7 +4149,6 @@ static LRESULT CALLBACK OnCommentDlgProc(HWND hDlgWnd, UINT msg, WPARAM wp, LPAR
 
 	switch (msg) {
 		case WM_INITDIALOG:
-			//SetDlgItemText(hDlgWnd, IDC_EDIT_COMMENT, "サンプル");
 			// エディットコントロールにフォーカスをあてる
 			SetFocus(GetDlgItem(hDlgWnd, IDC_EDIT_COMMENT));
 
@@ -4254,7 +4258,7 @@ void CVTWindow::OnReplayLog()
 	OPENFILENAME ofn;
 	char szFile[MAX_PATH];
 	char Command[MAX_PATH] = "notepad.exe";
-	char *exec = "ttermpro";
+	const char *exec = "ttermpro";
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 	char uimsg[MAX_UIMSG];
@@ -4529,7 +4533,7 @@ void CVTWindow::OnExternalSetup()
 	CAddSetting.EnableStackedTabs(FALSE);
 	ret = CAddSetting.DoModal();
 	switch (ret) {
-		case -1:
+		case (DWORD)-1:
 		case IDABORT:
 			ret = GetLastError();
 			break;
@@ -4908,8 +4912,9 @@ static BOOL convertVirtualStore(char *path, char *filename, char *vstore_path, i
 {
 	BOOL ret = FALSE;
 	int flag = 0;
-	char *s, **p;
-	char *virstore_env[] = {
+	char *s;
+	const char **p;
+	static const char *virstore_env[] = {
 		"ProgramFiles",
 		"ProgramData",
 		"SystemRoot",
@@ -5675,8 +5680,8 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 			// サブクラス化させてリアルタイムモードにする (2008.1.21 yutaka)
 			hwndBroadcast = GetDlgItem(hWnd, IDC_COMMAND_EDIT);
 			hwndBroadcastEdit = GetWindow(hwndBroadcast, GW_CHILD);
-			OrigBroadcastEditProc = (WNDPROC)GetWindowLong(hwndBroadcastEdit, GWL_WNDPROC);
-			SetWindowLong(hwndBroadcastEdit, GWL_WNDPROC, (LONG)BroadcastEditProc);
+			OrigBroadcastEditProc = (WNDPROC)GetWindowLong(hwndBroadcastEdit, GWLP_WNDPROC);
+			SetWindowLong(hwndBroadcastEdit, GWLP_WNDPROC, (LONG)BroadcastEditProc);
 			// デフォルトはon。残りはdisable。
 			SendMessage(GetDlgItem(hWnd, IDC_REALTIME_CHECK), BM_SETCHECK, BST_CHECKED, 0);  // default on
 			EnableWindow(GetDlgItem(hWnd, IDC_HISTORY_CHECK), FALSE);
@@ -5787,8 +5792,8 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 					// new handler
 					hwndBroadcast = GetDlgItem(hWnd, IDC_COMMAND_EDIT);
 					hwndBroadcastEdit = GetWindow(hwndBroadcast, GW_CHILD);
-					OrigBroadcastEditProc = (WNDPROC)GetWindowLong(hwndBroadcastEdit, GWL_WNDPROC);
-					SetWindowLong(hwndBroadcastEdit, GWL_WNDPROC, (LONG)BroadcastEditProc);
+					OrigBroadcastEditProc = (WNDPROC)GetWindowLong(hwndBroadcastEdit, GWLP_WNDPROC);
+					SetWindowLong(hwndBroadcastEdit, GWLP_WNDPROC, (LONG)BroadcastEditProc);
 
 					EnableWindow(GetDlgItem(hWnd, IDC_HISTORY_CHECK), FALSE);
 					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_CRLF), FALSE);
@@ -5799,7 +5804,7 @@ static LRESULT CALLBACK BroadcastCommandDlgProc(HWND hWnd, UINT msg, WPARAM wp, 
 					EnableWindow(GetDlgItem(hWnd, IDC_LIST), TRUE);  // true
 				} else {
 					// restore old handler
-					SetWindowLong(hwndBroadcastEdit, GWL_WNDPROC, (LONG)OrigBroadcastEditProc);
+					SetWindowLong(hwndBroadcastEdit, GWLP_WNDPROC, (LONG)OrigBroadcastEditProc);
 
 					EnableWindow(GetDlgItem(hWnd, IDC_HISTORY_CHECK), TRUE);
 					EnableWindow(GetDlgItem(hWnd, IDC_RADIO_CRLF), TRUE);
@@ -5874,7 +5879,7 @@ skip:;
 					// モードレスダイアログは一度生成されると、アプリケーションが終了するまで
 					// 破棄されないので、以下の「ウィンドウプロシージャ戻し」は不要と思われる。(yutaka)
 #if 0
-					SetWindowLong(hwndBroadcastEdit, GWL_WNDPROC, (LONG)OrigBroadcastEditProc);
+					SetWindowLong(hwndBroadcastEdit, GWLP_WNDPROC, (LONG)OrigBroadcastEditProc);
 #endif
 
 					//EndDialog(hDlgWnd, IDOK);
@@ -6066,7 +6071,7 @@ activate:;
 }
 
 // WM_COPYDATAの受信
-LONG CVTWindow::OnReceiveIpcMessage(UINT wParam, LONG lParam)
+LRESULT CVTWindow::OnReceiveIpcMessage(WPARAM wParam, LPARAM lParam)
 {
 	COPYDATASTRUCT *cds;
 	char *buf, *msg, *name;
