@@ -1,5 +1,5 @@
 /*
- * (C) 2008-2017 TeraTerm Project
+ * (C) 2008-2018 TeraTerm Project
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,11 +33,11 @@
 
 
 typedef struct {
-	char *name;
+	const char *name;
 	LPCTSTR id;
 } mouse_cursor_t;
 
-
+extern const mouse_cursor_t MouseCursor[];
 
 // General Page
 class CGeneralPropPageDlg : public CPropertyPage
@@ -133,6 +133,7 @@ private:
 
 protected:
 	DECLARE_MESSAGE_MAP()
+	virtual	HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 };
 

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1994-1998 T. Teranishi
- * (C) 2004-2017 TeraTerm Project
+ * (C) 2004-2018 TeraTerm Project
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,15 +52,15 @@
 
 #define MaxStrLen (LONG)512
 
-static PCHAR far TermList[] =
+static const char *TermList[] =
 	{ "VT100", "VT100J", "VT101", "VT102", "VT102J", "VT220J", "VT282",
 	"VT320", "VT382", "VT420", "VT520", "VT525", NULL };
 
-static PCHAR far RussList[] =
+static const char *RussList[] =
 	{ "Windows", "KOI8-R", "CP-866", "ISO-8859-5", NULL };
-static PCHAR far RussList2[] = { "Windows", "KOI8-R", NULL };
+static const char *RussList2[] = { "Windows", "KOI8-R", NULL };
 
-WORD str2id(PCHAR far * List, PCHAR str, WORD DefId)
+static WORD str2id(const char *List[], PCHAR str, WORD DefId)
 {
 	WORD i;
 	i = 0;
@@ -74,7 +74,7 @@ WORD str2id(PCHAR far * List, PCHAR str, WORD DefId)
 	return i;
 }
 
-void id2str(PCHAR far * List, WORD Id, WORD DefId, PCHAR str, int destlen)
+static void id2str(const char *List[], WORD Id, WORD DefId, PCHAR str, int destlen)
 {
 	int i;
 
@@ -90,7 +90,7 @@ void id2str(PCHAR far * List, WORD Id, WORD DefId, PCHAR str, int destlen)
 	strncpy_s(str, destlen, List[i], _TRUNCATE);
 }
 
-int IconName2IconId(const char *name) {
+static int IconName2IconId(const char *name) {
 	int id;
 
 	if (_stricmp(name, "tterm") == 0) {
@@ -123,7 +123,7 @@ int IconName2IconId(const char *name) {
 	return id;
 }
 
-void IconId2IconName(char *name, int len, int id) {
+static void IconId2IconName(char *name, int len, int id) {
 	char *icon;
 	switch (id) {
 		case IDI_TTERM:
@@ -585,13 +585,13 @@ void PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 
 	/* VT win position */
 	GetPrivateProfileString(Section, "VTPos", "-2147483648,-2147483648", Temp, sizeof(Temp), FName);	/* default: random position */
-	GetNthNum(Temp, 1, (int far *) (&ts->VTPos.x));
-	GetNthNum(Temp, 2, (int far *) (&ts->VTPos.y));
+	GetNthNum(Temp, 1, (int*) (&ts->VTPos.x));
+	GetNthNum(Temp, 2, (int*) (&ts->VTPos.y));
 
 	/* TEK win position */
 	GetPrivateProfileString(Section, "TEKPos", "-2147483648,-2147483648", Temp, sizeof(Temp), FName);	/* default: random position */
-	GetNthNum(Temp, 1, (int far *) &(ts->TEKPos.x));
-	GetNthNum(Temp, 2, (int far *) &(ts->TEKPos.y));
+	GetNthNum(Temp, 1, (int*) &(ts->TEKPos.x));
+	GetNthNum(Temp, 2, (int*) &(ts->TEKPos.y));
 
 	/* Save VT Window position */
 	ts->SaveVTWinPos = GetOnOff(Section, "SaveVTWinPos", FName, FALSE);
@@ -791,7 +791,7 @@ void PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	GetPrivateProfileString(Section, "VTColor", "0,0,0,255,255,255",
 	                        Temp, sizeof(Temp), FName);
 	for (i = 0; i <= 5; i++)
-		GetNthNum(Temp, i + 1, (int far *) &(ts->TmpColor[0][i]));
+		GetNthNum(Temp, i + 1, (int*) &(ts->TmpColor[0][i]));
 	for (i = 0; i <= 1; i++)
 		ts->VTColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
 		                     (BYTE) ts->TmpColor[0][i * 3 + 1],
@@ -801,7 +801,7 @@ void PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	GetPrivateProfileString(Section, "VTBoldColor", "0,0,255,255,255,255",
 	                        Temp, sizeof(Temp), FName);
 	for (i = 0; i <= 5; i++)
-		GetNthNum(Temp, i + 1, (int far *) &(ts->TmpColor[0][i]));
+		GetNthNum(Temp, i + 1, (int*) &(ts->TmpColor[0][i]));
 	for (i = 0; i <= 1; i++)
 		ts->VTBoldColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
 		                         (BYTE) ts->TmpColor[0][i * 3 + 1],
@@ -813,7 +813,7 @@ void PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	GetPrivateProfileString(Section, "VTBlinkColor", "255,0,0,255,255,255",
 	                        Temp, sizeof(Temp), FName);
 	for (i = 0; i <= 5; i++)
-		GetNthNum(Temp, i + 1, (int far *) &(ts->TmpColor[0][i]));
+		GetNthNum(Temp, i + 1, (int*) &(ts->TmpColor[0][i]));
 	for (i = 0; i <= 1; i++)
 		ts->VTBlinkColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
 		                          (BYTE) ts->TmpColor[0][i * 3 + 1],
@@ -825,7 +825,7 @@ void PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	GetPrivateProfileString(Section, "VTReverseColor", "255,255,255,0,0,0",
 	                        Temp, sizeof(Temp), FName);
 	for (i = 0; i <= 5; i++)
-		GetNthNum(Temp, i + 1, (int far *) &(ts->TmpColor[0][i]));
+		GetNthNum(Temp, i + 1, (int*) &(ts->TmpColor[0][i]));
 	for (i = 0; i <= 1; i++)
 		ts->VTReverseColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
 		                          (BYTE) ts->TmpColor[0][i * 3 + 1],
@@ -840,7 +840,7 @@ void PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	GetPrivateProfileString(Section, "URLColor", "0,255,0,255,255,255",
 	                        Temp, sizeof(Temp), FName);
 	for (i = 0; i <= 5; i++)
-		GetNthNum(Temp, i + 1, (int far *) &(ts->TmpColor[0][i]));
+		GetNthNum(Temp, i + 1, (int*) &(ts->TmpColor[0][i]));
 	for (i = 0; i <= 1; i++)
 		ts->URLColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
 		                      (BYTE) ts->TmpColor[0][i * 3 + 1],
@@ -855,7 +855,7 @@ void PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	GetPrivateProfileString(Section, "TEKColor", "0,0,0,255,255,255",
 	                        Temp, sizeof(Temp), FName);
 	for (i = 0; i <= 5; i++)
-		GetNthNum(Temp, i + 1, (int far *) &(ts->TmpColor[0][i]));
+		GetNthNum(Temp, i + 1, (int*) &(ts->TmpColor[0][i]));
 	for (i = 0; i <= 1; i++)
 		ts->TEKColor[i] = RGB((BYTE) ts->TmpColor[0][i * 3],
 		                      (BYTE) ts->TmpColor[0][i * 3 + 1],
@@ -893,10 +893,10 @@ void PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 		n /= 4;
 		for (i = 0; i < n; i++) {
 			int colorid, r, g, b;
-			GetNthNum(Temp, i * 4 + 1, (int far *) &colorid);
-			GetNthNum(Temp, i * 4 + 2, (int far *) &r);
-			GetNthNum(Temp, i * 4 + 3, (int far *) &g);
-			GetNthNum(Temp, i * 4 + 4, (int far *) &b);
+			GetNthNum(Temp, i * 4 + 1, (int*) &colorid);
+			GetNthNum(Temp, i * 4 + 2, (int*) &r);
+			GetNthNum(Temp, i * 4 + 3, (int*) &g);
+			GetNthNum(Temp, i * 4 + 4, (int*) &b);
 			ts->ANSIColor[colorid & 15] =
 				RGB((BYTE) r, (BYTE) g, (BYTE) b);
 		}
@@ -928,8 +928,8 @@ void PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	GetPrivateProfileString(Section, "VTFont", "Terminal,0,-13,1",
 	                        Temp, sizeof(Temp), FName);
 	GetNthString(Temp, 1, sizeof(ts->VTFont), ts->VTFont);
-	GetNthNum(Temp, 2, (int far *) &(ts->VTFontSize.x));
-	GetNthNum(Temp, 3, (int far *) &(ts->VTFontSize.y));
+	GetNthNum(Temp, 2, (int*) &(ts->VTFontSize.x));
+	GetNthNum(Temp, 3, (int*) &(ts->VTFontSize.y));
 	GetNthNum(Temp, 4, &(ts->VTFontCharSet));
 
 	/* Bold font flag */
@@ -945,8 +945,8 @@ void PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	GetPrivateProfileString(Section, "TEKFont", "Courier,0,-13,0",
 	                        Temp, sizeof(Temp), FName);
 	GetNthString(Temp, 1, sizeof(ts->TEKFont), ts->TEKFont);
-	GetNthNum(Temp, 2, (int far *) &(ts->TEKFontSize.x));
-	GetNthNum(Temp, 3, (int far *) &(ts->TEKFontSize.y));
+	GetNthNum(Temp, 2, (int*) &(ts->TEKFontSize.x));
+	GetNthNum(Temp, 3, (int*) &(ts->TEKFontSize.y));
 	GetNthNum(Temp, 4, &(ts->TEKFontCharSet));
 
 	/* BS key */
@@ -1342,8 +1342,8 @@ void PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	}
 	else {
 		GetNthString(Temp, 1, sizeof(ts->PrnFont), ts->PrnFont);
-		GetNthNum(Temp, 2, (int far *) &(ts->PrnFontSize.x));
-		GetNthNum(Temp, 3, (int far *) &(ts->PrnFontSize.y));
+		GetNthNum(Temp, 2, (int*) &(ts->PrnFontSize.x));
+		GetNthNum(Temp, 3, (int*) &(ts->PrnFontSize.y));
 		GetNthNum(Temp, 4, &(ts->PrnFontCharSet));
 	}
 
@@ -1465,14 +1465,14 @@ void PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	// VT-print scaling factors (pixels per inch) --- special option
 	GetPrivateProfileString(Section, "VTPPI", "0,0",
 	                        Temp, sizeof(Temp), FName);
-	GetNthNum(Temp, 1, (int far *) &ts->VTPPI.x);
-	GetNthNum(Temp, 2, (int far *) &ts->VTPPI.y);
+	GetNthNum(Temp, 1, (int*) &ts->VTPPI.x);
+	GetNthNum(Temp, 2, (int*) &ts->VTPPI.y);
 
 	// TEK-print scaling factors (pixels per inch) --- special option
 	GetPrivateProfileString(Section, "TEKPPI", "0,0",
 	                        Temp, sizeof(Temp), FName);
-	GetNthNum(Temp, 1, (int far *) &ts->TEKPPI.x);
-	GetNthNum(Temp, 2, (int far *) &ts->TEKPPI.y);
+	GetNthNum(Temp, 1, (int*) &ts->TEKPPI.x);
+	GetNthNum(Temp, 2, (int*) &ts->TEKPPI.y);
 
 	// Show "Window" menu -- special option
 	if (GetOnOff(Section, "WindowMenu", FName, TRUE))
@@ -1561,13 +1561,17 @@ void PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	          _TRUNCATE);
 
 	// Translucent window
-	ts->AlphaBlend =
-		GetPrivateProfileInt(Section, "AlphaBlend ", 255, FName);
-	ts->AlphaBlend = max(0, ts->AlphaBlend);
-	ts->AlphaBlend = min(255, ts->AlphaBlend);
+	ts->AlphaBlendInactive =
+		GetPrivateProfileInt(Section, "AlphaBlend", 255, FName);
+	ts->AlphaBlendInactive = max(0, ts->AlphaBlendInactive);
+	ts->AlphaBlendInactive = min(255, ts->AlphaBlendInactive);
+	ts->AlphaBlendActive =
+		GetPrivateProfileInt(Section, "AlphaBlendActive", 255, FName);
+	ts->AlphaBlendActive = max(0, ts->AlphaBlendActive);
+	ts->AlphaBlendActive = min(255, ts->AlphaBlendActive);
 
 	// Cygwin install path
-	GetPrivateProfileString(Section, "CygwinDirectory ", "c:\\cygwin",
+	GetPrivateProfileString(Section, "CygwinDirectory", "c:\\cygwin",
 	                        Temp, sizeof(Temp), FName);
 	strncpy_s(ts->CygwinDirectory, sizeof(ts->CygwinDirectory), Temp,
 	          _TRUNCATE);
@@ -1579,17 +1583,17 @@ void PASCAL ReadIniFile(PCHAR FName, PTTSet ts)
 	else {
 		Temp[0] = '\0';
 	}
-	GetPrivateProfileString(Section, "ViewlogEditor ", Temp,
+	GetPrivateProfileString(Section, "ViewlogEditor", Temp,
 	                        ts->ViewlogEditor, sizeof(ts->ViewlogEditor), FName);
 
 	// Locale for UTF-8
-	GetPrivateProfileString(Section, "Locale ", DEFAULT_LOCALE,
+	GetPrivateProfileString(Section, "Locale", DEFAULT_LOCALE,
 	                        Temp, sizeof(Temp), FName);
 	strncpy_s(ts->Locale, sizeof(ts->Locale), Temp, _TRUNCATE);
 
 	// CodePage
 	ts->CodePage =
-		GetPrivateProfileInt(Section, "CodePage ", DEFAULT_CODEPAGE,
+		GetPrivateProfileInt(Section, "CodePage", DEFAULT_CODEPAGE,
 		                     FName);
 
 	// UI language message file
@@ -2289,8 +2293,10 @@ void PASCAL WriteIniFile(PCHAR FName, PTTSet ts)
 	           ts->EnableContinuedLineCopy);
 	WritePrivateProfileString(Section, "MouseCursor", ts->MouseCursorName,
 	                          FName);
-	_snprintf_s(Temp, sizeof(Temp), _TRUNCATE, "%d", ts->AlphaBlend);
+	_snprintf_s(Temp, sizeof(Temp), _TRUNCATE, "%d", ts->AlphaBlendInactive);
 	WritePrivateProfileString(Section, "AlphaBlend", Temp, FName);
+	_snprintf_s(Temp, sizeof(Temp), _TRUNCATE, "%d", ts->AlphaBlendActive);
+	WritePrivateProfileString(Section, "AlphaBlendActive", Temp, FName);
 	WritePrivateProfileString(Section, "CygwinDirectory",
 	                          ts->CygwinDirectory, FName);
 	WritePrivateProfileString(Section, "ViewlogEditor", ts->ViewlogEditor,

@@ -45,6 +45,7 @@
 #include "tekwin.h"
 #include "ttdde.h"
 #include "keyboard.h"
+#include "compat_win.h"
 
 #include "teraapp.h"
 
@@ -94,6 +95,7 @@ CTeraApp theApp;
 BOOL CTeraApp::InitInstance()
 {
 	hInst = m_hInstance;
+	WinCompatInit();
 	m_pMainWnd = new CVTWindow();
 	pVTWin = m_pMainWnd;
 	return TRUE;
