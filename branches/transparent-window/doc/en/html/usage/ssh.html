@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>SSH connection</title>
+    <META http-equiv="Content-Style-Type" content="text/css">
+    <link rel="stylesheet" href="../style.css" type="text/css">
+  </head>
+
+  <body>
+    <h1>SSH connection</h1>
+
+    <p>
+      Description of SSH connection which is a feature of Tera Term. 
+      When the TTSSH module is installed, Tera Term supports the SSH connection.
+    </p>
+
+    <h2 id="prerequisite">Prerequisite</h2>
+
+    <p>
+      SSH is composed of two protocols, namely SSH1 and SSH2. Be careful that SSH2 is NOT upward compatible of SSH1. These protocols should be chosen carefully according to the host to be connected. TTSSH supports both protocols.
+    </p>
+
+    <p>
+      There are several ways of connection of SSH as follows
+      <ul>
+        <li>Password authentication</li>
+        <li>Public Key (and Private key pair) authentication
+          <ul>
+            <li>By using the PuTTY authentication agent `Pagent'.</li>
+          </ul>
+        </li>
+        <li>rhosts authentication for SSH1</li>
+        <li>challenge/response(TIS) authentication for SSH1</li>
+	<li>keyboard-interactive authentication for SSH2</li>
+      </ul>
+      In this document, we will describe Password authentication and Key-pair authentication which would be most widely used.
+    </p>
+
+    <h2 id="connproc">Procedure of connection</h2>
+
+    <p>
+      When Tera Term is activated, the following dialog will let you choose login procedure.
+    </p>
+    <div class="img"><img src="../image/NewConnection.png" alt="connection dialog"></div>
+    <p>
+      When using SSH, you should change SSH version in a default parameter. Make sure that it is synchronized to the host to be connected.
+    </p>
+
+    <p id="ssh_auth_dialog">
+      Once connected, then you will be prompted to select authentication method in a dialog.
+    </p>
+    <div class="img"><img src="../image/Authentication.png" alt="Authentication method"></div>
+    <p>
+      The TTSSH can support some authentication methods and a user should select one of methods. When an authentication method is failed, the TTSSH does not retry to authenticate another method.<br>
+      For example, the OpenSSH client will be able to login to the server without regard to the difference the password and the keyboard-interactive authentication. However, the TTSSH can not login to the server with the keyboard-interactive and public key authentication by using the password authentication.
+    </p>
+    <ul>
+      <li>If you want to use Password authentication, then make sure that [Use plain password to log in] is chcked and type in username and password. If they are correct, you can login.<br>
+          NOTE: The password can not be sent as plain text like TELNET protocol because the SSH packet including the password data is encrypted.</li>
+      <li>When using public key authentication, check [RSA/DSA/ECDSA/ED25519 key to log in] (second from the top line) and click [Private key file:] to specify Private key file. Then type in username and Private key pass phrase.<br>
+          Note: TTSSH 2.63(Tera Term 4.76) later can support the PuTTY format and SECSH(ssh.com) format of the SSH2 private key.</li>
+      <li>When the keyboard-interactive authentication is used, check the [Use keyboard-interactive to log in] and input your user name.<br>
+          Next, the dialog with the server prompt and string is shown and input your password.</li>
+      <li>When the Pageant is used, check the [Use Pageant] and input your user name.</li>
+    </ul>
+
+    <h3 id="passwd_input">Inputing Password and Passphrase</h3>
+    <p>
+      The password and passphrase input box differs from normal dialog box.
+    </p>
+    <ul>
+      <li>Control character(0x01 - 0x1F) can be inputted by Control + A - Z, [, \, ], ^ and _.</li>
+      <li>Control + V can not be used because the key equals SYN (0x16). Please use Shift + Insert combination for pasting.</li>
+    </ul>
+
+    <h2 id="securitywarning">Security Warning</h2>
+
+    <h3 id="known_hosts">ssh_known_hosts file</h3>
+
+    <p>On SSH connection, Tera Term searches the server host key into the ssh_known_hosts file. If the host key can not be found, the security warning is shown.<br />
+       The result is described below.</p>
+
+    <ul>
+      <li>No host key in ssh_known_hosts.</li>
+      <li>Mismatching the host key type found in ssh_known_hosts.</li>
+      <li>Mismatching the host key found in ssh_known_hosts.</li>
+      <li>Matching the host key found in ssh_known_hosts(not warning).</li>
+    </ul>
+
+    <p>When the security warning message is shown, a user will receive a network attack known as spoofing secretly redirecting the user's connection to a different server. <br />
+       However, this message will be shown when a user connects to a server for the first time and the server's host key is newly updated by reinstalling the server computer. If a user will see this warning, please compare a fingerprint on the warning dialog to the trusted fingerprint. </p>
+
+    <p>OpenSSH: The server administrator can get the fingerprint(hash) of the server's host key by using below command.</p>
+
+    <pre>ssh-keygen -l -f /etc/ssh/ssh_host_rsa_key.pub</pre>
+
+    <h3 id="VerifyHostKeyDNS">SSHFP RR</h3>
+
+    <p>When a user is using SSH to connect to a server, the user can use SSHFP RR (Secure SHell FingerPrint Resource Record) defined in RFC 4255. However, this feature is experimentally implemented because the current Tera Term can not do the DNSSEC verification.</p>
+
+    <p>A domain owner can register the SSHFP record into the DNS zone. The client software(Tera Term) can get the SSHFP record on connection and verify the record with the server's host key. <br />
+       However, this feature can be used on Windows 2000 or later by the limitation of the Windows resolver.</p>
+
+    <p>Please refer to below one sentence in RFC 4255. <br />
+       <i>A public key verified using this method MUST NOT be trusted if the SSHFP resource record (RR) used for verification was not authenticated by a trusted SIG RR.</i><br />
+      The DNSSEC verification always fails because the Windows resolver used by Tera Term can not verify the DNSSEC signature. </p>
+
+    <h2 id="generate">Generating Key</h2>
+
+    <p>
+     Here, we will describe how to generate Public/Private key pair.  To generate key, select [Setup]
+menu and choose [SSH KeyGenerator...].
+    </p>
+    <div class="img"><img src="../image/SelectKeyGenerator.png" alt="Choosing key generation"></div>
+    <p>
+      Then you will see a dialog of key generation. 
+    </p>
+    <div class="img"><img src="../image/KeyGenerator.png" alt="Key generation dialog"></div>
+    <p>
+      [Key type] is to select key types - [RSA1] for SSH1 protocol and [RSA], [DSA], [ECDSA] or [ED25519] for SSH2 protocol should be chosen respectively. After choosing key type, you will be prompted for pass phrase by clicking [Generate] button. Type in pass phrase (like a password, but it can include blank and usually much longer than password). Then click [Save public key]
+button, [Save private key] button to save these keys. File name can be left as default if you don't need. At the completion, click [Cancel] to finish this process.
+    </p>
+
+    <p>
+For this file, when it is saved as default, all files which have an extension of [pub] (public key) will be stored in the specified location in the server (usually, it is (home directory)/.ssh/authorized_keys). All files which have NOT an extension are recognized as private key and you have to specify it at login.
+ </p>
+
+    <p>
+      <em>Note: </em>Since Private key should not be disclosed to other party, please be careful to make it secret. Please make that it is NOT sent to server by accident.
+    </p>
+
+  </body>
+</html>

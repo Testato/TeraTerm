@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<title>名前付きパイプ</title>
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="../../style.css" type="text/css">
+</head>
+<body>
+
+<h1>名前付きパイプ</h1>
+<p>
+VMwareやHyper-Vといった仮想化ソフトウェアの名前付きパイプを利用することにより、Tera Termから名前付きパイプを介して、仮想マシンのゲストOSへシリアルコンソール接続を行うことができるようになります。
+</p>
+
+<pre>
+   +---------------+ 
+   | Guest OS      |
+   |               |
+   +----[COM]------+
+   | Hypervisor    |
+   +------+--------+
+          |
+          |                              +-------------+
+          |                              |             |
+          +-------[Named pipe]-----------+  Tera Term  |
+                                         |             |
+                                         +-------------+
+</pre>
+
+<h2 id="vmware">Linux on VMware</h2>
+<p>
+VMware Player 3.1.5 + Fedora 16の組み合わせを例としてあげます。
+</p>
+
+<p>
+VMware Player 3以降で名前付きパイプに対応しましたが、古いバージョンでは未対応なので、新しいバージョンにアップグレードして下さい。「仮想マシンの設定」ダイアログ - ハードウェア - シリアルポートにおいて、「名前付きパイプを使用する」を選択し、下記の通り入力します。
+<ul>
+  <li>「\\.\pipe\vmware-serial-port」</li>
+  <li>「この端末はサーバです」</li>
+  <li>「接続先はアプリケーションです」</li>
+</ul>
+</p>
+
+<p>
+Fedora 16は、デフォルトではシリアルコンソールが使用されていません。GRUB2の設定を変更することにより、ブートローダおよびLinuxブートログ、ログインプロンプトをシリアルコンソールに出力することができるようになります。<br>
+GRUB2の設定方法について示します。
+root権限で、/etc/default/grub を編集します。
+
+<pre>
+GRUB_TIMEOUT=5
+GRUB_DISTRIBUTOR="Fedora"
+GRUB_DEFAULT=saved
+GRUB_CMDLINE_LINUX="rd.md=0 rd.dm=0 rd.lvm.lv=VolGroup/lv_swap <font color=red><s>quiet rhgb</s></font> rd.lvm.lv=VolGroup/lv_root rd.luks=0 LANG=ja_JP.UTF-8  KEYTABLE=jp106"
+<font color=red>GRUB_TERMINAL="serial console"
+GRUB_SERIAL_COMMAND="serial --unit=0 --speed=38400"
+GRUB_CMDLINE_LINUX="console=tty0 console=ttyS0,38400"</font>
+</pre>
+
+次に、grub2-mkconfigコマンドを実行し、設定を反映させます。
+<pre>
+# grub2-mkconfig -o /boot/grub2/grub.cfg
+</pre>
+</p>
+
+以上より、VMwareからFedoraを起動すると、名前付きパイプ(\\.\pipe\vmware-serial-port)が作成されるので、Tera Termから接続可能となります。なお、ブレーク信号には対応していないので、Tera Termから"Send break"してもMagic SysRq keyは動作しません。
+
+<p>
+参考までに、Fedora 15以前では Legacy GRUB が採用されているため、シリアルコンソールの設定が異なります。
+root権限で、/boot/grub/grub.conf を直接編集します。
+
+<pre>
+default=0
+timeout=5
+<font color=red>#splashimage=(hd0,0)/grub/splash.xpm.gz</font>
+hiddenmenu
+<font color=red>serial --unit=0 --speed=38400
+terminal --timeout=5 serial console</font>
+title Fedora (2.6.38.6-26.rc1.fc15.i686.PAE)
+        root (hd0,0)
+        kernel /vmlinuz-2.6.38.6-26.rc1.fc15.i686.PAE ro root=/dev/mapper/VolGroup-lv_root rd_LVM_LV=VolGroup/lv_root rd_LVM_LV=VolGroup/lv_swap rd_NO_LUKS rd_NO_MD rd_NO_DM LANG=ja_JP.UTF-8 KEYTABLE=jp106 selinux=0 <font color=red><s>rhgb quiet</s></font> <font color=red>console=tty0 console=ttyS0,38400</font>
+        initrd /initramfs-2.6.38.6-26.rc1.fc15.i686.PAE.img
+</pre>
+
+</p>
+
+
+
+<h2 id="vmware">Windows Server on Hyper-V</h2>
+<p>
+Windows Server 2008 R2 の Hyper-V を使い、仮想マシン上で Windows Server を動作させる例を挙げます。
+</p>
+
+<p>
+Hyper-V のCOMポートの設定で、名前付きパイプを指定します。名前付きパイプの形式は「\\.\pipe\」となります。
+当該名前付きパイプを使って、Tera Termから Hyper-V のCOMポートに接続することができます。
+なお、ゲストOSは Windows Server でないと、SAC(Special Administration Console)は利用できません。デスクトップ版WindowsではSACは利用不可なので、名前付きパイプで接続しても、何もできません。
+</p>
+
+
+
+</body>
+</html>
